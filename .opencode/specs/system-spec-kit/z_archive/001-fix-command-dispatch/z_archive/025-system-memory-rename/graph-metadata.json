@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "rename",
+      "workflows",
+      "memory",
+      "system",
+      "025",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "key_topics": [
+      "spec",
+      "rename",
+      "workflows",
+      "memory",
+      "system",
+      "025",
+      "plan",
+      "tasks",
+      "checklist",
+      "workflows-memory",
+      "skill",
+      "needs"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "SKILL.md",
+      "README.md",
+      "config.jsonc",
+      "templates/context_template.md",
+      "mcp_server/INSTALL_GUIDE.md",
+      "mcp_server/lib/vector-index.js",
+      "scripts/setup.sh",
+      "scripts/generate-context.js",
+      "scripts/lib/vector-index.js",
+      "scripts/package.json",
+      "scripts/package-lock.json",
+      "mcp_server/package.json",
+      "references/spec_folder_detection.md",
+      "references/semantic_memory.md",
+      "references/troubleshooting.md",
+      "references/alignment_scoring.md",
+      "references/execution_methods.md",
+      "AGENTS.md",
+      "AGENTS (Universal).md",
+      "opencode.json"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "config.jsonc",
+        "kind": "file",
+        "path": "config.jsonc",
+        "source": "derived"
+      },
+      {
+        "name": "context_template.md",
+        "kind": "doc",
+        "path": "templates/context_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": "mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "setup.sh",
+        "kind": "script",
+        "path": "scripts/setup.sh",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "scripts/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "scripts/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "package-lock.json",
+        "kind": "config",
+        "path": "scripts/package-lock.json",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec_folder_detection.md",
+        "kind": "doc",
+        "path": "references/spec_folder_detection.md",
+        "source": "derived"
+      },
+      {
+        "name": "semantic_memory.md",
+        "kind": "doc",
+        "path": "references/semantic_memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "troubleshooting.md",
+        "kind": "doc",
+        "path": "references/troubleshooting.md",
+        "source": "derived"
+      },
+      {
+        "name": "alignment_scoring.md",
+        "kind": "doc",
+        "path": "references/alignment_scoring.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `workflows-memory` skill needs to be renamed to `system-memory` to align with the naming convention established by the recent `workflows-spec-kit` → `system-spec-kit` rename. The \"system-\" prefix better reflects that this is a core infrastructure skill rather than a domain workflow.",
+    "created_at": "2026-04-12T09:02:53.517Z",
+    "last_save_at": "2026-04-12T09:06:03.568Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

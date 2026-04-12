@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/004-fix-access-signal-path",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "fix access signal path",
+      "trackAccess adaptive signal",
+      "batched access signals",
+      "fix access signal plan",
+      "batched access signal plan",
+      "fix access signal tasks",
+      "batched access signal tasks",
+      "fix access signal checklist",
+      "phase 4 verification",
+      "phase 4 implementation summary",
+      "access signal path summary"
+    ],
+    "key_topics": [
+      "fix",
+      "access",
+      "signal",
+      "path",
+      "trackaccess",
+      "adaptive",
+      "batched",
+      "signals",
+      "plan",
+      "tasks",
+      "checklist",
+      "phase"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+      "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+      "stage2-fusion.ts",
+      "access-tracker.ts",
+      "config.query",
+      "console.warn",
+      "adaptive-ranking-e2e.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "access-tracker.ts",
+        "kind": "code",
+        "path": "access-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "config.query",
+        "kind": "file",
+        "path": "config.query",
+        "source": "derived"
+      },
+      {
+        "name": "console.warn",
+        "kind": "file",
+        "path": "console.warn",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Fix Access Signal Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Header",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 4** of the adaptive-ranking packet.",
+    "created_at": "2026-04-12T09:02:50.333Z",
+    "last_save_at": "2026-04-12T09:06:00.461Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

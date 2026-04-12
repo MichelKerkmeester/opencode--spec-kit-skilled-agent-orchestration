@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "pipeline architecture testing",
+      "014 pipeline architecture",
+      "phase 014 manual testing",
+      "4-stage pipeline refactor test",
+      "pipeline architecture execution plan",
+      "phase 014 plan",
+      "manual testing pipeline plan",
+      "pipeline test execution",
+      "pipeline architecture tasks",
+      "phase 014 tasks",
+      "manual testing pipeline tasks",
+      "pipeline architecture checklist",
+      "phase 014 verification",
+      "manual pipeline architecture checklist",
+      "049 050 051 pipeline checklist",
+      "pipeline-architecture implementation summary",
+      "phase 014 summary",
+      "manual testing pipeline-architecture summary"
+    ],
+    "key_topics": [
+      "pipeline",
+      "architecture",
+      "testing",
+      "014",
+      "phase",
+      "manual",
+      "4-stage",
+      "refactor",
+      "test",
+      "execution",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "validation-metadata.ts",
+      "stage2-fusion.ts",
+      "save-quality-gate.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "trigger-extractor.js",
+      "search-flags.ts",
+      "handlers/memory-search.ts",
+      "tests/memory-lineage-state.vitest.ts",
+      "vector-index-schema.ts",
+      "lib/storage/lineage-state.ts",
+      "tests/memory-lineage-backfill.vitest.ts",
+      "lib/storage/checkpoints.ts",
+      "memory-lineage-state.vitest.ts",
+      "checkpoints.ts",
+      "memory-lineage-backfill.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "validation-metadata.ts",
+        "kind": "code",
+        "path": "validation-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save-quality-gate.ts",
+        "kind": "code",
+        "path": "save-quality-gate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.js",
+        "kind": "code",
+        "path": "trigger-extractor.js",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-lineage-state.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-lineage-state.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lineage-state.ts",
+        "kind": "code",
+        "path": "lib/storage/lineage-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-lineage-backfill.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-lineage-backfill.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "lib/storage/checkpoints.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The pipeline architecture category (14--pipeline-architecture) contains 22 features spanning the 4-stage pipeline refactor, chunk-to-memory aggregation, schema validation, DB path standardisation, cross-process rebinding, and lineage projection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.",
+    "created_at": "2026-04-12T09:02:50.301Z",
+    "last_save_at": "2026-04-12T09:06:00.433Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

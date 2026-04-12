@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "security",
+      "documentation",
+      "remediation",
+      "spec",
+      "050",
+      "implementation",
+      "plan",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "security",
+      "documentation",
+      "remediation",
+      "spec",
+      "050",
+      "implementation",
+      "plan",
+      "verification",
+      "checklist",
+      "summary",
+      "audit",
+      "system-spec-kit"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "CONFIG.DATA_FILE",
+      "scripts/generate-context.js",
+      "mcp_server/context-server.js",
+      "mcp_server/lib/vector-index.js",
+      "mcp_server/lib/retry-manager.js",
+      "install_guides/MCP/MCP - Spec Kit Memory.md",
+      "mcp_server/README.md",
+      "README.md",
+      "scripts/rules/README.md",
+      "generate-context.js",
+      "context-server.js",
+      ".opencode/skill/system-spec-kit/scripts/generate-context.js",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
+      "/tmp/save-context-data.json",
+      "check-folder-naming.sh",
+      "check-frontmatter.sh"
+    ],
+    "entities": [
+      {
+        "name": "CONFIG.DATA_FILE",
+        "kind": "file",
+        "path": "CONFIG.DATA_FILE",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "retry-manager.js",
+        "kind": "code",
+        "path": "mcp_server/lib/retry-manager.js",
+        "source": "derived"
+      },
+      {
+        "name": "MCP - Spec Kit Memory.md",
+        "kind": "doc",
+        "path": "install_guides/MCP/MCP - Spec Kit Memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "scripts/rules/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Security audit of system-spec-kit identified 4 medium-severity and 5 low-severity issues. Additionally, documentation gaps exist from changes made in 048-system-analysis and 049-system-analysis-bugs that need to be addressed.",
+    "created_at": "2026-04-12T09:02:53.532Z",
+    "last_save_at": "2026-04-12T09:06:03.587Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

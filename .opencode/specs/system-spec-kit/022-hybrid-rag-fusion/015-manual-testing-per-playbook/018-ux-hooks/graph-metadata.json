@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "ux hooks manual testing",
+      "phase 018 ux hooks",
+      "103-107 166-169 179-180 mutation hooks checkpoint explainability",
+      "ux hooks execution plan",
+      "phase 018 manual tests",
+      "mutation feedback verdict plan",
+      "hooks barrel review plan",
+      "ux hooks tasks",
+      "phase 018 tasks",
+      "ux hooks test execution tasks",
+      "ux hooks verification checklist",
+      "phase 018 checklist",
+      "ux hooks manual test verification",
+      "mutation feedback checklist",
+      "ux-hooks implementation summary",
+      "phase 018 summary",
+      "manual testing ux-hooks"
+    ],
+    "key_topics": [
+      "hooks",
+      "manual",
+      "testing",
+      "phase",
+      "018",
+      "103-107",
+      "166-169",
+      "179-180",
+      "mutation",
+      "checkpoint",
+      "explainability",
+      "execution"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "hooks-ux-feedback.vitest.ts",
+      "memory-save-ux-regressions.vitest.ts",
+      "meta.autoSurface",
+      "context-server.vitest.ts",
+      "data.progressiveDisclosure",
+      "data.results",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "data.sessionState",
+      "data.goalRefinement",
+      "response-hints.ts",
+      "hooks/index.ts",
+      "result-explainability.ts",
+      "profile-formatters.ts",
+      "recovery-payload.ts",
+      "confidence-scoring.ts",
+      "1) npx vitest run tests/hooks-ux-feedback.vitest.ts",
+      "1) rg \"mutation-feedback\\|response-hints\" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts 2) rg \"mutation-feedback\\|response-hints\\|MutationHookResult\\|postMutationHooks\" .opencode/skill/system-spec-kit/mcp_server/hooks/README.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "hooks-ux-feedback.vitest.ts",
+        "kind": "test",
+        "path": "hooks-ux-feedback.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-ux-regressions.vitest.ts",
+        "kind": "test",
+        "path": "memory-save-ux-regressions.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "meta.autoSurface",
+        "kind": "file",
+        "path": "meta.autoSurface",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.vitest.ts",
+        "kind": "test",
+        "path": "context-server.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data.progressiveDisclosure",
+        "kind": "file",
+        "path": "data.progressiveDisclosure",
+        "source": "derived"
+      },
+      {
+        "name": "data.results",
+        "kind": "file",
+        "path": "data.results",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "data.sessionState",
+        "kind": "file",
+        "path": "data.sessionState",
+        "source": "derived"
+      },
+      {
+        "name": "data.goalRefinement",
+        "kind": "file",
+        "path": "data.goalRefinement",
+        "source": "derived"
+      },
+      {
+        "name": "response-hints.ts",
+        "kind": "code",
+        "path": "response-hints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "hooks/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "result-explainability.ts",
+        "kind": "code",
+        "path": "result-explainability.ts",
+        "source": "derived"
+      },
+      {
+        "name": "profile-formatters.ts",
+        "kind": "code",
+        "path": "profile-formatters.ts",
+        "source": "derived"
+      },
+      {
+        "name": "recovery-payload.ts",
+        "kind": "code",
+        "path": "recovery-payload.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Manual UX-hooks scenarios for the Spec Kit Memory system live inside the central playbook and require a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated UX-hooks packet, Phase 018 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Scenarios include result explainability, response profiles, progressive disclosure, session retrieval state, empty result recovery, and result confidence.",
+    "created_at": "2026-04-12T09:02:50.304Z",
+    "last_save_at": "2026-04-12T09:06:00.436Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

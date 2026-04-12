@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "088",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "known",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "088",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "known",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.js",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.js",
+      ".opencode/agent/orchestrate.md",
+      "AGENTS.md",
+      ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
+      ".opencode/skill/system-spec-kit/scripts/README.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/check-completion.sh",
+      ".opencode/install_guides/SET-UP - AGENTS.md",
+      ".opencode/agent/speckit.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js",
+      "grep -rn \"Gate 4\" .opencode/agent/ AGENTS.md",
+      "SET-UP - AGENTS.md",
+      "087-speckit-deep-analysis/known-limitations.md",
+      "087-speckit-deep-analysis/implementation-summary.md",
+      "scripts-registry.json",
+      "scripts/README.md",
+      "scripts/spec/check-completion.sh"
+    ],
+    "entities": [
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "prediction-error-gate.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.js",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "scripts-registry.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/scripts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "check-completion.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/check-completion.sh",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP - AGENTS.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/SET-UP - AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "access-tracker.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js",
+        "source": "derived"
+      },
+      {
+        "name": " AGENTS.md",
+        "kind": "doc",
+        "path": "grep -rn \"Gate 4\" .opencode/agent/ AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP - AGENTS.md",
+        "kind": "doc",
+        "path": "SET-UP - AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "known-limitations.md",
+        "kind": "doc",
+        "path": "087-speckit-deep-analysis/known-limitations.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs and 15+ moderate misalignments, but deferred 4 known limitations that require separate implementation work: (1) existing SQLite databases have a drifted schema with three conflicting DDL definitions causing silent INSERT failures, (2) stale Gate 4/6 references remain in 7 active files plus the legacy install guide, (3) three spec management scripts are undocumented in capability tables, and (4) minor signal handler gaps exist in the MCP server.",
+    "created_at": "2026-04-12T09:02:53.559Z",
+    "last_save_at": "2026-04-12T09:06:03.618Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

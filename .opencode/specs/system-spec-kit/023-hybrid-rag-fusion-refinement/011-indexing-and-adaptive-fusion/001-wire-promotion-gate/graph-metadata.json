@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/001-wire-promotion-gate",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "promotion gate",
+      "adaptive ranking promotion",
+      "shadow evaluation action",
+      "wire promotion",
+      "promotion gate wiring",
+      "adaptive ranking tuning",
+      "promotion gate tasks",
+      "wire promotion gate checklist",
+      "promotion gate verification",
+      "phase 1 checklist",
+      "implementation summary",
+      "adaptive tuning trigger"
+    ],
+    "key_topics": [
+      "promotion",
+      "gate",
+      "adaptive",
+      "ranking",
+      "shadow",
+      "evaluation",
+      "action",
+      "wire",
+      "wiring",
+      "tuning",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "shadow-evaluation-runtime.ts",
+      "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+      "mcp_server/tests/shadow-evaluation-runtime.vitest.ts",
+      "adaptive-ranking.ts",
+      "shadow-scoring.ts",
+      "context-server.ts",
+      "mcp_server/lib/cognitive/adaptive-ranking.ts",
+      "promotionGate.ready",
+      "gateResult.recommendation",
+      "npx vitest run tests/adaptive-ranking.vitest.ts tests/shadow-evaluation-runtime.vitest.ts tests/adaptive-fusion.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/shadow-evaluation-runtime.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking.ts",
+        "kind": "code",
+        "path": "adaptive-ranking.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-scoring.ts",
+        "kind": "code",
+        "path": "shadow-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/adaptive-ranking.ts",
+        "source": "derived"
+      },
+      {
+        "name": "promotionGate.ready",
+        "kind": "file",
+        "path": "promotionGate.ready",
+        "source": "derived"
+      },
+      {
+        "name": "gateResult.recommendation",
+        "kind": "file",
+        "path": "gateResult.recommendation",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-fusion.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/adaptive-ranking.vitest.ts tests/shadow-evaluation-runtime.vitest.ts tests/adaptive-fusion.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 1** of the adaptive-ranking-prerequisites specification.",
+    "created_at": "2026-04-12T09:02:50.326Z",
+    "last_save_at": "2026-04-12T09:06:00.459Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

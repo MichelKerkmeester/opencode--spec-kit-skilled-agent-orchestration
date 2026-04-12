@@ -241,6 +241,51 @@ function getCandidateSourceScores(row: PipelineRow): Record<string, number> {
   return fallbackScores;
 }
 
+function isPacketOrientedQuery(query: string): boolean {
+  const normalized = query.toLowerCase();
+  return [
+    'packet',
+    'spec folder',
+    'graph metadata',
+    'dependency',
+    'depends on',
+    'related to',
+    'supersedes',
+    'resume',
+    'key files',
+    'parent',
+    'children',
+  ].some((term) => normalized.includes(term));
+}
+
+function boostGraphMetadataCandidates(
+  results: PipelineRow[],
+  query: string,
+): PipelineRow[] {
+  if (!isPacketOrientedQuery(query)) {
+    return results;
+  }
+
+  return results.map((row) => {
+    if (row.document_type !== 'graph_metadata' && row.documentType !== 'graph_metadata') {
+      return row;
+    }
+
+    const currentScore = resolveEffectiveScore(row);
+    const boosted = Math.min(1, currentScore + 0.12);
+    const sourceScores = getCandidateSourceScores(row);
+    return {
+      ...row,
+      score: boosted,
+      rrfScore: boosted,
+      sourceScores: {
+        ...sourceScores,
+        graph_metadata: Math.max(sourceScores.graph_metadata ?? 0, boosted),
+      },
+    };
+  });
+}
+
 function annotateBranchScore(row: PipelineRow, branchLabel: string): Record<string, number> {
   const existingBranchScores = readFiniteScoreMap(row.stage1BranchScores);
   const effectiveScore = resolveEffectiveScore(row);
@@ -1053,6 +1098,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   candidates = backfillMissingQualityScores(candidates);
   candidates = filterByMinQualityScore(candidates, qualityThreshold);
+  candidates = boostGraphMetadataCandidates(candidates, query);
 
   // -- D2 REQ-D2-003: Corpus-Grounded LLM Reformulation ----------------------
   //
@@ -1397,6 +1443,8 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 export const __testables = {
   filterByMinQualityScore,
   resolveRowContextType,
+  isPacketOrientedQuery,
+  boostGraphMetadataCandidates,
   buildDeepQueryVariants,
   DEFAULT_EXPANSION_CANDIDATE_LIMIT,
   decomposeQueryFacets,

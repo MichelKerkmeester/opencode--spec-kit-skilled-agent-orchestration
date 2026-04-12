@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "kit",
+      "reimagined",
+      "bug",
+      "fixes",
+      "083",
+      "speckit",
+      "implementation",
+      "plan",
+      "task",
+      "breakdown",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "spec",
+      "kit",
+      "reimagined",
+      "bug",
+      "fixes",
+      "083",
+      "speckit",
+      "implementation",
+      "plan",
+      "task",
+      "breakdown",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec_kit/debug.md",
+      "spec_kit/research/research/research.md",
+      "spec_kit/complete.md",
+      "spec_kit/implement.md",
+      "spec_kit/plan.md",
+      "spec_kit/resume.md",
+      "spec_kit/handover.md",
+      "memory/learn.md",
+      "memory/continue.md",
+      "memory/context.md",
+      "memory/save.md",
+      "memory/manage.md",
+      "spec_kit_complete_auto.yaml",
+      "spec_kit_complete_confirm.yaml",
+      "spec_kit_implement_auto.yaml",
+      "spec_kit_implement_confirm.yaml",
+      "spec_kit_resume_auto.yaml",
+      "spec_kit_resume_confirm.yaml",
+      "spec_kit_plan_confirm.yaml",
+      "speckit.md"
+    ],
+    "entities": [
+      {
+        "name": "debug.md",
+        "kind": "doc",
+        "path": "spec_kit/debug.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "spec_kit/research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": "spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": "spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "spec_kit/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": "spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "spec_kit/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "learn.md",
+        "kind": "doc",
+        "path": "memory/learn.md",
+        "source": "derived"
+      },
+      {
+        "name": "continue.md",
+        "kind": "doc",
+        "path": "memory/continue.md",
+        "source": "derived"
+      },
+      {
+        "name": "context.md",
+        "kind": "doc",
+        "path": "memory/context.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": "memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "manage.md",
+        "kind": "doc",
+        "path": "memory/manage.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_auto.yaml",
+        "kind": "config",
+        "path": "spec_kit_complete_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_confirm.yaml",
+        "kind": "config",
+        "path": "spec_kit_complete_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_implement_auto.yaml",
+        "kind": "config",
+        "path": "spec_kit_implement_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_implement_confirm.yaml",
+        "kind": "config",
+        "path": "spec_kit_implement_confirm.yaml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "After the successful release of Spec Kit v1.2.1.0 (SpecKit Reimagined + Memory Command Consolidation), comprehensive parallel audits revealed **70+ issues** across the command files, YAML workflow assets, MCP server code, and documentation. This specification consolidates findings from:",
+    "created_at": "2026-04-12T09:02:53.554Z",
+    "last_save_at": "2026-04-12T09:06:03.613Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

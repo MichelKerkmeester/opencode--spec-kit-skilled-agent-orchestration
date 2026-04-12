@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "002-codesight research spec",
+      "002-codesight phase spec",
+      "codesight Adopt Adapt Reject",
+      "codesight AST detector research",
+      "002-codesight research plan",
+      "002-codesight execution plan",
+      "deep-research loop codesight",
+      "002-codesight research tasks",
+      "002-codesight task list",
+      "codesight deep-research tasks",
+      "002-codesight checklist",
+      "002-codesight verification",
+      "codesight verification",
+      "002-codesight decision record",
+      "002-codesight ADR",
+      "codesight engine choice",
+      "codesight sandbox extract workaround",
+      "002-codesight implementation summary",
+      "002-codesight outcome",
+      "codesight research complete"
+    ],
+    "key_topics": [
+      "002-codesight",
+      "research",
+      "spec",
+      "phase",
+      "codesight",
+      "adopt",
+      "adapt",
+      "reject",
+      "ast",
+      "detector",
+      "plan",
+      "execution"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "external/src/ast/loader.ts",
+      "external/src/mcp-server.ts",
+      "external/src/generators/ai-config.ts",
+      "external/src/detectors/blast-radius.ts",
+      "external/src/eval.ts",
+      "pnpm-workspace.yaml",
+      "package.json",
+      "turbo.json",
+      "nx.json",
+      "lerna.json",
+      "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
+      "research/deep-research-config.json",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-strategy.md",
+      "research/deep-research-dashboard.md",
+      "research/findings-registry.json",
+      "memory/06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
+      "memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
+      "memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "loader.ts",
+        "kind": "code",
+        "path": "external/src/ast/loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "mcp-server.ts",
+        "kind": "code",
+        "path": "external/src/mcp-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ai-config.ts",
+        "kind": "code",
+        "path": "external/src/generators/ai-config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "blast-radius.ts",
+        "kind": "code",
+        "path": "external/src/detectors/blast-radius.ts",
+        "source": "derived"
+      },
+      {
+        "name": "eval.ts",
+        "kind": "code",
+        "path": "external/src/eval.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pnpm-workspace.yaml",
+        "kind": "config",
+        "path": "pnpm-workspace.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "package.json",
+        "source": "derived"
+      },
+      {
+        "name": "turbo.json",
+        "kind": "config",
+        "path": "turbo.json",
+        "source": "derived"
+      },
+      {
+        "name": "nx.json",
+        "kind": "config",
+        "path": "nx.json",
+        "source": "derived"
+      },
+      {
+        "name": "lerna.json",
+        "kind": "config",
+        "path": "lerna.json",
+        "source": "derived"
+      },
+      {
+        "name": "codex-iter-NNN-output.md",
+        "kind": "doc",
+        "path": "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-config.json",
+        "kind": "config",
+        "path": "research/deep-research-config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-strategy.md",
+        "kind": "doc",
+        "path": "research/deep-research-strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
+    "created_at": "2026-04-12T09:02:53.446Z",
+    "last_save_at": "2026-04-12T09:06:03.490Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

@@ -1933,6 +1933,23 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   } else {
     log('   Context file was a duplicate — skipping description tracking');
   }
+
+  try {
+    const graphApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
+    if (!graphApiModule) {
+      throw new Error('MCP server API unavailable for graph-metadata refresh');
+    }
+    const { refreshGraphMetadataForSpecFolder: refreshGraphMetadata } = graphApiModule as {
+      refreshGraphMetadataForSpecFolder?: (specFolderPath: string, options?: Record<string, unknown>) => { created: boolean; filePath: string };
+    };
+    if (typeof refreshGraphMetadata !== 'function') {
+      throw new Error('refreshGraphMetadataForSpecFolder export unavailable');
+    }
+    const graphRefreshResult = refreshGraphMetadata(path.resolve(specFolder));
+    log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
+  } catch (graphErr: unknown) {
+    throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);
+  }
   log();
 
   // Step 10: Success confirmation (file written; indexing runs in Step 11)

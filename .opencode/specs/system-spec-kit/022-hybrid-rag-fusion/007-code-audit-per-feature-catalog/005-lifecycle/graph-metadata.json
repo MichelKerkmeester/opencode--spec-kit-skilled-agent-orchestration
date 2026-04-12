@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "lifecycle",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "lifecycle",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "summary",
+      "systematic",
+      "features"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "transaction-manager-extended.vitest.ts",
+      "bm25-index.ts",
+      "embeddings.ts",
+      "archival-manager.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "transaction-manager-extended.vitest.ts",
+        "kind": "test",
+        "path": "transaction-manager-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "bm25-index.ts",
+        "kind": "code",
+        "path": "bm25-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "embeddings.ts",
+        "kind": "code",
+        "path": "embeddings.ts",
+        "source": "derived"
+      },
+      {
+        "name": "archival-manager.ts",
+        "kind": "code",
+        "path": "archival-manager.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary\n\nSystematic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematic code audit of 7 Lifecycle features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/05--lifecycle/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
+    "created_at": "2026-04-12T09:02:50.247Z",
+    "last_save_at": "2026-04-12T09:06:00.375Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

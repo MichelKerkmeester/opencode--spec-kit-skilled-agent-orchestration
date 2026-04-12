@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "consolidated",
+      "002-indexing-normalization",
+      "implementation",
+      "summary",
+      "implementation summary",
+      "002",
+      "indexing",
+      "indexing normalization audit",
+      "improvement audit",
+      "deep research"
+    ],
+    "key_topics": [
+      "consolidated",
+      "002-indexing-normalization",
+      "implementation",
+      "summary",
+      "002",
+      "indexing",
+      "normalization",
+      "audit",
+      "improvement",
+      "deep",
+      "research",
+      "merge-consolidation"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js",
+      ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+      ".opencode/skill/system-spec-kit/templates/level_3/plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts",
+      "handler-memory-index.vitest.ts",
+      "importance-tiers.vitest.ts",
+      "memory-parser-extended.vitest.ts",
+      "full-spec-doc-indexing.vitest.ts",
+      "index-refresh.vitest.ts",
+      "npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts",
+      "npm test -- tests/memory-parser-extended.vitest.ts tests/full-spec-doc-indexing.vitest.ts",
+      "test-template-system.js",
+      "test-template-comprehensive.js",
+      "test-frontmatter-backfill.js",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+      ".opencode/skill/system-spec-kit/scripts/utils/spec-affinity.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "importance-tiers.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "backfill-frontmatter.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/level_3/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-index.vitest.ts",
+        "kind": "test",
+        "path": "handler-memory-index.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "importance-tiers.vitest.ts",
+        "kind": "test",
+        "path": "importance-tiers.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser-extended.vitest.ts",
+        "kind": "test",
+        "path": "memory-parser-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "full-spec-doc-indexing.vitest.ts",
+        "kind": "test",
+        "path": "full-spec-doc-indexing.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index-refresh.vitest.ts",
+        "kind": "test",
+        "path": "index-refresh.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "importance-tiers.vitest.ts",
+        "kind": "test",
+        "path": "npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "full-spec-doc-indexing.vitest.ts",
+        "kind": "test",
+        "path": "npm test -- tests/memory-parser-extended.vitest.ts tests/full-spec-doc-indexing.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-template-system.js",
+        "kind": "code",
+        "path": "test-template-system.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-template-comprehensive.js",
+        "kind": "code",
+        "path": "test-template-comprehensive.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"merge-consolidation | v1.0\"",
+    "created_at": "2026-04-12T09:02:50.237Z",
+    "last_save_at": "2026-04-12T09:06:00.366Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ]
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "rename",
+      "memory",
+      "command",
+      "008",
+      "plan",
+      "tasks",
+      "two"
+    ],
+    "key_topics": [
+      "spec",
+      "rename",
+      "memory",
+      "command",
+      "008",
+      "plan",
+      "tasks",
+      "two",
+      "unified",
+      "dashboard",
+      "check",
+      "update"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/memory/memory.md",
+      ".opencode/command/memory/check.md",
+      "check.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/command/memory/checkpoint.md",
+      ".opencode/skills/workflows-memory/SKILL.md",
+      ".opencode/memory/mcp_server/README.md",
+      ".opencode/memory/mcp_server/INSTALL_GUIDE.md",
+      "memory.md",
+      "save.md",
+      "checkpoint.md",
+      "SKILL.md",
+      "README.md",
+      "INSTALL_GUIDE.md",
+      "AGENTS.md",
+      "AGENTS (Universal).md",
+      ".opencode/command/cli/codex.md",
+      ".opencode/command/cli/gemini.md",
+      "search.md",
+      "codex.md"
+    ],
+    "entities": [
+      {
+        "name": "memory.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "check.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/check.md",
+        "source": "derived"
+      },
+      {
+        "name": "check.md",
+        "kind": "doc",
+        "path": "check.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoint.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/checkpoint.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skills/workflows-memory/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/memory/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/memory/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory.md",
+        "kind": "doc",
+        "path": "memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": "save.md",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoint.md",
+        "kind": "doc",
+        "path": "checkpoint.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": "INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS (Universal).md",
+        "kind": "doc",
+        "path": "AGENTS (Universal).md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Rename the unified memory dashboard command from `/memory` to `/memory:check` and update all references across the codebase.",
+    "created_at": "2026-04-12T09:02:53.510Z",
+    "last_save_at": "2026-04-12T09:06:03.559Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ]
+  }
+}

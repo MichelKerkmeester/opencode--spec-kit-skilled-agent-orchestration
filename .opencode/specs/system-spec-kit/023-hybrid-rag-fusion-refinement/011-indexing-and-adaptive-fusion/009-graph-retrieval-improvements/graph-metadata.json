@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/009-graph-retrieval-improvements",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graph retrieval improvements",
+      "community summaries",
+      "dual level retrieval",
+      "zero result fallback",
+      "graph provenance",
+      "graph retrieval plan",
+      "community summaries implementation",
+      "retrieval improvement phases",
+      "graph retrieval tasks",
+      "community summaries tasks",
+      "retrieval improvement checklist",
+      "graph retrieval checklist",
+      "retrieval improvements verification",
+      "graph retrieval adr",
+      "community summaries decision",
+      "retrieval improvement architecture",
+      "graph retrieval summary"
+    ],
+    "key_topics": [
+      "graph",
+      "retrieval",
+      "improvements",
+      "community",
+      "summaries",
+      "dual",
+      "level",
+      "zero",
+      "result",
+      "fallback",
+      "provenance",
+      "plan"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "community-search.ts",
+      "lib/graph/community-summaries.ts",
+      "lib/graph/community-storage.ts",
+      "lib/search/community-search.ts",
+      "lib/graph/temporal-edges.ts",
+      "lib/graph/contradiction-detection.ts",
+      "lib/graph/usage-tracking.ts",
+      "lib/graph/usage-ranking-signal.ts",
+      "lib/extraction/ontology-hooks.ts",
+      "tests/concept-extraction.vitest.ts",
+      "tests/community-search.vitest.ts",
+      "tests/provenance-envelope.vitest.ts",
+      "tests/contradiction-detection.vitest.ts",
+      "tests/usage-weighted-ranking.vitest.ts",
+      "tests/temporal-edges.vitest.ts",
+      "lib/search/entity-linker.ts",
+      "lib/search/pipeline/stage1-candidate-gen.ts",
+      "lib/search/recovery-payload.ts",
+      "lib/search/causal-boost.ts",
+      "lib/search/search-flags.ts"
+    ],
+    "entities": [
+      {
+        "name": "community-search.ts",
+        "kind": "code",
+        "path": "community-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-summaries.ts",
+        "kind": "code",
+        "path": "lib/graph/community-summaries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-storage.ts",
+        "kind": "code",
+        "path": "lib/graph/community-storage.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-search.ts",
+        "kind": "code",
+        "path": "lib/search/community-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "temporal-edges.ts",
+        "kind": "code",
+        "path": "lib/graph/temporal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contradiction-detection.ts",
+        "kind": "code",
+        "path": "lib/graph/contradiction-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "usage-tracking.ts",
+        "kind": "code",
+        "path": "lib/graph/usage-tracking.ts",
+        "source": "derived"
+      },
+      {
+        "name": "usage-ranking-signal.ts",
+        "kind": "code",
+        "path": "lib/graph/usage-ranking-signal.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ontology-hooks.ts",
+        "kind": "code",
+        "path": "lib/extraction/ontology-hooks.ts",
+        "source": "derived"
+      },
+      {
+        "name": "concept-extraction.vitest.ts",
+        "kind": "test",
+        "path": "tests/concept-extraction.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-search.vitest.ts",
+        "kind": "test",
+        "path": "tests/community-search.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "provenance-envelope.vitest.ts",
+        "kind": "test",
+        "path": "tests/provenance-envelope.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contradiction-detection.vitest.ts",
+        "kind": "test",
+        "path": "tests/contradiction-detection.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "usage-weighted-ranking.vitest.ts",
+        "kind": "test",
+        "path": "tests/usage-weighted-ranking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "temporal-edges.vitest.ts",
+        "kind": "test",
+        "path": "tests/temporal-edges.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "lib/search/entity-linker.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The Spec Kit Memory graph has 3,854 causal edges at 79.92% coverage but is underutilized: `memory_search(\"Semantic Search\")` returns 0 results, graph signals are invisible to users, and the graph fires only reactively via causal boost. Phase 007 surveyed 7 external graph memory systems and produced a 12-item ranked improvement backlog. This spec implements the top 8 improvements across 4 dependency-ordered phases.",
+    "created_at": "2026-04-12T09:02:50.338Z",
+    "last_save_at": "2026-04-12T09:06:00.466Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -221,6 +221,7 @@ export function getDefaultTierForDocumentType(documentType: string): ImportanceT
     implementation_summary: 'normal',
     research: 'normal',
     handover: 'normal',
+    graph_metadata: 'important',
     memory: 'normal',
   };
 

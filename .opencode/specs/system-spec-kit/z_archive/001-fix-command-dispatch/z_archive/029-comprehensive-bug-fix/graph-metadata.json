@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "comprehensive",
+      "skills",
+      "mcp",
+      "server",
+      "bug",
+      "spec",
+      "029",
+      "implementation",
+      "plan",
+      "fix",
+      "checklist"
+    ],
+    "key_topics": [
+      "comprehensive",
+      "skills",
+      "mcp",
+      "server",
+      "bug",
+      "spec",
+      "029",
+      "implementation",
+      "plan",
+      "fix",
+      "checklist",
+      "documents"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "semantic-memory.js",
+      "vector-index.js",
+      "hybrid-search.js",
+      "composite-scoring.js",
+      "scoring.js",
+      "importance-tiers.js",
+      "checkpoints.js",
+      "config-loader.js",
+      "trigger-matcher.js",
+      "trigger-extractor.js",
+      "system-memory/SKILL.md",
+      "mcp-leann/SKILL.md",
+      "mcp-code-context/SKILL.md",
+      "mcp-code-mode/SKILL.md",
+      "system-spec-kit/SKILL.md",
+      "workflows-code/SKILL.md",
+      "sk-git/SKILL.md",
+      "mcp-chrome-devtools/SKILL.md",
+      "system-memory/references/troubleshooting.md",
+      "mcp-leann/references/tool_catalog.md"
+    ],
+    "entities": [
+      {
+        "name": "semantic-memory.js",
+        "kind": "code",
+        "path": "semantic-memory.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.js",
+        "kind": "code",
+        "path": "hybrid-search.js",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.js",
+        "kind": "code",
+        "path": "composite-scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "scoring.js",
+        "kind": "code",
+        "path": "scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "importance-tiers.js",
+        "kind": "code",
+        "path": "importance-tiers.js",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.js",
+        "kind": "code",
+        "path": "checkpoints.js",
+        "source": "derived"
+      },
+      {
+        "name": "config-loader.js",
+        "kind": "code",
+        "path": "config-loader.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-matcher.js",
+        "kind": "code",
+        "path": "trigger-matcher.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.js",
+        "kind": "code",
+        "path": "trigger-extractor.js",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "system-memory/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "mcp-leann/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "mcp-code-context/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "mcp-code-mode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "workflows-code/SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This spec documents the comprehensive bug fix effort that addressed critical security issues, high-severity bugs, medium/low issues, and documentation inconsistencies across the entire skills and MCP server ecosystem.",
+    "created_at": "2026-04-12T09:02:53.521Z",
+    "last_save_at": "2026-04-12T09:06:03.573Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "checklist.md"
+    ]
+  }
+}

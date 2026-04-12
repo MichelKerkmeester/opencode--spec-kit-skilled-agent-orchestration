@@ -76,6 +76,35 @@ export {
   rebuildAutoEntities,
 } from '../lib/extraction/entity-extractor.js';
 
+// --- Graph metadata (used by scripts/core, scripts/graph, tests) ---
+export {
+  GRAPH_METADATA_DOCUMENT_TYPE,
+  GRAPH_METADATA_FILENAME,
+  GRAPH_METADATA_SCHEMA_VERSION,
+  createEmptyGraphMetadataManual,
+  graphMetadataSchema,
+  packetReferenceSchema,
+  graphEntityReferenceSchema,
+} from '../lib/graph/graph-metadata-schema.js';
+export type {
+  GraphMetadata,
+  GraphMetadataDerived,
+  GraphMetadataManual,
+  GraphEntityReference,
+  PacketReference,
+} from '../lib/graph/graph-metadata-schema.js';
+export {
+  validateGraphMetadataContent,
+  loadGraphMetadata,
+  deriveGraphMetadata,
+  mergeGraphMetadata,
+  serializeGraphMetadata,
+  writeGraphMetadataFile,
+  refreshGraphMetadataForSpecFolder,
+  graphMetadataToIndexableText,
+  packetReferencesToCausalLinks,
+} from '../lib/graph/graph-metadata-parser.js';
+
 // --- Performance benchmarking support (used by scripts/evals) ---
 export * as sessionBoost from '../lib/search/session-boost.js';
 export * as causalBoost from '../lib/search/causal-boost.js';

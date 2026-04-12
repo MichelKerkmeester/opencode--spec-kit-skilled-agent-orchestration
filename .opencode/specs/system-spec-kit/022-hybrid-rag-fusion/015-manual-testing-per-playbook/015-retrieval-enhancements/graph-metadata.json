@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "retrieval enhancements testing",
+      "015 retrieval enhancements",
+      "phase 015 manual testing",
+      "dual scope auto surface test",
+      "retrieval enhancements execution plan",
+      "phase 015 plan",
+      "manual testing retrieval plan",
+      "retrieval test execution",
+      "retrieval enhancements tasks",
+      "phase 015 tasks",
+      "manual testing retrieval tasks",
+      "retrieval enhancements checklist",
+      "phase 015 verification checklist",
+      "manual testing retrieval enhancements checks",
+      "055 056 057 retrieval checklist",
+      "retrieval-enhancements implementation summary",
+      "phase 015 summary",
+      "manual testing retrieval-enhancements summary"
+    ],
+    "key_topics": [
+      "retrieval",
+      "enhancements",
+      "testing",
+      "015",
+      "phase",
+      "manual",
+      "dual",
+      "scope",
+      "auto",
+      "surface",
+      "test",
+      "execution"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/context-server.ts",
+      "mcp_server/hooks/memory-surface.ts",
+      "mcp_server/lib/search/retrieval-directives.ts",
+      "mcp_server/lib/search/spec-folder-hierarchy.ts",
+      "mcp_server/lib/search/graph-search-fn.ts",
+      "mcp_server/lib/storage/consolidation.ts",
+      "mcp_server/lib/search/memory-summaries.ts",
+      "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+      "mcp_server/lib/search/entity-linker.ts",
+      "mcp_server/lib/search/hybrid-search.ts",
+      "mcp_server/lib/search/search-flags.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/formatters/search-results.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "search-flags.ts"
+    ],
+    "entities": [
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-directives.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/retrieval-directives.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-folder-hierarchy.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/spec-folder-hierarchy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "consolidation.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/consolidation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-summaries.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/memory-summaries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The retrieval enhancements category (15--retrieval-enhancements) contains 9 features covering dual-scope surfacing, constitutional memory injection, spec folder hierarchy retrieval, lightweight consolidation, memory summary channel, cross-document entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.",
+    "created_at": "2026-04-12T09:02:50.302Z",
+    "last_save_at": "2026-04-12T09:06:00.434Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

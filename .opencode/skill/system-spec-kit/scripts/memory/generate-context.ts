@@ -70,7 +70,8 @@ Examples:
 
 Output:
   Creates the saved context artifact for the active spec folder and indexes it
-  into the Spec Kit Memory system.
+  into the Spec Kit Memory system. Canonical saves also refresh the packet's
+  root-level graph-metadata.json file as part of the same workflow.
 
 Preferred save path (JSON-PRIMARY):
   - ALWAYS use --stdin, --json, or a JSON temp file.

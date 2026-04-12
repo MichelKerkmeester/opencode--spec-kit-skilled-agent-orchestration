@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory save quality",
+      "json mode save",
+      "generate-context pipeline",
+      "context compaction save",
+      "memory save quality plan",
+      "json mode plan",
+      "memory save quality tasks",
+      "json mode tasks",
+      "memory save checklist",
+      "json mode verification",
+      "decision record",
+      "memory save quality decisions",
+      "memory save implementation summary",
+      "json save quality summary"
+    ],
+    "key_topics": [
+      "memory",
+      "save",
+      "quality",
+      "json",
+      "mode",
+      "generate-context",
+      "pipeline",
+      "context",
+      "compaction",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/core/workflow.ts",
+      "scripts/extractors/conversation-extractor.ts",
+      "scripts/extractors/collect-session-data.ts",
+      "scripts/extractors/decision-extractor.ts",
+      "scripts/lib/validate-memory-quality.ts",
+      "scripts/core/quality-scorer.ts",
+      "workflow.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "implementation-summary.md",
+      "generate-context.js",
+      "source-capabilities.ts",
+      "core/quality-scorer.ts",
+      "extractors/quality-scorer.ts",
+      "input-normalizer.ts",
+      "session-types.ts",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "conversation-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/conversation-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/lib/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "scripts/core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "source-capabilities.ts",
+        "kind": "code",
+        "path": "source-capabilities.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "core/quality-scorer.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This phase addresses structured-input (`--json`/`--stdin`) quality regressions in memory save generation where normalization and extraction assumptions caused thin, low-value output. The work standardizes normalization, synthesis, quality scoring, and contamination handling for structured flows while preserving transcript-mode behavior.",
+    "created_at": "2026-04-12T09:02:50.338Z",
+    "last_save_at": "2026-04-12T09:06:00.467Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

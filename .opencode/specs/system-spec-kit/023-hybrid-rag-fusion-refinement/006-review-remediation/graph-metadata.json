@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "review remediation",
+      "deep review fixes",
+      "023 phase 6",
+      "fix review findings",
+      "remediation plan",
+      "review fix plan",
+      "023 phase 6 plan",
+      "remediation tasks",
+      "review fix tasks",
+      "023 phase 6 tasks",
+      "remediation checklist",
+      "review fix checklist",
+      "023 phase 6 checklist",
+      "phase 6 summary",
+      "review remediation summary",
+      "023 phase 6 implementation"
+    ],
+    "key_topics": [
+      "review",
+      "remediation",
+      "deep",
+      "fixes",
+      "023",
+      "phase",
+      "fix",
+      "findings",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "map-ground-truth-ids.ts",
+      "reindex-embeddings.ts",
+      "import.meta.dirname",
+      "context-server.ts",
+      "engines.node >= 20.11.0",
+      "shared/package.json",
+      "dist/index.js",
+      "shared/paths.ts",
+      "response-builder.ts",
+      "workflow.ts",
+      "api/index.ts",
+      "vector-index-store.ts",
+      "cli.ts",
+      "mcp_server/scripts/map-ground-truth-ids.ts",
+      "mcp_server/scripts/reindex-embeddings.ts",
+      "mcp_server/context-server.ts",
+      "mcp_server/package.json",
+      "package.json",
+      "scripts/package.json",
+      "mcp_server/handlers/shared-memory.ts"
+    ],
+    "entities": [
+      {
+        "name": "map-ground-truth-ids.ts",
+        "kind": "code",
+        "path": "map-ground-truth-ids.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reindex-embeddings.ts",
+        "kind": "code",
+        "path": "reindex-embeddings.ts",
+        "source": "derived"
+      },
+      {
+        "name": "import.meta.dirname",
+        "kind": "file",
+        "path": "import.meta.dirname",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "engines.node >= 20.11.0",
+        "kind": "file",
+        "path": "engines.node >= 20.11.0",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "shared/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": "dist/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "paths.ts",
+        "kind": "code",
+        "path": "shared/paths.ts",
+        "source": "derived"
+      },
+      {
+        "name": "response-builder.ts",
+        "kind": "code",
+        "path": "response-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "api/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cli.ts",
+        "kind": "code",
+        "path": "cli.ts",
+        "source": "derived"
+      },
+      {
+        "name": "map-ground-truth-ids.ts",
+        "kind": "code",
+        "path": "mcp_server/scripts/map-ground-truth-ids.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reindex-embeddings.ts",
+        "kind": "code",
+        "path": "mcp_server/scripts/reindex-embeddings.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 6** of the ESM Module Compliance specification.",
+    "created_at": "2026-04-12T09:02:50.320Z",
+    "last_save_at": "2026-04-12T09:06:00.455Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

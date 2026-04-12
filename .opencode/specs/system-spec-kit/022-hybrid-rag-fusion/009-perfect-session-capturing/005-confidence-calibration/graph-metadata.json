@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specif",
+      "spec",
+      "005",
+      "confidence",
+      "implementation",
+      "plan",
+      "tasks",
+      "confid",
+      "verificat",
+      "checklist",
+      "summary",
+      "calibration"
+    ],
+    "key_topics": [
+      "feature",
+      "specif",
+      "spec",
+      "005",
+      "confidence",
+      "implementation",
+      "plan",
+      "tasks",
+      "confid",
+      "verificat",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "decision-tree-generator.ts",
+      "ascii-boxes.ts",
+      "workflow.ts",
+      ".opencode/skill/system-spec-kit/templates/context_template.md",
+      "0.50",
+      "scripts/tests/decision-confidence.vitest.ts",
+      "scripts/tests/memory-render-fixture.vitest.ts",
+      "scripts/tests/test-extractors-loaders.js",
+      "node mcp_server/node_modules/vitest/vitest.mjs run tests/decision-confidence.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
+      "node scripts/tests/test-extractors-loaders.js",
+      "node scripts/tests/test-scripts-modules.js",
+      "memory/metadata.json",
+      "validate-memory-quality.ts",
+      "scripts/types/session-types.ts",
+      "scripts/extractors/decision-extractor.ts",
+      "scripts/lib/decision-tree-generator.ts",
+      "scripts/core/workflow.ts",
+      "scripts/lib/ascii-boxes.ts",
+      "scripts/lib/simulation-factory.ts",
+      "0.0-1.0"
+    ],
+    "entities": [
+      {
+        "name": "decision-tree-generator.ts",
+        "kind": "code",
+        "path": "decision-tree-generator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ascii-boxes.ts",
+        "kind": "code",
+        "path": "ascii-boxes.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "0.50",
+        "kind": "file",
+        "path": "0.50",
+        "source": "derived"
+      },
+      {
+        "name": "decision-confidence.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/decision-confidence.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-render-fixture.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/memory-render-fixture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "scripts/tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "node mcp_server/node_modules/vitest/vitest.mjs run tests/decision-confidence.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "memory/metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-tree-generator.ts",
+        "kind": "code",
+        "path": "scripts/lib/decision-tree-generator.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.270Z",
+    "last_save_at": "2026-04-12T09:06:00.400Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

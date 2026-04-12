@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "ux hooks",
+      "automation",
+      "guardrails",
+      "implementation",
+      "plan",
+      "hooks",
+      "command ux",
+      "error reduction",
+      "tasks",
+      "name",
+      "template",
+      "tasks core",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary",
+      "004",
+      "research",
+      "hook",
+      "improvement",
+      "opportunities"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "hooks",
+      "automation",
+      "guardrails",
+      "implementation",
+      "plan",
+      "command",
+      "error",
+      "reduction",
+      "tasks",
+      "name"
+    ],
+    "importance_tier": "normal",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      "memory-crud-update.ts",
+      "memory-crud-delete.ts",
+      "memory-bulk-delete.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts",
+      "checkpoints.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-types.ts",
+      "mutation-hooks.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+      "tool-schemas.ts",
+      "tools/types.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/hooks-ux-feedback.vitest.ts",
+      "context-server.vitest.ts",
+      "handler-checkpoints.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud-update.ts",
+        "kind": "code",
+        "path": "memory-crud-update.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud-delete.ts",
+        "kind": "code",
+        "path": "memory-crud-delete.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-bulk-delete.ts",
+        "kind": "code",
+        "path": "memory-bulk-delete.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud-health.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud-types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "mutation-hooks.ts",
+        "kind": "code",
+        "path": "mutation-hooks.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "mutation-feedback.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "response-hints.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.239Z",
+    "last_save_at": "2026-04-12T09:06:00.368Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

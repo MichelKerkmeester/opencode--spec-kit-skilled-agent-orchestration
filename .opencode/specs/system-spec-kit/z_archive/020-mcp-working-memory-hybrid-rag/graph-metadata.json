@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+  "spec_folder": "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+  "parent_id": null,
+  "children_ids": [
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation",
+    "system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "020-mcp-working-memory-hybrid-rag",
+      "mcp working memory hybrid rag",
+      "archive",
+      "validation",
+      "plan",
+      "archive normalization",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision record",
+      "normalization",
+      "implementation summary",
+      "research",
+      "memory",
+      "file",
+      "quality",
+      "and",
+      "136",
+      "mcp",
+      "note",
+      "handover",
+      "020"
+    ],
+    "key_topics": [
+      "020-mcp-working-memory-hybrid-rag",
+      "mcp",
+      "working",
+      "memory",
+      "hybrid",
+      "rag",
+      "archive",
+      "validation",
+      "plan",
+      "normalization",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "migrate-memory-v22.mjs",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "migrate-memory-v22.mjs",
+        "kind": "file",
+        "path": "migrate-memory-v22.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Working Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Working Memory Hybrid Rag",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nKeep",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This archived system-spec-kit archive folder captures work related to MCP Working Memory Hybrid Rag. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
+    "created_at": "2026-04-12T09:02:53.570Z",
+    "last_save_at": "2026-04-12T09:06:03.631Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ]
+  }
+}

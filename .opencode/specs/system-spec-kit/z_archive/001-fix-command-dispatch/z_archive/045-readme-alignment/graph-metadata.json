@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "readme",
+      "install",
+      "guide",
+      "alignment",
+      "045",
+      "plan",
+      "tasks",
+      "checklist",
+      "session",
+      "handover",
+      "document"
+    ],
+    "key_topics": [
+      "spec",
+      "readme",
+      "install",
+      "guide",
+      "alignment",
+      "045",
+      "plan",
+      "tasks",
+      "checklist",
+      "session",
+      "handover",
+      "document"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/mcp-narsil/README.md",
+      ".opencode/install_guides/MCP/MCP - Code Mode.md",
+      ".opencode/skill/mcp-leann/README.md",
+      "narsil.narsil_",
+      "webflow.webflow.sites_list",
+      "webflow.webflow_sites_list",
+      "save-workflow.md",
+      "context_template.md",
+      "errors.js",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "handover.md"
+    ],
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-narsil/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "MCP - Code Mode.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/MCP/MCP - Code Mode.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-leann/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "narsil.narsil_",
+        "kind": "file",
+        "path": "narsil.narsil_",
+        "source": "derived"
+      },
+      {
+        "name": "webflow.webflow.sites_list",
+        "kind": "file",
+        "path": "webflow.webflow.sites_list",
+        "source": "derived"
+      },
+      {
+        "name": "webflow.webflow_sites_list",
+        "kind": "file",
+        "path": "webflow.webflow_sites_list",
+        "source": "derived"
+      },
+      {
+        "name": "save-workflow.md",
+        "kind": "doc",
+        "path": "save-workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "context_template.md",
+        "kind": "doc",
+        "path": "context_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "errors.js",
+        "kind": "code",
+        "path": "errors.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fix documentation misalignments, incorrect counts, and inconsistencies discovered by 10 parallel Opus agents auditing README files and install guides across the skill system.",
+    "created_at": "2026-04-12T09:02:53.529Z",
+    "last_save_at": "2026-04-12T09:06:03.583Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "handover.md"
+    ]
+  }
+}

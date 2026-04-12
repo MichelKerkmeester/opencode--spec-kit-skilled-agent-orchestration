@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "mutation",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "mutation",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "summary",
+      "systematic",
+      "features"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "spec-folder-mutex.ts",
+      "markdown-evidence-builder.ts",
+      "validation-responses.ts",
+      "v-rule-bridge.ts",
+      "lineage-state.ts",
+      "history.ts",
+      "scope-governance.ts",
+      "shared-spaces.ts",
+      "shared/parsing/memory-sufficiency.ts",
+      "shared/parsing/spec-doc-health.ts",
+      "handlers/checkpoints.ts",
+      "confidence-tracker.ts",
+      "auto-promotion.ts",
+      "negative-feedback.ts",
+      "learned-feedback.ts",
+      "ground-truth-feedback.ts",
+      "adaptive-ranking.ts",
+      "handlers/shared-memory.ts",
+      "lib/collab/shared-spaces.ts",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "spec-folder-mutex.ts",
+        "kind": "code",
+        "path": "spec-folder-mutex.ts",
+        "source": "derived"
+      },
+      {
+        "name": "markdown-evidence-builder.ts",
+        "kind": "code",
+        "path": "markdown-evidence-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validation-responses.ts",
+        "kind": "code",
+        "path": "validation-responses.ts",
+        "source": "derived"
+      },
+      {
+        "name": "v-rule-bridge.ts",
+        "kind": "code",
+        "path": "v-rule-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lineage-state.ts",
+        "kind": "code",
+        "path": "lineage-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "history.ts",
+        "kind": "code",
+        "path": "history.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.ts",
+        "kind": "code",
+        "path": "shared-spaces.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-sufficiency.ts",
+        "kind": "code",
+        "path": "shared/parsing/memory-sufficiency.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-health.ts",
+        "kind": "code",
+        "path": "shared/parsing/spec-doc-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-tracker.ts",
+        "kind": "code",
+        "path": "confidence-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "auto-promotion.ts",
+        "kind": "code",
+        "path": "auto-promotion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "negative-feedback.ts",
+        "kind": "code",
+        "path": "negative-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-feedback.ts",
+        "kind": "code",
+        "path": "learned-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ground-truth-feedback.ts",
+        "kind": "code",
+        "path": "ground-truth-feedback.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematic code audit of 10 Mutation features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/02--mutation/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
+    "created_at": "2026-04-12T09:02:50.245Z",
+    "last_save_at": "2026-04-12T09:06:00.373Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

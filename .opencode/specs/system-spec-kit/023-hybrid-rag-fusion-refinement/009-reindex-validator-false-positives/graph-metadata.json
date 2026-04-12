@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "reindex false positive",
+      "validator blocking index",
+      "memory files not indexed",
+      "cross-spec contamination false positive",
+      "topical coherence mismatch",
+      "reindex validator plan",
+      "cross-spec contamination plan",
+      "topical coherence plan",
+      "tasks",
+      "009 tasks",
+      "reindex validator tasks",
+      "checklist",
+      "reindex validator",
+      "false positive verification",
+      "implementation summary",
+      "009 reindex validator",
+      "false positive fix summary",
+      "contextType migration"
+    ],
+    "key_topics": [
+      "reindex",
+      "false",
+      "positive",
+      "validator",
+      "blocking",
+      "index",
+      "memory",
+      "files",
+      "indexed",
+      "cross-spec",
+      "contamination",
+      "topical"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "v-rule-bridge.ts",
+      "memory-save.ts",
+      "shared/context-types.ts",
+      "vector-index-schema.ts",
+      "schema-downgrade.ts",
+      "params.contextType",
+      "shared/index.ts",
+      "scripts/lib/validate-memory-quality.ts",
+      "scripts/lib/frontmatter-migration.ts",
+      "scripts/tests/validate-memory-quality.vitest.ts",
+      "mcp_server/lib/parsing/memory-parser.ts",
+      "mcp_server/lib/cognitive/fsrs-scheduler.ts",
+      "mcp_server/lib/validation/save-quality-gate.ts",
+      "mcp_server/lib/search/vector-index-schema.ts",
+      "mcp_server/lib/storage/schema-downgrade.ts",
+      "mcp_server/handlers/save/dedup.ts",
+      "mcp_server/tests/memory-parser-extended.vitest.ts",
+      "context-types.ts",
+      "types.ts",
+      "mcp_server/handlers/memory-index.ts"
+    ],
+    "entities": [
+      {
+        "name": "v-rule-bridge.ts",
+        "kind": "code",
+        "path": "v-rule-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-types.ts",
+        "kind": "code",
+        "path": "shared/context-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "schema-downgrade.ts",
+        "kind": "code",
+        "path": "schema-downgrade.ts",
+        "source": "derived"
+      },
+      {
+        "name": "params.contextType",
+        "kind": "file",
+        "path": "params.contextType",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "shared/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/lib/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "frontmatter-migration.ts",
+        "kind": "code",
+        "path": "scripts/lib/frontmatter-migration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/validate-memory-quality.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/fsrs-scheduler.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save-quality-gate.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/validation/save-quality-gate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "schema-downgrade.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/schema-downgrade.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dedup.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/save/dedup.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Batch reindex discovered substantially more files on disk than were inserted into the memory index. Two validation rules were producing false positives in bulk mode, which blocked valid memory and spec documentation content from indexing.",
+    "created_at": "2026-04-12T09:02:50.322Z",
+    "last_save_at": "2026-04-12T09:06:00.457Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

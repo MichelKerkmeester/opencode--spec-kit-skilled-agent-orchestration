@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "json primary deprecation",
+      "017 json primary deprecation",
+      "dynamic capture deprecation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "json",
+      "primary",
+      "deprecation",
+      "017",
+      "dynamic",
+      "capture",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts",
+      ".opencode/skill/system-spec-kit/scripts/types/session-types.ts",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/command/memory/save.md",
+      "scripts/memory/generate-context.ts",
+      "scripts/loaders/data-loader.ts",
+      "scripts/types/session-types.ts",
+      "scripts/utils/input-normalizer.ts",
+      "scripts/core/memory-indexer.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data-loader.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data-loader.ts",
+        "kind": "code",
+        "path": "scripts/loaders/data-loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-indexer.ts",
+        "kind": "code",
+        "path": "scripts/core/memory-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Dynamic session capture reconstructs context from runtime databases after the fact. That heuristic repeatedly selected the wrong transcript, produced contaminated memory files, and failed even after multiple rounds of follow-up research and fixes. A production wrong-session capture proved the routine save path was still not trustworthy.",
+    "created_at": "2026-04-12T09:02:50.280Z",
+    "last_save_at": "2026-04-12T09:06:00.413Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

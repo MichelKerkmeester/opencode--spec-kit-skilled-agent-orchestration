@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "post",
+      "merge",
+      "refinement",
+      "phase",
+      "library",
+      "spec",
+      "037",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "key_topics": [
+      "post",
+      "merge",
+      "refinement",
+      "phase",
+      "library",
+      "spec",
+      "037",
+      "plan",
+      "tasks",
+      "checklist",
+      "split-brain",
+      "issue"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "vector-index.js",
+      "scripts/lib/vector-index.js",
+      "mcp_server/lib/vector-index.js",
+      "scripts/generate-context.js",
+      "generate-context.js",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "scripts/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Merge Refinemen",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Merge Refinement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Library Unification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Context\nWe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Smart Ranking",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Content Extraction",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "missing",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "We have a \"Split-Brain\" issue with two versions of `vector-index.js`:",
+    "created_at": "2026-04-12T09:02:53.524Z",
+    "last_save_at": "2026-04-12T09:06:03.578Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

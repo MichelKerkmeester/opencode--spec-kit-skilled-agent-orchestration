@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/008-structural-indexer",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/008-structural-indexer",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "008",
+      "structural",
+      "indexer",
+      "tree",
+      "spec",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "008",
+      "structural",
+      "indexer",
+      "tree",
+      "spec",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "structural-indexer.ts",
+      "tree-sitter-parser.ts",
+      "indexer-types.ts",
+      "incremental-index.ts",
+      "mcp_server/lib/code-graph/structural-indexer.ts",
+      "mcp_server/lib/code-graph/tree-sitter-parser.ts",
+      "mcp_server/lib/code-graph/indexer-types.ts",
+      "mcp_server/package.json",
+      "code-graph.sqlite",
+      "@definition.function",
+      "@definition.class",
+      "@definition.method",
+      "@definition.module",
+      "src/auth/middleware.ts",
+      "@reference.call",
+      "@reference.import",
+      "@definition.export",
+      "module.exports",
+      "javascript.scm",
+      "typescript.scm"
+    ],
+    "entities": [
+      {
+        "name": "structural-indexer.ts",
+        "kind": "code",
+        "path": "structural-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tree-sitter-parser.ts",
+        "kind": "code",
+        "path": "tree-sitter-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "indexer-types.ts",
+        "kind": "code",
+        "path": "indexer-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "incremental-index.ts",
+        "kind": "code",
+        "path": "incremental-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-indexer.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/structural-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tree-sitter-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/tree-sitter-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "indexer-types.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/indexer-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph.sqlite",
+        "kind": "file",
+        "path": "code-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "@definition.function",
+        "kind": "file",
+        "path": "@definition.function",
+        "source": "derived"
+      },
+      {
+        "name": "@definition.class",
+        "kind": "file",
+        "path": "@definition.class",
+        "source": "derived"
+      },
+      {
+        "name": "@definition.method",
+        "kind": "file",
+        "path": "@definition.method",
+        "source": "derived"
+      },
+      {
+        "name": "@definition.module",
+        "kind": "file",
+        "path": "@definition.module",
+        "source": "derived"
+      },
+      {
+        "name": "middleware.ts",
+        "kind": "code",
+        "path": "src/auth/middleware.ts",
+        "source": "derived"
+      },
+      {
+        "name": "@reference.call",
+        "kind": "file",
+        "path": "@reference.call",
+        "source": "derived"
+      },
+      {
+        "name": "@reference.import",
+        "kind": "file",
+        "path": "@reference.import",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.348Z",
+    "last_save_at": "2026-04-12T09:06:00.484Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

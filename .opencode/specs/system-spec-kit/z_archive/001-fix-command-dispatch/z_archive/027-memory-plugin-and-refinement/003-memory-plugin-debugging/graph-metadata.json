@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging",
+  "parent_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory",
+      "plugin",
+      "debugging",
+      "bun",
+      "sqlite",
+      "spec",
+      "003",
+      "implementation",
+      "plan",
+      "migration",
+      "tasks",
+      "verification",
+      "checklist",
+      "opencode",
+      "database",
+      "access",
+      "research"
+    ],
+    "key_topics": [
+      "memory",
+      "plugin",
+      "debugging",
+      "bun",
+      "sqlite",
+      "spec",
+      "003",
+      "implementation",
+      "plan",
+      "migration",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skills/system-memory/database/memory-index.sqlite",
+      ".opencode/plugin/semantic_memory_plugin/index.js",
+      "experimental.chat.system.transform",
+      ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-index.sqlite",
+        "kind": "file",
+        "path": ".opencode/skills/system-memory/database/memory-index.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": ".opencode/plugin/semantic_memory_plugin/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "experimental.chat.system.transform",
+        "kind": "file",
+        "path": "experimental.chat.system.transform",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-memory.js",
+        "kind": "code",
+        "path": ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Plugin Debugging",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root Cause\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Approach\n\nReplace",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The semantic memory plugin fails to load memories into the AI context dashboard, showing \"Loaded 0 memories for dashboard\" despite 66+ memories existing in the database. This prevents the AI from having automatic access to relevant context at session start.",
+    "created_at": "2026-04-12T09:02:53.520Z",
+    "last_save_at": "2026-04-12T09:06:03.571Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "research/research.md"
+    ]
+  }
+}

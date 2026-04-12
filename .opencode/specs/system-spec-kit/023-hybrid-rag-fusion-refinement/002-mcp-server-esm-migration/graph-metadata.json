@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "mcp server esm migration",
+      "mcp_server esm",
+      "023 phase 2",
+      "mcp server esm plan",
+      "023 phase 2 plan",
+      "mcp server esm tasks",
+      "023 phase 2 tasks",
+      "implementation summary",
+      "phase 2 closeout"
+    ],
+    "key_topics": [
+      "mcp",
+      "server",
+      "esm",
+      "migration",
+      "023",
+      "phase",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "closeout",
+      "module"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/package.json",
+      ">=20.11.0",
+      "import.meta.dirname",
+      "import.meta.filename",
+      "mcp_server/tsconfig.json",
+      "node dist/context-server.js",
+      "package.json",
+      "dist/context-server.js",
+      "mcp_server/context-server.ts",
+      ">=18.0.0",
+      "engines.node",
+      "lib/cognitive/archival-manager.ts",
+      "lib/cognitive/tier-classifier.ts",
+      "lib/errors/core.ts",
+      "lib/scoring/composite-scoring.ts",
+      "lib/ops/file-watcher.ts",
+      "handlers/v-rule-bridge.ts",
+      "import.meta.url",
+      "handlers/index.ts",
+      "require.resolve"
+    ],
+    "entities": [
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": ">=20.11.0",
+        "kind": "file",
+        "path": ">=20.11.0",
+        "source": "derived"
+      },
+      {
+        "name": "import.meta.dirname",
+        "kind": "file",
+        "path": "import.meta.dirname",
+        "source": "derived"
+      },
+      {
+        "name": "import.meta.filename",
+        "kind": "file",
+        "path": "import.meta.filename",
+        "source": "derived"
+      },
+      {
+        "name": "tsconfig.json",
+        "kind": "config",
+        "path": "mcp_server/tsconfig.json",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "node dist/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "package.json",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "dist/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": ">=18.0.0",
+        "kind": "file",
+        "path": ">=18.0.0",
+        "source": "derived"
+      },
+      {
+        "name": "engines.node",
+        "kind": "file",
+        "path": "engines.node",
+        "source": "derived"
+      },
+      {
+        "name": "archival-manager.ts",
+        "kind": "code",
+        "path": "lib/cognitive/archival-manager.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tier-classifier.ts",
+        "kind": "code",
+        "path": "lib/cognitive/tier-classifier.ts",
+        "source": "derived"
+      },
+      {
+        "name": "core.ts",
+        "kind": "code",
+        "path": "lib/errors/core.ts",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.ts",
+        "kind": "code",
+        "path": "lib/scoring/composite-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher.ts",
+        "kind": "code",
+        "path": "lib/ops/file-watcher.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 2** of the ESM Module Compliance specification.",
+    "created_at": "2026-04-12T09:02:50.317Z",
+    "last_save_at": "2026-04-12T09:06:00.452Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "076",
+      "post",
+      "speckit",
+      "template",
+      "checklist",
+      "upgrade",
+      "decision",
+      "record",
+      "decision record",
+      "implementation",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "spec",
+      "076",
+      "post",
+      "speckit",
+      "template",
+      "checklist",
+      "upgrade",
+      "decision",
+      "record",
+      "implementation",
+      "summary",
+      "comprehensive"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "create/skill.md",
+      "create/agent.md",
+      "grep \"<skill-name>\" .opencode/command/create/skill.md",
+      "implementation-summary.md",
+      "grep \"MANDATORY FIRST\" memory/search.md",
+      "grep \"<skill-name>\" skill.md",
+      "grep \"<agent-name>\" agent.md",
+      "grep \"checkpoint restore\" database.md",
+      "grep \"permission_reference:\" create_agent.yaml",
+      "grep \"secondary:\" create_agent.yaml",
+      "spec.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "skill.md",
+        "kind": "doc",
+        "path": "create/skill.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent.md",
+        "kind": "doc",
+        "path": "create/agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill.md",
+        "kind": "doc",
+        "path": "grep \"<skill-name>\" .opencode/command/create/skill.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": "grep \"MANDATORY FIRST\" memory/search.md",
+        "source": "derived"
+      },
+      {
+        "name": "grep \"<skill-name>\" skill.md",
+        "kind": "doc",
+        "path": "grep \"<skill-name>\" skill.md",
+        "source": "derived"
+      },
+      {
+        "name": "grep \"<agent-name>\" agent.md",
+        "kind": "doc",
+        "path": "grep \"<agent-name>\" agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "grep \"checkpoint restore\" database.md",
+        "kind": "doc",
+        "path": "grep \"checkpoint restore\" database.md",
+        "source": "derived"
+      },
+      {
+        "name": "grep \"permission_reference:\" create_agent.yaml",
+        "kind": "config",
+        "path": "grep \"permission_reference:\" create_agent.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "grep \"secondary:\" create_agent.yaml",
+        "kind": "config",
+        "path": "grep \"secondary:\" create_agent.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Command Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\n\nComprehensive",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive alignment of 19 OpenCode commands with command_template.md standards following SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture upgrade.",
+    "created_at": "2026-04-12T09:02:53.547Z",
+    "last_save_at": "2026-04-12T09:06:03.606Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 4",
+      "adaptive retrieval loops",
+      "shadow mode",
+      "feedback ranking",
+      "phase 4 plan",
+      "adaptive plan",
+      "phase 4 tasks",
+      "adaptive tasks",
+      "phase 4 checklist",
+      "adaptive checklist",
+      "phase 4 adr",
+      "adaptive adr",
+      "phase 4 summary",
+      "adaptive summary"
+    ],
+    "key_topics": [
+      "phase",
+      "adaptive",
+      "retrieval",
+      "loops",
+      "shadow",
+      "mode",
+      "feedback",
+      "ranking",
+      "plan",
+      "tasks",
+      "checklist",
+      "adr"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/cognitive/adaptive-ranking.ts",
+      "mcp_server/lib/storage/access-tracker.ts",
+      "mcp_server/handlers/checkpoints.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+      "mcp_server/lib/cognitive/rollout-policy.ts",
+      "mcp_server/lib/search/learned-feedback.ts",
+      "tests/adaptive-ranking.vitest.ts",
+      "npx vitest run tests/adaptive-ranking.vitest.ts tests/rollout-policy.vitest.ts tests/learned-feedback.vitest.ts",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "adaptive-ranking.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/adaptive-ranking.ts",
+        "source": "derived"
+      },
+      {
+        "name": "access-tracker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/access-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-telemetry.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rollout-policy.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/rollout-policy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-feedback.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/learned-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking.vitest.ts",
+        "kind": "test",
+        "path": "tests/adaptive-ranking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-feedback.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/adaptive-ranking.vitest.ts tests/rollout-policy.vitest.ts tests/learned-feedback.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "access-tracker.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-telemetry.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "job-queue.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + level3-arch + level3plus-govern | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.261Z",
+    "last_save_at": "2026-04-12T09:06:00.391Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

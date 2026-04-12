@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "runtime contract",
+      "indexability",
+      "phase 015",
+      "tasks",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "runtime",
+      "contract",
+      "indexability",
+      "phase",
+      "015",
+      "tasks",
+      "implementation",
+      "summary",
+      "session-capturing",
+      "used",
+      "one",
+      "broad"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "validate-memory-quality.ts",
+      "workflow.ts",
+      "scripts/memory/validate-memory-quality.ts",
+      "scripts/core/workflow.ts",
+      "scripts/core/memory-indexer.ts",
+      "scripts/tests/validation-rule-metadata.vitest.ts",
+      "scripts/tests/workflow-e2e.vitest.ts",
+      "qualityValidation.valid",
+      ".opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/validation-rule-metadata.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts",
+      "workflow-e2e.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/memory/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-indexer.ts",
+        "kind": "code",
+        "path": "scripts/core/memory-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validation-rule-metadata.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/validation-rule-metadata.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "qualityValidation.valid",
+        "kind": "file",
+        "path": "qualityValidation.valid",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-indexer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validation-rule-metadata.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/validation-rule-metadata.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": "workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The session-capturing runtime used one broad `qualityValidation.valid` boolean as the last indexing gate. That made it hard to express the intended policy: some failures should abort the write, some should allow a write but skip indexing, and V10-only source-mismatch diagnostics should still be able to write and index when stronger gates pass.",
+    "created_at": "2026-04-12T09:02:50.276Z",
+    "last_save_at": "2026-04-12T09:06:00.407Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

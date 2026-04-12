@@ -18,13 +18,17 @@
         "SPECKIT_ADAPTIVE_FUSION": "true",
         "SPECKIT_SESSION_BOOST": "true",
         "SPECKIT_CAUSAL_BOOST": "true",
+        "SPECKIT_HYDE_ACTIVE": "true",
+        "SPECKIT_ENTITY_LINKING": "true",
+        "SPECKIT_GRAPH_CONCEPT_ROUTING": "true",
+        "SPECKIT_GRAPH_REFRESH_MODE": "write_local",
         "_NOTE_1_DATABASE": "DB path auto-derived from provider profile (no MEMORY_DB_PATH needed)",
         "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
         "_NOTE_3_EMBEDDINGS_PROVIDER": "Current: 'auto' (VOYAGE_API_KEY -> OPENAI_API_KEY -> hf-local). Options: 'auto', 'voyage', 'openai', 'hf-local'",
         "_NOTE_4_CLOUD_PROVIDERS": "For cloud: add VOYAGE_API_KEY or OPENAI_API_KEY; Voyage uses rerank-2.5 and auto-selects the matching DB profile",
         "_NOTE_5_GET_VOYAGE_KEY": "Get Voyage key: https://dash.voyageai.com/api-keys (recommended, 8% better than OpenAI)",
         "_NOTE_6_GET_OPENAI_KEY": "Get OpenAI key: https://platform.openai.com/api-keys",
-        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_SESSION_BOOST, SPECKIT_CAUSAL_BOOST"
+        "_NOTE_7_FEATURE_FLAGS": "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_SESSION_BOOST, SPECKIT_CAUSAL_BOOST, SPECKIT_HYDE_ACTIVE, SPECKIT_ENTITY_LINKING, SPECKIT_GRAPH_CONCEPT_ROUTING, SPECKIT_GRAPH_REFRESH_MODE=write_local"
       },
       "disabled": false
     },

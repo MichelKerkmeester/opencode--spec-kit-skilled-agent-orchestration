@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory quality manual testing",
+      "phase 013 memory quality",
+      "spec kit memory quality indexing tests",
+      "hybrid rag fusion memory quality playbook",
+      "memory quality execution plan",
+      "phase 013 manual tests",
+      "indexing verdict plan",
+      "hybrid rag memory quality review",
+      "memory quality tasks",
+      "phase 013 tasks",
+      "manual testing memory quality tasks",
+      "tasks core memory indexing",
+      "memory quality checklist",
+      "phase 013 verification",
+      "indexing checklist",
+      "m-003 m-005 m-006 039 155 164 verification",
+      "memory quality implementation summary",
+      "phase 013 summary",
+      "manual testing memory quality",
+      "memory quality test results"
+    ],
+    "key_topics": [
+      "memory",
+      "quality",
+      "manual",
+      "testing",
+      "phase",
+      "013",
+      "spec",
+      "kit",
+      "indexing",
+      "tests",
+      "hybrid",
+      "rag"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\n\nExecute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\n\nThis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern\n\nManual",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The memory quality and indexing feature category is the largest single phase in the hybrid-RAG-fusion manual testing playbook, spanning 27 scenario files that expand to 34 exact IDs through sub-scenario decomposition (M-005 expands to M-005a/b/c, M-006 expands to M-006a/b/c, 155 expands to 155-F). These scenarios cover the verify-fix-verify loop, signal vocabulary, quality gates, reconsolidation, entity extraction, outsourced agent capture, session enrichment, post-save review, and deferred indexing among other features. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.",
+    "created_at": "2026-04-12T09:02:50.300Z",
+    "last_save_at": "2026-04-12T09:06:00.432Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

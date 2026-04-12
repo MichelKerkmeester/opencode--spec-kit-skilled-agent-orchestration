@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sprint 9 extra features",
+      "productization tooling",
+      "implementation",
+      "plan",
+      "010",
+      "sprint",
+      "tasks",
+      "verificatio",
+      "checklist",
+      "010-sprint-9-extra-features implementation summary",
+      "010-sprint-9-extra-features delivery record"
+    ],
+    "key_topics": [
+      "sprint",
+      "extra",
+      "features",
+      "productization",
+      "tooling",
+      "implementation",
+      "plan",
+      "010",
+      "tasks",
+      "verificatio",
+      "checklist",
+      "010-sprint-9-extra-features"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "node mcp_server/dist/context-server.js",
+      "mcp_server/tool-schemas.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/formatters/search-results.ts",
+      "mcp_server/lib/search/hybrid-search.ts",
+      "mcp_server/lib/search/pipeline/types.ts",
+      "mcp_server/handlers/memory-save.ts",
+      "mcp_server/lib/ops/job-queue.ts",
+      "mcp_server/lib/ops/file-watcher.ts",
+      "mcp_server/lib/search/local-reranker.ts",
+      "mcp_server/context-server.ts",
+      "mcp_server/handlers/index.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "tool-schemas.ts",
+      "hybrid-search.ts",
+      "formatters/search-results.ts",
+      "lib/search/hybrid-search.ts",
+      "lib/search/pipeline/types.ts"
+    ],
+    "entities": [
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "node mcp_server/dist/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "job-queue.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/ops/job-queue.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/ops/file-watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "local-reranker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/local-reranker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipeline, causal graph overlay, and evaluation infrastructure. A cross-AI research effort (6 agents: 3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. After triple-verification against the feature catalog, 4 were fully implemented, 7 partially implemented, and 5 genuinely new. This sprint completes the bounded gaps and builds the net-new operational tooling.",
+    "created_at": "2026-04-12T09:02:50.232Z",
+    "last_save_at": "2026-04-12T09:06:00.361Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

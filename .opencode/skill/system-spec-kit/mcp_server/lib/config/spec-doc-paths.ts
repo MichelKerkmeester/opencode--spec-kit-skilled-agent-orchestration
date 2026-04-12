@@ -13,6 +13,8 @@ export const SPEC_DOCUMENT_FILENAMES = new Set([
   'handover.md',
 ]);
 
+export const GRAPH_METADATA_FILENAME = 'graph-metadata.json';
+
 const WORKING_ARTIFACT_SEGMENTS = [
   '/scratch/',
   '/temp/',
@@ -26,6 +28,15 @@ const SPEC_DOCUMENT_EXCLUDED_SEGMENTS = [
   '/temp/',
   '/review/',
   '/z_archive/',
+  '/research/iterations/',
+  '/review/iterations/',
+  '/node_modules/',
+] as const;
+
+const GRAPH_METADATA_EXCLUDED_SEGMENTS = [
+  '/memory/',
+  '/scratch/',
+  '/temp/',
   '/research/iterations/',
   '/review/iterations/',
   '/node_modules/',
@@ -73,6 +84,12 @@ export function canClassifyAsSpecDocument(filePath: string | null | undefined): 
   return isSpecsScopedPath(filePath) && !isSpecDocumentExcludedPath(filePath);
 }
 
+export function canClassifyAsGraphMetadataPath(filePath: string | null | undefined): boolean {
+  const normalizedPath = normalizeSpecPath(filePath);
+  return isSpecsScopedPath(filePath)
+    && !GRAPH_METADATA_EXCLUDED_SEGMENTS.some((segment) => normalizedPath.includes(segment));
+}
+
 export function isSpecLeafSegment(segment: string | null | undefined): boolean {
   return typeof segment === 'string' && SPEC_LEAF_SEGMENT_PATTERN.test(segment);
 }
@@ -109,6 +126,21 @@ export function matchesSpecDocumentPath(
   );
 }
 
+export function isGraphMetadataPath(filePath: string | null | undefined): boolean {
+  if (!canClassifyAsGraphMetadataPath(filePath)) {
+    return false;
+  }
+
+  const normalizedPath = normalizeSpecPath(filePath);
+  if (!normalizedPath.endsWith(`/${GRAPH_METADATA_FILENAME}`) && normalizedPath !== GRAPH_METADATA_FILENAME) {
+    return false;
+  }
+
+  const segments = normalizedPath.split('/').filter(Boolean);
+  const parent = segments[segments.length - 2] || '';
+  return isSpecLeafSegment(parent);
+}
+
 export function extractSpecFolderFromSpecDocumentPath(
   filePath: string | null | undefined,
 ): string | null {
@@ -131,6 +163,23 @@ export function extractSpecFolderFromSpecDocumentPath(
   const parent = segments[segments.length - 2] || '';
   if (basename === 'research.md' && parent === 'research') {
     return segments.slice(specsIndex + 1, segments.length - 2).join('/');
+  }
+
+  return segments.slice(specsIndex + 1, segments.length - 1).join('/');
+}
+
+export function extractSpecFolderFromGraphMetadataPath(
+  filePath: string | null | undefined,
+): string | null {
+  if (!isGraphMetadataPath(filePath)) {
+    return null;
+  }
+
+  const normalizedPath = normalizeSpecPath(filePath);
+  const segments = normalizedPath.split('/').filter(Boolean);
+  const specsIndex = segments.findIndex((segment) => segment === 'specs');
+  if (specsIndex < 0) {
+    return null;
   }
 
   return segments.slice(specsIndex + 1, segments.length - 1).join('/');

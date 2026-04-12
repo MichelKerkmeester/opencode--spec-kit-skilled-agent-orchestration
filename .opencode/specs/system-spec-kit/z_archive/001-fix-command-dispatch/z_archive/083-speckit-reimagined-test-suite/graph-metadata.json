@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "speckit",
+      "reimagined",
+      "test",
+      "spec",
+      "083",
+      "implementation",
+      "plan",
+      "tasks",
+      "suite",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "kit",
+      "memory",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "speckit",
+      "reimagined",
+      "test",
+      "spec",
+      "083",
+      "implementation",
+      "plan",
+      "tasks",
+      "suite",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "attention-decay.test.js",
+      "tier-classifier.test.js",
+      "composite-scoring.test.js",
+      "five-factor-scoring.test.js",
+      "causal-edges.test.js",
+      "provider-chain.test.js",
+      "cross-encoder.test.js",
+      "tool-cache.test.js",
+      "schema-migration.test.js",
+      "api-key-validation.test.js",
+      "archival-manager.test.js",
+      "co-activation.test.js",
+      "continue-session.test.js",
+      "corrections.test.js",
+      "crash-recovery.test.js",
+      "fsrs-scheduler.test.js",
+      "fuzzy-match.test.js",
+      "incremental-index.test.js",
+      "intent-classifier.test.js",
+      "interfaces.test.js"
+    ],
+    "entities": [
+      {
+        "name": "attention-decay.test.js",
+        "kind": "code",
+        "path": "attention-decay.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "tier-classifier.test.js",
+        "kind": "code",
+        "path": "tier-classifier.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.test.js",
+        "kind": "code",
+        "path": "composite-scoring.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "five-factor-scoring.test.js",
+        "kind": "code",
+        "path": "five-factor-scoring.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.test.js",
+        "kind": "code",
+        "path": "causal-edges.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "provider-chain.test.js",
+        "kind": "code",
+        "path": "provider-chain.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "cross-encoder.test.js",
+        "kind": "code",
+        "path": "cross-encoder.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "tool-cache.test.js",
+        "kind": "code",
+        "path": "tool-cache.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "schema-migration.test.js",
+        "kind": "code",
+        "path": "schema-migration.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "api-key-validation.test.js",
+        "kind": "code",
+        "path": "api-key-validation.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "archival-manager.test.js",
+        "kind": "code",
+        "path": "archival-manager.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "co-activation.test.js",
+        "kind": "code",
+        "path": "co-activation.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "continue-session.test.js",
+        "kind": "code",
+        "path": "continue-session.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "corrections.test.js",
+        "kind": "code",
+        "path": "corrections.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "crash-recovery.test.js",
+        "kind": "code",
+        "path": "crash-recovery.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.test.js",
+        "kind": "code",
+        "path": "fsrs-scheduler.test.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This specification defines comprehensive test coverage for the SpecKit Reimagined implementation (082-speckit-reimagined). The test suite covers 33 features across 8 categories (Search, Decay, Session, Graph, Performance, UX, Architecture, Specialized Tools), extending existing test files and adding new test coverage for 107 implementation tasks across 5 workstreams (W-S, W-R, W-D, W-G, W-I).",
+    "created_at": "2026-04-12T09:02:53.555Z",
+    "last_save_at": "2026-04-12T09:06:03.615Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory",
+      "system",
+      "integration",
+      "into",
+      "spec",
+      "035",
+      "implementation",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "key_topics": [
+      "memory",
+      "system",
+      "integration",
+      "spec",
+      "035",
+      "implementation",
+      "plan",
+      "tasks",
+      "checklist",
+      "current",
+      "architecture",
+      "two"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "opencode.json",
+      "AGENTS.md",
+      ".opencode/skill/system-spec-kit/scripts/skill_advisor.py",
+      ".opencode/skill/system-memory/SKILL.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "lib/config.js",
+      "lib/services/database.js",
+      "lib/services/file-scanner.js",
+      "scripts/generate-context.js",
+      "save.md",
+      "system-memory/scripts/generate-context.js",
+      "system-memory/SKILL.md",
+      "search.md",
+      "load.md",
+      "checkpoint.md",
+      "mcp_server/context-server.js",
+      "context-index.sqlite",
+      "memory-index.sqlite",
+      ".opencode/skill/system-memory/scripts/generate-context.js"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.json",
+        "kind": "config",
+        "path": "opencode.json",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-memory/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "config.js",
+        "kind": "code",
+        "path": "lib/config.js",
+        "source": "derived"
+      },
+      {
+        "name": "database.js",
+        "kind": "code",
+        "path": "lib/services/database.js",
+        "source": "derived"
+      },
+      {
+        "name": "file-scanner.js",
+        "kind": "code",
+        "path": "lib/services/file-scanner.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": "save.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "system-memory/scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "system-memory/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": "search.md",
+        "source": "derived"
+      },
+      {
+        "name": "load.md",
+        "kind": "doc",
+        "path": "load.md",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoint.md",
+        "kind": "doc",
+        "path": "checkpoint.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The current architecture has **two overlapping skill folders** for documentation and context management:",
+    "created_at": "2026-04-12T09:02:53.523Z",
+    "last_save_at": "2026-04-12T09:06:03.576Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

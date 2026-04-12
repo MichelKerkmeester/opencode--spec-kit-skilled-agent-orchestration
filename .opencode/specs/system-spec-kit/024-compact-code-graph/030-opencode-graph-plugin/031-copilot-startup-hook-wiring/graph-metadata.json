@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/031-copilot-startup-hook-wiring",
+  "parent_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "copilot startup hook wiring",
+      "phase 031",
+      "packet 030 copilot",
+      "phase 031 plan",
+      "copilot startup hook wiring plan",
+      "phase 031 tasks",
+      "copilot startup hook tasks",
+      "phase 031 checklist",
+      "copilot startup hook verification",
+      "phase 031 adr",
+      "copilot startup hook adr",
+      "phase 031 implementation summary",
+      "copilot startup hook summary"
+    ],
+    "key_topics": [
+      "copilot",
+      "startup",
+      "hook",
+      "wiring",
+      "phase",
+      "031",
+      "packet",
+      "030",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".github/hooks/scripts/session-start.sh",
+      ".github/hooks/scripts/superset-notify.sh",
+      ".github/hooks/superset-notify.json",
+      "runtime-detection.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts tests/copilot-hook-wiring.vitest.ts",
+      "jq empty .github/hooks/superset-notify.json",
+      "startup-brief.ts",
+      "hooks/copilot/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/runtime-detection.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/copilot-hook-wiring.vitest.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/253-runtime-detection.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/06-runtime-detection.md",
+      "dist/hooks/copilot/session-prime.js",
+      "session-start.sh",
+      "superset-notify.sh",
+      "tests/copilot-hook-wiring.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "session-start.sh",
+        "kind": "script",
+        "path": ".github/hooks/scripts/session-start.sh",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.sh",
+        "kind": "script",
+        "path": ".github/hooks/scripts/superset-notify.sh",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": ".github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-detection.ts",
+        "kind": "code",
+        "path": "runtime-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "copilot-hook-wiring.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts tests/copilot-hook-wiring.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": "jq empty .github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/copilot/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-detection.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-detection.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/runtime-detection.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cross-runtime-fallback.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/cross-runtime-fallback.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "copilot-hook-wiring.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/copilot-hook-wiring.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "252-cross-runtime-fallback.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md",
+        "source": "derived"
+      },
+      {
+        "name": "253-runtime-detection.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/253-runtime-detection.md",
+        "source": "derived"
+      },
+      {
+        "name": "05-cross-runtime-fallback.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md",
+        "source": "derived"
+      },
+      {
+        "name": "06-runtime-detection.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/06-runtime-detection.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 031 is the bounded follow-on under packet `030-opencode-graph-plugin` that closes the last Copilot-specific startup parity gap exposed by live CLI testing. The shared Copilot session-start hook code already existed, but the repo hook registration still routed `sessionStart` through a Superset notifier that only emitted `{}`. As a result, the live Copilot CLI session never received the shared startup banner even though the hook binary itself worked.",
+    "created_at": "2026-04-12T09:02:53.439Z",
+    "last_save_at": "2026-04-12T09:06:03.483Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

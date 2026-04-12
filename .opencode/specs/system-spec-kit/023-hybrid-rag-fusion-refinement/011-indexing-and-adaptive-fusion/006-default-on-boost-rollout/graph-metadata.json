@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/006-default-on-boost-rollout",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "default on boost rollout",
+      "session boost default",
+      "causal boost default",
+      "deep expansion threshold",
+      "boost rollout",
+      "SPECKIT_SESSION_BOOST",
+      "SPECKIT_CAUSAL_BOOST",
+      "boost rollout plan",
+      "session boost implementation",
+      "causal boost default on",
+      "deep expansion fix",
+      "stage1-candidate-gen expansion",
+      "boost rollout tasks",
+      "session boost tasks",
+      "causal boost tasks",
+      "deep expansion tasks",
+      "boost rollout checklist",
+      "session boost verification",
+      "causal boost verification",
+      "deep expansion verification",
+      "boost rollout summary",
+      "session boost implementation summary",
+      "causal boost implementation summary",
+      "deep expansion summary"
+    ],
+    "key_topics": [
+      "default",
+      "boost",
+      "rollout",
+      "session",
+      "causal",
+      "deep",
+      "expansion",
+      "threshold",
+      "plan",
+      "implementation",
+      "fix",
+      "stage1-candidate-gen"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "stage2-fusion.ts",
+      "pipeline/types.ts",
+      "memory-search.ts",
+      "search-flags.ts",
+      "shadow-evaluation-runtime.ts",
+      "mcp_server/lib/search/session-boost.ts",
+      "mcp_server/lib/search/causal-boost.ts",
+      "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+      "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+      "mcp_server/lib/search/pipeline/types.ts",
+      "mcp_server/lib/search/search-flags.ts",
+      "mcp_server/lib/search/artifact-routing.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+      ".mcp.json",
+      "opencode.json",
+      ".claude/mcp.json",
+      ".codex/config.toml",
+      "rollout-policy.ts",
+      "session-boost.ts"
+    ],
+    "entities": [
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "pipeline/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-boost.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/session-boost.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-boost.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/causal-boost.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "artifact-routing.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/artifact-routing.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": ".mcp.json",
+        "kind": "config",
+        "path": ".mcp.json",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.json",
+        "kind": "config",
+        "path": "opencode.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Three retrieval quality features — session boost, causal boost, and deep query expansion — are each gated behind explicit opt-in environment variables (`SPECKIT_SESSION_BOOST`, `SPECKIT_CAUSAL_BOOST`). Because `isFeatureEnabled()` in `rollout-policy.ts` treats an *undefined* env var as ON, but `session-boost.ts` and `causal-boost.ts` call `isFeatureEnabled` with their specific flag names that users typically do not set, the net effect is that the features are effectively OFF for all default installations. A test search for \"semantic search\" confirmed: `sessionBoostApplied: \"off\"`, `causalBoostApplied: \"off\"`, and `deepExpansion: false` even in `deep` mode.",
+    "created_at": "2026-04-12T09:02:50.334Z",
+    "last_save_at": "2026-04-12T09:06:00.462Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specific",
+      "spec",
+      "007",
+      "phase",
+      "implementation",
+      "plan",
+      "tasks",
+      "verificatio",
+      "checklist",
+      "summary",
+      "classification"
+    ],
+    "key_topics": [
+      "feature",
+      "specific",
+      "spec",
+      "007",
+      "phase",
+      "implementation",
+      "plan",
+      "tasks",
+      "verificatio",
+      "checklist",
+      "summary",
+      "classification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/utils/phase-classifier.ts",
+      "scripts/extractors/conversation-extractor.ts",
+      "scripts/utils/tool-detection.ts",
+      "scripts/types/session-types.ts",
+      "scripts/extractors/file-extractor.ts",
+      "scripts/lib/simulation-factory.ts",
+      "scripts/tests/phase-classification.vitest.ts",
+      "test-extractors-loaders.js",
+      "test-scripts-modules.js",
+      "conversation-extractor.ts",
+      "tool-detection.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts --config ../mcp_server/vitest.config.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/semantic-signal-golden.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
+      "scripts/tests/test-scripts-modules.js",
+      "scripts/lib/flowchart-generator.ts",
+      "session-extractor.ts",
+      ".opencode/skill/system-spec-kit/templates/context_template.md",
+      "scripts/tests/test-extractors-loaders.js"
+    ],
+    "entities": [
+      {
+        "name": "phase-classifier.ts",
+        "kind": "code",
+        "path": "scripts/utils/phase-classifier.ts",
+        "source": "derived"
+      },
+      {
+        "name": "conversation-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/conversation-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-detection.ts",
+        "kind": "code",
+        "path": "scripts/utils/tool-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "simulation-factory.ts",
+        "kind": "code",
+        "path": "scripts/lib/simulation-factory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "phase-classification.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/phase-classification.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "conversation-extractor.ts",
+        "kind": "code",
+        "path": "conversation-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-detection.ts",
+        "kind": "code",
+        "path": "tool-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/semantic-signal-golden.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "scripts/tests/test-scripts-modules.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.271Z",
+    "last_save_at": "2026-04-12T09:06:00.402Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

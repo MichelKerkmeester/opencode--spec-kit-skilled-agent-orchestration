@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specificati",
+      "spec",
+      "008",
+      "signal",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "summary",
+      "extraction"
+    ],
+    "key_topics": [
+      "feature",
+      "specificati",
+      "spec",
+      "008",
+      "signal",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "summary",
+      "extraction"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/lib/semantic-signal-extractor.ts",
+      "scripts/lib/trigger-extractor.ts",
+      "scripts/core/topic-extractor.ts",
+      "scripts/extractors/session-extractor.ts",
+      "scripts/lib/semantic-summarizer.ts",
+      "scripts/tests/semantic-signal-golden.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
+      "scripts/tests/test-scripts-modules.js",
+      "shared/trigger-extractor.ts",
+      "core/topic-extractor.ts",
+      "lib/semantic-summarizer.ts",
+      "trigger-extractor.ts",
+      "topic-extractor.ts",
+      "semantic-summarizer.ts",
+      "session-extractor.ts",
+      "semantic-signal-golden.vitest.ts",
+      "description-enrichment.vitest.ts",
+      "decision-confidence.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "semantic-signal-extractor.ts",
+        "kind": "code",
+        "path": "scripts/lib/semantic-signal-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.ts",
+        "kind": "code",
+        "path": "scripts/lib/trigger-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "topic-extractor.ts",
+        "kind": "code",
+        "path": "scripts/core/topic-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-summarizer.ts",
+        "kind": "code",
+        "path": "scripts/lib/semantic-summarizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-signal-golden.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/semantic-signal-golden.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "scripts/tests/test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.ts",
+        "kind": "code",
+        "path": "shared/trigger-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "topic-extractor.ts",
+        "kind": "code",
+        "path": "core/topic-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-summarizer.ts",
+        "kind": "code",
+        "path": "lib/semantic-summarizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.ts",
+        "kind": "code",
+        "path": "trigger-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "topic-extractor.ts",
+        "kind": "code",
+        "path": "topic-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-summarizer.ts",
+        "kind": "code",
+        "path": "semantic-summarizer.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.271Z",
+    "last_save_at": "2026-04-12T09:06:00.402Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

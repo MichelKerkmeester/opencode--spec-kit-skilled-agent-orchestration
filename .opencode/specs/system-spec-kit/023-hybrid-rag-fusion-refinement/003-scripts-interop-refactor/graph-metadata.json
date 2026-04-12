@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "scripts interop refactor",
+      "scripts esm interop",
+      "023 phase 3",
+      "scripts interop plan",
+      "023 phase 3 plan",
+      "scripts interop tasks",
+      "023 phase 3 tasks",
+      "implementation summary",
+      "memory-save hardening"
+    ],
+    "key_topics": [
+      "scripts",
+      "interop",
+      "refactor",
+      "esm",
+      "023",
+      "phase",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "memory-save",
+      "hardening"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "workflow.ts",
+      "scripts/core/workflow.ts",
+      "scripts/package.json",
+      "scripts/lib/esm-interop.ts",
+      "scripts/lib/validate-memory-quality.ts",
+      "shared/parsing/memory-sufficiency.ts",
+      "mcp_server/handlers/save/markdown-evidence-builder.ts",
+      "modularization.vitest.ts",
+      "trigger-config-extended.vitest.ts",
+      "node scripts/tests/test-scripts-modules.js",
+      "node scripts/tests/test-export-contracts.js",
+      "scripts/memory/generate-context.ts",
+      "esm-interop.ts",
+      "scripts/tests/test-integration.vitest.ts",
+      "architecture-boundary-enforcement.vitest.ts",
+      "scripts/tests/test-scripts-modules.js",
+      "scripts/tests/test-export-contracts.js",
+      "npx vitest run tests/modularization.vitest.ts tests/trigger-config-extended.vitest.ts",
+      "npx vitest run scripts/tests/test-integration.vitest.ts scripts/tests/architecture-boundary-enforcement.vitest.ts",
+      "test-integration.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "scripts/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "esm-interop.ts",
+        "kind": "code",
+        "path": "scripts/lib/esm-interop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/lib/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-sufficiency.ts",
+        "kind": "code",
+        "path": "shared/parsing/memory-sufficiency.ts",
+        "source": "derived"
+      },
+      {
+        "name": "markdown-evidence-builder.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/save/markdown-evidence-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "modularization.vitest.ts",
+        "kind": "test",
+        "path": "modularization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-config-extended.vitest.ts",
+        "kind": "test",
+        "path": "trigger-config-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-export-contracts.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-export-contracts.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "esm-interop.ts",
+        "kind": "code",
+        "path": "esm-interop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-integration.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/test-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "architecture-boundary-enforcement.vitest.ts",
+        "kind": "test",
+        "path": "architecture-boundary-enforcement.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "scripts/tests/test-scripts-modules.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 3** of the ESM Module Compliance specification.",
+    "created_at": "2026-04-12T09:02:50.318Z",
+    "last_save_at": "2026-04-12T09:06:00.453Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

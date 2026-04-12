@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "fusion scoring",
+      "RRF calibration",
+      "shadow fusion lab",
+      "learned weights",
+      "overlap bonus",
+      "k-optimization",
+      "D1 implementation plan",
+      "fusion calibration phases",
+      "shadow fusion lab plan",
+      "learned weights plan",
+      "D1 tasks",
+      "fusion scoring tasks",
+      "calibration tasks",
+      "shadow lab tasks"
+    ],
+    "key_topics": [
+      "fusion",
+      "scoring",
+      "rrf",
+      "calibration",
+      "shadow",
+      "lab",
+      "learned",
+      "weights",
+      "overlap",
+      "bonus",
+      "k-optimization",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "shared/algorithms/rrf-fusion.ts",
+      "shared/algorithms/fusion-lab.ts",
+      "shared/algorithms/k-value-analysis.ts",
+      "shared/search/hybrid-search.ts",
+      "shared/search/adaptive-fusion.ts",
+      "shared/search/stage1-candidate-gen.ts",
+      "shared/ranking/stage2-fusion.ts",
+      "shared/ranking/learned-combiner.ts",
+      "fusion-lab.js",
+      "rrf-fusion.ts",
+      "k-value-analysis.ts",
+      "hybrid-search.ts",
+      "adaptive-fusion.ts",
+      "learned-combiner.ts",
+      "shared/algorithms/__tests__/rrf-fusion.test.ts",
+      "shared/algorithms/__tests__/k-value-analysis.test.ts",
+      "Promise.all",
+      "shared/algorithms/__tests__/fusion-lab.test.ts",
+      "shared/search/__tests__/hybrid-search.test.ts",
+      "shared/search/__tests__/adaptive-fusion.test.ts"
+    ],
+    "entities": [
+      {
+        "name": "rrf-fusion.ts",
+        "kind": "code",
+        "path": "shared/algorithms/rrf-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fusion-lab.ts",
+        "kind": "code",
+        "path": "shared/algorithms/fusion-lab.ts",
+        "source": "derived"
+      },
+      {
+        "name": "k-value-analysis.ts",
+        "kind": "code",
+        "path": "shared/algorithms/k-value-analysis.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "shared/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-fusion.ts",
+        "kind": "code",
+        "path": "shared/search/adaptive-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "shared/search/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "shared/ranking/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-combiner.ts",
+        "kind": "code",
+        "path": "shared/ranking/learned-combiner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fusion-lab.js",
+        "kind": "code",
+        "path": "fusion-lab.js",
+        "source": "derived"
+      },
+      {
+        "name": "rrf-fusion.ts",
+        "kind": "code",
+        "path": "rrf-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "k-value-analysis.ts",
+        "kind": "code",
+        "path": "k-value-analysis.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-fusion.ts",
+        "kind": "code",
+        "path": "adaptive-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-combiner.ts",
+        "kind": "code",
+        "path": "learned-combiner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rrf-fusion.test.ts",
+        "kind": "test",
+        "path": "shared/algorithms/__tests__/rrf-fusion.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "k-value-analysis.test.ts",
+        "kind": "test",
+        "path": "shared/algorithms/__tests__/k-value-analysis.test.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 1** of the Research-Based Refinement specification.",
+    "created_at": "2026-04-12T09:02:50.234Z",
+    "last_save_at": "2026-04-12T09:06:00.363Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

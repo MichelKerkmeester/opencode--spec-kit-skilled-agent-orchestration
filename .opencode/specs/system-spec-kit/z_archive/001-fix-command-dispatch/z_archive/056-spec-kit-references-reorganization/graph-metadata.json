@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "system",
+      "spec",
+      "kit",
+      "references",
+      "reorganization",
+      "056",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "system",
+      "spec",
+      "kit",
+      "references",
+      "reorganization",
+      "056",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "references/environment_variables.md",
+      "references/config/environment_variables.md",
+      "references/troubleshooting.md",
+      "references/debugging/troubleshooting.md",
+      "references/universal_debugging_methodology.md",
+      "references/debugging/universal_debugging_methodology.md",
+      "references/memory_system.md",
+      "references/memory/memory_system.md",
+      "references/save_workflow.md",
+      "references/memory/save_workflow.md",
+      "references/trigger_config.md",
+      "references/memory/trigger_config.md",
+      "references/folder_routing.md",
+      "references/structure/folder_routing.md",
+      "references/folder_structure.md",
+      "references/structure/folder_structure.md",
+      "references/sub_folder_versioning.md",
+      "references/structure/sub_folder_versioning.md",
+      "references/level_specifications.md",
+      "references/templates/level_specifications.md"
+    ],
+    "entities": [
+      {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": "references/environment_variables.md",
+        "source": "derived"
+      },
+      {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": "references/config/environment_variables.md",
+        "source": "derived"
+      },
+      {
+        "name": "troubleshooting.md",
+        "kind": "doc",
+        "path": "references/troubleshooting.md",
+        "source": "derived"
+      },
+      {
+        "name": "troubleshooting.md",
+        "kind": "doc",
+        "path": "references/debugging/troubleshooting.md",
+        "source": "derived"
+      },
+      {
+        "name": "universal_debugging_methodology.md",
+        "kind": "doc",
+        "path": "references/universal_debugging_methodology.md",
+        "source": "derived"
+      },
+      {
+        "name": "universal_debugging_methodology.md",
+        "kind": "doc",
+        "path": "references/debugging/universal_debugging_methodology.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system.md",
+        "kind": "doc",
+        "path": "references/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system.md",
+        "kind": "doc",
+        "path": "references/memory/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "save_workflow.md",
+        "kind": "doc",
+        "path": "references/save_workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "save_workflow.md",
+        "kind": "doc",
+        "path": "references/memory/save_workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger_config.md",
+        "kind": "doc",
+        "path": "references/trigger_config.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger_config.md",
+        "kind": "doc",
+        "path": "references/memory/trigger_config.md",
+        "source": "derived"
+      },
+      {
+        "name": "folder_routing.md",
+        "kind": "doc",
+        "path": "references/folder_routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "folder_routing.md",
+        "kind": "doc",
+        "path": "references/structure/folder_routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "folder_structure.md",
+        "kind": "doc",
+        "path": "references/folder_structure.md",
+        "source": "derived"
+      },
+      {
+        "name": "folder_structure.md",
+        "kind": "doc",
+        "path": "references/structure/folder_structure.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `system-spec-kit` skill's `references/` folder currently has a flat structure with all reference files at the root level. This makes navigation difficult, slows down discovery of relevant documentation, and creates inconsistency with other skills like `workflows-code` that use organized sub-folder structures.",
+    "created_at": "2026-04-12T09:02:53.535Z",
+    "last_save_at": "2026-04-12T09:06:03.592Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

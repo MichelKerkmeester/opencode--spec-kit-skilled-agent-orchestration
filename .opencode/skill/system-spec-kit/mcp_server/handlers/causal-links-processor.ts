@@ -42,6 +42,7 @@ interface MemoryIdRow {
 interface PathLookupRow extends MemoryIdRow {
   canonical_file_path: string | null;
   file_path: string | null;
+  spec_folder: string | null;
 }
 
 interface TitleLookupRow extends MemoryIdRow {
@@ -212,24 +213,26 @@ function resolveMemoryReferencesBatch(
   if (pathCandidates.size > 0) {
     const values = Array.from(pathCandidates);
     const inClause = buildInClause(values);
-    const pathRows = hasCanonicalFilePath
+  const pathRows = hasCanonicalFilePath
       ? database.prepare(`
-        SELECT id, canonical_file_path, file_path
+        SELECT id, canonical_file_path, file_path, spec_folder
         FROM memory_index
         WHERE canonical_file_path IN (${inClause})
            OR file_path IN (${inClause})
+           OR spec_folder IN (${inClause})
         ORDER BY id DESC
-      `).all(...values, ...values) as PathLookupRow[]
+      `).all(...values, ...values, ...values) as PathLookupRow[]
       : database.prepare(`
-        SELECT id, NULL AS canonical_file_path, file_path
+        SELECT id, NULL AS canonical_file_path, file_path, spec_folder
         FROM memory_index
         WHERE file_path IN (${inClause})
+           OR spec_folder IN (${inClause})
         ORDER BY id DESC
-      `).all(...values) as PathLookupRow[];
+      `).all(...values, ...values) as PathLookupRow[];
 
     const idByCandidate = new Map<string, number>();
     for (const row of pathRows) {
-      const rowKeys = [row.canonical_file_path, row.file_path].filter((value): value is string => typeof value === 'string');
+      const rowKeys = [row.canonical_file_path, row.file_path, row.spec_folder].filter((value): value is string => typeof value === 'string');
       for (const rowKey of rowKeys) {
         if (!idByCandidate.has(rowKey)) {
           idByCandidate.set(rowKey, row.id);

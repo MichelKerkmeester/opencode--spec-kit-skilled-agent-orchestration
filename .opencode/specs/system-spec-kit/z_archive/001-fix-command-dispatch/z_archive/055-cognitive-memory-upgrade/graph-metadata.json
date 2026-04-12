@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "cognitive",
+      "memory",
+      "upgrade",
+      "research",
+      "055",
+      "plan",
+      "for"
+    ],
+    "key_topics": [
+      "spec",
+      "cognitive",
+      "memory",
+      "upgrade",
+      "research",
+      "055",
+      "plan",
+      "upgrading",
+      "kit",
+      "system",
+      "ideas",
+      "principles"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "context-router-v2.py",
+      "pool-auto-update.py",
+      "pool-loader.py",
+      "history.py",
+      "mcp_server/context-server.js",
+      "mcp_server/lib/vector-index.js",
+      "mcp_server/lib/trigger-matcher.js",
+      "mcp_server/lib/hybrid-search.js",
+      "scripts/generate-context.js",
+      "spec.md",
+      "plan.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "context-router-v2.py",
+        "kind": "file",
+        "path": "context-router-v2.py",
+        "source": "derived"
+      },
+      {
+        "name": "pool-auto-update.py",
+        "kind": "file",
+        "path": "pool-auto-update.py",
+        "source": "derived"
+      },
+      {
+        "name": "pool-loader.py",
+        "kind": "file",
+        "path": "pool-loader.py",
+        "source": "derived"
+      },
+      {
+        "name": "history.py",
+        "kind": "file",
+        "path": "history.py",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-matcher.js",
+        "kind": "code",
+        "path": "mcp_server/lib/trigger-matcher.js",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.js",
+        "kind": "code",
+        "path": "mcp_server/lib/hybrid-search.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cognitive Memory Upgrade Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\nResearch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Research upgrading Spec Kit Memory system with ideas and principles from the claude-cognitive repository, adapted for OpenCode's hook-less architecture.",
+    "created_at": "2026-04-12T09:02:53.535Z",
+    "last_save_at": "2026-04-12T09:06:03.591Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "research/research.md"
+    ]
+  }
+}

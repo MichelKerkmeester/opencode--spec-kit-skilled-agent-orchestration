@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "manual testing scoring and calibration",
+      "phase 011 scoring calibration",
+      "023-032 066 074 079 098 102 118 121 159 160 170-172",
+      "phase 011 execution plan",
+      "scoring calibration manual test plan",
+      "scoring and calibration execution",
+      "phase 011 plan",
+      "phase 011 tasks",
+      "scoring calibration tasks",
+      "scoring and calibration task tracker",
+      "phase 011 checklist",
+      "scoring calibration verification checklist",
+      "scoring and calibration checklist",
+      "phase 011 implementation summary",
+      "scoring calibration execution summary",
+      "scoring and calibration test results"
+    ],
+    "key_topics": [
+      "manual",
+      "testing",
+      "scoring",
+      "calibration",
+      "phase",
+      "011",
+      "023-032",
+      "066",
+      "074",
+      "079",
+      "098",
+      "102"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "learned-combiner.ts",
+      "matrix-math.ts",
+      "shared/index.ts",
+      "stage2-fusion.ts",
+      "fusion-lab.js",
+      "lib/eval/shadow-scoring.ts",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "composite-scoring.ts",
+      "interference-scoring.ts",
+      "negative-feedback.ts",
+      "confidence-tracker.ts",
+      "folder-scoring.js",
+      "learned-combiner.js",
+      "matrix-math.js",
+      "rrf-fusion.js",
+      "adaptive-fusion.js",
+      "mmr-reranker.js",
+      "types.ts"
+    ],
+    "entities": [
+      {
+        "name": "learned-combiner.ts",
+        "kind": "code",
+        "path": "learned-combiner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "matrix-math.ts",
+        "kind": "code",
+        "path": "matrix-math.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "shared/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fusion-lab.js",
+        "kind": "code",
+        "path": "fusion-lab.js",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-scoring.ts",
+        "kind": "code",
+        "path": "lib/eval/shadow-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.ts",
+        "kind": "code",
+        "path": "composite-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "interference-scoring.ts",
+        "kind": "code",
+        "path": "interference-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "negative-feedback.ts",
+        "kind": "code",
+        "path": "negative-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-tracker.ts",
+        "kind": "code",
+        "path": "confidence-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "folder-scoring.js",
+        "kind": "code",
+        "path": "folder-scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "learned-combiner.js",
+        "kind": "code",
+        "path": "learned-combiner.js",
+        "source": "derived"
+      },
+      {
+        "name": "matrix-math.js",
+        "kind": "code",
+        "path": "matrix-math.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for all 22 scoring-focused playbook rows so operators can run the active scenarios consistently and reviewers can identify retired items that no longer exist in the MCP server.",
+    "created_at": "2026-04-12T09:02:50.297Z",
+    "last_save_at": "2026-04-12T09:06:00.430Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

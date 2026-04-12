@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "descriptions.json",
+      "description system",
+      "spec folder descriptions",
+      "per-folder description",
+      "memory uniqueness",
+      "memorysequence",
+      "description system refactor",
+      "spec folder description",
+      "description tasks",
+      "implementation tasks",
+      "description verification",
+      "checklist",
+      "description implementation"
+    ],
+    "key_topics": [
+      "descriptions",
+      "json",
+      "description",
+      "system",
+      "spec",
+      "folder",
+      "per-folder",
+      "memory",
+      "uniqueness",
+      "memorysequence",
+      "refactor",
+      "tasks"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "folder-discovery.ts",
+      "slug-utils.ts",
+      "workflow.ts",
+      "create.sh",
+      "description.json",
+      "spec-affinity.ts",
+      "spec-folder-extractor.ts",
+      "path.sep",
+      "descriptions.json",
+      "specs/descriptions.json",
+      "mcp_server/lib/search/folder-discovery.ts",
+      "scripts/spec/create.sh",
+      "scripts/utils/slug-utils.ts",
+      "scripts/core/workflow.ts",
+      "scripts/spec-folder/generate-description.ts",
+      "mcp_server/tests/folder-discovery.vitest.ts",
+      "mcp_server/tests/folder-discovery-integration.vitest.ts",
+      "generate-description.js",
+      "spec.md",
+      "file-helpers.ts"
+    ],
+    "entities": [
+      {
+        "name": "folder-discovery.ts",
+        "kind": "code",
+        "path": "folder-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "slug-utils.ts",
+        "kind": "code",
+        "path": "slug-utils.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec-affinity.ts",
+        "kind": "code",
+        "path": "spec-affinity.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-folder-extractor.ts",
+        "kind": "code",
+        "path": "spec-folder-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "path.sep",
+        "kind": "file",
+        "path": "path.sep",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": "descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": "specs/descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "folder-discovery.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/folder-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "slug-utils.ts",
+        "kind": "code",
+        "path": "scripts/utils/slug-utils.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-description.ts",
+        "kind": "code",
+        "path": "scripts/spec-folder/generate-description.ts",
+        "source": "derived"
+      },
+      {
+        "name": "folder-discovery.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/folder-discovery.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.274Z",
+    "last_save_at": "2026-04-12T09:06:00.405Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

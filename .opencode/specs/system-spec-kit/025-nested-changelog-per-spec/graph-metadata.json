@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/025-nested-changelog-per-spec",
+  "spec_folder": "system-spec-kit/025-nested-changelog-per-spec",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "nested changelog",
+      "spec packet changelog",
+      "phase changelog",
+      "025",
+      "system spec kit",
+      "implementation plan",
+      "tasks",
+      "verification checklist",
+      "decision record",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "nested",
+      "changelog",
+      "spec",
+      "packet",
+      "phase",
+      "025",
+      "system",
+      "kit",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "nested-changelog.ts",
+      "spec.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md",
+      "<spec-root>/changelog/changelog-<packet>-root.md",
+      "<spec-root>/changelog/changelog-<packet>-<phase-folder>.md",
+      ".opencode/skill/system-spec-kit/templates/changelog/root.md",
+      ".opencode/skill/system-spec-kit/templates/changelog/phase.md",
+      "changelog-<packet>-root.md",
+      "changelog-<packet>-<phase-folder>.md",
+      ".opencode/skill/system-spec-kit/scripts/spec-folder/nested-changelog.ts",
+      ".opencode/command/create/changelog.md",
+      ".opencode/command/spec_kit/implement.md",
+      ".opencode/command/spec_kit/complete.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/references/workflows/nested_changelog.md",
+      ".opencode/specs/system-spec-kit/025-nested-changelog-per-spec/implementation-summary.md",
+      "plan.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "nested-changelog.ts",
+        "kind": "code",
+        "path": "nested-changelog.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-root.md",
+        "kind": "doc",
+        "path": "<spec-root>/changelog/changelog-<packet>-root.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-<phase-folder>.md",
+        "kind": "doc",
+        "path": "<spec-root>/changelog/changelog-<packet>-<phase-folder>.md",
+        "source": "derived"
+      },
+      {
+        "name": "root.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/changelog/root.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/changelog/phase.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-root.md",
+        "kind": "doc",
+        "path": "changelog-<packet>-root.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-<phase-folder>.md",
+        "kind": "doc",
+        "path": "changelog-<packet>-<phase-folder>.md",
+        "source": "derived"
+      },
+      {
+        "name": "nested-changelog.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec-folder/nested-changelog.ts",
+        "source": "derived"
+      },
+      {
+        "name": "changelog.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/changelog.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "System Spec Kit now supports a second changelog mode that lives inside a packet, not just at the global component-release layer. The new workflow adds a nested changelog generator, packet/phase templates, and command guidance so spec roots and nested phase folders can produce packet-local history without replacing `implementation-summary.md`.",
+    "created_at": "2026-04-12T09:02:53.442Z",
+    "last_save_at": "2026-04-12T09:06:03.486Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

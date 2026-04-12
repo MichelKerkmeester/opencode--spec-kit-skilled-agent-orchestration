@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-structural-trust-axis-contract",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-structural-trust-axis-contract",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006-structural-trust-axis-contract",
+      "structural trust axis contract",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "summary"
+    ],
+    "key_topics": [
+      "006-structural-trust-axis-contract",
+      "structural",
+      "trust",
+      "axis",
+      "contract",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "shared-payload.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/structural-trust-axis.vitest.ts tests/shared-payload-certainty.vitest.ts tests/hook-session-start.vitest.ts",
+      "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/confidence-scoring.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/structural-trust-axis.vitest.ts tests/shared-payload-certainty.vitest.ts tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-scoring.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/confidence-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Structural Trust Axis Contract",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Define the structural trust contract that the research moved ahead of graph packaging and confidence cleanup by separating provenance, evidence, and freshness or authority into explicit axes.",
+    "created_at": "2026-04-12T09:02:53.467Z",
+    "last_save_at": "2026-04-12T09:06:03.510Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

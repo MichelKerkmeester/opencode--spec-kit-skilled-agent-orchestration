@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "gate",
+      "enforcement",
+      "constitutional",
+      "memory",
+      "refinement",
+      "spec",
+      "034",
+      "implementation",
+      "plan",
+      "verification",
+      "checklist"
+    ],
+    "key_topics": [
+      "gate",
+      "enforcement",
+      "constitutional",
+      "memory",
+      "refinement",
+      "spec",
+      "034",
+      "implementation",
+      "plan",
+      "verification",
+      "checklist",
+      "refine"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gate Enforcement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gate Enforcement Constitutional Memory Refinement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\nRefine",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem\nCurrent",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Compaction Check",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Verification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gates",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_search",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tasks",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "description:",
+        "kind": "quoted",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger_phrases:\n  -",
+        "kind": "quoted",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Refine the gate-enforcement.md constitutional memory to cover ALL 4 HARD BLOCK gates (0, 3, 5, 6) instead of just 2 (3, 5).",
+    "created_at": "2026-04-12T09:02:53.523Z",
+    "last_save_at": "2026-04-12T09:06:03.576Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "checklist.md"
+    ]
+  }
+}

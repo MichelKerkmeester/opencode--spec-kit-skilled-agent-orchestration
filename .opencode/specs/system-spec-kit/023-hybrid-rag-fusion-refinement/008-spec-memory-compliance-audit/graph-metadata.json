@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec compliance audit",
+      "memory quality review",
+      "template compliance",
+      "database reindex",
+      "spec validation sweep",
+      "memory cleanup",
+      "spec compliance plan",
+      "audit implementation",
+      "memory cleanup plan",
+      "database reindex plan",
+      "spec audit tasks",
+      "compliance tasks",
+      "memory cleanup tasks",
+      "spec audit checklist",
+      "compliance verification",
+      "memory cleanup checklist",
+      "compliance audit results",
+      "spec audit summary",
+      "memory cleanup results"
+    ],
+    "key_topics": [
+      "spec",
+      "compliance",
+      "audit",
+      "memory",
+      "quality",
+      "review",
+      "template",
+      "database",
+      "reindex",
+      "validation",
+      "sweep",
+      "cleanup"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/discovery-summary.md",
+      "research/hard-block-memories.txt",
+      "fix-anchors.py",
+      "reindex-embeddings.js",
+      "JSON.parse",
+      "cleanup-orphaned-vectors.js",
+      "context-index.sqlite.bak",
+      "cp context-index.sqlite.bak context-index.sqlite",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "discovery-summary.md",
+        "kind": "doc",
+        "path": "research/discovery-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "hard-block-memories.txt",
+        "kind": "file",
+        "path": "research/hard-block-memories.txt",
+        "source": "derived"
+      },
+      {
+        "name": "fix-anchors.py",
+        "kind": "file",
+        "path": "fix-anchors.py",
+        "source": "derived"
+      },
+      {
+        "name": "reindex-embeddings.js",
+        "kind": "code",
+        "path": "reindex-embeddings.js",
+        "source": "derived"
+      },
+      {
+        "name": "JSON.parse",
+        "kind": "file",
+        "path": "JSON.parse",
+        "source": "derived"
+      },
+      {
+        "name": "cleanup-orphaned-vectors.js",
+        "kind": "code",
+        "path": "cleanup-orphaned-vectors.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.sqlite.bak",
+        "kind": "file",
+        "path": "context-index.sqlite.bak",
+        "source": "derived"
+      },
+      {
+        "name": "cp context-index.sqlite.bak context-index.sqlite",
+        "kind": "file",
+        "path": "cp context-index.sqlite.bak context-index.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Compliance Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 8** of the ESM Module Compliance specification. It is the final cross-cutting documentation and database hygiene sweep after the runtime migration and search fixes completed.",
+    "created_at": "2026-04-12T09:02:50.321Z",
+    "last_save_at": "2026-04-12T09:06:00.456Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

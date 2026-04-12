@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "mcp",
+      "embedding",
+      "failure",
+      "investigation",
+      "spec",
+      "086",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "mcp",
+      "embedding",
+      "failure",
+      "investigation",
+      "spec",
+      "086",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "users",
+      "report"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/context-server.js",
+      "mcp_server/lib/search/vector-index.js",
+      "shared/embeddings/factory.js",
+      "mcp_server/lib/providers/retry-manager.js",
+      "shared/embeddings/providers/hf-local.js",
+      "nomic-ai/nomic-embed-text-v1.5",
+      ".opencode/skill/system-spec-kit/shared/embeddings.js",
+      ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
+      ".opencode/skill/system-spec-kit/shared/embeddings/providers/hf-local.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
+      ">=18.0.0",
+      "v25.5.0",
+      ".opencode/skill/system-spec-kit/references/debugging/troubleshooting.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/errors/core.js",
+      ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "factory.js",
+        "kind": "code",
+        "path": "shared/embeddings/factory.js",
+        "source": "derived"
+      },
+      {
+        "name": "retry-manager.js",
+        "kind": "code",
+        "path": "mcp_server/lib/providers/retry-manager.js",
+        "source": "derived"
+      },
+      {
+        "name": "hf-local.js",
+        "kind": "code",
+        "path": "shared/embeddings/providers/hf-local.js",
+        "source": "derived"
+      },
+      {
+        "name": "nomic-embed-text-v1.5",
+        "kind": "file",
+        "path": "nomic-ai/nomic-embed-text-v1.5",
+        "source": "derived"
+      },
+      {
+        "name": "embeddings.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/shared/embeddings.js",
+        "source": "derived"
+      },
+      {
+        "name": "factory.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
+        "source": "derived"
+      },
+      {
+        "name": "hf-local.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/shared/embeddings/providers/hf-local.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": ">=18.0.0",
+        "kind": "file",
+        "path": ">=18.0.0",
+        "source": "derived"
+      },
+      {
+        "name": "v25.5.0",
+        "kind": "file",
+        "path": "v25.5.0",
+        "source": "derived"
+      },
+      {
+        "name": "troubleshooting.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/debugging/troubleshooting.md",
+        "source": "derived"
+      },
+      {
+        "name": "recovery-hints.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.js",
+        "source": "derived"
+      },
+      {
+        "name": "core.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/errors/core.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Users report that the `spec_kit_memory` MCP server fails to generate semantic embeddings due to a corrupted local HuggingFace embedding model cache. The ONNX model fails protobuf parsing.",
+    "created_at": "2026-04-12T09:02:53.558Z",
+    "last_save_at": "2026-04-12T09:06:03.617Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

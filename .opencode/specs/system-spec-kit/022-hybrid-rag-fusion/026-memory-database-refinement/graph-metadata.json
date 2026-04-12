@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/026-memory-database-refinement",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory database refinement",
+      "memory db audit",
+      "mcp server review",
+      "causal graph issues",
+      "search pipeline bugs",
+      "memory database refinement plan",
+      "deep research review plan",
+      "mcp server audit plan",
+      "memory database refinement tasks",
+      "deep research review tasks",
+      "mcp server fix tasks",
+      "verification checklist",
+      "memory database refinement summary",
+      "mcp server audit complete",
+      "026 implementation summary",
+      "p0 p1 fixes complete",
+      "deep",
+      "research",
+      "further",
+      "refinement",
+      "026",
+      "memory"
+    ],
+    "key_topics": [
+      "memory",
+      "database",
+      "refinement",
+      "audit",
+      "mcp",
+      "server",
+      "review",
+      "causal",
+      "graph",
+      "issues",
+      "search",
+      "pipeline"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "review/review-report.md",
+      "lib/storage/lineage-state.ts",
+      "shared/embeddings/factory.js",
+      "lib/search/vector-index-store.ts",
+      "vector-index-store.ts",
+      "lib/storage/checkpoints.ts",
+      "handlers/checkpoints.ts",
+      "handlers/shared-memory.ts",
+      "lib/storage/reconsolidation.ts",
+      "memory_history.spec_folder",
+      "lib/errors.ts",
+      "core/db-state.ts",
+      "lib/search/hybrid-search.ts",
+      "handlers/pe-gating.ts",
+      "handlers/memory-save.ts",
+      "lib/search/vector-index-mutations.ts",
+      "lib/search/bm25-index.ts",
+      "lib/storage/causal-edges.ts",
+      "handlers/causal-graph.ts",
+      "lib/search/vector-index-schema.ts"
+    ],
+    "entities": [
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "lineage-state.ts",
+        "kind": "code",
+        "path": "lib/storage/lineage-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "factory.js",
+        "kind": "code",
+        "path": "shared/embeddings/factory.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "lib/search/vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "lib/storage/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-memory.ts",
+        "kind": "code",
+        "path": "handlers/shared-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation.ts",
+        "kind": "code",
+        "path": "lib/storage/reconsolidation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory_history.spec_folder",
+        "kind": "file",
+        "path": "memory_history.spec_folder",
+        "source": "derived"
+      },
+      {
+        "name": "errors.ts",
+        "kind": "code",
+        "path": "lib/errors.ts",
+        "source": "derived"
+      },
+      {
+        "name": "db-state.ts",
+        "kind": "code",
+        "path": "core/db-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pe-gating.ts",
+        "kind": "code",
+        "path": "handlers/pe-gating.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-mutations.ts",
+        "kind": "code",
+        "path": "lib/search/vector-index-mutations.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The Spec Kit Memory MCP server is a 70K+ LOC system with 31 MCP tools, a 57-column `memory_index` table, 5-channel hybrid search, causal graph traversal, FSRS-based scheduling, PE-gating, reconsolidation, lineage versioning, and a 2,500-LOC monolithic save pipeline. Prior spec work (023-ablation-benchmark-integrity) already exposed silent cross-DB scoring, evaluation-time truncation leaking into Recall@20, and stale ground-truth IDs. The system has 26 documented BUG-fix comments, a flagged modularization TODO on the save handler, and multiple gated feature flags whose interaction paths are untested in combination.",
+    "created_at": "2026-04-12T09:02:50.315Z",
+    "last_save_at": "2026-04-12T09:06:00.449Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

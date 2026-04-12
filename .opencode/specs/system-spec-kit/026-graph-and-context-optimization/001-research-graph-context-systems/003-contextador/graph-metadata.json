@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "contextador",
+      "mcp query interface",
+      "self-healing context",
+      "mainframe shared cache",
+      "token efficient navigation",
+      "contextador research plan",
+      "deep research loop",
+      "cli-codex delegation",
+      "contextador tasks",
+      "deep research tasks",
+      "phase 003 tasks",
+      "contextador checklist",
+      "research verification",
+      "phase 003 checklist",
+      "contextador adr",
+      "research-only scope",
+      "contextador summary",
+      "phase 003 summary",
+      "contextador research findings",
+      "contextador research",
+      "mcp query interface research"
+    ],
+    "key_topics": [
+      "contextador",
+      "mcp",
+      "query",
+      "interface",
+      "self-healing",
+      "context",
+      "mainframe",
+      "shared",
+      "cache",
+      "token",
+      "efficient",
+      "navigation"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp.ts",
+      "headmaster.ts",
+      "pointers.ts",
+      "hierarchy.ts",
+      "feedback.ts",
+      "janitor.ts",
+      "generator.ts",
+      "freshness.ts",
+      "bridge.ts",
+      "client.ts",
+      "rooms.ts",
+      "dedup.ts",
+      "summarizer.ts",
+      "budget.ts",
+      "agents.ts",
+      "validation.ts",
+      "writer.ts",
+      "sizecheck.ts",
+      "docsync.ts",
+      "depscan.ts"
+    ],
+    "entities": [
+      {
+        "name": "mcp.ts",
+        "kind": "code",
+        "path": "mcp.ts",
+        "source": "derived"
+      },
+      {
+        "name": "headmaster.ts",
+        "kind": "code",
+        "path": "headmaster.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pointers.ts",
+        "kind": "code",
+        "path": "pointers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hierarchy.ts",
+        "kind": "code",
+        "path": "hierarchy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "feedback.ts",
+        "kind": "code",
+        "path": "feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "janitor.ts",
+        "kind": "code",
+        "path": "janitor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generator.ts",
+        "kind": "code",
+        "path": "generator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "freshness.ts",
+        "kind": "code",
+        "path": "freshness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "bridge.ts",
+        "kind": "code",
+        "path": "bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "client.ts",
+        "kind": "code",
+        "path": "client.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rooms.ts",
+        "kind": "code",
+        "path": "rooms.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dedup.ts",
+        "kind": "code",
+        "path": "dedup.ts",
+        "source": "derived"
+      },
+      {
+        "name": "summarizer.ts",
+        "kind": "code",
+        "path": "summarizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "budget.ts",
+        "kind": "code",
+        "path": "budget.ts",
+        "source": "derived"
+      },
+      {
+        "name": "agents.ts",
+        "kind": "code",
+        "path": "agents.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validation.ts",
+        "kind": "code",
+        "path": "validation.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 003 of the graph-and-context-optimization research track investigates Contextador, a Bun-based TypeScript MCP server and CLI. The goal is to extract evidence-backed lessons about MCP-based query interfaces, self-healing context artifacts, Mainframe-style shared agent caches, and token-efficient codebase navigation, then map each lesson to a concrete `adopt now`, `prototype later`, or `reject` recommendation for `Code_Environment/Public`.",
+    "created_at": "2026-04-12T09:02:53.447Z",
+    "last_save_at": "2026-04-12T09:06:03.491Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

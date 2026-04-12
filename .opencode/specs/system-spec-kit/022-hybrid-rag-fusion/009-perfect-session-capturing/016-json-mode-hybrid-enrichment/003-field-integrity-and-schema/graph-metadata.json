@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "field integrity",
+      "schema validation",
+      "filesmodified fast-path",
+      "unknown-field warnings",
+      "contexttype enum",
+      "yaml frontmatter validation",
+      "content density",
+      "input-normalizer",
+      "validate-memory-quality",
+      "field integrity plan",
+      "schema validation implementation",
+      "filesmodified fast-path fix",
+      "input-normalizer changes",
+      "validate-memory-quality changes",
+      "field integrity tasks",
+      "schema validation tasks",
+      "filesmodified fast-path task",
+      "unknown-field warning task",
+      "contexttype validation task",
+      "field integrity checklist",
+      "schema validation checklist",
+      "filesmodified verification",
+      "input-normalizer checklist",
+      "field integrity decisions",
+      "schema validation adr",
+      "unknown-field warn vs error",
+      "yaml parser decision",
+      "content density threshold",
+      "string length limits decision",
+      "field integrity implementation summary",
+      "schema validation completed",
+      "filesmodified fix summary",
+      "phase 003 summary"
+    ],
+    "key_topics": [
+      "field",
+      "integrity",
+      "schema",
+      "validation",
+      "filesmodified",
+      "fast-path",
+      "unknown-field",
+      "warnings",
+      "contexttype",
+      "enum",
+      "yaml",
+      "frontmatter"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "input-normalizer.ts",
+      "console.warn",
+      "validate-memory-quality.ts",
+      "generate-context.js",
+      "description.json",
+      ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts",
+      "Array.isArray",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "grep js-yaml package.json",
+      "console.error",
+      "spec.md",
+      "input.contextType",
+      "implementation-summary.md",
+      "package.json",
+      "Object.keys",
+      "yaml.DEFAULT_SAFE_SCHEMA"
+    ],
+    "entities": [
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "console.warn",
+        "kind": "file",
+        "path": "console.warn",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Array.isArray",
+        "kind": "file",
+        "path": "Array.isArray",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "grep js-yaml package.json",
+        "kind": "config",
+        "path": "grep js-yaml package.json",
+        "source": "derived"
+      },
+      {
+        "name": "console.error",
+        "kind": "file",
+        "path": "console.error",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "input.contextType",
+        "kind": "file",
+        "path": "input.contextType",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `generate-context.js` pipeline contains two categories of correctness gap discovered during deep research Round 2 (74 findings, 20 recommendations). Domain A is a data-loss defect: when an AI sends both `userPrompts` (triggering the fast path) and `filesModified`, the file listing is silently discarded. Domain B is a set of five schema and validation weaknesses that allow typo'd fields, over-long strings, invalid enum values, malformed YAML frontmatter, and trivially short content to pass through to storage undetected. Together these eight changes harden the pipeline against both accidental data loss and silent quality degradation.",
+    "created_at": "2026-04-12T09:02:50.278Z",
+    "last_save_at": "2026-04-12T09:06:00.411Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

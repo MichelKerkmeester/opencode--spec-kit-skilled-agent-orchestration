@@ -179,7 +179,7 @@ Run the full 14-step SpecKit workflow: specification, clarification, planning, t
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Feature description with optional parameters (branch, scope, context)
-**Outputs:** Complete spec folder with all artifacts + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Complete spec folder with all artifacts, refreshed `graph-metadata.json`, and `STATUS=<OK|FAIL|CANCELLED>`
 
 ```text
 $ARGUMENTS
@@ -215,6 +215,12 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | 12 | Completion | Generate summary (MANDATORY L2+) | implementation-summary.md |
 | 13 | Save Context | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
 | 14 | Handover Check | Offer handover before completion | User prompted |
+
+### Packet Graph Metadata
+
+- Completion relies on canonical save to refresh the packet's root `graph-metadata.json`.
+- `/spec_kit:complete` is responsible for final packet-facing derived state such as `status` and `last_save_at`.
+- Manual packet relationships remain untouched during completion; only the derived section is refreshed.
 
 ### Execution Modes
 
@@ -310,7 +316,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
-**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity support artifacts directly; the script refreshes the indexed support artifact while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
+**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity support artifacts directly; the script refreshes the indexed support artifact and the packet's `graph-metadata.json` while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
 
 **Step 14 (Session Handover Check):** Display handover prompt offering `/spec_kit:handover`. Recommended if: continuing later, another dev may pick up, implementation has nuances. Wait for user response before marking workflow complete.
 
@@ -343,7 +349,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 All 14 steps executed successfully.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, nested changelog (when applicable), continuity support artifact refreshed
+Artifacts: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, nested changelog (when applicable), graph-metadata.json refreshed, continuity support artifact refreshed
 STATUS=OK PATH=[spec-folder-path]
 ```
 

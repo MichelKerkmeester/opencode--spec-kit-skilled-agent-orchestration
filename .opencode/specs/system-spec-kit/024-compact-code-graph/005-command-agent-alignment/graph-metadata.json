@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "command",
+      "agent",
+      "alignment",
+      "spec",
+      "005",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "command",
+      "agent",
+      "alignment",
+      "spec",
+      "005",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+      "pendingStopSave.cachedAt",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "hook-state.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec_kit_resume_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "pendingStopSave.cachedAt",
+        "kind": "file",
+        "path": "pendingStopSave.cachedAt",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary\nUpdate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gap Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current State",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Target State",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.345Z",
+    "last_save_at": "2026-04-12T09:06:00.482Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

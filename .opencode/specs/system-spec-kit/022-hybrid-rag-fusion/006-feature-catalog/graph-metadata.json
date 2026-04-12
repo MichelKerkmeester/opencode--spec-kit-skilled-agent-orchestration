@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "catalog",
+      "comprehensive",
+      "audit",
+      "remediation",
+      "spec",
+      "006",
+      "feature catalog",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "implementation",
+      "summary",
+      "implementation summary",
+      "session",
+      "handover"
+    ],
+    "key_topics": [
+      "feature",
+      "catalog",
+      "comprehensive",
+      "audit",
+      "remediation",
+      "spec",
+      "006",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "important",
+    "status": "In Progress",
+    "key_files": [
+      "session-transition.ts",
+      "ranking-contract.ts",
+      "verify_alignment_drift.py",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md"
+    ],
+    "entities": [
+      {
+        "name": "session-transition.ts",
+        "kind": "code",
+        "path": "session-transition.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ranking-contract.ts",
+        "kind": "code",
+        "path": "ranking-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "verify_alignment_drift.py",
+        "kind": "file",
+        "path": "verify_alignment_drift.py",
+        "source": "derived"
+      },
+      {
+        "name": "11-feature-catalog-code-references.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md",
+        "source": "derived"
+      },
+      {
+        "name": "FEATURE_CATALOG.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "16-json-mode-hybrid-enrichment.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md",
+        "source": "derived"
+      },
+      {
+        "name": "17-json-primary-deprecation-posture.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md",
+        "source": "derived"
+      },
+      {
+        "name": "153-json-mode-hybrid-enrichment.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md",
+        "source": "derived"
+      },
+      {
+        "name": "154-json-primary-deprecation-posture.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md",
+        "source": "derived"
+      },
+      {
+        "name": "15-evaluation-api-surface.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md",
+        "source": "derived"
+      },
+      {
+        "name": "22-mcp-server-public-api-barrel.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md",
+        "source": "derived"
+      },
+      {
+        "name": "23-embeddings-and-retry-api.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md",
+        "source": "derived"
+      },
+      {
+        "name": "05-constitutional-gate-enforcement-rule-pack.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This wrapper packet preserves the historical 2026-03-08 through 2026-03-26 audit trail, but it must no longer be read as the live denominator source on its own.",
+    "created_at": "2026-04-12T09:02:50.241Z",
+    "last_save_at": "2026-04-12T09:06:00.370Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md"
+    ]
+  }
+}

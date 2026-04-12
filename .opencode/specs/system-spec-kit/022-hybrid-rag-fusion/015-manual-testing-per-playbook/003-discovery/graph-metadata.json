@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "discovery manual testing",
+      "phase 003 discovery",
+      "ex-011 ex-012 ex-013 ex-036 ex-037 ex-038 ex-039 ex-040",
+      "memory_list memory_stats memory_health test",
+      "folder filter discovery",
+      "trigger phrase matching discovery",
+      "date range discovery",
+      "importance tier filter",
+      "causal link traversal",
+      "discovery phase execution plan",
+      "phase 003 plan",
+      "ex-011 ex-012 ex-013 execution",
+      "discovery phase tasks",
+      "phase 003 tasks",
+      "ex-011 ex-012 ex-013 tasks",
+      "discovery checklist",
+      "phase 003 checklist",
+      "ex-011 ex-012 ex-013 checklist",
+      "discovery implementation summary",
+      "phase 003 results",
+      "ex-011 ex-012 ex-013 results"
+    ],
+    "key_topics": [
+      "discovery",
+      "manual",
+      "testing",
+      "phase",
+      "003",
+      "ex-011",
+      "ex-012",
+      "ex-013",
+      "ex-036",
+      "ex-037",
+      "ex-038",
+      "ex-039"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "memory-tools.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/038-query-expansion-r12.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/039-verify-fix-verify-memory-quality-loop-pi-a5.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/040-signal-vocabulary-expansion-tm-08.md",
+      "spec.md",
+      "plan.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
+    ],
+    "entities": [
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-tools.ts",
+        "kind": "code",
+        "path": "memory-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "011-memory-browser-memory-list.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md",
+        "source": "derived"
+      },
+      {
+        "name": "012-system-statistics-memory-stats.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md",
+        "source": "derived"
+      },
+      {
+        "name": "013-health-diagnostics-memory-health.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md",
+        "source": "derived"
+      },
+      {
+        "name": "036-confidence-based-result-truncation-r15-ext.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md",
+        "source": "derived"
+      },
+      {
+        "name": "037-dynamic-token-budget-allocation-fut-7.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md",
+        "source": "derived"
+      },
+      {
+        "name": "038-query-expansion-r12.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/038-query-expansion-r12.md",
+        "source": "derived"
+      },
+      {
+        "name": "039-verify-fix-verify-memory-quality-loop-pi-a5.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/039-verify-fix-verify-memory-quality-loop-pi-a5.md",
+        "source": "derived"
+      },
+      {
+        "name": "040-signal-vocabulary-expansion-tm-08.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/040-signal-vocabulary-expansion-tm-08.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 003 discovery scenarios must be executed from scratch. All prior results are invalidated. The eight discovery scenarios (EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, EX-040) require fresh manual execution to verify that memory_list, memory_stats, memory_health, and targeted discovery operations behave as specified by the canonical playbook. The five new scenarios (EX-036 through EX-040) expand coverage to folder name filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal.",
+    "created_at": "2026-04-12T09:02:50.290Z",
+    "last_save_at": "2026-04-12T09:06:00.424Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

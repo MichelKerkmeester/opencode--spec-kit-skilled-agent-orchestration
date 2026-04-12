@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph",
+  "spec_folder": "system-spec-kit/024-compact-code-graph",
+  "parent_id": null,
+  "children_ids": [
+    "system-spec-kit/024-compact-code-graph/001-precompact-hook",
+    "system-spec-kit/024-compact-code-graph/002-session-start-hook",
+    "system-spec-kit/024-compact-code-graph/003-stop-hook-tracking",
+    "system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback",
+    "system-spec-kit/024-compact-code-graph/005-command-agent-alignment",
+    "system-spec-kit/024-compact-code-graph/006-documentation-alignment",
+    "system-spec-kit/024-compact-code-graph/007-testing-validation",
+    "system-spec-kit/024-compact-code-graph/008-structural-indexer",
+    "system-spec-kit/024-compact-code-graph/009-code-graph-storage-query",
+    "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
+    "system-spec-kit/024-compact-code-graph/011-compaction-working-set",
+    "system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization",
+    "system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair",
+    "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
+    "system-spec-kit/024-compact-code-graph/015-tree-sitter-migration",
+    "system-spec-kit/024-compact-code-graph/016-cross-runtime-ux",
+    "system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes",
+    "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming",
+    "system-spec-kit/024-compact-code-graph/019-code-graph-auto-trigger",
+    "system-spec-kit/024-compact-code-graph/020-query-routing-integration",
+    "system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity",
+    "system-spec-kit/024-compact-code-graph/022-gemini-hook-porting",
+    "system-spec-kit/024-compact-code-graph/023-context-preservation-metrics",
+    "system-spec-kit/024-compact-code-graph/024-hookless-priming-optimization",
+    "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement",
+    "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
+    "system-spec-kit/024-compact-code-graph/027-opencode-structural-priming",
+    "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation",
+    "system-spec-kit/024-compact-code-graph/029-review-remediation",
+    "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+    "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader",
+    "system-spec-kit/024-compact-code-graph/032-cached-summary-fidelity-gates",
+    "system-spec-kit/024-compact-code-graph/033-fts-forced-degrade-hardening",
+    "system-spec-kit/024-compact-code-graph/034-workflow-split-and-token-insight-contracts"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "hybrid",
+      "context",
+      "injection",
+      "hook",
+      "024",
+      "compact",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "implementation",
+      "summary",
+      "deep",
+      "research",
+      "report",
+      "code"
+    ],
+    "key_topics": [
+      "spec",
+      "hybrid",
+      "context",
+      "injection",
+      "hook",
+      "024",
+      "compact",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "compact-inject.ts",
+      "session-prime.ts",
+      "session-stop.ts",
+      "${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json",
+      ".claude/CLAUDE.md",
+      "code-graph.sqlite",
+      "decision-record.md",
+      "memory-search.ts",
+      "shadow-evaluation-runtime.ts",
+      "meta.autoSurface",
+      "pre_compact.py",
+      "input.source",
+      "validate.sh",
+      "hooks/memory-surface.ts",
+      "context-server.ts",
+      "mcp_server/hooks/claude/compact-inject.ts",
+      "mcp_server/hooks/claude/session-prime.ts",
+      "mcp_server/hooks/claude/shared.ts",
+      "mcp_server/hooks/claude/hook-state.ts",
+      ".claude/settings.local.json"
+    ],
+    "entities": [
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "compact-inject.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "<session-id>.json",
+        "kind": "config",
+        "path": "${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": ".claude/CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph.sqlite",
+        "kind": "file",
+        "path": "code-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "meta.autoSurface",
+        "kind": "file",
+        "path": "meta.autoSurface",
+        "source": "derived"
+      },
+      {
+        "name": "pre_compact.py",
+        "kind": "file",
+        "path": "pre_compact.py",
+        "source": "derived"
+      },
+      {
+        "name": "input.source",
+        "kind": "file",
+        "path": "input.source",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/compact-inject.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.341Z",
+    "last_save_at": "2026-04-12T09:06:00.470Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "perfect session capturing",
+      "spec 009",
+      "truth reconciliation",
+      "roadmap phases 000 018",
+      "implementation plan",
+      "roadmap phases 018 019",
+      "tasks",
+      "verification",
+      "decision",
+      "implementation",
+      "summary",
+      "deep",
+      "research",
+      "perfect",
+      "session",
+      "009"
+    ],
+    "key_topics": [
+      "perfect",
+      "session",
+      "capturing",
+      "spec",
+      "009",
+      "truth",
+      "reconciliation",
+      "roadmap",
+      "phases",
+      "000",
+      "018",
+      "implementation"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "000-dynamic-capture-deprecation/spec.md",
+      "plan.md",
+      "tasks.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/plan.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/tasks.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/checklist.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/decision-record.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/{spec,plan,tasks}.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/{spec,research}.md",
+      "research/research.md",
+      "spec.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "014-stateless-quality-gates/spec.md",
+      "015-runtime-contract-and-indexability/spec.md",
+      "016-json-mode-hybrid-enrichment/spec.md",
+      "017-json-primary-deprecation/spec.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "000-dynamic-capture-deprecation/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "{spec,plan,tasks}.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/{spec,plan,tasks}.md",
+        "source": "derived"
+      },
+      {
+        "name": "{spec,research}.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/{spec,research}.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This parent pack now carries one stable audit baseline and one repaired direct-child phase map.",
+    "created_at": "2026-04-12T09:02:50.263Z",
+    "last_save_at": "2026-04-12T09:06:00.393Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

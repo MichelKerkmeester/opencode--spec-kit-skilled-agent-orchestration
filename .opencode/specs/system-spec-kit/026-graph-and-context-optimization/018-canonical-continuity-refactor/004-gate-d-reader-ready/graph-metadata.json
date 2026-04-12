@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "gate d",
+      "reader ready",
+      "resume ladder",
+      "session resume",
+      "memory search",
+      "canonical continuity",
+      "implementation plan",
+      "reader handlers",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision record",
+      "archived hit rate",
+      "implementation summary",
+      "177 tests"
+    ],
+    "key_topics": [
+      "gate",
+      "reader",
+      "ready",
+      "resume",
+      "ladder",
+      "session",
+      "memory",
+      "search",
+      "canonical",
+      "continuity",
+      "implementation",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/handlers/memory-context.ts",
+      "mcp_server/handlers/session-resume.ts",
+      "mcp_server/handlers/session-bootstrap.ts",
+      "mcp_server/handlers/memory-index-discovery.ts",
+      "mcp_server/handlers/memory-triggers.ts",
+      "mcp_server/lib/resume/resume-ladder.ts",
+      "lib/resume/resume-ladder.ts",
+      "_memory.continuity",
+      "memory-search.ts",
+      "memory-context.ts",
+      "session-resume.ts",
+      "memory-save.ts",
+      "session-bootstrap.ts",
+      "memory-index-discovery.ts",
+      "memory-triggers.ts",
+      "resume.fast_path_miss",
+      "resume.stage.fallback_ms",
+      "resume.fast_path_source",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index-discovery.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-index-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-triggers.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-triggers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "resume-ladder.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/resume/resume-ladder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "resume-ladder.ts",
+        "kind": "code",
+        "path": "lib/resume/resume-ladder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "_memory.continuity",
+        "kind": "file",
+        "path": "_memory.continuity",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index-discovery.ts",
+        "kind": "code",
+        "path": "memory-index-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-triggers.ts",
+        "kind": "code",
+        "path": "memory-triggers.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Gate D moves the phase 018 read path onto the canonical continuity substrate defined in [`../implementation-design.md`](../implementation-design.md) and [`../resource-map.md`](../resource-map.md) section 4. The work keeps the existing 4-stage search pipeline, replaces memory-file primacy with a doc-first `resumeLadder`, and proves the new reader behavior through the 13-feature regression suite, resume fallback tests, and the latency budgets from iterations 013, 017, 025, 027, 029, and 039.",
+    "created_at": "2026-04-12T09:02:53.480Z",
+    "last_save_at": "2026-04-12T09:06:03.524Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

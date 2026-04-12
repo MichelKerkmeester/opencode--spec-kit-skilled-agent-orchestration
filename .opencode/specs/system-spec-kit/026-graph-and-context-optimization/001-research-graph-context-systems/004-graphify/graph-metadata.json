@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graphify research spec",
+      "004-graphify phase spec",
+      "two-pass extraction research",
+      "graphify Adopt Adapt Reject",
+      "graphify research plan",
+      "004-graphify execution plan",
+      "deep-research loop graphify",
+      "graphify research tasks",
+      "004-graphify task list",
+      "graphify deep-research tasks",
+      "graphify checklist",
+      "graphify verification",
+      "004-graphify verification",
+      "graphify decision record",
+      "graphify ADR",
+      "graphify engine switch",
+      "graphify iter 7 override",
+      "graphify implementation summary",
+      "004-graphify outcome",
+      "graphify research complete",
+      "graphify research",
+      "graphify external repo",
+      "two-pass AST extraction",
+      "Leiden community detection",
+      "evidence tagging EXTRACTED INFERRED AMBIGUOUS",
+      "graph-first PreToolUse hook",
+      "multimodal codebase extraction"
+    ],
+    "key_topics": [
+      "graphify",
+      "research",
+      "spec",
+      "004-graphify",
+      "phase",
+      "two-pass",
+      "extraction",
+      "adopt",
+      "adapt",
+      "reject",
+      "plan",
+      "execution"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "extract.py",
+      "external/skills/graphify/skill.md",
+      "build.py",
+      "graph.json",
+      "123,488 / 1,726 = 71.55x",
+      "export.py",
+      "wiki.py",
+      "serve.py",
+      "manifest.py",
+      "validate.py",
+      "reduce-state.cjs",
+      "gpt-5.4",
+      "memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+      "external/worked/mixed-corpus/GRAPH_REPORT.md",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      "detect.py",
+      "cache.py",
+      "external/worked/karpathy-repos/GRAPH_REPORT.md"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "extract.py",
+        "kind": "file",
+        "path": "extract.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill.md",
+        "kind": "doc",
+        "path": "external/skills/graphify/skill.md",
+        "source": "derived"
+      },
+      {
+        "name": "build.py",
+        "kind": "file",
+        "path": "build.py",
+        "source": "derived"
+      },
+      {
+        "name": "graph.json",
+        "kind": "config",
+        "path": "graph.json",
+        "source": "derived"
+      },
+      {
+        "name": " 1,726 = 71.55x",
+        "kind": "file",
+        "path": "123,488 / 1,726 = 71.55x",
+        "source": "derived"
+      },
+      {
+        "name": "export.py",
+        "kind": "file",
+        "path": "export.py",
+        "source": "derived"
+      },
+      {
+        "name": "wiki.py",
+        "kind": "file",
+        "path": "wiki.py",
+        "source": "derived"
+      },
+      {
+        "name": "serve.py",
+        "kind": "file",
+        "path": "serve.py",
+        "source": "derived"
+      },
+      {
+        "name": "manifest.py",
+        "kind": "file",
+        "path": "manifest.py",
+        "source": "derived"
+      },
+      {
+        "name": "validate.py",
+        "kind": "file",
+        "path": "validate.py",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "gpt-5.4",
+        "kind": "file",
+        "path": "gpt-5.4",
+        "source": "derived"
+      },
+      {
+        "name": "08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+        "kind": "doc",
+        "path": "memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+        "source": "derived"
+      },
+      {
+        "name": "GRAPH_REPORT.md",
+        "kind": "doc",
+        "path": "external/worked/mixed-corpus/GRAPH_REPORT.md",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 4 of `001-research-graph-context-systems` is a read-only audit of the graphify external Python skill to translate its two-pass codebase knowledge graph patterns into concrete improvements for Code_Environment/Public's existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/graphify/` file:line citations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
+    "created_at": "2026-04-12T09:02:53.448Z",
+    "last_save_at": "2026-04-12T09:06:03.492Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

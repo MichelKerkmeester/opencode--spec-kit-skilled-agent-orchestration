@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "utility",
+      "template",
+      "trigger",
+      "spec",
+      "012",
+      "handover",
+      "implementation",
+      "plan",
+      "tasks",
+      "keywords",
+      "checklist"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "utility",
+      "template",
+      "trigger",
+      "spec",
+      "012",
+      "handover",
+      "implementation",
+      "plan",
+      "tasks",
+      "keywords"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec.md",
+      "spec.md",
+      ".opencode/skills/system-spec-kit/SKILL.md",
+      "templates/handover.md",
+      "templates/debug-delegation.md"
+    ],
+    "entities": [
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "templates/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "debug-delegation.md",
+        "kind": "doc",
+        "path": "templates/debug-delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Utility Template Trigger Keywords",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "User Stories\n\nAdd",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Sequential Thinking",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nEnable",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Approach",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and debug delegation intent.",
+    "created_at": "2026-04-12T09:02:53.511Z",
+    "last_save_at": "2026-04-12T09:06:03.561Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

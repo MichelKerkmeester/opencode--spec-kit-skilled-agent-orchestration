@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "speckit",
+      "template",
+      "optimization",
+      "spec",
+      "073",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "speckit",
+      "template",
+      "optimization",
+      "spec",
+      "073",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "templates/core/spec-core.md",
+      "templates/core/plan-core.md",
+      "templates/core/tasks-core.md",
+      "templates/core/impl-summary-core.md",
+      "templates/addendum/level2-verify/spec-level2.md",
+      "templates/addendum/level2-verify/plan-level2.md",
+      "templates/addendum/level2-verify/checklist.md",
+      "templates/addendum/level3-arch/spec-level3.md",
+      "templates/addendum/level3-arch/plan-level3.md",
+      "templates/addendum/level3-arch/decision-record.md",
+      "templates/addendum/level3plus-govern/spec-level3plus.md",
+      "templates/addendum/level3plus-govern/plan-level3plus.md",
+      "templates/addendum/level3plus-govern/checklist-extended.md",
+      "assets/parallel_dispatch_config.md",
+      "scripts/spec/create.sh",
+      "SKILL.md",
+      "references/templates/level_specifications.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "spec-core.md",
+        "kind": "doc",
+        "path": "templates/core/spec-core.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan-core.md",
+        "kind": "doc",
+        "path": "templates/core/plan-core.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks-core.md",
+        "kind": "doc",
+        "path": "templates/core/tasks-core.md",
+        "source": "derived"
+      },
+      {
+        "name": "impl-summary-core.md",
+        "kind": "doc",
+        "path": "templates/core/impl-summary-core.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-level2.md",
+        "kind": "doc",
+        "path": "templates/addendum/level2-verify/spec-level2.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan-level2.md",
+        "kind": "doc",
+        "path": "templates/addendum/level2-verify/plan-level2.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "templates/addendum/level2-verify/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-level3.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3-arch/spec-level3.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan-level3.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3-arch/plan-level3.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3-arch/decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-level3plus.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3plus-govern/spec-level3plus.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan-level3plus.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3plus-govern/plan-level3plus.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist-extended.md",
+        "kind": "doc",
+        "path": "templates/addendum/level3plus-govern/checklist-extended.md",
+        "source": "derived"
+      },
+      {
+        "name": "parallel_dispatch_config.md",
+        "kind": "doc",
+        "path": "assets/parallel_dispatch_config.md",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This specification defines a comprehensive restructuring of the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. The optimization addresses three critical issues: template bloat from unused sections, lack of meaningful differentiation between levels, and absence of parallel sub-agent support for spec creation.",
+    "created_at": "2026-04-12T09:02:53.545Z",
+    "last_save_at": "2026-04-12T09:06:03.602Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

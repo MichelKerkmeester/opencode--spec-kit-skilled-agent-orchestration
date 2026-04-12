@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/002-opencode-transport-adapter",
+  "parent_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "opencode transport adapter",
+      "packet 030",
+      "level 3",
+      "opencode transport adapter plan",
+      "phase 2 tasks",
+      "transport adapter tasks",
+      "opencode transport adapter checklist",
+      "level 3 verification",
+      "opencode transport adapter adr",
+      "level 3 decision record",
+      "phase 2 implementation summary",
+      "opencode transport adapter implementation"
+    ],
+    "key_topics": [
+      "opencode",
+      "transport",
+      "adapter",
+      "packet",
+      "030",
+      "level",
+      "plan",
+      "phase",
+      "tasks",
+      "checklist",
+      "verification",
+      "adr"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/context/opencode-transport.ts",
+      ".opencode/plugins/spec-kit-compact-code-graph.js",
+      "opencode.json",
+      "experimental.chat.system.transform",
+      "experimental.chat.messages.transform",
+      "experimental.session.compacting",
+      "dist/lib/context/opencode-transport.js",
+      ".opencode/skill/system-spec-kit/mcp_server/dist/lib/context/opencode-transport.js",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-transport.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+      "npx vitest run tests/opencode-transport.vitest.ts tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/opencode-plugin.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
+      "node --check .opencode/plugins/spec-kit-compact-code-graph.js",
+      "jq empty opencode.json",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "opencode-transport.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/context/opencode-transport.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-compact-code-graph.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-compact-code-graph.js",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.json",
+        "kind": "config",
+        "path": "opencode.json",
+        "source": "derived"
+      },
+      {
+        "name": "experimental.chat.system.transform",
+        "kind": "file",
+        "path": "experimental.chat.system.transform",
+        "source": "derived"
+      },
+      {
+        "name": "experimental.chat.messages.transform",
+        "kind": "file",
+        "path": "experimental.chat.messages.transform",
+        "source": "derived"
+      },
+      {
+        "name": "experimental.session.compacting",
+        "kind": "file",
+        "path": "experimental.session.compacting",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-transport.js",
+        "kind": "code",
+        "path": "dist/lib/context/opencode-transport.js",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-transport.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/dist/lib/context/opencode-transport.js",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-transport.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-transport.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-plugin.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-plugin.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/opencode-transport.vitest.ts tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/opencode-plugin.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 2 turned the transport concept into a real shipped OpenCode plugin. The Level 3 repair keeps that runtime claim intact while adding the architecture and verification scaffolding needed for trustworthy packet recovery.",
+    "created_at": "2026-04-12T09:02:53.436Z",
+    "last_save_at": "2026-04-12T09:06:03.481Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

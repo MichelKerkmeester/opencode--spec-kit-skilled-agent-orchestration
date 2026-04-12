@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "repo readme rewrite",
+      "019 repo readme",
+      "root readme",
+      "repository documentation",
+      "plan",
+      "rewrite",
+      "repo",
+      "readme",
+      "019",
+      "tasks",
+      "implementation",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "repo",
+      "readme",
+      "rewrite",
+      "019",
+      "root",
+      "repository",
+      "documentation",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "822"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "README.md",
+      "README.md.bak",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/spec.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/plan.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/tasks.md",
+      "validate_document.py",
+      "CLAUDE.md",
+      "scratch/research-brief.md",
+      "spec.md",
+      "plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md.bak",
+        "kind": "file",
+        "path": "README.md.bak",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "research-brief.md",
+        "kind": "doc",
+        "path": "scratch/research-brief.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rewrite Repo",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The root README (`README.md`, ~822 lines) was previously rewritten but uses flat technical prose without the two-tier voice (narrative analogies + reference tables) established in the MCP server README (016) and Spec Kit README (018). It undercounts MCP tools (40 vs actual 42), lacks power-feature highlights from the 222-entry feature catalog, and does not match the formatting patterns (numbered subsections, dividers, comparison tables) of its sibling READMEs.",
+    "created_at": "2026-04-12T09:02:50.309Z",
+    "last_save_at": "2026-04-12T09:06:00.443Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

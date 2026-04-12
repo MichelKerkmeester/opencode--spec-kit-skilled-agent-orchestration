@@ -9,6 +9,9 @@ import path from 'path';
 
 import { toErrorMessage } from '../utils/index.js';
 import {
+  extractSpecFolderFromGraphMetadataPath,
+  GRAPH_METADATA_FILENAME,
+  isGraphMetadataPath,
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
 } from '../lib/config/spec-doc-paths.js';
@@ -30,6 +33,19 @@ const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
 
 export interface SpecDiscoveryOptions {
   specFolder?: string | null;
+}
+
+function matchesScopedSpecFolder(candidatePath: string, specsRoot: string, specFolder?: string | null): boolean {
+  if (!specFolder) {
+    return true;
+  }
+
+  const normalizedSpecFolder = specFolder.replace(/\\/g, '/').replace(/\/+$/, '');
+  const relativePath = path.relative(specsRoot, candidatePath).replace(/\\/g, '/');
+  return (
+    relativePath === normalizedSpecFolder
+    || relativePath.startsWith(`${normalizedSpecFolder}/`)
+  );
 }
 
 /**
@@ -66,15 +82,8 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
           }
 
           // Enforce optional specFolder scope before including a candidate file.
-          if (options.specFolder) {
-            const normalizedSpecFolder = options.specFolder.replace(/\\/g, '/').replace(/\/+$/, '');
-            const relativePath = path.relative(specsRoot, fullPath).replace(/\\/g, '/');
-            if (
-              relativePath !== normalizedSpecFolder &&
-              !relativePath.startsWith(`${normalizedSpecFolder}/`)
-            ) {
-              continue;
-            }
+          if (!matchesScopedSpecFolder(fullPath, specsRoot, options.specFolder)) {
+            continue;
           }
 
           const fileKey = getCanonicalPathKey(fullPath);
@@ -190,5 +199,65 @@ export function findConstitutionalFiles(workspacePath: string): string[] {
     const message = toErrorMessage(err);
     console.warn(`Warning: Could not read skill directory:`, message);
   }
+  return results;
+}
+
+/** Discover graph-metadata.json files from spec folder roots. */
+export function findGraphMetadataFiles(workspacePath: string, options: SpecDiscoveryOptions = {}): string[] {
+  const results: string[] = [];
+  const seenCanonicalFiles = new Set<string>();
+  const canonicalSpecsRoot = path.join(workspacePath, '.opencode', 'specs');
+  const legacySpecsRoot = path.join(workspacePath, 'specs');
+  const specsRoots = fs.existsSync(canonicalSpecsRoot)
+    ? [canonicalSpecsRoot]
+    : [legacySpecsRoot];
+
+  function walk(dir: string, specsRoot: string): void {
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || entry.name.startsWith('.')) {
+            continue;
+          }
+          walk(fullPath, specsRoot);
+          continue;
+        }
+
+        if (!entry.isFile() || entry.name !== GRAPH_METADATA_FILENAME) {
+          continue;
+        }
+        if (!isGraphMetadataPath(fullPath)) {
+          continue;
+        }
+        if (!matchesScopedSpecFolder(fullPath, specsRoot, options.specFolder)) {
+          continue;
+        }
+
+        const specFolder = extractSpecFolderFromGraphMetadataPath(fullPath);
+        if (!specFolder) {
+          continue;
+        }
+
+        const fileKey = getCanonicalPathKey(fullPath);
+        if (seenCanonicalFiles.has(fileKey)) {
+          continue;
+        }
+        seenCanonicalFiles.add(fileKey);
+        results.push(fullPath);
+      }
+    } catch (_error: unknown) {
+      // Keep discovery best-effort.
+    }
+  }
+
+  for (const specsRoot of specsRoots) {
+    if (!fs.existsSync(specsRoot)) {
+      continue;
+    }
+    walk(specsRoot, specsRoot);
+  }
+
   return results;
 }

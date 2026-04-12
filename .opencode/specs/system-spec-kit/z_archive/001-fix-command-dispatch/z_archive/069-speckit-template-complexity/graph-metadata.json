@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "level",
+      "based",
+      "template",
+      "spec",
+      "069",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "architecture",
+      "validation",
+      "checklist",
+      "decision",
+      "record",
+      "dynamic",
+      "complexity",
+      "decision record",
+      "summary",
+      "implementation summary",
+      "session",
+      "handover"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "level",
+      "based",
+      "template",
+      "spec",
+      "069",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "architecture"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "detector.js",
+      "classifier.js",
+      "features.js",
+      "scorers/scope.js",
+      "scorers/risk.js",
+      "scorers/research.js",
+      "scorers/multi-agent.js",
+      "scorers/coordination.js",
+      "preprocessor.js",
+      "marker-parser.js",
+      "detect-complexity.js",
+      "expand-template.js",
+      "config/complexity-config.jsonc",
+      "references/templates/complexity_guide.md",
+      "references/templates/level_specifications.md",
+      "assets/complexity_decision_matrix.md",
+      "scripts/create-spec-folder.sh",
+      "SKILL.md",
+      "test-detector.js",
+      "test-marker-parser.js"
+    ],
+    "entities": [
+      {
+        "name": "detector.js",
+        "kind": "code",
+        "path": "detector.js",
+        "source": "derived"
+      },
+      {
+        "name": "classifier.js",
+        "kind": "code",
+        "path": "classifier.js",
+        "source": "derived"
+      },
+      {
+        "name": "features.js",
+        "kind": "code",
+        "path": "features.js",
+        "source": "derived"
+      },
+      {
+        "name": "scope.js",
+        "kind": "code",
+        "path": "scorers/scope.js",
+        "source": "derived"
+      },
+      {
+        "name": "risk.js",
+        "kind": "code",
+        "path": "scorers/risk.js",
+        "source": "derived"
+      },
+      {
+        "name": "research.js",
+        "kind": "code",
+        "path": "scorers/research.js",
+        "source": "derived"
+      },
+      {
+        "name": "multi-agent.js",
+        "kind": "code",
+        "path": "scorers/multi-agent.js",
+        "source": "derived"
+      },
+      {
+        "name": "coordination.js",
+        "kind": "code",
+        "path": "scorers/coordination.js",
+        "source": "derived"
+      },
+      {
+        "name": "preprocessor.js",
+        "kind": "code",
+        "path": "preprocessor.js",
+        "source": "derived"
+      },
+      {
+        "name": "marker-parser.js",
+        "kind": "code",
+        "path": "marker-parser.js",
+        "source": "derived"
+      },
+      {
+        "name": "detect-complexity.js",
+        "kind": "code",
+        "path": "detect-complexity.js",
+        "source": "derived"
+      },
+      {
+        "name": "expand-template.js",
+        "kind": "code",
+        "path": "expand-template.js",
+        "source": "derived"
+      },
+      {
+        "name": "complexity-config.jsonc",
+        "kind": "file",
+        "path": "config/complexity-config.jsonc",
+        "source": "derived"
+      },
+      {
+        "name": "complexity_guide.md",
+        "kind": "doc",
+        "path": "references/templates/complexity_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": "references/templates/level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "complexity_decision_matrix.md",
+        "kind": "doc",
+        "path": "assets/complexity_decision_matrix.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level.",
+    "created_at": "2026-04-12T09:02:53.542Z",
+    "last_save_at": "2026-04-12T09:06:03.599Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md"
+    ]
+  }
+}

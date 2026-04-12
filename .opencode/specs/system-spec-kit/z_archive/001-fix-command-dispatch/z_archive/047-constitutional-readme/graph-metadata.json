@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "constitutional",
+      "memory",
+      "system",
+      "readme",
+      "047",
+      "plan",
+      "tasks"
+    ],
+    "key_topics": [
+      "spec",
+      "constitutional",
+      "memory",
+      "system",
+      "readme",
+      "047",
+      "plan",
+      "tasks",
+      "create",
+      "comprehensive",
+      "documentation",
+      "located"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/scripts/README.md",
+      ".opencode/skill/system-spec-kit/scripts/lib/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/README.md",
+      "gate-enforcement.md",
+      ".opencode/skill/system-spec-kit/constitutional/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/scripts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "gate-enforcement.md",
+        "kind": "doc",
+        "path": "gate-enforcement.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/constitutional/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Constitutional Memory System",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Objective\n\nCreate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Constitutional Tier Behavior",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Create comprehensive documentation (README.md) for the constitutional memory system located at `.opencode/skill/system-spec-kit/constitutional/`. The README should explain how constitutional memories work, how to create new ones, and how to customize existing ones.",
+    "created_at": "2026-04-12T09:02:53.530Z",
+    "last_save_at": "2026-04-12T09:06:03.585Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ]
+  }
+}

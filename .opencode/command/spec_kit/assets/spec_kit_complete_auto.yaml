@@ -131,6 +131,14 @@ field_handling:
     path_pattern: "specs/{NNN-parent}/{NNN-phase}/"
   scope_policy: { default: "specs/**", rule: "Limit file operations to scope when provided" }
 
+packet_graph_metadata:
+  completion_contract:
+    file: "graph-metadata.json"
+    refresh_step: 13
+    derived_fields_finalized: ["status", "last_save_at"]
+    manual_fields_preserved: ["depends_on", "supersedes", "related_to"]
+    note: "Completion depends on canonical save to refresh packet graph metadata without mutating manual relationships."
+
 # ─────────────────────────────────────────────────────────────────
 # DOCUMENTATION LEVELS
 # ─────────────────────────────────────────────────────────────────

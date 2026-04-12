@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/025-tool-routing-enforcement",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "tool routing enforcement",
+      "cocoindex not used",
+      "code graph misjudgment",
+      "use cocoindex instead of grep",
+      "semantic search enforcement",
+      "tool routing plan",
+      "enforcement implementation order",
+      "cocoindex enforcement plan",
+      "tool routing tasks",
+      "enforcement tasks",
+      "tool routing checklist",
+      "enforcement verification",
+      "tool routing decisions",
+      "enforcement architecture",
+      "implementation",
+      "summary",
+      "template",
+      "impl summary core"
+    ],
+    "key_topics": [
+      "tool",
+      "routing",
+      "enforcement",
+      "cocoindex",
+      "used",
+      "code",
+      "graph",
+      "misjudgment",
+      "use",
+      "instead",
+      "grep",
+      "semantic"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".gemini/agents/context-prime.md",
+      "tool-schemas.ts",
+      "mcp_server/context-server.ts",
+      "mcp_server/hooks/memory-surface.ts",
+      "mcp_server/tool-schemas.ts",
+      "mcp_server/lib/session/session-snapshot.ts",
+      "primePackage.routingRules",
+      ".opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md",
+      "PrimePackage.routingRules",
+      "hooks/memory-surface.ts",
+      "lib/session/session-snapshot.ts",
+      ".opencode/agent/context-prime.md",
+      "context-server.ts",
+      "routingRules.toolRouting",
+      "memory-surface.ts",
+      "session-snapshot.ts",
+      "CLAUDE.md",
+      ".claude/agents/context-prime.md",
+      ".codex/agents/context-prime.toml",
+      ".agents/agents/context-prime.md"
+    ],
+    "entities": [
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": ".gemini/agents/context-prime.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "primePackage.routingRules",
+        "kind": "file",
+        "path": "primePackage.routingRules",
+        "source": "derived"
+      },
+      {
+        "name": "gate-tool-routing.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "PrimePackage.routingRules",
+        "kind": "file",
+        "path": "PrimePackage.routingRules",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": "lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context-prime.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "routingRules.toolRouting",
+        "kind": "file",
+        "path": "routingRules.toolRouting",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": "session-snapshot.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 025** of the compact-code-graph specification.",
+    "created_at": "2026-04-12T09:02:53.431Z",
+    "last_save_at": "2026-04-12T09:06:03.475Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

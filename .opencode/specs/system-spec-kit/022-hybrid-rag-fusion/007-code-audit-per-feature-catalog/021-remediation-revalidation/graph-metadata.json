@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "remediation and revalidation",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary",
+      "remediation & revalidation"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "remediation",
+      "revalidation",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "summary",
+      "meta-phase"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
+      "mcp_server/lib/validation/preflight.ts",
+      "mcp_server/handlers/v-rule-bridge.ts",
+      "mcp_server/handlers/quality-loop.ts",
+      "mcp_server/lib/validation/save-quality-gate.ts",
+      "mcp_server/handlers/memory-save.ts",
+      "mcp_server/handlers/checkpoints.ts",
+      "mcp_server/handlers/memory-crud-health.ts",
+      "preflight.ts",
+      "database.js",
+      "config.js",
+      "config.scoring",
+      "config.retrieval.scoring",
+      "batch-learning.ts",
+      "confidence-scoring.ts",
+      "graph-calibration.ts",
+      "llm-cache.ts",
+      "recovery-payload.ts",
+      "result-explainability.ts",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "01-category-stub.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
+        "source": "derived"
+      },
+      {
+        "name": "preflight.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/validation/preflight.ts",
+        "source": "derived"
+      },
+      {
+        "name": "v-rule-bridge.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/v-rule-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-loop.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/quality-loop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save-quality-gate.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/validation/save-quality-gate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud-health.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-crud-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "preflight.ts",
+        "kind": "code",
+        "path": "preflight.ts",
+        "source": "derived"
+      },
+      {
+        "name": "database.js",
+        "kind": "code",
+        "path": "database.js",
+        "source": "derived"
+      },
+      {
+        "name": "config.js",
+        "kind": "code",
+        "path": "config.js",
+        "source": "derived"
+      },
+      {
+        "name": "config.scoring",
+        "kind": "file",
+        "path": "config.scoring",
+        "source": "derived"
+      },
+      {
+        "name": "config.retrieval.scoring",
+        "kind": "file",
+        "path": "config.retrieval.scoring",
+        "source": "derived"
+      },
+      {
+        "name": "batch-learning.ts",
+        "kind": "code",
+        "path": "batch-learning.ts",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-scoring.ts",
+        "kind": "code",
+        "path": "confidence-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-calibration.ts",
+        "kind": "code",
+        "path": "graph-calibration.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "META-PHASE synthesizing remediation needs identified across all 20 preceding audit phases. This phase collects cross-cutting catalog hygiene issues, classifies them by severity, and tracks their resolution. The original zero-MISMATCH baseline is superseded by the re-audit/deep-review state: 222 audited features, 133 MATCH, 84 PARTIAL, and 5 MISMATCH. Remediation now spans both catalog hygiene and audit/runtime-path drift. Full remediation plan pending — 22 P1 findings documented in `../review-report.md`.",
+    "created_at": "2026-04-12T09:02:50.256Z",
+    "last_save_at": "2026-04-12T09:06:00.386Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

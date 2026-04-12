@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specific",
+      "spec",
+      "012",
+      "auto",
+      "implementation",
+      "plan",
+      "tasks",
+      "det",
+      "verificatio",
+      "checklist",
+      "summary",
+      "auto-detection",
+      "fixes"
+    ],
+    "key_topics": [
+      "feature",
+      "specific",
+      "spec",
+      "012",
+      "auto",
+      "implementation",
+      "plan",
+      "tasks",
+      "det",
+      "verificatio",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "folder-detector.ts",
+      "workflow.ts",
+      "scripts/spec-folder/folder-detector.ts",
+      "scripts/core/workflow.ts",
+      "fsSync.readFileSync",
+      "f.DESCRIPTION",
+      "scripts/extractors/decision-extractor.ts",
+      "scripts/extractors/session-extractor.ts",
+      "scripts/extractors/session-activity-signal.ts",
+      "decision-extractor.ts",
+      "session-extractor.ts",
+      "session-activity-signal.ts",
+      "validate.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "folder-detector.ts",
+        "kind": "code",
+        "path": "folder-detector.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "folder-detector.ts",
+        "kind": "code",
+        "path": "scripts/spec-folder/folder-detector.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsSync.readFileSync",
+        "kind": "file",
+        "path": "fsSync.readFileSync",
+        "source": "derived"
+      },
+      {
+        "name": "f.DESCRIPTION",
+        "kind": "file",
+        "path": "f.DESCRIPTION",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-activity-signal.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-activity-signal.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-activity-signal.ts",
+        "kind": "code",
+        "path": "session-activity-signal.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.273Z",
+    "last_save_at": "2026-04-12T09:06:00.405Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

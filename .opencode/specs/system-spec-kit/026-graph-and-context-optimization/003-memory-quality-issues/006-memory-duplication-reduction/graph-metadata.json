@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 6 memory duplication reduction",
+      "memory dedupe phase",
+      "recent memory duplication",
+      "phase 6 deep research",
+      "phase 6 plan",
+      "memory duplication reduction plan",
+      "five iteration deep research",
+      "phase 6 tasks",
+      "memory duplication tasks",
+      "phase 6 research wave",
+      "phase 6 checklist",
+      "memory duplication checklist",
+      "phase 6 implementation summary",
+      "memory duplication summary",
+      "phase 6 research",
+      "memory duplication research",
+      "residual duplication remediation"
+    ],
+    "key_topics": [
+      "phase",
+      "memory",
+      "duplication",
+      "reduction",
+      "dedupe",
+      "recent",
+      "deep",
+      "research",
+      "plan",
+      "five",
+      "iteration",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/alignment-validator.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts",
+      ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts",
+      ".opencode/skill/system-spec-kit/templates/context_template.md",
+      ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-template.test.ts",
+      "CHECK-DUP1..DUP7",
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
+      "F001.1",
+      "F001.3",
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase6-template.test.ts tests/memory-quality-phase6-extractors.test.ts tests/memory-quality-phase6-trigger.test.ts tests/memory-quality-phase6-migration.test.ts"
+    ],
+    "entities": [
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-phrase-sanitizer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "frontmatter-migration.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "alignment-validator.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/alignment-validator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-metadata.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-template-contract.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "migrate-trigger-phrase-residual.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase6-template.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-template.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "CHECK-DUP1..DUP7",
+        "kind": "file",
+        "path": "CHECK-DUP1..DUP7",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase6-extractors.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase6-trigger.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-issues`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
+    "created_at": "2026-04-12T09:02:53.461Z",
+    "last_save_at": "2026-04-12T09:06:03.505Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

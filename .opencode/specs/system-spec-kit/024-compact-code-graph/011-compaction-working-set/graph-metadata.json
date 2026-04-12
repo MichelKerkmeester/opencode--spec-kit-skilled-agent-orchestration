@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/011-compaction-working-set",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/011-compaction-working-set",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "011",
+      "compaction",
+      "working",
+      "set",
+      "spec",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "011",
+      "compaction",
+      "working",
+      "set",
+      "spec",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "working-set-tracker.ts",
+      "budget-allocator.ts",
+      "compact-merger.ts",
+      "compact-inject.ts",
+      "session-prime.ts",
+      "lib/code-graph/working-set-tracker.ts",
+      "lib/code-graph/budget-allocator.ts",
+      "lib/code-graph/compact-merger.ts",
+      "lib/code-graph/index.ts",
+      "hooks/claude/compact-inject.ts",
+      "hooks/claude/session-prime.ts",
+      "tests/budget-allocator.vitest.ts",
+      "tests/compact-merger.vitest.ts",
+      "tests/dual-scope-hooks.vitest.ts",
+      "hooks/memory-surface.ts",
+      "dynamic-token-budget.ts",
+      "mcp_server/lib/code-graph/working-set-tracker.ts",
+      "mcp_server/lib/code-graph/budget-allocator.ts",
+      "mcp_server/lib/code-graph/compact-merger.ts",
+      "mcp_server/hooks/memory-surface.ts"
+    ],
+    "entities": [
+      {
+        "name": "working-set-tracker.ts",
+        "kind": "code",
+        "path": "working-set-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "budget-allocator.ts",
+        "kind": "code",
+        "path": "budget-allocator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-merger.ts",
+        "kind": "code",
+        "path": "compact-merger.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "compact-inject.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "working-set-tracker.ts",
+        "kind": "code",
+        "path": "lib/code-graph/working-set-tracker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "budget-allocator.ts",
+        "kind": "code",
+        "path": "lib/code-graph/budget-allocator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-merger.ts",
+        "kind": "code",
+        "path": "lib/code-graph/compact-merger.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "lib/code-graph/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "hooks/claude/compact-inject.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "budget-allocator.vitest.ts",
+        "kind": "test",
+        "path": "tests/budget-allocator.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-merger.vitest.ts",
+        "kind": "test",
+        "path": "tests/compact-merger.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dual-scope-hooks.vitest.ts",
+        "kind": "test",
+        "path": "tests/dual-scope-hooks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dynamic-token-budget.ts",
+        "kind": "code",
+        "path": "dynamic-token-budget.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.350Z",
+    "last_save_at": "2026-04-12T09:06:00.487Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

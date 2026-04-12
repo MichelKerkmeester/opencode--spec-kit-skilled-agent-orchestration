@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-claudest research spec",
+      "005-claudest phase spec",
+      "Claudest claude-memory research",
+      "FTS5 BM25 cascade research",
+      "005-claudest research plan",
+      "005-claudest execution plan",
+      "deep-research loop claudest",
+      "005-claudest research tasks",
+      "005-claudest task list",
+      "claudest deep-research tasks",
+      "005-claudest checklist",
+      "005-claudest verification",
+      "claudest verification",
+      "005-claudest decision record",
+      "005-claudest ADR",
+      "claudest engine choice",
+      "claudest cli-codex workspace-write",
+      "005-claudest implementation summary",
+      "005-claudest outcome",
+      "claudest research complete"
+    ],
+    "key_topics": [
+      "005-claudest",
+      "research",
+      "spec",
+      "phase",
+      "claudest",
+      "claude-memory",
+      "fts5",
+      "bm25",
+      "cascade",
+      "plan",
+      "execution",
+      "deep-research"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "external/.claude-plugin/marketplace.json",
+      "plugin.json",
+      "summarizer.py",
+      "dashboard.html",
+      "generate-context.js",
+      "mcp_server/lib/search/sqlite-fts.ts",
+      "mcp_server/lib/search/hybrid-search.ts",
+      "mcp_server/lib/search/graph-search-fn.ts",
+      "research/deep-research-config.json",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-strategy.md",
+      "research/deep-research-dashboard.md",
+      "research/findings-registry.json",
+      "research/archive/research-v1-iter012-snapshot.md",
+      "memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+      "memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md",
+      "memory/metadata.json",
+      "hookSpecificOutput.additionalContext",
+      "codex-cli 0.118.0"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "marketplace.json",
+        "kind": "config",
+        "path": "external/.claude-plugin/marketplace.json",
+        "source": "derived"
+      },
+      {
+        "name": "plugin.json",
+        "kind": "config",
+        "path": "plugin.json",
+        "source": "derived"
+      },
+      {
+        "name": "summarizer.py",
+        "kind": "file",
+        "path": "summarizer.py",
+        "source": "derived"
+      },
+      {
+        "name": "dashboard.html",
+        "kind": "file",
+        "path": "dashboard.html",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-fts.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/sqlite-fts.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-config.json",
+        "kind": "config",
+        "path": "research/deep-research-config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-strategy.md",
+        "kind": "doc",
+        "path": "research/deep-research-strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "research-v1-iter012-snapshot.md",
+        "kind": "doc",
+        "path": "research/archive/research-v1-iter012-snapshot.md",
+        "source": "derived"
+      },
+      {
+        "name": "06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+        "kind": "doc",
+        "path": "memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 20 deep-research iterations, plus packet-ready briefs and an execution-ready follow-on packet roadmap for Public's FTS, analytics, SessionStart, and consolidation seams.",
+    "created_at": "2026-04-12T09:02:53.450Z",
+    "last_save_at": "2026-04-12T09:06:03.494Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

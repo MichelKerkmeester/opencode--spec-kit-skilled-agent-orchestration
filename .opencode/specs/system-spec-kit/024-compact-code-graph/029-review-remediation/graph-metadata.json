@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/029-review-remediation",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/029-review-remediation",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "029",
+      "review remediation",
+      "deep review findings",
+      "compact code graph remediation",
+      "active P1 findings",
+      "029 plan",
+      "review remediation plan",
+      "active findings remediation",
+      "029 tasks",
+      "review remediation tasks",
+      "029 checklist",
+      "review remediation checklist",
+      "029 implementation summary",
+      "review remediation summary",
+      "packet 024 review fixes"
+    ],
+    "key_topics": [
+      "029",
+      "review",
+      "remediation",
+      "deep",
+      "findings",
+      "compact",
+      "code",
+      "graph",
+      "active",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md",
+      "AGENTS.md",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
+      ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+      ".opencode/agent/context-prime.md",
+      ".claude/agents/context-prime.md",
+      ".codex/agents/context-prime.toml",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "hook-session-stop.vitest.ts",
+        "kind": "test",
+        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context-prime.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The completed deep review for `024-compact-code-graph` found seven active issues that leave the packet internally inconsistent across runtime contracts, hook safety, evidence traceability, and cross-runtime guidance. The current tree still advertises behavior that either is not implemented, is documented inconsistently, or is proven with stale evidence. Until these findings are remediated or explicitly downgraded with truthful packet updates, the parent packet cannot be treated as release-ready.",
+    "created_at": "2026-04-12T09:02:53.434Z",
+    "last_save_at": "2026-04-12T09:06:03.478Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

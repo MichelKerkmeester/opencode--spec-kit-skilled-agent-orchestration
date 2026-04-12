@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/014-memory-index-txt-support",
+  "spec_folder": "system-spec-kit/z_archive/014-memory-index-txt-support",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "014-memory-index-txt-support",
+      "memory index txt support",
+      "archive",
+      "validation",
+      "plan",
+      "archive normalization",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision record",
+      "normalization",
+      "implementation summary",
+      "research",
+      "memory",
+      "index",
+      "txt",
+      "file",
+      "131"
+    ],
+    "key_topics": [
+      "014-memory-index-txt-support",
+      "memory",
+      "index",
+      "txt",
+      "support",
+      "archive",
+      "validation",
+      "plan",
+      "normalization",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      ".opencode/command/spec_kit/README.txt",
+      ".opencode/command/memory/README.txt",
+      "memory-save.ts",
+      "README.txt",
+      "memory-parser.ts",
+      "fs.readFileSync",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/spec_kit/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/memory/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": "README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": "memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fs.readFileSync",
+        "kind": "file",
+        "path": "fs.readFileSync",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Index Txt Support",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This archived system-spec-kit archive folder captures work related to Memory Index Txt Support. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
+    "created_at": "2026-04-12T09:02:53.567Z",
+    "last_save_at": "2026-04-12T09:06:03.627Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

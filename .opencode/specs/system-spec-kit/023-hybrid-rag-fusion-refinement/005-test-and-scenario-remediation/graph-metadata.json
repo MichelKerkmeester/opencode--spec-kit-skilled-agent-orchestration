@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "test remediation",
+      "scenario fixes",
+      "023 phase 5",
+      "pre-existing test failures",
+      "playbook scenario gaps",
+      "test remediation plan",
+      "023 phase 5 plan",
+      "test remediation tasks",
+      "023 phase 5 tasks",
+      "fix failing tests",
+      "implementation summary",
+      "phase 5 remediation summary",
+      "100 percent pass rate"
+    ],
+    "key_topics": [
+      "test",
+      "remediation",
+      "scenario",
+      "fixes",
+      "023",
+      "phase",
+      "pre-existing",
+      "failures",
+      "playbook",
+      "gaps",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "db-state.js",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/integration-error-recovery.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-recovery.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/stdio-logging-safety.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/crash-recovery.vitest.ts",
+      "hydra-spec-pack-consistency.vitest.ts",
+      "feature-flag-reference-docs.vitest.ts",
+      "modularization.vitest.ts",
+      "integration-causal-graph.vitest.ts",
+      "integration-error-recovery.vitest.ts",
+      "learning-stats-filters.vitest.ts",
+      "transaction-manager-recovery.vitest.ts",
+      "stdio-logging-safety.vitest.ts",
+      "mcp_server/tests/integration-causal-graph.vitest.ts",
+      "mcp_server/tests/integration-error-recovery.vitest.ts",
+      "mcp_server/tests/learning-stats-filters.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "db-state.js",
+        "kind": "code",
+        "path": "db-state.js",
+        "source": "derived"
+      },
+      {
+        "name": "integration-causal-graph.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "integration-error-recovery.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/integration-error-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learning-stats-filters.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "transaction-manager-recovery.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stdio-logging-safety.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/stdio-logging-safety.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "modularization.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "crash-recovery.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/crash-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hydra-spec-pack-consistency.vitest.ts",
+        "kind": "test",
+        "path": "hydra-spec-pack-consistency.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "feature-flag-reference-docs.vitest.ts",
+        "kind": "test",
+        "path": "feature-flag-reference-docs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "modularization.vitest.ts",
+        "kind": "test",
+        "path": "modularization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "integration-causal-graph.vitest.ts",
+        "kind": "test",
+        "path": "integration-causal-graph.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "integration-error-recovery.vitest.ts",
+        "kind": "test",
+        "path": "integration-error-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learning-stats-filters.vitest.ts",
+        "kind": "test",
+        "path": "learning-stats-filters.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "transaction-manager-recovery.vitest.ts",
+        "kind": "test",
+        "path": "transaction-manager-recovery.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 5** of the ESM Module Compliance specification.",
+    "created_at": "2026-04-12T09:02:50.319Z",
+    "last_save_at": "2026-04-12T09:06:00.454Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

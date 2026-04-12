@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 4 agent execution guardrails",
+      "agent execution guardrails",
+      "agents enterprise guardrail update",
+      "barter coder agents guardrails",
+      "phase 4 plan",
+      "agent execution guardrails plan",
+      "agents guardrail update plan",
+      "phase 4 tasks",
+      "agent execution guardrails tasks",
+      "agents guardrail packet tasks",
+      "phase 4 checklist",
+      "agent execution guardrails checklist",
+      "phase 4 implementation summary",
+      "agent execution guardrails summary"
+    ],
+    "key_topics": [
+      "phase",
+      "agent",
+      "execution",
+      "guardrails",
+      "agents",
+      "enterprise",
+      "guardrail",
+      "update",
+      "barter",
+      "coder",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "AGENTS.md",
+      "AGENTS_example_fs_enterprises.md",
+      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md",
+      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS_example_fs_enterprises.md",
+      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/description.json",
+      "description.json",
+      "CLAUDE.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS_example_fs_enterprises.md",
+        "kind": "doc",
+        "path": "AGENTS_example_fs_enterprises.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS_example_fs_enterprises.md",
+        "kind": "doc",
+        "path": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS_example_fs_enterprises.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 4 is the narrow execution-guidance packet for `026-graph-and-context-optimization`. It updates three AGENTS surfaces so future agents stop ownership-dodging, plan before acting, use research-first evidence, remember runtime conventions from `CLAUDE.md`, and keep pushing toward a complete fix instead of stopping early.",
+    "created_at": "2026-04-12T09:02:53.465Z",
+    "last_save_at": "2026-04-12T09:06:03.509Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/021-spec-kit-phase-system",
+  "spec_folder": "system-spec-kit/021-spec-kit-phase-system",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "speckit",
+      "phase",
+      "system",
+      "spec",
+      "021",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "speckit",
+      "phase",
+      "system",
+      "spec",
+      "021",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "tasks.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "recommend-level.sh",
+      "create.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      ".opencode/command/spec_kit/assets/spec_kit_phase_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_phase_confirm.yaml",
+      "CLAUDE.md",
+      "validate.sh",
+      ".speckit.yaml",
+      "decision-record.md",
+      "compose.sh",
+      "Parent Spec: ../spec.md",
+      "Parent Plan: ../plan.md",
+      "assets/spec_kit_phase_auto.yaml"
+    ],
+    "entities": [
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "recommend-level.sh",
+        "kind": "script",
+        "path": "recommend-level.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "recommend-level.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_phase_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_phase_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_phase_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_phase_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": ".speckit.yaml",
+        "kind": "config",
+        "path": ".speckit.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Level 3+ (+Govern) is appropriate when:",
+    "created_at": "2026-04-12T09:02:50.222Z",
+    "last_save_at": "2026-04-12T09:06:00.351Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

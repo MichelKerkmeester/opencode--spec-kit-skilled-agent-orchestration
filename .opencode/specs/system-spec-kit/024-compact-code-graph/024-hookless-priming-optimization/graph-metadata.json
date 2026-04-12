@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/024-hookless-priming-optimization",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/024-hookless-priming-optimization",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy",
+      "phase",
+      "content",
+      "continues",
+      "024",
+      "hookless",
+      "priming",
+      "optimization"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "lib/code-graph/runtime-detection.ts",
+      ".gemini/settings.json",
+      "lib/session/session-snapshot.ts",
+      "lib/session/context-metrics.ts",
+      "context-server.ts",
+      "handlers/session-resume.ts",
+      "handlers/session-bootstrap.ts",
+      "handlers/index.ts",
+      "tool-schemas.ts",
+      "schemas/tool-input-schemas.ts",
+      "tools/types.ts",
+      "tools/lifecycle-tools.ts",
+      "lib/architecture/layer-definitions.ts",
+      "hooks/memory-surface.ts",
+      ".opencode/agent/context-prime.md",
+      ".claude/agents/context-prime.md",
+      ".codex/agents/context-prime.toml",
+      ".agents/agents/context-prime.md",
+      ".opencode/agent/orchestrate.md",
+      "tests/context-server.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "runtime-detection.ts",
+        "kind": "code",
+        "path": "lib/code-graph/runtime-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": "lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-metrics.ts",
+        "kind": "code",
+        "path": "lib/session/context-metrics.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": "schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "tools/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": "tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "layer-definitions.ts",
+        "kind": "code",
+        "path": "lib/architecture/layer-definitions.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context-prime.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": ".claude/agents/context-prime.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:53.125Z",
+    "last_save_at": "2026-04-12T09:06:03.183Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

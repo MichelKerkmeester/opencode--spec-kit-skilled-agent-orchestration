@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state",
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval",
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops",
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance",
+    "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "hydra",
+      "memory roadmap",
+      "lineage",
+      "governance",
+      "shared memory",
+      "implementation plan",
+      "hydra roadmap",
+      "truth sync",
+      "phase pack normalization",
+      "tasks",
+      "memory mcp",
+      "roadmap",
+      "verification",
+      "checklist",
+      "closure",
+      "decision",
+      "record",
+      "adr",
+      "architecture",
+      "implementation",
+      "summary",
+      "implementation summary",
+      "008",
+      "research",
+      "features",
+      "assessment"
+    ],
+    "key_topics": [
+      "hydra",
+      "memory",
+      "roadmap",
+      "lineage",
+      "governance",
+      "shared",
+      "implementation",
+      "plan",
+      "truth",
+      "sync",
+      "phase",
+      "pack"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/tool-input-schema.vitest.ts tests/handler-memory-context.vitest.ts tests/memory-tools.vitest.ts tests/shared-memory-handlers.vitest.ts tests/graph-search-fn.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/claude-code-capture.vitest.ts tests/opencode-capture.vitest.ts",
+      "decision-record.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "validate.sh",
+      "lineage-state.ts",
+      "001-baseline-and-safety-rails/spec.md",
+      "002-versioned-memory-state/spec.md"
+    ],
+    "entities": [
+      {
+        "name": "graph-search-fn.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/tool-input-schema.vitest.ts tests/handler-memory-context.vitest.ts tests/memory-tools.vitest.ts tests/shared-memory-handlers.vitest.ts tests/graph-search-fn.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-governance.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-roadmap-finalization.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-capture.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/claude-code-capture.vitest.ts tests/opencode-capture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lineage-state.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-memory.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hydra-spec-pack-consistency.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.",
+    "created_at": "2026-04-12T09:02:50.258Z",
+    "last_save_at": "2026-04-12T09:06:00.387Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

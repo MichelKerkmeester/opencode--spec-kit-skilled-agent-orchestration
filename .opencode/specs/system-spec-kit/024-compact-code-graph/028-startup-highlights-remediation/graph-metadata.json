@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/028-startup-highlights-remediation",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "startup highlights",
+      "028",
+      "remediation",
+      "queryStartupHighlights",
+      "highlights fix",
+      "startup highlights plan",
+      "028 plan",
+      "028 tasks",
+      "028 checklist",
+      "028 summary"
+    ],
+    "key_topics": [
+      "startup",
+      "highlights",
+      "028",
+      "remediation",
+      "querystartuphighlights",
+      "fix",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "correctness",
+      "findings"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "GROUP BY n.symbol_id",
+      "GROUP BY fn.name, fn.kind, fn.file_path",
+      "e.source_id = n.symbol_id",
+      "e.target_id = fn.symbol_id",
+      "code-graph-db.ts",
+      "startup-brief.ts",
+      "startup-brief.vitest.ts",
+      "n.kind",
+      "site-packages/yaml/scanner.py",
+      "special/tests/test_legendre.py",
+      "session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
+      "LEFT JOIN code_edges e ON e.source_id = n.symbol_id",
+      "LEFT JOIN code_edges e ON e.target_id = fn.symbol_id",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "GROUP BY n.symbol_id",
+        "kind": "file",
+        "path": "GROUP BY n.symbol_id",
+        "source": "derived"
+      },
+      {
+        "name": "GROUP BY fn.name, fn.kind, fn.file_path",
+        "kind": "file",
+        "path": "GROUP BY fn.name, fn.kind, fn.file_path",
+        "source": "derived"
+      },
+      {
+        "name": "e.source_id = n.symbol_id",
+        "kind": "file",
+        "path": "e.source_id = n.symbol_id",
+        "source": "derived"
+      },
+      {
+        "name": "e.target_id = fn.symbol_id",
+        "kind": "file",
+        "path": "e.target_id = fn.symbol_id",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.vitest.ts",
+        "kind": "test",
+        "path": "startup-brief.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "n.kind",
+        "kind": "file",
+        "path": "n.kind",
+        "source": "derived"
+      },
+      {
+        "name": "scanner.py",
+        "kind": "file",
+        "path": "site-packages/yaml/scanner.py",
+        "source": "derived"
+      },
+      {
+        "name": "test_legendre.py",
+        "kind": "file",
+        "path": "special/tests/test_legendre.py",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "LEFT JOIN code_edges e ON e.source_id = n.symbol_id",
+        "kind": "file",
+        "path": "LEFT JOIN code_edges e ON e.source_id = n.symbol_id",
+        "source": "derived"
+      },
+      {
+        "name": "LEFT JOIN code_edges e ON e.target_id = fn.symbol_id",
+        "kind": "file",
+        "path": "LEFT JOIN code_edges e ON e.target_id = fn.symbol_id",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fix 3 P1 correctness findings from the deep review (2026-04-02) in `queryStartupHighlights()`. The function currently produces low-signal output due to duplicate entries, vendored/test code domination, and a wrong ranking heuristic. See DR-017.",
+    "created_at": "2026-04-12T09:02:53.434Z",
+    "last_save_at": "2026-04-12T09:06:03.477Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

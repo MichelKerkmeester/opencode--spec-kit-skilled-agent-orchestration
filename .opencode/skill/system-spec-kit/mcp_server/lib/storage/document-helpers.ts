@@ -29,6 +29,7 @@ export function calculateDocumentWeight(filePath: string, documentType?: string)
       research: 0.6,
       checklist: 0.5,
       handover: 0.5,
+      graph_metadata: 0.75,
       constitutional: 1.0,
       memory: 0.5,
       scratch: 0.25,

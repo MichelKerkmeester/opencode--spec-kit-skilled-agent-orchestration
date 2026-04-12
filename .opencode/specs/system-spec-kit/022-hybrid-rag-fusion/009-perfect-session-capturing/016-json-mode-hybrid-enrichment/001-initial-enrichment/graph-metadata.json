@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "json mode",
+      "hybrid enrichment",
+      "session metadata",
+      "git metadata",
+      "implementation",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "summary"
+    ],
+    "key_topics": [
+      "json",
+      "mode",
+      "hybrid",
+      "enrichment",
+      "session",
+      "metadata",
+      "git",
+      "implementation",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "scripts/core/post-save-review.ts",
+      "CLAUDE.md",
+      "AGENTS.md",
+      "GEMINI.md",
+      "AGENTS_example_fs_enterprises.md",
+      ".opencode/skill/system-spec-kit/scripts/types/session-types.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+      ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      "session-types.ts",
+      "workflow.ts",
+      "generate-context.ts",
+      "0.85",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": "scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "GEMINI.md",
+        "kind": "doc",
+        "path": "GEMINI.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS_example_fs_enterprises.md",
+        "kind": "doc",
+        "path": "AGENTS_example_fs_enterprises.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "0.85",
+        "kind": "file",
+        "path": "0.85",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "JSON-mode saves became the safe path for multi-spec sessions, but the implementation that actually shipped in this tree is narrower than the original phase design. The code now accepts richer structured JSON summaries such as `toolCalls` and `exchanges`, but it does not ship the full file-backed hybrid enrichment path originally described here.",
+    "created_at": "2026-04-12T09:02:50.277Z",
+    "last_save_at": "2026-04-12T09:06:00.409Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

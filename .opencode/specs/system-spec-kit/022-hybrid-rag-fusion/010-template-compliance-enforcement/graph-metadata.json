@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "template compliance",
+      "spec validation",
+      "anchor enforcement",
+      "agent compliance",
+      "template compliance plan",
+      "enforcement implementation",
+      "2-layer architecture",
+      "contract injection",
+      "template compliance tasks",
+      "enforcement tasks",
+      "contract injection tasks",
+      "template compliance checklist",
+      "enforcement verification",
+      "compliance verification",
+      "template compliance summary",
+      "enforcement summary",
+      "compliance implementation results",
+      "research",
+      "template",
+      "compliance",
+      "010"
+    ],
+    "key_topics": [
+      "template",
+      "compliance",
+      "spec",
+      "validation",
+      "anchor",
+      "enforcement",
+      "agent",
+      "plan",
+      "implementation",
+      "2-layer",
+      "architecture",
+      "contract"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
+      ".claude/agents/speckit.md",
+      ".opencode/agent/speckit.md",
+      ".codex/agents/speckit.toml",
+      "generate-compliance-contract.sh",
+      "generate-description.ts",
+      "generate-context.js",
+      "template-structure.js",
+      ".gemini/agents/speckit.md",
+      "validate.sh",
+      "research/research.md",
+      "git checkout -- .claude/agents/speckit.md .opencode/agent/speckit.md .opencode/agent/chatgpt/speckit.md .codex/agents/speckit.toml",
+      "spec.md",
+      "plan.md",
+      "research/iterations/iteration-009.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
+      "progressive-validate.sh",
+      "quality-audit.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/pre-commit-spec-validate.sh"
+    ],
+    "entities": [
+      {
+        "name": "template_compliance_contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".claude/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.toml",
+        "kind": "file",
+        "path": ".codex/agents/speckit.toml",
+        "source": "derived"
+      },
+      {
+        "name": "generate-compliance-contract.sh",
+        "kind": "script",
+        "path": "generate-compliance-contract.sh",
+        "source": "derived"
+      },
+      {
+        "name": "generate-description.ts",
+        "kind": "code",
+        "path": "generate-description.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.js",
+        "kind": "code",
+        "path": "template-structure.js",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".gemini/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.toml",
+        "kind": "file",
+        "path": "git checkout -- .claude/agents/speckit.md .opencode/agent/speckit.md .opencode/agent/chatgpt/speckit.md .codex/agents/speckit.toml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-009.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-009.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Agents across all 4 CLI surfaces (Claude Code, Copilot, ChatGPT, Codex) produce structurally non-compliant spec folder documents. A clean-slate rewrite of 20 spec folders (commit b88c07f82) revealed 637 header/anchor structural changes across 54 errors, requiring approximately 270 fix edits. The three dominant failure modes are TEMPLATE_HEADERS (wrong section names, numbering, or order), ANCHORS_VALID (missing, misspelled, or unclosed anchor tags), and SPEC_DOC_INTEGRITY (broken cross-file references). The current validation system runs only after files are written.",
+    "created_at": "2026-04-12T09:02:50.283Z",
+    "last_save_at": "2026-04-12T09:06:00.416Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

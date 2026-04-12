@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/005-e2e-integration-test",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 5 integration",
+      "adaptive ranking e2e",
+      "scheduled replay coverage",
+      "phase 5 plan",
+      "adaptive ranking e2e plan",
+      "phase 5 tasks",
+      "adaptive ranking e2e tasks",
+      "phase 5 checklist",
+      "adaptive ranking e2e verification",
+      "phase 5 implementation summary",
+      "adaptive ranking e2e summary"
+    ],
+    "key_topics": [
+      "phase",
+      "integration",
+      "adaptive",
+      "ranking",
+      "e2e",
+      "scheduled",
+      "replay",
+      "coverage",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+      "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+      "mcp_server/lib/cognitive/adaptive-ranking.ts",
+      "tests/adaptive-ranking-e2e.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/adaptive-ranking.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "tests/adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "End Integration Test",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Header",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 5** of the adaptive-ranking packet.",
+    "created_at": "2026-04-12T09:02:50.334Z",
+    "last_save_at": "2026-04-12T09:06:00.462Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

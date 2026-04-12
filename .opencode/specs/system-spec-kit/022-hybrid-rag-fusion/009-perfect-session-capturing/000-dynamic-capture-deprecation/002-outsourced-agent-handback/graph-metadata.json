@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "outsourced agent memory",
+      "cli agent context",
+      "memory handback",
+      "external agent save",
+      "generate-context json",
+      "memory handback plan",
+      "cli agent protocol",
+      "outsourced agent tasks",
+      "memory handback tasks",
+      "outsourced agent checklist",
+      "memory handback checklist",
+      "outsourced agent summary",
+      "memory handback summary",
+      "runtime memory inputs"
+    ],
+    "key_topics": [
+      "outsourced",
+      "agent",
+      "memory",
+      "cli",
+      "context",
+      "handback",
+      "external",
+      "save",
+      "generate-context",
+      "json",
+      "plan",
+      "protocol"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "data-loader.ts",
+      "input-normalizer.ts",
+      "session-extractor.ts",
+      "/tmp/save-context-data.json",
+      "scripts/tests/outsourced-agent-handback-docs.vitest.ts",
+      "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts",
+      "memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md",
+      "generate-context.js",
+      "scripts/loaders/data-loader.ts",
+      "scripts/utils/input-normalizer.ts",
+      "scripts/extractors/session-extractor.ts",
+      "scripts/tests/runtime-memory-inputs.vitest.ts",
+      ".opencode/skill/cli-codex/SKILL.md",
+      ".opencode/skill/cli-copilot/SKILL.md",
+      ".opencode/skill/cli-gemini/SKILL.md",
+      ".opencode/skill/cli-claude-code/SKILL.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md",
+      "workflow.ts",
+      "validate.sh",
+      "runtime-memory-inputs.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "data-loader.ts",
+        "kind": "code",
+        "path": "data-loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save-context-data.json",
+        "kind": "config",
+        "path": "/tmp/save-context-data.json",
+        "source": "derived"
+      },
+      {
+        "name": "outsourced-agent-handback-docs.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/outsourced-agent-handback-docs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "outsourced-agent-handback-docs.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md",
+        "kind": "doc",
+        "path": "memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "data-loader.ts",
+        "kind": "code",
+        "path": "scripts/loaders/data-loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-memory-inputs.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/runtime-memory-inputs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.265Z",
+    "last_save_at": "2026-04-12T09:06:00.395Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

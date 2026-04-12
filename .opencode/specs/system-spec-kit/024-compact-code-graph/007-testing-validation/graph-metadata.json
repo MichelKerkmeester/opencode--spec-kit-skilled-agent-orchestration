@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/007-testing-validation",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/007-testing-validation",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "testing",
+      "validation",
+      "spec",
+      "007",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "testing",
+      "validation",
+      "spec",
+      "007",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "tests/fixtures/runtime-fixtures.ts",
+      "runtime-routing.vitest.ts",
+      "hook-session-start.vitest.ts",
+      "hook-precompact.vitest.ts",
+      "hook-stop-token-tracking.vitest.ts",
+      "token-snapshot-store.vitest.ts",
+      "session-token-resume.vitest.ts",
+      "cross-runtime-fallback.vitest.ts",
+      "dual-scope-hooks.vitest.ts",
+      "crash-recovery.vitest.ts",
+      "edge-cases.vitest.ts",
+      "tests/runtime-routing.vitest.ts",
+      "tests/hook-session-start.vitest.ts",
+      "tests/hook-precompact.vitest.ts",
+      "tests/hook-stop-token-tracking.vitest.ts",
+      "tests/cross-runtime-fallback.vitest.ts",
+      "tests/token-snapshot-store.vitest.ts",
+      "tests/session-token-resume.vitest.ts",
+      "tests/edge-cases.vitest.ts",
+      "tests/dual-scope-hooks.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "runtime-fixtures.ts",
+        "kind": "code",
+        "path": "tests/fixtures/runtime-fixtures.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-routing.vitest.ts",
+        "kind": "test",
+        "path": "runtime-routing.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-precompact.vitest.ts",
+        "kind": "test",
+        "path": "hook-precompact.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-stop-token-tracking.vitest.ts",
+        "kind": "test",
+        "path": "hook-stop-token-tracking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "token-snapshot-store.vitest.ts",
+        "kind": "test",
+        "path": "token-snapshot-store.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-token-resume.vitest.ts",
+        "kind": "test",
+        "path": "session-token-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cross-runtime-fallback.vitest.ts",
+        "kind": "test",
+        "path": "cross-runtime-fallback.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dual-scope-hooks.vitest.ts",
+        "kind": "test",
+        "path": "dual-scope-hooks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "crash-recovery.vitest.ts",
+        "kind": "test",
+        "path": "crash-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "edge-cases.vitest.ts",
+        "kind": "test",
+        "path": "edge-cases.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-routing.vitest.ts",
+        "kind": "test",
+        "path": "tests/runtime-routing.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-precompact.vitest.ts",
+        "kind": "test",
+        "path": "tests/hook-precompact.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-stop-token-tracking.vitest.ts",
+        "kind": "test",
+        "path": "tests/hook-stop-token-tracking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cross-runtime-fallback.vitest.ts",
+        "kind": "test",
+        "path": "tests/cross-runtime-fallback.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.347Z",
+    "last_save_at": "2026-04-12T09:06:00.483Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

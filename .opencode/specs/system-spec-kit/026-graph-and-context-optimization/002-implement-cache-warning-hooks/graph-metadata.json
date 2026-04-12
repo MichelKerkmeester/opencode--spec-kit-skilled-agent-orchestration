@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cache warning hook",
+      "stop-hook metadata patch",
+      "replay isolation",
+      "continuity prerequisite",
+      "claudest continuation",
+      "cache warning plan",
+      "producer patch plan",
+      "claudest continuation order",
+      "tasks",
+      "producer patch",
+      "idempotency",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "producer boundary",
+      "packet rescope",
+      "002 implementation summary",
+      "producer-first continuity closeout",
+      "compact continuity wrapper",
+      "stop hook metadata handoff",
+      "cache warning research"
+    ],
+    "key_topics": [
+      "cache",
+      "warning",
+      "hook",
+      "stop-hook",
+      "metadata",
+      "patch",
+      "replay",
+      "isolation",
+      "continuity",
+      "prerequisite",
+      "claudest",
+      "continuation"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "decision-record.md",
+      "implementation-summary.md",
+      "hook-state.ts",
+      "session-stop.ts",
+      "session-prime.ts",
+      ".claude/settings.local.json",
+      "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/session-token-resume.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "research.md",
+      "checklist.md",
+      "git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json",
+      "mcp_server/test/hooks/replay-harness.ts",
+      "tests/fixtures/hooks/session-stop-replay.jsonl",
+      "tests/hook-session-stop-replay.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "hook-stop-token-tracking.vitest.ts",
+        "kind": "test",
+        "path": "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/session-token-resume.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "replay-harness.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
+    "created_at": "2026-04-12T09:02:53.453Z",
+    "last_save_at": "2026-04-12T09:06:03.497Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research.md"
+    ]
+  }
+}

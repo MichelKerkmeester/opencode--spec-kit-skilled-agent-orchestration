@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "query decomposition",
+      "HyDE",
+      "concept routing",
+      "LLM reformulation",
+      "query surrogates",
+      "hybrid",
+      "rag",
+      "fusion",
+      "001",
+      "plan",
+      "002",
+      "query",
+      "ybrid",
+      "tasks"
+    ],
+    "key_topics": [
+      "query",
+      "decomposition",
+      "hyde",
+      "concept",
+      "routing",
+      "llm",
+      "reformulation",
+      "surrogates",
+      "hybrid",
+      "rag",
+      "fusion",
+      "001"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "stage1-candidate-gen.ts",
+      "query-decomposer.ts",
+      "entity-linker.ts",
+      "llm-reformulation.ts",
+      "hyde.ts",
+      "vector-index-store.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query-decomposer.ts",
+        "kind": "code",
+        "path": "query-decomposer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "llm-reformulation.ts",
+        "kind": "code",
+        "path": "llm-reformulation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hyde.ts",
+        "kind": "code",
+        "path": "hyde.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Query Intelligence",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\n\nIntroduce",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The current retrieval pipeline treats every user query as a single opaque string — one embedding lookup, one keyword expansion, one graph probe. This works for simple, well-phrased queries but fails when the user's question is multi-faceted (\"what decisions were made about scoring AND graph pruning?\"), uses vocabulary that diverges from stored terminology, or targets concepts that sit across multiple memory clusters. The result is missed recall on complex queries while simple-query latency must remain untouched.",
+    "created_at": "2026-04-12T09:02:50.234Z",
+    "last_save_at": "2026-04-12T09:06:00.363Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

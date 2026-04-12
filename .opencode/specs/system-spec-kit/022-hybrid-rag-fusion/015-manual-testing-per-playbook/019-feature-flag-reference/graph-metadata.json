@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature flag reference manual testing",
+      "phase 019 feature flag reference",
+      "speckit flags classification tests",
+      "hybrid rag fusion flag catalog playbook",
+      "feature flag reference execution plan",
+      "phase 019 manual tests",
+      "speckit flag audit verdict plan",
+      "hybrid rag flag catalog review",
+      "feature flag reference tasks",
+      "phase 019 tasks",
+      "flag catalog manual testing tasks",
+      "feature flag reference checklist",
+      "phase 019 verification",
+      "flag catalog test quality gates",
+      "speckit flag audit checklist",
+      "feature-flag-reference implementation summary",
+      "phase 019 summary",
+      "manual testing feature-flag-reference"
+    ],
+    "key_topics": [
+      "feature",
+      "flag",
+      "reference",
+      "manual",
+      "testing",
+      "phase",
+      "019",
+      "speckit",
+      "flags",
+      "classification",
+      "tests",
+      "hybrid"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "capabilities.graphUnified",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "dist/lib/config/capability-flags.js",
+      "capability-flags.ts",
+      "lib/search/graph-flags.ts",
+      "spec.md",
+      "plan.md",
+      "description.json",
+      "capability-flags.js",
+      ".opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js",
+      "capabilities.sharedMemory"
+    ],
+    "entities": [
+      {
+        "name": "capabilities.graphUnified",
+        "kind": "file",
+        "path": "capabilities.graphUnified",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.js",
+        "kind": "code",
+        "path": "dist/lib/config/capability-flags.js",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.ts",
+        "kind": "code",
+        "path": "capability-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-flags.ts",
+        "kind": "code",
+        "path": "lib/search/graph-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.js",
+        "kind": "code",
+        "path": "capability-flags.js",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js",
+        "source": "derived"
+      },
+      {
+        "name": "capabilities.sharedMemory",
+        "kind": "file",
+        "path": "capabilities.sharedMemory",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Manual feature-flag-reference scenarios for the Spec Kit Memory system live inside the central playbook and require a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated feature-flag-reference packet, Phase 019 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.",
+    "created_at": "2026-04-12T09:02:50.305Z",
+    "last_save_at": "2026-04-12T09:06:00.438Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

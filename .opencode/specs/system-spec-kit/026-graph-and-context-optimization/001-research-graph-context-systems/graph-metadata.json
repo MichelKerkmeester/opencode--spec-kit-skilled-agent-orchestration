@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/001-claude-optimization-settings",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
+    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graph and context optimization",
+      "master research packet",
+      "adoption sequencing",
+      "honest measurement contract",
+      "trust-axis separation",
+      "graph context packet plan",
+      "adoption sequencing plan",
+      "recommendation rollback",
+      "follow-on packets",
+      "graph context packet tasks",
+      "follow-on packet tasks",
+      "root packet conformance",
+      "graph context packet checklist",
+      "research packet verification",
+      "recommendation readiness",
+      "graph context packet ADR",
+      "measurement contract",
+      "conditional warm-start",
+      "graph context packet summary",
+      "master research summary",
+      "v1 to v2 packet summary"
+    ],
+    "key_topics": [
+      "graph",
+      "context",
+      "optimization",
+      "master",
+      "research",
+      "packet",
+      "adoption",
+      "sequencing",
+      "honest",
+      "measurement",
+      "contract",
+      "trust-axis"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "research/recommendations.md",
+      "research/findings-registry.json",
+      "research/cross-phase-matrix.md",
+      "research/iterations/q-d-adoption-sequencing.md",
+      "research/iterations/q-f-killer-combos.md",
+      "description.json",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "memory/metadata.json",
+      "002-codesight/description.json",
+      "scratch/spec-doc-phase-2-summary.md",
+      "003-contextador/CONTEXT.md",
+      "001-claude-optimization-settings/spec.md",
+      "002-codesight/spec.md",
+      "003-contextador/spec.md"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "recommendations.md",
+        "kind": "doc",
+        "path": "research/recommendations.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "cross-phase-matrix.md",
+        "kind": "doc",
+        "path": "research/cross-phase-matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "q-d-adoption-sequencing.md",
+        "kind": "doc",
+        "path": "research/iterations/q-d-adoption-sequencing.md",
+        "source": "derived"
+      },
+      {
+        "name": "q-f-killer-combos.md",
+        "kind": "doc",
+        "path": "research/iterations/q-f-killer-combos.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "memory/metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "002-codesight/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-phase-2-summary.md",
+        "kind": "doc",
+        "path": "scratch/spec-doc-phase-2-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
+    "created_at": "2026-04-12T09:02:53.443Z",
+    "last_save_at": "2026-04-12T09:06:03.488Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

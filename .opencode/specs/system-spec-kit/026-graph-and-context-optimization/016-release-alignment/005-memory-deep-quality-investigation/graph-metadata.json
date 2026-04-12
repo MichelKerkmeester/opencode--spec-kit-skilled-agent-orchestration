@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/005-memory-deep-quality-investigation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/005-memory-deep-quality-investigation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory generator bugs",
+      "memory deep quality investigation",
+      "causal links broken",
+      "trigger phrases n-gram noise",
+      "provenance empty memory",
+      "title path suffix corruption",
+      "generate context bugs",
+      "memory investigation plan",
+      "generator root cause analysis",
+      "memory quality deep dive",
+      "phase 005 investigation plan",
+      "memory investigation tasks",
+      "root cause analysis tasks",
+      "phase 005 tasks",
+      "memory investigation checklist",
+      "root cause verification",
+      "phase 005 verification"
+    ],
+    "key_topics": [
+      "memory",
+      "generator",
+      "bugs",
+      "deep",
+      "quality",
+      "investigation",
+      "causal",
+      "links",
+      "broken",
+      "trigger",
+      "phrases",
+      "n-gram"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "scratch/deep-findings.json",
+      "scratch/deep-audit.mjs",
+      ".opencode/skill/system-spec-kit/scripts/src/memory/generate-context.ts",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "deep-findings.json",
+        "kind": "config",
+        "path": "scratch/deep-findings.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-audit.mjs",
+        "kind": "file",
+        "path": "scratch/deep-audit.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/src/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Deep Quality Investigation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nPhase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nInvestigate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 004 confirmed the memory corpus is structurally v2.2 compliant (frontmatter fields present, `/100` patterns removed, `retroactive_reviewed` flags applied). But a deeper audit of the 153 memory files found **562 systemic quality findings across 16 categories**, pointing to generator-level bugs rather than one-off content problems:",
+    "created_at": "2026-04-12T09:02:53.476Z",
+    "last_save_at": "2026-04-12T09:06:03.519Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

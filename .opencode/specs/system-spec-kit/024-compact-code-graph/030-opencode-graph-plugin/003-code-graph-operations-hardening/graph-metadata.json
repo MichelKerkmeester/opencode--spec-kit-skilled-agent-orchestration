@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/003-code-graph-operations-hardening",
+  "parent_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code graph operations hardening",
+      "packet 030",
+      "level 3",
+      "code graph operations hardening plan",
+      "phase 3 tasks",
+      "graph ops hardening tasks",
+      "code graph operations hardening checklist",
+      "level 3 verification",
+      "code graph operations hardening adr",
+      "level 3 decision record",
+      "phase 3 implementation summary",
+      "code graph operations hardening implementation"
+    ],
+    "key_topics": [
+      "code",
+      "graph",
+      "operations",
+      "hardening",
+      "packet",
+      "030",
+      "level",
+      "plan",
+      "phase",
+      "tasks",
+      "ops",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-ops-hardening.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
+      "npx vitest run tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "ops-hardening.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ops-hardening.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-health.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-ops-hardening.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-ops-hardening.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-contract.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph Operations Hardening",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 3 added one reusable graph-operations hardening contract below the transport shell. The Level 3 repair keeps that shipped runtime scope intact and explains the portability and repair boundaries cleanly.",
+    "created_at": "2026-04-12T09:02:53.437Z",
+    "last_save_at": "2026-04-12T09:06:03.481Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

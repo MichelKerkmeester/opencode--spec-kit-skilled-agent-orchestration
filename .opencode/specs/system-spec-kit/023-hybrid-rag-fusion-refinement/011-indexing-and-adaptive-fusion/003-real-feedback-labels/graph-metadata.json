@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/003-real-feedback-labels",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "real feedback labels",
+      "buildReplayRanks",
+      "query-scoped feedback",
+      "feedback-informed evaluation",
+      "real feedback labels plan",
+      "query-scoped replay plan",
+      "shadow evaluation plan",
+      "real feedback labels tasks",
+      "query-scoped replay tasks",
+      "real feedback labels checklist",
+      "phase 3 verification",
+      "phase 3 implementation summary",
+      "real feedback labels summary"
+    ],
+    "key_topics": [
+      "real",
+      "feedback",
+      "labels",
+      "buildreplayranks",
+      "query-scoped",
+      "feedback-informed",
+      "evaluation",
+      "plan",
+      "replay",
+      "shadow",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+      "mcp_server/handlers/checkpoints.ts",
+      "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+      "metadata.queryText",
+      "adaptive-ranking-e2e.vitest.ts",
+      "checkpoints.ts",
+      "0.5",
+      "shadow-evaluation-runtime.ts",
+      "handlers/checkpoints.ts",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.queryText",
+        "kind": "file",
+        "path": "metadata.queryText",
+        "source": "derived"
+      },
+      {
+        "name": "adaptive-ranking-e2e.vitest.ts",
+        "kind": "test",
+        "path": "adaptive-ranking-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "0.5",
+        "kind": "file",
+        "path": "0.5",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-evaluation-runtime.ts",
+        "kind": "code",
+        "path": "shadow-evaluation-runtime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "handlers/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Real Feedback Labels",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 3** of the adaptive-ranking packet.",
+    "created_at": "2026-04-12T09:02:50.333Z",
+    "last_save_at": "2026-04-12T09:06:00.460Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

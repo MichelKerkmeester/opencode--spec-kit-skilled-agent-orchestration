@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/002-alignment-fixes",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/002-alignment-fixes",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory",
+      "command",
+      "alignment",
+      "fixes",
+      "spec",
+      "002"
+    ],
+    "key_topics": [
+      "memory",
+      "command",
+      "alignment",
+      "fixes",
+      "spec",
+      "002",
+      "documents",
+      "applied",
+      "files",
+      "ensure",
+      "consistency",
+      "system-spec-kit"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "status.md",
+      "triggers.md",
+      "cleanup.md",
+      "SKILL.md",
+      "AGENTS.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "status.md",
+        "kind": "doc",
+        "path": "status.md",
+        "source": "derived"
+      },
+      {
+        "name": "triggers.md",
+        "kind": "doc",
+        "path": "triggers.md",
+        "source": "derived"
+      },
+      {
+        "name": "cleanup.md",
+        "kind": "doc",
+        "path": "cleanup.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Command Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Command Alignment Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\n\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "User Story",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Acceptance Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This spec documents the alignment fixes applied to memory command files to ensure consistency with:",
+    "created_at": "2026-04-12T09:02:53.507Z",
+    "last_save_at": "2026-04-12T09:06:03.556Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md"
+    ]
+  }
+}

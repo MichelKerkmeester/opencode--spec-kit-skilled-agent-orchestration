@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/004-cross-runtime-startup-surfacing-parity",
+  "parent_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cross-runtime startup surfacing parity",
+      "packet 030",
+      "level 3",
+      "cross-runtime startup surfacing parity plan",
+      "phase 4 tasks",
+      "startup parity tasks",
+      "runtime startup surfacing",
+      "cross-runtime startup surfacing parity checklist",
+      "level 3 verification",
+      "cross-runtime startup surfacing parity adr",
+      "level 3 decision record",
+      "phase 4 implementation summary",
+      "startup surfacing parity summary"
+    ],
+    "key_topics": [
+      "cross-runtime",
+      "startup",
+      "surfacing",
+      "parity",
+      "packet",
+      "030",
+      "level",
+      "plan",
+      "phase",
+      "tasks",
+      "runtime",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "startup-brief.ts",
+      "mcp_server/hooks/copilot/session-prime.ts",
+      "context-prime.toml",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
+      ".codex/agents/context-prime.toml",
+      ".github/hooks/superset-notify.json",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
+      "python3.11",
+      "jq empty .github/hooks/superset-notify.json",
+      "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
+      "printf '{\\\"session_id\\\":\\\"demo\\\",\\\"source\\\":\\\"startup\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js",
+      "printf '{\\\"session_id\\\":\\\"demo\\\",\\\"source\\\":\\\"startup\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-prime.js",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/copilot/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.toml",
+        "kind": "file",
+        "path": "context-prime.toml",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.toml",
+        "kind": "file",
+        "path": ".codex/agents/context-prime.toml",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": ".github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "python3.11",
+        "kind": "file",
+        "path": "python3.11",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": "jq empty .github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.js",
+        "kind": "code",
+        "path": "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 4 extended the shipped startup experience beyond OpenCode. The Level 3 repair keeps that runtime/config parity claim intact and turns the phase into a durable packet artifact with explicit runtime boundaries and evidence.",
+    "created_at": "2026-04-12T09:02:53.438Z",
+    "last_save_at": "2026-04-12T09:06:03.482Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

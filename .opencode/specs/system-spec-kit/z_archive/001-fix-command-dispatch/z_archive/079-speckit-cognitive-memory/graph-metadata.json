@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "cognitive",
+      "memory",
+      "upgrade",
+      "spec",
+      "079",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary",
+      "research",
+      "consolidation",
+      "and",
+      "dormancy"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "cognitive",
+      "memory",
+      "upgrade",
+      "spec",
+      "079",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "lib/cognitive/fsrs-scheduler.js",
+      "lib/cognitive/prediction-error-gate.js",
+      "lib/cognitive/tier-classifier.js",
+      "lib/cognitive/attention-decay.js",
+      "lib/cognitive/index.js",
+      "lib/scoring/composite-scoring.js",
+      "lib/search/vector-index.js",
+      "handlers/memory-save.js",
+      "handlers/memory-search.js",
+      "tests/fsrs-scheduler.test.js",
+      "tests/verify-cognitive-upgrade.js",
+      ".opencode/command/memory/checkpoint.md",
+      ".opencode/command/memory/database.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/command/memory/search.md",
+      "command_template.md",
+      "fsrs-scheduler.js",
+      "FSRS_DECAY = -0.5",
+      "DEFAULT_STABILITY = 1.0",
+      "DEFAULT_DIFFICULTY = 5.0"
+    ],
+    "entities": [
+      {
+        "name": "fsrs-scheduler.js",
+        "kind": "code",
+        "path": "lib/cognitive/fsrs-scheduler.js",
+        "source": "derived"
+      },
+      {
+        "name": "prediction-error-gate.js",
+        "kind": "code",
+        "path": "lib/cognitive/prediction-error-gate.js",
+        "source": "derived"
+      },
+      {
+        "name": "tier-classifier.js",
+        "kind": "code",
+        "path": "lib/cognitive/tier-classifier.js",
+        "source": "derived"
+      },
+      {
+        "name": "attention-decay.js",
+        "kind": "code",
+        "path": "lib/cognitive/attention-decay.js",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": "lib/cognitive/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.js",
+        "kind": "code",
+        "path": "lib/scoring/composite-scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.js",
+        "kind": "code",
+        "path": "handlers/memory-save.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.js",
+        "kind": "code",
+        "path": "handlers/memory-search.js",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.test.js",
+        "kind": "code",
+        "path": "tests/fsrs-scheduler.test.js",
+        "source": "derived"
+      },
+      {
+        "name": "verify-cognitive-upgrade.js",
+        "kind": "code",
+        "path": "tests/verify-cognitive-upgrade.js",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoint.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/checkpoint.md",
+        "source": "derived"
+      },
+      {
+        "name": "database.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/database.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/search.md",
+        "source": "derived"
+      },
+      {
+        "name": "command_template.md",
+        "kind": "doc",
+        "path": "command_template.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory patterns: FSRS power-law decay, prediction error gating for conflict detection, and dual-strength tracking. This transforms the system from \"store everything forever\" to intelligent memory that naturally retains what matters and forgets what doesn't.",
+    "created_at": "2026-04-12T09:02:53.550Z",
+    "last_save_at": "2026-04-12T09:06:03.608Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

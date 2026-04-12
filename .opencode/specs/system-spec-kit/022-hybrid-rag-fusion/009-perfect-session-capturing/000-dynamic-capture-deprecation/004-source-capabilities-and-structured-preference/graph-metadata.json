@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "source capabilities",
+      "structured preference",
+      "phase 019",
+      "tasks",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "source",
+      "capabilities",
+      "structured",
+      "preference",
+      "phase",
+      "019",
+      "tasks",
+      "implementation",
+      "summary",
+      "session-capturing",
+      "pipeline",
+      "still"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "scripts/utils/source-capabilities.ts",
+      "scripts/extractors/contamination-filter.ts",
+      "scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/utils/source-capabilities.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "input-normalizer.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "source-capabilities.ts",
+        "kind": "code",
+        "path": "scripts/utils/source-capabilities.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": "scripts/extractors/contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "source-capabilities.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/utils/source-capabilities.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "12-session-capturing-pipeline-quality.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Capabilities And Structured Preference",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The session-capturing pipeline still expressed source-aware policy with a raw source-name exception. That made the contamination downgrade brittle and under-documented. At the same time, the CLI surface supported structured `--stdin` / `--json` input but did not describe those structured modes as the preferred save path when curated payloads already existed.",
+    "created_at": "2026-04-12T09:02:50.266Z",
+    "last_save_at": "2026-04-12T09:06:00.396Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

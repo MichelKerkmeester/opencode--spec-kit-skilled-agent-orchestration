@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deprecate context-prime",
+      "remove context-prime agent",
+      "context-prime no longer needed",
+      "sessionstart replaces context-prime",
+      "implementation",
+      "plan",
+      "phase 015",
+      "tasks",
+      "summary"
+    ],
+    "key_topics": [
+      "deprecate",
+      "context-prime",
+      "remove",
+      "agent",
+      "longer",
+      "needed",
+      "sessionstart",
+      "replaces",
+      "implementation",
+      "plan",
+      "phase",
+      "015"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "CLAUDE.md",
+      ".codex/agents/context-prime.toml",
+      ".opencode/agent/orchestrate.md",
+      ".codex/agents/orchestrate.toml",
+      "rg -n \"context-prime\" .opencode/agent/ .claude/agents/ .codex/agents/ .gemini/agents/ CLAUDE.md",
+      "git diff --check -- .opencode/agent/orchestrate.md .codex/agents/orchestrate.toml CLAUDE.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent .opencode/agent/context-prime.md .claude/agents/context-prime.md .codex/agents/context-prime.toml .gemini/agents/context-prime.md",
+      "session-prime.ts",
+      "spec.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.toml",
+        "kind": "file",
+        "path": ".codex/agents/context-prime.toml",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.toml",
+        "kind": "file",
+        "path": ".codex/agents/orchestrate.toml",
+        "source": "derived"
+      },
+      {
+        "name": " CLAUDE.md",
+        "kind": "doc",
+        "path": "rg -n \"context-prime\" .opencode/agent/ .claude/agents/ .codex/agents/ .gemini/agents/ CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-prime.md",
+        "kind": "doc",
+        "path": "git diff --check -- .opencode/agent/orchestrate.md .codex/agents/orchestrate.toml CLAUDE.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent .opencode/agent/context-prime.md .claude/agents/context-prime.md .codex/agents/context-prime.toml .gemini/agents/context-prime.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nRemove",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The runtime agent surfaces still exposed `@context-prime` even though session startup priming is now handled by the SessionStart hook. That left a redundant bootstrap profile in the visible taxonomy and stale dispatch guidance in orchestrator documentation.",
+    "created_at": "2026-04-12T09:02:53.472Z",
+    "last_save_at": "2026-04-12T09:06:03.516Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

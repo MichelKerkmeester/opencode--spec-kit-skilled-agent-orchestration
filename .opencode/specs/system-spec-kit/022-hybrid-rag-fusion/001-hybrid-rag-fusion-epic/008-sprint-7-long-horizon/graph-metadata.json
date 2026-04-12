@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sprint 7",
+      "long horizon",
+      "memory summaries",
+      "entity linking",
+      "r5 evaluation",
+      "sprint 7 plan",
+      "long horizon plan",
+      "r5 evaluation plan",
+      "sprint 7 tasks",
+      "long horizon tasks",
+      "r5 evaluation tasks",
+      "sprint 7 checklist",
+      "long horizon checklist",
+      "sprint 7 verification",
+      "008-sprint-7-long-horizon implementation summary",
+      "008-sprint-7-long-horizon delivery record"
+    ],
+    "key_topics": [
+      "sprint",
+      "long",
+      "horizon",
+      "memory",
+      "summaries",
+      "entity",
+      "linking",
+      "evaluation",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "s7-ablation-framework.vitest.ts",
+      "s7-reporting-dashboard.vitest.ts",
+      "s7-content-normalizer.vitest.ts",
+      "mcp_server/lib/search/memory-summaries.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/lib/parsing/memory-parser.ts",
+      "mcp_server/lib/search/entity-linker.ts",
+      "mcp_server/lib/storage/causal-edges.ts",
+      "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+      "mcp_server/lib/eval/ablation-framework.ts",
+      "mcp_server/lib/search/vector-index.ts",
+      "9 - analysis-pageindex-systems-architecture.md",
+      "9 - recommendations-pageindex-patterns-for-speckit.md",
+      "9 - pageindex-tree-search-analysis.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "content-normalizer.ts",
+      "memory-save.ts"
+    ],
+    "entities": [
+      {
+        "name": "s7-ablation-framework.vitest.ts",
+        "kind": "test",
+        "path": "s7-ablation-framework.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "s7-reporting-dashboard.vitest.ts",
+        "kind": "test",
+        "path": "s7-reporting-dashboard.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "s7-content-normalizer.vitest.ts",
+        "kind": "test",
+        "path": "s7-content-normalizer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-summaries.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/memory-summaries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-telemetry.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ablation-framework.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/ablation-framework.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "9 - analysis-pageindex-systems-architecture.md",
+        "kind": "doc",
+        "path": "9 - analysis-pageindex-systems-architecture.md",
+        "source": "derived"
+      },
+      {
+        "name": "9 - recommendations-pageindex-patterns-for-speckit.md",
+        "kind": "doc",
+        "path": "9 - recommendations-pageindex-patterns-for-speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "9 - pageindex-tree-search-analysis.md",
+        "kind": "doc",
+        "path": "9 - pageindex-tree-search-analysis.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 8** of the Hybrid RAG Fusion Refinement specification.",
+    "created_at": "2026-04-12T09:02:50.230Z",
+    "last_save_at": "2026-04-12T09:06:00.359Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

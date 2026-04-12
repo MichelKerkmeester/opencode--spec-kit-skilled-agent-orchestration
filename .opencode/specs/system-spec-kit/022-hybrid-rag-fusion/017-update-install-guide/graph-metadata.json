@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/017-update-install-guide",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "install guide update",
+      "017 install guide",
+      "installation documentation",
+      "mcp install",
+      "plan",
+      "update",
+      "install",
+      "guide",
+      "017",
+      "tasks",
+      "implementation",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "install",
+      "guide",
+      "update",
+      "017",
+      "installation",
+      "documentation",
+      "mcp",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "930"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "package.json",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
+      "validate_document.py",
+      "INSTALL_GUIDE.md.bak",
+      "spec.md",
+      "plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "package.json",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md.bak",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md.bak",
+        "kind": "file",
+        "path": "INSTALL_GUIDE.md.bak",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Install Guide",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\n\nVerify",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The install guide (mcp_server/INSTALL_GUIDE.md, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.",
+    "created_at": "2026-04-12T09:02:50.308Z",
+    "last_save_at": "2026-04-12T09:06:00.442Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

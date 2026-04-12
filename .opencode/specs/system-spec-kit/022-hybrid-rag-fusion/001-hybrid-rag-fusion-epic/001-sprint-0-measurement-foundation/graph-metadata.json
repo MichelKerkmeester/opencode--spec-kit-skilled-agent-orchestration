@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sprint 0",
+      "measurement foundation",
+      "graph id fix",
+      "eval infrastructure",
+      "sprint 0 plan",
+      "measurement foundation plan",
+      "eval infrastructure plan",
+      "sprint 0 tasks",
+      "measurement foundation tasks",
+      "eval infrastructure tasks",
+      "sprint 0 checklist",
+      "measurement foundation checklist",
+      "sprint 0 verification",
+      "001-sprint-0-measurement-foundation implementation summary",
+      "001-sprint-0-measurement-foundation delivery record"
+    ],
+    "key_topics": [
+      "sprint",
+      "measurement",
+      "foundation",
+      "graph",
+      "fix",
+      "eval",
+      "infrastructure",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification",
+      "001-sprint-0-measurement-foundation"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "t004-eval-db.vitest.ts",
+      "t006-eval-metrics.vitest.ts",
+      "t007-ground-truth.vitest.ts",
+      "t008-bm25-baseline.vitest.ts",
+      "t013-eval-the-eval.vitest.ts",
+      "speckit-eval.db",
+      "relevanceWeight=0.2",
+      "search-weights.json",
+      "graph-search-fn.ts",
+      "memory-search.ts",
+      "co-activation.ts",
+      "memory-save.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "t004-eval-db.vitest.ts",
+        "kind": "test",
+        "path": "t004-eval-db.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "t006-eval-metrics.vitest.ts",
+        "kind": "test",
+        "path": "t006-eval-metrics.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "t007-ground-truth.vitest.ts",
+        "kind": "test",
+        "path": "t007-ground-truth.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "t008-bm25-baseline.vitest.ts",
+        "kind": "test",
+        "path": "t008-bm25-baseline.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "t013-eval-the-eval.vitest.ts",
+        "kind": "test",
+        "path": "t013-eval-the-eval.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "speckit-eval.db",
+        "kind": "file",
+        "path": "speckit-eval.db",
+        "source": "derived"
+      },
+      {
+        "name": "relevanceWeight=0.2",
+        "kind": "file",
+        "path": "relevanceWeight=0.2",
+        "source": "derived"
+      },
+      {
+        "name": "search-weights.json",
+        "kind": "config",
+        "path": "search-weights.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "co-activation.ts",
+        "kind": "code",
+        "path": "co-activation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 1** of the Hybrid RAG Fusion Refinement specification.",
+    "created_at": "2026-04-12T09:02:50.225Z",
+    "last_save_at": "2026-04-12T09:06:00.354Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/009-post-save-render-fixes",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "009 post-save render fixes",
+      "memory save render fixes",
+      "canonical sources render lane",
+      "post-save wrapper contract",
+      "009 render fixes plan",
+      "post-save render plan",
+      "009 render tasks",
+      "post-save render tasks",
+      "009 render checklist",
+      "post-save render verification",
+      "009 render adr",
+      "post-save render decisions",
+      "009 implementation summary",
+      "post-save render fixes closeout"
+    ],
+    "key_topics": [
+      "009",
+      "post-save",
+      "render",
+      "fixes",
+      "memory",
+      "save",
+      "canonical",
+      "sources",
+      "lane",
+      "wrapper",
+      "contract",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/core/title-builder.ts",
+      "generate-context.ts",
+      "scripts/extractors/session-extractor.ts",
+      "scripts/extractors/collect-session-data.ts",
+      "scripts/extractors/file-extractor.ts",
+      "topic-extractor.ts",
+      "scripts/core/workflow.ts",
+      "scripts/core/memory-metadata.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/title-builder.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/frontmatter-editor.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/quality-scorer.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/quality-scorer.ts",
+      ".opencode/skill/system-spec-kit/templates/context_template.md",
+      "workflow.ts"
+    ],
+    "entities": [
+      {
+        "name": "title-builder.ts",
+        "kind": "code",
+        "path": "scripts/core/title-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "topic-extractor.ts",
+        "kind": "code",
+        "path": "topic-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-metadata.ts",
+        "kind": "code",
+        "path": "scripts/core/memory-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "title-builder.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/title-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "frontmatter-editor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/frontmatter-editor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-metadata.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet `009-post-save-render-fixes` repairs the nine systematic render-layer defects still visible in the 2026-04-09 `014-code-graph-upgrades` memory saves: filename-garbage titles, empty canonical sources, zeroed file counts, prose-bigram trigger noise, duplicated distinguishing evidence, stale phase and status capture, missing causal link auto-population, self-referential `parent_spec`, and the unresolved two-scorer naming conflict. The goal is to make fresh memory saves honestly satisfy the compact-wrapper contract defined by the sibling `001/.../006-research-memory-redundancy` packet without reopening the wrapper-template body or the Phase 6 sanitizer and duplication-review work that shipped in commit `7f0c0572a`. [SOURCE: ../../014-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md:2-35] [SOURCE: ../../014-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:2-39] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/spec.md:44-58] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]",
+    "created_at": "2026-04-12T09:02:53.463Z",
+    "last_save_at": "2026-04-12T09:06:03.507Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

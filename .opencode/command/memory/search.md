@@ -108,6 +108,7 @@ The unified context tool runs a hybrid retrieval pipeline with **graph-first rou
 
 - `/spec_kit:resume` is the recovery surface for session continuation.
 - Resume-oriented retrieval follows `handover.md -> _memory.continuity -> spec docs`.
+- Packet-oriented retrieval may additionally use indexed `document_type='graph_metadata'` rows for dependency, supersession, related-packet, and key-file signals.
 - `find_spec` and `find_decision` should resolve against canonical spec docs and anchors, not against standalone continuity artifacts.
 
 ---

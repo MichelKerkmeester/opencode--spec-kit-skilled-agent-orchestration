@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "result recovery",
+      "explainability",
+      "response profile",
+      "confidence scoring",
+      "progressive disclosure",
+      "session state",
+      "022",
+      "hybrid",
+      "rag",
+      "fusion",
+      "001",
+      "plan",
+      "005",
+      "retrieval",
+      "tasks"
+    ],
+    "key_topics": [
+      "result",
+      "recovery",
+      "explainability",
+      "response",
+      "profile",
+      "confidence",
+      "scoring",
+      "progressive",
+      "disclosure",
+      "session",
+      "state",
+      "022"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "search-results.ts",
+      "envelope.ts",
+      "stage2-fusion.ts",
+      "why.summary",
+      "memory-context.ts",
+      "memory-search.ts",
+      "confidence-scoring.ts",
+      "data.results",
+      "data.progressiveDisclosure",
+      "session-state.ts",
+      "data.sessionState",
+      "data.goalRefinement",
+      "debug.enabled",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "envelope.ts",
+        "kind": "code",
+        "path": "envelope.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "why.summary",
+        "kind": "file",
+        "path": "why.summary",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-scoring.ts",
+        "kind": "code",
+        "path": "confidence-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data.results",
+        "kind": "file",
+        "path": "data.results",
+        "source": "derived"
+      },
+      {
+        "name": "data.progressiveDisclosure",
+        "kind": "file",
+        "path": "data.progressiveDisclosure",
+        "source": "derived"
+      },
+      {
+        "name": "session-state.ts",
+        "kind": "code",
+        "path": "session-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data.sessionState",
+        "kind": "file",
+        "path": "data.sessionState",
+        "source": "derived"
+      },
+      {
+        "name": "data.goalRefinement",
+        "kind": "file",
+        "path": "data.goalRefinement",
+        "source": "derived"
+      },
+      {
+        "name": "debug.enabled",
+        "kind": "file",
+        "path": "debug.enabled",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The D5 research agent found the system already has basic empty-result handling, trace envelopes, session transition trace, token budgets, session dedup, and evidence-gap detection. The gap is not raw capability but shaping these signals into an **AI-caller-friendly DECISION CONTRACT** — structured payloads that let the calling AI make informed decisions about retries, abstention, follow-up queries, and presentation depth without parsing free-text or guessing.",
+    "created_at": "2026-04-12T09:02:50.236Z",
+    "last_save_at": "2026-04-12T09:06:00.365Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

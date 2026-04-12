@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "spec",
+      "002",
+      "contamination",
+      "implementatio",
+      "plan",
+      "tasks",
+      "conta",
+      "verifica",
+      "checklist",
+      "implementation",
+      "summary",
+      "detection"
+    ],
+    "key_topics": [
+      "feature",
+      "spec",
+      "002",
+      "contamination",
+      "implementatio",
+      "plan",
+      "tasks",
+      "conta",
+      "verifica",
+      "checklist",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/memory/validate-memory-quality.ts",
+      "scripts/lib/content-filter.ts",
+      "noise.patterns",
+      "scripts/extractors/contamination-filter.ts",
+      "scripts/core/workflow.ts",
+      "metadata.json",
+      "scripts/tests/task-enrichment.vitest.ts",
+      "workflow.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --config ../mcp_server/vitest.config.ts",
+      "node scripts/tests/test-memory-quality-lane.js",
+      "memory/metadata.json",
+      "content-filter.ts",
+      "validate-memory-quality.ts",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/memory/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "content-filter.ts",
+        "kind": "code",
+        "path": "scripts/lib/content-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "noise.patterns",
+        "kind": "file",
+        "path": "noise.patterns",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": "scripts/extractors/contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "task-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/task-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-memory-quality-lane.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-memory-quality-lane.js",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "memory/metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "content-filter.ts",
+        "kind": "code",
+        "path": "content-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.268Z",
+    "last_save_at": "2026-04-12T09:06:00.398Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

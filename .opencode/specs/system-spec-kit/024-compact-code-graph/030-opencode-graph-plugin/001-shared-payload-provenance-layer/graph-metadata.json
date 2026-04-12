@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/001-shared-payload-provenance-layer",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/001-shared-payload-provenance-layer",
+  "parent_id": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "shared payload and provenance layer",
+      "packet 030",
+      "level 3",
+      "shared payload and provenance layer plan",
+      "phase 1 tasks",
+      "payload provenance tasks",
+      "shared payload and provenance layer checklist",
+      "level 3 verification",
+      "shared payload and provenance layer adr",
+      "level 3 decision record",
+      "phase 1 implementation summary",
+      "shared payload provenance implementation"
+    ],
+    "key_topics": [
+      "shared",
+      "payload",
+      "provenance",
+      "layer",
+      "packet",
+      "030",
+      "level",
+      "plan",
+      "phase",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/context/shared-payload.ts",
+      "mcp_server/lib/code-graph/startup-brief.ts",
+      "mcp_server/lib/session/session-snapshot.ts",
+      "mcp_server/handlers/session-resume.ts",
+      "mcp_server/handlers/session-health.ts",
+      "mcp_server/handlers/session-bootstrap.ts",
+      "mcp_server/lib/code-graph/compact-merger.ts",
+      "mcp_server/hooks/claude/compact-inject.ts",
+      "mcp_server/hooks/gemini/compact-cache.ts",
+      "mcp_server/hooks/claude/hook-state.ts",
+      "mcp_server/hooks/claude/shared.ts",
+      "mcp_server/hooks/claude/session-prime.ts",
+      "npx vitest run tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/compact-merger.vitest.ts tests/hook-session-start.vitest.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-health.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-merger.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/compact-merger.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/compact-inject.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-cache.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/gemini/compact-cache.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/shared.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/compact-merger.vitest.ts tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 1 turned a research recommendation into runtime code by introducing one shared payload/provenance contract across startup, recovery, and compaction. The Level 3 repair keeps that same shipped scope intact and adds the architecture context needed for future recovery and review.",
+    "created_at": "2026-04-12T09:02:53.436Z",
+    "last_save_at": "2026-04-12T09:06:03.480Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "mcp readme rewrite",
+      "016 mcp readme",
+      "memory mcp documentation",
+      "mcp server readme",
+      "plan",
+      "rewrite",
+      "memory",
+      "mcp",
+      "readme",
+      "016",
+      "tasks",
+      "implementation",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "mcp",
+      "readme",
+      "rewrite",
+      "016",
+      "memory",
+      "documentation",
+      "server",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "1281"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+      ".opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md.bak",
+      "validate_document.py",
+      "tool-schemas.ts",
+      "scratch/research-brief.md",
+      "README.md.bak",
+      "spec.md",
+      "plan.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+        "source": "derived"
+      },
+      {
+        "name": "SHARED_MEMORY_DATABASE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md.bak",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md.bak",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "research-brief.md",
+        "kind": "doc",
+        "path": "scratch/research-brief.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md.bak",
+        "kind": "file",
+        "path": "README.md.bak",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "FEATURE_CATALOG.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rewrite Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The MCP server README (mcp_server/README.md, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 33 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.",
+    "created_at": "2026-04-12T09:02:50.308Z",
+    "last_save_at": "2026-04-12T09:06:00.441Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

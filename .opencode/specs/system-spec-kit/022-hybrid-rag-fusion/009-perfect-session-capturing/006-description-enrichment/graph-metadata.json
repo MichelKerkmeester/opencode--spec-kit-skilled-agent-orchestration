@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specif",
+      "spec",
+      "006",
+      "description",
+      "implementation",
+      "plan",
+      "tasks",
+      "descri",
+      "verificat",
+      "checklist",
+      "summary",
+      "enrichment"
+    ],
+    "key_topics": [
+      "feature",
+      "specif",
+      "spec",
+      "006",
+      "description",
+      "implementation",
+      "plan",
+      "tasks",
+      "descri",
+      "verificat",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "utils/file-helpers.ts",
+      "quality-scorer.ts",
+      "git-context-extractor.ts",
+      "description-enrichment.vitest.ts",
+      "file-extractor.ts",
+      "test-extractors-loaders.js",
+      "semantic-summarizer.ts",
+      "scripts/extractors/file-extractor.ts",
+      "scripts/core/quality-scorer.ts",
+      "scripts/extractors/git-context-extractor.ts",
+      "scripts/utils/file-helpers.ts",
+      "scripts/types/session-types.ts",
+      "file-helpers.ts",
+      "session-types.ts",
+      "quality-scorer-calibration.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "file-helpers.ts",
+        "kind": "code",
+        "path": "utils/file-helpers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "git-context-extractor.ts",
+        "kind": "code",
+        "path": "git-context-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "description-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "description-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-summarizer.ts",
+        "kind": "code",
+        "path": "semantic-summarizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "scripts/core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "git-context-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/git-context-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-helpers.ts",
+        "kind": "code",
+        "path": "scripts/utils/file-helpers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "scripts/types/session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-helpers.ts",
+        "kind": "code",
+        "path": "file-helpers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": "quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.270Z",
+    "last_save_at": "2026-04-12T09:06:00.401Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

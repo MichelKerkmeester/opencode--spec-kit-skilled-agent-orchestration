@@ -177,7 +177,7 @@ Run the planning workflow: specification, clarification, and technical planning.
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` — Feature description with optional parameters (branch, scope, context)
-**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), plus a refreshed continuity support artifact generated via structured `generate-context.js` input
+**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), a scaffolded root `graph-metadata.json` packet contract, plus a refreshed continuity support artifact generated via structured `generate-context.js` input
 
 > **Level 1 Note:** /spec_kit:plan creates spec.md, plan.md, and tasks.md. For complete Level 1 baseline implementation execution, run /spec_kit:implement after planning or use /spec_kit:complete instead.
 
@@ -199,6 +199,12 @@ $ARGUMENTS
 | 6    | Save Context     | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
 | 7    | Handover Check   | Prompt for session handover  | handover.md (optional)   |
 
+### Packet Graph Metadata
+
+- Packet creation now scaffolds a root `graph-metadata.json` file alongside the canonical spec docs.
+- The file starts with empty `manual.depends_on`, `manual.supersedes`, and `manual.related_to` arrays.
+- Derived fields are intentionally minimal at creation time and are finalized by later canonical save or completion flows.
+
 ---
 
 ## 4. INSTRUCTIONS
@@ -217,7 +223,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 ✅ SpecKit Planning Complete — All 7 steps executed.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), continuity support artifact refreshed
+Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), graph-metadata.json scaffolded, continuity support artifact refreshed
 Ready for: /spec_kit:implement [spec-folder-path]
 STATUS=OK PATH=[spec-folder-path]
 ```

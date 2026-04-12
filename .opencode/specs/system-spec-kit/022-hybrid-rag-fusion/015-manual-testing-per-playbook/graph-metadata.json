@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/001-retrieval",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/002-mutation",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/003-discovery",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/005-lifecycle",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/007-evaluation",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/011-scoring-and-calibration",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/012-query-intelligence",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/013-memory-quality-and-indexing",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/014-pipeline-architecture",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/015-retrieval-enhancements",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/018-ux-hooks",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/019-feature-flag-reference",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/020-feature-flag-reference",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/021-remediation-revalidation",
+    "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "manual testing",
+      "testing playbook",
+      "phase parent",
+      "umbrella spec",
+      "manual testing plan",
+      "testing phases",
+      "playbook execution",
+      "test execution plan",
+      "manual testing tasks",
+      "playbook phase tasks",
+      "umbrella test tasks",
+      "manual testing checklist",
+      "playbook verification",
+      "umbrella checklist",
+      "manual testing implementation summary",
+      "playbook umbrella summary",
+      "phase documentation complete"
+    ],
+    "key_topics": [
+      "manual",
+      "testing",
+      "playbook",
+      "phase",
+      "parent",
+      "umbrella",
+      "spec",
+      "plan",
+      "phases",
+      "execution",
+      "test",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "context-server.ts",
+      "learned-combiner.ts",
+      "matrix-math.ts",
+      "shared/index.ts",
+      "stage2-fusion.ts",
+      "anchor-metadata.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "review-report.md",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md"
+    ],
+    "entities": [
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-combiner.ts",
+        "kind": "code",
+        "path": "learned-combiner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "matrix-math.ts",
+        "kind": "code",
+        "path": "matrix-math.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "shared/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "anchor-metadata.vitest.ts",
+        "kind": "test",
+        "path": "anchor-metadata.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "07-ast-level-section-retrieval-tool.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md",
+        "source": "derived"
+      },
+      {
+        "name": "09-tool-result-extraction-to-working-memory.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "11-session-recovery-spec-kit-resume.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.",
+    "created_at": "2026-04-12T09:02:50.288Z",
+    "last_save_at": "2026-04-12T09:06:00.422Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

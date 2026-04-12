@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "078",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "test",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "078",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "test",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/tests/test-session-learning.js",
+      "mcp_server/tests/test-memory-handlers.js",
+      "mcp_server/tests/test-cognitive-integration.js",
+      "scripts/tests/test-validation-system.js",
+      "scripts/tests/test-template-comprehensive.js",
+      "scripts/tests/test_dual_threshold.py",
+      "scripts/tests/test-extractors-loaders.js",
+      "scripts/tests/test-five-checks.js",
+      "mcp_server/tests/test-validation-system.js",
+      "mcp_server/tests/test-template-comprehensive.js",
+      "pytest scripts/tests/test_dual_threshold.py",
+      "test-context-server.js",
+      "test-memory-basic.js",
+      "test-checkpoints.js",
+      "test-importance.js",
+      "test-template-generation.js",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "test-session-learning.js"
+    ],
+    "entities": [
+      {
+        "name": "test-session-learning.js",
+        "kind": "code",
+        "path": "mcp_server/tests/test-session-learning.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-memory-handlers.js",
+        "kind": "code",
+        "path": "mcp_server/tests/test-memory-handlers.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-cognitive-integration.js",
+        "kind": "code",
+        "path": "mcp_server/tests/test-cognitive-integration.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation-system.js",
+        "kind": "code",
+        "path": "scripts/tests/test-validation-system.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-template-comprehensive.js",
+        "kind": "code",
+        "path": "scripts/tests/test-template-comprehensive.js",
+        "source": "derived"
+      },
+      {
+        "name": "test_dual_threshold.py",
+        "kind": "file",
+        "path": "scripts/tests/test_dual_threshold.py",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "scripts/tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-five-checks.js",
+        "kind": "code",
+        "path": "scripts/tests/test-five-checks.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation-system.js",
+        "kind": "code",
+        "path": "mcp_server/tests/test-validation-system.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-template-comprehensive.js",
+        "kind": "code",
+        "path": "mcp_server/tests/test-template-comprehensive.js",
+        "source": "derived"
+      },
+      {
+        "name": "test_dual_threshold.py",
+        "kind": "file",
+        "path": "pytest scripts/tests/test_dual_threshold.py",
+        "source": "derived"
+      },
+      {
+        "name": "test-context-server.js",
+        "kind": "code",
+        "path": "test-context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-memory-basic.js",
+        "kind": "code",
+        "path": "test-memory-basic.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-checkpoints.js",
+        "kind": "code",
+        "path": "test-checkpoints.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-importance.js",
+        "kind": "code",
+        "path": "test-importance.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-template-generation.js",
+        "kind": "code",
+        "path": "test-template-generation.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The system-spec-kit has grown to ~10,500 LOC across MCP handlers (2,208 LOC) and scripts (8,500 LOC), but test coverage is incomplete. While 14 existing test files cover ~1,027 tests, critical gaps remain:",
+    "created_at": "2026-04-12T09:02:53.549Z",
+    "last_save_at": "2026-04-12T09:06:03.607Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/006-documentation-alignment",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/006-documentation-alignment",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "documentation",
+      "alignment",
+      "spec",
+      "006",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "documentation",
+      "alignment",
+      "spec",
+      "006",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "session-stop.ts",
+      ".gemini/settings.json",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".claude/settings.local.json",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/README.md",
+      "AGENTS.md",
+      "README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md",
+      ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+      ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+      ".opencode/skill/mcp-coco-index/README.md",
+      ".opencode/skill/mcp-coco-index/SKILL.md",
+      ".opencode/skill/mcp-coco-index/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md",
+      "AGENTS_example_fs_enterprises.md"
+    ],
+    "entities": [
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog_in_simple_terms.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.346Z",
+    "last_save_at": "2026-04-12T09:06:00.482Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

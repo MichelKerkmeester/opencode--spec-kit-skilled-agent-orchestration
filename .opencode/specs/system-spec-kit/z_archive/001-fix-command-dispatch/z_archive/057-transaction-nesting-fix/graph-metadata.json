@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "fix",
+      "sqlite",
+      "transaction",
+      "nesting",
+      "057",
+      "plan",
+      "checklist",
+      "bug"
+    ],
+    "key_topics": [
+      "spec",
+      "fix",
+      "sqlite",
+      "transaction",
+      "nesting",
+      "057",
+      "plan",
+      "checklist",
+      "bug",
+      "mcp",
+      "tool",
+      "fails"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "context-server.js",
+      "vector-index.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
+      ".opencode/skill/system-spec-kit/scripts/test-bug-fixes.js",
+      "test-bug-fixes.js",
+      "node -c vector-index.js",
+      "mcp_server/INSTALL_GUIDE.md",
+      ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
+      "spec.md",
+      "plan.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-bug-fixes.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/test-bug-fixes.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-bug-fixes.js",
+        "kind": "code",
+        "path": "test-bug-fixes.js",
+        "source": "derived"
+      },
+      {
+        "name": "node -c vector-index.js",
+        "kind": "code",
+        "path": "node -c vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": "mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "MCP - Spec Kit Memory.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Transaction Nesting Issue",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pending Verification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Bug Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `memory_index_scan` MCP tool fails with SQLite error:",
+    "created_at": "2026-04-12T09:02:53.536Z",
+    "last_save_at": "2026-04-12T09:06:03.593Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "checklist.md"
+    ]
+  }
+}

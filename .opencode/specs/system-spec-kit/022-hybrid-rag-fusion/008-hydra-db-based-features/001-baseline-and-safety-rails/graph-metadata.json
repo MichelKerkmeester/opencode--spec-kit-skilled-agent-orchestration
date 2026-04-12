@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 1",
+      "baseline and safety rails",
+      "hydra phase 1",
+      "checkpoint safety",
+      "phase 1 plan",
+      "baseline plan",
+      "safety rails plan",
+      "phase 1 tasks",
+      "baseline tasks",
+      "safety rails tasks",
+      "phase 1 checklist",
+      "baseline verification",
+      "safety rails checklist",
+      "phase 1 adr",
+      "baseline decision",
+      "safety rails adr",
+      "phase 1 summary",
+      "baseline summary",
+      "safety rails summary"
+    ],
+    "key_topics": [
+      "phase",
+      "baseline",
+      "safety",
+      "rails",
+      "hydra",
+      "checkpoint",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification",
+      "adr",
+      "decision"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/config/capability-flags.ts",
+      "mcp_server/lib/eval/memory-state-baseline.ts",
+      "mcp_server/scripts/migrations/create-checkpoint.ts",
+      "mcp_server/scripts/migrations/restore-checkpoint.ts",
+      "mcp_server/lib/search/vector-index-schema.ts",
+      "mcp_server/package.json",
+      "npx vitest run tests/memory-roadmap-flags.vitest.ts tests/retrieval-telemetry.vitest.ts tests/adaptive-ranking.vitest.ts tests/memory-governance.vitest.ts tests/shared-spaces.vitest.ts tests/handler-memory-save.vitest.ts",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/eval/memory-state-baseline.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/scripts/migrations/create-checkpoint.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "package.json",
+      "implementation-summary.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "capability-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/config/capability-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-state-baseline.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/memory-state-baseline.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create-checkpoint.ts",
+        "kind": "code",
+        "path": "mcp_server/scripts/migrations/create-checkpoint.ts",
+        "source": "derived"
+      },
+      {
+        "name": "restore-checkpoint.ts",
+        "kind": "code",
+        "path": "mcp_server/scripts/migrations/restore-checkpoint.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-save.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/memory-roadmap-flags.vitest.ts tests/retrieval-telemetry.vitest.ts tests/adaptive-ranking.vitest.ts tests/memory-governance.vitest.ts tests/shared-spaces.vitest.ts tests/handler-memory-save.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-state-baseline.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/eval/memory-state-baseline.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create-checkpoint.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/scripts/migrations/create-checkpoint.ts",
+        "source": "derived"
+      },
+      {
+        "name": "restore-checkpoint.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "package.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + level3-arch + level3plus-govern | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.259Z",
+    "last_save_at": "2026-04-12T09:06:00.388Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

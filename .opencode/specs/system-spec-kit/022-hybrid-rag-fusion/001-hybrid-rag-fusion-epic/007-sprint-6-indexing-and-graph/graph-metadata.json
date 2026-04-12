@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sprint 6",
+      "indexing and graph",
+      "centrality",
+      "consolidation",
+      "entity extraction",
+      "sprint 6 plan",
+      "indexing and graph plan",
+      "consolidation plan",
+      "sprint 6 tasks",
+      "indexing and graph tasks",
+      "consolidation tasks",
+      "sprint 6 checklist",
+      "indexing and graph checklist",
+      "sprint 6 verification",
+      "007-sprint-6-indexing-and-graph implementation summary",
+      "007-sprint-6-indexing-and-graph delivery record"
+    ],
+    "key_topics": [
+      "sprint",
+      "indexing",
+      "graph",
+      "centrality",
+      "consolidation",
+      "entity",
+      "extraction",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification",
+      "007-sprint-6-indexing-and-graph"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "s6-n3lite-consolidation.vitest.ts",
+      "s6-r7-chunk-thinning.vitest.ts",
+      "s6-r16-encoding-intent.vitest.ts",
+      "s6-s4-spec-folder-hierarchy.vitest.ts",
+      "fsrs.ts",
+      "graph-search-fn.ts",
+      "9 - analysis-pageindex-systems-architecture.md",
+      "9 - recommendations-pageindex-patterns-for-speckit.md",
+      "9 - pageindex-tree-search-analysis.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "spec-folder-hierarchy.ts",
+      "memory-save.ts",
+      "MAX_AUTO_STRENGTH=0.5",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "s6-n3lite-consolidation.vitest.ts",
+        "kind": "test",
+        "path": "s6-n3lite-consolidation.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "s6-r7-chunk-thinning.vitest.ts",
+        "kind": "test",
+        "path": "s6-r7-chunk-thinning.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "s6-r16-encoding-intent.vitest.ts",
+        "kind": "test",
+        "path": "s6-r16-encoding-intent.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "s6-s4-spec-folder-hierarchy.vitest.ts",
+        "kind": "test",
+        "path": "s6-s4-spec-folder-hierarchy.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs.ts",
+        "kind": "code",
+        "path": "fsrs.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "9 - analysis-pageindex-systems-architecture.md",
+        "kind": "doc",
+        "path": "9 - analysis-pageindex-systems-architecture.md",
+        "source": "derived"
+      },
+      {
+        "name": "9 - recommendations-pageindex-patterns-for-speckit.md",
+        "kind": "doc",
+        "path": "9 - recommendations-pageindex-patterns-for-speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "9 - pageindex-tree-search-analysis.md",
+        "kind": "doc",
+        "path": "9 - pageindex-tree-search-analysis.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-folder-hierarchy.ts",
+        "kind": "code",
+        "path": "spec-folder-hierarchy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "MAX_AUTO_STRENGTH=0.5",
+        "kind": "file",
+        "path": "MAX_AUTO_STRENGTH=0.5",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + phase-child-header | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.229Z",
+    "last_save_at": "2026-04-12T09:06:00.358Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

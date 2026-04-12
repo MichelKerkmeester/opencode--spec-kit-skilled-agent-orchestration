@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "014-code-graph-upgrades",
+      "code graph upgrades",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "summary"
+    ],
+    "key_topics": [
+      "014-code-graph-upgrades",
+      "code",
+      "graph",
+      "upgrades",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "shared-payload.ts",
+      "spec.md",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/graph-payload-validator.vitest.ts tests/graph-first-routing-nudge.vitest.ts tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/handler-memory-search.vitest.ts tests/publication-gate.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts tests/code-graph-scan.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/detector-regression-floor.vitest.ts.test.ts tests/session-cached-consumer.vitest.ts.test.ts tests/warm-start-bundle-benchmark.vitest.ts.test.ts tests/graph-upgrades-regression-floor.vitest.ts.test.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/structural-trust-axis.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-context-handler.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-scan.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-scan.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts tests/graph-payload-validator.vitest.ts tests/graph-first-routing-nudge.vitest.ts tests/sqlite-fts.vitest.ts tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/handler-memory-search.vitest.ts tests/publication-gate.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts tests/code-graph-scan.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-upgrades-regression-floor.vitest.ts.test.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/detector-regression-floor.vitest.ts.test.ts tests/session-cached-consumer.vitest.ts.test.ts tests/warm-start-bundle-benchmark.vitest.ts.test.ts tests/graph-upgrades-regression-floor.vitest.ts.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scan.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/scan.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-trust-axis.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/structural-trust-axis.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-context-handler.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-context-handler.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-scan.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-scan.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-query-handler.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/code-graph-query-handler.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-payload-certainty.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-payload-validator.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-upgrades-regression-floor.vitest.ts.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Ship the bounded code-graph upgrade lane that improves detector fidelity, graph payload richness, and code-graph-local query ergonomics while explicitly depending on existing trust and routing packets instead of competing with them. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:930-932]",
+    "created_at": "2026-04-12T09:02:53.472Z",
+    "last_save_at": "2026-04-12T09:06:03.515Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

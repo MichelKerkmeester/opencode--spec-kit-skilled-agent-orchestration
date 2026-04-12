@@ -337,6 +337,7 @@ create_versioned_subfolder() {
     mkdir -p "$subfolder_path/scratch"
     touch "$subfolder_path/memory/.gitkeep"
     touch "$subfolder_path/scratch/.gitkeep"
+    create_graph_metadata_file "$subfolder_path" "${FEATURE_DESCRIPTION:-$topic}" "planned"
     
     echo "$subfolder_path"
 }
@@ -348,6 +349,77 @@ resolve_existing_dir() {
         return 1
     fi
     (cd "$dir_path" >/dev/null 2>&1 && pwd -P)
+}
+
+create_graph_metadata_file() {
+    local folder_path="$1"
+    local summary="${2:-}"
+    local status="${3:-planned}"
+    local graph_path="$folder_path/graph-metadata.json"
+
+    if [[ -f "$graph_path" ]]; then
+        return 0
+    fi
+
+    local relative_spec="${folder_path#$SPECS_DIR/}"
+    if [[ "$relative_spec" == "$folder_path" ]]; then
+        relative_spec="${folder_path#${REPO_ROOT}/.opencode/specs/}"
+    fi
+    relative_spec="${relative_spec#./}"
+
+    local parent_name
+    parent_name="$(basename "$(dirname "$folder_path")")"
+    local parent_id="null"
+    if [[ "$parent_name" =~ ^[0-9]{3}(?:[-_].+)?$ ]]; then
+        local parent_rel
+        parent_rel="$(dirname "$relative_spec")"
+        parent_id="\"${parent_rel}\""
+    fi
+
+    local now_iso
+    now_iso="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+    local summary_text="$summary"
+    if [[ -z "$summary_text" ]]; then
+        summary_text="${FEATURE_DESCRIPTION:-Spec folder graph metadata scaffold}"
+    fi
+
+    local source_docs_json='["spec.md","plan.md","tasks.md"]'
+    local key_files_json='["spec.md","plan.md","tasks.md"]'
+    if [[ -f "$folder_path/checklist.md" && -f "$folder_path/decision-record.md" ]]; then
+        source_docs_json='["spec.md","plan.md","tasks.md","checklist.md","decision-record.md"]'
+        key_files_json='["spec.md","plan.md","tasks.md","checklist.md","decision-record.md"]'
+    elif [[ -f "$folder_path/checklist.md" ]]; then
+        source_docs_json='["spec.md","plan.md","tasks.md","checklist.md"]'
+        key_files_json='["spec.md","plan.md","tasks.md","checklist.md"]'
+    fi
+
+    cat > "$graph_path" <<EOF
+{
+  "schema_version": 1,
+  "packet_id": "${relative_spec}",
+  "spec_folder": "${relative_spec}",
+  "parent_id": ${parent_id},
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [],
+    "importance_tier": "important",
+    "status": "${status}",
+    "key_files": ${key_files_json},
+    "entities": [],
+    "causal_summary": "${summary_text//\"/\\\"}",
+    "created_at": "${now_iso}",
+    "last_save_at": "${now_iso}",
+    "last_accessed_at": null,
+    "source_docs": ${source_docs_json}
+  }
+}
+EOF
 }
 
 # Containment check with path boundary semantics.
@@ -655,6 +727,7 @@ if [[ "$PHASE_MODE" = true ]]; then
 
         mkdir -p "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
         touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+        create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
     else
         # ── Branch name generation (shared function) ──
         resolve_branch_name
@@ -664,6 +737,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
         mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
         touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+        create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
         # Copy parent templates based on documentation level
         DOC_LEVEL_NUM="${DOC_LEVEL/+/}"
@@ -858,6 +932,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         # Create child directory structure
         mkdir -p "$_child_path" "$_child_path/memory" "$_child_path/scratch"
         touch "$_child_path/memory/.gitkeep" "$_child_path/scratch/.gitkeep"
+        create_graph_metadata_file "$_child_path" "Phase ${_i}: ${_child_folder#*-}" "planned"
 
         # Copy Level 1 templates to child folder
         for template_file in "$CHILD_LEVEL_DIR"/*.md; do
@@ -1055,6 +1130,7 @@ fi
 
 mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
 touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
 # ───────────────────────────────────────────────────────────────
 # 6. COPY TEMPLATES BASED ON DOCUMENTATION LEVEL

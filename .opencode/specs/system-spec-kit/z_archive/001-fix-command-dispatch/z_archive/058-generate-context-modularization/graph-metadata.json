@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "specification",
+      "generate",
+      "context",
+      "modularization",
+      "spec",
+      "058",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary",
+      "research",
+      "analysis",
+      "session",
+      "handover",
+      "document"
+    ],
+    "key_topics": [
+      "specification",
+      "generate",
+      "context",
+      "modularization",
+      "spec",
+      "058",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "workflow.js",
+      "core/index.js",
+      "collect-session-data.js",
+      "lib/content-filter.js",
+      "lib/semantic-summarizer.js",
+      "lib/anchor-generator.js",
+      "lib/embeddings.js",
+      "lib/retry-manager.js",
+      "lib/simulation-factory.js",
+      "lib/ascii-boxes.js",
+      "lib/flowchart-generator.js",
+      "lib/opencode-capture.js",
+      "lib/trigger-extractor.js",
+      "generate-context.js",
+      "scripts/test-snapshot.sh",
+      "scripts/utils/logger.js",
+      "scripts/utils/path-utils.js",
+      "scripts/utils/data-validator.js",
+      "scripts/utils/index.js",
+      "scripts/utils/input-normalizer.js"
+    ],
+    "entities": [
+      {
+        "name": "workflow.js",
+        "kind": "code",
+        "path": "workflow.js",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": "core/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.js",
+        "kind": "code",
+        "path": "collect-session-data.js",
+        "source": "derived"
+      },
+      {
+        "name": "content-filter.js",
+        "kind": "code",
+        "path": "lib/content-filter.js",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-summarizer.js",
+        "kind": "code",
+        "path": "lib/semantic-summarizer.js",
+        "source": "derived"
+      },
+      {
+        "name": "anchor-generator.js",
+        "kind": "code",
+        "path": "lib/anchor-generator.js",
+        "source": "derived"
+      },
+      {
+        "name": "embeddings.js",
+        "kind": "code",
+        "path": "lib/embeddings.js",
+        "source": "derived"
+      },
+      {
+        "name": "retry-manager.js",
+        "kind": "code",
+        "path": "lib/retry-manager.js",
+        "source": "derived"
+      },
+      {
+        "name": "simulation-factory.js",
+        "kind": "code",
+        "path": "lib/simulation-factory.js",
+        "source": "derived"
+      },
+      {
+        "name": "ascii-boxes.js",
+        "kind": "code",
+        "path": "lib/ascii-boxes.js",
+        "source": "derived"
+      },
+      {
+        "name": "flowchart-generator.js",
+        "kind": "code",
+        "path": "lib/flowchart-generator.js",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-capture.js",
+        "kind": "code",
+        "path": "lib/opencode-capture.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.js",
+        "kind": "code",
+        "path": "lib/trigger-extractor.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-snapshot.sh",
+        "kind": "script",
+        "path": "scripts/test-snapshot.sh",
+        "source": "derived"
+      },
+      {
+        "name": "logger.js",
+        "kind": "code",
+        "path": "scripts/utils/logger.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `generate-context.js` script is a **4,837-line monolithic file** containing 84 functions across 18 sections. This creates several problems:",
+    "created_at": "2026-04-12T09:02:53.536Z",
+    "last_save_at": "2026-04-12T09:06:03.593Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ]
+  }
+}

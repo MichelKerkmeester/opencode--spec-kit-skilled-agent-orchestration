@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deprecated feature remediation",
+      "022 implement and remove deprecated features",
+      "graph calibration",
+      "temporal contiguity",
+      "consumption logger",
+      "spec",
+      "kit",
+      "022",
+      "hybrid",
+      "rag",
+      "plan",
+      "implement",
+      "tasks",
+      "fusion",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "deprecated",
+      "feature",
+      "remediation",
+      "022",
+      "implement",
+      "remove",
+      "features",
+      "graph",
+      "calibration",
+      "temporal",
+      "contiguity",
+      "consumption"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md",
+      "shared/embeddings.ts",
+      "mcp_server/context-server.ts",
+      "mcp_server/lib/eval/shadow-scoring.ts",
+      "mcp_server/lib/scoring/composite-scoring.ts",
+      "mcp_server/lib/search/hybrid-search.ts",
+      ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
+      "mcp_server/lib/search/graph-calibration.ts",
+      "mcp_server/lib/cognitive/temporal-contiguity.ts",
+      "mcp_server/lib/telemetry/consumption-logger.ts",
+      "mcp_server/lib/eval/channel-attribution.ts",
+      "mcp_server/lib/eval/eval-ceiling.ts",
+      "mcp_server/shared/algorithms/fusion-lab.ts",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-category-stub.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md",
+        "source": "derived"
+      },
+      {
+        "name": "embeddings.ts",
+        "kind": "code",
+        "path": "shared/embeddings.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-scoring.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/shadow-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/scoring/composite-scoring.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "01-category-stub.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-calibration.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-calibration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "temporal-contiguity.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/temporal-contiguity.ts",
+        "source": "derived"
+      },
+      {
+        "name": "consumption-logger.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/telemetry/consumption-logger.ts",
+        "source": "derived"
+      },
+      {
+        "name": "channel-attribution.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/channel-attribution.ts",
+        "source": "derived"
+      },
+      {
+        "name": "eval-ceiling.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/eval-ceiling.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet preserves the six remediation targets that closed the `007-code-audit-per-feature-catalog` phase chain: three previously deprecated capabilities that needed release-level verification and three obsolete evaluation/shadow artifacts targeted for retirement. During the 2026-03-25 release-alignment pass, the packet was normalized to reflect its actual role as a release-control tracker, while execution status remains coordinated with the parent release packet at ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md.",
+    "created_at": "2026-04-12T09:02:50.257Z",
+    "last_save_at": "2026-04-12T09:06:00.387Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

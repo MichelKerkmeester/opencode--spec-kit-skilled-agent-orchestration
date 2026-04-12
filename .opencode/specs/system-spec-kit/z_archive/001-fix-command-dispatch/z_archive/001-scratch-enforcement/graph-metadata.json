@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "speckit",
+      "scratch",
+      "folder",
+      "spec",
+      "001",
+      "implementation",
+      "plan",
+      "tasks",
+      "enforcement",
+      "validation",
+      "checklist"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "speckit",
+      "scratch",
+      "folder",
+      "spec",
+      "001",
+      "implementation",
+      "plan",
+      "tasks",
+      "enforcement",
+      "validation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "agents_universal_framework.md",
+      "spec.md",
+      "tasks.md",
+      "research/research.md",
+      "checklist.md",
+      "AGENTS.md",
+      ".opencode/speckit/templates/spec.md",
+      ".opencode/speckit/templates/tasks.md",
+      ".opencode/speckit/templates/research/research/research.md",
+      ".opencode/speckit/templates/checklist.md",
+      ".opencode/commands/spec_kit/complete.md",
+      ".opencode/commands/spec_kit/implement.md",
+      ".opencode/commands/spec_kit/research/research/research.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "agents_universal_framework.md",
+        "kind": "doc",
+        "path": "agents_universal_framework.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/speckit/templates/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/speckit/templates/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": ".opencode/speckit/templates/research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/speckit/templates/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/commands/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": ".opencode/commands/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": ".opencode/commands/spec_kit/research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scratch Folder Enforcement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Complete specification for enforcing scratch folder usage to prevent root folder pollution.",
+    "created_at": "2026-04-12T09:02:53.506Z",
+    "last_save_at": "2026-04-12T09:06:03.556Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

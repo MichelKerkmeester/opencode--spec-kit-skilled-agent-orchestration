@@ -181,6 +181,7 @@ const CANONICAL_SPEC_DOC_DOCUMENT_TYPES = new Set([
   'implementation_summary',
   'research',
   'handover',
+  'graph_metadata',
   'spec_doc',
 ]);
 const NON_CANONICAL_DOCUMENT_TYPES = new Set([

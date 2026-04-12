@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/025-mcp-runtime-hardening",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "mcp runtime hardening",
+      "db dimension integrity tests",
+      "lifecycle coverage tests",
+      "provider log sanitization",
+      "025 follow-on",
+      "mcp runtime hardening plan",
+      "025 implementation plan",
+      "025 mcp hardening tasks",
+      "runtime hardening tasks",
+      "025 mcp hardening checklist",
+      "runtime hardening verification",
+      "025 mcp hardening summary",
+      "runtime hardening implementation"
+    ],
+    "key_topics": [
+      "mcp",
+      "runtime",
+      "hardening",
+      "dimension",
+      "integrity",
+      "tests",
+      "lifecycle",
+      "coverage",
+      "provider",
+      "log",
+      "sanitization",
+      "025"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "data.error",
+      "data.details",
+      "lib/utils/cleanup-helpers.ts",
+      "mcp_server/tests/db-dimension-integrity.vitest.ts",
+      "mcp_server/tests/lifecycle-shutdown.vitest.ts",
+      "mcp_server/tests/stage2b-enrichment-extended.vitest.ts",
+      "mcp_server/tests/error-sanitization.vitest.ts",
+      "mcp_server/lib/errors/core.ts",
+      "mcp_server/lib/utils/cleanup-helpers.ts",
+      "mcp_server/context-server.ts",
+      ".opencode/specs/descriptions.json",
+      "lib/errors/core.ts",
+      "db-dimension-integrity.vitest.ts",
+      "context-server.ts",
+      "lifecycle-shutdown.vitest.ts",
+      "stage2b-enrichment-extended.vitest.ts",
+      "cleanup-helpers.ts",
+      "tests/db-dimension-integrity.vitest.ts",
+      "tests/lifecycle-shutdown.vitest.ts",
+      "tests/stage2b-enrichment-extended.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "data.error",
+        "kind": "file",
+        "path": "data.error",
+        "source": "derived"
+      },
+      {
+        "name": "data.details",
+        "kind": "file",
+        "path": "data.details",
+        "source": "derived"
+      },
+      {
+        "name": "cleanup-helpers.ts",
+        "kind": "code",
+        "path": "lib/utils/cleanup-helpers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "db-dimension-integrity.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/db-dimension-integrity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-shutdown.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/lifecycle-shutdown.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2b-enrichment-extended.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/stage2b-enrichment-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "error-sanitization.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/error-sanitization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "core.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/errors/core.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cleanup-helpers.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/utils/cleanup-helpers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": ".opencode/specs/descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "core.ts",
+        "kind": "code",
+        "path": "lib/errors/core.ts",
+        "source": "derived"
+      },
+      {
+        "name": "db-dimension-integrity.vitest.ts",
+        "kind": "test",
+        "path": "db-dimension-integrity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-shutdown.vitest.ts",
+        "kind": "test",
+        "path": "lifecycle-shutdown.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2b-enrichment-extended.vitest.ts",
+        "kind": "test",
+        "path": "stage2b-enrichment-extended.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `024-codex-memory-mcp-fix` packet documented six follow-on recommendations (T020-T025) for runtime hardening, but none were implemented. Key gaps: no integration tests for custom-path DB + embedding-dimension mismatch; no lifecycle tests for shutdown sequencing or tool-cache invalidation; `buildErrorResponse()` passes unsanitized provider error messages to callers; and launcher docs lack consolidated MEMORY_DB_PATH and clean-transport guidance.",
+    "created_at": "2026-04-12T09:02:50.314Z",
+    "last_save_at": "2026-04-12T09:06:00.448Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "agents md alignment",
+      "014 agents md alignment",
+      "agents.md quick reference",
+      "memory command table",
+      "014 plan",
+      "agents md plan",
+      "014 tasks",
+      "014 checklist",
+      "014 summary",
+      "014 implementation"
+    ],
+    "key_topics": [
+      "agents",
+      "alignment",
+      "014",
+      "quick",
+      "reference",
+      "memory",
+      "command",
+      "table",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "AGENTS.md",
+      "Opencode Env/Public/AGENTS.md",
+      "AGENTS_example_fs_enterprises.md",
+      "Opencode Env/Public/AGENTS_example_fs_enterprises.md",
+      "Opencode Env/Barter/coder/AGENTS.md",
+      "CLAUDE.md",
+      "Opencode Env/Public/CLAUDE.md",
+      "validate_document.py",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "Opencode Env/Public/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS_example_fs_enterprises.md",
+        "kind": "doc",
+        "path": "AGENTS_example_fs_enterprises.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS_example_fs_enterprises.md",
+        "kind": "doc",
+        "path": "Opencode Env/Public/AGENTS_example_fs_enterprises.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "Opencode Env/Barter/coder/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "Opencode Env/Public/CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quick Reference Tables",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Align Quick Reference",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 4-command memory surface. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand and the nested `/memory:manage shared` shared-memory lifecycle route. The retrieval row still points at the retired analyze command name instead of `/memory:search`. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.",
+    "created_at": "2026-04-12T09:02:50.287Z",
+    "last_save_at": "2026-04-12T09:06:00.421Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

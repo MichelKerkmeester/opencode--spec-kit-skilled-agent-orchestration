@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/008-create-sh-phase-parent",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase parent alias",
+      "nested phase append",
+      "create sh nested specs",
+      "phase-parent planning",
+      "create sh phase parent plan",
+      "nested phase append plan",
+      "phase-parent alias plan",
+      "phase parent tasks",
+      "nested append task list",
+      "create sh phase planning tasks",
+      "phase 008 checklist",
+      "create sh nested append verification",
+      "phase-parent planning checklist",
+      "phase-parent adr",
+      "create sh nested append decision",
+      "parent-derived resolution adr",
+      "phase 008 implementation summary",
+      "create sh nested append status",
+      "phase 008 nested append summary"
+    ],
+    "key_topics": [
+      "phase",
+      "parent",
+      "alias",
+      "nested",
+      "append",
+      "create",
+      "specs",
+      "phase-parent",
+      "planning",
+      "plan",
+      "tasks",
+      "task"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+      "create.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Append Nested Child Phases",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The phase creation workflow breaks when the parent folder lives inside a nested spec tree such as `system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion`. Today there is no `--phase-parent` flag, `--parent` is the only supported flag in phase mode, `resolve_and_validate_spec_path()` validates only the basename against `^[0-9]{3}-[A-Za-z0-9._-]+$`, and `SPECS_DIR` always points to `$REPO_ROOT/specs`. That combination makes append behavior fragile or wrong for `.opencode/specs` phase work.",
+    "created_at": "2026-04-12T09:02:50.337Z",
+    "last_save_at": "2026-04-12T09:06:00.465Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

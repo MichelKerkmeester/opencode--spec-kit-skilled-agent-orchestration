@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "kit",
+      "bug",
+      "remediation",
+      "080",
+      "speckit",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "implementation",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "spec",
+      "kit",
+      "bug",
+      "remediation",
+      "080",
+      "speckit",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "lib/cognitive/tier-classifier.js",
+      "lib/cognitive/prediction-error-gate.js",
+      "lib/cognitive/working-memory.js",
+      "lib/cognitive/co-activation.js",
+      "lib/cognitive/attention-decay.js",
+      "lib/search/vector-index.js",
+      "lib/storage/checkpoints.js",
+      "lib/storage/history.js",
+      "lib/scoring/composite-scoring.js",
+      "lib/parsing/memory-parser.js",
+      "lib/parsing/trigger-matcher.js",
+      "lib/parsing/entity-scope.js",
+      "lib/errors.js",
+      "shared/trigger-extractor.js",
+      "handlers/memory-crud.js",
+      "handlers/memory-save.js",
+      "handlers/memory-search.js",
+      "formatters/search-results.js",
+      "MEDIUM_MATCH: 0.70",
+      "LOW_MATCH: 0.70"
+    ],
+    "entities": [
+      {
+        "name": "tier-classifier.js",
+        "kind": "code",
+        "path": "lib/cognitive/tier-classifier.js",
+        "source": "derived"
+      },
+      {
+        "name": "prediction-error-gate.js",
+        "kind": "code",
+        "path": "lib/cognitive/prediction-error-gate.js",
+        "source": "derived"
+      },
+      {
+        "name": "working-memory.js",
+        "kind": "code",
+        "path": "lib/cognitive/working-memory.js",
+        "source": "derived"
+      },
+      {
+        "name": "co-activation.js",
+        "kind": "code",
+        "path": "lib/cognitive/co-activation.js",
+        "source": "derived"
+      },
+      {
+        "name": "attention-decay.js",
+        "kind": "code",
+        "path": "lib/cognitive/attention-decay.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.js",
+        "kind": "code",
+        "path": "lib/storage/checkpoints.js",
+        "source": "derived"
+      },
+      {
+        "name": "history.js",
+        "kind": "code",
+        "path": "lib/storage/history.js",
+        "source": "derived"
+      },
+      {
+        "name": "composite-scoring.js",
+        "kind": "code",
+        "path": "lib/scoring/composite-scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.js",
+        "kind": "code",
+        "path": "lib/parsing/memory-parser.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-matcher.js",
+        "kind": "code",
+        "path": "lib/parsing/trigger-matcher.js",
+        "source": "derived"
+      },
+      {
+        "name": "entity-scope.js",
+        "kind": "code",
+        "path": "lib/parsing/entity-scope.js",
+        "source": "derived"
+      },
+      {
+        "name": "errors.js",
+        "kind": "code",
+        "path": "lib/errors.js",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-extractor.js",
+        "kind": "code",
+        "path": "shared/trigger-extractor.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-crud.js",
+        "kind": "code",
+        "path": "handlers/memory-crud.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.js",
+        "kind": "code",
+        "path": "handlers/memory-save.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive audit by 10 parallel Opus agents identified **45+ bugs** across the Spec Kit MCP server codebase. Issues range from critical data corruption risks to ReDoS vulnerabilities and logic errors that affect memory ranking, caching, and cognitive algorithms.",
+    "created_at": "2026-04-12T09:02:53.551Z",
+    "last_save_at": "2026-04-12T09:06:03.610Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

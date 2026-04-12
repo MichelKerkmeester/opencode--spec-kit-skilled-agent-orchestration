@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
+      "@spec-kit/mcp-server/api": ["../mcp_server/api/index.ts"],
       "@spec-kit/shared/*": ["../shared/*"],
       "@spec-kit/mcp-server/*": ["../mcp_server/*"]
     }
@@ -20,6 +21,7 @@
     "core/**/*.ts",
     "evals/**/*.ts",
     "extractors/**/*.ts",
+    "graph/**/*.ts",
     "lib/**/*.ts",
     "loaders/**/*.ts",
     "memory/**/*.ts",

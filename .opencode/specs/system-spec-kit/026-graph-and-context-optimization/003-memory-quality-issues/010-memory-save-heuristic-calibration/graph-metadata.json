@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/010-memory-save-heuristic-calibration",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/010-memory-save-heuristic-calibration",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010 memory save heuristic calibration",
+      "memory save quality gates remediation",
+      "d5 continuation calibration",
+      "v8 v12 validator calibration",
+      "010 heuristic calibration plan",
+      "memory save calibration plan",
+      "010 heuristic calibration tasks",
+      "memory save calibration tasks",
+      "010 heuristic calibration checklist",
+      "memory save calibration verification",
+      "010 heuristic calibration adr",
+      "memory save calibration decisions",
+      "010 heuristic calibration implementation summary",
+      "memory save calibration summary"
+    ],
+    "key_topics": [
+      "010",
+      "memory",
+      "save",
+      "heuristic",
+      "calibration",
+      "quality",
+      "gates",
+      "remediation",
+      "continuation",
+      "v12",
+      "validator",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "input-normalizer.ts",
+      "session-types.ts",
+      "workflow.ts",
+      "memory-metadata.ts",
+      "memory-save-title-description-override.vitest.ts",
+      "trigger-phrase-sanitizer.ts",
+      "trigger-phrase-sanitizer-manual-preservation.vitest.ts",
+      "trigger-phrase-filter.vitest.ts",
+      "validate-memory-quality.ts",
+      "validate-memory-quality-v8-regex-narrow.vitest.ts",
+      "validate-memory-quality-v12-normalization.vitest.ts",
+      "find-predecessor-memory.ts",
+      "post-save-review.ts",
+      "memory-save-d5-continuation-and-causal-links.vitest.ts",
+      "decision-extractor.ts",
+      "memory-quality-phase1.vitest.ts",
+      "input-normalizer-unit.vitest.ts",
+      "memory-quality-phase3-pr5.vitest.ts",
+      "post-save-review.vitest.ts",
+      "task-enrichment.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-metadata.ts",
+        "kind": "code",
+        "path": "memory-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-title-description-override.vitest.ts",
+        "kind": "test",
+        "path": "memory-save-title-description-override.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-phrase-sanitizer.ts",
+        "kind": "code",
+        "path": "trigger-phrase-sanitizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-phrase-sanitizer-manual-preservation.vitest.ts",
+        "kind": "test",
+        "path": "trigger-phrase-sanitizer-manual-preservation.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trigger-phrase-filter.vitest.ts",
+        "kind": "test",
+        "path": "trigger-phrase-filter.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality-v8-regex-narrow.vitest.ts",
+        "kind": "test",
+        "path": "validate-memory-quality-v8-regex-narrow.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality-v12-normalization.vitest.ts",
+        "kind": "test",
+        "path": "validate-memory-quality-v12-normalization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "find-predecessor-memory.ts",
+        "kind": "code",
+        "path": "find-predecessor-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": "post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-d5-continuation-and-causal-links.vitest.ts",
+        "kind": "test",
+        "path": "memory-save-d5-continuation-and-causal-links.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase1.vitest.ts",
+        "kind": "test",
+        "path": "memory-quality-phase1.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet `010-memory-save-heuristic-calibration` closes the defects that remained after `009-post-save-render-fixes`: structured JSON saves still reject explicit `title`, `description`, and `causalLinks`; manual DR finding IDs can still be dropped by the trigger sanitizer; V8 and V12 validators still misclassify real saves; D5 continuation logic still drifts between linker and reviewer; and `decision-extractor.ts` still contains raw truncation callsites that research marked for shared-helper migration. The packet owns the full end-to-end remediation: runtime source, regression tests, `dist/` rebuild, strict packet validation, and a real wild save against the `026-graph-and-context-optimization` parent folder. [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:5-18] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:25-41] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:69-136]",
+    "created_at": "2026-04-12T09:02:53.464Z",
+    "last_save_at": "2026-04-12T09:06:03.508Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

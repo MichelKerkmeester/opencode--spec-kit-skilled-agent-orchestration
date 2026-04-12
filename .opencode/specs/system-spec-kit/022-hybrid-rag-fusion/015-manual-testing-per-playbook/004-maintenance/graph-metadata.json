@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "maintenance manual testing",
+      "phase 004 maintenance",
+      "ex-014 ex-035 ex-041 ex-042 ex-043 ex-044 ex-045",
+      "memory_index_scan startup guards test",
+      "memory_update memory_delete test",
+      "bulk delete health check index repair",
+      "maintenance phase execution plan",
+      "phase 004 plan",
+      "ex-014 ex-035 execution",
+      "maintenance phase tasks",
+      "phase 004 tasks",
+      "ex-014 ex-035 tasks",
+      "maintenance checklist",
+      "phase 004 checklist",
+      "ex-014 ex-035 checklist",
+      "maintenance implementation summary",
+      "phase 004 results",
+      "ex-014 ex-035 results"
+    ],
+    "key_topics": [
+      "maintenance",
+      "manual",
+      "testing",
+      "phase",
+      "004",
+      "ex-014",
+      "ex-035",
+      "ex-041",
+      "ex-042",
+      "ex-043",
+      "ex-044",
+      "ex-045"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "startup-checks.vitest.ts",
+      "fs.writeFileSync",
+      "process.versions.modules",
+      "console.warn",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "handlers/memory-index.ts",
+      "lib/storage/incremental-index.ts",
+      "handler-memory-index.vitest.ts",
+      "handler-memory-index-cooldown.vitest.ts",
+      "incremental-index-v2.vitest.ts",
+      "startup-checks.ts",
+      "tests/startup-checks.vitest.ts",
+      "npx vitest run tests/startup-checks.vitest.ts",
+      "context-server.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/035-startup-runtime-compatibility-guards.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/042-spec-folder-description-discovery-pi-b3.md"
+    ],
+    "entities": [
+      {
+        "name": "startup-checks.vitest.ts",
+        "kind": "test",
+        "path": "startup-checks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fs.writeFileSync",
+        "kind": "file",
+        "path": "fs.writeFileSync",
+        "source": "derived"
+      },
+      {
+        "name": "process.versions.modules",
+        "kind": "file",
+        "path": "process.versions.modules",
+        "source": "derived"
+      },
+      {
+        "name": "console.warn",
+        "kind": "file",
+        "path": "console.warn",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": "handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "incremental-index.ts",
+        "kind": "code",
+        "path": "lib/storage/incremental-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-index.vitest.ts",
+        "kind": "test",
+        "path": "handler-memory-index.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-index-cooldown.vitest.ts",
+        "kind": "test",
+        "path": "handler-memory-index-cooldown.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "incremental-index-v2.vitest.ts",
+        "kind": "test",
+        "path": "incremental-index-v2.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-checks.ts",
+        "kind": "code",
+        "path": "startup-checks.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-checks.vitest.ts",
+        "kind": "test",
+        "path": "tests/startup-checks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-checks.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/startup-checks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The seven maintenance scenarios (EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, EX-045) require fresh manual execution to verify that memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair behave as specified by the canonical playbook. The five new scenarios (EX-041 through EX-045) expand coverage to state-mutating maintenance operations and diagnostic repair workflows.",
+    "created_at": "2026-04-12T09:02:50.291Z",
+    "last_save_at": "2026-04-12T09:06:00.425Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

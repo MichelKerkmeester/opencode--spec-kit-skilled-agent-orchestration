@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "post",
+      "release",
+      "refinement",
+      "infrastructure",
+      "bug",
+      "spec",
+      "046",
+      "implementation",
+      "plan",
+      "task",
+      "breakdown",
+      "tasks",
+      "validation",
+      "checklist",
+      "decision",
+      "record",
+      "decision record"
+    ],
+    "key_topics": [
+      "post",
+      "release",
+      "refinement",
+      "infrastructure",
+      "bug",
+      "spec",
+      "046",
+      "implementation",
+      "plan",
+      "task",
+      "breakdown",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".utcp_config.json",
+      "system-spec-kit/SKILL.md",
+      "validate-spec-folder.js",
+      "validate-memory-file.js",
+      "skill_advisor.py",
+      "mcp-chrome-devtools/SKILL.md",
+      "sk-git/SKILL.md",
+      "scratch/backups/pre-refinement.sqlite",
+      ".utcp_config.json.backup",
+      "checkpoints.js",
+      "vector-index.js",
+      "confidence-tracker.js",
+      "context-server.js",
+      "workflows-code/SKILL.md",
+      "AGENTS.md",
+      "search/index.md",
+      "generate-context.js",
+      "check-files.sh",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/checkpoints.js",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js"
+    ],
+    "entities": [
+      {
+        "name": ".utcp_config.json",
+        "kind": "config",
+        "path": ".utcp_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate-spec-folder.js",
+        "kind": "code",
+        "path": "validate-spec-folder.js",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-file.js",
+        "kind": "code",
+        "path": "validate-memory-file.js",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "mcp-chrome-devtools/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "sk-git/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "pre-refinement.sqlite",
+        "kind": "file",
+        "path": "scratch/backups/pre-refinement.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": ".utcp_config.json.backup",
+        "kind": "file",
+        "path": ".utcp_config.json.backup",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.js",
+        "kind": "code",
+        "path": "checkpoints.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-tracker.js",
+        "kind": "code",
+        "path": "confidence-tracker.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "workflows-code/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "index.md",
+        "kind": "doc",
+        "path": "search/index.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematically address all bugs, misalignments, and technical debt identified during the comprehensive 20-agent deep dive analysis of the OpenCode infrastructure. This includes fixes for the Memory MCP Server, Spec-Kit scripts, Skills system, Commands, and cross-system integration issues.",
+    "created_at": "2026-04-12T09:02:53.529Z",
+    "last_save_at": "2026-04-12T09:06:03.584Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
+  }
+}

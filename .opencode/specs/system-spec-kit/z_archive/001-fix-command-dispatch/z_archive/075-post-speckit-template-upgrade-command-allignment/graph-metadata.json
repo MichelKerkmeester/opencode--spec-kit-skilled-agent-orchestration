@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "076",
+      "post",
+      "speckit",
+      "template",
+      "075",
+      "plan",
+      "upgrade",
+      "tasks",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "research",
+      "summary"
+    ],
+    "key_topics": [
+      "spec",
+      "076",
+      "post",
+      "speckit",
+      "template",
+      "075",
+      "plan",
+      "upgrade",
+      "tasks",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "folder-scoring.js",
+      "compose.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "folder-scoring.js",
+        "kind": "code",
+        "path": "folder-scoring.js",
+        "source": "derived"
+      },
+      {
+        "name": "compose.sh",
+        "kind": "script",
+        "path": "compose.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Command Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\n\nComprehensive",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary\n\nMulti",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Synthesis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive analysis of specs 072-075 in 003-memory-and-spec-kit combined with current system-spec-kit state to determine command alignment needs.",
+    "created_at": "2026-04-12T09:02:53.546Z",
+    "last_save_at": "2026-04-12T09:06:03.604Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "research/research.md"
+    ]
+  }
+}

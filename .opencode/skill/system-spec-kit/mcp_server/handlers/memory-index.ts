@@ -26,6 +26,7 @@ import * as vectorIndex from '../lib/search/vector-index.js';
 import { runPostMutationHooks } from './mutation-hooks.js';
 import {
   findConstitutionalFiles,
+  findGraphMetadataFiles,
   findSpecDocuments,
   detectSpecLevel,
 } from './memory-index-discovery.js';
@@ -212,6 +213,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   const specFiles: string[] = memoryParser.findMemoryFiles(workspacePath, { specFolder: spec_folder });
   const constitutionalFiles: string[] = include_constitutional ? findConstitutionalFiles(workspacePath) : [];
   const specDocFiles: string[] = include_spec_docs ? findSpecDocuments(workspacePath, { specFolder: spec_folder }) : [];
+  const graphMetadataFiles: string[] = include_spec_docs ? findGraphMetadataFiles(workspacePath, { specFolder: spec_folder }) : [];
 
   const canonicalKeyCache = new Map<string, string>();
   const getCachedKey = (filePath: string): string => {
@@ -225,7 +227,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     return canonicalKey;
   };
 
-  const mergedFiles = [...specFiles, ...constitutionalFiles, ...specDocFiles];
+  const mergedFiles = [...specFiles, ...constitutionalFiles, ...specDocFiles, ...graphMetadataFiles];
   const specDocKeySet = new Set(specDocFiles.map((f) => getCachedKey(f)));
   const seenCanonicalFiles = new Set<string>();
   const files: string[] = [];
@@ -539,7 +541,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
           SELECT document_type, MAX(id) AS id
           FROM memory_index
           WHERE spec_folder = ?
-            AND document_type IN ('spec', 'plan', 'tasks', 'checklist', 'decision_record', 'implementation_summary', 'research', 'handover')
+            AND document_type IN ('spec', 'plan', 'tasks', 'checklist', 'decision_record', 'implementation_summary', 'research', 'handover', 'graph_metadata')
           GROUP BY document_type
         `);
 

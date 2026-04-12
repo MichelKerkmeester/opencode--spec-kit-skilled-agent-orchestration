@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "retrieval enhancements",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "retrieval",
+      "enhancements",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "summary",
+      "systematic"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/hooks/memory-surface.ts",
+      "mcp_server/lib/search/retrieval-directives.ts",
+      "mcp_server/lib/search/spec-folder-hierarchy.ts",
+      "mcp_server/lib/storage/consolidation.ts",
+      "mcp_server/lib/search/tfidf-summarizer.ts",
+      "mcp_server/lib/search/entity-linker.ts",
+      "mcp_server/lib/search/hybrid-search.ts",
+      "mcp_server/formatters/search-results.ts",
+      "hybrid-search.ts",
+      "hybrid-search-context-headers.vitest.ts",
+      "hooks/memory-surface.ts",
+      "context-server.ts",
+      "lib/search/retrieval-directives.ts",
+      "lib/search/spec-folder-hierarchy.ts",
+      "lib/storage/consolidation.ts",
+      "lib/search/tfidf-summarizer.ts",
+      "lib/search/memory-summaries.ts",
+      "lib/search/entity-linker.ts",
+      "lib/search/hybrid-search.ts",
+      "formatters/search-results.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-directives.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/retrieval-directives.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-folder-hierarchy.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/spec-folder-hierarchy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "consolidation.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/consolidation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tfidf-summarizer.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/tfidf-summarizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search-context-headers.vitest.ts",
+        "kind": "test",
+        "path": "hybrid-search-context-headers.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-directives.ts",
+        "kind": "code",
+        "path": "lib/search/retrieval-directives.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-folder-hierarchy.ts",
+        "kind": "code",
+        "path": "lib/search/spec-folder-hierarchy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "consolidation.ts",
+        "kind": "code",
+        "path": "lib/storage/consolidation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tfidf-summarizer.ts",
+        "kind": "code",
+        "path": "lib/search/tfidf-summarizer.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematic code audit of 9 Retrieval Enhancements features in the Spec Kit Memory MCP server. Each feature from `feature_catalog/15--retrieval-enhancements/` was verified against source code implementation to confirm accuracy, completeness, and catalog alignment.",
+    "created_at": "2026-04-12T09:02:50.253Z",
+    "last_save_at": "2026-04-12T09:06:00.382Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

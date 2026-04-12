@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/026-session-start-injection-debug",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "startup injection",
+      "session start context",
+      "handleStartup",
+      "compact code graph injection",
+      "graph freshness empty",
+      "startup auto priming",
+      "026",
+      "startup injection plan",
+      "handleStartup fix",
+      "026 plan",
+      "cross-runtime priming",
+      "026 tasks",
+      "startup injection tasks",
+      "026 checklist",
+      "026 implementation summary",
+      "startup brief implementation"
+    ],
+    "key_topics": [
+      "startup",
+      "injection",
+      "session",
+      "start",
+      "context",
+      "handlestartup",
+      "compact",
+      "code",
+      "graph",
+      "freshness",
+      "empty",
+      "auto"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/hooks/claude/hook-state.ts",
+      "mcp_server/lib/code-graph/code-graph-db.ts",
+      "mcp_server/lib/code-graph/startup-brief.ts",
+      "mcp_server/hooks/claude/session-prime.ts",
+      "mcp_server/hooks/gemini/session-prime.ts",
+      "README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "TMPDIR=.tmp/vitest-tmp npx vitest run tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/startup-brief.vitest.ts tests/session-resume.vitest.ts tests/session-lifecycle.vitest.ts tests/session-state.vitest.ts tests/context-server.vitest.ts tests/startup-checks.vitest.ts tests/handler-memory-health-edge.vitest.ts",
+      "startup-brief.ts",
+      "hooks/claude/hook-state.ts",
+      "code-graph-db.ts",
+      "hook-state.ts",
+      "session-prime.ts",
+      "gemini/session-prime.ts",
+      "lib/code-graph/startup-brief.ts",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/code-graph/startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/gemini/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-health-edge.vitest.ts",
+        "kind": "test",
+        "path": "TMPDIR=.tmp/vitest-tmp npx vitest run tests/hook-state.vitest.ts tests/hook-session-start.vitest.ts tests/startup-brief.vitest.ts tests/session-resume.vitest.ts tests/session-lifecycle.vitest.ts tests/session-state.vitest.ts tests/context-server.vitest.ts tests/startup-checks.vitest.ts tests/handler-memory-health-edge.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "startup-brief.ts",
+        "kind": "code",
+        "path": "startup-brief.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 26** of the Compact Code Graph specification.",
+    "created_at": "2026-04-12T09:02:53.432Z",
+    "last_save_at": "2026-04-12T09:06:03.476Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "026 release alignment",
+      "system-spec-kit docs",
+      "level 3 planning packet",
+      "reference map",
+      "planning-only",
+      "026 release alignment plan",
+      "system-spec-kit plan",
+      "level 3 planning",
+      "doc parity plan",
+      "reference-map driven",
+      "026 tasks",
+      "system-spec-kit tasks",
+      "level 3 packet tasks",
+      "doc alignment tasks",
+      "planning packet",
+      "verification",
+      "checklist",
+      "system-spec-kit packet",
+      "level 3",
+      "decision",
+      "record",
+      "implementation",
+      "summary",
+      "packet uplift"
+    ],
+    "key_topics": [
+      "026",
+      "release",
+      "alignment",
+      "system-spec-kit",
+      "docs",
+      "level",
+      "planning",
+      "packet",
+      "reference",
+      "map",
+      "planning-only",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "reference-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/decision-record.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/reference-map.md",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "reference-map.md",
+        "kind": "doc",
+        "path": "reference-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "reference-map.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/001-sk-system-speckit/reference-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This child packet now serves as the Level 3 planning surface for the `system-spec-kit` release-alignment lane inside packet 026. The packet does not implement documentation updates in the skill itself; it defines the architecture, verification, and decision trail needed for a later documentation-only alignment pass.",
+    "created_at": "2026-04-12T09:02:53.473Z",
+    "last_save_at": "2026-04-12T09:06:03.516Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

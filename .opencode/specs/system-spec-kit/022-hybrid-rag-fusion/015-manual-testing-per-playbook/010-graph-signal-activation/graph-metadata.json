@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/010-graph-signal-activation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graph signal activation manual testing",
+      "phase 010 graph tests",
+      "manual testing playbook 016",
+      "manual testing playbook 175",
+      "graph signal activation implementation plan",
+      "phase 010 graph plan",
+      "manual testing graph workflow",
+      "graph playbook execution plan",
+      "graph signal activation tasks",
+      "phase 010 tasks",
+      "graph testing tasks",
+      "tasks core graph signal",
+      "graph signal activation checklist",
+      "phase 010 verification",
+      "graph testing checklist",
+      "016 175 verification",
+      "graph-signal-activation implementation summary",
+      "phase 010 summary",
+      "manual testing graph-signal-activation"
+    ],
+    "key_topics": [
+      "graph",
+      "signal",
+      "activation",
+      "manual",
+      "testing",
+      "phase",
+      "010",
+      "tests",
+      "playbook",
+      "016",
+      "175",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/search/graph-search-fn.ts",
+      "mcp_server/lib/cognitive/co-activation.ts",
+      "mcp_server/lib/eval/edge-density.ts",
+      "mcp_server/lib/storage/causal-edges.ts",
+      "mcp_server/lib/graph/graph-signals.ts",
+      "mcp_server/lib/graph/community-detection.ts",
+      "handlers/causal-graph.ts",
+      "mcp_server/lib/search/search-flags.ts",
+      "mcp_server/lib/search/graph-flags.ts",
+      "result-explainability.ts",
+      "causal-edges.ts",
+      "mcp_server/lib/search/graph-lifecycle.ts",
+      "mcp_server/lib/search/graph-calibration.ts",
+      "mcp_server/lib/search/entity-linker.ts",
+      "mcp_server/lib/search/causal-boost.ts",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "mcp_server/handlers/causal-graph.ts",
+      "mcp_server/lib/search/result-explainability.ts"
+    ],
+    "entities": [
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "co-activation.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/cognitive/co-activation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "edge-density.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/eval/edge-density.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-signals.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/graph-signals.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-detection.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/community-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-graph.ts",
+        "kind": "code",
+        "path": "handlers/causal-graph.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "result-explainability.ts",
+        "kind": "code",
+        "path": "result-explainability.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-lifecycle.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-lifecycle.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-calibration.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-calibration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-boost.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/causal-boost.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Manual test scenarios for graph-signal-activation need structured per-phase documentation instead of relying on scattered playbook rows. Phase 010 covers 15 graph-focused scenarios spanning typed degree scoring, co-activation boost, causal depth signals, community detection, graph rollback and explainability, and feature-flag-driven graph lifecycle features, so reviewers need one packet that preserves the mapped feature links, acceptance criteria, and evidence expectations for each test.",
+    "created_at": "2026-04-12T09:02:50.296Z",
+    "last_save_at": "2026-04-12T09:06:00.429Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

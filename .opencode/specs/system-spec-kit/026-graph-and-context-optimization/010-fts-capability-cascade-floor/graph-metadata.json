@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-fts-capability-cascade-floor",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010-fts-capability-cascade-floor",
+      "fts capability cascade floor",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "summary"
+    ],
+    "key_topics": [
+      "010-fts-capability-cascade-floor",
+      "fts",
+      "capability",
+      "cascade",
+      "floor",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "sqlite-fts.ts",
+      "spec.md",
+      "memory-search.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/handler-memory-search.vitest.ts tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts",
+      "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/README.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "sqlite-fts.ts",
+        "kind": "code",
+        "path": "sqlite-fts.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-trust-axis.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/sqlite-fts.vitest.ts tests/handler-memory-search.vitest.ts tests/shared-payload-certainty.vitest.ts tests/structural-trust-axis.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-fts.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-fts.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-search.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Capability Cascade Floor",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Create the bounded FTS hardening packet the research described: runtime lexical-path truth, explicit fallback status, and a truthful forced-degrade matrix that preserves current semantics when FTS5 is unavailable.",
+    "created_at": "2026-04-12T09:02:53.469Z",
+    "last_save_at": "2026-04-12T09:06:03.512Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

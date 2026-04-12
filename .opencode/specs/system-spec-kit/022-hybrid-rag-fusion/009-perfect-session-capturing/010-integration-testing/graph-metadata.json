@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specifica",
+      "spec",
+      "010",
+      "integration",
+      "implementation",
+      "plan",
+      "tasks",
+      "integrati",
+      "verification",
+      "checklist",
+      "summary",
+      "testing"
+    ],
+    "key_topics": [
+      "feature",
+      "specifica",
+      "spec",
+      "010",
+      "integration",
+      "implementation",
+      "plan",
+      "tasks",
+      "integrati",
+      "verification",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "workflow-e2e.vitest.ts",
+      "description.json",
+      "test-integration.vitest.ts",
+      "tests/fixtures/session-data-factory.ts",
+      "scripts/tests/workflow-e2e.vitest.ts",
+      "scripts/tests/fixtures/session-data-factory.ts",
+      "scripts/tests/test-integration.vitest.ts",
+      "test-integration.js",
+      "scripts/tests/task-enrichment.vitest.ts",
+      "scripts/tests/memory-render-fixture.vitest.ts",
+      "task-enrichment.vitest.ts",
+      "memory-render-fixture.vitest.ts",
+      "validate.sh",
+      "check-completion.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "node ../mcp_server/node_modules/vitest/vitest.mjs run tests/workflow-e2e.vitest.ts tests/test-integration.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --config ../mcp_server/vitest.config.ts"
+    ],
+    "entities": [
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": "workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "test-integration.vitest.ts",
+        "kind": "test",
+        "path": "test-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-data-factory.ts",
+        "kind": "code",
+        "path": "tests/fixtures/session-data-factory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-data-factory.ts",
+        "kind": "code",
+        "path": "scripts/tests/fixtures/session-data-factory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-integration.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/test-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-integration.js",
+        "kind": "code",
+        "path": "test-integration.js",
+        "source": "derived"
+      },
+      {
+        "name": "task-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/task-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-render-fixture.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/memory-render-fixture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "task-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "task-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-render-fixture.vitest.ts",
+        "kind": "test",
+        "path": "memory-render-fixture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-completion.sh",
+        "kind": "script",
+        "path": "check-completion.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.272Z",
+    "last_save_at": "2026-04-12T09:06:00.403Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

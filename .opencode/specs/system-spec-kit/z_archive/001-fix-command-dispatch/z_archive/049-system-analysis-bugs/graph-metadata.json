@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "system",
+      "spec",
+      "kit",
+      "bug",
+      "analysis",
+      "049",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary",
+      "research",
+      "findings",
+      "session",
+      "handover",
+      "document"
+    ],
+    "key_topics": [
+      "system",
+      "spec",
+      "kit",
+      "bug",
+      "analysis",
+      "049",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/vector-index.js",
+      "mcp_server/context-server.js",
+      "scripts/rules/check-folder-naming.sh",
+      "scripts/rules/check-files.sh",
+      "scripts/validate-spec.sh",
+      "scripts/rules/check-frontmatter.sh",
+      "references/folder_routing.md",
+      "SKILL.md",
+      "templates/handover.md",
+      "templates/implementation-summary.md",
+      "references/template_style_guide.md",
+      "scripts/generate-context.js",
+      "vector-index.js",
+      "spec_kit_memory.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
+      "context-server.js",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-folder-naming.sh",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-files.sh",
+      "validate-spec.sh",
+      "check-frontmatter.sh"
+    ],
+    "entities": [
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "check-folder-naming.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-folder-naming.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-files.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-files.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate-spec.sh",
+        "kind": "script",
+        "path": "scripts/validate-spec.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-frontmatter.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-frontmatter.sh",
+        "source": "derived"
+      },
+      {
+        "name": "folder_routing.md",
+        "kind": "doc",
+        "path": "references/folder_routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "templates/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "templates/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_style_guide.md",
+        "kind": "doc",
+        "path": "references/template_style_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": "vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_memory.md",
+        "kind": "doc",
+        "path": "spec_kit_memory.md",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "context-server.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill revealed **1 CRITICAL bug**, **2 HIGH severity issues**, and **6 MEDIUM issues** that impact the memory indexing system, validation logic, and documentation consistency.",
+    "created_at": "2026-04-12T09:02:53.531Z",
+    "last_save_at": "2026-04-12T09:06:03.586Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ]
+  }
+}

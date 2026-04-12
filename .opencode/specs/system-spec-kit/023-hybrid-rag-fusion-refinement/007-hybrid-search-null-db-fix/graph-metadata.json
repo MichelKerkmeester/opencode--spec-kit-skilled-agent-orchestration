@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "hybrid search null db",
+      "search returns 0 results",
+      "memory search broken",
+      "ftssearch db null",
+      "vector search null reference",
+      "esm module duplication search",
+      "hybrid search fix plan",
+      "null db search fix",
+      "search pipeline repair",
+      "ftssearch null db fix",
+      "hybrid search fix tasks",
+      "search pipeline repair tasks",
+      "scope enforcement fix",
+      "trm state filter fix",
+      "hybrid search checklist",
+      "search fix verification",
+      "023 phase 7 checklist",
+      "hybrid search fix",
+      "search pipeline 0 results",
+      "scope enforcement bug",
+      "trm state unknown filter",
+      "minstate warm bug",
+      "isscopeenforcementenabled",
+      "research",
+      "memory",
+      "search",
+      "007",
+      "hybrid"
+    ],
+    "key_topics": [
+      "hybrid",
+      "search",
+      "null",
+      "returns",
+      "results",
+      "memory",
+      "broken",
+      "ftssearch",
+      "vector",
+      "reference",
+      "esm",
+      "module"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "scope-governance.ts",
+      "mcp_server/lib/governance/scope-governance.ts",
+      "mcp_server/dist/lib/governance/scope-governance.js",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/dist/handlers/memory-search.js",
+      "mcp_server/handlers/memory-context.ts",
+      "mcp_server/dist/handlers/memory-context.js",
+      "shared/algorithms/rrf-fusion.ts",
+      "handlers/memory-search.ts",
+      "architecture/layer-definitions.ts",
+      "sqlite-fts.ts",
+      "bm25-index.ts",
+      "embedding-expansion.ts",
+      "stage1-candidate-gen.ts",
+      "stage3-rerank.ts",
+      "stage2-fusion.ts",
+      "co-activation.ts",
+      "save-quality-gate.ts",
+      "chunking-orchestrator.ts",
+      "hybrid-search.ts"
+    ],
+    "entities": [
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.js",
+        "kind": "code",
+        "path": "mcp_server/dist/lib/governance/scope-governance.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.js",
+        "kind": "code",
+        "path": "mcp_server/dist/handlers/memory-search.js",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.js",
+        "kind": "code",
+        "path": "mcp_server/dist/handlers/memory-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "rrf-fusion.ts",
+        "kind": "code",
+        "path": "shared/algorithms/rrf-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "layer-definitions.ts",
+        "kind": "code",
+        "path": "architecture/layer-definitions.ts",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-fts.ts",
+        "kind": "code",
+        "path": "sqlite-fts.ts",
+        "source": "derived"
+      },
+      {
+        "name": "bm25-index.ts",
+        "kind": "code",
+        "path": "bm25-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "embedding-expansion.ts",
+        "kind": "code",
+        "path": "embedding-expansion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage3-rerank.ts",
+        "kind": "code",
+        "path": "stage3-rerank.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "stage2-fusion.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 7** of the ESM Module Compliance specification. It restores hybrid search correctness first, then records the follow-on search quality improvements applied after the initial fix.",
+    "created_at": "2026-04-12T09:02:50.320Z",
+    "last_save_at": "2026-04-12T09:06:00.455Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

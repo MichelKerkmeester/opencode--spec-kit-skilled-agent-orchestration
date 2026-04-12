@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
+    "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "016 json mode hybrid enrichment",
+      "json mode hybrid enrichment container",
+      "phase 016 packet",
+      "016 json mode plan",
+      "json mode hybrid enrichment plan",
+      "016 json mode tasks",
+      "json mode hybrid enrichment tasks",
+      "016 json mode implementation summary",
+      "json mode hybrid enrichment summary",
+      "resea",
+      "research",
+      "016",
+      "json"
+    ],
+    "key_topics": [
+      "016",
+      "json",
+      "mode",
+      "hybrid",
+      "enrichment",
+      "container",
+      "phase",
+      "packet",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "001-initial-enrichment/spec.md",
+      "003-field-integrity-and-schema/spec.md",
+      "004-indexing-and-coherence/spec.md",
+      "001-initial-enrichment/implementation-summary.md",
+      "004-indexing-and-coherence/implementation-summary.md",
+      "research/research.md",
+      "sessionData.TOOL_COUNT",
+      "extractors/quality-scorer.ts",
+      "core/quality-scorer.ts",
+      "quality-scorer-calibration.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "001-initial-enrichment/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "003-field-integrity-and-schema/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "004-indexing-and-coherence/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "001-initial-enrichment/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "004-indexing-and-coherence/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "sessionData.TOOL_COUNT",
+        "kind": "file",
+        "path": "sessionData.TOOL_COUNT",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "extractors/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": "quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet had drifted into a historical phase container that no longer matched active system-spec-kit template rules. The top-level docs lacked template markers, anchors, and required section structure, which prevented recursive strict validation even though the child phases capture real implementation work.",
+    "created_at": "2026-04-12T09:02:50.276Z",
+    "last_save_at": "2026-04-12T09:06:00.408Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

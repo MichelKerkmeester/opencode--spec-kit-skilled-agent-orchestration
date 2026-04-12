@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "hybrid",
+      "rag",
+      "fusion",
+      "009",
+      "perfect",
+      "spec",
+      "001",
+      "session",
+      "plan",
+      "tasks",
+      "rid",
+      "checklist",
+      "implementation",
+      "summary",
+      "validation"
+    ],
+    "key_topics": [
+      "hybrid",
+      "rag",
+      "fusion",
+      "009",
+      "perfect",
+      "spec",
+      "001",
+      "session",
+      "plan",
+      "tasks",
+      "rid",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/extractors/claude-code-capture.ts",
+      "scripts/loaders/data-loader.ts",
+      "scripts/memory/validate-memory-quality.ts",
+      "scripts/extractors/quality-scorer.ts",
+      "scripts/core/quality-scorer.ts",
+      "scripts/core/workflow.ts",
+      "scripts/extractors/collect-session-data.ts",
+      "claude-code-capture.ts",
+      "collect-session-data.ts",
+      "quality-scorer-calibration.vitest.ts",
+      "task-enrichment.vitest.ts",
+      "memory-render-fixture.vitest.ts",
+      "claude-code-capture.vitest.ts",
+      "test-memory-quality-lane.js",
+      "validate.sh",
+      "check-completion.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "claude-code-capture.ts",
+        "kind": "code",
+        "path": "scripts/extractors/claude-code-capture.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data-loader.ts",
+        "kind": "code",
+        "path": "scripts/loaders/data-loader.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": "scripts/memory/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "scripts/extractors/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "scripts/core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "claude-code-capture.ts",
+        "kind": "code",
+        "path": "claude-code-capture.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": "quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "task-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "task-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-render-fixture.vitest.ts",
+        "kind": "test",
+        "path": "memory-render-fixture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "claude-code-capture.vitest.ts",
+        "kind": "test",
+        "path": "claude-code-capture.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-memory-quality-lane.js",
+        "kind": "code",
+        "path": "test-memory-quality-lane.js",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-completion.sh",
+        "kind": "script",
+        "path": "check-completion.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.264Z",
+    "last_save_at": "2026-04-12T09:06:00.394Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

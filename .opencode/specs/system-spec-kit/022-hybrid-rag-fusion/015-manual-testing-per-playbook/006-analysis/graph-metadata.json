@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/006-analysis",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "analysis testing",
+      "causal graph test",
+      "epistemic testing",
+      "learning history test",
+      "analysis test plan",
+      "causal graph test plan",
+      "epistemic test plan",
+      "analysis tasks",
+      "analysis test tasks",
+      "causal graph tasks",
+      "analysis checklist",
+      "analysis verification",
+      "causal graph checklist",
+      "analysis summary",
+      "analysis results",
+      "causal graph results"
+    ],
+    "key_topics": [
+      "analysis",
+      "testing",
+      "causal",
+      "graph",
+      "test",
+      "epistemic",
+      "learning",
+      "history",
+      "plan",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/tools/causal-tools.ts",
+      "mcp_server/tools/lifecycle-tools.ts",
+      "mcp_server/handlers/causal-graph.ts",
+      "mcp_server/handlers/session-learning.ts",
+      "mcp_server/lib/storage/causal-edges.ts",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "causal-tools.ts",
+        "kind": "code",
+        "path": "mcp_server/tools/causal-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": "mcp_server/tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-graph.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/causal-graph.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-learning.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-learning.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nExecute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The analysis category contains 7 manual test scenarios covering causal graph operations (create, stats, delete, trace), epistemic measurement (preflight, postflight), and learning history retrieval. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that analysis tools function correctly.",
+    "created_at": "2026-04-12T09:02:50.293Z",
+    "last_save_at": "2026-04-12T09:06:00.427Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "memory quality and indexing",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary",
+      "memory quality & indexing"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "memory",
+      "quality",
+      "indexing",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "scripts/core/title-builder.ts",
+      "slug-utils.ts",
+      "scripts/core/file-writer.ts",
+      "entity-linker.ts",
+      "fsrs-scheduler.ts",
+      "title-builder.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "file-writer.ts",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "title-builder.ts",
+        "kind": "code",
+        "path": "scripts/core/title-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "slug-utils.ts",
+        "kind": "code",
+        "path": "slug-utils.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-writer.ts",
+        "kind": "code",
+        "path": "scripts/core/file-writer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "entity-linker.ts",
+        "kind": "code",
+        "path": "entity-linker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.ts",
+        "kind": "code",
+        "path": "fsrs-scheduler.ts",
+        "source": "derived"
+      },
+      {
+        "name": "title-builder.ts",
+        "kind": "code",
+        "path": "title-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "file-writer.ts",
+        "kind": "code",
+        "path": "file-writer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Quality",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary\n\nSystematic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematic code audit of 24 Memory Quality and Indexing features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/13--memory-quality-and-indexing/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
+    "created_at": "2026-04-12T09:02:50.251Z",
+    "last_save_at": "2026-04-12T09:06:00.380Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

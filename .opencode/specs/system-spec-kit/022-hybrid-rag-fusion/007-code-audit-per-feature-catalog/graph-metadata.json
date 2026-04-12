@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
+    "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "feature catalog audit",
+      "spec kit memory audit",
+      "007 code audit",
+      "audit plan",
+      "feature catalog",
+      "tasks",
+      "checklist",
+      "code audit decisions",
+      "audit methodology",
+      "implementation summary",
+      "deep",
+      "research",
+      "code",
+      "audit",
+      "gap",
+      "007"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "feature",
+      "catalog",
+      "spec",
+      "kit",
+      "memory",
+      "007",
+      "plan",
+      "tasks",
+      "checklist",
+      "decisions"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "rollout-policy.ts",
+      "mcp_server/api/index.ts",
+      "mcp_server/api/eval.ts",
+      "mcp_server/api/indexing.ts",
+      "mcp_server/api/search.ts",
+      "mcp_server/api/providers.ts",
+      "scripts/spec/check-completion.sh",
+      "scripts/ops/runbook.sh",
+      "scripts/evals/run-ablation.ts",
+      "config/config.jsonc",
+      "config/filters.jsonc",
+      ".opencode/skill/system-spec-kit/constitutional/gate-enforcement.md",
+      ".opencode/skill/system-spec-kit/nodes/phase-system.md",
+      "mcp_server/api/storage.ts",
+      "scripts/spec/create.sh",
+      "scripts/spec/validate.sh",
+      "create.sh",
+      "validate.sh",
+      "spec.md",
+      "storage.ts"
+    ],
+    "entities": [
+      {
+        "name": "rollout-policy.ts",
+        "kind": "code",
+        "path": "rollout-policy.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "mcp_server/api/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "eval.ts",
+        "kind": "code",
+        "path": "mcp_server/api/eval.ts",
+        "source": "derived"
+      },
+      {
+        "name": "indexing.ts",
+        "kind": "code",
+        "path": "mcp_server/api/indexing.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search.ts",
+        "kind": "code",
+        "path": "mcp_server/api/search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "providers.ts",
+        "kind": "code",
+        "path": "mcp_server/api/providers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-completion.sh",
+        "kind": "script",
+        "path": "scripts/spec/check-completion.sh",
+        "source": "derived"
+      },
+      {
+        "name": "runbook.sh",
+        "kind": "script",
+        "path": "scripts/ops/runbook.sh",
+        "source": "derived"
+      },
+      {
+        "name": "run-ablation.ts",
+        "kind": "code",
+        "path": "scripts/evals/run-ablation.ts",
+        "source": "derived"
+      },
+      {
+        "name": "config.jsonc",
+        "kind": "file",
+        "path": "config/config.jsonc",
+        "source": "derived"
+      },
+      {
+        "name": "filters.jsonc",
+        "kind": "file",
+        "path": "config/filters.jsonc",
+        "source": "derived"
+      },
+      {
+        "name": "gate-enforcement.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/constitutional/gate-enforcement.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase-system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/nodes/phase-system.md",
+        "source": "derived"
+      },
+      {
+        "name": "storage.ts",
+        "kind": "code",
+        "path": "mcp_server/api/storage.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive code audit of the Spec Kit Memory MCP server, systematically verifying the 222-feature live catalog against the actual source code. The work is decomposed into 22 child folders (001-022): 19 category audits, 2 synthesis/remediation meta-phases, and 1 downstream implementation/removal follow-up tracked under the same umbrella packet.",
+    "created_at": "2026-04-12T09:02:50.243Z",
+    "last_save_at": "2026-04-12T09:06:00.372Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

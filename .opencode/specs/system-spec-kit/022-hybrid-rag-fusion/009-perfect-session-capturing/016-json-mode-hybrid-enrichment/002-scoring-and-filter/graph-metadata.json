@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "quality scorer recalibration",
+      "contamination filter expansion",
+      "scoring and filter",
+      "bonus system overcompensation",
+      "hallucination prevention",
+      "domain c domain e",
+      "scoring filter implementation plan",
+      "recalibrate quality scorer",
+      "extend contamination filter",
+      "filtercontamination workflow",
+      "scoring filter tasks",
+      "quality scorer tasks",
+      "contamination filter tasks",
+      "002-scoring-and-filter tasks",
+      "scoring filter checklist",
+      "quality scorer verification",
+      "contamination filter verification",
+      "002-scoring-and-filter checklist",
+      "scoring filter decisions",
+      "quality scorer bonus removal decision",
+      "contamination filter scope decision",
+      "post-save penalty integration",
+      "adr-001 adr-002 adr-003 scoring filter",
+      "scoring filter implementation summary",
+      "quality scorer recalibration complete",
+      "contamination filter expansion complete",
+      "002-scoring-and-filter summary"
+    ],
+    "key_topics": [
+      "quality",
+      "scorer",
+      "recalibration",
+      "contamination",
+      "filter",
+      "expansion",
+      "scoring",
+      "bonus",
+      "system",
+      "overcompensation",
+      "hallucination",
+      "prevention"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "extractors/quality-scorer.ts",
+      "workflow.ts",
+      "session-extractor.ts",
+      "input-normalizer.ts",
+      "post-save-review.ts",
+      "scripts/extractors/quality-scorer.ts",
+      "scripts/core/workflow.ts",
+      "scripts/extractors/contamination-filter.ts",
+      "scripts/extractors/session-extractor.ts",
+      "scripts/utils/input-normalizer.ts",
+      "scripts/core/post-save-review.ts",
+      "scripts/tests/quality-scorer-calibration.vitest.ts",
+      "core/quality-scorer.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "core/workflow.ts",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "extractors/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": "post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "scripts/extractors/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": "scripts/extractors/contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/session-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-save-review.ts",
+        "kind": "code",
+        "path": "scripts/core/post-save-review.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer.ts",
+        "kind": "code",
+        "path": "core/quality-scorer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Two interrelated defects undermine memory quality in the generate-context.js pipeline. First, the extractors quality scorer applies up to +0.20 in bonuses for normal session activity, ensuring that five simultaneous soft failures still produce a score above 0.95 — making quality_score effectively binary and useless for discriminating good saves from bad ones. Second, the contamination filter is applied only to `observations` and `SUMMARY`, leaving `_JSON_SESSION_SUMMARY`, `_manualDecisions`, `recentContext`, and `technicalContext` completely uncleaned. This phase recalibrates the scorer and extends the filter to close both gaps.",
+    "created_at": "2026-04-12T09:02:50.278Z",
+    "last_save_at": "2026-04-12T09:06:00.410Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

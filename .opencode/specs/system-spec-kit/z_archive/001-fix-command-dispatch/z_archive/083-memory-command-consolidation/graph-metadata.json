@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory",
+      "command",
+      "consolidation",
+      "spec",
+      "083",
+      "implementation",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "memory",
+      "command",
+      "consolidation",
+      "spec",
+      "083",
+      "implementation",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "namespace",
+      "grown"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "context.md",
+      "learn.md",
+      "save.md",
+      "continue.md",
+      "manage.md",
+      "SKILL.md",
+      "README.md",
+      "CHANGELOG.md",
+      "mcp_server/README.md",
+      "templates/memory/README.md",
+      "search.md",
+      "database.md",
+      "checkpoint.md",
+      "correct.md",
+      "why.md",
+      "command_template.md",
+      ".opencode/skill/sk-doc/assets/opencode/command_template.md",
+      ".opencode/command/memory/manage.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md"
+    ],
+    "entities": [
+      {
+        "name": "context.md",
+        "kind": "doc",
+        "path": "context.md",
+        "source": "derived"
+      },
+      {
+        "name": "learn.md",
+        "kind": "doc",
+        "path": "learn.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": "save.md",
+        "source": "derived"
+      },
+      {
+        "name": "continue.md",
+        "kind": "doc",
+        "path": "continue.md",
+        "source": "derived"
+      },
+      {
+        "name": "manage.md",
+        "kind": "doc",
+        "path": "manage.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "CHANGELOG.md",
+        "kind": "doc",
+        "path": "CHANGELOG.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "templates/memory/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": "search.md",
+        "source": "derived"
+      },
+      {
+        "name": "database.md",
+        "kind": "doc",
+        "path": "database.md",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoint.md",
+        "kind": "doc",
+        "path": "checkpoint.md",
+        "source": "derived"
+      },
+      {
+        "name": "correct.md",
+        "kind": "doc",
+        "path": "correct.md",
+        "source": "derived"
+      },
+      {
+        "name": "why.md",
+        "kind": "doc",
+        "path": "why.md",
+        "source": "derived"
+      },
+      {
+        "name": "command_template.md",
+        "kind": "doc",
+        "path": "command_template.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `/memory:*` command namespace has grown to **9 separate commands**, creating:",
+    "created_at": "2026-04-12T09:02:53.554Z",
+    "last_save_at": "2026-04-12T09:06:03.613Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

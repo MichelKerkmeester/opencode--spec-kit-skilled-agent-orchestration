@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec doc indexing rejected",
+      "quality gate bypass incomplete",
+      "warn-only not working",
+      "1807 spec docs rejected",
+      "processpreparedmemory rejection gates",
+      "spec doc bypass plan",
+      "processpreparedmemory fix",
+      "warn-only gates",
+      "spec doc bypass tasks",
+      "indexing bypass tasks",
+      "spec doc bypass summary",
+      "indexing bypass results",
+      "warn-only implementation"
+    ],
+    "key_topics": [
+      "spec",
+      "doc",
+      "indexing",
+      "rejected",
+      "quality",
+      "gate",
+      "bypass",
+      "incomplete",
+      "warn-only",
+      "working",
+      "1807",
+      "docs"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/handlers/memory-save.ts",
+      "memory-index.ts",
+      "spec.md",
+      "plan.md",
+      "changelog/01--system-spec-kit/v3.0.0.1.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": "memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "v3.0.0.1.md",
+        "kind": "doc",
+        "path": "changelog/01--system-spec-kit/v3.0.0.1.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Doc Indexing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Doc Indexing Bypass",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\nAdd",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "All spec documents should index successfully during `memory_index_scan`, with quality warnings logged instead of hard rejections.",
+    "created_at": "2026-04-12T09:02:50.312Z",
+    "last_save_at": "2026-04-12T09:06:00.446Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

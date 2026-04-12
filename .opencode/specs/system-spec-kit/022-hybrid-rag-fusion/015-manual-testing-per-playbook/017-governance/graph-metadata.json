@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/017-governance",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "governance manual testing",
+      "phase 017 governance",
+      "feature flag governance tests",
+      "hybrid rag governance playbook",
+      "governance execution plan",
+      "phase 017 manual tests",
+      "feature flag governance verdict plan",
+      "hybrid rag governance review",
+      "governance tasks",
+      "phase 017 tasks",
+      "governance test execution tasks",
+      "governance verification checklist",
+      "phase 017 checklist",
+      "feature flag governance checklist",
+      "shared memory governance testing",
+      "governance implementation summary",
+      "phase 017 summary",
+      "manual testing governance"
+    ],
+    "key_topics": [
+      "governance",
+      "manual",
+      "testing",
+      "phase",
+      "017",
+      "feature",
+      "flag",
+      "tests",
+      "hybrid",
+      "rag",
+      "playbook",
+      "execution"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "search-flags.ts",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "lib/governance/scope-governance.ts",
+      "lib/governance/retention.ts",
+      "lib/collab/shared-spaces.ts",
+      "handlers/shared-memory.ts",
+      "handlers/memory-save.ts",
+      "lib/search/search-flags.ts",
+      "spec.md",
+      "plan.md",
+      "description.json",
+      "mcp_server/lib/search/search-flags.ts",
+      "learned-feedback.ts",
+      "fs.existsSync",
+      "config.shared_memory_enabled"
+    ],
+    "entities": [
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": "lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retention.ts",
+        "kind": "code",
+        "path": "lib/governance/retention.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.ts",
+        "kind": "code",
+        "path": "lib/collab/shared-spaces.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-memory.ts",
+        "kind": "code",
+        "path": "handlers/shared-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "lib/search/search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "search-flags.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/search-flags.ts",
+        "source": "derived"
+      },
+      {
+        "name": "learned-feedback.ts",
+        "kind": "code",
+        "path": "learned-feedback.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fs.existsSync",
+        "kind": "file",
+        "path": "fs.existsSync",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Manual governance scenarios for the Spec Kit Memory system live inside the central playbook and require a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated governance packet, Phase 017 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.",
+    "created_at": "2026-04-12T09:02:50.303Z",
+    "last_save_at": "2026-04-12T09:06:00.436Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

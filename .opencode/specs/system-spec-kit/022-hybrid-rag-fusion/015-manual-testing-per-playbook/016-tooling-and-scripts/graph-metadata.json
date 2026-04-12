@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "tooling scripts manual testing",
+      "016 testing",
+      "016 tooling and scripts",
+      "tooling and scripts manual test",
+      "016 tooling and scripts plan",
+      "016 tooling and scripts tasks",
+      "016 tooling and scripts checklist",
+      "016 tooling and scripts summary"
+    ],
+    "key_topics": [
+      "tooling",
+      "scripts",
+      "manual",
+      "testing",
+      "016",
+      "test",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "tooling-and-scripts",
+      "category"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "readlink .gemini",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "recommend-level.sh",
+      "create.sh",
+      "check-phase-links.sh",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "readlink .gemini",
+        "kind": "file",
+        "path": "readlink .gemini",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "recommend-level.sh",
+        "kind": "script",
+        "path": "recommend-level.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-phase-links.sh",
+        "kind": "script",
+        "path": "check-phase-links.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specifi",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scripts Manual Testing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Playbook Category",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scenario Files",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The tooling-and-scripts category (16) contains 33 scenario files covering 65 exact scenario IDs that have not been manually tested against the live system. This is the second-largest phase by exact ID count, with two major sub-scenario expansions: M-007 (session capturing pipeline quality) with 17 sub-IDs and 153 (JSON mode structured summary hardening) with 15 sub-IDs. Each requires systematic validation with documented evidence.",
+    "created_at": "2026-04-12T09:02:50.302Z",
+    "last_save_at": "2026-04-12T09:06:00.435Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

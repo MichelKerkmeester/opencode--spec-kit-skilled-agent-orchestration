@@ -273,7 +273,7 @@ export function getStartupEmbeddingDimension(): number {
 
 export function getStartupEmbeddingProfile(): EmbeddingProfile {
   const resolution = resolveProvider();
-  const provider = resolution.name;
+  const provider = toSupportedProviderName(resolution.name);
   const model = resolveConfiguredModel(provider);
   const dim = resolveStartupEmbeddingDimension(resolution);
 

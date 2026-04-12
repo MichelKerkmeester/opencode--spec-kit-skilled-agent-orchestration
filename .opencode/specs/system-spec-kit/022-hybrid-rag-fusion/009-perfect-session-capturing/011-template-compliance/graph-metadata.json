@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "template compliance",
+      "spec templates"
+    ],
+    "key_topics": [
+      "template",
+      "compliance",
+      "spec",
+      "templates",
+      "document",
+      "records",
+      "current",
+      "verified",
+      "state",
+      "scope",
+      "use",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".agents/agents/speckit.md",
+      ".opencode/agent/speckit.md",
+      ".claude/agents/speckit.md",
+      ".gemini/agents/speckit.md",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts",
+      "node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js",
+      "/Users/michelkerkmeester/.codex",
+      "check-template-headers.sh",
+      "check-anchors.sh",
+      "validate.sh",
+      "template-structure.js",
+      "delegation-prompt-builder.ts",
+      "template-structure.vitest.ts",
+      "test-phase-command-workflows.js",
+      "test-validation.sh",
+      "test-validation-extended.sh",
+      ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
+      "scripts/tests/template-structure.vitest.ts",
+      "scripts/tests/test-phase-command-workflows.js",
+      "generate-context.js"
+    ],
+    "entities": [
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".agents/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".claude/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".gemini/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-phase-command-workflows.js",
+        "kind": "code",
+        "path": "node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js",
+        "source": "derived"
+      },
+      {
+        "name": ".codex",
+        "kind": "file",
+        "path": "/Users/michelkerkmeester/.codex",
+        "source": "derived"
+      },
+      {
+        "name": "check-template-headers.sh",
+        "kind": "script",
+        "path": "check-template-headers.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-anchors.sh",
+        "kind": "script",
+        "path": "check-anchors.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.js",
+        "kind": "code",
+        "path": "template-structure.js",
+        "source": "derived"
+      },
+      {
+        "name": "delegation-prompt-builder.ts",
+        "kind": "code",
+        "path": "delegation-prompt-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.vitest.ts",
+        "kind": "test",
+        "path": "template-structure.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-phase-command-workflows.js",
+        "kind": "code",
+        "path": "test-phase-command-workflows.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation.sh",
+        "kind": "script",
+        "path": "test-validation.sh",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation-extended.sh",
+        "kind": "script",
+        "path": "test-validation-extended.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.273Z",
+    "last_save_at": "2026-04-12T09:06:00.404Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

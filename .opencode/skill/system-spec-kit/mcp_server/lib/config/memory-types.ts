@@ -1,5 +1,6 @@
 import {
   canClassifyAsSpecDocument,
+  isGraphMetadataPath,
   matchesSpecDocumentPath,
 } from './spec-doc-paths.js';
 
@@ -372,6 +373,7 @@ export type DocumentType =
   | 'implementation_summary'
   | 'research'
   | 'handover'
+  | 'graph_metadata'
   | 'memory'
   | 'constitutional';
 
@@ -396,6 +398,7 @@ export const SPEC_DOCUMENT_CONFIGS: readonly SpecDocumentConfig[] = [
   { filePattern: /(?:^|\/)implementation-summary\.md$/i,  documentType: 'implementation_summary',  memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
   { filePattern: /(?:^|\/)(?:research\/research\.md|research\.md)$/i, documentType: 'research', memoryType: 'semantic', defaultImportanceTier: 'normal', defaultImportanceWeight: 0.6 },
   { filePattern: /(?:^|\/)handover\.md$/i,                documentType: 'handover',                memoryType: 'episodic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
+  { filePattern: /(?:^|\/)graph-metadata\.json$/i,        documentType: 'graph_metadata',          memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.75 },
 ] as const;
 
 /**
@@ -414,6 +417,7 @@ export function inferDocumentTypeFromPath(filePath: string): DocumentType {
     implementation_summary: 'implementation-summary.md',
     research: 'research.md',
     handover: 'handover.md',
+    graph_metadata: 'graph-metadata.json',
   };
 
   // Check spec document patterns first
@@ -426,6 +430,10 @@ export function inferDocumentTypeFromPath(filePath: string): DocumentType {
     ) {
       return config.documentType;
     }
+  }
+
+  if (isGraphMetadataPath(filePath)) {
+    return 'graph_metadata';
   }
 
   // Constitutional files

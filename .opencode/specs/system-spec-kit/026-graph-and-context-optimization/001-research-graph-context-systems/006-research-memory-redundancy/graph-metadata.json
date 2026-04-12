@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006 research memory redundancy",
+      "memory redundancy follow on",
+      "compact wrapper follow on",
+      "canonical doc ownership",
+      "memory redundancy follow on plan",
+      "compact wrapper coordination plan",
+      "memory redundancy follow on tasks",
+      "compact wrapper follow on tasks",
+      "memory redundancy follow on checklist",
+      "compact wrapper follow on verification",
+      "memory redundancy follow on adr",
+      "006 redundancy decision record",
+      "006 redundancy implementation summary",
+      "memory redundancy follow on summary"
+    ],
+    "key_topics": [
+      "006",
+      "research",
+      "memory",
+      "redundancy",
+      "follow",
+      "compact",
+      "wrapper",
+      "canonical",
+      "doc",
+      "ownership",
+      "plan",
+      "coordination"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "research/findings-registry.json",
+      "decision-record.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "rg -n \"002-implement-cache-warning-hooks|003-memory-quality-issues|012-cached-sessionstart-consumer-gated|013-warm-start-bundle-conditional-validation\" spec.md"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "rg -n \"002-implement-cache-warning-hooks|003-memory-quality-issues|012-cached-sessionstart-consumer-gated|013-warm-start-bundle-conditional-validation\" spec.md",
+        "kind": "doc",
+        "path": "rg -n \"002-implement-cache-warning-hooks|003-memory-quality-issues|012-cached-sessionstart-consumer-gated|013-warm-start-bundle-conditional-validation\" spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Memory Redundancy Follow",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet operationalizes the completed redundancy research in `research/research.md`. It does not rerun the investigation. It records how the parent research canonicals and the downstream packet train should react to the compact-wrapper conclusion that memory saves should point at canonical docs instead of replaying them.",
+    "created_at": "2026-04-12T09:02:53.452Z",
+    "last_save_at": "2026-04-12T09:06:03.496Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

@@ -87,6 +87,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - `handover.md`
    - `implementation-summary.md` with `_memory.continuity`
    - Supporting spec docs: `tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`
+   - `graph-metadata.json` for packet dependencies, related packets, and derived key files after the canonical docs are checked
    - Store: continuity_sources_available = [yes/partial/no]
 
 7. ASK with SINGLE prompt (include only applicable questions):
@@ -145,6 +146,11 @@ STOP HERE - Wait for user answers before continuing.
 **Phase Output:**
 - `spec_path` | `detection_method` | `execution_mode`
 - `artifacts_valid` | `memory_loaded`
+
+### Packet Graph Metadata
+
+- Resume remains anchored to `handover.md -> _memory.continuity -> spec docs`.
+- When that canonical packet is thin, `graph-metadata.json` provides packet-level dependency and key-file hints without replacing the canonical ladder.
 
 ---
 
@@ -228,7 +234,7 @@ Resume work on an existing or recently interrupted spec-folder session by detect
 ## 7. CONTRACT
 
 **Inputs:** `$ARGUMENTS` — Optional spec folder path with optional :auto/:confirm suffix
-**Outputs:** Resumed session context + progress display + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Resumed session context + progress display + packet-graph hints when available + `STATUS=<OK|FAIL|CANCELLED>`
 
 ```text
 $ARGUMENTS
@@ -260,8 +266,9 @@ The YAML contains detailed step-by-step workflow, output formats, and all config
 1. handover.md (exists & <24h) → use handover context
 2. `implementation-summary.md` → `_memory.continuity` host block for last/next/blockers/key files
 3. Supporting spec docs (`tasks.md`, `checklist.md`, `plan.md`, `decision-record.md`) → canonical packet detail
-4. `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` → optional enrichment when the canonical packet is still thin
-5. `memory_search()` with resume anchors → targeted gap-filling only when essentials are still missing
+4. `graph-metadata.json` → packet dependencies, related packets, supersession, and derived key files
+5. `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` → optional enrichment when the canonical packet is still thin
+6. `memory_search()` with resume anchors → targeted gap-filling only when essentials are still missing
 
 **Stale session (>7 days):** Warn user, offer: A) Resume anyway, B) Fresh start, C) Review changes, D) Cancel
 

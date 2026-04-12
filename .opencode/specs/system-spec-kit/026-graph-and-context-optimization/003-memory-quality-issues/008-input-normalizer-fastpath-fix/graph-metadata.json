@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/008-input-normalizer-fastpath-fix",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "input normalizer fast-path fix",
+      "memory save string coercion",
+      "003 phase 8",
+      "input normalizer plan",
+      "fast-path fix plan",
+      "003 phase 8 plan",
+      "input normalizer tasks",
+      "fast-path fix tasks",
+      "003 phase 8 tasks",
+      "implementation summary",
+      "memory save repro fix"
+    ],
+    "key_topics": [
+      "input",
+      "normalizer",
+      "fast-path",
+      "fix",
+      "memory",
+      "save",
+      "string",
+      "coercion",
+      "003",
+      "phase",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "/tmp/save-context-data.json",
+      ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/input-normalizer-unit.vitest.ts",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/08-04-26_19-10__orchestration-completion-of-003-memory-quality.md",
+      "tests/input-normalizer-unit.vitest.ts",
+      "scripts/utils/input-normalizer.ts",
+      "scripts/memory/generate-context.ts",
+      "/tmp/003mq-complete/b4-output.md",
+      "generate-context.ts",
+      "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/input-normalizer-unit.vitest.ts",
+      "input-normalizer.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "save-context-data.json",
+        "kind": "config",
+        "path": "/tmp/save-context-data.json",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer-unit.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/input-normalizer-unit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "08-04-26_19-10__orchestration-completion-of-003-memory-quality.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/memory/08-04-26_19-10__orchestration-completion-of-003-memory-quality.md",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer-unit.vitest.ts",
+        "kind": "test",
+        "path": "tests/input-normalizer-unit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "b4-output.md",
+        "kind": "doc",
+        "path": "/tmp/003mq-complete/b4-output.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer-unit.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/input-normalizer-unit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This is **Phase 8** of `003-memory-quality-issues`.",
+    "created_at": "2026-04-12T09:02:53.463Z",
+    "last_save_at": "2026-04-12T09:06:03.507Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

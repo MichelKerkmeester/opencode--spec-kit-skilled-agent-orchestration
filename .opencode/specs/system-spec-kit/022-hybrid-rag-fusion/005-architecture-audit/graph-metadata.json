@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "architecture audit",
+      "scripts boundary",
+      "mcp server boundary",
+      "boundary enforcement",
+      "handler cycle removal",
+      "architecture audit plan",
+      "boundary remediation plan",
+      "scripts mcp server boundary",
+      "architecture audit tasks",
+      "boundary remediation tasks",
+      "architecture audit checklist",
+      "boundary remediation verification",
+      "decision record",
+      "architecture adr",
+      "boundary contract",
+      "architecture audit summary",
+      "boundary remediation summary",
+      "system",
+      "spec",
+      "kit",
+      "architecture",
+      "audit",
+      "research",
+      "005"
+    ],
+    "key_topics": [
+      "architecture",
+      "audit",
+      "scripts",
+      "boundary",
+      "mcp",
+      "server",
+      "enforcement",
+      "handler",
+      "cycle",
+      "removal",
+      "plan",
+      "remediation"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "decision-record.md",
+      "research/research.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "mcp_server/scripts/reindex-embeddings.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/scripts/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/database/README.md",
+      "shared/utils/token-estimate.ts",
+      "check-no-mcp-lib-imports.ts",
+      "check-allowlist-expiry.ts",
+      "check-api-boundary.sh",
+      "memory-save.ts",
+      "causal-links-processor.ts",
+      "handler-utils.ts",
+      "mcp_server/handlers/handler-utils.ts",
+      "mcp_server/api/indexing.ts"
+    ],
+    "entities": [
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "reindex-embeddings.ts",
+        "kind": "code",
+        "path": "mcp_server/scripts/reindex-embeddings.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/scripts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/database/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "token-estimate.ts",
+        "kind": "code",
+        "path": "shared/utils/token-estimate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-no-mcp-lib-imports.ts",
+        "kind": "code",
+        "path": "check-no-mcp-lib-imports.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-allowlist-expiry.ts",
+        "kind": "code",
+        "path": "check-allowlist-expiry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-api-boundary.sh",
+        "kind": "script",
+        "path": "check-api-boundary.sh",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This completed Level 3 spec captures the architecture audit of `.opencode/skill/system-spec-kit/` with focus on the ownership boundary between root `scripts/` and `mcp_server/`. The work established a boundary contract, reduced cross-area drift, hardened enforcement, merged the former `030-architecture-boundary-remediation` follow-up, and closed later verification-driven issues around naming, README coverage, symlinked runtime paths, and source-dist alignment.",
+    "created_at": "2026-04-12T09:02:50.240Z",
+    "last_save_at": "2026-04-12T09:06:00.369Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

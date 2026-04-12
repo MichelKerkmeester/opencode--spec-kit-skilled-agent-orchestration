@@ -15,11 +15,19 @@ import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../sc
 import { inferMemoryType } from '../config/type-inference.js';
 import {
   canClassifyAsSpecDocument,
+  extractSpecFolderFromGraphMetadataPath,
+  isGraphMetadataPath,
   extractSpecFolderFromSpecDocumentPath,
   isWorkingArtifactPath,
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
 } from '../config/spec-doc-paths.js';
+import {
+  graphMetadataToIndexableText,
+  loadGraphMetadata,
+  packetReferencesToCausalLinks,
+  validateGraphMetadataContent,
+} from '../graph/graph-metadata-parser.js';
 
 export { getCanonicalPathKey };
 
@@ -248,6 +256,47 @@ export function parseMemoryContent(
   // Infer document type from file path.
   const documentType = extractDocumentType(filePath);
 
+  if (documentType === 'graph_metadata') {
+    const validation = validateGraphMetadataContent(content);
+    if (!validation.ok || !validation.metadata) {
+      throw new Error(`Invalid graph metadata content for ${filePath}: ${validation.errors.join('; ')}`);
+    }
+
+    const metadata = validation.metadata;
+    const normalizedContent = graphMetadataToIndexableText(metadata);
+    const content_hash = computeContentHash(content);
+    const importance_tier = metadata.derived.importance_tier;
+    const typeInference: TypeInferenceResult = inferMemoryType({
+      filePath,
+      content: normalizedContent,
+      title: metadata.packet_id,
+      triggerPhrases: metadata.derived.trigger_phrases,
+      importanceTier: importance_tier,
+    });
+    const causalLinks = extractCausalLinksFromGraphMetadata(metadata);
+
+    return {
+      filePath,
+      specFolder: metadata.spec_folder,
+      title: `Graph Metadata: ${metadata.packet_id}`,
+      triggerPhrases: metadata.derived.trigger_phrases,
+      contextType: 'planning',
+      importanceTier: importance_tier,
+      contentHash: content_hash,
+      content: normalizedContent,
+      fileSize: Buffer.byteLength(content, 'utf8'),
+      lastModified: options.lastModified ?? new Date().toISOString(),
+      memoryType: typeInference.type,
+      memoryTypeSource: typeInference.source,
+      memoryTypeConfidence: typeInference.confidence,
+      causalLinks,
+      hasCausalLinks: hasCausalLinks(causalLinks),
+      documentType,
+      qualityScore: 1,
+      qualityFlags: [],
+    };
+  }
+
   const spec_folder = extractSpecFolder(filePath);
   const title = extractTitle(content);
   const triggerPhrases = extractTriggerPhrases(content);
@@ -322,6 +371,10 @@ export function extractDocumentType(filePath: string): string {
     if (docType && matchesSpecDocumentPath(filePath, basename)) return docType;
   }
 
+  if (isGraphMetadataPath(filePath)) {
+    return 'graph_metadata';
+  }
+
   // Constitutional files
   if (normalizedPath.includes('/constitutional/') && normalizedPath.endsWith('.md')) {
     return 'constitutional';
@@ -354,6 +407,11 @@ export function extractSpecFolder(filePath: string): string {
     return specDocumentFolder;
   }
 
+  const graphMetadataFolder = extractSpecFolderFromGraphMetadataPath(normalizedPath);
+  if (graphMetadataFolder) {
+    return graphMetadataFolder;
+  }
+
   // Fallback: try to extract from path segments
   const segments = normalizedPath.split('/');
   const specsIndex = segments.findIndex(s => s === 'specs');
@@ -374,6 +432,19 @@ export function extractSpecFolder(filePath: string): string {
   // Last resort: use parent directory name (use normalizedPath, not raw filePath)
   const parentDir = path.dirname(path.dirname(normalizedPath));
   return path.basename(parentDir);
+}
+
+function extractCausalLinksFromGraphMetadata(
+  metadata: import('../graph/graph-metadata-schema.js').GraphMetadata,
+): CausalLinks {
+  const packetLinks = packetReferencesToCausalLinks(metadata.manual);
+  return {
+    caused_by: [],
+    supersedes: packetLinks.supersedes ?? [],
+    derived_from: [],
+    blocks: packetLinks.blocks ?? [],
+    related_to: packetLinks.related_to ?? [],
+  };
 }
 
 const MAX_MEMORY_TITLE_LENGTH = 120;

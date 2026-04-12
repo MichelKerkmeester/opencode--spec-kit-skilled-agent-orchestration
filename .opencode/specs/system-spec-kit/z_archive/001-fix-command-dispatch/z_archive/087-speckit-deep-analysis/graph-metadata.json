@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "087",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "deep",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "system",
+      "spec",
+      "kit",
+      "087",
+      "speckit",
+      "implementation",
+      "plan",
+      "tasks",
+      "deep",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+      ".opencode/agent/speckit.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "opencode.json",
+      ".opencode/command/spec_kit/complete.md",
+      "command/spec_kit/handover.md",
+      "command/spec_kit/implement.md",
+      "command/spec_kit/resume.md",
+      "command/spec_kit/research/research/research.md",
+      "command/spec_kit/plan.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/constitutional/gate-enforcement.md",
+      ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
+      ".opencode/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/agent/research/research/research.md",
+      "PUBLIC_RELEASE.md"
+    ],
+    "entities": [
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.json",
+        "kind": "config",
+        "path": "opencode.json",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "command/spec_kit/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": "command/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": "command/spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "command/spec_kit/research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "command/spec_kit/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "gate-enforcement.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/constitutional/gate-enforcement.md",
+        "source": "derived"
+      },
+      {
+        "name": "scripts-registry.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP server code, skill files, agent definitions, command files, constitutional memories, scripts, and AGENTS.md integration. Found and fixed 3 critical bugs (SQL constraint violation, ghost tool references, stale file references), 15+ moderate misalignments (gate numbering, threshold inconsistencies, missing commands), and performed ecosystem-wide AGENTS.md-to-AGENTS.md migration across 30+ files.",
+    "created_at": "2026-04-12T09:02:53.558Z",
+    "last_save_at": "2026-04-12T09:06:03.617Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

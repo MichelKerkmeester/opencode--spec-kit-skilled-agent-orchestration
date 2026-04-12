@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/031-normalized-analytics-reader",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "normalized analytics reader",
+      "session analytics replay",
+      "cross-session token analytics",
+      "reader-owned replay model",
+      "024 compact code graph",
+      "normalized analytics plan",
+      "session analytics replay plan",
+      "reader-owned analytics",
+      "024 compact code graph plan",
+      "analytics reader tasks",
+      "session analytics replay tasks",
+      "normalized analytics tasks",
+      "analytics reader verification",
+      "session analytics checklist",
+      "normalized analytics checklist",
+      "analytics reader adr",
+      "normalized analytics decision",
+      "reader-owned replay decision",
+      "analytics reader implementation summary",
+      "normalized analytics summary",
+      "session analytics replay summary"
+    ],
+    "key_topics": [
+      "normalized",
+      "analytics",
+      "reader",
+      "session",
+      "replay",
+      "cross-session",
+      "token",
+      "reader-owned",
+      "model",
+      "024",
+      "compact",
+      "code"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "session-analytics-db.ts",
+      "speckit-session-analytics.db",
+      "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/session-analytics-db.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
+      "producerMetadata.transcript",
+      "session-stop.ts",
+      "hook-state.ts",
+      "session-prime.ts",
+      ".claude/settings.local.json",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/analytics/session-analytics-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/session-analytics-db.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/fixtures/hooks/session-stop-replay.jsonl",
+      "analytics_sessions.claude_session_id",
+      "producerMetadata.transcript.path",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "session-analytics-db.ts",
+        "kind": "code",
+        "path": "session-analytics-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "speckit-session-analytics.db",
+        "kind": "file",
+        "path": "speckit-session-analytics.db",
+        "source": "derived"
+      },
+      {
+        "name": "hook-stop-token-tracking.vitest.ts",
+        "kind": "test",
+        "path": "TMPDIR=$PWD/.tmp/vitest-tmp npx vitest run tests/session-analytics-db.vitest.ts tests/hook-session-stop-replay.vitest.ts tests/hook-stop-token-tracking.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "producerMetadata.transcript",
+        "kind": "file",
+        "path": "producerMetadata.transcript",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "claude-transcript.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/claude-transcript.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-analytics-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/analytics/session-analytics-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-analytics-db.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/session-analytics-db.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop-replay.jsonl",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/fixtures/hooks/session-stop-replay.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "analytics_sessions.claude_session_id",
+        "kind": "file",
+        "path": "analytics_sessions.claude_session_id",
+        "source": "derived"
+      },
+      {
+        "name": "producerMetadata.transcript.path",
+        "kind": "file",
+        "path": "producerMetadata.transcript.path",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet `024/003` proved the Stop hook can persist useful session-end facts, but those facts still lived in per-session hook-state JSON and could not answer cross-session questions safely. This packet closes that gap by adding a reader-owned normalized SQLite replay model that ingests the producer metadata seam without changing the writer or startup authority.",
+    "created_at": "2026-04-12T09:02:53.440Z",
+    "last_save_at": "2026-04-12T09:06:03.484Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

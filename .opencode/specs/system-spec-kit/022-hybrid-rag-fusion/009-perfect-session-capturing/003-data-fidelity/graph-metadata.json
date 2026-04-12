@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "spec",
+      "003",
+      "data",
+      "implementation",
+      "plan",
+      "tasks",
+      "fidelity",
+      "verification",
+      "checklist",
+      "summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "spec",
+      "003",
+      "data",
+      "implementation",
+      "plan",
+      "tasks",
+      "fidelity",
+      "verification",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/utils/input-normalizer.ts",
+      "scripts/utils/fact-coercion.ts",
+      "scripts/extractors/file-extractor.ts",
+      "scripts/extractors/conversation-extractor.ts",
+      "scripts/extractors/decision-extractor.ts",
+      "scripts/extractors/collect-session-data.ts",
+      "_manualDecision.fullText",
+      "scripts/tests/runtime-memory-inputs.vitest.ts",
+      "scripts/tests/test-extractors-loaders.js",
+      "session-types.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+      "JSON.stringify",
+      "input-normalizer.ts",
+      "file-extractor.ts",
+      "decision-extractor.ts",
+      "collect-session-data.ts",
+      "console.warn",
+      "tests/runtime-memory-inputs.vitest.ts",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "scripts/utils/input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fact-coercion.ts",
+        "kind": "code",
+        "path": "scripts/utils/fact-coercion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "conversation-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/conversation-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "scripts/extractors/decision-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "scripts/extractors/collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "_manualDecision.fullText",
+        "kind": "file",
+        "path": "_manualDecision.fullText",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-memory-inputs.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/runtime-memory-inputs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "scripts/tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "session-types.ts",
+        "kind": "code",
+        "path": "session-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-extractors-loaders.js",
+        "kind": "code",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+        "source": "derived"
+      },
+      {
+        "name": "JSON.stringify",
+        "kind": "file",
+        "path": "JSON.stringify",
+        "source": "derived"
+      },
+      {
+        "name": "input-normalizer.ts",
+        "kind": "code",
+        "path": "input-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-extractor.ts",
+        "kind": "code",
+        "path": "file-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-extractor.ts",
+        "kind": "code",
+        "path": "decision-extractor.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
+    "created_at": "2026-04-12T09:02:50.269Z",
+    "last_save_at": "2026-04-12T09:06:00.399Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

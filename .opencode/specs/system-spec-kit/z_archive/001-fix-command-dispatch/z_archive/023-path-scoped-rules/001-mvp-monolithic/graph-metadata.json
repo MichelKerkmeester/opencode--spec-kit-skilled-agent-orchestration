@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic",
+  "parent_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "path",
+      "scoped",
+      "validation",
+      "rules",
+      "spec",
+      "001",
+      "mvp",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "path",
+      "scoped",
+      "validation",
+      "rules",
+      "spec",
+      "001",
+      "mvp",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "validate-spec.sh",
+      ".opencode/skill/system-spec-kit/scripts/validate-spec.sh",
+      ".opencode/skill/system-spec-kit/scripts/test-validation.sh",
+      "path_scoped_rules.md",
+      "validation_rules.md",
+      "scripts/README.md",
+      ".speckit.yaml",
+      "check-prerequisites.sh",
+      "calculate-completeness.sh",
+      "common.sh",
+      "AGENTS.md",
+      "SKILL.md",
+      "test-validation.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "validate-spec.sh",
+        "kind": "script",
+        "path": "validate-spec.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate-spec.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/validate-spec.sh",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/test-validation.sh",
+        "source": "derived"
+      },
+      {
+        "name": "path_scoped_rules.md",
+        "kind": "doc",
+        "path": "path_scoped_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "validation_rules.md",
+        "kind": "doc",
+        "path": "validation_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "scripts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": ".speckit.yaml",
+        "kind": "config",
+        "path": ".speckit.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "check-prerequisites.sh",
+        "kind": "script",
+        "path": "check-prerequisites.sh",
+        "source": "derived"
+      },
+      {
+        "name": "calculate-completeness.sh",
+        "kind": "script",
+        "path": "calculate-completeness.sh",
+        "source": "derived"
+      },
+      {
+        "name": "common.sh",
+        "kind": "script",
+        "path": "common.sh",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation.sh",
+        "kind": "script",
+        "path": "test-validation.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "1. No quality enforcement: Incomplete specs pass silently",
+    "created_at": "2026-04-12T09:02:53.515Z",
+    "last_save_at": "2026-04-12T09:06:03.566Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

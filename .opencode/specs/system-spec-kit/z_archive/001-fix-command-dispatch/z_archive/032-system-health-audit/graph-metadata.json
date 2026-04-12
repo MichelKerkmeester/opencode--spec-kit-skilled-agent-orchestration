@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "system",
+      "health",
+      "audit",
+      "comprehensive",
+      "bug",
+      "spec",
+      "032",
+      "implementation",
+      "plan",
+      "tasks",
+      "completed",
+      "checklist",
+      "decision",
+      "record",
+      "decision record"
+    ],
+    "key_topics": [
+      "system",
+      "health",
+      "audit",
+      "comprehensive",
+      "bug",
+      "spec",
+      "032",
+      "implementation",
+      "plan",
+      "tasks",
+      "completed",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/scripts/skill_advisor.py",
+      ".opencode/skill/system-memory/scripts/lib/vector-index.js",
+      ".opencode/skill/system-memory/mcp_server/semantic-memory.js",
+      ".opencode/skill/system-memory/SKILL.md",
+      ".opencode/skill/system-memory/mcp_server/lib/confidence-tracker.js",
+      ".opencode/skill/system-memory/scripts/lib/opencode-capture.js",
+      "process.env.USERPROFILE",
+      "opencode.local.json",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-memory/scripts/lib/vector-index.js",
+        "source": "derived"
+      },
+      {
+        "name": "semantic-memory.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-memory/mcp_server/semantic-memory.js",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-memory/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "confidence-tracker.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-memory/mcp_server/lib/confidence-tracker.js",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-capture.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-memory/scripts/lib/opencode-capture.js",
+        "source": "derived"
+      },
+      {
+        "name": "process.env.USERPROFILE",
+        "kind": "file",
+        "path": "process.env.USERPROFILE",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.local.json",
+        "kind": "config",
+        "path": "opencode.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Health Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Comprehensive Bug Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "A comprehensive audit combining **20-agent deep analysis** and **System Health Dashboard** findings revealed critical bugs, alignment issues, and UX problems across multiple systems:",
+    "created_at": "2026-04-12T09:02:53.522Z",
+    "last_save_at": "2026-04-12T09:06:03.575Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
+  }
+}

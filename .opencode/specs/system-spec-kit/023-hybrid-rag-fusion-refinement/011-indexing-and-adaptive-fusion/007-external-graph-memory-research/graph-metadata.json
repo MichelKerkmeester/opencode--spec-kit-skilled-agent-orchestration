@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
+  "spec_folder": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/007-external-graph-memory-research",
+  "parent_id": "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "graph memory research",
+      "external graph solutions",
+      "graph effectiveness",
+      "knowledge graph memory",
+      "graph ux improvement",
+      "external graph memory research",
+      "graph retrieval improvement survey",
+      "research phase plan",
+      "adaptive fusion graph research",
+      "graph memory research tasks",
+      "external graph survey checklist",
+      "phase 007 tasks",
+      "phase 007 checklist",
+      "external graph research verification",
+      "research phase readiness",
+      "phase 007 adr",
+      "graph research decision",
+      "external graph comparison decision",
+      "phase 007 implementation summary",
+      "graph research status",
+      "research phase stub summary",
+      "graph memory survey results",
+      "graph improvement backlog"
+    ],
+    "key_topics": [
+      "graph",
+      "memory",
+      "research",
+      "external",
+      "solutions",
+      "effectiveness",
+      "knowledge",
+      "improvement",
+      "retrieval",
+      "survey",
+      "phase",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "decision-record.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "generate-context.js",
+      "implementation-summary.md",
+      "mem0/graphs/utils.py",
+      "main.py",
+      "graph_memory.py",
+      "graphs/utils.py",
+      "QueryParam.mode",
+      "README.md",
+      "0.76",
+      "lightrag/base.py",
+      "lightrag/prompt.py",
+      "lightrag/operate.py",
+      "lightrag/lightrag.py",
+      "lightrag/api/README.md"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "utils.py",
+        "kind": "file",
+        "path": "mem0/graphs/utils.py",
+        "source": "derived"
+      },
+      {
+        "name": "main.py",
+        "kind": "file",
+        "path": "main.py",
+        "source": "derived"
+      },
+      {
+        "name": "graph_memory.py",
+        "kind": "file",
+        "path": "graph_memory.py",
+        "source": "derived"
+      },
+      {
+        "name": "utils.py",
+        "kind": "file",
+        "path": "graphs/utils.py",
+        "source": "derived"
+      },
+      {
+        "name": "QueryParam.mode",
+        "kind": "file",
+        "path": "QueryParam.mode",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "0.76",
+        "kind": "file",
+        "path": "0.76",
+        "source": "derived"
+      },
+      {
+        "name": "base.py",
+        "kind": "file",
+        "path": "lightrag/base.py",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The Spec Kit Memory causal graph currently has 3,854 edges at 79.92% coverage, dominated by `supports` (2,578) and `caused` (1,265) relations. While structurally healthy, the graph is used reactively — retrieved only when causal boost or co-activation fires — rather than as a proactive, first-class retrieval channel. This research phase investigates how leading external graph memory systems (Zep, Mem0, GraphRAG, Memoripy, LightRAG, Cognee) handle graph construction, traversal, UX surface, and automatic utilization, and produces a ranked shortlist of improvements applicable to our system.",
+    "created_at": "2026-04-12T09:02:50.335Z",
+    "last_save_at": "2026-04-12T09:06:00.463Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

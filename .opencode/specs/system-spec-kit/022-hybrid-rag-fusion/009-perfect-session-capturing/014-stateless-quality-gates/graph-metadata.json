@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "stateless quality gates",
+      "gate a tiering",
+      "v10 file count divergence",
+      "contamination cap stateless",
+      "stdin flag generate-context",
+      "stateless mode save blocked",
+      "stateless quality gates plan",
+      "phase 014 plan",
+      "gate a tiering implementation",
+      "stdin flag implementation",
+      "source-aware contamination plan",
+      "stateless quality gates tasks",
+      "phase 014 tasks",
+      "gate a tiering tasks",
+      "stdin tasks",
+      "stateless quality gates checklist",
+      "phase 014 checklist",
+      "gate a verification",
+      "stateless save verification",
+      "stateless quality gates decisions",
+      "gate a tiering decision",
+      "stdin decision",
+      "contamination filter source-aware decision",
+      "phase 014 implementation summary",
+      "stateless quality gate summary",
+      "gate a split summary"
+    ],
+    "key_topics": [
+      "stateless",
+      "quality",
+      "gates",
+      "gate",
+      "tiering",
+      "v10",
+      "file",
+      "count",
+      "divergence",
+      "contamination",
+      "cap",
+      "stdin"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "/tmp/save-context-data.json",
+      "workflow.ts",
+      "options.collectedData",
+      "workflow-e2e.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/workflow-e2e.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/contamination-filter.vitest.ts tests/quality-scorer-calibration.vitest.ts",
+      "generate-context.ts",
+      "contamination-filter.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/contamination-filter.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/quality-scorer-calibration.vitest.ts",
+      "Read tool on /src/file.ts",
+      "decision-record.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "save-context-data.json",
+        "kind": "config",
+        "path": "/tmp/save-context-data.json",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "options.collectedData",
+        "kind": "file",
+        "path": "options.collectedData",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": "workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/workflow-e2e.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/contamination-filter.vitest.ts tests/quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": "contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow-e2e.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context-cli-authority.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contamination-filter.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/contamination-filter.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quality-scorer-calibration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/quality-scorer-calibration.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Stateless mode (`node generate-context.js \"014-stateless-quality-gates\"`) is blocked by quality gates designed for curated JSON payloads. Two root causes produce systematic false-positive aborts: V10 always fires because it compares inherently different file-count measurements, and the tool-title-with-path contamination pattern caps scores at 0.60 for content that is factually correct in Claude Code sessions. This spec fixes the gate architecture across three targeted changes: tiering Gate A into hard-block vs. soft-warning rules, adding `--stdin` / `--json` support that reuses the file-mode workflow without temp files, and making the contamination filter source-aware.",
+    "created_at": "2026-04-12T09:02:50.275Z",
+    "last_save_at": "2026-04-12T09:06:00.406Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

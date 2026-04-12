@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase",
+      "010",
+      "cocoindex",
+      "bridge",
+      "spec",
+      "plan",
+      "checklist"
+    ],
+    "key_topics": [
+      "phase",
+      "010",
+      "cocoindex",
+      "bridge",
+      "spec",
+      "plan",
+      "checklist",
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "tool-schemas.ts",
+      "context-server.ts",
+      "handlers/code-graph/context.ts",
+      "lib/code-graph/seed-resolver.ts",
+      "lib/code-graph/code-graph-context.ts",
+      "data.anchors",
+      "profile-formatters.ts",
+      "search-results.ts",
+      "code-graph-context.ts",
+      "context-formatter.ts",
+      "seed-resolver.ts",
+      "data.queryMode",
+      "data.graphContext",
+      "data.textBrief",
+      "data.combinedSummary",
+      "data.nextActions",
+      "data.metadata",
+      "mcp_server/lib/code-graph/code-graph-context.ts",
+      "mcp_server/lib/code-graph/seed-resolver.ts",
+      "mcp_server/tool-schemas.ts"
+    ],
+    "entities": [
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context.ts",
+        "kind": "code",
+        "path": "handlers/code-graph/context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "seed-resolver.ts",
+        "kind": "code",
+        "path": "lib/code-graph/seed-resolver.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-context.ts",
+        "kind": "code",
+        "path": "lib/code-graph/code-graph-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data.anchors",
+        "kind": "file",
+        "path": "data.anchors",
+        "source": "derived"
+      },
+      {
+        "name": "profile-formatters.ts",
+        "kind": "code",
+        "path": "profile-formatters.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-context.ts",
+        "kind": "code",
+        "path": "code-graph-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-formatter.ts",
+        "kind": "code",
+        "path": "context-formatter.ts",
+        "source": "derived"
+      },
+      {
+        "name": "seed-resolver.ts",
+        "kind": "code",
+        "path": "seed-resolver.ts",
+        "source": "derived"
+      },
+      {
+        "name": "data.queryMode",
+        "kind": "file",
+        "path": "data.queryMode",
+        "source": "derived"
+      },
+      {
+        "name": "data.graphContext",
+        "kind": "file",
+        "path": "data.graphContext",
+        "source": "derived"
+      },
+      {
+        "name": "data.textBrief",
+        "kind": "file",
+        "path": "data.textBrief",
+        "source": "derived"
+      },
+      {
+        "name": "data.combinedSummary",
+        "kind": "file",
+        "path": "data.combinedSummary",
+        "source": "derived"
+      },
+      {
+        "name": "data.nextActions",
+        "kind": "file",
+        "path": "data.nextActions",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-12T09:02:50.349Z",
+    "last_save_at": "2026-04-12T09:06:00.486Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

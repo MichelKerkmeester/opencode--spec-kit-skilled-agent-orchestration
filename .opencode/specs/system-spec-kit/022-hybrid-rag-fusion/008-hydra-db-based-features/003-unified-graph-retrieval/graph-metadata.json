@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 3",
+      "unified graph retrieval",
+      "graph fusion",
+      "deterministic ranking",
+      "phase 3 plan",
+      "graph fusion plan",
+      "phase 3 tasks",
+      "graph fusion tasks",
+      "phase 3 checklist",
+      "graph checklist",
+      "phase 3 adr",
+      "graph fusion adr",
+      "phase 3 summary",
+      "graph summary"
+    ],
+    "key_topics": [
+      "phase",
+      "unified",
+      "graph",
+      "retrieval",
+      "fusion",
+      "deterministic",
+      "ranking",
+      "plan",
+      "tasks",
+      "checklist",
+      "adr",
+      "summary"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/search/pipeline/ranking-contract.ts",
+      "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+      "mcp_server/lib/search/graph-search-fn.ts",
+      "mcp_server/lib/graph/graph-signals.ts",
+      "mcp_server/lib/graph/community-detection.ts",
+      "tests/graph-roadmap-finalization.vitest.ts",
+      "npx vitest run tests/graph-search-fn.vitest.ts tests/graph-roadmap-finalization.vitest.ts tests/graph-regression-flag-off.vitest.ts",
+      "validate.sh",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "ranking-contract.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/ranking-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-telemetry.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/telemetry/retrieval-telemetry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-search-fn.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/graph-search-fn.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-signals.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/graph-signals.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-detection.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/community-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-roadmap-finalization.vitest.ts",
+        "kind": "test",
+        "path": "tests/graph-roadmap-finalization.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-regression-flag-off.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/graph-search-fn.vitest.ts tests/graph-roadmap-finalization.vitest.ts tests/graph-regression-flag-off.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-boost.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + level3-arch + level3plus-govern | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.260Z",
+    "last_save_at": "2026-04-12T09:06:00.390Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

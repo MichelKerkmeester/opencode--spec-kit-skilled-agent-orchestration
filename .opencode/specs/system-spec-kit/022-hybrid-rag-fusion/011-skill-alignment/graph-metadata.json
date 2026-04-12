@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion",
+  "children_ids": [
+    "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment",
+    "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "skill alignment",
+      "011 alignment",
+      "system-spec-kit backlog",
+      "system skill guide update",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary",
+      "011",
+      "skill"
+    ],
+    "key_topics": [
+      "skill",
+      "alignment",
+      "011",
+      "system-spec-kit",
+      "backlog",
+      "system",
+      "guide",
+      "update",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/references/memory/save_workflow.md",
+      ".opencode/skill/system-spec-kit/references/memory/embedding_resilience.md",
+      ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+      ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+      ".opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md",
+      ".opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md",
+      ".opencode/skill/system-spec-kit/assets/level_decision_matrix.md",
+      ".opencode/skill/system-spec-kit/assets/template_mapping.md",
+      "mcp_server/tool-schemas.ts",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/plan.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md",
+      ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "save_workflow.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/save_workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "embedding_resilience.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/embedding_resilience.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "environment_variables.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
+        "source": "derived"
+      },
+      {
+        "name": "parallel_dispatch_config.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md",
+        "source": "derived"
+      },
+      {
+        "name": "complexity_decision_matrix.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_decision_matrix.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/assets/level_decision_matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_mapping.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/assets/template_mapping.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **4 commands**, with retrieval documented under `/memory:search` and shared-memory lifecycle routed through `/memory:manage shared`.",
+    "created_at": "2026-04-12T09:02:50.284Z",
+    "last_save_at": "2026-04-12T09:06:00.417Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

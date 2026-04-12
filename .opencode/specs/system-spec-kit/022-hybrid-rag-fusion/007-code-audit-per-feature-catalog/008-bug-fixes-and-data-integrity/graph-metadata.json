@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code audit",
+      "bug fixes and data integrity",
+      "feature verification",
+      "audit plan",
+      "tasks",
+      "checklist",
+      "implementation summary",
+      "bug fixes & data integrity"
+    ],
+    "key_topics": [
+      "code",
+      "audit",
+      "bug",
+      "fixes",
+      "data",
+      "integrity",
+      "feature",
+      "verification",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "graph-lifecycle.ts",
+      "retrieval-pipeline.ts",
+      "score-calibration.ts",
+      "k-value-analysis.ts",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "graph-lifecycle.ts",
+        "kind": "code",
+        "path": "graph-lifecycle.ts",
+        "source": "derived"
+      },
+      {
+        "name": "retrieval-pipeline.ts",
+        "kind": "code",
+        "path": "retrieval-pipeline.ts",
+        "source": "derived"
+      },
+      {
+        "name": "score-calibration.ts",
+        "kind": "code",
+        "path": "score-calibration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "k-value-analysis.ts",
+        "kind": "code",
+        "path": "k-value-analysis.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Bug Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Integrity",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary\n\nSystematic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Systematic code audit of 11 Bug Fixes and Data Integrity features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/08--bug-fixes-and-data-integrity/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
+    "created_at": "2026-04-12T09:02:50.249Z",
+    "last_save_at": "2026-04-12T09:06:00.377Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

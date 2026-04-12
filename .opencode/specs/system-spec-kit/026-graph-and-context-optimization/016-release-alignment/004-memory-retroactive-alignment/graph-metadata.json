@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/004-memory-retroactive-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/004-memory-retroactive-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory retroactive alignment",
+      "retroactive memory remediation",
+      "v2.2 memory alignment complete",
+      "memory corpus settled",
+      "retroactive reviewed memories",
+      "memory alignment plan",
+      "completed remediation plan",
+      "retroactive memory verification",
+      "settled corpus plan",
+      "memory alignment tasks",
+      "retroactive remediation tasks",
+      "memory corpus completion tasks",
+      "memory alignment checklist",
+      "retroactive remediation verification",
+      "memory corpus settled checklist",
+      "memory remediation summary",
+      "retroactive alignment implementation summary",
+      "149 memories remediated",
+      "memory corpus settled summary"
+    ],
+    "key_topics": [
+      "memory",
+      "retroactive",
+      "alignment",
+      "remediation",
+      "complete",
+      "corpus",
+      "settled",
+      "reviewed",
+      "memories",
+      "plan",
+      "completed",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scratch/remediate-memories.mjs",
+      "scratch/audit-report.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "verify_alignment_drift.py"
+    ],
+    "entities": [
+      {
+        "name": "remediate-memories.mjs",
+        "kind": "file",
+        "path": "scratch/remediate-memories.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "audit-report.md",
+        "kind": "doc",
+        "path": "scratch/audit-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "verify_alignment_drift.py",
+        "kind": "file",
+        "path": "verify_alignment_drift.py",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Retroactive Memory Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nOlder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nRecord",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executed Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Older memory files across `.opencode/specs/**/memory/*.md` had drifted away from the current v2.2 standard. The completed remediation run needed to eliminate placeholder `/100` markers, normalize required frontmatter, raise trigger phrase coverage, preserve deprecated archive state correctly, and prove that the full corpus could settle cleanly after reruns.",
+    "created_at": "2026-04-12T09:02:53.475Z",
+    "last_save_at": "2026-04-12T09:06:03.519Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

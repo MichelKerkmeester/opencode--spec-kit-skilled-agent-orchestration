@@ -24,7 +24,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, context indexing, and targeted Vitest regressions around hardened script behavior.
+This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, packet graph metadata refresh/backfill, context indexing, and targeted Vitest regressions around hardened script behavior.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:inventory-snapshot -->
@@ -46,7 +46,8 @@ Top-level files with extensions (10 including this README):
 Primary script directories:
 - `spec/` - 12 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`, `check-template-staleness.sh`, `quality-audit.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
-- `rules/` - 20 files total: 19 shell validation rules plus directory README (`0` TypeScript rule files; `LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
+- `rules/` - 21 files total: 20 shell validation rules plus directory README (`0` TypeScript rule files; `LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
+- `graph/` - 1 TypeScript backfill CLI (`backfill-graph-metadata.ts`) for repo-wide `graph-metadata.json` dry-runs and writes
 - `memory/` - 8 TypeScript/JS CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`)
 - `core/` - 17 TypeScript workflow modules plus barrel export
 - `config/` - 1 TypeScript configuration module (`index.ts`)
@@ -105,6 +106,13 @@ Memory save entrypoint (required by Memory Save Rule):
 
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+```
+
+Canonical saves now refresh the root `graph-metadata.json` packet contract as part of the same workflow run. For repo-wide coverage and rollout backfill, use:
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run
+node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js
 ```
 
 Use `/spec_kit:resume` for active recovery; canonical continuity lives in `handover.md -> _memory.continuity -> spec docs`, while generated `memory/` output remains supporting/indexed material.

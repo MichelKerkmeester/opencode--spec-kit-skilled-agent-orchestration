@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec",
+      "speckit",
+      "skill",
+      "refinement",
+      "003",
+      "plan",
+      "conservative",
+      "tasks"
+    ],
+    "key_topics": [
+      "spec",
+      "speckit",
+      "skill",
+      "refinement",
+      "003",
+      "plan",
+      "conservative",
+      "tasks",
+      "comprehensively",
+      "improve",
+      "workflows-spec-kit",
+      "reducing"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "path_scoped_rules.md",
+      ".spec-actives.json",
+      "level_specifications.md",
+      "template_guide.md",
+      "automation_workflows.md",
+      "quick_reference.md",
+      "level_decision_matrix.md",
+      "template_mapping.md",
+      ".opencode/skills/workflows-spec-kit/SKILL.md",
+      "references/level_specifications.md",
+      "references/template_guide.md",
+      "references/automation_workflows.md",
+      "references/quick_reference.md",
+      "references/path_scoped_rules.md",
+      "assets/level_decision_matrix.md",
+      "assets/template_mapping.md",
+      "version: 1.1.0",
+      "version: 1.2.0",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "path_scoped_rules.md",
+        "kind": "doc",
+        "path": "path_scoped_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": ".spec-actives.json",
+        "kind": "config",
+        "path": ".spec-actives.json",
+        "source": "derived"
+      },
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": "level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_guide.md",
+        "kind": "doc",
+        "path": "template_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "automation_workflows.md",
+        "kind": "doc",
+        "path": "automation_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": "quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_decision_matrix.md",
+        "kind": "doc",
+        "path": "level_decision_matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_mapping.md",
+        "kind": "doc",
+        "path": "template_mapping.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skills/workflows-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": "references/level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_guide.md",
+        "kind": "doc",
+        "path": "references/template_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "automation_workflows.md",
+        "kind": "doc",
+        "path": "references/automation_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": "references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "path_scoped_rules.md",
+        "kind": "doc",
+        "path": "references/path_scoped_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "level_decision_matrix.md",
+        "kind": "doc",
+        "path": "assets/level_decision_matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_mapping.md",
+        "kind": "doc",
+        "path": "assets/template_mapping.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensively improve the `workflows-spec-kit` skill by reducing redundancy, improving structure, updating accuracy, enhancing clarity, and simplifying content while maintaining completeness.",
+    "created_at": "2026-04-12T09:02:53.507Z",
+    "last_save_at": "2026-04-12T09:06:03.557Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ]
+  }
+}

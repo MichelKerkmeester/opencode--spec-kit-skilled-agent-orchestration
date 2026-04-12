@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture",
+  "parent_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "modular",
+      "validation",
+      "architecture",
+      "spec",
+      "002",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "modular",
+      "validation",
+      "architecture",
+      "spec",
+      "002",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "validate-spec.sh",
+      "lib/common.sh",
+      "lib/output.sh",
+      "lib/config.sh",
+      "rules/check-files.sh",
+      "rules/check-placeholders.sh",
+      "rules/check-sections.sh",
+      "rules/check-level.sh",
+      "rules/check-priority-tags.sh",
+      "rules/check-evidence.sh",
+      "rules/check-anchors.sh",
+      "test-validation.sh",
+      "time validate-spec.sh",
+      ".speckit.yaml",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "validate-spec.sh",
+        "kind": "script",
+        "path": "validate-spec.sh",
+        "source": "derived"
+      },
+      {
+        "name": "common.sh",
+        "kind": "script",
+        "path": "lib/common.sh",
+        "source": "derived"
+      },
+      {
+        "name": "output.sh",
+        "kind": "script",
+        "path": "lib/output.sh",
+        "source": "derived"
+      },
+      {
+        "name": "config.sh",
+        "kind": "script",
+        "path": "lib/config.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-files.sh",
+        "kind": "script",
+        "path": "rules/check-files.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-placeholders.sh",
+        "kind": "script",
+        "path": "rules/check-placeholders.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-sections.sh",
+        "kind": "script",
+        "path": "rules/check-sections.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-level.sh",
+        "kind": "script",
+        "path": "rules/check-level.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-priority-tags.sh",
+        "kind": "script",
+        "path": "rules/check-priority-tags.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-evidence.sh",
+        "kind": "script",
+        "path": "rules/check-evidence.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-anchors.sh",
+        "kind": "script",
+        "path": "rules/check-anchors.sh",
+        "source": "derived"
+      },
+      {
+        "name": "test-validation.sh",
+        "kind": "script",
+        "path": "test-validation.sh",
+        "source": "derived"
+      },
+      {
+        "name": "time validate-spec.sh",
+        "kind": "script",
+        "path": "time validate-spec.sh",
+        "source": "derived"
+      },
+      {
+        "name": ".speckit.yaml",
+        "kind": "config",
+        "path": ".speckit.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The current `validate-spec.sh` script is a monolithic ~600 line file. Adding all planned features (PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, .speckit.yaml config, glob patterns) would bloat it to ~1400 lines, making it:",
+    "created_at": "2026-04-12T09:02:53.516Z",
+    "last_save_at": "2026-04-12T09:06:03.567Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

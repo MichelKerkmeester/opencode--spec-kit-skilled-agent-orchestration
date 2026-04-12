@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "stateless",
+      "spec",
+      "passing",
+      "system",
+      "alignment",
+      "017",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "key_topics": [
+      "stateless",
+      "spec",
+      "passing",
+      "system",
+      "alignment",
+      "017",
+      "plan",
+      "tasks",
+      "checklist",
+      "remove",
+      "reliance",
+      "spec-active"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "AGENTS.md",
+      "spec_folder_detection.md",
+      "research/research.md",
+      "generate-context.js",
+      ".opencode/command/spec_kit/resume.md",
+      ".opencode/command/spec_kit/research/research/research.md",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+      ".opencode/command/prompt/assets/improve_prompt.yaml",
+      ".opencode/command/memory/save.md",
+      ".opencode/skills/system-memory/scripts/generate-context.js",
+      ".opencode/skills/system-spec-kit/SKILL.md",
+      ".opencode/skills/system-spec-kit/references/sub_folder_versioning.md",
+      ".opencode/skills/system-spec-kit/references/template_guide.md",
+      ".opencode/skills/system-memory/README.md",
+      ".opencode/skills/system-memory/references/execution_methods.md",
+      ".opencode/skills/system-memory/references/spec_folder_detection.md",
+      "create-spec-folder.sh",
+      "common.sh",
+      "complete.md"
+    ],
+    "entities": [
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_folder_detection.md",
+        "kind": "doc",
+        "path": "spec_folder_detection.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "improve_prompt.yaml",
+        "kind": "config",
+        "path": ".opencode/command/prompt/assets/improve_prompt.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skills/system-memory/scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "sub_folder_versioning.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-spec-kit/references/sub_folder_versioning.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_guide.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-spec-kit/references/template_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-memory/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "execution_methods.md",
+        "kind": "doc",
+        "path": ".opencode/skills/system-memory/references/execution_methods.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Remove all system reliance on the `.spec-active` marker file, enforcing a strictly stateless architecture. This aligns with `AGENTS.md` Gate 5: \"NEVER create/write to .spec-active file (Stateless only)\".",
+    "created_at": "2026-04-12T09:02:53.513Z",
+    "last_save_at": "2026-04-12T09:06:03.563Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

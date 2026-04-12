@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "tooling and scripts audit",
+      "code audit tooling",
+      "016 tooling scripts",
+      "tree thinning",
+      "architecture boundary enforcement",
+      "progressive validation",
+      "dead code removal",
+      "admin cli audit",
+      "session capturing pipeline",
+      "source-dist alignment",
+      "audit plan",
+      "tooling and scripts",
+      "tasks",
+      "checklist",
+      "implementation summary",
+      "tooling & scripts",
+      "code audit"
+    ],
+    "key_topics": [
+      "tooling",
+      "scripts",
+      "audit",
+      "code",
+      "016",
+      "tree",
+      "thinning",
+      "architecture",
+      "boundary",
+      "enforcement",
+      "progressive",
+      "validation"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md",
+      ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
+      ".claude/agents/speckit.md",
+      ".opencode/agent/speckit.md",
+      ".codex/agents/speckit.toml",
+      ".gemini/agents/speckit.md",
+      "scripts/utils/template-structure.js",
+      "mcp_server/api/index.ts",
+      "scripts/spec/check-completion.sh",
+      "checklist.md",
+      "validate.sh",
+      "scripts/ops/runbook.sh",
+      ".opencode/skill/system-spec-kit/nodes/phase-system.md",
+      "scripts/spec/create.sh",
+      "shell-common.sh",
+      "git-branch.sh",
+      "template-utils.sh",
+      "generate-description.js",
+      "scripts/spec/validate.sh",
+      ".speckit.yaml"
+    ],
+    "entities": [
+      {
+        "name": "18-template-compliance-contract-enforcement.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_compliance_contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".claude/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.toml",
+        "kind": "file",
+        "path": ".codex/agents/speckit.toml",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".gemini/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.js",
+        "kind": "code",
+        "path": "scripts/utils/template-structure.js",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "mcp_server/api/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-completion.sh",
+        "kind": "script",
+        "path": "scripts/spec/check-completion.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "runbook.sh",
+        "kind": "script",
+        "path": "scripts/ops/runbook.sh",
+        "source": "derived"
+      },
+      {
+        "name": "phase-system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/nodes/phase-system.md",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "shell-common.sh",
+        "kind": "script",
+        "path": "shell-common.sh",
+        "source": "derived"
+      },
+      {
+        "name": "git-branch.sh",
+        "kind": "script",
+        "path": "git-branch.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet audits the 17 Tooling and Scripts catalog entries that support Spec Kit build workflows, validation rules, admin operations, checkpointing, and source-dist hygiene. The verified result is 16 MATCH and 1 PARTIAL, with the remaining drift concentrated in the code-standards-alignment entry rather than runtime behavior.",
+    "created_at": "2026-04-12T09:02:50.253Z",
+    "last_save_at": "2026-04-12T09:06:00.382Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

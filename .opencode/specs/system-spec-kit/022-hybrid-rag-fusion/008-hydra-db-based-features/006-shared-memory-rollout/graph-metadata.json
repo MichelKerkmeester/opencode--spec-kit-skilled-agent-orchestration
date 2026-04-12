@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 6",
+      "shared memory rollout",
+      "collaboration spaces",
+      "shared memory",
+      "phase 6 plan",
+      "shared memory plan",
+      "phase 6 tasks",
+      "shared memory tasks",
+      "phase 6 checklist",
+      "shared memory checklist",
+      "phase 6 adr",
+      "shared memory adr",
+      "phase 6 summary",
+      "shared memory summary"
+    ],
+    "key_topics": [
+      "phase",
+      "shared",
+      "memory",
+      "rollout",
+      "collaboration",
+      "spaces",
+      "plan",
+      "tasks",
+      "checklist",
+      "adr",
+      "summary",
+      "spec-core"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      "mcp_server/lib/search/vector-index-schema.ts",
+      "mcp_server/lib/collab/shared-spaces.ts",
+      "mcp_server/handlers/shared-memory.ts",
+      "mcp_server/tools/lifecycle-tools.ts",
+      "mcp_server/handlers/memory-save.ts",
+      "tests/shared-spaces.vitest.ts",
+      "npx vitest run tests/shared-spaces.vitest.ts",
+      "validate.sh",
+      "checklist.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "plan.md",
+      "tasks.md",
+      "decision-record.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/collab/shared-spaces.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-memory.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/shared-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": "mcp_server/tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.vitest.ts",
+        "kind": "test",
+        "path": "tests/shared-spaces.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-spaces.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/shared-spaces.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specifica",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + level3-arch + level3plus-govern | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.262Z",
+    "last_save_at": "2026-04-12T09:06:00.392Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

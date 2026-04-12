@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite",
+  "spec_folder": "system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "naming",
+      "convention",
+      "test",
+      "spec",
+      "091",
+      "implementation",
+      "plan",
+      "tasks",
+      "suite",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "naming",
+      "convention",
+      "test",
+      "spec",
+      "091",
+      "implementation",
+      "plan",
+      "tasks",
+      "suite",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scripts/tests/test-naming-migration.js",
+      "scripts/tests/test-export-contracts.js",
+      "scripts/tests/test-bug-regressions.js",
+      "cleanup-orphaned-vectors.js",
+      "stats.sourceCount",
+      "stats.source_count",
+      "context-server.js",
+      "module.exports",
+      "test_dual_threshold.py",
+      "090-opencode-naming-conventions/spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "node scripts/tests/test-naming-migration.js",
+      "child_process.execSync",
+      "test-naming-migration.js",
+      "test-export-contracts.js",
+      "test-bug-regressions.js",
+      "registry-loader.sh",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "test-naming-migration.js",
+        "kind": "code",
+        "path": "scripts/tests/test-naming-migration.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-export-contracts.js",
+        "kind": "code",
+        "path": "scripts/tests/test-export-contracts.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-bug-regressions.js",
+        "kind": "code",
+        "path": "scripts/tests/test-bug-regressions.js",
+        "source": "derived"
+      },
+      {
+        "name": "cleanup-orphaned-vectors.js",
+        "kind": "code",
+        "path": "cleanup-orphaned-vectors.js",
+        "source": "derived"
+      },
+      {
+        "name": "stats.sourceCount",
+        "kind": "file",
+        "path": "stats.sourceCount",
+        "source": "derived"
+      },
+      {
+        "name": "stats.source_count",
+        "kind": "file",
+        "path": "stats.source_count",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "context-server.js",
+        "source": "derived"
+      },
+      {
+        "name": "module.exports",
+        "kind": "file",
+        "path": "module.exports",
+        "source": "derived"
+      },
+      {
+        "name": "test_dual_threshold.py",
+        "kind": "file",
+        "path": "test_dual_threshold.py",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "090-opencode-naming-conventions/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-naming-migration.js",
+        "kind": "code",
+        "path": "node scripts/tests/test-naming-migration.js",
+        "source": "derived"
+      },
+      {
+        "name": "child_process.execSync",
+        "kind": "file",
+        "path": "child_process.execSync",
+        "source": "derived"
+      },
+      {
+        "name": "test-naming-migration.js",
+        "kind": "code",
+        "path": "test-naming-migration.js",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Comprehensive test suite to verify all ~246 files adjusted during the OpenCode naming convention migration (spec 090). Tests confirm that every JS, shell, and Python script works correctly after renaming snake_case identifiers to camelCase, that 3 discovered runtime bugs are fixed, and that backward-compatible MCP handler exports function properly.",
+    "created_at": "2026-04-12T09:02:53.561Z",
+    "last_save_at": "2026-04-12T09:06:03.621Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "architecture remediation",
+      "019 deep dive",
+      "session capturing audit",
+      "architecture remediation plan",
+      "019 remediation",
+      "019 tasks",
+      "architecture remediation tasks",
+      "wave 1 agents",
+      "wave 3 synthesis",
+      "019 checklist",
+      "architecture remediation verification",
+      "wave 3 quality gates",
+      "019 decision record",
+      "architecture remediation adr",
+      "opus-b3 synthesis",
+      "019 implementation summary",
+      "architecture remediation summary"
+    ],
+    "key_topics": [
+      "architecture",
+      "remediation",
+      "019",
+      "deep",
+      "dive",
+      "session",
+      "capturing",
+      "audit",
+      "plan",
+      "tasks",
+      "wave",
+      "agents"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "plan.md",
+      "decision-record.md",
+      "conversation-extractor.ts",
+      "collect-session-data.ts",
+      "tasks.md",
+      "checklist.md",
+      "scratch/codex-1-core-pipeline.md",
+      "scratch/opus-5-type-system.md",
+      "check-architecture-boundaries.ts",
+      "scratch/wave3-priority-matrix.md",
+      "scratch/wave3-decision-records.md",
+      "scratch/wave3-checklist.md",
+      "test-scripts-modules.js",
+      "run-quality-legacy-remediation.js",
+      "task-enrichment.vitest.ts",
+      "memory-render-fixture.vitest.ts",
+      "workflow.ts",
+      "core/workflow.ts",
+      "cli-capture-shared.ts",
+      "descriptions.json"
+    ],
+    "entities": [
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "conversation-extractor.ts",
+        "kind": "code",
+        "path": "conversation-extractor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "collect-session-data.ts",
+        "kind": "code",
+        "path": "collect-session-data.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "codex-1-core-pipeline.md",
+        "kind": "doc",
+        "path": "scratch/codex-1-core-pipeline.md",
+        "source": "derived"
+      },
+      {
+        "name": "opus-5-type-system.md",
+        "kind": "doc",
+        "path": "scratch/opus-5-type-system.md",
+        "source": "derived"
+      },
+      {
+        "name": "check-architecture-boundaries.ts",
+        "kind": "code",
+        "path": "check-architecture-boundaries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "wave3-priority-matrix.md",
+        "kind": "doc",
+        "path": "scratch/wave3-priority-matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "wave3-decision-records.md",
+        "kind": "doc",
+        "path": "scratch/wave3-decision-records.md",
+        "source": "derived"
+      },
+      {
+        "name": "wave3-checklist.md",
+        "kind": "doc",
+        "path": "scratch/wave3-checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-scripts-modules.js",
+        "kind": "code",
+        "path": "test-scripts-modules.js",
+        "source": "derived"
+      },
+      {
+        "name": "run-quality-legacy-remediation.js",
+        "kind": "code",
+        "path": "run-quality-legacy-remediation.js",
+        "source": "derived"
+      },
+      {
+        "name": "task-enrichment.vitest.ts",
+        "kind": "test",
+        "path": "task-enrichment.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-render-fixture.vitest.ts",
+        "kind": "test",
+        "path": "memory-render-fixture.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Global architecture, bug fix, and alignment deep dive across the entire `009-perfect-session-capturing` subsystem. This phase deployed 15 parallel analysis agents across 3 waves (5 GPT 5.4 via Codex CLI + 5 Claude Opus Wave 1/2 analysis, plus 5 Claude Opus Wave 3 synthesis) to produce a comprehensive findings report covering:",
+    "created_at": "2026-04-12T09:02:50.282Z",
+    "last_save_at": "2026-04-12T09:06:00.415Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

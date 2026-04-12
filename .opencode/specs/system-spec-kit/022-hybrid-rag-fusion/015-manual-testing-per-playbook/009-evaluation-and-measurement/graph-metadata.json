@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement",
+  "spec_folder": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/009-evaluation-and-measurement",
+  "parent_id": "system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "manual testing",
+      "evaluation and measurement",
+      "eval database and schema",
+      "ablation study framework",
+      "shadow scoring channel attribution",
+      "int8 quantization evaluation",
+      "memory roadmap baseline",
+      "evaluation and measurement plan",
+      "manual testing plan",
+      "eval run ablation execution",
+      "playbook execution plan",
+      "evaluation and measurement tasks",
+      "manual testing tasks",
+      "scenario execution tasks",
+      "evaluation and measurement checklist",
+      "manual testing checklist",
+      "scenario verification checklist",
+      "evaluation and measurement implementation summary",
+      "phase 009 summary",
+      "manual testing results"
+    ],
+    "key_topics": [
+      "manual",
+      "testing",
+      "evaluation",
+      "measurement",
+      "eval",
+      "database",
+      "schema",
+      "ablation",
+      "study",
+      "framework",
+      "shadow",
+      "scoring"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Manual Testing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\n\nExecute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview\n\nThis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern\n\nManual",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The evaluation-and-measurement category covers 16 scenarios that verify the correctness of the retrieval evaluation framework — including the eval DB schema, metric computation, ablation studies, shadow scoring, and ground truth tooling. These scenarios require structured manual execution to confirm that the measurement pipeline produces accurate, reproducible results.",
+    "created_at": "2026-04-12T09:02:50.296Z",
+    "last_save_at": "2026-04-12T09:06:00.429Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}
