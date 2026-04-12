@@ -49,8 +49,9 @@
 ### Tools & Search
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` — NEVER manually author packet continuity artifacts.
-  - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
+- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in spec docs.
+  - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
+  - Quick continuity: directly edit `_memory.continuity` YAML in spec doc frontmatter (no script round-trip needed).
 - **CocoIndex Code MCP** — semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** — worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
@@ -198,14 +199,15 @@ When multiple inputs are needed, consolidate into a SINGLE prompt — never spli
 ### 🔒 POST-EXECUTION RULES
 
 #### MEMORY SAVE RULE [HARD] BLOCK
-Trigger: "save context", "save memory", `/memory:save`, continuity support artifact refresh
+Trigger: "save context", "save memory", `/memory:save`, continuity update
 - If spec folder established at Gate 3 → USE IT (don't re-ask). Carry-over applies ONLY to memory saves
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
-- **Script:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
-  - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`. The AI has strictly better information about its own session than any DB extraction.
-  - Subfolder: `003-parent/121-child` or bare `121-child` (auto-searches parents)
+- **Full save (DB + embeddings + graph):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+  - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`.
+  - Also refreshes `graph-metadata.json` and `description.json` for the spec folder.
+- **Quick continuity update:** AI may directly edit `_memory.continuity` YAML frontmatter blocks in spec docs without running generate-context.js (per ADR-004).
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
-- **Violation:** Manually authored continuity support artifact under `memory/` → DELETE and re-run via script
+- **Violation:** Creating standalone `.md` files in a `memory/` directory → those directories no longer exist. All continuity lives in spec doc frontmatter + `graph-metadata.json`.
 - **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.
   - **HIGH** issues: MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier)
   - **MEDIUM** issues: patch when practical
@@ -249,7 +251,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 **Spec folder path:** `specs/[###-short-name]/` | **Templates:** `.opencode/skill/system-spec-kit/templates/`
 
-**For details on:** folder structure, `scratch/` vs `memory/` usage, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow — see system-spec-kit SKILL.md §3.
+**For details on:** folder structure, `scratch/` usage, `graph-metadata.json`, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow — see system-spec-kit SKILL.md §3.
 
 ---
 
