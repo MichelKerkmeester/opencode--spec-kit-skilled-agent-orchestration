@@ -44,6 +44,10 @@ const ADMIN_USER_ID = 'gate-i-admin-user';
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
 const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..', '..');
+const DEFAULT_REPORT_DIR = path.join(
+  REPO_ROOT,
+  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution/scratch/manual-playbook-results',
+);
 
 type ContinuitySeed = {
   packetPointer: string;
@@ -312,10 +316,9 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
   const dbDir = path.join(rootDir, 'db');
   const dbPath = path.join(dbDir, 'context-index.sqlite');
   const baselineDbPath = path.join(dbDir, 'context-index.baseline.sqlite');
-  const reportDir = path.join(
-    REPO_ROOT,
-    '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/scratch/gate-i-execution-report',
-  );
+  const reportDir = process.env.MANUAL_PLAYBOOK_REPORT_ROOT
+    ? path.resolve(process.env.MANUAL_PLAYBOOK_REPORT_ROOT)
+    : DEFAULT_REPORT_DIR;
 
   const targetSpecFolder = `specs/${TARGET_SPEC_SLUG}`;
   const sandboxSpecFolder = `specs/${SANDBOX_SPEC_SLUG}`;

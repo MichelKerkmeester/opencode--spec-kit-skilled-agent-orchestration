@@ -1,0 +1,110 @@
+[
+  {
+    "scenarioId": "228",
+    "category": "21--implement-and-remove-deprecated-features",
+    "status": "UNAUTOMATABLE",
+    "filePath": "21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md",
+    "prompt": "As a canonical-continuity validation operator, confirm deprecated runtime flags remain visible for compatibility while no longer steering live behavior against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify targeted runtime and scoring suites pass; eager warmup remains hard-disabled despite compatibility flags; shadow scoring runtime entry points stay inert; novelty boost always reports as not applied; and hybrid search uses adaptive fusion as the default live path without consulting the retired rollout flag. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a canonical-continuity validation operator, validate Retired runtime shims and inert compatibility flags against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify deprecated runtime flags remain visible for compatibility while no longer steering live behavior. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Targeted runtime and scoring suites pass",
+      "eager warmup remains hard-disabled despite compatibility flags",
+      "shadow scoring runtime entry points stay inert",
+      "novelty boost always reports as not applied",
+      "and hybrid search uses adaptive fusion as the default live path without consulting the retired rollout flag"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Targeted runtime and scoring suites pass",
+      "eager warmup remains hard-disabled despite compatibility flags",
+      "shadow scoring runtime entry points stay inert",
+      "novelty boost always reports as not applied",
+      "and hybrid search uses adaptive fusion as the default live path without consulting the retired rollout flag"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts`\n2. inspect source-backed assertions or snapshots showing eager warmup stays disabled and deprecated warmup flags only surface as compatibility warnings\n3. inspect source-backed assertions or snapshots showing shadow scoring runtime helpers return inert values and novelty boost reports as not applied\n4. inspect source-backed assertions or snapshots showing hybrid search always follows adaptive fusion as the default live path without consulting the retired flag"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "229",
+    "category": "21--implement-and-remove-deprecated-features",
+    "status": "UNAUTOMATABLE",
+    "filePath": "21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md",
+    "prompt": "Validate that embedding startup now stays on lazy initialization and that the legacy warmup flags only remain as deprecated compatibility surfaces. Run the targeted checks, capture the evidence that proves lazy startup is the shipped behavior, and return a concise pass/fail verdict with the main reason.\n\nAs a canonical-continuity validation operator, validate Lazy-loading migration and warmup compatibility against the documented validation surface. Verify lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "The targeted lazy-loading and context-server tests pass, `shouldEagerWarmup()` stays false by default, startup logs say lazy loading is enabled, and the deprecated warmup flags are only acknowledged in compatibility messaging"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "The targeted lazy-loading and context-server tests pass, `shouldEagerWarmup()` stays false by default, startup logs say lazy loading is enabled, and the deprecated warmup flags are only acknowledged in compatibility messaging"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npx vitest run tests/lazy-loading.vitest.ts tests/context-server.vitest.ts`\n3. `sed -n '840,890p' context-server.ts`\n4. `rg -n \"shouldEagerWarmup|getLazyLoadingStats|preWarmModel|SPECKIT_EAGER_WARMUP|SPECKIT_LAZY_LOADING\" lib/providers/embeddings.ts ../shared/embeddings.ts context-server.ts tests/lazy-loading.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "230",
+    "category": "21--implement-and-remove-deprecated-features",
+    "status": "UNAUTOMATABLE",
+    "filePath": "21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md",
+    "prompt": "Validate that shadow-scoring execution and persistence remain retired even when the legacy flag is set, while comparison and historical stats helpers stay safe to call. Run the targeted checks, capture the evidence that proves the runtime path is shut off, and return a concise pass/fail verdict with the main reason.\n\nAs a canonical-continuity validation operator, validate Shadow-scoring retirement against the documented validation surface. Verify runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npx vitest run tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts`\n3. `sed -n '230,420p' lib/eval/shadow-scoring.ts`\n4. `rg -n \"runShadowScoring|logShadowComparison|getShadowStats|compareShadowResults|SPECKIT_SHADOW_SCORING\" lib/eval/shadow-scoring.ts tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "231",
+    "category": "21--implement-and-remove-deprecated-features",
+    "status": "UNAUTOMATABLE",
+    "filePath": "21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md",
+    "prompt": "Validate that retired scoring controls remain compatibility shims: novelty boost stays permanently inert and legacy graph-flag helpers only forward to the newer rollout resolver. Run the targeted checks, capture the evidence that proves the old controls cannot re-enable a deprecated path, and return a concise pass/fail verdict with the main reason.\n\nAs a canonical-continuity validation operator, validate Inert scoring flags and compatibility shims against the documented validation surface. Verify retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "The targeted scoring and rollout tests pass, `calculateNoveltyBoost()` always returns `0`, novelty telemetry stays disabled, and `getGraphWalkRolloutState()` continues to mirror `resolveGraphWalkRolloutState()` instead of restoring separate legacy flag behavior"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "The targeted scoring and rollout tests pass, `calculateNoveltyBoost()` always returns `0`, novelty telemetry stays disabled, and `getGraphWalkRolloutState()` continues to mirror `resolveGraphWalkRolloutState()` instead of restoring separate legacy flag behavior"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npx vitest run tests/cold-start.vitest.ts tests/search-flags.vitest.ts tests/scoring-observability.vitest.ts`\n3. `sed -n '470,530p' lib/scoring/composite-scoring.ts`\n4. `sed -n '1,120p' lib/search/graph-flags.ts`\n5. `rg -n \"SPECKIT_NOVELTY_BOOST|calculateNoveltyBoost|getGraphWalkRolloutState|resolveGraphWalkRolloutState\" lib/scoring/composite-scoring.ts lib/search/graph-flags.ts lib/search/search-flags.ts tests/cold-start.vitest.ts tests/search-flags.vitest.ts tests/scoring-observability.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "232",
+    "category": "21--implement-and-remove-deprecated-features",
+    "status": "UNAUTOMATABLE",
+    "filePath": "21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md",
+    "prompt": "As a canonical-continuity validation operator, confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch against cd .opencode/skill/system-spec-kit/mcp_server. Verify the targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls hybridAdaptiveFuse(...) without a flag gate in hybrid-search.ts, and INSTALL_GUIDE.md still documents SPECKIT_ADAPTIVE_FUSION as an operator-facing disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a canonical-continuity validation operator, validate Adaptive-fusion flag drift against cd .opencode/skill/system-spec-kit/mcp_server. Verify live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npx vitest run tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts`\n3. `sed -n '985,1015p' lib/search/hybrid-search.ts`\n4. `rg -n \"SPECKIT_ADAPTIVE_FUSION\" INSTALL_GUIDE.md`\n5. `rg -n \"hybridAdaptiveFuse\" lib/search/hybrid-search.ts tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

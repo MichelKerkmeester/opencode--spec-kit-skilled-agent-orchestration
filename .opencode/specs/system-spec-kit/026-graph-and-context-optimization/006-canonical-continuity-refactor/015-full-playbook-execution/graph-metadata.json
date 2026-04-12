@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-manual-playbook-post-006-audit"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/011-spec-folder-graph-metadata"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "015 spec",
+      "015 plan",
+      "015 tasks",
+      "015 checklist",
+      "015 implementation summary",
+      "full playbook execution",
+      "manual playbook execution",
+      "phase 015"
+    ],
+    "key_topics": [
+      "manual playbook runner",
+      "vitest",
+      "packet validation",
+      "unautomatable scenarios",
+      "failure inventory"
+    ],
+    "importance_tier": "critical",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      {
+        "name": "manual-playbook-runner",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "phase 015 packet",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 015 executes the live system-spec-kit playbook inventory, patches the runner so the packet-local evidence matches the current prose-format scenarios, captures the first automated-suite failures, and records the remaining manual automation boundary honestly.",
+    "created_at": "2026-04-12T00:00:00.000Z",
+    "last_save_at": "2026-04-12T00:00:00.000Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

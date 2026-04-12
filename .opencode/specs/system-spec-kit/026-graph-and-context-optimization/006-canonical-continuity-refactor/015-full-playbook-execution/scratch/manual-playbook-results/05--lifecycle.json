@@ -1,0 +1,364 @@
+[
+  {
+    "scenarioId": "EX-015",
+    "category": "05--lifecycle",
+    "status": "PASS",
+    "filePath": "05--lifecycle/015-checkpoint-creation-checkpoint-create.md",
+    "prompt": "As a lifecycle validation operator, validate Pre-destructive backup against checkpoint_create(name,specFolder). Verify new checkpoint listed. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Checkpoint creation (checkpoint_create) against checkpoint_create(name,specFolder). Verify new checkpoint listed. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "New checkpoint listed"
+    ],
+    "matchedSignals": [
+      "New checkpoint listed"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_create",
+        "args": {
+          "name": "gate-i-checkpoint",
+          "specFolder": "specs/002-test-sandbox"
+        }
+      },
+      {
+        "name": "checkpoint_list",
+        "args": {
+          "specFolder": "specs/002-test-sandbox"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Checkpoint \\\"gate-i-checkpoint\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"gate-i-checkpoint\",\"createdAt\":\"2026-04-12T13:49:34.292Z\",\"specFolder\":\"specs/002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":42814,\"metadata\":{\"memoryCount\":0}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"gate-i-checkpoint\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"gate-i-checkpoint\\\", confirmName: \\\"gate-i-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":175,\"latencyMs\":8,\"cacheHit\":false}}",
+      "{\"summary\":\"Found 1 checkpoint(s)\",\"data\":{\"count\":1,\"checkpoints\":[{\"id\":1,\"name\":\"gate-i-checkpoint\",\"createdAt\":\"2026-04-12T13:49:34.292Z\",\"specFolder\":\"specs/002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":42814,\"metadata\":{\"memoryCount\":0,\"vectorCount\":0,\"includeEmbeddings\":true,\"manifest\":{\"snapshot\":[\"memory_index\",\"vec_memories\",\"vec_metadata\",\"working_memory\",\"causal_edges\",\"weight_history\",\"memory_history\",\"mutation_ledger\",\"memory_conflicts\",\"memory_corrections\",\"adaptive_signal_events\",\"negative_feedback_events\",\"learned_feedback_audit\",\"session_learning\",\"governance_audit\",\"session_state\",\"session_sent_memories\",\"memory_summaries\"],\"rebuild\":[\"memory_lineage\",\"active_memory_projection\",\"memory_entities\",\"entity_catalog\",\"degree_snapshots\",\"community_assignments\",\"graph_communities\",\"community_summaries\",\"memory_fts\"],\"skip\":[\"checkpoints\",\"schema_version\",\"embedding_cache\",\"adaptive_shadow_runs\"]}}}]},\"hints\":[],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":447,\"latencyMs\":0,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_create(name,specFolder)",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_create",
+          "args": {
+            "name": "gate-i-checkpoint",
+            "specFolder": "specs/002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "checkpoint created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Checkpoint \\\"gate-i-checkpoint\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"gate-i-checkpoint\",\"createdAt\":\"2026-04-12T13:49:34.292Z\",\"specFolder\":\"specs/002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":42814,\"metadata\":{\"memoryCount\":0}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"gate-i-checkpoint\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"gate-i-checkpoint\\\", confirmName: \\\"gate-i-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":175,\"latencyMs\":8,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "checkpoint_list()",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_list",
+          "args": {
+            "specFolder": "specs/002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "available restore points displayed",
+          "checkpoint present"
+        ],
+        "evidence": [
+          "{\"summary\":\"Found 1 checkpoint(s)\",\"data\":{\"count\":1,\"checkpoints\":[{\"id\":1,\"name\":\"gate-i-checkpoint\",\"createdAt\":\"2026-04-12T13:49:34.292Z\",\"specFolder\":\"specs/002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":42814,\"metadata\":{\"memoryCount\":0,\"vectorCount\":0,\"includeEmbeddings\":true,\"manifest\":{\"snapshot\":[\"memory_index\",\"vec_memories\",\"vec_metadata\",\"working_memory\",\"causal_edges\",\"weight_history\",\"memory_history\",\"mutation_ledger\",\"memory_conflicts\",\"memory_corrections\",\"adaptive_signal_events\",\"negative_feedback_events\",\"learned_feedback_audit\",\"session_learning\",\"governance_audit\",\"session_state\",\"session_sent_memories\",\"memory_summaries\"],\"rebuild\":[\"memory_lineage\",\"active_memory_projection\",\"memory_entities\",\"entity_catalog\",\"degree_snapshots\",\"community_assignments\",\"graph_communities\",\"community_summaries\",\"memory_fts\"],\"skip\":[\"checkpoints\",\"schema_version\",\"embedding_cache\",\"adaptive_shadow_runs\"]}}}]},\"hints\":[],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":447,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-016",
+    "category": "05--lifecycle",
+    "status": "PASS",
+    "filePath": "05--lifecycle/016-checkpoint-listing-checkpoint-list.md",
+    "prompt": "As a lifecycle validation operator, validate Recovery asset discovery against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Checkpoint listing (checkpoint_list) against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Available restore points displayed"
+    ],
+    "matchedSignals": [
+      "Available restore points displayed"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_list",
+        "args": {
+          "specFolder": "specs/002-test-sandbox"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_list(specFolder,limit)",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_list",
+          "args": {
+            "specFolder": "specs/002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "available restore points displayed",
+          "checkpoint present"
+        ],
+        "evidence": [
+          "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-017",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/017-checkpoint-restore-checkpoint-restore.md",
+    "prompt": "As a lifecycle validation operator, validate Rollback restore drill against checkpoint_restore(name,clearExisting:false). Verify restored data + healthy state. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Checkpoint restore (checkpoint_restore) against checkpoint_restore(name,clearExisting:false). Verify restored data + healthy state. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Restored data + healthy state"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Restored data + healthy state"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+    ],
+    "steps": [],
+    "reason": "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+  },
+  {
+    "scenarioId": "EX-018",
+    "category": "05--lifecycle",
+    "status": "PASS",
+    "filePath": "05--lifecycle/018-checkpoint-deletion-checkpoint-delete.md",
+    "prompt": "As a lifecycle validation operator, validate Old snapshot cleanup against checkpoint_list(specFolder:\"<sandbox-spec>\"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Checkpoint deletion (checkpoint_delete) against checkpoint_list(specFolder:\"<sandbox-spec>\"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Removed checkpoint absent from list"
+    ],
+    "matchedSignals": [
+      "Removed checkpoint absent from list"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_list",
+        "args": {
+          "specFolder": "002-test-sandbox"
+        }
+      },
+      {
+        "name": "checkpoint_delete",
+        "args": {
+          "name": "gate-i-checkpoint",
+          "confirmName": "gate-i-checkpoint"
+        }
+      },
+      {
+        "name": "checkpoint_list",
+        "args": {
+          "specFolder": "002-test-sandbox"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}",
+      "{\"summary\":\"Checkpoint \\\"gate-i-checkpoint\\\" not found\",\"data\":{\"success\":false,\"safetyConfirmationUsed\":true,\"checkpointName\":\"gate-i-checkpoint\"},\"hints\":[\"Use checkpoint_list() to see available checkpoints\"],\"meta\":{\"tool\":\"checkpoint_delete\",\"tokenCount\":92,\"latencyMs\":0,\"cacheHit\":false}}",
+      "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_list(specFolder:\"<sandbox-spec>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_list",
+          "args": {
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "available restore points displayed",
+          "checkpoint present"
+        ],
+        "evidence": [
+          "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "checkpoint_delete(name:\"<checkpoint-name>\",confirmName:\"<checkpoint-name>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_delete",
+          "args": {
+            "name": "gate-i-checkpoint",
+            "confirmName": "gate-i-checkpoint"
+          }
+        },
+        "success": true,
+        "facts": [
+          "checkpoint deleted"
+        ],
+        "evidence": [
+          "{\"summary\":\"Checkpoint \\\"gate-i-checkpoint\\\" not found\",\"data\":{\"success\":false,\"safetyConfirmationUsed\":true,\"checkpointName\":\"gate-i-checkpoint\"},\"hints\":[\"Use checkpoint_list() to see available checkpoints\"],\"meta\":{\"tool\":\"checkpoint_delete\",\"tokenCount\":92,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "checkpoint_list(specFolder:\"<sandbox-spec>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_list",
+          "args": {
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "available restore points displayed",
+          "checkpoint present"
+        ],
+        "evidence": [
+          "{\"summary\":\"No checkpoints found\",\"data\":{\"count\":0,\"checkpoints\":[]},\"hints\":[\"Create a checkpoint with checkpoint_create({ name: \\\"my-checkpoint\\\" })\"],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":76,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "097",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md",
+    "prompt": "As a lifecycle validation operator, confirm job state machine, duplicate-path dedup, and crash recovery against memory_ingest_start({paths:[\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file2.md\"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Async ingestion job lifecycle (P0-3) against memory_ingest_start({paths:[\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file2.md\"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Job state transitions through queued→parsing→embedding→indexing→complete in order",
+      "duplicate input paths are deduplicated before queueing with explicit reporting",
+      "cancel sets state to cancelled",
+      "job IDs match nanoid format",
+      "incomplete jobs re-enqueue after restart"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Job state transitions through queued→parsing→embedding→indexing→complete in order",
+      "duplicate input paths are deduplicated before queueing with explicit reporting",
+      "cancel sets state to cancelled",
+      "job IDs match nanoid format",
+      "incomplete jobs re-enqueue after restart"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+    ],
+    "steps": [],
+    "reason": "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+  },
+  {
+    "scenarioId": "100",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/100-async-shutdown-with-deadline-server-lifecycle.md",
+    "prompt": "As a lifecycle validation operator, confirm graceful shutdown completes async cleanup against the documented validation surface. Verify file watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Async shutdown with deadline (server lifecycle) against the documented validation surface. Verify file watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "File watcher closes",
+      "local reranker disposes",
+      "vector index closes",
+      "shutdown completes within 5s",
+      "force exit fires if cleanup exceeds deadline"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "File watcher closes",
+      "local reranker disposes",
+      "vector index closes",
+      "shutdown completes within 5s",
+      "force exit fires if cleanup exceeds deadline"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. start server with file watcher and local reranker enabled\n2. send SIGTERM\n3. verify file watcher closes, local reranker disposes, and vector index closes\n4. verify shutdown completes within 5s deadline (no hang)\n5. if async cleanup exceeds 5s, verify force exit fires"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "114",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/114-path-traversal-validation-p0-4.md",
+    "prompt": "As a lifecycle validation operator, verify memory_ingest_start rejects paths outside allowed base directories and paths containing traversal segments against memory_ingest_start({ paths: [\"../../etc/passwd\"] }). Verify traversal paths (../) rejected with E_VALIDATION error; absolute paths outside allowed base rejected; valid paths within allowed directories accepted and job created. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Path traversal validation (P0-4) against memory_ingest_start({ paths: [\"../../etc/passwd\"] }). Verify memory_ingest_start rejects paths outside allowed base directories and paths containing traversal segments. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Traversal paths (../) rejected with E_VALIDATION error",
+      "absolute paths outside allowed base rejected",
+      "valid paths within allowed directories accepted and job created"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Traversal paths (../) rejected with E_VALIDATION error",
+      "absolute paths outside allowed base rejected",
+      "valid paths within allowed directories accepted and job created"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+    ],
+    "steps": [],
+    "reason": "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+  },
+  {
+    "scenarioId": "134",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/134-startup-pending-file-recovery-lifecycle-coverage.md",
+    "prompt": "As a lifecycle validation operator, verify startup recovery scans allowed roots and preserves stale pending files for manual review against recoverAllPendingFiles. Verify committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Startup pending-file recovery lifecycle coverage against recoverAllPendingFiles. Verify startup recovery scans allowed roots and preserves stale pending files for manual review. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Committed pending file recovers to original path",
+      "stale pending file remains with explicit stale classification",
+      "startup scan covers configured/allowed roots without scanning unrelated workspace trees"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Committed pending file recovers to original path",
+      "stale pending file remains with explicit stale classification",
+      "startup scan covers configured/allowed roots without scanning unrelated workspace trees"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Create a pending file where DB row is committed, then run startup recovery (`recoverAllPendingFiles` path)\n2. Verify committed pending file is renamed to original path\n3. Create a stale pending file with no DB row\n4. Verify stale pending file is not renamed and is reported for manual review\n5. Verify scan roots include configured memory base roots plus `.opencode/specs` and constitutional locations"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "144",
+    "category": "05--lifecycle",
+    "status": "UNAUTOMATABLE",
+    "filePath": "05--lifecycle/144-advisory-ingest-lifecycle-forecast.md",
+    "prompt": "As a lifecycle validation operator, verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress against memory_ingest_start({ paths:[\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file2.md\"] }). Verify status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a lifecycle validation operator, validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:[\"specs/<target-spec>/memory/file1.md\",\"specs/<target-spec>/memory/file2.md\"] }). Verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Status payloads always include a `forecast` object",
+      "sparse progress yields null or low-confidence fields plus caveat text",
+      "progressing jobs update ETA/risk fields without breaking the handler contract",
+      "optional telemetry remains additive"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Status payloads always include a `forecast` object",
+      "sparse progress yields null or low-confidence fields plus caveat text",
+      "progressing jobs update ETA/risk fields without breaking the handler contract",
+      "optional telemetry remains additive"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+    ],
+    "steps": [],
+    "reason": "Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner."
+  }
+]

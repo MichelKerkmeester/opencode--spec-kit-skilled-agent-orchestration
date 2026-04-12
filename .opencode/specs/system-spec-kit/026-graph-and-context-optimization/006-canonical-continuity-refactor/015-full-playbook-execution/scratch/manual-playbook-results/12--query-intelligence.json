@@ -1,0 +1,259 @@
+[
+  {
+    "scenarioId": "033",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/033-query-complexity-router-r15.md",
+    "prompt": "As a query-intelligence validation operator, confirm query-class routing against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Query complexity router (R15) against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Simple queries route to fewer channels",
+      "complex queries activate all channels",
+      "disabled flag falls back to default routing"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Simple queries route to fewer channels",
+      "complex queries activate all channels",
+      "disabled flag falls back to default routing"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Run simple/moderate/complex\n2. Inspect selected channels\n3. Disable flag fallback"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "035",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/035-channel-min-representation-r2.md",
+    "prompt": "As a query-intelligence validation operator, confirm top-k channel diversity rule against the documented validation surface. Verify each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Channel min-representation (R2) against the documented validation surface. Verify each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Each channel represented in top-k results even when one channel dominates",
+      "quality floor prevents low-relevance injection"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Each channel represented in top-k results even when one channel dominates",
+      "quality floor prevents low-relevance injection"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Run dominance query\n2. Inspect pre/post representation\n3. Verify quality floor"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "036",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md",
+    "prompt": "As a query-intelligence validation operator, confirm relevance-cliff cutoff against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Confidence-based result truncation (R15-ext) against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Results truncated at confidence cliff",
+      "minimum result count guaranteed",
+      "cutoff threshold documented in trace"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Results truncated at confidence cliff",
+      "minimum result count guaranteed",
+      "cutoff threshold documented in trace"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Run long-tail query\n2. Inspect cutoff math\n3. Verify min-result guarantee"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "037",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md",
+    "prompt": "As a query-intelligence validation operator, confirm complexity-tier budgets against the documented validation surface. Verify token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Dynamic token budget allocation (FUT-7) against the documented validation surface. Verify token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Token budget scales with query complexity tier",
+      "simple queries get smaller budgets",
+      "disabled flag falls back to default budget"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Token budget scales with query complexity tier",
+      "simple queries get smaller budgets",
+      "disabled flag falls back to default budget"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Run classed queries\n2. Inspect budgets\n3. Disable flag fallback"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "038",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/038-query-expansion-r12.md",
+    "prompt": "As a query-intelligence validation operator, confirm parallel expansion + dedup against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Query expansion (R12) against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Complex queries produce expanded variants",
+      "expanded results deduplicated against baseline",
+      "simple queries skip expansion"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Complex queries produce expanded variants",
+      "expanded results deduplicated against baseline",
+      "simple queries skip expansion"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Complex query expansion\n2. Parallel baseline+expanded\n3. dedup + simple-query skip"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "161",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/161-llm-reformulation-speckit-llm-reformulation.md",
+    "prompt": "As a query-intelligence validation operator, verify reformulation pipeline runs in deep mode against memory_search({ query: \"complex multi-faceted query\", mode: \"deep\" }). Verify cheapSeedRetrieve() returns FTS5/BM25 seeds; abstract >= 5 chars; variants array max 2; LLM cache hit on repeat; no-op in non-deep mode. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate LLM reformulation (SPECKIT_LLM_REFORMULATION) against memory_search({ query: \"complex multi-faceted query\", mode: \"deep\" }). Verify reformulation pipeline runs in deep mode with corpus-grounded seeds. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "cheapSeedRetrieve() returns FTS5/BM25 seeds",
+      "abstract >= 5 chars",
+      "variants array max 2",
+      "LLM cache hit on repeat",
+      "no-op in non-deep mode"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "cheapSeedRetrieve() returns FTS5/BM25 seeds",
+      "abstract >= 5 chars",
+      "variants array max 2",
+      "LLM cache hit on repeat",
+      "no-op in non-deep mode"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "LLM reformulation validation requires external LLM/cache inspection beyond this direct-handler runner."
+    ],
+    "steps": [],
+    "reason": "LLM reformulation validation requires external LLM/cache inspection beyond this direct-handler runner."
+  },
+  {
+    "scenarioId": "162",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/162-hyde-speckit-hyde.md",
+    "prompt": "As a query-intelligence validation operator, verify HyDE pseudo-document generated against SPECKIT_HYDE=true. Verify hyDEResult with pseudoDocument and Float32Array embedding; low-confidence threshold at 0.45; active merge by default (SPECKIT_HYDE_ACTIVE ON); shadow-only when SPECKIT_HYDE_ACTIVE=false; LLM cache shared. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate HyDE (SPECKIT_HYDE) against SPECKIT_HYDE=true. Verify hyDE pseudo-document generation for low-confidence deep queries. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "HyDEResult with pseudoDocument and Float32Array embedding",
+      "low-confidence threshold at 0.45",
+      "active merge by default (SPECKIT_HYDE_ACTIVE ON)",
+      "shadow-only when SPECKIT_HYDE_ACTIVE=false",
+      "LLM cache shared"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "HyDEResult with pseudoDocument and Float32Array embedding",
+      "low-confidence threshold at 0.45",
+      "active merge by default (SPECKIT_HYDE_ACTIVE ON)",
+      "shadow-only when SPECKIT_HYDE_ACTIVE=false",
+      "LLM cache shared"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_HYDE=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_HYDE=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "163",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md",
+    "prompt": "As a query-intelligence validation operator, verify surrogates generated and matched against SPECKIT_QUERY_SURROGATES=true. Verify surrogateMetadata with aliases, headings, summary, surrogateQuestions; query matching returns score > MIN_MATCH_THRESHOLD; no LLM calls. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Query surrogates (SPECKIT_QUERY_SURROGATES) against SPECKIT_QUERY_SURROGATES=true. Verify surrogate metadata generated at index time and matched at query time. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "SurrogateMetadata with aliases, headings, summary, surrogateQuestions",
+      "query matching returns score > MIN_MATCH_THRESHOLD",
+      "no LLM calls"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "SurrogateMetadata with aliases, headings, summary, surrogateQuestions",
+      "query matching returns score > MIN_MATCH_THRESHOLD",
+      "no LLM calls"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_QUERY_SURROGATES=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_QUERY_SURROGATES=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "173",
+    "category": "12--query-intelligence",
+    "status": "UNAUTOMATABLE",
+    "filePath": "12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md",
+    "prompt": "As a query-intelligence validation operator, verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries against SPECKIT_QUERY_DECOMPOSITION. Verify isQueryDecompositionEnabled() returns true; conjunction splitting on coordinating conjunctions; wh-question word detection; MAX_FACETS=3 enforced; no LLM calls; deep-mode only; graceful fallback on error. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a query-intelligence validation operator, validate Query decomposition (SPECKIT_QUERY_DECOMPOSITION) against SPECKIT_QUERY_DECOMPOSITION. Verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "isQueryDecompositionEnabled() returns true",
+      "conjunction splitting on coordinating conjunctions",
+      "wh-question word detection",
+      "MAX_FACETS=3 enforced",
+      "no LLM calls",
+      "deep-mode only",
+      "graceful fallback on error"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isQueryDecompositionEnabled() returns true",
+      "conjunction splitting on coordinating conjunctions",
+      "wh-question word detection",
+      "MAX_FACETS=3 enforced",
+      "no LLM calls",
+      "deep-mode only",
+      "graceful fallback on error"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_QUERY_DECOMPOSITION"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_QUERY_DECOMPOSITION",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  }
+]

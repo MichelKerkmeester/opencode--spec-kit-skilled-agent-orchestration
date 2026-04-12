@@ -71,10 +71,13 @@ const SKILL_ROOT = cwd.endsWith(path.join('.opencode', 'skill', 'system-spec-kit
   : path.resolve(cwd, '.opencode/skill/system-spec-kit');
 const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..');
 const PLAYBOOK_ROOT = path.join(SKILL_ROOT, 'manual_testing_playbook');
-const SPEC_REPORT_ROOT = path.resolve(
+const DEFAULT_REPORT_ROOT = path.resolve(
   REPO_ROOT,
-  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/scratch/gate-i-execution-report',
+  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution/scratch/manual-playbook-results',
 );
+const SPEC_REPORT_ROOT = process.env.MANUAL_PLAYBOOK_REPORT_ROOT
+  ? path.resolve(process.env.MANUAL_PLAYBOOK_REPORT_ROOT)
+  : DEFAULT_REPORT_ROOT;
 const RESULTS_JSON = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.json');
 const RESULTS_JSONL = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.jsonl');
 
@@ -248,26 +251,47 @@ function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
   const parseProseDefinition = (): ScenarioDefinition | null => {
     const executionMatch = text.match(/## 3\. TEST EXECUTION\s*([\s\S]*?)(?:\n---\s*\n|\n## 4\.)/);
     const executionBlock = executionMatch?.[1] ?? text;
-    const promptMatch = executionBlock.match(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:)/)
-      ?? text.match(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:)/);
-    const commandsMatch = executionBlock.match(/- Commands:\s*([\s\S]*?)(?:\n- Expected(?: signals)?:|\n####\s+)/);
-    const expectedMatch = executionBlock.match(/- Expected(?: signals)?:\s*([\s\S]*?)\n- Evidence:/)
-      ?? text.match(/- Expected(?: signals)?:\s*([\s\S]*?)\n- (?:Evidence|Pass\/fail):/);
+    const promptMatches = [
+      ...executionBlock.matchAll(/### Prompt\s*```[\r\n]+([\s\S]*?)```/g),
+      ...executionBlock.matchAll(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:)/g),
+      ...text.matchAll(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:|\n\n---)/g),
+    ];
+    const commandsMatches = [
+      ...executionBlock.matchAll(/### Commands\s*([\s\S]*?)(?=\n### Expected|\n### Evidence|\n### Pass \/ Fail|\n### Failure Triage|\n---\s*\n|\n## 4\.)/g),
+      ...executionBlock.matchAll(/- Commands:\s*([\s\S]*?)(?:\n- Expected(?: signals)?:|\n####\s+)/g),
+    ];
+    const expectedMatches = [
+      ...executionBlock.matchAll(/### Expected\s*([\s\S]*?)(?=\n### Evidence|\n### Pass \/ Fail|\n### Failure Triage|\n---\s*\n|\n## 4\.)/g),
+      ...executionBlock.matchAll(/- Expected(?: signals)?:\s*([\s\S]*?)\n- (?:Evidence|Pass\/fail):/g),
+    ];
     const scenarioIdMatch = text.match(/- Playbook ID:\s*([A-Z]+-\d+[A-Za-z0-9-]*|\d+[A-Za-z0-9-]*)/);
     const titleMatch = text.match(/^#\s+(.+)$/m);
 
-    if (!promptMatch || !expectedMatch) {
+    if (promptMatches.length === 0 || expectedMatches.length === 0) {
       return null;
     }
+
+    const prompt = promptMatches
+      .map((matchItem) => matchItem[1].trim().replace(/^`|`$/g, ''))
+      .filter(Boolean)
+      .join('\n\n');
+    const commands = commandsMatches
+      .map((matchItem) => matchItem[1].trim())
+      .filter(Boolean)
+      .join('\n');
+    const expected = expectedMatches
+      .map((matchItem) => matchItem[1].trim())
+      .filter(Boolean)
+      .join('; ');
 
     return {
       filePath: relative,
       category,
       scenarioId: scenarioIdMatch?.[1]?.trim() ?? path.basename(filePath, '.md'),
       featureName: titleMatch?.[1]?.trim() ?? path.basename(filePath, '.md'),
-      exactPrompt: promptMatch[1].trim().replace(/^`|`$/g, ''),
-      commandSequence: commandsMatch?.[1]?.trim() ?? '',
-      expectedSignals: expectedMatch[1].trim(),
+      exactPrompt: prompt,
+      commandSequence: commands,
+      expectedSignals: expected,
     };
   };
 
@@ -352,32 +376,52 @@ function preclassifiedUnautomatableReason(definition: ScenarioDefinition): strin
 }
 
 function parseSteps(commandSequence: string): ScenarioStep[] {
-  const backtickMatches = [...commandSequence.matchAll(/`([^`]+)`/g)].map((match) => match[1].trim());
-  if (backtickMatches.length === 0) {
-    return [{
-      raw: commandSequence.trim(),
-      kind: commandSequence.trim().length > 0 ? 'narrative' : 'shell',
-    }];
-  }
-
-  return backtickMatches.map((raw) => {
+  const classifyStep = (rawStep: string): ScenarioStep => {
+    const raw = rawStep.trim();
     if (raw.startsWith('/')) {
       return { raw, kind: 'slash' };
     }
     if (/^(cd|bash|npx|node|rg|sed|tail|find)\b/.test(raw)) {
       return { raw, kind: 'shell' };
     }
-    const toolMatch = raw.match(/^([a-z_]+)\(([\s\S]*)\)$/);
+    const normalized = raw
+      .replace(/^Call\s+/i, '')
+      .replace(/\s+via MCP\b.*$/i, '')
+      .replace(/\s+again\b.*$/i, '')
+      .trim();
+    const toolMatch = normalized.match(/^([a-z_]+)\(([\s\S]*)\)$/);
     if (toolMatch) {
       return {
-        raw,
+        raw: normalized,
         kind: 'tool',
         toolName: toolMatch[1],
         argSource: toolMatch[2].trim(),
       };
     }
     return { raw, kind: 'narrative' };
-  });
+  };
+
+  const fromBackticks = [...commandSequence.matchAll(/`([^`]+)`/g)].map((match) => match[1].trim());
+  if (fromBackticks.length > 0) {
+    return fromBackticks.map(classifyStep);
+  }
+
+  const lineSteps = commandSequence
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .flatMap((line) => line.split(/\s*;\s*(?:then\s+)?/i))
+    .map((line) => line.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '').trim())
+    .filter(Boolean);
+
+  if (lineSteps.length === 0) {
+    return [{
+      raw: commandSequence.trim(),
+      kind: commandSequence.trim().length > 0 ? 'narrative' : 'shell',
+    }];
+  }
+
+  return lineSteps.map(classifyStep);
 }
 
 function substitutePlaceholders(value: string, fixture: FixtureToolContext, runtimeState: RuntimeState): string {
