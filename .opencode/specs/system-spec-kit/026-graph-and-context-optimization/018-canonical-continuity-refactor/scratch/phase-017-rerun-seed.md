@@ -1,6 +1,6 @@
 # Phase 017 Rerun Seed — Findings the phase 018 research can reference
 
-This file captures the 10 key findings from the 10-iteration rerun of phase 017 (`../017-memory-refactor-or-deprecation/research/iterations/iteration-001.md` through `iteration-010.md`). Phase 018 iterations should read this seed first and build on it, not re-derive it.
+This file captures the 10 key findings from the 10-iteration rerun of phase 017 (`../z_archive/017-memory-refactor-or-deprecation/research/iterations/iteration-001.md` through `iteration-010.md`). Phase 018 iterations should read this seed first and build on it, not re-derive it.
 
 **Provenance**: written 2026-04-11T13:30:00Z by claude-opus-4-6 after the phase 017 generation-2 10-iteration rerun produced 0 contradictions, 9/9 cited, composite score 0.92.
 
@@ -111,7 +111,7 @@ From phase 017 iteration 9:
 ## F10 — One blocker found: ~5 root packets with no canonical docs
 
 From phase 017 iterations 3, 5, 7:
-- ~5 root packets (e.g., `026/016-release-alignment/`) currently have NO canonical `implementation-summary.md` at the root level
+- ~5 root packets (e.g., `026/z_archive/016-release-alignment/`) currently have NO canonical `implementation-summary.md` at the root level
 - Their memory files are the ONLY narrative artifact
 - If phase 018 archives these memory files without backfilling, the narrative is lost
 
@@ -144,6 +144,6 @@ Phase 018 iterations should:
 1. Read this seed file in iteration 1 as baseline
 2. Reference it in per-iteration findings (e.g., "per F3, 35% of the corpus is..." instead of re-deriving)
 3. Focus research effort on the OPEN questions, not the settled ones
-4. Cite phase 017 iteration files directly (`../017-memory-refactor-or-deprecation/research/iterations/iteration-N.md`)
+4. Cite phase 017 iteration files directly (`../z_archive/017-memory-refactor-or-deprecation/research/iterations/iteration-N.md`)
 
 The 8 key questions in the research prompts are the OPEN questions. This seed answers the "what do we already know" question.

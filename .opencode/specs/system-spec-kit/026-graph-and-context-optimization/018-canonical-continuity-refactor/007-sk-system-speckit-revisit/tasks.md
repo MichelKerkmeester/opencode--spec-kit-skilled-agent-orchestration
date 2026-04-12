@@ -69,7 +69,7 @@ _memory:
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- Source map: [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md)
+- Source map: [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md)
 - Evidence ledger: [implementation summary](./implementation-summary.md)
 - Parent packet: [018 parent spec](../spec.md)
 <!-- /ANCHOR:cross-refs -->

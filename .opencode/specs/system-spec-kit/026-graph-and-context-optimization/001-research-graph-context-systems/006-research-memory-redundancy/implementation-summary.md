@@ -69,7 +69,7 @@ The pass began with the strict-validator baseline for this folder. After the pac
 | Check | Result |
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy --strict` | PASS after doc normalization and closeout-doc creation |
-| Downstream impact map review | PASS, packets `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` are all classified |
+| Downstream impact map review | PASS, packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are all classified |
 <!-- /ANCHOR:verification -->
 
 ---

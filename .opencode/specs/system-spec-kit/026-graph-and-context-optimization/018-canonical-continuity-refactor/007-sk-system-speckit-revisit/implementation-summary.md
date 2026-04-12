@@ -28,7 +28,7 @@ _memory:
 |-------|-------|
 | Packet | `007-sk-system-speckit-revisit` |
 | Completed | 2026-04-12 |
-| Source Scope | [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md) |
+| Source Scope | [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md) |
 | Reviewed | 63 |
 | Updated | 32 |
 | Deleted / N/A | 0 |

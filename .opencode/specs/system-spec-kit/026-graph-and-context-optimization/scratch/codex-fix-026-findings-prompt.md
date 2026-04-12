@@ -44,7 +44,7 @@ There are **6 lanes** below. Execute them in the listed order — Lanes 1 and 2 
 
 **Test**: Add a vitest case to `mcp_server/tests/hook-state.vitest.ts` (or create `tests/hook-state-scope-isolation.vitest.ts`) where two sessions write parallel hook-state files with different `specFolder` values. Assert session A's `loadMostRecentState({ specFolder: "A" })` returns A's state, NOT B's. Add a case for the fail-closed default when no scope is derivable.
 
-**Doc update**: Edit `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated/spec.md` REQ-002 (freshness gate) and REQ-007 (explicit invalidation) to make scope-binding required at the candidate-selection level, not just at the gate level. Re-run `validate.sh --strict` on the 012 packet folder.
+**Doc update**: Edit `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/012-cached-sessionstart-consumer-gated/spec.md` REQ-002 (freshness gate) and REQ-007 (explicit invalidation) to make scope-binding required at the candidate-selection level, not just at the gate level. Re-run `validate.sh --strict` on the 012 packet folder.
 
 ---
 
@@ -119,7 +119,7 @@ There are **6 lanes** below. Execute them in the listed order — Lanes 1 and 2 
 - `.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:191` (variant runner logic)
 - `.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:215` (scoring function)
 - `.opencode/skill/system-spec-kit/scripts/tests/warm-start-bundle-benchmark.vitest.ts.test.ts:176` (corpus)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md` (rewrite output)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/scratch/benchmark-matrix.md` (rewrite output)
 
 **Fix**:
 1. Add new scoring fields that vary per variant. Required additions:
@@ -145,7 +145,7 @@ There are **6 lanes** below. Execute them in the listed order — Lanes 1 and 2 
   - **Option A (preferred)**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` — already shapes response payloads
   - **Option B**: Create a minimal `.opencode/skill/system-spec-kit/mcp_server/handlers/export.ts` if no existing handler fits cleanly
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search.vitest.ts` (or new tests for the chosen handler)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract/implementation-summary.md` (remove the LIMITATIONS admission)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/009-auditable-savings-publication-contract/implementation-summary.md` (remove the LIMITATIONS admission)
 
 **Fix**:
 1. Pick the consumer (Option A unless `memory-search.ts` doesn't fit — explain why in BLOCKERS if you go Option B).

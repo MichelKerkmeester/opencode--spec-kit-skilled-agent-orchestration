@@ -259,10 +259,10 @@ The research loop halts when **all** of the following are true:
 - Canonical narrative routes into existing spec docs.
 - Advanced features preserved, retargeted at new substrate.
 - Prior deliverables to read:
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-memory-refactor-or-deprecation/recommendation.md`
-  - `.../017-memory-refactor-or-deprecation/phase-018-proposal.md`
-  - `.../017-memory-refactor-or-deprecation/findings/integration-impact.md`
-  - `.../017-memory-refactor-or-deprecation/research/research.md`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/z_archive/017-memory-refactor-or-deprecation/recommendation.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/phase-018-proposal.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/findings/integration-impact.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/research/research.md`
 
 ### 6.2 Integration surface (pre-vetted)
 

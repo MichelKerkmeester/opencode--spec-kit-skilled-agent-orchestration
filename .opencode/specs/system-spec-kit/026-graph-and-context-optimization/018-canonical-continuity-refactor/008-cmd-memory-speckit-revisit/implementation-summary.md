@@ -28,7 +28,7 @@ _memory:
 |-------|-------|
 | Packet | `008-cmd-memory-speckit-revisit` |
 | Completed | 2026-04-12 |
-| Source Scope | [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
+| Source Scope | [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
 | Reviewed | 44 |
 | Updated | 28 |
 | Deleted / N/A | 0 |

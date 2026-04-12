@@ -31,9 +31,9 @@ Target: move all 6 packets from CONDITIONAL/FAIL → PASS. Move aggregate verdic
 1. **Source of truth for each finding** (read all 6 per-phase review reports):
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/002-implement-cache-warning-hooks/review-report.md`
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/003-memory-quality-issues/review-report.md`
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/008-graph-first-routing-nudge/review-report.md`
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/010-fts-capability-cascade-floor/review-report.md`
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/013-warm-start-bundle-conditional-validation/review-report.md`
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/008-graph-first-routing-nudge/review-report.md`
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/010-fts-capability-cascade-floor/review-report.md`
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/review-report.md`
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/014-code-graph-upgrades/review-report.md`
 2. **Consolidated context** (optional but recommended): `026/review/batch-phase-review-consolidated.md` §6 Remediation Priority Queue
 3. **Current state of every file you're about to modify** — read before editing; never edit blind. The per-phase reports cite the exact line numbers for each finding.

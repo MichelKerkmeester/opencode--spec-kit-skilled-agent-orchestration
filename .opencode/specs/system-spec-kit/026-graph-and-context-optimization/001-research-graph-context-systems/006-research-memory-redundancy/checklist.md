@@ -52,7 +52,7 @@ contextType: "checklist"
 
 - [x] CHK-020 [P0] Strict validation passes on this folder. [EVIDENCE: implementation-summary.md]
 - [x] CHK-021 [P0] Parent matrix boundary stays intact. [EVIDENCE: spec.md; plan.md]
-- [x] CHK-022 [P1] Packets `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` are classified explicitly. [EVIDENCE: spec.md]
+- [x] CHK-022 [P1] Packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are classified explicitly. [EVIDENCE: spec.md]
 - [x] CHK-023 [P1] Orthogonal packets are recorded as no-change outcomes where appropriate. [EVIDENCE: spec.md]
 <!-- /ANCHOR:testing -->
 

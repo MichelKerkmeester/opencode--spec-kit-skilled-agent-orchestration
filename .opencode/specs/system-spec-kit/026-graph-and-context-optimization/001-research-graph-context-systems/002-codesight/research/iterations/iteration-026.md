@@ -6,7 +6,7 @@ Score Graphify's evidence-tagged edge model against Public's existing graph payl
 ## Findings
 
 ### Finding 1 — Evidence-tagged edges plus numeric confidence are adopt-now graph upgrades, but only after `011`
-Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md:74-90] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md:742-746] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:61-72]
+Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md:74-90] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify/research/research.md:742-746] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/spec.md:61-72]
 What it does: Graphify shows that edge evidence class and numeric confidence can be transport-level fields rather than UI hints, while its later translation notes that Public already has owner payloads where those fields could land additively.
 Why it matters for Public's Code Graph MCP: This is the most concrete graph-structure improvement that raises graph fidelity without requiring a new graph platform. The only hard rule is sequencing: the validator packet must land first.
 Evidence type: source-confirmed

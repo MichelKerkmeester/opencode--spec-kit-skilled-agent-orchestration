@@ -28,7 +28,7 @@ Phase 009 is a fixed-scope README parity pass. The work starts from the exact 01
 
 ### Technical Context
 
-- Documentation-only revisit scoped to the 34 files from the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md)
+- Documentation-only revisit scoped to the 34 files from the [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md)
 - Canonical contract: `generate-context.js`, `handover -> _memory.continuity -> spec docs`, and no archived active-state language in discovery surfaces
 - Verification surface: README parity with already-updated command and skill docs plus `validate.sh --strict`
 <!-- /ANCHOR:summary -->
@@ -36,7 +36,7 @@ Phase 009 is a fixed-scope README parity pass. The work starts from the exact 01
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-- [x] The source-of-truth target list is locked to the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md).
+- [x] The source-of-truth target list is locked to the [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md).
 - [x] The review pass stays inside the extracted 34-file set plus the targeted first-party `system-spec-kit` README sweep.
 - [x] Every edited file is re-read after patching.
 - [x] The final packet must pass `validate.sh --strict`.

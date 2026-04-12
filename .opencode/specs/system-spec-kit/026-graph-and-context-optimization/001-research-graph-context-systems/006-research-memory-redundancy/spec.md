@@ -22,7 +22,7 @@ This packet operationalizes the completed redundancy research in `research/resea
 
 **Key Decisions**: Keep `research/research.md` as the local authority, keep the parent `../research/cross-phase-matrix.md` untouched, and point future runtime implementation back to `../../003-memory-quality-issues/`.
 
-**Critical Dependencies**: `research/research.md`, `research/findings-registry.json`, parent research docs under `../research/`, and the downstream packet docs from `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/`.
+**Critical Dependencies**: `research/research.md`, `research/findings-registry.json`, parent research docs under `../research/`, and the downstream packet docs from `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/`.
 
 ---
 
@@ -68,7 +68,7 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 - Keep `research/research.md` and `research/findings-registry.json` as the local authority for the redundancy conclusions.
 - Sync the parent research docs at `../research/research.md`, `../research/recommendations.md`, and `../research/deep-research-dashboard.md`.
 - Keep the parent root docs at `../spec.md`, `../plan.md`, `../tasks.md`, `../checklist.md`, and `../implementation-summary.md` aligned with the follow-on.
-- Review the downstream packet train from `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/`.
+- Review the downstream packet train from `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/`.
 - Record which packets need docs-only alignment, implementation re-scope, assumption alignment, or no change.
 - Maintain the full Level 3 packet surface for this folder, including `decision-record.md` and `implementation-summary.md`.
 
@@ -98,15 +98,15 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 | `../../002-implement-cache-warning-hooks/` | Documentation sync only | Keep producer scope unchanged while aligning memory-artifact assumptions |
 | `../../003-memory-quality-issues/` | Implementation re-scope | Keep the runtime implementation lane here |
 | `../../004-agent-execution-guardrails/` | No change | Policy packet with no memory-save runtime ownership |
-| `../../005-provisional-measurement-contract/` | No change | Measurement contract remains orthogonal |
-| `../../006-structural-trust-axis-contract/` | No change | Structural trust-axis contract remains orthogonal |
-| `../../007-detector-provenance-and-regression-floor/` | No change | Detector provenance contract remains orthogonal |
-| `../../008-graph-first-routing-nudge/` | No change | Routing packet does not own memory-save runtime |
-| `../../009-auditable-savings-publication-contract/` | No change | Publication contract does not own memory-save runtime |
-| `../../010-fts-capability-cascade-floor/` | No change | Retrieval-floor packet stays independent |
-| `../../011-graph-payload-validator-and-trust-preservation/` | No change | Graph-payload trust packet stays independent |
-| `../../012-cached-sessionstart-consumer-gated/` | Recommendation or assumption alignment | Describe upstream memory artifacts as compact wrappers |
-| `../../013-warm-start-bundle-conditional-validation/` | Recommendation or assumption alignment | Keep validation assumptions aligned to compact wrappers |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/005-provisional-measurement-contract/` | No change | Measurement contract remains orthogonal |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/006-structural-trust-axis-contract/` | No change | Structural trust-axis contract remains orthogonal |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/007-detector-provenance-and-regression-floor/` | No change | Detector provenance contract remains orthogonal |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/008-graph-first-routing-nudge/` | No change | Routing packet does not own memory-save runtime |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/009-auditable-savings-publication-contract/` | No change | Publication contract does not own memory-save runtime |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/010-fts-capability-cascade-floor/` | No change | Retrieval-floor packet stays independent |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/` | No change | Graph-payload trust packet stays independent |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/012-cached-sessionstart-consumer-gated/` | Recommendation or assumption alignment | Describe upstream memory artifacts as compact wrappers |
+| `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` | Recommendation or assumption alignment | Keep validation assumptions aligned to compact wrappers |
 
 ---
 
@@ -119,7 +119,7 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 |----|-------------|---------------------|
 | REQ-001 | The packet must formalize the redundancy findings without replacing the local research canonicals. | `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` treat `research/research.md` and `research/findings-registry.json` as the authority. |
 | REQ-002 | Parent research docs must acknowledge the follow-on without rewriting the external-systems matrix. | `../research/research.md`, `../research/recommendations.md`, and `../research/deep-research-dashboard.md` are the sync targets, while `../research/cross-phase-matrix.md` stays unchanged. |
-| REQ-003 | The downstream packet train must receive explicit impact classifications. | The packet docs record outcomes for `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/`. |
+| REQ-003 | The downstream packet train must receive explicit impact classifications. | The packet docs record outcomes for `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/`. |
 | REQ-004 | Runtime implementation ownership must stay with `../../003-memory-quality-issues/`. | `decision-record.md` and the packet docs identify `../../003-memory-quality-issues/` as the follow-on runtime owner. |
 | REQ-005 | The folder must validate as a complete Level 3 packet. | `decision-record.md` and `implementation-summary.md` exist, and strict validation passes on this folder. |
 
@@ -128,8 +128,8 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-006 | Parent root docs must stay truthful about the original research charter. | The parent packet still reads as the external-systems root plus a derivative follow-on. |
-| REQ-007 | Unchanged packets must be recorded as intentionally unchanged. | Packets `../../004-agent-execution-guardrails/` through `../../011-graph-payload-validator-and-trust-preservation/` show explicit no-change outcomes. |
-| REQ-008 | Packets `../../002-implement-cache-warning-hooks/`, `../../012-cached-sessionstart-consumer-gated/`, and `../../013-warm-start-bundle-conditional-validation/` must align to the compact-wrapper assumption without scope growth. | Their documented outcomes stay bounded to docs or assumption alignment. |
+| REQ-007 | Unchanged packets must be recorded as intentionally unchanged. | Packets `../../004-agent-execution-guardrails/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/` show explicit no-change outcomes. |
+| REQ-008 | Packets `../../002-implement-cache-warning-hooks/`, `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/012-cached-sessionstart-consumer-gated/`, and `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` must align to the compact-wrapper assumption without scope growth. | Their documented outcomes stay bounded to docs or assumption alignment. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -140,7 +140,7 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 
 **Given** the parent research docs are opened, **when** the follow-on is applied, **then** they acknowledge the redundancy conclusions without rewriting `../research/cross-phase-matrix.md`.
 
-**Given** the downstream packet train is reviewed, **when** packets `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` are classified, **then** each packet has an explicit impact class.
+**Given** the downstream packet train is reviewed, **when** packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are classified, **then** each packet has an explicit impact class.
 
 **Given** a maintainer looks for the next runtime home, **when** they read this packet, **then** `../../003-memory-quality-issues/` is named as the implementation owner.
 
@@ -156,7 +156,7 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 - **SC-001**: This folder validates as a complete Level 3 follow-on packet.
 - **SC-002**: Parent research docs and parent root docs acknowledge the follow-on without reshaping the original research charter.
 - **SC-003**: `../../003-memory-quality-issues/` is clearly identified as the future runtime implementation owner.
-- **SC-004**: Every downstream packet from `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` has an explicit impact class.
+- **SC-004**: Every downstream packet from `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` has an explicit impact class.
 - **SC-005**: Orthogonal packets are documented as intentionally unchanged where appropriate.
 - **SC-006**: Future audits can resume here without reopening the research artifacts to learn the packet outcome.
 <!-- /ANCHOR:success-criteria -->
@@ -250,7 +250,7 @@ Turn the completed redundancy findings into a validator-clean follow-on packet t
 
 ### US-003: Reviewer needs complete downstream classifications (Priority: P1)
 
-**As a** reviewer, **I want** every downstream packet from `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` classified, **so that** no packet looks silently skipped.
+**As a** reviewer, **I want** every downstream packet from `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` classified, **so that** no packet looks silently skipped.
 
 **Acceptance Criteria**:
 1. Given the downstream impact map, When I inspect the packet train, Then every reviewed packet has an explicit outcome.

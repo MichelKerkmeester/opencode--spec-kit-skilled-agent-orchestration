@@ -32,7 +32,7 @@ _memory:
 | Created | 2026-04-12 |
 | Updated | 2026-04-12 |
 | Parent Packet | `018-canonical-continuity-refactor` |
-| Source Map | [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md) |
+| Source Map | [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md) |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
@@ -58,7 +58,7 @@ Review the exact 63 file targets from the 016 SKILL/internal-doc reference map, 
 
 ### In Scope
 
-- Re-review the 63 existing file paths extracted from the [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md).
+- Re-review the 63 existing file paths extracted from the [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md).
 - Update SKILL, README, reference, template, install-guide, agent-guide, and MCP-server docs that still described pre-018 continuity behavior.
 - Keep legitimate current-reality references intact, including:
   - constitutional memory documentation,

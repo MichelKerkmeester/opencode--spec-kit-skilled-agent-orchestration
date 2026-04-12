@@ -32,7 +32,7 @@ contextType: "decision-record"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The roadmap explicitly states that packet `011` remains the validator owner and that this packet must add graph schema and query richness only after the validator contract is in place. Packet `011` already exists to validate graph and bridge payload trust metadata at emission time while preserving separate provenance, evidence, and freshness fields end to end on existing owner surfaces. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:919-922] [SOURCE: ../011-graph-payload-validator-and-trust-preservation/spec.md:20-24]
+The roadmap explicitly states that packet `011` remains the validator owner and that this packet must add graph schema and query richness only after the validator contract is in place. Packet `011` already exists to validate graph and bridge payload trust metadata at emission time while preserving separate provenance, evidence, and freshness fields end to end on existing owner surfaces. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:919-922] [SOURCE: ../z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/spec.md:20-24]
 
 ### Constraints
 
@@ -129,7 +129,7 @@ The roadmap explicitly states that packet `011` remains the validator owner and 
 
 ### Context
 
-Packet `008` already owns readiness-gated structural hints on existing startup, resume, compact, and response-hint surfaces, and it explicitly keeps new graph routers or replacement retrieval owners out of scope. The roadmap therefore rejects or defers any PreToolUse or startup-surface nudge that would duplicate `008` and confines `014` to code-graph-local detector, schema, and query upgrades. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:921-922] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:1001-1002] [SOURCE: ../008-graph-first-routing-nudge/spec.md:58-67]
+Packet `008` already owns readiness-gated structural hints on existing startup, resume, compact, and response-hint surfaces, and it explicitly keeps new graph routers or replacement retrieval owners out of scope. The roadmap therefore rejects or defers any PreToolUse or startup-surface nudge that would duplicate `008` and confines `014` to code-graph-local detector, schema, and query upgrades. [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:921-922] [SOURCE: ../001-research-graph-context-systems/002-codesight/research/research.md:1001-1002] [SOURCE: ../z_archive/research-governance-contracts/008-graph-first-routing-nudge/spec.md:58-67]
 
 ### Decision
 

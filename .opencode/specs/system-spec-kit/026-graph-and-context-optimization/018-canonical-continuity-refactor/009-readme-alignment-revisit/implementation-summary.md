@@ -28,7 +28,7 @@ _memory:
 |-------|-------|
 | Packet | `009-readme-alignment-revisit` |
 | Completed | 2026-04-12 |
-| Source Scope | [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md) plus the first-party `system-spec-kit` README extension |
+| Source Scope | [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md) plus the first-party `system-spec-kit` README extension |
 | Reviewed | 34 audit targets + 20 first-party README spot-checks |
 | Updated | 11 |
 | Deleted / N/A | 0 |

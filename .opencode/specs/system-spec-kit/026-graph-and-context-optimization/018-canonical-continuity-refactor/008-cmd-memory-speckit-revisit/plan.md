@@ -28,7 +28,7 @@ Phase 008 is a fixed-scope command parity pass. The work starts from the exact 0
 
 ### Technical Context
 
-- Documentation-only revisit scoped to the 44 files from the [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md)
+- Documentation-only revisit scoped to the 44 files from the [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md)
 - Canonical contract: `generate-context.js`, `handover -> _memory.continuity -> spec docs`, and no archived active-state language in operator-facing command docs
 - Verification surface: authoritative command docs plus explicit read-only wrapper evidence
 <!-- /ANCHOR:summary -->
@@ -36,7 +36,7 @@ Phase 008 is a fixed-scope command parity pass. The work starts from the exact 0
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-- [x] The source-of-truth target list is locked to the [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md).
+- [x] The source-of-truth target list is locked to the [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md).
 - [x] The review pass stays inside the extracted 44-file set.
 - [x] Every edited file is re-read after patching.
 - [x] Every stale-but-blocked wrapper mirror is recorded with the observed sandbox failure.

@@ -19,9 +19,9 @@ Ground the 20-iteration loop. Read `../scratch/phase-017-rerun-seed.md` to inter
 ## Inputs read this iteration
 
 1. `../scratch/phase-017-rerun-seed.md` (F1-F10 + 6 refinements)
-2. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-001.md` (phase 017 architecture baseline)
-3. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-002.md` (16-stage pipeline mapping)
-4. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-004.md` (redundancy matrix)
+2. `../../z_archive/z_archive/017-memory-refactor-or-deprecation/research/iterations/iteration-001.md` (phase 017 architecture baseline)
+3. `../../z_archive/z_archive/017-memory-refactor-or-deprecation/research/iterations/iteration-002.md` (16-stage pipeline mapping)
+4. `../../z_archive/z_archive/017-memory-refactor-or-deprecation/research/iterations/iteration-004.md` (redundancy matrix)
 5. Cached mental model of `memory-save.ts` (1799 LOC), `memory-context.ts` (1610 LOC), `memory-search.ts` (1378 LOC), `generate-context.ts` (610 LOC), `nested-changelog.ts` (787 LOC)
 
 ## Current-state architecture (established by phase 017)

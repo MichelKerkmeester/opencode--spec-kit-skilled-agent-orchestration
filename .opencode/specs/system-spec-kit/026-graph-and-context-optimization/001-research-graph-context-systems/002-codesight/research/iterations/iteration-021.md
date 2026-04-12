@@ -6,7 +6,7 @@ Map the current 026 parent DAG and the scoped `008` / `011` packets against the 
 ## Findings
 
 ### Finding 1 — The current DAG hardens trust and routing, but it does not yet own detector or graph-structure upgrades
-Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/spec.md:9-18] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:58-67] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md:61-72]
+Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/spec.md:9-18] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/008-graph-first-routing-nudge/spec.md:58-67] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/spec.md:61-72]
 What it does: The parent DAG currently assigns graph-adjacent work to `011` for fail-closed trust validation and to `008` for readiness-gated advisory routing hints on existing surfaces.
 Why it matters for Public's Code Graph MCP: That leaves a clean gap for graph-local detector, schema, blast-radius, clustering, and export upgrades as long as they do not recreate either packet's owner seam.
 Evidence type: source-confirmed

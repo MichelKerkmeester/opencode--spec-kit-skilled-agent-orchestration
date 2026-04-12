@@ -32,7 +32,7 @@ _memory:
 | Created | 2026-04-12 |
 | Updated | 2026-04-12 |
 | Parent Packet | `018-canonical-continuity-refactor` |
-| Source Map | [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md) |
+| Source Map | [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md) |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
@@ -44,7 +44,7 @@ Phase 016 aligned the README surfaces across the `system-spec-kit` tree before P
 
 ### Purpose
 
-Review the exact 34 existing file paths extracted from the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md), then extend that README-only pass with a first-party `system-spec-kit` README spot-check and stale-term sweep. Update the one remaining drifted audit-scope README plus the 10 additional subsystem README surfaces flagged by the deeper sweep, and confirm the remaining reviewed files already match the Phase 018 continuity contract.
+Review the exact 34 existing file paths extracted from the [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md), then extend that README-only pass with a first-party `system-spec-kit` README spot-check and stale-term sweep. Update the one remaining drifted audit-scope README plus the 10 additional subsystem README surfaces flagged by the deeper sweep, and confirm the remaining reviewed files already match the Phase 018 continuity contract.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -52,7 +52,7 @@ Review the exact 34 existing file paths extracted from the [016 003 README audit
 
 ### In Scope
 
-- Re-review the 34 existing file paths extracted from the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md).
+- Re-review the 34 existing file paths extracted from the [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md).
 - Update README and install-guide surfaces that still described pre-018 continuity behavior.
 - Preserve legitimate current references such as constitutional-memory documentation and archive-folder references that remain accurate.
 - Record the reviewed/updated counts inside this packet.

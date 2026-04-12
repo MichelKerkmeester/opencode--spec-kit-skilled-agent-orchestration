@@ -28,7 +28,7 @@ Phase 007 is a fixed-scope doc parity pass. The work starts from the exact 016 r
 
 ### Technical Context
 
-- Documentation-only revisit scoped to the 63 files from the [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md)
+- Documentation-only revisit scoped to the 63 files from the [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md)
 - Canonical contract: `generate-context.js`, `handover -> _memory.continuity -> spec docs`, and four active states only
 - Verification surface: packet-doc template compliance plus `validate.sh --strict`
 <!-- /ANCHOR:summary -->
@@ -36,7 +36,7 @@ Phase 007 is a fixed-scope doc parity pass. The work starts from the exact 016 r
 <!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
-- [x] The source-of-truth target list is locked to the [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md).
+- [x] The source-of-truth target list is locked to the [016 001 reference map](../../z_archive/z_archive/016-release-alignment/001-sk-system-speckit/reference-map.md).
 - [x] The review pass stays inside the extracted 63-file set.
 - [x] Every edited file is re-read after patching.
 - [x] The final packet must pass `validate.sh --strict`.

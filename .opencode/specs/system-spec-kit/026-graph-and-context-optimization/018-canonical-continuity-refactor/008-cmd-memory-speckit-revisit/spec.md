@@ -32,7 +32,7 @@ _memory:
 | Created | 2026-04-12 |
 | Updated | 2026-04-12 |
 | Parent Packet | `018-canonical-continuity-refactor` |
-| Source Map | [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
+| Source Map | [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
@@ -44,7 +44,7 @@ Phase 016 aligned the live `spec_kit` and `memory` command surfaces before Phase
 
 ### Purpose
 
-Review the exact 44 existing file paths extracted from the [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md), update the 28 editable drifted files, and record the alternate `.agents/commands/**` wrapper files that still carry pre-018 language but cannot be edited in this sandbox because writes under `.agents/commands/` fail with `Operation not permitted`.
+Review the exact 44 existing file paths extracted from the [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md), update the 28 editable drifted files, and record the alternate `.agents/commands/**` wrapper files that still carry pre-018 language but cannot be edited in this sandbox because writes under `.agents/commands/` fail with `Operation not permitted`.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -52,7 +52,7 @@ Review the exact 44 existing file paths extracted from the [016 002 reference ma
 
 ### In Scope
 
-- Re-review the 44 existing file paths extracted from the [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md).
+- Re-review the 44 existing file paths extracted from the [016 002 reference map](../../z_archive/z_archive/016-release-alignment/002-cmd-memory-and-speckit/reference-map.md).
 - Update authoritative `.opencode/command/**` docs, YAML assets, repo-level command catalogs, and the command-adjacent `handover` agent surface where wording still described pre-018 continuity behavior.
 - Record the blocked `.agents/commands/**` mirror wrappers that still need the same wording refresh but could not be edited in this environment.
 - Preserve legitimate current-reality references, including constitutional memory-document management in `/memory:learn`.

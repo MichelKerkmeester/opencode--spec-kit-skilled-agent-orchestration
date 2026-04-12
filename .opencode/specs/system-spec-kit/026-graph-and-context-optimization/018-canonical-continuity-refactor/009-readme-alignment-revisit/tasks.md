@@ -69,7 +69,7 @@ _memory:
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- Source map: [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md)
+- Source map: [016 003 README audit](../../z_archive/z_archive/016-release-alignment/003-readme-alignment/readme-audit.md)
 - Evidence ledger: [implementation summary](./implementation-summary.md)
 - Parent packet: [018 parent spec](../spec.md)
 <!-- /ANCHOR:cross-refs -->

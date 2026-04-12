@@ -15,7 +15,7 @@ Affected Public surface: extractor contracts, graph schema, code-graph payloads
 Risk/cost: medium
 
 ### Finding 2 — Routing-surface nudges and pointer-style delivery must be separated from graph-local upgrades
-Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/research.md:84-102] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md:58-67]
+Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/003-contextador/research/research.md:84-102] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/008-graph-first-routing-nudge/spec.md:58-67]
 What it does: `003-contextador` keeps the ergonomic appeal of a routing facade, but its pointer-first delivery is explicitly weaker than Public's typed graph/semantic/memory surfaces. `008` already owns the advisory routing-hint lane on shared startup/resume/response surfaces.
 Why it matters for Public's Code Graph MCP: A new code-graph upgrade packet should not adopt pointer-shaped delivery and should avoid any startup-surface hint that belongs in `008`.
 Evidence type: source-confirmed

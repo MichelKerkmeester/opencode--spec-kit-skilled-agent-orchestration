@@ -26,9 +26,9 @@ Ship the runtime for packet `014-code-graph-upgrades` per its 9-task roadmap. Pa
 4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/decision-record.md` — ADR-001 (011 dependency), ADR-002 (008 non-overlap), ADR-003 (prototype-later boundaries), ADR-004 (side-branch placement)
 5. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md` — §20 Code Graph Upgrade Charter (the canonical roadmap; §20.1-20.8 covers charter boundary, matrix, adopt-now lane, prototype-later lane)
 6. **Predecessor contracts you must respect**:
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation/spec.md` — validator contract you must NOT replace
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-graph-first-routing-nudge/spec.md` §3 Out of Scope — the non-overlap boundary
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-detector-provenance-and-regression-floor/spec.md` — the regression floor discipline
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/spec.md` — validator contract you must NOT replace
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/008-graph-first-routing-nudge/spec.md` §3 Out of Scope — the non-overlap boundary
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/007-detector-provenance-and-regression-floor/spec.md` — the regression floor discipline
 7. **Existing runtime you'll touch** (read current state before editing):
    - `.opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts` — has 005's `CertaintyStatus`, 006's `StructuralTrust` axes (`ParserProvenance`/`EvidenceStatus`/`FreshnessAuthority`), 011's validator
    - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` — the code-graph query handler (blast-radius lives here)

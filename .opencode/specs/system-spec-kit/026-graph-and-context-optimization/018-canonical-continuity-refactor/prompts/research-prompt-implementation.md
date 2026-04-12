@@ -199,13 +199,13 @@ Halt the research loop when **any** of these are met:
 - Canonical narrative routes into existing spec docs.
 - Advanced features preserved, retargeted at the new substrate.
 - **Phase 017 deliverables** (must be read in iteration 1):
-  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-memory-refactor-or-deprecation/recommendation.md`
-  - `.../017-memory-refactor-or-deprecation/phase-018-proposal.md`
-  - `.../017-memory-refactor-or-deprecation/research/research.md`
-  - `.../017-memory-refactor-or-deprecation/findings/alternatives-comparison.md`
-  - `.../017-memory-refactor-or-deprecation/findings/integration-impact.md`
-  - `.../017-memory-refactor-or-deprecation/findings/redundancy-matrix.md`
-  - `.../017-memory-refactor-or-deprecation/findings/retrieval-comparison.md`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/z_archive/017-memory-refactor-or-deprecation/recommendation.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/phase-018-proposal.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/research/research.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/findings/alternatives-comparison.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/findings/integration-impact.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/findings/redundancy-matrix.md`
+  - `.../z_archive/017-memory-refactor-or-deprecation/findings/retrieval-comparison.md`
 
 ### 6.2 Anchor inventory (already present in templates)
 

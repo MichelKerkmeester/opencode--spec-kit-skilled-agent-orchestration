@@ -40,7 +40,7 @@ This plan applies the completed redundancy research without reopening runtime sc
 
 - [x] `research/research.md` is complete and citation-backed.
 - [x] The parent research and root packet docs are readable and stable.
-- [x] The downstream packet train from `../../002-implement-cache-warning-hooks/` through `../../013-warm-start-bundle-conditional-validation/` can be reviewed directly.
+- [x] The downstream packet train from `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` can be reviewed directly.
 
 ### Definition of Done
 
