@@ -1,0 +1,836 @@
+[
+  {
+    "scenarioId": "M-003",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/003-context-save-index-update.md",
+    "prompt": "Save fresh context for the target spec folder, run an index scan immediately after the save, and verify the saved artifacts are discoverable in retrieval results. Capture the save and index evidence, and return a concise user-facing pass/fail verdict with the main reason.`\n\n---\n\n## 3. TEST EXECUTION",
+    "expectedSignals": [
+      "saved context artifacts are discoverable."
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "saved context artifacts are discoverable."
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+    ],
+    "steps": [],
+    "reason": "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+  },
+  {
+    "scenarioId": "M-005",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md",
+    "prompt": "Dispatch task to external CLI agent and capture memory back to Spec Kit. Capture the evidence needed to prove Agent output contains structured memory section; saved context is discoverable via search. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Agent output contains structured memory section",
+      "saved context is discoverable via search."
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Agent output contains structured memory section",
+      "saved context is discoverable via search."
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+    ],
+    "steps": [],
+    "reason": "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+  },
+  {
+    "scenarioId": "M-006",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md",
+    "prompt": "Run a memory save for a spec that edits generic code paths and verify enrichment/guard behavior. Capture the evidence needed to prove the save resolves through handover.md first, then _memory.continuity, then spec docs; keeps spec-folder and git enrichment as supporting context only; and does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs",
+      "spec-folder and git enrichment remain supporting-only",
+      "and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table."
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs",
+      "spec-folder and git enrichment remain supporting-only",
+      "and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table."
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+    ],
+    "steps": [],
+    "reason": "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+  },
+  {
+    "scenarioId": "039",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/039-verify-fix-verify-memory-quality-loop-pi-a5.md",
+    "prompt": "Verify PI-A5 quality loop behavior. Capture the evidence needed to prove Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Low-quality memory triggers retry cycle",
+      "final reject after max retries",
+      "rejection reason logged"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Low-quality memory triggers retry cycle",
+      "final reject after max retries",
+      "rejection reason logged"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Submit low-quality memory 2) Observe retries 3) Confirm final reject"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "040",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/040-signal-vocabulary-expansion-tm-08.md",
+    "prompt": "Validate signal vocabulary expansion (TM-08). Capture the evidence needed to prove Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Signal categories (correction, preference, reinforcement) detected from prompt analysis",
+      "trigger matching reflects expanded vocabulary"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Signal categories (correction, preference, reinforcement) detected from prompt analysis",
+      "trigger matching reflects expanded vocabulary"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "041",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md",
+    "prompt": "Verify pre-flight token budget validation (PI-A3). Capture the evidence needed to prove Token estimate is computed before embedding/database writes; near-limit input emits PF021 warning; over-limit input emits PF020 failure; behavior follows MCP_CHARS_PER_TOKEN, MCP_MAX_MEMORY_TOKENS, and MCP_TOKEN_WARNING_THRESHOLD. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Token estimate is computed before embedding/database writes",
+      "near-limit input emits `PF021` warning",
+      "over-limit input emits `PF020` failure",
+      "behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD`"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Token estimate is computed before embedding/database writes",
+      "near-limit input emits `PF021` warning",
+      "over-limit input emits `PF020` failure",
+      "behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD`"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/sandbox-extra.md",
+          "dryRun": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: preflight.ts"
+    ],
+    "steps": [
+      {
+        "step": "memory_save({filePath:\"<sandbox-file>\", dryRun:true})",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/sandbox-extra.md",
+            "dryRun": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Dry-run detected structural template-contract violations\",\"data\":{\"status\":\"dry_run\",\"would_pass\":false,\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/sandbox-extra.md\",\"spec_folder\":\"002-test-sandbox\",\"title\":\"Sandbox Extra\",\"validation\":{\"errors\":[],\"warnings\":[],\"details\":{\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/sandbox-extra.md\",\"spec_folder\":\"002-test-sandbox\",\"checks_run\":[\"content_size\",\"anchor_format\",\"token_budget\",\"duplicate_check\"],\"content_size\":{\"valid\":true,\"content_length\":1008,\"errors\":[],\"warnings\":[]},\"anchor_format\":{\"valid\":true,\"errors\":[],\"warnings\":[],\"anchors\":[\"continue-session\",\"overview\",\"recovery-hints\",\"metadata\"]},\"token_budget\":{\"within_budget\":true,\"estimated_tokens\":402,\"maxTokens\":8000,\"percentage_used\":0.05025,\"warnings\":[],\"errors\":[]},\"duplicate_check\":{\"isDuplicate\":false,\"duplicate_type\":null,\"existingId\":null,\"existing_path\":null,\"similarity\":null,\"content_hash\":\"91f7cb4dd4819bb20486da93727a83466a1eba3362599aa3fe11069aaf7bb04c\"}}},\"qualityLoop\":{\"passed\":true,\"rejected\":false,\"fixes\":[]},\"templateContract\":{\"valid\":false,\"violations\":[{\"code\":\"missing_section\",\"message\":\"Rendered memory is missing the required canonical-docs section.\",\"sectionId\":\"canonical-docs\"},{\"code\":\"missing_section\",\"message\":\"Rendered memory is missing the required evidence section.\",\"sectionId\":\"evidence\"}],\"missingAnchors\":[],\"unexpectedTemplateArtifacts\":[]},\"sufficiency\":{\"pass\":false,\"rejectionCode\":\"INSUFFICIENT_CONTEXT_ABORT\",\"reasons\":[\"No primary evidence was captured for this memory.\"],\"evidenceCounts\":{\"primary\":0,\"support\":3,\"total\":3,\"semanticChars\":317,\"uniqueWords\":27,\"anchors\":4,\"triggerPhrases\":1},\"sc"
+        ]
+      },
+      {
+        "step": "preflight.ts",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "042",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/042-spec-folder-description-discovery-pi-b3.md",
+    "prompt": "Validate PI-B3 folder description discovery. Capture the evidence needed to prove description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place; missing description.json falls back cleanly without implicit backfill; out-of-base or prefix-bypass paths are rejected by realpath containment checks; YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases; memory_context uses folder routing; regeneration leaves valid JSON on disk with no leftover temp files. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "description.json exists after create.sh",
+      "stale detection triggers on spec.md edit",
+      "per-folder files preferred over spec.md fallback",
+      "mixed-mode aggregation works",
+      "invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place",
+      "missing description.json falls back cleanly without implicit backfill",
+      "out-of-base or prefix-bypass paths are rejected by realpath containment checks",
+      "YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases",
+      "memory_context uses folder routing",
+      "regeneration leaves valid JSON on disk with no leftover temp files"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "description.json exists after create.sh",
+      "stale detection triggers on spec.md edit",
+      "per-folder files preferred over spec.md fallback",
+      "mixed-mode aggregation works",
+      "invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place",
+      "missing description.json falls back cleanly without implicit backfill",
+      "out-of-base or prefix-bypass paths are rejected by realpath containment checks",
+      "YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases",
+      "memory_context uses folder routing",
+      "regeneration leaves valid JSON on disk with no leftover temp files"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create spec folder via create.sh → verify description.json exists 2) Edit spec.md → verify isPerFolderDescriptionStale detects change 3) Run generateFolderDescriptions → verify per-folder files preferred over spec.md 4) Mixed mode: some folders with/without description.json → verify aggregation 5) Corrupt description.json with invalid JSON and schema-invalid field types → run generateFolderDescriptions() and verify spec.md fallback plus repaired description.json 6) Verify missing description.json falls back to spec.md without forcing a write 7) Attempt generation against an out-of-base or prefix-bypass path → verify rejection and no file written 8) Use spec.md with large YAML frontmatter and CRLF-heavy line endings → verify extracted description comes from post-frontmatter content 9) Run memory_context query → verify short-circuit folder routing"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "043",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/043-pre-storage-quality-gate-tm-04.md",
+    "prompt": "Verify pre-storage quality gate (TM-04). Capture the evidence needed to prove the structural, semantic, and duplication checks run in order, that blocking failures stop the save, and that warn-only findings are surfaced without inventing a persisted decision log. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Structural, semantic, and duplication checks all run",
+      "blocking failures stop the save",
+      "warn-only findings remain advisory"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Structural, semantic, and duplication checks all run",
+      "blocking failures stop the save",
+      "warn-only findings remain advisory"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Submit one structural failure, one semantic-quality failure, and one duplicate-content case 2) observe block vs warn behavior at each step 3) capture returned warnings and save outcome"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "044",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/044-reconsolidation-on-save-tm-06.md",
+    "prompt": "Validate reconsolidation-on-save (TM-06). Capture the evidence needed to prove Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Similarity >=0.88 triggers merge",
+      "0.75-0.88 triggers supersede/deprecate",
+      "below 0.75 saves independently",
+      "thresholds documented in output"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Similarity >=0.88 triggers merge",
+      "0.75-0.88 triggers supersede/deprecate",
+      "below 0.75 saves independently",
+      "thresholds documented in output"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save near neighbors 2) verify >=0.88 merge 3) verify 0.75-0.88 supersede"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "045",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/045-smarter-memory-content-generation-s1.md",
+    "prompt": "Assess smarter memory content generation (S1). Capture the evidence needed to prove Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; and inferMemoryTypesBatch keeps separate results for multiple pathless inputs instead of collapsing them onto one key. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Generated content retains structural elements (headings, lists, code blocks)",
+      "output is concise",
+      "coherence maintained across sections",
+      "multiple pathless batch inputs keep distinct inference results"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Generated content retains structural elements (headings, lists, code blocks)",
+      "output is concise",
+      "coherence maintained across sections",
+      "multiple pathless batch inputs keep distinct inference results"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Generate from mixed content 2) Inspect structure retention 3) Run batch type inference with two or more pathless inputs 4) Verify distinct inference results plus concise coherence"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "046",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/046-anchor-aware-chunk-thinning-r7.md",
+    "prompt": "Validate anchor-aware chunk thinning (R7). Capture the evidence needed to prove Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Anchor chunks retained",
+      "filler chunks thinned",
+      "retained set is non-empty",
+      "anchor priority respected in thinning order"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Anchor chunks retained",
+      "filler chunks thinned",
+      "retained set is non-empty",
+      "anchor priority respected in thinning order"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Index long doc with anchors/filler 2) run thinning 3) verify non-empty retained set"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "047",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/047-encoding-intent-capture-at-index-time-r16.md",
+    "prompt": "Verify encoding-intent capture (R16). Capture the evidence needed to prove Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Intent labels (doc/code/structured) persisted in metadata",
+      "labels read-only after indexing",
+      "varied content types produce correct labels"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Intent labels (doc/code/structured) persisted in metadata",
+      "labels read-only after indexing",
+      "varied content types produce correct labels"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save doc/code/structured examples 2) inspect metadata 3) verify read-only intent field"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "048",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/048-auto-entity-extraction-r10.md",
+    "prompt": "Validate auto entity extraction (R10). Capture the evidence needed to prove Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Entities extracted and persisted in entity tables",
+      "normalization applied (case, aliases)",
+      "denylist entities excluded"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Entities extracted and persisted in entity tables",
+      "normalization applied (case, aliases)",
+      "denylist entities excluded"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save entity-rich content 2) inspect entity tables 3) verify normalization/denylist"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "069",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/069-entity-normalization-consolidation.md",
+    "prompt": "Validate entity normalization consolidation. Capture the evidence needed to prove Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Extractor and linker produce identical normalized forms for same input",
+      "unicode entities handled consistently",
+      "no normalization divergence"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Extractor and linker produce identical normalized forms for same input",
+      "unicode entities handled consistently",
+      "no normalization divergence"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "073",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/073-quality-gate-timer-persistence.md",
+    "prompt": "Verify quality gate timer persistence. Capture the evidence needed to prove Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Activation timestamp survives service restart",
+      "quality gate respects persisted timer",
+      "no timer reset on restart"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Activation timestamp survives service restart",
+      "quality gate respects persisted timer",
+      "no timer reset on restart"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) set activation timestamp 2) restart service 3) verify persisted timestamp"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "092",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/092-implemented-auto-entity-extraction-r10.md",
+    "prompt": "Verify R10 implemented and active. Capture the evidence needed to prove Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Entities automatically extracted on save",
+      "entity outputs contain expected entity types",
+      "default extraction settings are applied"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Entities automatically extracted on save",
+      "entity outputs contain expected entity types",
+      "default extraction settings are applied"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "111",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/111-deferred-lexical-only-indexing.md",
+    "prompt": "Validate deferred lexical-only indexing fallback. Capture the evidence needed to prove Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Memory saved with embedding_status='pending' on embedding failure",
+      "BM25/FTS5 lexical search returns the memory",
+      "reindex transitions status to 'success'",
+      "vector search works after reindex"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Memory saved with embedding_status='pending' on embedding failure",
+      "BM25/FTS5 lexical search returns the memory",
+      "reindex transitions status to 'success'",
+      "vector search works after reindex"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: OPENAI_API_KEY"
+    ],
+    "steps": [
+      {
+        "step": "OPENAI_API_KEY",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "119",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/119-memory-filename-uniqueness-ensureuniquememoryfilename.md",
+    "prompt": "Validate memory filename collision prevention. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [],
+    "matchedSignals": [],
+    "unmatchedSignals": [],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save memory to a folder 2) Save again with same slug within same minute 3) Verify two distinct filenames (second has -1 suffix) 4) Exhaust `-1` through `-100` collisions and save again 5) Persist the first random fallback filename, repeat the save, and verify a second distinct random fallback is reserved 6) Verify fallback filename uses `crypto.randomBytes(6).toString('hex')` suffix shape, not SHA1 7) Verify `description.json` increments `memorySequence` via `Number(existing.memorySequence)"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "131",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/131-description-json-batch-backfill-validation-pi-b3.md",
+    "prompt": "Validate PI-B3 batch backfill results. Capture the evidence needed to prove Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Description.json coverage stays in parity with the current active spec inventory",
+      "all JSON files parse without syntax errors",
+      "C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number",
+      "schema fields are present at varying depths",
+      "per-folder files preferred over spec.md fallback"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Description.json coverage stays in parity with the current active spec inventory",
+      "all JSON files parse without syntax errors",
+      "C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number",
+      "schema fields are present at varying depths",
+      "per-folder files preferred over spec.md fallback"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Count spec folders with spec.md 2) Count description.json files — expect parity with the current active spec inventory 3) Validate JSON syntax of all files 4) Run explicit C1 conformance checks: `specId` is string, `parentChain` is array of strings, and `memorySequence` is number 5) Spot-check schema fields at depth 1, 3, 5+ 6) Run generateFolderDescriptions → verify per-folder files preferred over spec.md"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "132",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/132-description-json-schema-field-validation.md",
+    "prompt": "Validate description.json required fields and types. Capture the evidence needed to prove description.json generated on folder creation with all 9 required fields; field types match contract with strings for specId, folderSlug, specFolder, description, and lastUpdated, arrays of strings for parentChain, memoryNameHistory, and keywords, and number for memorySequence; memorySequence and memoryNameHistory update on save; corrupted fields repaired on regeneration. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "description.json generated on folder creation with all 9 required fields",
+      "field types match contract with strings for `specId`, `folderSlug`, `specFolder`, `description`, and `lastUpdated`, arrays of strings for `parentChain`, `memoryNameHistory`, and `keywords`, and number for `memorySequence`",
+      "`memorySequence` and `memoryNameHistory` update on save",
+      "corrupted fields repaired on regeneration"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "description.json generated on folder creation with all 9 required fields",
+      "field types match contract with strings for `specId`, `folderSlug`, `specFolder`, `description`, and `lastUpdated`, arrays of strings for `parentChain`, `memoryNameHistory`, and `keywords`, and number for `memorySequence`",
+      "`memorySequence` and `memoryNameHistory` update on save",
+      "corrupted fields repaired on regeneration"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create sandbox spec folder via create.sh → verify description.json generated 2) Assert 9 required fields: specId, folderSlug, parentChain, memorySequence, memoryNameHistory, specFolder, description, keywords, lastUpdated 3) Verify the full 9-field type matrix: strings (`specId`, `folderSlug`, `specFolder`, `description`, `lastUpdated`), arrays of strings (`parentChain`, `memoryNameHistory`, `keywords`), number (`memorySequence`) 4) Save memory → verify `memorySequence` and `memoryNameHistory` update 5) Corrupt a field → verify regeneration repairs it"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "133",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md",
+    "prompt": "Validate memory_save dryRun preview behavior, including insufficiency detection. Capture the evidence needed to prove Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Dry-run returns preflight plus quality-loop and sufficiency payloads",
+      "thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation",
+      "`force:true` does not bypass insufficiency",
+      "rich non-dry-run save indexes the same file"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Dry-run returns preflight plus quality-loop and sufficiency payloads",
+      "thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation",
+      "`force:true` does not bypass insufficiency",
+      "rich non-dry-run save indexes the same file"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_stats",
+        "args": {
+          "limit": 10
+        }
+      },
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/thin-sandbox.md",
+          "dryRun": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: qualityLoop"
+    ],
+    "steps": [
+      {
+        "step": "memory_stats()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_stats",
+          "args": {
+            "limit": 10
+          }
+        },
+        "success": true,
+        "facts": [
+          "counts present",
+          "totals displayed"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory system: 11 memories across 2 folders\",\"data\":{\"totalMemories\":11,\"byStatus\":{\"pending\":0,\"success\":11,\"failed\":0,\"retry\":0,\"partial\":0},\"oldestMemory\":\"2026-04-12T00:32:34.418Z\",\"newestMemory\":\"2026-04-12T00:32:35.003Z\",\"topFolders\":[{\"folder\":\"001-manual-fixture-auth-resume\",\"count\":7},{\"folder\":\"002-test-sandbox\",\"count\":4}],\"totalSpecFolders\":2,\"limit\":10,\"totalTriggerPhrases\":11,\"vectorSearchEnabled\":true,\"graphChannelMetrics\":{\"totalQueries\":0,\"graphHits\":0,\"graphOnlyResults\":0,\"multiSourceResults\":119,\"graphHitRate\":0},\"folderRanking\":\"count\",\"tierBreakdown\":{\"normal\":11},\"databaseSizeBytes\":3981312,\"lastIndexedAt\":\"2026-04-12T00:32:35.003Z\"},\"hints\":[],\"meta\":{\"tool\":\"memory_stats\",\"tokenCount\":269,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_save({filePath:\"<thin-sandbox-file>\", dryRun:true})",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/thin-sandbox.md",
+            "dryRun": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Dry-run detected structural template-contract violations\",\"data\":{\"status\":\"dry_run\",\"would_pass\":false,\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/thin-sandbox.md\",\"spec_folder\":\"002-test-sandbox\",\"title\":\"Thin Sandbox Memory\",\"validation\":{\"errors\":[],\"warnings\":[],\"details\":{\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/002-test-sandbox/memory/thin-sandbox.md\",\"spec_folder\":\"002-test-sandbox\",\"checks_run\":[\"content_size\",\"anchor_format\",\"token_budget\",\"duplicate_check\"],\"content_size\":{\"valid\":true,\"content_length\":984,\"errors\":[],\"warnings\":[]},\"anchor_format\":{\"valid\":true,\"errors\":[],\"warnings\":[],\"anchors\":[\"continue-session\",\"overview\",\"recovery-hints\",\"metadata\"]},\"token_budget\":{\"within_budget\":true,\"estimated_tokens\":396,\"maxTokens\":8000,\"percentage_used\":0.0495,\"warnings\":[],\"errors\":[]},\"duplicate_check\":{\"isDuplicate\":false,\"duplicate_type\":null,\"existingId\":null,\"existing_path\":null,\"similarity\":null,\"content_hash\":\"52e8ae473d40b61e012f05cd4702e2182be18bb5eb7d48751cddeb0996827ef1\"}}},\"qualityLoop\":{\"passed\":true,\"rejected\":false,\"fixes\":[]},\"templateContract\":{\"valid\":false,\"violations\":[{\"code\":\"missing_section\",\"message\":\"Rendered memory is missing the required canonical-docs section.\",\"sectionId\":\"canonical-docs\"},{\"code\":\"missing_section\",\"message\":\"Rendered memory is missing the required evidence section.\",\"sectionId\":\"evidence\"}],\"missingAnchors\":[],\"unexpectedTemplateArtifacts\":[]},\"sufficiency\":{\"pass\":false,\"rejectionCode\":\"INSUFFICIENT_CONTEXT_ABORT\",\"reasons\":[\"No primary evidence was captured for this memory.\"],\"evidenceCounts\":{\"primary\":0,\"support\":3,\"total\":3,\"semanticChars\":304,\"uniqueWords\":26,\"anchors\":4,\"triggerPhrases\":1},\""
+        ]
+      },
+      {
+        "step": "qualityLoop",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "155",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/155-post-save-quality-review.md",
+    "prompt": "Run generate-context.js --json with a complete payload containing a meaningful sessionSummary, explicit triggerPhrases, at least 2 keyDecisions, importanceTier=\"important\", and contextType=\"implementation\". Confirm the POST-SAVE QUALITY REVIEW block reports PASSED with 0 issues.",
+    "expectedSignals": [
+      "`POST-SAVE QUALITY REVIEW -- PASSED` with 0 issues"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`POST-SAVE QUALITY REVIEW -- PASSED` with 0 issues"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Compose full JSON payload: `sessionSummary` = descriptive title, `triggerPhrases` = keyword array, `keyDecisions` = 2+ items, `importanceTier` = \"important\", `contextType` = \"implementation\" 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 3) Capture stdout 4) Locate `POST-SAVE QUALITY REVIEW` block 5) Assert status = PASSED and issues = 0"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "165",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/165-assistive-reconsolidation-speckit-assistive-reconsolidation.md",
+    "prompt": "Test SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Save near-duplicates and borderline pairs, verify auto-merge at >= 0.96 similarity and review recommendation at >= 0.88. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "auto_merge at >= 0.96",
+      "review with recommendation at >= 0.88",
+      "keep_separate below 0.88",
+      "no destructive action for review tier"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "auto_merge at >= 0.96",
+      "review with recommendation at >= 0.88",
+      "keep_separate below 0.88",
+      "no destructive action for review tier"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` 2) Save memory A, then save near-duplicate B (sim >= 0.96) 3) Verify auto-merge 4) Save memory C (0.88 <= sim < 0.96 vs A) 5) Verify AssistiveRecommendation logged 6) `npx vitest run tests/assistive-reconsolidation.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "177",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/177-hybrid-decay-policy-speckit-hybrid-decay-policy.md",
+    "prompt": "Test the default-on SPECKIT_HYBRID_DECAY_POLICY behavior. Confirm the implementing symbols exist in the expected code, rerun the hybrid-decay regression tests, and verify that decision, constitutional, and critical context types resolve to no-decay while other types stay on the standard FSRS schedule. Return a concise pass/fail verdict with the first failing symbol or test if anything breaks.",
+    "expectedSignals": [
+      "SPECKIT_CLASSIFICATION_DECAY"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "SPECKIT_CLASSIFICATION_DECAY"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `rg -n \"SPECKIT_HYBRID_DECAY_POLICY"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "178",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md",
+    "prompt": "Test the default-on SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS behavior. Save a short decision document and verify it bypasses the 50-char minimum. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "isSaveQualityGateExceptionsEnabled() returns true",
+      "decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50",
+      "non-decision types rejected",
+      "< 2 signals rejected",
+      "Layer 1/2/3 validation still runs for other checks"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isSaveQualityGateExceptionsEnabled() returns true",
+      "decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50",
+      "non-decision types rejected",
+      "< 2 signals rejected",
+      "Layer 1/2/3 validation still runs for other checks"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "199",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/199-content-aware-memory-filename-generation.md",
+    "prompt": "Validate content-aware memory filename generation. Capture the evidence needed to prove filename slugs prefer task/session context before folder fallback; the resulting slug is normalized/truncated into a meaningful filename; the H1 heading matches the derived slug title; and multiple pathless inputs in one batch remain distinct instead of collapsing onto one key. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Preferred slug source order is task -> spec title -> session candidates -> folder base",
+      "saved filenames in the same folder differ when task context differs",
+      "slug normalization lowercases and hyphenates content-aware names",
+      "H1 heading matches `slugToTitle()` output",
+      "pathless batch inputs receive distinct synthetic keys"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Preferred slug source order is task -> spec title -> session candidates -> folder base",
+      "saved filenames in the same folder differ when task context differs",
+      "slug normalization lowercases and hyphenates content-aware names",
+      "H1 heading matches `slugToTitle()` output",
+      "pathless batch inputs receive distinct synthetic keys"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Use one spec folder and perform two memory-save flows with clearly different task/session summaries 2) Confirm the saved filenames are different and reflect the task/session wording rather than repeating the folder slug 3) Open each saved file and verify the H1 heading matches the derived filename title 4) Exercise a batch/pathless save case with multiple inputs lacking file paths and verify each item gets a unique synthetic key and distinct slug decision 5) Capture one long task name and confirm the slug is lowercased, hyphenated, and truncated at a word boundary"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "200",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/200-generation-time-duplicate-and-empty-content-prevention.md",
+    "prompt": "Validate generation-time duplicate and empty content prevention. Capture the evidence needed to prove template-only or insubstantial content is rejected before atomic write; exact duplicate content is rejected by content hash before write promotion; descriptive validation errors identify the failing gate; and no final memory file is created for either rejected case. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Empty-content validation strips frontmatter/comments/empty structure before measuring substance",
+      "insubstantial content below threshold is rejected",
+      "SHA-256 duplicate detection rejects exact-match content in the target memory directory",
+      "failures stop the save before atomic write/promotion",
+      "descriptive errors identify the specific gate"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Empty-content validation strips frontmatter/comments/empty structure before measuring substance",
+      "insubstantial content below threshold is rejected",
+      "SHA-256 duplicate detection rejects exact-match content in the target memory directory",
+      "failures stop the save before atomic write/promotion",
+      "descriptive errors identify the specific gate"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Attempt a memory save whose body contains mostly template/frontmatter/comments with little or no substantive content 2) Confirm the save is rejected with an empty-content or substance-validation error and that no final memory file appears 3) Save one valid memory successfully 4) Immediately repeat the save with byte-for-byte identical content in the same target memory directory 5) Confirm the duplicate attempt is rejected before promotion and that the original file remains the only persisted copy"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "201",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/201-spec-doc-structure-validator-and-continuity-frontmatter.md",
+    "prompt": "Validate spec-doc structure validator behavior. Capture evidence that validate.sh --strict runs FRONTMATTER_MEMORY_BLOCK, MERGE_LEGALITY, SPEC_DOC_SUFFICIENCY, CROSS_ANCHOR_CONTAMINATION, and POST_SAVE_FINGERPRINT in the documented order; malformed _memory.continuity blocks fail closed; and valid spec docs pass cleanly. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Five named rules execute in order",
+      "malformed `_memory.continuity` fails closed",
+      "valid docs pass cleanly"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Five named rules execute in order",
+      "malformed `_memory.continuity` fails closed",
+      "valid docs pass cleanly"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create or pick a spec doc with a deliberately malformed `_memory.continuity` block 2) Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict <target-spec>` 3) Confirm the five rules appear in the expected order 4) Repair the continuity block and rerun 5) Confirm the document passes cleanly"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "202",
+    "category": "13--memory-quality-and-indexing",
+    "status": "UNAUTOMATABLE",
+    "filePath": "13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md",
+    "prompt": "Validate canonical continuity save substrate. Capture evidence that contentRouter routes a mixed session chunk into the correct target, anchorMergeOperation applies the correct merge mode under withSpecFolderLock, atomicIndexMemory writes the canonical spec-doc result, and the saved doc carries a thin _memory.continuity block that the resume ladder can read. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "contentRouter chooses the right tier",
+      "anchorMergeOperation uses the right mode",
+      "atomicIndexMemory writes the canonical result",
+      "`_memory.continuity` stays thin and readable"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "contentRouter chooses the right tier",
+      "anchorMergeOperation uses the right mode",
+      "atomicIndexMemory writes the canonical result",
+      "`_memory.continuity` stays thin and readable"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save a routed session chunk that has both target and non-target content 2) Confirm `contentRouter` picks the intended destination 3) Confirm `anchorMergeOperation` uses the correct merge mode and preserves the target anchor 4) Confirm `atomicIndexMemory` writes the canonical output 5) Read the saved file and confirm `_memory.continuity` is present and thin 6) Confirm the resume ladder can read the saved continuity state"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

@@ -1,0 +1,330 @@
+[
+  {
+    "scenarioId": "001",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/001-graph-channel-id-fix-g1.md",
+    "prompt": "Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits when causal edges exist. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Graph channel returns >0 hits when causal edges exist"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Graph channel returns >0 hits when causal edges exist"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create linked memories 2) Run graph-capable query 3) Verify graph hits"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "002",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/002-chunk-collapse-deduplication-g3.md",
+    "prompt": "Validate chunk collapse deduplication (G3) in default search mode. Capture the evidence needed to prove No duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "No duplicate memory IDs in results",
+      "collapsed chunks yield unique parents only"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "No duplicate memory IDs in results",
+      "collapsed chunks yield unique parents only"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Chunk-collapse validation requires multi-chunk seeding and collapse-stage inspection beyond the direct handler contract."
+    ],
+    "steps": [],
+    "reason": "Chunk-collapse validation requires multi-chunk seeding and collapse-stage inspection beyond the direct handler contract."
+  },
+  {
+    "scenarioId": "003",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/003-co-activation-fan-effect-divisor-r17.md",
+    "prompt": "Verify co-activation fan-effect divisor (R17). Capture the evidence needed to prove Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Hub node score dampened proportionally to fan-out degree",
+      "non-hub scores unaffected"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Hub node score dampened proportionally to fan-out degree",
+      "non-hub scores unaffected"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create high-degree hub 2) Run repeated queries 3) Compare dominance"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "004",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/004-sha-256-content-hash-deduplication-tm-02.md",
+    "prompt": "Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches; and the save-path/content-hash queries use exact-match scope clauses rather than nullable OR predicates. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Second save returns skip/no-op status",
+      "no new embedding row created",
+      "content hash matches",
+      "SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Second save returns skip/no-op status",
+      "no new embedding row created",
+      "content hash matches",
+      "SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save once 2) Save identical payload 3) Verify embedding skipped 4) Capture SQL-shape evidence for the unchanged-save and content-hash probes"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "065",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/065-database-and-schema-safety.md",
+    "prompt": "Validate database and schema safety bundle. Capture the evidence needed to prove Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Mutations complete atomically",
+      "no partial SQL corruption",
+      "schema constraints enforced",
+      "rollback on failure"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Mutations complete atomically",
+      "no partial SQL corruption",
+      "schema constraints enforced",
+      "rollback on failure"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "068",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/068-guards-and-edge-cases.md",
+    "prompt": "Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "No double-counting in aggregation",
+      "fallback paths trigger correctly",
+      "guard conditions prevent invalid state"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "No double-counting in aggregation",
+      "fallback paths trigger correctly",
+      "guard conditions prevent invalid state"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "075",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/075-canonical-id-dedup-hardening.md",
+    "prompt": "Verify canonical ID dedup hardening. Capture the evidence needed to prove Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity; same-path saves use two direct probes (`canonical_file_path = ?`, then `file_path = ?` when needed); and the parent-only save indexes exist for canonical-path and scoped content-hash lookups. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form",
+      "dedup produces exactly one result per logical entity",
+      "same-path lookup uses two direct probes without nullable OR predicates",
+      "`idx_save_parent_canonical_path` and `idx_save_parent_content_hash_scope` exist with `WHERE parent_id IS NULL`"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form",
+      "dedup produces exactly one result per logical entity",
+      "same-path lookup uses two direct probes without nullable OR predicates",
+      "`idx_save_parent_canonical_path` and `idx_save_parent_content_hash_scope` exist with `WHERE parent_id IS NULL`"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Produce mixed IDs 2) Run dedup 3) Confirm single canonical output 4) Capture same-path SQL-shape evidence 5) Query schema indexes for parent-only save-path coverage"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "083",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/083-math-max-min-stack-overflow-elimination.md",
+    "prompt": "Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Large arrays (10k+ elements) processed without RangeError",
+      "numeric outputs match expected min/max values",
+      "no stack overflow in any code path"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Large arrays (10k+ elements) processed without RangeError",
+      "numeric outputs match expected min/max values",
+      "no stack overflow in any code path"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "084",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/084-session-manager-transaction-gap-fixes.md",
+    "prompt": "Validate session-manager transaction gap fixes. Capture the evidence needed to prove Concurrent writes are serialized via transactions; session limits enforced; no data corruption from concurrent access. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Concurrent writes are serialized via transactions",
+      "session limits enforced",
+      "no data corruption from concurrent access"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Concurrent writes are serialized via transactions",
+      "session limits enforced",
+      "no data corruption from concurrent access"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) simulate concurrent writes 2) inspect transactions 3) confirm limits enforced"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "116",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/116-chunking-safe-swap-atomicity-p0-6.md",
+    "prompt": "\"Re-chunk a parent memory and verify safe-swap finalization stays atomic.\" Capture the evidence needed to prove New chunks index in staged state before old deletion; finalization moves parent attach + old-child unlink/delete into one transaction; failed finalization cleans the staged chunk tree; all-chunks-failed rollback preserves old children and the old parent BM25 state. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "New chunks indexed in staged state before old deletion",
+      "old children keep original linkage on finalize failure",
+      "staged replacement chunks are cleaned on finalize failure",
+      "all-chunks-failed rollback preserves old parent BM25 state",
+      "handler returns error status on failure"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "New chunks indexed in staged state before old deletion",
+      "old children keep original linkage on finalize failure",
+      "staged replacement chunks are cleaned on finalize failure",
+      "all-chunks-failed rollback preserves old parent BM25 state",
+      "handler returns error status on failure"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+          "asyncEmbedding": true,
+          "skipPreflight": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: parent_id IS NULL"
+    ],
+    "steps": [
+      {
+        "step": "memory_save()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+            "asyncEmbedding": true,
+            "skipPreflight": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory file does not match the required template contract.\",\"data\":{\"status\":\"rejected\",\"id\":0,\"specFolder\":\"001-manual-fixture-auth-resume\",\"title\":\"Auth Resume Decision Record\",\"qualityScore\":0.875,\"qualityFlags\":[\"Only 1 trigger phrase(s) — 4+ recommended\",\"violates_template_contract\"],\"rejectionReason\":\"Template contract validation failed: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section\",\"warnings\":[\"Manual fallback save mode detected; standard generate-context template markers are missing.\"],\"message\":\"Memory file does not match the required template contract.\"},\"hints\":[\"Rejected saves do not mutate the memory index\",\"Review quality issues and retry the save\"],\"meta\":{\"tool\":\"memory_save\",\"tokenCount\":236,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "parent_id IS NULL",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "117",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/117-sqlite-datetime-session-cleanup-p0-7.md",
+    "prompt": "\"Create sessions with known timestamps and verify cleanup deletes only expired ones\". Capture the evidence needed to prove Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Expired session (45min old) deleted",
+      "active session (5min old) preserved",
+      "cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Expired session (45min old) deleted",
+      "active session (5min old) preserved",
+      "cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: **Precondition:** Working memory database accessible. 1) Insert a session with `last_focused` = 45 minutes ago (expired) 2) Insert a session with `last_focused` = 5 minutes ago (active) 3) Run `cleanupOldSessions()` with 30-minute threshold 4) Verify expired session deleted, active session preserved 5) Verify comparison works with both `YYYY-MM-DD HH:MM:SS` and ISO format timestamps"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "118",
+    "category": "08--bug-fixes-and-data-integrity",
+    "status": "UNAUTOMATABLE",
+    "filePath": "08--bug-fixes-and-data-integrity/118-error-response-credential-sanitization.md",
+    "prompt": "Trigger a provider error by using an invalid API key, then inspect the error response for leaked credentials. Verify that sk-*, voy_*, Bearer tokens, and key= patterns are replaced with [REDACTED] in summary, data.error, and data.details (including nested objects and arrays). Return a concise pass/fail verdict.",
+    "expectedSignals": [
+      "All credential patterns replaced with [REDACTED]",
+      "error codes and provider names preserved",
+      "nested objects sanitized"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "All credential patterns replaced with [REDACTED]",
+      "error codes and provider names preserved",
+      "nested objects sanitized"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Set invalid VOYAGE_API_KEY or OPENAI_API_KEY 2) Call memory_search to trigger provider error 3) Inspect response.summary, response.data.error, response.data.details"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

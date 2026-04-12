@@ -1,0 +1,509 @@
+[
+  {
+    "scenarioId": "016",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/016-typed-weighted-degree-channel-r4.md",
+    "prompt": "Test typed-weighted degree channel (R4). Capture the evidence needed to prove Typed-degree boost bounded within configured cap; cold-cache scoring computes uncached nodes through one batched SQL pass and caches the global max for reuse; fallback activates when edge types missing; varied types produce different scores. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Typed-degree boost bounded within configured cap",
+      "cold-cache scoring batches uncached nodes in one SQL pass",
+      "cached global max prevents repeated normalization-base queries",
+      "fallback activates when edge types missing",
+      "varied types produce different scores"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Typed-degree boost bounded within configured cap",
+      "cold-cache scoring batches uncached nodes in one SQL pass",
+      "cached global max prevents repeated normalization-base queries",
+      "fallback activates when edge types missing",
+      "varied types produce different scores"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create varied edge types across multiple candidate memories 2) Clear the degree cache 3) Run the degree-scoring path once and capture SQL/query evidence for the cold-cache pass 4) Repeat without invalidation 5) Verify caps, cached-max reuse, and fallback behavior"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "017",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/017-co-activation-boost-strength-increase-a7.md",
+    "prompt": "Compare co-activation strength values for A7. Capture the evidence needed to prove Increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration batches detail fetches with one \\`WHERE id IN (...)\\` query; causal neighbors are hydrated with one joined SQL statement; and Stage 2 precomputes neighbor counts once per boosted batch. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Increased co-activation strength produces measurably higher contribution delta vs baseline",
+      "related-memory hydration uses one batched `WHERE id IN (...)` fetch",
+      "causal-neighbor lookup uses one CTE + join query",
+      "Stage 2 calls the neighbor-count precompute once per boosted batch"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Increased co-activation strength produces measurably higher contribution delta vs baseline",
+      "related-memory hydration uses one batched `WHERE id IN (...)` fetch",
+      "causal-neighbor lookup uses one CTE + join query",
+      "Stage 2 calls the neighbor-count precompute once per boosted batch"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Baseline run 2) Increase strength 3) Compare contribution 4) Capture batching evidence for similarity-neighbor, causal-neighbor, and Stage 2 count lookup paths"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "018",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/018-edge-density-measurement.md",
+    "prompt": "Verify edge density measurement and gate behavior. Capture the evidence needed to prove Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Edge density ratio computed correctly (edges/nodes)",
+      "threshold gate activates/deactivates at boundary"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Edge density ratio computed correctly (edges/nodes)",
+      "threshold gate activates/deactivates at boundary"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Query edge+node counts 2) Compute ratio 3) Check threshold handling"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "019",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/019-weight-history-audit-tracking.md",
+    "prompt": "Validate weight history audit tracking. Capture the evidence needed to prove Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Audit rows logged for each edge strength mutation",
+      "rollback restores previous weights",
+      "audit history is append-only"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Audit rows logged for each edge strength mutation",
+      "rollback restores previous weights",
+      "audit history is append-only"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Mutate edge strengths 2) Inspect audit rows 3) Run rollback"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "020",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/020-graph-momentum-scoring-n2a.md",
+    "prompt": "Verify graph momentum scoring (N2a). Capture the evidence needed to prove 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "7-day momentum delta bonus applied and capped",
+      "nodes with no history get zero bonus",
+      "cap enforced"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "7-day momentum delta bonus applied and capped",
+      "nodes with no history get zero bonus",
+      "cap enforced"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Seed snapshots now/7d 2) Query 3) Verify capped bonus"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "021",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/021-causal-depth-signal-n2b.md",
+    "prompt": "Test causal depth signal (N2b). Capture the evidence needed to prove Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Depth score normalized to [0,1]",
+      "deeper chains produce higher normalized values",
+      "shortcut edges do not reduce longest-path depth",
+      "cycle members share one bounded depth layer"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Depth score normalized to [0,1]",
+      "deeper chains produce higher normalized values",
+      "shortcut edges do not reduce longest-path depth",
+      "cycle members share one bounded depth layer"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Build multi-level graph with a shortcut edge or rooted cycle 2) Score depth 3) Verify normalized output"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "022",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/022-community-detection-n2c.md",
+    "prompt": "Validate community detection (N2c). Capture the evidence needed to prove Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Community detection assigns cluster IDs",
+      "co-member boost injected",
+      "boost capped at configured maximum"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Community detection assigns cluster IDs",
+      "co-member boost injected",
+      "boost capped at configured maximum"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create communities 2) Recompute 3) Verify co-member injection/caps"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "081",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/081-graph-and-cognitive-memory-fixes.md",
+    "prompt": "Validate graph and cognitive memory fixes. Capture the evidence needed to prove Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Self-loops prevented",
+      "depth clamps enforced",
+      "cache invalidation triggers on mutation",
+      "no stale cognitive data returned"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Self-loops prevented",
+      "depth clamps enforced",
+      "cache invalidation triggers on mutation",
+      "no stale cognitive data returned"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) trigger self-loop/depth/cache scenarios 2) verify clamps/invalidations 3) capture results"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "091",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/091-implemented-graph-centrality-and-community-detection-n2.md",
+    "prompt": "Verify N2 implemented and active. Capture the evidence needed to prove N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "N2 tables exist with data",
+      "feature flags show active status",
+      "graph queries include centrality/community contributions in scores"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "N2 tables exist with data",
+      "feature flags show active status",
+      "graph queries include centrality/community contributions in scores"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) inspect tables/flags 2) run graph queries 3) verify N2 contributions"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "120",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/120-unified-graph-rollback-and-explainability-phase-3.md",
+    "prompt": "Validate Phase 3 graph rollback and explainability. Capture the evidence needed to prove When enabled, trace includes graph contribution summary and repeated identical inputs return identical order; the graph FTS query materializes matched rowids once in a CTE, expands via UNION ALL source/target edge lookups, and avoids JS-side dedup; when disabled, graph-side effects are absent and baseline ordering remains deterministic. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "When enabled, trace includes graph contribution summary and repeated identical inputs return identical order",
+      "graph FTS path uses a CTE with SQL-side dedup and cached FTS-table availability",
+      "when disabled, graph-side effects are absent and baseline ordering remains deterministic"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "When enabled, trace includes graph contribution summary and repeated identical inputs return identical order",
+      "graph FTS path uses a CTE with SQL-side dedup and cached FTS-table availability",
+      "when disabled, graph-side effects are absent and baseline ordering remains deterministic"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "graph rollout check",
+          "includeTrace": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: UNION ALL"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({ query:\"graph rollout check\", includeTrace:true })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "graph rollout check",
+            "includeTrace": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":10,\"constitutionalInjected\":0,\"durationMs\":6},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":2,\"coActivationBoosted\":2,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":2,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":9,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":6,\"stage2\":2,\"stage3\":0,\"stage4\":0,\"total\":8}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,"
+        ]
+      },
+      {
+        "step": "UNION ALL",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "156",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md",
+    "prompt": "Test SPECKIT_GRAPH_REFRESH_MODE=write_local. Save a memory with entity edges, then verify dirty-node tracking and local recompute execute. Capture the evidence needed to prove markDirty() populates the dirty-node set and recomputeLocal() runs for small components. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "markDirty() populates dirty-node set",
+      "onWrite() returns localRecomputed=true and skipped=false",
+      "component size estimation runs",
+      "dirty nodes cleared after local recompute"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "markDirty() populates dirty-node set",
+      "onWrite() returns localRecomputed=true and skipped=false",
+      "component size estimation runs",
+      "dirty nodes cleared after local recompute"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_REFRESH_MODE=write_local"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_REFRESH_MODE=write_local",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "157",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md",
+    "prompt": "Test SPECKIT_LLM_GRAPH_BACKFILL=true. Register a backfill callback via registerLlmBackfillFn(), save a high-quality memory (qualityScore >= 0.7), and verify the LLM backfill is scheduled. Capture the evidence needed to prove onIndex() returns llmBackfillScheduled=true for high-value docs and false for low-value docs. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold",
+      "backfill callback is invoked via setImmediate",
+      "low-value docs do not trigger backfill"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold",
+      "backfill callback is invoked via setImmediate",
+      "low-value docs do not trigger backfill"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `SPECKIT_LLM_GRAPH_BACKFILL=true` 2) Register callback via `registerLlmBackfillFn()` 3) Call `onIndex(db, memoryId, content, { qualityScore: 0.8 })` 4) Verify OnIndexResult.llmBackfillScheduled 5) `npx vitest run tests/graph-lifecycle.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "158",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md",
+    "prompt": "Test SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Run a search with graph signals active and verify graph weight contribution is capped at 0.05 and community scoring boost is capped at 0.03. Capture the evidence needed to prove cap enforcement and Louvain threshold gating. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "applyGraphWeightCap() clamps to [0, 0.05]",
+      "applyCommunityScoring() caps at 0.03",
+      "shouldActivateLouvain() respects thresholds",
+      "calibrateGraphWeight() enforces N2a/N2b caps"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "applyGraphWeightCap() clamps to [0, 0.05]",
+      "applyCommunityScoring() caps at 0.03",
+      "shouldActivateLouvain() respects thresholds",
+      "calibrateGraphWeight() enforces N2a/N2b caps"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_CALIBRATION_PROFILE=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_CALIBRATION_PROFILE=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "174",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md",
+    "prompt": "Test the default-on SPECKIT_GRAPH_CONCEPT_ROUTING behavior. Run a query with indirect concept references and verify graph channel activation via alias matching. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "isGraphConceptRoutingEnabled() returns true",
+      "noun phrases extracted from query",
+      "alias table consulted in SQLite",
+      "canonical concept names returned",
+      "graph channel activated for matched concepts"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isGraphConceptRoutingEnabled() returns true",
+      "noun phrases extracted from query",
+      "alias table consulted in SQLite",
+      "canonical concept names returned",
+      "graph channel activated for matched concepts"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_CONCEPT_ROUTING"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_CONCEPT_ROUTING",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "175",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/175-typed-traversal-speckit-typed-traversal.md",
+    "prompt": "Test the default-on SPECKIT_TYPED_TRAVERSAL behavior. Verify sparse-first 1-hop constraint and intent-aware edge scoring formula. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "isTypedTraversalEnabled() returns true",
+      "sparse-first: density < 0.5 → 1-hop",
+      "INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit",
+      "edge prior tiers: 1.0/0.75/0.5",
+      "MAX_BOOST_PER_HOP=0.05",
+      "MAX_COMBINED_BOOST=0.20"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isTypedTraversalEnabled() returns true",
+      "sparse-first: density < 0.5 → 1-hop",
+      "INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit",
+      "edge prior tiers: 1.0/0.75/0.5",
+      "MAX_BOOST_PER_HOP=0.05",
+      "MAX_COMBINED_BOOST=0.20"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Confirm `SPECKIT_TYPED_TRAVERSAL` is unset or `true` 2) Run search against a sparse graph (density < 0.5) 3) Verify traversal constrained to SPARSE_MAX_HOPS=1 4) Run search with classified intent (e.g., fix_bug) 5) Verify INTENT_EDGE_PRIORITY mapping applied 6) Confirm score = seedScore * edgePrior * hopDecay * freshness"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "194",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/194-causal-neighbor-boost-and-injection.md",
+    "prompt": "Validate causal neighbor boost and injection. Capture the evidence needed to prove Stage 2 fusion seeds causal traversal from top-ranked results; traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior; combined causal plus session boost stays within the 0.20 ceiling; disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Stage 2 fusion seeds causal traversal from top-ranked results",
+      "traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior",
+      "combined causal plus session boost stays within the 0.20 ceiling",
+      "disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Stage 2 fusion seeds causal traversal from top-ranked results",
+      "traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior",
+      "combined causal plus session boost stays within the 0.20 ceiling",
+      "disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Seed a ranked result set with causal_edges across relation types and hop depths 2) Run Stage 2 fusion with causal boost enabled 3) Inspect boosted neighbors, hop counts, relation weights, and the combined ceiling 4) Disable `SPECKIT_CAUSAL_BOOST` and rerun for comparison"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "195",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/195-temporal-contiguity-layer.md",
+    "prompt": "Validate temporal contiguity layer. Capture the evidence needed to prove vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window; closer-in-time memories receive stronger reinforcement than distant ones; cumulative boost per result stays within the 0.50 cap; disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer; and getTemporalNeighbors() first narrows by spec_folder + created_at bounded range, then computes time_delta_seconds on the reduced set using the idx_spec_folder_created_at access path. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window",
+      "closer-in-time memories receive stronger reinforcement than distant ones",
+      "cumulative boost per result stays within the 0.50 cap",
+      "disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer",
+      "getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window",
+      "closer-in-time memories receive stronger reinforcement than distant ones",
+      "cumulative boost per result stays within the 0.50 cap",
+      "disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer",
+      "getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Seed vector-search candidates with near and far timestamps 2) Run Stage 1 vector search with temporal contiguity enabled 3) Inspect pairwise boost contributions, clamped-window behavior, and the cumulative cap 4) Seed an anchor memory plus in-range and out-of-range neighbors inside the same `spec_folder`, then call `getTemporalNeighbors()` 5) Capture query-plan or diagnostic evidence that the lookup uses `spec_folder` plus bounded `created_at >= ? AND created_at <= ?` filtering, backed by `idx_spec_folder_created_at`, before time deltas are computed 6) Confirm returned neighbors are sorted by computed `time_delta_seconds ASC` and exclude out-of-window rows 7) Disable `SPECKIT_TEMPORAL_CONTIGUITY` and rerun Stage 1 search for comparison"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

@@ -1,0 +1,358 @@
+[
+  {
+    "scenarioId": "005",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/005-evaluation-database-and-schema-r13-s1.md",
+    "prompt": "Verify evaluation DB/schema writes. Capture the evidence needed to prove Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Eval tables created in separate DB/schema",
+      "retrieval events logged without affecting main memory DB"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Eval tables created in separate DB/schema",
+      "retrieval events logged without affecting main memory DB"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Trigger retrieval events 2) Query eval DB tables 3) Confirm isolation"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "006",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/006-core-metric-computation-r13-s1.md",
+    "prompt": "Validate core metric computation (R13-S1). Capture the evidence needed to prove Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Metric battery returns precision, recall, MRR, NDCG values",
+      "all within valid ranges"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Metric battery returns precision, recall, MRR, NDCG values",
+      "all within valid ranges"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Seed ground truth 2) Run eval metrics 3) Verify metric set"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "007",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/007-observer-effect-mitigation-d4.md",
+    "prompt": "Check observer effect mitigation (D4). Capture the evidence needed to prove Search returns normal results even when eval logging throws; no latency spike from logging failure. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Search returns normal results even when eval logging throws",
+      "no latency spike from logging failure"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Search returns normal results even when eval logging throws",
+      "no latency spike from logging failure"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Induce eval logging failure 2) Run search 3) Confirm search unaffected"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "009",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/009-quality-proxy-formula-b7.md",
+    "prompt": "Compute and verify quality proxy formula (B7). Capture the evidence needed to prove Computed proxy value matches manual formula calculation within tolerance; formula components are all present. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Computed proxy value matches manual formula calculation within tolerance",
+      "formula components are all present"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Computed proxy value matches manual formula calculation within tolerance",
+      "formula components are all present"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Export logs 2) Compute formula manually 3) Compare stored value"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "010",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/010-synthetic-ground-truth-corpus-g-new-1-g-new-3-phase-a.md",
+    "prompt": "Audit synthetic ground-truth corpus coverage. Capture the evidence needed to prove Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Corpus covers all intent categories",
+      "hard negatives present",
+      "non-trigger prompts included",
+      "tier distribution balanced"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Corpus covers all intent categories",
+      "hard negatives present",
+      "non-trigger prompts included",
+      "tier distribution balanced"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Open corpus 2) Count intents/tiers 3) Verify hard negatives/non-trigger prompts"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "011",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/011-bm25-only-baseline-g-new-1.md",
+    "prompt": "Run BM25/FTS5-only baseline measurement. Capture the evidence needed to prove the in-memory BM25 path is active; the BM25-only run produces reproducible MRR@5; and no non-BM25 channel contributions appear in trace. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "BM25 path is active",
+      "BM25-only run produces reproducible MRR@5",
+      "no non-BM25 channel contributions in trace"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "BM25 path is active",
+      "BM25-only run produces reproducible MRR@5",
+      "no non-BM25 channel contributions in trace"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Set `ENABLE_BM25=true` and disable non-BM25 channels 2) Run the corpus twice 3) Record MRR@5 and trace output for both runs 4) Confirm the trace shows BM25-only and no vector/graph/trigger contribution"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "012",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/012-agent-consumption-instrumentation-g-new-2.md",
+    "prompt": "Validate G-NEW-2 instrumentation behavior. Capture the evidence needed to prove Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Logger gate is closed (inert)",
+      "telemetry handlers are wired but produce no output",
+      "no runtime errors"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Logger gate is closed (inert)",
+      "telemetry handlers are wired but produce no output",
+      "no runtime errors"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Trigger retrieval handlers 2) Inspect logger gate 3) Confirm no-op telemetry"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "013",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/013-scoring-observability-t010.md",
+    "prompt": "Verify scoring observability (T010). Capture the evidence needed to prove Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Sampled scoring rows appear in observability log",
+      "write error does not crash search",
+      "sample rate respected"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Sampled scoring rows appear in observability log",
+      "write error does not crash search",
+      "sample rate respected"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Run many searches 2) Inspect sampled rows 3) Force write error and confirm safety"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "014",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/014-full-reporting-and-ablation-study-framework-r13-s3.md",
+    "prompt": "Execute manual ablation run (R13-S3). Capture the evidence needed to prove Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Ablation run produces per-channel delta snapshots",
+      "dashboard renders with trend data in supported runtime output formats",
+      "no channel leaves empty report"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Ablation run produces per-channel delta snapshots",
+      "dashboard renders with trend data in supported runtime output formats",
+      "no channel leaves empty report"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Run ablation channel-off 2) Check snapshots 3) Validate dashboard"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "072",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/072-test-quality-improvements.md",
+    "prompt": "Audit test quality improvements. Capture the evidence needed to prove Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Tests use proper teardown",
+      "assertions are specific (not generic truthy checks)",
+      "no flaky timing-dependent patterns",
+      "test isolation maintained"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Tests use proper teardown",
+      "assertions are specific (not generic truthy checks)",
+      "no flaky timing-dependent patterns",
+      "test isolation maintained"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) inspect changed tests 2) verify teardown/assertion patterns 3) record reliability signals"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "082",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/082-evaluation-and-housekeeping-fixes.md",
+    "prompt": "Validate evaluation and housekeeping fixes. Capture the evidence needed to prove Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Run-IDs are unique across restarts",
+      "upserts are idempotent",
+      "boundary guards prevent out-of-range values",
+      "housekeeping completes cleanly"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Run-IDs are unique across restarts",
+      "upserts are idempotent",
+      "boundary guards prevent out-of-range values",
+      "housekeeping completes cleanly"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) restart+eval runs 2) verify run-id and upsert behavior 3) inspect boundary guards"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "088",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/088-cross-ai-validation-fixes-tier-4.md",
+    "prompt": "Validate Phase 018 Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Each tier-4 fix location shows corrected behavior",
+      "representative flows produce expected outputs",
+      "no regressions in adjacent functionality"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Each tier-4 fix location shows corrected behavior",
+      "representative flows produce expected outputs",
+      "no regressions in adjacent functionality"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) inspect each fix location 2) run representative flows 3) record behavior"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "090",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/090-int8-quantization-evaluation-r5.md",
+    "prompt": "Re-evaluate INT8 quantization decision criteria. Capture the evidence needed to prove Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Quality degradation metrics exceed acceptable threshold",
+      "no-go criteria still met",
+      "decision rationale documented with current data"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Quality degradation metrics exceed acceptable threshold",
+      "no-go criteria still met",
+      "decision rationale documented with current data"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) gather thresholds metrics 2) compare go/no-go criteria 3) record decision"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "126",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md",
+    "prompt": "Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Targeted suite passes",
+      "transcript shows persisted snapshot rows and missing-context DB zero fallback coverage"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Targeted suite passes",
+      "transcript shows persisted snapshot rows and missing-context DB zero fallback coverage"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-state-baseline.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "217",
+    "category": "09--evaluation-and-measurement",
+    "status": "UNAUTOMATABLE",
+    "filePath": "09--evaluation-and-measurement/217-evaluation-api-surface.md",
+    "prompt": "Validate the evaluation API surface. Capture the evidence needed to prove scripts can import ablation helpers, BM25 baseline helpers, ground-truth loading, and evaluation DB initialization from \\`mcp_server/api/eval\\` without reaching into internal \\`lib/eval/*\\` modules, and that the facade remains a pure re-export boundary. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "`mcp_server/api/eval.ts` exposes ablation exports, BM25 baseline exports, `loadGroundTruth`, and `initEvalDb`",
+      "downstream consumers can use one stable import path",
+      "the file adds no local wrapper or transformation logic"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`mcp_server/api/eval.ts` exposes ablation exports, BM25 baseline exports, `loadGroundTruth`, and `initEvalDb`",
+      "downstream consumers can use one stable import path",
+      "the file adds no local wrapper or transformation logic"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Inspect `mcp_server/api/eval.ts` and capture the full export list 2) Compare the facade exports against `mcp_server/lib/eval/ablation-framework.ts`, `mcp_server/lib/eval/bm25-baseline.ts`, `mcp_server/lib/eval/ground-truth-generator.ts`, and `mcp_server/lib/eval/eval-db.ts` 3) Run an import smoke test or script-level check that consumes the exported symbols from `mcp_server/api/eval` only 4) Confirm the facade contains no local wrappers, validation, or transformation logic"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]
