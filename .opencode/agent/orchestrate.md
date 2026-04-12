@@ -606,7 +606,6 @@ When ANY context pressure signal fires:
 | Need retrieval, analysis, or eval      | `/memory:search`    | Unified knowledge retrieval            |
 | Memory maintenance or ingest           | `/memory:manage`     | Stats, health, cleanup, ingest ops     |
 | Constitutional memory rules            | `/memory:learn`      | Create/list/edit/remove always-surface rules |
-| Shared-memory spaces                   | `/memory:manage shared`     | Create spaces, manage memberships      |
 
 ---
 
@@ -789,7 +788,6 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/memory:search`           | Unified retrieval, analysis, eval               | `.opencode/command/memory/search.md`        |
 | `/memory:manage`            | Stats, health, cleanup, ingest                  | `.opencode/command/memory/manage.md`         |
 | `/memory:learn`             | Constitutional memory manager                   | `.opencode/command/memory/learn.md`          |
-| `/memory:manage shared`            | Shared-memory lifecycle                         | `.opencode/command/memory/manage.md`         |
 | `system-spec-kit`           | Spec folders, memory, validation                | `.opencode/skill/system-spec-kit/`           |
 | `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code-review/` |
 | `sk-code-*`         | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code-*/` |

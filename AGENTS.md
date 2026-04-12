@@ -153,7 +153,6 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 | **Deep review**           | `/spec_kit:deep-review` → Scope → Loop iterations → Convergence → review-report.md → Memory save                                   |
 | **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                               |
 | **Constitutional memory** | `/memory:learn` → create, list, edit, remove, budget                                                                                |
-| **Shared memory**         | `/memory:manage shared` → create spaces, manage memberships, inspect rollout                                                        |
 
 ---
 
