@@ -25,7 +25,7 @@ All variables are optional. The server runs with sensible defaults when none are
 | `parseFloat(... \|\| 'N')` | Numeric with fallback default N |
 | `?.trim()` | String, empty = use default |
 
-Total unique variables documented: 134 (including 7 legacy HYDRA aliases).
+Total unique variables documented: 127 (legacy HYDRA aliases removed in commit 6f2c2c939).
 
 ### Provisional Measurement Contract
 
