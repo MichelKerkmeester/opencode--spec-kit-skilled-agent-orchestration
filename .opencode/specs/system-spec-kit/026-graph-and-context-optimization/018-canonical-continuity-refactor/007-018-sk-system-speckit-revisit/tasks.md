@@ -42,7 +42,7 @@ _memory:
 
 ### Drift Review
 
-- [x] T003 Scan the target set for pre-018 continuity wording (`memory file`, archived active state, crash-prompt/context-prime language, shadow-only wording).
+- [x] T003 Scan the target set for pre-018 continuity wording (manual continuity artifacts, deprecated archive-active-state language, legacy bootstrap wording, and stale recovery phrasing).
 - [x] T004 Separate legitimate current references from real drift so archive-folder filtering, packet status values, and constitutional docs stay accurate.
 
 ### Content Updates

@@ -253,12 +253,11 @@ Show created file path and continuation instructions.
 
 | Command              | Relationship                                                     |
 | -------------------- | ---------------------------------------------------------------- |
-| `/spec_kit:resume`   | Loads handover document to continue work                         |
+| `/spec_kit:resume`   | Standard continuation surface - reads `handover.md`, then `_memory.continuity`, then supporting spec docs |
 | `/spec_kit:complete` | Start new feature (handover captures in-progress)                |
 | `/memory:save`       | Optional support-artifact refresh for search indexing; canonical continuity stays in spec docs |
-| `/spec_kit:resume`   | Standard continuation surface - reads `handover.md`, then `_memory.continuity`, then supporting spec docs |
 
-> After creating handover.md, refresh the indexed support artifact with structured JSON input to `generate-context.js`; `/spec_kit:resume` still recovers from `handover.md` and spec docs first.
+> After creating handover.md, refresh the indexed support artifact with structured JSON input to `generate-context.js`; `/spec_kit:resume` still recovers from `handover.md`, then `_memory.continuity`, then the packet spec docs.
 
 ### Agents
 

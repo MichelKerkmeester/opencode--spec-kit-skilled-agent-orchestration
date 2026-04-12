@@ -1059,7 +1059,7 @@ workflow:
 
     post_save_indexing:
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__session.md" })'
+      invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the support artifact is written to disk"
 

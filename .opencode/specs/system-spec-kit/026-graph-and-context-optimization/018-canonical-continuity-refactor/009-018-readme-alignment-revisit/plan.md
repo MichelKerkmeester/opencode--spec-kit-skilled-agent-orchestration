@@ -24,7 +24,7 @@ _memory:
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
-Phase 009 is a fixed-scope README parity pass. The work starts from the exact 016 README audit, scans the 34 reviewed files for pre-018 continuity language, patches the 14 drifted README surfaces, re-reads every edited file, then closes the packet with strict validation and an evidence summary.
+Phase 009 is a fixed-scope README parity pass. The work starts from the exact 016 README audit, scans the 34 reviewed files for pre-018 continuity language, extends the same review with a first-party `system-spec-kit` README spot-check and stale-term sweep, patches the 11 drifted README surfaces, re-reads every edited file, then closes the packet with strict validation and an evidence summary.
 
 ### Technical Context
 
@@ -37,7 +37,7 @@ Phase 009 is a fixed-scope README parity pass. The work starts from the exact 01
 ## 2. QUALITY GATES
 
 - [x] The source-of-truth target list is locked to the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md).
-- [x] The review pass stays inside the extracted 34-file set.
+- [x] The review pass stays inside the extracted 34-file set plus the targeted first-party `system-spec-kit` README sweep.
 - [x] Every edited file is re-read after patching.
 - [x] The final packet must pass `validate.sh --strict`.
 <!-- /ANCHOR:quality-gates -->
@@ -63,7 +63,7 @@ This packet is documentation-only. The implementation surface is limited to READ
 
 ### Phase 3: Patch and Re-Read
 
-- [x] Update the 14 drifted files.
+- [x] Update the one drifted audit file plus 10 additional first-party README surfaces flagged by the deeper sweep (11 total).
 - [x] Re-read the edited files to confirm the Phase 018 wording landed.
 
 ### Phase 4: Close the Packet
@@ -77,8 +77,8 @@ This packet is documentation-only. The implementation surface is limited to READ
 
 | Test | Method |
 |------|--------|
-| Scope lock | Re-extract the 016 file list from the source README audit |
-| Drift sweep | `rg` scan for stale continuity wording inside the target set |
+| Scope lock | Re-extract the 016 file list from the source README audit and log the first-party README extension |
+| Drift sweep | `rg` scan for stale continuity wording inside the target set plus the first-party README sweep |
 | Edit verification | Re-read every edited file after patching |
 | Packet validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict [packet-path]` |
 <!-- /ANCHOR:testing -->
@@ -96,5 +96,5 @@ This packet is documentation-only. The implementation surface is limited to READ
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-If this packet must be reverted, restore the prior README wording in the 14 updated files, then rerun the 34-file README drift sweep and `validate.sh --strict` on this packet to confirm the rollback state.
+If this packet must be reverted, restore the prior README wording in the 11 updated files, then rerun the 34-file README drift sweep, the first-party README extension scan, and `validate.sh --strict` on this packet to confirm the rollback state.
 <!-- /ANCHOR:rollback -->

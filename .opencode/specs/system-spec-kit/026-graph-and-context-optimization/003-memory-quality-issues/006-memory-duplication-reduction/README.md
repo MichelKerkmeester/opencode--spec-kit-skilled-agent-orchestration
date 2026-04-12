@@ -17,7 +17,7 @@ Phase 6 is the first follow-on packet after the original five-phase remediation 
 - `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` define the approved Phase 6 scope and delivery rules.
 - `research/iterations/` is reserved for the five parallel deep-research iteration outputs.
 - `scratch/` is the working area for corpus inventories, diff notes, and synthesis artifacts.
-- `memory/` is reserved for saved phase-local findings and handoff context.
+- `memory/` is reserved for generated phase-local continuity support artifacts and handoff context.
 
 ## Research Focus
 

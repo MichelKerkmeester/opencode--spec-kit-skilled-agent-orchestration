@@ -30,14 +30,14 @@ _memory:
 | Completed | 2026-04-12 |
 | Source Scope | [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md) |
 | Reviewed | 63 |
-| Updated | 26 |
+| Updated | 32 |
 | Deleted / N/A | 0 |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This revisit removed the remaining pre-018 continuity wording from the editable 016 SKILL/internal-doc surfaces. The update set focused on files that still implied memory-file-first continuity, archived active-state guidance, context-prime/bootstrap leftovers, or shadow-only wording in operator-facing docs.
+This revisit removed the remaining pre-018 continuity wording from the editable 016 SKILL/internal-doc surfaces. The update set focused on files that still implied standalone continuity artifacts, deprecated archive-active-state guidance, legacy bootstrap leftovers, or stale recovery wording in operator-facing docs. The deeper 10-iteration review extended the same locked scope to additional structure/debug/template/validation references and the `speckit` agent guide that the smaller first pass had missed.
 
 ### Updated Files
 
@@ -51,9 +51,14 @@ This revisit removed the remaining pre-018 continuity wording from the editable 
 - .opencode/skill/system-spec-kit/references/memory/memory_system.md
 - .opencode/skill/system-spec-kit/references/config/hook_system.md
 - .opencode/skill/system-spec-kit/references/config/environment_variables.md
+- .opencode/skill/system-spec-kit/references/structure/folder_routing.md
+- .opencode/skill/system-spec-kit/references/structure/sub_folder_versioning.md
+- .opencode/skill/system-spec-kit/references/debugging/troubleshooting.md
 - .opencode/skill/system-spec-kit/references/templates/template_guide.md
 - .opencode/skill/system-spec-kit/references/templates/level_specifications.md
+- .opencode/skill/system-spec-kit/references/templates/template_style_guide.md
 - .opencode/skill/system-spec-kit/references/validation/validation_rules.md
+- .opencode/skill/system-spec-kit/references/validation/path_scoped_rules.md
 - .opencode/skill/system-spec-kit/templates/README.md
 - .opencode/skill/system-spec-kit/assets/template_mapping.md
 - .opencode/skill/system-spec-kit/assets/level_decision_matrix.md
@@ -67,12 +72,13 @@ This revisit removed the remaining pre-018 continuity wording from the editable 
 - .opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md
 - .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/23-tool-routing-enforcement.md
 - .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md
+- .opencode/agent/speckit.md
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The 26-file update set was applied directly to the authoritative `system-spec-kit` documentation surfaces, then verified by re-reading each edited file and re-scanning the full 63-file target set for the stale Phase 018 markers that motivated this revisit.
+The 32-file update set was applied directly to the authoritative `system-spec-kit` documentation surfaces, then verified by re-reading each edited file and re-scanning the full 63-file target set for the stale Phase 018 markers that motivated this revisit.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
@@ -96,5 +102,5 @@ The 26-file update set was applied directly to the authoritative `system-spec-ki
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No additional limitations. All 26 drifted files inside the 007 target set were writable and updated in this run.
+No additional limitations. All 32 drifted files inside the 007 target set were writable and updated in this run.
 <!-- /ANCHOR:limitations -->

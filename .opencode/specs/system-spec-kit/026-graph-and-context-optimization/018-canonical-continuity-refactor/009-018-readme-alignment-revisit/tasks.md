@@ -42,12 +42,12 @@ _memory:
 
 ### Drift Review
 
-- [x] T003 Scan the target set for pre-018 continuity wording (`memory file`, archived active-state language, and stale resume wording).
+- [x] T003 Scan the target set for pre-018 continuity wording (manual continuity-artifact phrasing, deprecated archive-active-state language, and stale resume wording), then extend that sweep across first-party `system-spec-kit` READMEs.
 - [x] T004 Separate legitimate current references from real README drift.
 
 ### Content Updates
 
-- [x] T005 Update the 14 drifted files to the Phase 018 contract.
+- [x] T005 Update the one drifted audit file plus 10 additional first-party README surfaces flagged by the deeper sweep (11 total).
 - [x] T006 Re-read every edited file to confirm the new wording landed.
 <!-- /ANCHOR:phase-2 -->
 
@@ -62,7 +62,7 @@ _memory:
 ## Completion Criteria
 
 - [x] The 34-file target set was reviewed.
-- [x] The 14-file drift subset was updated.
+- [x] The 11-file drift subset was updated.
 - [x] The packet contains explicit evidence and passes strict validation.
 <!-- /ANCHOR:completion -->
 

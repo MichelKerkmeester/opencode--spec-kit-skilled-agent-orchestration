@@ -77,7 +77,7 @@ validation/
 
 ### Anchor Format Validation
 
-Validates memory file anchor tags:
+Validates anchor tags in markdown continuity documents:
 
 | Check | Description |
 |-------|-------------|
@@ -275,7 +275,7 @@ if (!result.pass) {
 |---------|----------|-------------|
 | Full validation | `runPreflight()` | Before memory_save |
 | Quality gate | `runQualityGate()` | Before memory storage (flag-gated) |
-| Anchor check | `validateAnchorFormat()` | Editing memory files |
+| Anchor check | `validateAnchorFormat()` | Editing packet docs or continuity support artifacts |
 | Token estimate | `estimateTokens()` | Before embedding API |
 | Hash compute | `computeContentHash()` | Duplicate detection |
 | Structural check | `validateStructural()` | Quick pre-save structural validation |

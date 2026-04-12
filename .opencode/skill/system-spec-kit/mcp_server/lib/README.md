@@ -35,7 +35,7 @@ trigger_phrases:
 
 The MCP Server Library provides the core functionality for the Spec Kit Memory MCP server. It implements cognitive memory features including semantic search, attention decay, importance scoring and intelligent context retrieval. These modules work together to provide AI assistants with human-like memory recall and context awareness.
 
-Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the operator-facing recovery surface, and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts are not the primary continuity source.
+Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the operator-facing recovery surface, and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated continuity support artifacts are not the primary continuity source.
 
 ### Key Statistics
 
@@ -59,7 +59,7 @@ Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the oper
 | **Folder Ranking** | Composite scoring for spec folders based on recency, relevance and importance |
 | **Document-Type Scoring** | Document-aware ranking supports spec lifecycle docs (spec/plan/tasks/checklist/decision-record/implementation-summary/research/handover) |
 | **Spec Document Indexing** | 3-source indexing pipeline supports optional spec-doc ingestion via `includeSpecDocs` (default: true) |
-| **Content Parsing** | Memory file parsing, trigger matching (with CORRECTION/PREFERENCE signals) and entity scope detection |
+| **Content Parsing** | Markdown document parsing, trigger matching (with CORRECTION/PREFERENCE signals) and entity scope detection |
 | **Batch Processing** | Utilities for batch operations, retry logic and rate limiting |
 | **Embedding Cache** | Persistent SQLite cache for embedding reuse with LRU eviction |
 | **Query Routing** | Complexity classifier routes simple/moderate/complex queries to optimal pipelines |
@@ -194,7 +194,7 @@ lib/                            # TypeScript source files
 │   └── README.md               # Module documentation
 │
 ├── parsing/                    # Content parsing (2 modules)
-│   ├── memory-parser.ts        # Memory file parser
+│   ├── memory-parser.ts        # Continuity document parser
 │   ├── trigger-matcher.ts      # Trigger phrase matching
 │   └── README.md               # Module documentation
 │
@@ -496,7 +496,7 @@ await storage.checkpoints.restore_checkpoint('before-refactor');
 
 ### Parsing and Validation
 
-**Memory Parser**: Extracts structured data from markdown memory files
+**Memory Parser**: Extracts structured data from markdown continuity documents
 
 | Feature | Description |
 |---------|-------------|

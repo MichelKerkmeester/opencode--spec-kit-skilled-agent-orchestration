@@ -1,6 +1,6 @@
 ---
 title: "KPI Scripts"
-description: "Shell-based quality KPI reporter that scans memory files for placeholders, fallback content, AI contamination and missing trigger phrases."
+description: "Shell-based quality KPI reporter that scans generated continuity support artifacts for placeholders, fallback content, AI contamination and missing trigger phrases."
 trigger_phrases:
   - "quality kpi"
   - "memory quality rates"
@@ -10,7 +10,7 @@ trigger_phrases:
 
 # KPI Scripts
 
-> Quality metrics reporter for spec-kit memory files.
+> Quality metrics reporter for generated spec-kit continuity support artifacts.
 
 ---
 
@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The `kpi/` directory contains shell scripts that compute quality health metrics across memory files in the specs tree. The primary script, `quality-kpi.sh`, walks all `.md` files inside `memory/` subdirectories and reports defect rates as JSON plus a one-line stderr summary.
+The `kpi/` directory contains shell scripts that compute quality health metrics across generated continuity support artifacts in the specs tree. The primary script, `quality-kpi.sh`, walks all `.md` files inside `memory/` subdirectories and reports defect rates as JSON plus a one-line stderr summary.
 Those scans measure supporting generated artifacts only; canonical packet continuity is still recovered through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
 
 The script uses an embedded Node.js inline program to perform file scanning, regex matching and rate computation. It exits `0` on success regardless of defect rates (the caller decides thresholds).

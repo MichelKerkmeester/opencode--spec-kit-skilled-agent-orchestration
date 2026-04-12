@@ -227,7 +227,7 @@ All rules implement a standardized interface:
 
 #### ANCHORS_VALID (check-anchors.sh)
 
-**Purpose**: Validates anchor pairs in memory files are properly matched
+**Purpose**: Validates anchor pairs in packet docs and continuity support artifacts are properly matched
 
 **Checks**:
 - Every `<!-- ANCHOR:id -->` has matching `<!-- /ANCHOR:id -->`
@@ -498,7 +498,7 @@ Use `[YOUR_VALUE_HERE: example]` syntax for placeholders.
 | Missing files     | Create from templates in `templates/`            |
 | No priority tags  | Add `## P0`, `## P1`, `## P2` headers            |
 | Missing evidence  | Add `[EVIDENCE: description]` to completed items |
-| Unmatched anchors | Check memory files for typos in anchor IDs       |
+| Unmatched anchors | Check packet docs or continuity support artifacts for typos in anchor IDs |
 
 ### Diagnostic Commands
 

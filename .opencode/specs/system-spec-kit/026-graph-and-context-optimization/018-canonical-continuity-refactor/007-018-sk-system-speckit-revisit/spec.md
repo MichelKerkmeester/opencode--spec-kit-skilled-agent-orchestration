@@ -40,13 +40,13 @@ _memory:
 
 ### Problem Statement
 
-Phase 016 aligned the main `system-spec-kit` skill guide and internal documentation surfaces before Phase 018 removed the legacy memory-file-first continuity model, retired archived-tier guidance from the active contract, and made `/spec_kit:resume` a three-step ladder rooted in `handover`, `_memory.continuity`, and canonical packet docs. The 016 surfaces therefore needed a second pass so they would stop describing pre-018 save/recovery behavior.
+Phase 016 aligned the main `system-spec-kit` skill guide and internal documentation surfaces before Phase 018 removed the legacy standalone continuity model, retired deprecated archive-active-state guidance from the active contract, and made `/spec_kit:resume` a three-step ladder rooted in `handover`, `_memory.continuity`, and canonical packet docs. The 016 surfaces therefore needed a second pass so they would stop describing pre-018 save/recovery behavior.
 
 ### Purpose
 
 Review the exact 63 file targets from the 016 SKILL/internal-doc reference map, keep the current-reality sections that already match Phase 018, and update the drifted surfaces so they consistently describe:
 
-- canonical packet continuity rather than manual session memory files,
+- canonical packet continuity rather than manual session continuity artifacts,
 - four active memory states only,
 - the three-step resume ladder,
 - `generate-context.js` as the canonical save path,
@@ -59,7 +59,7 @@ Review the exact 63 file targets from the 016 SKILL/internal-doc reference map, 
 ### In Scope
 
 - Re-review the 63 existing file paths extracted from the [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md).
-- Update SKILL, README, reference, feature-catalog, manual-playbook, template, and MCP-server docs that still described pre-018 continuity behavior.
+- Update SKILL, README, reference, template, install-guide, agent-guide, and MCP-server docs that still described pre-018 continuity behavior.
 - Keep legitimate current-reality references intact, including:
   - constitutional memory documentation,
   - packet status values such as `archived`,
@@ -76,16 +76,16 @@ Review the exact 63 file targets from the 016 SKILL/internal-doc reference map, 
 
 | Source | Reviewed | Updated | Deleted / N/A |
 |--------|----------|---------|----------------|
-| 016 `001-sk-system-speckit` reference map | 63 | 26 | 0 |
+| 016 `001-sk-system-speckit` reference map | 63 | 32 | 0 |
 
 ### Files to Change
 
 | Area | Description |
 |------|-------------|
 | Skill guide and README surfaces | Re-state the canonical save and resume contract |
-| `references/**` | Remove memory-file-first guidance and archived-state wording from active continuity docs |
-| `templates/**`, `assets/**` | Rename memory-file language to generated continuity artifact language where appropriate |
-| `feature_catalog/**`, `manual_testing_playbook/**` | Remove stale context-prime / crash-prompt framing and align examples to Phase 018 |
+| `references/**` | Remove standalone-continuity wording and deprecated archive-active-state guidance from active continuity docs |
+| `templates/**`, `assets/**` | Rename legacy continuity wording to generated continuity artifact language where appropriate |
+| Agent and install guidance surfaces | Keep recovery and save examples aligned to the Phase 018 contract |
 | MCP server markdown docs | Present the active four-state model and continuity-bearing document language |
 <!-- /ANCHOR:scope -->
 
@@ -105,7 +105,7 @@ Review the exact 63 file targets from the 016 SKILL/internal-doc reference map, 
 ## 5. Success Criteria
 
 - The 63-file 016 target set is reviewed against the Phase 018 contract.
-- The 26 drifted files inside that target set are updated and re-read.
+- The 32 drifted files inside that target set are updated and re-read.
 - No reviewed doc still describes the active continuity ladder as memory-file-first or as a four-plus-archived active state model.
 - `validate.sh --strict` passes for this packet.
 

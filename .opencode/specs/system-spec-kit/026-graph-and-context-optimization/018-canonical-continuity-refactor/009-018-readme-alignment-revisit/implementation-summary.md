@@ -28,47 +28,45 @@ _memory:
 |-------|-------|
 | Packet | `009-018-readme-alignment-revisit` |
 | Completed | 2026-04-12 |
-| Source Scope | [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md) |
-| Reviewed | 34 |
-| Updated | 14 |
+| Source Scope | [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md) plus the first-party `system-spec-kit` README extension |
+| Reviewed | 34 audit targets + 20 first-party README spot-checks |
+| Updated | 11 |
 | Deleted / N/A | 0 |
+| Extra Sweep | 89 first-party `system-spec-kit` READMEs scanned for stale continuity terms |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This revisit removed the remaining pre-018 continuity wording from the README surfaces identified by the Phase 016 audit. The updated set focused on top-level discovery docs, install-guide surfaces, and the `system-spec-kit` README family that still implied memory-file-first continuity or the older recovery ladder.
+This revisit removed the remaining pre-018 continuity wording from the README surfaces identified by the Phase 016 audit, then extended the same README-only review to the first-party `system-spec-kit` subsystem READMEs. The updated set focused on the one remaining audit-scope packet README plus the subsystem README families that still implied standalone continuity artifacts, stale active-state language, or the older recovery ladder.
 
 ### Updated Files
 
-- README.md
-- .opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md
-- .opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md
-- .opencode/README.md
-- .opencode/skill/README.md
-- .opencode/command/spec_kit/README.txt
-- .opencode/command/memory/README.txt
-- .opencode/command/README.txt
-- .opencode/skill/system-spec-kit/README.md
-- .opencode/skill/system-spec-kit/mcp_server/README.md
-- .opencode/skill/system-spec-kit/constitutional/README.md
-- .opencode/skill/system-spec-kit/templates/README.md
-- .opencode/skill/system-spec-kit/scripts/memory/README.md
+- .opencode/skill/system-spec-kit/mcp_server/lib/README.md
+- .opencode/skill/system-spec-kit/mcp_server/lib/chunking/README.md
+- .opencode/skill/system-spec-kit/mcp_server/lib/errors/README.md
+- .opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md
+- .opencode/skill/system-spec-kit/scripts/kpi/README.md
+- .opencode/skill/system-spec-kit/scripts/rules/README.md
+- .opencode/skill/system-spec-kit/scripts/test-fixtures/README.md
+- .opencode/skill/system-spec-kit/scripts/utils/README.md
+- .opencode/skill/system-spec-kit/shared/README.md
+- .opencode/skill/system-spec-kit/shared/parsing/README.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/006-memory-duplication-reduction/README.md
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The 14-file update set was applied directly to the README and install-guide discovery surfaces, then verified by re-reading each edited file and re-scanning the full 34-file target set for stale Phase 018 continuity markers.
+The 11-file update set was applied directly to the README discovery surfaces, then verified by re-reading each edited file, spot-checking 20 first-party `system-spec-kit` READMEs, and re-scanning the 89 first-party `system-spec-kit` README set for stale Phase 018 continuity markers.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-- Public-facing README surfaces now center canonical packet continuity instead of hand-authored session files under `memory/`.
+- The broader public-facing README surfaces in the 016 audit already matched current reality; the remaining fixes were concentrated in subsystem README surfaces.
 - Recovery wording now centers `handover -> _memory.continuity -> spec docs`.
-- README surfaces no longer present archived tier as part of the active continuity model.
+- README surfaces no longer present deprecated archive-active-state wording as part of the active continuity model.
 - Remaining reviewed/no-change files already matched the Phase 018 contract after the broader command and SKILL documentation passes.
 <!-- /ANCHOR:decisions -->
 
@@ -76,12 +74,12 @@ The 14-file update set was applied directly to the README and install-guide disc
 ## Verification
 
 - Re-read every edited file after patching via targeted `sed` / `rg` checks.
-- Re-scanned the 34-file target set and confirmed there were no remaining stale hits requiring README edits.
+- Re-scanned the 34-file target set plus the 89 first-party `system-spec-kit` README set and confirmed there were no remaining stale hits requiring README edits inside the reviewed scope.
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/009-018-readme-alignment-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-No additional limitations. All 14 drifted README surfaces inside the 009 target set were writable and updated in this run.
+No additional limitations. All 11 drifted README surfaces inside the 009 deep-review scope were writable and updated in this run.
 <!-- /ANCHOR:limitations -->

@@ -63,7 +63,7 @@ This packet is documentation-only. The implementation surface is limited to the 
 
 ### Phase 3: Patch and Re-Read
 
-- [x] Update the 26 drifted files.
+- [x] Update the 32 drifted files.
 - [x] Re-read the edited files to confirm the 018 wording landed.
 
 ### Phase 4: Close the Packet
@@ -96,5 +96,5 @@ This packet is documentation-only. The implementation surface is limited to the 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-If this packet ever needs to be reverted, restore the prior doc wording for the 26 edited files, then rerun the 63-file drift sweep and `validate.sh --strict` on this packet to confirm the rollback matches the intended historical state.
+If this packet ever needs to be reverted, restore the prior doc wording for the 32 edited files, then rerun the 63-file drift sweep and `validate.sh --strict` on this packet to confirm the rollback matches the intended historical state.
 <!-- /ANCHOR:rollback -->

@@ -52,7 +52,7 @@ ENVIRONMENT OVERRIDES (runtime control)
 | Pattern                                        | Behavior                     |
 | ---------------------------------------------- | ---------------------------- |
 | `**/scratch/**`                                | Skip all validation          |
-| `**/memory/**`                                 | Minimal validation (memory files validated by ANCHORS_VALID rule only) |
+| `**/memory/**`                                 | Minimal validation (generated continuity support artifacts validated by ANCHORS_VALID only) |
 | `.opencode/skill/system-spec-kit/templates/**` | Skip content validation      |
 | `specs/**/`                                    | Level-appropriate validation (recursive through nested packet families) |
 | `.opencode/specs/**/`                          | Level-appropriate validation (recursive through nested packet families) |
@@ -81,7 +81,7 @@ ENVIRONMENT OVERRIDES (runtime control)
 | `LEVEL_DECLARED`     | INFO     | Level explicitly stated in spec.md metadata         |
 | `PRIORITY_TAGS`      | WARNING  | Validate P0/P1/P2 format in checklists              |
 | `EVIDENCE_CITED`     | WARNING  | Verify `[EVIDENCE:]` on completed P0/P1 items       |
-| `ANCHORS_VALID`      | ERROR    | Validate `<!-- ANCHOR:id -->` pairs in memory files |
+| `ANCHORS_VALID`      | ERROR    | Validate `<!-- ANCHOR:id -->` pairs in generated continuity support artifacts |
 
 ### Placeholder Patterns Detected
 

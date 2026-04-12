@@ -305,8 +305,8 @@ Use `/memory:search` with intent-aware retrieval:
 | Phase         | Query                                                   | Purpose                     |
 | ------------- | ------------------------------------------------------- | --------------------------- |
 | Before Step 1 | `/memory:search --intent:{intent} "topic"`            | Find prior related work     |
-| During Step 3 | `memory_search({ anchors: ['architecture'] })`          | Existing patterns/decisions |
-| During Step 5 | `memory_search({ anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
+| During Step 3 | `memory_search({ query: "architecture patterns", anchors: ['architecture'] })`          | Existing patterns/decisions |
+| During Step 5 | `memory_search({ query: "planning decisions rationale", anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
 | After Step 6  | `generate-context.js /tmp/save-context-data.json [spec-folder]` | Refresh the indexed support artifact   |
 
 ### After Planning

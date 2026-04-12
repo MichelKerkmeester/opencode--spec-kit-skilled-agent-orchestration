@@ -39,7 +39,7 @@ The `shared/` directory is the **canonical source** for shared modules used by b
 - **MCP server** (`mcp_server/`) - `context-server.ts` and memory tools
 
 This consolidation eliminates code duplication and ensures consistent behavior across all entry points.
-These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds active context from `handover.md -> _memory.continuity -> spec docs`, while generated memory artifacts remain supporting search material.
+These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds active context from `handover.md -> _memory.continuity -> spec docs`, while generated continuity support artifacts remain supporting search material.
 
 ### Architecture
 
@@ -206,7 +206,7 @@ shared/
 │       └── speckit_memory.db   # Active shared SQLite database file
 ├── parsing/
 │   ├── memory-sufficiency.ts          # Memory sufficiency checks
-│   ├── memory-template-contract.ts    # Template contract validation for memory files
+│   ├── memory-template-contract.ts    # Template contract validation for continuity support artifacts
 │   ├── quality-extractors.ts          # Quality score/flags extraction
 │   ├── quality-extractors.test.ts     # Parsing coverage for quality extraction
 │   ├── spec-doc-health.ts             # Spec document health checks

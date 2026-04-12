@@ -434,7 +434,7 @@ Use this structure when reporting spec folder creation:
 1. **Context Check**: Verify spec folder path exists and is valid
 2. **Level Validation**: Confirm documentation level matches requirements
 3. **Template Source**: Verify templates copied from `templates/level_N/`
-4. **ANCHOR Format**: Memory files must use valid ANCHOR tags
+4. **ANCHOR Format**: Generated continuity support artifacts under `memory/` must use valid ANCHOR tags
 
 **Valid ANCHOR tags:** `summary`, `state`, `decisions`, `context`, `artifacts`, `next-steps`, `blockers`
 
@@ -474,7 +474,7 @@ All spec operations should return structured responses:
 □ File sizes reasonable (not empty)
 □ All required files for level present
 □ Checklist items marked with evidence (Level 2+)
-□ ANCHOR format valid in memory files (if present)
+□ ANCHOR format valid in generated continuity support artifacts (if present)
 ```
 
 ### Anti-Hallucination Rules

@@ -1,11 +1,11 @@
 ---
 title: Sub-Folder Versioning
-description: Workflow-assisted pattern for organizing iterative work within existing spec folders using versioned sub-folders and isolated memory context.
+description: Workflow-assisted pattern for organizing iterative work within existing spec folders using versioned sub-folders and isolated continuity support artifacts.
 ---
 
 # Sub-Folder Versioning - Iterative Work Organization Pattern
 
-Workflow-assisted pattern for organizing iterative work within existing spec folders using memory-based context preservation.
+Workflow-assisted pattern for organizing iterative work within existing spec folders using canonical packet continuity plus generated support artifacts.
 
 ---
 
@@ -14,7 +14,7 @@ Workflow-assisted pattern for organizing iterative work within existing spec fol
 
 ### Purpose
 
-Enable clean separation of iterative work within a single spec folder while preserving historical context through memory files. Each iteration maintains its own memory directory for independent conversation history.
+Enable clean separation of iterative work within a single spec folder while preserving historical context through packet continuity and generated support artifacts. Each iteration maintains its own `memory/` directory for generated support artifacts tied to that child packet.
 
 ### Important Note
 
@@ -107,10 +107,10 @@ Routine saves pass the target spec folder alongside structured JSON.
 ## 5. MEMORY CONTEXT ROUTING
 
 - Spec folder path passed explicitly alongside structured JSON for routine saves
-- Writes to specified sub-folder's `memory/` directory
-- Each iteration has isolated conversation history
+- `generate-context.js` writes support artifacts to the specified sub-folder's `memory/` directory while refreshing canonical continuity in that packet
+- Each iteration has isolated support-artifact history
 - Sub-folder creation also provisions isolated `scratch/` directories
-- Root `memory/` may contain earlier session files. Routine saves target the intended sub-folder path with structured JSON
+- Root `memory/` may contain earlier generated artifacts. Routine saves target the intended sub-folder path with structured JSON
 
 ---
 
@@ -146,7 +146,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 **Key Points:**
 - User manually creates and organizes sub-folders
 - Original content can be moved to a sub-folder if desired
-- Each sub-folder has independent memory/ context
+- Each sub-folder has independent generated support artifacts under `memory/`
 - Numbering is sequential within the spec folder
 
 ### Step-by-Step Walkthrough
@@ -170,7 +170,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 
 - Clean separation of iterative work
 - Preserves all historical work (no data loss)
-- Independent memory/ contexts per iteration
+- Independent generated support artifacts per iteration
 - Backward compatible (works with non-versioned folders)
 - Flexible organization based on project needs
 
@@ -214,9 +214,9 @@ When using subfolder versioning, the memory save script (`generate-context.js`) 
 | `specs/003-parent/121-child`           | Strips prefix, resolves nested                     |
 | `.opencode/specs/003-parent/121-child` | Strips prefix, resolves nested                     |
 
-### Memory File Location
+### Generated Support Artifact Location
 
-Memory files are always saved to the CHILD folder's `memory/` directory:
+Generated continuity support artifacts are always saved to the CHILD folder's `memory/` directory:
 - `specs/003-parent/121-child/memory/` (correct)
 - `specs/003-parent/memory/` (wrong — parent-level, not child)
 

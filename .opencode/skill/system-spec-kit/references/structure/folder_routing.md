@@ -247,13 +247,13 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js dat
    ```bash
    node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context.json "014-stateless-alignment"
    ```
-4. Memory file written to `specs/014-stateless-alignment/memory/`
+4. Generated continuity support artifact written under `specs/014-stateless-alignment/memory/`
 
 ### Fallback Detection
 
 When no spec folder is provided, the AI agent:
 
-1. **Checks recent memory files** - `ls -t specs/*/memory/*.{md,txt} | head -1`
+1. **Checks recent packet continuity signals** - prefer active packet context, recent `handover.md`, `_memory.continuity`, spec docs, or generated support artifacts
 2. **Asks user** - "Which spec folder should I save to?"
 3. **Suggests phase-aware path** - When the target is a phased packet tree, prefer the explicit root packet or an explicit child phase path. For phased packets like `022-hybrid-rag-fusion`, navigate to the specific child phase (e.g., `022-hybrid-rag-fusion/011-skill-alignment/`) rather than the root.
 
@@ -542,7 +542,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js dat
 # List all spec folders
 ls -d specs/[0-9][0-9][0-9]-*/
 
-# Find most recently modified memory file
+# Find most recently modified generated support artifact
 ls -t specs/*/memory/*.{md,txt} 2>/dev/null | head -1
 
 # Count memories per spec folder

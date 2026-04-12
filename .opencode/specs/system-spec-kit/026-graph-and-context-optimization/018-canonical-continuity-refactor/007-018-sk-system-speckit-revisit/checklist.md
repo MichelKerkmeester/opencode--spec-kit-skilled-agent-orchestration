@@ -46,7 +46,7 @@ _memory:
 ## Testing
 
 - [x] [P0] CHK-012 Active-state guidance now describes only `HOT`, `WARM`, `COLD`, and `DORMANT`. [EVIDENCE: implementation summary]
-- [x] [P1] CHK-020 All 26 edited files were re-read after patching. [EVIDENCE: implementation summary]
+- [x] [P1] CHK-020 All 32 edited files were re-read after patching. [EVIDENCE: implementation summary]
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:security -->

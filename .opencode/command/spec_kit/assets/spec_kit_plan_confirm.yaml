@@ -532,7 +532,7 @@ workflow:
         command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_path}"
         note: "First compose structured JSON, then run generate-context.js before MCP indexing"
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__planning_session.md" })'
+      invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
       critical_note: "Then index via memory_save or memory_index_scan. Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the generated continuity artifact is written to disk"
     anchor_requirements:

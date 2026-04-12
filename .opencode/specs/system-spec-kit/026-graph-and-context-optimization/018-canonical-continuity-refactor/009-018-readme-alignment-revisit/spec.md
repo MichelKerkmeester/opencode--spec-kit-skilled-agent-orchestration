@@ -40,11 +40,11 @@ _memory:
 
 ### Problem Statement
 
-Phase 016 aligned the README surfaces across the `system-spec-kit` tree before Phase 018 replaced memory-file-first continuity with canonical packet continuity and shortened recovery to a three-step ladder. The README surfaces therefore needed a new pass so public-facing discovery docs would describe the current save/resume contract instead of the pre-018 model.
+Phase 016 aligned the README surfaces across the `system-spec-kit` tree before Phase 018 replaced standalone continuity artifacts with canonical packet continuity and shortened recovery to a three-step ladder. The README surfaces therefore needed a new pass so public-facing discovery docs would describe the current save/resume contract instead of the pre-018 model.
 
 ### Purpose
 
-Review the exact 34 existing file paths extracted from the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md), update the 14 drifted README/install-guide surfaces, and confirm the remaining reviewed files already match the Phase 018 continuity contract.
+Review the exact 34 existing file paths extracted from the [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md), then extend that README-only pass with a first-party `system-spec-kit` README spot-check and stale-term sweep. Update the one remaining drifted audit-scope README plus the 10 additional subsystem README surfaces flagged by the deeper sweep, and confirm the remaining reviewed files already match the Phase 018 continuity contract.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -60,14 +60,15 @@ Review the exact 34 existing file paths extracted from the [016 003 README audit
 ### Out of Scope
 
 - Runtime code changes.
-- Files outside the exact 016 README target list.
+- Files outside the exact 016 README target list plus the targeted first-party `system-spec-kit` README sweep.
 - Rewriting non-README docs that belong to the 007 or 008 revisit scopes.
 
 ### Target Set Summary
 
 | Source | Reviewed | Updated | Deleted / N/A |
 |--------|----------|---------|----------------|
-| 016 `003-readme-alignment` audit | 34 | 14 | 0 |
+| 016 `003-readme-alignment` audit | 34 | 1 | 0 |
+| Deep-review extension: first-party `system-spec-kit` README sweep | 20 spot-checked + 89 first-party README stale-term scan | 10 | 0 |
 
 ### Files to Change
 
@@ -75,7 +76,8 @@ Review the exact 34 existing file paths extracted from the [016 003 README audit
 |------|-------------|
 | Root and repo README surfaces | Align top-level command and continuity discovery docs |
 | `system-spec-kit` README surfaces | Align save, resume, and continuity explanations to Phase 018 |
-| Install guides and command-family README files | Remove stale memory-file-first guidance |
+| Install guides and command-family README files | Remove stale standalone-continuity guidance |
+| First-party `system-spec-kit` subsystem READMEs | Sweep for lingering pre-018 continuity terms in `mcp_server/lib/`, `scripts/`, and `shared/` README surfaces |
 | Packet-local README carryovers | Keep legacy packet README references current where they remain public discovery surfaces |
 <!-- /ANCHOR:scope -->
 
@@ -86,7 +88,7 @@ Review the exact 34 existing file paths extracted from the [016 003 README audit
 |----|-------------|---------------------|
 | REQ-001 | README save-path wording must match Phase 018 | Reviewed README surfaces say `generate-context.js` is the canonical save path |
 | REQ-002 | README recovery wording must match Phase 018 | Reviewed README surfaces describe `handover -> _memory.continuity -> spec docs` as the primary resume ladder |
-| REQ-003 | Deprecated active-tier wording must be removed | Reviewed README surfaces do not present archived tier as part of the active continuity model |
+| REQ-003 | Deprecated active-tier wording must be removed | Reviewed README surfaces do not present deprecated archive-active-state wording as part of the active continuity model |
 | REQ-004 | Legitimate current README references must be preserved | Reviewed/no-change surfaces keep accurate constitutional-memory or archive-filter wording rather than forcing unnecessary edits |
 | REQ-005 | Packet evidence must be auditable | The implementation summary records reviewed/updated counts plus the strict-validation result |
 <!-- /ANCHOR:requirements -->
@@ -95,7 +97,8 @@ Review the exact 34 existing file paths extracted from the [016 003 README audit
 ## 5. Success Criteria
 
 - The 34-file README target set is reviewed against the Phase 018 contract.
-- The 14 drifted README surfaces are updated and re-read.
+- A first-party `system-spec-kit` README spot-check and stale-term sweep is completed.
+- The 11 drifted README surfaces are updated and re-read.
 - Remaining reviewed/no-change files already reflect current reality.
 - `validate.sh --strict` passes for this packet.
 

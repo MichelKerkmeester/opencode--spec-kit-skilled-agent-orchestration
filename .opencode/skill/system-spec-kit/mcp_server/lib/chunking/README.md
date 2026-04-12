@@ -1,6 +1,6 @@
 ---
 title: "Chunking"
-description: "Anchor-aware chunking and quality-based thinning for large memory files. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing."
+description: "Anchor-aware chunking and quality-based thinning for large markdown documents. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing."
 trigger_phrases:
   - "anchor chunking"
   - "chunk thinning"
@@ -10,7 +10,7 @@ trigger_phrases:
 
 # Chunking
 
-> Anchor-aware chunking and quality-based thinning for large memory files. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing.
+> Anchor-aware chunking and quality-based thinning for large markdown documents. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing.
 
 ---
 
@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The chunking module splits large memory files into smaller pieces suitable for embedding and indexing. It works in two stages: first chunking (splitting), then thinning (filtering).
+The chunking module splits large markdown documents into smaller pieces suitable for embedding and indexing. It works in two stages: first chunking (splitting), then thinning (filtering).
 
 Gate E alignment: chunking is a storage and retrieval optimization only. Canonical continuity still lives in spec documents first, with `_memory.continuity` as supporting structured state.
 

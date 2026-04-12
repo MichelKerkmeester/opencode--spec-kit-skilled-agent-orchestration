@@ -1,6 +1,6 @@
 ---
 title: "Quality Extractors"
-description: "Shared parsing functions for extracting quality metadata from YAML frontmatter in memory files."
+description: "Shared parsing functions for extracting quality metadata from YAML frontmatter in markdown continuity documents."
 trigger_phrases:
   - "quality extractors"
   - "quality score parsing"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Quality Extractors
 
-> Shared parsing functions for extracting quality metadata from YAML frontmatter in memory files.
+> Shared parsing functions for extracting quality metadata from YAML frontmatter in markdown continuity documents.
 
 ---
 

@@ -33,7 +33,7 @@ trigger_phrases:
 
 The utilities folder contains reusable TypeScript modules (compiled to JavaScript) plus a small direct-runtime JavaScript helper that provide core functionality for all system-spec-kit scripts. These modules handle data validation, path security, file I/O, structured logging, message formatting, prompt generation and tool detection. They enforce security standards (CWE-22 path traversal prevention), normalize diverse input formats and provide consistent error handling across the entire script collection.
 
-These shared helpers support the Gate E continuity model where `/spec_kit:resume` is the recovery surface and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+These shared helpers support the Gate E continuity model where `/spec_kit:resume` is the recovery surface and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated continuity support artifacts remain supporting only.
 
 **Build System**: TypeScript source files (`.ts`) are compiled to `dist/utils/` using the TypeScript compiler. Scripts import from the compiled output at runtime.
 
@@ -139,7 +139,7 @@ utils/
 ├── path-utils.ts              # Path sanitization and security (CWE-22)
 ├── phase-classifier.ts        # Workflow phase classification helpers
 ├── prompt-utils.ts            # Prompt generation and formatting
-├── slug-utils.ts              # Content-aware slug generation and memory filename uniqueness
+├── slug-utils.ts              # Content-aware slug generation and continuity artifact filename uniqueness
 ├── source-capabilities.ts     # Source capability and provenance helpers
 ├── spec-affinity.ts           # Spec matching and affinity scoring helpers
 ├── task-enrichment.ts         # Task title enrichment from spec titles and memory context
@@ -195,7 +195,7 @@ utils/template-structure.js    # Source-only helper (not emitted to dist/)
 | `tool-detection.ts` | Detects available MCP tools and their capabilities for dynamic feature enablement |
 | `source-capabilities.ts` | Normalizes metadata about source capabilities and available behaviors |
 | `spec-affinity.ts` | Scores how strongly content aligns with a candidate spec folder |
-| `slug-utils.ts` | Content-aware slug generation for memory filenames. Provides `ensureUniqueMemoryFilename()` to prevent collisions via `-1`, `-2` suffix appending |
+| `slug-utils.ts` | Content-aware slug generation for continuity artifact filenames. Provides `ensureUniqueMemoryFilename()` to prevent collisions via `-1`, `-2` suffix appending |
 | `task-enrichment.ts` | Task title enrichment from spec titles and memory context for higher-quality memory naming |
 | `template-structure.js` | Defines helper logic for working with template structure layouts |
 | `tool-sanitizer.ts` | Sanitizes tool payloads before reuse, storage, or display |

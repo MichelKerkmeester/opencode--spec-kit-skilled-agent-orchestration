@@ -154,7 +154,7 @@ import { createErrorWithHint, ErrorCodes } from '@spec-kit/lib/errors';
 
 const error = createErrorWithHint(
   ErrorCodes.FILE_NOT_FOUND,
-  'Memory file not found',
+  'Continuity document not found',
   { path: '/specs/memory/context.md' },
   'memory_save'
 );

@@ -38,7 +38,7 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] [P0] CHK-010 Save-path guidance now points to `generate-context.js` and canonical packet continuity rather than manual session memory files. [EVIDENCE: implementation summary]
+- [x] [P0] CHK-010 Save-path guidance now points to `generate-context.js` and canonical packet continuity rather than manual session continuity artifacts. [EVIDENCE: implementation summary]
 - [x] [P0] CHK-011 Resume guidance now describes `handover -> _memory.continuity -> spec docs`. [EVIDENCE: implementation summary]
 <!-- /ANCHOR:code-quality -->
 
@@ -46,13 +46,13 @@ _memory:
 ## Testing
 
 - [x] [P0] CHK-012 Active-state guidance now describes four active states only. [EVIDENCE: implementation summary]
-- [x] [P1] CHK-020 All 20 edited files were re-read after patching. [EVIDENCE: implementation summary]
+- [x] [P1] CHK-020 All 28 edited files were re-read after patching. [EVIDENCE: implementation summary]
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] [P1] CHK-013 Constitutional-memory file management remains intact where `/memory:learn` legitimately owns that flow. [EVIDENCE: implementation summary]
+- [x] [P1] CHK-013 Constitutional memory-document management remains intact where `/memory:learn` legitimately owns that flow. [EVIDENCE: implementation summary]
 - [x] [P1] CHK-021 The seven stale `.agents/commands/**` wrapper mirrors are listed in the implementation summary. [EVIDENCE: implementation summary]
 <!-- /ANCHOR:security -->
 

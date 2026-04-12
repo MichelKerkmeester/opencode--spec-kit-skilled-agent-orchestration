@@ -680,16 +680,18 @@ workflow:
     steps:
 
       step_generate_context:
-        action: "Save memory context via generate-context.js"
+        action: "Refresh continuity support artifact via generate-context.js"
         command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_folder}"
-        critical_rule: "NEVER use Write tool directly for memory/ paths"
+        critical_rule: "NEVER manually author continuity support artifacts under memory/; use generate-context.js"
 
       step_index_memory:
-        action: "No additional indexing step in the live contract"
-        note: "generate-context.js is the supported save boundary for this workflow"
+        action: "Index generated support artifact with memory_save when immediate MCP visibility is required"
+        mcp_tool: memory_save
+        invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
+        note: "Use the actual file path returned by generate-context.js; memory_index_scan remains the bulk fallback"
 
       step_verify_save:
-        action: "Verify memory file was created"
+        action: "Verify generated continuity support artifact was created"
         check: "Does {spec_folder}/memory/*.md exist?"
         on_fail: "Log warning but do not block completion"
 

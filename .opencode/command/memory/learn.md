@@ -148,7 +148,7 @@ MEMORY:LEARN
 
 ### Step 3: Structure the Memory
 
-Generate a properly formatted constitutional memory file:
+Generate a properly formatted constitutional memory document:
 
 ```markdown
 ---

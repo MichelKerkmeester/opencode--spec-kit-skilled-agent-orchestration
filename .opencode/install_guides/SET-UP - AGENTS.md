@@ -942,7 +942,7 @@ User Message
 - Trigger: "save context", "save memory", `/memory:save`, continuity support artifact refresh
 - If spec folder established at Gate 3, use it (do not re-ask)
 - Script: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
-- Violation: Write tool on `memory/` path means DELETE and re-run via script
+- Violation: Manually authored continuity support artifact under `memory/` means DELETE and re-run via script
 
 **Completion Verification Rule (HARD BLOCK)**
 - Trigger: Claiming "done", "complete", "finished", "works"

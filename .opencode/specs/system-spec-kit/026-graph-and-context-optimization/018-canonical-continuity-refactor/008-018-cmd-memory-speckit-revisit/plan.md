@@ -24,7 +24,7 @@ _memory:
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
-Phase 008 is a fixed-scope command parity pass. The work starts from the exact 016 command reference map, scans the 44 reviewed files for pre-018 continuity language, patches the 20 editable drifted surfaces, re-reads every edited file, records the seven stale `.agents/commands/**` mirror wrappers that this sandbox will not let us modify, then closes the packet with strict validation and an evidence summary.
+Phase 008 is a fixed-scope command parity pass. The work starts from the exact 016 command reference map, scans the 44 reviewed files for pre-018 continuity language, patches the 28 editable drifted surfaces, re-reads every edited file, records the seven stale `.agents/commands/**` mirror wrappers that this sandbox will not let us modify, then closes the packet with strict validation and an evidence summary.
 
 ### Technical Context
 
@@ -64,7 +64,7 @@ This packet is documentation-only. The implementation surface is limited to auth
 
 ### Phase 3: Patch and Re-Read
 
-- [x] Update the 20 editable drifted files.
+- [x] Update the 28 editable drifted files.
 - [x] Re-read the edited files to confirm the Phase 018 wording landed.
 
 ### Phase 4: Record Blocked Mirrors
@@ -104,5 +104,5 @@ This packet is documentation-only. The implementation surface is limited to auth
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-If this packet must be reverted, restore the prior wording in the 20 updated authoritative files, then rerun the 44-file command drift sweep and `validate.sh --strict` on this packet. The blocked wrapper list should remain as an audit trail until mirror writes are possible again.
+If this packet must be reverted, restore the prior wording in the 28 updated authoritative files, then rerun the 44-file command drift sweep and `validate.sh --strict` on this packet. The blocked wrapper list should remain as an audit trail until mirror writes are possible again.
 <!-- /ANCHOR:rollback -->

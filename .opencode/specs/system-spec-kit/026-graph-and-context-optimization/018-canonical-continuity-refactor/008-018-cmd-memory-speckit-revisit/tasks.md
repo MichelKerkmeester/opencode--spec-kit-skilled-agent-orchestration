@@ -43,8 +43,8 @@ _memory:
 
 ### Drift Review
 
-- [x] T003 Scan the target set for pre-018 continuity wording (`memory file`, hand-authored continuity files under `memory/`, archived active-state language, and stale resume wording).
-- [x] T004 Separate legitimate constitutional-memory file management from real command drift.
+- [x] T003 Scan the target set for pre-018 continuity wording (manual continuity artifacts under `memory/`, deprecated archive-active-state language, and stale resume wording).
+- [x] T004 Separate legitimate constitutional memory-document management from real command drift.
 
 ### Writable Updates
 

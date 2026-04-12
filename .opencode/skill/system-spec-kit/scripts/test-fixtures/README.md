@@ -142,9 +142,9 @@ test-fixtures/
 ├── 009-valid-priority-tags/            # Proper P0/P1/P2 usage
 ├── 010-valid-evidence/                 # Checklist evidence patterns
 ├── 011-anchors-duplicate-ids/          # Duplicate anchor IDs
-├── 012-anchors-empty-memory/           # Empty memory files
-├── 013-anchors-multiple-files/         # Multiple memory files
-├── 014-anchors-nested/                 # Nested memory structure
+├── 012-anchors-empty-memory/           # Empty continuity support artifacts
+├── 013-anchors-multiple-files/         # Multiple continuity support artifacts
+├── 014-anchors-nested/                 # Nested continuity support artifact structure
 ├── 015-anchors-no-memory/              # Missing memory directory
 ├── 016-evidence-all-patterns/          # All valid evidence formats
 ├── 017-evidence-case-variations/       # Case-insensitive evidence

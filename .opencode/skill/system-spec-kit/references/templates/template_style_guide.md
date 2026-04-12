@@ -34,7 +34,7 @@ Current templates (10 user-facing + 1 internal):
 | **Level 2** | + checklist.md |
 | **Level 3** | + decision-record.md, research/research.md |
 | **Utility** | handover.md, debug-delegation.md |
-| **Internal** | context_template.md (memory file generation) |
+| **Internal** | context_template.md (generated continuity artifact rendering) |
 
 ---
 
@@ -210,11 +210,11 @@ All templates should include a source marker for validation and change tracking:
 
 | Template Type | Frontmatter | Reason |
 |---------------|-------------|--------|
-| Memory files (`memory/*.md`) | Required | ANCHOR format for indexing |
+| Generated continuity support artifacts (`memory/*.md`) | Required | ANCHOR format for indexing |
 | Spec folder files | Optional | Human-readable metadata |
 | Reference files | Required | Skill system indexing |
 
-### Memory File Frontmatter (ANCHOR Format)
+### Generated Continuity Support Artifact Frontmatter (ANCHOR Format)
 
 ```yaml
 ---
@@ -276,7 +276,7 @@ The `validate.sh` script enforces these rules:
 | Template | Location | Purpose |
 |----------|----------|---------|
 | All spec templates | `templates/` | Spec folder documentation |
-| context_template.md | `templates/` | Memory file generation |
+| context_template.md | `templates/` | Generated continuity artifact rendering |
 
 ### Validation
 
@@ -290,6 +290,6 @@ The `validate.sh` script enforces these rules:
 ### Related References
 
 - [validation_rules.md](../validation/validation_rules.md) - Complete validation rule documentation
-- [memory_system.md](../memory/memory_system.md) - Memory file format and indexing
+- [memory_system.md](../memory/memory_system.md) - Continuity artifact format and indexing
 - [folder_routing.md](../structure/folder_routing.md) - Spec folder organization
 <!-- /ANCHOR:related-resources -->

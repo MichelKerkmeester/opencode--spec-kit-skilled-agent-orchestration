@@ -196,13 +196,13 @@ Where:
 ### Debugging Commands
 
 ```bash
-# Check if memory file has anchors (UPPERCASE format)
+# Check if generated support artifact has anchors (UPPERCASE format)
 grep -c "<!-- ANCHOR:" specs/049-*/memory/*.md
 
 # List all available anchor IDs in a file
 grep -o 'ANCHOR:[a-z0-9-]*' specs/049-*/memory/*.md | sed 's/ANCHOR://' | sort -u
 
-# Find all memory files with anchors across project
+# Find all generated support artifacts with anchors across project
 find specs -name "*.md" -path "*/memory/*" -exec grep -l "<!-- ANCHOR:" {} \;
 
 # Check memory system statistics (via MCP)
@@ -338,8 +338,8 @@ Root Cause: Incorrect specFolder parameter
 memory_list({ specFolder: "###-correct-folder", limit: 3 })
 
 // Search and read from specific folder
-const results = await memory_search({ specFolder: "###-correct-folder", limit: 3 })
-Read(results[0].filePath)  // Read specific memory file
+const results = await memory_search({ query: "current task", specFolder: "###-correct-folder", limit: 3 })
+Read(results[0].filePath)  // Read specific indexed document
 ```
 
 For direct memory saves, prefer an explicit CLI target:
@@ -360,8 +360,8 @@ Root Cause: Tier not set correctly
 
 ✅ Solution:
 ```javascript
-// Check memory tier
-memory_list({ tier: "constitutional" })
+// Search constitutional tier directly
+memory_search({ query: "<rule keyword>", tier: "constitutional", limit: 3 })
 
 // Update tier if needed
 memory_update({ id: 123, importanceTier: "constitutional" })
@@ -410,12 +410,12 @@ Quick reference for common recovery scenarios with symptoms and actions.
 |----------|----------|-----------------|
 | **Context Loss** | Agent doesn't remember prior work | Run `/spec_kit:resume [spec-folder]` |
 | **State Mismatch** | Files don't match expected state | Verify with `git status` and `git diff` |
-| **Memory Not Found** | Search returns no results | Check `memory_search({ specFolder: "..." })` |
-| **Stale Context** | Information seems outdated | Check `last_accessed_epoch` vs current time |
-| **Incomplete Handover** | Missing continuation context | Review CONTINUE SESSION section in memory |
+| **Memory Not Found** | Search returns no results | Check `memory_search({ query: "<keyword>", specFolder: "..." })` |
+| **Stale Context** | Information seems outdated | Check recent `updated_at` values in `memory_list({ specFolder: "...", sortBy: "updated_at" })` |
+| **Incomplete Handover** | Missing continuation context | Review the CONTINUE SESSION section in `handover.md` |
 | **Dedup Collision** | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
 | **Embedding Failure** | Semantic search not working | Check provider health, use fallback FTS5 |
-| **Checkpoint Corrupt** | Can't restore state | Try previous checkpoint, rebuild from memory files |
+| **Checkpoint Corrupt** | Can't restore state | Try previous checkpoint, rebuild from `handover.md`, `_memory.continuity`, and packet docs |
 
 ### Recovery Action Details
 
@@ -443,11 +443,11 @@ cat specs/###-feature/checklist.md
 
 **Stale Context Detection:**
 ```javascript
-// Check memory freshness
-memory_list({ specFolder: "###-feature", sortBy: "last_accessed" })
+// Check memory freshness via recent updates
+memory_list({ specFolder: "###-feature", sortBy: "updated_at" })
 
-// Look for last_accessed_epoch in results
-// If > 24 hours old, consider refreshing context
+// Review updated_at timestamps in the returned rows
+// If the latest continuity docs are stale, consider refreshing context
 ```
 
 **Checkpoint Recovery:**
@@ -455,11 +455,11 @@ memory_list({ specFolder: "###-feature", sortBy: "last_accessed" })
 // List available checkpoints
 checkpoint_list()
 
-// Restore from specific checkpoint
-checkpoint_restore({ checkpointId: "checkpoint-###" })
+// Restore from specific checkpoint name
+checkpoint_restore({ name: "checkpoint-###" })
 
 // If corrupt, try previous:
-checkpoint_restore({ checkpointId: "checkpoint-###-prev" })
+checkpoint_restore({ name: "checkpoint-###-prev" })
 ```
 
 ---
@@ -479,7 +479,7 @@ memory_index_scan({ force: true })
 
 # Or delete and re-save specific memories
 memory_delete({ id: <memory_id> })
-# Then re-save the memory file
+# Then re-save the generated support artifact
 ```
 
 ---
@@ -490,7 +490,7 @@ memory_delete({ id: <memory_id> })
 
 ### Reference Files
 - [SKILL.md](../../SKILL.md) - MCP tools, hybrid search, and importance tier system
-- [execution_methods.md](../workflows/execution_methods.md) - Memory file detection and execution trigger patterns
+- [execution_methods.md](../workflows/execution_methods.md) - Continuity artifact detection and execution trigger patterns
 - [folder_routing.md](../structure/folder_routing.md) - Routing logic and alignment scoring
 
 ### Related Skills
