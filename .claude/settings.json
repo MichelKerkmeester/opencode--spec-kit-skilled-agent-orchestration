@@ -4,5 +4,9 @@
     "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "ENABLE_TOOL_SEARCH": "true",
     "MAX_THINKING_TOKENS": "999999"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash .claude/statusline-command.sh"
   }
 }
