@@ -55,7 +55,7 @@ parent: "006-canonical-continuity-refactor"
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `014-playbook-prompt-rewrite` |
-| **Successor** | N/A |
+| **Successor** | `016-deep-review-remediation` |
 <!-- /ANCHOR:metadata -->
 
 ---

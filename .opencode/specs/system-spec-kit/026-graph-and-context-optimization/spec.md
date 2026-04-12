@@ -32,7 +32,7 @@ Packet `026-graph-and-context-optimization` is the parent program for the graph-
 
 **Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-issues` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a phase map plus packet-local strict validation.
 
-**Critical Dependencies**: Child packets `001` through `014` remain the implementation and research authorities for their own scopes. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The six active child packets `001` through `006` remain the implementation and research authorities for their own scopes. Former phases `007` through `017` were archived to `z_archive/` during the April 2026 normalization pass and remain historical evidence only. This root packet owns coordination, sequencing, and completion truth only.
 
 ---
 
@@ -70,7 +70,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 ### In Scope
 
-- Record the dependency-aware execution order for child packets `001` through `014`.
+- Record the dependency-aware execution order for the six active child packets `001` through `006`.
 - Track the parent packet's coordination contract, success criteria, and packet-level risks.
 - Maintain the phase documentation map and child handoff rules for strict validation.
 - Keep the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the shipped child packet set.
@@ -99,43 +99,33 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 ## PHASE DOCUMENTATION MAP
 
 > This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+> Active children are `001` through `006`. Former phases `007` through `017` were archived to `z_archive/` during the April 2026 normalization pass and are not part of the live child graph.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
-| 1 | `001-research-graph-context-systems/` | External-systems research root plus the moved memory-redundancy follow-on | Complete |
-| 2 | `002-implement-cache-warning-hooks/` | Cache-warning hook producer hardening | Complete |
-| 3 | `003-memory-quality-issues/` | Memory-quality remediation train, including `009-post-save-render-fixes` | Complete |
+| 1 | `001-research-graph-context-systems/` | External-systems research root and recommendation synthesis | Complete |
+| 2 | `002-implement-cache-warning-hooks/` | Stop-hook producer hardening and replay validation | Complete |
+| 3 | `003-memory-quality-issues/` | Memory-quality remediation train and follow-on packet closeout | Complete |
 | 4 | `004-agent-execution-guardrails/` | AGENTS execution-policy alignment | Complete |
-| 5 | `005-provisional-measurement-contract/` | Measurement contract lane | Complete |
-| 6 | `006-structural-trust-axis-contract/` | Structural trust-axis contract | Complete |
-| 7 | `007-detector-provenance-and-regression-floor/` | Detector provenance and regression floor | Complete |
-| 8 | `008-graph-first-routing-nudge/` | Graph-first routing nudge | Complete |
-| 9 | `009-auditable-savings-publication-contract/` | Savings publication contract | Complete |
-| 10 | `010-fts-capability-cascade-floor/` | FTS capability cascade floor | Complete |
-| 11 | `011-graph-payload-validator-and-trust-preservation/` | Graph payload validation and trust preservation | Complete |
-| 12 | `012-cached-sessionstart-consumer-gated/` | Cached SessionStart consumer gating | Complete |
-| 13 | `013-warm-start-bundle-conditional-validation/` | Warm-start bundle conditional validation | Complete |
-| 14 | `005-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
+| 5 | `005-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
+| 6 | `006-canonical-continuity-refactor/` | Canonical continuity refactor and post-006 cleanup train | Complete |
 
 ### Phase Transition Rules
 
-- Each child packet MUST pass `validate.sh --strict` independently before the parent packet can claim integrated completion.
-- The runtime train follows research-aligned prerequisites rather than simple numeric slug order.
-- `003-memory-quality-issues` and `004-agent-execution-guardrails` are orthogonal support lanes and do not block the R1-R10 runtime train unless a child packet explicitly depends on them.
+- Each active child packet MUST pass `validate.sh --strict` independently before the parent packet can claim integrated completion.
+- The live child graph follows research-aligned prerequisites rather than simple numeric slug order.
+- `003-memory-quality-issues` and `004-agent-execution-guardrails` are orthogonal support lanes and do not block unrelated runtime or documentation closeout unless a child packet explicitly depends on them.
+- Archived packets under `z_archive/` remain historical references only and do not count as live children.
 - Local-only empty directories do not become packet phases unless they contain a valid `spec.md` root.
 
 ### Phase Handoff Criteria
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
-| `001-research-graph-context-systems` | `005-provisional-measurement-contract` | Research outputs and sequencing assumptions are stable enough to start runtime packetization | Child packet `001` validates cleanly and records the runtime packet map |
-| `005-provisional-measurement-contract` | `010-fts-capability-cascade-floor` | Measurement contract is available for downstream retrieval lanes | Child packets `005` and `010` validate cleanly |
-| `010-fts-capability-cascade-floor` | `002-implement-cache-warning-hooks` | Retrieval capability floor is defined before the producer patch lands | Child packets `010` and `002` validate cleanly |
-| `002-implement-cache-warning-hooks` | `012-cached-sessionstart-consumer-gated` | Producer metadata is available for the gated consumer | Child packets `002` and `012` validate cleanly |
-| `006-structural-trust-axis-contract` | `011-graph-payload-validator-and-trust-preservation` | Trust-axis contract is stable enough to bind payload validation | Child packets `006` and `011` validate cleanly |
-| `011-graph-payload-validator-and-trust-preservation` | `008-graph-first-routing-nudge` | Graph payload guarantees are available to the routing nudge | Child packets `011` and `008` validate cleanly |
-| `007-detector-provenance-and-regression-floor` + `011-graph-payload-validator-and-trust-preservation` | `005-code-graph-upgrades` | Detector and graph-payload contracts are both stable | Child packets `007`, `011`, and `014` validate cleanly |
-| `002-implement-cache-warning-hooks` + `012-cached-sessionstart-consumer-gated` + `008-graph-first-routing-nudge` | `013-warm-start-bundle-conditional-validation` | Producer, consumer, and routing assumptions are all stable enough for conditional validation | Child packets `002`, `012`, `008`, and `013` validate cleanly |
+| `001-research-graph-context-systems` | `002-implement-cache-warning-hooks` | Research outputs clarified the continuity producer boundary and sequencing assumptions for the first runtime hardening lane | Child packets `001` and `002` validate cleanly |
+| `001-research-graph-context-systems` | `005-code-graph-upgrades` | Research outputs established the graph-first and detector-provenance direction that Phase 005 implements | Child packets `001` and `005` validate cleanly |
+| `003-memory-quality-issues` + `004-agent-execution-guardrails` | `006-canonical-continuity-refactor` | Memory-save quality fixes and guardrail alignment are documented before the final continuity cleanup train closes packet-local drift | Child packets `003`, `004`, and `006` validate cleanly |
+| `002-implement-cache-warning-hooks` + `005-code-graph-upgrades` | `006-canonical-continuity-refactor` | Producer-boundary and graph/documentation foundations are stable enough for the canonical continuity cleanup lane | Child packets `002`, `005`, and `006` validate cleanly |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -240,7 +230,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Fourteen active child packets plus parent coordination docs |
+| Scope | 20/25 | Six active child packets plus parent coordination docs |
 | Risk | 14/25 | Mis-sequencing or coordination drift can mislead later runtime work |
 | Research | 14/20 | Requires aligning research-derived order with shipped child packets |
 | Multi-Agent | 4/15 | Coordination-only packet with no runtime implementation |

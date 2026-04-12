@@ -39,20 +39,22 @@ Verify that the authoritative `memory` and `spec_kit` command surfaces match the
 | D3 Traceability | CONDITIONAL | 1-2 | `save.md` and `manage.md` each drift from the handler behavior in a different way. |
 | D2 Security | PASS | 2 | No live shared-memory or unsafe recovery wording remained in the reviewed command surfaces. |
 | D4 Maintainability | CONDITIONAL | 2 | The scan-pipeline documentation understates a now-live indexed artifact class. |
+| D1/D3/D4 Post-remediation validation | PASS | 12 | `save.md` and `manage.md` now match the shipped graph-metadata refresh and four-source scan behavior. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 2 active
+- **P1 (Major):** 0 active
 - **P2 (Minor):** 0 active
-- **Delta this iteration:** +0 P0, +1 P1, +0 P2
+- **Delta this iteration:** +0 P0, -2 P1, +0 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
 
 - Iteration 1: Comparing `memory/save.md` directly against the CLI help text and workflow hook exposed the save-side-effect gap immediately.
 - Iteration 2: Reading `memory/manage.md` beside `memory-index.ts` made the missing graph-metadata scan source easy to confirm.
+- Iteration 12: A straight reread of the remediated command docs against the previously cited behavior confirmed both operator-facing fixes landed cleanly.
 
 ## 9. WHAT FAILED
 
@@ -66,10 +68,11 @@ Verify that the authoritative `memory` and `spec_kit` command surfaces match the
 
 - `/spec_kit:resume` itself already documents `graph-metadata.json` correctly and does not drive the command-surface drift here.
 - The reviewed command docs no longer advertise live shared-memory command modes.
+- The previously missing graph-metadata refresh and fourth scan source are now explicitly documented in the requested command surfaces.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Complete after 2 iterations. The active fixes are to describe graph-metadata refresh explicitly in `/memory:save` and to update `/memory:manage` from a 3-source to a 4-source scan model.
+Post-remediation validation complete. No remaining source-backed drift was found in the requested command surfaces.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
@@ -81,8 +84,8 @@ Complete after 2 iterations. The active fixes are to describe graph-metadata ref
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 1-2 | `/memory:save` and `/memory:manage` both under-describe the live save/scan behavior. |
-| `checklist_evidence` | core | partial | 2 | Packet closure claims are broadly true, but these two command surfaces are still behind runtime reality. |
+| `spec_code` | core | pass | 12 | `/memory:save` and `/memory:manage` now describe the live save/scan behavior accurately. |
+| `checklist_evidence` | core | pass | 12 | The packet's documented remediation now matches the current command surfaces. |
 | `feature_catalog_code` | overlay | notApplicable | 0 | No feature-catalog surface was in the requested scope. |
 | `playbook_capability` | overlay | notApplicable | 0 | No playbook surface was in the requested scope. |
 <!-- MACHINE-OWNED: END -->
@@ -91,8 +94,8 @@ Complete after 2 iterations. The active fixes are to describe graph-metadata ref
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/command/memory/save.md` | [D1, D3, D4] | 1 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/command/memory/manage.md` | [D3, D4] | 2 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/command/memory/save.md` | [D1, D3, D4] | 12 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/command/memory/manage.md` | [D3, D4] | 12 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | [D1, D3] | 1 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | [D1, D3] | 1 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts` | [D3, D4] | 2 | 0 P0, 0 P1, 0 P2 | complete |

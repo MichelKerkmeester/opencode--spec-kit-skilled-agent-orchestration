@@ -1,4 +1,4 @@
-# Deep Review Strategy: 006-canonical-continuity-refactor (Phases 012-015)
+# Deep Review Strategy: 006-canonical-continuity-refactor (Phases 012-015 + final synthesis wave)
 
 ## Review Dimensions
 
@@ -25,14 +25,19 @@
 | Dead code / ARCHITECTURE.md (013) | 3-5 | PASS with P2 note |
 | Playbook format (014) | 6-7 | PASS |
 | Test execution evidence (015) | 8-10 | PASS with caveats |
+| Cross-reference integrity (all 026 phases) | 26 | CONDITIONAL |
+| Graph-metadata consistency (all active packets) | 27 | CONDITIONAL |
+| Continuity contract consistency (Public surfaces) | 28 | PASS (Barter blocked) |
+| MCP config security scan (Public surfaces) | 29 | PASS |
+| Final synthesis | 30 | CONDITIONAL |
 
 ## Running Findings
 
 | Severity | Count |
 |----------|-------|
 | P0 | 0 |
-| P1 | 3 (all fixed) |
-| P2 | 4 |
+| P1 | 11 active |
+| P2 | 1 active |
 
 ## What Worked
 
@@ -40,15 +45,19 @@
 - Iteration 3-5: Comparing ARCHITECTURE.md topology tree against actual ls output
 - Iteration 6-7: Checking frontmatter status vs body status vs task completion
 - Iteration 8-10: Verifying scratch artifacts and execution counts
+- Iteration 26: Root packet graph comparison immediately exposed the stale 001-014 phase map
+- Iteration 27: Structured graph-metadata sweep caught live command strings and ghost packet-relative paths
+- Iteration 28: Public continuity contract cross-check showed strong implementation-summary.md agreement across save/resume surfaces
+- Iteration 29: Focused MCP config scan ruled out checked-in secrets without opening scope beyond Public
 
 ## What Failed
 
-- None
+- Iteration 28: Requested Barter `AGENTS.md` parity could not be validated from the current workspace because the sibling repo was not accessible
 
 ## Exhausted Approaches
 
-- None
+- Barter `AGENTS.md` parity cannot be re-checked from this workspace until the sibling repo becomes accessible
 
 ## Next Focus
 
-Review complete. All 10 iterations executed across 4 child phases.
+Review complete. Final synthesis is captured in `review/review-report.md`; route active P1 work into remediation planning rather than further review iterations.

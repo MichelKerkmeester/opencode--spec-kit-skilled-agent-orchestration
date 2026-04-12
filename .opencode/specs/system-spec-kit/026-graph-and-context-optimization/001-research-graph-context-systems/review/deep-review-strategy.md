@@ -30,15 +30,15 @@ Root phase review of `001-research-graph-context-systems`
 
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 1 | The canonical root packet is structurally coherent, but one archived snapshot still carries dead `phase-N` source aliases. |
-| D2 Security | notApplicable | 2 | No direct runtime or secret-handling surface is owned by this research packet. |
-| D3 Traceability | FAIL | 1 | The v1 archive snapshot violates the root packet's literal-folder-path contract. |
-| D4 Maintainability | CONDITIONAL | 2 | Current root and child-006 references are clean, so the defect is isolated to the archived v1 snapshot. |
+| D1 Correctness | PASS | 21 | Post-remediation verification found no remaining broken root or child-006 path behavior in the live packet. |
+| D2 Security | notApplicable | 21 | No direct runtime or secret-handling surface is owned by this research packet. |
+| D3 Traceability | PASS | 21 | The archived v1 snapshot now declares its legacy alias mapping explicitly, and live packet references use literal child-folder paths. |
+| D4 Maintainability | PASS | 21 | The old archive drift is now scoped as historical context rather than an unresolved packet defect. |
 
 ## 7. RUNNING FINDINGS
 
 - P0: 0 active
-- P1: 1 active
+- P1: 0 active
 - P2: 0 active
 - Delta this iteration: +0 P0, +0 P1, +0 P2
 
@@ -47,6 +47,7 @@ Root phase review of `001-research-graph-context-systems`
 - A citation-existence sweep across `research/archive/*.md` immediately separated the clean v2 surfaces from the stale v1 snapshot.
 - Re-reading the root packet requirement and implementation summary made the defect concrete instead of treating it as harmless archive drift.
 - Cross-checking root `research/research.md` against child `006` confirmed the live packet surfaces already use the right literal-folder-path form.
+- [iter 21] The archive note plus live child-`006` path re-read closed the remaining defect without introducing any new archive-traceability gap.
 
 ## 9. WHAT FAILED
 
@@ -59,7 +60,7 @@ Root phase review of `001-research-graph-context-systems`
 
 ## 11. NEXT FOCUS
 
-Completed. The remaining defect is isolated to `research/archive/research-v1-iter-8.md`.
+Completed. No active findings remain after iteration 21.
 
 ## 12. KNOWN CONTEXT
 
@@ -71,8 +72,8 @@ Completed. The remaining defect is isolated to `research/archive/research-v1-ite
 
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 1 | Archived v1 snapshot still cites dead `phase-N/...` aliases. |
-| `checklist_evidence` | core | partial | 2 | Live root docs are aligned, but archive integrity is overstated in the implementation summary. |
+| `spec_code` | core | pass | 21 | The archive now declares the legacy alias mapping explicitly, and live root references stay on literal child-folder paths. |
+| `checklist_evidence` | core | pass | 21 | The implementation summary and archive snapshot now agree about the historical `phase-N/...` alias handling. |
 | `skill_agent` | overlay | notApplicable | 2 | No skill or agent contract is owned here. |
 | `agent_cross_runtime` | overlay | notApplicable | 2 | No cross-runtime instruction surface is owned here. |
 | `feature_catalog_code` | overlay | notApplicable | 2 | No feature catalog surface is in scope. |

@@ -2,7 +2,7 @@
 
 > Second-pass deep-research synthesis of 5 first-pass packets. 8 iterations, composite 0.94, all 6 cross-phase questions answered. Built upon iter-2 to iter-7 outputs in `research/iterations/`.
 > Charter: `scratch/deep-research-prompt-master-consolidation.md`
-> Note: This v1 snapshot predates folder normalization. `phase-N/...` aliases map to the current child-folder paths.
+> **Archive Note:** This v1 snapshot predates folder normalization (April 2026). References to `phase-N/...` map to current child-folder paths under `001-research-graph-context-systems/`.
 
 ## 1. Executive summary
 - Adopt one publication rule for token savings now: no Public headline percentage or multiplier should ship until the same frozen task corpus has provider-counted token totals and reproducible answer-quality scores. [SOURCE: research/iterations/q-a-token-honesty.md:115-125]

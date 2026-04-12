@@ -6,7 +6,7 @@
   "children_ids": [],
   "manual": {
     "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-manual-playbook-post-006-audit"
+      "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite"
     ],
     "supersedes": [],
     "related_to": [

@@ -10,6 +10,7 @@ trigger_phrases:
   - "f-ac8 clean reviewer"
 importance_tier: important
 contextType: "planning"
+status: complete
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2 -->"
 _memory:
   continuity:
@@ -49,7 +50,7 @@ This phase is intentionally downstream of the first three phases. PR-8 refactors
 | **Successor** | `005-operations-tail-prs` |
 | **Priority Band** | P3 |
 | **Theme** | D5 auto-supersedes with continuation gate + SaveMode enum refactor + post-save reviewer CHECK-D1..D8 upgrade |
-| **Parent Phase Map Status** | Pending at packet level until this child lands [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] |
+| **Parent Phase Map Status** | Complete in the parent packet phase map [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] |
 | **Phase 4 → 5 Handoff** | PR-7 + PR-8 + PR-9 merged; F-AC5 and F-AC8 green; reviewer reports zero HIGH findings on clean baseline [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:195-200] |
 
 Phase 4 carries the biggest coordination burden in the packet because it is where the train stops being "single-owner bug fixes" and starts enforcing a durable contract for later operational work. That is why this child folder owns both the implementation details and the guardrail story needed for Phase 5. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:182-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1522-1525]
@@ -64,7 +65,7 @@ Phase 4 carries the biggest coordination burden in the packet because it is wher
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P3 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-07 |
 | **Branch** | `026-graph-and-context-optimization/003-memory-quality-issues/004-heuristics-refactor-guardrails` |
 | **Parent Packet** | `003-memory-quality-issues` |

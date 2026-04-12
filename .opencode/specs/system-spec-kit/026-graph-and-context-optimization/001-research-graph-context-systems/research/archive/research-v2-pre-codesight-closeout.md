@@ -11,7 +11,7 @@
 | Confidence | Lowered overall confidence and split evidence gaps from measurement gaps | 9, 10, 12 |
 | New synthesis | Added four new cross-phase patterns after the v1 assembly | 15 |
 | Public baseline | Added 8 Public moats and 11 hidden prerequisites that v1 under-described | 13 |
-| Citation hygiene | Replaced `phase-N/` references with literal `00N-folder/` paths and removed broken path grammar | 11 |
+| Citation hygiene | Replaced legacy placeholder-path references with literal `00N-folder/` paths and removed broken path grammar | 11 |
 | Contextador closeout | Folded the 20-iteration `003-contextador` extension into the active v2 synthesis without changing the overall verdict or top-10 ordering | 003 ext 14-20 |
 | Graphify closeout | Folded the 20-iteration `004-graphify` translation wave into the active v2 synthesis, tightening the graph lane around additive payload and hint enrichment, phased local multimodal scope, and explicit rejection of subsystem replacement | 004 ext 11-20 |
 | Claudest continuation | Folded the 20-iteration `005-claudest` execution-ready continuation into the active v2 synthesis, sharpening packet order and acceptance gates inside the continuity/analytics lane without changing the master verdict | 005 ext 13-20 |
@@ -321,7 +321,7 @@ The moat/prerequisite pairing also explains why the replacement for v1’s R10 i
 | 8 | v1 assembly | baseline narrative and registry |
 | 9 | skeptical review | exposed contradictions, schema drift, and dependency omissions |
 | 10 | gap reattempt | closed 4 more gaps, tightened 4 partials, confirmed 2 unknowns |
-| 11 | citation audit | identified 6 broken `phase-N/` literal-path citations |
+| 11 | citation audit | identified 6 broken legacy placeholder-path citations |
 | 12 | combo stress-test | weakened Combo 1, preserved Combo 2, falsified Combo 3 |
 | 13 | Public infra inventory | surfaced 8 moats and 11 hidden prerequisites |
 | 14 | cost reality check | re-sized several P0/P1 lanes and marked trust-heavy packaging speculative |

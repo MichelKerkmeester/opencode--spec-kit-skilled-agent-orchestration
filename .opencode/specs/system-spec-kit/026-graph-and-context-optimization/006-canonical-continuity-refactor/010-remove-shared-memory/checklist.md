@@ -50,7 +50,7 @@ _memory:
 - [x] CHK-010 [P0] Shared-memory lifecycle tools and runtime files were removed instead of deprecated. [EVIDENCE: File implementation-summary.md]
 - [x] CHK-011 [P0] No dangling shared-memory imports or tool registrations remain. [EVIDENCE: Test final shared-reference grep]
 - [x] CHK-012 [P1] Remaining governance/search/save/checkpoint logic keeps only non-shared scope behavior. [EVIDENCE: File implementation-summary.md]
-- [x] CHK-013 [P1] The schema-column exception is isolated to `vector-index-schema.ts` with the requested comment. [EVIDENCE: File implementation-summary.md]
+- [x] CHK-013 [P1] The schema-column exception is isolated to `vector-index-schema.ts` with the requested comment. [EVIDENCE: `shared_space_id` columns retained in schema for backward-compatible DB migration. Not used by runtime. Documented exception - does not affect shared memory removal completeness.]
 <!-- /ANCHOR:code-quality -->
 
 ---

@@ -31,21 +31,22 @@ Root phase review of `005-code-graph-upgrades`
 |-----------|---------|-----------|---------|
 | D1 Correctness | PASS | 1 | Query, context, scan, and status handlers match the bounded main packet scope. |
 | D2 Security | PASS | 1 | No authority-surface widening or fail-open issue surfaced in the reviewed code. |
-| D3 Traceability | CONDITIONAL | 2 | Packet-local scratch prompts still over-claim what `code_graph_status` returns. |
-| D4 Maintainability | CONDITIONAL | 2 | The runtime is coherent, but the operator-facing scratch guidance now lags the implementation. |
+| D3 Traceability | PASS | 25 | Packet-local scratch prompts now point detector provenance checks at the scan response while status remains count-and-health only. |
+| D4 Maintainability | PASS | 25 | Operator guidance now matches the implemented handler split, and the packet-014 side-branch naming is still intentional. |
 
 ## 7. RUNNING FINDINGS
 
 - P0: 0 active
 - P1: 0 active
-- P2: 1 active
+- P2: 0 active
 
 ## 8. WHAT WORKED
 
 - Reading the main spec and implementation summary before looking at the scratch prompts kept the severity calibrated.
 - The focused handler and test reads showed that detector provenance summary really is owned by the scan response, not the status response.
 - The live runtime surfaces remained bounded and additive under the reviewed packet scope.
+- [iter 25] A post-remediation prompt sweep confirmed the scratch matrix now mirrors the real status and scan handler boundaries without a stale packet-reference defect.
 
 ## 9. NEXT FOCUS
 
-Completed. The remaining issue is limited to packet-local scratch guidance.
+Completed. No active findings remain after iteration 25.

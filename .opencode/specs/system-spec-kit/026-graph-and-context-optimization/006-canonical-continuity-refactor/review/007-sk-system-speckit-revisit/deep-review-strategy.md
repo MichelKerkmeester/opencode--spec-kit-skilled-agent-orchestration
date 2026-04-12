@@ -39,20 +39,22 @@ Verify that `.opencode/skill/system-spec-kit/SKILL.md` reflects the live canonic
 | D3 Traceability | PASS with advisory | 1 | The skill omits the now-shipped `graph-metadata.json` refresh side effect from its save-path explanation. |
 | D2 Security | PASS | 2 | No live shared-memory or unsafe recovery contract remained in the reviewed skill sections. |
 | D4 Maintainability | PASS with advisory | 2 | The omission leaves the save contract slightly under-specified for future packet operators. |
+| D3/D4 Post-remediation validation | CONDITIONAL | 11 | The save-path fix landed, but the live structure guidance still teaches per-packet `memory/` directories as current packet layout. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 0 active
-- **P2 (Minor):** 1 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **P1 (Major):** 1 active
+- **P2 (Minor):** 0 active
+- **Delta this iteration:** +0 P0, +1 P1, -1 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
 
 - Iteration 1: Comparing the skill's save section directly against the CLI help text and workflow hook isolated the one remaining omission quickly.
 - Iteration 2: A focused reread of the recovery and shared-memory sections was enough to rule out broader contract drift.
+- Iteration 11: Rechecking the remediated save-path wording before widening to structure examples exposed a new contradiction without reopening the old advisory.
 
 ## 9. WHAT FAILED
 
@@ -66,10 +68,11 @@ Verify that `.opencode/skill/system-spec-kit/SKILL.md` reflects the live canonic
 
 - The legacy shared-memory note in SKILL.md is historical removal guidance, not a live feature claim.
 - The existing resume ladder wording is accurate and does not need escalation.
+- The graph-metadata refresh note and ADR-004 `implementation-summary.md` allowance are now present and no longer the source of drift.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Complete after 2 iterations. The only remaining advisory is to surface `graph-metadata.json` refresh explicitly anywhere the skill describes the full canonical save side effects of `generate-context.js`.
+Post-remediation validation complete. If this packet is reopened, rewrite the spec-folder contents bullet and sub-folder versioning example so they stop presenting `memory/` directories as current packet structure.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
@@ -81,8 +84,8 @@ Complete after 2 iterations. The only remaining advisory is to surface `graph-me
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 1 | Save-path wording is broadly correct but omits the graph-metadata refresh side effect now shipped in the workflow. |
-| `checklist_evidence` | core | pass | 2 | No contradictory completion language was found for the reviewed save and recovery sections. |
+| `spec_code` | core | fail | 11 | The remediated save-path wording is correct, but the same skill still teaches `memory/` directories as live packet structure. |
+| `checklist_evidence` | core | partial | 11 | Save-path closure is real, yet the broader structure guidance still contradicts the canonical continuity model. |
 | `feature_catalog_code` | overlay | notApplicable | 0 | No feature-catalog surface was in this packet's requested scope. |
 | `playbook_capability` | overlay | notApplicable | 0 | No playbook surface was in this packet's requested scope. |
 <!-- MACHINE-OWNED: END -->
@@ -91,7 +94,7 @@ Complete after 2 iterations. The only remaining advisory is to surface `graph-me
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/skill/system-spec-kit/SKILL.md` | [D1, D2, D3, D4] | 2 | 0 P0, 0 P1, 1 P2 | complete |
+| `.opencode/skill/system-spec-kit/SKILL.md` | [D1, D2, D3, D4] | 11 | 0 P0, 1 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | [D1, D3] | 1 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | [D1, D3] | 1 | 0 P0, 0 P1, 0 P2 | complete |
 <!-- MACHINE-OWNED: END -->

@@ -39,20 +39,22 @@ Verify that the repo and module README surfaces still describe the live module l
 | D3 Traceability | CONDITIONAL | 1-2 | The graph README omits the packet-011 graph-metadata files, and the config README understates the spec-document inventory. |
 | D2 Security | PASS | 2 | No new shared-memory or unsafe operator claims were found in the reviewed README surfaces. |
 | D4 Maintainability | CONDITIONAL | 2 | The config README still teaches removed `memory/*` examples and stale document counts. |
+| D1/D3/D4 Post-remediation validation | PASS | 13 | The requested README surfaces now match the shipped graph-module inventory and post-memory-folder examples. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 2 active
+- **P1 (Major):** 0 active
 - **P2 (Minor):** 0 active
-- **Delta this iteration:** +0 P0, +1 P1, +0 P2
+- **Delta this iteration:** +0 P0, -2 P1, +0 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
 
 - Iteration 1: Comparing the graph module README against the on-disk `lib/graph/` directory exposed the missing graph-metadata files quickly.
 - Iteration 2: Comparing the config README counts and examples against `memory-types.ts` isolated the stale document-type inventory and removed `memory/*` examples.
+- Iteration 13: Re-reading only the previously drifting README sections made the remediation check fast and conclusive.
 
 ## 9. WHAT FAILED
 
@@ -66,10 +68,11 @@ Verify that the repo and module README surfaces still describe the live module l
 
 - Root `README.md` already documents `graph-metadata.json` in the packet structure and was not the strongest source of layout drift here.
 - No root `ARCHITECTURE.md` exists in the current checkout, so no source-backed finding was recorded for that path.
+- The graph and config README fixes are real: the missing parser/schema files and stale spec-document examples are no longer present in the reviewed text.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Complete after 2 iterations. The active fixes are to add `graph-metadata-parser.ts` and `graph-metadata-schema.ts` to the graph README, then update the config README counts and examples to reflect `description.json`, `graph-metadata.json`, and the post-memory-folder continuity model.
+Post-remediation validation complete. No remaining source-backed README drift was found in the requested surfaces.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
@@ -81,8 +84,8 @@ Complete after 2 iterations. The active fixes are to add `graph-metadata-parser.
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 1-2 | Two README surfaces no longer match the live module/file inventory. |
-| `checklist_evidence` | core | partial | 2 | The revisit intent is still sound, but the README parity pass is not fully complete while these drifts remain. |
+| `spec_code` | core | pass | 13 | The reviewed README surfaces now match the live module/file inventory and current continuity model. |
+| `checklist_evidence` | core | pass | 13 | The remediation claims for this revisit are borne out by the current README text. |
 | `feature_catalog_code` | overlay | notApplicable | 0 | Feature-catalog surfaces were not in this packet's requested scope. |
 | `playbook_capability` | overlay | notApplicable | 0 | No manual-playbook surface was reviewed in this packet. |
 <!-- MACHINE-OWNED: END -->
@@ -91,8 +94,8 @@ Complete after 2 iterations. The active fixes are to add `graph-metadata-parser.
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md` | [D1, D3, D4] | 1 | 0 P0, 1 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/config/README.md` | [D1, D3, D4] | 2 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md` | [D1, D3, D4] | 13 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/config/README.md` | [D1, D3, D4] | 13 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/config/memory-types.ts` | [D1, D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | [D3, D4] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 | `README.md` | [D3, D4] | 2 | 0 P0, 0 P1, 0 P2 | complete |

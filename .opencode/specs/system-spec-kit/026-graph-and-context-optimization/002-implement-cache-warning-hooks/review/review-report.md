@@ -9,13 +9,13 @@ contextType: "review-report"
 
 ## 1. Overview
 
-Two allocated iterations covered the live Stop-hook boundary and then the replay/fencing evidence. Verdict `CONDITIONAL`: the replay harness and idempotency suite remain sound, but the packet docs still describe `session-stop.ts` as additive-only even though the default runtime path shells into `generate-context.js` autosave when state is populated.
+Two allocated iterations covered the live Stop-hook boundary and then the replay/fencing evidence. Verdict `CONDITIONAL`: the replay harness and idempotency suite remain sound, but the packet docs still described `session-stop.ts` as a narrower writer-only seam even though the default runtime path shells into `generate-context.js` autosave when state is populated.
 
 ## 2. Findings
 
 ### P1
 
-1. Packet `002` still documents `session-stop.ts` as an additive writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever the state carries a spec folder and summary. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/checklist.md:61] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:308]
+1. Packet `002` still documented `session-stop.ts` as a narrower writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever the state carries a spec folder and summary. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/checklist.md:61] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:308]
 
     {
       "claim": "The packet evidence overstates the Stop hook boundary: live `processStopHook()` still performs default autosave work in addition to additive hook-state writes.",
@@ -42,7 +42,7 @@ This is not a hidden code defect in the replay harness. The contradiction is bet
 ## 4. Recommended Remediation
 
 - Either update the packet docs and checklist to describe autosave as an intentional part of the producer boundary, or gate the default Stop path so it really only performs additive state writes in this packet.
-- If the fenced replay path is the only approved verification surface, say that explicitly and stop describing the live default branch as additive-only.
+- If the fenced replay path is the only approved verification surface, say that explicitly and stop describing the live default branch as a narrower writer-only seam.
 
 ## 5. Cross-References
 

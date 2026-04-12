@@ -49,20 +49,14 @@
       ".vscode/mcp.json",
       ".gemini/settings.json",
       "opencode.json",
-      "cross-encoder.ts",
-      "rerank-2.5",
-      "vector-index-store.ts",
-      "rollout-policy.ts",
-      "spec.md",
-      "implementation-summary.md",
-      "node mcp_server/node_modules/vitest/vitest.mjs run mcp_server/tests/tool-input-schema.vitest.ts mcp_server/tests/graph-metadata-schema.vitest.ts mcp_server/tests/graph-metadata-integration.vitest.ts mcp_server/tests/cross-encoder.vitest.ts mcp_server/tests/cross-encoder-extended.vitest.ts mcp_server/tests/rollout-policy.vitest.ts mcp_server/tests/feature-flag-reference-docs.vitest.ts --config mcp_server/vitest.config.ts",
-      "rg -n \"MEMORY_DB_PATH|SPECKIT_ADAPTIVE_FUSION|SPECKIT_SESSION_BOOST|SPECKIT_CAUSAL_BOOST|SPECKIT_HYDE_ACTIVE|SPECKIT_ENTITY_LINKING|SPECKIT_GRAPH_CONCEPT_ROUTING|SPECKIT_GRAPH_REFRESH_MODE\" .mcp.json .claude/mcp.json .vscode/mcp.json .gemini/settings.json opencode.json",
       ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts",
+      "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
+      "implementation-summary.md",
       "graph-metadata.json"
     ],
     "entities": [
@@ -97,30 +91,6 @@
         "source": "derived"
       },
       {
-        "name": "cross-encoder.ts",
-        "kind": "code",
-        "path": "cross-encoder.ts",
-        "source": "derived"
-      },
-      {
-        "name": "rerank-2.5",
-        "kind": "file",
-        "path": "rerank-2.5",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-store.ts",
-        "kind": "code",
-        "path": "vector-index-store.ts",
-        "source": "derived"
-      },
-      {
-        "name": "rollout-policy.ts",
-        "kind": "code",
-        "path": "rollout-policy.ts",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -130,18 +100,6 @@
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "node mcp_server/node_modules/vitest/vitest.mjs run mcp_server/tests/tool-input-schema.vitest.ts mcp_server/tests/graph-metadata-schema.vitest.ts mcp_server/tests/graph-metadata-integration.vitest.ts mcp_server/tests/cross-encoder.vitest.ts mcp_server/tests/cross-encoder-extended.vitest.ts mcp_server/tests/rollout-policy.vitest.ts mcp_server/tests/feature-flag-reference-docs.vitest.ts --config mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
-        "name": "settings.json opencode.json",
-        "kind": "config",
-        "path": "rg -n \"MEMORY_DB_PATH|SPECKIT_ADAPTIVE_FUSION|SPECKIT_SESSION_BOOST|SPECKIT_CAUSAL_BOOST|SPECKIT_HYDE_ACTIVE|SPECKIT_ENTITY_LINKING|SPECKIT_GRAPH_CONCEPT_ROUTING|SPECKIT_GRAPH_REFRESH_MODE\" .mcp.json .claude/mcp.json .vscode/mcp.json .gemini/settings.json opencode.json",
         "source": "derived"
       },
       {
@@ -160,6 +118,30 @@
         "name": "vector-index-store.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "graph-metadata.json",
         "source": "derived"
       }
     ],

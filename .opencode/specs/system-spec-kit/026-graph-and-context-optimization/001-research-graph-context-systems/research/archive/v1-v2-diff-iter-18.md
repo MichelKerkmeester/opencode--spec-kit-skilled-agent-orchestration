@@ -3,7 +3,7 @@
 > Comprehensive change log of what the rigor lane (iters 9-16) and v2 assembly (iter-17) produced.
 
 ## TL;DR
-- `research-v2.md` is structurally strong: 13 core sections are present, citations grew from `125` to `229`, word count is `8698`, and `phase-N/` literals are gone.
+- `research-v2.md` is structurally strong: 13 core sections are present, citations grew from `125` to `229`, word count is `8698`, and the legacy placeholder-path literals are gone.
 - The one blocking validation failure is in `findings-registry-v2.json`: `tag: "new-cross-phase"` appears `31` times total (`23` newly added), which does not match the requested iter-15 patterns + iter-13 prerequisites target of `15`.
 - V2 adds `23` findings, removes `0`, and substantively amends `65`; the biggest new themes are uncertainty hygiene, seam-level validation, freshness authority, Public moats, and hidden prerequisites.
 - Combo 3 is now explicitly `FALSIFIED`; old R10 was replaced with a prerequisite trust-axis / freshness-authority contract.
@@ -18,7 +18,7 @@
 | 13 sections present | pass (`13` core sections present; `2` extra appendices also present) |
 | Citation count ≥ 125 | pass (`229`) |
 | Word count 8000-12000 | pass (`8698`) |
-| No phase-N/ literal paths | pass |
+| No legacy placeholder literal paths | pass |
 | Combo 3 marked FALSIFIED | pass |
 | §12 has 4 patterns | pass |
 | §13 has 8 moats + 11 prereqs | pass |

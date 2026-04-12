@@ -2,42 +2,43 @@
 
 ## Review Dimensions
 
-- [x] Correctness - Five checked-in config surfaces inspected for `MEMORY_DB_PATH`, `EMBEDDINGS_PROVIDER`, and `_NOTE_7_FEATURE_FLAGS` parity
-- [x] Security - Checked-in config surfaces inspected for local path leakage and host-specific state
-- [x] Traceability - Runtime defaults verified against packet claims in `spec.md`, `checklist.md`, and `implementation-summary.md`
-- [x] Maintainability - Cross-runtime config consistency reviewed against the claimed "identical env block" closeout
+- [x] Correctness - Five checked-in config surfaces revalidated for env-block parity after remediation
+- [x] Security - Checked-in config surfaces revalidated for host-specific path leakage and DB override drift
+- [x] Traceability - Runtime defaults, tests, and packet claims revalidated against the current code
+- [x] Maintainability - Cross-runtime config consistency revalidated against the note-only env-block contract
 
 ## Completed Dimensions
 
 | Dimension | Iteration | Verdict |
 |-----------|-----------|---------|
-| Correctness | 001 | PASS |
-| Security | 002 | CONDITIONAL |
-| Traceability | 003 | PASS |
-| Maintainability | 002-003 | CONDITIONAL |
+| Correctness | 001,004 | PASS |
+| Security | 002,004 | PASS |
+| Traceability | 003,005 | PASS |
+| Maintainability | 002-005 | PASS |
 
 ## Running Findings
 
 | Severity | Count |
 |----------|-------|
 | P0 | 0 |
-| P1 | 1 |
+| P1 | 0 |
 | P2 | 0 |
 
 ## What Worked
 
-- Direct line-by-line comparison of the five checked-in MCP surfaces quickly ruled out `MEMORY_DB_PATH` regressions and `_NOTE_7_FEATURE_FLAGS` drift.
-- Verifying `rollout-policy.ts`, `cross-encoder.ts`, and `vector-index-store.ts` after the config pass kept the review tied to actual runtime semantics instead of packet claims alone.
+- Iteration 001-003 isolated the original Gemini absolute-path defect quickly by comparing the five checked-in config surfaces against the runtime-default docs and code.
+- Iteration 004 confirmed the five checked-in MCP config surfaces now share the same note-only env block and repo-relative execution roots.
+- Iteration 005 confirmed rollout-policy code, tests, and operator docs agree on the graduated default-on contract.
 
 ## What Failed
 
-- The packet's parity story still overstates the current reality because `.gemini/settings.json` keeps a machine-specific absolute `cwd`.
+- None.
 
 ## Exhausted Approaches
 
-- Rechecked the other four config surfaces for an equivalent absolute path override; none were found.
-- Rechecked the runtime default files for a compensating requirement that Gemini must stay absolute; none were documented.
+- Rechecked the five checked-in MCP config surfaces for absolute paths, `MEMORY_DB_PATH`, and note-order drift; none remain.
+- Rechecked rollout-policy semantics against code, tests, and docs; no follow-on drift surfaced.
 
 ## Next Focus
 
-Review complete. The narrow remediation is to align `.gemini/settings.json` with the repo-relative convention already used by the other checked-in MCP configs and then rerun the five-file parity sweep.
+Review complete. No open findings remain for Phase 012.

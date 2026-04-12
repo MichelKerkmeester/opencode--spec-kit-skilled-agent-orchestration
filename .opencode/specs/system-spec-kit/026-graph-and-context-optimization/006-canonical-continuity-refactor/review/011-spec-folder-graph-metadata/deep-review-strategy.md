@@ -39,6 +39,7 @@ Verify that the graph-metadata schema, parser, and backfill flow are correct, an
 | D3 Traceability | PASS with advisories | 1 | Parser output can contain both fully qualified paths and bare basenames for the same artifact. |
 | D2 Security | PASS | 2 | No unsafe relationship merge or cross-packet leakage was found in the reviewed code paths. |
 | D4 Maintainability | PASS with advisories | 2 | Ambiguous basename-only `key_files` entries make the derived metadata noisier for downstream consumers. |
+| D1/D3 Post-remediation validation | PASS with advisories | 15 | The newline cleanup landed, but basename-only file references still survive into current `graph-metadata.json` output. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
@@ -53,6 +54,7 @@ Verify that the graph-metadata schema, parser, and backfill flow are correct, an
 
 - Iteration 1: Reading the parser beside a real `graph-metadata.json` output made the basename-duplication issue visible immediately.
 - Iteration 2: Rechecking the schema and backfill paths confirmed the issue is quality-of-output noise rather than a contract-breaking correctness failure.
+- Iteration 15: Re-reading the patched parser beside the current on-disk packet artifact made it clear the remediation only addressed multiline entity text, not basename normalization.
 
 ## 9. WHAT FAILED
 
@@ -66,10 +68,11 @@ Verify that the graph-metadata schema, parser, and backfill flow are correct, an
 
 - The schema version, manual/derived split, and backfill traversal logic all align with the intended packet-graph contract.
 - No unsafe manual-field overwrite or cross-packet relationship corruption was found in the reviewed code paths.
+- The graph README and config README fixes are real; the remaining issue is parser/output quality, not documentation drift.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Complete after 2 iterations. The only active follow-up is to normalize or filter basename-only file references before they enter `key_files` and derived entities.
+Post-remediation validation complete. The only active follow-up remains to normalize or filter basename-only file references before they enter `key_files` and derived entities.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
@@ -81,8 +84,8 @@ Complete after 2 iterations. The only active follow-up is to normalize or filter
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 1-2 | The feature works, but derived key-file/entity output is noisier than the ideal packet contract suggests. |
-| `checklist_evidence` | core | partial | 2 | Packet closure is broadly correct, yet downstream metadata quality still has one advisory gap. |
+| `spec_code` | core | partial | 15 | The feature still works, but the latest parser/output recheck shows basename-only key-file noise remains in the derived artifact. |
+| `checklist_evidence` | core | partial | 15 | Packet closure is broadly correct, yet the post-remediation validation still leaves one downstream metadata-quality advisory open. |
 | `feature_catalog_code` | overlay | notApplicable | 0 | Feature-catalog surfaces were not in the requested scope. |
 | `playbook_capability` | overlay | notApplicable | 0 | Manual-playbook surfaces were not in the requested scope. |
 <!-- MACHINE-OWNED: END -->
@@ -92,9 +95,9 @@ Complete after 2 iterations. The only active follow-up is to normalize or filter
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
 | `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-schema.ts` | [D1, D2, D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts` | [D1, D2, D3, D4] | 2 | 0 P0, 0 P1, 1 P2 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts` | [D1, D2, D3, D4] | 15 | 0 P0, 0 P1, 1 P2 | complete |
 | `.opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts` | [D1, D3, D4] | 2 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/011-spec-folder-graph-metadata/graph-metadata.json` | [D3, D4] | 1 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/011-spec-folder-graph-metadata/graph-metadata.json` | [D3, D4] | 15 | 0 P0, 0 P1, 0 P2 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES

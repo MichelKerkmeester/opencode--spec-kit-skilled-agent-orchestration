@@ -71,18 +71,10 @@
       "implementation-design.md",
       "resource-map.md",
       "research/research.md",
-      "verify-phases-review.md",
-      "phase-017-rerun-seed.md",
-      "_memory.continuity",
-      "./.opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-      "lib/routing/content-router.ts",
-      "lib/merge/anchor-merge-operation.ts",
+      "scratch/verify-phases-review.md",
+      "scratch/phase-017-rerun-seed.md",
       "handover.md",
-      "findings/routing-rules.md",
-      "findings/validation-contract.md",
-      "findings/thin-continuity-schema.md",
-      "findings/feature-retargeting-map.md",
-      "findings/resume-journey.md"
+      "graph-metadata.json"
     ],
     "entities": [
       {
@@ -136,37 +128,13 @@
       {
         "name": "verify-phases-review.md",
         "kind": "doc",
-        "path": "verify-phases-review.md",
+        "path": "scratch/verify-phases-review.md",
         "source": "derived"
       },
       {
         "name": "phase-017-rerun-seed.md",
         "kind": "doc",
-        "path": "phase-017-rerun-seed.md",
-        "source": "derived"
-      },
-      {
-        "name": "_memory.continuity",
-        "kind": "file",
-        "path": "_memory.continuity",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "./.opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "content-router.ts",
-        "kind": "code",
-        "path": "lib/routing/content-router.ts",
-        "source": "derived"
-      },
-      {
-        "name": "anchor-merge-operation.ts",
-        "kind": "code",
-        "path": "lib/merge/anchor-merge-operation.ts",
+        "path": "scratch/phase-017-rerun-seed.md",
         "source": "derived"
       },
       {
@@ -176,9 +144,9 @@
         "source": "derived"
       },
       {
-        "name": "routing-rules.md",
-        "kind": "doc",
-        "path": "findings/routing-rules.md",
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "graph-metadata.json",
         "source": "derived"
       }
     ],

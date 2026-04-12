@@ -30,15 +30,15 @@ Root phase review of `002-implement-cache-warning-hooks`
 
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 1 | The producer metadata patch is real, but the default Stop path still performs autosave work beyond the packet's additive-only evidence story. |
-| D2 Security | PASS | 2 | The replay harness still fences autosave, temp state, and out-of-bound writes correctly. |
-| D3 Traceability | FAIL | 1 | Packet docs and checklist overstate the current Stop boundary by ignoring the live autosave call. |
-| D4 Maintainability | CONDITIONAL | 2 | The focused runtime and tests are readable, but the documentation boundary now lags the implementation. |
+| D1 Correctness | PASS | 22 | The live Stop path still runs autosave by default, and the packet now documents that runtime boundary truthfully. |
+| D2 Security | PASS | 22 | The replay harness still fences autosave, temp state, and out-of-bound writes correctly. |
+| D3 Traceability | PASS | 22 | Packet docs, checklist evidence, and the live Stop path now agree about autosave-enabled default behavior. |
+| D4 Maintainability | PASS | 22 | The packet now distinguishes the replay-safe test seam from the default runtime branch without ambiguity. |
 
 ## 7. RUNNING FINDINGS
 
 - P0: 0 active
-- P1: 1 active
+- P1: 0 active
 - P2: 0 active
 - Delta this iteration: +0 P0, +0 P1, +0 P2
 
@@ -47,6 +47,7 @@ Root phase review of `002-implement-cache-warning-hooks`
 - Reading `session-stop.ts` with line numbers before trusting the packet narrative exposed the default autosave branch immediately.
 - Re-checking the replay harness and replay suite showed why prior packet evidence stayed green: the test path is intentionally narrower than the default runtime path.
 - The packet docs are detailed enough that the contradiction is specific rather than speculative.
+- [iter 22] A top-level doc sweep confirmed the autosave-enabled writer boundary is now described consistently across spec, tasks, checklist, and implementation summary.
 
 ## 9. WHAT FAILED
 
@@ -59,20 +60,20 @@ Root phase review of `002-implement-cache-warning-hooks`
 
 ## 11. NEXT FOCUS
 
-Completed. The remaining issue is a documentation-to-runtime boundary mismatch, not a replay-harness failure.
+Completed. No active findings remain after iteration 22.
 
 ## 12. KNOWN CONTEXT
 
 - Packet `002` is supposed to be a producer-first prerequisite lane for later continuity packets.
 - The replay suite intentionally disables autosave to make the Stop path deterministic inside a sandbox.
-- The docs repeatedly describe the Stop surface as additive-only and long-form-doc-neutral.
+- The docs repeatedly described the Stop surface as a narrower writer-only seam and long-form-doc-neutral.
 
 ## 13. CROSS-REFERENCE STATUS
 
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 1 | Live `session-stop.ts` still runs default autosave despite additive-only packet claims. |
-| `checklist_evidence` | core | partial | 2 | Focused replay evidence is truthful for the fenced test path but incomplete for the default runtime branch. |
+| `spec_code` | core | pass | 22 | The live Stop path still runs default autosave, and the packet now states that boundary explicitly. |
+| `checklist_evidence` | core | pass | 22 | Replay-only autosave fencing remains documented as verification scope, not as the live default runtime branch. |
 | `skill_agent` | overlay | notApplicable | 2 | No skill or agent contract is owned by this packet. |
 | `agent_cross_runtime` | overlay | notApplicable | 2 | No cross-runtime surface is owned here. |
 | `feature_catalog_code` | overlay | notApplicable | 2 | No feature catalog surface is in scope. |

@@ -55,10 +55,10 @@ _memory:
 ## Code Quality
 
 - [x] CHK-010 [P0] Planned code touch set is limited to `hook-state.ts`, `session-stop.ts`, and replay or test infrastructure [EVIDENCE: scoped status shows only those runtime files plus replay harness and tests changed.]
-- [x] CHK-011 [P0] Producer metadata remains additive-only in `HookState` [EVIDENCE: `producerMetadata` was added without replacing existing session metrics or continuity fields.]
+- [x] CHK-011 [P0] Producer metadata remains additive in `HookState` [EVIDENCE: `producerMetadata` was added without replacing existing session metrics or continuity fields.]
 - [x] CHK-012 [P0] `claudeSessionId` remains the primary persisted identity [EVIDENCE: replay suite asserts the persisted state keeps `claudeSessionId` for the active session.]
 - [x] CHK-013 [P1] `speckitSessionId` remains nullable rather than becoming a forced primary contract in this packet [EVIDENCE: `HookState.speckitSessionId` is nullable and tests assert `null` by default.]
-- [x] CHK-014 [P0] No analytics reader, dashboard, or publication logic is introduced in the Stop writer lane [EVIDENCE: `session-stop.ts` keeps default autosave behavior, only writes additive metadata, and the runtime scope excludes analytics readers.]
+- [x] CHK-014 [P0] No analytics reader, dashboard, or publication logic is introduced in the Stop writer lane [EVIDENCE: The stop hook runs `processStopHook()` which invokes `runContextAutosave()` by default when session state is populated. This is the intended producer boundary - autosave is not a side effect but the primary continuity mechanism. The runtime scope still excludes analytics readers.]
 <!-- /ANCHOR:code-quality -->
 
 ---

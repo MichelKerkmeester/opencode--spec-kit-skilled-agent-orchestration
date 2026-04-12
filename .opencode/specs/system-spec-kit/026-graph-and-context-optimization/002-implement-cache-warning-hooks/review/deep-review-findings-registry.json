@@ -5,7 +5,7 @@
       "id": "DR-002-I001-P1-001",
       "severity": "P1",
       "dimension": "traceability",
-      "summary": "Packet `002` still documents `session-stop.ts` as an additive writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever the state carries a spec folder and summary.",
+      "summary": "Packet `002` still documents `session-stop.ts` as a narrower writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever the state carries a spec folder and summary.",
       "evidenceRefs": [
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:124",
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/tasks.md:69",

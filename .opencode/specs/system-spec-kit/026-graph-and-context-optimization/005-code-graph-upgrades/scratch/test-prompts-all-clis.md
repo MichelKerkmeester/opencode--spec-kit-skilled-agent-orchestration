@@ -27,7 +27,7 @@ These prompts exercise the code graph upgrades shipped in packet 014. Run each p
 ```
 Call code_graph_scan to index the codebase, then call code_graph_status. 
 Show me the graph status including node count, edge count, and whether 
-the graph is ready. Also show the detector provenance summary if available.
+the graph is ready.
 ```
 
 ### T2-CC: Basic Query
@@ -99,7 +99,7 @@ Run each with: `codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_
 ### T1-CX: Graph Scan + Status
 
 ```
-codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_tier="fast" "Call the MCP tool code_graph_scan to index the codebase. Then call code_graph_status. Report: node count, edge count, graph readiness state, and detector provenance summary (dominant detector type and per-type counts). Do NOT modify any files."
+codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_tier="fast" "Call the MCP tool code_graph_scan to index the codebase. Then call code_graph_status. Report: node count, edge count, and graph readiness state. Do NOT modify any files."
 ```
 
 ### T2-CX: Basic Query
@@ -111,7 +111,7 @@ codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_tier="fast" "Use
 ### T3-CX: Detector Provenance
 
 ```
-codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_tier="fast" "Run code_graph_scan, then code_graph_status. Report the detector provenance summary: which detector type is dominant (AST, regex, heuristic), what the per-type counts are, and whether the DetectorProvenance contract from shared-payload.ts is correctly serialized. Cite the specific fields you see in the response. Do NOT modify any files."
+codex exec -m gpt-5.4 -c model_reasoning_effort=high -c service_tier="fast" "Run code_graph_scan. Report the detector provenance summary from the scan response: which detector type is dominant (AST, regex, heuristic), what the per-type counts are, and whether the DetectorProvenance contract from shared-payload.ts is correctly serialized. Cite the specific fields you see in the response. Do NOT modify any files."
 ```
 
 ### T4-CX: Blast-Radius Depth Cap
@@ -147,7 +147,7 @@ Run each with: `copilot -p "..."`
 ### T1-CP: Graph Scan + Status
 
 ```
-copilot -p "Use the Spec Kit Memory MCP server to call code_graph_scan followed by code_graph_status. Report the graph node count, edge count, readiness state, and detector provenance summary. Do not modify any files."
+copilot -p "Use the Spec Kit Memory MCP server to call code_graph_scan followed by code_graph_status. Report the graph node count, edge count, and readiness state. Do not modify any files."
 ```
 
 ### T2-CP: Basic Query
@@ -159,7 +159,7 @@ copilot -p "Use code_graph_query from the Spec Kit Memory MCP to find all caller
 ### T3-CP: Detector Provenance
 
 ```
-copilot -p "After running code_graph_scan, check code_graph_status for the detector provenance summary. Report which detector is dominant (AST vs regex vs heuristic), the per-type counts, and whether the DetectorProvenance taxonomy from shared-payload.ts is correctly reflected."
+copilot -p "After running code_graph_scan, inspect the scan response for the detector provenance summary. Report which detector is dominant (AST vs regex vs heuristic), the per-type counts, and whether the DetectorProvenance taxonomy from shared-payload.ts is correctly reflected."
 ```
 
 ### T4-CP: Blast-Radius Depth Cap
@@ -195,7 +195,7 @@ Run each with: `gemini -p "..."`
 ### T1-GE: Graph Scan + Status
 
 ```
-gemini -p "Call the MCP tools code_graph_scan and code_graph_status from the spec_kit_memory server. Report graph node count, edge count, readiness, and detector provenance summary."
+gemini -p "Call the MCP tools code_graph_scan and code_graph_status from the spec_kit_memory server. Report graph node count, edge count, and readiness."
 ```
 
 ### T2-GE: Basic Query
@@ -207,7 +207,7 @@ gemini -p "Use the code_graph_query MCP tool to find all callers of the function
 ### T3-GE: Detector Provenance
 
 ```
-gemini -p "Run code_graph_scan then code_graph_status. Report the detector provenance summary: dominant type, per-type counts, and whether DetectorProvenance is correctly serialized."
+gemini -p "Run code_graph_scan. Report the detector provenance summary from the scan response: dominant type, per-type counts, and whether DetectorProvenance is correctly serialized."
 ```
 
 ### T4-GE: Blast-Radius Depth Cap

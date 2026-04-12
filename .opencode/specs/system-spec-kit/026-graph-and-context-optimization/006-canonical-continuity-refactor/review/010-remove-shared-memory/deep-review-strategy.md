@@ -39,6 +39,7 @@ Re-run the live runtime grep for shared-memory residues and verify whether any a
 | D3 Traceability | CONDITIONAL | 1-2 | Packet `010` documents the schema-column exception, but the operator's grep contract still turns that live residue into a major finding. |
 | D2 Security | PASS | 2 | No live shared-memory handlers, scope branches, HYDRA aliases, or archival-manager paths remained in the reviewed runtime grep surface. |
 | D4 Maintainability | CONDITIONAL | 2 | Grep-based audits still surface the removed shared-space identifier in active runtime code. |
+| D1/D2/D3 Post-remediation validation | CONDITIONAL | 14 | The live-code sweep is otherwise clean, but the documented `shared_space_id` schema-column exception still remains in runtime code. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
@@ -53,6 +54,7 @@ Re-run the live runtime grep for shared-memory residues and verify whether any a
 
 - Iteration 1: Restricting the grep to live runtime TypeScript surfaces produced a small, auditable hit set.
 - Iteration 2: Re-reading the packet's success criteria and implementation summary made the downgrade decision from P0 to P1 explicit instead of hand-wavy.
+- Iteration 14: Re-running the exact `shared_space` / `shared_memory` / `HYDRA` sweep proved the codebase is clean except for the same schema-column exception.
 
 ## 9. WHAT FAILED
 
@@ -66,10 +68,11 @@ Re-run the live runtime grep for shared-memory residues and verify whether any a
 
 - No live runtime hits remained in `handlers/`, `lib/collab/`, or non-schema shared-memory pathways.
 - The retained residue is limited to `shared_space_id` schema-column definitions in `vector-index-schema.ts`.
+- No `shared_memory` or `HYDRA` identifiers remain in live TypeScript/JavaScript runtime code under the reviewed trees.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Complete after 2 iterations. The remaining decision is product-facing, not investigative: either remove/rename the dormant schema column if migration becomes safe, or tighten future release claims so the schema-column exception is explicitly excluded from "zero-hit" runtime expectations.
+Post-remediation validation complete. The remaining decision is still product-facing rather than investigative: either remove/rename the dormant schema column if migration becomes safe, or tighten future release claims so the schema-column exception is explicitly excluded from "zero-hit" runtime expectations.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
@@ -81,8 +84,8 @@ Complete after 2 iterations. The remaining decision is product-facing, not inves
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 1-2 | Packet docs describe the schema exception, but the runtime still contains the removed identifier. |
-| `checklist_evidence` | core | partial | 2 | The packet's own acceptance criteria allow the exception, yet the stricter batch grep rule keeps the phase at CONDITIONAL. |
+| `spec_code` | core | partial | 14 | Packet docs describe the schema exception, and the latest live-code sweep still finds only that retained runtime residue. |
+| `checklist_evidence` | core | partial | 14 | The packet's own acceptance criteria allow the exception, yet the stricter batch grep rule still keeps the phase at CONDITIONAL. |
 | `feature_catalog_code` | overlay | notApplicable | 0 | Catalog surfaces were not part of this focused grep revisit. |
 | `playbook_capability` | overlay | notApplicable | 0 | Manual-playbook surfaces were not part of this focused grep revisit. |
 <!-- MACHINE-OWNED: END -->
@@ -91,7 +94,7 @@ Complete after 2 iterations. The remaining decision is product-facing, not inves
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | [D1, D2, D3, D4] | 2 | 0 P0, 1 P1, 0 P2 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | [D1, D2, D3, D4] | 14 | 0 P0, 1 P1, 0 P2 | complete |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/010-remove-shared-memory/spec.md` | [D3] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/010-remove-shared-memory/implementation-summary.md` | [D3, D4] | 2 | 0 P0, 0 P1, 0 P2 | complete |
 <!-- MACHINE-OWNED: END -->

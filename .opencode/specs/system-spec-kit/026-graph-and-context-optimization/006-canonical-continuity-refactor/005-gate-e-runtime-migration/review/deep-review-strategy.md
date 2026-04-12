@@ -1,128 +1,119 @@
 ---
-title: Deep Review Strategy - Gate E Runtime Migration
-description: Final strategy state for the Gate E doc-surface parity review batch.
+title: Deep Review Strategy
+description: Gate E post-remediation validation tracking for the canonical continuity refactor.
 ---
 
-# Deep Review Strategy: Gate E - Runtime Migration
+# Deep Review Strategy - Gate E Runtime Migration
+
+## 1. OVERVIEW
+
+### Purpose
+Track the post-remediation Gate E validation pass while keeping the operator docs, skill docs, and Gemini runtime settings read-only.
+
+### Usage
+- Validation scope: iterations 008-009 of the post-remediation pass
+- Current phase focus: confirm continuity-edit guidance is aligned across docs, then verify canonical ladder wording and Gemini runtime settings stay in parity
+- Reducer handoff: `deep-review-findings-registry.json`
 
 ## 2. TOPIC
-Gate E documentation-parity review for batch iterations 005-008 covering the top-level operator docs, memory commands, agent docs, and the `system-spec-kit` skill contract.
+Gate E post-remediation validation for continuity-edit guidance, canonical recovery wording, and Gemini runtime configuration parity.
 
 ## 3. REVIEW DIMENSIONS (remaining)
 <!-- MACHINE-OWNED: START -->
-- [x] D1 Correctness - Recovery instructions vs shipped runtime behavior
-- [x] D2 Security - Retired migration language and unsafe operator guidance
-- [x] D3 Traceability - Cross-surface consistency across docs, commands, agents, and skills
-- [x] D4 Maintainability - Stable wording, minimal ambiguity, future-safe guidance
+- [ ] D1 Correctness — not allocated in this validation slice
+- [ ] D2 Security — not allocated in this validation slice
+- [x] D3 Traceability — reviewed in iteration 008
+- [x] D4 Maintainability — reviewed in iteration 009
 <!-- MACHINE-OWNED: END -->
 
 ## 4. NON-GOALS
-- Editing the packet docs or broader repo surfaces.
-- Recounting every historical Gate E touched file from git history.
-- Reviewing runtime implementation beyond the specific lines needed to validate doc claims.
+- Do not reopen Gate D runtime behavior or Gate F cleanup verification in this packet.
+- Do not modify the reviewed docs or settings during validation.
+- Do not elevate formatting-only nits when the canonical continuity wording is already aligned.
 
 ## 5. STOP CONDITIONS
-- Complete the four requested Gate E iterations.
-- Confirm whether the mapped surfaces reflect current post-006 recovery reality.
-- Keep all writes inside `005-gate-e-runtime-migration/review/`.
+- Stop after the assigned Gate E validation iterations.
+- Stop early only for a confirmed P0 or release-blocking P1 in the runtime-migration documentation surface.
 
 ## 6. COMPLETED DIMENSIONS
 <!-- MACHINE-OWNED: START -->
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 005 | Operator-facing docs say direct `_memory.continuity` edits can land in generic spec docs, but the runtime ladder only reads continuity from `implementation-summary.md`. |
-| D2 Security | PASS | 007 | No target-surface references to `/spec_kit:continue`, `/memory:continue`, shadow-only rollout, EWMA, or staged hold windows remain. |
-| D3 Traceability | CONDITIONAL | 006 | `system-spec-kit/SKILL.md` still hard-blocks direct continuity edits while AGENTS, CLAUDE, and `/memory:save` explicitly allow them. |
-| D4 Maintainability | PASS | 008 | The surviving command and agent surfaces consistently re-anchor recovery on `/spec_kit:resume` and the canonical ladder. |
+| D3 Traceability | PASS | 008 | `AGENTS.md`, `CLAUDE.md`, `SKILL.md`, and `.gemini/settings.json` now agree on `implementation-summary.md` continuity edits, indexed saves via `generate-context.js`, and a relative Gemini `cwd`. |
+| D4 Maintainability | PASS | 009 | The cross-runtime docs now use the same canonical ladder and memory-save wording, with no surviving standalone `memory/*.md` primary-artifact guidance. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 2 active
+- **P1 (Major):** 0 active
 - **P2 (Minor):** 0 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **Delta this slice:** +0 P0, +0 P1, +0 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
-- Comparing the live runtime carrier (`resume-ladder.ts`) to AGENTS, CLAUDE, README, and `/memory:save` exposed the operator-visible drift quickly. (iteration 005)
-- Reading the `system-spec-kit` skill after the command docs showed the second contradiction was not runtime vs docs, but doc vs doc. (iteration 006)
-- Exit-code grep sweeps were effective for ruling out stale rollout vocabulary across the targeted surfaces. (iteration 007)
+- Reading the operator docs, skill docs, and Gemini settings together made it easy to confirm that the continuity-edit contract was fully normalized after remediation.
+- Keeping the second pass focused on wording parity prevented low-value nits from obscuring the fact that the requested Gate E fixes appear to have landed cleanly.
 
 ## 9. WHAT FAILED
-- Packet implementation-summary counts were not useful for parity review by themselves; the current text had to be validated against the live files directly. (iteration 008)
-- The generic phrase “spec docs” hid a real operational ambiguity until the runtime carrier and command guidance were read together. (iteration 005)
+- None. This slice produced confirmation-only results with no new defects.
 
 ## 10. EXHAUSTED APPROACHES (do not retry)
-### Quick continuity wording audit -- PRODUCTIVE (iteration 005)
-- What worked: compare AGENTS, CLAUDE, README, and `/memory:save` against the live resume reader.
-- Prefer for: operator-facing continuity contract disputes.
+### Continuity-edit guidance parity recheck -- PRODUCTIVE (iteration 008)
+- What worked: compare the explicit save/edit instructions in `AGENTS.md`, `CLAUDE.md`, and `SKILL.md` against the Gemini runtime configuration in one pass
+- Prefer for: future regressions where one runtime or playbook surface lags behind the canonical continuity contract
 
-### Historical rollout term hunting -- PRODUCTIVE (iteration 007)
-- What worked: exact-term grep across the scoped doc, command, and agent surfaces.
-- Prefer for: proving retired migration language is gone from active guidance.
-
-### Git-history reconstruction of the 178-file fanout -- BLOCKED (iteration 008)
-- What was tried: inferring parity correctness from packet summary counts alone.
-- Why blocked: the current review target is present-tense doc/runtime parity, not historical diff accounting.
-- Do NOT retry: treat the packet’s aggregate file counts as proof of alignment without checking the live surfaces.
+### Canonical ladder wording parity recheck -- PRODUCTIVE (iteration 009)
+- What worked: verify the cross-runtime docs all now describe `handover -> _memory.continuity -> spec docs` and no longer instruct operators to author standalone `memory/*.md` continuity artifacts
+- Prefer for: post-remediation documentation audits where wording drift is the primary concern
 
 ## 11. RULED OUT DIRECTIONS
-- Stale `/spec_kit:continue` or `/memory:continue` references in the scoped Gate E surfaces were ruled out by exact-term grep. (iteration 007)
-- Shadow-only rollout, dual-write, EWMA, and fixed hold-window language were ruled out across the targeted doc/agent/command surfaces. (iteration 007)
-- A repo-root `ARCHITECTURE.md` parity obligation was ruled out for this checkout because no such file exists at the target root. (iteration 008)
+- Direct continuity edits still target a file other than `implementation-summary.md`: ruled out across `AGENTS.md`, `CLAUDE.md`, and `SKILL.md`.
+- `.gemini/settings.json` still hardcodes an absolute repository path: ruled out by the relative `cwd` values.
+- Cross-runtime docs still disagree on the canonical recovery ladder or save flow: ruled out by the aligned wording now present in the reviewed docs.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-All requested Gate E iterations are complete. Remaining work is remediation planning for the two continuity-contract contradictions.
+Gate E validation slice complete. If extended, keep the next pass scoped to low-priority packet metadata cleanup rather than re-checking the already aligned continuity guidance.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
-- Batch 2/5 scope fixed Gate E review to current-reality doc parity, not runtime implementation edits.
-- The operator specifically asked for AGENTS, CLAUDE, README, command, agent, and skill surfaces.
-- Review target stayed read-only; no non-review markdown was touched.
+- Commit `9efe2bce2` remediated the earlier Gate E alignment problems.
+- The requested Gate E surfaces now appear fully aligned with the implementation-summary-only continuity model.
 
 ## 14. CROSS-REFERENCE STATUS
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `doc_runtime` | core | partial | 005 | Quick continuity edit guidance over-promises which spec docs are load-bearing for `/spec_kit:resume`. |
-| `command_agent_skill` | core | partial | 006 | `system-spec-kit/SKILL.md` contradicts AGENTS, CLAUDE, and `/memory:save` on whether direct `_memory.continuity` edits are allowed. |
-| `resume_surface` | overlay | pass | 008 | Targeted agent and command docs consistently re-anchor recovery on `/spec_kit:resume` and the canonical ladder. |
-| `stale_rollout_terms` | overlay | pass | 007 | No stale `/continue`, shadow-only, EWMA, or hold-window language remains in the scoped Gate E surfaces. |
+| `doc_runtime` | core | pass | 008 | The reviewed docs all point direct continuity edits to `implementation-summary.md`, and Gemini now uses a relative repository root. |
+| `resume_surface` | overlay | pass | 008 | The reviewed operator and skill docs agree on the canonical recovery ladder and indexed save path. |
+| `command_agent_skill` | core | pass | 009 | `AGENTS.md`, `CLAUDE.md`, and `SKILL.md` now use the same save/edit workflow language. |
+| `stale_rollout_terms` | overlay | pass | 009 | No reviewed file still treats standalone `memory/*.md` artifacts as the primary continuity surface. |
 <!-- MACHINE-OWNED: END -->
 
 ## 15. FILES UNDER REVIEW
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `AGENTS.md` | D1, D3 | 005 | 1 P1 | complete |
-| `CLAUDE.md` | D1, D3 | 005 | 1 P1 | complete |
-| `README.md` | D1, D4 | 008 | 1 P1 | complete |
-| `.opencode/command/memory/save.md` | D1, D3 | 006 | 2 P1 | complete |
-| `.opencode/command/memory/README.txt` | D2, D4 | 007 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/command/memory/search.md` | D2, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/agent/context.md` | D3, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/agent/deep-review.md` | D3, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/agent/handover.md` | D3, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/agent/review.md` | D3, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/agent/speckit.md` | D3, D4 | 008 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/SKILL.md` | D1, D3, D4 | 006 | 1 P1 | complete |
+| `AGENTS.md` | D3, D4 | 008-009 | 0 | complete |
+| `CLAUDE.md` | D3, D4 | 008-009 | 0 | complete |
+| `.opencode/skill/system-spec-kit/SKILL.md` | D3, D4 | 008-009 | 0 | complete |
+| `.gemini/settings.json` | D3, D4 | 008-009 | 0 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES
 <!-- MACHINE-OWNED: START -->
-- Max iterations: 10 batch iterations, 4 allocated to this phase
-- Convergence threshold: not used in this manual batch pass
+- Max iterations: 30
+- Convergence threshold: 0.10
 - Rolling STOP threshold: 0.08
 - No-progress threshold: 0.05
 - Coverage stabilization passes required: 1
-- Session lineage: sessionId=dr-026-006-005-20260412, parentSessionId=null, generation=1, lineageMode=new
-- Findings registry: not created in this scoped pass; state lives in `deep-review-state.jsonl`
-- Release-readiness states: review_in_progress
-- Per-iteration budget: 12 tool calls, 20 minutes
-- Severity threshold: P2
-- Review target type: docs
-- Cross-reference checks: core=doc_runtime, command_agent_skill; overlay=resume_surface, stale_rollout_terms
-- Started: 2026-04-12T10:30:00Z
+- Session lineage: sessionId=DB4B1A15-CF29-478B-8CE6-12FFB2236837, parentSessionId=dr-026-006-005-20260412, generation=2, lineageMode=restart
+- Findings registry: `deep-review-findings-registry.json`
+- Release-readiness states: in-progress | converged | release-blocking
+- Per-iteration budget: verification-only slice
+- Severity threshold: P1
+- Review target type: files
+- Cross-reference checks: core=`doc_runtime`, `command_agent_skill`; overlay=`resume_surface`, `stale_rollout_terms`
+- Started: 2026-04-12T19:11:09Z
 <!-- MACHINE-OWNED: END -->

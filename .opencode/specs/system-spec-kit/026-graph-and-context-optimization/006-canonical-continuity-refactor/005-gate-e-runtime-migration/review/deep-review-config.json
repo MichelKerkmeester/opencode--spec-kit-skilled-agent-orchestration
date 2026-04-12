@@ -1,31 +1,27 @@
 {
-  "sessionId": "dr-026-006-005-20260412",
-  "parentSessionId": null,
-  "lineageMode": "new",
-  "generation": 1,
-  "releaseReadinessState": "review_in_progress",
-  "reviewTargetType": "docs",
+  "topic": "Post-remediation validation - Gate E runtime migration documentation alignment",
+  "mode": "review",
+  "sessionId": "DB4B1A15-CF29-478B-8CE6-12FFB2236837",
+  "parentSessionId": "dr-026-006-005-20260412",
+  "lineageMode": "restart",
+  "generation": 2,
+  "continuedFromRun": 4,
+  "archivedPath": "review_archive/20260412T191109Z-post-remediation",
+  "releaseReadinessState": "in-progress",
+  "reviewTargetType": "files",
   "reviewTarget": {
     "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/005-gate-e-runtime-migration",
-    "scope": "Gate E runtime-migration doc, command, agent, and skill parity review",
-    "batchIterationRange": [5, 8],
+    "scope": "Gate E post-remediation validation for continuity-edit guidance, canonical recovery wording, and Gemini runtime settings",
     "files": [
       "AGENTS.md",
       "CLAUDE.md",
-      "README.md",
-      ".opencode/command/memory/README.txt",
-      ".opencode/command/memory/save.md",
-      ".opencode/command/memory/search.md",
-      ".opencode/agent/context.md",
-      ".opencode/agent/deep-review.md",
-      ".opencode/agent/handover.md",
-      ".opencode/agent/review.md",
-      ".opencode/agent/speckit.md",
-      ".opencode/skill/system-spec-kit/SKILL.md"
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".gemini/settings.json"
     ]
   },
-  "allocatedIterations": 4,
-  "maxIterations": 10,
+  "assignedIterationRange": [8, 9],
+  "allocatedIterations": 2,
+  "maxIterations": 30,
   "dimensions": [
     "correctness",
     "security",
@@ -42,7 +38,8 @@
       "stale_rollout_terms"
     ]
   },
-  "severityThreshold": "P2",
+  "severityThreshold": "P1",
   "maxToolCallsPerIteration": 12,
-  "maxMinutesPerIteration": 20
+  "maxMinutesPerIteration": 20,
+  "startedAt": "2026-04-12T19:11:09Z"
 }

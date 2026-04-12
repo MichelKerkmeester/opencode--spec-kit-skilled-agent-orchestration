@@ -38,7 +38,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Shared memory is gone from the active system surface, and the dead governance, HYDRA, and archival ballast that depended on it is gone too. You can no longer enable shared spaces, flip shared-memory governance flags, rely on HYDRA compatibility aliases, or start the old archival manager. The remaining runtime only keeps the schema-column exception in `vector-index-schema.ts`.
+Shared memory is gone from the active system surface, and the dead governance, HYDRA, and archival ballast that depended on it is gone too. You can no longer enable shared spaces, flip shared-memory governance flags, rely on HYDRA compatibility aliases, or start the old archival manager. The remaining runtime only keeps the schema-column exception in `vector-index-schema.ts`: `shared_space_id` columns retained in schema for backward-compatible DB migration. Not used by runtime. Documented exception - does not affect shared memory removal completeness.
 
 ### Tool and runtime cleanup
 
@@ -119,6 +119,6 @@ The pass started with direct reads of the shared-memory modules, generic scope c
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Schema exception remains** `vector-index-schema.ts` still defines the kept `shared_space_id` columns because this phase does not attempt unsafe SQLite column drops.
+1. **Schema exception remains** `vector-index-schema.ts` still defines the kept `shared_space_id` columns because this phase does not attempt unsafe SQLite column drops. `shared_space_id` columns retained in schema for backward-compatible DB migration. Not used by runtime. Documented exception - does not affect shared memory removal completeness.
 2. **Legacy database rows may still contain data** Existing installs can still have populated shared-space columns or tables, but the runtime no longer uses them.
 <!-- /ANCHOR:limitations -->

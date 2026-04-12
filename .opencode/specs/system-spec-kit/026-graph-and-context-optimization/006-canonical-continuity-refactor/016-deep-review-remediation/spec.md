@@ -4,6 +4,7 @@ status: planned
 level: 3
 type: implementation
 parent: 006-canonical-continuity-refactor
+predecessor: 015-full-playbook-execution
 branch: main
 created: 2026-04-12
 ---

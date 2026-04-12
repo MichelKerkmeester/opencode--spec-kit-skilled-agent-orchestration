@@ -32,8 +32,8 @@ Root phase review of `003-memory-quality-issues`
 |-----------|---------|-----------|---------|
 | D1 Correctness | PASS | 1 | The parent phase map matches the current 10-child folder set on disk. |
 | D2 Security | notApplicable | 3 | No distinct security boundary is owned by this documentation-heavy root packet. |
-| D3 Traceability | FAIL | 2 | Parent and child status surfaces still say `Draft` for multiple children whose implementation summaries describe shipped runtime work. |
-| D4 Maintainability | CONDITIONAL | 3 | The sampled runtime files exist and line up with the child summaries, but the root status roll-up is no longer trustworthy. |
+| D3 Traceability | FAIL | 23 | The broad multi-child drift is fixed, but Phase 4 still reports `Draft` in the parent phase map and child spec metadata despite shipped closeout evidence. |
+| D4 Maintainability | CONDITIONAL | 24 | The packet is otherwise coherent after remediation; the surviving defect is isolated to Phase 4 status tables and parent roll-up wording. |
 
 ## 7. RUNNING FINDINGS
 
@@ -47,19 +47,23 @@ Root phase review of `003-memory-quality-issues`
 - Starting with a child-folder inventory kept the review honest and avoided repeating an older stale finding about missing phases.
 - Comparing child `Status` fields directly against child `implementation-summary.md` delivery sections exposed the real roll-up defect.
 - Spot-checking the actual `scripts/` runtime files confirmed that the issue is documentation truthfulness, not invented implementation work.
+- [iter 23] A child-status sweep showed the remediation closed the earlier broad drift and left one isolated Phase 4 mismatch.
+- [iter 24] A stabilization pass confirmed the surviving defect does not extend beyond the parent phase map and Phase 4 child metadata.
 
 ## 9. WHAT FAILED
 
 - Treating the parent note about phase-local completion as if it automatically reconciled child `Draft` metadata with shipped runtime summaries.
+- Assuming the post-remediation status sweep updated every child packet evenly; Phase 4 still carries stale Draft metadata.
 
 ## 10. RULED OUT DIRECTIONS
 
-- Parent phase-map folder drift: ruled out; the root packet now enumerates the 10 child folders that exist on disk on 2026-04-12.
-- Missing runtime landing for the sampled children: ruled out by direct reads of `workflow.ts`, `decision-extractor.ts`, `post-save-review.ts`, `trigger-phrase-sanitizer.ts`, `memory-metadata.ts`, and `collect-session-data.ts`.
+- Parent phase-map folder drift: ruled out; the root packet still enumerates the 10 child folders that exist on disk on 2026-04-12.
+- Missing runtime landing for the sampled children: ruled out by direct reads of `workflow.ts`, `decision-extractor.ts`, `post-save-review.ts`, `trigger-phrase-sanitizer.ts`, and the Phase 4 implementation summary verification surface.
+- Broader child-status regression outside Phase 4: ruled out by the now-truthful `Complete` or `Implemented` status metadata on the other sampled child packets.
 
 ## 11. NEXT FOCUS
 
-Completed. The remaining defect is status-surface drift, not folder-topology drift.
+Completed. The remaining defect is isolated to the Phase 4 Draft-status mismatch captured in `F023`.
 
 ## 12. KNOWN CONTEXT
 
@@ -71,8 +75,8 @@ Completed. The remaining defect is status-surface drift, not folder-topology dri
 
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 2 | Parent and child status surfaces still under-report shipped child runtime. |
-| `checklist_evidence` | core | partial | 3 | Child implementation summaries and code samples are real, but the root roll-up no longer reflects them honestly. |
+| `spec_code` | core | fail | 23 | Phase 4 still reports `Draft` in the parent phase map and child spec despite shipped closeout evidence. |
+| `checklist_evidence` | core | fail | 24 | Parent checklist CHK-050 still claims all five child phases are complete while the parent row and child spec leave Phase 4 in Draft state. |
 | `skill_agent` | overlay | notApplicable | 3 | No skill or agent contract is owned here. |
 | `agent_cross_runtime` | overlay | notApplicable | 3 | No cross-runtime surface is in scope. |
 | `feature_catalog_code` | overlay | notApplicable | 3 | No feature catalog surface is in scope. |

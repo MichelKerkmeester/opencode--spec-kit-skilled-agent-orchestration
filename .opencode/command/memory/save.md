@@ -78,7 +78,7 @@ Save the current conversation context, including session summary, key decisions,
 | Field   | Value                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------- |
 | Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
-| Output  | Canonical spec-doc continuity updates + indexed continuity data                               |
+| Output  | Canonical spec-doc continuity updates + indexed continuity data. Also refreshes `graph-metadata.json` derived fields (trigger_phrases, key_files, entities, status) in the spec folder. |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
 | Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
 | Trigger | "save context", "save memory", `/memory:save`                                                |

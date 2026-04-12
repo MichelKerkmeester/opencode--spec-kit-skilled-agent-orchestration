@@ -10,7 +10,7 @@ status: thought
 # Iteration 001 - D1 Correctness
 
 ## Focus
-Compare the packet's additive-only Stop-boundary claims against the live `session-stop.ts` implementation.
+Compare the packet's narrower Stop-boundary claims against the live `session-stop.ts` implementation.
 
 ## Files Reviewed
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md`
@@ -26,7 +26,7 @@ Compare the packet's additive-only Stop-boundary claims against the live `sessio
 None this iteration
 
 ### P1 - Required
-- Packet `002` still describes `session-stop.ts` as an additive writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever a spec folder and session summary are present. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/tasks.md:69] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/checklist.md:61] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:63] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:60] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:85] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:308]
+- Packet `002` still described `session-stop.ts` as a narrower writer-only boundary, but the live Stop path invokes `runContextAutosave()` by default and shells into `generate-context.js` whenever a spec folder and session summary are present. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/spec.md:124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/tasks.md:69] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/checklist.md:61] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-implement-cache-warning-hooks/implementation-summary.md:63] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:60] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:85] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:308]
 
 ### P2 - Suggestions
 None this iteration

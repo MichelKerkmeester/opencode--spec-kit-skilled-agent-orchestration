@@ -60,7 +60,7 @@ You can now replay the Stop path inside a sandboxed `TMPDIR` without touching li
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The delivery stayed inside the packet's narrowed boundary: producer metadata only, no startup fast path, no settings mutation, and no direct warning consumer. I first re-scoped the docs to the canonical 2026-04-08 ordering, then patched `hook-state.ts` and `session-stop.ts`, added a replay harness plus fixture-backed Stop-path tests, and finished with package-level typecheck plus strict packet validation. The Stop hook still runs autosave by default, but this packet keeps that writer path bounded to compact continuity output while the packet docs remain the canonical long-form explanation surface.
+The delivery stayed inside the packet's narrowed boundary: producer metadata only, no startup fast path, no settings mutation, and no direct warning consumer. I first re-scoped the docs to the canonical 2026-04-08 ordering, then patched `hook-state.ts` and `session-stop.ts`, added a replay harness plus fixture-backed Stop-path tests, and finished with package-level typecheck plus strict packet validation. The stop hook runs `processStopHook()` which invokes `runContextAutosave()` by default when session state is populated. This is the intended producer boundary - autosave is not a side effect but the primary continuity mechanism.
 <!-- /ANCHOR:how-delivered -->
 
 ---

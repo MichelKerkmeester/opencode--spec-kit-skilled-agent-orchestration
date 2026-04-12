@@ -1,119 +1,124 @@
 ---
-title: Deep Review Strategy - Gate D Reader Ready
-description: Final strategy state for the Gate D reader-surface deep review batch.
+title: Deep Review Strategy
+description: Gate D post-remediation validation tracking for the canonical continuity refactor.
 ---
 
-# Deep Review Strategy: Gate D - Reader Ready
+# Deep Review Strategy - Gate D Reader-ready
+
+## 1. OVERVIEW
+
+### Purpose
+Track the post-remediation Gate D validation pass while keeping the canonical reader runtime and packet docs read-only.
+
+### Usage
+- Validation scope: iterations 006-007 of the post-remediation pass
+- Current phase focus: confirm the 3-level reader ladder landed correctly, then reconcile the packet contract with the cleaned-up runtime
+- Reducer handoff: `deep-review-findings-registry.json`
 
 ## 2. TOPIC
-Gate D runtime review for batch iterations 001-004 covering the reader-side implementation surfaces: `resume-ladder.ts`, `session-resume.ts`, `memory-context.ts`, `memory-search.ts`, `session-bootstrap.ts`, and `memory-index-discovery.ts`.
+Gate D post-remediation validation for the canonical reader ladder and packet-to-runtime traceability after archived-tier resume fallback was removed from the live contract.
 
 ## 3. REVIEW DIMENSIONS (remaining)
 <!-- MACHINE-OWNED: START -->
-- [x] D1 Correctness - Logic errors, fallback ordering, contract safety
-- [x] D2 Security - Stable reads, override handling, failure behavior
-- [x] D3 Traceability - Packet/design/test/runtime alignment
-- [x] D4 Maintainability - Shared helper boundaries, drift resistance, safe follow-on cost
+- [x] D1 Correctness — reviewed in iteration 006
+- [ ] D2 Security — not allocated in this validation slice
+- [x] D3 Traceability — reviewed in iteration 007
+- [ ] D4 Maintainability — not allocated in this validation slice
 <!-- MACHINE-OWNED: END -->
 
 ## 4. NON-GOALS
-- Editing any runtime or packet files under review.
-- Re-opening archived-tier design decisions beyond the active Gate D code surfaces.
-- Re-running the full Gate D benchmark or regression suite inside this review pass.
+- Do not reopen Gate C writer-path behavior or Gate E documentation routing in this packet.
+- Do not modify the reviewed runtime or packet files during validation.
+- Do not infer a missing runtime defect from stale packet prose when the live reader contract already says otherwise.
 
 ## 5. STOP CONDITIONS
-- Complete the four requested Gate D iterations.
-- Cite every finding with concrete file-line evidence.
-- Keep review writes inside `004-gate-d-reader-ready/review/` only.
+- Stop after the assigned Gate D validation iterations.
+- Stop early only for a confirmed P0 or release-blocking P1 in the canonical reader path.
 
 ## 6. COMPLETED DIMENSIONS
 <!-- MACHINE-OWNED: START -->
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 001 | `resumeLadder` only reads `_memory.continuity` from `implementation-summary.md`, which is narrower than the broader spec-doc continuity contract. |
-| D2 Security | PASS | 002 | Stable read checks, fingerprint generation, and explicit spec-folder override handling are present and fail closed. |
-| D3 Traceability | CONDITIONAL | 003 | Runtime and fixture tests converge on `implementation-summary.md` continuity, while design and validation still describe `_memory.continuity` as a spec-doc feature. |
-| D4 Maintainability | PASS | 004 | Shared helper boundaries stay thin and the canonical discovery/search surfaces remain aligned with doc-first recovery. |
+| D1 Correctness | PASS | 006 | The live reader path now sources continuity only from `implementation-summary.md`, exposes `handover -> continuity -> spec docs`, and keeps freshness-aware synthesis intentionally. |
+| D3 Traceability | CONDITIONAL | 007 | Gate D `spec.md` and `checklist.md` still require archived fallback, archived telemetry, and a 4-level ladder even though the live resume contract explicitly disables that tier. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
 - **P1 (Major):** 1 active
-- **P2 (Minor):** 1 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **P2 (Minor):** 0 active
+- **Delta this slice:** +0 P0, +1 P1, +0 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
-- Line-level comparison of `resume-ladder.ts` against the Gate D design packet and validator contract exposed the real continuity-scope behavior quickly. (iteration 001)
-- Reading temp-fixture and benchmark tests after the runtime pass clarified what the current regression suite actually protects. (iteration 003)
-- Verifying `memory-search.ts`, `memory-index-discovery.ts`, and `session-bootstrap.ts` separately helped rule out broader reader-surface regressions. (iteration 004)
+- Reviewing `resume-ladder.ts`, `session-resume.ts`, `memory-context.ts`, and `memory-search.ts` together quickly proved the runtime now agrees on the 3-level reader contract.
+- Re-reading the Gate D ADR and risk table settled the only open ambiguity: freshness-aware synthesis is still intentional, so the remaining issue is packet traceability drift rather than reader correctness.
 
 ## 9. WHAT FAILED
-- Grep-only surface sweeps were too coarse to settle whether continuity scope drift was intentional; the code, design summary, validator, and tests all needed to be read together. (iteration 001)
-- Packet wording around a four-level ladder was not decisive for this batch because the operator brief explicitly framed Gate D as a three-level ladder. (iteration 004)
+- The Gate D packet cleanup did not fully propagate into `spec.md` and `checklist.md`, so the packet still verifies archived fallback that no longer exists in the live reader path.
 
 ## 10. EXHAUSTED APPROACHES (do not retry)
-### Continuity scope triangulation -- PRODUCTIVE (iteration 001)
-- What worked: reading `resume-ladder.ts`, `implementation-design.md`, and `spec-doc-structure.ts` together.
-- Prefer for: runtime/doc contract disputes around canonical continuity.
+### Canonical reader ladder recheck -- PRODUCTIVE (iteration 006)
+- What worked: compare the live ladder builder, exposed resume metadata, and canonical source classification before looking for drift in packet docs
+- Prefer for: future regressions where resume-source ordering or continuity sourcing seems uncertain
 
-### Archived-tier conjecture -- BLOCKED (iteration 004, 2 attempts)
-- What was tried: looking for a batch-relevant archived fallback defect in the active Gate D runtime files.
-- Why blocked: the user brief, `memory-context` hints, and current runtime all treat the live Gate D path as handover -> continuity -> spec docs.
-- Do NOT retry: infer a missing archived-tier runtime bug from older packet prose without a newer contract saying the archived tier must still exist here.
+### Gate D packet contract recheck -- PRODUCTIVE (iteration 007)
+- What worked: reconcile `spec.md` and `checklist.md` against the live resume metadata instead of assuming the stale packet still reflects the runtime
+- Prefer for: post-remediation validation where docs may lag behind a cleaned-up reader contract
 
 ## 11. RULED OUT DIRECTIONS
-- Missing happy-path stability checks in `resume-ladder.ts` were ruled out by the double-stat read guard before fingerprint creation. (iteration 002, evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts:269`)
-- Hidden SQL recovery on the default `session_resume` path was ruled out by direct inspection of the ladder call site and no-context handling. (iteration 002, evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:422`)
-- Canonical discovery ordering regression was ruled out by `memory-index-discovery.ts` preferring `.opencode/specs` and excluding `memory/`. (iteration 004, evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts:27`)
+- Archived fallback is still active in the live Gate D resume mode: ruled out by `resume-ladder.ts` and `memory-context.ts`, which now expose only `handover`, `continuity`, and `spec_docs`.
+- Continuity still reads from standalone `memory/*.md` artifacts: ruled out by `resume-ladder.ts`, which reads continuity directly from `implementation-summary.md`.
+- Freshness-aware handover/continuity synthesis is a new mismatch: ruled out by Gate D's own ADR and risk table, which still describe freshness comparison as intended behavior.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-All requested Gate D iterations are complete. Follow-on work belongs to remediation planning, not additional review passes inside this packet.
+Gate D validation slice complete. If extended, review adjacent packet artifacts for stale archived-tier wording rather than re-checking the runtime again.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
-- Batch 2/5 scope was fixed to Gate D implementation review for iterations 001-004.
-- Review target remained read-only throughout; only `review/` artifacts were created.
-- The operator explicitly framed Gate D as the three-level resume ladder, so archived-tier speculation was treated as out-of-scope unless live code contradicted that.
+- Commit `9efe2bce2` remediated the original Gate D reader defect cluster.
+- The remaining post-remediation concern is packet traceability drift, not a live resume-ladder correctness failure.
 
 ## 14. CROSS-REFERENCE STATUS
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 001 | Design/packet prose describes spec-doc continuity broadly, but runtime only loads continuity from `implementation-summary.md`. |
-| `checklist_evidence` | core | pass | 004 | Packet checklist references the shipped helper and test lane that still exist in the runtime tree. |
-| `resume_surface` | overlay | partial | 003 | `memory_context` and `session_resume` both inherit the narrowed continuity-reader behavior from `buildResumeLadder()`. |
-| `session_bootstrap_contract` | overlay | pass | 004 | `session-bootstrap.ts` stays a wrapper over `session_resume` and only adds advisory routing and trust-envelope shaping. |
-| `trigger_discovery` | overlay | pass | 004 | Discovery/search surfaces prefer canonical spec docs and exclude `memory/` directories from active continuity indexing. |
+| `spec_code` | core | pass | 006 | The reader runtime now consistently exposes the canonical `handover -> continuity -> spec docs` ladder and implementation-summary continuity sourcing. |
+| `checklist_evidence` | core | pass | 006 | The live handler surfaces agree on the corrected Gate D contract, so the runtime confirmation pass produced no contradiction. |
+| `spec_code` | core | fail | 007 | Gate D `spec.md` still requires archived fallback and a 4-level ladder that the live resume metadata explicitly disables. |
+| `checklist_evidence` | core | fail | 007 | `checklist.md` still marks archived fallback verified even though the live resume mode reports `archivedTierEnabled: false`. |
+| `feature_catalog_code` | overlay | notApplicable | 006-007 | No feature-catalog surface was reviewed in Gate D scope. |
+| `playbook_capability` | overlay | notApplicable | 006-007 | No playbook surface was reviewed in Gate D scope. |
 <!-- MACHINE-OWNED: END -->
 
 ## 15. FILES UNDER REVIEW
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts` | D1, D2, D3, D4 | 004 | 1 P1, 1 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | D1, D2, D3 | 003 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | D1, D3 | 003 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | D3, D4 | 004 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | D3, D4 | 004 | 0 P0, 0 P1, 0 P2 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | D3, D4 | 004 | 0 P0, 0 P1, 0 P2 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts` | D1, D3 | 006-007 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | D1 | 006 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | D1, D3 | 006-007 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | D1 | 006 | 0 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md` | D3 | 007 | 1 P1 | partial |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/checklist.md` | D3 | 007 | 1 P1 | partial |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md` | D3 | 007 | 0 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES
 <!-- MACHINE-OWNED: START -->
-- Max iterations: 10 batch iterations, 4 allocated to this phase
-- Convergence threshold: not used in this manual batch pass
+- Max iterations: 30
+- Convergence threshold: 0.10
 - Rolling STOP threshold: 0.08
 - No-progress threshold: 0.05
 - Coverage stabilization passes required: 1
-- Session lineage: sessionId=dr-026-006-004-20260412, parentSessionId=null, generation=1, lineageMode=new
-- Findings registry: not created in this scoped pass; state lives in `deep-review-state.jsonl`
-- Release-readiness states: review_in_progress
-- Per-iteration budget: 12 tool calls, 20 minutes
-- Severity threshold: P2
-- Review target type: code
-- Cross-reference checks: core=spec_code, checklist_evidence; overlay=resume_surface, session_bootstrap_contract, trigger_discovery
-- Started: 2026-04-12T09:00:00Z
+- Session lineage: sessionId=711C7530-39B3-4F35-85ED-4B9EDD278780, parentSessionId=dr-026-006-004-20260412, generation=2, lineageMode=restart
+- Findings registry: `deep-review-findings-registry.json`
+- Release-readiness states: in-progress | converged | release-blocking
+- Per-iteration budget: verification-only slice
+- Severity threshold: P1
+- Review target type: files
+- Cross-reference checks: core=`spec_code`, `checklist_evidence`; overlay=`feature_catalog_code`, `playbook_capability`
+- Started: 2026-04-12T19:11:09Z
 <!-- MACHINE-OWNED: END -->
