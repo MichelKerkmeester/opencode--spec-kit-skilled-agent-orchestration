@@ -43,7 +43,7 @@
       "implementation",
       "summary"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "planned",
     "key_files": [
       "runtime-capabilities.cjs",

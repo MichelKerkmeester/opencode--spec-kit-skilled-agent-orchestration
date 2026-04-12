@@ -46,7 +46,7 @@
       "tasks",
       "verification"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "planned",
     "key_files": [
       "reduce-state.cjs",

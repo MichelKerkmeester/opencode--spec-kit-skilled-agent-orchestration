@@ -20,20 +20,21 @@ import { isWorkingArtifactPath } from '../config/spec-doc-paths.js';
  */
 export function calculateDocumentWeight(filePath: string, documentType?: string): number {
   if (documentType) {
-    const DOC_TYPE_WEIGHTS: Record<string, number> = {
-      spec: 0.8,
-      decision_record: 0.8,
-      plan: 0.7,
-      tasks: 0.6,
-      implementation_summary: 0.6,
-      research: 0.6,
-      checklist: 0.5,
-      handover: 0.5,
-      graph_metadata: 0.75,
-      constitutional: 1.0,
-      memory: 0.5,
-      scratch: 0.25,
-    };
+      const DOC_TYPE_WEIGHTS: Record<string, number> = {
+        spec: 0.8,
+        decision_record: 0.8,
+        plan: 0.7,
+        tasks: 0.6,
+        implementation_summary: 0.6,
+        research: 0.6,
+        checklist: 0.5,
+        handover: 0.5,
+        description_metadata: 0.55,
+        graph_metadata: 0.75,
+        constitutional: 1.0,
+        memory: 0.5,
+        scratch: 0.25,
+      };
     const weight = DOC_TYPE_WEIGHTS[documentType];
     if (weight !== undefined) return weight;
   }

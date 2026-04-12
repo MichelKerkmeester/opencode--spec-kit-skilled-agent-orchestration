@@ -82,6 +82,86 @@ function parseJsonObject(content: string): unknown {
   return JSON.parse(content) as unknown;
 }
 
+function parseDelimitedValues(raw: string | null | undefined): string[] {
+  if (!raw || typeof raw !== 'string') {
+    return [];
+  }
+
+  return raw
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null {
+  const lines = content
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const values = new Map<string, string>();
+  for (const line of lines) {
+    const separatorIndex = line.indexOf(':');
+    if (separatorIndex <= 0) {
+      continue;
+    }
+    const key = line.slice(0, separatorIndex).trim().toLowerCase();
+    const value = line.slice(separatorIndex + 1).trim();
+    if (!key || !value) {
+      continue;
+    }
+    values.set(key, value);
+  }
+
+  const packetId = values.get('packet');
+  const specFolder = values.get('spec folder');
+  if (!packetId || !specFolder) {
+    return null;
+  }
+
+  const nowIso = new Date().toISOString();
+  const summary = values.get('summary') ?? '';
+  const keyTopics = parseDelimitedValues(values.get('key topics'));
+  const triggerPhrases = Array.from(new Set([
+    ...keyTopics,
+    ...extractKeywords(`${packetId} ${specFolder} ${summary}`).slice(0, 8),
+  ]));
+  const sourceDocs = parseDelimitedValues(values.get('source docs'));
+  const toPacketReferences = (raw: string | undefined): PacketReference[] => {
+    return parseDelimitedValues(raw).map((packet) => ({
+      packet_id: packet,
+      reason: 'Imported from legacy graph-metadata.json',
+      source: 'legacy',
+    }));
+  };
+
+  return {
+    schema_version: GRAPH_METADATA_SCHEMA_VERSION,
+    packet_id: packetId,
+    spec_folder: specFolder,
+    parent_id: values.get('parent') ?? null,
+    children_ids: parseDelimitedValues(values.get('children')),
+    manual: {
+      depends_on: toPacketReferences(values.get('depends on')),
+      supersedes: toPacketReferences(values.get('supersedes')),
+      related_to: toPacketReferences(values.get('related to')),
+    },
+    derived: {
+      trigger_phrases: triggerPhrases.length > 0 ? triggerPhrases : [packetId, specFolder],
+      key_topics: keyTopics,
+      importance_tier: values.get('importance tier') ?? 'normal',
+      status: values.get('status') ?? 'planned',
+      key_files: parseDelimitedValues(values.get('key files')),
+      entities: [],
+      causal_summary: summary,
+      created_at: nowIso,
+      last_save_at: nowIso,
+      last_accessed_at: null,
+      source_docs: sourceDocs,
+    },
+  };
+}
+
 function formatZodError(error: ZodError): string[] {
   return error.issues.map((issue) => {
     const location = issue.path.length > 0 ? issue.path.join('.') : 'root';
@@ -95,6 +175,23 @@ export function validateGraphMetadataContent(content: string): GraphMetadataVali
     const metadata = graphMetadataSchema.parse(parsed);
     return { ok: true, metadata, errors: [] };
   } catch (error: unknown) {
+    const legacyMetadata = parseLegacyGraphMetadataContent(content);
+    if (legacyMetadata) {
+      try {
+        const metadata = graphMetadataSchema.parse(legacyMetadata);
+        return { ok: true, metadata, errors: [] };
+      } catch (legacyError: unknown) {
+        if (legacyError instanceof ZodError) {
+          return { ok: false, metadata: null, errors: formatZodError(legacyError) };
+        }
+        return {
+          ok: false,
+          metadata: null,
+          errors: [legacyError instanceof Error ? legacyError.message : String(legacyError)],
+        };
+      }
+    }
+
     if (error instanceof ZodError) {
       return { ok: false, metadata: null, errors: formatZodError(error) };
     }

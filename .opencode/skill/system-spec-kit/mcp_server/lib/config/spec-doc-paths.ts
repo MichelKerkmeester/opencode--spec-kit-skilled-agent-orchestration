@@ -11,6 +11,7 @@ export const SPEC_DOCUMENT_FILENAMES = new Set([
   'implementation-summary.md',
   'research.md',
   'handover.md',
+  'description.json',
 ]);
 
 export const GRAPH_METADATA_FILENAME = 'graph-metadata.json';

@@ -43,7 +43,7 @@
       "tasks",
       "implementation"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "planned",
     "key_files": [
       ".opencode/skill/sk-deep-review/SKILL.md",

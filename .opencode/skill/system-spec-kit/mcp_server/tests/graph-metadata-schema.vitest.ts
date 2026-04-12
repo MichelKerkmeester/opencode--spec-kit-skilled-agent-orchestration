@@ -127,4 +127,28 @@ describe('graph metadata schema and parser', () => {
     expect(validation.ok).toBe(false);
     expect(validation.errors.join(' ')).toContain('schema_version');
   });
+
+  it('accepts legacy line-based graph metadata content', () => {
+    const validation = validateGraphMetadataContent([
+      'Packet: system-spec-kit/999-legacy-packet',
+      'Spec Folder: system-spec-kit/999-legacy-packet',
+      'Status: planned',
+      'Importance Tier: important',
+      'Summary: Legacy graph metadata payload still present in the repo.',
+      'Parent: system-spec-kit/998-parent',
+      'Depends On: system-spec-kit/010-foundation',
+      'Supersedes: system-spec-kit/009-older',
+      'Related To: system-spec-kit/011-peer',
+      'Key Topics: legacy, graph, metadata',
+      'Key Files: spec.md, plan.md',
+      'Source Docs: spec.md, plan.md',
+    ].join('\n'));
+
+    expect(validation.ok).toBe(true);
+    expect(validation.metadata?.packet_id).toBe('system-spec-kit/999-legacy-packet');
+    expect(validation.metadata?.parent_id).toBe('system-spec-kit/998-parent');
+    expect(validation.metadata?.manual.depends_on[0]?.packet_id).toBe('system-spec-kit/010-foundation');
+    expect(validation.metadata?.manual.supersedes[0]?.packet_id).toBe('system-spec-kit/009-older');
+    expect(validation.metadata?.manual.related_to[0]?.packet_id).toBe('system-spec-kit/011-peer');
+  });
 });

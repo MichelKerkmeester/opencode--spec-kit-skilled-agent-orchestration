@@ -79,6 +79,7 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       { path: '/project/.opencode/specs/003/100-feature/research/research.md', expected: 'research', label: 'research/research.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/research.md', expected: 'research', label: 'legacy research.md in specs/' },
       { path: '/project/.opencode/specs/003/100-feature/handover.md', expected: 'handover', label: 'handover.md in specs/' },
+      { path: '/project/.opencode/specs/003/100-feature/description.json', expected: 'description_metadata', label: 'description.json in specs/' },
     ];
 
     for (const tc of testCases) {
@@ -110,8 +111,8 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
   });
 
   describe('T063: SPEC_DOCUMENT_CONFIGS completeness', () => {
-    it('Has exactly 8 entries', () => {
-      expect(SPEC_DOCUMENT_CONFIGS.length).toBe(8);
+    it('Has exactly 10 entries', () => {
+      expect(SPEC_DOCUMENT_CONFIGS.length).toBe(10);
     });
 
     it('Each config has required fields', () => {
@@ -124,7 +125,7 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       }
     });
 
-    it('Covers all 8 spec document types', () => {
+    it('Covers all canonical spec document types', () => {
       const types = SPEC_DOCUMENT_CONFIGS.map(c => c.documentType);
       expect(types).toContain('spec');
       expect(types).toContain('plan');
@@ -134,6 +135,8 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(types).toContain('implementation_summary');
       expect(types).toContain('research');
       expect(types).toContain('handover');
+      expect(types).toContain('description_metadata');
+      expect(types).toContain('graph_metadata');
     });
 
     it('spec.md config: semantic, important, 0.8', () => {
@@ -175,16 +178,24 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(config!.defaultImportanceTier).toBe('normal');
       expect(config!.defaultImportanceWeight).toBe(0.6);
     });
+
+    it('description.json config: semantic, normal, 0.55', () => {
+      const config = getSpecDocumentConfig('description_metadata' as DocumentType);
+      expect(config).not.toBeNull();
+      expect(config!.memoryType).toBe('semantic');
+      expect(config!.defaultImportanceTier).toBe('normal');
+      expect(config!.defaultImportanceWeight).toBe(0.55);
+    });
   });
 
   describe('SPEC_DOCUMENT_FILENAMES set', () => {
-    it('Has 8 entries', () => {
-      expect(SPEC_DOCUMENT_FILENAMES.size).toBe(8);
+    it('Has 9 entries', () => {
+      expect(SPEC_DOCUMENT_FILENAMES.size).toBe(9);
     });
 
     const expectedFilenames = [
       'spec.md', 'plan.md', 'tasks.md', 'checklist.md',
-      'decision-record.md', 'implementation-summary.md', 'research.md', 'handover.md',
+      'decision-record.md', 'implementation-summary.md', 'research.md', 'handover.md', 'description.json',
     ];
 
     for (const fn of expectedFilenames) {
@@ -212,6 +223,7 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       { path: '/p/.opencode/specs/003/100/research/research.md', expected: 'research', label: 'research/research.md' },
       { path: '/p/.opencode/specs/003/100/research.md', expected: 'research', label: 'legacy research.md' },
       { path: '/p/.opencode/specs/003/100/handover.md', expected: 'handover', label: 'handover.md' },
+      { path: '/p/.opencode/specs/003/100/description.json', expected: 'description_metadata', label: 'description.json' },
     ];
 
     for (const tc of testCases) {
@@ -256,6 +268,10 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
 
     it('Accepts spec.md in specs/ directory', () => {
       expect(isMemoryFile('/p/.opencode/specs/003/100/spec.md')).toBe(true);
+    });
+
+    it('Accepts description.json in specs/ directory', () => {
+      expect(isMemoryFile('/p/.opencode/specs/003/100/description.json')).toBe(true);
     });
 
     it('Accepts plan.md in specs/ directory', () => {
@@ -313,6 +329,11 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       expect(result).toBe('system-spec-kit/100-feature');
     });
 
+    it('Extracts folder from description.json path (non-memory)', () => {
+      const result = extractSpecFolder('/p/.opencode/specs/system-spec-kit/100-feature/description.json');
+      expect(result).toBe('system-spec-kit/100-feature');
+    });
+
     it('Returns folder category for skill README path', () => {
       const result = extractSpecFolder('/p/.opencode/skill/system-spec-kit/README.md');
       expect(result).toBe('skill');
@@ -354,6 +375,10 @@ describe('Spec 126 Phase 5: Indexing Pipeline', () => {
 
     it('research -> 0.6', () => {
       expect(calculateDocumentWeight('/p/specs/x/research/research.md', 'research')).toBe(0.6);
+    });
+
+    it('description_metadata -> 0.55', () => {
+      expect(calculateDocumentWeight('/p/specs/x/description.json', 'description_metadata')).toBe(0.55);
     });
 
     it('checklist -> 0.5', () => {
@@ -743,6 +768,10 @@ describe('Spec 126 Peripheral: getDefaultTierForDocumentType()', () => {
 
     it('handover -> normal', () => {
       expect(getDefaultTierForDocumentType('handover')).toBe('normal');
+    });
+
+    it('description_metadata -> normal', () => {
+      expect(getDefaultTierForDocumentType('description_metadata')).toBe('normal');
     });
 
     it('memory -> normal', () => {

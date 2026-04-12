@@ -256,6 +256,45 @@ export function parseMemoryContent(
   // Infer document type from file path.
   const documentType = extractDocumentType(filePath);
 
+  if (documentType === 'description_metadata') {
+    const metadata = parseDescriptionMetadataContent(filePath, content);
+    const normalizedContent = descriptionMetadataToIndexableText(metadata);
+    const contentHash = computeContentHash(content);
+    const importanceTier = getDefaultTierForDocumentType(documentType);
+    const triggerPhrases = buildDescriptionTriggerPhrases(metadata);
+    const typeInference: TypeInferenceResult = inferMemoryType({
+      filePath,
+      content: normalizedContent,
+      title: metadata.description || metadata.specFolder,
+      triggerPhrases,
+      importanceTier,
+    });
+    const causalLinks = emptyCausalLinks();
+
+    return {
+      filePath,
+      specFolder: metadata.specFolder,
+      title: metadata.description
+        ? `Description: ${metadata.description}`
+        : `Description Metadata: ${metadata.specFolder}`,
+      triggerPhrases,
+      contextType: 'planning',
+      importanceTier,
+      contentHash,
+      content: normalizedContent,
+      fileSize: Buffer.byteLength(content, 'utf8'),
+      lastModified: options.lastModified ?? new Date().toISOString(),
+      memoryType: typeInference.type,
+      memoryTypeSource: typeInference.source,
+      memoryTypeConfidence: typeInference.confidence,
+      causalLinks,
+      hasCausalLinks: false,
+      documentType,
+      qualityScore: 1,
+      qualityFlags: [],
+    };
+  }
+
   if (documentType === 'graph_metadata') {
     const validation = validateGraphMetadataContent(content);
     if (!validation.ok || !validation.metadata) {
@@ -364,6 +403,7 @@ export function extractDocumentType(filePath: string): string {
     'implementation-summary.md': 'implementation_summary',
     'research.md': 'research',
     'handover.md': 'handover',
+    'description.json': 'description_metadata',
   };
 
   if (canClassifyAsSpecDocument(filePath)) {
@@ -445,6 +485,93 @@ function extractCausalLinksFromGraphMetadata(
     blocks: packetLinks.blocks ?? [],
     related_to: packetLinks.related_to ?? [],
   };
+}
+
+function emptyCausalLinks(): CausalLinks {
+  return {
+    caused_by: [],
+    supersedes: [],
+    derived_from: [],
+    blocks: [],
+    related_to: [],
+  };
+}
+
+interface DescriptionMetadataContent {
+  specFolder: string;
+  description: string;
+  keywords: string[];
+  lastUpdated: string;
+  specId: string;
+  folderSlug: string;
+  parentChain: string[];
+  memorySequence: number;
+  memoryNameHistory: string[];
+}
+
+function parseDescriptionMetadataContent(
+  filePath: string,
+  content: string,
+): DescriptionMetadataContent {
+  let parsed: Record<string, unknown>;
+  try {
+    parsed = JSON.parse(content) as Record<string, unknown>;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid description metadata content for ${filePath}: ${message}`);
+  }
+
+  const extractedSpecFolder = extractSpecFolder(filePath);
+
+  return {
+    specFolder: typeof parsed.specFolder === 'string' && parsed.specFolder.trim()
+      ? parsed.specFolder.trim()
+      : extractedSpecFolder,
+    description: typeof parsed.description === 'string' ? parsed.description.trim() : '',
+    keywords: Array.isArray(parsed.keywords)
+      ? parsed.keywords.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+      : [],
+    lastUpdated: typeof parsed.lastUpdated === 'string' ? parsed.lastUpdated : '',
+    specId: typeof parsed.specId === 'string' ? parsed.specId.trim() : '',
+    folderSlug: typeof parsed.folderSlug === 'string' ? parsed.folderSlug.trim() : '',
+    parentChain: Array.isArray(parsed.parentChain)
+      ? parsed.parentChain.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+      : [],
+    memorySequence: typeof parsed.memorySequence === 'number' && Number.isFinite(parsed.memorySequence)
+      ? parsed.memorySequence
+      : 0,
+    memoryNameHistory: Array.isArray(parsed.memoryNameHistory)
+      ? parsed.memoryNameHistory.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+      : [],
+  };
+}
+
+function descriptionMetadataToIndexableText(metadata: DescriptionMetadataContent): string {
+  return [
+    `Spec folder: ${metadata.specFolder}`,
+    metadata.description ? `Description: ${metadata.description}` : '',
+    metadata.specId ? `Spec id: ${metadata.specId}` : '',
+    metadata.folderSlug ? `Folder slug: ${metadata.folderSlug}` : '',
+    metadata.parentChain.length > 0 ? `Parent chain: ${metadata.parentChain.join(' > ')}` : '',
+    metadata.keywords.length > 0 ? `Keywords: ${metadata.keywords.join(', ')}` : '',
+    metadata.memoryNameHistory.length > 0 ? `Memory name history: ${metadata.memoryNameHistory.join(', ')}` : '',
+    `Memory sequence: ${metadata.memorySequence}`,
+    metadata.lastUpdated ? `Last updated: ${metadata.lastUpdated}` : '',
+  ].filter(Boolean).join('\n');
+}
+
+function buildDescriptionTriggerPhrases(metadata: DescriptionMetadataContent): string[] {
+  const candidates = [
+    metadata.specFolder,
+    metadata.description,
+    metadata.specId,
+    metadata.folderSlug,
+    ...metadata.parentChain,
+    ...metadata.keywords,
+    ...metadata.memoryNameHistory,
+  ];
+
+  return Array.from(new Set(candidates.map((value) => value.trim()).filter(Boolean))).slice(0, 20);
 }
 
 const MAX_MEMORY_TITLE_LENGTH = 120;
@@ -843,7 +970,7 @@ export function isMemoryFile(filePath: string): boolean {
 
   // Spec folder documents (spec.md, plan.md, tasks.md, etc.).
   const isSpecDocument = (
-    normalizedPath.endsWith('.md') &&
+    (normalizedPath.endsWith('.md') || normalizedPath.endsWith('.json')) &&
     canClassifyAsSpecDocument(normalizedPath) &&
     !isWorkingArtifactPath(normalizedPath) &&
     SPEC_DOCUMENT_FILENAMES_SET.has(path.basename(normalizedPath).toLowerCase()) &&

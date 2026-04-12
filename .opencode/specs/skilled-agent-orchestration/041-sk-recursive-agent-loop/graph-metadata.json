@@ -49,7 +49,7 @@
       "parent",
       "implementation"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "planned",
     "key_files": [
       ".opencode/agent/handover.md",

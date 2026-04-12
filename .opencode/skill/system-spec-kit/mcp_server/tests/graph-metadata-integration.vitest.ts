@@ -139,4 +139,35 @@ describe('graph metadata integration', () => {
     expect(boosted[0]?.score).toBeGreaterThan(0.4);
     expect(boosted[1]?.score).toBe(0.4);
   });
+
+  it('parses description.json into an indexable packet row', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'description-metadata-integration-'));
+    createdRoots.add(root);
+    const specFolder = path.join(root, '.opencode', 'specs', 'system-spec-kit', '902-description-integration');
+    fs.mkdirSync(specFolder, { recursive: true });
+    const descriptionPath = path.join(specFolder, 'description.json');
+    fs.writeFileSync(descriptionPath, JSON.stringify({
+      specFolder: 'system-spec-kit/902-description-integration',
+      description: 'Feature Specification: Description metadata indexing',
+      keywords: ['description metadata', 'indexing', 'spec folder'],
+      lastUpdated: '2026-04-12T12:00:00.000Z',
+      specId: '902',
+      folderSlug: 'description-integration',
+      parentChain: ['system-spec-kit'],
+      memorySequence: 4,
+      memoryNameHistory: ['description-indexing'],
+    }, null, 2));
+
+    const parsed = parseMemoryContent(descriptionPath, fs.readFileSync(descriptionPath, 'utf-8'));
+
+    expect(parsed.documentType).toBe('description_metadata');
+    expect(parsed.specFolder).toBe('system-spec-kit/902-description-integration');
+    expect(parsed.contextType).toBe('planning');
+    expect(parsed.triggerPhrases).toEqual(expect.arrayContaining([
+      'system-spec-kit/902-description-integration',
+      'description metadata',
+      '902',
+      'description-integration',
+    ]));
+  });
 });
