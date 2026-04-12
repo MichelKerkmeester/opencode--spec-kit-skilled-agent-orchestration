@@ -5,6 +5,9 @@ description: "Operator-facing reference combining the manual testing directory, 
 
 # sk-deep-review: Manual Testing Playbook
 
+> **EXECUTION POLICY**: Every scenario MUST be executed for real — not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
+
+
 This document combines the operator-facing manual testing contract for the `sk-deep-review` skill into a single reference. The root playbook acts as the directory, review protocol, and orchestration guide while the per-feature files carry the scenario-specific execution truth.
 
 ---

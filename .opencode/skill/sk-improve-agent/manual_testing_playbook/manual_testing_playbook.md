@@ -5,6 +5,9 @@ description: "Operator-facing validation package for the sk-improve-agent skill 
 
 # sk-improve-agent Manual Testing Playbook
 
+> **EXECUTION POLICY**: Every scenario MUST be executed for real — not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
+
+
 This document provides the root manual-validation contract for `sk-improve-agent`. The root playbook keeps the package-level expectations concise while the linked per-feature files carry the exact prompt, command, verification, and triage details.
 
 ---

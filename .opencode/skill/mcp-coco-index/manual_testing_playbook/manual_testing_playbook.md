@@ -5,6 +5,9 @@ description: "Operator-facing reference combining the manual testing directory, 
 
 # CocoIndex Code: Manual Testing Playbook
 
+> **EXECUTION POLICY**: Every scenario MUST be executed for real — not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
+
+
 This document combines the full manual-validation contract for the `mcp-coco-index` skill into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide while the per-feature files carry the scenario-specific execution truth.
 
 ---
