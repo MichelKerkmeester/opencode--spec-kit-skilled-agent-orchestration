@@ -62,7 +62,7 @@ const VALIDATION_COMPLETE_MARKERS = [
  * double-counting in the fusion pipeline.
  */
 export interface ValidationMetadata {
-  /** Spec documentation level (1 = minimal, 2 = QA, 3 = complex, 4 = enterprise 3+). */
+  /** Spec documentation level (1 = minimal, 2 = QA, 3 = complex, 4 = extended 3+). */
   specLevel?: number;
   /** True when a checklist.md document is detected from path or content. */
   hasChecklist?: boolean;
