@@ -12,6 +12,8 @@ notes:
 
 # Phase 018 — Autonomous Execution Runbook
 
+> Historical lineage note: this runbook captures the earlier research-era autonomous rollout plan. The active execution contract now lives in the parent packet plus the gate folders. Any surviving `shadow_only`, dual-write, observation-window, or `archived_hit_rate` language below is retained as historical context only and should not be followed as current runtime guidance.
+
 One-shot execution plan for Gates A through E of the phase 018 Canonical Continuity Refactor, using cli-codex gpt-5.4 high fast as the execution worker. Gate F is **partial** in one go — it only gets the observation-start step; its permanence decision requires 180 days of elapsed real-world time and comes back later.
 
 ## 1. Honest Scope

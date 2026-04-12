@@ -4,6 +4,7 @@ description: "Canonical cutover."
 trigger_phrases: ["gate e", "runtime migration"]
 importance_tier: "important"
 contextType: "implementation"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"

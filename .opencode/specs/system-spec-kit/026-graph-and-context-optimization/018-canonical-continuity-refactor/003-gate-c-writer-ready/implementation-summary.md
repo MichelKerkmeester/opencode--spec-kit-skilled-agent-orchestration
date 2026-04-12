@@ -7,6 +7,7 @@ contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
@@ -16,8 +17,8 @@ _memory:
     next_safe_action: "Complete remaining Gate C proof work"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/implementation-summary.md"]
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3+ -->
 # Implementation Summary
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -29,7 +30,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-gate-c-writer-ready |
-| **Completed** | 2026-04-11 (continuation pass; Gate C still partial overall) |
+| **Completed** | 2026-04-12 review refresh; Gate C remains in progress overall |
 | **Level** | 3+ |
 <!-- /ANCHOR:metadata -->
 
@@ -91,7 +92,8 @@ No observation-window concepts were added back. Anything tied to `shadow_only`, 
 | `node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts` | PASS, 9 files / 214 tests |
 | `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/workflow-canonical-continuity.vitest.ts --config ../mcp_server/vitest.config.ts` | PASS, 1 file / 4 tests |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready` | PASS, exit 0 with 0 errors / 0 warnings |
-| `npm run typecheck` | FAIL, only on pre-existing unrelated errors in `mcp_server/lib/storage/causal-edges.ts:722` and `mcp_server/lib/storage/reconsolidation.ts:507` |
+| `npm run --workspace=@spec-kit/mcp-server typecheck` | PASS |
+| `npm run --workspace=@spec-kit/scripts typecheck` | PASS |
 
 Part 1 evidence still stands alongside this continuation: 14 verified tests in the original Gate C landing plus the earlier 103 MCP test passes already called out by the orchestrator.
 <!-- /ANCHOR:verification -->
@@ -102,7 +104,7 @@ Part 1 evidence still stands alongside this continuation: 14 verified tests in t
 ## Known Limitations
 
 1. **Gate C is still partial overall.** The canonical writer path is now live, but the full 243-test catalog, broader parity pack, and the larger proof-run checklist are not complete in this continuation.
-2. **`typecheck` is still blocked by two unrelated existing errors.** The remaining failures are outside the continuation changes in `lib/storage/causal-edges.ts` and `lib/storage/reconsolidation.ts`.
+2. **The broader proof pack is still incomplete.** The targeted writer-path suites and both workspace typechecks are now green, but the packet still tracks the larger 243-test catalog and parity-pack work outside this continuation slice.
 3. **Tasks and checklist remain mostly open by design.** The packet still tracks unfinished proof and rollout work that belongs to the rest of Gate C, not just this continuation slice.
 <!-- /ANCHOR:limitations -->
 

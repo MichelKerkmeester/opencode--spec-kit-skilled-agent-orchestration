@@ -17,6 +17,8 @@ notes:
 
 This is the master index of every existing file phase 018 must touch, organized by surface. Full tables with row-level detail live in `scratch/resource-map/*.md`. This document is the quick-reference overlay: headline findings, cross-surface dependencies, priority ordering, and suggested execution order.
 
+> Historical lineage note: this resource map preserves research-era sequencing language. Active packet truth now lives in the gate folders, especially `005-gate-e-runtime-migration/` and `006-gate-f-archive-permanence/`. Any surviving `shadow_only`, dual-write, observation-window, or `archived_hit_rate` references below are lineage markers, not current runtime guidance.
+
 ---
 
 ## 1. Surface Index

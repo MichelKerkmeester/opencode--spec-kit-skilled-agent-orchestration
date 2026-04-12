@@ -4,6 +4,7 @@ description: "Execution tasks."
 trigger_phrases: ["gate e", "tasks"]
 importance_tier: "important"
 contextType: "implementation"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"

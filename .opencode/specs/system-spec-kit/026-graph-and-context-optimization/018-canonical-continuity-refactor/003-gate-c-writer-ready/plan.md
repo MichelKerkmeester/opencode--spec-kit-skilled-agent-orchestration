@@ -7,6 +7,7 @@ contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
@@ -16,8 +17,8 @@ _memory:
     next_safe_action: "Keep tasks and checklist aligned with proof-pack terms"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/plan.md"]
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3+ -->
 # Implementation Plan: Gate C — Writer Ready
 
 ---

@@ -4,6 +4,7 @@ description: "Closeout checklist."
 trigger_phrases: ["gate e", "checklist"]
 importance_tier: "important"
 contextType: "implementation"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"

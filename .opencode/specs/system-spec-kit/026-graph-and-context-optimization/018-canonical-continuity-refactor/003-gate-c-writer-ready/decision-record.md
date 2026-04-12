@@ -7,6 +7,7 @@ contextType: "implementation"
 level: "3+"
 gate: "C"
 parent: "018-canonical-continuity-refactor"
+status: "in_progress"
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
@@ -16,8 +17,8 @@ _memory:
     next_safe_action: "Patch implementation placeholder"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/decision-record.md"]
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- SPECKIT_LEVEL: 3+ -->
 # Decision Record: Gate C — Writer Ready
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 

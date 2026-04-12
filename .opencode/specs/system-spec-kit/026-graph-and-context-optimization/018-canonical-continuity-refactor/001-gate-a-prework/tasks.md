@@ -1,4 +1,5 @@
 ---
+#SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
@@ -15,6 +16,14 @@ trigger_phrases:
   - "root packet backfill"
 importance_tier: "important"
 contextType: "planning"
+_memory:
+  continuity:
+    packet_pointer: "018/001-gate-a-prework"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Validated Gate A task-ledger continuity during the Phase 018 deep review pass"
+    next_safe_action: "Treat the task ledger as closed historical evidence for downstream gates"
+    key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/001-gate-a-prework/tasks.md"]
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
