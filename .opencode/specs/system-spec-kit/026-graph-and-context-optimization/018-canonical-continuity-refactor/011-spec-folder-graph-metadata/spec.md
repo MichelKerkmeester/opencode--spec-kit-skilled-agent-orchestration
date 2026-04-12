@@ -1,7 +1,12 @@
 ---
-title: "018 / 011 — Spec-folder graph metadata"
-description: "Level 3 feature specification for a dedicated graph-metadata.json contract per spec-folder root."
-trigger_phrases: ["018 011 graph metadata", "spec folder graph metadata", "graph-metadata.json contract"]
+title: "Feature Specification: 018 / 011 — graph-metadata.json packet contract"
+description: "Define a dedicated per-spec-folder graph-metadata.json contract so packet relationships, ranking signals, and key files can be refreshed on canonical save and indexed without reviving legacy memory markdown."
+trigger_phrases:
+  - "018 011 spec"
+  - "graph metadata json"
+  - "spec folder graph metadata"
+  - "canonical continuity graph contract"
+  - "graph metadata packet contract"
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"
@@ -10,454 +15,364 @@ _memory:
     packet_pointer: "018/011-spec-folder-graph-metadata"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Rewrote the packet as a Level 3 implementation specification"
-    next_safe_action: "Implement the five-phase plan against the verified save, index, graph, and workflow surfaces"
-    key_files: ["research.md", "spec.md", "plan.md", "tasks.md", "decision-record.md"]
+    recent_action: "Rebuilt the missing spec.md and aligned the packet to a Level 3 implementation contract"
+    next_safe_action: "Start Phase 1 schema work"
+    key_files: ["spec.md", "plan.md", "tasks.md", "decision-record.md", "research.md"]
 ---
-# Feature Specification: 018 / 011 — Spec-folder graph metadata
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+# Feature Specification: 018 / 011 — graph-metadata.json packet contract
 
 ---
 
-## Executive Summary
+## EXECUTIVE SUMMARY
 
-Phase 018 moved continuity authority into canonical spec docs plus `_memory.continuity`, but the packet-level graph signals that legacy memory saves used to supply are still fragmented across runtime surfaces. The completed research in [research.md](./research.md) settled on one additive contract: a dedicated `graph-metadata.json` in each active spec-folder root, refreshed on canonical save, indexed as `document_type='graph_metadata'`, and consumed by the existing `memory_index` plus `causal_edges` pipeline instead of a new database.
+Phase 018 removed legacy packet `memory/` saves as the main continuity surface, but the graph and retrieval stack still depends on packet-level metadata for relationships, ranking, and key-file recovery. This packet formalizes the replacement contract from [research.md](./research.md): one `graph-metadata.json` per spec-folder root, split into merge-safe `manual` fields and fully regenerated `derived` fields, refreshed on canonical save, and indexed as `document_type='graph_metadata'`.
 
-This specification turns that research into an implementation-ready Level 3 packet. It locks the schema, defines the save/index/graph integrations, sets rollout and validation rules, and keeps the boundary lines explicit: `graph-metadata.json` is for packet-level graph state, `description.json` remains folder identity/tracking, and `_memory.continuity` remains the thin doc-local resume surface. Grounding: Iterations 3, 4, 5, 6, 8, 9, and 10 in [research.md](./research.md).
+**Key Decisions**: use a dedicated root JSON file instead of extending `description.json` or `_memory.continuity` (Iterations 3, 9, 10); preserve `manual.*` relationships while rewriting `derived.*` on save (Iterations 4, 5, 10).
 
+**Critical Dependencies**: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`, `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`, `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`.
+
+---
 <!-- ANCHOR:metadata -->
-## 1. Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| Level | 3 |
-| Packet Status | Planned |
-| Priority | P0 |
-| Parent Packet | `018-canonical-continuity-refactor` |
-| Research Baseline | `research.md` with 10 completed iterations |
-| Primary Runtime Surfaces | `scripts/memory/generate-context.ts`, `scripts/core/workflow.ts`, `mcp_server/handlers/memory-index-discovery.ts`, `mcp_server/handlers/causal-links-processor.ts`, `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`, `scripts/spec/validate.sh` |
-| Core Recommendation | Add `graph-metadata.json` per spec-folder root, preserve manual relationship fields, regenerate derived fields on canonical save, and index as `graph_metadata` |
+| **Level** | 3 |
+| **Priority** | P0 |
+| **Status** | Planned |
+| **Created** | 2026-04-12 |
+| **Branch** | `system-speckit/026-graph-and-context-optimization` |
 <!-- /ANCHOR:metadata -->
 
+---
+
 <!-- ANCHOR:problem -->
-## 2. Problem & Purpose
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
 
-The current runtime still has the graph and search plumbing needed for packet reasoning, but the packet-level producer is missing:
+Iteration 1 of [research.md](./research.md) confirmed that the graph stack still exists, but the packet-scoped metadata producer that used to arrive through legacy `memory/*.md` saves no longer does. The current runtime still ranks and links through `memory_index`, `causal_edges`, `causal-links-processor.ts`, `reconsolidation.ts`, and `stage1-candidate-gen.ts`, yet there is no durable per-folder contract for packet relationships, trigger phrases, key files, entities, or packet state once canonical continuity lives in spec docs instead of memory markdown.
 
-- `scripts/core/workflow.ts` still updates `description.json` only when `ctxFileWritten` is true, which means canonical save completion is not the general packet metadata refresh hook today.
-- `scripts/core/memory-metadata.ts` still derives auto causal links only from a legacy `memory/` directory, which no longer exists in the Phase 018 packet lineage.
-- `mcp_server/handlers/memory-index-discovery.ts` discovers spec markdown documents and constitutional docs, but not a dedicated packet metadata file.
-- `mcp_server/handlers/causal-links-processor.ts` resolves link-like references into `causal_edges`, but only from currently indexed row content.
-- `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` already understands `document_type`, tiers, and query intent, but it has no packet-level `graph_metadata` row to privilege for dependency-oriented queries.
-
-Grounding: Iterations 1, 5, 6, 8, and 9 in [research.md](./research.md).
+The result is a structural gap: packets can be readable to humans through canonical docs, but they are weaker inputs for packet-aware retrieval, supersession tracking, dependency queries, and resume ranking. This specification restores that missing packet-level input without undoing the architectural direction of Phase 018.
 
 ### Purpose
 
-Restore one durable, machine-readable packet-level metadata source that:
-
-- survives the canonical-doc continuity refactor,
-- preserves operator-authored cross-packet relationships,
-- reuses the current indexing and causal-edge storage model, and
-- gives `/spec_kit:plan`, `/spec_kit:complete`, `/spec_kit:resume`, `/memory:search`, and `validate.sh` a shared packet graph contract.
+Define the exact `graph-metadata.json` contract, lifecycle, and integration points needed to restore packet-level graph and retrieval signals while keeping canonical spec docs, `_memory.continuity`, and `description.json` in their current roles.
 <!-- /ANCHOR:problem -->
 
+---
+
 <!-- ANCHOR:scope -->
-## 3. Scope
+## 3. SCOPE
 
 ### In Scope
 
-- A dedicated `graph-metadata.json` file in each active spec-folder root.
-- A versioned JSON schema with explicit `manual` and `derived` sections.
-- Canonical save-path refresh after successful save completion.
-- Discovery, indexing, graph-edge upsert, packet-query ranking, and rollout validation support.
-- Backfill and dry-run reporting for existing spec folders.
-- Workflow adoption for packet creation, completion, resume, and packet-oriented search.
+- Add a dedicated `graph-metadata.json` contract for each spec-folder root, with `manual` and `derived` sections exactly as recommended in Iteration 4.
+- Refresh `graph-metadata.json` during canonical save completion even when no legacy context markdown file is written, per Iteration 5.
+- Index one `graph_metadata` row per packet and project cross-packet edges into existing `causal_edges`, per Iteration 6.
+- Backfill active spec folders with warning-first rollout and human-review flags for ambiguous relationships, per Iteration 7.
+- Extend packet-facing workflows so `/spec_kit:plan`, `/spec_kit:complete`, `/spec_kit:resume`, `/memory:search`, and `validate.sh` can create, consume, or enforce the new file, per Iterations 8 and 10.
 
 ### Out of Scope
 
-- Reintroducing legacy `memory/*.md` as a graph carrier.
-- Replacing `description.json` as the per-folder discovery/tracking surface.
-- Replacing `_memory.continuity` as the fast, doc-local resume anchor.
-- Introducing a new graph database or a second packet metadata index.
-- Rewriting the overall Phase 018 continuity architecture.
+- Replacing `description.json`. It remains the folder identity and save-history tracking surface from `.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts`.
+- Replacing `_memory.continuity`. It remains the thin doc-local resume surface attached to canonical spec docs.
+- Introducing a new database, new graph table, or a parallel packet registry outside `memory_index` plus `causal_edges`.
+- Reintroducing legacy `memory/*.md` packet saves as the primary graph source.
 
-### Non-Goals
+### Files to Change
 
-- Not replacing `description.json` as the per-folder identity, keyword, and memory-sequence surface.
-- Not replacing `_memory.continuity` as the canonical doc-local recovery anchor.
-- Not adding a new graph database, sidecar index, or packet storage layer.
-- Not reviving legacy memory markdown as the preferred packet metadata carrier.
-- Not requiring perfect `description.json` coverage before rollout begins.
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/` | Extend | Add schema, parser, and merge helpers for `graph-metadata.json`. |
+| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Trigger graph-metadata refresh from the canonical save entry point. |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Run refresh and atomic write after canonical save completion. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Modify | Discover and validate `graph-metadata.json` files. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` | Modify | Translate packet relationship arrays into `causal_edges` using indexed packet rows. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Modify | Boost `graph_metadata` rows for packet-oriented retrieval and resume queries. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Modify | Confirm schema/index support for `document_type='graph_metadata'` and companion metadata. |
+| `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Modify | Scaffold `graph-metadata.json` during packet creation. |
+| `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh` | Modify | Respect planned-vs-complete graph metadata expectations during closeout. |
+| `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Modify | Enforce schema validity and phased presence rules. |
+| `.opencode/command/spec_kit/plan.md` + `.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml` + `.opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml` | Modify | Create empty graph metadata on new packet scaffolds. |
+| `.opencode/command/spec_kit/complete.md` + `.opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml` + `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml` | Modify | Finalize `status` and `last_save_at` during completion. |
+| `.opencode/command/spec_kit/resume.md` + `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` | Modify | Surface packet dependencies and key files from graph metadata. |
+| `.opencode/command/memory/search.md` + `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Modify | Use packet graph rows for packet-oriented retrieval. |
 <!-- /ANCHOR:scope -->
 
+---
+
 <!-- ANCHOR:requirements -->
-## 4. Requirements
+## 4. REQUIREMENTS
 
-| ID | Priority | Requirement | Grounding |
-|----|----------|-------------|-----------|
-| REQ-001 | P0 | Every active spec-folder root must support a dedicated `graph-metadata.json` contract that is separate from `description.json` and canonical markdown docs. | Iterations 3, 9, 10 |
-| REQ-002 | P0 | The file must implement schema version `1` with the Iteration 4 shape: top-level identity fields, `manual` relationship buckets, and `derived` ranking/runtime fields. | Iteration 4 |
-| REQ-003 | P0 | Manual relationship fields must survive refreshes; automated refresh may replace only derived fields. | Iterations 4, 5, 10 |
-| REQ-004 | P0 | Graph metadata refresh must run on the canonical save path after save completion even when no legacy context markdown file is written. | Iterations 5, 10 |
-| REQ-005 | P0 | The refresh path must derive, at minimum, `trigger_phrases`, `key_files`, `status`, `importance_tier`, `parent_id`, `children_ids`, `causal_summary`, timestamps, and `source_docs` from canonical packet docs plus path structure. | Iterations 2, 4, 5, 8 |
-| REQ-006 | P1 | Discovery and indexing must scan `graph-metadata.json` files and write one `memory_index` row per packet with `document_type='graph_metadata'`. | Iterations 6, 10 |
-| REQ-007 | P1 | Manual packet relationships must upsert into `causal_edges` using the agreed mapping: `depends_on -> enabled`, `supersedes -> supersedes`, `related_to -> supports`. | Iteration 6 |
-| REQ-008 | P1 | Search and resume surfaces must recognize `graph_metadata` rows as high-signal packet candidates for dependency, packet discovery, and resume-adjacent queries. | Iterations 6, 8 |
-| REQ-009 | P1 | A backfill script must generate best-effort graph metadata for existing spec folders, support dry-run mode, and flag folders requiring manual relationship review. | Iteration 7 |
-| REQ-010 | P1 | Workflow adoption must scaffold or consume graph metadata through the real packet surfaces behind `/spec_kit:plan`, `/spec_kit:complete`, `/spec_kit:resume`, and `/memory:search`. | Iteration 8 |
-| REQ-011 | P1 | `validate.sh` must gain rollout-aware graph metadata validation, with warning-first presence enforcement and later promotion to error after backfill coverage is acceptable. | Iterations 8, 10 |
-| REQ-012 | P2 | The implementation must work when `description.json` coverage is incomplete and must not make description coverage a prerequisite for graph metadata rollout. | Iterations 7, 9 |
-| REQ-013 | P2 | The packet must not add or depend on a new database; `memory_index`, `causal_edges`, and existing search plumbing remain authoritative. | Iterations 6, 10 |
+### P0 - Blockers (MUST complete)
 
-### Formal Schema
+| ID | Requirement | Acceptance Criteria | Research Basis |
+|----|-------------|---------------------|----------------|
+| REQ-001 | The system MUST define one `graph-metadata.json` file per spec-folder root as the packet-level graph contract. | The schema includes top-level identity plus `manual` and `derived` sections, and packet docs explicitly prohibit moving this state into `description.json` or `_memory.continuity`. | Iterations 3, 4, 9, 10 |
+| REQ-002 | The v1 schema MUST match Iteration 4 without structural drift. | The formal schema includes `schema_version`, `packet_id`, `spec_folder`, `parent_id`, `children_ids`, `manual.depends_on`, `manual.supersedes`, `manual.related_to`, and the full `derived.*` set from Iteration 4. Any deviation is documented in the packet before code lands. | Iteration 4 |
+| REQ-003 | Canonical save MUST refresh `graph-metadata.json` even when no legacy context markdown file is emitted. | The refresh hook runs from `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` and `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` after canonical save completion, independent of `ctxFileWritten`. | Iterations 1, 5, 8, 10 |
+| REQ-004 | Save refresh MUST preserve manual packet relationships while fully regenerating derived packet signals. | Existing `manual.depends_on`, `manual.supersedes`, and `manual.related_to` survive every refresh; `derived.*` is rewritten from canonical sources on each save. | Iterations 4, 5, 10 |
+| REQ-005 | Index discovery MUST add `graph-metadata.json` as a first-class spec-folder artifact. | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` discovers the file only in valid spec folders and indexes it with `document_type='graph_metadata'`. | Iterations 6, 10 |
+| REQ-006 | Cross-packet relationships MUST project into existing `causal_edges`, not a new storage layer. | `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` resolves packet references from `manual.*` and upserts edges between packet rows in `memory_index`. | Iterations 6, 10 |
 
-The schema below intentionally matches the Iteration 4 design exactly in structure and field ownership. The only formalization change is that `derived.status` is constrained to an enum for validator safety rather than remaining an unconstrained string example. That divergence is deliberate and required for `validate.sh` enforcement. Grounding: Iteration 4 plus the rollout needs in Iterations 8 and 10.
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria | Research Basis |
+|----|-------------|---------------------|----------------|
+| REQ-007 | Retrieval and resume flows SHOULD treat `graph_metadata` rows as high-signal packet artifacts. | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`, and `/spec_kit:resume` surfaces use graph metadata for packet-oriented queries, dependencies, and key-file hints. | Iterations 6, 8, 10 |
+| REQ-008 | The rollout SHOULD include a backfill script for active spec folders with dry-run and review flags. | A backfill command scans valid folders, derives best-effort metadata from canonical docs plus `description.json` when present, and emits explicit review warnings instead of guessing ambiguous relationships. | Iteration 7 |
+| REQ-009 | Validation SHOULD enforce schema correctness immediately and presence gradually. | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` validates file shape on day one, reports missing files as warnings during backfill, then promotes presence to error after rollout coverage is proven. | Iterations 8, 10 |
+| REQ-010 | Workflow commands SHOULD create and maintain graph metadata through normal packet lifecycle commands. | `/spec_kit:plan` scaffolds an empty file, `/spec_kit:complete` finalizes terminal status and save timestamp, `/memory:search` can rank packet graph rows, and `/spec_kit:resume` can read dependencies and key files. | Iterations 8, 10 |
+
+### P2 - Optional (complete if cheap, otherwise document)
+
+| ID | Requirement | Acceptance Criteria | Research Basis |
+|----|-------------|---------------------|----------------|
+| REQ-011 | The implementation MAY add packet-oriented ranking heuristics beyond a simple document-type boost if they stay packet-local and testable. | Any extra ranking logic stays bounded to packet or dependency intents and does not degrade canonical spec-doc retrieval for ordinary content searches. | Iterations 6, 10 |
+| REQ-012 | The implementation MAY add richer entity extraction and `last_accessed_at` updates after the core contract is stable. | Entity extraction and access timestamps remain additive and do not block the core schema, save-path, discovery, or backfill rollout. | Iterations 4, 5, 10 |
+
+### Schema Contract
+
+This specification intentionally preserves the Iteration 4 shape. There is no structural divergence from the research recommendation. The only added clarification is that `packet-ref` and `entity-ref` must be validated as typed objects instead of loose JSON blobs.
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "spec-kit/graph-metadata.schema.json",
-  "title": "Spec Folder Graph Metadata",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "packet_id",
-    "spec_folder",
-    "parent_id",
-    "children_ids",
-    "manual",
-    "derived"
-  ],
-  "properties": {
-    "schema_version": { "const": 1 },
-    "packet_id": { "type": "string", "minLength": 1 },
-    "spec_folder": { "type": "string", "minLength": 1 },
-    "parent_id": {
-      "oneOf": [
-        { "type": "string", "minLength": 1 },
-        { "type": "null" }
-      ]
-    },
-    "children_ids": {
-      "type": "array",
-      "items": { "type": "string", "minLength": 1 },
-      "uniqueItems": true
-    },
-    "manual": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["depends_on", "supersedes", "related_to"],
-      "properties": {
-        "depends_on": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/packetRef" },
-          "default": []
-        },
-        "supersedes": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/packetRef" },
-          "default": []
-        },
-        "related_to": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/packetRef" },
-          "default": []
-        }
-      }
-    },
-    "derived": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "trigger_phrases",
-        "key_topics",
-        "importance_tier",
-        "status",
-        "key_files",
-        "entities",
-        "causal_summary",
-        "created_at",
-        "last_save_at",
-        "last_accessed_at",
-        "source_docs"
-      ],
-      "properties": {
-        "trigger_phrases": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "uniqueItems": true
-        },
-        "key_topics": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "uniqueItems": true
-        },
-        "importance_tier": {
-          "type": "string",
-          "enum": [
-            "constitutional",
-            "critical",
-            "important",
-            "normal",
-            "temporary",
-            "deprecated"
-          ]
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "planned",
-            "in_progress",
-            "blocked",
-            "complete",
-            "archived"
-          ]
-        },
-        "key_files": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "uniqueItems": true
-        },
-        "entities": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/entityRef" }
-        },
-        "causal_summary": { "type": "string", "minLength": 1 },
-        "created_at": { "type": "string", "format": "date-time" },
-        "last_save_at": { "type": "string", "format": "date-time" },
-        "last_accessed_at": {
-          "oneOf": [
-            { "type": "string", "format": "date-time" },
-            { "type": "null" }
-          ]
-        },
-        "source_docs": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "uniqueItems": true
-        }
-      }
-    }
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
   },
-  "$defs": {
-    "packetRef": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["packet_id", "reason", "source"],
-      "properties": {
-        "packet_id": { "type": "string", "minLength": 1 },
-        "reason": { "type": "string", "minLength": 1 },
-        "source": { "type": "string", "minLength": 1 }
-      }
-    },
-    "entityRef": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["name", "kind", "path", "source"],
-      "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "kind": { "type": "string", "minLength": 1 },
-        "path": { "type": "string", "minLength": 1 },
-        "source": { "type": "string", "minLength": 1 }
-      }
-    }
+  "derived": {
+    "trigger_phrases": ["018 011 graph metadata", "per spec folder graph metadata"],
+    "key_topics": ["graph metadata", "causal graph", "generate-context", "memory_index"],
+    "importance_tier": "critical",
+    "status": "complete",
+    "key_files": ["research.md", "spec.md", "plan.md", "decision-record.md"],
+    "entities": [
+      { "name": "generate-context.js", "kind": "script", "path": "scripts/memory/generate-context.ts", "source": "derived" }
+    ],
+    "causal_summary": "Defines a dedicated per-folder metadata file to restore graph signals lost with legacy memory-file removal.",
+    "created_at": "2026-04-12T00:00:00Z",
+    "last_save_at": "2026-04-12T00:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md", "plan.md", "tasks.md", "research.md", "decision-record.md"]
   }
 }
 ```
 
-### Integration Points
+| Field | Type | Source | Rules |
+|-------|------|--------|-------|
+| `schema_version` | number | derived | Starts at `1`; required for parser compatibility and migration gating. |
+| `packet_id` | string | derived | Canonical packet identity derived from spec-folder path. |
+| `spec_folder` | string | derived | Canonical spec-folder path used for lookup and joins. |
+| `parent_id` | string or null | derived | Path-derived parent pointer. |
+| `children_ids` | string[] | derived | Folder-structure children for phased packets. |
+| `manual.depends_on` | `packet-ref`[] | manual | Never overwritten by automated refresh. |
+| `manual.supersedes` | `packet-ref`[] | manual | Never overwritten by automated refresh. |
+| `manual.related_to` | `packet-ref`[] | manual | Never overwritten by automated refresh. |
+| `derived.trigger_phrases` | string[] | derived | Derived from packet doc frontmatter plus packet title terms. |
+| `derived.key_topics` | string[] | derived | Best-effort topic extraction from canonical docs and summaries. |
+| `derived.importance_tier` | string | derived | Derived from packet frontmatter with optional future override path. |
+| `derived.status` | enum | derived | Derived from packet frontmatter and completion workflow state. |
+| `derived.key_files` | string[] | derived | Derived from canonical docs, especially `implementation-summary.md` and continuity hints. |
+| `derived.entities` | `entity-ref`[] | derived | Best-effort symbol, file, command, or script references. |
+| `derived.causal_summary` | string | derived | Compact packet summary for ranking and retrieval. |
+| `derived.created_at` | ISO-8601 string | derived | First-write timestamp. |
+| `derived.last_save_at` | ISO-8601 string | derived | Updated on every canonical save. |
+| `derived.last_accessed_at` | ISO-8601 string or null | runtime | Updated by read-path telemetry only after rollout decides to support it. |
+| `derived.source_docs` | string[] | derived | Canonical provenance inputs used to rebuild the file. |
 
-| Surface | Current State | Planned Change | Grounding |
-|--------|---------------|----------------|-----------|
-| `./../../../../../skill/system-spec-kit/scripts/memory/generate-context.ts` | CLI entrypoint for structured canonical saves | Pass graph metadata refresh inputs into the canonical workflow and keep CLI target authority unchanged | Iterations 5, 8 |
-| `./../../../../../skill/system-spec-kit/scripts/core/workflow.ts` | Updates `description.json` only when `ctxFileWritten` is true | Add graph metadata refresh after canonical save completion, independent of the legacy write gate, with atomic write plus merge | Iterations 5, 10 |
-| `./../../../../../skill/system-spec-kit/scripts/core/memory-metadata.ts` | `autoPopulateCausalLinks()` still scans `memory/` | Add deterministic derivation helpers for packet graph metadata so packet-level relationships no longer depend on a legacy memory directory | Iterations 1, 5 |
-| `./../../../../../skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Discovers spec markdown docs only | Scan for `graph-metadata.json` in valid spec folders and surface it for indexing | Iteration 6 |
-| `./../../../../../skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` | Resolves link-like references into `causal_edges` | Resolve `manual.depends_on`, `manual.supersedes`, and `manual.related_to` packet refs and upsert graph edges | Iteration 6 |
-| `./../../../../../skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Uses query intent, tiers, and `document_type` as ranking inputs | Add packet-oriented boosts for `graph_metadata` rows without changing the overall pipeline architecture | Iterations 6, 8 |
-| `./../../../../../skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Already supports `document_type` and document-type indexes | Reuse the existing `document_type` column/indexes and add only the minimum schema migration needed for graph metadata rollout | Iteration 6 |
-| `./../../../../../skill/system-spec-kit/scripts/spec/validate.sh` | Validates packet docs, not graph metadata presence/schema | Add `GRAPH_METADATA_PRESENT` and schema checks, warning-first during rollout | Iterations 8, 10 |
-| `./../../../../../skill/system-spec-kit/scripts/spec/create.sh` | Scaffolds packet docs and `description.json` | Scaffold an empty or minimally valid `graph-metadata.json` for new spec folders | Iteration 8 |
-| `./../../../../../skill/system-spec-kit/mcp_server/handlers/session-resume.ts` and `./../../../../../skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Resume/search rely on canonical docs and indexed rows | Optionally consume graph metadata for packet dependencies, key files, and packet-oriented ranking while keeping canonical docs first | Iteration 8 |
-
-### Requirement Traceability
-
-| Requirement | Tasks | Checklist |
-|-------------|-------|-----------|
-| REQ-001 | T001, T010, T013 | CHK-001, CHK-011, CHK-050 |
-| REQ-002 | T001, T002, T003 | CHK-001, CHK-020 |
-| REQ-003 | T002, T005, T006 | CHK-010, CHK-020 |
-| REQ-004 | T004, T005, T006 | CHK-003, CHK-021, CHK-030 |
-| REQ-005 | T004, T005, T010, T011 | CHK-003, CHK-010, CHK-021, CHK-030 |
-| REQ-006 | T007, T009 | CHK-012, CHK-022, CHK-041 |
-| REQ-007 | T008, T009 | CHK-012, CHK-022, CHK-031 |
-| REQ-008 | T009, T014 | CHK-022, CHK-040 |
-| REQ-009 | T010, T011, T012 | CHK-023, CHK-024, CHK-032 |
-| REQ-010 | T013, T014, T015 | CHK-003, CHK-040, CHK-041, CHK-042, CHK-050 |
-| REQ-011 | T012, T014, T015 | CHK-024, CHK-041, CHK-042 |
-| REQ-012 | T010, T011 | CHK-023, CHK-032 |
-| REQ-013 | T007, T008, T009 | CHK-011, CHK-012, CHK-022, CHK-031, CHK-050 |
+| Type | Required Fields | Notes |
+|------|-----------------|-------|
+| `packet-ref` | `packet_id`, `reason`, `source` | May add optional `spec_folder` or `title` later, but v1 requires an identity anchor and provenance. |
+| `entity-ref` | `name`, `kind`, `path`, `source` | `path` may point to a file, command doc, or script surface. |
 <!-- /ANCHOR:requirements -->
 
-<!-- ANCHOR:success-criteria -->
-## 5. Success Criteria
+---
 
-- SC-001: A canonical save in a packet with no legacy `memory/` directory still refreshes `graph-metadata.json`.
-- SC-002: Manual packet relationships survive refresh; only derived fields are recomputed.
-- SC-003: The indexer can discover and ingest graph metadata rows as `document_type='graph_metadata'`.
-- SC-004: Packet dependency edges appear in `causal_edges` without a new graph database.
-- SC-005: Packet-oriented search and resume flows can prefer graph metadata for dependency and ownership queries while preserving canonical-doc recovery order.
-- SC-006: Backfill can generate best-effort files for existing spec folders, expose dry-run output, and flag ambiguous folders for manual review.
-- SC-007: Validation begins in warning-first mode and can later tighten to error once rollout coverage is proven.
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: A packet saved through canonical continuity always has one fresh `graph-metadata.json` file, even when no legacy context markdown file is emitted.
+- **SC-002**: `graph-metadata.json` indexes as `document_type='graph_metadata'` and can be retrieved by packet-oriented searches.
+- **SC-003**: Manual packet relationships survive repeated save refreshes without being overwritten by derived regeneration.
+- **SC-004**: Packet dependency, supersession, and related-to links project into `causal_edges` without introducing a new graph database or table.
+- **SC-005**: Backfill can populate active packets with dry-run reporting and explicit review flags for ambiguous relationships.
+- **SC-006**: Validation can enforce schema correctness immediately and presence after rollout coverage is proven.
 
 ### Acceptance Scenarios
 
-1. Given a canonical save that does not emit a legacy context markdown file, when the save completes, then `graph-metadata.json` still refreshes and persists derived packet state. Reqs: `REQ-003`, `REQ-004`, `REQ-005`.
-2. Given a packet declares `manual.depends_on`, when indexing runs, then the dependency becomes an `enabled` edge in `causal_edges`. Reqs: `REQ-006`, `REQ-007`.
-3. Given `/memory:search` receives a packet or dependency query, when stage 1 candidates are generated, then `graph_metadata` rows can receive the packet-oriented boost. Reqs: `REQ-008`, `REQ-013`.
-4. Given a repo backfill run across active spec folders, when dry-run mode is enabled, then the script reports missing or ambiguous fields without mutating files. Reqs: `REQ-009`, `REQ-012`.
-5. Given `/spec_kit:plan` scaffolds a new packet, when workflow adoption lands, then graph metadata is created alongside the canonical packet docs. Reqs: `REQ-001`, `REQ-010`.
-6. Given `/spec_kit:complete` closes a packet, when the save path runs, then packet status and `last_save_at` remain synchronized with graph metadata. Reqs: `REQ-004`, `REQ-010`, `REQ-011`.
-7. Given `description.json` is missing for a valid packet, when backfill or refresh runs, then graph metadata still derives from canonical docs plus folder structure. Reqs: `REQ-005`, `REQ-012`.
+1. **Given** a packet is saved through canonical continuity and no legacy context markdown file is emitted, **when** save completes, **then** `graph-metadata.json` is still refreshed.
+2. **Given** a packet already contains manual `depends_on`, `supersedes`, or `related_to` entries, **when** save refresh runs, **then** those entries remain unchanged.
+3. **Given** discovery scans valid spec folders, **when** `graph-metadata.json` exists, **then** one `graph_metadata` row is indexed for the packet.
+4. **Given** packet relationship arrays reference other packets, **when** graph processing runs, **then** the system projects those links into `causal_edges`.
+5. **Given** the backfill script runs in dry-run mode, **when** ambiguous packet status or relationships are detected, **then** the report flags them for review instead of guessing.
+6. **Given** rollout is still in progress, **when** `validate.sh` sees a packet missing `graph-metadata.json`, **then** it warns instead of failing hard until the coverage threshold is met.
 <!-- /ANCHOR:success-criteria -->
 
-<!-- ANCHOR:risks -->
-## 6. Risks & Dependencies
+---
 
-| Type | Item | Mitigation |
-|------|------|------------|
-| Dependency | `workflow.ts` is the canonical save authority | Attach refresh to canonical save completion, not to legacy write branches |
-| Dependency | `memory_index` already supports `document_type` | Reuse the existing column and indexes rather than adding storage |
-| Dependency | `mcp_server/lib/graph/` already exists | Place schema/parser work in the verified graph library instead of inventing a new subsystem |
-| Risk | Refresh attaches to the wrong save hook and repeats the `ctxFileWritten` blind spot | Test both legacy-write and no-legacy-write scenarios |
-| Risk | Automated refresh overwrites operator-authored packet relationships | Preserve `manual.*`, regenerate only `derived.*`, and test merge semantics explicitly |
-| Risk | `description.json` or `_memory.continuity` gets overloaded with graph state during implementation | Keep separation of concerns enforced in ADRs, tasks, and validation |
-| Risk | Backfill infers misleading cross-packet relationships from prose | Backfill only derived fields automatically and emit manual review flags for relationship arrays |
-| Risk | Search boosts make `graph_metadata` rows dominate non-packet queries | Restrict boosts to packet-oriented intents and integration tests |
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation | Research Basis |
+|------|------|--------|------------|----------------|
+| Dependency | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` + `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Wrong hook choice recreates the legacy-only blind spot. | Refresh graph metadata from the canonical save path after save completion, not behind `ctxFileWritten`. | Iterations 1, 5, 10 |
+| Dependency | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Without discovery, no graph metadata reaches search or causal processing. | Treat the file as a first-class spec artifact with exclusion rules aligned to existing spec-doc scanning. | Iteration 6 |
+| Risk | Manual relationship edits get overwritten by automation | High | Preserve `manual.*` on every merge and overwrite only `derived.*`. | Iterations 4, 5, 10 |
+| Risk | Packet boundaries collapse back into `description.json` or `_memory.continuity` | High | Enforce separation of concerns in docs, parser APIs, and validation messaging. | Iterations 3, 9, 10 |
+| Risk | Backfill produces false confidence on ambiguous packet links | Medium | Emit review flags and unresolved-reference reports instead of guessing. | Iteration 7 |
+| Risk | Ranking boost for `graph_metadata` hurts ordinary content retrieval | Medium | Limit boosts to packet-oriented, dependency, and resume-like intents and cover with retrieval tests. | Iterations 6, 10 |
+| Risk | Presence validation causes broad false failures before coverage exists | Medium | Roll out schema validation first, presence warnings second, and presence errors only after backfill and create/save hooks are live. | Iterations 8, 10 |
+
+### Integration Points
+
+| Surface | Required Change | Why It Matters | Research Basis |
+|---------|-----------------|----------------|----------------|
+| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Trigger graph-metadata refresh from the canonical save CLI entry point. | Canonical save must remain the authoritative producer for packet metadata. | Iterations 5, 8, 10 |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Run read-merge-write flow after canonical save completion and before indexing returns. | The wrong hook recreates the current blind spot where graph metadata only updates when legacy memory markdown exists. | Iterations 1, 5, 10 |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts` | Discover valid `graph-metadata.json` files and skip excluded directories. | Discovery is the gateway to indexing, retrieval, and backfill verification. | Iteration 6 |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` | Resolve `manual.depends_on`, `manual.supersedes`, and `manual.related_to` into `causal_edges`. | Reuses the graph table that already powers causal traversal and supersession. | Iteration 6 |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Apply packet-oriented boosts for `document_type='graph_metadata'`. | Packet discovery and dependency queries should treat the new artifact as first-class. | Iterations 6, 10 |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Confirm schema and indexes accept `graph_metadata` rows cleanly. | Prevents rollout drift between discovery, indexing, and ranking assumptions. | Iteration 6 |
+| `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Add schema validation now and phased presence enforcement later. | Rollout must be warning-first until backfill coverage is acceptable. | Iterations 8, 10 |
+| `.opencode/command/spec_kit/plan.md` and plan assets | Scaffold empty graph metadata during packet creation. | New packets need the file from day one once rollout begins. | Iterations 8, 10 |
+| `.opencode/command/spec_kit/complete.md` and complete assets | Update final packet status and `last_save_at`. | Keeps terminal packet state in sync with completion workflows. | Iteration 8 |
+| `.opencode/command/spec_kit/resume.md` and `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Read graph metadata for dependencies, key files, and packet ranking. | This is the user-facing payoff for the new artifact. | Iterations 8, 10 |
 <!-- /ANCHOR:risks -->
 
-## 7. Non-Functional Requirements
+---
 
-### Maintainability
-
-- NFR-M01: The metadata file must be deterministic JSON with one schema version and stable field names.
-- NFR-M02: Manual relationship edits must survive automated refreshes.
-- NFR-M03: The contract must remain understandable in git diffs without custom tooling.
-
-### Reliability
-
-- NFR-R01: Save-time refresh must be atomic with the canonical save path or fail open without corrupting packet docs.
-- NFR-R02: Indexing must degrade safely when the file is missing or schema-invalid.
-- NFR-R03: The rollout must not require full `description.json` coverage.
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 
-- NFR-P01: Packet-level graph metadata indexing should remain O(number of spec folders), not O(number of anchors).
-- NFR-P02: Search ranking and resume must not require full-doc rescans to answer packet-level dependency questions.
+- **NFR-P01**: Graph-metadata refresh should add bounded overhead to canonical save and avoid unnecessary full-folder rescans.
+- **NFR-P02**: Packet-oriented ranking boosts should remain intent-gated so ordinary retrieval does not pay a broad relevance penalty.
 
-### Rollout Discipline
+### Security
 
-- NFR-D01: Warning-first validation must remain in place until backfill coverage is proven.
-- NFR-D02: Resume recovery order stays `handover.md -> _memory.continuity -> canonical spec docs`, with graph metadata as an adjunct signal rather than a replacement.
+- **NFR-S01**: The new file must contain no secrets or session-only data that does not belong in packet metadata.
+- **NFR-S02**: Atomic write semantics must prevent partially written JSON files from corrupting save-path or indexing workflows.
 
-## 8. Edge Cases
+### Reliability
 
-- A packet has no `implementation-summary.md` yet but still needs graph metadata.
-- A packet is nested several levels deep and needs both `parent_id` and `children_ids`.
-- A save updates doc content but does not produce a legacy context markdown file.
-- A packet manually declares `depends_on` or `supersedes` edges that contradict inferred relationships.
-- A packet references code entities when the code graph is stale or unavailable.
-- Backfill runs on a folder with valid packet docs but no `description.json`.
+- **NFR-R01**: The parser must reject malformed files deterministically and surface useful diagnostics through validation and backfill reports.
+- **NFR-R02**: Derived refresh must be idempotent: repeated saves with unchanged canonical docs should converge on the same derived content.
 
-## 9. Complexity Assessment
+### Maintainability
 
-| Dimension | Score | Triggers |
-|-----------|-------|----------|
-| Scope | 22/25 | Touches save workflow, indexing, search ranking, validation, backfill, and packet lifecycle surfaces |
-| Risk | 21/25 | A wrong contract would either recreate legacy sprawl or leave packet graph state underspecified |
-| Research | 18/20 | Required runtime audit, format comparison, migration counting, and schema design |
-| Coordination | 12/15 | Must stay aligned with Phase 018 continuity boundaries and command/runtime parity |
-| Rollout | 11/15 | Needs warning-first validation and measured backfill promotion |
-| Total | 84/100 | Level 3 |
+- **NFR-M01**: The schema must stay explicit enough for validator, backfill, and index code to share one typed contract.
+- **NFR-M02**: Packet identity and relationship resolution rules must stay path-based and testable, not heuristic-only.
 
-## 10. Risk Matrix
+Research basis: Iterations 4, 5, 6, 7, 10.
 
-| Risk ID | Risk | Impact | Likelihood | Mitigation |
-|---------|------|--------|------------|------------|
-| R-001 | Refresh attaches to the wrong save hook and repeats the legacy-only blind spot | High | Medium | Hook graph metadata refresh to canonical save completion in `workflow.ts` |
-| R-002 | Automated refresh overwrites operator-authored packet relationships | High | Medium | Preserve `manual.*` and test merge semantics explicitly |
-| R-003 | `description.json` or `_memory.continuity` gets overloaded with graph state | High | Medium | Keep separation of concerns enforced in ADRs, tasks, and validation |
-| R-004 | Backfill infers misleading cross-packet relationships from prose | Medium | Medium | Emit manual review flags instead of guessing relationships |
-| R-005 | Search boosts over-promote packet metadata for non-packet queries | Medium | Medium | Limit boosts to packet-oriented intents and test them |
-| R-006 | Validation creates broad failures before coverage is acceptable | Medium | Medium | Start warning-first and promote only after measured backfill progress |
+---
 
-## 11. User Stories
+## 8. EDGE CASES
 
-### US-001: Packet dependency discovery
+### Data Boundaries
 
-As a maintainer, I want each spec folder to expose machine-readable dependency and supersession edges, so graph queries can answer packet-relationship questions without scraping prose.
+- Packets with no `implementation-summary.md` yet should still produce valid graph metadata from `spec.md`, `plan.md`, `tasks.md`, and `research.md`.
+- Phased parent packets with child folders should compute `children_ids` from folder structure without forcing child packet content reads into the root schema validator.
+- Packets missing `description.json` must still backfill and validate successfully.
+
+### Error Scenarios
+
+- If `graph-metadata.json` exists but fails schema validation, save-path refresh should fail loudly in strict execution contexts and emit actionable diagnostics during dry-run or backfill workflows.
+- If manual packet references cannot resolve to packet rows yet, the system should record unresolved references for review rather than inserting incorrect edges.
+- If canonical save is interrupted mid-refresh, atomic write behavior must prevent partial JSON from being indexed.
+
+### State Transitions
+
+- `/spec_kit:plan` creates a minimally valid file with empty manual arrays and initial derived state.
+- `/spec_kit:complete` finalizes packet `status` and `last_save_at` without mutating manual relationships.
+- Read-path telemetry may populate `last_accessed_at` later, but that is not required for initial rollout.
+
+Research basis: Iterations 5, 7, 8, 10.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 23/25 | Save-path, discovery, indexing, graph edges, command workflows, and validation all move together. |
+| Risk | 22/25 | Wrong boundary choice or wrong hook placement would undermine canonical continuity and retrieval quality. |
+| Research | 18/20 | Ten iterations already converged; the implementation challenge is disciplined execution rather than unresolved design. |
+| Multi-Agent / Coordination | 10/15 | The rollout crosses scripts, MCP handlers, commands, validators, and backfill tooling, but stays within one subsystem family. |
+| Coordination | 13/15 | Requires phased rollout to avoid mass false positives and packet drift. |
+| **Total** | **86/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Canonical save hooks the wrong branch and graph metadata never refreshes for doc-only saves. | High | Medium | Bind refresh to canonical completion in `workflow.ts` and test the no-legacy-markdown case explicitly. |
+| R-002 | `description.json` or `_memory.continuity` absorbs graph state as a shortcut. | High | Low | Keep clear scope boundaries in docs, parser APIs, and validation errors. |
+| R-003 | Manual packet links are clobbered during refresh. | High | Medium | Preserve `manual.*` by merge and overwrite only `derived.*`. |
+| R-004 | Backfill guesses packet relationships from prose. | Medium | Medium | Emit review flags and unresolved-reference reports, not guessed edges. |
+| R-005 | Packet ranking becomes noisy once `graph_metadata` rows exist. | Medium | Medium | Intent-gate boosts and cover with search regression tests. |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Save-path maintainer (Priority: P0)
+
+**As a** Spec Kit maintainer, **I want** canonical save to refresh packet graph metadata automatically, **so that** packet graph state stays aligned with canonical docs without legacy memory markdown.
 
 **Acceptance Criteria**:
-1. Given a packet with manual relationship entries, when the causal-links processor runs, then the agreed `enabled`, `supersedes`, and `supports` edges are written into `causal_edges`.
-2. Given a packet-oriented dependency query, when stage 1 candidates are ranked, then the packet's `graph_metadata` row can surface ahead of generic narrative rows.
+1. Given a canonical save with no legacy context markdown, when save completes, then `graph-metadata.json` still refreshes.
+2. Given an existing file with manual relationships, when save refresh runs, then `manual.*` remains intact.
 
-### US-002: Thin resume remains intact
+---
 
-As an operator, I want `_memory.continuity` to stay compact and fast, so packet resume does not regress into a heavyweight metadata dump.
+### US-002: Retrieval and resume operator (Priority: P1)
 
-**Acceptance Criteria**:
-1. Given a canonical save that completes without a legacy context markdown write, when refresh runs, then `graph-metadata.json` still updates.
-2. Given `/spec_kit:resume` loads packet context, when graph metadata is available, then it augments dependency and key-file hints without replacing the canonical recovery order.
-
-### US-003: Incremental rollout is practical
-
-As an implementation owner, I want backfill and warning-first validation, so the contract can land without waiting for perfect `description.json` coverage.
+**As a** packet operator, **I want** packet-aware search and resume to see dependency and key-file signals, **so that** I can resume or inspect related packets faster.
 
 **Acceptance Criteria**:
-1. Given a packet tree with partial `description.json` coverage, when backfill runs in dry-run mode, then best-effort graph metadata output and manual-review flags are still reported.
+1. Given a packet-oriented query, when search runs, then `graph_metadata` rows can rank as high-signal packet artifacts.
+2. Given a packet with dependencies, when `/spec_kit:resume` runs, then the packet can surface those dependency hints without bloating `_memory.continuity`.
 
-### US-004: Packet-oriented retrieval improves
+---
 
-As a user of `/memory:search` and `/spec_kit:resume`, I want packet-level metadata rows to surface key files, relationships, and status, so packet discovery is more precise.
+### US-003: Rollout and validation owner (Priority: P1)
+
+**As a** rollout owner, **I want** backfill and validation to expose coverage and ambiguity clearly, **so that** I can adopt the new contract without breaking the repo.
 
 **Acceptance Criteria**:
-1. Given a packet search query, when indexing has produced `graph_metadata` rows, then packet key files and status can be surfaced from that row.
-2. Given rollout validation is still in warning mode, when a packet lacks `graph-metadata.json`, then validation reports the gap without failing unrelated packet work.
+1. Given a backfill dry run, when ambiguous relationships or status are detected, then the report flags them for review instead of guessing.
+2. Given rollout is incomplete, when `validate.sh` runs, then missing graph metadata is warning-only until the agreed coverage threshold is reached.
+
+---
 
 <!-- ANCHOR:questions -->
-## 12. Open Questions
+## 12. OPEN QUESTIONS
 
-No unresolved design questions remain in this packet. The implementation work should follow the settled recommendation in [research.md](./research.md), and any new blocker discovered during coding should be captured as a runtime finding or a follow-on phase rather than reopening the storage-model decision here.
+- No design blockers remain. The remaining questions are rollout details:
+- Should `last_accessed_at` land in the first rollout or wait until the read path stabilizes around `graph_metadata` rows?
+- Should packet-oriented ranking boost only `packet`, `dependency`, and `resume` intents, or should it also inform broader planning queries once coverage is high?
+- What coverage threshold should promote `GRAPH_METADATA_PRESENT` from warning to error in `validate.sh`?
 <!-- /ANCHOR:questions -->
+
+---
 
 ## RELATED DOCUMENTS
 
-- Research basis: [research.md](./research.md)
-- Implementation plan: [plan.md](./plan.md)
-- Task ledger: [tasks.md](./tasks.md)
-- Verification checklist: [checklist.md](./checklist.md)
-- Architectural decisions: [decision-record.md](./decision-record.md)
-- Implementation summary shell: [implementation-summary.md](./implementation-summary.md)
-
-### AI Execution Protocol
-
-### Pre-Task Checklist
-
-- Re-read [research.md](./research.md) before coding and keep iteration references explicit in code comments or docs where the contract could drift.
-- Verify the runtime surfaces listed in the requirements section still exist before implementation begins.
-- Preserve packet-local scope: no unrelated documentation or runtime churn outside the verified graph/save/search/validation surfaces.
-
-### Execution Rules
-
-| Rule ID | Rule | Why |
-|---------|------|-----|
-| AI-GRAPHMETA-001 | Treat `graph-metadata.json` as the only new packet-level graph file introduced by this packet | Prevents contract sprawl |
-| AI-GRAPHMETA-002 | Prefer additive integration into existing `memory_index` and `causal_edges` paths over new storage | Keeps the implementation small and reversible |
-| AI-GRAPHMETA-003 | Preserve `manual.*` exactly and derive `derived.*` deterministically on refresh | Protects human intent while keeping automation fresh |
-| AI-GRAPHMETA-004 | Keep resume authoritative order as `handover.md -> _memory.continuity -> canonical spec docs`, with graph metadata as an adjunct signal | Avoids conflating packet graph state with recovery state |
-| AI-GRAPHMETA-005 | Promote graph metadata validation from warning to error only after backfill evidence is available | Supports safe rollout |
+- **Research**: See `research.md`
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`

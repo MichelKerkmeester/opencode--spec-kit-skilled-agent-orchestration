@@ -20,7 +20,6 @@ const SCOPE_COLUMNS = [
   ['user_id', 'userId'],
   ['agent_id', 'agentId'],
   ['session_id', 'sessionId'],
-  ['shared_space_id', 'sharedSpaceId'],
 ] as const;
 
 interface SamePathDedupExclusion {
@@ -65,7 +64,6 @@ function buildScopedWhereClauses(scope: MemoryScopeMatch): {
     userId: normalizeScopeMatchValue(scope.userId),
     agentId: normalizeScopeMatchValue(scope.agentId),
     sessionId: normalizeScopeMatchValue(scope.sessionId),
-    sharedSpaceId: normalizeScopeMatchValue(scope.sharedSpaceId),
   };
   const clauses: string[] = [];
   const params: string[] = [];

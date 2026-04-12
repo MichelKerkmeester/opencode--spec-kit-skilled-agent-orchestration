@@ -166,7 +166,6 @@ export interface SaveArgs {
   userId?: string;
   agentId?: string;
   sessionId?: string;
-  sharedSpaceId?: string;
   provenanceSource?: string;
   provenanceActor?: string;
   governedAt?: string;
@@ -196,7 +195,6 @@ export interface PostInsertMetadataFields {
   tenant_id?: string;
   user_id?: string;
   agent_id?: string;
-  shared_space_id?: string;
   provenance_source?: string;
   provenance_actor?: string;
   governed_at?: string;
@@ -212,7 +210,6 @@ export interface MemoryScopeMatch {
   userId?: string | null;
   agentId?: string | null;
   sessionId?: string | null;
-  sharedSpaceId?: string | null;
 }
 
 export function normalizeScopeMatchValue(value?: string | null): string | null {

@@ -185,7 +185,6 @@ export function findSamePathExistingMemory(
   const userId = normalizeScopeMatchValue(scope.userId);
   const agentId = normalizeScopeMatchValue(scope.agentId);
   const sessionId = normalizeScopeMatchValue(scope.sessionId);
-  const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
   const resolvedCanonicalFilePath = normalizeOptionalString(identityHints.canonicalFilePath) ?? canonicalFilePath;
   const resolvedFilePath = normalizeOptionalString(identityHints.targetDocPath) ?? filePath;
   const resolvedAnchorId = normalizeOptionalString(identityHints.targetAnchorId);
@@ -218,8 +217,6 @@ export function findSamePathExistingMemory(
     agentId,
     sessionId,
     sessionId,
-    sharedSpaceId,
-    sharedSpaceId,
   );
 
   return database.prepare(`
@@ -233,7 +230,6 @@ export function findSamePathExistingMemory(
       AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
       AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
       AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
-      AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
     ORDER BY id DESC
     LIMIT 1
   `).get(...params) as { id: number; title: string | null; content_hash?: string | null } | undefined;

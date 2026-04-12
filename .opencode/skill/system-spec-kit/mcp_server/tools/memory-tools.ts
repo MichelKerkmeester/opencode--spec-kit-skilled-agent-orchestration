@@ -86,7 +86,6 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
         tenantId: validated.tenantId as string | undefined,
         userId: validated.userId as string | undefined,
         agentId: validated.agentId as string | undefined,
-        sharedSpaceId: validated.sharedSpaceId as string | undefined,
         autoDetectIntent: true,
         enableDedup: true,
         includeContent: true,

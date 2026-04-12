@@ -12,7 +12,6 @@ import type Database from 'better-sqlite3';
 
 // Internal utils
 import { toErrorMessage } from '../../utils/db-helpers.js';
-import { getAllowedSharedSpaceIds } from '../collab/shared-spaces.js';
 import { rebuildAutoEntities } from '../extraction/entity-extractor.js';
 import {
   createScopeFilterPredicate,
@@ -93,9 +92,6 @@ const CHECKPOINT_MANIFEST = Object.freeze({
     'learned_feedback_audit',
     'session_learning',
     'governance_audit',
-    'shared_spaces',
-    'shared_space_members',
-    'shared_space_conflicts',
     'session_state',
     'session_sent_memories',
     'memory_summaries',
@@ -135,9 +131,6 @@ const CHECKPOINT_RESTORE_ORDER = [
   'learned_feedback_audit',
   'session_learning',
   'governance_audit',
-  'shared_spaces',
-  'shared_space_members',
-  'shared_space_conflicts',
   'session_state',
   'session_sent_memories',
   'memory_summaries',
@@ -332,8 +325,8 @@ const ALLOWED_TABLE_NAMES = new Set([
   'active_memory_projection', 'auto_entities', 'community_assignments', 'degree_snapshots',
   // Feedback & learning
   'learned_feedback_audit', 'learned_trigger_scores', 'learned_trigger_feedback',
-  // Governance & shared
-  'governance_audit', 'shared_spaces', 'shared_space_members', 'shared_space_conflicts',
+  // Governance
+  'governance_audit',
   // Checkpoints & system
   'checkpoints', 'checkpoint_items', 'deletion_log', 'consumption_log',
   'eval_shadow_comparisons',
@@ -404,17 +397,6 @@ function getMemoryIds(memories: Array<Record<string, unknown>>): number[] {
   return Array.from(ids);
 }
 
-function getSharedSpaceIdsFromMemories(memories: Array<Record<string, unknown>>): string[] {
-  const ids = new Set<string>();
-  for (const memory of memories) {
-    const rawId = memory?.shared_space_id;
-    if (typeof rawId === 'string' && rawId.trim().length > 0) {
-      ids.add(rawId.trim());
-    }
-  }
-  return Array.from(ids);
-}
-
 function parseCheckpointMetadata(value: unknown): Record<string, unknown> {
   if (!value) {
     return {};
@@ -445,7 +427,6 @@ function checkpointMetadataMatchesScope(rawMetadata: unknown, scope: ScopeContex
     (normalizedScope.tenantId === undefined || metadata.tenantId === normalizedScope.tenantId)
     && (normalizedScope.userId === undefined || metadata.userId === normalizedScope.userId)
     && (normalizedScope.agentId === undefined || metadata.agentId === normalizedScope.agentId)
-    && (normalizedScope.sharedSpaceId === undefined || metadata.sharedSpaceId === normalizedScope.sharedSpaceId)
   );
 }
 
@@ -455,7 +436,6 @@ function hasDirectScopeColumns(columns: ReadonlySet<string>): boolean {
     || columns.has('user_id')
     || columns.has('agent_id')
     || columns.has('session_id')
-    || columns.has('shared_space_id')
   );
 }
 
@@ -464,23 +444,19 @@ function getScopeFilterContext(
   scope: ScopeContext = {},
 ): {
   normalizedScope: ScopeContext;
-  allowedSharedSpaceIds: Set<string>;
   predicate: ((row: Record<string, unknown>) => boolean) | null;
 } {
   const normalizedScope = normalizeScopeContext(scope);
   if (!hasScopeConstraints(normalizedScope)) {
     return {
       normalizedScope,
-      allowedSharedSpaceIds: new Set<string>(),
       predicate: null,
     };
   }
 
-  const allowedSharedSpaceIds = getAllowedSharedSpaceIds(database, normalizedScope);
   return {
     normalizedScope,
-    allowedSharedSpaceIds,
-    predicate: createScopeFilterPredicate<Record<string, unknown>>(normalizedScope, allowedSharedSpaceIds),
+    predicate: createScopeFilterPredicate<Record<string, unknown>>(normalizedScope),
   };
 }
 
@@ -491,10 +467,9 @@ function getScopedMemories(
 ): {
   memories: Array<Record<string, unknown>>;
   memoryIds: number[];
-  allowedSharedSpaceIds: Set<string>;
   normalizedScope: ScopeContext;
 } {
-  const { normalizedScope, allowedSharedSpaceIds, predicate } = getScopeFilterContext(database, scope);
+  const { normalizedScope, predicate } = getScopeFilterContext(database, scope);
   const baseMemories = specFolder
     ? database.prepare('SELECT * FROM memory_index WHERE spec_folder = ?').all(specFolder) as Array<Record<string, unknown>>
     : database.prepare('SELECT * FROM memory_index').all() as Array<Record<string, unknown>>;
@@ -503,7 +478,6 @@ function getScopedMemories(
   return {
     memories,
     memoryIds: getMemoryIds(memories),
-    allowedSharedSpaceIds,
     normalizedScope,
   };
 }
@@ -543,10 +517,6 @@ function buildRestoreScopeDeleteWhere(
   if (normalizedScope.agentId && columns.has('agent_id')) {
     clauses.push('agent_id = ?');
     params.push(normalizedScope.agentId);
-  }
-  if (normalizedScope.sharedSpaceId && columns.has('shared_space_id')) {
-    clauses.push('shared_space_id = ?');
-    params.push(normalizedScope.sharedSpaceId);
   }
 
   return { clauses, params };

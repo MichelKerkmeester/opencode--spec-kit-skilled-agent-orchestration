@@ -69,7 +69,6 @@ export interface DuplicateCheckResult {
     tenantId?: string | null;
     userId?: string | null;
     agentId?: string | null;
-    sharedSpaceId?: string | null;
   };
   redactedForScope?: boolean;
 }
@@ -103,7 +102,6 @@ export interface DuplicateCheckParams {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
 }
 
 /** Options for duplicate checking */
@@ -124,7 +122,6 @@ export interface PreflightParams {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
 }
 
 /** Options for the unified preflight check */
@@ -200,7 +197,6 @@ type FindSimilarFn = (embedding: Float32Array | number[], options: {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
 }) => Array<{
   id: number;
   file_path: string;
@@ -208,7 +204,6 @@ type FindSimilarFn = (embedding: Float32Array | number[], options: {
   tenant_id?: string | null;
   user_id?: string | null;
   agent_id?: string | null;
-  shared_space_id?: string | null;
 }>;
 
 // ───────────────────────────────────────────────────────────────
@@ -425,7 +420,6 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
   } = params;
 
   const {
@@ -453,14 +447,12 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
     tenantId: normalizeScopeValue(tenantId),
     userId: normalizeScopeValue(userId),
     agentId: normalizeScopeValue(agentId),
-    sharedSpaceId: normalizeScopeValue(sharedSpaceId),
   };
 
   const scopeFilters = [
     ['tenant_id', requestedScope.tenantId],
     ['user_id', requestedScope.userId],
     ['agent_id', requestedScope.agentId],
-    ['shared_space_id', requestedScope.sharedSpaceId],
   ] as const;
 
   const redactDuplicateForScope = (
@@ -468,7 +460,6 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
       tenant_id?: string | null;
       user_id?: string | null;
       agent_id?: string | null;
-      shared_space_id?: string | null;
       file_path?: string | null;
     },
     similarity?: number | null,
@@ -477,13 +468,11 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
       tenantId: duplicate.tenant_id ?? null,
       userId: duplicate.user_id ?? null,
       agentId: duplicate.agent_id ?? null,
-      sharedSpaceId: duplicate.shared_space_id ?? null,
     };
     const existingValues = [
       existingScope.tenantId,
       existingScope.userId,
       existingScope.agentId,
-      existingScope.sharedSpaceId,
     ];
     const isDifferentScope = scopeFilters.some(([_, value], index) => {
       if (value === null) return false;
@@ -526,7 +515,7 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         }
       }
       const sql = `
-        SELECT id, file_path, content_text, tenant_id, user_id, agent_id, shared_space_id
+        SELECT id, file_path, content_text, tenant_id, user_id, agent_id
         FROM memory_index
         WHERE ${whereClauses.join(' AND ')}
         LIMIT 1
@@ -538,7 +527,6 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         tenant_id?: string | null;
         user_id?: string | null;
         agent_id?: string | null;
-        shared_space_id?: string | null;
       } | undefined;
 
       if (existing) {
@@ -572,7 +560,6 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         tenantId: requestedScope.tenantId ?? undefined,
         userId: requestedScope.userId ?? undefined,
         agentId: requestedScope.agentId ?? undefined,
-        sharedSpaceId: requestedScope.sharedSpaceId ?? undefined,
       });
 
       if (candidates && candidates.length > 0) {
@@ -583,7 +570,6 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
           tenant_id?: string | null;
           user_id?: string | null;
           agent_id?: string | null;
-          shared_space_id?: string | null;
         };
         const similarity = bestMatch.similarity;
 
@@ -759,7 +745,6 @@ export function runPreflight(params: PreflightParams, options: PreflightOptions 
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
   } = params;
 
   const {
@@ -850,7 +835,7 @@ export function runPreflight(params: PreflightParams, options: PreflightOptions 
   // 4. Duplicate detection
   if (check_duplicates && content) {
     const dupResult = checkDuplicate(
-      { content, spec_folder, database, find_similar, embedding, tenantId, userId, agentId, sharedSpaceId },
+      { content, spec_folder, database, find_similar, embedding, tenantId, userId, agentId },
       { check_exact: true, check_similar }
     );
     addCheck('duplicate_check', dupResult);

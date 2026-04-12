@@ -35,7 +35,6 @@ type MemoryIndexRow = Record<string, unknown> & {
   user_id?: string | null;
   agent_id?: string | null;
   session_id?: string | null;
-  shared_space_id?: string | null;
   title?: string | null;
   content_hash?: string | null;
   created_at?: string;
@@ -210,7 +209,6 @@ function buildScopePrefix(row: MemoryIndexRow): string | null {
     ['user', normalizeScopeValue(row.user_id)],
     ['agent', normalizeScopeValue(row.agent_id)],
     ['session', normalizeScopeValue(row.session_id)],
-    ['shared_space', normalizeScopeValue(row.shared_space_id)],
   ].filter((entry): entry is [string, string] => entry[1] != null);
 
   if (scopeTuple.length === 0) {

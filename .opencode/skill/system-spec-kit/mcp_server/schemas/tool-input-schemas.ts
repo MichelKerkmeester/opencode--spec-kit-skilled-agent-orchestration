@@ -123,7 +123,6 @@ const memoryContextSchema = getSchema({
   tenantId: z.string().optional(),
   userId: z.string().optional(),
   agentId: z.string().optional(),
-  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -142,7 +141,6 @@ const memorySearchSchema = getSchema({
   tenantId: z.string().optional(),
   userId: z.string().optional(),
   agentId: z.string().optional(),
-  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -179,7 +177,6 @@ const memoryQuickSearchSchema = getSchema({
   tenantId: z.string().optional(),
   userId: z.string().optional(),
   agentId: z.string().optional(),
-  sharedSpaceId: z.string().optional(),
 });
 
 const memoryMatchTriggersSchema = getSchema({
@@ -188,7 +185,6 @@ const memoryMatchTriggersSchema = getSchema({
   tenantId: z.string().optional(),
   userId: z.string().optional(),
   agentId: z.string().optional(),
-  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   session_id: z.string().optional(),
   turnNumber: safeNumericPreprocess.pipe(z.number().int().min(1)).optional(),
@@ -209,7 +205,6 @@ const memorySaveSchema = getSchema({
   userId: z.string().optional(),
   agentId: z.string().optional(),
   sessionId: z.string().optional(),
-  sharedSpaceId: z.string().optional(),
   provenanceSource: z.string().optional(),
   provenanceActor: z.string().optional(),
   governedAt: z.string().optional(),
@@ -289,7 +284,6 @@ const checkpointCreateSchema = getSchema({
   tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
-  sharedSpaceId: z.string().min(1).optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
@@ -298,7 +292,6 @@ const checkpointListSchema = getSchema({
   tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
-  sharedSpaceId: z.string().min(1).optional(),
   limit: positiveIntMax(100).optional(),
 });
 
@@ -307,7 +300,6 @@ const checkpointRestoreSchema = getSchema({
   tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
-  sharedSpaceId: z.string().min(1).optional(),
   clearExisting: z.boolean().optional(),
 });
 
@@ -316,7 +308,6 @@ const checkpointDeleteSchema = getSchema({
   tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
-  sharedSpaceId: z.string().min(1).optional(),
   confirmName: z.string().min(1),
 });
 
@@ -444,34 +435,6 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_ingest_start: memoryIngestStartSchema as unknown as ToolInputSchema,
   memory_ingest_status: memoryIngestStatusSchema as unknown as ToolInputSchema,
   memory_ingest_cancel: memoryIngestCancelSchema as unknown as ToolInputSchema,
-  shared_space_upsert: getSchema({
-    spaceId: z.string(),
-    tenantId: z.string(),
-    name: z.string(),
-    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    rolloutEnabled: z.boolean().optional(),
-    rolloutCohort: z.string().optional(),
-    killSwitch: z.boolean().optional(),
-  }),
-  shared_space_membership_set: getSchema({
-    spaceId: z.string(),
-    tenantId: z.string(),
-    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    subjectType: z.enum(['user', 'agent']),
-    subjectId: z.string(),
-    role: z.enum(['owner', 'editor', 'viewer']),
-  }),
-  shared_memory_status: getSchema({
-    tenantId: z.string().optional(),
-    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-  }),
-  shared_memory_enable: getSchema({
-    actorUserId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-    actorAgentId: z.string().optional().describe('Actor identity (provide actorUserId OR actorAgentId, not both)'),
-  }),
   session_bootstrap: getSchema({
     specFolder: optionalPathString(),
   }) as unknown as ToolInputSchema,
@@ -483,11 +446,11 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
-  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors', 'profile'],
-  memory_search: ['cursor', 'query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace', 'profile'],
-  memory_quick_search: ['query', 'limit', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId'],
-  memory_match_triggers: ['prompt', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
-  memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding', 'routeAs', 'mergeModeHint', 'tenantId', 'userId', 'agentId', 'sessionId', 'sharedSpaceId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
+  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors', 'profile'],
+  memory_search: ['cursor', 'query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace', 'profile'],
+  memory_quick_search: ['query', 'limit', 'specFolder', 'tenantId', 'userId', 'agentId'],
+  memory_match_triggers: ['prompt', 'specFolder', 'tenantId', 'userId', 'agentId', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
+  memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding', 'routeAs', 'mergeModeHint', 'tenantId', 'userId', 'agentId', 'sessionId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_list: ['limit', 'offset', 'specFolder', 'sortBy', 'includeChunks'],
   memory_stats: ['folderRanking', 'excludePatterns', 'includeScores', 'includeArchived', 'limit'],
   memory_health: ['reportMode', 'limit', 'specFolder', 'autoRepair', 'confirmed'],
@@ -495,10 +458,10 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],
   memory_bulk_delete: ['tier', 'specFolder', 'confirm', 'olderThanDays', 'skipCheckpoint'],
-  checkpoint_create: ['name', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'metadata'],
-  checkpoint_list: ['specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit'],
-  checkpoint_restore: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'clearExisting'],
-  checkpoint_delete: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'confirmName'],
+  checkpoint_create: ['name', 'specFolder', 'tenantId', 'userId', 'agentId', 'metadata'],
+  checkpoint_list: ['specFolder', 'tenantId', 'userId', 'agentId', 'limit'],
+  checkpoint_restore: ['name', 'tenantId', 'userId', 'agentId', 'clearExisting'],
+  checkpoint_delete: ['name', 'tenantId', 'userId', 'agentId', 'confirmName'],
   task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
   task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered', 'sessionId'],
   memory_drift_why: ['memoryId', 'maxDepth', 'direction', 'relations', 'includeMemoryDetails'],
@@ -512,10 +475,6 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_start: ['paths', 'specFolder'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
-  shared_space_upsert: ['spaceId', 'tenantId', 'name', 'actorUserId', 'actorAgentId', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
-  shared_space_membership_set: ['spaceId', 'tenantId', 'actorUserId', 'actorAgentId', 'subjectType', 'subjectId', 'role'],
-  shared_memory_status: ['tenantId', 'actorUserId', 'actorAgentId'],
-  shared_memory_enable: ['actorUserId', 'actorAgentId'],
   session_bootstrap: ['specFolder'],
   session_health: [],
   session_resume: ['specFolder', 'minimal'],

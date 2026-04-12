@@ -57,10 +57,6 @@ import {
   recordGovernanceAudit,
   validateGovernedIngest,
 } from '../lib/governance/scope-governance.js';
-import {
-  assertSharedSpaceAccess,
-  recordSharedConflict,
-} from '../lib/collab/shared-spaces.js';
 import { delete_memory_from_database } from '../lib/search/vector-index-mutations.js';
 import {
   runQualityLoop,
@@ -1457,7 +1453,6 @@ async function processPreparedMemory(
               userId: scope.userId,
               agentId: scope.agentId,
               sessionId: scope.sessionId,
-              sharedSpaceId: scope.sharedSpaceId,
             }).map(m => ({
               id: m.id,
               file_path: m.file_path,
@@ -1837,7 +1832,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     userId,
     agentId,
     sessionId,
-    sharedSpaceId,
     provenanceSource,
     provenanceActor,
     governedAt,
@@ -1868,7 +1862,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     userId,
     agentId,
     sessionId,
-    sharedSpaceId,
     provenanceSource,
     provenanceActor,
     governedAt,
@@ -1884,34 +1877,10 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       userId,
       agentId,
       sessionId,
-      sharedSpaceId,
       reason: governanceDecision.reason ?? 'governance_rejected',
       metadata: { issues: governanceDecision.issues },
     });
     throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
-  }
-
-  if (sharedSpaceId) {
-    const access = assertSharedSpaceAccess(database, {
-      tenantId,
-      userId,
-      agentId,
-      sessionId,
-      sharedSpaceId,
-    }, sharedSpaceId, 'editor');
-    if (!access.allowed) {
-      recordGovernanceAudit(database, {
-        action: 'memory_save_shared_space',
-        decision: 'deny',
-        tenantId,
-        userId,
-        agentId,
-        sessionId,
-        sharedSpaceId,
-        reason: access.reason ?? 'shared_space_denied',
-      });
-      throw new Error(`Shared-memory save denied: ${access.reason ?? 'shared_space_denied'}`);
-    }
   }
 
   // DryRun must remain non-mutating even when preflight is explicitly skipped.
@@ -1997,7 +1966,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     userId: governanceDecision.normalized.userId ?? null,
     agentId: governanceDecision.normalized.agentId ?? null,
     sessionId: governanceDecision.normalized.sessionId,
-    sharedSpaceId: governanceDecision.normalized.sharedSpaceId ?? null,
   };
 
   // PRE-FLIGHT VALIDATION
@@ -2015,7 +1983,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         tenantId: saveScope.tenantId ?? undefined,
         userId: saveScope.userId ?? undefined,
         agentId: saveScope.agentId ?? undefined,
-        sharedSpaceId: saveScope.sharedSpaceId ?? undefined,
       },
       {
         dry_run: dryRun,
@@ -2186,7 +2153,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   if (typeof result.id === 'number' && result.id > 0 && result.status !== 'unchanged' && result.status !== 'duplicate') {
     // B13 + H5 FIX: Wrap governance metadata in a transaction with rollback on failure.
     // If governance application fails, delete the orphaned memory row to prevent
-    // persisted rows without tenant/shared-space/retention metadata.
+    // persisted rows without tenant/session/retention metadata.
     const applyGovernanceTx = database.transaction(() => {
       applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));
       recordGovernanceAudit(database, {
@@ -2197,32 +2164,9 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         userId,
         agentId,
         sessionId,
-        sharedSpaceId,
-        reason: sharedSpaceId ? 'shared_space_save' : 'governed_ingest',
+        reason: 'governed_ingest',
         metadata: { filePath: validatedPath, retentionPolicy: governanceDecision.normalized.retentionPolicy },
       });
-
-      if (sharedSpaceId) {
-        const existing = database.prepare(`
-          SELECT id
-          FROM memory_index
-          WHERE shared_space_id = ?
-            AND file_path = ?
-            AND id != ?
-          ORDER BY id DESC
-          LIMIT 1
-        `).get(sharedSpaceId, validatedPath, result.id) as { id?: number } | undefined;
-        if (existing?.id) {
-          recordSharedConflict(database, {
-            spaceId: sharedSpaceId,
-            logicalKey: `${result.specFolder || ''}::${validatedPath}`,
-            existingMemoryId: existing.id,
-            incomingMemoryId: result.id,
-            actor: provenanceActor ?? 'mcp:memory_save',
-            metadata: { filePath: validatedPath },
-          });
-        }
-      }
     });
     try {
       applyGovernanceTx();

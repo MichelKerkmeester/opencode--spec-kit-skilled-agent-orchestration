@@ -1,17 +1,20 @@
 ---
-title: "018 / 011 — Graph metadata research summary"
-description: "This packet defines the cleanest path for restoring packet-level graph signals without reviving legacy memory-file sprawl."
-trigger_phrases: ["018 011 implementation summary", "graph metadata research summary", "graph metadata closeout"]
+title: "Implementation Summary: 018 / 011 — graph-metadata.json rollout shell"
+description: "Planned-shell summary for the future implementation of graph-metadata.json. No runtime code has landed yet."
+trigger_phrases:
+  - "018 011 implementation summary"
+  - "graph metadata rollout shell"
+  - "graph metadata planned summary"
 importance_tier: "important"
-contextType: "research"
-status: "complete"
+contextType: "planning"
+status: "planned"
 _memory:
   continuity:
     packet_pointer: "018/011-spec-folder-graph-metadata"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Completed packet authoring and passed strict validation"
-    next_safe_action: "Open implementation phase"
+    recent_action: "Reframed implementation-summary.md as a planned shell for the future rollout"
+    next_safe_action: "Populate this file after runtime changes and verification land"
     key_files: ["implementation-summary.md", "research.md", "spec.md", "plan.md"]
 ---
 # Implementation Summary
@@ -28,7 +31,8 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 011-spec-folder-graph-metadata |
-| **Completed** | 2026-04-12 |
+| **Status** | Planned |
+| **Completed** | TBD |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -37,11 +41,11 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet gives Phase 018 a concrete answer to the graph gap it created. You can now point to one recommended contract, one schema direction, and one migration path for restoring packet-level graph metadata without undoing the canonical-doc continuity model.
+This file remains a shell until the runtime rollout lands. The packet now contains the completed implementation specification for `graph-metadata.json`, but it does not yet contain the code changes that will create, refresh, index, backfill, and enforce the new file.
 
-### Research and synthesis packet
+### Planned rollout summary
 
-You now have a full 10-iteration research record in `research.md`, plus a matching `spec.md`, `plan.md`, and `decision-record.md` that all converge on the same recommendation: introduce `graph-metadata.json` per spec folder, refresh it during canonical saves, index it as `graph_metadata`, and reuse `memory_index` plus `causal_edges`.
+The approved implementation path is now locked in packet docs: add one `graph-metadata.json` per spec-folder root, split it into `manual` and `derived` sections, refresh it from canonical save, index it as `graph_metadata`, project packet relationships into `causal_edges`, then adopt it across plan, complete, resume, memory-search, and validation flows.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -49,7 +53,7 @@ You now have a full 10-iteration research record in `research.md`, plus a matchi
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The packet was built from direct inspection of the live save, indexing, and graph code paths instead of assumption-based design. The delivery flow was: audit current runtime inputs, compare storage options, draft the schema and lifecycle, encode the recommendation into packet docs, then reconcile everything to the strict Level 3 template contract so the packet can validate cleanly.
+The shell was rebuilt from direct inspection of live runtime files, packet research, and Level 3 templates. `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` now define the implementation contract that future code work will follow.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -61,7 +65,7 @@ The packet was built from direct inspection of the live save, indexing, and grap
 |----------|-----|
 | Use `graph-metadata.json` as a new root-level packet file | It is the smallest contract that restores packet-level graph state while keeping resume and discovery surfaces focused |
 | Keep manual and derived fields separate | Human packet relationships need to survive automated save refreshes |
-| Reuse `memory_index` and `causal_edges` | The current runtime already knows how to rank rows and traverse edges, so the missing piece is a better packet row, not a new database |
+| Refresh by merge, not blind overwrite | The save path must preserve manual relationships and still rebuild stale derived state |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -71,9 +75,9 @@ The packet was built from direct inspection of the live save, indexing, and grap
 
 | Check | Result |
 |-------|--------|
-| Runtime/source audit | PASS, based on direct reads of `causal-links-processor.ts`, `reconsolidation.ts`, `memory-index-discovery.ts`, `stage1-candidate-gen.ts`, `generate-context.ts`, and workflow helpers |
-| Research coverage | PASS, all 10 requested iterations are present in `research.md` |
-| Strict packet validation | PASS - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata` |
+| Packet doc rewrite | PASS, the Level 3 implementation packet now matches the settled research direction |
+| Runtime/source audit | PASS, grounded in direct reads of the verified `.opencode/skill/system-spec-kit/...` runtime files |
+| Strict packet validation | Pending final validation run after this rewrite |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -81,6 +85,15 @@ The packet was built from direct inspection of the live save, indexing, and grap
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Research-only packet** This phase does not implement the runtime changes. A follow-on implementation phase still has to add save-path refresh, discovery, indexing, validation, and backfill behavior.
-2. **CocoIndex unavailable in sandbox** Semantic code search was blocked by MCP cancellation and local daemon permissions, so concept exploration fell back to direct file inspection.
+1. **No runtime implementation yet** This packet still needs the actual schema, save-path, indexing, backfill, command-surface, and validation changes described in `plan.md`.
+2. **`spec.md` had to be recreated** The 011 folder did not contain the expected stub `spec.md`, so this rewrite rebuilt it from the completed research and verified runtime paths.
+3. **CocoIndex unavailable in sandbox** Semantic code search calls were cancelled in this environment, so final grounding relied on direct file inspection and exact path verification.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->

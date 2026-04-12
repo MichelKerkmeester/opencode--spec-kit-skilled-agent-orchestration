@@ -32,7 +32,6 @@ interface CacheArgsInput {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit: number;
   mode?: string;
   tier?: string;
@@ -116,7 +115,6 @@ function buildCacheArgs({
   tenantId,
   userId,
   agentId,
-  sharedSpaceId,
   limit,
   mode,
   tier,
@@ -146,7 +144,6 @@ function buildCacheArgs({
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
     limit,
     mode,
     tier,

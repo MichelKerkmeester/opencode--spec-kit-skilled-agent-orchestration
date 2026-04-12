@@ -97,19 +97,6 @@ export {
 export type { LayerDefinition, LayerId } from '../lib/architecture/layer-definitions.js';
 
 export {
-  getSharedRolloutMetrics,
-  getSharedRolloutCohortSummary,
-} from '../lib/collab/shared-spaces.js';
-export type {
-  SharedMembership,
-  SharedRole,
-  SharedRolloutCohortSummary,
-  SharedRolloutMetrics,
-  SharedSpaceDefinition,
-  SharedSubjectType,
-} from '../lib/collab/shared-spaces.js';
-
-export {
   getMemoryRoadmapCapabilityFlags,
   getMemoryRoadmapDefaults,
   getMemoryRoadmapPhase,

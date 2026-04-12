@@ -46,7 +46,6 @@ import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers.js';
 import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance.js';
-import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces.js';
 import { withTimeout } from '../../errors/core.js';
 import { computeBackfillQualityScore } from '../../validation/save-quality-gate.js';
 import {
@@ -477,7 +476,6 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
     tier,
     contextType,
     includeArchived,
@@ -973,26 +971,19 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     tenantId
     || userId
     || agentId
-    || sharedSpaceId
   );
   const shouldApplyScopeFiltering = hasGovernanceScope || isScopeEnforcementEnabled();
   const scopeFilter = {
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
   };
-  let allowedSharedSpaceIds: Set<string> | undefined;
 
   if (shouldApplyScopeFiltering) {
     try {
       const db = requireDb();
-      allowedSharedSpaceIds = getAllowedSharedSpaceIds(db, scopeFilter);
-      candidates = filterRowsByScope(
-        candidates,
-        scopeFilter,
-        allowedSharedSpaceIds,
-      );
+      void db;
+      candidates = filterRowsByScope(candidates, scopeFilter);
     } catch (_error: unknown) {
       candidates = filterRowsByScope(candidates, scopeFilter);
     }
@@ -1045,11 +1036,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         // H12 FIX: Use shouldApplyScopeFiltering (not just hasGovernanceScope)
         // to ensure constitutional injection respects global scope enforcement
         const filteredConstitutional = shouldApplyScopeFiltering
-          ? filterRowsByScope(
-            contextFilteredConstitutional,
-            scopeFilter,
-            allowedSharedSpaceIds,
-          )
+          ? filterRowsByScope(contextFilteredConstitutional, scopeFilter)
           : contextFilteredConstitutional;
         candidates = [...candidates, ...filteredConstitutional];
         constitutionalInjectedCount = filteredConstitutional.length;
@@ -1115,7 +1102,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           if (reformResultSets.length > 0) {
             const filteredReformSets = reformResultSets.map((resultSet, index) => {
               let rows = shouldApplyScopeFiltering
-                ? filterRowsByScope(resultSet, scopeFilter, allowedSharedSpaceIds)
+                ? filterRowsByScope(resultSet, scopeFilter)
                 : resultSet;
               if (contextType) {
                 rows = rows.filter((r) => resolveRowContextType(r) === contextType);
@@ -1170,7 +1157,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     try {
       const rawHydeCandidates = await runHyDE(query, candidates, limit, specFolder);
       const hydeCandidates = shouldApplyScopeFiltering
-        ? filterRowsByScope(rawHydeCandidates, scopeFilter, allowedSharedSpaceIds)
+        ? filterRowsByScope(rawHydeCandidates, scopeFilter)
         : rawHydeCandidates;
       if (hydeCandidates.length > 0) {
         let newHydeCandidates = hydeCandidates;
@@ -1230,7 +1217,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             if (newSummaryIds.length > 0) {
               const placeholders = newSummaryIds.map(() => '?').join(', ');
               const memRows = db.prepare(
-                `SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id IN (${placeholders})`
+                `SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, context_type, tenant_id, user_id, agent_id, session_id FROM memory_index WHERE id IN (${placeholders})`
               ).all(...newSummaryIds) as PipelineRow[];
 
               const memRowMap = new Map(memRows.map((r) => [r.id, r]));
@@ -1256,7 +1243,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               ? tierFilteredSummaryHits.filter((r) => resolveRowContextType(r) === contextType)
               : tierFilteredSummaryHits;
             const scopeFilteredSummaryHits = shouldApplyScopeFiltering
-              ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter, allowedSharedSpaceIds)
+              ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter)
               : contextFilteredSummaryHits;
 
             // Apply the same quality threshold that other candidates go through

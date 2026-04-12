@@ -29,7 +29,6 @@ export interface ContextArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -49,7 +48,6 @@ export interface SearchArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
   tier?: string;
   contextType?: string;
@@ -172,7 +170,6 @@ export interface SaveArgs {
   userId?: string;
   agentId?: string;
   sessionId?: string;
-  sharedSpaceId?: string;
   provenanceSource?: string;
   provenanceActor?: string;
   governedAt?: string;
@@ -187,38 +184,6 @@ export interface ScanArgs {
   includeConstitutional?: boolean;
   includeSpecDocs?: boolean;
   incremental?: boolean;
-}
-
-export interface SharedSpaceUpsertArgs {
-  spaceId: string;
-  tenantId: string;
-  name: string;
-  actorUserId?: string;
-  actorAgentId?: string;
-  rolloutEnabled?: boolean;
-  rolloutCohort?: string;
-  killSwitch?: boolean;
-}
-
-export interface SharedSpaceMembershipArgs {
-  spaceId: string;
-  tenantId: string;
-  actorUserId?: string;
-  actorAgentId?: string;
-  subjectType: 'user' | 'agent';
-  subjectId: string;
-  role: 'owner' | 'editor' | 'viewer';
-}
-
-export interface SharedMemoryStatusArgs {
-  tenantId?: string;
-  actorUserId?: string;
-  actorAgentId?: string;
-}
-
-export interface SharedMemoryEnableArgs {
-  actorUserId?: string;
-  actorAgentId?: string;
 }
 
 /** Arguments for session resume requests. */
@@ -239,7 +204,6 @@ export interface CheckpointCreateArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -249,7 +213,6 @@ export interface CheckpointListArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
 }
 
@@ -259,7 +222,6 @@ export interface CheckpointRestoreArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   clearExisting?: boolean;
 }
 
@@ -269,7 +231,6 @@ export interface CheckpointDeleteArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   confirmName: string;
 }
 

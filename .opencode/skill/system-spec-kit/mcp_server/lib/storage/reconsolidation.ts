@@ -908,7 +908,6 @@ function buildMergePostInsertMetadata(
     user_id: existingRow.user_id,
     agent_id: existingRow.agent_id,
     session_id: existingRow.session_id,
-    shared_space_id: existingRow.shared_space_id,
     provenance_source: existingRow.provenance_source,
     provenance_actor: existingRow.provenance_actor,
     governed_at: existingRow.governed_at,

@@ -81,7 +81,6 @@ interface ContextOptions {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -118,7 +117,6 @@ interface ContextArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -809,7 +807,6 @@ async function executeQuickStrategy(input: string, options: ContextOptions): Pro
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
-    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 5,
     session_id: options.sessionId,
     include_cognitive: true
@@ -830,7 +827,6 @@ async function executeDeepStrategy(input: string, intent: string | null, options
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
-    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 10,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
@@ -861,7 +857,6 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     tenantId: options.tenantId,
     userId: options.userId,
     agentId: options.agentId,
-    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 8,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
@@ -1397,7 +1392,6 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     tenantId: args.tenantId,
     userId: args.userId,
     agentId: args.agentId,
-    sharedSpaceId: args.sharedSpaceId,
     limit,
     sessionId: effectiveSessionId,
     enableDedup: enableDedup,

@@ -168,7 +168,7 @@ export async function runReconsolidationIfEnabled(
   filePath: string,
   force: boolean,
   embedding: Float32Array | null,
-  scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null },
+  scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null },
 ): Promise<ReconsolidationBridgeResult> {
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings = [] as ReconWarningList;
@@ -210,7 +210,6 @@ export async function runReconsolidationIfEnabled(
                 if (scope?.tenantId && r.tenant_id && r.tenant_id !== scope.tenantId) return false;
                 if (scope?.userId && r.user_id && r.user_id !== scope.userId) return false;
                 if (scope?.agentId && r.agent_id && r.agent_id !== scope.agentId) return false;
-                if (scope?.sharedSpaceId && r.shared_space_id && r.shared_space_id !== scope.sharedSpaceId) return false;
                 return true;
               }).slice(0, opts.limit ?? 3);
               return scopeFiltered.map((r: Record<string, unknown>) => ({

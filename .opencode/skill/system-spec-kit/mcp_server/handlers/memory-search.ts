@@ -307,7 +307,6 @@ interface SearchArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
   tier?: string;
   contextType?: string;
@@ -624,7 +623,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     tenantId,
     userId,
     agentId,
-    sharedSpaceId,
     limit: rawLimit = 10,
     tier,
     contextType,
@@ -657,13 +655,12 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
   const includeArchived = false;
-  const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
+  const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId });
   const progressiveScopeKey = JSON.stringify({
     tenantId: normalizedScope.tenantId ?? null,
     userId: normalizedScope.userId ?? null,
     agentId: normalizedScope.agentId ?? null,
     sessionId: normalizedScope.sessionId ?? null,
-    sharedSpaceId: normalizedScope.sharedSpaceId ?? null,
   });
 
   // Validate at least one search input is provided (moved from schema superRefine for GPT compatibility)
@@ -851,7 +848,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     tenantId: normalizedScope.tenantId,
     userId: normalizedScope.userId,
     agentId: normalizedScope.agentId,
-    sharedSpaceId: normalizedScope.sharedSpaceId,
     limit,
     mode,
     tier,
@@ -909,7 +905,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       tenantId: normalizedScope.tenantId,
       userId: normalizedScope.userId,
       agentId: normalizedScope.agentId,
-      sharedSpaceId: normalizedScope.sharedSpaceId,
       tier,
       contextType,
       includeArchived,

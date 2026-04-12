@@ -41,7 +41,7 @@ export interface ToolDefinition {
 const memoryContext: ToolDefinition = {
   name: 'memory_context',
   description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. For session recovery, use mode: \'resume\' with profile: \'resume\'. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 3500. For code search by concept/intent, prefer mcp__cocoindex_code__search (CocoIndex). For structural code queries (callers, imports), prefer code_graph_query.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', minLength: 1, description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', minimum: 1, maximum: 100, description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Optional server-issued session identifier for working-memory continuity. When provided, it must match an existing server-managed session or the call is rejected. Omit it to let the server generate a new session for this request.' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' }, profile: { type: 'string', enum: ['quick', 'research', 'resume', 'debug'], description: 'Optional response profile formatter. Returns a reduced or mode-aware response shape when profile formatting is enabled.' } }, required: ['input'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', minLength: 1, description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', minimum: 1, maximum: 100, description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Optional server-issued session identifier for working-memory continuity. When provided, it must match an existing server-managed session or the call is rejected. Omit it to let the server generate a new session for this request.' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' }, profile: { type: 'string', enum: ['quick', 'research', 'resume', 'debug'], description: 'Optional response profile formatter. Returns a reduced or mode-aware response shape when profile formatting is enabled.' } }, required: ['input'] },
 };
 
 // L2: Core - Primary operations (Token Budget: 3500)
@@ -70,7 +70,6 @@ const memorySearch: ToolDefinition = {
       tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval. When provided with scope enforcement, results are isolated to this tenant.' },
       userId: { type: 'string', description: 'User boundary for governed retrieval. Filters private or shared-space user-scoped memories.' },
       agentId: { type: 'string', description: 'Agent boundary for governed retrieval. Filters agent-scoped memories.' },
-      sharedSpaceId: { type: 'string', description: 'Shared-memory space identifier. Requires explicit membership when shared memory rollout is enabled.' },
       limit: { type: 'number', default: 10, minimum: 1, maximum: 100, description: 'Maximum number of results to return (1-100)' },
       sessionId: {
         type: 'string',
@@ -201,7 +200,6 @@ const memoryQuickSearch: ToolDefinition = {
       tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval.' },
       userId: { type: 'string', description: 'User boundary for governed retrieval.' },
       agentId: { type: 'string', description: 'Agent boundary for governed retrieval.' },
-      sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval.' },
     },
     required: ['query'],
   },
@@ -210,14 +208,14 @@ const memoryQuickSearch: ToolDefinition = {
 const memoryMatchTriggers: ToolDefinition = {
   name: 'memory_match_triggers',
   description: '[L2:Core] Fast trigger phrase matching with cognitive memory features. Supports attention-based decay, tiered content injection (HOT=full, WARM=summary), and co-activation of related memories. Pass session_id and turnNumber for cognitive features. Token Budget: 3500.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { prompt: { type: 'string', minLength: 1, description: 'User prompt or text to match against trigger phrases' }, specFolder: { type: 'string', description: 'Limit trigger matches to a specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed trigger matching.' }, userId: { type: 'string', description: 'User boundary for governed trigger matching.' }, agentId: { type: 'string', description: 'Agent boundary for governed trigger matching.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed trigger matching.' }, limit: { type: 'number', default: 3, minimum: 1, maximum: 100, description: 'Maximum number of matching memories to return (default: 3)' }, session_id: { type: 'string', description: 'Session identifier for cognitive features. When provided, enables attention decay and tiered content injection.' }, turnNumber: { type: 'number', minimum: 1, description: 'Current conversation turn number. Used with session_id for decay calculations.' }, include_cognitive: { type: 'boolean', default: true, description: 'Enable cognitive features (decay, tiers, co-activation). Requires session_id.' } }, required: ['prompt'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { prompt: { type: 'string', minLength: 1, description: 'User prompt or text to match against trigger phrases' }, specFolder: { type: 'string', description: 'Limit trigger matches to a specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed trigger matching.' }, userId: { type: 'string', description: 'User boundary for governed trigger matching.' }, agentId: { type: 'string', description: 'Agent boundary for governed trigger matching.' }, limit: { type: 'number', default: 3, minimum: 1, maximum: 100, description: 'Maximum number of matching memories to return (default: 3)' }, session_id: { type: 'string', description: 'Session identifier for cognitive features. When provided, enables attention decay and tiered content injection.' }, turnNumber: { type: 'number', minimum: 1, description: 'Current conversation turn number. Used with session_id for decay calculations.' }, include_cognitive: { type: 'boolean', default: true, description: 'Enable cognitive features (decay, tiers, co-activation). Requires session_id.' } }, required: ['prompt'] },
 };
 
 // T306: Added asyncEmbedding parameter for non-blocking embedding generation
 const memorySave: ToolDefinition = {
   name: 'memory_save',
   description: '[L2:Core] Index a memory file into the spec kit memory database. Reads the file, extracts metadata (title, trigger phrases), generates embedding, and stores in the index. Use this to manually index new or updated memory files. Includes pre-flight validation (T067-T070) for anchor format, duplicate detection, and token budget estimation. Token Budget: 3500.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { filePath: { type: 'string', minLength: 1, description: 'Absolute path to the memory file (must be in specs/**/memory/, .opencode/specs/**/memory/, specs/**/ for spec documents, or .opencode/skill/*/constitutional/)' }, force: { type: 'boolean', default: false, description: 'Force re-index even if content hash unchanged' }, dryRun: { type: 'boolean', default: false, description: 'Validate only without saving. Returns validation results including anchor format, duplicate check, and token budget estimation (CHK-160)' }, skipPreflight: { type: 'boolean', default: false, description: 'Skip pre-flight validation checks (not recommended)' }, asyncEmbedding: { type: 'boolean', default: false, description: 'When true, embedding generation is deferred for non-blocking saves. Memory is immediately saved with pending status and an async background attempt is triggered. Default false preserves synchronous embedding behavior.' }, routeAs: { type: 'string', enum: ['narrative_progress', 'narrative_delivery', 'decision', 'handover_state', 'research_finding', 'task_update', 'metadata_only', 'drop'], description: 'Optional routing override hint for canonical continuity saves.' }, mergeModeHint: { type: 'string', enum: ['append-as-paragraph', 'insert-new-adr', 'append-table-row', 'update-in-place', 'append-section'], description: 'Optional merge-mode hint for routed canonical continuity saves.' }, tenantId: { type: 'string', description: 'Tenant boundary for governed ingest.' }, userId: { type: 'string', description: 'User boundary for governed ingest.' }, agentId: { type: 'string', description: 'Agent boundary for governed ingest.' }, sessionId: { type: 'string', description: 'Session boundary for governed ingest.' }, sharedSpaceId: { type: 'string', description: 'Optional shared-memory space for collaboration saves.' }, provenanceSource: { type: 'string', description: 'Required provenance source when governance guardrails are enabled.' }, provenanceActor: { type: 'string', description: 'Required provenance actor when governance guardrails are enabled.' }, governedAt: { type: 'string', description: 'ISO timestamp for governed ingest. Defaults to now when omitted.' }, retentionPolicy: { type: 'string', enum: ['keep', 'ephemeral', 'shared'], description: 'Retention class applied to the saved memory.' }, deleteAfter: { type: 'string', description: 'Optional ISO timestamp after which retention sweep may delete the memory.' } }, required: ['filePath'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { filePath: { type: 'string', minLength: 1, description: 'Absolute path to the memory file (must be in specs/**/memory/, .opencode/specs/**/memory/, specs/**/ for spec documents, or .opencode/skill/*/constitutional/)' }, force: { type: 'boolean', default: false, description: 'Force re-index even if content hash unchanged' }, dryRun: { type: 'boolean', default: false, description: 'Validate only without saving. Returns validation results including anchor format, duplicate check, and token budget estimation (CHK-160)' }, skipPreflight: { type: 'boolean', default: false, description: 'Skip pre-flight validation checks (not recommended)' }, asyncEmbedding: { type: 'boolean', default: false, description: 'When true, embedding generation is deferred for non-blocking saves. Memory is immediately saved with pending status and an async background attempt is triggered. Default false preserves synchronous embedding behavior.' }, routeAs: { type: 'string', enum: ['narrative_progress', 'narrative_delivery', 'decision', 'handover_state', 'research_finding', 'task_update', 'metadata_only', 'drop'], description: 'Optional routing override hint for canonical continuity saves.' }, mergeModeHint: { type: 'string', enum: ['append-as-paragraph', 'insert-new-adr', 'append-table-row', 'update-in-place', 'append-section'], description: 'Optional merge-mode hint for routed canonical continuity saves.' }, tenantId: { type: 'string', description: 'Tenant boundary for governed ingest.' }, userId: { type: 'string', description: 'User boundary for governed ingest.' }, agentId: { type: 'string', description: 'Agent boundary for governed ingest.' }, sessionId: { type: 'string', description: 'Session boundary for governed ingest.' }, provenanceSource: { type: 'string', description: 'Required provenance source when governance guardrails are enabled.' }, provenanceActor: { type: 'string', description: 'Required provenance actor when governance guardrails are enabled.' }, governedAt: { type: 'string', description: 'ISO timestamp for governed ingest. Defaults to now when omitted.' }, retentionPolicy: { type: 'string', enum: ['keep', 'ephemeral', 'shared'], description: 'Retention class applied to the saved memory.' }, deleteAfter: { type: 'string', description: 'Optional ISO timestamp after which retention sweep may delete the memory.' } }, required: ['filePath'] },
 };
 
 // L3: Discovery - Browse and explore (Token Budget: 800)
@@ -335,7 +333,6 @@ const checkpointCreate: ToolDefinition = {
       tenantId: { type: 'string', minLength: 1, description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', minLength: 1, description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', minLength: 1, description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', minLength: 1, description: 'Scope to this shared space (requires tenantId).' },
       metadata: { type: 'object', description: 'Additional metadata' }
     },
     required: ['name']
@@ -353,7 +350,6 @@ const checkpointList: ToolDefinition = {
       tenantId: { type: 'string', minLength: 1, description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', minLength: 1, description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', minLength: 1, description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', minLength: 1, description: 'Scope to this shared space (requires tenantId).' },
       limit: { type: 'number', default: 50, minimum: 1, maximum: 100 }
     }
   },
@@ -370,7 +366,6 @@ const checkpointRestore: ToolDefinition = {
       tenantId: { type: 'string', minLength: 1, description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', minLength: 1, description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', minLength: 1, description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', minLength: 1, description: 'Scope to this shared space (requires tenantId).' },
       clearExisting: { type: 'boolean', default: false }
     },
     required: ['name']
@@ -388,7 +383,6 @@ const checkpointDelete: ToolDefinition = {
       tenantId: { type: 'string', minLength: 1, description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', minLength: 1, description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', minLength: 1, description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', minLength: 1, description: 'Scope to this shared space (requires tenantId).' },
       confirmName: {
         type: 'string',
         minLength: 1,
@@ -396,76 +390,6 @@ const checkpointDelete: ToolDefinition = {
       }
     },
     required: ['name', 'confirmName']
-  },
-};
-
-const sharedSpaceUpsert: ToolDefinition = {
-  name: 'shared_space_upsert',
-  description: '[L5:Lifecycle] Create or update a shared-memory space. Caller authentication is required. New spaces may only be created by the configured shared-memory admin; updates require the configured admin or a current space owner.',
-  inputSchema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      spaceId: { type: 'string', description: 'Stable shared-space identifier.' },
-      tenantId: { type: 'string', description: 'Owning tenant for the shared space.' },
-      name: { type: 'string', description: 'Display name for the shared space.' },
-      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
-      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-      rolloutEnabled: { type: 'boolean', default: false, description: 'Enable this space for rollout.' },
-      rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
-      killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
-    },
-    // oneOf/not removed — Claude Code MCP client rejects top-level oneOf/anyOf/allOf/not
-    // Runtime handler validates exactly-one-of actorUserId/actorAgentId
-    required: ['spaceId', 'tenantId', 'name'],
-  },
-};
-
-const sharedSpaceMembershipSet: ToolDefinition = {
-  name: 'shared_space_membership_set',
-  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Caller authentication is required; membership changes require the configured shared-memory admin or a current space owner.',
-  inputSchema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      spaceId: { type: 'string', description: 'Shared-space identifier.' },
-      tenantId: { type: 'string', description: 'Tenant boundary for the membership mutation.' },
-      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
-      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-      subjectType: { type: 'string', description: 'Membership subject type: "user" or "agent".' },
-      subjectId: { type: 'string', description: 'Membership subject identifier.' },
-      role: { type: 'string', description: 'Access role inside the shared space: "owner", "editor", or "viewer".' },
-    },
-    required: ['spaceId', 'tenantId', 'subjectType', 'subjectId', 'role'],
-  },
-};
-
-const sharedMemoryStatus: ToolDefinition = {
-  name: 'shared_memory_status',
-  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the caller-visible spaces for the authenticated actor.',
-  inputSchema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      tenantId: { type: 'string', description: 'Optional tenant filter applied to the authenticated caller scope.' },
-      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
-      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-    },
-    required: [],
-  },
-};
-
-const sharedMemoryEnable: ToolDefinition = {
-  name: 'shared_memory_enable',
-  description: '[L5:Lifecycle] Enable the shared-memory subsystem. Caller authentication is required. First-run setup persists enablement, creates infrastructure tables, and generates a README. Idempotent — subsequent calls return alreadyEnabled: true.',
-  inputSchema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      actorUserId: { type: 'string', description: 'Authenticated caller user ID. Provide exactly one of actorUserId or actorAgentId.' },
-      actorAgentId: { type: 'string', description: 'Authenticated caller agent ID. Provide exactly one of actorUserId or actorAgentId.' },
-    },
-    required: [],
   },
 };
 
@@ -903,10 +827,6 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   checkpointList,
   checkpointRestore,
   checkpointDelete,
-  sharedSpaceUpsert,
-  sharedSpaceMembershipSet,
-  sharedMemoryStatus,
-  sharedMemoryEnable,
   // L6: Analysis
   taskPreflight,
   taskPostflight,

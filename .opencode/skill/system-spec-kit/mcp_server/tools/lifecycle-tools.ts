@@ -13,10 +13,6 @@ import {
   handleGetLearningHistory,
   handleEvalRunAblation,
   handleEvalReportingDashboard,
-  handleSharedMemoryEnable,
-  handleSharedMemoryStatus,
-  handleSharedSpaceMembershipSet,
-  handleSharedSpaceUpsert,
   handleSessionHealth,
   handleSessionResume,
   handleSessionBootstrap,
@@ -35,10 +31,6 @@ import type {
   IngestStartArgs,
   IngestStatusArgs,
   IngestCancelArgs,
-  SharedSpaceMembershipArgs,
-  SharedSpaceUpsertArgs,
-  SharedMemoryStatusArgs,
-  SharedMemoryEnableArgs,
   SessionResumeArgs,
   SessionBootstrapArgs,
 } from './types.js';
@@ -54,10 +46,6 @@ export const TOOL_NAMES = new Set([
   'memory_ingest_cancel',
   'eval_run_ablation',
   'eval_reporting_dashboard',
-  'shared_space_upsert',
-  'shared_space_membership_set',
-  'shared_memory_status',
-  'shared_memory_enable',
   'session_health',
   'session_resume',
   'session_bootstrap',
@@ -75,10 +63,6 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'memory_ingest_cancel':       return handleMemoryIngestCancel(parseArgs<IngestCancelArgs>(validateToolArgs('memory_ingest_cancel', args)));
     case 'eval_run_ablation':          return handleEvalRunAblation(parseArgs<EvalRunAblationArgs>(validateToolArgs('eval_run_ablation', args)));
     case 'eval_reporting_dashboard':   return handleEvalReportingDashboard(parseArgs<EvalReportingDashboardArgs>(validateToolArgs('eval_reporting_dashboard', args)));
-    case 'shared_space_upsert':        return handleSharedSpaceUpsert(parseArgs<SharedSpaceUpsertArgs>(validateToolArgs('shared_space_upsert', args)));
-    case 'shared_space_membership_set': return handleSharedSpaceMembershipSet(parseArgs<SharedSpaceMembershipArgs>(validateToolArgs('shared_space_membership_set', args)));
-    case 'shared_memory_status':       return handleSharedMemoryStatus(parseArgs<SharedMemoryStatusArgs>(validateToolArgs('shared_memory_status', args)));
-    case 'shared_memory_enable':       return handleSharedMemoryEnable(parseArgs<SharedMemoryEnableArgs>(validateToolArgs('shared_memory_enable', args)));
     case 'session_health':             return handleSessionHealth();
     case 'session_resume':             return handleSessionResume(parseArgs<SessionResumeArgs>(validateToolArgs('session_resume', args)));
     case 'session_bootstrap':          return handleSessionBootstrap(parseArgs<SessionBootstrapArgs>(validateToolArgs('session_bootstrap', args)));

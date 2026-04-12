@@ -112,7 +112,6 @@ interface TriggerArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -289,15 +288,15 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   let results: TriggerMatch[] = triggerMatchResult.matches;
 
   // C2 FIX: Post-filter by scope to prevent cross-tenant trigger leaks
-  const { specFolder, tenantId, userId, agentId, sharedSpaceId } = args;
-  if (specFolder || tenantId || userId || agentId || sharedSpaceId) {
+  const { specFolder, tenantId, userId, agentId } = args;
+  if (specFolder || tenantId || userId || agentId) {
     try {
       const database = initialize_db();
       const memoryIds = results.map(r => r.memoryId);
       if (memoryIds.length > 0) {
         const placeholders = memoryIds.map(() => '?').join(',');
         const scopeRows = database.prepare(`
-          SELECT id, spec_folder, tenant_id, user_id, agent_id, shared_space_id
+          SELECT id, spec_folder, tenant_id, user_id, agent_id
           FROM memory_index WHERE id IN (${placeholders})
         `).all(...memoryIds) as Array<{
           id: number;
@@ -305,7 +304,6 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
           tenant_id?: string;
           user_id?: string;
           agent_id?: string;
-          shared_space_id?: string;
         }>;
         const scopeMap = new Map(scopeRows.map(r => [r.id, r]));
         results = results.filter(match => {
@@ -317,7 +315,6 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
           if (tenantId && row.tenant_id !== tenantId) return false;
           if (userId && row.user_id !== userId) return false;
           if (agentId && row.agent_id !== agentId) return false;
-          if (sharedSpaceId && row.shared_space_id !== sharedSpaceId) return false;
           return true;
         });
       }

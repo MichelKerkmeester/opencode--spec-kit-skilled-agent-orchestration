@@ -32,7 +32,7 @@ export function evaluateAndApplyPeDecision(
   validationWarnings: string[] | undefined,
   embeddingStatus: string,
   filePath: string,
-  scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null },
+  scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null },
 ): PeOrchestrationResult {
   let peDecision: PeDecision = { action: 'CREATE', similarity: 0 };
   let candidates: SimilarMemory[] = [];
@@ -46,7 +46,6 @@ export function evaluateAndApplyPeDecision(
       userId: scope?.userId,
       agentId: scope?.agentId,
       sessionId: scope?.sessionId,
-      sharedSpaceId: scope?.sharedSpaceId,
     });
   }
 

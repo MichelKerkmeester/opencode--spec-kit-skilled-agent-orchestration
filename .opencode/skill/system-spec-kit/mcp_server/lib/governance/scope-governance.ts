@@ -5,7 +5,7 @@
 // provenance normalization, and governance audit persistence.
 import type Database from 'better-sqlite3';
 
-import { ensureGovernanceTables, ensureSharedSpaceTables } from '../search/vector-index-schema.js';
+import { ensureGovernanceTables } from '../search/vector-index-schema.js';
 
 // Feature catalog: Hierarchical scope governance, governed ingest, retention, and audit
 
@@ -16,14 +16,13 @@ import { ensureGovernanceTables, ensureSharedSpaceTables } from '../search/vecto
 export type RetentionPolicy = 'keep' | 'ephemeral' | 'shared';
 
 /**
- * Request scope used to enforce tenancy, actor, session, and shared-space boundaries.
+ * Request scope used to enforce tenancy, actor, and session boundaries.
  */
 export interface ScopeContext {
   tenantId?: string;
   userId?: string;
   agentId?: string;
   sessionId?: string;
-  sharedSpaceId?: string;
 }
 
 /**
@@ -46,7 +45,6 @@ export interface GovernanceNormalized {
   userId?: string | null;
   agentId?: string | null;
   sessionId?: string | null;
-  sharedSpaceId?: string | null;
   provenanceSource: string | null;
   provenanceActor: string | null;
   governedAt: string;
@@ -121,7 +119,6 @@ export interface GovernanceAuditReviewResult {
  */
 export interface ScopeFilterBenchmarkOptions {
   iterations?: number;
-  allowedSharedSpaceIds?: ReadonlySet<string>;
 }
 
 /**
@@ -161,7 +158,6 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
     userId: normalizeId(input.userId),
     agentId: normalizeId(input.agentId),
     sessionId: normalizeId(input.sessionId),
-    sharedSpaceId: normalizeId(input.sharedSpaceId),
   };
 }
 
@@ -170,7 +166,7 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
  * Default: OFF — scope enforcement is opt-in via SPECKIT_MEMORY_SCOPE_ENFORCEMENT=true.
  * When enabled without scope constraints in the query, all results are rejected
  * (empty scope + enforcement = no access). Only enable when multi-tenant governance
- * is configured with tenantId/userId/agentId/sharedSpaceId in queries.
+ * is configured with tenantId/userId/agentId in queries.
  *
  * @returns `true` when scope enforcement is enabled.
  */
@@ -236,7 +232,6 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
         userId: scope.userId || null,
         agentId: scope.agentId || null,
         sessionId: scope.sessionId || null,
-        sharedSpaceId: scope.sharedSpaceId || null,
         provenanceSource: provenanceSource || null,
         provenanceActor: provenanceActor || null,
         governedAt,
@@ -270,7 +265,6 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
       userId: scope.userId,
       agentId: scope.agentId,
       sessionId: scope.sessionId ?? '',
-      sharedSpaceId: scope.sharedSpaceId,
       provenanceSource,
       provenanceActor,
       governedAt,
@@ -292,7 +286,6 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
     user_id: decision.normalized.userId ?? null,
     agent_id: decision.normalized.agentId ?? null,
     session_id: decision.normalized.sessionId || null,
-    shared_space_id: decision.normalized.sharedSpaceId ?? null,
     provenance_source: decision.normalized.provenanceSource || null,
     provenance_actor: decision.normalized.provenanceActor || null,
     governed_at: decision.normalized.governedAt,
@@ -303,7 +296,6 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
       userId: decision.normalized.userId ?? null,
       agentId: decision.normalized.agentId ?? null,
       sessionId: decision.normalized.sessionId || null,
-      sharedSpaceId: decision.normalized.sharedSpaceId ?? null,
       provenanceSource: decision.normalized.provenanceSource || null,
       provenanceActor: decision.normalized.provenanceActor || null,
       governedAt: decision.normalized.governedAt,
@@ -314,13 +306,12 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
 }
 
 /**
- * Ensure governance and shared-space audit tables exist before writes.
+ * Ensure governance audit tables exist before writes.
  *
  * @param database - Database connection that stores governance state.
  */
 export function ensureGovernanceRuntime(database: Database.Database): void {
   ensureGovernanceTables(database);
-  ensureSharedSpaceTables(database);
 }
 
 /**
@@ -335,8 +326,8 @@ export function recordGovernanceAudit(database: Database.Database, entry: Govern
   database.prepare(`
     INSERT INTO governance_audit (
       action, decision, memory_id, logical_key, tenant_id, user_id, agent_id, session_id,
-      shared_space_id, reason, metadata
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      reason, metadata
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     entry.action,
     entry.decision,
@@ -346,7 +337,6 @@ export function recordGovernanceAudit(database: Database.Database, entry: Govern
     scope.userId ?? null,
     scope.agentId ?? null,
     scope.sessionId ?? null,
-    scope.sharedSpaceId ?? null,
     entry.reason ?? null,
     entry.metadata ? JSON.stringify(entry.metadata) : null,
   );
@@ -360,13 +350,12 @@ function matchesExactScope(rowValue: unknown, requestedValue?: string): boolean 
 /**
  * Determine whether a scope includes at least one concrete constraint.
  *
- * @param scope - Scope to inspect for tenant, actor, session, or shared-space bounds.
+ * @param scope - Scope to inspect for tenant, actor, or session bounds.
  * @returns `true` when the scope constrains access to at least one boundary.
  */
 export function hasScopeConstraints(scope: ScopeContext): boolean {
   return Boolean(
-    scope.sharedSpaceId
-    || scope.tenantId
+    scope.tenantId
     || scope.userId
     || scope.agentId
     || scope.sessionId,
@@ -422,11 +411,6 @@ function buildGovernanceAuditWhereClause(filters: GovernanceAuditReviewFilters):
     clauses.push('session_id = ?');
     params.push(normalized.sessionId);
   }
-  if (normalized.sharedSpaceId) {
-    clauses.push('shared_space_id = ?');
-    params.push(normalized.sharedSpaceId);
-  }
-
   return {
     whereSql: clauses.length > 0 ? `WHERE ${clauses.join(' AND ')}` : '',
     params,
@@ -442,7 +426,6 @@ function hasGovernanceAuditFilters(filters: GovernanceAuditReviewFilters): boole
     || normalized.userId
     || normalized.agentId
     || normalized.sessionId
-    || normalized.sharedSpaceId
   );
 }
 
@@ -450,12 +433,10 @@ function hasGovernanceAuditFilters(filters: GovernanceAuditReviewFilters): boole
  * Build a reusable row predicate for scope filtering without re-normalizing each row scan.
  *
  * @param scope - Requested scope used for filtering.
- * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
  * @returns Predicate that returns `true` when a row remains visible.
  */
 export function createScopeFilterPredicate<T extends Record<string, unknown>>(
   scope: ScopeContext,
-  allowedSharedSpaceIds?: ReadonlySet<string>,
 ): (row: T) => boolean {
   const normalized = normalizeScopeContext(scope);
   if (!isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
@@ -467,25 +448,6 @@ export function createScopeFilterPredicate<T extends Record<string, unknown>>(
   }
 
   return (row: T) => {
-    const rowSharedSpaceId = normalizeId(row.shared_space_id);
-    if (rowSharedSpaceId) {
-      if (normalized.sharedSpaceId && rowSharedSpaceId !== normalized.sharedSpaceId) {
-        return false;
-      }
-      if (allowedSharedSpaceIds && !allowedSharedSpaceIds.has(rowSharedSpaceId)) {
-        return false;
-      }
-    } else if (normalized.sharedSpaceId) {
-      return false;
-    }
-
-    // H8 FIX: When a row belongs to an allowed shared space, use membership as
-    // the access boundary — don't require exact actor/session match, which would
-    // block collaborator B from seeing collaborator A's shared memories.
-    if (rowSharedSpaceId && allowedSharedSpaceIds?.has(rowSharedSpaceId)) {
-      return matchesExactScope(row.tenant_id, normalized.tenantId);
-    }
-
     return matchesExactScope(row.tenant_id, normalized.tenantId)
       && matchesExactScope(row.user_id, normalized.userId)
       && matchesExactScope(row.agent_id, normalized.agentId)
@@ -536,7 +498,6 @@ export function reviewGovernanceAudit(
       user_id,
       agent_id,
       session_id,
-      shared_space_id,
       reason,
       metadata,
       created_at
@@ -554,7 +515,6 @@ export function reviewGovernanceAudit(
     user_id: string | null;
     agent_id: string | null;
     session_id: string | null;
-    shared_space_id: string | null;
     reason: string | null;
     metadata: string | null;
     created_at: string;
@@ -607,7 +567,6 @@ export function reviewGovernanceAudit(
       userId: row.user_id ?? undefined,
       agentId: row.agent_id ?? undefined,
       sessionId: row.session_id ?? undefined,
-      sharedSpaceId: row.shared_space_id ?? undefined,
       reason: row.reason,
       metadata: parseAuditMetadata(row.metadata),
       createdAt: row.created_at,
@@ -627,7 +586,7 @@ export function reviewGovernanceAudit(
  *
  * @param rows - Candidate rows that include governance scope columns.
  * @param scope - Requested scope used for filtering.
- * @param options - Optional iterations and shared-space allowlist.
+ * @param options - Optional iteration count.
  * @returns Timing and match counts for the benchmark run.
  */
 export function benchmarkScopeFilter<T extends Record<string, unknown>>(
@@ -638,7 +597,7 @@ export function benchmarkScopeFilter<T extends Record<string, unknown>>(
   const iterations = Number.isInteger(options.iterations) && (options.iterations ?? 0) > 0
     ? Math.trunc(options.iterations as number)
     : 1;
-  const predicate = createScopeFilterPredicate(scope, options.allowedSharedSpaceIds);
+  const predicate = createScopeFilterPredicate(scope);
   let matchedRows = 0;
   const startedAt = process.hrtime.bigint();
 
@@ -663,13 +622,12 @@ export function benchmarkScopeFilter<T extends Record<string, unknown>>(
 }
 
 /**
- * Filter result rows to the tenant, actor, session, and shared-space scope in force.
+ * Filter result rows to the tenant, actor, and session scope in force.
  *
  * @param rows - Candidate rows that include governance scope columns.
  * @param scope - Requested scope used for filtering.
- * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
  * @returns Rows that remain visible after governance filtering.
  */
-export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], scope: ScopeContext, allowedSharedSpaceIds?: ReadonlySet<string>): T[] {
-  return rows.filter(createScopeFilterPredicate(scope, allowedSharedSpaceIds));
+export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], scope: ScopeContext): T[] {
+  return rows.filter(createScopeFilterPredicate(scope));
 }

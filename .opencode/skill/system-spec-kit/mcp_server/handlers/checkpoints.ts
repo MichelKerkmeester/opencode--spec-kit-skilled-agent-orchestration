@@ -42,7 +42,6 @@ interface CheckpointCreateArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -51,7 +50,6 @@ interface CheckpointListArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   limit?: number;
 }
 
@@ -60,7 +58,6 @@ interface CheckpointRestoreArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   clearExisting?: boolean;
 }
 
@@ -69,7 +66,6 @@ interface CheckpointDeleteArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   confirmName: string;
 }
 
@@ -77,7 +73,6 @@ interface CheckpointScopeArgs {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
 }
 
 interface MemoryValidateArgs {
@@ -203,23 +198,20 @@ function validateCheckpointScope(args: CheckpointScopeArgs): CheckpointScopeArgs
   const tenantId = validateValue(args.tenantId, 'tenantId', { trim: true });
   const userId = validateValue(args.userId, 'userId');
   const agentId = validateValue(args.agentId, 'agentId');
-  const sharedSpaceId = validateValue(args.sharedSpaceId, 'sharedSpaceId');
-  const hasActorOrSharedSpaceScope =
-    userId !== undefined || agentId !== undefined || sharedSpaceId !== undefined;
+  const hasActorScope = userId !== undefined || agentId !== undefined;
 
   if (
-    hasActorOrSharedSpaceScope
+    hasActorScope
     && tenantId !== undefined
     && tenantId.trim().length === 0
   ) {
-    throw new Error('tenantId must be a non-empty string when userId, agentId, or sharedSpaceId is provided');
+    throw new Error('tenantId must be a non-empty string when userId or agentId is provided');
   }
 
   return {
     tenantId: tenantId && tenantId.length > 0 ? tenantId : undefined,
     userId,
     agentId,
-    sharedSpaceId,
   };
 }
 
@@ -228,7 +220,6 @@ function hasCheckpointScope(scope: CheckpointScopeArgs): boolean {
     scope.tenantId !== undefined
     || scope.userId !== undefined
     || scope.agentId !== undefined
-    || scope.sharedSpaceId !== undefined
   );
 }
 
@@ -236,7 +227,6 @@ function requiresCheckpointTenant(scope: CheckpointScopeArgs): boolean {
   return scope.tenantId === undefined && (
     scope.userId !== undefined
     || scope.agentId !== undefined
-    || scope.sharedSpaceId !== undefined
   );
 }
 
@@ -249,7 +239,6 @@ function mergeCheckpointScopeMetadata(
     ...(scope.tenantId !== undefined ? { tenantId: scope.tenantId } : {}),
     ...(scope.userId !== undefined ? { userId: scope.userId } : {}),
     ...(scope.agentId !== undefined ? { agentId: scope.agentId } : {}),
-    ...(scope.sharedSpaceId !== undefined ? { sharedSpaceId: scope.sharedSpaceId } : {}),
   };
 }
 
@@ -267,8 +256,7 @@ function checkpointMatchesScope(rawMetadata: unknown, scope: CheckpointScopeArgs
   return (
     matchesScopeField('tenantId') &&
     matchesScopeField('userId') &&
-    matchesScopeField('agentId') &&
-    matchesScopeField('sharedSpaceId')
+    matchesScopeField('agentId')
   );
 }
 
@@ -283,9 +271,6 @@ function checkpointScopeDetails(scope: CheckpointScopeArgs): Record<string, stri
   if (scope.agentId !== undefined) {
     details.agentId = scope.agentId;
   }
-  if (scope.sharedSpaceId !== undefined) {
-    details.sharedSpaceId = scope.sharedSpaceId;
-  }
   return details;
 }
 
@@ -294,7 +279,7 @@ function createCheckpointScopeValidationError(
 ): MCPResponse {
   return createMCPErrorResponse({
     tool,
-    error: 'tenantId is required when userId, agentId, or sharedSpaceId is provided.',
+    error: 'tenantId is required when userId or agentId is provided.',
     code: 'CHECKPOINT_SCOPE_TENANT_REQUIRED',
     details: {
       reason: 'checkpoint_scope_tenant_required',

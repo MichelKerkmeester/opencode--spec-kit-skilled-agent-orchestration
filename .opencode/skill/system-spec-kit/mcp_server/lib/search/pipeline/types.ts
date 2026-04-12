@@ -128,7 +128,6 @@ export interface PipelineConfig {
   tenantId?: string;
   userId?: string;
   agentId?: string;
-  sharedSpaceId?: string;
   tier?: string;
   contextType?: string;
   includeArchived: boolean;
