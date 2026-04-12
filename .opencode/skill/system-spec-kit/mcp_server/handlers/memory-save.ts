@@ -2194,7 +2194,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
  * is restored before the error is returned and before the lock is released.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
-  const { file_path, content, routeAs, mergeModeHint } = params;
+  const { file_path, routeAs, mergeModeHint } = params;
   const database = requireDb();
   const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint);
 

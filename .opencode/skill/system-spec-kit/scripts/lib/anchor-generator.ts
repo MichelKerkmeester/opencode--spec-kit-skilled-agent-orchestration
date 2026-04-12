@@ -131,16 +131,6 @@ function validateAnchorUniqueness(anchorId: string, existingAnchors: string[]): 
 // ───────────────────────────────────────────────────────────────
 // 8. KEYWORD EXTRACTION
 // ───────────────────────────────────────────────────────────────
-/** Extracts nouns, proper nouns, technical terms (filters action verbs, stop words) */
-function extractKeywords(text: string): string[] {
-  const words: RegExpMatchArray | null = text.match(/\b[a-z]{3,}\b|\b[A-Z][A-Z0-9]*\b|\bv?\d+\.?\d*\b/gi);
-  if (!words) return [];
-  const keywords: string[] = words
-    .map((w: string) => w.toLowerCase())
-    .filter((w: string) => !ACTION_VERBS.has(w) && !STOP_WORDS.has(w) && w.length > 2);
-  return [...new Set(keywords)].slice(0, 5);
-}
-
 function slugify(keywords: string[]): string {
   if (!keywords || keywords.length === 0) return 'unnamed';
   return keywords
@@ -157,11 +147,6 @@ function slugify(keywords: string[]): string {
 function extractSpecNumber(specFolder: string): string {
   const match: RegExpMatchArray | null = specFolder.match(/^(\d{3})-/);
   return match ? match[1] : '000';
-}
-
-function getCurrentDate(): string {
-  const now: Date = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -219,6 +204,7 @@ function wrapSectionsWithAnchors(
   content: string,
   specNumber: string | null = null
 ): AnchorWrapResult {
+  void specNumber;
   const lines = content.split('\n');
   const existingAnchors = extractExistingAnchors(content);
   const usedAnchors: string[] = [...existingAnchors];
@@ -243,7 +229,7 @@ function wrapSectionsWithAnchors(
 
     if (headingMatch && !isAlreadyWrapped(lines, i)) {
       const headingText = headingMatch[1];
-      const category = categorizeSection(headingText);
+      categorizeSection(headingText);
       
       // Generate anchor ID
       let anchorId = `${generateSemanticSlug(headingText)}-${sectionIndex}`;

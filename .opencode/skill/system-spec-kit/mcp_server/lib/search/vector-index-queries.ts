@@ -341,6 +341,7 @@ export function multi_concept_search(
   }
 
   const { limit = 10, specFolder = null, minSimilarity = 50, includeArchived = false } = options;
+  void includeArchived;
 
   const concept_buffers = concepts.map(c => to_embedding_buffer(c));
   const max_distance = 2 * (1 - minSimilarity / 100);
@@ -613,6 +614,7 @@ export function keyword_search(
   database: Database.Database = initialize_db(),
 ): MemoryRow[] {
   const { limit = 20, specFolder = null, includeArchived = false } = options;
+  void includeArchived;
 
   if (!query || typeof query !== 'string') {
     console.warn('[vector-index] keyword_search: invalid query, expected non-empty string');

@@ -4,174 +4,17 @@
 // Feature catalog: Automatic archival subsystem
 // Background archival job for dormant/archived memories
 import type Database from 'better-sqlite3';
-import { clearDegreeCache } from '../search/graph-search-fn.js';
-import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES (lazy-loaded)
 ----------------------------------------------------------------*/
 
-// Lazy-load tier-classifier to avoid circular dependencies
-let tierClassifierModule: Record<string, unknown> | null = null;
-let tierClassifierModulePromise: Promise<Record<string, unknown> | null> | null = null;
-
-async function loadTierClassifierModule(): Promise<Record<string, unknown> | null> {
-  if (tierClassifierModule !== null) {
-    return tierClassifierModule;
-  }
-  if (tierClassifierModulePromise !== null) {
-    return tierClassifierModulePromise;
-  }
-
-  const loadPromise = (async (): Promise<Record<string, unknown> | null> => {
-    try {
-      tierClassifierModule = await import('./tier-classifier.js');
-      return tierClassifierModule;
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.warn(`[archival-manager] tier-classifier module unavailable: ${message}`);
-      return null;
-    }
-  })();
-
-  tierClassifierModulePromise = loadPromise;
-  try {
-    return await loadPromise;
-  } finally {
-    if (tierClassifierModulePromise === loadPromise) {
-      tierClassifierModulePromise = null;
-    }
-  }
-}
-
-function getTierClassifier(): Record<string, unknown> | null {
-  if (tierClassifierModule !== null) return tierClassifierModule;
-  if (tierClassifierModulePromise === null) {
-    void loadTierClassifierModule();
-  }
-  return null;
-}
-
-interface Bm25IndexModule {
-  isBm25Enabled: () => boolean;
-  buildBm25DocumentText: (row: Record<string, unknown>) => string;
-  getIndex: () => {
-    removeDocument: (id: string) => boolean;
-    addDocument: (id: string, text: string) => void;
-  };
-}
-
-let bm25IndexModule: Bm25IndexModule | null = null;
-let bm25IndexModulePromise: Promise<Bm25IndexModule | null> | null = null;
-
-async function loadBm25IndexModule(): Promise<Bm25IndexModule | null> {
-  if (bm25IndexModule !== null) {
-    return bm25IndexModule;
-  }
-  if (bm25IndexModulePromise !== null) {
-    return bm25IndexModulePromise;
-  }
-
-  const primaryModulePath = '../search/bm25-index.js';
-  const fallbackModulePath = '../../search/bm25-index.js';
-
-  const loadPromise = (async (): Promise<Bm25IndexModule | null> => {
-    try {
-      bm25IndexModule = await import(primaryModulePath) as Bm25IndexModule;
-      return bm25IndexModule;
-    } catch (error: unknown) {
-      const primaryError = error instanceof Error ? error.message : String(error);
-      try {
-        // Support cognitive symlink import path in some runtime setups.
-        bm25IndexModule = await import(fallbackModulePath) as Bm25IndexModule;
-        return bm25IndexModule;
-      } catch (fallbackError: unknown) {
-        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
-        console.warn(
-          `[archival-manager] bm25-index module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
-        );
-        return null;
-      }
-    }
-  })();
-
-  bm25IndexModulePromise = loadPromise;
-  try {
-    return await loadPromise;
-  } finally {
-    if (bm25IndexModulePromise === loadPromise) {
-      bm25IndexModulePromise = null;
-    }
-  }
-}
-
-function getBm25Index(): Bm25IndexModule | null {
-  if (bm25IndexModule !== null) return bm25IndexModule;
-  if (bm25IndexModulePromise === null) {
-    void loadBm25IndexModule();
-  }
-  return null;
-}
-
 interface EmbeddingModule {
   generateDocumentEmbedding: (content: string) => Promise<Float32Array | null>;
 }
 
-let embeddingsModule: EmbeddingModule | null = null;
-let embeddingsModulePromise: Promise<EmbeddingModule | null> | null = null;
-
-async function loadEmbeddingsModule(): Promise<EmbeddingModule | null> {
-  if (embeddingsModule !== null) {
-    return embeddingsModule;
-  }
-  if (embeddingsModulePromise !== null) {
-    return embeddingsModulePromise;
-  }
-
-  const primaryModulePath = '../providers/embeddings.js';
-  const fallbackModulePath = '../../providers/embeddings.js';
-
-  const loadPromise = (async (): Promise<EmbeddingModule | null> => {
-    try {
-      embeddingsModule = await import(primaryModulePath) as EmbeddingModule;
-      return embeddingsModule;
-    } catch (error: unknown) {
-      const primaryError = error instanceof Error ? error.message : String(error);
-      try {
-        // Support cognitive symlink import path in some runtime setups.
-        embeddingsModule = await import(fallbackModulePath) as EmbeddingModule;
-        return embeddingsModule;
-      } catch (fallbackError: unknown) {
-        const fallbackMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
-        console.warn(
-          `[archival-manager] embeddings module unavailable. primary="${primaryError}" fallback="${fallbackMessage}"`
-        );
-        return null;
-      }
-    }
-  })();
-
-  embeddingsModulePromise = loadPromise;
-  try {
-    return await loadPromise;
-  } finally {
-    if (embeddingsModulePromise === loadPromise) {
-      embeddingsModulePromise = null;
-    }
-  }
-}
-
-function _getEmbeddings(): EmbeddingModule | null {
-  if (embeddingsModule !== null) return embeddingsModule;
-  if (embeddingsModulePromise === null) {
-    void loadEmbeddingsModule();
-  }
-  return null;
-}
-
 function __setEmbeddingsModuleForTests(module: EmbeddingModule | null): void {
-  embeddingsModule = module;
-  embeddingsModulePromise = null;
+  void module;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -367,20 +210,6 @@ function getArchivalCandidates(limit: number = ARCHIVAL_CONFIG.batchSize): Archi
   return [];
 }
 
-function determineArchivalReason(row: Record<string, unknown>, cutoffDate: Date): string {
-  const reasons: string[] = [];
-  if (row.created_at && new Date(row.created_at as string) < cutoffDate) {
-    reasons.push('aged');
-  }
-  if ((row.access_count as number) <= ARCHIVAL_CONFIG.maxAccessCount) {
-    reasons.push('low-access');
-  }
-  if ((row.confidence as number) <= ARCHIVAL_CONFIG.maxConfidence) {
-    reasons.push('low-confidence');
-  }
-  return reasons.join(', ') || 'candidate';
-}
-
 function checkMemoryArchivalStatus(memoryId: number): {
   isArchived: boolean;
   shouldArchive: boolean;
@@ -389,85 +218,6 @@ function checkMemoryArchivalStatus(memoryId: number): {
   return { isArchived: false, shouldArchive: false };
 }
 
-function getMemoryIndexColumns(): Set<string> {
-  if (!db) return new Set();
-
-  try {
-    const columns = (db.prepare('PRAGMA table_info(memory_index)') as Database.Statement).all() as Array<{ name: string }>;
-    return new Set(columns.map(column => column.name));
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] getMemoryIndexColumns failed: ${message}`);
-    return new Set();
-  }
-}
-
-function syncBm25OnArchive(memoryId: number): void {
-  const bm25 = getBm25Index();
-  if (!db || !bm25 || !bm25.isBm25Enabled()) return;
-
-  try {
-    bm25.getIndex().removeDocument(String(memoryId));
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] BM25 archive sync failed: ${msg}`);
-  }
-}
-
-// Vector-only deletion — removes the vec_memories embedding row without
-// Touching memory_index or ancillary tables. DEPRECATED archived-tier behavior.
-function syncVectorOnArchive(memoryId: number): void {
-  if (!db) return;
-
-  try {
-    db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
-  } catch (error: unknown) {
-    // Expected to fail when sqlite-vec is not loaded or vec_memories doesn't exist
-    const msg = error instanceof Error ? error.message : String(error);
-    if (!msg.includes('no such table')) {
-      console.warn(`[archival-manager] Vector archive sync failed: ${msg}`);
-    }
-  }
-}
-
-function syncBm25OnUnarchive(memoryId: number): void {
-  const bm25 = getBm25Index();
-  if (!db || !bm25 || !bm25.isBm25Enabled()) return;
-
-  try {
-    const columns = getMemoryIndexColumns();
-    const availableColumns = ['title', 'content_text', 'trigger_phrases', 'file_path']
-      .filter(column => columns.has(column));
-
-    if (availableColumns.length === 0) return;
-
-    const query = `SELECT ${availableColumns.join(', ')} FROM memory_index WHERE id = ?`;
-    const row = (db.prepare(query) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
-    if (!row) return;
-
-    const text = bm25.buildBm25DocumentText(row);
-    if (!text) return;
-    bm25.getIndex().addDocument(String(memoryId), text);
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] BM25 unarchive sync failed: ${msg}`);
-  }
-}
-
-/**
- * Defer vector re-embedding to the next index scan rather than rebuilding immediately.
- *
- * The playbook contract (scenario 124) requires that unarchive does NOT recreate the
- * vec_memories row inline — instead it logs a deferred-rebuild notice so the next
- * `memory_index_scan` picks up the gap and re-embeds the memory. This avoids blocking
- * the unarchive call on an async embedding generation round-trip and keeps the
- * archive/unarchive path lightweight.
- */
-function syncVectorOnUnarchive(memoryId: number): void {
-  console.error(
-    `[archival-manager] Deferred vector re-embedding for memory ${memoryId} until next index scan`
-  );
-}
 
 function archiveMemory(memoryId: number): boolean {
   void memoryId;

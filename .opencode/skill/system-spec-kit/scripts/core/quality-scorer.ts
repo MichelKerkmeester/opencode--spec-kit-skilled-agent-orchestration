@@ -23,7 +23,6 @@ import type {
   DescriptionProvenance,
   QualityDimensionScore,
   QualityFlag,
-  QualityInsufficiencySummary,
   QualityScoreResult,
 } from '../types/session-types';
 import type { ContaminationSeverity } from '../extractors/contamination-filter';

@@ -9,6 +9,7 @@
 
 import { validateDataStructure } from '../utils/data-validator';
 import { coerceFactsToText } from '../utils/fact-coercion';
+import { structuredLog } from '../utils/logger';
 import {
   detectToolCall,
   isProseContext,
@@ -16,7 +17,6 @@ import {
 } from '../utils/tool-detection';
 import * as flowchartGen from '../lib/flowchart-generator';
 import * as simFactory from '../lib/simulation-factory';
-import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type {
   CollectedDataSubset,
   DiagramOutput,
@@ -52,7 +52,9 @@ function extractPhasesFromData(collectedData: CollectedDataSubset<'observations'
 
   const messageCount: number = collectedData.observations.length;
   if (messageCount <= 2) {
-    console.log('   Session too short for meaningful phase detection');
+    structuredLog('info', 'Session too short for meaningful phase detection', {
+      messageCount,
+    });
     return [];
   }
 
@@ -138,7 +140,6 @@ async function extractDiagrams(
   }
 
   const observations = collectedData.observations || [];
-  const decisions = collectedData.observations?.filter((o) => o.type === 'decision') || [];
   const userPrompts = collectedData.userPrompts || [];
 
   const boxChars = /[\u250C\u2510\u2514\u2518\u251C\u2524\u252C\u2534\u253C\u2500\u2502\u256D\u256E\u2570\u256F\u2571\u2572\u25BC\u25B2\u25BA\u25C4]/;

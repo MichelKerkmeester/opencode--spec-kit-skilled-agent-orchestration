@@ -175,7 +175,7 @@ function filterStopWordsByProfile(tokens: string[], profile: StopwordProfile): s
   return tokens.filter((token) => token === '__break__' || !stopWords.has(token));
 }
 
-function buildBreakdown(text: string, cleanedText: string, phrases: string[], tokens: string[], filteredTokens: string[]): ExtractionResult['breakdown'] {
+function buildBreakdown(text: string, cleanedText: string, _phrases: string[], _tokens: string[], _filteredTokens: string[]): ExtractionResult['breakdown'] {
   const problemTerms = extractProblemTerms(cleanedText);
   const technicalTerms = extractTechnicalTerms(text);
   const decisionTerms = extractDecisionTerms(cleanedText);

@@ -1,564 +1,199 @@
 ---
-title: "Architecture Boundaries: system-spec-kit"
-description: "Canonical ownership contract between scripts/ and mcp_server/ defining allowed dependency directions, build boundaries, exception governance and enforcement tooling."
+title: "Architecture: system-spec-kit"
+description: "Current package architecture for scripts, MCP runtime, shared modules, and canonical continuity flows."
 trigger_phrases:
-  - "architecture boundaries"
-  - "boundary contract"
-  - "import policy"
-  - "dependency direction"
+  - "system spec kit architecture"
+  - "canonical continuity architecture"
+  - "resume ladder"
+  - "content router"
 ---
 
-# Architecture Boundaries: system-spec-kit
+# Architecture: system-spec-kit
 
-> Canonical ownership contract between `scripts/` and `mcp_server/` defining allowed dependency directions, build boundaries, exception governance and enforcement tooling.
-
----
+> Current-reality architecture for the `system-spec-kit` package: authored code lives in `scripts/`, `mcp_server/`, and `shared/`, while packet continuity is rebuilt through `/spec_kit:resume` and canonical spec documents.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. FAQ](#8--faq)
-- [9. RELATED DOCUMENTS](#9--related-documents)
-- [10. HOOK + CODE GRAPH + COCOINDEX ARCHITECTURE](#10--hook--code-graph--cocoindex-architecture)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. CANONICAL CONTINUITY FLOWS](#3--canonical-continuity-flows)
+- [4. RUNTIME SUBSYSTEMS](#4--runtime-subsystems)
+- [5. ENFORCEMENT AND VERIFICATION](#5--enforcement-and-verification)
+- [6. RELATED](#6--related)
 
 <!-- /ANCHOR:table-of-contents -->
----
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What Are Architecture Boundaries?
+`system-spec-kit` is split into three authored zones plus generated build output:
 
-The `system-spec-kit` codebase splits into three ownership zones: **build-time scripts**, **runtime MCP server** and **shared modules**. Each zone has a clear purpose and strict import rules that prevent coupling between build-time and runtime code.
+| Zone | Purpose | Source of Truth |
+|---|---|---|
+| `scripts/` | CLI generation, validation, indexing, evals, and packet tooling | TypeScript and shell under `scripts/` |
+| `mcp_server/` | Runtime MCP server, handlers, storage, search, hooks, and routing | TypeScript under `mcp_server/` |
+| `shared/` | Neutral modules imported by both scripts and runtime | TypeScript under `shared/` |
+| `dist/` | Built JavaScript entrypoints | Generated output only |
 
-The `mcp_server/api/` surface acts as the stable boundary. Scripts that need runtime functionality must import through `api/` or `shared/`, never from internal runtime directories.
+The package no longer treats generated memory notes as the primary continuity artifact. The operator-facing recovery surface is `/spec_kit:resume`, and the recovery chain is:
 
-See ADR-001 in the spec folder for the full decision rationale.
+1. `handover.md`
+2. `_memory.continuity`
+3. canonical spec docs such as `implementation-summary.md`, `tasks.md`, `plan.md`, and `spec.md`
 
-### Key Statistics
-
-| Metric | Value | Details |
-|--------|-------|---------|
-| Ownership zones | 3 | Scripts, MCP Server, Shared |
-| Public boundary | 1 | `mcp_server/api/` |
-| Enforcement tools | 9 | AST checkers, CI workflow, boundary scripts |
-| Active exceptions | 4 | Registered in allowlist with expiry tracking |
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Ownership Matrix** | Clear zone assignments for every directory |
-| **Dependency Rules** | Allowed and forbidden import directions with rationale |
-| **Exception Governance** | Registered exceptions with owner, reason and expiry |
-| **Enforcement Tooling** | AST-level and regex-level boundary checkers plus CI |
-
-### Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| TypeScript | 5.0+ | 5.3+ |
-| Node.js | 18+ | 20+ |
+Generated memory artifacts are supporting context only.
 
 <!-- /ANCHOR:overview -->
----
 
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
+<!-- ANCHOR:topology -->
+## 2. PACKAGE TOPOLOGY
 
-### Import Decision Guide
-
-```
-Need to import from another zone?
-├─ From scripts/ to shared/              → ALLOWED
-├─ From scripts/ to mcp_server/api/*     → ALLOWED (preferred)
-├─ From scripts/ to mcp_server/lib/*     → FORBIDDEN (use api/ or shared/)
-├─ From scripts/ to mcp_server/core/*    → FORBIDDEN (use api/)
-├─ From scripts/ to mcp_server/handlers/ → FORBIDDEN (use api/)
-├─ From mcp_server/ to shared/           → ALLOWED
-├─ From mcp_server/scripts/ to scripts/dist/* → ALLOWED (wrappers only)
-└─ From mcp_server/lib/ to mcp_server/api/   → FORBIDDEN (api wraps lib)
-```
-
-### Verify Boundaries
-
-```bash
-# Run all boundary checks
-npx tsx scripts/evals/check-no-mcp-lib-imports.ts
-npx tsx scripts/evals/check-no-mcp-lib-imports-ast.ts
-npx tsx scripts/evals/check-handler-cycles-ast.ts
-
-# Expected output:
-# No forbidden imports detected
-```
-
-<!-- /ANCHOR:quick-start -->
----
-
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
+```text
 system-spec-kit/
-├── scripts/                    # Build-time CLI: generation, indexing, evals
-│   └── evals/                  # Boundary enforcement scripts and allowlist
-├── mcp_server/                 # Runtime: handlers, search, scoring, storage
-│   ├── api/                    # Public boundary surface (stable)
-│   ├── lib/                    # Internal runtime (private)
-│   ├── core/                   # Bootstrap (private)
-│   ├── handlers/               # Request handlers (private)
-│   └── scripts/                # Compatibility wrappers (delegating only)
-├── shared/                     # Neutral: reusable modules for both zones
-└── */dist/                     # Generated build output (never source of truth)
+├── scripts/                    # CLI generation, validation, eval, and packet tooling
+├── mcp_server/                 # MCP runtime
+│   ├── handlers/               # Tool handlers and save orchestration
+│   ├── hooks/                  # Claude, Gemini, Copilot lifecycle hooks
+│   ├── lib/                    # Runtime subsystems
+│   │   ├── continuity/         # _memory.continuity contract helpers
+│   │   ├── resume/             # Resume ladder resolution
+│   │   ├── routing/            # Content router for canonical saves
+│   │   ├── merge/              # Anchor-scoped spec-doc merge operations
+│   │   ├── search/             # Hybrid search pipeline
+│   │   ├── graph/              # Causal graph signals
+│   │   ├── coverage-graph/     # Deep-loop research/review coverage graphs
+│   │   ├── feedback/           # Implicit feedback and shadow evaluation
+│   │   └── ...                 # storage, validation, governance, response, etc.
+│   ├── api/                    # Stable import boundary for non-runtime callers
+│   ├── tests/                  # Vitest suites and fixtures
+│   └── scripts/                # Compatibility wrappers only
+├── shared/                     # Neutral cross-package modules
+└── specs/ / .opencode/specs/   # Packet docs and continuity artifacts
 ```
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `scripts/evals/import-policy-allowlist.json` | Registered exceptions with ownership metadata |
-| `scripts/evals/check-no-mcp-lib-imports.ts` | Regex-level import policy checker |
-| `scripts/evals/check-no-mcp-lib-imports-ast.ts` | AST-level import policy checker |
-| `scripts/evals/check-handler-cycles-ast.ts` | Circular import detector for handlers |
-| `scripts/evals/check-architecture-boundaries.ts` | Shared neutrality and wrapper verification |
-| `scripts/check-api-boundary.sh` | API boundary direction check |
-
-<!-- /ANCHOR:structure -->
----
-
-<!-- ANCHOR:features -->
-## 4. FEATURES
-
-### Ownership Zones
-
-Each zone has a clear owner and purpose. Cross-zone imports follow strict directional rules.
-
-| Area | Owner | Purpose |
-|------|-------|---------|
-| `scripts/` | Build-time / CLI | Generation, indexing orchestration, eval runners, operational scripts |
-| `mcp_server/` | Runtime | Request handlers, search, scoring, storage, MCP tools |
-| `shared/` | Neutral | Reusable modules consumed by both `scripts/` and `mcp_server/` |
-| `mcp_server/api/` | Public boundary | Stable surface for external consumers (scripts, evals, automation) |
-| `mcp_server/scripts/` | Compatibility | Wrappers delegating to canonical `scripts/` implementations |
-| `*/dist/` | Generated | Runtime JavaScript from `tsc --build`. Never the source of truth |
-
-### Dependency Rules
-
-**Allowed directions:**
+### Dependency direction
 
 | From | To | Status |
-|------|----|--------|
+|---|---|---|
 | `scripts/` | `shared/` | Allowed |
-| `scripts/` | `mcp_server/api/*` | Allowed (preferred) |
+| `scripts/` | `mcp_server/api/*` | Allowed and preferred |
+| `scripts/` | `mcp_server/lib/*` | Disallowed unless explicitly allowlisted |
 | `mcp_server/` | `shared/` | Allowed |
-| `mcp_server/scripts/` | `scripts/dist/*` | Allowed (compatibility wrappers only) |
+| `mcp_server/lib/*` | `mcp_server/api/*` | Disallowed |
 
-**Forbidden directions:**
+This keeps the runtime internals private while still exposing a stable boundary for tooling.
 
-| From | To | Why |
-|------|----|-----|
-| `scripts/` | `mcp_server/lib/*` | Use `api/` or `shared/` instead |
-| `scripts/` | `mcp_server/core{,/*}` | Runtime bootstrap stays behind `api/` |
-| `scripts/` | `mcp_server/handlers{,/*}` | Runtime handlers stay behind `api/` |
-| `mcp_server/lib/` | `mcp_server/api/` | `api/` wraps `lib/`, not the reverse |
+<!-- /ANCHOR:topology -->
 
-### Build Artifact Rule (Dist Policy)
+<!-- ANCHOR:continuity-flows -->
+## 3. CANONICAL CONTINUITY FLOWS
 
-`dist/` directories under `shared/`, `scripts/` and `mcp_server/` are generated build outputs produced from TypeScript sources via the build process (`tsc --build`). They can run at runtime, but they are not source-of-truth code or documentation and should not be committed to version control. Edit the authored `.ts` and `.md` files in package roots, then rebuild. Scripts or documentation that reference `dist/` files for execution (e.g., `node scripts/dist/memory/generate-context.js`) are referencing the generated runtime entry point, not canonical source.
+### Read / resume path
 
-#### No Symlinks in lib/ Tree
+The runtime rebuilds continuity through `lib/resume/resume-ladder.ts`.
 
-**Policy**: No symlinks are permitted within `mcp_server/lib/`. All import paths must resolve through real filesystem paths.
-
-**Rationale**: Symlinks create invisible indirection that breaks grep, IDE navigation, dead-code analysis, and static dependency tooling.
-
-**Enforcement**: Visual inspection and `find -type l` checks during code review.
-
-#### Source-Dist Alignment Enforcement
-
-**Policy**: Every `.js` file in `mcp_server/dist/lib/` must have a corresponding `.ts` source file.
-
-**Rationale**: Source files can be silently lost while compiled `dist/` output persists, creating orphaned artifacts.
-
-**Enforcement**: `scripts/evals/check-source-dist-alignment.ts` (run via `npm run check --workspace=scripts` and the boundary-enforcement CI workflow).
-
-### Test Placement Rule
-
-Keep authored tests with the package they verify. Runtime behavior belongs under `mcp_server/tests/`. Do not add hand-written tests under any `dist/` directory. Validate generated output by building from source and running source-owned tests or smoke commands.
-
-### Exception Governance
-
-All exceptions must be registered in `scripts/evals/import-policy-allowlist.json`. Each entry requires owner, reason and expiry tracking.
-
-**Current exceptions:**
-
-| File | Import | Reason |
-|------|--------|--------|
-| `scripts/evals/run-performance-benchmarks.ts` | `@spec-kit/mcp-server/lib/*` (multiple) | Benchmark needs direct access to internal metrics |
-| `scripts/spec-folder/generate-description.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | CLI tool needs folder-discovery internals for description generation |
-| `scripts/core/workflow.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | Workflow memory-save updates per-folder description.json via dynamic import |
-| `scripts/memory/rebuild-auto-entities.ts` | `@spec-kit/mcp-server/lib/*` | Entity rebuilder needs direct access to internal storage and indexing modules |
-
-**Removal criteria:** Remove an allowlist entry when its `removeWhen` condition has been satisfied or its `expiresAt` date has passed.
-
-**Removal process:**
-
-1. **Review**: Allowlist `owner` plus at least one `system-spec-kit` maintainer must approve
-2. **Migrate**: Delete or narrow the allowlist entry, then move caller imports to `mcp_server/api/*` or `shared/*`
-3. **Verify**: Run `check-no-mcp-lib-imports.ts`, re-run affected evals, update `lastReviewedAt` for retained exceptions
-
-### Compatibility Wrappers
-
-`mcp_server/scripts/` contains **only** compatibility wrappers that delegate to canonical implementations in `scripts/`. These are not canonical scripts. See `mcp_server/scripts/README.md`.
-
-**Removal criteria:** Remove a wrapper when all known consumers have migrated to canonical `scripts/` entry points and a 2-sprint cool-down has passed with no rollback.
-
-**Removal process:**
-
-1. **Review**: `system-spec-kit` maintainers and owning runtime/scripts maintainers
-2. **Remove**: Delete wrapper files, update docs/runbooks, remove stale references
-3. **Verify**: Run canonical entry points, confirm no references remain (`rg "mcp_server/scripts/<name>"`), confirm CI passes
-
-### Shared Module Policy
-
-`shared/` modules must be stable. Breaking changes require coordination with both consumers (`scripts/` and `mcp_server/`). See `shared/README.md` for module inventory and import conventions.
-
-### Enforcement Tooling
-
-| Tool | Path | Purpose |
-|------|------|---------|
-| Import-policy checker | `scripts/evals/check-no-mcp-lib-imports.ts` | Detects direct `scripts/` imports of internal runtime paths |
-| AST import-policy checker | `scripts/evals/check-no-mcp-lib-imports-ast.ts` | AST-level detection for direct and transitive internal imports |
-| AST handler-cycle checker | `scripts/evals/check-handler-cycles-ast.ts` | Detects circular imports across `mcp_server/handlers/` |
-| Allowlist | `scripts/evals/import-policy-allowlist.json` | Registered exceptions with ownership metadata |
-| API boundary check | `scripts/check-api-boundary.sh` | Checks `lib/` to `api/` direction |
-| Architecture boundary check | `scripts/evals/check-architecture-boundaries.ts` | `shared/` neutrality + wrapper-only verification |
-| CI workflow | `.github/workflows/system-spec-kit-boundary-enforcement.yml` | Runs boundary checks on PRs and pushes |
-
-<!-- /ANCHOR:features -->
----
-
-<!-- ANCHOR:configuration -->
-## 5. CONFIGURATION
-
-### Exception Allowlist Format
-
-**Location**: `scripts/evals/import-policy-allowlist.json`
-
-```json
-{
-  "exceptions": [
-    {
-      "file": "scripts/evals/run-performance-benchmarks.ts",
-      "import": "@spec-kit/mcp-server/lib/*",
-      "owner": "spec-kit-maintainers",
-      "reason": "Benchmark needs direct access to internal metrics",
-      "removeWhen": "api/ exposes benchmark metrics",
-      "createdAt": "2026-01-15",
-      "lastReviewedAt": "2026-03-01"
-    }
-  ]
-}
+```text
+/spec_kit:resume
+  -> session-bootstrap / session-resume handlers
+  -> lib/resume/resume-ladder.ts
+  -> handover.md
+  -> _memory.continuity
+  -> canonical spec docs
+  -> supporting search and graph evidence
 ```
 
-### Allowlist Fields
+Key runtime modules:
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `owner` | Yes | Team or individual responsible |
-| `reason` | Yes | Why the exception exists |
-| `removeWhen` | Yes | Condition for removing the exception |
-| `createdAt` | Yes | ISO date when exception was created |
-| `lastReviewedAt` | Yes | ISO date of last review |
-| `expiresAt` | Wildcard only | ISO date for sunset (required for wildcard internal-runtime entries) |
+- `mcp_server/lib/resume/resume-ladder.ts`
+- `mcp_server/lib/continuity/thin-continuity-record.ts`
+- `mcp_server/handlers/session-resume.ts`
+- `mcp_server/handlers/session-bootstrap.ts`
+- `mcp_server/handlers/memory-context.ts`
 
-<!-- /ANCHOR:configuration -->
----
+### Write / save path
 
-<!-- ANCHOR:usage-examples -->
-## 6. USAGE EXAMPLES
+Canonical save routing is no longer "always write a generated memory file first." The runtime classifies content, chooses a canonical target, and only then performs a bounded merge or supporting artifact write.
 
-### Example 1: Script Importing Through the Public API
-
-```typescript
-// scripts/core/workflow.ts
-import { hybridSearchEnhanced } from '@spec-kit/mcp-server/api/search';
-// Imports through the public API boundary
+```text
+memory_save
+  -> handlers/memory-save.ts
+  -> handlers/save/*
+  -> lib/routing/content-router.ts
+  -> lib/merge/anchor-merge-operation.ts
+  -> spec doc or continuity target
+  -> index / metadata update
 ```
 
-**Result**: Valid import. Passes all boundary checks.
+Key runtime modules:
 
-### Example 2: Forbidden Direct Import from Internal Lib
+- `mcp_server/handlers/memory-save.ts`
+- `mcp_server/lib/routing/content-router.ts`
+- `mcp_server/lib/merge/anchor-merge-operation.ts`
+- `mcp_server/lib/continuity/thin-continuity-record.ts`
 
-```typescript
-// scripts/core/workflow.ts
-import { internalScorer } from '@spec-kit/mcp-server/lib/search/scorer';
-// FORBIDDEN: Direct import of internal runtime module
-// Fix: Use the api/ export or move shared logic to shared/
-```
+### Supporting artifacts
 
-**Result**: Blocked by `check-no-mcp-lib-imports.ts` and CI.
+Generated memory files still matter for search, traceability, and evidence capture, but they are supporting artifacts rather than the canonical operator-facing session state.
 
-### Example 3: Shared Module Used by Both Zones
+<!-- /ANCHOR:continuity-flows -->
 
-```typescript
-// scripts/lib/indexer.ts
-import { adaptiveFusion } from '@spec-kit/shared/algorithms/adaptive-fusion';
-// Both zones can import from shared/
+<!-- ANCHOR:runtime-subsystems -->
+## 4. RUNTIME SUBSYSTEMS
 
-// mcp_server/lib/search/pipeline.ts
-import { adaptiveFusion } from '@spec-kit/shared/algorithms/adaptive-fusion';
-// Both zones can import from shared/
-```
+### Search and retrieval
 
-**Result**: Valid imports. `shared/` is neutral ground for both consumers.
+`mcp_server/lib/search/` remains the hybrid retrieval subsystem. It provides vector, BM25, FTS5, graph, and structural graph channels, then fuses them in a staged ranking pipeline. Retrieval is subordinate to the resume ladder for packet recovery.
 
-### Common Patterns
+### Graph systems
 
-| Pattern | Import Path | When to Use |
-|---------|-------------|-------------|
-| Script needs search | `@spec-kit/mcp-server/api/search` | Any script calling search functionality |
-| Script needs scoring | `@spec-kit/mcp-server/api` | Any script calling scoring functionality |
-| Both need an algorithm | `@spec-kit/shared/algorithms/*` | Reusable logic for both zones |
-| Wrapper delegation | `../../../scripts/dist/*` | Compatibility wrappers in `mcp_server/scripts/` only |
+Two graph systems now coexist:
 
-<!-- /ANCHOR:usage-examples -->
----
+| Graph | Purpose | Primary Modules |
+|---|---|---|
+| Causal memory graph | Search boosts, causal lineage, community signals | `lib/graph/`, `lib/search/graph-search-fn.ts` |
+| Coverage graph | Deep research/review convergence and gap tracking | `lib/coverage-graph/`, `handlers/coverage-graph/` |
 
-<!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
+### Feedback and evaluation
 
-### Common Issues
+`mcp_server/lib/feedback/` stores feedback events and shadow-scoring helpers. `lib/eval/` and `scripts/evals/` provide reporting, ablations, and boundary checks.
 
-#### Forbidden Import Detected by CI
+### Hooks and startup context
 
-**Symptom**: CI fails with "forbidden import detected" in `check-no-mcp-lib-imports.ts`
+`mcp_server/hooks/` contains lifecycle integrations for Claude, Gemini, and Copilot. These hooks surface startup or compaction context, but they still point operators back to the canonical resume chain instead of inventing an alternate source of truth.
 
-**Cause**: A script file imports directly from internal `mcp_server/` directories (`lib/`, `core/`, `handlers/` or a combination)
+<!-- /ANCHOR:runtime-subsystems -->
 
-**Solution**:
-```bash
-# Find the offending import
-npx tsx scripts/evals/check-no-mcp-lib-imports.ts
+<!-- ANCHOR:enforcement -->
+## 5. ENFORCEMENT AND VERIFICATION
 
-# Option A: Move the needed function to mcp_server/api/ and import from there
-# Option B: Move shared logic to shared/ and import from there
-# Option C: Register an exception in the allowlist (requires maintainer approval)
-```
+The architecture is enforced by code, tests, and scripts, not by docs alone.
 
-#### Circular Import in Handlers
+Key checks:
 
-**Symptom**: `check-handler-cycles-ast.ts` reports a cycle
+- `scripts/evals/check-no-mcp-lib-imports.ts`
+- `scripts/evals/check-no-mcp-lib-imports-ast.ts`
+- `scripts/evals/check-handler-cycles-ast.ts`
+- `scripts/evals/check-architecture-boundaries.ts`
+- workspace typechecks for `@spec-kit/mcp-server` and `@spec-kit/scripts`
+- targeted Vitest suites for save, resume, routing, public API, and docs parity
 
-**Cause**: Two or more handler files import from each other
+### Practical rule set
 
-**Solution**: Extract the shared dependency into a utility within `mcp_server/lib/` or `shared/` and have both handlers import from there.
+- Edit authored `.ts`, `.md`, and shell sources, not `dist/`.
+- Use `mcp_server/api/` as the import boundary from `scripts/`.
+- Keep packet recovery anchored on `/spec_kit:resume`.
+- Treat `handover.md`, `_memory.continuity`, and spec docs as the continuity backbone.
 
-### Quick Fixes
+<!-- /ANCHOR:enforcement -->
 
-| Problem | Quick Fix |
-|---------|-----------|
-| "Forbidden import" in scripts | Change import path from `lib/*` to `api/*` |
-| Circular handler dependency | Extract shared code to `mcp_server/lib/` utility |
-| Stale allowlist entry | Update `lastReviewedAt` or remove if condition met |
-| Wrapper still referenced | Run `rg "mcp_server/scripts/<name>"` to find consumers |
+<!-- ANCHOR:related -->
+## 6. RELATED
 
-### Diagnostic Commands
+- `mcp_server/README.md`
+- `mcp_server/lib/README.md`
+- `mcp_server/handlers/README.md`
+- `mcp_server/hooks/README.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/resource-map.md`
 
-```bash
-# Run all boundary enforcement checks
-npx tsx scripts/evals/check-no-mcp-lib-imports.ts
-npx tsx scripts/evals/check-no-mcp-lib-imports-ast.ts
-npx tsx scripts/evals/check-handler-cycles-ast.ts
-npx tsx scripts/evals/check-architecture-boundaries.ts
-bash scripts/check-api-boundary.sh
-
-# Search for forbidden import patterns
-rg "from.*@spec-kit/mcp-server/(lib|core|handlers)" scripts/
-```
-
-<!-- /ANCHOR:troubleshooting -->
----
-
-<!-- ANCHOR:faq -->
-## 8. FAQ
-
-### General Questions
-
-**Q: Why can't scripts import directly from `mcp_server/lib/`?**
-
-A: Direct imports create tight coupling between build-time and runtime code. The `api/` boundary provides a stable surface that can change internal implementations without breaking callers.
-
----
-
-**Q: When should I add code to `shared/` vs `mcp_server/api/`?**
-
-A: Add to `shared/` when both `scripts/` and `mcp_server/` need the same logic (algorithms, types, utilities, constants). Use `api/` when scripts need to call runtime functionality that lives inside `mcp_server/`.
-
----
-
-### Technical Questions
-
-**Q: How do I register a new exception?**
-
-A: Add an entry to `scripts/evals/import-policy-allowlist.json` with all required fields (`owner`, `reason`, `removeWhen`, `createdAt`, `lastReviewedAt`). Get approval from a `system-spec-kit` maintainer before merging.
-
----
-
-**Q: Can I edit files in `dist/` directories?**
-
-A: No. `dist/` contains generated build output. Edit the source `.ts` files in package roots and rebuild. Changes to `dist/` will be overwritten on the next build.
-
-<!-- /ANCHOR:faq -->
----
-
-<!-- ANCHOR:related-documents -->
-## 9. RELATED DOCUMENTS
-
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [mcp_server/api/README.md](mcp_server/api/README.md) | Public API boundary surface |
-| [scripts/evals/README.md](scripts/evals/README.md) | Eval scripts and boundary enforcement |
-| [shared/README.md](shared/README.md) | Shared module inventory and conventions |
-| [mcp_server/scripts/README.md](mcp_server/scripts/README.md) | Compatibility wrapper documentation |
-
-<!-- /ANCHOR:related-documents -->
----
-
-<!-- ANCHOR:hook-code-graph-cocoindex -->
-## 10. HOOK + CODE GRAPH + COCOINDEX ARCHITECTURE
-
-### Overview
-
-Three subsystems collaborate to provide intelligent context across session boundaries: **startup/recovery surfaces** deliver runtime-specific startup context, **Code Graph** provides structural code intelligence, and **CocoIndex** enables semantic discovery. A **Compact Merger** still unifies structural, semantic, and memory-oriented signals for bounded payload construction, but startup delivery is now runtime-specific rather than Claude-only.
-
-### Integration Flowchart
-
-```mermaid
-flowchart TB
-    subgraph SESSION["Session Lifecycle"]
-        direction LR
-        startup["startup"] --> work["work"] --> compact["compact"] --> resume["resume"]
-    end
-
-    subgraph SURFACES["Startup / Recovery Surfaces"]
-        direction TB
-        claude["Claude SessionStart<br/>hooks/claude/session-prime.ts"]
-        gemini["Gemini SessionStart<br/>hooks/gemini/session-prime.ts"]
-        opencode["OpenCode transport plan<br/>lib/context/opencode-transport.ts"]
-        codex["Codex bootstrap parity<br/>session_bootstrap() MCP tool"]
-        copilot["Copilot local hook config / wrappers<br/>.github/hooks/*"]
-        surfacedetect["Runtime detection<br/>runtime-detection.ts"]
-
-        surfacedetect --> claude
-        surfacedetect --> gemini
-        surfacedetect --> opencode
-        surfacedetect --> codex
-        surfacedetect --> copilot
-    end
-
-    subgraph CODEGRAPH["Code Graph Layer"]
-        direction TB
-        indexer["Structural Indexer<br/>structural-indexer.ts"]
-        db["SQLite DB<br/>code-graph-db.ts"]
-        cgtools["MCP Tools<br/>scan / query / status / context"]
-        wst["Working Set Tracker<br/>working-set-tracker.ts"]
-
-        indexer -->|"parse JS/TS/Python/Bash"| db
-        db --> cgtools
-        wst -->|"recency-weighted files"| cgtools
-    end
-
-    subgraph COCOINDEX["CocoIndex Layer"]
-        direction TB
-        semantic["Semantic Search<br/>mcp__cocoindex_code__search"]
-        seed["Seed Resolver<br/>seed-resolver.ts"]
-        ctxbuilder["Context Builder<br/>code-graph-context.ts"]
-
-        semantic -->|"embedding matches"| seed
-        seed -->|"resolve to graph nodes"| ctxbuilder
-    end
-
-    subgraph MERGER["Compact Merger"]
-        direction TB
-        merger["compact-merger.ts<br/>3-source merge"]
-        budget["Budget Allocator<br/>budget-allocator.ts"]
-        mergerruntime["Runtime Detection<br/>runtime-detection.ts"]
-        brief["Merged Brief"]
-
-        mergerruntime -->|"hook policy"| merger
-        merger --> budget
-        budget --> brief
-    end
-
-    SESSION -->|"triggers"| SURFACES
-    claude -->|"startup snapshot"| merger
-    gemini -->|"startup snapshot"| merger
-    opencode -->|"transport digest"| merger
-    codex -->|"bootstrap digest"| merger
-    copilot -->|"startup banner when configured"| merger
-    cgtools -->|"structural neighborhoods"| merger
-    ctxbuilder -->|"semantic context"| merger
-    brief -->|"rendered for runtime surface"| SURFACES
-```
-
-### Component Reference
-
-| Component | Location | Purpose |
-|-----------|----------|---------|
-| `session-prime.ts` | `hooks/claude/`, `hooks/gemini/`, `hooks/copilot/` | Runtime-specific startup surface emitters where hook/config support exists |
-| `session-stop.ts` | `hooks/claude/`, `hooks/gemini/` | Stop: track tokens, auto-save session |
-| `hook-state.ts` | `hooks/claude/` | Claude-oriented per-session state management used by the shared startup brief |
-| `opencode-transport.ts` | `lib/context/` | Transport-only OpenCode startup/message/compaction block builder |
-| `runtime-detection.ts` | `lib/code-graph/` | Runtime ID + startup-surface hook policy detection |
-| `structural-indexer.ts` | `lib/code-graph/` | Dual-backend parser: tree-sitter WASM default, regex fallback (JS/TS/Python/Bash) |
-| `code-graph-db.ts` | `lib/code-graph/` | SQLite storage + CRUD operations |
-| `seed-resolver.ts` | `lib/code-graph/` | CocoIndex results to graph node resolution |
-| `code-graph-context.ts` | `lib/code-graph/` | LLM-oriented compact neighborhoods |
-| `budget-allocator.ts` | `lib/code-graph/` | Token distribution (floor + overflow) |
-| `compact-merger.ts` | `lib/code-graph/` | 3-source merge for compaction |
-| `working-set-tracker.ts` | `lib/code-graph/` | Recency-weighted file tracking |
-
-### Budget Allocation
-
-The budget allocator distributes a fixed token budget across four sources using a **floor + overflow** strategy. Each source receives a guaranteed minimum (floor). Remaining tokens form an overflow pool redistributed to sources that need more space.
-
-```mermaid
-pie title Token Budget Distribution (4000 total)
-    "Constitutional (700)" : 700
-    "Code Graph (1200)" : 1200
-    "CocoIndex (900)" : 900
-    "Triggered (400)" : 400
-    "Overflow (800)" : 800
-```
-
-| Source | Floor | Purpose |
-|--------|-------|---------|
-| Constitutional | 700 | Always-present rules, CLAUDE.md essentials |
-| Code Graph | 1200 | Structural neighborhoods, active file context |
-| CocoIndex | 900 | Semantic search results, related code |
-| Triggered | 400 | Memory matches, session-specific context |
-| Overflow | 800 | Redistributed to sources that exceed their floor |
-| **Total** | **4000** | |
-
-### Query Routing
-
-Different query intents route to different subsystems. The routing ensures each query reaches the system best suited to answer it.
-
-| Query Intent | Route To | Tool |
-|-------------|----------|------|
-| Semantic discovery (find by meaning/concept) | CocoIndex | `mcp__cocoindex_code__search` |
-| Structural navigation (call graph, dependencies) | Code Graph | `code_graph_query` / `code_graph_context` |
-| Startup or recovery state | Session surfaces | `session_bootstrap` / `session_resume` / startup surface |
-| Session continuity (prior work, decisions) | Memory | `memory_search` / `memory_context` |
-
-<!-- /ANCHOR:hook-code-graph-cocoindex -->
+<!-- /ANCHOR:related -->

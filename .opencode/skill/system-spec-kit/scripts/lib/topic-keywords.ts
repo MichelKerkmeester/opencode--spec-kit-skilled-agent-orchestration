@@ -15,17 +15,10 @@
 // ───────────────────────────────────────────────────────────────
 // Shared lexical helpers for topic extraction across script extractors.
 
-const WORD_PATTERN = /\b[a-z][a-z0-9]+\b/g;
-
 const BASE_VALID_SHORT_TERMS = [
   'ai', 'api', 'cd', 'ci', 'css', 'db', 'dom', 'go', 'id', 'io', 'ip', 'js',
   'mcp', 'ml', 'os', 'qa', 'rx', 'sql', 'ts', 'ui', 'ux', 'vm', 'wp',
 ];
-
-/** Tokenize topic words. */
-function tokenizeTopicWords(text: string): string[] {
-  return text.toLowerCase().match(WORD_PATTERN) || [];
-}
 
 /** Create valid short terms. */
 export function createValidShortTerms(extraTerms: string[] = []): Set<string> {

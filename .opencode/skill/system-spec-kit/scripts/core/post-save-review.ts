@@ -136,7 +136,6 @@ const GENERIC_TITLES = new Set([
 ]);
 
 const DECISION_PLACEHOLDER_PATTERN = /\b(?:observation|user)\s+decision\s+\d+\b/i;
-const HIGH_GUARDRAIL_CHECKS = new Set<ReviewCheckId>(['D1', 'D2', 'D4', 'D7']);
 
 /* ───────────────────────────────────────────────────────────────
    3. PARSING HELPERS
@@ -414,24 +413,6 @@ function countMergedFromClauses(text: string): number {
 function isGenericTitle(title: string): boolean {
   const normalized = title.trim().toLowerCase().replace(/['"]/g, '');
   return GENERIC_TITLES.has(normalized) || normalized.length < 10;
-}
-
-function buildD3Counts(triggerPhrases: string[]): Record<D3Reason, number> {
-  return triggerPhrases.reduce<Record<D3Reason, number>>((counts, phrase) => {
-    const verdict = sanitizeTriggerPhrase(phrase);
-    if (
-      verdict.keep === false &&
-      verdict.reason &&
-      (verdict.reason === 'path_fragment' || verdict.reason === 'standalone_stopword' || verdict.reason === 'synthetic_bigram')
-    ) {
-      counts[verdict.reason] += 1;
-    }
-    return counts;
-  }, {
-    path_fragment: 0,
-    standalone_stopword: 0,
-    synthetic_bigram: 0,
-  });
 }
 
 function buildManualTriggerKeySet(triggerPhrases: string[] | undefined): Set<string> {
@@ -1093,45 +1074,52 @@ export function printPostSaveReview(result: PostSaveReviewResult): void {
   };
 
   if (result.status === 'SKIPPED') {
-    console.log(`\nPOST-SAVE QUALITY REVIEW -- SKIPPED (${result.skipReason})\n`);
-    console.log(JSON.stringify(payload, null, 2));
+    structuredLog('info', 'POST-SAVE QUALITY REVIEW -- SKIPPED', {
+      ...payload,
+      component: 'post-save-review',
+      skipReason: result.skipReason,
+    });
     return;
   }
 
   if (result.status === 'REVIEWER_ERROR') {
-    console.log(`\nPOST-SAVE QUALITY REVIEW -- REVIEWER ERROR (${result.reviewerError || 'unknown reviewer error'})\n`);
-    console.log(JSON.stringify(payload, null, 2));
+    structuredLog('error', 'POST-SAVE QUALITY REVIEW -- REVIEWER ERROR', {
+      ...payload,
+      component: 'post-save-review',
+      reviewerError: result.reviewerError || 'unknown reviewer error',
+    });
     return;
   }
 
   if (result.status === 'PASSED') {
-    console.log('\nPOST-SAVE QUALITY REVIEW -- PASSED (0 issues)\n');
-    console.log(JSON.stringify(payload, null, 2));
+    structuredLog('info', 'POST-SAVE QUALITY REVIEW -- PASSED', {
+      ...payload,
+      component: 'post-save-review',
+    });
     return;
   }
 
   const highCount = result.highCount ?? result.issues.filter((issue) => issue.severity === 'HIGH').length;
   const mediumCount = result.mediumCount ?? result.issues.filter((issue) => issue.severity === 'MEDIUM').length;
 
-  if (result.status === 'REJECTED') {
-    console.log(`\nPOST-SAVE QUALITY REVIEW -- REJECTED (${result.blockerReason})\n`);
-  } else {
-    console.log(`\nPOST-SAVE QUALITY REVIEW -- ${result.issues.length} issues found\n`);
-  }
-
-  for (const issue of result.issues) {
-    const checkLabel = issue.checkId ? `${issue.checkId} ` : '';
-    console.log(`[${issue.severity}] ${checkLabel}${issue.field}: ${issue.message}`);
-    console.log(`  Fix: ${issue.fix}\n`);
-  }
-
-  if (result.status === 'REJECTED') {
-    console.log('The save is REJECTED because the composite blocker fired.\n');
-  } else if (highCount > 0) {
-    console.log('The AI MUST manually patch HIGH severity fields before continuing.\n');
-  } else if (mediumCount > 0) {
-    console.log('MEDIUM issues should be patched when practical.\n');
-  }
-
-  console.log(JSON.stringify(payload, null, 2));
+  structuredLog(result.status === 'REJECTED' ? 'error' : 'warn', 'POST-SAVE QUALITY REVIEW -- ISSUES FOUND', {
+    ...payload,
+    component: 'post-save-review',
+    issueCount: result.issues.length,
+    issueSummaries: result.issues.map((issue) => ({
+      severity: issue.severity,
+      checkId: issue.checkId ?? null,
+      field: issue.field,
+      message: issue.message,
+      fix: issue.fix,
+    })),
+    reviewSummary:
+      result.status === 'REJECTED'
+        ? 'The save is rejected because the composite blocker fired.'
+        : highCount > 0
+          ? 'The AI must manually patch HIGH severity fields before continuing.'
+          : mediumCount > 0
+            ? 'MEDIUM issues should be patched when practical.'
+            : undefined,
+  });
 }

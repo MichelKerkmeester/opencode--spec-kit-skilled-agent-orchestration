@@ -8,7 +8,6 @@
 // Computes composite ranking scores for memories and folders with recency decay
 
 import * as fs from 'fs';
-import * as path from 'path';
 
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS FROM FOLDER-SCORING
@@ -25,7 +24,6 @@ import {
   TIER_WEIGHTS,
   SCORE_WEIGHTS,
   DECAY_RATE,
-  TIER_ORDER,
 } from '@spec-kit/shared/scoring/folder-scoring';
 import type { FolderMemoryInput } from '@spec-kit/shared/scoring/folder-scoring';
 
@@ -139,15 +137,6 @@ function formatRelativeTime(timestamp: string): string {
   if (daysSince < 30) return `${Math.floor(daysSince / 7)}w ago`;
   if (daysSince < 365) return `${Math.floor(daysSince / 30)}mo ago`;
   return `${Math.floor(daysSince / 365)}y ago`;
-}
-
-function formatFolderDisplay(folder: FolderScoreEntry): string {
-  const name: string = folder.simplified || simplifyFolderPath(folder.folder);
-  const count: number = folder.memoryCount || 0;
-  const time: string = folder.lastUpdateRelative || formatRelativeTime(folder.lastUpdate);
-  const scorePercent: number = Math.round((folder.score || 0) * 100);
-
-  return `${name} (${count}, ${time}) ${scorePercent}%`;
 }
 
 function computeFolderScore(folderPath: string, folderMemories: NormalizedMemory[]): number {

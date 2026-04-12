@@ -98,10 +98,16 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     const rawData: RawInputData = JSON.parse(dataContent) as RawInputData;
 
     validateInputData(rawData, specFolderArg);
-    console.log('   \u2713 Loaded and validated conversation data from file');
+    structuredLog('info', 'Loaded and validated conversation data from file', {
+      filePath: validatedDataFilePath,
+      source: 'file',
+    });
 
     const data: NormalizedData | RawInputData = normalizeInputData(rawData);
-    console.log(`   \u2713 Loaded data from data file`);
+    structuredLog('info', 'Loaded data from file', {
+      filePath: validatedDataFilePath,
+      source: 'file',
+    });
     return { ...data, _source: 'file' } as LoadedData;
   } catch (error: unknown) {
     if (error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code === 'ENOENT') {

@@ -12,6 +12,7 @@ import * as fsSync from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 import { validateNoLeakedPlaceholders, validateAnchors } from '../utils/validation-utils';
+import { structuredLog } from '../utils/logger';
 
 const MIN_SUBSTANCE_CHARS = 200;
 const FRONTMATTER_BLOCK_RE = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
@@ -190,7 +191,11 @@ export async function writeFilesAtomically(
       const parentFd = await fs.open(parentDir, fsSync.constants.O_RDONLY);
       try { await parentFd.sync(); } finally { await parentFd.close(); }
       written.push({ filename, existedBefore, backupPath });
-      console.log(`   ${filename} (${content.split('\n').length} lines)`);
+      structuredLog('info', 'Wrote file', {
+        component: 'file-writer',
+        filename,
+        lineCount: content.split('\n').length,
+      });
     } catch (e: unknown) {
       try { await fs.unlink(tempPath); } catch { /* temp file cleanup — failure is non-critical */ }
       // F-05: Accumulate current-file restore errors instead of swallowing

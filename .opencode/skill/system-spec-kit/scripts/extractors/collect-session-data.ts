@@ -45,7 +45,6 @@ import type {
   CanonicalDocs,
   CollectedDataBase,
   ContextItem,
-  DistinguishingEvidenceItem,
   FileChange,
   FileEntry,
   GapDescription,
@@ -581,7 +580,7 @@ function estimateCompletionPercent(
 
 function extractPendingTasks(
   observations: Observation[],
-  recentContext: RecentContextEntry[] | undefined,
+  _recentContext: RecentContextEntry[] | undefined,
   nextAction: string
 ): PendingTask[] {
   const tasks: PendingTask[] = [];
@@ -651,7 +650,7 @@ function extractPendingTasks(
 }
 
 function generateContextSummary(
-  summary: string,
+  _summary: string,
   observations: Observation[],
   projectPhase: string,
   decisionCount: number
@@ -773,7 +772,7 @@ function generateResumeContext(
 
 function deriveCanonicalDocPointers(
   specFiles: SpecFileEntry[],
-  options: {
+  _options: {
     contextType: string;
     preferDecisionRecord: boolean;
     preferImplementationSummary: boolean;
@@ -1219,7 +1218,10 @@ async function collectSessionData(
 
   // RECOVERY-ONLY: This fallback is unreachable in JSON-primary mode (data-loader throws before reaching here).
   if (!collectedData) {
-    console.log('   Warning: Using simulation data');
+    structuredLog('warn', 'Using simulation data', {
+      channel: getChannel(),
+      specFolder: folderName,
+    });
     return getSimFactory().createSessionData({
       specFolder: folderName,
       channel: getChannel(),
@@ -1254,7 +1256,10 @@ async function collectSessionData(
   const messageCount: number = userPrompts.length || 0;
 
   if (shouldAutoSave(messageCount)) {
-    console.log(`\n   Context Budget: ${messageCount} messages reached. Auto-saving context...\n`);
+    structuredLog('info', 'Context budget reached, auto-saving context', {
+      messageCount,
+      trigger: 'message_budget',
+    });
   }
 
   const duration: string = calculateSessionDuration(userPrompts, now);
@@ -1458,7 +1463,10 @@ async function collectSessionData(
       SPEC_FILES = await detectRelatedDocs(specFolderPath) as SpecFileEntry[];
     } catch (docError: unknown) {
       const errMsg = docError instanceof Error ? docError.message : String(docError);
-      console.warn(`   Warning: Could not detect related docs: ${errMsg}`);
+      structuredLog('warn', 'Could not detect related docs', {
+        error: errMsg,
+        specFolderPath,
+      });
       SPEC_FILES = [];
     }
   }

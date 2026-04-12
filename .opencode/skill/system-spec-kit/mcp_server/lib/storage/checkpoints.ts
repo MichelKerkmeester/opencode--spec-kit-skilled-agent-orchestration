@@ -440,7 +440,7 @@ function hasDirectScopeColumns(columns: ReadonlySet<string>): boolean {
 }
 
 function getScopeFilterContext(
-  database: Database.Database,
+  _database: Database.Database,
   scope: ScopeContext = {},
 ): {
   normalizedScope: ScopeContext;
@@ -542,24 +542,6 @@ function deleteRowsByIds(
   tableName: string,
   columnName: string,
   ids: number[],
-): void {
-  if (ids.length === 0) {
-    return;
-  }
-
-  const sql = `DELETE FROM ${tableName} WHERE ${columnName} IN (__PLACEHOLDERS__)`;
-  for (let i = 0; i < ids.length; i += 500) {
-    const batch = ids.slice(i, i + 500);
-    const placeholders = batch.map(() => '?').join(', ');
-    database.prepare(sql.replace('__PLACEHOLDERS__', placeholders)).run(...batch);
-  }
-}
-
-function deleteRowsByStringIds(
-  database: Database.Database,
-  tableName: string,
-  columnName: string,
-  ids: string[],
 ): void {
   if (ids.length === 0) {
     return;

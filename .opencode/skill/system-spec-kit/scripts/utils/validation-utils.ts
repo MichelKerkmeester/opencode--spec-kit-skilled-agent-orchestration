@@ -74,14 +74,6 @@ function validateAnchors(content: string): string[] {
   return warnings;
 }
 
-function logAnchorValidation(content: string, filename: string): void {
-  const anchorWarnings: string[] = validateAnchors(content);
-  if (anchorWarnings.length > 0) {
-    console.warn(`[generate-context] Anchor validation warnings in ${filename}:`);
-    anchorWarnings.forEach((w: string) => console.warn(`  - ${w}`));
-  }
-}
-
 // ───────────────────────────────────────────────────────────────
 // 4. EXPORTS
 // ───────────────────────────────────────────────────────────────

@@ -106,10 +106,18 @@ async function indexMemory(
     // Start with pre-extracted triggers (from enriched sources), fall back to content extraction
     if (preExtractedTriggers.length > 0) {
       triggerPhrases = [...preExtractedTriggers];
-      console.log(`   Using ${triggerPhrases.length} pre-extracted trigger phrases`);
+      structuredLog('info', 'Using pre-extracted trigger phrases', {
+        component: 'memory-indexer',
+        count: triggerPhrases.length,
+        file: contextFilename,
+      });
     } else {
       triggerPhrases = extractTriggerPhrases(content);
-      console.log(`   Extracted ${triggerPhrases.length} trigger phrases from content`);
+      structuredLog('info', 'Extracted trigger phrases from content', {
+        component: 'memory-indexer',
+        count: triggerPhrases.length,
+        file: contextFilename,
+      });
     }
 
     // Merge manual phrases if available
@@ -121,7 +129,12 @@ async function indexMemory(
           triggerPhrases.push(phrase);
         }
       }
-      console.log(`   Total: ${triggerPhrases.length} trigger phrases (${manualPhrases.length} manual)`);
+      structuredLog('info', 'Merged manual trigger phrases', {
+        component: 'memory-indexer',
+        totalCount: triggerPhrases.length,
+        manualCount: manualPhrases.length,
+        file: contextFilename,
+      });
     }
   } catch (triggerError: unknown) {
     const errMsg = triggerError instanceof Error ? triggerError.message : String(triggerError);
@@ -132,7 +145,11 @@ async function indexMemory(
     console.warn(`   Warning: Trigger extraction failed: ${errMsg}`);
     if (collectedData && collectedData._manualTriggerPhrases) {
       triggerPhrases = collectedData._manualTriggerPhrases;
-      console.log(`   Using ${triggerPhrases.length} manual trigger phrases`);
+      structuredLog('info', 'Fell back to manual trigger phrases', {
+        component: 'memory-indexer',
+        count: triggerPhrases.length,
+        file: contextFilename,
+      });
     }
   }
 
@@ -181,7 +198,11 @@ async function indexMemory(
     return null;
   }
 
-  console.log(`   Embedding generated in ${embeddingTime}ms`);
+  structuredLog('info', 'Embedding generated', {
+    component: 'memory-indexer',
+    durationMs: embeddingTime,
+    file: contextFilename,
+  });
 
   if (embeddingTime > EMBEDDING_PERF_WARN_MS) {
     console.warn(`   Warning: Embedding took ${embeddingTime}ms (target <${EMBEDDING_PERF_WARN_MS}ms)`);

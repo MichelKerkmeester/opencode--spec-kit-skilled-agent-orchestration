@@ -379,7 +379,7 @@ function mergeInsertNewAdr(
 function mergeAppendTableRow(
   payload: AppendTableRowPayload,
   anchorBody: string,
-  dedupeFingerprint: string,
+  _dedupeFingerprint: string,
   newline: string
 ): MergeTransformOutcome {
   if (!Array.isArray(payload.cells) || payload.cells.length === 0) {
@@ -774,7 +774,6 @@ interface ParsedTable {
 }
 
 function locateMarkdownTable(anchorBody: string): ParsedTable {
-  const newline = detectNewline(anchorBody);
   const lines = anchorBody.split(/\r?\n/);
   for (let index = 0; index < lines.length - 1; index += 1) {
     if (!looksLikeTableHeader(lines[index]) || !looksLikeTableDivider(lines[index + 1])) {

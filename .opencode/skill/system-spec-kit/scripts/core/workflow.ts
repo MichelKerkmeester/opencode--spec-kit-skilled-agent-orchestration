@@ -82,7 +82,7 @@ import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/dat
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
-import type { ThinFileInput, ThinningResult } from './tree-thinning';
+import type { ThinFileInput } from './tree-thinning';
 import { getSourceCapabilities } from '../utils/source-capabilities';
 import { normalizeInputData } from '../utils/input-normalizer';
 import type { RawInputData } from '../utils/input-normalizer';
@@ -96,7 +96,6 @@ import {
   extractSpecTitle,
 } from './title-builder';
 import {
-  normalizeFilePath,
   resolveTreeThinningContent,
   buildKeyFiles,
 } from './workflow-path-utils';
@@ -642,8 +641,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const activeSpecFolderArg = specFolderArg ?? (hasDirectDataContext ? null : CONFIG.SPEC_FOLDER_ARG);
 
 
-    const log = silent ? (): void => {} : console.log.bind(console);
-    const warn = silent ? (): void => {} : console.warn.bind(console);
+    const log = silent
+      ? (): void => {}
+      : (message: string = ''): void => {
+          structuredLog('info', message || 'workflow event', { component: 'workflow' });
+        };
+    const warn = silent
+      ? (): void => {}
+      : (message: string = ''): void => {
+          structuredLog('warn', message || 'workflow warning', { component: 'workflow' });
+        };
     const workflowWarnings: string[] = [];
 
     log('Starting memory skill workflow...\n');
@@ -1177,10 +1184,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     semanticFileChanges
   );
 
-  const IMPL_SUMMARY_MD: string = formatSummaryAsMarkdown(implSummary);
-  const HAS_IMPL: boolean = implSummary.filesCreated.length > 0 ||
-                   implSummary.filesModified.length > 0 ||
-                   implSummary.decisions.length > 0;
+  formatSummaryAsMarkdown(implSummary);
 
   log(`   Generated summary: ${implSummary.filesCreated.length} created, ${implSummary.filesModified.length} modified, ${implSummary.decisions.length} decisions\n`);
 
@@ -1288,8 +1292,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       .split('/')
       .map((segment) => segment.replace(/^\d{1,3}-/, '').replace(/-/g, ' ').trim())
       .filter(Boolean);
-    const folderNameForTriggers = folderSegmentsForTriggers.join(' ');
-
     const triggerSource = triggerSourceParts.join('\n');
     const autoExtractedTriggers = extractTriggerPhrases(triggerSource);
     const mergedTriggers: string[] = [];
@@ -1394,14 +1396,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }
 
-    preExtractedTriggers = ensureMinTriggerPhrases(preExtractedTriggers, effectiveFiles, specFolderName);
+    preExtractedTriggers = ensureMinTriggerPhrases(preExtractedTriggers, specFolderName);
     log(`   Pre-extracted ${preExtractedTriggers.length} trigger phrases`);
   } catch (e: unknown) {
     const errMsg = e instanceof Error ? e.message : String(e);
     warn(`   Warning: Pre-extraction of trigger phrases failed: ${errMsg}`);
   }
 
-  const keyFiles = buildKeyFiles(enhancedFiles, specFolder);
+  buildKeyFiles(enhancedFiles, specFolder);
   const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
   const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
   const currentSnakeCaseCausalLinks = (

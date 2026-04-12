@@ -273,14 +273,6 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
    2. DATABASE PATH AND SECURITY
 ----------------------------------------------------------------*/
 
-// F4.04/F8.02 fix: Use centralized DB-path resolution from core/config.ts.
-// Legacy env vars MEMORY_DB_DIR and MEMORY_DB_PATH remain supported for backward compatibility.
-function get_default_db_dir(): string {
-  return process.env.MEMORY_DB_DIR
-    ? path.resolve(process.env.MEMORY_DB_DIR)
-    : resolveDatabasePaths().databaseDir;
-}
-
 function get_default_db_path(): string {
   return process.env.MEMORY_DB_PATH || resolveDatabasePaths().databasePath;
 }

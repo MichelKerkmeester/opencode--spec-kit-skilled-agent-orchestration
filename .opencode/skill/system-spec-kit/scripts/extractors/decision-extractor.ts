@@ -10,6 +10,7 @@
 import { formatTimestamp } from '../utils/message-utils';
 import { validateDataStructure } from '../utils/data-validator';
 import { coerceFactsToText } from '../utils/fact-coercion';
+import { structuredLog } from '../utils/logger';
 import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
 import { truncateOnWordBoundary } from '../lib/truncate-on-word-boundary';
@@ -248,7 +249,9 @@ async function extractDecisions(
   // F-12: Process manual decisions, then merge with observation-extracted decisions
   let processedManualDecisions: DecisionRecord[] = [];
   if (manualDecisionInputs.length > 0) {
-    console.log(`   Processing ${manualDecisionInputs.length} manual decision(s)`);
+    structuredLog('info', 'Processing manual decisions', {
+      manualDecisionCount: manualDecisionInputs.length,
+    });
 
     processedManualDecisions = manualDecisionInputs.map(
       (manualDec: string | Record<string, unknown>, index: number): DecisionRecord => {

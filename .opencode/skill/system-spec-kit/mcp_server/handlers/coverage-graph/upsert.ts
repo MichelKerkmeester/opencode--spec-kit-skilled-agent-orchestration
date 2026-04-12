@@ -5,8 +5,6 @@
 // node/edge upsert with self-loop rejection and weight clamping.
 
 import {
-  upsertNode,
-  upsertEdge,
   batchUpsert,
   clampWeight,
   VALID_KINDS,

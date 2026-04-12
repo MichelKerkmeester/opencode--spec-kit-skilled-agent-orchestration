@@ -119,19 +119,6 @@ function isAllowlisted(filePath: string, importPath: string, allowlist: Allowlis
   return false;
 }
 
-/** Extract the import path from a matched line, preferring the path after from/import/require */
-function extractImportPath(line: string): string {
-  // Try 'from "path"' or "from 'path'" first (most common for static imports)
-  const fromMatch = line.match(/from\s+['"]([^'"]+)['"]/);
-  if (fromMatch) return fromMatch[1];
-  // Try require("path") or import("path")
-  const callMatch = line.match(/(?:require|import)\s*\(\s*['"]([^'"]+)['"]/);
-  if (callMatch) return callMatch[1];
-  // Fallback: first quoted string
-  const fallback = line.match(/['"]([^'"]+)['"]/);
-  return fallback ? fallback[1] : '<unknown>';
-}
-
 function extractModuleSpecifier(line: string): string | null {
   const fromMatch = line.match(/\b(?:import|export)\b[^;]*?\bfrom\s+['"`]([^'"`]+)['"`]/);
   if (fromMatch) return fromMatch[1];

@@ -138,7 +138,7 @@ function buildLeafFolderAnchor(specFolderName: string): string {
   return parentLead ? `${leafSegment} ${parentLead}` : leafSegment;
 }
 
-export function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
+export function ensureMinTriggerPhrases(existing: string[], specFolderName: string): string[] {
   if (existing.length >= 2) {
     return existing;
   }

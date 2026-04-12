@@ -511,7 +511,7 @@ function createSimulationPhases(): PhaseEntry[] {
 // ───────────────────────────────────────────────────────────────
 // 8. FULL SIMULATION AND DETECTION
 // ───────────────────────────────────────────────────────────────
-function createFullSimulation(config: SessionConfig = {}): FullSimulation {
+export function createFullSimulation(config: SessionConfig = {}): FullSimulation {
   return {
     session: createSessionData(config),
     conversations: createConversationData(config),
@@ -535,12 +535,12 @@ function requiresSimulation(collectedData: SimCollectedData | null): boolean {
 // ───────────────────────────────────────────────────────────────
 // 9. SIMULATION WARNING UTILITIES
 // ───────────────────────────────────────────────────────────────
-function addSimulationWarning(content: string): string {
+export function addSimulationWarning(content: string): string {
   const warning: string = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
   return warning + content;
 }
 
-function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
+export function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
   return {
     ...metadata,
     isSimulated: true,

@@ -295,6 +295,7 @@ interface PatternMatcher {
 }
 
 function extractCodePatterns(observations: ObservationInput[], files: FileInput[]): CodePattern[] {
+  void files;
   const patterns: CodePattern[] = [];
   const seen = new Set<string>();
 

@@ -191,6 +191,7 @@ function detectProjectPhase(
   observations: Observation[],
   messageCount: number
 ): string {
+  void messageCount;
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   if (total === 0) return 'RESEARCH';
 
@@ -392,6 +393,7 @@ function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgress
  * @returns An object mapping each known tool name to its invocation count.
  */
 function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]): ToolCounts {
+  void userPrompts;
   const toolNames = ['Read', 'Edit', 'Write', 'Bash', 'Grep', 'Glob', 'Task', 'WebFetch', 'WebSearch', 'Skill', 'View', 'Agent', 'NotebookEdit', 'ToolSearch'];
   const counts: ToolCounts = Object.fromEntries(toolNames.map((t) => [t, 0])) as ToolCounts;
 

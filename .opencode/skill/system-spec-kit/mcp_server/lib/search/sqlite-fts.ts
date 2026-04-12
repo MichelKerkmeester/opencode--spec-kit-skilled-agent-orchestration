@@ -165,6 +165,7 @@ function fts5Bm25Search(
   options: FtsBm25Options = {}
 ): FtsBm25Result[] {
   const { limit = 20, specFolder, includeArchived = false } = options;
+  void includeArchived;
 
   // Sanitize via shared tokenizer, then wrap each token in quotes and join with OR for recall
   const tokens = normalizeLexicalQueryTokens(query).fts;

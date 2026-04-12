@@ -323,17 +323,6 @@ function createFilterStats(): FilterStats {
   };
 }
 
-/** Compat wrapper — prefer createFilterStats(). */
-function resetStats(): void {
-  // No-op: stats are now per-pipeline, not global
-}
-
-/** Compat wrapper — prefer pipeline.getQualityScore(). */
-function getFilterStats(): FilterStats {
-  // Return empty stats for backward compatibility
-  return createFilterStats();
-}
-
 function isNoiseContent(content: string, additionalPatterns: readonly RegExp[] = []): boolean {
   if (!content || typeof content !== 'string') return true;
 
@@ -659,7 +648,7 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
   };
 }
 
-function filterContent(prompts: PromptItem[], options: Partial<FilterConfig> = {}): PromptItem[] {
+export function filterContent(prompts: PromptItem[], options: Partial<FilterConfig> = {}): PromptItem[] {
   const pipeline: FilterPipeline = createFilterPipeline(options);
   return pipeline.filter(prompts);
 }

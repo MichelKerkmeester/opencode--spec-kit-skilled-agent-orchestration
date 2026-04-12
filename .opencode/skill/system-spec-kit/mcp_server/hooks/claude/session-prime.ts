@@ -176,7 +176,6 @@ export function handleStartup(
 /** Handle source=resume: load resume context for continued session */
 function handleResume(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
   const sections: OutputSection[] = [];
 
   if (state?.lastSpecFolder) {

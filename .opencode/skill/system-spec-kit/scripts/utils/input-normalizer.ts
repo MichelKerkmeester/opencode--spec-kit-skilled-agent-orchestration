@@ -9,7 +9,6 @@
 import { structuredLog } from './logger';
 import {
   buildSpecAffinityTargets,
-  evaluateSpecAffinityText,
   extractSpecIds,
   matchesSpecAffinityFilePath,
   matchesSpecAffinityText,

@@ -623,7 +623,6 @@ function runQualityLoop(
   let bestScore = score;
   let bestContent = currentContent;
   let bestMetadata = { ...currentMetadata };
-  let _bestAttempt = 0;
 
   // Auto-fix loop
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -642,7 +641,6 @@ function runQualityLoop(
       bestScore = score;
       bestContent = currentContent;
       bestMetadata = { ...currentMetadata };
-      _bestAttempt = attempt;
     }
 
     if (score.total >= threshold) {

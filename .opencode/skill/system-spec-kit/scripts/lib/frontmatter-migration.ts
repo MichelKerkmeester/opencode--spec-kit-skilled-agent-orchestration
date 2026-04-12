@@ -1209,10 +1209,10 @@ function inferContextType(
 }
 
 function frontmatterForContextTemplate(
-  classification: ClassifiedDocument,
+  _classification: ClassifiedDocument,
   existingDescription: string | null,
   existingTriggers: string[],
-  existingTier: string | null,
+  _existingTier: string | null,
   existingContext: string | null
 ): ManagedFrontmatter {
   const trigger_phrases = existingTriggers.length > 0

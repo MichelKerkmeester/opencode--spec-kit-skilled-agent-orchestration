@@ -1,71 +1,154 @@
 ---
-title: "Plan — Phase 013 Dead Code & Architecture Audit"
-status: "planned"
+title: "Implementation Plan: 026 / 006 / 013 — dead code and architecture audit"
+description: "Execution plan for cleaning the active runtime, aligning architecture docs, completing README coverage, and closing the packet with verification evidence."
+trigger_phrases: ["013 plan", "dead code audit plan", "architecture audit plan"]
+importance_tier: "important"
+contextType: "implementation"
+status: "complete"
 level: 3
 parent: "006-canonical-continuity-refactor"
+_memory:
+  continuity:
+    packet_pointer: "026/006/013-dead-code-and-architecture-audit"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Recorded the executed implementation plan"
+    next_safe_action: "Review packet"
+    key_files: ["plan.md", "tasks.md", "checklist.md", "implementation-summary.md"]
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
-# Plan: Phase 013 — Dead Code & Architecture Audit
+# Implementation Plan: 026 / 006 / 013 — dead code and architecture audit
 
 ---
 
-## Implementation Phases
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Phase 1 — Automated Scanning (~2 hours)
-**Parallel sub-agents: 4**
+### Technical Context
 
-1. **Dead imports scanner** — `tsc --noUnusedLocals --noUnusedParameters` on both workspaces + custom grep for imports of deleted modules
-2. **Dead concept scanner** — grep for `shadow_only`, `shared_space_id` (active paths, not schema), `archived_hit_rate`, `dual_write`, `observation_window` in active code
-3. **Console.log scanner** — grep for `console.log`, `console.error`, `console.warn` in `mcp_server/handlers/`, `mcp_server/lib/`, `scripts/core/` (not tests)
-4. **Circular dependency scanner** — build import graph, detect cycles
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript, shell, markdown |
+| **Framework** | `system-spec-kit` scripts plus MCP runtime |
+| **Storage** | Existing packet docs, package docs, and runtime modules |
+| **Testing** | TypeScript compiler, npm workspace typechecks, Vitest, packet validator |
 
-### Phase 2 — Fix Pass (~3 hours)
-**Parallel sub-agents: 6 (one per module area)**
+### Overview
 
-1. `mcp_server/handlers/` — fix imports, dead branches, console usage
-2. `mcp_server/lib/search/` — fix imports, dead branches, console usage
-3. `mcp_server/lib/storage/` + `lib/cognitive/` — fix imports, dead branches
-4. `mcp_server/lib/graph/` + `lib/merge/` + `lib/routing/` + `lib/resume/` — verify new modules clean
-5. `scripts/core/` + `scripts/memory/` — fix imports, dead branches
-6. `mcp_server/tools/` + `mcp_server/schemas/` — verify tool catalog matches reality
-
-### Phase 3 — ARCHITECTURE.md + READMEs (~2 hours)
-**Serial (ARCHITECTURE.md) + Parallel (READMEs)**
-
-1. Read `mcp_server/ARCHITECTURE.md` (if exists) or top-level architecture docs
-2. Diff against actual module layout: `ls -R mcp_server/lib/ mcp_server/handlers/`
-3. Update or create ARCHITECTURE.md with current truth
-4. Walk every directory under `mcp_server/`, check README.md exists + is accurate
-5. Create missing READMEs, update stale ones
-
-### Phase 4 — Resource Map Refresh (~1 hour)
-1. Read `006-canonical-continuity-refactor/resource-map.md`
-2. Add rows for new files from phases 010-012
-3. Remove rows for deleted files (shared-memory, legacy memory)
-4. Update verb/effort columns for modified files
-
-### Phase 5 — Verification (~1 hour)
-1. `npm run --workspace=@spec-kit/mcp-server typecheck`
-2. `npm run --workspace=@spec-kit/scripts typecheck`
-3. Full vitest suite on touched test files
-4. `validate.sh --strict` on phase 013 packet
+The plan executed in five workstreams: scan for dead code and removed concepts, clean the runtime, rewrite the package architecture narrative, complete source README coverage and the parent resource map, then rerun the full verification set required for packet closeout.
+<!-- /ANCHOR:summary -->
 
 ---
 
-## Critical Files
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-| Area | Key files |
-|---|---|
-| Architecture | `mcp_server/ARCHITECTURE.md` or equivalent |
-| Tool catalog | `mcp_server/tools/lifecycle-tools.ts`, `tool-schemas.ts` |
-| Resource map | `006-canonical-continuity-refactor/resource-map.md` |
-| sk-code-opencode | `.opencode/skill/sk-code-opencode/SKILL.md` (reference) |
-| New modules | `lib/graph/`, `lib/resume/`, `lib/merge/`, `lib/routing/` |
+### Definition of Ready
+
+- [x] Runtime scope identified
+- [x] Shared docs to update identified
+- [x] Verification commands known
+
+### Definition of Done
+
+- [x] Dead-code compiler sweeps pass in both workspaces
+- [x] Workspace typechecks pass
+- [x] Affected tests pass
+- [x] Packet validator passes in strict mode
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-## Dependencies
-- Phase 011 (graph-metadata) must be complete (it is)
-- Phase 010 (shared-memory removal) must be complete (it is)
-- Re-index must be complete before resource map refresh
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+
+Surgical runtime cleanup followed by documentation alignment.
+
+### Key Components
+
+- `mcp_server/handlers/` cleanup for handler entrypoints
+- `mcp_server/lib/` cleanup for runtime helpers and storage-adjacent modules
+- `scripts/core/`, `scripts/loaders/`, and `scripts/extractors/` cleanup for the active save path
+- Package architecture document and per-directory README coverage
+- Parent resource map and packet-local closeout docs
+
+### Data Flow
+
+Audit commands identify dead symbols and removed concept branches, cleanup edits remove them, architecture and README updates document the surviving runtime, then verification commands confirm the cleaned tree still behaves correctly.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Read the phase packet, package docs, and representative runtime modules
+- [x] Run dead-code, dead-concept, console, cycle, and boundary scans
+
+### Phase 2: Core Implementation
+- [x] Remove dead imports, dead locals, and dead helper paths
+- [x] Replace raw runtime `console.log` usage in the active save pipeline
+- [x] Rewrite the package architecture document
+- [x] Create missing source READMEs and refresh the parent resource map
+
+### Phase 3: Verification
+- [x] Run workspace typechecks
+- [x] Run targeted runtime and scripts Vitest batches
+- [x] Run strict packet validation
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Static | Unused symbols and dead concept greps | `tsc`, `rg` |
+| Runtime | Handler cycles and architecture boundaries | package scripts |
+| Behavioral | Affected runtime and scripts tests | Vitest |
+| Documentation | Packet integrity and template compliance | `validate.sh --strict` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `mcp_server` workspace | Internal | Green | Runtime cleanup cannot be verified |
+| `scripts` workspace | Internal | Green | Save-path cleanup cannot be verified |
+| Package architecture document | Internal | Green | Architecture alignment cannot close |
+| Parent resource map | Internal | Green | Phase 006 ownership remains stale |
+| Packet validator | Internal | Green | Phase cannot close cleanly |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Cleanup edits break typecheck, tests, or validator compliance.
+- **Procedure**:
+1. Restore the smallest failing module behavior.
+2. Re-run the affected verification command.
+3. Keep packet docs honest about what remains unresolved.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Medium | 45 minutes |
+| Core Implementation | High | 3 hours |
+| Verification | Medium | 90 minutes |
+| **Total** | | **5 hours 15 minutes** |
+<!-- /ANCHOR:effort -->

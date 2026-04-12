@@ -110,7 +110,7 @@ The framework adds three layers on top of the base platform:
                                 ▼
          ┌──────────────────────────────────────────┐
          │     SPEC KIT (documentation framework)   │
-         │  specs/###-feature/ ─ memory/ ─ scratch/ │
+         │  specs/###-feature/ ─ scratch/             │
          │  4 levels ─ 81 templates ─ 20 rules      │
          └──────────────────────────────────────────┘
 ```
@@ -218,9 +218,8 @@ specs/<###-feature-name>/
 ├── checklist.md                 # QA validation gates (Level 2+)
 ├── decision-record.md           # Architecture decisions (Level 3+)
 ├── implementation-summary.md    # Post-implementation summary (all levels)
-├── memory/                      # Supporting generated context artifacts (not the canonical continuity source)
-│   └── YY-MM-DD_HH-MM__topic.md
-└── scratch/                     # Temporary workspace files (gitignored)
+├── graph-metadata.json          # Packet-level graph metadata (auto-refreshed on save)
+└── scratch/                     # Temporary workspace files
 ```
 
 #### Checklist Priority System (Level 2+)
@@ -564,7 +563,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - The ONLY agent permitted to write `*.md` files inside spec folders
 - Template-first: copies from `templates/level_N/` - never creates from scratch
 - Supports Level 1-3+ documentation with CORE + ADDENDUM architecture and 20-rule validation
-- Exceptions: `memory/` (via generate-context.js), `scratch/` (any agent), `handover.md`, `research.md`
+- Exceptions: `scratch/` (any agent), `handover.md`, `research.md`, `graph-metadata.json` (via generate-context.js)
 
 **Debug**
 - Fresh-perspective debugger that receives structured context handoff (not conversation history)

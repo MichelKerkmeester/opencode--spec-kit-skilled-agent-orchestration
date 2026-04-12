@@ -192,7 +192,7 @@ export function extractRelationPhrases(content: string): Array<[string, string]>
  */
 export function createTypedEdges(
   db: Database.Database,
-  memoryId: number,
+  _memoryId: number,
   edges: DeterministicEdge[],
   onWriteFn: (db: Database.Database, payload: WriteEdgePayload) => void,
 ): number {
