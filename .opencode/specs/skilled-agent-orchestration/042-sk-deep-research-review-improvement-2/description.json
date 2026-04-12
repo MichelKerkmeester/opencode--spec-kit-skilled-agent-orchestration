@@ -1,21 +1,22 @@
 {
-  "specFolder": "042-sk-deep-research-review-improvement-2",
-  "description": "Rename sk-improve-agent to sk-improve-agent and sk-improve-prompt to sk-improve-prompt; update all references across repo",
+  "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "description": "Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle",
   "keywords": [
-    "rename",
-    "sk-improve-agent",
-    "sk-improve-agent",
-    "sk-improve-prompt",
-    "sk-improve-prompt",
-    "update",
-    "references",
-    "across",
-    "repo"
+    "feature",
+    "specification",
+    "deep",
+    "research",
+    "review",
+    "runtime",
+    "improvement",
+    "bundle"
   ],
-  "lastUpdated": "2026-04-11T06:05:30.085Z",
+  "lastUpdated": "2026-04-12T15:47:03.424Z",
   "specId": "042",
   "folderSlug": "sk-deep-research-review-improvement-2",
-  "parentChain": [],
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
   "memorySequence": 5,
   "memoryNameHistory": [
     "10-04-26_14-14__comprehensive-deep-skills-optimization-session.md",

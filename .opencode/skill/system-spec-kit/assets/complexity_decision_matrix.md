@@ -121,7 +121,7 @@ regardless of complexity score, as they require governance artifacts not covered
 | Effort estimation     | -       | -       | ✓        | ✓        |
 | AI execution protocol | -       | -       | Optional | Required |
 | Extended checklist    | -       | -       | -        | ✓        |
-| Sign-off section      | -       | -       | -        | ✓        |
+| Approval tracking     | -       | -       | -        | ✓        |
 | Workstream org        | -       | -       | -        | ✓        |
 
 ---

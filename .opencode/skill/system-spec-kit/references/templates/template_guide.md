@@ -227,11 +227,11 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 **When to use:**
 - Multi-agent or multi-workstream coordination
 - High-risk architectural or governance-heavy work
-- Enterprise/compliance requirements and formal sign-off flows
+- Compliance requirements and formal approval tracking
 
 **Level 3+ expectations:**
 - AI execution protocol sections remain intact and project-specific
-- Extended checklist includes P0/P1/P2 gating and sign-off sections
+- Extended checklist includes P0/P1/P2 gating and approval tracking sections
 - Governance, approval, and stakeholder communication sections are populated
 
 **Enforcement:** Hard block if required Level 3 files are missing; quality gates rely on checklist completion and validation scripts

@@ -301,7 +301,7 @@ For Level 3/3+ spec folders, include Five Checks in the decision record:
 
 - **Templates:** `.opencode/skill/system-spec-kit/templates/`
 - **Level 3 Template:** Includes Five Checks section
-- **Level 3+ Template:** Extended Five Checks with stakeholder sign-off
+- **Level 3+ Template:** Extended Five Checks with approval tracking
 
 ---
 

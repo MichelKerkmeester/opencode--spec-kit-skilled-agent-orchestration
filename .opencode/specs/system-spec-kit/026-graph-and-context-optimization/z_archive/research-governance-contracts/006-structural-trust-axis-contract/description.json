@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-structural-trust-axis-contract",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/006-structural-trust-axis-contract",
   "description": "Feature Specification: Structural Trust Axis Contract",
   "keywords": [
     "feature",
@@ -9,12 +9,14 @@
     "axis",
     "contract"
   ],
-  "lastUpdated": "2026-04-10T12:04:52.923Z",
+  "lastUpdated": "2026-04-12T15:47:03.597Z",
   "specId": "006",
   "folderSlug": "structural-trust-axis-contract",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "z_archive",
+    "research-governance-contracts"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

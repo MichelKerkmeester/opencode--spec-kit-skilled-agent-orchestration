@@ -62,16 +62,16 @@ Use for high-complexity work that needs approval tracking, compliance checkpoint
 - `decision-record.md`
 - `implementation-summary.md`
 
-These are the same core files as Level 3 with governance-expanded sections.
+These are the same core files as Level 3 with additional approval, compliance and stakeholder sections.
 
 <!-- /ANCHOR:files -->
 
 ## 3. GOVERNANCE ADDITIONS
 <!-- ANCHOR:additions -->
 
-- Approval workflow and stakeholder sign-off structure.
+- Approval workflow with reviewer checkpoint table.
 - Compliance checkpoints and traceability fields.
-- Workstream coordination and execution protocol sections.
+- Stakeholder tracking and workstream coordination sections.
 - Expanded checklist coverage for release-readiness validation.
 
 <!-- /ANCHOR:additions -->
@@ -99,7 +99,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Phase decomposition is strongly recommended for Level 3+ complexity. Governance-heavy work benefits significantly from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure.
+Phase decomposition is strongly recommended for Level 3+ complexity. High-complexity work benefits from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

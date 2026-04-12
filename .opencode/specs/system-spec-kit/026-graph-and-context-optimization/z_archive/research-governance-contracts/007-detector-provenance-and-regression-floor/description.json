@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-detector-provenance-and-regression-floor",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/007-detector-provenance-and-regression-floor",
   "description": "Feature Specification: Detector Provenance and Regression Floor",
   "keywords": [
     "feature",
@@ -9,12 +9,14 @@
     "regression",
     "floor"
   ],
-  "lastUpdated": "2026-04-10T12:04:52.929Z",
+  "lastUpdated": "2026-04-12T15:47:03.601Z",
   "specId": "007",
   "folderSlug": "detector-provenance-and-regression-floor",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "z_archive",
+    "research-governance-contracts"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -387,7 +387,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 - `spec.md` (from Level 3) - With Complexity Assessment section
 - `plan.md` (from Level 3) - With AI Execution Framework, dependency graphs
 - `tasks.md` (from Level 3) - With 3-Tier Task Format, AI Execution Protocol
-- `checklist.md` (from Level 3) - Extended (100-150 items) with approval tracking
+- `checklist.md` (from Level 3) - Extended (100-150 items) with sign-off section
 - `decision-record.md` (from Level 3) - Architecture Decision Records
 - `implementation-summary.md` (from Level 3) - Required completion artifact for all levels
 
@@ -399,7 +399,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 | Dependency Graph | Full DAG visualization of task dependencies | plan.md |
 | Effort Estimation | Story points/hours per phase with totals | plan.md |
 | Extended Checklist | 100-150 items with P0/P1/P2 prioritization | checklist.md |
-| Approval Tracking | Reviewer checkpoint table for key approvers | checklist.md |
+| Sign-Off Section | Technical Lead, Product Owner, QA Lead sign-offs | checklist.md |
 | Workstream Organization | Parallel workstream tracking and coordination | tasks.md |
 
 ### AI Execution Protocol Components
@@ -503,7 +503,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 4. Build dependency graph showing all task relationships
 5. Add effort estimates per phase
 6. Expand checklist to 100+ items covering all validation areas
-7. Add approval tracking section with appropriate reviewers
+7. Add approval tracking section with reviewers
 8. Organize workstreams if parallel work streams exist
 9. Remove all sample content and placeholders
 

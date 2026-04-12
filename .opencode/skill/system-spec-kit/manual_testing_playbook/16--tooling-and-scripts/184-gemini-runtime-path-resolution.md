@@ -19,15 +19,15 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `As a tooling validation operator, validate Gemini Runtime Path Resolution against the documented validation surface. Verify readlink .gemini returns .agents; basename diff is empty; resolved count is 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a tooling validation operator, validate Gemini Runtime Path Resolution against the documented validation surface. Verify ls -d .gemini returns .agents; basename diff is empty; resolved count is 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   ```bash
-  test -L .gemini
-  readlink .gemini
+  test -d .gemini
+  ls -d .gemini
   diff -u <(find -L .gemini/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .agents/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)
   find -L .gemini/agents -maxdepth 1 -type f -name '*.md' | wc -l
   ```
-- Expected: `readlink .gemini` returns `.agents`; basename diff is empty; resolved count is `9`.
+- Expected: `ls -d .gemini` returns `.agents`; basename diff is empty; resolved count is `9`.
 - Evidence: readlink output, diff output (empty on pass), and file count.
 - Pass: symlink target, resolved file set, and count all match.
 - Fail triage: symlink missing, target mismatch, or file set divergence; collect evidence and identify root cause.

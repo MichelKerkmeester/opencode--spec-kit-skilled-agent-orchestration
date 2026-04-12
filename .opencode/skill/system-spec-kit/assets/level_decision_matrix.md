@@ -49,7 +49,7 @@ Level 2 (Verification): Level 1 + checklist.md
                               ↓
 Level 3 (Full):         Level 2 + decision-record.md + optional research/research.md
                               ↓
-Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
+Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder tracking
 ```
 
 ---

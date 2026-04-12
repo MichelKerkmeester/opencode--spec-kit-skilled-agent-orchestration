@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-auditable-savings-publication-contract",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/009-auditable-savings-publication-contract",
   "description": "Feature Specification: Auditable Savings Publication Contract",
   "keywords": [
     "feature",
@@ -9,12 +9,14 @@
     "publication",
     "contract"
   ],
-  "lastUpdated": "2026-04-10T12:04:52.938Z",
+  "lastUpdated": "2026-04-12T15:47:03.609Z",
   "specId": "009",
   "folderSlug": "auditable-savings-publication-contract",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "z_archive",
+    "research-governance-contracts"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []
