@@ -793,7 +793,7 @@ STATUS=OK ACTION=dashboard
 
 ### Tool Signatures
 
-> **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, governed retrieval params (`tenantId`, `userId`, `agentId`, `sharedSpaceId`), `limit`, `sessionId`, `enableDedup`, `includeContent`, `includeTrace`, `tokenUsage`, and `anchors`. `spec_kit_memory_memory_quick_search()` also supports governed retrieval via `tenantId`, `userId`, `agentId`, and `sharedSpaceId`. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
+> **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, governed retrieval params (`tenantId`, `userId`, `agentId`), `limit`, `sessionId`, `enableDedup`, `includeContent`, `includeTrace`, `tokenUsage`, and `anchors`. `spec_kit_memory_memory_quick_search()` also supports governed retrieval via `tenantId`, `userId`, and `agentId`. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
 
 > **Adaptive Fusion, Hybrid Routing & Telemetry:** Retrieval combines vector, FTS5/BM25, and graph channels, then applies intent-adaptive fusion and reranking. Results may be routed through artifact-class classification before scoring. When `SPECKIT_ADAPTIVE_FUSION` is enabled, weights adapt dynamically by intent. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, extended telemetry is captured (query timing, score distributions, fusion decisions) and written to the telemetry log.
 >
@@ -810,7 +810,6 @@ spec_kit_memory_memory_context({
   tenantId: "<tenant-id>", // Optional governed retrieval boundary
   userId: "<user-id>",     // Optional governed retrieval boundary
   agentId: "<agent-id>",   // Optional governed retrieval boundary
-  sharedSpaceId: "<space-id>", // Optional governed retrieval boundary
   includeContent: true,
   anchors: ["<anchor1>", "<anchor2>"],  // Intent-specific
 })
@@ -823,7 +822,6 @@ spec_kit_memory_memory_quick_search({
   tenantId: "<tenant-id>",  // Optional governed retrieval boundary
   userId: "<user-id>",      // Optional governed retrieval boundary
   agentId: "<agent-id>",    // Optional governed retrieval boundary
-  sharedSpaceId: "<space-id>", // Optional governed retrieval boundary
 })
 
 // Option 3: Manual search with anchors (advanced — fine-grained control)
@@ -920,7 +918,7 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `mode` | string | `auto` | `auto` (standard) or `deep` (multi-query expansion). Note: deep mode does not guarantee expansion for simple queries |
 | `includeTrace` | boolean | false | Include provenance-rich scores/source/trace fields in each result |
 
-> **Governance scoping:** `tenantId`, `userId`, `agentId`, and `sharedSpaceId` are advertised in the tool schema for governed retrieval. When shared-memory scope enforcement is active, results are isolated to the specified boundaries.
+> **Governance scoping:** `tenantId`, `userId`, and `agentId` are advertised in the tool schema for governed retrieval. When scope enforcement is active, results are isolated to the specified boundaries.
 
 ### memory_match_triggers: Cognitive Parameters
 

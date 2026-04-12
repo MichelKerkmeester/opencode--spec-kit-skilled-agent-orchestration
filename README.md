@@ -345,10 +345,9 @@ For the full spec folder workflow, template architecture (81 templates), gate de
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
-The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full 47-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
-
-#### 47 Tools Across 7 Layers
+#### Layered MCP Surface
 
 The MCP tools are organized into a layered architecture. Each layer has a token budget that controls how much context it consumes:
 
@@ -358,10 +357,10 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 | **L2** | Core | 4 | 1,500 | Search, quick search, trigger matching, save |
 | **L3** | Discovery | 4 | 800 | List, stats, health checks, and session readiness |
 | **L4** | Mutation | 4 | 500 | Delete, update, validate, bulk cleanup |
-| **L5** | Lifecycle | 8 | 600 | Checkpoints, shared spaces, and lifecycle state |
+| **L5** | Lifecycle | 4 | 600 | Checkpoints and lifecycle state |
 | **L6** | Analysis | 10 | 1,200 | Causal graph, epistemic baselines, evaluations, and dashboards |
 | **L7** | Maintenance | 10 | 1,000 | Index scans, async ingest, learning history, and graph/CocoIndex maintenance |
-| | **Total** | **47** | **7,600** | |
+| | **Total** | **43** | **7,600** | |
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
@@ -452,16 +451,6 @@ Additional save-time processing:
 
 
 #### SHARED MEMORY
-
-By default, every memory is private. Shared memory adds controlled access for multiple people or agents:
-
-- **Spaces** - named containers for shared knowledge
-- **Roles** -`owner` (full control), `editor` (read/write), `viewer` (read-only)
-- **Deny-by-default** - nobody gets access unless explicitly granted
-- **Kill switch** - immediately blocks all access for emergencies
-
-For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md).
-
 
 #### QUALITY GATES AND LEARNING
 
@@ -701,7 +690,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 **Manage**
 - Database admin: stats (memory counts, index health), health checks, cleanup (orphaned vectors)
 - Checkpoint management: create, list, restore, delete
-- Bulk operations, ingestion (start/status/cancel), and shared-memory lifecycle
+- Bulk operations and ingestion (start/status/cancel)
 
 #### CREATE
 
@@ -991,7 +980,7 @@ For the complete flag reference with per-flag defaults, see [MCP Server README S
 
 ### Database Schema
 
-The runtime centers on a SQLite `memory_index` table with 56 columns plus companion FTS5/vector, lineage, checkpoint, working-memory, shared-memory, and eval tables.
+The runtime centers on a SQLite `memory_index` table with 56 columns plus companion FTS5/vector, lineage, checkpoint, working-memory, and eval tables.
 
 - **Primary store** - `memory_index` holds the searchable memory rows plus governance, quality, chunking, and retrieval metadata.
 - **Search companions** - FTS5 and vector tables support lexical and embedding retrieval alongside BM25 rebuild/index data.

@@ -1,6 +1,6 @@
 ---
 title: "Memory Commands"
-description: "Slash commands for managing the Spec Kit Memory system including search, session recovery, constitutional memory management, database operations, shared-memory lifecycle, and async ingestion."
+description: "Slash commands for managing the Spec Kit Memory system including search, session recovery, constitutional memory management, database operations, and async ingestion."
 trigger_phrases:
   - "memory command"
   - "memory save"
@@ -35,7 +35,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `memory` command group provides operations for the Spec Kit Memory MCP system. These 4 commands cover context preservation, unified knowledge retrieval and analysis, constitutional memory management, and database maintenance including shared-memory lifecycle plus async ingest. Session recovery now lives under `/spec_kit:resume`.
+The `memory` command group provides operations for the Spec Kit Memory MCP system. These 4 commands cover context preservation, unified knowledge retrieval and analysis, constitutional memory management, and database maintenance plus async ingest. Session recovery now lives under `/spec_kit:resume`.
 
 All commands interact with the memory MCP server tools (`spec_kit_memory_*`). They follow a gate-based argument validation pattern: if required arguments are missing, the command prompts the user before proceeding.
 
@@ -62,7 +62,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 |---------|------------|-------------|
 | **search** | `/memory:search <query> [--intent:<type>]` or `/memory:search <subcommand>` | Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
-| **manage** | `/memory:manage <subcommand>` | Database operations plus shared-memory lifecycle (scan, cleanup, tier, health, checkpoint, ingest, shared) |
+| **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |
 | **save** | `/memory:save <spec-folder>` | Update packet continuity with semantic indexing |
 
 ### Intent Types for Search Command (Retrieval Mode)
@@ -100,17 +100,6 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | ablation | `/memory:search ablation` | Run channel ablation study |
 | dashboard | `/memory:search dashboard` | View reporting dashboard |
 | history | `/memory:search history <specFolder>` | View learning history and LI trends |
-
-### Manage Shared Subcommands
-
-| Subcommand | Invocation | Description |
-|------------|------------|-------------|
-| enable | `/memory:manage shared enable` | Enable shared memory (first-time setup, required) |
-| create | `/memory:manage shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create or update shared space. First create auto-grants owner access to the actor |
-| member | `/memory:manage shared member <spaceId> <tenantId> <type> <id> <role> (--actor-user <id> \| --actor-agent <id>)` | Set membership as an existing owner |
-| status | `/memory:manage shared status [--tenant <id>] (--actor-user <id> \| --actor-agent <id>)` | Inspect rollout status for a concrete caller |
-
-> **Note:** Shared memory is disabled by default. Run `/memory:manage shared` or `/memory:manage shared enable` to complete first-time setup before using other subcommands. Shared spaces stay deny-by-default after bootstrap: the first successful `create` auto-grants `owner` to the acting caller, and later access changes still require explicit membership updates. `shared_memory_enable()` requires authenticated caller context and succeeds only for the configured shared-memory admin; `shared status` likewise requires one actor identity so rollout access is evaluated for a real caller.
 
 <!-- /ANCHOR:commands -->
 
@@ -198,15 +187,6 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # View reporting dashboard
 /memory:search dashboard
 
-# Create a shared-memory space and bootstrap owner access for the acting user
-/memory:manage shared create team-alpha tenant-1 "Team Alpha" --actor-user user-1
-
-# Set membership for a user as an existing owner
-/memory:manage shared member team-alpha tenant-1 user user-42 editor --actor-user user-1
-
-# View rollout status
-/memory:manage shared status --tenant tenant-1 --actor-user user-42
-
 # Start async ingestion of multiple files
 /memory:manage ingest start /path/to/file1.md /path/to/file2.md
 
@@ -239,8 +219,6 @@ The `/memory:manage` command accepts these subcommands:
 | `health` | (none) | Check memory system health status |
 | `checkpoint` | `create\|list\|restore\|delete` | Manage named checkpoints of memory state |
 | `ingest` | `start\|status\|cancel` | Async bulk ingestion of specific files |
-| `shared` | `enable\|create\|member\|status` | Shared-memory setup, space lifecycle, and membership management |
-
 <!-- /ANCHOR:manage-subcommands -->
 
 ---
@@ -248,7 +226,7 @@ The `/memory:manage` command accepts these subcommands:
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
 
-All 47 MCP tools mapped to their primary command home:
+Primary MCP tools mapped to their command home:
 
 > **026 Note:** Tool count increased from 33 to 47 with the addition of session management tools (`session_bootstrap`, `session_health`, `session_resume`), code graph tools (`code_graph_query`, `code_graph_scan`, `code_graph_status`, `code_graph_context`), and CCC tools (`ccc_status`, `ccc_feedback`, `ccc_reindex`). Graph-first retrieval routing (026) means `code_graph_query` is now the preferred first channel for structural code search before semantic/vector or FTS5/BM25 fallback.
 
@@ -270,44 +248,39 @@ All 47 MCP tools mapped to their primary command home:
 | 14 | `checkpoint_list` | L5 | `/memory:manage` |
 | 15 | `checkpoint_restore` | L5 | `/memory:manage` |
 | 16 | `checkpoint_delete` | L5 | `/memory:manage` |
-| 17 | `shared_space_upsert` | L5 | `/memory:manage shared` |
-| 18 | `shared_space_membership_set` | L5 | `/memory:manage shared` |
-| 19 | `shared_memory_status` | L5 | `/memory:manage shared` |
-| 20 | `shared_memory_enable` | L5 | `/memory:manage shared` |
-| 21 | `task_preflight` | L6 | `/memory:search` |
-| 22 | `task_postflight` | L6 | `/memory:search` |
-| 23 | `memory_drift_why` | L6 | `/memory:search` |
-| 24 | `memory_causal_link` | L6 | `/memory:search` |
-| 25 | `memory_causal_stats` | L6 | `/memory:search` |
-| 26 | `memory_causal_unlink` | L6 | `/memory:search` |
-| 27 | `eval_run_ablation` | L6 | `/memory:search` |
-| 28 | `eval_reporting_dashboard` | L6 | `/memory:search` |
-| 29 | `memory_index_scan` | L7 | `/memory:manage` |
-| 30 | `memory_get_learning_history` | L7 | `/memory:search` |
-| 31 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
-| 32 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
-| 33 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
-| 34 | `session_bootstrap` | L1 | `/spec_kit:resume` |
-| 35 | `session_health` | L3 | `/memory:manage` |
-| 36 | `session_resume` | L1 | `/spec_kit:resume` |
-| 37 | `code_graph_query` | L2 | `/memory:search` |
-| 38 | `code_graph_scan` | L7 | `/memory:manage` |
-| 39 | `code_graph_status` | L3 | `/memory:manage` |
-| 40 | `code_graph_context` | L2 | `/memory:search` |
-| 41 | `ccc_status` | L3 | `/memory:manage` |
-| 42 | `ccc_feedback` | L4 | `/memory:manage` |
-| 43 | `ccc_reindex` | L7 | `/memory:manage` |
-
+| 17 | `task_preflight` | L6 | `/memory:search` |
+| 18 | `task_postflight` | L6 | `/memory:search` |
+| 19 | `memory_drift_why` | L6 | `/memory:search` |
+| 20 | `memory_causal_link` | L6 | `/memory:search` |
+| 21 | `memory_causal_stats` | L6 | `/memory:search` |
+| 22 | `memory_causal_unlink` | L6 | `/memory:search` |
+| 23 | `eval_run_ablation` | L6 | `/memory:search` |
+| 24 | `eval_reporting_dashboard` | L6 | `/memory:search` |
+| 25 | `memory_index_scan` | L7 | `/memory:manage` |
+| 26 | `memory_get_learning_history` | L7 | `/memory:search` |
+| 27 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
+| 28 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
+| 29 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
+| 30 | `session_bootstrap` | L1 | `/spec_kit:resume` |
+| 31 | `session_health` | L3 | `/memory:manage` |
+| 32 | `session_resume` | L1 | `/spec_kit:resume` |
+| 33 | `code_graph_query` | L2 | `/memory:search` |
+| 34 | `code_graph_scan` | L7 | `/memory:manage` |
+| 35 | `code_graph_status` | L3 | `/memory:manage` |
+| 36 | `code_graph_context` | L2 | `/memory:search` |
+| 37 | `ccc_status` | L3 | `/memory:manage` |
+| 38 | `ccc_feedback` | L4 | `/memory:manage` |
+| 39 | `ccc_reindex` | L7 | `/memory:manage` |
 ### Coverage by Command
 
 | Command | Tools Owned | Helper Tools | Layers |
 |---------|-------------|--------------|--------|
 | `/memory:search` | 15 | (none) | L1, L2, L6, L7 |
 | `/memory:save` | 1 | 3 (index_scan, stats, update) | L2 |
-| `/memory:manage` | 24 | 1 (search) | L3, L4, L5, L7 |
+| `/memory:manage` | 20 | 1 (search) | L3, L4, L5, L7 |
 | `/memory:learn` | 0 | uses manage/save tools | (none) |
 | `/spec_kit:resume` | 3 | uses search/manage tools | L1 |
-| **Total** | **47** | | **L1-L7** |
+| **Total** | **39 listed** | | **L1-L7** |
 
 > **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership. Each command file's `allowed-tools` shows the full operational set.
 
@@ -321,12 +294,6 @@ All 47 MCP tools mapped to their primary command home:
 **Q: What is the difference between `/memory:search` and `/spec_kit:resume`?**
 
 `/memory:search` retrieves and searches indexed knowledge using a query or subcommand. `/spec_kit:resume` handles session continuation and interrupted-session recovery: it reconstructs packet context from `handover.md`, then `_memory.continuity`, then canonical spec docs before deeper memory tools engage. Use `search` for knowledge lookup and `resume` when you need to continue prior work.
-
-**Q: Do I need to run `/memory:manage shared enable` before every shared-memory operation?**
-
-No. Run `enable` only once during first-time setup. After that, the shared-memory subsystem stays active and you can use `shared create`, `shared member`, and `shared status` directly. Re-running `enable` on an already-enabled system returns `alreadyEnabled: true` without making changes.
-
-Enablement still requires the configured shared-memory admin and an authenticated caller context from the runtime session. If auth is missing or the caller is not the configured admin, the MCP tool returns an auth error instead of enabling the subsystem.
 
 **Q: When should I use `/memory:learn` vs `/memory:save`?**
 

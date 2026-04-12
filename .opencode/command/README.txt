@@ -151,7 +151,7 @@ Manage the Spec Kit Memory system for context preservation across sessions.
 |---------|------------|---------|
 | Search | `/memory:search <query>` or `/memory:search <subcommand>` | Unified retrieval + analysis (intent-aware search, epistemic, causal, eval) |
 | Learn | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories |
-| Manage | `/memory:manage <subcommand>` | Database operations plus shared-memory lifecycle (`scan`, `cleanup`, `tier`, `health`, `checkpoint`, `ingest`, `shared ...`) |
+| Manage | `/memory:manage <subcommand>` | Database operations (`scan`, `cleanup`, `tier`, `health`, `checkpoint`, `ingest`) |
 | Save | `/memory:save <spec-folder>` | Update packet continuity with semantic indexing |
 
 ### Spec Kit Commands

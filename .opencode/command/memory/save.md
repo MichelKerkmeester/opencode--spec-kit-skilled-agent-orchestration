@@ -669,7 +669,6 @@ The `memory_save` tool schema advertises advanced governance parameters for mult
 | `userId` | string | User boundary for governed ingest |
 | `agentId` | string | Agent boundary for governed ingest |
 | `sessionId` | string | Session boundary for governed ingest |
-| `sharedSpaceId` | string | Shared-memory space for collaboration saves. Requires explicit membership (see `/memory:manage shared`) |
 
 #### Provenance
 
@@ -683,10 +682,10 @@ The `memory_save` tool schema advertises advanced governance parameters for mult
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `retentionPolicy` | string | Retention class: `keep` (permanent), `ephemeral` (short-lived), `shared` (shared-space lifecycle) |
+| `retentionPolicy` | string | Retention class: `keep` (permanent), `ephemeral` (short-lived), `shared` (reserved compatibility value) |
 | `deleteAfter` | string | Optional ISO timestamp after which retention sweep may delete the memory |
 
-> **Note:** Governance parameters (tenantId, userId, agentId, sharedSpaceId) are validated by the memorySaveSchema when provided. All governance fields must pass schema validation.
+> **Note:** Governance parameters (tenantId, userId, agentId, sessionId) are validated by the memorySaveSchema when provided. All governance fields must pass schema validation.
 
 #### Async Bulk Ingestion
 

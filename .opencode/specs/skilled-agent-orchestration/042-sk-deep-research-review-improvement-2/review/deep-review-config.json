@@ -1,23 +1,27 @@
 {
-  "topic": "Deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle: spec + all 8 phase folders (001-runtime-truth-foundation through 008-further-deep-loop-improvements), shipped in 35+ commits to system-speckit/026-graph-and-context-optimization. Verify correctness, security, traceability, maintainability across the whole bundle.",
-  "sessionId": "rvw-2026-04-11T13-50-06Z",
-  "parentSessionId": null,
-  "lineageMode": "new",
-  "generation": 1,
+  "topic": "20-iteration GPT-5.4 deep review of the entire 042 Deep Research & Review Runtime Improvement Bundle: root spec + all 8 phase folders (001-runtime-truth-foundation through 008-further-deep-loop-improvements), covering ~200 implementation files across coverage-graph, wave-executor, offline-optimizer, agent-improver, reducers, MCP handlers, command workflows, and agent definitions.",
+  "sessionId": "rvw-2026-04-12T11-30-00Z",
+  "parentSessionId": "rvw-2026-04-11T13-50-06Z",
+  "lineageMode": "continued",
+  "generation": 2,
   "continuedFromRun": null,
   "migrationWindowEndsAt": "",
-  "maxIterations": 10,
-  "convergenceThreshold": 0.10,
-  "stuckThreshold": 2,
-  "maxDurationMinutes": 240,
-  "maxToolCallsPerIteration": 15,
-  "maxMinutesPerIteration": 10,
+  "maxIterations": 20,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 480,
+  "maxToolCallsPerIteration": 20,
+  "maxMinutesPerIteration": 15,
   "progressiveSynthesis": false,
   "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
-  "createdAt": "2026-04-11T13:50:06Z",
+  "createdAt": "2026-04-12T11:30:00Z",
   "status": "initialized",
   "releaseReadinessState": "in-progress",
   "executionMode": "auto",
+  "executionEngine": "cli-codex",
+  "executionModel": "gpt-5.4",
+  "executionReasoning": "high",
+  "executionTier": "fast",
   "mode": "review",
   "reviewTarget": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
   "reviewTargetType": "spec-folder",
@@ -30,32 +34,20 @@
   "severityThreshold": "P2",
   "crossReference": {
     "core": ["spec_code", "checklist_evidence"],
-    "overlay": ["feature_catalog_code", "playbook_capability"]
+    "overlay": ["feature_catalog_code", "playbook_capability", "test_coverage"]
   },
   "qualityGateThreshold": true,
   "reducer": {
-    "enabled": true,
-    "inputs": ["latestJSONLDelta", "newIterationFile", "priorReducedState"],
-    "outputs": ["findingsRegistry", "dashboardMetrics", "strategyUpdates"],
-    "metrics": [
-      "dimensionsCovered",
-      "findingsBySeverity",
-      "openFindings",
-      "resolvedFindings",
-      "convergenceScore"
-    ]
+    "enabled": false,
+    "note": "CLI-dispatched iterations write standalone files; Claude orchestrator handles state aggregation"
   },
-  "reducerScriptPath": ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
-  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-review/scripts/runtime-capabilities.cjs",
   "fileProtection": {
     "deep-review-config.json": "immutable",
     "deep-review-state.jsonl": "append-only",
     "deep-review-findings-registry.json": "auto-generated",
     "deep-review-strategy.md": "mutable",
     "deep-review-dashboard.md": "auto-generated",
-    ".deep-review-pause": "operator-controlled",
     "review-report.md": "mutable",
-    "review-report-v*.md": "write-once",
     "iteration-*.md": "write-once"
   }
 }

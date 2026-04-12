@@ -94,11 +94,11 @@ One shared-package fix was required during verification: `shared/embeddings/fact
 | `node mcp_server/node_modules/vitest/vitest.mjs run mcp_server/tests/graph-metadata-schema.vitest.ts mcp_server/tests/graph-metadata-integration.vitest.ts scripts/tests/graph-metadata-refresh.vitest.ts scripts/tests/graph-metadata-backfill.vitest.ts --config mcp_server/vitest.config.ts` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata --strict` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata --strict` | PASS |
-| `find .opencode/specs -type f -name graph-metadata.json | wc -l` | PASS, 515 files present |
+| `find .opencode/specs -type f -name graph-metadata.json | wc -l` | PASS at rollout time with 515 files; current review count is 516 after later packet creation |
 
 ### Backfill Coverage
 
-The final backfill apply summary refreshed all `515` detected spec-folder roots under `.opencode/specs`. A follow-up filesystem count confirmed `515` `graph-metadata.json` files present. Review flags were emitted for historically ambiguous packets, but the run still completed without inventing manual relationships.
+The final backfill apply summary refreshed all `515` detected spec-folder roots under `.opencode/specs` at rollout time. The current review count is `516` because a later child packet now also carries a root `graph-metadata.json`; review flags were still emitted only for historically ambiguous packets, and the original backfill run completed without inventing manual relationships.
 
 ### 10-Iteration Deep Review
 
@@ -108,7 +108,7 @@ The post-implementation review covered ten passes:
 2. Parser robustness: invalid JSON, version mismatch, manual preservation, and archive-path cases are covered.
 3. Save-path integration: canonical save refreshes graph metadata through the workflow hook.
 4. Index integration: graph metadata is discoverable, indexable, and causal-edge aware.
-5. Backfill coverage: the whole `.opencode/specs` tree reached `515/515` packet-root coverage.
+5. Backfill coverage: the rollout backfill reached `515/515` packet-root coverage at implementation time, and the current tree now contains `516` graph-metadata files after subsequent packet creation.
 6. Test coverage: four new test files passed with ten tests total.
 7. Doc accuracy: relevant command and scripts docs were updated for the new lifecycle.
 8. Typecheck and build: both workspaces passed.
