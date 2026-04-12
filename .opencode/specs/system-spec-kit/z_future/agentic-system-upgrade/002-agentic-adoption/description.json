@@ -1,21 +1,20 @@
 {
-  "specFolder": "system-spec-kit/999-agentic-system-upgrade/002-agentic-adoption",
-  "description": "Spec: Agentic adoption map synthesized from nine external system research phases",
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
+  "description": "Feature Specification: 002 Agentic Adoption",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
+    "002",
     "agentic",
-    "adoption",
-    "research",
-    "synthesis",
-    "lifecycle",
-    "agents"
+    "adoption"
   ],
-  "lastUpdated": "2026-04-11T07:21:10.443Z",
+  "lastUpdated": "2026-04-12T15:47:03.649Z",
   "specId": "002",
   "folderSlug": "agentic-adoption",
   "parentChain": [
     "system-spec-kit",
-    "999-agentic-system-upgrade"
+    "z_future",
+    "agentic-system-upgrade"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

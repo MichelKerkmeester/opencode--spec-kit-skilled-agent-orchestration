@@ -1,23 +1,17 @@
 {
-  "specFolder": "042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements",
-  "description": "Phase 8: Further deep-loop improvements — land 12 P0/P1/P2 recommendations surfaced by the 20-iteration deep-research audit across sk-deep-research, sk-deep-review, sk-improve-agent, and the shared coverage graph. Close the capability-vs-wiring gap so the coverage graph is actively and smartly utilized on the visible loop path.",
+  "specFolder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements",
+  "description": "Feature Specification: Further Deep-Loop Improvements",
   "keywords": [
-    "phase",
-    "further-deep-loop-improvements",
-    "contract-truth",
-    "graph-wiring",
-    "reducer-surfacing",
-    "blocked-stop",
-    "journal-wiring",
-    "sample-size-enforcement",
-    "session-scoping",
-    "coverage-graph",
-    "fixtures"
+    "feature",
+    "specification",
+    "deep-loop",
+    "improvements"
   ],
-  "lastUpdated": "2026-04-11T09:45:00.000Z",
+  "lastUpdated": "2026-04-12T15:47:03.457Z",
   "specId": "008",
   "folderSlug": "further-deep-loop-improvements",
   "parentChain": [
+    "skilled-agent-orchestration",
     "042-sk-deep-research-review-improvement-2"
   ],
   "memorySequence": 1,
