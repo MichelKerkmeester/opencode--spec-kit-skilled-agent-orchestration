@@ -513,7 +513,7 @@ exec
 181:- symptom: causal auto-link misses prior session; cause: parser read `session_id` from frontmatter only; fix: parse metadata YAML block too [Task 1]
 185:applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for follow-on edits to 014 graph/query/session payload logic in this checkout when regression-floor and strict doc validation must stay green
 191:- rollout_summaries/2026-04-09T07-35-51-j53b-implement_014_code_graph_upgrades.md (cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public, rollout_path=/Users/michelkerkmeester/.codex/sessions/2026/04/09/rollout-2026-04-09T09-35-51-019d712b-3824-7403-9e7e-a2a68ef35e61.jsonl, updated_at=2026-04-09T09:39:44+00:00, thread_id=019d712b-3824-7403-9e7e-a2a68ef35e61)
-195:- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+195:- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
 207:- doc closeout requires synchronized updates across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` with exact evidence pointers and explicit deferred-lane notes per ADR-003 [Task 1]
 222:- rollout_summaries/2026-04-09T06-44-41-UMNL-sk_code_opencode_head10_style_check.md (cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public, rollout_path=/Users/michelkerkmeester/.codex/sessions/2026/04/09/rollout-2026-04-09T08-44-41-019d70fc-632a-76c2-9b62-3f46d18aa9dd.jsonl, updated_at=2026-04-09T11:01:44+00:00, thread_id=019d70fc-632a-76c2-9b62-3f46d18aa9dd)
 243:applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for memory-redundancy follow-on work in this checkout when syncing implementation-summary/tasks language and answering Phase 6 plan questions from completed research
@@ -753,7 +753,7 @@ exec
    181	- symptom: causal auto-link misses prior session; cause: parser read `session_id` from frontmatter only; fix: parse metadata YAML block too [Task 1]
    182	
    183	# Task Group: 026/014 Code Graph Upgrades Runtime Closeout and Regression Floor
-   184	scope: adopt-now runtime lane + docs closeout for `014-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
+   184	scope: adopt-now runtime lane + docs closeout for `005-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
    185	applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for follow-on edits to 014 graph/query/session payload logic in this checkout when regression-floor and strict doc validation must stay green
    186	
    187	## Task 1: Implement 014 runtime/docs plus missing regression-floor test and strict verification sweep, outcome success
@@ -764,7 +764,7 @@ exec
    192	
    193	### keywords
    194	
-   195	- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+   195	- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
    196	
    197	## User preferences
    198	

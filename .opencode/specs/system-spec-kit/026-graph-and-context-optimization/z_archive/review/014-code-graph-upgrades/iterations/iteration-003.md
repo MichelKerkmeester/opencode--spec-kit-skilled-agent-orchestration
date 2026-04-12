@@ -2,7 +2,7 @@
 title: "Deep Review Iteration 003 — D3 Traceability"
 iteration: 003
 dimension: D3 Traceability
-session_id: 2026-04-09T14:31:56Z-014-code-graph-upgrades
+session_id: 2026-04-09T14:31:56Z-005-code-graph-upgrades
 timestamp: 2026-04-09T14:34:56Z
 status: thought
 ---
@@ -13,9 +13,9 @@ status: thought
 Cross-check spec requirements, implementation-summary claims, checklist evidence, and focused tests for the resume/bootstrap enrichment path.
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts`
 

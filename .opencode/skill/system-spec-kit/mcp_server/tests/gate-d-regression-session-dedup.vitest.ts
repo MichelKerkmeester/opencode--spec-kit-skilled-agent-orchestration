@@ -20,13 +20,13 @@ let testDb: InstanceType<typeof Database> | null = null;
 function createCanonicalRow(overrides: Partial<CanonicalMemoryRow>): CanonicalMemoryRow {
   return {
     id: 1,
-    file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
+    file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
     anchorId: 'what-built',
     title: 'Gate D reader-ready canonical doc',
     content_hash: 'sha256:gate-d-session-dedup-feature-3',
     documentType: 'spec_doc',
     source: 'spec-doc',
-    specFolder: 'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready',
+    specFolder: 'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready',
     content: 'Canonical spec-doc row for the Gate D reader-ready packet.',
     ...overrides,
   };
@@ -60,7 +60,7 @@ describe('Gate D regression session dedup', () => {
       title: 'Gate D reader-ready canonical doc',
       documentType: 'spec_doc',
       source: 'spec-doc',
-      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
+      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
       content: 'Canonical spec-doc row for the Gate D reader-ready packet.',
     });
     const continuityRow = createCanonicalRow({
@@ -69,7 +69,7 @@ describe('Gate D regression session dedup', () => {
       title: 'Gate D reader-ready continuity row',
       documentType: 'continuity',
       source: 'continuity',
-      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
+      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
       content: 'Canonical continuity row for the same Gate D reader-ready packet.',
     });
     const unrelatedCanonicalRow = createCanonicalRow({
@@ -79,7 +79,7 @@ describe('Gate D regression session dedup', () => {
       content_hash: 'sha256:gate-d-session-dedup-feature-3-follow-up',
       documentType: 'spec_doc',
       source: 'spec-doc',
-      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/tasks.md',
+      file_path: '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/tasks.md',
       content: 'Independent canonical row that should survive session dedup.',
     });
 

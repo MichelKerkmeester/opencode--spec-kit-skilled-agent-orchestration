@@ -30,7 +30,7 @@ contextType: "decision-record"
 
 ### Context
 
-The sibling research packet defines the compact-wrapper contract, and `003/006` already shipped the wrapper-template runtime plus the Phase 6 sanitizer and duplication-review guardrails. The 014 audit shows that the remaining defects are visible at the render surface, not in the wrapper body contract itself. [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120] [SOURCE: ../006-memory-duplication-reduction/implementation-summary.md:25-67] [SOURCE: ../../014-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:107-139]
+The sibling research packet defines the compact-wrapper contract, and `003/006` already shipped the wrapper-template runtime plus the Phase 6 sanitizer and duplication-review guardrails. The 014 audit shows that the remaining defects are visible at the render surface, not in the wrapper body contract itself. [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120] [SOURCE: ../006-memory-duplication-reduction/implementation-summary.md:25-67] [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:107-139]
 
 ### Decision
 
@@ -81,7 +81,7 @@ The sibling research packet defines the compact-wrapper contract, and `003/006` 
 
 ### Context
 
-All nine defects corrupt the same saved compact-wrapper surface. Splitting them into separate follow-ons would leave the operator with half-correct memories: for example, canonical sources could still be empty while title, file counts, or score names remained wrong. [SOURCE: ../../014-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md:2-35] [SOURCE: ../../014-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:2-39]
+All nine defects corrupt the same saved compact-wrapper surface. Splitting them into separate follow-ons would leave the operator with half-correct memories: for example, canonical sources could still be empty while title, file counts, or score names remained wrong. [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md:2-35] [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:2-39]
 
 ### Decision
 

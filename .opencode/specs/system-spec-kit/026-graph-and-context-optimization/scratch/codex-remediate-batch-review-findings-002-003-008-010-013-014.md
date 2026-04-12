@@ -13,7 +13,7 @@ Resolve all 7 P1 findings across these 6 packets:
 | 3 | `008-graph-first-routing-nudge` | CONDITIONAL | `session-prime.ts` emits startup hint without the promised activation-scaffold gate | runtime + test + doc |
 | 4 | `010-fts-capability-cascade-floor` | CONDITIONAL | `bm25_fallback` labeled as the lane that ran even though runtime returns empty lexical results | docs-only label rewrite (runtime fallback implementation is out of scope) |
 | 5 | `013-warm-start-bundle-conditional-validation` | CONDITIONAL | CHK-022 cites stale benchmark evidence (`pass 28`) vs current shipped matrix (`38/40`) | docs-only |
-| 6 | `014-code-graph-upgrades` | CONDITIONAL | Docs claim resume/bootstrap preserve graph-edge enrichment, but handlers and tests don't carry it | runtime + test + doc (mirrors the earlier 011 trust-preservation fix pattern) |
+| 6 | `005-code-graph-upgrades` | CONDITIONAL | Docs claim resume/bootstrap preserve graph-edge enrichment, but handlers and tests don't carry it | runtime + test + doc (mirrors the earlier 011 trust-preservation fix pattern) |
 
 Total: **4 docs-only lanes + 2 runtime lanes + 1 hybrid (docs-only rewrite for 010)**.
 
@@ -34,7 +34,7 @@ Target: move all 6 packets from CONDITIONAL/FAIL → PASS. Move aggregate verdic
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/008-graph-first-routing-nudge/review-report.md`
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/010-fts-capability-cascade-floor/review-report.md`
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/review-report.md`
-   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/014-code-graph-upgrades/review-report.md`
+   - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/005-code-graph-upgrades/review-report.md`
 2. **Consolidated context** (optional but recommended): `026/review/batch-phase-review-consolidated.md` §6 Remediation Priority Queue
 3. **Current state of every file you're about to modify** — read before editing; never edit blind. The per-phase reports cite the exact line numbers for each finding.
 4. **Reference pattern for Lane 6** (014 enrichment preservation): the earlier 011 trust-preservation fix at `handlers/session-resume.ts` + `handlers/session-bootstrap.ts` + `lib/context/shared-payload.ts` is the canonical pattern for "preserve contract fields additively through resume/bootstrap." Mirror that pattern for graph-edge enrichment (`edgeEvidenceClass`, `numericConfidence`, `graphEdgeEnrichment` envelope).
@@ -216,7 +216,7 @@ for pkt in 002-implement-cache-warning-hooks \
            008-graph-first-routing-nudge \
            010-fts-capability-cascade-floor \
            013-warm-start-bundle-conditional-validation \
-           014-code-graph-upgrades; do
+           005-code-graph-upgrades; do
   echo "=== $pkt ==="
   bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict \
     ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/$pkt"

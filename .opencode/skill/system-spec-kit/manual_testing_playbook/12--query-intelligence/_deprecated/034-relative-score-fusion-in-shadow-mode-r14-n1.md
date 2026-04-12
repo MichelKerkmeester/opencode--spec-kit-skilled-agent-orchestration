@@ -3,7 +3,7 @@ title: "034 -- Relative score fusion in shadow mode (R14/N1) [deprecated]"
 description: "RSF runtime-path validation is retired. This tombstone preserves the historical record while the live path remains RRF-only with precomputed adaptive weights."
 status: deprecated
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecation_reason: "The shipped ranking path no longer uses RSF; validation should stay source-only."
 phase_018_replaces: "feature_catalog/12--query-intelligence/_deprecated/02-relative-score-fusion-in-shadow-mode.md"
 ---

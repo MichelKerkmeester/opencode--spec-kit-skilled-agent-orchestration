@@ -55,7 +55,7 @@ Broader note: a sampled `scripts` package `npm test` run surfaced an unrelated e
 | `011-graph-payload-validator-and-trust-preservation` | `PASS` | 0 | `PASS` | No active findings existed in the source review artifacts. |
 | `012-cached-sessionstart-consumer-gated` | `PASS` | 0 | `PASS` | No active findings existed in the source review artifacts. |
 | `013-warm-start-bundle-conditional-validation` | `CONDITIONAL` | 1 | `PASS` | CHK-022 now cites `pass 38/40` at `013-warm-start-bundle-conditional-validation/checklist.md:55`, matching the implementation summary and benchmark matrix. |
-| `014-code-graph-upgrades` | `CONDITIONAL` | 1 | `PASS` | Packet 014 now explicitly keeps resume/bootstrap graph-edge carriage out of scope at `014-code-graph-upgrades/spec.md:69-73`. |
+| `005-code-graph-upgrades` | `CONDITIONAL` | 1 | `PASS` | Packet 014 now explicitly keeps resume/bootstrap graph-edge carriage out of scope at `005-code-graph-upgrades/spec.md:69-73`. |
 
 ## Finding Verification
 
@@ -105,9 +105,9 @@ Broader note: a sampled `scripts` package `npm test` run surfaced an unrelated e
 
 #### DR-014-I001-P1-001 — FIXED
 
-- Current state: packet `014` now explicitly places `Resume/bootstrap carriage of graph-edge enrichment beyond the graph-local owner surfaces` out of scope at `014-code-graph-upgrades/spec.md:69-73`.
-- Closeout alignment: the implementation summary says graph enrichment stays graph-local and does not expand `session_resume` or `session_bootstrap` at `014-code-graph-upgrades/implementation-summary.md:34-36`.
-- Delivery narrative: the lane summary repeats that edge enrichment remains scoped to graph-local payload owners at `014-code-graph-upgrades/implementation-summary.md:60` and `014-code-graph-upgrades/implementation-summary.md:75`.
+- Current state: packet `014` now explicitly places `Resume/bootstrap carriage of graph-edge enrichment beyond the graph-local owner surfaces` out of scope at `005-code-graph-upgrades/spec.md:69-73`.
+- Closeout alignment: the implementation summary says graph enrichment stays graph-local and does not expand `session_resume` or `session_bootstrap` at `005-code-graph-upgrades/implementation-summary.md:34-36`.
+- Delivery narrative: the lane summary repeats that edge enrichment remains scoped to graph-local payload owners at `005-code-graph-upgrades/implementation-summary.md:60` and `005-code-graph-upgrades/implementation-summary.md:75`.
 - Recommendation status: implemented as a truthful rescope. The reviewed resume/bootstrap overclaim is gone.
 
 ### Refresh Review Findings

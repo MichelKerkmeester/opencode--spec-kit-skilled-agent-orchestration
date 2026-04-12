@@ -3,7 +3,7 @@ title: "Relative score fusion in shadow mode [deprecated]"
 description: "RSF runtime code is retired. This tombstone preserves the historical record while the live path remains RRF-only with precomputed adaptive weights."
 status: deprecated
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecation_reason: "RSF runtime code was removed; RRF remains the sole live fusion method."
 phase_018_replaces: "RRF-only live path; RSF runtime code remains retired"
 ---

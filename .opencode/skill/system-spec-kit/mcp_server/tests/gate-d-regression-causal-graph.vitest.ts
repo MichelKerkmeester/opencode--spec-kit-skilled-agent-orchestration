@@ -7,7 +7,7 @@ type SqliteDatabase = InstanceType<typeof Database>;
 type CausalChainNode = ReturnType<typeof causalEdges.getCausalChain>;
 
 const CANONICAL_SPEC_FOLDER =
-  'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready';
+  'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready';
 
 function createCausalGraphDb(): SqliteDatabase {
   const db = new Database(':memory:');

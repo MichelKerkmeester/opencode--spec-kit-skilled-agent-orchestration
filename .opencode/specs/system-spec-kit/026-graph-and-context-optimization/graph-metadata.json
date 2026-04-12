@@ -17,11 +17,11 @@
     "system-spec-kit/026-graph-and-context-optimization/011-graph-payload-validator-and-trust-preservation",
     "system-spec-kit/026-graph-and-context-optimization/012-cached-sessionstart-consumer-gated",
     "system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation",
-    "system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades",
+    "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
     "system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent",
     "system-spec-kit/026-graph-and-context-optimization/016-release-alignment",
     "system-spec-kit/026-graph-and-context-optimization/017-memory-refactor-or-deprecation",
-    "system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor"
+    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor"
   ],
   "manual": {
     "depends_on": [],
@@ -169,7 +169,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `014-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.",
+    "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `005-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.",
     "created_at": "2026-04-12T09:02:53.443Z",
     "last_save_at": "2026-04-12T09:06:03.487Z",
     "last_accessed_at": null,

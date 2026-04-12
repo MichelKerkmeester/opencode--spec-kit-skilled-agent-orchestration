@@ -41,7 +41,7 @@ Phase list (13 total, exact folder names):
 011-graph-payload-validator-and-trust-preservation   4 iters (early convergence)
 012-cached-sessionstart-consumer-gated           4 iters (early convergence)
 013-warm-start-bundle-conditional-validation    5 iters
-014-code-graph-upgrades                         5 iters
+005-code-graph-upgrades                         5 iters
 ```
 
 Total iteration files to read: **108**.

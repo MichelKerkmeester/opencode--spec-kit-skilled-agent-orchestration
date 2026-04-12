@@ -1,7 +1,7 @@
 ---
 title: "DEPRECATED: Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK)"
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 ---
 
 # Deprecated

@@ -23,7 +23,7 @@ function buildCanonicalRow(overrides: Partial<SearchableRow>): SearchableRow {
   return {
     id: 0,
     title: 'Canonical reader-ready row',
-    file_path: '/tmp/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
+    file_path: '/tmp/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
     document_type: 'spec',
     importance_tier: 'normal',
     importance_weight: 0.4,
@@ -65,7 +65,7 @@ describe('Gate D regression 7 — memory tiers', () => {
       buildCanonicalRow({
         id: 704,
         title: 'Deprecated row should stay hidden',
-        file_path: '/tmp/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/tasks.md',
+        file_path: '/tmp/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/tasks.md',
         document_type: 'tasks',
         importance_tier: 'deprecated',
         importance_weight: 1,

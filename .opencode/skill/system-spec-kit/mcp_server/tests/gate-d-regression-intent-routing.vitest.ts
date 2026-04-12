@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const GATE_D_SPEC_FOLDER = '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/';
+const GATE_D_SPEC_FOLDER = '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/';
 const CANONICAL_QUERY = 'find the canonical decision and task anchors for Gate D reader-ready';
 const CANONICAL_ANCHORS = ['decision', 'task', 'spec_doc'];
 

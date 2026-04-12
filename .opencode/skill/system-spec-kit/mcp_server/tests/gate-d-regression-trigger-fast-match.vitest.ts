@@ -61,8 +61,8 @@ describe('Gate D trigger fast-match regression', () => {
     setMockDbRows([
       {
         id: 101,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
-        file_path: '/virtual/specs/system-spec-kit/018-canonical-continuity-refactor/implementation-summary.md',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
+        file_path: '/virtual/specs/system-spec-kit/006-canonical-continuity-refactor/implementation-summary.md',
         title: 'Canonical implementation summary',
         trigger_phrases: JSON.stringify(['stale column phrase']),
         importance_weight: 0.9,
@@ -72,8 +72,8 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 102,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
-        file_path: '/virtual/specs/system-spec-kit/018-canonical-continuity-refactor/implementation-summary.md',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
+        file_path: '/virtual/specs/system-spec-kit/006-canonical-continuity-refactor/implementation-summary.md',
         title: 'Canonical continuity',
         trigger_phrases: JSON.stringify(['continuity fallback']),
         importance_weight: 0.4,
@@ -83,7 +83,7 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 103,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
         file_path: '/virtual/legacy/memory.md',
         title: 'Legacy memory row',
         trigger_phrases: JSON.stringify(['legacy fallback']),
@@ -94,7 +94,7 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 104,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
         file_path: '/virtual/archive/memory.md',
         title: 'Archived memory row',
         trigger_phrases: JSON.stringify(['archived fallback']),
@@ -120,8 +120,8 @@ describe('Gate D trigger fast-match regression', () => {
     setMockDbRows([
       {
         id: 201,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
-        file_path: '/virtual/specs/system-spec-kit/018-canonical-continuity-refactor/tasks.md',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
+        file_path: '/virtual/specs/system-spec-kit/006-canonical-continuity-refactor/tasks.md',
         title: 'Tasks doc',
         trigger_phrases: JSON.stringify(['stale column phrase']),
         importance_weight: 0.8,
@@ -131,8 +131,8 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 202,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
-        file_path: '/virtual/specs/system-spec-kit/018-canonical-continuity-refactor/tasks.md',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
+        file_path: '/virtual/specs/system-spec-kit/006-canonical-continuity-refactor/tasks.md',
         title: 'Tasks continuity',
         trigger_phrases: JSON.stringify(['continuity fallback']),
         importance_weight: 0.6,
@@ -142,7 +142,7 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 203,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
         file_path: '/virtual/legacy/tasks.md',
         title: 'Legacy task row',
         trigger_phrases: JSON.stringify(['legacy fallback']),
@@ -153,7 +153,7 @@ describe('Gate D trigger fast-match regression', () => {
       },
       {
         id: 204,
-        spec_folder: 'specs/system-spec-kit/018-canonical-continuity-refactor',
+        spec_folder: 'specs/system-spec-kit/006-canonical-continuity-refactor',
         file_path: '/virtual/archive/tasks.md',
         title: 'Archived task row',
         trigger_phrases: JSON.stringify(['archived fallback']),

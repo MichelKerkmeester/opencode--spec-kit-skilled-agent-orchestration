@@ -30,7 +30,7 @@ describe('thin continuity record', () => {
     const markdown = makeFrontmatterMarkdown();
 
     const writeResult = upsertThinContinuityInMarkdown(markdown, {
-      packet_pointer: '026-graph-and-context-optimization/018-canonical-continuity-refactor/',
+      packet_pointer: '026-graph-and-context-optimization/006-canonical-continuity-refactor/',
       last_updated_at: '2026-04-11T18:48:00+02:00',
       last_updated_by: 'gate-c-worker',
       recent_action: 'Completed continuity schema validation',
@@ -58,7 +58,7 @@ describe('thin continuity record', () => {
     const readResult = readThinContinuityRecord(writeResult.markdown!);
     expect(readResult.ok).toBe(true);
     expect(readResult.record).toMatchObject({
-      packet_pointer: '026-graph-and-context-optimization/018-canonical-continuity-refactor',
+      packet_pointer: '026-graph-and-context-optimization/006-canonical-continuity-refactor',
       last_updated_at: '2026-04-11T16:48:00Z',
       last_updated_by: 'gate-c-worker',
       recent_action: 'Completed continuity schema validation',
@@ -78,7 +78,7 @@ describe('thin continuity record', () => {
 
   it('rejects malformed narrative recent_action content', () => {
     const result = validateThinContinuityRecord({
-      packet_pointer: '026-graph-and-context-optimization/018-canonical-continuity-refactor',
+      packet_pointer: '026-graph-and-context-optimization/006-canonical-continuity-refactor',
       last_updated_at: '2026-04-11T16:48:00Z',
       last_updated_by: 'gate-c-worker',
       recent_action: 'Completed iteration 24 validation design. This clarified why legacy blocks should auto-hydrate.',
@@ -147,7 +147,7 @@ describe('thin continuity record', () => {
 
   it('normalizes timestamps, question ids, and sentinel blockers deterministically', () => {
     const result = validateThinContinuityRecord({
-      packet_pointer: '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/',
+      packet_pointer: '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/',
       last_updated_at: '2026-04-11T18:48:59+02:00',
       last_updated_by: 'gate-c-worker',
       recent_action: 'Completed continuity normalization pass',
@@ -161,7 +161,7 @@ describe('thin continuity record', () => {
 
     expect(result.ok).toBe(true);
     expect(result.record).toMatchObject({
-      packet_pointer: 'specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor',
+      packet_pointer: 'specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor',
       last_updated_at: '2026-04-11T16:48:59Z',
       blockers: [],
       key_files: ['templates/level_3+/spec.md', 'templates/level_1/spec.md'],

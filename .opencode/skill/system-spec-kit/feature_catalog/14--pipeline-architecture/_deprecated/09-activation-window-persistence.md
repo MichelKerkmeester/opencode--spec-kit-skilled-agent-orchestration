@@ -3,7 +3,7 @@ title: "Activation window persistence"
 description: "Archived copy of the activation window persistence entry. The live path no longer uses the legacy quality-gate timer path."
 audited_post_018: true
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecated_reason: "The legacy quality-gate timer path is no longer part of the live pipeline."
 ---
 

@@ -187,7 +187,7 @@
       "completedAt": "2026-04-09T14:50:30Z"
     },
     {
-      "phaseSlug": "014-code-graph-upgrades",
+      "phaseSlug": "005-code-graph-upgrades",
       "iterationsCompleted": 5,
       "stopReason": "max_iterations",
       "findings": {
@@ -197,7 +197,7 @@
       },
       "verdict": "CONDITIONAL",
       "keyFindings": [
-        "Packet docs claim `session_resume` and `session_bootstrap` preserve graph-edge enrichment, but the current handlers and cited tests do not carry or assert those fields (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83)."
+        "Packet docs claim `session_resume` and `session_bootstrap` preserve graph-edge enrichment, but the current handlers and cited tests do not carry or assert those fields (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:83)."
       ],
       "completedAt": "2026-04-09T14:50:30Z"
     }

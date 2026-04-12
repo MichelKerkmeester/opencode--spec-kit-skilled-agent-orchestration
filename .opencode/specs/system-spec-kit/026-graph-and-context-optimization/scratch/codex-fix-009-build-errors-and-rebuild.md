@@ -52,16 +52,16 @@ After `dist/` is rebuilt, run the memory save on 014 via the CLI and inspect the
 
 ```bash
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades 2>&1 | tail -30
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades 2>&1 | tail -30
 ```
 
-The `/tmp/save-context-data.json` file already exists from the prior wild verification attempt. Use it as-is. The save will create a NEW memory file in `014-code-graph-upgrades/memory/` with a fresh timestamp.
+The `/tmp/save-context-data.json` file already exists from the prior wild verification attempt. Use it as-is. The save will create a NEW memory file in `005-code-graph-upgrades/memory/` with a fresh timestamp.
 
 If the save fails because of a post-009 change to the input validator (e.g., now requires a new field), edit `/tmp/save-context-data.json` to satisfy the validator and retry. Report any field changes in your output.
 
 ## STEP 3 — Audit the new memory file against the 9 wrapper-contract checks
 
-After the save completes, find the newest file in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/` (timestamp suffix will tell you). Read it and verify each of the 9 checks:
+After the save completes, find the newest file in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/` (timestamp suffix will tell you). Read it and verify each of the 9 checks:
 
 | Lane | Check | Pass criterion |
 |--|--|--|
@@ -72,7 +72,7 @@ After the save completes, find the newest file in `.opencode/specs/system-spec-k
 | E | DISTINGUISHING EVIDENCE | Bullets are DEDUPED (no identical duplicates), prefer bullets with `[SOURCE: file:line]` anchor patterns over prose paraphrases |
 | F | Phase/Status | `Context Summary` Phase reflects the payload's intent (REVIEW is acceptable since `contextType: "review"`), AND `Session Status` + `Completion %` are either correct-from-payload OR honestly derived from git state (not stale defaults) |
 | G | causal_links.derived_from | Contains at least one entry pointing at the prior 014 memory saves (`09-04-26_08-46__...` or `09-04-26_10-30__...`) |
-| H | parent_spec | Points at `"system-spec-kit/026-graph-and-context-optimization"` (the ACTUAL parent) NOT the self-referential `"system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades"` |
+| H | parent_spec | Points at `"system-spec-kit/026-graph-and-context-optimization"` (the ACTUAL parent) NOT the self-referential `"system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades"` |
 | I | quality_score rename | Frontmatter uses `render_quality_score` (NOT the generic `quality_score`). Metadata.json uses `input_completeness_score` (NOT the generic `filtering.qualityScore`). |
 
 ## CONSTRAINTS
@@ -100,7 +100,7 @@ BUILD:
   dist/core/title-builder.js modified timestamp: <new time>
 
 WILD_SAVE:
-  command: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .../014-code-graph-upgrades
+  command: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .../005-code-graph-upgrades
   exit code: <n>
   new memory file: <path>
 

@@ -73,7 +73,7 @@ const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..');
 const PLAYBOOK_ROOT = path.join(SKILL_ROOT, 'manual_testing_playbook');
 const SPEC_REPORT_ROOT = path.resolve(
   REPO_ROOT,
-  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/scratch/gate-i-execution-report',
+  '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/scratch/gate-i-execution-report',
 );
 const RESULTS_JSON = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.json');
 const RESULTS_JSONL = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.jsonl');

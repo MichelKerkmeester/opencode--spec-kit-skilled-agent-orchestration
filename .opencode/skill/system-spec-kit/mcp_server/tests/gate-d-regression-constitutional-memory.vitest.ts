@@ -163,7 +163,7 @@ describe('Gate D regression constitutional memory', () => {
         {
           id: 202,
           title: 'Implementation Summary',
-          file_path: '/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
+          file_path: '/workspace/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
           document_type: 'implementation_summary',
           importance_tier: 'important',
           score: 0.95,

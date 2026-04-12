@@ -325,7 +325,7 @@ exec
 55:- continue, phasesCompleted == totalPhases, status complete, batch-phase-review-consolidated.md, overall verdict FAIL, aggregate findings 0 P0 7 P1 0 P2
 81:- when the user replied “continue,” expected behavior was resume-aware verification (re-read state and artifacts) instead of restarting all phase reviews from scratch [Task 2]
 170:- keep JSON payload overrides wired through normalizer/collector: `phase`, `status/sessionStatus`, and completion-percent aliases must map to `projectPhase`, `sessionStatus`, and `completionPercent` to prevent stale-default warnings [Task 1]
-195:- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+195:- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
 245:## Task 1: Align 002/003 closeout docs so memory saves are compact wrappers and canonical docs remain narrative owners, outcome success
 253:- 002-implement-cache-warning-hooks, 003-memory-quality-issues, compact continuity wrapper, decision-record.md, implementation-summary.md, spec/validate.sh --strict, template-only anchor/header mismatch
 268:- the user repeatedly insisted memory artifacts should be “a compact continuity wrapper, not a second narrative,” with long-form meaning kept in `decision-record.md` and `implementation-summary.md` [Task 1]

@@ -11,7 +11,7 @@ Run a 5-iteration deep-review on each of these 4 phase folders:
 | 1 | `011-graph-payload-validator-and-trust-preservation` |
 | 2 | `012-cached-sessionstart-consumer-gated` |
 | 3 | `013-warm-start-bundle-conditional-validation` |
-| 4 | `014-code-graph-upgrades` |
+| 4 | `005-code-graph-upgrades` |
 
 Each phase gets its own review packet under `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/<phase-slug>/`.
 
@@ -58,7 +58,7 @@ Each phase gets its own review packet under `.opencode/specs/system-spec-kit/026
     "011-graph-payload-validator-and-trust-preservation",
     "012-cached-sessionstart-consumer-gated",
     "013-warm-start-bundle-conditional-validation",
-    "014-code-graph-upgrades"
+    "005-code-graph-upgrades"
   ],
   "currentPhase": null,
   "phaseResults": [],
@@ -277,13 +277,13 @@ After updating the batch state file, CHECK: is `phasesCompleted == 13` (all 13 p
 ```
 === BATCH_C_DEEP_REVIEW_RESULT ===
 BATCH_STATUS: complete | paused | failed
-PHASES_IN_THIS_BATCH: 011-graph-payload-validator-and-trust-preservation, 012-cached-sessionstart-consumer-gated, 013-warm-start-bundle-conditional-validation, 014-code-graph-upgrades
+PHASES_IN_THIS_BATCH: 011-graph-payload-validator-and-trust-preservation, 012-cached-sessionstart-consumer-gated, 013-warm-start-bundle-conditional-validation, 005-code-graph-upgrades
 
 PER_PHASE_SUMMARY:
   011-graph-payload-validator-and-trust-preservation: iters=<n> verdict=<PASS|CONDITIONAL|FAIL> P0=<n> P1=<n> P2=<n> stopReason=<reason>
   012-cached-sessionstart-consumer-gated:       iters=<n> verdict=<...>
   013-warm-start-bundle-conditional-validation: iters=<n> verdict=<...>
-  014-code-graph-upgrades:                      iters=<n> verdict=<...>
+  005-code-graph-upgrades:                      iters=<n> verdict=<...>
 
 BATCH_C_AGGREGATE_FINDINGS:
   P0: <n>

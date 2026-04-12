@@ -541,7 +541,7 @@ Save --> generate-context.js --> verify memory artifact
 exec
 /bin/zsh -lc 'rg -n "mnemosyne|metric|benchmark|ablation|quality|retrieval accuracy|system health|hybrid-rag-fusion" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 0ms:
-13:- fix findings, review/review-report.md, 002-implement-cache-warning-hooks, 003-memory-quality-issues, 008-graph-first-routing-nudge, 010-sqlite-fts-helper, 013-analytics-token-contracts, 014-code-graph-upgrades, lexicalPath unavailable, Structural Routing Hint, validate.sh --strict
+13:- fix findings, review/review-report.md, 002-implement-cache-warning-hooks, 003-memory-quality-issues, 008-graph-first-routing-nudge, 010-sqlite-fts-helper, 013-analytics-token-contracts, 005-code-graph-upgrades, lexicalPath unavailable, Structural Routing Hint, validate.sh --strict
 22:- packet 003 review references must point to real local review artifacts (for example `../review/003-memory-quality-issues/review-report.md`) so strict validator integrity checks pass [Task 1]
 25:- packet 013 benchmark evidence should cite `38/40` combined benchmark in checklist/report surfaces; stale `pass 28` wording is a known traceability finding trigger [Task 1]
 31:- symptom: strict validation fails on packet 003 with missing parent review references; cause: spec/docs pointed to non-existent review paths; fix: use explicit relative links to local review artifacts under `../review/003-memory-quality-issues/` before rerunning strict validation [Task 1]

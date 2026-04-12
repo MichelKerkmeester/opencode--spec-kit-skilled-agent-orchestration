@@ -25,7 +25,7 @@ function makeEmbeddingFn() {
 
 function makeContext(overrides: Record<string, unknown> = {}) {
   return {
-    specFolder: '026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready',
+    specFolder: '026-graph-and-context-optimization/006-canonical-continuity-refactor/003-gate-c-writer-ready',
     packetLevel: 'L3+' as const,
     existingAnchors: ['phase-1', 'phase-2', 'what-built', 'how-delivered'],
     sessionMeta: {

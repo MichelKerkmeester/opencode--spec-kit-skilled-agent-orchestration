@@ -334,8 +334,8 @@ exec
 135:- when running runtime packet alignment, the user explicitly constrained scope to docs/memory trees and “NO runtime code edits”; future runs should leave runtime source and JSON ownership files untouched even if nearby files are dirty [Task 3]
 140:- high-yield preflight: run a metadata-anchor audioscope/normalization script before manual edits; in this rollout it caught all 32 files missing metadata closure faster than iterative validator reruns [Task 1]
 150:scope: render-layer memory pipeline fixes in `003-memory-quality-issues/009-post-save-render-fixes` with acceptance anchored to a real 014 wild save and zero post-save-review issues
-184:scope: adopt-now runtime lane + docs closeout for `014-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
-195:- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+184:scope: adopt-now runtime lane + docs closeout for `005-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
+195:- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
 201:- packet closeout reporting should enumerate the same gate sequence explicitly (typecheck, server Vitest batch, scripts Vitest batch, strict validator) and keep out-of-scope packets untouched [Task 1]
 215:scope: bounded style-verifier sweep over the exact HEAD~10 TypeScript diff under `.opencode/skill/system-spec-kit/` with hard stop on failing required verification gates
 216:applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for user-requested sk-code-opencode conformance sweeps where scope and stop rules are explicitly fixed by git diff output

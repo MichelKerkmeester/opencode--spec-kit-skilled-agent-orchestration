@@ -97,7 +97,7 @@ The prior batch's 7 active P1 findings appear to hold as remediated in the sampl
 
 The old packet-010 degraded lexical overclaim also appears closed. Current forced-degrade tests expect `lexicalPath: 'unavailable'` plus explicit fallback-state metadata, not `bm25_fallback`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/review-report.md:179-213] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts:162-207]
 
-The old packet-014 resume/bootstrap scope overclaim is likewise narrowed in current docs and tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/review-report.md:245-267] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:69-73] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:34-37]
+The old packet-014 resume/bootstrap scope overclaim is likewise narrowed in current docs and tests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/review-report.md:245-267] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:69-73] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:34-37]
 
 The refresh findings above therefore read as new or newly visible issues rather than regressions caused by the prior P1 fixes themselves.
 

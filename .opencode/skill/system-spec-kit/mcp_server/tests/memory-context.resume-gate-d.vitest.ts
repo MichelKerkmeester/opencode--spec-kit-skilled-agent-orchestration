@@ -58,7 +58,7 @@ function buildBaseMarkdown(title: string, body: string): string {
 function buildContinuityMarkdown(title: string, body: string): string {
   const base = buildBaseMarkdown(title, body);
   const writeResult = upsertThinContinuityInMarkdown(base, {
-    packet_pointer: 'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready',
+    packet_pointer: 'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready',
     last_updated_at: '2026-04-11T12:00:00Z',
     last_updated_by: 'resume-test',
     recent_action: 'Refined canonical resume flow',

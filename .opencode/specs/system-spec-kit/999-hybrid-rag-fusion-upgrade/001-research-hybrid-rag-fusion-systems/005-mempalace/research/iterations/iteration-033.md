@@ -439,7 +439,7 @@ exec
  succeeded in 0ms:
 185:applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for follow-on edits to 014 graph/query/session payload logic in this checkout when regression-floor and strict doc validation must stay green
 187:## Task 1: Implement 014 runtime/docs plus missing regression-floor test and strict verification sweep, outcome success
-195:- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+195:- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
 206:- regression guard for this lane is the added file `scripts/tests/graph-upgrades-regression-floor.vitest.ts.test.ts`; rerun it whenever detector/query surfaces change [Task 1]
 212:- symptom: scripts suite undercounts expected files; cause: missing regression-floor test file; fix: verify listed test files exist first, then rerun suite [Task 1]
 293:- 005-mempalace, phase-research-prompt.md, dont ask for a spec folder, 13-section TIDD-EC, source-confirmed README-documented benchmark-documented, raw-verbatim hooks taxonomy temporal KG

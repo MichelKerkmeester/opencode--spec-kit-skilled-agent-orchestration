@@ -159,6 +159,6 @@ All 8 questions answered with iterated evidence.
 
 **Composite convergence score**: 0.92 (high — 8/8 questions answered, 0 contradictions, 9/9 citations verified, recommendation has cross-iteration evidence).
 
-**Handover to phase 018**: the two research prompts at `../018-canonical-continuity-refactor/prompts/` are ready. Launch via `/spec_kit:deep-research:auto` when phase 018 begins.
+**Handover to phase 018**: the two research prompts at `../006-canonical-continuity-refactor/prompts/` are ready. Launch via `/spec_kit:deep-research:auto` when phase 018 begins.
 
 **Loop complete.**

@@ -3,7 +3,7 @@ title: "Cold-start novelty boost"
 description: "Archived copy of the cold-start novelty boost entry. The live hot path no longer applies this behavior."
 audited_post_018: true
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecated_reason: "The novelty boost is no longer part of the live scoring path; it was moved out of the active category into _deprecated/."
 ---
 

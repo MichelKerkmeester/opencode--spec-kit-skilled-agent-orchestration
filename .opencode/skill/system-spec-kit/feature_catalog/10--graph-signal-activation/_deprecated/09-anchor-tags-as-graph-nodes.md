@@ -3,7 +3,7 @@ title: "ANCHOR tags as graph nodes"
 description: "Deprecated tombstone for anchor-node promotion. Anchor markers remain metadata only; graph-node promotion is not implemented."
 status: deprecated
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecation_reason: "Anchor markers remain metadata only; graph-node promotion is not implemented."
 phase_018_replaces: "10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md"
 ---

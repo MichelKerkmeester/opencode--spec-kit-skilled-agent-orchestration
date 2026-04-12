@@ -638,7 +638,7 @@ exec
     10	
     11	### keywords
     12	
-    13	- fix findings, review/review-report.md, 002-implement-cache-warning-hooks, 003-memory-quality-issues, 008-graph-first-routing-nudge, 010-sqlite-fts-helper, 013-analytics-token-contracts, 014-code-graph-upgrades, lexicalPath unavailable, Structural Routing Hint, validate.sh --strict
+    13	- fix findings, review/review-report.md, 002-implement-cache-warning-hooks, 003-memory-quality-issues, 008-graph-first-routing-nudge, 010-sqlite-fts-helper, 013-analytics-token-contracts, 005-code-graph-upgrades, lexicalPath unavailable, Structural Routing Hint, validate.sh --strict
     14	
     15	## User preferences
     16	
@@ -755,7 +755,7 @@ exec
    127	
    128	### keywords
    129	
-   130	- docs(026-runtime), no runtime code edits, staged runtime packet docs first, validate.sh 002-implement-cache-warning-hooks, validate.sh 014-code-graph-upgrades, description.json memory/metadata.json untouched
+   130	- docs(026-runtime), no runtime code edits, staged runtime packet docs first, validate.sh 002-implement-cache-warning-hooks, validate.sh 005-code-graph-upgrades, description.json memory/metadata.json untouched
    131	
    132	## User preferences
    133	
@@ -809,7 +809,7 @@ exec
    181	- symptom: causal auto-link misses prior session; cause: parser read `session_id` from frontmatter only; fix: parse metadata YAML block too [Task 1]
    182	
    183	# Task Group: 026/014 Code Graph Upgrades Runtime Closeout and Regression Floor
-   184	scope: adopt-now runtime lane + docs closeout for `014-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
+   184	scope: adopt-now runtime lane + docs closeout for `005-code-graph-upgrades` with detector provenance, blast-radius constraints, and explicit verification gates
    185	applies_to: cwd=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public; reuse_rule=reuse for follow-on edits to 014 graph/query/session payload logic in this checkout when regression-floor and strict doc validation must stay green
    186	
    187	## Task 1: Implement 014 runtime/docs plus missing regression-floor test and strict verification sweep, outcome success
@@ -820,7 +820,7 @@ exec
    192	
    193	### keywords
    194	
-   195	- 014-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
+   195	- 005-code-graph-upgrades, shared-payload.ts DetectorProvenance, handlers/code-graph/query.ts unionMode multi maxDepth hotFileBreadcrumb, session_resume session_bootstrap additive edge enrichment, graph-upgrades-regression-floor.vitest.ts.test.ts, validate.sh --strict
    196	
    197	## User preferences
    198	

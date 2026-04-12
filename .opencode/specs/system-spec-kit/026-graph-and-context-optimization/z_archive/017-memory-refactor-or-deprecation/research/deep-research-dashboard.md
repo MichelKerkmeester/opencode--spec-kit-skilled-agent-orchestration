@@ -111,7 +111,7 @@ Phase 017 investigated whether the current Spec Kit Memory system should be depr
 **Research phase status**: complete. No next action within this research session.
 
 **Downstream**:
-1. **Phase 018 launch**: run the two research prompts at `../018-canonical-continuity-refactor/prompts/` via `/spec_kit:deep-research:auto`. Both prompts have been hardened to reject single-shot delegation.
+1. **Phase 018 launch**: run the two research prompts at `../006-canonical-continuity-refactor/prompts/` via `/spec_kit:deep-research:auto`. Both prompts have been hardened to reject single-shot delegation.
 2. **Phase 018 prerequisites** (before the code work begins):
    - Backfill canonical `implementation-summary.md` for ~5 root packets that currently rely on memory files as the only narrative (iteration 5 F5.4, iteration 7 F7.4)
    - Take SQLite backup of `memory_index` table

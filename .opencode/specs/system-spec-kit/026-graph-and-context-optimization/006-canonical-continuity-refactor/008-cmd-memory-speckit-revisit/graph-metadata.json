@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/008-cmd-memory-speckit-revisit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/008-cmd-memory-speckit-revisit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 018 command revisit",
+      "memory command revisit",
+      "spec kit command revisit",
+      "016 command alignment revisit",
+      "008 revisit plan",
+      "command revisit plan",
+      "phase 018 command parity",
+      "008 revisit tasks",
+      "command revisit tasks",
+      "phase 018 command alignment tasks",
+      "008 checklist",
+      "command revisit checklist",
+      "phase 018 command verification",
+      "008 implementation summary",
+      "command revisit summary",
+      "phase 018 command evidence"
+    ],
+    "key_topics": [
+      "phase",
+      "018",
+      "command",
+      "revisit",
+      "memory",
+      "spec",
+      "kit",
+      "016",
+      "alignment",
+      "008",
+      "plan",
+      "parity"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".agents/commands/spec_kit/plan.toml",
+      ".agents/commands/spec_kit/implement.toml",
+      ".agents/commands/spec_kit/complete.toml",
+      ".agents/commands/spec_kit/resume.toml",
+      ".agents/commands/memory/save.toml",
+      ".agents/commands/memory/manage.toml",
+      ".agents/commands/memory/learn.toml",
+      "touch .agents/commands/.codex-write-test",
+      "generate-context.js",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "plan.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/plan.toml",
+        "source": "derived"
+      },
+      {
+        "name": "implement.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/implement.toml",
+        "source": "derived"
+      },
+      {
+        "name": "complete.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/complete.toml",
+        "source": "derived"
+      },
+      {
+        "name": "resume.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/resume.toml",
+        "source": "derived"
+      },
+      {
+        "name": "save.toml",
+        "kind": "file",
+        "path": ".agents/commands/memory/save.toml",
+        "source": "derived"
+      },
+      {
+        "name": "manage.toml",
+        "kind": "file",
+        "path": ".agents/commands/memory/manage.toml",
+        "source": "derived"
+      },
+      {
+        "name": "learn.toml",
+        "kind": "file",
+        "path": ".agents/commands/memory/learn.toml",
+        "source": "derived"
+      },
+      {
+        "name": ".codex-write-test",
+        "kind": "file",
+        "path": "touch .agents/commands/.codex-write-test",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 016 aligned the live `spec_kit` and `memory` command surfaces before Phase 018 replaced memory-file-first continuity with canonical spec-doc continuity, reduced the resume flow to `handover -> _memory.continuity -> spec docs`, and made `generate-context.js` the only canonical save path for session continuity. The Phase 016 command targets therefore needed a second pass to remove pre-018 continuity wording from the authoritative `.opencode/command/**` surfaces and from the repo-wide command references that point at them.",
+    "created_at": "2026-04-12T09:02:53.482Z",
+    "last_save_at": "2026-04-12T09:06:03.527Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,15 +1,15 @@
 ---
 title: "Deep Review Strategy"
-description: "Tracking strategy for batch review of 014-code-graph-upgrades."
+description: "Tracking strategy for batch review of 005-code-graph-upgrades."
 ---
 
 # Deep Review Strategy
 
 ## 1. OVERVIEW
-Batch review strategy for `014-code-graph-upgrades`.
+Batch review strategy for `005-code-graph-upgrades`.
 
 ## 2. TOPIC
-Batch review of `014-code-graph-upgrades`.
+Batch review of `005-code-graph-upgrades`.
 
 ## 3. REVIEW DIMENSIONS (remaining)
 <!-- MACHINE-OWNED: START -->
@@ -82,9 +82,9 @@ Packet 014 shipped detector provenance, blast-radius depth fixes, hot-file bread
 ## 15. FILES UNDER REVIEW
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
 | .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts | D1, D2, D3, D4 | 5 | 0 P0, 1 P1, 0 P2 | complete |
@@ -99,7 +99,7 @@ Packet 014 shipped detector provenance, blast-radius depth fixes, hot-file bread
 - Rolling STOP threshold: 0.08
 - No-progress threshold: 0.05
 - Coverage stabilization passes required: 1
-- Session lineage: sessionId=2026-04-09T14:31:56Z-014-code-graph-upgrades, parentSessionId=None, generation=1, lineageMode=new
+- Session lineage: sessionId=2026-04-09T14:31:56Z-005-code-graph-upgrades, parentSessionId=None, generation=1, lineageMode=new
 - Findings registry: `deep-review-findings-registry.json`
 - Release-readiness states: in-progress | converged | release-blocking
 - Per-iteration budget: 12 tool calls, 10 minutes

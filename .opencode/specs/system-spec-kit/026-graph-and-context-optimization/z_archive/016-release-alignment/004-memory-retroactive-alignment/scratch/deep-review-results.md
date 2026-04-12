@@ -625,31 +625,31 @@
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_12-22__verified-packet-014-runtime-end-to-end-after.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_12-22__verified-packet-014-runtime-end-to-end-after.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_12-40__shipped-the-014-code-graph-upgrades-runtime-lane.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_12-40__shipped-the-005-code-graph-upgrades-runtime-lane.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_12-53__shipped-the-014-code-graph-upgrades-runtime-lane.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_12-53__shipped-the-005-code-graph-upgrades-runtime-lane.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_12-56__shipped-the-014-code-graph-upgrades-runtime-lane.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_12-56__shipped-the-005-code-graph-upgrades-runtime-lane.md`
 
 - No eligible deep-review changes were needed
 
-### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_13-01__shipped-the-014-code-graph-upgrades-runtime-lane.md`
+### CHECKED: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_13-01__shipped-the-005-code-graph-upgrades-runtime-lane.md`
 
 - No eligible deep-review changes were needed
 

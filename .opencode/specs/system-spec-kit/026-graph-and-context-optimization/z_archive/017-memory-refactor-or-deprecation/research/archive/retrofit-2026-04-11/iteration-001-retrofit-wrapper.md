@@ -114,13 +114,13 @@ None from this iteration. All 8 research questions resolved in the single-shot p
 - For each advanced memory feature, what is the specific retarget mechanism?
 - What does `/spec_kit:resume` look like end-to-end in the new model?
 
-These are the key questions in the phase 018 research prompts at `../018-canonical-continuity-refactor/prompts/`.
+These are the key questions in the phase 018 research prompts at `../006-canonical-continuity-refactor/prompts/`.
 
 ## Lessons learned (this iteration — more importantly, about the process)
 
 1. **Single-shot `codex exec` for deep research is a trap.** It produces usable content but bypasses every state file, every convergence check, every reducer update, every quality guard, and every resumability guarantee. The resulting folder cannot be audited, forked, or continued.
 2. **The sk-deep-research loop driver exists for a reason.** Init/iterate/synthesize/save is not ceremony — it is the contract that makes research packets composable, resumable, and auditable.
-3. **Phase 018 prompts have been updated to enforce the proper flow.** The prompts README at `../018-canonical-continuity-refactor/prompts/README.md` includes a mandatory notice rejecting single-shot `codex exec` and mandating `/spec_kit:deep-research:auto`.
+3. **Phase 018 prompts have been updated to enforce the proper flow.** The prompts README at `../006-canonical-continuity-refactor/prompts/README.md` includes a mandatory notice rejecting single-shot `codex exec` and mandating `/spec_kit:deep-research:auto`.
 4. **Retrofit is acceptable when content is trusted.** The phase 017 research content was already acted on and trusted; re-running would cost tokens and produce different findings requiring reconciliation. Retrofit preserves the audit trail honestly.
 
 ## Stop reason

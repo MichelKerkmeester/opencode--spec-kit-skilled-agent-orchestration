@@ -18,7 +18,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `014-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.
+Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `005-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.
 
 **Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-issues` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a phase map plus packet-local strict validation.
 
@@ -102,7 +102,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | 11 | `011-graph-payload-validator-and-trust-preservation/` | Graph payload validation and trust preservation | Complete |
 | 12 | `012-cached-sessionstart-consumer-gated/` | Cached SessionStart consumer gating | Complete |
 | 13 | `013-warm-start-bundle-conditional-validation/` | Warm-start bundle conditional validation | Complete |
-| 14 | `014-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
+| 14 | `005-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
 
 ### Phase Transition Rules
 
@@ -121,7 +121,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | `002-implement-cache-warning-hooks` | `012-cached-sessionstart-consumer-gated` | Producer metadata is available for the gated consumer | Child packets `002` and `012` validate cleanly |
 | `006-structural-trust-axis-contract` | `011-graph-payload-validator-and-trust-preservation` | Trust-axis contract is stable enough to bind payload validation | Child packets `006` and `011` validate cleanly |
 | `011-graph-payload-validator-and-trust-preservation` | `008-graph-first-routing-nudge` | Graph payload guarantees are available to the routing nudge | Child packets `011` and `008` validate cleanly |
-| `007-detector-provenance-and-regression-floor` + `011-graph-payload-validator-and-trust-preservation` | `014-code-graph-upgrades` | Detector and graph-payload contracts are both stable | Child packets `007`, `011`, and `014` validate cleanly |
+| `007-detector-provenance-and-regression-floor` + `011-graph-payload-validator-and-trust-preservation` | `005-code-graph-upgrades` | Detector and graph-payload contracts are both stable | Child packets `007`, `011`, and `014` validate cleanly |
 | `002-implement-cache-warning-hooks` + `012-cached-sessionstart-consumer-gated` + `008-graph-first-routing-nudge` | `013-warm-start-bundle-conditional-validation` | Producer, consumer, and routing assumptions are all stable enough for conditional validation | Child packets `002`, `012`, `008`, and `013` validate cleanly |
 <!-- /ANCHOR:phase-map -->
 

@@ -1,14 +1,14 @@
 ---
-title: "Phase Review Report: 014-code-graph-upgrades"
-description: "5-iteration deep review of 014-code-graph-upgrades. Verdict CONDITIONAL with 0 P0 / 1 P1 / 0 P2 findings."
+title: "Phase Review Report: 005-code-graph-upgrades"
+description: "5-iteration deep review of 005-code-graph-upgrades. Verdict CONDITIONAL with 0 P0 / 1 P1 / 0 P2 findings."
 importance_tier: "important"
 contextType: "review-report"
 ---
 
-# Phase Review Report: 014-code-graph-upgrades
+# Phase Review Report: 005-code-graph-upgrades
 
 ## 1. Overview
-Review target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/`. Iterations completed: 5. Stop reason: `max_iterations`. Dimensions covered: correctness, security, traceability, maintainability. Verdict: **CONDITIONAL**. Findings: 0 P0 / 1 P1 / 0 P2.
+Review target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/`. Iterations completed: 5. Stop reason: `max_iterations`. Dimensions covered: correctness, security, traceability, maintainability. Verdict: **CONDITIONAL**. Findings: 0 P0 / 1 P1 / 0 P2.
 
 ## 2. Findings
 - **P1** Packet `014` claims that `session_resume` and `session_bootstrap` preserve additive graph-edge enrichment, but neither handler carries `graphEdgeEnrichment`, `edgeEvidenceClass`, or `numericConfidence`, and the cited tests do not assert those fields.
@@ -17,14 +17,14 @@ Review target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimizati
 {
   "claim": "Packet 014 claims resume/bootstrap preserve graph-edge enrichment, but neither handler or test currently carries or asserts those fields.",
   "evidenceRefs": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:75",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:83",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:84",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:89",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:90",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:106",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:48",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:75",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md:55",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246",

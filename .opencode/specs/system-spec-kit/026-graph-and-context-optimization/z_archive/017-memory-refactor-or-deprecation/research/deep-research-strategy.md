@@ -164,7 +164,7 @@ All answers cite `research/research.md` and the `findings/` subfolder as the evi
 ### Single-shot `codex exec` delegation for deep-research work — AVOID (retrofit lesson)
 - **What was tried**: `cat research-prompt.md | codex exec --model gpt-5.4 -c model_reasoning_effort="high" -c service_tier="fast" --full-auto -`
 - **Why avoid**: Bypasses the entire sk-deep-research loop driver. Produces a usable `research.md` but no state files, no iteration history, no convergence tracking, no resumability, no auditability. Folder cannot be forked, restarted, or reopened via `completed-continue`.
-- **Do NOT retry**: Use `/spec_kit:deep-research:auto` or `:confirm` for all future deep-research work. Phase 018 prompts at `../018-canonical-continuity-refactor/prompts/` now mandate this.
+- **Do NOT retry**: Use `/spec_kit:deep-research:auto` or `:confirm` for all future deep-research work. Phase 018 prompts at `../006-canonical-continuity-refactor/prompts/` now mandate this.
 
 ### Live `memory_search` against degraded embedding runtime — BLOCKED
 - **What was tried**: direct MCP handler calls for 10 resume-style queries.
@@ -194,7 +194,7 @@ All answers cite `research/research.md` and the `findings/` subfolder as the evi
 **Retrofit status**: research is complete. No next focus within this research session.
 
 **Downstream work**:
-1. Phase 018 — Canonical Continuity Refactor. See `../018-canonical-continuity-refactor/prompts/` for the two follow-up research prompts (20-iter implementation design + 5-iter impact analysis). Those prompts MUST be run via `/spec_kit:deep-research:auto` (the lesson from this retrofit is enforced in their README).
+1. Phase 018 — Canonical Continuity Refactor. See `../006-canonical-continuity-refactor/prompts/` for the two follow-up research prompts (20-iter implementation design + 5-iter impact analysis). Those prompts MUST be run via `/spec_kit:deep-research:auto` (the lesson from this retrofit is enforced in their README).
 2. Phase 019 — Runtime migration of `memory_save` default behavior.
 3. Phase 020 — Decide on thin-layer permanence vs full deprecation.
 

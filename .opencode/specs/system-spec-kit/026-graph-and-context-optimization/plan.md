@@ -131,7 +131,7 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 |-----------|-------|-------|
 | Structural validation | Parent packet docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization --strict` |
 | Phase-map review | Child folders `001` through `014` | Manual review plus `find` and `rg` sweeps |
-| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec|Phase Documentation Map|014-code-graph-upgrades|003-memory-quality-issues"` |
+| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec|Phase Documentation Map|005-code-graph-upgrades|003-memory-quality-issues"` |
 <!-- /ANCHOR:testing -->
 
 ---

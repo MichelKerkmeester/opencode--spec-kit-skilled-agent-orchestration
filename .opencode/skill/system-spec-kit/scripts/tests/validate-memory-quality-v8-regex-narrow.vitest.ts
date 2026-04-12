@@ -17,7 +17,7 @@ describe('V8 spec id extraction calibration', () => {
     '010-i001-p1-001',
     '013-i003-p1-001',
     '013-warm-start-bundle-conditional-validation',
-    '014-code-graph-upgrades',
+    '005-code-graph-upgrades',
     '014-i001-p1-001',
     '026-04-09',
     '026-graph-and-context-optimization',
@@ -33,7 +33,7 @@ describe('V8 spec id extraction calibration', () => {
       '008-graph-first-routing-nudge',
       '010-fts-capability-cascade-floor',
       '013-warm-start-bundle-conditional-validation',
-      '014-code-graph-upgrades',
+      '005-code-graph-upgrades',
       '026-graph-and-context-optimization',
     ]);
   });

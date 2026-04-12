@@ -10,7 +10,7 @@ Source: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimizat
 What it does: The parent DAG and the scoped packet specs make it clear that the new lane should depend on the regression and trust packets while staying distinct from `008`'s routing-surface work.
 Why it matters for Public's Code Graph MCP: That placement gives the new packet a clean problem statement: improve detector fidelity, graph schema richness, and graph-local query behavior after the trust and test floors exist.
 Evidence type: source-confirmed
-Recommendation: draft the packet as `014-code-graph-upgrades` with P0 scope limited to graph-local detector, schema, and query work
+Recommendation: draft the packet as `005-code-graph-upgrades` with P0 scope limited to graph-local detector, schema, and query work
 Affected Public surface: 026 packet proposal placement
 Risk/cost: low
 

@@ -37,7 +37,7 @@ Open the terminal validation packet for R8 so the warm-start bundle remains cond
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `012-cached-sessionstart-consumer-gated` |
-| **Successor** | `014-code-graph-upgrades` |
+| **Successor** | `005-code-graph-upgrades` |
 | **Research citation** | `R8 in recommendations.md:75-83` |
 
 ---

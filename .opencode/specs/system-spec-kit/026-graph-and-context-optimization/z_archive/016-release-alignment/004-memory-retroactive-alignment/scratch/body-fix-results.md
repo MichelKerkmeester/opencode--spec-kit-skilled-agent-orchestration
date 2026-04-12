@@ -83,7 +83,7 @@
 
 - added truncation notice (4 ellipsis markers detected)
 
-### `system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md`
+### `system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md`
 
 - added truncation notice (4 ellipsis markers detected)
 

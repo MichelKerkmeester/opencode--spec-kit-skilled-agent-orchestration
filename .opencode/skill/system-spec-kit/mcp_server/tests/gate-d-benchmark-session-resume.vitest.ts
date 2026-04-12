@@ -131,7 +131,7 @@ describe('Gate D benchmark — session resume', () => {
   it('keeps the 3-level happy-path resume ladder under the Gate D latency budget', async () => {
     const workspace = makeWorkspace();
     const specFolder =
-      'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready';
+      'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready';
 
     writeDoc(workspace, specFolder, 'handover.md', buildHandover());
     writeDoc(workspace, specFolder, 'implementation-summary.md', buildImplementationSummary(specFolder));

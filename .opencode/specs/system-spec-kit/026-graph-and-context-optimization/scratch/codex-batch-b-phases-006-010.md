@@ -59,7 +59,7 @@ Each phase gets its own review packet under `.opencode/specs/system-spec-kit/026
     "011-graph-payload-validator-and-trust-preservation",
     "012-cached-sessionstart-consumer-gated",
     "013-warm-start-bundle-conditional-validation",
-    "014-code-graph-upgrades"
+    "005-code-graph-upgrades"
   ],
   "currentPhase": null,
   "phaseResults": [],

@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/007-sk-system-speckit-revisit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/007-sk-system-speckit-revisit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase 018 revisit",
+      "system-spec-kit revisit",
+      "canonical continuity docs",
+      "016 release alignment revisit",
+      "007 revisit plan",
+      "system-spec-kit revisit plan",
+      "phase 018 doc parity",
+      "007 revisit tasks",
+      "system-spec-kit revisit tasks",
+      "phase 018 release-alignment tasks",
+      "007 checklist",
+      "system-spec-kit revisit checklist",
+      "release-alignment verification",
+      "007 implementation summary",
+      "system-spec-kit revisit summary",
+      "phase 018 evidence"
+    ],
+    "key_topics": [
+      "phase",
+      "018",
+      "revisit",
+      "system-spec-kit",
+      "canonical",
+      "continuity",
+      "docs",
+      "016",
+      "release",
+      "alignment",
+      "007",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "generate-context.js",
+      "_memory.continuity",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "_memory.continuity",
+        "kind": "file",
+        "path": "_memory.continuity",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Map",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nPhase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\n\nReview",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "strict",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 016 aligned the main `system-spec-kit` skill guide and internal documentation surfaces before Phase 018 removed the legacy standalone continuity model, retired deprecated archive-active-state guidance from the active contract, and made `/spec_kit:resume` a three-step ladder rooted in `handover`, `_memory.continuity`, and canonical packet docs. The 016 surfaces therefore needed a second pass so they would stop describing pre-018 save/recovery behavior.",
+    "created_at": "2026-04-12T09:02:53.481Z",
+    "last_save_at": "2026-04-12T09:06:03.526Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

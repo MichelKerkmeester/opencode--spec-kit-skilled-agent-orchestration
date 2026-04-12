@@ -26,7 +26,7 @@ interface CanonicalDecayRow {
 }
 
 const FIXTURE_SPEC_FOLDER =
-  'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready';
+  'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready';
 const BASE_NOW = new Date('2026-04-11T12:00:00.000Z');
 
 function buildCanonicalRow(overrides: Partial<CanonicalDecayRow>): CanonicalDecayRow {

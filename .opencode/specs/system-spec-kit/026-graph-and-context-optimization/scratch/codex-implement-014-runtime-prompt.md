@@ -1,10 +1,10 @@
-# Codex CLI Prompt — Implement packet 014-code-graph-upgrades runtime
+# Codex CLI Prompt — Implement packet 005-code-graph-upgrades runtime
 
 You are running as codex CLI (`gpt-5.4`, `reasoning_effort=high`, `service_tier=fast`, `sandbox=workspace-write`). This prompt is self-contained — you have no prior conversation context. Read the files I name, implement the runtime lanes, run the verification commands, report results.
 
 ## SCOPE
 
-Ship the runtime for packet `014-code-graph-upgrades` per its 9-task roadmap. Packet 014 is scaffolded as a Level-3 planning packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/`, but its current §2 marks it as "planning-only, does not authorize code implementation in this run." **That boundary is now lifted** (Step 0 below). You will edit 014's spec.md to authorize runtime, then implement the adopt-now lane (5 required lanes) across the existing Code Graph MCP surfaces.
+Ship the runtime for packet `005-code-graph-upgrades` per its 9-task roadmap. Packet 014 is scaffolded as a Level-3 planning packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/`, but its current §2 marks it as "planning-only, does not authorize code implementation in this run." **That boundary is now lifted** (Step 0 below). You will edit 014's spec.md to authorize runtime, then implement the adopt-now lane (5 required lanes) across the existing Code Graph MCP surfaces.
 
 014 is a **post-R5/R6 side branch** depending on:
 - **007** (detector regression floor) — shipped; you will add regression fixtures under its discipline
@@ -13,17 +13,17 @@ Ship the runtime for packet `014-code-graph-upgrades` per its 9-task roadmap. Pa
 
 ## PRE-APPROVALS (do not ask)
 
-- Spec folder: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/` (PRE-APPROVED, skip Gate 3)
+- Spec folder: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/` (PRE-APPROVED, skip Gate 3)
 - Skill routing: pre-decided implementation work, skip Gate 2
 - Sandbox: workspace-write — you may write to runtime files under `mcp_server/`, tests under `mcp_server/tests/` and `scripts/tests/`, and docs under the 014 packet folder
 - Boundary override: user explicitly authorized runtime implementation of 014 in this run. You will codify this in Step 0 by editing 014/spec.md §2
 
 ## MANDATORY READS (read once at start)
 
-1. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md` — packet scope, requirements (REQ-001..REQ-009), acceptance scenarios
-2. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/plan.md` — phases, execution rules, dependency matrix
-3. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/tasks.md` — the 9 roadmap tasks
-4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/decision-record.md` — ADR-001 (011 dependency), ADR-002 (008 non-overlap), ADR-003 (prototype-later boundaries), ADR-004 (side-branch placement)
+1. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md` — packet scope, requirements (REQ-001..REQ-009), acceptance scenarios
+2. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/plan.md` — phases, execution rules, dependency matrix
+3. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/tasks.md` — the 9 roadmap tasks
+4. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/decision-record.md` — ADR-001 (011 dependency), ADR-002 (008 non-overlap), ADR-003 (prototype-later boundaries), ADR-004 (side-branch placement)
 5. `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight/research/research.md` — §20 Code Graph Upgrade Charter (the canonical roadmap; §20.1-20.8 covers charter boundary, matrix, adopt-now lane, prototype-later lane)
 6. **Predecessor contracts you must respect**:
    - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/z_archive/research-governance-contracts/011-graph-payload-validator-and-trust-preservation/spec.md` — validator contract you must NOT replace
@@ -40,7 +40,7 @@ Ship the runtime for packet `014-code-graph-upgrades` per its 9-task roadmap. Pa
 
 ## STEP 0 — Override the planning-only boundary (do this first)
 
-Edit `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md`:
+Edit `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md`:
 
 Replace the §2 boundary note:
 ```
@@ -199,7 +199,7 @@ TMPDIR=./.tmp/vitest-tmp npx vitest run \
 cd -
 
 bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict \
-  .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades
+  .opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades
 ```
 
 ALL must PASS. The existing test files (covering 005-013) are your regression guard — they MUST continue to pass. Any new 014 test files must PASS too.
@@ -251,8 +251,8 @@ DOC_DONE_MARKED: <n>/<total>
 BLOCKERS: <list or "none">
 PROTOTYPE_LATER_NOTES: <list of features deliberately deferred, per ADR-003>
 
-NEXT_REVIEW_RECOMMENDATION: run /spec_kit:deep-review:auto on 014-code-graph-upgrades with maxIterations=8 convergenceThreshold=0.05 to verify no new findings in the expanded graph surface
+NEXT_REVIEW_RECOMMENDATION: run /spec_kit:deep-review:auto on 005-code-graph-upgrades with maxIterations=8 convergenceThreshold=0.05 to verify no new findings in the expanded graph surface
 === END_IMPLEMENT_014_RUNTIME_RESULT ===
 ```
 
-Spec folder: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/` (pre-approved, skip Gate 3)
+Spec folder: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/` (pre-approved, skip Gate 3)

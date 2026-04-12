@@ -3,7 +3,7 @@ title: "201 -- Warm server / daemon mode [deprecated]"
 description: "Archived copy of the Warm server / daemon mode scenario. The live playbook no longer includes a daemon transport path."
 audited_post_018: true
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecated_reason: "Daemon mode is still deferred and is not part of the phase-018 live playbook."
 ---
 

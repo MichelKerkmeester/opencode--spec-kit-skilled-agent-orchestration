@@ -37,7 +37,7 @@ Phases expected (from the prior batch review plan):
 | 011-graph-payload-validator-and-trust-preservation |
 | 012-cached-sessionstart-consumer-gated |
 | 013-warm-start-bundle-conditional-validation |
-| 014-code-graph-upgrades |
+| 005-code-graph-upgrades |
 
 For each phase slug, check whether `026/review/<phase-slug>/review-report.md` exists. Build a list of:
 - **Available** — phases with a per-phase review-report you'll include in the synthesis
@@ -128,7 +128,7 @@ contextType: "review-report"
 | 011-graph-payload-validator-and-trust-preservation | | | | | | |
 | 012-cached-sessionstart-consumer-gated | | | | | | |
 | 013-warm-start-bundle-conditional-validation | | | | | | |
-| 014-code-graph-upgrades | | | | | | |
+| 005-code-graph-upgrades | | | | | | |
 
 ---
 

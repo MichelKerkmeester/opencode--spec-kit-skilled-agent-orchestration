@@ -314,7 +314,7 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
   const baselineDbPath = path.join(dbDir, 'context-index.baseline.sqlite');
   const reportDir = path.join(
     REPO_ROOT,
-    '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/scratch/gate-i-execution-report',
+    '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/scratch/gate-i-execution-report',
   );
 
   const targetSpecFolder = `specs/${TARGET_SPEC_SLUG}`;
@@ -380,7 +380,7 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
   );
   await setEmbeddingModelReady(true);
 
-  const packetPointer = 'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor';
+  const packetPointer = 'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor';
   writeFile(
     path.join(targetSpecAbsolute, 'handover.md'),
     buildSpecDoc(

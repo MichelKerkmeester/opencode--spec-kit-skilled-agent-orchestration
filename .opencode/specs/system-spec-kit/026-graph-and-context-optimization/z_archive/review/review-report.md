@@ -15,7 +15,7 @@ contextType: "review-report"
 ## 1. Executive Summary
 
 - **Scope**: 13 phases under `026-graph-and-context-optimization/`, reviewed via per-phase deep-review packets. The original batch plan targeted 5 iterations per phase (65 planned), but extension reruns and convergence-driven stops produced 108 actual executed iterations across the available reports.
-- **Phases with per-phase review reports available**: 13 of 13 — `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `004-agent-execution-guardrails`, `005-provisional-measurement-contract`, `006-structural-trust-axis-contract`, `007-detector-provenance-and-regression-floor`, `008-graph-first-routing-nudge`, `009-auditable-savings-publication-contract`, `010-fts-capability-cascade-floor`, `011-graph-payload-validator-and-trust-preservation`, `012-cached-sessionstart-consumer-gated`, `013-warm-start-bundle-conditional-validation`, `014-code-graph-upgrades`
+- **Phases with per-phase review reports available**: 13 of 13 — `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `004-agent-execution-guardrails`, `005-provisional-measurement-contract`, `006-structural-trust-axis-contract`, `007-detector-provenance-and-regression-floor`, `008-graph-first-routing-nudge`, `009-auditable-savings-publication-contract`, `010-fts-capability-cascade-floor`, `011-graph-payload-validator-and-trust-preservation`, `012-cached-sessionstart-consumer-gated`, `013-warm-start-bundle-conditional-validation`, `005-code-graph-upgrades`
 - **Phases MISSING review reports**: none
 - **Total iterations executed across available phases**: 108
 - **Aggregate findings by severity**:
@@ -45,7 +45,7 @@ contextType: "review-report"
 | 011-graph-payload-validator-and-trust-preservation | 4 | PASS | 0 | 0 | 0 | None active after convergence. |
 | 012-cached-sessionstart-consumer-gated | 4 | PASS | 0 | 0 | 0 | None active after convergence. |
 | 013-warm-start-bundle-conditional-validation | 5 | CONDITIONAL | 0 | 1 | 0 | CHK-022 still cites stale `pass 28` evidence while the shipped benchmark source of truth reports `38/40`. |
-| 014-code-graph-upgrades | 5 | CONDITIONAL | 0 | 1 | 0 | Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented. |
+| 005-code-graph-upgrades | 5 | CONDITIONAL | 0 | 1 | 0 | Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented. |
 
 Convergence note: every phase covered D1-D4. `011` and `012` stopped after four iterations because those four baseline dimensions cleared with no active findings; both per-phase review reports say all reviewed claims matched the shipped runtime and packet evidence rather than needing the operator-requested stability extension used elsewhere in the batch.
 
@@ -242,29 +242,29 @@ After normalizing by file plus claim title, the active set remains 7 unique P1 f
 }
 ```
 
-### 014-code-graph-upgrades
+### 005-code-graph-upgrades
 
 - **Finding ID**: `DR-014-I001-P1-001`
 - **Title**: Resume/bootstrap graph-edge enrichment preservation is claimed but not implemented
-- **Affected phase(s)**: `014-code-graph-upgrades`
+- **Affected phase(s)**: `005-code-graph-upgrades`
 - **Severity**: P1
 - **Dimension**: D1 Correctness
 - **Summary**: Packet `014` says `session_resume` and `session_bootstrap` preserve additive graph-edge enrichment, yet neither handler carries `graphEdgeEnrichment`, `edgeEvidenceClass`, or `numericConfidence`, and the cited tests do not assert those fields. The graph-local query upgrades may have landed, but the resume/bootstrap preservation story remains overclaimed.
-- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:75`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:326`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:198`; `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:228`
+- **Evidence references**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:83`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:84`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:89`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:90`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:106`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:48`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:75`; `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md:55`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`; `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:326`; `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts:198`; `.opencode/skill/system-spec-kit/mcp_server/tests/shared-payload-certainty.vitest.ts:228`
 - **Typed claim-adjudication block**:
 
 ```json
 {
   "claim": "Packet 014 claims resume/bootstrap preserve graph-edge enrichment, but neither handler or test currently carries or asserts those fields.",
   "evidenceRefs": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:84",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:89",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:90",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:106",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:75",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md:55",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:83",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:84",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:89",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:90",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:106",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:48",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:75",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md:55",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:587",
     ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246",
@@ -288,13 +288,13 @@ P2 appendix table: None applicable.
 
 ### Pattern 1: Packet-truth drift and overclaim vs ship
 
-- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `010-fts-capability-cascade-floor`, `013-warm-start-bundle-conditional-validation`, `014-code-graph-upgrades`
+- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `010-fts-capability-cascade-floor`, `013-warm-start-bundle-conditional-validation`, `005-code-graph-upgrades`
 - **Severity cluster**: P1
 - **Recommended structural remediation**: Run one packet-truth reconciliation sweep across `spec.md`, `implementation-summary.md`, `checklist.md`, phase maps, and emitted runtime vocabulary before any release claim. The root cause is not only missing code; it is stale metadata, stale evidence, or broader narrative scope than the current runtime actually supports.
 
 ### Pattern 2: Adjacent claimed surfaces are less constrained than the tested helper or handler path
 
-- **Phases affected**: `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `014-code-graph-upgrades`
+- **Phases affected**: `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `005-code-graph-upgrades`
 - **Severity cluster**: P1
 - **Recommended structural remediation**: Add a release gate that requires one focused assertion against every named surface in the packet claim, not just the helper or primary handler. If a packet says a hook, degraded lane, or resume/bootstrap path is governed, the test and checklist evidence must hit that exact surface.
 
@@ -312,7 +312,7 @@ P2 appendix table: None applicable.
 
 ### Pattern 5: Counterevidence repeatedly failed to find explicit scope waivers or frozen-snapshot disclaimers
 
-- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `014-code-graph-upgrades`
+- **Phases affected**: `002-implement-cache-warning-hooks`, `003-memory-quality-issues`, `008-graph-first-routing-nudge`, `010-fts-capability-cascade-floor`, `005-code-graph-upgrades`
 - **Severity cluster**: P1
 - **Recommended structural remediation**: When a packet is intentionally narrower than its broader prose, or when an artifact is meant to be historical rather than live status, state that exception directly in the packet and checklist. Multiple review lanes searched for those disclaimers and found none, which is why the defects remained P1 truthfulness failures instead of being downgraded to intentional scope notes.
 
@@ -355,8 +355,8 @@ Also note:
    - Recommended fix: Restore the correct child topology, then reconcile the later-phase status table against the child specs and `SC-001`. If packet `003` is meant to stop at the earlier remediation train, explicitly re-scope it and remove the broken later-phase roll-up.
    - Downgrade path: Doc-only re-scope to a frozen earlier train is acceptable if operators are told not to use `003` as a current child-phase index.
 
-2. **Lane 2 — Honor or narrow packet `014`'s resume/bootstrap enrichment preservation claim** (P1, affected phases: `014-code-graph-upgrades`, with downstream coupling to `011-graph-payload-validator-and-trust-preservation`)
-   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md:83`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md:48`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`
+2. **Lane 2 — Honor or narrow packet `014`'s resume/bootstrap enrichment preservation claim** (P1, affected phases: `005-code-graph-upgrades`, with downstream coupling to `011-graph-payload-validator-and-trust-preservation`)
+   - Target files: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md:83`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md:48`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:518`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:246`
    - Effort: M/L
    - Recommended fix: Either carry `graphEdgeEnrichment`, `edgeEvidenceClass`, and `numericConfidence` through `session-resume.ts` and `session-bootstrap.ts` with matching tests, or narrow the packet docs and checklist so the claim stays limited to graph-local query surfaces.
    - Downgrade path: Doc-only re-scope to graph-local outputs converts the finding from a runtime delivery gap into a documentation honesty fix.
@@ -426,7 +426,7 @@ Also note:
   - `026/review/011-graph-payload-validator-and-trust-preservation/review-report.md`
   - `026/review/012-cached-sessionstart-consumer-gated/review-report.md`
   - `026/review/013-warm-start-bundle-conditional-validation/review-report.md`
-  - `026/review/014-code-graph-upgrades/review-report.md`
+  - `026/review/005-code-graph-upgrades/review-report.md`
 - Per-phase findings registries read:
   - `026/review/002-implement-cache-warning-hooks/deep-review-findings-registry.json`
   - `026/review/003-memory-quality-issues/deep-review-findings-registry.json`
@@ -440,7 +440,7 @@ Also note:
   - `026/review/011-graph-payload-validator-and-trust-preservation/deep-review-findings-registry.json`
   - `026/review/012-cached-sessionstart-consumer-gated/deep-review-findings-registry.json`
   - `026/review/013-warm-start-bundle-conditional-validation/deep-review-findings-registry.json`
-  - `026/review/014-code-graph-upgrades/deep-review-findings-registry.json`
+  - `026/review/005-code-graph-upgrades/deep-review-findings-registry.json`
 - Per-phase stop reasons and dimension coverage:
 
 | Phase | Stop reason | Dimensions covered | Notes |
@@ -457,7 +457,7 @@ Also note:
 | `011-graph-payload-validator-and-trust-preservation` | `converged` | `D1, D2, D3, D4` | Early stop after D1-D4 because the phase report says all reviewed claims matched shipped runtime and packet evidence. |
 | `012-cached-sessionstart-consumer-gated` | `converged` | `D1, D2, D3, D4` | Early stop after D1-D4 because the phase report says all reviewed claims matched shipped runtime and packet evidence, including real session-surface mounting through hook-state fixtures. |
 | `013-warm-start-bundle-conditional-validation` | `max_iterations` | `D1, D2, D3, D4` | Completed the full 5-iteration plan with one remaining P1 traceability finding. |
-| `014-code-graph-upgrades` | `max_iterations` | `D1, D2, D3, D4` | Completed the full 5-iteration plan with one remaining P1 correctness finding. |
+| `005-code-graph-upgrades` | `max_iterations` | `D1, D2, D3, D4` | Completed the full 5-iteration plan with one remaining P1 correctness finding. |
 - Parent review consulted: `026/review/review-report.md` (session `2026-04-09T03:59:45Z`)
 - Parent findings registry consulted: `026/review/deep-review-findings-registry.json`
 - Data-quality note: `011` and `012` frontmatter descriptions say "5-iteration deep review," but both the phase overview sections and `batch-phase-review-state.json` record 4 converged iterations. This synthesis uses the batch-state counts for iteration totals and flags the discrepancy here rather than smoothing it over.

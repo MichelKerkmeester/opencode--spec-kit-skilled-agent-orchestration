@@ -3,7 +3,7 @@ title: "024 -- Cold-start novelty boost (N4)"
 description: "Archived copy of the Cold-start novelty boost (N4) scenario. It validates that novelty is removed from the hot path."
 audited_post_018: true
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecated_reason: "The novelty boost scenario is no longer part of the live playbook; it was moved out of the active category into _deprecated/."
 ---
 

@@ -20,7 +20,7 @@ Run `spec_kit:deep-review`-style iterative code audit against 13 phase folders:
 | 10 | `011-graph-payload-validator-and-trust-preservation` |
 | 11 | `012-cached-sessionstart-consumer-gated` |
 | 12 | `013-warm-start-bundle-conditional-validation` |
-| 13 | `014-code-graph-upgrades` |
+| 13 | `005-code-graph-upgrades` |
 
 Each phase gets its own review packet under `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/<phase-slug>/` with 5 iteration files, state files, strategy, dashboard, and per-phase review-report. After all 13 phases complete, write a consolidated report at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/batch-phase-review-consolidated.md`.
 
@@ -76,7 +76,7 @@ Each phase gets its own review packet under `.opencode/specs/system-spec-kit/026
 ├── 003-memory-quality-issues/
 │   └── ... (same structure)
 ...
-└── 014-code-graph-upgrades/
+└── 005-code-graph-upgrades/
     └── ... (same structure)
 ```
 
@@ -319,7 +319,7 @@ for slug in 002-implement-cache-warning-hooks 003-memory-quality-issues 004-agen
             007-detector-provenance-and-regression-floor 008-graph-first-routing-nudge \
             009-auditable-savings-publication-contract 010-fts-capability-cascade-floor \
             011-graph-payload-validator-and-trust-preservation 012-cached-sessionstart-consumer-gated \
-            013-warm-start-bundle-conditional-validation 014-code-graph-upgrades; do
+            013-warm-start-bundle-conditional-validation 005-code-graph-upgrades; do
   test -f ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/$slug/review-report.md" \
     && echo "$slug: OK" \
     || echo "$slug: MISSING review-report.md"
@@ -377,7 +377,7 @@ PER_PHASE_SUMMARY:
   011-graph-payload-validator-and-trust-preservation: iters=<n> verdict=<...>
   012-cached-sessionstart-consumer-gated:       iters=<n> verdict=<...>
   013-warm-start-bundle-conditional-validation: iters=<n> verdict=<...>
-  014-code-graph-upgrades:                      iters=<n> verdict=<...>
+  005-code-graph-upgrades:                      iters=<n> verdict=<...>
 
 AGGREGATE_FINDINGS:
   P0: <n>

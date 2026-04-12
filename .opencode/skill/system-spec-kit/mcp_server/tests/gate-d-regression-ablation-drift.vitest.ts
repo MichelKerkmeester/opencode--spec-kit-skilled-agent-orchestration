@@ -127,14 +127,14 @@ function seedCanonicalRows(): void {
         id: 7001,
         title: 'Gate D reader-ready spec doc',
         spec_folder:
-          'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready',
+          'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready',
         importance_tier: 'important',
         importance_weight: 0.92,
         context_type: 'implementation',
         created_at: '2026-04-11T12:00:00Z',
         updated_at: '2026-04-11T12:05:00Z',
         file_path:
-          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
+          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/spec.md',
       },
     ],
     [
@@ -143,11 +143,11 @@ function seedCanonicalRows(): void {
         id: 7002,
         title: 'Gate D continuity summary',
         spec_folder:
-          'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready',
+          'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready',
         importance_tier: 'important',
         created_at: '2026-04-11T12:06:00Z',
         file_path:
-          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
+          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/implementation-summary.md',
       },
     ],
     [
@@ -156,11 +156,11 @@ function seedCanonicalRows(): void {
         id: 7003,
         title: 'Gate D decision record',
         spec_folder:
-          'system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready',
+          'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready',
         importance_tier: 'important',
         created_at: '2026-04-11T12:07:00Z',
         file_path:
-          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/004-gate-d-reader-ready/decision-record.md',
+          '/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/004-gate-d-reader-ready/decision-record.md',
       },
     ],
   ]);

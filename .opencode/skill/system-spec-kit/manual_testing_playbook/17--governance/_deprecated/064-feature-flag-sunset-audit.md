@@ -2,7 +2,7 @@
 title: "064 -- Feature flag sunset audit"
 description: "Deprecated scenario for retired flag-surface behaviors and compatibility-only paths."
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 ---
 
 # 064 -- Feature flag sunset audit

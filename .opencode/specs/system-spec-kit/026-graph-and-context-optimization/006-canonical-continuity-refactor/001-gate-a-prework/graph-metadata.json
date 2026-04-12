@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/001-gate-a-prework",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/001-gate-a-prework",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "gate a",
+      "pre-work",
+      "canonical continuity",
+      "phase 018",
+      "template hardening",
+      "pre-work plan",
+      "rollback rehearsal",
+      "gate a tasks",
+      "pre-work tasks",
+      "root packet backfill",
+      "gate a checklist",
+      "pre-work verification",
+      "exit gate",
+      "gate a implementation summary",
+      "pre-work closeout",
+      "blocked summary"
+    ],
+    "key_topics": [
+      "gate",
+      "pre-work",
+      "canonical",
+      "continuity",
+      "phase",
+      "018",
+      "template",
+      "hardening",
+      "plan",
+      "rollback",
+      "rehearsal",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "validate.sh",
+      "implementation-summary.md",
+      "memory-018-pre.db",
+      ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+      ".opencode/skill/system-spec-kit/templates/level_3+/spec.md",
+      ".opencode/skill/system-spec-kit/templates/handover.md",
+      ".opencode/skill/system-spec-kit/templates/research.md",
+      ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
+      "scripts/spec/validate.sh",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "mcp_server/lib/search/vector-index-schema.ts",
+      "memory-save.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/database/memory.db",
+      "vector-index-schema.ts",
+      "memory.db",
+      "tests/gate-d-benchmark-session-resume.vitest.ts",
+      "tests/gate-d-resume-perf.vitest.ts",
+      "tests/resume-ladder.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-018-pre.db",
+        "kind": "file",
+        "path": "memory-018-pre.db",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/level_3+/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "debug-delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-release-alignment/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-018-pre.db",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory.db",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/database/memory.db",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "vector-index-schema.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Gate A exists because phase 018 cannot safely begin merge-time continuity writes or archive-state migration while known template debt is still live. `../resource-map.md` flags orphan `metadata` anchor closes in `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`, plus anchorless `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md`; iteration 022 makes those defects hard blockers because `ANCHORS_VALID` and `MERGE_LEGALITY` fail on orphan or missing targets.",
+    "created_at": "2026-04-12T09:02:53.477Z",
+    "last_save_at": "2026-04-12T09:06:03.521Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

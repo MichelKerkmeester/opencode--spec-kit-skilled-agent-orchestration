@@ -3,7 +3,7 @@ title: "Warm server / daemon mode"
 description: "Archived copy of the warm server / daemon mode entry. The live transport remains stdio."
 audited_post_018: true
 deprecated_at: 2026-04-11
-deprecated_by: phase-018-canonical-continuity-refactor
+deprecated_by: phase-006-canonical-continuity-refactor
 deprecated_reason: "Daemon mode is still deferred and is not part of the phase-018 live transport model."
 ---
 

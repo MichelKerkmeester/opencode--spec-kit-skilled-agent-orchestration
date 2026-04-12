@@ -2,7 +2,7 @@
 title: "Deep Review Iteration 002 — D2 Security"
 iteration: 002
 dimension: D2 Security
-session_id: 2026-04-09T14:31:56Z-014-code-graph-upgrades
+session_id: 2026-04-09T14:31:56Z-005-code-graph-upgrades
 timestamp: 2026-04-09T14:33:56Z
 status: thought
 ---
@@ -13,8 +13,8 @@ status: thought
 Check authority boundaries, packet-011 dependency discipline, and overlap with packet 008 under the security lens.
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts`

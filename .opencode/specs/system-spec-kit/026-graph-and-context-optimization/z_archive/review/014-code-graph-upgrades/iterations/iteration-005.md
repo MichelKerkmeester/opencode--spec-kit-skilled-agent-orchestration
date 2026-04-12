@@ -2,7 +2,7 @@
 title: "Deep Review Iteration 005 — D1 Adversarial Re-check"
 iteration: 005
 dimension: D1 Adversarial Re-check
-session_id: 2026-04-09T14:31:56Z-014-code-graph-upgrades
+session_id: 2026-04-09T14:31:56Z-005-code-graph-upgrades
 timestamp: 2026-04-09T14:36:56Z
 status: thought
 ---
@@ -13,8 +13,8 @@ status: thought
 Adversarially re-check the handlers, tests, and packet docs to determine whether any hidden enrichment path exists beyond the reviewed serialization code.
 
 ## Files Reviewed
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-code-graph-upgrades/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades/checklist.md`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts`

@@ -165,7 +165,7 @@ Verification against the 15 evidence tokens:
 | `010-i001-p1-001` | No |
 | `013-i003-p1-001` | No |
 | `013-warm-start-bundle-conditional-validation` | Yes |
-| `014-code-graph-upgrades` | Yes |
+| `005-code-graph-upgrades` | Yes |
 | `014-i001-p1-001` | No |
 | `026-04-09` | No |
 | `026-graph-and-context-optimization` | Yes |
