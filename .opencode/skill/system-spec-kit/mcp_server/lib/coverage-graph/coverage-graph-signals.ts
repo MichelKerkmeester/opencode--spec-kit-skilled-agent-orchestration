@@ -11,6 +11,7 @@ import {
   getNodes,
   getEdges,
   createSnapshot,
+  getSnapshots,
   getStats,
   type Namespace,
   type LoopType,
@@ -597,18 +598,16 @@ export function createSignalSnapshot(ns: Namespace, iteration: number): SignalSn
 /**
  * Compute momentum (change rate) between the latest and previous snapshots.
  */
-export function computeMomentum(specFolder: string, loopType: LoopType): Record<string, number> | null {
-  const d = getDb();
-  const snapshots = d.prepare(`
-    SELECT metrics FROM coverage_snapshots
-    WHERE spec_folder = ? AND loop_type = ?
-    ORDER BY iteration DESC LIMIT 2
-  `).all(specFolder, loopType) as Array<{ metrics: string }>;
-
+export function computeMomentum(
+  specFolder: string,
+  loopType: LoopType,
+  sessionId?: string,
+): Record<string, number> | null {
+  const snapshots = getSnapshots(specFolder, loopType, sessionId);
   if (snapshots.length < 2) return null;
 
-  const latest = JSON.parse(snapshots[0].metrics) as Record<string, number>;
-  const previous = JSON.parse(snapshots[1].metrics) as Record<string, number>;
+  const latest = snapshots[snapshots.length - 1]?.metrics ?? {};
+  const previous = snapshots[snapshots.length - 2]?.metrics ?? {};
 
   const momentum: Record<string, number> = {};
   for (const key of Object.keys(latest)) {

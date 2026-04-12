@@ -58,7 +58,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Execution Modes** | 3 | Interactive, Autopilot (`--allow-all-tools`), Cloud delegation |
 | **Reasoning Levels** | 4 | low, medium, high, xhigh (GPT-5.x models) |
 | **References** | 4 | cli_reference, copilot_tools, agent_delegation, integration_patterns |
-| **Version** | 1.3.1 | |
+| **Version** | 1.3.4.0 | Max 5 concurrent processes |
 
 ### How This Compares
 

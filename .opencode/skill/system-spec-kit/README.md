@@ -1083,4 +1083,4 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-_Documentation version: 3.0 | Last updated: 2026-03-25 | Skill version: 3.2.0.0_
+_Documentation version: 3.0 | Last updated: 2026-04-12 | Skill version: 3.3.1.0_

@@ -13,6 +13,13 @@
 // requiring native parallel-step support.
 // ---------------------------------------------------------------
 
+const {
+  createBoard: createMergeBoard,
+  buildFindingRecord,
+  mergeFinding,
+  compareSeverity: compareFindingSeverity,
+} = require('./wave-coordination-board.cjs');
+
 /* ---------------------------------------------------------------
    1. CONSTANTS
 ----------------------------------------------------------------*/
@@ -251,77 +258,38 @@ function joinWave(results, mergeStrategy) {
   }
 
   const strategy = mergeStrategy || MERGE_STRATEGIES.DEDUPE;
-  const conflicts = [];
-  const findingMap = new Map();
+  const mergeBoard = createCanonicalMergeBoard(results);
+  const merged = [];
 
   for (const result of results) {
-    if (!result || !result.findings) continue;
+    if (!result || !Array.isArray(result.findings)) continue;
 
     for (const finding of result.findings) {
-      const key = buildFindingKey(finding);
-
-      if (findingMap.has(key)) {
-        const existing = findingMap.get(key);
-
-        if (strategy === MERGE_STRATEGIES.CONCAT) {
-          // Keep both under different composite keys
-          const altKey = `${key}::${result.segmentId || 'unknown'}`;
-          findingMap.set(altKey, {
-            ...finding,
-            mergedFrom: result.segmentId || 'unknown',
-            mergeState: 'appended',
-          });
-        } else if (strategy === MERGE_STRATEGIES.PRIORITY) {
-          // Keep higher severity
-          if (compareSeverity(finding.severity, existing.severity) > 0) {
-            conflicts.push({
-              findingId: key,
-              kept: finding,
-              replaced: existing,
-              reason: 'priority-upgrade',
-            });
-            findingMap.set(key, {
-              ...finding,
-              mergedFrom: result.segmentId || 'unknown',
-              mergeState: 'promoted',
-              priorSegment: existing.mergedFrom,
-            });
-          } else {
-            conflicts.push({
-              findingId: key,
-              kept: existing,
-              replaced: finding,
-              reason: 'priority-kept',
-            });
-          }
-        } else {
-          // DEDUPE: keep first occurrence, record conflict
-          conflicts.push({
-            findingId: key,
-            kept: existing,
-            duplicate: finding,
-            duplicateSegment: result.segmentId || 'unknown',
-            reason: 'dedupe',
-          });
-        }
-      } else {
-        findingMap.set(key, {
-          ...finding,
-          mergedFrom: result.segmentId || 'unknown',
-          mergeState: 'original',
-        });
+      const record = buildFindingRecord(
+        finding,
+        result.segmentId || 'unknown',
+        mergeBoard,
+        result,
+      );
+      if (!record) {
+        continue;
       }
+      if (strategy === MERGE_STRATEGIES.CONCAT) {
+        merged.push(record);
+        continue;
+      }
+      mergeFinding(mergeBoard, record);
     }
   }
-
-  const merged = Array.from(findingMap.values());
+  const conflicts = strategy === MERGE_STRATEGIES.CONCAT ? [] : mergeBoard.conflicts;
+  const mergedResults = strategy === MERGE_STRATEGIES.CONCAT ? merged : mergeBoard.findings;
 
   return {
-    merged,
+    merged: mergedResults,
     conflicts,
     stats: {
       totalInput: results.reduce((sum, r) => sum + ((r && r.findings) ? r.findings.length : 0), 0),
-      totalMerged: merged.length,
+      totalMerged: mergedResults.length,
       totalConflicts: conflicts.length,
       mergeStrategy: strategy,
     },
@@ -425,6 +393,21 @@ function buildFindingKey(finding) {
 }
 
 /**
+ * Create a canonical merge board seeded from the first valid result.
+ * @param {Array<object>} results - Segment results to seed the board from.
+ * @returns {object} A merge board with canonical structure.
+ */
+function createCanonicalMergeBoard(results) {
+  const firstResult = results.find((result) => result && typeof result === 'object') || {};
+  return createMergeBoard({
+    sessionId: firstResult.sessionId || 'wave-join',
+    generation: typeof firstResult.generation === 'number' ? firstResult.generation : 1,
+    loopType: firstResult.loopType === 'research' ? 'research' : 'review',
+    target: firstResult.target || '',
+  }) || createMergeBoard({ sessionId: 'wave-join', loopType: 'review' });
+}
+
+/**
  * Compare two severity values. Returns >0 if a is higher severity.
  * P0 > P1 > P2.
  *
@@ -433,8 +416,7 @@ function buildFindingKey(finding) {
  * @returns {number}
  */
 function compareSeverity(a, b) {
-  const order = { P0: 3, P1: 2, P2: 1 };
-  return (order[a] || 0) - (order[b] || 0);
+  return compareFindingSeverity(a, b);
 }
 
 /* ---------------------------------------------------------------

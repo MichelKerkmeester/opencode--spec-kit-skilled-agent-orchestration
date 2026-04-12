@@ -29,7 +29,7 @@ contextType: "implementation-summary"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase gave the coverage-graph runtime the verification layer it needed after the Phase 002 runtime landed. You can now find dedicated automated suites for graph contract alignment and larger-graph stress coverage, plus graph-specific manual playbook scenarios across the research, review, and improve-agent loop families.
+This phase gave the coverage-graph runtime the verification layer it needed after the Phase 002 runtime landed. You can now find dedicated automated suites for graph contract alignment and larger-graph stress coverage, plus graph-specific manual playbook scenarios across the research and review loop families, with the existing improve-agent graph scenarios cross-referenced into the same verification surface.
 
 ### Verification Surface
 
@@ -39,7 +39,7 @@ This phase gave the coverage-graph runtime the verification layer it needed afte
 | `.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts` | Created | Exercises larger graph workloads and contradiction scanning |
 | Research graph playbooks | Created | Add operator scenarios for graph convergence and `graphEvents` emission |
 | Review graph playbooks | Created | Add operator scenarios for graph convergence and `graphEvents` emission |
-| Improve-agent graph playbooks | Created | Add operator scenarios for mutation coverage, trade-off detection, and candidate lineage |
+| Improve-agent graph playbooks (`022`-`024`) | Validated / cross-referenced | Reuse the existing operator scenarios for mutation coverage, trade-off detection, and candidate lineage as phase evidence |
 | Three skill READMEs | Modified | Surface graph capability coverage where it was previously missing |
 <!-- /ANCHOR:what-built -->
 

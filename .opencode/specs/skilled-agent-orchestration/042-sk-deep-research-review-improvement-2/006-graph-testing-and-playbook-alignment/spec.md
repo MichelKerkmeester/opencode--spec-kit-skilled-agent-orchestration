@@ -74,9 +74,9 @@ Document the completed verification pass that added graph integration tests, gra
 | `.opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-discipline/029-graph-events-emission.md` | Create | Research playbook for `graphEvents` emission. |
 | `.opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md` | Create | Review playbook for graph-aware convergence. |
 | `.opencode/skill/sk-deep-review/manual_testing_playbook/03--iteration-execution-and-state-discipline/015-graph-events-review.md` | Create | Review playbook for `graphEvents` emission. |
-| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md` | Create | Improve-agent playbook for mutation-coverage graph tracking. |
-| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md` | Create | Improve-agent playbook for trade-off detection. |
-| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md` | Create | Improve-agent playbook for candidate-lineage tracking. |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md` | Validate / Cross-reference | Existing improve-agent playbook for mutation-coverage graph tracking, created in Phase 005 and validated from this packet. |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md` | Validate / Cross-reference | Existing improve-agent playbook for trade-off detection, created in Phase 005 and validated from this packet. |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md` | Validate / Cross-reference | Existing improve-agent playbook for candidate-lineage tracking, created in Phase 005 and validated from this packet. |
 | `.opencode/skill/sk-deep-research/README.md` | Modify | Surface graph capability coverage. |
 | `.opencode/skill/sk-deep-review/README.md` | Modify | Surface graph capability coverage. |
 | `.opencode/skill/sk-improve-agent/README.md` | Modify | Surface graph capability coverage. |

@@ -11,6 +11,14 @@
 // wave, and findingId. Merge logic never relies on append order.
 // ---------------------------------------------------------------
 
+const {
+  FINDING_MERGE_KEYS,
+  createBoard: createMergeBoard,
+  buildFindingRecord,
+  mergeFinding,
+  compareSeverity: compareFindingSeverity,
+} = require('./wave-coordination-board.cjs');
+
 /* ---------------------------------------------------------------
    1. CONSTANTS
 ----------------------------------------------------------------*/
@@ -20,13 +28,7 @@
  * Merge correctness is keyed by these fields, not append order.
  * @type {ReadonlyArray<string>}
  */
-const MERGE_KEYS = Object.freeze([
-  'sessionId',
-  'generation',
-  'segment',
-  'wave',
-  'findingId',
-]);
+const MERGE_KEYS = FINDING_MERGE_KEYS;
 
 /**
  * Valid segment state statuses.
@@ -188,63 +190,29 @@ function mergeSegmentStates(states, mergeStrategy) {
   }
 
   const strategy = mergeStrategy || 'dedupe';
-  const findingMap = new Map();
-  const conflicts = [];
-  const dedupeLog = [];
   const allRecords = [];
+  const mergeBoard = createCanonicalMergeBoard(states);
+  const mergedFindings = [];
 
   for (const state of states) {
     if (!state) continue;
 
     // Merge findings
     for (const finding of (state.findings || [])) {
-      const key = finding.findingId || buildMergeKey(finding);
-
-      if (findingMap.has(key)) {
-        const existing = findingMap.get(key);
-
-        if (strategy === 'dedupe') {
-          // Check for conflicts
-          if (existing.severity !== finding.severity) {
-            conflicts.push({
-              findingId: key,
-              existingSegment: existing.segment || existing.segmentId,
-              newSegment: state.segmentId,
-              existingSeverity: existing.severity,
-              newSeverity: finding.severity,
-              resolution: 'keep-higher',
-            });
-
-            // Keep higher severity
-            if (compareSeverity(finding.severity, existing.severity) > 0) {
-              findingMap.set(key, {
-                ...finding,
-                provenance: {
-                  sourceSegment: state.segmentId,
-                  promotedFrom: existing.segment || existing.segmentId,
-                },
-              });
-            }
-          } else {
-            dedupeLog.push({
-              findingId: key,
-              duplicateSegment: state.segmentId,
-              originalSegment: existing.segment || existing.segmentId,
-            });
-          }
-        } else {
-          // concat: keep all
-          findingMap.set(`${key}::${state.segmentId}`, {
-            ...finding,
-            provenance: { sourceSegment: state.segmentId },
-          });
-        }
-      } else {
-        findingMap.set(key, {
-          ...finding,
-          provenance: { sourceSegment: state.segmentId },
-        });
+      const record = buildFindingRecord(
+        finding,
+        state.segmentId || finding.segment || 'unknown',
+        mergeBoard,
+        { waveId: state.waveId || finding.wave || finding.waveId || null },
+      );
+      if (!record) {
+        continue;
       }
+      if (strategy === 'concat') {
+        mergedFindings.push(record);
+        continue;
+      }
+      mergeFinding(mergeBoard, record);
     }
 
     // Collect all JSONL records sorted by explicit keys
@@ -266,14 +234,14 @@ function mergeSegmentStates(states, mergeStrategy) {
 
   return {
     merged: {
-      findings: Array.from(findingMap.values()),
+      findings: strategy === 'concat' ? mergedFindings : mergeBoard.findings,
       jsonlRecords: allRecords,
       totalSegments: states.length,
       mergeStrategy: strategy,
       mergedAt: new Date().toISOString(),
     },
-    conflicts,
-    dedupeLog,
+    conflicts: strategy === 'concat' ? [] : mergeBoard.conflicts,
+    dedupeLog: strategy === 'concat' ? [] : mergeBoard.dedupeLog,
   };
 }
 
@@ -375,14 +343,27 @@ function buildMergeKey(finding) {
 }
 
 /**
+ * Create a canonical merge board seeded from the first valid segment state.
+ * @param {Array<object>} states - Segment states to seed the board from.
+ * @returns {object} A merge board with canonical structure.
+ */
+function createCanonicalMergeBoard(states) {
+  const firstState = states.find((state) => state && typeof state === 'object') || {};
+  return createMergeBoard({
+    sessionId: firstState.sessionId || 'segment-merge',
+    generation: typeof firstState.generation === 'number' ? firstState.generation : 1,
+    loopType: firstState.loopType === 'research' ? 'research' : 'review',
+  }) || createMergeBoard({ sessionId: 'segment-merge', loopType: 'review' });
+}
+
+/**
  * Compare severity levels. Returns >0 if a is higher.
  * @param {string} a
  * @param {string} b
  * @returns {number}
  */
 function compareSeverity(a, b) {
-  const order = { P0: 3, P1: 2, P2: 1 };
-  return (order[a] || 0) - (order[b] || 0);
+  return compareFindingSeverity(a, b);
 }
 
 /* ---------------------------------------------------------------

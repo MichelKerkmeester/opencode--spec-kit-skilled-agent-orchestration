@@ -160,26 +160,37 @@ describe('wave-lifecycle', () => {
       expect(joined.conflicts.length).toBe(0);
     });
 
-    it('deduplicates findings with same findingId', () => {
+    it('preserves cross-segment findings that share a logical findingId', () => {
       const results = [
         { segmentId: 'seg-1', findings: [{ findingId: 'f1', title: 'Bug A', severity: 'P1' }] },
         { segmentId: 'seg-2', findings: [{ findingId: 'f1', title: 'Bug A', severity: 'P1' }] },
       ];
       const joined = lifecycle.joinWave(results, 'dedupe');
-      expect(joined.merged.length).toBe(1);
-      expect(joined.conflicts.length).toBe(1);
-      expect((joined.conflicts[0] as any).reason).toBe('dedupe');
+      expect(joined.merged.length).toBe(2);
+      expect(joined.conflicts.length).toBe(0);
     });
 
-    it('promotes higher severity in priority mode', () => {
+    it('deduplicates exact duplicates only when the full 5-key composite matches', () => {
+      const results = [
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug A', severity: 'P1' }] },
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug A', severity: 'P1' }] },
+      ];
+      const joined = lifecycle.joinWave(results, 'dedupe');
+      expect(joined.merged.length).toBe(1);
+      expect(joined.conflicts.length).toBe(0);
+    });
+
+    it('records cross-segment promotions through the canonical board merge contract', () => {
       const results = [
         { segmentId: 'seg-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P2' }] },
         { segmentId: 'seg-2', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P0' }] },
       ];
       const joined = lifecycle.joinWave(results, 'priority');
-      expect(joined.merged.length).toBe(1);
-      expect((joined.merged[0] as any).severity).toBe('P0');
-      expect((joined.merged[0] as any).mergeState).toBe('promoted');
+      expect(joined.merged.length).toBe(2);
+      expect(joined.conflicts.length).toBe(1);
+      const promoted = joined.merged.find((finding: any) => finding.segment === 'seg-2');
+      expect((promoted as any).severity).toBe('P0');
+      expect((promoted as any).mergeState).toBe('promoted');
     });
 
     it('keeps all findings in concat mode', () => {

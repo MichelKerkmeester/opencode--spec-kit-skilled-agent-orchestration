@@ -655,6 +655,21 @@ function normalizeBlockedByList(value, legacyLegalStop) {
   });
 }
 
+/**
+ * Format a blocked-by gate list into a human-readable string.
+ * @param {Array<string|object>} blockedBy - List of gate names or structured gate objects.
+ * @returns {string} Formatted comma-separated gate list.
+ */
+function formatBlockedByList(blockedBy) {
+  if (!Array.isArray(blockedBy) || blockedBy.length === 0) {
+    return 'unknown gates';
+  }
+  return blockedBy
+    .map((entry) => normalizeText(String(entry || '')))
+    .filter(Boolean)
+    .join(', ') || 'unknown gates';
+}
+
 function buildBlockedStopHistory(records) {
   return records
     .filter((record) => record?.type === 'event' && record?.event === 'blocked_stop')
@@ -853,9 +868,7 @@ function updateStrategyContent(strategyContent, registry, iterationFiles, option
     const blockedIsMostRecent = !latestIterationTimestamp
       || latestBlockedStop.timestamp >= latestIterationTimestamp;
     if (blockedIsMostRecent) {
-      const blockers = Array.isArray(latestBlockedStop.blockedBy) && latestBlockedStop.blockedBy.length > 0
-        ? latestBlockedStop.blockedBy.join(', ')
-        : 'unknown gates';
+      const blockers = formatBlockedByList(latestBlockedStop.blockedBy);
       const recovery = latestBlockedStop.recoveryStrategy || '[no recovery strategy provided]';
       nextFocus = [
         `BLOCKED on: ${blockers}`,
@@ -982,9 +995,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '## 6. BLOCKED STOPS',
     ...(registry.blockedStopHistory && registry.blockedStopHistory.length > 0
       ? registry.blockedStopHistory.flatMap((entry) => {
-          const blockers = Array.isArray(entry.blockedBy) && entry.blockedBy.length > 0
-            ? entry.blockedBy.join(', ')
-            : 'unknown gates';
+          const blockers = formatBlockedByList(entry.blockedBy);
           const gateSummary = entry.gateResults && typeof entry.gateResults === 'object'
             ? Object.entries(entry.gateResults)
                 .map(([gate, result]) => {
@@ -1135,16 +1146,16 @@ function reduceReviewState(specFolder, options = {}) {
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, { createMissingAnchors }, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
+  if (corruptionWarnings.length > 0 && !lenient) {
+    throw createCorruptionError(stateLogPath, corruptionWarnings);
+  }
+
   if (write) {
     writeUtf8(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
     if (strategyContent) {
       writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     }
     writeUtf8(dashboardPath, dashboard);
-  }
-
-  if (corruptionWarnings.length > 0 && !lenient) {
-    throw createCorruptionError(stateLogPath, corruptionWarnings);
   }
 
   return {

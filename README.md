@@ -576,13 +576,33 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - State externalized via JSONL + strategy.md for pause/resume across sessions
 - Loop orchestration managed by `/spec_kit:deep-research` command, not this agent
 - Has permission to write `research.md` and `scratch/` inside spec folders
+- 3-signal convergence model: Rolling Average (0.45), MAD Noise Floor (0.30), Coverage/Age (0.25) with 0.60 threshold
+- Semantic coverage graph: each iteration emits `graphEvents` with relation types (ANSWERS, SUPPORTS, CONTRADICTS, SUPERSEDES, DERIVED_FROM, COVERS, CITES)
+- Graph convergence guards: sourceDiversity (>= 0.4) and evidenceDepth (>= 1.5) block premature STOP
+- Question coverage tracking computes answerCoverage ratio from ANSWERS edges
+- Quality guards: source diversity, focus alignment and weak-source checks must pass before STOP
+- Progressive synthesis: `research.md` updated incrementally and finalized during synthesis
+- Negative knowledge: ruled-out directions and dead ends preserved as first-class outputs
+- Lifecycle modes: `new`, `resume`, `restart` (fork and completed-continue are deferred)
+- Fail-closed corruption handling: throws structured error before writing derived files when JSONL is corrupt
+- Graph convergence fallback: scoring uses a numeric fallback when `blendedScore` is absent
 
 **Deep-Review**
 - Autonomous code quality auditor using LEAF architecture for single review iterations
 - Reviews code but NEVER modifies target files (read-only on code)
 - Loop orchestration managed by `/spec_kit:deep-review` command, not this agent
-- Produces P0/P1/P2 severity-ranked findings with `file:line` evidence across 7 review dimensions
-- Includes adversarial self-check on all findings before finalizing
+- Produces P0/P1/P2 severity-ranked findings with `file:line` evidence across 4 review dimensions (Correctness, Security, Traceability, Maintainability)
+- Severity-weighted convergence: P0 contributes weight 10.0, P1 contributes 5.0, P2 contributes 1.0. Refinements contribute 0.5x those weights
+- 3-signal convergence model: Rolling Average (0.45), MAD Noise Floor (0.30), Dimension Coverage (0.25)
+- P0 override: any new P0 finding forces at least one more iteration regardless of convergence math
+- Adversarial self-check on P0 findings: Hunter/Skeptic/Referee triad before admission
+- Binary quality gates: evidence (file:line backed), scope (stays inside declared target), coverage (all dimensions and cross-reference protocols complete)
+- Graph-aware legal-stop checks using structural graph signals from `graphEvents`
+- Semantic coverage graph with review-specific node types (DIMENSION, FILE, FINDING, EVIDENCE, REMEDIATION) and edge types (COVERS, EVIDENCE_FOR, IN_DIMENSION, CONTRADICTS, RESOLVES, CONFIRMS)
+- 9-section review report with PASS/CONDITIONAL/FAIL verdict (FAIL on P0, CONDITIONAL on P1, PASS otherwise)
+- Claim-adjudication `finalSeverity` overrides original severity in the findings registry
+- Fail-closed corruption handling: reducer refuses to write derived files when JSONL corruption is detected
+- Lifecycle modes: `new`, `resume`, `restart` with typed JSONL lineage events
 
 **Review**
 - Code quality guardian with strict read-only permissions (cannot write or edit any file)
@@ -611,8 +631,8 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 **Agent-Improver**
 - Proposal-only mutator for bounded agent improvement experiments
 - Reads the target agent's charter, manifest and integration surface, then writes ONE candidate to a packet-local runtime area
-- Never scores, promotes, benchmarks or edits canonical targets - leaves that to the `/improve:agent` command loop
-- Loop orchestration: scan integration surfaces → generate dynamic profile → dispatch this agent → score candidate across 5 dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness) → reduce state → check stop conditions
+- Never scores, promotes, benchmarks or edits canonical targets. The `/improve:agent` command loop handles those.
+- Loop orchestration: scan integration surfaces, generate dynamic profile, dispatch this agent, score candidate across 5 dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness), reduce state, check stop conditions
 
 **Improve-Prompt**
 - Prompt-escalation specialist for high-stakes external CLI invocations and other sensitive AI prompt work
@@ -657,11 +677,18 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 **Deep Research**
 - Autonomous research loop dispatching deep-research agents iteratively until convergence
 - Externalized JSONL state enables pause/resume across sessions
+- Reducer parses terminal `synthesis_complete` events for authoritative stop metadata
+- Graph convergence guards block premature STOP when sourceDiversity or evidenceDepth thresholds fail
+- Lifecycle modes: `new`, `resume`, `restart` with lineage tracking across generations
 - Modes: `:auto`, `:confirm`
 
 **Deep Review**
 - Autonomous code review loop dispatching deep-review agents iteratively until convergence
-- Severity-weighted findings (P0/P1/P2) across 7 review dimensions with release readiness verdicts
+- Severity-weighted findings (P0/P1/P2) across 4 dimensions with release readiness verdicts (PASS/CONDITIONAL/FAIL)
+- Claim-adjudication packets with `finalSeverity` override, stale STOP veto auto-clearing
+- Binary quality gates (evidence, scope, coverage) checked after convergence math before allowing stop
+- Adversarial self-check on P0 findings using Hunter/Skeptic/Referee triad
+- Lifecycle modes: `new`, `resume`, `restart` with typed JSONL lineage events
 - Modes: `:auto`, `:confirm`
 
 **Handover**
@@ -732,8 +759,15 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 **Improve Agent**
 - Evaluates and improves any agent across 5 integration-aware dimensions with deterministic scoring
-- Runs a bounded loop: scan integration surfaces → generate dynamic profile → dispatch `@improve-agent` → score candidate → reduce state → check stop conditions
+- Runs a bounded loop: scan integration surfaces, generate dynamic profile, dispatch `@improve-agent`, score candidate, reduce state, check stop conditions
+- Integration scanner discovers all surfaces an agent touches: canonical definition, runtime mirrors, command dispatch, YAML workflows, skill references
+- Dynamic profiling: derives scoring rubric from any agent's own rules, no hardcoded profiles needed
+- Proposal-first: candidates written to packet-local runtime areas, canonical target untouched until guarded promotion
+- Guarded promotion requires passing scoring, benchmark status, repeatability evidence and operator approval. Rollback restores pre-promotion backup.
+- Dimensional progress tracking detects plateau (3+ identical scores across all dimensions) and triggers stop
 - All scoring is regex/string/file-existence based (no LLM-as-judge) for promotion gate reliability
+- Emits `legal_stop_evaluated` and `blocked_stop` events to the JSONL ledger matching the deep-loop runtime-truth contract
+- Session-boundary gate enforces fresh-session isolation before initialization
 - Modes: `:auto`, `:confirm`. Supports any agent in `.opencode/agent/` as target
 
 **Improve Prompt**
@@ -808,15 +842,22 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - **git-commit**: conventional commit format, staged change analysis, scope detection
 - **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
 
-**sk-deep-research**
+**sk-deep-research** (v1.6.2.0)
 - Autonomous research investigation system with iterative LEAF cycles
-- Fresh context per iteration, externalized JSONL state, convergence detection
-- Dispatched by `/spec_kit:deep-research` command
+- Fresh context per iteration, externalized JSONL state, 3-signal convergence detection (Rolling Average + MAD Noise Floor + Coverage/Age)
+- Semantic coverage graph with 7 relation types, question coverage tracking, sourceDiversity and evidenceDepth guards
+- Progressive synthesis, negative knowledge preservation, quality guards (source diversity, focus alignment, weak-source checks)
+- Fail-closed corruption handling, graph convergence fallback scoring, terminal stop metadata parsing
+- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-research` command
 
-**sk-deep-review**
+**sk-deep-review** (v1.3.2.0)
 - Autonomous code quality auditing system with iterative LEAF cycles
-- Dispatches deep-review agents with P0/P1/P2 severity-weighted findings across 7 review dimensions
-- Dispatched by `/spec_kit:deep-review` command
+- P0/P1/P2 severity-weighted findings across 4 dimensions (Correctness, Security, Traceability, Maintainability)
+- 3-signal convergence model, P0 override blocks stop, adversarial self-check (Hunter/Skeptic/Referee)
+- Binary quality gates (evidence, scope, coverage), graph-aware legal-stop checks, semantic coverage graph
+- 9-section review report with PASS/CONDITIONAL/FAIL verdict
+- Fail-closed corruption, claim-adjudication `finalSeverity`, stale STOP veto auto-clearing
+- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
 
 #### MCP INTEGRATION
 
@@ -874,11 +915,15 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - DEPTH thinking methodology with 3-10 iteration rounds of progressive refinement
 - CLEAR quality scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold)
 
-**sk-improve-agent**
+**sk-improve-agent** (v1.2.2.0)
 - Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
 - Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
-- Dynamic profile generator derives scoring rubric from any agent's own rules — no hardcoded profiles needed
-- All scoring is deterministic (regex/string/file-existence) — no LLM-as-judge, safe for promotion gates
+- Dynamic profile generator derives scoring rubric from any agent's own rules, no hardcoded profiles needed
+- Proposal-first: candidates in packet-local runtime areas, canonical target untouched until guarded promotion
+- Guarded promotion with scoring, benchmark, repeatability and operator approval gates. Rollback support.
+- Dimensional progress tracking with plateau detection (3+ identical scores triggers stop)
+- All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
+- Legal-stop events, session-boundary gate, `plateau` stop reason, dashboard sections for journal/lineage/coverage
 
 ---
 

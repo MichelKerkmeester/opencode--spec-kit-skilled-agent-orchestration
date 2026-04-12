@@ -73,7 +73,7 @@ contextType: "planning"
 - [x] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail. ✓ Verified in: spec.md, plan.md, and implementation-summary.md §What Was Built
 - [x] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly. ✓ Verified in: ./001-runtime-truth-foundation/checklist.md (linked from this checklist §Pre-Implementation)
 - [x] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds). ✓ Verified in: §Pre-Implementation table (rows Phase 2–4) and implementation-summary.md §Verification rows Phase 5–8
-- [x] CHK-PARENT-043 [P1] `review/review-report.md` is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits. ✓ Verified in: ./review/review-report.md and implementation-summary.md §How It Was Delivered (Lane 1–5 paragraphs with commits be79ed0a0, 17b5f28ed, 86c7fbc9d, 2c4f74b9f, f99739742)
+- [x] CHK-PARENT-043 [P1] The archived closing-audit report is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits. ✓ Verified in: ./review/archive-rvw-2026-04-11/review-report.md and implementation-summary.md §How It Was Delivered (Lane 1–5 paragraphs with commits be79ed0a0, 17b5f28ed, 86c7fbc9d, 2c4f74b9f, f99739742)
 <!-- /ANCHOR:docs -->
 
 ---

@@ -327,16 +327,11 @@ After loop exits, classify the termination:
 - `rolledBack` — Promotion reversed
 - `advisoryOnly` — Assessment only, no mutation
 
-### Step 6D: Resume Semantics (Phase 005)
+### Step 6D: Session Boundary (current release)
 
-When `--session-id=<prior-id>` is provided:
+`/improve:agent` is one-session-only in the current release. Every invocation starts a fresh `new`-mode session with generation 1, writes a new journal, and evaluates candidates from iteration 1 for that session.
 
-1. Read the prior journal from `{spec_folder}/improvement/improvement-journal.jsonl`
-2. Replay journal state to determine `continuedFromIteration`
-3. Resume the iteration counter from that point
-4. Do NOT repeat already-completed iterations
-
-Supported lineage modes: `new`. sk-improve-agent is one-session-only in the current release — every invocation starts a fresh session with generation 1. `resume`, `restart`, `fork`, and `completed-continue` were described in earlier drafts but have no runtime wiring; see `.opencode/skill/sk-improve-agent/SKILL.md §Resume/Continuation Semantics (current release)` for the full retraction.
+Do **not** document or attempt journal replay, iteration carry-forward, or `resume`/`restart`/`fork`/`completed-continue` behavior here. Those lineage modes were described in earlier drafts but have no shipped runtime wiring; see `.opencode/skill/sk-improve-agent/SKILL.md §Resume/Continuation Semantics (current release)` for the canonical retraction.
 
 ### Step 7: Return Status
 

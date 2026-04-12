@@ -238,6 +238,24 @@ describe('coverage graph session isolation — shared-ID collisions', () => {
     };
   }
 
+  function collisionTypedNode(
+    sessionId: string,
+    id: string,
+    kind: CoverageNode['kind'],
+    name: string,
+    metadata?: Record<string, unknown>,
+  ): CoverageNode {
+    return {
+      id,
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId,
+      kind,
+      name,
+      metadata,
+    };
+  }
+
   function collisionEdge(sessionId: string, id: string, sourceId: string, targetId: string): CoverageEdge {
     return {
       id,
@@ -247,6 +265,25 @@ describe('coverage graph session isolation — shared-ID collisions', () => {
       sourceId,
       targetId,
       relation: 'ANSWERS',
+      weight: 1,
+    };
+  }
+
+  function collisionTypedEdge(
+    sessionId: string,
+    id: string,
+    sourceId: string,
+    targetId: string,
+    relation: CoverageEdge['relation'],
+  ): CoverageEdge {
+    return {
+      id,
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId,
+      sourceId,
+      targetId,
+      relation,
       weight: 1,
     };
   }
@@ -342,26 +379,26 @@ describe('coverage graph session isolation — shared-ID collisions', () => {
 
     const sessionXNodes: CoverageNode[] = [
       collisionNode(SESSION_X, sharedQuestionId, 'Question X'),
-      makeNode(sharedFindingOneId, SESSION_X, 'FINDING', 'Finding X1'),
-      makeNode(sharedFindingTwoId, SESSION_X, 'FINDING', 'Finding X2'),
-      makeNode(sharedSourceOneId, SESSION_X, 'SOURCE', 'Source X1', { quality_class: 'primary' }),
-      makeNode(sharedSourceTwoId, SESSION_X, 'SOURCE', 'Source X2', { quality_class: 'secondary' }),
-      makeNode(sharedClaimSourceId, SESSION_X, 'CLAIM', 'Claim X A'),
-      makeNode(sharedClaimTargetId, SESSION_X, 'CLAIM', 'Claim X B'),
+      collisionTypedNode(SESSION_X, sharedFindingOneId, 'FINDING', 'Finding X1'),
+      collisionTypedNode(SESSION_X, sharedFindingTwoId, 'FINDING', 'Finding X2'),
+      collisionTypedNode(SESSION_X, sharedSourceOneId, 'SOURCE', 'Source X1', { quality_class: 'primary' }),
+      collisionTypedNode(SESSION_X, sharedSourceTwoId, 'SOURCE', 'Source X2', { quality_class: 'secondary' }),
+      collisionTypedNode(SESSION_X, sharedClaimSourceId, 'CLAIM', 'Claim X A'),
+      collisionTypedNode(SESSION_X, sharedClaimTargetId, 'CLAIM', 'Claim X B'),
     ];
     const sessionYNodes: CoverageNode[] = [
       collisionNode(SESSION_Y, sharedQuestionId, 'Question Y'),
-      makeNode(sharedFindingOneId, SESSION_Y, 'FINDING', 'Finding Y1'),
-      makeNode(sharedClaimSourceId, SESSION_Y, 'CLAIM', 'Claim Y A'),
-      makeNode(sharedClaimTargetId, SESSION_Y, 'CLAIM', 'Claim Y B'),
+      collisionTypedNode(SESSION_Y, sharedFindingOneId, 'FINDING', 'Finding Y1'),
+      collisionTypedNode(SESSION_Y, sharedClaimSourceId, 'CLAIM', 'Claim Y A'),
+      collisionTypedNode(SESSION_Y, sharedClaimTargetId, 'CLAIM', 'Claim Y B'),
     ];
 
     const sessionXEdges: CoverageEdge[] = [
       collisionEdge(SESSION_X, 'answers-shared-1', sharedFindingOneId, sharedQuestionId),
       collisionEdge(SESSION_X, 'answers-shared-2', sharedFindingTwoId, sharedQuestionId),
-      makeEdge('cites-shared-1', SESSION_X, sharedFindingOneId, sharedSourceOneId, 'CITES'),
-      makeEdge('cites-shared-2', SESSION_X, sharedFindingTwoId, sharedSourceTwoId, 'CITES'),
-      makeEdge('contradiction-shared', SESSION_X, sharedClaimSourceId, sharedClaimTargetId, 'CONTRADICTS'),
+      collisionTypedEdge(SESSION_X, 'cites-shared-1', sharedFindingOneId, sharedSourceOneId, 'CITES'),
+      collisionTypedEdge(SESSION_X, 'cites-shared-2', sharedFindingTwoId, sharedSourceTwoId, 'CITES'),
+      collisionTypedEdge(SESSION_X, 'contradiction-shared', sharedClaimSourceId, sharedClaimTargetId, 'CONTRADICTS'),
     ];
     const sessionYEdges: CoverageEdge[] = [
       collisionEdge(SESSION_Y, 'answers-shared-1', sharedFindingOneId, sharedQuestionId),

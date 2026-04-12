@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Parent overview for the phased implementation bundle that coordinates runtime truth, semantic coverage, wave execution, and offline optimization across child phases 001-004."
+description: "Parent overview for the phased implementation bundle that coordinates runtime truth, semantic coverage, wave execution, offline optimization, and closeout remediation across child phases 001-008."
 trigger_phrases:
   - "042"
   - "deep research"
@@ -38,7 +38,7 @@ This parent packet coordinates **eight child implementation phases plus a post-p
 
 **Key decisions**: keep runtime truth first, reuse existing graph infrastructure instead of building a separate platform, keep wave execution at the orchestrator layer instead of inside LEAF agents, split the optimizer into active Phase 4a work plus deferred Phase 4b work, add phases 5–8 to harden the deep-loop skills against the residual contract drift they shipped with, and absorb the closing-audit findings into the same packet via a five-lane remediation rather than spinning up a new packet.
 
-**Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet; `review/review-report.md` for the 16 closing-audit findings and their Lane 1–5 remediation mapping.
+**Critical dependencies**: consolidated research findings `CF-004`, `CF-010`, `CF-014`, `CF-021`, `CF-027`, and `CF-030`; existing deep-loop reducer/parity surfaces; packet-local append-only state; the child phase plans under this packet; `review/archive-rvw-2026-04-11/review-report.md` for the 16 closing-audit findings and their Lane 1–5 remediation mapping.
 
 ---
 <!-- ANCHOR:metadata -->
@@ -63,11 +63,11 @@ This parent packet coordinates **eight child implementation phases plus a post-p
 
 ### Problem Statement
 
-The deep-loop stack still needs stronger runtime truth, better semantic coverage signals, bounded large-target orchestration, and safer offline tuning. The original parent packet described all of that in one place, but it is now stale because the work has been decomposed into four execution-ready child phases with their own specs, plans, and tasks.
+The deep-loop stack still needs stronger runtime truth, better semantic coverage signals, bounded large-target orchestration, and safer offline tuning. The original parent packet described all of that in one place, but it is now stale because the work has been decomposed into eight execution-ready child phases with their own specs, plans, and tasks, plus an archived closing-audit report that records the final remediation trigger.
 
 ### Purpose
 
-Define the parent coordination layer for Packet 042: summarize the four-phase scope, show where detail now lives, and keep cross-phase requirements, milestones, risks, and open questions visible without duplicating the child packet contents.
+Define the parent coordination layer for Packet 042: summarize the eight-phase scope, show where detail now lives, and keep cross-phase requirements, milestones, risks, and open questions visible without duplicating the child packet contents.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -77,7 +77,7 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 
 ### In Scope
 
-- Coordinate the four child phases that together deliver the runtime-improvement bundle.
+- Coordinate the eight child phases that together deliver the runtime-improvement bundle.
 - Keep the parent packet focused on cross-phase scope, dependencies, milestones, and handoff criteria.
 - Provide a requirement-to-phase map so operators know where detailed implementation work lives.
 - Keep parent-level references to verification, ADRs, and task counts synchronized with the child folders.
@@ -86,7 +86,7 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 
 - Repeating detailed per-file implementation plans already documented in the child folders.
 - Repeating child-level edge cases, acceptance scenarios, or task prose in the parent docs.
-- Introducing new implementation scope beyond the four existing child phases.
+- Introducing new implementation scope beyond the eight implemented child phases, the explicitly deferred Phase 4b track, and the archived closing-audit remediation record.
 
 ### Files to Change Summary
 
@@ -96,6 +96,10 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 | **Phase 2** | Semantic coverage graph | Shared graph libraries, Spec Kit Memory MCP server, reducer integration, graph tests, agent/reference updates |
 | **Phase 3** | Wave executor | Orchestration helpers, wave-aware contracts, workflow updates, merge/resume tests |
 | **Phase 4** | Offline optimizer | Optimizer scripts, replay fixtures, config boundaries, promotion gate, offline maintenance docs |
+| **Phase 5** | Agent-improver deep-loop alignment | sk-improve-agent helpers, runtime-truth docs, journal surfaces, advisory optimizer alignment |
+| **Phase 6** | Graph testing and playbook alignment | Coverage-graph test suites, playbook cross-references, README discovery surfaces |
+| **Phase 7** | Graph-aware stop gate | Graph convergence workflow wiring, fail-closed reducer reconciliation, runtime-truth state-log alignment |
+| **Phase 8** | Further deep-loop improvements | Research/review/improve-agent release packaging, phase-008 fixes, post-audit reconciliation inputs |
 
 ### Phase Documentation Map
 
@@ -105,6 +109,10 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 | **2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph reuse, dedicated SQLite store, MCP tools, reducer/MCP seam, graph-aware convergence | Implemented | Phase 1 |
 | **3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, reducer-owned board, keyed merge | Implemented | Phases 1-2 |
 | **4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | `4a` deterministic config optimizer now; `4b` prompt/meta optimizer deferred | Implemented (4a); Deferred (4b) | Phases 1-3 |
+| **5** | [./005-agent-improver-deep-loop-alignment/](./005-agent-improver-deep-loop-alignment/) | sk-improve-agent helper parity, journal contract alignment, advisory optimizer traceability | Implemented | Phases 1-4 |
+| **6** | [./006-graph-testing-and-playbook-alignment/](./006-graph-testing-and-playbook-alignment/) | Coverage-graph test coverage plus operator playbook alignment | Implemented | Phases 2, 5 |
+| **7** | [./007-graph-aware-stop-gate/](./007-graph-aware-stop-gate/) | Graph convergence workflow wiring and fail-closed runtime-truth reconciliation | Implemented | Phases 1-6 |
+| **8** | [./008-further-deep-loop-improvements/](./008-further-deep-loop-improvements/) | Follow-on runtime hardening, release packaging, and closing-audit pre-reconciliation | Implemented | Phases 1-7 |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -120,7 +128,7 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 | REQ-004 | Phase 4a remains the source of truth for active deterministic replay/config optimization work. | [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md) |
 | REQ-005 | Phase 4b must remain explicitly deferred until replay fixtures, behavioral suites, and corpus prerequisites exist. | [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md) |
 | REQ-006 | The parent packet must map every major requirement cluster to the correct child phase instead of duplicating child detail. | This file plus child packet links |
-| REQ-007 | Parent milestones and handoff criteria must reflect the child phase dependency order `001 -> 002 -> 003 -> 004`. | [./plan.md](./plan.md) |
+| REQ-007 | Parent milestones and handoff criteria must reflect the child phase dependency order `001 -> 002 -> 003 -> 004 -> 005 -> 006 -> 007 -> 008`, with the archived closing audit routed after Phase 008. | [./plan.md](./plan.md) |
 | REQ-008 | Parent verification and ADR indexes must point to the child sources of truth that actually own those details. | [./checklist.md](./checklist.md), [./decision-record.md](./decision-record.md) |
 <!-- /ANCHOR:requirements -->
 
@@ -196,7 +204,7 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 24/25 | Four coordinated child phases across runtime contracts, graph infrastructure, orchestration, and offline optimization |
+| Scope | 24/25 | Eight coordinated child phases plus archived closing-audit remediation across runtime contracts, graph infrastructure, orchestration, optimizer follow-on work, and release-readiness reconciliation |
 | Risk | 22/25 | Stop legality, graph truth, merge correctness, replay fidelity, and deferred optimizer guardrails |
 | Research | 17/20 | Strong evidence base exists, but several cross-phase handoff choices still matter |
 | Multi-Agent | 0/15 | Planning only; execution strategy is phase-based rather than multi-agent at the parent level |
@@ -253,44 +261,8 @@ Define the parent coordination layer for Packet 042: summarize the four-phase sc
 - **Phase 2**: See [./002-semantic-coverage-graph/spec.md](./002-semantic-coverage-graph/spec.md)
 - **Phase 3**: See [./003-wave-executor/spec.md](./003-wave-executor/spec.md)
 - **Phase 4**: See [./004-offline-loop-optimizer/spec.md](./004-offline-loop-optimizer/spec.md)
-
----
-title: "phase parent section [template:addendum/phase/phase-parent-section.md]"
-description: "Template document for addendum/phase/phase-parent-section.md."
-trigger_phrases:
-  - "phase"
-  - "parent"
-  - "section"
-  - "template"
-  - "phase parent section"
-importance_tier: "normal"
-contextType: "general"
----
-<!-- SPECKIT_ADDENDUM: Phase - Parent Section -->
-<!-- Append to parent spec.md after SCOPE section -->
-
----
-
-<!-- ANCHOR:phase-map -->
-## PHASE DOCUMENTATION MAP
-
-> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
-
-| Phase | Folder | Focus | Status |
-|-------|--------|-------|--------|
-| 7 | 007-skill-rename-improve-agent-prompt/ | [Phase 7 scope] | [deps] | Pending |
-
-### Phase Transition Rules
-
-- Each phase MUST pass `validate.sh` independently before the next phase begins
-- Parent spec tracks aggregate progress via this map
-- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
-- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
-- Packet-local changelog files live under `changelog/`; root uses `changelog-<packet>-root.md` and phases use `changelog-<packet>-<phase-folder>.md`
-
-### Phase Handoff Criteria
-
-| From | To | Criteria | Verification |
-|------|-----|----------|--------------|
-| 006-graph-testing-and-playbook-alignment | 007-skill-rename-improve-agent-prompt | [Criteria TBD] | [Verification TBD] |
-<!-- /ANCHOR:phase-map -->
+- **Phase 5**: See [./005-agent-improver-deep-loop-alignment/spec.md](./005-agent-improver-deep-loop-alignment/spec.md)
+- **Phase 6**: See [./006-graph-testing-and-playbook-alignment/spec.md](./006-graph-testing-and-playbook-alignment/spec.md)
+- **Phase 7**: See [./007-graph-aware-stop-gate/spec.md](./007-graph-aware-stop-gate/spec.md)
+- **Phase 8**: See [./008-further-deep-loop-improvements/spec.md](./008-further-deep-loop-improvements/spec.md)
+- **Closing Audit Report**: See [./review/archive-rvw-2026-04-11/review-report.md](./review/archive-rvw-2026-04-11/review-report.md)

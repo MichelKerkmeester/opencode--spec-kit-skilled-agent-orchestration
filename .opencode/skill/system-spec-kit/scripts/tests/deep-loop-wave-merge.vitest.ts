@@ -77,6 +77,15 @@ describe('wave-coordination-board', () => {
       expect(b.segments.length).toBe(1);
       expect(b.findings.length).toBe(1);
       expect(b.stats.totalFindings).toBe(1);
+      expect(b.status).toBe('merging');
+    });
+
+    it('routes board status updates through the transition matrix', () => {
+      const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
+      board.updateBoard(b, [
+        { segmentId: 'seg-1', status: 'running', findings: [] },
+      ]);
+      expect(b.status).toBe('executing');
     });
 
     it('deduplicates repeated merges only when the full 5-key composite matches', () => {
@@ -269,11 +278,23 @@ describe('wave-segment-state', () => {
       expect(result.conflicts.length).toBe(0);
     });
 
-    it('deduplicates findings with same ID', () => {
+    it('preserves cross-segment findings that share a logical findingId', () => {
       const s1 = segState.createSegmentState('seg-1', { sessionId: 's1' });
       s1.findings = [{ findingId: 'f1', title: 'Bug', severity: 'P1' }];
 
       const s2 = segState.createSegmentState('seg-2', { sessionId: 's1' });
+      s2.findings = [{ findingId: 'f1', title: 'Bug', severity: 'P1' }];
+
+      const result = segState.mergeSegmentStates([s1, s2], 'dedupe');
+      expect(result.merged.findings.length).toBe(2);
+      expect(result.dedupeLog.length).toBe(0);
+    });
+
+    it('deduplicates exact duplicates only when the full 5-key composite matches', () => {
+      const s1 = segState.createSegmentState('seg-1', { sessionId: 's1', waveId: 'w1' });
+      s1.findings = [{ findingId: 'f1', title: 'Bug', severity: 'P1' }];
+
+      const s2 = segState.createSegmentState('seg-1', { sessionId: 's1', waveId: 'w1' });
       s2.findings = [{ findingId: 'f1', title: 'Bug', severity: 'P1' }];
 
       const result = segState.mergeSegmentStates([s1, s2], 'dedupe');
@@ -290,7 +311,9 @@ describe('wave-segment-state', () => {
 
       const result = segState.mergeSegmentStates([s1, s2], 'dedupe');
       expect(result.conflicts.length).toBe(1);
-      expect(result.merged.findings[0].severity).toBe('P0');
+      expect(result.merged.findings.length).toBe(2);
+      const promoted = result.merged.findings.find((finding: any) => finding.segment === 'seg-2');
+      expect(promoted?.severity).toBe('P0');
     });
 
     it('sorts JSONL records by explicit keys, not append order', () => {

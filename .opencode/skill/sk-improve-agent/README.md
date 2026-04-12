@@ -159,7 +159,15 @@ Promotion requires passing prompt scoring, benchmark status, repeatability evide
 
 The reducer tracks per-dimension scores across iterations, rendering a Dimensional Progress table in the dashboard. It detects when all dimensions have plateaued (3+ identical scores) and triggers a stop condition, preventing endless loops without improvement.
 
-### 3.7 MIRROR DRIFT AS PACKAGING WORK
+### 3.8 LEGAL-STOP EVENTS AND SESSION-BOUNDARY GATE
+
+Both auto and confirm workflows now emit `legal_stop_evaluated` and `blocked_stop` events to the JSONL ledger, matching the deep-research and deep-review runtime-truth contract. A session-boundary gate enforces fresh-session isolation before initialization — if prior improvement state exists, the workflow halts until the operator archives, resumes, or aborts.
+
+### 3.9 PLATEAU STOP REASON
+
+The stop-reason taxonomy includes a dedicated `plateau` reason so plateau exits are recorded truthfully instead of being falsified as `converged`. The journal validator accepts `plateau` as a first-class stop type.
+
+### 3.10 MIRROR DRIFT AS PACKAGING WORK
 
 Runtime mirrors are downstream packaging surfaces. The skill treats them as follow-up parity work, not as proof that the benchmark result was real. The integration scanner reports drift status so it can be addressed separately.
 

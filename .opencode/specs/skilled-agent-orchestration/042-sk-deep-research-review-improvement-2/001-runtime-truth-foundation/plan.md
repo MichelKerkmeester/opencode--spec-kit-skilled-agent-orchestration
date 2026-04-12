@@ -248,7 +248,7 @@ Phase 5 optional advanced modes
 - `.claude/agents/deep-research.md`
 - `.gemini/agents/deep-research.md`
 - `.codex/agents/deep-research.toml`
-- `.agents/agents/deep-research.md`
+- `.claude/agents/deep-research.md`
 - `.claude/agents/deep-review.md`
 - `.gemini/agents/deep-review.md`
 - `.codex/agents/deep-review.toml`

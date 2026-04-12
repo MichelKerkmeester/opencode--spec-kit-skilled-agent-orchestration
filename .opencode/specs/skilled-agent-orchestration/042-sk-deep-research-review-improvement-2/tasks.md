@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Parent task index for child phases 001-004."
+description: "Parent task index for child phases 001-008 plus archived closing-audit remediation."
 trigger_phrases:
   - "042"
   - "tasks"
@@ -77,7 +77,7 @@ contextType: "planning"
 | **Phase 6** | [./006-graph-testing-and-playbook-alignment/tasks.md](./006-graph-testing-and-playbook-alignment/tasks.md) | Graph testing + playbook coverage | Implemented; all tasks completed | Vitest coverage across coverage-graph layers + matching playbook scenarios |
 | **Phase 7** | [./007-graph-aware-stop-gate/tasks.md](./007-graph-aware-stop-gate/tasks.md) | Graph-aware stop gate + runtime-truth reconciliation | Implemented; all tasks completed | Graph convergence MCP wiring in both loop workflows, fail-closed reducer reconciliation |
 | **Phase 8** | [./008-further-deep-loop-improvements/tasks.md](./008-further-deep-loop-improvements/tasks.md) | 12 Codex research recommendations + 4 phase-008 closing-audit P1 fixes | Implemented; all tasks completed | 12 new vitest tests, 7 playbook scenarios, SKILL bumps to v1.6.0.0 / v1.3.0.0 / v1.2.0.0 |
-| **Closing Audit + Remediation** | [./review/review-report.md](./review/review-report.md) | Post-phase-008 closing audit (10 iterations, CONDITIONAL) and Lane 1–5 remediation | Closed — 16 findings routed to 5 remediation lanes, all landed in this packet | See `implementation-summary.md` §How It Was Delivered for the Lane 1–5 mapping and REQ-026 through REQ-034 |
+| **Closing Audit + Remediation** | [./review/archive-rvw-2026-04-11/review-report.md](./review/archive-rvw-2026-04-11/review-report.md) | Post-phase-008 closing audit (10 iterations, CONDITIONAL) and Lane 1–5 remediation | Closed — 16 findings routed to 5 remediation lanes, all landed in this packet | See `implementation-summary.md` §How It Was Delivered for the Lane 1–5 mapping and REQ-026 through REQ-034 |
 
 - [x] T-PARENT-001 Keep the root packet synchronized with Phase 1 child docs.
 - [x] T-PARENT-002 Keep the root packet synchronized with Phase 2 child docs.
@@ -102,7 +102,7 @@ contextType: "planning"
 | Category | Count |
 |----------|-------|
 | Child phases | 8 (`001`–`008`) plus closing-audit remediation (`review/` + Lanes 1–5) |
-| Completed child tasks | 88 across phases 1–4 plus all phase 5–8 tasks plus the 12 Lane 1–5 remediation tasks (T001–T012 in `review/review-report.md`) |
+| Completed child tasks | 88 across phases 1–4 plus all phase 5–8 tasks plus the 12 Lane 1–5 remediation tasks (T001–T012 in `review/archive-rvw-2026-04-11/review-report.md`) |
 | Blocked (Phase 4b deferred) | 3 |
 | Pending | 0 |
 

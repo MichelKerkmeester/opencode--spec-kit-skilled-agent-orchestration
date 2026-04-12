@@ -97,6 +97,21 @@ function parseJsonlDetailed(jsonlContent) {
   return { records, corruptionWarnings };
 }
 
+function createCorruptionError(stateLogPath, corruptionWarnings) {
+  const preview = corruptionWarnings
+    .slice(0, 3)
+    .map((warning) => `  - line ${warning.line}: ${warning.error}`)
+    .join('\n');
+  const error = new Error(
+    `[sk-deep-research] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
+    + 'Pass --lenient to the reducer CLI (or lenient:true to reduceResearchState) to ignore corruption.',
+  );
+  error.code = 'STATE_CORRUPTION';
+  error.corruptionWarnings = corruptionWarnings;
+  error.stateLogPath = stateLogPath;
+  return error;
+}
+
 function extractSection(markdown, heading) {
   // Drop the `m` flag so `$` anchors to end-of-string, not end-of-line
   const pattern = new RegExp(`(?:^|\\n)##\\s+${escapeRegExp(heading)}\\s*\\n([\\s\\S]*?)(?=\\n##\\s|$)`, 'i');
@@ -848,22 +863,14 @@ function reduceResearchState(specFolder, options = {}) {
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
+  if (corruptionWarnings.length > 0 && !lenient) {
+    throw createCorruptionError(stateLogPath, corruptionWarnings);
+  }
+
   if (write) {
     writeUtf8(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
     writeUtf8(strategyPath, strategy.endsWith('\n') ? strategy : `${strategy}\n`);
     writeUtf8(dashboardPath, dashboard);
-  }
-
-  // Fail-closed on corruption unless --lenient.
-  if (corruptionWarnings.length > 0 && !lenient) {
-    const preview = corruptionWarnings
-      .slice(0, 3)
-      .map((w) => `  - line ${w.line}: ${w.error}`)
-      .join('\n');
-    process.stderr.write(
-      `[sk-deep-research] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
-      + 'Pass --lenient to the reducer CLI (or lenient:true to reduceResearchState) to ignore corruption.\n',
-    );
   }
 
   return {
@@ -917,6 +924,10 @@ if (require.main === module) {
       process.exit(2);
     }
   } catch (error) {
+    if (error && error.code === 'STATE_CORRUPTION') {
+      process.stderr.write(`${error.message}\n`);
+      process.exit(2);
+    }
     process.stderr.write(`[sk-deep-research] reducer failed: ${error instanceof Error ? error.message : String(error)}\n`);
     process.exit(3);
   }

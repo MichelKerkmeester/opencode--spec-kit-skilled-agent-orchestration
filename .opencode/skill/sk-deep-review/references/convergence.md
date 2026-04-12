@@ -285,7 +285,7 @@ The two semantic signals integrate with the existing 5-gate legal-stop bundle (S
 
 2. **findingStability signal** (new): The `findingStability` metric (0.0-1.0) is surfaced alongside the existing convergence signals. It supports the `findingStability` gate evaluation by providing a registry-level stability measure that complements the ratio-based churn signals.
 
-The gate passes only when both the existing churn-based checks AND the semantic stability checks agree. When a semantic check fails, the `legalStop.gateResults.findingStability` detail string includes the semantic signal values.
+The gate passes only when both the existing churn-based checks AND the semantic stability checks agree. When a semantic check fails, the persisted `blocked_stop.gateResults.findingStability` payload includes the semantic signal values.
 
 #### Stop-Decision Trace
 
@@ -419,7 +419,7 @@ function buildReviewLegalStop(state, config, coverage):
   }
 ```
 
-When convergence math returns STOP, invoke `buildReviewLegalStop()`. If it returns `pass: false`, persist a first-class blocked-stop decision with `stopReason=blockedStop`, populate `legalStop.blockedBy` from the failing gates, copy the full `gateResults`, snapshot the replay inputs, and attach a `recoveryStrategy` describing the next review action before overriding the decision to CONTINUE.
+When convergence math returns STOP, invoke `buildReviewLegalStop()`. If it returns `pass: false`, persist a first-class `blocked_stop` event with the failing `blockedBy` gates, the full `gateResults` bundle, a `recoveryStrategy`, and the normal run/timestamp/session lineage fields before overriding the decision to CONTINUE.
 
 ### Blocked-Stop Recovery Strategy
 
@@ -607,12 +607,10 @@ Semantic Convergence Signals:
   findingStability:   0.XX [SUPPORTS_STOP|PREVENTS_STOP|INSUFFICIENT_DATA]
   semanticVerdict:    [all_support_stop|mixed|all_prevent_stop|insufficient_data]
 
-legalStop:
+blocked_stop (only when STOP was vetoed on this run):
   blockedBy: [gate names]
   gateResults: [pass/fail map with detail]
-  replayInputs: [snapshot of ratios, coverage, and gate inputs]
-
-Blocked-stop recovery strategy: [what the next iteration must do before STOP can be retried]
+  recoveryStrategy: [what the next iteration must do before STOP can be retried]
 
 Stuck recovery attempts: N (recovered: N, failed: N)
 ```
@@ -624,24 +622,6 @@ Stuck recovery attempts: N (recovered: N, failed: N)
   "type": "event",
   "event": "synthesis",
   "stopReason": "converged",
-  "legalStop": {
-    "blockedBy": [],
-    "gateResults": {
-      "findingStability": { "pass": true, "detail": "Rolling average, MAD noise floor, and novelty ratio all voted STOP." },
-      "dimensionCoverage": { "pass": true, "detail": "All configured review dimensions were examined, required traceability coverage passed, and stabilization aged enough to stop." },
-      "p0Resolution": { "pass": true, "detail": "No unresolved P0 findings remained." },
-      "evidenceDensity": { "pass": true, "detail": "Evidence density stayed above the configured threshold." },
-      "hotspotSaturation": { "pass": true, "detail": "Priority hotspots were revisited enough times to satisfy saturation." }
-    },
-    "replayInputs": {
-      "iterationCount": 5,
-      "newFindingsRatio": 0.04,
-      "noveltyRatio": 0.03,
-      "dimensionsExamined": ["correctness", "security", "traceability", "maintainability"],
-      "hotspotCoverage": { "saturated": 3, "required": 3 },
-      "stopScore": 0.70
-    }
-  },
   "totalIterations": 5,
   "verdict": "CONDITIONAL",
   "hasAdvisories": false,
@@ -661,6 +641,8 @@ Stuck recovery attempts: N (recovered: N, failed: N)
   "stuckRecoveryAttempts": 0
 }
 ```
+
+When STOP is vetoed instead of finalized, the workflow emits the separate `blocked_stop` event from Section 6 rather than nesting a `legalStop` object inside `synthesis`.
 
 ---
 
@@ -736,7 +718,7 @@ The following convergence thresholds are managed by the offline loop optimizer (
 The following fields are runtime contracts and MUST NOT be modified by the optimizer:
 
 - `stopReason` enum values and semantics
-- `legalStop` record structure and gate names
+- `blocked_stop` event structure and gate names
 - Lineage fields (`sessionId`, `lineageMode`, `generation`)
 - Reducer configuration and file protection policies
 - Review dimensions (`reviewDimensions`) and product mode (`mode`)

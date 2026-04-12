@@ -52,7 +52,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 Every iteration follows this exact sequence:
 
 ```
-1. READ STATE ──────> Read JSONL + strategy.md
+1. READ STATE ──────> Read config + JSONL + strategy.md
 2. DETERMINE FOCUS ─> Pick focus from strategy "Next Focus"
 3. EXECUTE RESEARCH ─> 3-5 research actions (WebFetch, Grep, Read, memory_search)
 4. WRITE FINDINGS ──> Create research/iterations/iteration-NNN.md

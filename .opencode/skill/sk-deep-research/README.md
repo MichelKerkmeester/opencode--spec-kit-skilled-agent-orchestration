@@ -89,6 +89,9 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 | Semantic coverage graph | Each iteration emits `graphEvents` (nodes + edges) in JSONL, building an in-memory coverage graph with relation types (ANSWERS, SUPPORTS, CONTRADICTS, SUPERSEDES, DERIVED_FROM, COVERS, CITES). |
 | Graph convergence guards | STOP-blocking guards: sourceDiversity (>= 0.4) and evidenceDepth (>= 1.5) must pass before convergence is accepted, preventing premature termination from single-source or shallow-evidence research. |
 | Question coverage tracking | Graph tracks which research questions have ANSWERS edges, computing an answerCoverage ratio that contributes to the convergence score. |
+| Fail-closed corruption handling | The reducer throws a structured error before writing any derived files when JSONL corruption is detected in non-lenient mode. |
+| Graph convergence fallback | When `blendedScore` is absent from `graph_convergence` events, the reducer uses a numeric fallback instead of collapsing to zero. |
+| Terminal stop metadata | The reducer parses `synthesis_complete` events to derive authoritative dashboard status rather than relying on stale config. |
 <!-- /ANCHOR:features -->
 
 ---

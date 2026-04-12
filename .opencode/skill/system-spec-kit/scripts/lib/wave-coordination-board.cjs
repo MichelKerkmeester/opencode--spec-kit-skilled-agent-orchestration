@@ -54,6 +54,18 @@ const FINDING_MERGE_STATES = Object.freeze([
 ]);
 
 /**
+ * Canonical merge-key fields shared across wave board, lifecycle, and segment-state.
+ * @type {ReadonlyArray<string>}
+ */
+const FINDING_MERGE_KEYS = Object.freeze([
+  'sessionId',
+  'generation',
+  'segment',
+  'wave',
+  'findingId',
+]);
+
+/**
  * Check whether a value is a non-empty string.
  * @param {unknown} value
  * @returns {boolean}
@@ -172,6 +184,10 @@ function updateBoard(board, segmentResults) {
 
   // Update stats
   recalculateStats(board);
+
+  if (board.status !== 'completed' && board.status !== 'failed') {
+    advanceBoardStatus(board, deriveBoardStatus(board));
+  }
 
   return board;
 }
@@ -371,6 +387,92 @@ function transitionBoardStatus(board, targetStatus) {
   };
 }
 
+/**
+ * Advance the board through adjacent transitions until it reaches targetStatus.
+ *
+ * @param {object} board
+ * @param {string} targetStatus
+ * @returns {{ success: boolean, previousStatus: string, currentStatus: string, error?: string }}
+ */
+function advanceBoardStatus(board, targetStatus) {
+  if (!board || typeof board !== 'object') {
+    return { success: false, previousStatus: 'unknown', currentStatus: 'unknown', error: 'Invalid board' };
+  }
+  if (!BOARD_STATUSES.includes(targetStatus)) {
+    return {
+      success: false,
+      previousStatus: board.status || 'unknown',
+      currentStatus: board.status || 'unknown',
+      error: `Invalid target status: ${targetStatus}`,
+    };
+  }
+  if (board.status === targetStatus) {
+    return {
+      success: true,
+      previousStatus: board.status,
+      currentStatus: board.status,
+    };
+  }
+  if (targetStatus === 'failed') {
+    return transitionBoardStatus(board, targetStatus);
+  }
+
+  const currentIndex = BOARD_STATUSES.indexOf(board.status);
+  const targetIndex = BOARD_STATUSES.indexOf(targetStatus);
+  if (currentIndex < 0 || targetIndex < 0 || targetIndex < currentIndex) {
+    return {
+      success: false,
+      previousStatus: board.status || 'unknown',
+      currentStatus: board.status || 'unknown',
+      error: `Cannot advance board from "${board.status}" to "${targetStatus}"`,
+    };
+  }
+
+  let previousStatus = board.status;
+  for (let index = currentIndex + 1; index <= targetIndex; index += 1) {
+    const result = transitionBoardStatus(board, BOARD_STATUSES[index]);
+    if (!result.success) {
+      return result;
+    }
+    previousStatus = result.previousStatus;
+  }
+
+  return {
+    success: true,
+    previousStatus,
+    currentStatus: board.status,
+  };
+}
+
+/**
+ * Derive the authoritative board status from the current segment state.
+ *
+ * @param {object} board
+ * @returns {string}
+ */
+function deriveBoardStatus(board) {
+  const segments = Array.isArray(board?.segments) ? board.segments : [];
+  if (segments.length === 0) {
+    return board?.status || 'initialized';
+  }
+
+  const terminalStatuses = new Set(['completed', 'converged', 'pruned', 'failed']);
+  const statuses = segments
+    .map((segment) => segment?.status)
+    .filter(isNonEmptyString);
+
+  if (statuses.length === 0) {
+    return 'planning';
+  }
+  if (statuses.every((status) => terminalStatuses.has(status))) {
+    return 'merging';
+  }
+  if (statuses.some((status) => status === 'running' || status === 'dispatched' || terminalStatuses.has(status))) {
+    return 'executing';
+  }
+  return 'planning';
+}
+
 /* ---------------------------------------------------------------
    5. DASHBOARD RENDERING
 ----------------------------------------------------------------*/
@@ -511,13 +613,9 @@ function compareSeverity(a, b) {
  * @returns {string}
  */
 function buildFindingCompositeKey(findingRecord) {
-  return [
-    normalizeMergeKeyPart(findingRecord && findingRecord.sessionId),
-    normalizeMergeKeyPart(findingRecord && findingRecord.generation),
-    normalizeMergeKeyPart(findingRecord && findingRecord.segment),
-    normalizeMergeKeyPart(findingRecord && findingRecord.wave),
-    normalizeMergeKeyPart(findingRecord && findingRecord.findingId),
-  ].join('::');
+  return FINDING_MERGE_KEYS
+    .map((key) => normalizeMergeKeyPart(findingRecord && findingRecord[key]))
+    .join('::');
 }
 
 /**
@@ -583,17 +681,23 @@ module.exports = {
   BOARD_STATUSES,
   BOARD_STATUS_TRANSITIONS,
   FINDING_MERGE_STATES,
+  FINDING_MERGE_KEYS,
   // Board operations
   createBoard,
   updateBoard,
   transitionBoardStatus,
+  advanceBoardStatus,
+  deriveBoardStatus,
   // Finding operations
   buildFindingRecord,
   mergeFinding,
+  buildFindingCompositeKey,
+  buildFindingGroupKey,
   // Dashboard
   renderDashboard,
   // Helpers
   generateFindingId,
   recalculateStats,
   compareSeverity,
+  normalizeMergeKeyPart,
 };

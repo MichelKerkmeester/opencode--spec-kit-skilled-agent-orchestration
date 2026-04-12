@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Four-phase implementation delivering runtime truth, semantic coverage graph, wave execution, and offline optimization across 100 files and +19K lines for sk-deep-research and sk-deep-review."
+description: "Eight-phase implementation plus archived closing-audit remediation delivering runtime truth, semantic coverage, wave execution, offline optimization, and follow-on hardening for the deep-loop skills."
 trigger_phrases:
   - "042"
   - "implementation summary"
@@ -25,7 +25,7 @@ contextType: "planning"
 | **Spec Folder** | 042-sk-deep-research-review-improvement-2 |
 | **Completed** | 2026-04-10 |
 | **Level** | 3 |
-| **Execution Model** | Four child phases; Phase 4 split into active `4a` (complete) and deferred `4b` |
+| **Execution Model** | Eight child phases; Phase 4 split into active `4a` (complete) and deferred `4b`, followed by an archived closing-audit remediation pass |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,7 +33,7 @@ contextType: "planning"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The deep-loop stack is now auditable, graph-aware, scale-ready, and offline-tunable. This bundle converted consolidated agentic-systems research into four implementation phases that upgraded `sk-deep-research` and `sk-deep-review` without collapsing them into a generic workflow. The work touched approximately 100 files and added over 19,000 lines across contracts, libraries, MCP tools, reducer logic, agent instructions, and test suites.
+The deep-loop stack is now auditable, graph-aware, scale-ready, and offline-tunable. This bundle converted consolidated agentic-systems research into four foundation phases plus four follow-up hardening phases that upgraded `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` without collapsing them into a generic workflow. The work touched approximately 100 files and added over 19,000 lines across contracts, libraries, MCP tools, reducer logic, agent instructions, and test suites.
 
 ### Phase 1: Runtime Truth Foundation
 
@@ -57,7 +57,7 @@ Phase 4a delivers a complete offline compile/evaluate loop that tunes determinis
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Phases were delivered in strict dependency order: runtime truth first, then coverage graph, then wave execution, then offline optimization. The original four phases were independently validated against their task lists and quality gates.
+The bundle shipped in strict dependency order: the four foundation phases landed first (runtime truth, coverage graph, wave execution, offline optimization), and the four follow-up phases then hardened the visible deep-loop surfaces that still drifted from those foundations. Each phase was validated against its own task list and quality gates before the archived closing audit drove the final remediation pass.
 
 After the four foundation phases landed, the packet took on four follow-up phases that kept the deep-loop skills honest with their shipped runtime:
 
@@ -66,11 +66,11 @@ After the four foundation phases landed, the packet took on four follow-up phase
 - **Phase 007 — graph-aware stop gate plus runtime truth reconciliation.** Wired the graph convergence MCP calls into both loop workflows and reconciled the fail-closed reducer behavior with the visible state-log contract.
 - **Phase 008 — further deep-loop improvements.** Closed the 12 Codex-research recommendations plus the 4 phase-008 closing-audit P1 findings (commit `c07c9fbcf`) and shipped 12 new vitest tests, 7 playbook scenarios, and SKILL.md + changelog bumps for all three deep-loop skills.
 
-After phase 008 landed, a **10-iteration Codex GPT-5.4 `spec_kit:deep-review` closing audit** (`rvw-2026-04-11T13-50-06Z`) surfaced 16 residual findings (0 P0 / 10 P1 / 6 P2) that Parts A–D did not catch. The verdict was CONDITIONAL, and the full `review/` packet routed into a five-lane remediation pass that landed in the same packet:
+After phase 008 landed, a **10-iteration Codex GPT-5.4 `spec_kit:deep-review` closing audit** (`rvw-2026-04-11T13-50-06Z`) surfaced 16 residual findings (0 P0 / 10 P1 / 6 P2) that Parts A–D did not catch. The verdict was CONDITIONAL, and the archived report at `review/archive-rvw-2026-04-11/review-report.md` routed into a five-lane remediation pass that landed in the same packet:
 
 1. **Lane 1 — Claim-Adjudication Stop Gate Wiring** closed F002 and F007 by adding a universal STOP veto pre-check and a dedicated `claimAdjudicationGate` in the review legal-stop decision tree, plus persisted `claim_adjudication` events, typed packet docs in `.opencode/skill/sk-deep-review/references/state_format.md` §9, and matching `.opencode/skill/sk-deep-review/references/loop_protocol.md` §Step 4a. New REQs: REQ-026, REQ-027.
 2. **Lane 2 — Coverage-Graph Session Isolation** closed F004, F005, F006, and F013 by bumping `deep-loop-graph.sqlite` to v2 with a composite primary key of `(spec_folder, loop_type, session_id, id)` on both `coverage_nodes` and `coverage_edges`, migrating via drop-and-recreate, adding a shared-ID collisions regression to `session-isolation.vitest.ts`, and documenting the typed `graphEvents` payload shape and namespace rules in both state_format references. New REQs: REQ-028, REQ-029.
-3. **Lane 3 — Lifecycle Persistence** closed F010, F011, and F012 by retracting the unimplemented `fork` and `completed-continue` branches from the review + research confirm workflows, wiring real event emission for `resumed` and `restarted`, and narrowing sk-improve-agent's `Resume/Continuation Semantics` to the shipped one-session model. New REQs: REQ-030, REQ-031.
+3. **Lane 3 — Lifecycle Persistence** partially closed F010, F011, and F012 by retracting the unimplemented `fork` and `completed-continue` branches from the review + research confirm workflows, keeping lifecycle claims scoped to the shipped `resumed` / `restarted` event path where it actually exists, and narrowing sk-improve-agent's `Resume/Continuation Semantics` to the shipped one-session model; final lifecycle-doc cleanup still remained for the packet closeout pass. New REQs: REQ-030, REQ-031.
 4. **Lane 4 — Canonical Contract Cleanup** closed F001, F003, F008, and F009 by rewriting the canonical `.opencode/agent/deep-review.md` iteration skeleton to match `reduce-state.cjs:186`, adding `review_dimensions_json` pre-serialization in both review workflows, replacing the phantom `legalStop` record in `.opencode/skill/sk-deep-review/references/convergence.md` with the canonical persisted `blocked_stop` event shape, and correcting Signal 3 of the 3-signal convergence vote to `Dimension Coverage`. New REQs: REQ-032, REQ-033.
 5. **Lane 5 — Release-Readiness Reconciliation** closed F013, F014, F015, and F016 by rewriting the phase-008 closeout surfaces, the packet-root completion surfaces below, and the reducer-owned `ACTIVE RISKS` dashboard section so non-P0 release-readiness debt stays visible. New REQ: REQ-034.
 
@@ -84,7 +84,7 @@ Each lane shipped as an independent commit with targeted vitest and tsc verifica
 
 | Decision | Why |
 |----------|-----|
-| Phase the work into four child packets | Keep the root packet concise and make each area independently executable and verifiable |
+| Phase the work into eight child packets | Keep the root packet concise and make each area independently executable and verifiable |
 | Split Phase 4 into active `4a` and deferred `4b` | Keep deterministic optimizer work in scope now and postpone unsafe prompt/meta optimization |
 | Keep deep research and deep review as separate products | Collapsing them into a generic workflow DSL would lose product-specific semantics |
 | Shared stop-reason taxonomy with legal-stop gates | One auditable vocabulary plus explicit enforcement prevents hidden runtime state |
@@ -111,7 +111,7 @@ Each lane shipped as an independent commit with targeted vitest and tsc verifica
 | Phase 8: further deep-loop improvements (12 Codex research recs + 4 phase-008 closing-audit P1 fixes) | PASS |
 | Cross-phase deep review (3 rounds in phases 1–4, 0 P0 / 3 P1 closed) | PASS |
 | Phase-008 closing deep-review (10 Codex iterations, `rvw-2026-04-11T13-50-06Z`, CONDITIONAL) | PASS with 16 findings routed to Lane 1–5 remediation |
-| Closing-audit Lane 1–5 remediation (REQ-026 through REQ-034) | PASS — see `008-further-deep-loop-improvements/implementation-summary.md` §Closing Audit Remediation Notes and `review/review-report.md` |
+| Closing-audit Lane 1–5 remediation (REQ-026 through REQ-034) | PASS — see `review/archive-rvw-2026-04-11/review-report.md`, this file §How It Was Delivered, and `008-further-deep-loop-improvements/implementation-summary.md` §§What Was Built, Verification |
 | Post-remediation vitest scripts/tests run | PASS — 908 passed / 55 skipped / 0 failed |
 | Post-remediation `tsc --noEmit` on mcp_server | PASS |
 | Parent-child doc synchronization | PASS — this summary, `spec.md`, `tasks.md`, `checklist.md`, and the phase-008 summary were all reconciled as the final action of Lane 5 |

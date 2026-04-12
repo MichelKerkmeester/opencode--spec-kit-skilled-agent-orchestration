@@ -124,6 +124,11 @@ workflow:
       gate_session_boundary:
         type: approval_gate
         description: "Confirm a fresh standalone session boundary before init writes"
+        verify:
+          - lineage_mode_must_equal_new: "Improve-agent currently ships only `new` sessions; resume/restart/fork/completed-continue are not runtime-wired."
+          - existing_runtime_must_be_archived: "If {spec_folder}/improvement already exists from a prior run, archive or replace it instead of resuming in place."
+          - dormant_resume_fields_disallowed: "Do not populate continuedFromIteration, resumeMode, or carried-forward parentSessionId state."
+        on_fail: "Halt with STATUS=FAIL and instruct the operator to archive the prior improvement packet before re-running."
         present: |
           improve-agent currently supports only fresh `new` sessions.
           If `{spec_folder}/improvement` already contains prior state, archive or replace it instead of resuming in place.

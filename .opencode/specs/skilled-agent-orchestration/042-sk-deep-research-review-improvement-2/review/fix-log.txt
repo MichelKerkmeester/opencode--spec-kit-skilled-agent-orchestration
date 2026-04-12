@@ -2633,3 +2633,476 @@ I’m at the point of making edits. Before I patch, I’m checking the two suite
   └ Edit .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
 
 The main edits are in. I’m doing one read-through on the patched sections before I run the focused test passes, mainly to catch type/import mismatches in the new DB-backed assertions and the session-collision handler coverage.
+
+● Read coverage-graph-integration.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  └ L1:220 (220 lines read)
+
+● Read coverage-graph-stress.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts
+  └ L1:220 (220 lines read)
+
+● Read session-isolation.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  └ L1:420 (420 lines read)
+
+● Read optimizer-replay-runner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ L160:220 (60 lines read)
+
+● Read coverage-graph-contradictions.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-contradictions.vitest.ts
+  └ 166 lines read
+
+● Read benchmark-stability.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ L220:270 (51 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L80:240 (154 lines read)
+
+● Read coverage-graph-integration.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  └ L220:420 (201 lines read)
+
+● Read session-isolation.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  └ L420:520 (16 lines read)
+
+● Read coverage-graph-stress.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts
+  └ L220:420 (200 lines read)
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+
+The only real bug I caught in the patch set was a shared-ID handler test accidentally mixing the old spec namespace into the new collision fixtures; that’s fixed. I’m moving the two stale contract suites out of the active test path now, then running the focused checks.
+
+● Archive stale coverage graph test suites (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && mkdir -p
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/archive && mv
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/archive/coverage-graph-db.vitest.ts && mv
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-tools.vitest.ts …
+  └ 2 lines...
+
+--- Batch 5-tests done | Sun Apr 12 14:29:53 CEST 2026 ---
+
+--- Batch 6-spec-docs | Sun Apr 12 14:29:53 CEST 2026 ---
+● skill(system-spec-kit)
+
+I’m pulling the cited spec packet and playbooks together first so the edits stay narrow and only fix the documented traceability mismatches.
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md
+  └ 296 lines read
+
+● Read tasks.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md
+  └ 141 lines read
+
+● Read implementation-summary.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/implementa
+  │ tion-summary.md
+  └ 129 lines read
+
+● Read implementation-summary.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-
+  │ improver-deep-loop-alignment/implementation-summary.md
+  └ 112 lines read
+
+● Read implementation-summary.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-
+  │ testing-and-playbook-alignment/implementation-summary.md
+  └ 89 lines read
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtim
+  │ e-truth-foundation/spec.md
+  └ 1 line read
+
+● Read 034-replay-consumer.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay-consumer.m
+  │ d
+  └ 112 lines read
+
+● Read 029-graph-events-emission.md
+  │ .opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-disci
+  │ pline/029-graph-events-emission.md
+  └ 78 lines read
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Fix traceability issues in .opencode/spec…
+  └ {"summary":"No matching trigger phrases found","data":{"count":0,"results":[]...
+
+● Check git status and validate target spec (shell)
+  │ git --no-pager status --short && echo '---' && bash
+  │ .opencode/skill/system-spec-kit/scripts/spec/validate.sh
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 --strict
+  └ 14 lines...
+
+I found one definite leak already: the parent `spec.md` still has a pasted phase-template block at the end. I’m tracing the remaining references against the actual phase folders and current runtime docs before patching.
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtim
+  │ e-truth-foundation/spec.md
+  └ L1:260 (176 lines read)
+
+● Read implementation-summary.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-furthe
+  │ r-deep-loop-improvements/implementation-summary.md
+  └ L1:260 (121 lines read)
+
+● Read 022-mutation-coverage-graph-tracking.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-covera
+  │ ge-graph-tracking.md
+  └ L1:120 (49 lines read)
+
+● Search (grep)
+  │ "four-phase|four child phases|001 -> 002 -> 003 ->
+  │ 004|007-skill-rename-improve-agent-prompt|Phase 7|archiv|Lane
+  │ 3|REQ-030|REQ-031|completed-continue|fork|REQ-007|REQ-016" in *.md
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ 5 lines found
+
+● Read 023-trade-off-detection.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detec
+  │ tion.md
+  └ L1:120 (49 lines read)
+
+● Read 024-candidate-lineage.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-linea
+  │ ge.md
+  └ L1:120 (50 lines read)
+
+● Read copilot-tool-output-1775997055737-ig402j.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997055737-ig402j.txt
+  └ L1:220 (220 lines read)
+
+I’ve got the mismatch pattern now: the parent docs still describe the old four-phase packet, and some closeout links still point at a no-longer-present `review/review-report.md`. I’m resolving those exact targets against what’s actually in the packet and runtime docs.
+
+● Search (grep)
+  │ "REQ-007|REQ-016|completed-continue|fork|resumed|restarted" (.opencode/specs/skilled-agent-orche
+  │ stration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation/spec.md)
+  └ 6 lines found
+
+● Search (glob)
+  │ "**/review-report.md" in
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2
+  └ 1 file found
+
+● List directory .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvemen…
+  └ 8 files found
+
+● Search (grep)
+  │ "journalSummary|candidateLineage|mutationCoverage|Journal Summary|Candidate Lineage|Mutation
+  │ Coverage|dashboard" in *.{md,cjs,json} (.opencode/skill/sk-improve-agent)
+  └ 7 lines found
+
+● Search (grep)
+  │ "graphEvents|question_node|finding_node|source_node|kind: "node"|flat|type:" in *.{md,cjs,json}
+  │ (.opencode/skill/sk-deep-research)
+  └ 33 lines found
+
+● Search (grep)
+  │ "graphEvents|question_node|finding_node|source_node|type:|nodeId|edgeId" in *.{ts,md,cjs,json}
+  │ (.opencode/skill/system-spec-kit)
+  └ 7 lines found
+
+● Read state_format.md
+  │ .opencode/skill/sk-deep-research/references/state_format.md
+  └ L220:255 (36 lines read)
+
+● Search (grep)
+  │ "graphEvents|question|finding|edge|source_node|question_node|finding_node"
+  │ (.opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts)
+  └ 31 lines found
+
+● Search (grep)
+  │ "graphEvents|question|finding|edge|source_node|question_node|finding_node|researchNodeTypes" in
+  │ *.ts (.opencode/skill/system-spec-kit/mcp_server/tests/archive)
+  └ 41 lines found
+
+● Search (grep)
+  │ "journalSummary|candidateLineage|mutationCoverage|agent-improvement-dashboard|Journal
+  │ Summary|Candidate Lineage|Mutation Coverage"
+  │ (.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs)
+  └ 15 lines found
+
+● Search (grep)
+  │ "journalSummary|candidateLineage|mutationCoverage|Journal Summary|Candidate Lineage|Mutation
+  │ Coverage|replay consumer" (.opencode/skill/sk-improve-agent/README.md)
+  └ No matches found
+
+● Search (grep)
+  │ "archive-rvw|review-report.md|review/" (.opencode/specs/skilled-agent-orchestration/042-sk-deep-
+  │ research-review-improvement-2/implementation-summary.md)
+  └ 4 lines found
+
+● Search (grep)
+  │ "archive-rvw|review-report.md|review/" (.opencode/specs/skilled-agent-orchestration/042-sk-deep-
+  │ research-review-improvement-2/checklist.md)
+  └ 1 line found
+
+One playbook needs extra care: the live `reduce-state.cjs` still renders replay-consumer sections into the dashboard, so I’m checking whether the requested wording change is about the contractual proof surface rather than literal absence from the file.
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L850:975 (126 lines read)
+
+● Search (grep)
+  │ "replay consumer|journalSummary|candidateLineage|mutationCoverage|dashboard|registry-only" in
+  │ *.md (.opencode/changelog/15--sk-improve-agent)
+  └ 9 lines found
+
+● Search (grep)
+  │ "review/review-report.md|archive-rvw-2026-04-11/review-report.md" in *.md
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ 6 lines found
+
+● Read checklist.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/checklist.
+  │ md
+  └ L60:92 (33 lines read)
+
+● Read review-report.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/arc
+  │ hive-rvw-2026-04-11/review-report.md
+  └ L1:140 (140 lines read)
+
+● Search (grep)
+  │ "partial|deferred|Requirement Status|REQ-007|REQ-016|completed-continue|fork|Acceptance
+  │ Scenarios|NFR-R02" (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-impr
+  │ ovement-2/001-runtime-truth-foundation/spec.md)
+  └ 8 lines found
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtim
+  │ e-truth-foundation/spec.md
+  └ L160:270 (89 lines read)
+
+● Search (grep)
+  │ "dashboard|registry|journalSummary|candidateLineage|mutationCoverage" in *.md
+  │ (.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth)
+  └ 43 lines found
+
+● Search (grep)
+  │ "v1.2.0.0|v1.2.1.0|follow-on|helper|workflow|wiring|registry"
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent
+  │ -improver-deep-loop-alignment/implementation-summary.md)
+  └ 8 lines found
+
+● Search (grep)
+  │ "Created" (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2
+  │ /006-graph-testing-and-playbook-alignment/implementation-summary.md)
+  └ 5 lines found
+
+● Search (grep)
+  │ "four|Phase 4|001 -> 002 -> 003 -> 004|Phase 5|Phase 6|Phase 7|Phase
+  │ 8|007-skill-rename-improve-agent-prompt|review/"
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md)
+  └ 31 lines found
+
+● Search (grep)
+  │ "graphEvents.*type.:.?question|type: 'question'|type":"question"|type: 'finding'|type:
+  │ 'source'|type: 'edge'" in *.{md,cjs,json} (.opencode/skill/sk-deep-research)
+  └ 1 line found
+
+● Search (grep)
+  │ "graphEvents|question_node|finding_node|source_node|kind: 'node'|kind: "node""
+  │ (.opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts)
+  └ No matches found
+
+● Search (grep)
+  │ "graphEvents.*type.:.?question|type: 'question'|type":"question"|type: 'finding'|type:
+  │ 'source'|type: 'edge'" in *.{ts,md,cjs,json} (.opencode/skill/system-spec-kit)
+  └ 11 lines found
+
+● Search (grep)
+  │ "007-skill-rename-improve-agent-prompt|Phase 7|007-graph-aware-stop-gate"
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md)
+  └ 2 lines found
+
+● Read v1.2.0.0.md
+  │ .opencode/changelog/15--sk-improve-agent/v1.2.0.0.md
+  └ L1:130 (85 lines read)
+
+● Read v1.2.1.0.md
+  │ .opencode/changelog/15--sk-improve-agent/v1.2.1.0.md
+  └ L1:120 (35 lines read)
+
+● Read implementation-summary.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/implementa
+  │ tion-summary.md
+  └ L1:130 (129 lines read)
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md
+  └ L90:210 (121 lines read)
+
+● Read 034-replay-consumer.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay-consumer.m
+  │ d
+  └ L1:115 (112 lines read)
+
+I’ve narrowed the edits to the actual drift: stale four-phase wording, one leaked template fragment, archived review-report paths, one over-claimed lifecycle lane, and two playbooks that were still describing superseded proof shapes.
+
+● Edit
+  │ Edit
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md
+  │ Edit
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/check
+  │ list.md
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/imple
+  │ mentation-summary.md
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-a
+  │ gent-improver-deep-loop-alignment/implementation-summary.md
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-g
+  │ raph-testing-and-playbook-alignment/implementation-summary.md
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-r
+  │ untime-truth-foundation/spec.md
+  │ Edit .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay-consu
+  │ mer.md
+  └ Edit .opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-
+    discipline/029-graph-events-emission.md
+
+The edits are in. I’m doing one last pass for packet integrity and to make sure the old proof paths and leaked template block are actually gone.
+
+● Search (grep)
+  │ "question_node|finding_node|source_node|kind: \"node\"|kind: 'node'"
+  │ (.opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-disc
+  │ ipline/029-graph-events-emission.md)
+  └ 3 lines found
+
+● Search (grep)
+  │ "dashboard renders|agent-improvement-dashboard.md|Journal Summary\|Candidate Lineage\|Mutation
+  │ Coverage" (.opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay
+  │ -consumer.md)
+  └ No matches found
+
+● Search (grep)
+  │ "007-skill-rename-improve-agent-prompt|phase parent section
+  │ \[template:addendum/phase/phase-parent-section.md\]|review/review-report.md|four-phase|four
+  │ child phases" in *.md
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ 6 lines found
+
+● Revalidate target spec packet (shell)
+  │ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 --strict
+  └ 21 lines...
+
+Validation still has packet-level findings, so I’m reading the exact failures rather than hand-waving them. If they’re from the targeted traceability surfaces, I’ll close them too.
+
+● Read copilot-tool-output-1775997444601-j0f4so.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997444601-j0f4so.txt
+  └ L1:220 (220 lines read)
+
+● Search (grep)
+  │ "review/review-report.md|archive-rvw-2026-04-11/review-report.md|four-phase|four child
+  │ phases|007-skill-rename-improve-agent-prompt" in
+  │ {spec.md,tasks.md,implementation-summary.md,checklist.md,plan.md,decision-record.md}
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ 22 lines found
+
+● Search (grep)
+  │ "agent-improvement-dashboard.md|dashboard exposes|dashboard renders" (.opencode/skill/sk-improve
+  │ -agent/manual_testing_playbook/07--runtime-truth/034-replay-consumer.md)
+  └ No matches found
+
+● Edit
+  └ Edit
+    .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md
+
+● Search (grep)
+  │ "review/review-report.md"
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md)
+  └ No matches found
+
+● Revalidate target spec packet (shell)
+  │ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 --strict
+  └ 21 lines...
+
+● Read copilot-tool-output-1775997486977-cokn64.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997486977-cokn64.txt
+  └ L1:80 (80 lines read)
+
+The root packet is clean now; the remaining strict-validator failure is a separate Phase 001 link drift inside the same packet. I’m fixing those broken source paths since they’re directly on one of the requested docs.
+
+● Search (grep)
+  │ "consolidated-research-report|\.agents/agents/deep-research\.md" in *.md (.opencode/specs/skille
+  │ d-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation)
+  └ 6 lines found
+
+● Search (glob)
+  │ "**/consolidated-research-report.md" in .opencode/specs/system-spec-kit
+  └ 1 file found
+
+● Search (glob)
+  │ "**/deep-research.md"
+  └ 4 files found
+
+● Read copilot-tool-output-1775997510417-p5lhgg.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997510417-p5lhgg.txt
+  └ L1:120 (27 lines read)
+
+● Edit
+  │ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-r
+  │ untime-truth-foundation/spec.md
+  └ Edit .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-r
+    untime-truth-foundation/plan.md
+
+● Search (grep)
+  │ "999-agentic-system-upgrade|\.agents/agents/deep-research\.md|review/review-report.md" in *.md
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runti
+  │ me-truth-foundation)
+  └ 6 lines found
+
+● Run final strict validation (shell)
+  │ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 --strict
+  └ 21 lines...
+
+● Read copilot-tool-output-1775997594150-ny86o0.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997594150-ny86o0.txt
+  └ L1:110 (110 lines read)
+
+● Search (grep)
+  │ "✗"
+  │ (/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775997594150-ny86o0.txt)
+  └ No matches found
+
+I’ve finished the narrow fixes. I’m just checking the final diff shape so I don’t accidentally hand you any unrelated churn from the dirty worktree.
+
+● Show final diff stat for touched files (shell)
+  │ git --no-pager diff --stat --
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2 .opencode/
+  │ skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay-consumer.md
+  │ .opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-disci
+  │ pline/029-graph-events-emission.md
+  └ 13 lines...
+
+● Show final targeted diff (shell)
+  │ git --no-pager diff --
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/tasks.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/impleme
+  │ ntation-summary.md .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-imp…
+  └ 18 lines...
+
+Fixed the traceability drift in the 042 packet and the two playbooks with narrow doc-only edits.
+
+- **Root 042 packet docs** now reflect the **eight-phase** structure, route Phase 7 to `007-graph-aware-stop-gate`, point closing-audit references at `review/archive-rvw-2026-04-11/review-report.md`, and no longer include the leaked phase-template block. I also corrected the coupled checklist/task references and the Phase 001 source-path drift that was blocking the packet’s live integrity links.
+- **Phase summaries** now distinguish **Phase 005 helper delivery** from the later **v1.2.0.0 workflow wiring**, keep **v1.2.1.0** as the lifecycle wording correction, and mark Phase 006’s improve-agent playbooks `022-024` as **validated/cross-referenced** rather than newly created.
+- **Runtime-truth/playbook accuracy** is aligned with current reality: Phase 001 now treats **`fork`** and **`completed-continue`** as deferred and marks **REQ-007** / **REQ-016** as partial, `034-replay-consumer.md` now uses **registry-only** proof language, and `029-graph-events-emission.md` now documents the current **flat `graphEvents` schema** (`question` / `finding` / `source` / `edge`).
+
+
+Changes   +89 -115
+Requests  1 Premium (10m 42s)
+Tokens    ↑ 3.6m • ↓ 35.7k • 3.4m (cached) • 14.0k (reasoning)
+--- Batch 6-spec-docs done | Sun Apr 12 14:40:37 CEST 2026 ---
+
+=== ALL BATCHES COMPLETE ===
+End: Sun Apr 12 14:40:37 CEST 2026

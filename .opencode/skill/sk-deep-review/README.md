@@ -139,6 +139,14 @@ Synthesis produces `{spec_folder}/review/review-report.md` with nine sections: e
 
 Each review iteration emits `graphEvents` in its JSONL record, building a coverage graph with review-specific node types (DIMENSION, FILE, FINDING, EVIDENCE, REMEDIATION) and edge types (COVERS, EVIDENCE_FOR, IN_DIMENSION, IN_FILE, CONTRADICTS, RESOLVES, CONFIRMS). The graph provides structural awareness of which files and dimensions have been examined, enabling graph-based convergence guards that complement the Phase 1 composite stop score.
 
+### Fail-Closed Corruption Handling
+
+The reducer refuses to write derived files (registry, strategy, dashboard) when JSONL state corruption is detected. In non-lenient mode, `reduceReviewState()` throws a structured error with corruption details before any output is produced. This prevents silently propagating incorrect state.
+
+### Terminal Stop Metadata and Claim Adjudication
+
+The reducer parses `synthesis_complete` events to derive authoritative stop reason and legal-stop outcome for the dashboard. Claim-adjudication packets carry `finalSeverity` that overrides original severity in the findings registry, and stale STOP vetos are automatically cleared when all active P0/P1 findings resolve.
+
 ### Fresh Context Per Iteration
 
 Each `@deep-review` agent dispatch gets a clean context window. No compaction or memory degradation across iterations. Knowledge transfers through the strategy file and JSONL state on disk.

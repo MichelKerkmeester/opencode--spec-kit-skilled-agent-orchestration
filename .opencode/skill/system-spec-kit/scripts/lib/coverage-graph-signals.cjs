@@ -167,8 +167,6 @@ function computeRecentEdgeActivity(graph, nodeId, windowSize, sessionId) {
   return count;
 }
 
-const computeMomentum = computeRecentEdgeActivity;
-
 /* ---------------------------------------------------------------
    4. CLUSTER METRICS
 ----------------------------------------------------------------*/
@@ -398,7 +396,6 @@ module.exports = {
   computeDepth,
   computeAllDepths,
   computeRecentEdgeActivity,
-  computeMomentum,
   computeClusterMetrics,
 
   // Internal helpers exposed for testing

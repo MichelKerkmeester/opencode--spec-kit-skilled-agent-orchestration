@@ -24,8 +24,17 @@ const signalsModule = require(path.join(
   computeDepth: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string, sessionId?: string) => number;
   computeAllDepths: (graph: ReturnType<typeof coreModule.createGraph>, sessionId?: string) => Map<string, number>;
   computeRecentEdgeActivity: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string, windowSize?: number, sessionId?: string) => number;
-  computeMomentum: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string, windowSize?: number, sessionId?: string) => number;
   computeClusterMetrics: (graph: ReturnType<typeof coreModule.createGraph>, sessionId?: string) => { componentCount: number; sizes: number[]; largestSize: number; isolatedNodes: number };
+};
+
+const sessionModule = require(path.join(
+  WORKSPACE_ROOT,
+  '.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-session.cjs',
+)) as {
+  getEdgeSessionId: (
+    graph: { nodes: Map<string, object> },
+    edge: { source?: string; target?: string; sessionId?: string; metadata?: Record<string, unknown> },
+  ) => string | null;
 };
 
 describe('coverage-graph-signals', () => {
@@ -155,7 +164,6 @@ describe('coverage-graph-signals', () => {
       // With a large window, both edges should be counted
       const activity = signalsModule.computeRecentEdgeActivity(graph, 'a', 600000);
       expect(activity).toBe(2);
-      expect(signalsModule.computeMomentum(graph, 'a', 600000)).toBe(activity);
     });
 
     it('returns 0 for node with no recent edges', () => {
@@ -223,6 +231,17 @@ describe('coverage-graph-signals', () => {
       const metrics = signalsModule.computeClusterMetrics(graph);
       expect(metrics.componentCount).toBe(1);
       expect(metrics.largestSize).toBe(2);
+    });
+  });
+
+  describe('coverage-graph-session helper', () => {
+    it('prefers the target node session when mixed-session edges omit edge.sessionId', () => {
+      const graph = coreModule.createGraph();
+      graph.nodes.set('source', { id: 'source', sessionId: 'session-source' });
+      graph.nodes.set('target', { id: 'target', sessionId: 'session-target' });
+      const edge = { id: 'mixed', source: 'source', target: 'target' };
+
+      expect(sessionModule.getEdgeSessionId(graph, edge)).toBe('session-target');
     });
   });
 });

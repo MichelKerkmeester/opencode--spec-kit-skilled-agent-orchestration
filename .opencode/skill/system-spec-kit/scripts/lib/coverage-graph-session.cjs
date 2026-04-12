@@ -38,6 +38,9 @@ function getNodeSessionId(node) {
 
 /**
  * Read a normalized session identifier from an edge or its endpoint nodes.
+ * Resolution order is explicit edge session -> edge metadata session -> endpoint nodes.
+ * If the edge itself carries no session id and the source/target nodes disagree, the
+ * target node session wins; mixed-session edges should set edge.sessionId explicitly.
  * @param {{ nodes?: Map<string, object> }} graph
  * @param {unknown} edge
  * @returns {string|null}

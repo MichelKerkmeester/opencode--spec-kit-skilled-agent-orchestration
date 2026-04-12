@@ -25,6 +25,7 @@ contextType: "implementation"
 | **Level** | 3 |
 | **Landing Commit** | `080cf549e` |
 | **Primary Release Note** | `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md` |
+| **Follow-on Delivery** | `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md` |
 | **Follow-on Correction** | `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md` |
 <!-- /ANCHOR:metadata -->
 
@@ -33,7 +34,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 005 brought the improve-agent loop into the same runtime-truth family as the deeper research and review loops. The work landed five helper modules, dedicated tests, supporting playbook scenarios, and command plus skill documentation updates so improve-agent sessions could be audited, reasoned about, and explained with concrete artifacts instead of opaque reducer-only summaries.
+Phase 005 brought the improve-agent loop into the same runtime-truth family as the deeper research and review loops. The phase landed five helper modules, dedicated tests, supporting playbook scenarios, and command plus skill documentation updates so improve-agent sessions could be audited, reasoned about, and explained with concrete artifacts instead of opaque reducer-only summaries. What it did **not** land yet was the later visible-path workflow wiring that actually invoked those helpers during `/improve:agent` runs; that follow-on arrived in Phase 008 via `v1.2.0.0`.
 
 ### Stop-Reason Taxonomy and Audit Journal
 
@@ -49,7 +50,7 @@ The phase added `.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs`
 
 ### Stability Scoring and Advisory Optimization
 
-The phase added `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` so repeated benchmark behavior could be measured instead of assumed. The same helper family also exposed advisory optimizer-facing outputs, which later phases refined further rather than replacing.
+The phase added `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs` so repeated benchmark behavior could be measured instead of assumed. The same helper family also exposed advisory optimizer-facing outputs, which Phase 008 later wired into the visible workflow in `v1.2.0.0` rather than replacing.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -57,14 +58,16 @@ The phase added `.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cj
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The implementation landed in commit `080cf549e`, which records the five helper scripts, the five dedicated test files, and the asset plus command updates. The shipped outcome was then documented in `v1.1.0.0`, which records:
+The implementation landed in commit `080cf549e`, which records the five helper scripts, the five dedicated test files, and the asset plus command updates. That Phase 005 landing is the helper-delivery point, not the visible workflow-wiring point. The shipped helper surface was then documented in `v1.1.0.0`, which records:
 
 - the runtime-truth helper surface
 - the improve-agent rename completion
 - the 31/31 manual playbook pass
 - the 10,335-test Vitest result recorded at ship time
 
-Later on the packet family corrected one important documentation drift: `v1.2.1.0` explicitly retracted a multi-session lifecycle contract that had been documented but not actually wired. This closeout packet reflects that later correction so Phase 005 is recorded as shipped without silently preserving superseded lifecycle claims.
+Phase 008 later supplied the missing visible-path workflow wiring in `v1.2.0.0`: `/improve:agent` began emitting journal events at runtime boundaries, reducer refresh began consuming replay artifacts, and the helper-only runtime-truth surface moved onto the live operator path.
+
+Later on the packet family corrected one important documentation drift: `v1.2.1.0` explicitly retracted a multi-session lifecycle contract that had been documented but not actually wired. This closeout packet reflects both follow-ons so Phase 005 is recorded as shipped without silently claiming that helper delivery and workflow wiring landed together.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -98,7 +101,7 @@ Later on the packet family corrected one important documentation drift: `v1.2.1.
 | Landing release note recorded shipped verification | PASS |
 | Phase packet strict validation | PASS |
 
-Verification evidence for the shipped runtime lives in `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md`. Verification evidence for the later lifecycle wording correction lives in `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md`.
+Verification evidence for the Phase 005 helper delivery lives in `.opencode/changelog/15--sk-improve-agent/v1.1.0.0.md`. Verification evidence for the later visible-path workflow wiring lives in `.opencode/changelog/15--sk-improve-agent/v1.2.0.0.md`. Verification evidence for the lifecycle wording correction lives in `.opencode/changelog/15--sk-improve-agent/v1.2.1.0.md`.
 <!-- /ANCHOR:verification -->
 
 ---
@@ -107,6 +110,7 @@ Verification evidence for the shipped runtime lives in `.opencode/changelog/15--
 ## Known Limitations
 
 1. The historical phase slug still uses `agent-improver`, while the live runtime surface is now `sk-improve-agent`.
-2. `v1.1.0.0` documented broader lifecycle semantics than the runtime actually shipped; `v1.2.1.0` later narrowed that wording to current reality.
+2. Helper delivery shipped in Phase 005, but the visible workflow wiring for journal emission and replay consumers did not land until `v1.2.0.0`.
+3. `v1.1.0.0` documented broader lifecycle semantics than the runtime actually shipped; `v1.2.1.0` later narrowed that wording to current reality.
 3. This closeout pass documents shipped evidence and packet validity; it does not re-run the original Phase 005 runtime implementation work.
 <!-- /ANCHOR:limitations -->
