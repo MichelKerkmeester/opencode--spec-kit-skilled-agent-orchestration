@@ -38,9 +38,9 @@ directives:
 
 **Pipeline order**: Gate A ✅ → Gate B ✅ → Gate C Part 1 ✅ → Gate C-continuation ✅ → Gate B-cleanup ✅ → Gate D ✅ → Gate E ✅ → Gate F-cleanup ✅ → Gate G ✅ → Gate H ✅ → Gate I ✅ → **regression remediation 🟡** → deep-review × 7 per gate × 9 gates → fix findings → final completion marking
 
-**All 9 code gates DONE.** Next: fix 115 automated regressions (Gate I findings), then dispatch deep-review × 7 per gate.
+**All 9 code gates DONE.** Regression remediation reduced failures 115 → 29 (99.04% pass rate). Next: dispatch deep-review × 7 per gate, then final completion marking.
 
-**Next action**: Dispatch a regression remediation pass via cli-codex targeting the 115 known automated failures from Gate I (themes: causal_edges source_anchor missing, sqlite-fts archived filtering, memory-save dedup, reconsolidation cleanup, etc.). After remediation: dispatch /spec_kit:deep-review × 7 per gate × 9 gates.
+**Next action**: Dispatch /spec_kit:deep-review × 7 per gate × 9 gates via cli-codex. Start with Gate C (most complex, most deferred work). The 29 remaining automated failures will be caught and fixed during deep-review iterations.
 
 ---
 
