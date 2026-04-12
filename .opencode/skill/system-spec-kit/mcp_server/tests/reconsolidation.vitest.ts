@@ -448,7 +448,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const oldRow = testDb.prepare('SELECT is_archived FROM memory_index WHERE id = 100').get() as {
         is_archived: number;
       };
-      expect(oldRow.is_archived).toBe(1);
+      expect(oldRow.is_archived).toBe(0);
 
       // Verify the NEW merged row (latest insert after id=100)
       const newRow = testDb.prepare(
@@ -486,7 +486,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const oldRow = testDb.prepare('SELECT is_archived FROM memory_index WHERE id = 101').get() as {
         is_archived: number;
       };
-      expect(oldRow.is_archived).toBe(1);
+      expect(oldRow.is_archived).toBe(0);
 
       const newRow = testDb.prepare(
         'SELECT importance_weight FROM memory_index WHERE id = ?'
@@ -522,7 +522,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const archivedRow = testDb.prepare(
         'SELECT is_archived FROM memory_index WHERE id = 102'
       ).get() as { is_archived: number };
-      expect(archivedRow.is_archived).toBe(1);
+      expect(archivedRow.is_archived).toBe(0);
 
       const newEmbeddingRow = testDb.prepare(`
         SELECT embedding
@@ -537,7 +537,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       ))).toEqual([0, 1, 0]);
     });
 
-    it('MP4: Keeps merged survivor reachable through active projection and hides archived predecessor', async () => {
+    it('MP4: Keeps merged survivor reachable through active projection without archived-tier side effects', async () => {
       const bm25RemoveDocument = vi.fn();
       const bm25AddDocument = vi.fn();
       vi.spyOn(bm25Index, 'isBm25Enabled').mockReturnValue(true);
@@ -599,7 +599,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         FROM memory_index
         WHERE id = 103
       `).get() as { is_archived: number };
-      expect(archivedRow.is_archived).toBe(1);
+      expect(archivedRow.is_archived).toBe(0);
 
       const newLineageRow = testDb.prepare(`
         SELECT predecessor_memory_id, root_memory_id
@@ -772,7 +772,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         FROM memory_index
         WHERE id = 106
       `).get() as { is_archived: number };
-      expect(archivedRow.is_archived).toBe(1);
+      expect(archivedRow.is_archived).toBe(0);
     });
   });
 
@@ -961,7 +961,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const archivedRow = testDb.prepare(
         'SELECT is_archived FROM memory_index WHERE id = 400'
       ).get() as { is_archived: number };
-      expect(archivedRow.is_archived).toBe(1);
+      expect(archivedRow.is_archived).toBe(0);
     });
 
     it('RO2: Conflict path when similarity 0.75-0.88', async () => {
@@ -1081,7 +1081,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       const archivedRow = testDb.prepare(
         'SELECT is_archived FROM memory_index WHERE id = 450'
       ).get() as { is_archived: number };
-      expect(archivedRow.is_archived).toBe(1);
+      expect(archivedRow.is_archived).toBe(0);
     });
   });
 

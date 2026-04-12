@@ -658,6 +658,12 @@ cat > /tmp/save-context-data.json << 'JSONEOF'
       "learning": "<durable implementation detail or verification result>"
     }
   ],
+  "recentContext": [
+    {
+      "request": "<compatibility alias for callers still emitting camelCase>",
+      "learning": "<same semantics as recent_context>"
+    }
+  ],
   "FILES": [
     {
       "FILE_PATH": "<extracted path when known>",

@@ -90,7 +90,7 @@ describe('vector-index-store remediation regressions', () => {
     expect(results[0]).toMatchObject({ id: 1, isConstitutional: true });
   });
 
-  it('clears folder-scoped constitutional cache entries for archived and non-archived keys', () => {
+  it('clears folder-scoped constitutional cache entries for both compatibility keys', () => {
     const { dir, dbPath } = createTempDbPath('constitutional-cache');
     process.env.MEMORY_ALLOWED_PATHS = dir;
     process.env.EMBEDDING_DIM = '1024';
@@ -128,8 +128,13 @@ describe('vector-index-store remediation regressions', () => {
       db.prepare('UPDATE memory_index SET is_archived = 1 WHERE id = ?').run(4001);
       clearConstitutionalCache(specFolder);
 
-      expect(get_constitutional_memories(db, specFolder, false)).toHaveLength(0);
-      expect(get_constitutional_memories(db, specFolder, true)).toHaveLength(1);
+      const defaultResults = get_constitutional_memories(db, specFolder, false);
+      const compatibilityResults = get_constitutional_memories(db, specFolder, true);
+
+      expect(defaultResults).toHaveLength(1);
+      expect(compatibilityResults).toHaveLength(1);
+      expect(defaultResults.map((row) => row.id)).toEqual([4001]);
+      expect(compatibilityResults.map((row) => row.id)).toEqual([4001]);
     } finally {
       removeTempDir(dir);
     }

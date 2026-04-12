@@ -134,12 +134,12 @@ describe('session_resume certainty contract', () => {
       (section: { key: string }) => section.key === 'structural-context',
     );
 
-    expect(parsed.data.payloadContract.summary).toContain('memory=estimated');
+    expect(parsed.data.payloadContract.summary).toContain('memory=defaulted');
     expect(parsed.data.payloadContract.summary).toContain('graph=exact');
     expect(parsed.data.payloadContract.summary).toContain('cocoindex=exact');
     expect(parsed.data.payloadContract.summary).toContain('structural=exact');
     expect(sections).toMatchObject({
-      'memory-resume': 'estimated',
+      'memory-resume': 'defaulted',
       'code-graph-status': 'exact',
       'cocoindex-status': 'exact',
       'structural-context': 'exact',

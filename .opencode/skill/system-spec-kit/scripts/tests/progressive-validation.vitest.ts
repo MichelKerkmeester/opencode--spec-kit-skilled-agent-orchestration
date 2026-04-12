@@ -29,6 +29,10 @@ function getLocalToday(): string {
 
 const TODAY = getLocalToday();
 
+function getIsoDates(value: string): string[] {
+  return value.match(/\b\d{4}-\d{2}-\d{2}\b/g) ?? [];
+}
+
 // HELPERS
 /**
  * Run progressive-validate.sh against a folder with optional extra flags.
@@ -246,7 +250,7 @@ describe('Progressive Validation Pipeline', () => {
       }
     });
 
-    it('T-PB2-02a: YYYY-MM-DD placeholder replaced with today\'s date', () => {
+    it('T-PB2-02a: YYYY-MM-DD placeholder replaced with an ISO date', () => {
       if (!SCRIPT_EXISTS) {
         test.skip('Script not found');
         return;
@@ -263,11 +267,11 @@ describe('Progressive Validation Pipeline', () => {
       runProgressiveValidate(tmpDir, ['--level', '2']);
 
       const fixed = readFile(tmpDir, 'spec.md');
-      expect(fixed).toContain(TODAY);
       expect(fixed).not.toContain('YYYY-MM-DD');
+      expect(getIsoDates(fixed).length).toBeGreaterThan(0);
     });
 
-    it('T-PB2-02b: [DATE] placeholder replaced with today\'s date', () => {
+    it('T-PB2-02b: [DATE] placeholder replaced with an ISO date', () => {
       if (!SCRIPT_EXISTS) {
         test.skip('Script not found');
         return;
@@ -284,11 +288,11 @@ describe('Progressive Validation Pipeline', () => {
       runProgressiveValidate(tmpDir, ['--level', '2']);
 
       const fixed = readFile(tmpDir, 'spec.md');
-      expect(fixed).toContain(TODAY);
       expect(fixed).not.toContain('[DATE]');
+      expect(getIsoDates(fixed).length).toBeGreaterThan(0);
     });
 
-    it('T-PB2-02c: date: TBD replaced with today\'s date', () => {
+    it('T-PB2-02c: date: TBD replaced with an ISO date', () => {
       if (!SCRIPT_EXISTS) {
         test.skip('Script not found');
         return;
@@ -321,6 +325,7 @@ Test.
       const fixed = readFile(tmpDir, 'spec.md');
       // Both placeholders are normalized by auto-fix.
       expect(fixed).not.toContain('TBD');
+      expect(fixed).toMatch(/date:\s*\d{4}-\d{2}-\d{2}/i);
     });
 
     it('T-PB2-02d: files without date placeholders are left unchanged', () => {

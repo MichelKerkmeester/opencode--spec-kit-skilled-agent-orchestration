@@ -594,31 +594,10 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.data.systemPromptContext![0].memoryId).toBe(101);
     });
 
-    it('injects session transition into traced nested results when includeTrace=true', async () => {
+    it('preserves traced resume metadata without routing resume mode through memory_search', async () => {
       mockTrustedSession('session-trace');
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
-      vi.mocked(handleMemorySearch).mockResolvedValueOnce({
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              data: {
-                results: [
-                  {
-                    id: 42,
-                    trace: {
-                      channelsUsed: ['vector'],
-                    },
-                  },
-                ],
-                count: 1,
-              },
-              meta: {},
-            }),
-          },
-        ],
-        isError: false,
-      });
+      const searchCallCountBefore = mockedHandleMemorySearch.mock.calls.length;
 
       const result = await withTimeout(
         handler.handleMemoryContext({
@@ -632,23 +611,26 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       );
 
       const parsed = parseResponse(result);
+      const nestedResume = JSON.parse(String(parsed.data.content?.[0]?.text ?? '{}')) as {
+        data?: {
+          results?: unknown[];
+          resumeLadder?: { archivedTierEnabled?: boolean };
+        };
+      };
       expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
-      expect(handleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
-        sessionTransition: expect.objectContaining({
-          previousState: null,
-          currentState: 'resume',
-          confidence: 1,
-          signalSources: expect.arrayContaining(['session-resume', 'explicit-mode']),
-          reason: 'resumed session inferred resume mode',
-        }),
+      expect(mockedHandleMemorySearch.mock.calls.length).toBe(searchCallCountBefore);
+      expect(nestedResume.data?.results).toEqual(expect.any(Array));
+      expect(nestedResume.data?.resumeLadder).toEqual(expect.objectContaining({
+        archivedTierEnabled: false,
       }));
     });
 
-    it('uses the last inferred mode as previousState when a traced caller session resumes', async () => {
+    it('keeps traced resume responses on the canonical ladder even when a prior mode exists', async () => {
       mockTrustedSession('session-known');
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.spyOn(workingMemory, 'getSessionEventCounter').mockReturnValue(4);
       vi.spyOn(workingMemory, 'getSessionInferredMode').mockReturnValue('focused');
+      const searchCallCountBefore = mockedHandleMemorySearch.mock.calls.length;
 
       await withTimeout(
         handler.handleMemoryContext({
@@ -661,13 +643,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'session-trace-previous-state'
       );
 
-      expect(handleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
-        sessionTransition: expect.objectContaining({
-          previousState: 'focused',
-          currentState: 'resume',
-          signalSources: expect.arrayContaining(['session-resume', 'explicit-mode']),
-        }),
-      }));
+      expect(mockedHandleMemorySearch.mock.calls.length).toBe(searchCallCountBefore);
     });
 
     it('default-on contract: auto-resume injection runs when SPECKIT_AUTO_RESUME is unset', async () => {

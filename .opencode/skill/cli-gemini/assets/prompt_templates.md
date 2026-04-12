@@ -496,6 +496,12 @@ JSON_PAYLOAD=$(cat <<'JSONEOF'
       "date": "<ISO-8601>"
     }
   ],
+  "recentContext": [
+    {
+      "request": "<compatibility alias for callers still emitting camelCase>",
+      "learning": "<same semantics as recent_context>"
+    }
+  ],
   "toolCalls": [
     {
       "tool": "gemini",

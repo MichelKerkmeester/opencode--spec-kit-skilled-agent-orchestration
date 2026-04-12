@@ -1011,6 +1011,12 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
 
+    // Eval channel attribution should reflect the retrieval pipeline output
+    // before canonical source filtering drops rows for response formatting.
+    _evalChannelPayloads = buildEvalChannelPayloads(
+      pipelineResult.results as unknown as Array<Record<string, unknown>>,
+    );
+
     const canonicalFilter = filterCanonicalSourceRows(resultsForFormatting);
     resultsForFormatting = canonicalFilter.results;
 
@@ -1119,8 +1125,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     } catch (_error: unknown) {
       // Adaptive proposal logging is best-effort only
     }
-
-    _evalChannelPayloads = buildEvalChannelPayloads(resultsForFormatting);
 
     const appliedBoosts: Record<string, unknown> = {
       session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },

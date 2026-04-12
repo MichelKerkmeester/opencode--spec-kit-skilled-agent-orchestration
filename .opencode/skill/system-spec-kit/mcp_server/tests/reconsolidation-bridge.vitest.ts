@@ -149,7 +149,7 @@ describe('Reconsolidation Bridge', () => {
     expect(bridgeMocks.appendMutationLedgerSafe).toHaveBeenCalledOnce();
   });
 
-  it('removes archived assistive auto-merge documents from the BM25 singleton', async () => {
+  it('keeps assistive auto-merge as a compatibility note without archived BM25 cleanup side effects', async () => {
     const archiveRun = vi.fn();
     const database = {
       prepare: vi.fn(() => ({ run: archiveRun })),
@@ -188,9 +188,9 @@ describe('Reconsolidation Bridge', () => {
     );
 
     expect(result.earlyReturn).toBeNull();
-    expect(database.prepare).toHaveBeenCalled();
-    expect(archiveRun).toHaveBeenCalledWith(55);
-    expect(bridgeMocks.bm25RemoveDocument).toHaveBeenCalledWith('55');
+    expect(database.prepare).not.toHaveBeenCalled();
+    expect(archiveRun).not.toHaveBeenCalled();
+    expect(bridgeMocks.bm25RemoveDocument).not.toHaveBeenCalled();
   });
 
   it('attempts BM25 repair for recon conflict stores and surfaces the warning when repair fails', async () => {

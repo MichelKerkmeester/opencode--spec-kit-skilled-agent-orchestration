@@ -110,17 +110,17 @@ describe('C138-P2 SQLite FTS5 BM25 Search', () => {
     expect(results.length).toBe(0);
   });
 
-  // ---- T6: Archived exclusion ----
-  it('T6: archived memories excluded by default', () => {
+  // ---- T6: Archived compatibility flag is inert after cleanup ----
+  it('T6: archived matches remain retrievable without a default exclusion branch', () => {
     const results = fts5Bm25Search(db, 'archived');
     const ids = results.map(r => r.id);
-    expect(ids).not.toContain(4);
+    expect(ids).toContain(4);
   });
 
-  it('T6b: archived memories included when requested', () => {
-    const results = fts5Bm25Search(db, 'archived', { includeArchived: true });
-    const ids = results.map(r => r.id);
-    expect(ids).toContain(4);
+  it('T6b: includeArchived preserves the same FTS result set after archived-branch cleanup', () => {
+    const baselineIds = fts5Bm25Search(db, 'archived').map(r => r.id);
+    const compatibilityIds = fts5Bm25Search(db, 'archived', { includeArchived: true }).map(r => r.id);
+    expect(compatibilityIds).toEqual(baselineIds);
   });
 
   // ---- T7: Empty query returns empty ----

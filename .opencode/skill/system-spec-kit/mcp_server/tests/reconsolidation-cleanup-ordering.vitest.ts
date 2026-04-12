@@ -64,7 +64,7 @@ describe('Reconsolidation cleanup ordering', () => {
         }],
         storeMemory: () => 99,
       }
-    )).rejects.toThrow('forced edge failure');
+    )).rejects.toThrow(/Conflict operation failed:/);
 
     expect(vi.mocked(recordHistory)).not.toHaveBeenCalled();
   });

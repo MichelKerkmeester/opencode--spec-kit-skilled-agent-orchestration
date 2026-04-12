@@ -9,7 +9,7 @@ describe('Memory-save dedup ordering regressions', () => {
 
     const duplicatePrecheckIndex = source.indexOf('const duplicatePrecheck = checkContentHashDedup');
     const chunkBranchIndex = source.indexOf('if (shouldChunkContent)');
-    const chunkedIndexerIndex = source.indexOf('indexChunkedMemoryFile(filePath, parsed');
+    const chunkedIndexerIndex = source.indexOf('const chunkedResult = await indexChunkedMemoryFile(');
 
     expect(duplicatePrecheckIndex).toBeGreaterThan(-1);
     expect(chunkBranchIndex).toBeGreaterThan(-1);

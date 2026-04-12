@@ -48,6 +48,8 @@ describe('Causal Edges Unit Tests', () => {
         evidence TEXT,
         extracted_at TEXT DEFAULT (datetime('now')),
         created_by TEXT DEFAULT 'manual',
+        source_anchor TEXT,
+        target_anchor TEXT,
         last_accessed TEXT,
         UNIQUE(source_id, target_id, relation)
       )

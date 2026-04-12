@@ -196,7 +196,7 @@ describe('Archival Manager (T059)', () => {
       expect(candidateTitles).not.toContain('Recent Memory');
     });
 
-    it('T059-006: Old memory (91 days) IS in candidates', () => {
+    it('T059-006: Old memory is ignored because archived-tier candidate scans are disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 91);
 
@@ -209,10 +209,7 @@ describe('Archival Manager (T059)', () => {
         half_life_days: 0.05,
       });
 
-      const candidates = archivalManager.getArchivalCandidates(100);
-      const candidateTitles = candidates.map(c => c.title);
-
-      expect(candidateTitles).toContain('Old Memory');
+      expect(archivalManager.getArchivalCandidates(100)).toEqual([]);
     });
 
     it('T059-007: Constitutional memory NOT in candidates (protected tier)', () => {
@@ -265,7 +262,7 @@ describe('Archival Manager (T059)', () => {
       teardownTestDb();
     });
 
-    it('T059-010: archiveMemory returns true on success', () => {
+    it('T059-010: archiveMemory is a no-op under the canonical no-archived flow', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -276,11 +273,10 @@ describe('Archival Manager (T059)', () => {
       });
       const memory_id = toMemoryId(result.lastInsertRowid);
 
-      const archiveResult = archivalManager.archiveMemory(memory_id);
-      expect(archiveResult).toBe(true);
+      expect(archivalManager.archiveMemory(memory_id)).toBe(false);
     });
 
-    it('T059-011: is_archived flag set to 1', () => {
+    it('T059-011: archiveMemory leaves the legacy is_archived ballast untouched', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -293,10 +289,10 @@ describe('Archival Manager (T059)', () => {
 
       archivalManager.archiveMemory(memory_id);
       const row = requireDb().prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id) as { is_archived: number };
-      expect(row.is_archived).toBe(1);
+      expect(row.is_archived).toBe(0);
     });
 
-    it('T059-012: unarchiveMemory succeeds', () => {
+    it('T059-012: unarchiveMemory is a no-op under the canonical no-archived flow', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -308,14 +304,13 @@ describe('Archival Manager (T059)', () => {
       const memory_id = toMemoryId(result.lastInsertRowid);
 
       archivalManager.archiveMemory(memory_id);
-      const unarchiveResult = archivalManager.unarchiveMemory(memory_id);
-      expect(unarchiveResult).toBe(true);
+      expect(archivalManager.unarchiveMemory(memory_id)).toBe(false);
 
       const row = requireDb().prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id) as { is_archived: number };
       expect(row.is_archived).toBe(0);
     });
 
-    it('T059-012c: archive and unarchive invalidate graph caches on success', () => {
+    it('T059-012c: archive and unarchive do not invalidate graph caches when the flow is disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -326,14 +321,14 @@ describe('Archival Manager (T059)', () => {
       });
       const memory_id = toMemoryId(result.lastInsertRowid);
 
-      expect(archivalManager.archiveMemory(memory_id)).toBe(true);
-      expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
+      expect(archivalManager.archiveMemory(memory_id)).toBe(false);
+      expect(archivalManager.unarchiveMemory(memory_id)).toBe(false);
 
-      expect(mockClearDegreeCache).toHaveBeenCalledTimes(2);
-      expect(mockClearGraphSignalsCache).toHaveBeenCalledTimes(2);
+      expect(mockClearDegreeCache).not.toHaveBeenCalled();
+      expect(mockClearGraphSignalsCache).not.toHaveBeenCalled();
     });
 
-    it('T059-013: Batch archive succeeds', () => {
+    it('T059-013: Batch archive reports all items as skipped when archive flow is disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -348,8 +343,8 @@ describe('Archival Manager (T059)', () => {
       }
 
       const batchResult = archivalManager.archiveBatch(idsToArchive);
-      expect(batchResult.archived).toBe(3);
-      expect(batchResult.failed).toBe(0);
+      expect(batchResult.archived).toBe(0);
+      expect(batchResult.failed).toBe(3);
     });
 
     it('T059-014: archiveMemory on already-archived returns false', () => {
@@ -368,7 +363,7 @@ describe('Archival Manager (T059)', () => {
       expect(alreadyArchived).toBe(false);
     });
 
-    it('T059-011b: archiveMemory removes vec_memories row but preserves memory_index archive state', () => {
+    it('T059-011b: archiveMemory leaves vec_memories and memory_index untouched when disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -390,21 +385,21 @@ describe('Archival Manager (T059)', () => {
       expect(beforeArchive).toBeDefined();
 
       const archiveResult = archivalManager.archiveMemory(memory_id);
-      expect(archiveResult).toBe(true);
+      expect(archiveResult).toBe(false);
 
       const archivedRow = requireDb()
         .prepare('SELECT is_archived FROM memory_index WHERE id = ?')
         .get(memory_id) as { is_archived: number } | undefined;
       expect(archivedRow).toBeDefined();
-      expect(archivedRow?.is_archived).toBe(1);
+      expect(archivedRow?.is_archived).toBe(0);
 
       const vectorRow = requireDb()
         .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
         .get(BigInt(memory_id));
-      expect(vectorRow).toBeUndefined();
+      expect(vectorRow).toBeDefined();
     });
 
-    it('T059-012b: unarchiveMemory defers vector re-embedding to next index scan', () => {
+    it('T059-012b: unarchiveMemory does not trigger vector rebuild paths when archive flow is disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -429,33 +424,30 @@ describe('Archival Manager (T059)', () => {
         },
       });
 
-      expect(archivalManager.archiveMemory(memory_id)).toBe(true);
+      expect(archivalManager.archiveMemory(memory_id)).toBe(false);
 
       const archivedVector = requireDb()
         .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
         .get(BigInt(memory_id));
-      expect(archivedVector).toBeUndefined();
+      expect(archivedVector).toBeDefined();
 
       // Capture deferred-rebuild log emitted by syncVectorOnUnarchive
       const logSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       try {
-        expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
+        expect(archivalManager.unarchiveMemory(memory_id)).toBe(false);
 
-        // Vector should NOT be rebuilt immediately — deferred to next index scan
         const vectorAfterUnarchive = requireDb()
           .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
           .get(BigInt(memory_id));
-        expect(vectorAfterUnarchive).toBeUndefined();
+        expect(vectorAfterUnarchive).toBeDefined();
 
-        // No embedding generation should have been called
         expect(embeddingCalls).toBe(0);
 
-        // Deferred-rebuild log should have been emitted
         const hasDeferredLog = logSpy.mock.calls.some(([message]) => {
           const text = String(message ?? '');
           return text.includes('Deferred vector re-embedding') && text.includes(String(memory_id));
         });
-        expect(hasDeferredLog).toBe(true);
+        expect(hasDeferredLog).toBe(false);
       } finally {
         logSpy.mockRestore();
       }
@@ -475,7 +467,7 @@ describe('Archival Manager (T059)', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       try {
         const archiveResult = archivalManager.archiveMemory(memory_id);
-        expect(archiveResult).toBe(true);
+        expect(archiveResult).toBe(false);
 
         const hasVectorWarning = warnSpy.mock.calls.some(([message]) => {
           const text = String(message ?? '');
@@ -538,10 +530,10 @@ describe('Archival Manager (T059)', () => {
       });
 
       const scanResult = archivalManager.runArchivalScan();
-      expect(scanResult.archived).toBeGreaterThanOrEqual(1);
+      expect(scanResult.archived).toBe(0);
     });
 
-    it('T059-016: Scan reports scanned count', () => {
+    it('T059-016: Scan reports zero scanned candidates when archive flow is disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 91);
 
@@ -555,7 +547,7 @@ describe('Archival Manager (T059)', () => {
       });
 
       const scanResult = archivalManager.runArchivalScan();
-      expect(scanResult.scanned).toBeGreaterThanOrEqual(1);
+      expect(scanResult.scanned).toBe(0);
     });
 
     it('T059-017: Second scan finds fewer candidates', () => {
@@ -644,10 +636,10 @@ describe('Archival Manager (T059)', () => {
 
       archivalManager.runArchivalScan();
       const stats = archivalManager.getStats();
-      expect(stats.totalScanned).toBeGreaterThanOrEqual(1);
+      expect(stats.totalScanned).toBe(0);
     });
 
-    it('T059-023: Stats include totalArchived', () => {
+    it('T059-023: Stats keep totalArchived at zero when archive flow is disabled', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -665,7 +657,7 @@ describe('Archival Manager (T059)', () => {
 
       archivalManager.runArchivalScan();
       const stats = archivalManager.getStats();
-      expect(stats.totalArchived).toBeGreaterThanOrEqual(1);
+      expect(stats.totalArchived).toBe(0);
     });
 
     it('T059-024: Stats include lastScanTime', () => {

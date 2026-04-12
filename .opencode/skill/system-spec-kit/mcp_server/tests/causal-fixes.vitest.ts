@@ -24,6 +24,8 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
         id INTEGER PRIMARY KEY,
         source_id TEXT NOT NULL,
         target_id TEXT NOT NULL,
+        source_anchor TEXT,
+        target_anchor TEXT,
         relation TEXT NOT NULL CHECK(relation IN (
           'caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'
         )),
