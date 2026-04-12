@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Local GGUF reranker via node-llama-cpp
 //
-// Neural reranking via external APIs (Voyage rerank-2, Cohere
+// Neural reranking via external APIs (Voyage rerank-2.5, Cohere
 // Rerank-english-v3.0) or a local cross-encoder model
 // (ms-marco-MiniLM-L-6-v2). When no provider is configured the
 // Module returns a positional fallback (scored 0–0.5) and marks
@@ -35,7 +35,7 @@ interface ProviderConfigEntry {
 const PROVIDER_CONFIG: Record<string, ProviderConfigEntry> = {
   voyage: {
     name: 'voyage',
-    model: 'rerank-2',
+    model: 'rerank-2.5',
     endpoint: 'https://api.voyageai.com/v1/rerank',
     apiKeyEnv: 'VOYAGE_API_KEY',
     maxDocuments: 100,

@@ -158,7 +158,8 @@ args = ["mcp"]
 COCOINDEX_CODE_ROOT_PATH = "."
 _NOTE_1 = "Install: bash .opencode/skill/mcp-coco-index/scripts/install.sh"
 _NOTE_2 = "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)"
-_NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
+_NOTE_3 = "If you switch to LiteLLM with VOYAGE_API_KEY, use voyage/voyage-code-3 and rebuild the index"
+_NOTE_4 = "Index stored in .cocoindex_code/ (gitignored)"
 ```
 
 Notes:

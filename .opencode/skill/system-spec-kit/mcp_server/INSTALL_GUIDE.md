@@ -2,7 +2,7 @@
 
 > MCP Server v1.7.2 | 2026-03-15
 
-Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 43 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, shared memory spaces, session learning, evaluation, validation, and bounded structural code-graph indexing.
+Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 43 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, session learning, evaluation, validation, and bounded structural code-graph indexing.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 
@@ -113,7 +113,7 @@ This guide addresses the full installation lifecycle and common failures after m
 | `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Default repo-local memory database used by the checked-in configs |
 | `.opencode/skill/system-spec-kit/mcp_server/database/code-graph.sqlite` | Default repo-local structural code-graph database used by the checked-in configs |
 
-The checked-in repo configs currently default to `mcp_server/database/`. Override `MEMORY_DB_PATH` or `SPEC_KIT_DB_DIR` only when you intentionally want the server to use a different writable database location.
+The checked-in repo configs currently point `SPEC_KIT_DB_DIR` at `mcp_server/database/`. The runtime then derives the actual sqlite filename from the active embedding profile: local fallback stays on `context-index.sqlite`, while Voyage and OpenAI profiles get their own profile-specific filenames in the same directory. Override `MEMORY_DB_PATH` only when you intentionally want to pin one exact sqlite file.
 
 The Code Graph system uses a separate database stored alongside the memory index:
 
@@ -294,8 +294,8 @@ Add the following to `opencode.json` in your project root:
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "environment": {
-        "EMBEDDINGS_PROVIDER": "hf-local",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"
+        "EMBEDDINGS_PROVIDER": "auto",
+        "SPEC_KIT_DB_DIR": ".opencode/skill/system-spec-kit/mcp_server/database"
       },
       "enabled": true
     }
@@ -306,7 +306,7 @@ Add the following to `opencode.json` in your project root:
 Paths are relative to the project root. Use absolute paths if your client requires them:
 `/Users/YOUR_USERNAME/path/to/project/.opencode/skill/...`
 
-> **Codex CLI users**: If running in a read-only workspace, override `MEMORY_DB_PATH` with a writable path outside the repo (e.g., `~/.speckit/database/context-index.sqlite`). See `.codex/config.toml` for the default configuration.
+> **Codex CLI users**: If running in a read-only workspace, point `SPEC_KIT_DB_DIR` at a writable directory outside the repo (for example `~/.speckit/database`). The runtime will derive the provider-specific sqlite filename there automatically. Use `MEMORY_DB_PATH` only for an intentional single-file override. See `.codex/config.toml` for the checked-in configuration shape.
 
 ### Option B: Claude Code CLI
 
@@ -334,7 +334,7 @@ Add the following to that file:
         "/Users/YOUR_USERNAME/path/to/project/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "env": {
-        "EMBEDDINGS_PROVIDER": "hf-local"
+        "EMBEDDINGS_PROVIDER": "auto"
       }
     }
   }
@@ -351,7 +351,7 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
 |---|---|---|
 | `SPECKIT_ADAPTIVE_FUSION` | `true` | Controls adaptive intent-based fusion weights. Set to `false` to disable (7 task types). |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | Controls 4-dimension per-retrieval telemetry. Set to `true` to enable metrics collection. |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Records the current memory roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | Records the current memory roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on memory-roadmap graph capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
 
 **Example** (OpenCode with all flags explicit):
@@ -366,8 +366,8 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "environment": {
-        "EMBEDDINGS_PROVIDER": "hf-local",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
+        "EMBEDDINGS_PROVIDER": "auto",
+        "SPEC_KIT_DB_DIR": ".opencode/skill/system-spec-kit/mcp_server/database",
         "SPECKIT_ADAPTIVE_FUSION": "true",
         "SPECKIT_EXTENDED_TELEMETRY": "true",
         "SPECKIT_MEMORY_ROADMAP_PHASE": "graph",
@@ -746,17 +746,17 @@ sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
 ```bash
 # Symptom: Codex cannot initialize spec_kit_memory MCP server
 
-# Check 1: MEMORY_DB_PATH must be writable
-# In .codex/config.toml, verify the path is writable:
-ls -la "$(grep MEMORY_DB_PATH .codex/config.toml | cut -d'"' -f2)"
+# Check 1: SPEC_KIT_DB_DIR must be writable
+# In .codex/config.toml, verify the directory is writable:
+ls -ld "$(grep SPEC_KIT_DB_DIR .codex/config.toml | cut -d'\"' -f2)"
 
 # Check 2: No stdout contamination
 # All MCP server logging must use stderr (console.error).
 # stdout is reserved for MCP JSON-RPC protocol messages.
 
-# Fix: Override MEMORY_DB_PATH to a writable location:
+# Fix: Override SPEC_KIT_DB_DIR to a writable location:
 # In .codex/config.toml, set:
-#   MEMORY_DB_PATH = "/Users/YOUR_USERNAME/.speckit/database/context-index.sqlite"
+#   SPEC_KIT_DB_DIR = "/Users/YOUR_USERNAME/.speckit/database"
 ```
 
 ### Example 9a: Validating Markdown Links
@@ -905,7 +905,7 @@ The four most common failure modes after a major update:
 1. **Install or build run from wrong directory.** Partial installs leave workspace links unresolved, particularly `@spec-kit/shared`.
 2. **Native module ABI mismatch after a Node.js update.** `better-sqlite3` and `sqlite-vec` were compiled for an older `MODULE_VERSION`.
 3. **Stale build output after dependency changes.** The `dist/` folder was not rebuilt, or was rebuilt without the required workspace state.
-4. **Database path confusion.** The current default runtime writes to `mcp_server/database/...`, not `dist/database/...`. If your client overrides `MEMORY_DB_PATH` or `SPEC_KIT_DB_DIR`, verify the override before inspecting files manually.
+4. **Database path confusion.** The current default runtime writes into `mcp_server/database/`, but the exact sqlite filename now depends on the active embedding profile. If your client overrides `SPEC_KIT_DB_DIR` or `MEMORY_DB_PATH`, verify the override before inspecting files manually.
 
 ---
 
@@ -1042,7 +1042,7 @@ PHASE VALID:  bash scripts/validate.sh specs/NNN-name --recursive
 FEATURE FLAGS (env vars):
   SPECKIT_ADAPTIVE_FUSION    default: true     (false = disable intent-based fusion)
   SPECKIT_EXTENDED_TELEMETRY default: false    (true = enable metrics)
-  SPECKIT_MEMORY_ROADMAP_PHASE default: shared-rollout (final roadmap default)
+  SPECKIT_MEMORY_ROADMAP_PHASE default: scope-governance (current roadmap default)
 
 MCP TOOLS: memory_context, memory_search, memory_match_triggers,
            memory_save, memory_index_scan, memory_stats

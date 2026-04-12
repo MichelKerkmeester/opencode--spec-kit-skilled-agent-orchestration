@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { getDbDir } from './config.js';
+import { getStartupEmbeddingProfile } from './embeddings/factory.js';
 
 function findUp(startDir: string, predicate: (dir: string) => boolean): string | undefined {
   let dir = startDir;
@@ -95,7 +96,9 @@ export function resolveDatabaseDir(): string {
   return validateResolvedPath('database dir', path.join(resolvePackageRoot(), 'mcp_server', 'database'));
 }
 
-const DEFAULT_DB_PATH = path.join(resolveDatabaseDir(), 'context-index.sqlite');
+function resolveDerivedDbPath(databaseDir = resolveDatabaseDir()): string {
+  return getStartupEmbeddingProfile().getDatabasePath(databaseDir);
+}
 
 /** Defines database path. */
 export const DB_PATH: string = (() => {
@@ -106,5 +109,5 @@ export const DB_PATH: string = (() => {
     return path.join(validatedDir, path.basename(resolvedPath));
   }
 
-  return DEFAULT_DB_PATH;
+  return resolveDerivedDbPath();
 })();

@@ -33,7 +33,7 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     it('T040: Voyage provider has correct configuration', () => {
       const voyageConfig = crossEncoder.PROVIDER_CONFIG.voyage;
       expect(voyageConfig.name).toBe('voyage');
-      expect(voyageConfig.model).toBe('rerank-2');
+      expect(voyageConfig.model).toBe('rerank-2.5');
       expect(voyageConfig.endpoint).toBe('https://api.voyageai.com/v1/rerank');
       expect(voyageConfig.apiKeyEnv).toBe('VOYAGE_API_KEY');
       expect(voyageConfig.timeout).toBe(15000);

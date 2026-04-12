@@ -42,7 +42,7 @@ Those embeddings support retrieval over packet materials and generated artifacts
 | Category | Value | Details |
 |----------|-------|---------|
 | Providers | 3 | Voyage, HF Local, OpenAI |
-| Default Model | nomic-embed-text-v1.5 | 768-dimensional vectors |
+| Default Model | auto-detected | `voyage-4` (1024) with `VOYAGE_API_KEY`, otherwise `text-embedding-3-small` (1536) with `OPENAI_API_KEY`, otherwise local `nomic-embed-text-v1.5` (768) |
 | Recommended | Voyage | Best retrieval quality (+8%) |
 
 ### Key Features
@@ -101,7 +101,7 @@ node context-server.ts
 const embeddings = require('./embeddings');
 const metadata = embeddings.getProviderMetadata();
 console.log(metadata);
-// Expected: { provider: 'voyage', model: 'voyage-code-2', dim: 1024, healthy: true }
+// Expected: { provider: 'voyage', model: 'voyage-4', dim: 1024, healthy: true }
 ```
 
 ### First Use
@@ -159,7 +159,7 @@ database/
 ├── context-index.sqlite                              # Legacy (hf-local + nomic + 768)
 ├── context-index__openai__text-embedding-3-small__1536.sqlite
 ├── context-index__openai__text-embedding-3-large__3072.sqlite
-└── context-index__hf-local__custom-model__768.sqlite
+└── context-index__voyage__voyage-4__1024.sqlite
 ```
 
 **Benefits:**
@@ -202,6 +202,8 @@ const { generateDocumentEmbedding, getEmbeddingDimension } = require('./embeddin
 | `VOYAGE_API_KEY` | No | - | Voyage AI API key (recommended) |
 | `OPENAI_API_KEY` | No | - | OpenAI API key |
 | `EMBEDDINGS_PROVIDER` | No | `auto` | Force specific provider |
+| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | No | auto-detected | Preferred database directory override; runtime derives the sqlite filename from the active profile |
+| `MEMORY_DB_PATH` | No | unset | Explicit single-file database override. Prefer the DB dir override when auto profile switching should stay intact |
 | `OPENAI_EMBEDDINGS_MODEL` | No | `text-embedding-3-small` | OpenAI model override |
 | `HF_EMBEDDINGS_MODEL` | No | `nomic-ai/nomic-embed-text-v1.5` | HF model override |
 
@@ -226,6 +228,8 @@ export HF_EMBEDDINGS_MODEL=nomic-ai/nomic-embed-text-v1.5
 2. Auto-detection: Voyage if `VOYAGE_API_KEY` exists (recommended)
 3. Auto-detection: OpenAI if `OPENAI_API_KEY` exists
 4. Fallback: HF local
+
+When only `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` is set, the database filename tracks that same precedence automatically so provider switches do not reuse an incompatible sqlite file.
 
 <!-- /ANCHOR:configuration -->
 
@@ -322,7 +326,7 @@ OPENAI_API_KEY=sk-... node scripts/tests/test-embeddings-factory.js
 
 **Cause**: Switched providers without using per-profile databases
 
-**Solution**: Should no longer occur with per-profile DBs. If you see this error, verify you're not using forced `MEMORY_DB_PATH`.
+**Solution**: Should no longer occur with per-profile DBs. If you see this error, verify you're not forcing `MEMORY_DB_PATH` to a shared sqlite file across multiple providers.
 
 ---
 

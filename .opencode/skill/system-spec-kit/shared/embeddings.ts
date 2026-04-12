@@ -11,6 +11,7 @@ import {
   createEmbeddingsProvider,
   getProviderInfo,
   getStartupEmbeddingDimension,
+  getStartupEmbeddingProfile,
   validateApiKey,
   VALIDATION_TIMEOUT_MS,
 } from './embeddings/factory.js';
@@ -903,6 +904,7 @@ export {
   getEmbeddingProfile,
   getEmbeddingProfileAsync,
   getProviderMetadata,
+  getStartupEmbeddingProfile,
   clearEmbeddingCache,
   getEmbeddingCacheStats,
   // T016-T019: Lazy loading exports

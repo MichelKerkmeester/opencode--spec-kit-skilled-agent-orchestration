@@ -20,9 +20,9 @@ import * as path from 'path';
 import Database from 'better-sqlite3';
 import * as sqliteVec from 'sqlite-vec';
 
-import { getStartupEmbeddingDimension } from '@spec-kit/shared/embeddings/factory';
+import { getEmbeddingDimension } from '@spec-kit/shared/embeddings';
 
-import { DATABASE_PATH, SERVER_DIR } from '../../core/config.js';
+import { resolveDatabasePaths, SERVER_DIR } from '../../core/config.js';
 import { IVectorStore } from '../interfaces/vector-store.js';
 import { computeInterferenceScoresBatch } from '../scoring/interference-scoring.js';
 import { validateFilePath } from '../utils/path-security.js';
@@ -118,14 +118,14 @@ async function getAliasesModule() {
 ----------------------------------------------------------------*/
 
 /** Default embedding dimension used by the vector index. */
-export const EMBEDDING_DIM = 768;
+export const EMBEDDING_DIM = getEmbeddingDimension();
 
 /**
  * Gets the active embedding dimension for the current provider.
  * @returns The embedding dimension.
  */
 export function get_embedding_dim(): number {
-  return getStartupEmbeddingDimension();
+  return getEmbeddingDimension();
 }
 
 /**
@@ -137,13 +137,14 @@ export async function get_confirmed_embedding_dimension(timeout_ms = 5000): Prom
   const start = Date.now();
   while (Date.now() - start < timeout_ms) {
     const dim = get_embedding_dim();
-    if (dim !== 768 || process.env.EMBEDDING_DIM === '768') {
+    if (Number.isFinite(dim) && dim > 0) {
       return dim;
     }
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  console.warn('[vector-index] Using default dimension 768 after timeout');
-  return 768;
+  const fallbackDim = get_embedding_dim();
+  console.warn(`[vector-index] Using embedding dimension ${fallbackDim} after timeout`);
+  return fallbackDim;
 }
 
 type EmbeddingDimensionValidation = {
@@ -248,7 +249,7 @@ function validate_embedding_dimension_for_connection(
       const warning = `EMBEDDING DIMENSION MISMATCH: Existing database stores ${existing.stored_dim}-dim vectors (${source_label}), ` +
         `but the active embedding configuration resolves to ${current_dim}. Refusing to bootstrap because vector search would fail. ` +
         `Solutions: 1) Delete database and re-index, 2) Set EMBEDDINGS_PROVIDER to match original, ` +
-        `3) Use MEMORY_DB_PATH for provider-specific databases.`;
+        `3) Let SPEC_KIT_DB_DIR auto-derive a profile-specific database, or set MEMORY_DB_PATH only for an intentional file override.`;
       console.error(`[vector-index] WARNING: ${warning}`);
       return { valid: false, stored: existing.stored_dim, current: current_dim, warning };
     }
@@ -272,18 +273,25 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
    2. DATABASE PATH AND SECURITY
 ----------------------------------------------------------------*/
 
-// F4.04/F8.02 fix: Use centralized DB path from core/config.ts.
+// F4.04/F8.02 fix: Use centralized DB-path resolution from core/config.ts.
 // Legacy env vars MEMORY_DB_DIR and MEMORY_DB_PATH remain supported for backward compatibility.
-const DEFAULT_DB_DIR = process.env.MEMORY_DB_DIR
-  ? path.resolve(process.env.MEMORY_DB_DIR)
-  : path.dirname(DATABASE_PATH);
+function get_default_db_dir(): string {
+  return process.env.MEMORY_DB_DIR
+    ? path.resolve(process.env.MEMORY_DB_DIR)
+    : resolveDatabasePaths().databaseDir;
+}
+
+function get_default_db_path(): string {
+  return process.env.MEMORY_DB_PATH || resolveDatabasePaths().databasePath;
+}
+
 /** Default path for the vector-index database file. */
 export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH
-  || path.join(DEFAULT_DB_DIR, path.basename(DATABASE_PATH));
+  || get_default_db_path();
 const DB_PERMISSIONS = 0o600;
 
 function resolve_database_path() {
-  return process.env.MEMORY_DB_PATH || DEFAULT_DB_PATH;
+  return process.env.MEMORY_DB_PATH || get_default_db_path();
 }
 
 // P1-06 FIX: Unified allowed paths
@@ -374,7 +382,7 @@ export function safe_parse_json(json_string: unknown, default_value = []): unkno
 ----------------------------------------------------------------*/
 
 let db: Database.Database | null = null;
-let db_path = DEFAULT_DB_PATH;
+let db_path = resolve_database_path();
 let sqlite_vec_available_flag = true;
 // C1 FIX: Key connections by resolved DB path to prevent cross-store data corruption
 const db_connections = new Map<string, Database.Database>();

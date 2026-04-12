@@ -262,15 +262,12 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | string | Active memory roadmap phase: `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, `shared-rollout`. | `lib/config/capability-flags.ts` |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | string | Active memory roadmap phase: `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | Lineage state tracking capability. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | Graph unified capability for roadmap tracking. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking capability. **Default OFF**: opt-in. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | boolean | Scope enforcement for tenant/user/agent isolation. Graduated ON. Legacy: `SPECKIT_HYDRA_SCOPE_ENFORCEMENT`. | `lib/governance/scope-governance.ts` |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | boolean | Governance guardrails for validated operations. Graduated ON. Legacy: `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS`. | `lib/governance/scope-governance.ts` |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | boolean | Shared memory spaces with deny-by-default membership. **Default OFF**: opt-in. | `lib/config/capability-flags.ts` |
-| `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID` | (none) | string | Admin user ID override for shared memory operations. | `handlers/shared-memory.ts` |
-| `SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID` | (none) | string | Admin agent ID override for shared memory operations. | `handlers/shared-memory.ts` |
 <!-- /ANCHOR:governance-scope -->
 
 ---
@@ -333,6 +330,8 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 <!-- ANCHOR:reranker -->
 ## 14. RERANKER
 
+When `VOYAGE_API_KEY` is present and local reranking is not forced, the default remote reranker resolves to Voyage `rerank-2.5`. Users without API keys still keep the existing local fallback paths.
+
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
 | `SPECKIT_RERANKER_MODEL` | (auto) | string | Custom GGUF model path for local reranker. | `lib/search/local-reranker.ts` |
@@ -343,6 +342,8 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 
 <!-- ANCHOR:embedding -->
 ## 15. EMBEDDING
+
+Embedding provider selection stays auto-detected unless you force it. In `EMBEDDINGS_PROVIDER=auto`, the runtime prefers Voyage `voyage-4` (1024 dims) when `VOYAGE_API_KEY` is present, then OpenAI `text-embedding-3-small` (1536 dims) when `OPENAI_API_KEY` is present, and otherwise falls back to the local Hugging Face profile (768 dims). If you override only `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR`, the sqlite filename is derived automatically from that active profile.
 
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
@@ -360,13 +361,12 @@ These variables control memory roadmap capabilities. Each has a **legacy `SPECKI
 
 | Variable | Legacy Alias | Default | Type | Description |
 |----------|-------------|---------|------|-------------|
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | Active roadmap phase. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | Active roadmap phase. |
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | Lineage tracking. |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | Graph unified mode. |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking (opt-in). |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | Scope enforcement. |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | Governance guardrails. |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | Shared memory spaces (opt-in). |
 <!-- /ANCHOR:roadmap-phase-control -->
 
 ---
@@ -388,7 +388,6 @@ These variables are no longer active but may still appear in compatibility code.
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | **Legacy** | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | Use the MEMORY_ prefix. Still works as fallback. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | **Legacy** | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | Use the MEMORY_ prefix. Still works as fallback. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | **Legacy** | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | **Legacy** | `SPECKIT_MEMORY_SHARED_MEMORY` | Use the MEMORY_ prefix. Still works as fallback. |
 <!-- /ANCHOR:deprecated -->
 
 ---
@@ -415,8 +414,8 @@ export SPECKIT_ABLATION=true
 # Enable extended telemetry
 export SPECKIT_EXTENDED_TELEMETRY=true
 
-# Enable shared memory spaces
-export SPECKIT_MEMORY_SHARED_MEMORY=true
+# Enable adaptive roadmap capability metadata
+export SPECKIT_MEMORY_ADAPTIVE_RANKING=true
 ```
 
 ### Tune Numeric Parameters

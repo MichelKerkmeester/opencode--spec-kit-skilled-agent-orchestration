@@ -11,6 +11,7 @@ import {
   validateApiKey,
 } from '@spec-kit/shared/embeddings/factory';
 import { VoyageProvider } from '@spec-kit/shared/embeddings/providers/voyage';
+import { getStartupEmbeddingProfile } from '../../shared/embeddings/factory.js';
 import * as embeddingsFacade from '../lib/providers/embeddings';
 
 const ENV_KEYS = [
@@ -232,21 +233,47 @@ describe('Embeddings Architecture (T513)', () => {
       expect(startup.dimension).toBeGreaterThan(0);
     });
 
-    it('T513-03e: hf-local inference respects provider timeout', async () => {
+    it('T513-03e: startup profile derives a Voyage-specific database path in auto mode', () => {
+      delete process.env.EMBEDDINGS_PROVIDER;
+      process.env.VOYAGE_API_KEY = 'voyage_test_key_1234567890';
+      delete process.env.OPENAI_API_KEY;
+
+      const profile = getStartupEmbeddingProfile();
+
+      expect(profile.provider).toBe('voyage');
+      expect(profile.model).toBe('voyage-4');
+      expect(profile.dim).toBe(1024);
+      expect(profile.getDatabasePath('/tmp/spec-kit-db')).toBe('/tmp/spec-kit-db/context-index__voyage__voyage-4__1024.sqlite');
+    });
+
+    it('T513-03f: startup profile keeps the local fallback database path when no API keys are present', () => {
+      delete process.env.EMBEDDINGS_PROVIDER;
+      delete process.env.VOYAGE_API_KEY;
+      delete process.env.OPENAI_API_KEY;
+
+      const profile = getStartupEmbeddingProfile();
+
+      expect(profile.provider).toBe('hf-local');
+      expect(profile.model).toBe('nomic-ai/nomic-embed-text-v1.5');
+      expect(profile.dim).toBe(768);
+      expect(profile.getDatabasePath('/tmp/spec-kit-db')).toBe('/tmp/spec-kit-db/context-index.sqlite');
+    });
+
+    it('T513-03g: hf-local inference respects provider timeout', async () => {
       const source = fs.readFileSync(HF_LOCAL_PROVIDER_FILE, 'utf8');
       expect(source).toContain('async function withTimeout<T>(');
       expect(source).toContain('HF local inference timed out after ${this.timeout}ms');
       expect(source).toContain('const output = await withTimeout(');
     });
 
-    it('T513-03f: openai warmup uses a bounded Promise.race deadline', () => {
+    it('T513-03h: openai warmup uses a bounded Promise.race deadline', () => {
       const source = fs.readFileSync(OPENAI_PROVIDER_FILE, 'utf8');
       expect(source).toContain('const result = await Promise.race([');
       expect(source).toContain('OpenAI warmup timed out after ${this.timeout}ms');
       expect(source).toContain('proceeding with cold provider state');
     });
 
-    it('T513-03g: voyage warmup uses a bounded Promise.race deadline', () => {
+    it('T513-03i: voyage warmup uses a bounded Promise.race deadline', () => {
       const source = fs.readFileSync(VOYAGE_PROVIDER_FILE, 'utf8');
       expect(source).toContain('const result = await Promise.race([');
       expect(source).toContain('Voyage warmup timed out after ${this.timeout}ms');

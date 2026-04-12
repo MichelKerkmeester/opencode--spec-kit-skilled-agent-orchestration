@@ -77,7 +77,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 | **Memory state** | Everything treated equally | 4 active cognitive states (HOT through DORMANT) with FSRS-driven transitions |
 | **Save quality** | Accept everything | 3-layer gate (structure, semantic sufficiency, duplicate) with dry-run preview |
 | **Explainability** | Black box | Confidence scoring (high/medium/low) + two-tier trace (basic and debug) |
-| **Access control** | None | Shared spaces with deny-by-default membership and kill switches |
+| **Access control** | None | Governed tenant, user, agent, and session boundaries |
 | **Evaluation** | Manual testing | Ablation studies, 12-metric computation (MRR, NDCG), synthetic ground truth corpus |
 
 ### How You Use It
@@ -88,9 +88,9 @@ The memory system exposes 47 MCP tools through 4 memory slash commands plus the 
 |---------|-------------|------------|
 | `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
-| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 19 primary tools + 1 helper |
+| `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion | 19 primary tools + 1 helper |
 | `/memory:save` | Update packet continuity and supporting generated context artifacts | 4 tools |
-| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface; primary chain uses 3 shared memory tools |
+| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface for packet recovery |
 
 ### Requirements
 
@@ -146,7 +146,7 @@ Use the configuration shape that matches your client.
       ],
       "environment": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite"
+        "SPEC_KIT_DB_DIR": ".opencode/skill/system-spec-kit/mcp_server/database"
       }
     }
   }
@@ -431,22 +431,7 @@ The system keeps track of what happened during your current conversation so it d
 
 ---
 
-#### 3.1.8 SHARED MEMORY
-
-By default, every memory is private to the user or agent that created it. Shared memory adds controlled access so multiple people or agents can read and write to a common knowledge pool.
-
-Think of it like a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. Management can lock it down instantly if something goes wrong.
-
-- **Spaces** -- named containers for shared knowledge (like rooms in the office)
-- **Roles** -- `owner` (full control), `editor` (read/write), `viewer` (read-only)
-- **Deny-by-default** -- nobody gets access unless explicitly granted
-- **Kill switch** -- immediately blocks all access for emergencies
-
-For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md).
-
----
-
-#### 3.1.9 QUALITY GATES AND LEARNING
+#### 3.1.8 QUALITY GATES AND LEARNING
 
 Not everything deserves to be stored. Before a new memory enters the system, it goes through three layered checks:
 
@@ -575,7 +560,6 @@ The smart entry point. You describe what you need and it figures out the best wa
 | `tenantId` | string | Tenant boundary for governed retrieval |
 | `userId` | string | User boundary for governed retrieval |
 | `agentId` | string | Agent boundary for governed retrieval |
-| `sharedSpaceId` | string | Shared-space boundary for governed retrieval |
 | `limit` | number | Max results to return (default varies by mode) |
 | `sessionId` | string | Session ID for deduplication across turns |
 | `anchors` | string[] | Pull specific sections: `["state", "next-steps"]` |
@@ -633,7 +617,6 @@ The main search tool. You type what you are looking for in plain language and th
 | `tenantId` | string | Tenant boundary |
 | `userId` | string | User boundary |
 | `agentId` | string | Agent boundary |
-| `sharedSpaceId` | string | Shared-memory boundary |
 | `limit` | number | 1-100 results (default 10) |
 | `tier` | string | Filter by importance tier |
 | `minState` | string | Minimum active state: `HOT`, `WARM`, `COLD`, `DORMANT` |
@@ -668,7 +651,6 @@ The lightweight search option. Works like a preset: you provide a query and opti
 | `tenantId` | string | Tenant boundary |
 | `userId` | string | User boundary |
 | `agentId` | string | Agent boundary |
-| `sharedSpaceId` | string | Shared-memory boundary |
 | `limit` | number | 1-100 results (default 10) |
 
 ---
@@ -715,7 +697,6 @@ This is how you add new knowledge to the system. Point it at a markdown file and
 | `tenantId` | string | Governance: tenant scope |
 | `userId` | string | Governance: user attribution |
 | `agentId` | string | Governance: agent attribution |
-| `sharedSpaceId` | string | Governance: shared-space target |
 | `provenanceSource` | string | Audit source label |
 | `provenanceActor` | string | Audit actor label |
 | `governedAt` | string | ISO timestamp for governed ingest audit |
@@ -887,62 +868,6 @@ Delete a checkpoint. Requires you to type the name twice as a safety measure so 
 |-----------|------|-------|
 | `name` | string | **Required.** Checkpoint name to delete |
 | `confirmName` | string | **Required.** Must exactly match `name` |
-
----
-
-##### `shared_space_upsert`
-
-Create or update a shared-memory space. Shared spaces start locked: nobody can read or write until you add members with `shared_space_membership_set`. The person or agent who creates the space automatically becomes its owner.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `spaceId` | string | **Required.** Unique identifier for the space |
-| `tenantId` | string | **Required.** Tenant scope |
-| `name` | string | **Required.** Human-readable name |
-| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
-| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
-| `rolloutEnabled` | boolean | Enable or disable this space |
-| `rolloutCohort` | string | Limit access to a specific cohort |
-| `killSwitch` | boolean | Emergency shutoff |
-
----
-
-##### `shared_space_membership_set`
-
-Control who can access a shared space. Assign owner, editor or viewer roles. Only existing owners can change membership.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `spaceId` | string | **Required.** Space to configure |
-| `tenantId` | string | **Required.** Tenant boundary |
-| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
-| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
-| `subjectType` | string | **Required.** `user` or `agent` |
-| `subjectId` | string | **Required.** User or agent identifier |
-| `role` | string | **Required.** `owner`, `editor` or `viewer` |
-
----
-
-##### `shared_memory_status`
-
-Check the state of shared memory for an authenticated caller. The response includes `allowedSharedSpaceIds` for currently readable spaces plus `spaces[]` and `rolloutSummary` for the caller's visible memberships.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `tenantId` | string | Filter by tenant |
-| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
-| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
-
----
-
-##### `shared_memory_enable`
-
-Turn on the shared-memory subsystem. First-time setup creates the database tables. Safe to call multiple times. Caller authentication is required until the transport provides a server-minted principal.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `actorUserId` | string | Caller identity (user). Provide exactly one actor |
-| `actorAgentId` | string | Caller identity (agent). Provide exactly one actor |
 
 ---
 
@@ -1230,7 +1155,6 @@ mcp_server/
 ├── hooks/                     # Session-start/compaction surfacing, mutation feedback, token-count sync
 ├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
 ├── schemas/                   # Zod tool-input schemas
-├── shared-spaces/             # Documentation-only shared-memory surface
 ├── tests/                     # Vitest suites (329 root `.vitest.ts` files at audit time)
 ├── tools/                     # Tool dispatch layer
 ├── package.json               # Package metadata and scripts
@@ -1249,7 +1173,7 @@ mcp_server/
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
 | `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
-| `api/index.ts` | Stable external import surface for eval, indexing, search, provider, rollout, and discovery helpers. |
+| `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
 ### 7-Layer Tool Architecture
@@ -1262,7 +1186,7 @@ Tools are organized into layers based on what they do. Lower layers handle every
 | L2 | Core | 4 | 1,500 | The main search and save operations |
 | L3 | Discovery | 4 | 800 | Browse what is stored, check system health |
 | L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
-| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/status/shared-space lifecycle |
+| L5 | Lifecycle | 4 | 600 | Checkpoints and lifecycle snapshot management |
 | L6 | Analysis | 10 | 1,200 | Trace decisions, measure learning, run evaluations |
 | L7 | Maintenance | 10 | 1,000 | Re-index files, review history, run bulk imports |
 | | **Total** | **47** | **7,600** | |
@@ -1278,7 +1202,7 @@ Token budgets control how much content each tool can return per call. The budget
 
 For the complete list of all environment variables with defaults and examples, see `../references/config/environment_variables.md`.
 
-Codex note: if the active Codex runtime cannot write inside the repository, set `MEMORY_DB_PATH` to a writable location (for example under your home directory or `/tmp`) so the MCP server can create and update the SQLite database safely.
+Codex note: if the active Codex runtime cannot write inside the repository, point `SPEC_KIT_DB_DIR` at a writable directory (for example under your home directory or `/tmp`). Use `MEMORY_DB_PATH` only when you intentionally need one fixed sqlite file instead of letting the runtime derive a profile-specific filename automatically.
 
 ### Embedding Providers
 
@@ -1286,9 +1210,9 @@ The system needs an embedding provider to convert text into vectors for similari
 
 | Provider | Environment Variables | Notes |
 |----------|-----------------------|-------|
-| **Voyage AI** (recommended) | `EMBEDDING_PROVIDER=voyage`, `VOYAGE_API_KEY=your-key` | Best retrieval quality |
-| **OpenAI** | `EMBEDDING_PROVIDER=openai`, `OPENAI_API_KEY=your-key` | Widely available |
-| **HuggingFace local** | `EMBEDDING_PROVIDER=huggingface` | No API key needed, runs on your machine |
+| **Voyage AI** (recommended) | `EMBEDDINGS_PROVIDER=auto`, `VOYAGE_API_KEY=your-key` | Preferred automatically when the key is present; uses `voyage-4` embeddings and `rerank-2.5` |
+| **OpenAI** | `EMBEDDINGS_PROVIDER=auto`, `OPENAI_API_KEY=your-key` | Selected automatically when Voyage is unavailable and an OpenAI key is present |
+| **HuggingFace local** | `EMBEDDINGS_PROVIDER=auto` | Default fallback when no cloud API keys are present; stays fully local |
 
 ### Representative Environment Variables
 
@@ -1296,7 +1220,8 @@ The full source of truth lives in `../references/config/environment_variables.md
 
 | Variable | Default | What It Controls |
 |------|---------|-----------------|
-| `MEMORY_DB_PATH` | `mcp_server/database/context-index.sqlite` | Override the active memory database location |
+| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | auto-detected | Preferred database-directory override; runtime derives a provider/model-specific sqlite filename inside it |
+| `MEMORY_DB_PATH` | unset | Explicit file override for the active memory database; use only when you intentionally want to pin one sqlite path |
 | `ENABLE_RERANKER` | `false` | Enable the experimental reranker path |
 | `ENABLE_TOOL_CACHE` | `true` | Enable tool-level result caching |
 | `SPECKIT_STRICT_SCHEMAS` | `true` | Strict Zod validation for MCP tool inputs |
@@ -1493,51 +1418,6 @@ After finishing, capture what you learned:
 
 ---
 
-### Example 7: Set Up Shared Memory
-
-Enable the subsystem and create a shared space for your team:
-
-```json
-{
-  "tool": "shared_memory_enable",
-  "arguments": {
-    "actorAgentId": "spec-kit"
-  }
-}
-```
-
-```json
-{
-  "tool": "shared_space_upsert",
-  "arguments": {
-    "spaceId": "research",
-    "tenantId": "acme",
-    "name": "Research Team",
-    "actorAgentId": "spec-kit"
-  }
-}
-```
-
-Grant another agent access:
-
-```json
-{
-  "tool": "shared_space_membership_set",
-  "arguments": {
-    "spaceId": "research",
-    "tenantId": "acme",
-    "actorAgentId": "spec-kit",
-    "subjectType": "agent",
-    "subjectId": "claude-code",
-    "role": "editor"
-  }
-}
-```
-
-For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md).
-
----
-
 ### Common Patterns
 
 | What You Want To Do | Tool | How |
@@ -1604,11 +1484,11 @@ If it shows `INSUFFICIENT_CONTEXT_ABORT`, add more real evidence. If it shows a 
 **Fix**: Check your environment:
 
 ```bash
-echo $EMBEDDING_PROVIDER
+echo $EMBEDDINGS_PROVIDER
 echo $VOYAGE_API_KEY
 ```
 
-Switch to local HuggingFace if no API key is available: `EMBEDDING_PROVIDER=huggingface`
+Switch to local HuggingFace if no API key is available: `EMBEDDINGS_PROVIDER=hf-local`
 
 ---
 
@@ -1632,7 +1512,7 @@ Restore if needed:
 
 ### Server Fails to Start
 
-**What you see**: `node dist/context-server.js` exits with a module error or `MEMORY_DB_PATH`/database-path error.
+**What you see**: `node dist/context-server.js` exits with a module error or `SPEC_KIT_DB_DIR` / `MEMORY_DB_PATH` database-path error.
 
 **Fix**: Rebuild and check the database path:
 
@@ -1653,7 +1533,6 @@ node --input-type=module -e "await import('./dist/context-server.js')" 2>&1 | he
 | BM25 index stale | Set `ENABLE_BM25=false` to fall back to FTS5 |
 | Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and review cache + trace settings before enabling heavier debug output |
 | Embedding API rate limit | Set `SPECKIT_EMBEDDING_RETRY_DELAY_MS=1000` |
-| Shared memory not working | Call `shared_memory_enable` first, then create a space with an actor identity |
 
 ### Diagnostic Commands
 
@@ -1682,7 +1561,7 @@ sqlite3 database/context-index.sqlite "SELECT COUNT(*) FROM memory_index;"
 
 **Q: Do I need an API key to use this?**
 
-No. The server runs with HuggingFace local embeddings out of the box. Set `EMBEDDING_PROVIDER=huggingface` and no API key is required. Voyage AI gives better retrieval quality but is optional.
+No. The server runs with HuggingFace local embeddings out of the box whenever no cloud API key is present. Leave `EMBEDDINGS_PROVIDER=auto` for that fallback, or force `EMBEDDINGS_PROVIDER=hf-local` if you want to pin the local provider explicitly. Voyage AI gives better retrieval quality but is optional.
 
 ---
 
@@ -1707,12 +1586,6 @@ Constitutional memories are rules that never change: coding standards, architect
 **Q: How much disk space does the database use?**
 
 A typical project with a few hundred indexed packet docs and generated continuity artifacts uses 10-50 MB. The vector table (1024-dimension float32 embeddings) is the largest contributor. Check with `memory_stats` using `includeScores: true`.
-
----
-
-**Q: Can multiple AI agents share the same memories?**
-
-Yes, through shared memory. Call `shared_memory_enable`, create a space with `shared_space_upsert` and grant access with `shared_space_membership_set`. Spaces are deny-by-default and the first creator becomes owner. See [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md) for the full guide.
 
 ---
 
@@ -1750,7 +1623,6 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | Document | What It Covers |
 |----------|---------------|
 | [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full installation: embedding providers, database setup, MCP client config, verification |
-| [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md) | Complete shared memory guide: setup, use cases, roles, kill switch, troubleshooting |
 | [lib/search/README.md](./lib/search/README.md) | Per-stage module mapping for the 4-stage search pipeline |
 | [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |

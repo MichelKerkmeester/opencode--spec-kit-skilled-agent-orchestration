@@ -20,7 +20,7 @@ readonly MCP_DISPLAY_NAME="Spec Kit Memory"
 readonly SPEC_KIT_ROOT_DIR=".opencode/skill/system-spec-kit"
 readonly MCP_SERVER_DIR="${SPEC_KIT_ROOT_DIR}/mcp_server"
 readonly MCP_SERVER_SCRIPT="dist/context-server.js"
-readonly MCP_CANONICAL_DB_PATH="${MCP_SERVER_DIR}/dist/database/context-index.sqlite"
+readonly MCP_CANONICAL_DB_DIR="${MCP_SERVER_DIR}/database"
 readonly MIN_NODE_VERSION="18"
 SKIP_VERIFY="${SKIP_VERIFY:-false}"
 
@@ -188,12 +188,12 @@ configure_mcp() {
         "type": "local",
         "command": ["node", "'"${MCP_SERVER_DIR}/${MCP_SERVER_SCRIPT}"'"],
         "environment": {
-            "EMBEDDINGS_PROVIDER": "hf-local",
-            "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
-            "_NOTE_1_DATABASE": "Stores vectors in: .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
+            "EMBEDDINGS_PROVIDER": "auto",
+            "SPEC_KIT_DB_DIR": ".opencode/skill/system-spec-kit/mcp_server/database",
+            "_NOTE_1_DATABASE": "Auto-derives profile-specific DB files inside: .opencode/skill/system-spec-kit/mcp_server/database/",
             "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
-            "_NOTE_3_CLOUD_PROVIDERS": "For cloud embeddings: add VOYAGE_API_KEY or OPENAI_API_KEY and set EMBEDDINGS_PROVIDER accordingly",
-            "_NOTE_4_PORTABLE": "Uses relative path - works when copying project to new location",
+            "_NOTE_3_CLOUD_PROVIDERS": "In auto mode: VOYAGE_API_KEY selects Voyage embeddings + rerank-2.5, OPENAI_API_KEY selects OpenAI, otherwise HF local fallback stays active",
+            "_NOTE_4_PORTABLE": "Uses relative paths and auto-derived DB names so provider switches do not require manual sqlite path edits",
             "_NOTE_5_FEATURE_FLAGS": "Opt-out flags: SPECKIT_EXTENDED_TELEMETRY (default ON), SPECKIT_ADAPTIVE_FUSION (default OFF)"
         }
     }'
@@ -248,17 +248,13 @@ verify_installation() {
         return 1
     fi
     
-    # Note about database creation (canonical runtime path)
-    local canonical_db_path="${project_root}/${MCP_CANONICAL_DB_PATH}"
-    if [[ -f "${canonical_db_path}" ]]; then
-        log_info "Database already exists at canonical path: ${canonical_db_path}"
+    # Note about database creation (canonical runtime directory)
+    local canonical_db_dir="${project_root}/${MCP_CANONICAL_DB_DIR}"
+    local local_fallback_db_path="${canonical_db_dir}/context-index.sqlite"
+    if [[ -f "${local_fallback_db_path}" ]]; then
+        log_info "Local fallback database already exists: ${local_fallback_db_path}"
     else
-        log_info "Database will be created on first use at: ${canonical_db_path}"
-    fi
-
-    local compatibility_db_path="${project_root}/${MCP_SERVER_DIR}/database/context-index.sqlite"
-    if [[ -L "${compatibility_db_path}" ]]; then
-        log_info "Compatibility symlink present: ${compatibility_db_path}"
+        log_info "Database files will be auto-derived on first use inside: ${canonical_db_dir}"
     fi
 }
 

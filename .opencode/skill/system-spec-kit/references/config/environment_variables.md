@@ -22,7 +22,7 @@ These variables control memory system behavior, token budgets, script execution,
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `MEMORY_DB_PATH` | `mcp_server/dist/database/context-index.sqlite` | Override database location |
+| `MEMORY_DB_PATH` | Unset | Explicit file override for the active memory database |
 | `MEMORY_BASE_PATH` | Current working directory | Workspace root path |
 | `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` (Note: effective read boundary also includes `process.cwd()` and `~/.claude/` at runtime. For tighter isolation, explicitly set this variable to restrict filesystem access.) | Additional allowed paths (colon-separated) |
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
@@ -38,7 +38,7 @@ These variables control memory system behavior, token budgets, script execution,
 | `RERANKER_LOCAL` | `false` | Enable local GGUF reranker path in Stage 3 (`node-llama-cpp`) |
 | `SPECKIT_RERANKER_MODEL` | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional model path override for local reranker |
 
-Codex note: set `MEMORY_DB_PATH` to a writable location outside read-only repo paths (for example under your home directory or `/tmp`) so the MCP server can create and update its SQLite database.
+Codex note: point `SPEC_KIT_DB_DIR` at a writable directory outside read-only repo paths (for example under your home directory or `/tmp`) so the MCP server can derive and create the active SQLite database safely. Use `MEMORY_DB_PATH` only when you intentionally need one fixed sqlite file.
 
 ---
 
@@ -135,8 +135,8 @@ node scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature"
 # Stdin mode with debug logging
 DEBUG=1 echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node scripts/dist/memory/generate-context.js --stdin
 
-# Use custom database location
-MEMORY_DB_PATH=/tmp/test-db.sqlite node mcp_server/dist/context-server.js
+# Use a writable database directory and let the runtime derive the sqlite filename
+SPEC_KIT_DB_DIR=/tmp/spec-kit-db node mcp_server/dist/context-server.js
 
 # Enable experimental reranker
 ENABLE_RERANKER=true node mcp_server/dist/context-server.js
@@ -172,7 +172,7 @@ The canonical runtime surface now uses `SPECKIT_*`, `SPECKIT_MEMORY_*`, and rela
 | Family | Examples | Use |
 |--------|----------|-----|
 | `SPECKIT_*` | `SPECKIT_RRF`, `SPECKIT_PARSER`, `SPECKIT_FILE_WATCHER` | Core retrieval, graph, indexing, and response behavior |
-| `SPECKIT_MEMORY_*` | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT`, `SPECKIT_MEMORY_SHARED_MEMORY` | Memory roadmap and governance controls |
+| `SPECKIT_MEMORY_*` | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT`, `SPECKIT_MEMORY_ROADMAP_PHASE` | Memory roadmap and governance controls |
 | Compatibility aliases | `SPEC_KIT_DB_DIR` (alias for `SPECKIT_DB_DIR`) | Legacy compatibility only where explicitly documented |
 
 ### 8.2 Graduated Search Pipeline Flags (SPECKIT_ prefix)
@@ -295,13 +295,12 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
 | `SPECKIT_EXTENDED_TELEMETRY` | OFF | S5 | Opt-in 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture snapshots |
-| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
+| `SPECKIT_HYDRA_PHASE` | `scope-governance` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | ON | S7 | Legacy roadmap metadata flag for the lineage-state milestone |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | ON | S7 | Legacy roadmap metadata flag for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | OFF | S7 | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; enables shadow adaptive ranking when set to `true` |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | ON | S7 | Legacy roadmap metadata flag for scope-enforcement tracking |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | ON | S7 | Legacy roadmap metadata flag for governance-guardrail tracking |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | ON | S7 | Legacy roadmap metadata flag for the shared-memory milestone |
 | `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
 | `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
 | `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
@@ -332,11 +331,8 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | OFF | S7 | Enables shadow adaptive ranking. Default OFF; set `true` to activate feedback-driven, SQLite-persisted score adjustments in the reranking stage. Pair with `SPECKIT_MEMORY_ADAPTIVE_MODE` to control rollout stage. |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SCOPE_ENFORCEMENT |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | OFF | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY (default-off shared-memory state) |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GRAPH_UNIFIED |
-| `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID` | string | S7 | Admin user identity for shared-memory governance mutations; must resolve to a single configured identity |
-| `SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID` | string | S7 | Admin agent identity for shared-memory governance mutations; must resolve to a single configured identity |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | S7 | Canonical phase label for Hydra roadmap tracking |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | S7 | Canonical phase label for Hydra roadmap tracking |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | S7 | Adaptive ranking mode when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`: `shadow` (default; proposals run silently alongside production) or `promoted` (score adjustments applied to live results). No effect when ranking is disabled. |
 
 > **Adaptive ranking capabilities (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a memory is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.

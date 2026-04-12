@@ -210,7 +210,7 @@ Check that Spec Kit Memory tools are available:
 
 The response should return `status: "ok"` and database table counts. If it returns an error, see [Troubleshooting](#7-troubleshooting).
 
-Codex CLI note: if the MCP server runs in a restricted or read-only repo context, set `MEMORY_DB_PATH` to a writable location such as a directory under your home folder or `/tmp`.
+Codex CLI note: if the MCP server runs in a restricted or read-only repo context, point `SPEC_KIT_DB_DIR` at a writable directory such as one under your home folder or `/tmp`. Use `MEMORY_DB_PATH` only when you intentionally need one fixed sqlite file.
 
 <!-- /ANCHOR:quick-start -->
 
@@ -388,18 +388,6 @@ When you save new content, the system runs an arbitration process before storing
 Three quality gates run before storage: structure check (required format and metadata), semantic sufficiency check (enough real content to be useful), and duplicate detection.
 Short decision-type memories can bypass the content-length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals (title, specFolder, or anchor) are present.
 
-#### Shared Memory
-
-By default, every memory is private. Shared memory adds controlled access so teams and multi-agent setups can share a knowledge pool.
-
-Think of it like a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. Management can lock it down instantly if something goes wrong.
-
-- **Deny-by-default** -- nobody gets access unless explicitly granted
-- **Three roles** -- `owner` (full control), `editor` (read/write), `viewer` (read-only)
-- **Kill switch** -- immediately blocks all reads for emergencies
-
-For the full shared memory guide, see [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md).
-
 #### Evaluation Infrastructure
 
 The memory system includes built-in tools for measuring search quality:
@@ -448,7 +436,7 @@ Spec Kit exposes 12 top-level workflow commands: 8 `spec_kit` + 4 `memory` opera
 | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `/memory:save`   | 4          | Update packet continuity surfaces and supporting generated context artifacts with semantic indexing                                      |
 | `/memory:search` | 13         | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types                                                           |
-| `/memory:manage` | 20         | Database maintenance plus shared-memory lifecycle: stats, scan, cleanup, bulk-delete, checkpoints, ingest, spaces, memberships, rollout |
+| `/memory:manage` | 20         | Database maintenance and lifecycle operations: stats, scan, cleanup, bulk-delete, checkpoints, and ingest |
 | `/memory:learn`  | 6          | Constitutional memory manager: create, list, edit, remove always-surface rules                                                          |
 
 Session recovery lives in `/spec_kit:resume`, which rebuilds packet context in this order: `handover.md`, then `_memory.continuity`, then canonical spec docs before deeper memory retrieval is needed.
@@ -579,7 +567,6 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 ├── SKILL.md                    # AI workflow instructions (when to use, gates, rules)
 ├── README.md                   # This file (what it does, how to use it)
 ├── ARCHITECTURE.md             # Boundary contract: scripts/ vs mcp_server/
-├── SHARED_MEMORY_DATABASE.md   # Shared memory guide
 ├── templates/                  # Template system (CORE + ADDENDUM v2.2)
 │   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
 │   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
@@ -622,7 +609,6 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`SKILL.md`](./SKILL.md)                                                     | AI agent instructions: routing rules, gates, validation procedures, template application             |
 | [`README.md`](./README.md)                                                   | This file -- what Spec Kit does, how to use it, where to find things                                 |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                       | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md)                   | Shared memory guide with spaces, roles and kill switch                                               |
 | [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)               | Step-by-step installation with embedding providers and environment                                   |
 | [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
@@ -687,7 +673,8 @@ The memory system converts text to numerical embeddings for vector search. Three
 | -------------------- | ----------- | ---------------------------------------------------- |
 | `VOYAGE_API_KEY`     | Recommended | Voyage AI embeddings (1024d, best retrieval quality) |
 | `OPENAI_API_KEY`     | Alternative | OpenAI embeddings fallback                           |
-| `MEMORY_DB_PATH`     | No          | Override default SQLite database path                |
+| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | No | Preferred database-directory override; runtime derives the sqlite filename from the active embedding profile |
+| `MEMORY_DB_PATH`     | No          | Explicit file override for the active SQLite database path |
 | `SPEC_KIT_LOG_LEVEL` | No          | Log verbosity: `debug`, `info`, `warn`, `error`      |
 
 For the full list of environment variables (including evaluation, telemetry and feature flag overrides), see [`references/config/environment_variables.md`](./references/config/environment_variables.md).
@@ -845,7 +832,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 | Check prior decisions         | `/memory:search "query"`            | Starting a related task           |
 | Upgrade documentation level   | `upgrade-level.sh [folder] [level]` | Scope grew beyond original level  |
 | Create always-surface rule    | `/memory:learn`                     | Team standards, workflow rules    |
-| Share knowledge across agents | `/memory:manage shared`             | Multi-agent or team setups        |
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -1044,10 +1030,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-**Q: How does shared memory work?**
-
-A: Shared memory adds controlled access boundaries between users or agents. You create a space, grant memberships with roles (owner, editor, viewer) and memories in that space become visible to members. Access is deny-by-default -- nobody gets in unless explicitly granted. A kill switch blocks all reads instantly for emergencies. See [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md) for the full guide.
-
 <!-- /ANCHOR:faq -->
 
 ---
@@ -1064,7 +1046,6 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                                           | API boundary contract between `scripts/` and `mcp_server/`                                           |
 | [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)                                   | Step-by-step installation with embedding providers and environment variables                         |
-| [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md)                                       | Shared memory guide with spaces, roles, kill switch                                                  |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md)                     | Detailed memory system reference                                                                     |
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md)       | All 20 validation rules with fixes                                                                   |
 | [`references/templates/level_specifications.md`](./references/templates/level_specifications.md) | Level definitions and template size guidance                                                         |

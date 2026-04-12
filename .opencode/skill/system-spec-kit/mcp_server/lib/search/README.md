@@ -219,7 +219,7 @@ The contract is intentionally narrow: preserve result-shape semantics, surface t
 **Purpose**: Refine top results using query-document pair scoring.
 
 **Providers** (REQ-013):
-- **Voyage rerank-2**: API-based, max 100 docs
+- **Voyage rerank-2.5**: API-based, max 100 docs
 - **Cohere rerank-english-v3.0**: API-based, max 100 docs
 - **Local GGUF path**: `node-llama-cpp` with `bge-reranker-v2-m3.Q4_K_M.gguf` when `RERANKER_LOCAL=true` and the runtime/model guards pass
 
@@ -547,7 +547,7 @@ hybridSearch("authentication", { specFolder: "specs/<###-spec-name>" })
 **Provider Auto-Detection**:
 ```javascript
 // Checks API keys in order:
-// 1. VOYAGE_API_KEY -> Voyage rerank-2
+// 1. VOYAGE_API_KEY -> Voyage rerank-2.5
 // 2. COHERE_API_KEY -> Cohere v3.5
 // 3. Python available -> Local (unimplemented)
 ```

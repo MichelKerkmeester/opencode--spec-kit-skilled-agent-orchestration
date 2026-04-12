@@ -4,6 +4,7 @@
 
 import { HfLocalProvider } from './providers/hf-local.js';
 import { OpenAIProvider, MODEL_DIMENSIONS as OPENAI_MODEL_DIMENSIONS } from './providers/openai.js';
+import { EmbeddingProfile } from './profile.js';
 import { VoyageProvider, MODEL_DIMENSIONS as VOYAGE_MODEL_DIMENSIONS, resolveVoyageBaseUrl } from './providers/voyage.js';
 import type {
   IEmbeddingProvider,
@@ -268,6 +269,20 @@ function resolveStartupEmbeddingDimension(resolution: ProviderResolution): numbe
 
 export function getStartupEmbeddingDimension(): number {
   return resolveStartupEmbeddingDimension(resolveProvider());
+}
+
+export function getStartupEmbeddingProfile(): EmbeddingProfile {
+  const resolution = resolveProvider();
+  const provider = resolution.name;
+  const model = resolveConfiguredModel(provider);
+  const dim = resolveStartupEmbeddingDimension(resolution);
+
+  return new EmbeddingProfile({
+    provider,
+    model,
+    dim,
+    baseUrl: provider === 'voyage' ? resolveVoyageBaseUrl() : null,
+  });
 }
 
 export async function resolveStartupEmbeddingConfig(

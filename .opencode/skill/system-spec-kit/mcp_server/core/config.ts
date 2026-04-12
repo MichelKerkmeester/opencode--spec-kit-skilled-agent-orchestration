@@ -46,6 +46,7 @@ export function resolveDatabasePaths(): DatabasePaths {
   // (e.g. tests that set the env var after module import). Fall back to the
   // import-time DB_PATH when no runtime override is present.
   const runtimeDbDir = process.env.SPEC_KIT_DB_DIR?.trim() || process.env.SPECKIT_DB_DIR?.trim();
+  const runtimeDbPath = process.env.MEMORY_DB_PATH?.trim();
   const databaseDir = runtimeDbDir
     ? path.resolve(process.cwd(), runtimeDbDir)
     : path.dirname(DB_PATH);
@@ -72,7 +73,9 @@ export function resolveDatabasePaths(): DatabasePaths {
 
   return {
     databaseDir: resolved,
-    databasePath: path.join(resolved, 'context-index.sqlite'),
+    databasePath: runtimeDbPath
+      ? path.join(resolved, path.basename(path.resolve(process.cwd(), runtimeDbPath)))
+      : path.join(resolved, path.basename(DB_PATH)),
     dbUpdatedFile: path.join(resolved, '.db-updated')
   };
 }
