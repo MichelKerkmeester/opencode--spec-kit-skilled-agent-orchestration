@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/035-sk-deep-research-path-migration",
+  "spec_folder": "skilled-agent-orchestration/035-sk-deep-research-path-migration",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deep-research path migration",
+      "research packet layout",
+      "review iterations folder",
+      "research packet root",
+      "review/iterations",
+      "deep-research migration plan",
+      "research packet implementation plan",
+      "review iterations migration",
+      "deep-research migration tasks",
+      "research packet task breakdown",
+      "deep-research path migration checklist",
+      "research packet verification",
+      "deep-research path migration adr",
+      "research packet adr",
+      "deep-research path migration implementation summary",
+      "research packet summary"
+    ],
+    "key_topics": [
+      "deep-research",
+      "path",
+      "migration",
+      "research",
+      "packet",
+      "layout",
+      "review",
+      "iterations",
+      "folder",
+      "root",
+      "plan",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/README.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/state_format.md",
+      ".opencode/skill/sk-deep-research/references/quick_reference.md",
+      ".opencode/agent/speckit.md",
+      ".claude/agents/speckit.md",
+      ".agents/commands/spec_kit/plan.toml",
+      ".agents/commands/spec_kit/complete.toml",
+      ".agents/commands/spec_kit/phase.toml",
+      ".agents/workflows/spec_kit_research.md",
+      "1.2.2.0",
+      ".opencode/changelog/12--sk-deep-research/v1.2.2.0.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
+      ".opencode/skill/system-spec-kit/shared/scoring/folder-scoring.ts",
+      ".opencode/skill/system-spec-kit/scripts/migrate-deep-research-paths.ts"
+    ],
+    "entities": [
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
+        "kind": "doc",
+        "path": ".claude/agents/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/plan.toml",
+        "source": "derived"
+      },
+      {
+        "name": "complete.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/complete.toml",
+        "source": "derived"
+      },
+      {
+        "name": "phase.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/phase.toml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_research.md",
+        "kind": "doc",
+        "path": ".agents/workflows/spec_kit_research.md",
+        "source": "derived"
+      },
+      {
+        "name": "1.2.2.0",
+        "kind": "file",
+        "path": "1.2.2.0",
+        "source": "derived"
+      },
+      {
+        "name": "v1.2.2.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/12--sk-deep-research/v1.2.2.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-paths.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The deep-research contract is now split across a former root research document, `research/iterations/iteration-*`, and a newer review packet that still has to normalize legacy `review/iterations/iteration-*` layouts. The migration defined here makes `research/` the canonical research packet, keeps `review/` as the canonical review packet, and standardizes iteration artifacts into dedicated `iterations/` folders with no `output/` folder. [SOURCE: .opencode/command/spec_kit/deep-research.md:211-242] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:187-201]",
+    "created_at": "2026-04-12T09:02:50.179Z",
+    "last_save_at": "2026-04-12T09:06:00.311Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

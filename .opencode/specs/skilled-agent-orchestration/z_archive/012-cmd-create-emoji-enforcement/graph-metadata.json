@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/012-cmd-create-emoji-enforcement",
+  "spec_folder": "skilled-agent-orchestration/z_archive/012-cmd-create-emoji-enforcement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "remove",
+      "emoji",
+      "enforcement",
+      "spec",
+      "011",
+      "create",
+      "implementation",
+      "plan",
+      "tasks",
+      "from",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "remove",
+      "emoji",
+      "enforcement",
+      "spec",
+      "011",
+      "create",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "create_folder_readme_auto.yaml",
+      "create_folder_readme_confirm.yaml",
+      "create_install_guide_auto.yaml",
+      "create_install_guide_confirm.yaml",
+      "create_skill_asset_auto.yaml",
+      "create_skill_asset_confirm.yaml",
+      "create_skill_reference_auto.yaml",
+      "create_skill_reference_confirm.yaml",
+      "create_agent_auto.yaml",
+      "create_agent_confirm.yaml",
+      "create_skill_confirm.yaml",
+      ".opencode/command/create/folder_readme.md",
+      ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+      ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+      ".opencode/command/create/assets/create_install_guide_auto.yaml",
+      ".opencode/command/create/assets/create_install_guide_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_asset_auto.yaml",
+      ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_reference_auto.yaml",
+      ".opencode/command/create/assets/create_skill_reference_confirm.yaml"
+    ],
+    "entities": [
+      {
+        "name": "create_folder_readme_auto.yaml",
+        "kind": "config",
+        "path": "create_folder_readme_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_confirm.yaml",
+        "kind": "config",
+        "path": "create_folder_readme_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_auto.yaml",
+        "kind": "config",
+        "path": "create_install_guide_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_confirm.yaml",
+        "kind": "config",
+        "path": "create_install_guide_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_auto.yaml",
+        "kind": "config",
+        "path": "create_skill_asset_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_confirm.yaml",
+        "kind": "config",
+        "path": "create_skill_asset_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_auto.yaml",
+        "kind": "config",
+        "path": "create_skill_reference_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_confirm.yaml",
+        "kind": "config",
+        "path": "create_skill_reference_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_auto.yaml",
+        "kind": "config",
+        "path": "create_agent_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_confirm.yaml",
+        "kind": "config",
+        "path": "create_agent_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_confirm.yaml",
+        "kind": "config",
+        "path": "create_skill_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "folder_readme.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/folder_readme.md",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_install_guide_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_install_guide_confirm.yaml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `/create` command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the removal of all emoji enforcement logic from the command infrastructure while preserving the command's core functionality.",
+    "created_at": "2026-04-12T09:02:50.211Z",
+    "last_save_at": "2026-04-12T09:06:00.343Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

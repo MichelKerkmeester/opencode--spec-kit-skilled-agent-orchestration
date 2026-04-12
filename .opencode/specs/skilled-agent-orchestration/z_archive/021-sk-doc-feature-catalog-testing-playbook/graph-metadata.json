@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/021-sk-doc-feature-catalog-testing-playbook",
+  "spec_folder": "skilled-agent-orchestration/z_archive/021-sk-doc-feature-catalog-testing-playbook",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature catalog",
+      "manual testing playbook",
+      "sk-doc templates",
+      "references/global",
+      "references/specific",
+      "feature catalog plan",
+      "manual testing playbook plan",
+      "sk-doc regroup references",
+      "feature catalog tasks",
+      "testing playbook tasks",
+      "sk-doc regroup tasks",
+      "feature catalog checklist",
+      "testing playbook checklist",
+      "sk-doc alignment checklist",
+      "implementation summary",
+      "feature catalog alignment complete",
+      "testing playbook alignment complete"
+    ],
+    "key_topics": [
+      "feature",
+      "catalog",
+      "manual",
+      "testing",
+      "playbook",
+      "sk-doc",
+      "templates",
+      "references",
+      "global",
+      "specific",
+      "plan",
+      "regroup"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+      ".opencode/agent/write.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/feature-flag-reference-docs.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "python3 .opencode/skill/sk-doc/scripts/validate_document.py",
+      ".opencode/skill/sk-doc/references/specific/agent_creation.md",
+      "python3 -m json.tool .opencode/skill/sk-doc/assets/template_rules.json",
+      "npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts",
+      ".opencode/skill/sk-doc/SKILL.md",
+      ".opencode/skill/sk-doc/README.md",
+      ".opencode/skill/sk-doc/references/global/quick_reference.md",
+      ".opencode/skill/sk-doc/references/global/workflows.md",
+      ".opencode/skill/sk-doc/references/specific/install_guide_creation.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md"
+    ],
+    "entities": [
+      {
+        "name": "FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".opencode/agent/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature-flag-reference-docs.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/feature-flag-reference-docs.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "python3 .opencode/skill/sk-doc/scripts/validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "agent_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/agent_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_rules.json",
+        "kind": "config",
+        "path": "python3 -m json.tool .opencode/skill/sk-doc/assets/template_rules.json",
+        "source": "derived"
+      },
+      {
+        "name": "hydra-spec-pack-consistency.vitest.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "workflows.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/workflows.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet records the final shipped documentation contract for the feature-catalog and manual-testing-playbook work. It replaces the earlier playbook-only framing with the broader reality: both document families, their templates, their references, and their downstream creation workflows were aligned together.",
+    "created_at": "2026-04-12T09:02:50.221Z",
+    "last_save_at": "2026-04-12T09:06:00.350Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

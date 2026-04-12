@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp",
+  "parent_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "agent improvement loop",
+      "sk-improve-agent",
+      "automatic agent iteration",
+      "evaluator-first",
+      "proposal-only loop",
+      "agent improvement plan",
+      "sk-improve-agent plan",
+      "proposal-only MVP",
+      "agent improvement tasks",
+      "sk-improve-agent tasks",
+      "agent improvement checklist",
+      "verification",
+      "agent improvement decisions",
+      "decision record",
+      "implementation summary",
+      "agent improvement summary"
+    ],
+    "key_topics": [
+      "agent",
+      "improvement",
+      "loop",
+      "sk-improve-agent",
+      "automatic",
+      "iteration",
+      "evaluator-first",
+      "proposal-only",
+      "plan",
+      "mvp",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/agent/agent-improver.md",
+      "skill_advisor.py",
+      "descriptions.json",
+      ".opencode/agent/handover.md",
+      "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py",
+      "python3.11",
+      "score-candidate.cjs",
+      "reduce-state.cjs",
+      "promote-candidate.cjs",
+      "rollback-candidate.cjs",
+      "check-mirror-drift.cjs",
+      "python3 .opencode/skill/scripts/skill_advisor.py \"continue with agent improvement loop for handover target proposal-only evaluator-first scoring\" --threshold 0.8",
+      "0.95",
+      "git diff -- .opencode/agent/handover.md",
+      "promotion-blocked.log",
+      "promotion-invalid-target.log",
+      "rollback-invalid-target.log",
+      "score-003b.json",
+      "rollback-004.json",
+      "promotion-005.json"
+    ],
+    "entities": [
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".opencode/agent/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": "descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": ".opencode/agent/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "python3.11",
+        "kind": "file",
+        "path": "python3.11",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": "score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "promote-candidate.cjs",
+        "kind": "file",
+        "path": "promote-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "rollback-candidate.cjs",
+        "kind": "file",
+        "path": "rollback-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "check-mirror-drift.cjs",
+        "kind": "file",
+        "path": "check-mirror-drift.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py \"continue with agent improvement loop for handover target proposal-only evaluator-first scoring\" --threshold 0.8",
+        "kind": "file",
+        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"continue with agent improvement loop for handover target proposal-only evaluator-first scoring\" --threshold 0.8",
+        "source": "derived"
+      },
+      {
+        "name": "0.95",
+        "kind": "file",
+        "path": "0.95",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "git diff -- .opencode/agent/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "promotion-blocked.log",
+        "kind": "file",
+        "path": "promotion-blocked.log",
+        "source": "derived"
+      },
+      {
+        "name": "promotion-invalid-target.log",
+        "kind": "file",
+        "path": "promotion-invalid-target.log",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Create a repo-native `sk-improve-agent` system that borrows the good parts of `autoagent-main` without copying its trust boundary. The MVP is evaluator-first and proposal-only: it runs bounded experiments against one canonical source surface, scores candidates independently, records every attempt in an append-only ledger, and blocks canonical file mutation until the scorer and promotion contract are proven.",
+    "created_at": "2026-04-12T09:02:50.185Z",
+    "last_save_at": "2026-04-12T09:06:00.318Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

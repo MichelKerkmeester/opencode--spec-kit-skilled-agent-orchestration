@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/002-sk-git-github-mcp-integration",
+  "spec_folder": "skilled-agent-orchestration/z_archive/002-sk-git-github-mcp-integration",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "github",
+      "mcp",
+      "integration",
+      "spec",
+      "002",
+      "git",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "github",
+      "mcp",
+      "integration",
+      "spec",
+      "002",
+      "git",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/sk-git/SKILL.md",
+      ".opencode/skill/sk-git/references/finish_workflows.md",
+      ".opencode/skill/sk-git/references/shared_patterns.md",
+      ".opencode/skill/sk-git/references/quick_reference.md",
+      "validate.sh",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "finish_workflows.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/finish_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "shared_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/shared_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nNormalize",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Mode",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The sk-git skill documented GitHub MCP usage with incorrect call syntax, incomplete tool coverage, and weak guidance on when to use GitHub MCP instead of local git or `gh`. That made remote GitHub workflows harder to execute correctly from the skill documentation.",
+    "created_at": "2026-04-12T09:02:50.200Z",
+    "last_save_at": "2026-04-12T09:06:00.336Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

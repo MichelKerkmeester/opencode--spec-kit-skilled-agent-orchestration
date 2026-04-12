@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/024-sk-deep-research-refinement",
+  "spec_folder": "skilled-agent-orchestration/024-sk-deep-research-refinement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "deep",
+      "research",
+      "refinement",
+      "spec",
+      "024",
+      "implementation",
+      "plan",
+      "tasks",
+      "via",
+      "verification",
+      "checklist",
+      "implementation summary",
+      "deep research refinement summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "deep",
+      "research",
+      "refinement",
+      "spec",
+      "024",
+      "implementation",
+      "plan",
+      "tasks",
+      "via",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/research.md",
+      "scratch/improvement-proposals-v3.md",
+      "scratch/wave1-cross-runtime-audit.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "validate.sh",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/references/convergence.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/state_format.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".claude/agents/deep-research.md",
+      ".codex/agents/deep-research.toml",
+      ".opencode/agent/deep-research.md",
+      "convergenceThreshold: 0.02",
+      "spec_kit_deep-research_auto.yaml"
+    ],
+    "entities": [
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "improvement-proposals-v3.md",
+        "kind": "doc",
+        "path": "scratch/improvement-proposals-v3.md",
+        "source": "derived"
+      },
+      {
+        "name": "wave1-cross-runtime-audit.md",
+        "kind": "doc",
+        "path": "scratch/wave1-cross-runtime-audit.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".claude/agents/deep-research.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The sk-deep-research system (v1) is functional but has 18 documented improvement proposals (from spec 023) that need rigorous validation, prioritization refinement, and implementation-ready specifications before they can be executed. The proposals were derived from a 14-iteration research cycle but need a second-pass deep investigation that:",
+    "created_at": "2026-04-12T09:02:50.173Z",
+    "last_save_at": "2026-04-12T09:06:00.302Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

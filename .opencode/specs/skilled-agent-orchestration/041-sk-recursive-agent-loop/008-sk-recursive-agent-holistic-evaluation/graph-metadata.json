@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation",
+  "parent_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sk-improve-agent",
+      "skill",
+      "evaluates",
+      "agents",
+      "checking",
+      "keyword",
+      "presence",
+      "markdown",
+      "15-20",
+      "true",
+      "agent",
+      "improvement"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scan-integration.cjs",
+      "generate-profile.cjs",
+      "score-candidate.cjs",
+      "run-benchmark.cjs",
+      "reduce-state.cjs",
+      "improvement_config_reference.md",
+      "integration_scanning.md",
+      ".opencode/agent/agent-improver.md",
+      ".opencode/command/improve/agent.md",
+      "prompt.md",
+      "improve_agent-improver_auto.yaml",
+      "_confirm.yaml",
+      "README.txt",
+      "MANUAL_TESTING_PLAYBOOK.md",
+      "spec.md",
+      "scripts/scan-integration.cjs",
+      "scripts/generate-profile.cjs",
+      "scripts/score-candidate.cjs",
+      "scripts/run-benchmark.cjs",
+      "scripts/reduce-state.cjs"
+    ],
+    "entities": [
+      {
+        "name": "scan-integration.cjs",
+        "kind": "file",
+        "path": "scan-integration.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "generate-profile.cjs",
+        "kind": "file",
+        "path": "generate-profile.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": "score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "run-benchmark.cjs",
+        "kind": "file",
+        "path": "run-benchmark.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "improvement_config_reference.md",
+        "kind": "doc",
+        "path": "improvement_config_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_scanning.md",
+        "kind": "doc",
+        "path": "integration_scanning.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".opencode/agent/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent.md",
+        "kind": "doc",
+        "path": ".opencode/command/improve/agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt.md",
+        "kind": "doc",
+        "path": "prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve_agent-improver_auto.yaml",
+        "kind": "config",
+        "path": "improve_agent-improver_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "_confirm.yaml",
+        "kind": "config",
+        "path": "_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": "README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": "MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "scan-integration.cjs",
+        "kind": "file",
+        "path": "scripts/scan-integration.cjs",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The sk-improve-agent skill evaluates agents by checking **keyword presence in markdown** (~15-20% of what a true agent improvement system needs). The scorer tests \"does the file mention `spec.md`?\" rather than \"does the agent understand spec folders?\". The benchmark tests \"does output have required headings?\" rather than \"is the output correct and useful?\".",
+    "created_at": "2026-04-12T09:02:50.189Z",
+    "last_save_at": "2026-04-12T09:06:00.323Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

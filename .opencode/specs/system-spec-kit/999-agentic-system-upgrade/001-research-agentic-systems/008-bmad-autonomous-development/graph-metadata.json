@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development",
+  "spec_folder": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development",
+  "parent_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "bmad",
+      "deep research",
+      "phase 2",
+      "packet 008",
+      "research continuation",
+      "implementation plan",
+      "research packet",
+      "validator cleanup",
+      "tasks",
+      "implementation",
+      "summary"
+    ],
+    "key_topics": [
+      "bmad",
+      "deep",
+      "research",
+      "phase",
+      "packet",
+      "008",
+      "continuation",
+      "implementation",
+      "plan",
+      "validator",
+      "cleanup",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/iterations/iteration-011.md",
+      "research/iterations/iteration-020.md",
+      "research/research.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "wc -l research/deep-research-state.jsonl",
+      "research/deep-research-dashboard.md",
+      "phase-research-prompt.md",
+      "research/deep-research-state.jsonl",
+      "deep-research-state.jsonl",
+      "skill_advisor.py",
+      "skills/bad/SKILL.md",
+      "iteration-001.md",
+      ".opencode/agent/orchestrate.md",
+      "iteration-002.md",
+      ".opencode/skill/system-spec-kit/references/structure/phase_definitions.md",
+      "sprint-status.yaml",
+      "iteration-003.md"
+    ],
+    "entities": [
+      {
+        "name": "iteration-011.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-011.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-020.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-020.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "wc -l research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase-research-prompt.md",
+        "kind": "doc",
+        "path": "phase-research-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "skills/bad/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This phase already contained Phase 1 BAD research artifacts, but it did not have the required Level 1 packet docs and its phase prompt still referenced stale extracted-repo paths. Phase 2 needed to extend the research through iterations `011`-`020`, merge the findings into the packet synthesis, and leave the folder in a validator-clean state instead of as an orphaned research dump.",
+    "created_at": "2026-04-12T09:02:53.489Z",
+    "last_save_at": "2026-04-12T09:06:03.534Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main",
+  "spec_folder": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/006-ralph-main",
+  "parent_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006-ralph-main spec",
+      "ralph research phase closeout",
+      "agentic systems ralph spec",
+      "006-ralph-main plan",
+      "ralph phase closeout plan",
+      "research phase implementation plan",
+      "006-ralph-main tasks",
+      "ralph phase closeout tasks",
+      "research packet task list",
+      "006-ralph-main checklist",
+      "ralph research verification checklist",
+      "agentic systems ralph verification",
+      "006-ralph-main implementation summary",
+      "ralph phase closeout summary",
+      "phase 3 ralph research summary"
+    ],
+    "key_topics": [
+      "006-ralph-main",
+      "spec",
+      "ralph",
+      "research",
+      "phase",
+      "closeout",
+      "agentic",
+      "systems",
+      "plan",
+      "implementation",
+      "tasks",
+      "packet"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "research/iterations/iteration-021.md",
+      "research/iterations/iteration-030.md",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-dashboard.md",
+      "research/research.md",
+      "phase-research-prompt.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "validate.sh",
+      "research/iterations/iteration-001.md",
+      "research/iterations/iteration-020.md",
+      "prd.json",
+      "progress.txt",
+      "external/ralph.sh",
+      "external/prompt.md",
+      "external/CLAUDE.md",
+      "external/prd.json.example"
+    ],
+    "entities": [
+      {
+        "name": "iteration-021.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-021.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-030.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-030.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase-research-prompt.md",
+        "kind": "doc",
+        "path": "phase-research-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-020.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-020.md",
+        "source": "derived"
+      },
+      {
+        "name": "prd.json",
+        "kind": "config",
+        "path": "prd.json",
+        "source": "derived"
+      },
+      {
+        "name": "progress.txt",
+        "kind": "file",
+        "path": "progress.txt",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `006-ralph-main` phase already contained two completed research waves and a packet-local external snapshot, but it was missing its root spec docs and still referenced stale `external/ralph-main/...` markdown paths in `phase-research-prompt.md`. Phase 3 also needed ten new UX and agentic-system iterations plus an updated merged synthesis.",
+    "created_at": "2026-04-12T09:02:53.487Z",
+    "last_save_at": "2026-04-12T09:06:03.532Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

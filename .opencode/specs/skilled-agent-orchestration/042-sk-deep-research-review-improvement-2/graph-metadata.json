@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "parent_id": null,
+  "children_ids": [
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/001-runtime-truth-foundation",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042",
+      "deep research",
+      "deep review",
+      "runtime improvement",
+      "phase overview",
+      "parent packet",
+      "implementation plan",
+      "parent overview",
+      "phase plan",
+      "tasks",
+      "phase index",
+      "verification checklist",
+      "phase verification",
+      "decision record",
+      "adr index",
+      "implementation summary",
+      "runtime improvement bundle"
+    ],
+    "key_topics": [
+      "042",
+      "deep",
+      "research",
+      "review",
+      "runtime",
+      "improvement",
+      "phase",
+      "overview",
+      "parent",
+      "packet",
+      "implementation",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "deep-loop-graph.sqlite",
+      ".opencode/skill/sk-deep-review/references/state_format.md",
+      ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+      "session-isolation.vitest.ts",
+      ".opencode/agent/deep-review.md",
+      ".opencode/skill/sk-deep-review/references/convergence.md",
+      "008-further-deep-loop-improvements/implementation-summary.md",
+      "review/review-report.md",
+      "spec.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "validate.sh",
+      "changelog-<packet>-root.md",
+      "changelog-<packet>-<phase-folder>.md",
+      "board.json",
+      "decision-record.md",
+      "mutation-coverage.cjs",
+      "deep-research-state.jsonl",
+      "research/research-ideas.md"
+    ],
+    "entities": [
+      {
+        "name": "deep-loop-graph.sqlite",
+        "kind": "file",
+        "path": "deep-loop-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-isolation.vitest.ts",
+        "kind": "test",
+        "path": "session-isolation.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "008-further-deep-loop-improvements/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-root.md",
+        "kind": "doc",
+        "path": "changelog-<packet>-root.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog-<packet>-<phase-folder>.md",
+        "kind": "doc",
+        "path": "changelog-<packet>-<phase-folder>.md",
+        "source": "derived"
+      },
+      {
+        "name": "board.json",
+        "kind": "config",
+        "path": "board.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.",
+    "created_at": "2026-04-12T09:02:50.190Z",
+    "last_save_at": "2026-04-12T09:06:00.325Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

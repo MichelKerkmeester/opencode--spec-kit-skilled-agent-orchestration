@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.002",
+      "semantic coverage graph",
+      "deep-loop graph",
+      "deep_loop_graph_convergence",
+      "deep-loop-graph.sqlite",
+      "implementation plan",
+      "deep_loop_graph_query",
+      "tasks",
+      "deep loop graph",
+      "verification checklist",
+      "decision record",
+      "implementation summary",
+      "coverage graph"
+    ],
+    "key_topics": [
+      "042",
+      "002",
+      "semantic",
+      "coverage",
+      "graph",
+      "deep-loop",
+      "deep-loop-graph",
+      "sqlite",
+      "implementation",
+      "plan",
+      "tasks",
+      "deep"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "coverage-graph-core.cjs",
+      "coverage-graph-signals.cjs",
+      "coverage-graph-contradictions.cjs",
+      "coverage-graph-convergence.cjs",
+      "deep-loop-graph.sqlite",
+      "causal-edges.ts",
+      "graph-signals.ts",
+      "contradiction-detection.ts",
+      "code-graph-db.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/status.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts"
+    ],
+    "entities": [
+      {
+        "name": "coverage-graph-core.cjs",
+        "kind": "file",
+        "path": "coverage-graph-core.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-signals.cjs",
+        "kind": "file",
+        "path": "coverage-graph-signals.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-contradictions.cjs",
+        "kind": "file",
+        "path": "coverage-graph-contradictions.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-convergence.cjs",
+        "kind": "file",
+        "path": "coverage-graph-convergence.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "deep-loop-graph.sqlite",
+        "kind": "file",
+        "path": "deep-loop-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-signals.ts",
+        "kind": "code",
+        "path": "graph-signals.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contradiction-detection.ts",
+        "kind": "code",
+        "path": "contradiction-detection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-core.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-signals.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-contradictions.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-convergence.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/coverage-graph-convergence.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-db.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-query.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-signals.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 002 turns semantic convergence from an abstract idea into a concrete implementation plan. The coverage graph is the fourth graph system in the existing Spec Kit Memory stack, following the causal graph, the code structural graph, and the graph-signal layer already present under `.opencode/skill/system-spec-kit/mcp_server/`.",
+    "created_at": "2026-04-12T09:02:50.193Z",
+    "last_save_at": "2026-04-12T09:06:00.328Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

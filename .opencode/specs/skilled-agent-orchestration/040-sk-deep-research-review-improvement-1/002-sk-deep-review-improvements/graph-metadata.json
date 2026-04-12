@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements",
+  "spec_folder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements",
+  "parent_id": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deep review",
+      "phase 2 spec",
+      "review lineage",
+      "review reducer",
+      "runtime parity",
+      "deep review plan",
+      "phase 2 plan",
+      "review reducer plan",
+      "review parity plan",
+      "runtime mirror plan",
+      "deep review tasks",
+      "phase 2 tasks",
+      "review reducer tasks",
+      "review parity tasks",
+      "implementation summary",
+      "deep review summary",
+      "phase 2 summary"
+    ],
+    "key_topics": [
+      "deep",
+      "review",
+      "phase",
+      "spec",
+      "lineage",
+      "reducer",
+      "runtime",
+      "parity",
+      "plan",
+      "mirror",
+      "tasks",
+      "implementation"
+    ],
+    "importance_tier": "high",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/sk-deep-review/SKILL.md",
+      ".opencode/skill/sk-deep-review/README.md",
+      ".opencode/skill/sk-deep-review/references/state_format.md",
+      ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-review/references/convergence.md",
+      ".opencode/skill/sk-deep-review/references/quick_reference.md",
+      ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+      ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+      ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
+      ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+      ".opencode/agent/deep-review.md",
+      ".claude/agents/deep-review.md",
+      ".gemini/agents/deep-review.md",
+      ".codex/agents/deep-review.toml",
+      ".opencode/skill/system-spec-kit/scripts/tests/deep-review-contract-parity.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/deep-review-reducer-schema.vitest.ts",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_strategy.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_dashboard.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "review_mode_contract.yaml",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".claude/agents/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".gemini/agents/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-review.toml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Make Phase 2 the durable review-mode contract by aligning docs, assets, workflow YAML, runtime mirrors, manual testing playbook surfaces, and packet closeout evidence around one canonical deep-review packet model.",
+    "created_at": "2026-04-12T09:02:50.184Z",
+    "last_save_at": "2026-04-12T09:06:00.316Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

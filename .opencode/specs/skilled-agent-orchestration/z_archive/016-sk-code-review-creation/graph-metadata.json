@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/016-sk-code-review-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/016-sk-code-review-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sk-code-review",
+      "code review skill",
+      "baseline overlay",
+      "review agent",
+      "041",
+      "implementation plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "sk-code-review",
+      "code",
+      "review",
+      "skill",
+      "baseline",
+      "overlay",
+      "agent",
+      "041",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".codex/agents/review.toml",
+      ".codex/agents/orchestrate.toml",
+      "skill_advisor.py",
+      ".opencode/skill/README.md",
+      ".opencode/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "python3 .opencode/skill/scripts/skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
+      "python3 .opencode/skill/scripts/skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
+      ".codex/agents/{review,orchestrate}.toml",
+      ".opencode/skill/sk-code-review/SKILL.md",
+      ".opencode/skill/sk-code-review/README.md",
+      ".opencode/agent/review.md",
+      ".opencode/agent/orchestrate.md",
+      ".gemini/agents/review.md",
+      ".gemini/agents/orchestrate.md",
+      ".claude/agents/review.md"
+    ],
+    "entities": [
+      {
+        "name": "review.toml",
+        "kind": "file",
+        "path": ".codex/agents/review.toml",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.toml",
+        "kind": "file",
+        "path": ".codex/agents/orchestrate.toml",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
+        "kind": "file",
+        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
+        "kind": "file",
+        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
+        "source": "derived"
+      },
+      {
+        "name": "{review,orchestrate}.toml",
+        "kind": "file",
+        "path": ".codex/agents/{review,orchestrate}.toml",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/review.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Level 2 specification for converting the draft `legacy-single-hyphen-review` package into `sk-code-review`, aligning router behavior to `sk-doc` standards, and wiring `@review` workflows to a baseline+overlay model. ---",
+    "created_at": "2026-04-12T09:02:50.217Z",
+    "last_save_at": "2026-04-12T09:06:00.346Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

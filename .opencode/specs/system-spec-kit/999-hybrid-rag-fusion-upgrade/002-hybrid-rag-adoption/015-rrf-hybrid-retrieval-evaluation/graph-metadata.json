@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation",
+  "spec_folder": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation",
+  "parent_id": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "investigates",
+      "whether",
+      "mnemosyne",
+      "documented",
+      "bm25",
+      "vector",
+      "rrf",
+      "pattern",
+      "exposes",
+      "retrieval",
+      "operability"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/rrf-fusion.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/rrf-degree-channel.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rrf-fusion.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/rrf-fusion.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "unit-rrf-fusion.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rrf-degree-channel.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/rrf-degree-channel.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hybrid Retrieval",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Benchmarks Mnemosyne",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Constraints",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase investigates whether Mnemosyne's documented BM25/vector/RRF pattern exposes any retrieval or operability gap that Public has not already closed. It is a measurement packet, not a plugin or wrapper proposal: the core question is whether current Public hybrid retrieval already covers the value, and what benchmark lanes are required to prove that. It does not ship a Mnemosyne-style facade.",
+    "created_at": "2026-04-12T09:02:53.505Z",
+    "last_save_at": "2026-04-12T09:06:03.553Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

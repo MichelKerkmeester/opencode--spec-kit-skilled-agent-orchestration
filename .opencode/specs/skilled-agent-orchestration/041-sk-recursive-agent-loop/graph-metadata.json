@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "parent_id": null,
+  "children_ids": [
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/003-sk-recursive-agent-doc-alignment",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/006-sk-recursive-agent-command-rename",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/009-sk-agent-improver-self-test",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes",
+    "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "041 spec",
+      "recursive agent loop",
+      "recursive agent phases",
+      "041 plan",
+      "recursive agent phase plan",
+      "041 tasks",
+      "recursive agent phase tasks",
+      "041 checklist",
+      "recursive agent parent checklist",
+      "041 implementation summary",
+      "recursive agent parent summary"
+    ],
+    "key_topics": [
+      "041",
+      "spec",
+      "recursive",
+      "agent",
+      "loop",
+      "phases",
+      "plan",
+      "phase",
+      "tasks",
+      "checklist",
+      "parent",
+      "implementation"
+    ],
+    "importance_tier": "high",
+    "status": "planned",
+    "key_files": [
+      ".opencode/agent/handover.md",
+      ".opencode/skill/sk-improve-agent/SKILL.md",
+      "scan-integration.cjs",
+      "generate-profile.cjs",
+      "score-candidate.cjs",
+      "run-benchmark.cjs",
+      "reduce-state.cjs",
+      "agent-improver.md",
+      "research/research.md",
+      "python3.11",
+      "validate_document.py",
+      "promote-candidate.cjs",
+      "rollback-candidate.cjs",
+      "program.md",
+      ".codex/config.toml",
+      "improvement-charter.md",
+      "target-manifest.jsonc",
+      "improvement-config.json",
+      "improvement-state.jsonl",
+      "gpt-5.4"
+    ],
+    "entities": [
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": ".opencode/agent/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "scan-integration.cjs",
+        "kind": "file",
+        "path": "scan-integration.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "generate-profile.cjs",
+        "kind": "file",
+        "path": "generate-profile.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": "score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "run-benchmark.cjs",
+        "kind": "file",
+        "path": "run-benchmark.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": "agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "python3.11",
+        "kind": "file",
+        "path": "python3.11",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "promote-candidate.cjs",
+        "kind": "file",
+        "path": "promote-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "rollback-candidate.cjs",
+        "kind": "file",
+        "path": "rollback-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "program.md",
+        "kind": "doc",
+        "path": "program.md",
+        "source": "derived"
+      },
+      {
+        "name": "config.toml",
+        "kind": "file",
+        "path": ".codex/config.toml",
+        "source": "derived"
+      },
+      {
+        "name": "improvement-charter.md",
+        "kind": "doc",
+        "path": "improvement-charter.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The original `041-sk-improve-agent-loop` packet grew into a longer agent-improver program with seven explicit implementation phases. Keeping any of those phases out of the root packet would leave the program history incomplete and make the completion state harder to trust.",
+    "created_at": "2026-04-12T09:02:50.184Z",
+    "last_save_at": "2026-04-12T09:06:00.317Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

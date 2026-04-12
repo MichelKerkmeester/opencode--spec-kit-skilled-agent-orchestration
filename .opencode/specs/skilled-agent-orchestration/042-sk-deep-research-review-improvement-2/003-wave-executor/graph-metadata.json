@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-executor",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.003",
+      "wave executor",
+      "segment planner",
+      "coordination board",
+      "parallel deep loop",
+      "implementation plan",
+      "tasks",
+      "verification checklist",
+      "decision record",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "042",
+      "003",
+      "wave",
+      "executor",
+      "segment",
+      "planner",
+      "coordination",
+      "board",
+      "parallel",
+      "deep",
+      "loop",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "hotspot-inventory.json",
+      "domain-ledger.json",
+      "board.json",
+      ".opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs",
+      ".opencode/skill/system-spec-kit/scripts/lib/wave-convergence.cjs",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/state_format.md",
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+      ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-review/references/state_format.md",
+      ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+      ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+      ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/spec_kit/deep-review.md",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml"
+    ],
+    "entities": [
+      {
+        "name": "hotspot-inventory.json",
+        "kind": "config",
+        "path": "hotspot-inventory.json",
+        "source": "derived"
+      },
+      {
+        "name": "domain-ledger.json",
+        "kind": "config",
+        "path": "domain-ledger.json",
+        "source": "derived"
+      },
+      {
+        "name": "board.json",
+        "kind": "config",
+        "path": "board.json",
+        "source": "derived"
+      },
+      {
+        "name": "wave-segment-planner.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "wave-lifecycle.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "wave-coordination-board.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "wave-segment-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "wave-convergence.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/wave-convergence.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_strategy.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_strategy.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 003 adds orchestrator-managed parallel wave execution so deep research and deep review can handle very large targets without abandoning the LEAF-worker model. It formalizes deterministic segmentation, packet-local coordination, segment-level convergence, and auditable merge behavior on top of the coverage-graph foundation from Phase 002.",
+    "created_at": "2026-04-12T09:02:50.193Z",
+    "last_save_at": "2026-04-12T09:06:00.329Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

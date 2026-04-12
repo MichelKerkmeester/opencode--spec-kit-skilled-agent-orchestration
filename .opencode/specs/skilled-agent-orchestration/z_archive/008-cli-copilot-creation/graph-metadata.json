@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/008-cli-copilot-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/008-cli-copilot-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli-copilot spec",
+      "copilot skill spec",
+      "cli-copilot plan",
+      "copilot skill plan",
+      "cli-copilot tasks",
+      "cli-copilot checklist",
+      "cli-copilot summary"
+    ],
+    "key_topics": [
+      "cli-copilot",
+      "spec",
+      "copilot",
+      "skill",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "exists",
+      "assistants",
+      "delegate",
+      "github"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/cli-copilot/SKILL.md",
+      ".opencode/skill/cli-copilot/README.md",
+      ".opencode/skill/cli-copilot/references/cli_reference.md",
+      ".opencode/skill/cli-copilot/references/agent_delegation.md",
+      ".opencode/skill/cli-copilot/references/copilot_tools.md",
+      ".opencode/skill/cli-copilot/references/integration_patterns.md",
+      ".opencode/skill/cli-copilot/assets/prompt_templates.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      "Barter/.opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/README.md",
+      ".opencode/README.md",
+      "README.md",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "copilot_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/references/copilot_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "Barter/.opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "No skill exists for AI assistants to delegate tasks to GitHub's Copilot CLI (`copilot`). The project has 3 CLI orchestration skills (cli-gemini, cli-codex, cli-claude-code) but no equivalent for Copilot CLI. This leaves Copilot's unique capabilities — multi-provider model selection (7+ models from Anthropic, OpenAI, Google), cloud delegation (`/delegate`), collaborative plan mode, autopilot execution, and repository memory — inaccessible to external orchestrators.",
+    "created_at": "2026-04-12T09:02:50.204Z",
+    "last_save_at": "2026-04-12T09:06:00.340Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

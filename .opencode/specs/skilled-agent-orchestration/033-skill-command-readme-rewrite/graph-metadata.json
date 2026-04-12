@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/033-skill-command-readme-rewrite",
+  "spec_folder": "skilled-agent-orchestration/033-skill-command-readme-rewrite",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "skill readme rewrite",
+      "command readme rewrite",
+      "readme overhaul",
+      "readme rewrite plan",
+      "skill readme plan",
+      "tasks",
+      "readme",
+      "033",
+      "verification",
+      "checklist",
+      "readme rewrite",
+      "implementation",
+      "summary"
+    ],
+    "key_topics": [
+      "skill",
+      "readme",
+      "rewrite",
+      "command",
+      "overhaul",
+      "plan",
+      "tasks",
+      "033",
+      "verification",
+      "checklist",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/spec.md",
+      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/plan.md",
+      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/tasks.md",
+      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/checklist.md",
+      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary.md",
+      ".opencode/command/README.txt",
+      ".opencode/command/create/README.txt",
+      ".opencode/command/memory/README.txt",
+      ".opencode/command/spec_kit/README.txt",
+      ".opencode/skill/sk-doc/references/specific/readme_creation.md",
+      ".opencode/skill/sk-doc/references/global/hvr_rules.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/README.md",
+      ".opencode/skill/cli-claude-code/README.md",
+      ".opencode/skill/cli-codex/README.md",
+      ".opencode/skill/cli-copilot/README.md",
+      ".opencode/skill/cli-gemini/README.md",
+      ".opencode/skill/mcp-chrome-devtools/README.md",
+      ".opencode/skill/mcp-clickup/README.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/create/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/memory/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/spec_kit/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "readme_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/readme_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "hvr_rules.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/hvr_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/README.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Skill READMEs and command READMEs vary in quality, structure and voice. Most lack two-tier voice, comparison tables, numbered Feature subsections and HVR compliance. The recently upgraded `.opencode/skill/sk-doc/references/specific/readme_creation.md` and `.opencode/skill/sk-doc/references/global/hvr_rules.md` from spec 032 define production-quality standards that no existing skill README meets except the system-spec-kit exemplars.",
+    "created_at": "2026-04-12T09:02:50.178Z",
+    "last_save_at": "2026-04-12T09:06:00.309Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

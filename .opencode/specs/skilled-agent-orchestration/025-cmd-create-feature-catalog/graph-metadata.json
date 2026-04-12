@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/025-cmd-create-feature-catalog",
+  "spec_folder": "skilled-agent-orchestration/025-cmd-create-feature-catalog",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "create feature catalog command",
+      "/create:feature-catalog",
+      "feature catalog scaffold",
+      "sk-doc feature catalog template",
+      "feature catalog command plan",
+      "/create:feature-catalog plan",
+      "feature catalog command tasks",
+      "/create:feature-catalog tasks",
+      "feature catalog command checklist",
+      "/create:feature-catalog checklist",
+      "feature catalog command adr",
+      "/create:feature-catalog decision record",
+      "feature catalog command implementation summary",
+      "/create:feature-catalog summary"
+    ],
+    "key_topics": [
+      "create",
+      "feature",
+      "catalog",
+      "command",
+      "feature-catalog",
+      "scaffold",
+      "sk-doc",
+      "template",
+      "plan",
+      "tasks",
+      "checklist",
+      "adr"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/create/feature-catalog.md",
+      ".opencode/command/create/assets/create_feature_catalog_auto.yaml",
+      ".opencode/command/create/assets/create_feature_catalog_confirm.yaml",
+      ".agents/commands/create/feature-catalog.toml",
+      ".opencode/command/create/README.txt",
+      ".opencode/command/README.txt",
+      ".opencode/README.md",
+      ".opencode/agent/write.md",
+      ".claude/agents/write.md",
+      ".codex/agents/write.toml",
+      ".agents/agents/write.md",
+      "validate_document.py .opencode/command/create/feature-catalog.md",
+      "create_feature_catalog_auto.yaml",
+      "create_feature_catalog_confirm.yaml",
+      ".gemini/commands/create/feature-catalog.toml",
+      "spec.md",
+      ".opencode/skill/sk-doc/references/specific/feature_catalog_creation.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_snippet_template.md",
+      "<skill-root>/feature_catalog/FEATURE_CATALOG.md"
+    ],
+    "entities": [
+      {
+        "name": "feature-catalog.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/feature-catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_feature_catalog_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_feature_catalog_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "feature-catalog.toml",
+        "kind": "file",
+        "path": ".agents/commands/create/feature-catalog.toml",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/create/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".opencode/agent/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".claude/agents/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.toml",
+        "kind": "file",
+        "path": ".codex/agents/write.toml",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".agents/agents/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature-catalog.md",
+        "kind": "doc",
+        "path": "validate_document.py .opencode/command/create/feature-catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_auto.yaml",
+        "kind": "config",
+        "path": "create_feature_catalog_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_confirm.yaml",
+        "kind": "config",
+        "path": "create_feature_catalog_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "feature-catalog.toml",
+        "kind": "file",
+        "path": ".gemini/commands/create/feature-catalog.toml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet defines the implementation contract for a new `/create:feature-catalog` command that scaffolds the current `sk-doc` feature-catalog package shape. The command must create or update `feature_catalog/` using the shipped creation reference and both template files, then keep runtime mirrors and command-discovery surfaces aligned.",
+    "created_at": "2026-04-12T09:02:50.173Z",
+    "last_save_at": "2026-04-12T09:06:00.302Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

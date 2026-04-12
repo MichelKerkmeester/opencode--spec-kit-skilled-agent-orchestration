@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/003-sk-prompt-initial-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/003-sk-prompt-initial-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sk-improve-prompt",
+      "prompt engineering skill",
+      "prompt improvement",
+      "rcaf costar frameworks",
+      "prompt frameworks",
+      "implementation",
+      "plan",
+      "prompt",
+      "improver",
+      "initial",
+      "003",
+      "tasks",
+      "creation",
+      "verification",
+      "checklist",
+      "decision",
+      "record",
+      "decision record",
+      "summary",
+      "improv",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "sk-improve-prompt",
+      "prompt",
+      "engineering",
+      "skill",
+      "improvement",
+      "rcaf",
+      "costar",
+      "frameworks",
+      "implementation",
+      "plan",
+      "improver",
+      "initial"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "skill_advisor.py",
+      ".opencode/skill/sk-improve-prompt/SKILL.md",
+      ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      "package_skill.py",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "depth_framework.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "package_skill.py",
+        "kind": "file",
+        "path": "package_skill.py",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Prompt Improver",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nThe Prompt Improver",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Convert the standalone Prompt Improver AI system (v0.200) into an OpenCode-native skill (`sk-improve-prompt`) that provides integrated prompt engineering capabilities directly within the coding environment. The skill packages 10 proven prompt frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT, VIBE, FRAME, MOTION), the DEPTH thinking methodology, and triple scoring systems (CLEAR/EVOKE/VISUAL) into the OpenCode skill architecture for seamless on-demand invocation.",
+    "created_at": "2026-04-12T09:02:50.200Z",
+    "last_save_at": "2026-04-12T09:06:00.336Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

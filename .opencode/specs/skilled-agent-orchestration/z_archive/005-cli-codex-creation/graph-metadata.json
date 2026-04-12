@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/005-cli-codex-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/005-cli-codex-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "cli",
+      "gemini",
+      "model",
+      "spec",
+      "005",
+      "implementation",
+      "plan",
+      "tasks",
+      "consolidation",
+      "verification",
+      "checklist",
+      "summary",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "cli",
+      "gemini",
+      "model",
+      "spec",
+      "005",
+      "implementation",
+      "plan",
+      "tasks",
+      "consolidation",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "gemini-3.1-pro-preview",
+      ".opencode/skill/cli-codex/SKILL.md",
+      ".opencode/skill/cli-codex/assets/prompt_templates.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      "README.md",
+      "validate.sh",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "gemini-3.1-pro-preview",
+        "kind": "file",
+        "path": "gemini-3.1-pro-preview",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Consolidation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThe",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nConsolidate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The existing `cli-gemini` skill referenced multiple Gemini model variants, which created avoidable decision overhead. At the same time, there was no companion `cli-codex` skill even though Codex CLI support already existed elsewhere in the repository.",
+    "created_at": "2026-04-12T09:02:50.202Z",
+    "last_save_at": "2026-04-12T09:06:00.338Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

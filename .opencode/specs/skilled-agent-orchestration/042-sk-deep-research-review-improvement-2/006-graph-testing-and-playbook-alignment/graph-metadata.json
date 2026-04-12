@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.006",
+      "graph testing",
+      "playbook alignment",
+      "coverage graph integration",
+      "graph stress tests",
+      "graph testing plan",
+      "playbook alignment plan",
+      "graph testing tasks",
+      "graph testing checklist",
+      "graph testing implementation summary"
+    ],
+    "key_topics": [
+      "042",
+      "006",
+      "graph",
+      "testing",
+      "playbook",
+      "alignment",
+      "coverage",
+      "integration",
+      "stress",
+      "tests",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts",
+      ".opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md",
+      ".opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-discipline/029-graph-events-emission.md",
+      ".opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md",
+      ".opencode/skill/sk-deep-review/manual_testing_playbook/03--iteration-execution-and-state-discipline/015-graph-events-review.md",
+      ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md",
+      ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md",
+      ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md",
+      ".opencode/skill/sk-deep-research/README.md",
+      ".opencode/skill/sk-deep-review/README.md",
+      ".opencode/skill/sk-improve-agent/README.md",
+      "coverage-graph-integration.vitest.ts",
+      "coverage-graph-stress.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts"
+    ],
+    "entities": [
+      {
+        "name": "coverage-graph-integration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-stress.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "031-graph-convergence-signals.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md",
+        "source": "derived"
+      },
+      {
+        "name": "029-graph-events-emission.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/manual_testing_playbook/03--iteration-execution-and-state-discipline/029-graph-events-emission.md",
+        "source": "derived"
+      },
+      {
+        "name": "021-graph-convergence-review.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/manual_testing_playbook/04--convergence-and-recovery/021-graph-convergence-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "015-graph-events-review.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/manual_testing_playbook/03--iteration-execution-and-state-discipline/015-graph-events-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "022-mutation-coverage-graph-tracking.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/022-mutation-coverage-graph-tracking.md",
+        "source": "derived"
+      },
+      {
+        "name": "023-trade-off-detection.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/023-trade-off-detection.md",
+        "source": "derived"
+      },
+      {
+        "name": "024-candidate-lineage.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop/024-candidate-lineage.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-integration.vitest.ts",
+        "kind": "test",
+        "path": "coverage-graph-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-stress.vitest.ts",
+        "kind": "test",
+        "path": "coverage-graph-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 002 introduced the coverage-graph runtime, but the supporting verification surface was incomplete. The repo needed one phase that proved the CommonJS and TypeScript graph layers stayed aligned, that graph operations held up under larger loads, and that human-run playbooks across `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` covered the new graph behaviors.",
+    "created_at": "2026-04-12T09:02:50.196Z",
+    "last_save_at": "2026-04-12T09:06:00.332Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

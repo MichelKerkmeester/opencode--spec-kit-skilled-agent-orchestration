@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/010-sk-doc-rename",
+  "spec_folder": "skilled-agent-orchestration/z_archive/010-sk-doc-rename",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "rename",
+      "template",
+      "spec core",
+      "implementation",
+      "plan",
+      "plan core",
+      "tasks",
+      "tasks core",
+      "verification",
+      "checklist",
+      "summary",
+      "impl summary core"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "rename",
+      "template",
+      "spec",
+      "core",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/preflight-counts.txt",
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv",
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
+      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/final-remnant-counts.txt",
+      "preflight-counts.txt",
+      "preflight-paths.txt",
+      "preflight-symlinks.txt",
+      "path-rename-map.tsv",
+      "path-rename-log.txt",
+      "post-path-symlinks.txt",
+      "final-remnant-counts.txt",
+      "0.81",
+      "validate.sh",
+      "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
+      "checklist.md",
+      "scratch/preflight-counts.txt",
+      "scratch/preflight-paths.txt",
+      "scratch/preflight-symlinks.txt"
+    ],
+    "entities": [
+      {
+        "name": "preflight-counts.txt",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/preflight-counts.txt",
+        "source": "derived"
+      },
+      {
+        "name": "path-rename-map.tsv",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv",
+        "source": "derived"
+      },
+      {
+        "name": "path-rename-log.txt",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
+        "source": "derived"
+      },
+      {
+        "name": "content-replacement-files.txt",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
+        "source": "derived"
+      },
+      {
+        "name": "post-path-symlinks.txt",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
+        "source": "derived"
+      },
+      {
+        "name": "final-remnant-counts.txt",
+        "kind": "file",
+        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/final-remnant-counts.txt",
+        "source": "derived"
+      },
+      {
+        "name": "preflight-counts.txt",
+        "kind": "file",
+        "path": "preflight-counts.txt",
+        "source": "derived"
+      },
+      {
+        "name": "preflight-paths.txt",
+        "kind": "file",
+        "path": "preflight-paths.txt",
+        "source": "derived"
+      },
+      {
+        "name": "preflight-symlinks.txt",
+        "kind": "file",
+        "path": "preflight-symlinks.txt",
+        "source": "derived"
+      },
+      {
+        "name": "path-rename-map.tsv",
+        "kind": "file",
+        "path": "path-rename-map.tsv",
+        "source": "derived"
+      },
+      {
+        "name": "path-rename-log.txt",
+        "kind": "file",
+        "path": "path-rename-log.txt",
+        "source": "derived"
+      },
+      {
+        "name": "post-path-symlinks.txt",
+        "kind": "file",
+        "path": "post-path-symlinks.txt",
+        "source": "derived"
+      },
+      {
+        "name": "final-remnant-counts.txt",
+        "kind": "file",
+        "path": "final-remnant-counts.txt",
+        "source": "derived"
+      },
+      {
+        "name": "0.81",
+        "kind": "file",
+        "path": "0.81",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core | v2.2\"",
+    "created_at": "2026-04-12T09:02:50.205Z",
+    "last_save_at": "2026-04-12T09:06:00.342Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

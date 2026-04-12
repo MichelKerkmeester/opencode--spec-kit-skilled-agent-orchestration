@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
+  "spec_folder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
+  "parent_id": null,
+  "children_ids": [
+    "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements",
+    "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/002-sk-deep-review-improvements"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deep research improvement",
+      "deep review improvement",
+      "040 spec",
+      "lineage reducer parity",
+      "040 plan",
+      "deep research review plan",
+      "reducer parity plan",
+      "040 tasks",
+      "deep research review tasks",
+      "reducer parity tasks",
+      "verification",
+      "checklist",
+      "040 checklist",
+      "deep research review checklist",
+      "implementation summary",
+      "040 summary",
+      "deep research review summary"
+    ],
+    "key_topics": [
+      "deep",
+      "research",
+      "improvement",
+      "review",
+      "040",
+      "spec",
+      "lineage",
+      "reducer",
+      "parity",
+      "plan",
+      "tasks",
+      "verification"
+    ],
+    "importance_tier": "high",
+    "status": "planned",
+    "key_files": [
+      "reduce-state.cjs",
+      "runtime-capabilities.cjs",
+      "review_mode_contract.yaml",
+      "deep-research-contract-parity.vitest.ts",
+      "deep-research-reducer.vitest.ts",
+      "deep-review-contract-parity.vitest.ts",
+      "deep-review-reducer-schema.vitest.ts",
+      "tasks.md",
+      "research/research.md",
+      "research/recommendations-sk-deep-research.md",
+      "research/recommendations-sk-deep-review.md",
+      "001-sk-deep-research-improvements/plan.md",
+      "002-sk-deep-review-improvements/plan.md",
+      "001-sk-deep-research-improvements/tasks.md",
+      "002-sk-deep-review-improvements/tasks.md",
+      ".codex/prompts/spec_kit-deep-research.md",
+      "research/deep-research-state.jsonl",
+      "research/iterations/iteration-001.md",
+      "iteration-090.md",
+      "~/.cocoindex_code/daemon.sock"
+    ],
+    "entities": [
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-capabilities.cjs",
+        "kind": "file",
+        "path": "runtime-capabilities.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "review_mode_contract.yaml",
+        "kind": "config",
+        "path": "review_mode_contract.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-contract-parity.vitest.ts",
+        "kind": "test",
+        "path": "deep-research-contract-parity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-reducer.vitest.ts",
+        "kind": "test",
+        "path": "deep-research-reducer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review-contract-parity.vitest.ts",
+        "kind": "test",
+        "path": "deep-review-contract-parity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review-reducer-schema.vitest.ts",
+        "kind": "test",
+        "path": "deep-review-reducer-schema.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "recommendations-sk-deep-research.md",
+        "kind": "doc",
+        "path": "research/recommendations-sk-deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "recommendations-sk-deep-review.md",
+        "kind": "doc",
+        "path": "research/recommendations-sk-deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "001-sk-deep-research-improvements/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "002-sk-deep-review-improvements/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "001-sk-deep-research-improvements/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "002-sk-deep-review-improvements/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit-deep-research.md",
+        "kind": "doc",
+        "path": ".codex/prompts/spec_kit-deep-research.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Make both skills operate under explicit, testable packet contracts — canonical naming, lifecycle branches, reducer semantics, release-readiness states, and runtime parity — all backed by executable Vitest guards.",
+    "created_at": "2026-04-12T09:02:50.183Z",
+    "last_save_at": "2026-04-12T09:06:00.315Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

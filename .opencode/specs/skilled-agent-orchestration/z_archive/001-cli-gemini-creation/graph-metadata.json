@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/001-cli-gemini-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/001-cli-gemini-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "gemini cli skill",
+      "cli-gemini",
+      "gemini integration",
+      "gemini cli plan",
+      "cli-gemini plan",
+      "gemini cli tasks",
+      "cli-gemini tasks",
+      "gemini cli checklist",
+      "cli-gemini checklist",
+      "gemini cli summary",
+      "cli-gemini summary"
+    ],
+    "key_topics": [
+      "gemini",
+      "cli",
+      "skill",
+      "cli-gemini",
+      "integration",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "claude",
+      "code",
+      "opencode"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/cli-gemini/SKILL.md",
+      ".opencode/skill/cli-gemini/references/cli_reference.md",
+      ".opencode/skill/cli-gemini/references/integration_patterns.md",
+      ".opencode/skill/cli-gemini/references/gemini_tools.md",
+      ".opencode/skill/cli-gemini/assets/prompt_templates.md",
+      ".opencode/skill/cli-gemini/references/agent_delegation.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "gemini_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/references/gemini_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\n\nClaude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Google Search",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Claude Code and OpenCode lack a structured way to delegate tasks to Google's Gemini CLI. Without a skill, agents have no guidance on when to use Gemini, how to invoke it correctly, or how to validate its output. This leads to missed opportunities for cross-AI validation, web research via Google Search grounding, and codebase investigation using Gemini's unique tools.",
+    "created_at": "2026-04-12T09:02:50.199Z",
+    "last_save_at": "2026-04-12T09:06:00.335Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

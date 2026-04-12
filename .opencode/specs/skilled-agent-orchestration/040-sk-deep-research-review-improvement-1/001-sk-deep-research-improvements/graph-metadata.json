@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements",
+  "spec_folder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1/001-sk-deep-research-improvements",
+  "parent_id": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deep research",
+      "lineage",
+      "reducer",
+      "runtime parity",
+      "phase 1 spec",
+      "deep research plan",
+      "lineage plan",
+      "runtime parity plan",
+      "phase 1 plan",
+      "reducer plan",
+      "deep research tasks",
+      "phase 1 tasks",
+      "reducer tasks",
+      "runtime parity tasks",
+      "implementation summary",
+      "deep research summary",
+      "phase 1 summary"
+    ],
+    "key_topics": [
+      "deep",
+      "research",
+      "lineage",
+      "reducer",
+      "runtime",
+      "parity",
+      "phase",
+      "spec",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "high",
+    "status": "planned",
+    "key_files": [
+      "runtime-capabilities.cjs",
+      "reduce-state.cjs",
+      ".opencode/skill/sk-deep-research/README.md",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/references/quick_reference.md",
+      ".opencode/skill/sk-deep-research/references/state_format.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+      ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+      ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/agent/deep-research.md",
+      ".claude/agents/deep-research.md",
+      ".gemini/agents/deep-research.md",
+      ".codex/agents/deep-research.toml",
+      ".agents/agents/deep-research.md",
+      ".opencode/skill/system-spec-kit/scripts/tests/deep-research-contract-parity.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "runtime-capabilities.cjs",
+        "kind": "file",
+        "path": "runtime-capabilities.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "capability_matrix.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "runtime_capabilities.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+        "source": "derived"
+      },
+      {
+        "name": "runtime-capabilities.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".claude/agents/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".gemini/agents/deep-research.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Make Phase 1 the durable contract for research lineage, reducer-owned state, and runtime parity so later deep-review work inherits a stable packet model instead of ambiguous conventions.",
+    "created_at": "2026-04-12T09:02:50.183Z",
+    "last_save_at": "2026-04-12T09:06:00.315Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

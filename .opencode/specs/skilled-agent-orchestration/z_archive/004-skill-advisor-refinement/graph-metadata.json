@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/004-skill-advisor-refinement",
+  "spec_folder": "skilled-agent-orchestration/z_archive/004-skill-advisor-refinement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "skill advisor",
+      "routing quality",
+      "confidence uncertainty",
+      "intent normalization",
+      "latency benchmark",
+      "skill advisor plan",
+      "regression harness",
+      "skill advisor tasks",
+      "routing quality gates",
+      "latency benchmark tasks",
+      "skill advisor verification",
+      "regression gate",
+      "benchmark gate",
+      "skill advisor adr",
+      "confidence override",
+      "command bridge ranking",
+      "runtime cache",
+      "skill advisor implementation summary",
+      "confidence-only override",
+      "regression benchmark gates"
+    ],
+    "key_topics": [
+      "skill",
+      "advisor",
+      "routing",
+      "quality",
+      "confidence",
+      "uncertainty",
+      "intent",
+      "normalization",
+      "latency",
+      "benchmark",
+      "plan",
+      "regression"
+    ],
+    "importance_tier": "critical",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/scripts/README.md",
+      ".opencode/skill/scripts/SET-UP_GUIDE.md",
+      "skill_advisor.py",
+      "skill_advisor_runtime.py",
+      "skill_advisor_regression.py",
+      "skill_advisor_bench.py",
+      "fixtures/skill_advisor_regression_cases.jsonl",
+      "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py .opencode/skill/scripts/skill_advisor_runtime.py .opencode/skill/scripts/skill_advisor_regression.py .opencode/skill/scripts/skill_advisor_bench.py",
+      "python3 .opencode/skill/scripts/skill_advisor_regression.py --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl --out .opencode/skill/scripts/out/regression-report.json",
+      "top1_accuracy=1.0",
+      "p0_pass_rate=1.0",
+      "command_bridge_fp_rate=0.0",
+      "python3 .opencode/skill/scripts/skill_advisor_bench.py --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl --runs 7 --out .opencode/skill/scripts/out/benchmark-report.json",
+      "throughput_multiplier=25.8538x",
+      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/scripts/skill_advisor_runtime.py",
+      ".opencode/skill/scripts/skill_advisor_regression.py",
+      ".opencode/skill/scripts/skill_advisor_bench.py",
+      ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "python3 .opencode/skill/scripts/skill_advisor.py \"ambiguous prompt\" --threshold 0.8"
+    ],
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/scripts/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/scripts/SET-UP_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_runtime.py",
+        "kind": "file",
+        "path": "skill_advisor_runtime.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression.py",
+        "kind": "file",
+        "path": "skill_advisor_regression.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_bench.py",
+        "kind": "file",
+        "path": "skill_advisor_bench.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": "fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_bench.py",
+        "kind": "file",
+        "path": "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py .opencode/skill/scripts/skill_advisor_runtime.py .opencode/skill/scripts/skill_advisor_regression.py .opencode/skill/scripts/skill_advisor_bench.py",
+        "source": "derived"
+      },
+      {
+        "name": "regression-report.json",
+        "kind": "config",
+        "path": "python3 .opencode/skill/scripts/skill_advisor_regression.py --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl --out .opencode/skill/scripts/out/regression-report.json",
+        "source": "derived"
+      },
+      {
+        "name": "top1_accuracy=1.0",
+        "kind": "file",
+        "path": "top1_accuracy=1.0",
+        "source": "derived"
+      },
+      {
+        "name": "p0_pass_rate=1.0",
+        "kind": "file",
+        "path": "p0_pass_rate=1.0",
+        "source": "derived"
+      },
+      {
+        "name": "command_bridge_fp_rate=0.0",
+        "kind": "file",
+        "path": "command_bridge_fp_rate=0.0",
+        "source": "derived"
+      },
+      {
+        "name": "benchmark-report.json",
+        "kind": "config",
+        "path": "python3 .opencode/skill/scripts/skill_advisor_bench.py --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl --runs 7 --out .opencode/skill/scripts/out/benchmark-report.json",
+        "source": "derived"
+      },
+      {
+        "name": "throughput_multiplier=25.8538x",
+        "kind": "file",
+        "path": "throughput_multiplier=25.8538x",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_runtime.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor_runtime.py",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This spec defines a focused refinement of the skill advisor workflow to improve recommendation correctness, preserve uncertainty safety by default, and reduce runtime overhead in repeated calls. The work is limited to `.opencode/skill/scripts/skill_advisor.py` plus adjacent script-level support files that provide caching, benchmarking, and regression gates.",
+    "created_at": "2026-04-12T09:02:50.201Z",
+    "last_save_at": "2026-04-12T09:06:00.337Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

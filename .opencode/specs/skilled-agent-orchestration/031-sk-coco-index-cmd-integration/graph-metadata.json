@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/031-sk-coco-index-cmd-integration",
+  "spec_folder": "skilled-agent-orchestration/031-sk-coco-index-cmd-integration",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "031",
+      "coco index",
+      "command integration",
+      "sk-coco-index",
+      "coco index plan",
+      "command integration plan",
+      "coco index tasks",
+      "command integration tasks",
+      "implementation",
+      "summary"
+    ],
+    "key_topics": [
+      "031",
+      "coco",
+      "index",
+      "command",
+      "integration",
+      "sk-coco-index",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "folder",
+      "existed"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/implementation-summary.md",
+      ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/spec.md",
+      ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/plan.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/tasks.md",
+      "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Command Integration",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose\nCreate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This folder existed without the required planning docs, so the intended command integration work for sk-coco-index was not traceable through spec-kit validation. The repair needs to establish a truthful planning baseline without inventing implementation results.",
+    "created_at": "2026-04-12T09:02:50.177Z",
+    "last_save_at": "2026-04-12T09:06:00.307Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

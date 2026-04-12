@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge",
+  "spec_folder": "system-spec-kit/999-agentic-system-upgrade/002-agentic-adoption/002-retry-feedback-bridge",
+  "parent_id": "system-spec-kit/999-agentic-system-upgrade/002-agentic-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "feature",
+      "specification",
+      "002-retry-feedback-bridge",
+      "adoption",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
+    ],
+    "key_topics": [
+      "feature",
+      "specification",
+      "002-retry-feedback-bridge",
+      "adoption",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "public",
+      "already",
+      "core"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/spec_kit/implement.md",
+      ".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml",
+      ".opencode/agent/review.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_implement_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/review.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Retry Feedback Bridge",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Predecessor Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Successor Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement\nPublic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Public already has the core authority needed for 002 retry feedback bridge, but the change still needs one implementation-ready contract. This child phase narrows the converged research into a current-authority-safe design.",
+    "created_at": "2026-04-12T09:02:53.492Z",
+    "last_save_at": "2026-04-12T09:06:03.537Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

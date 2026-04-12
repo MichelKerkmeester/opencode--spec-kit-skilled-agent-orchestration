@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment",
+  "parent_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "recursive agent wording alignment",
+      "041 phase 007",
+      "recursive agent wording pass",
+      "041 phase 007 plan",
+      "recursive agent wording alignment plan",
+      "041 phase 007 tasks",
+      "recursive agent wording alignment tasks",
+      "041 phase 007 checklist",
+      "recursive agent wording alignment checklist",
+      "041 phase 007 implementation summary",
+      "recursive agent wording alignment summary"
+    ],
+    "key_topics": [
+      "recursive",
+      "agent",
+      "wording",
+      "alignment",
+      "041",
+      "phase",
+      "007",
+      "pass",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/sk-improve-agent/SKILL.md",
+      ".opencode/skill/sk-improve-agent/README.md",
+      "validate_document.py",
+      "descriptions.json",
+      ".opencode/command/spec_kit/agent-improver.md",
+      ".agents/commands/spec_kit/agent-improver.toml",
+      ".gemini/commands/spec_kit/agent-improver.toml",
+      ".opencode/agent/agent-improver.md",
+      ".claude/agents/agent-improver.md",
+      ".gemini/agents/agent-improver.md",
+      ".agents/agents/agent-improver.md",
+      ".codex/agents/agent-improver.toml",
+      ".opencode/specs/descriptions.json",
+      "python3.11",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": "validate_document.py",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": "descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/agent-improver.toml",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.toml",
+        "kind": "file",
+        "path": ".gemini/commands/spec_kit/agent-improver.toml",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".opencode/agent/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".claude/agents/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".gemini/agents/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.md",
+        "kind": "doc",
+        "path": ".agents/agents/agent-improver.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent-improver.toml",
+        "kind": "file",
+        "path": ".codex/agents/agent-improver.toml",
+        "source": "derived"
+      },
+      {
+        "name": "descriptions.json",
+        "kind": "config",
+        "path": ".opencode/specs/descriptions.json",
+        "source": "derived"
+      },
+      {
+        "name": "python3.11",
+        "kind": "file",
+        "path": "python3.11",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "After phase `006`, the agent-improver program was structurally aligned, but several current surfaces still had awkward phrasing, inconsistent terminology, or minor wording bugs across the source skill package, runtime mirrors, wrapper prompts, and parent packet docs.",
+    "created_at": "2026-04-12T09:02:50.188Z",
+    "last_save_at": "2026-04-12T09:06:00.322Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

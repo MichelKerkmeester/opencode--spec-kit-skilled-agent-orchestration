@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/030-sk-deep-research-review-mode",
+  "spec_folder": "skilled-agent-orchestration/030-sk-deep-research-review-mode",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "030",
+      "deep research",
+      "review mode",
+      "sk-deep-research",
+      "review mode plan",
+      "deep research review plan",
+      "review mode tasks",
+      "deep research review tasks",
+      "implementation",
+      "summary",
+      "research",
+      "improving",
+      "review",
+      "logic",
+      "deep",
+      "session",
+      "handover",
+      "document"
+    ],
+    "key_topics": [
+      "030",
+      "deep",
+      "research",
+      "review",
+      "mode",
+      "sk-deep-research",
+      "plan",
+      "tasks",
+      "implementation",
+      "summary",
+      "improving",
+      "logic"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/implementation-summary.md",
+      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md",
+      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/spec.md",
+      ".opencode/skill/sk-code-review/references/review_core.md",
+      ".opencode/skill/sk-code-review/references/review_ux_single_pass.md",
+      ".opencode/skill/sk-code-review/references/quick_reference.md",
+      ".opencode/skill/sk-code-review/SKILL.md",
+      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/plan.md",
+      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/tasks.md",
+      "research/research.md",
+      "spec.md",
+      "handover.md",
+      "plan.md",
+      "tasks.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/skill/sk-deep-research/README.md",
+      "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "review_mode_contract.yaml",
+      "rollingStop=0.08",
+      "noProgress=0.05"
+    ],
+    "entities": [
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "review_core.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/references/review_core.md",
+        "source": "derived"
+      },
+      {
+        "name": "review_ux_single_pass.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/references/review_ux_single_pass.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Currently, reviewing spec folders, code changes, skills, and their cross-references for release readiness is a manual, single-pass process. There is no iterative, convergence-driven review flow that systematically checks all dimensions such as correctness, security, patterns, spec alignment, completeness, and cross-reference integrity across a review target.",
+    "created_at": "2026-04-12T09:02:50.177Z",
+    "last_save_at": "2026-04-12T09:06:00.306Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
+    ]
+  }
+}

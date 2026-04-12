@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/007-cli-claude-code-creation",
+  "spec_folder": "skilled-agent-orchestration/z_archive/007-cli-claude-code-creation",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli-claude-code spec",
+      "claude code skill spec",
+      "cli-claude-code plan",
+      "claude code skill plan",
+      "cli-claude-code tasks",
+      "cli-claude-code checklist",
+      "cli-claude-code summary"
+    ],
+    "key_topics": [
+      "cli-claude-code",
+      "spec",
+      "claude",
+      "code",
+      "skill",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "exists",
+      "external",
+      "assistants"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/cli-claude-code/SKILL.md",
+      ".opencode/skill/cli-claude-code/README.md",
+      ".opencode/skill/cli-claude-code/references/cli_reference.md",
+      ".opencode/skill/cli-claude-code/references/agent_delegation.md",
+      ".opencode/skill/cli-claude-code/references/claude_tools.md",
+      ".opencode/skill/cli-claude-code/references/integration_patterns.md",
+      ".opencode/skill/cli-claude-code/assets/prompt_templates.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/README.md",
+      ".opencode/README.md",
+      "README.md",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "claude_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/references/claude_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "No skill exists for external AI assistants (Gemini CLI, Codex CLI, Copilot, etc.) to delegate tasks to Claude Code CLI. The existing `cli-gemini` and `cli-codex` skills enable Claude Code to invoke *other* AIs, but the reverse direction — other AIs invoking Claude Code — has no structured skill. This leaves Claude Code's unique capabilities (extended thinking, `--json-schema`, `--permission-mode plan`, `--max-budget-usd`) inaccessible to external orchestrators.",
+    "created_at": "2026-04-12T09:02:50.203Z",
+    "last_save_at": "2026-04-12T09:06:00.340Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/004-offline-loop-optimizer",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.004",
+      "offline loop optimizer",
+      "replay corpus",
+      "optimizer manifest",
+      "advisory promotion gate",
+      "implementation plan",
+      "phase 4a",
+      "phase 4b",
+      "tasks",
+      "verification checklist",
+      "decision record",
+      "implementation summary",
+      "advisory promotion"
+    ],
+    "key_topics": [
+      "042",
+      "004",
+      "offline",
+      "loop",
+      "optimizer",
+      "replay",
+      "corpus",
+      "manifest",
+      "advisory",
+      "promotion",
+      "gate",
+      "implementation"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/rubric.cjs",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/search.cjs",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+      ".opencode/skill/sk-deep-research/references/convergence.md",
+      ".opencode/skill/sk-deep-review/references/convergence.md",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/spec_kit/deep-review.md",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-rubric.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/prompt-pack-generator.cjs",
+      ".opencode/skill/system-spec-kit/scripts/tests/optimizer-prompt-pack.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/optimizer/task-shape-model.cjs"
+    ],
+    "entities": [
+      {
+        "name": "replay-corpus.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "rubric.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/rubric.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "search.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/search.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "replay-runner.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "promote.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "optimizer-manifest.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "optimizer-replay-corpus.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "optimizer-rubric.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/optimizer-rubric.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "optimizer-search.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "optimizer-replay-runner.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 004 is now explicitly split into two sub-phases. Phase 4a is the realistic near-term deliverable: build an offline compile/evaluate loop that replays real packet traces, tunes deterministic numeric config thresholds, and emits advisory patch recommendations with a full audit trail. Phase 4b is deferred future work for prompt-pack and meta-optimization once replay fixtures, behavioral suites, and multi-family corpus coverage actually exist.",
+    "created_at": "2026-04-12T09:02:50.194Z",
+    "last_save_at": "2026-04-12T09:06:00.330Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

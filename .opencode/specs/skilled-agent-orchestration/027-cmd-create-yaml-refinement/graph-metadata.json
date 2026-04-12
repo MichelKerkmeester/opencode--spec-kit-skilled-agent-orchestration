@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/027-cmd-create-yaml-refinement",
+  "spec_folder": "skilled-agent-orchestration/027-cmd-create-yaml-refinement",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "create yaml refinement",
+      "create command yaml standardization",
+      "spec_kit style yaml alignment",
+      "create yaml refinement plan",
+      "create command yaml standardization plan",
+      "create yaml refinement tasks",
+      "create command yaml standardization tasks",
+      "create yaml refinement checklist",
+      "create command yaml standardization checklist",
+      "create yaml refinement adr",
+      "create command yaml standardization decision",
+      "create yaml refinement summary",
+      "create command yaml standardization summary"
+    ],
+    "key_topics": [
+      "create",
+      "yaml",
+      "refinement",
+      "command",
+      "standardization",
+      "style",
+      "alignment",
+      "plan",
+      "tasks",
+      "checklist",
+      "adr",
+      "decision"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "validate_document.py .opencode/command/create/README.txt",
+      "validate_document.py .opencode/command/README.txt",
+      "spec.md",
+      ".opencode/command/create/assets/create_feature_catalog_auto.yaml",
+      ".opencode/command/create/assets/create_feature_catalog_confirm.yaml",
+      ".opencode/command/create/assets/create_testing_playbook_auto.yaml",
+      ".opencode/command/create/assets/create_testing_playbook_confirm.yaml",
+      ".opencode/command/create/assets/create_agent_auto.yaml",
+      ".opencode/command/create/assets/create_agent_confirm.yaml",
+      ".opencode/command/create/assets/create_changelog_auto.yaml",
+      ".opencode/command/create/assets/create_changelog_confirm.yaml",
+      ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+      ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+      "create_feature_catalog_auto.yaml",
+      "create_feature_catalog_confirm.yaml",
+      "create_testing_playbook_auto.yaml",
+      "create_testing_playbook_confirm.yaml",
+      "create_folder_readme_auto.yaml",
+      "create_folder_readme_confirm.yaml",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": "validate_document.py .opencode/command/create/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": "validate_document.py .opencode/command/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_feature_catalog_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_feature_catalog_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_testing_playbook_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_testing_playbook_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_testing_playbook_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_testing_playbook_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_agent_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_agent_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_changelog_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_changelog_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_changelog_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_changelog_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_auto.yaml",
+        "kind": "config",
+        "path": "create_feature_catalog_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_feature_catalog_confirm.yaml",
+        "kind": "config",
+        "path": "create_feature_catalog_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_testing_playbook_auto.yaml",
+        "kind": "config",
+        "path": "create_testing_playbook_auto.yaml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet defines the refinement pass for `.opencode/command/create/assets/*.yaml` so the create-command suite more closely matches the richer `spec_kit` command YAML style. The work must strengthen the newer feature-catalog and testing-playbook assets, then add a shared structural contract across the broader create suite without rewriting command behavior or changing command names.",
+    "created_at": "2026-04-12T09:02:50.175Z",
+    "last_save_at": "2026-04-12T09:06:00.304Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

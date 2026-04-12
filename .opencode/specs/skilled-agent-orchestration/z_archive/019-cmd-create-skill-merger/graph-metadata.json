@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/019-cmd-create-skill-merger",
+  "spec_folder": "skilled-agent-orchestration/z_archive/019-cmd-create-skill-merger",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "create:sk-skill",
+      "skill merger",
+      "command consolidation",
+      "unified workflow",
+      "implementation plan",
+      "create skill merger",
+      "tasks",
+      "retroactive implementation",
+      "verification checklist",
+      "migration validation",
+      "implementation summary",
+      "canonical command"
+    ],
+    "key_topics": [
+      "create",
+      "sk-skill",
+      "skill",
+      "merger",
+      "command",
+      "consolidation",
+      "unified",
+      "workflow",
+      "implementation",
+      "plan",
+      "tasks",
+      "retroactive"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/create/sk-skill.md",
+      ".opencode/command/create/assets/create_sk_skill_auto.yaml",
+      ".opencode/command/create/assets/create_sk_skill_confirm.yaml",
+      ".opencode/command/create/prompt.md",
+      ".agents/agents/write.md",
+      ".opencode/agent/write.md",
+      ".codex/agents/write.toml",
+      ".opencode/README.md",
+      "README.md",
+      ".opencode/install_guides/README.md",
+      ".opencode/install_guides/SET-UP - AGENTS.md",
+      ".opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json",
+      ".opencode/command/create/assets/create_skill_auto.yaml",
+      ".opencode/command/create/assets/create_skill_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_reference_auto.yaml",
+      ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_asset_auto.yaml",
+      ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
+      "memory/metadata.json",
+      "create_sk_skill_auto.yaml"
+    ],
+    "entities": [
+      {
+        "name": "sk-skill.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/sk-skill.md",
+        "source": "derived"
+      },
+      {
+        "name": "create_sk_skill_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_sk_skill_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_sk_skill_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_sk_skill_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "prompt.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".agents/agents/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".opencode/agent/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.toml",
+        "kind": "file",
+        "path": ".codex/agents/write.toml",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP - AGENTS.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/SET-UP - AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_reference_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The create command surface for skills was fragmented across separate command files and YAML workflows (`/create:skill`, `/create:skill_reference`, `/create:skill_asset`). That duplication increased maintenance cost and made routing behavior harder to keep consistent across operation and mode variants. After canonical merger, active runtime and onboarding documentation still needed explicit synchronization to canonical `/create:sk-skill` references.",
+    "created_at": "2026-04-12T09:02:50.220Z",
+    "last_save_at": "2026-04-12T09:06:00.348Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

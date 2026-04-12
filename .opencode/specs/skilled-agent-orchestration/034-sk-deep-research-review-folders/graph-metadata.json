@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/034-sk-deep-research-review-folders",
+  "spec_folder": "skilled-agent-orchestration/034-sk-deep-research-review-folders",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "deep review folder",
+      "review subfolder",
+      "sk-deep-research review outputs",
+      "scratch misuse",
+      "review packet contract",
+      "review folder plan",
+      "deep-review path migration",
+      "review packet implementation",
+      "review folder tasks",
+      "deep-review task breakdown",
+      "review folder verification",
+      "deep-review checklist",
+      "review folder adr",
+      "deep-review decision record",
+      "review folder implementation summary",
+      "review folder summary"
+    ],
+    "key_topics": [
+      "deep",
+      "review",
+      "folder",
+      "subfolder",
+      "sk-deep-research",
+      "outputs",
+      "scratch",
+      "misuse",
+      "packet",
+      "contract",
+      "plan",
+      "deep-review"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "review_mode_contract.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml",
+      ".opencode/skill/sk-deep-research/assets/review_mode_contract.yaml",
+      ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+      ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".agents/commands/spec_kit/deep-research.toml",
+      ".opencode/agent/deep-review.md",
+      ".claude/agents/deep-review.md",
+      ".codex/agents/deep-review.toml",
+      ".gemini/agents/deep-review.md",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/README.md",
+      "deep-research-config.json",
+      "deep-research-state.jsonl",
+      ".opencode/skill/sk-deep-research/references/quick_reference.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md"
+    ],
+    "entities": [
+      {
+        "name": "review_mode_contract.yaml",
+        "kind": "config",
+        "path": "review_mode_contract.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "review_mode_contract.yaml",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/review_mode_contract.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_strategy.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_dashboard.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.toml",
+        "kind": "file",
+        "path": ".agents/commands/spec_kit/deep-research.toml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".claude/agents/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-review.toml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".gemini/agents/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet plans a dedicated `review/` subfolder inside the target spec so all review-mode outputs live together: config, JSONL state, strategy, dashboard, iteration artifacts, pause sentinel, and final report. The implementation also needs a legacy migration path because existing review sessions already persist their state under `scratch/`.",
+    "created_at": "2026-04-12T09:02:50.178Z",
+    "last_save_at": "2026-04-12T09:06:00.309Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

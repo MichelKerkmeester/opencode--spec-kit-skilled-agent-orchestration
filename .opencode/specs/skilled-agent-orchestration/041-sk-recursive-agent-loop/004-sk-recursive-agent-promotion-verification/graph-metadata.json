@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/004-sk-recursive-agent-promotion-verification",
+  "parent_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "recursive agent promotion verification",
+      "041 phase 004",
+      "context-prime repeatability",
+      "recursive agent promotion verification plan",
+      "041 phase 004 plan",
+      "041 phase 004 tasks",
+      "recursive agent promotion verification tasks",
+      "041 phase 004 checklist",
+      "recursive agent promotion verification checklist",
+      "041 phase 004 implementation summary",
+      "recursive agent promotion verification summary"
+    ],
+    "key_topics": [
+      "recursive",
+      "agent",
+      "promotion",
+      "verification",
+      "041",
+      "phase",
+      "004",
+      "context-prime",
+      "repeatability",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "score-candidate.cjs",
+      ".opencode/skill/sk-improve-agent/references/evaluator_contract.md",
+      ".opencode/agent/handover.md",
+      "node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+      "improvement/score-handover-candidate-002.json",
+      "improvement/handover-candidate-validation.log",
+      "improvement/benchmark-runs/handover/run-001.json",
+      "improvement/benchmark-runs/handover/run-002.json",
+      "improvement/benchmark-runs/handover/repeatability.json",
+      "improvement/benchmark-runs/context-prime/run-001.json",
+      "improvement/benchmark-runs/context-prime/run-002.json",
+      "improvement/benchmark-runs/context-prime/repeatability.json",
+      "improvement/promotion-001.json",
+      "improvement/promotion-validation.log",
+      "improvement/rollback-001.json",
+      "improvement/post-rollback-compare.txt",
+      ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+      ".opencode/specs/descriptions.json",
+      "repeatability.json",
+      "promote-candidate.cjs"
+    ],
+    "entities": [
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": "score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "evaluator_contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/references/evaluator_contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": ".opencode/agent/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "run-benchmark.cjs",
+        "kind": "file",
+        "path": "node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "score-handover-candidate-002.json",
+        "kind": "config",
+        "path": "improvement/score-handover-candidate-002.json",
+        "source": "derived"
+      },
+      {
+        "name": "handover-candidate-validation.log",
+        "kind": "file",
+        "path": "improvement/handover-candidate-validation.log",
+        "source": "derived"
+      },
+      {
+        "name": "run-001.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/run-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "run-002.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/run-002.json",
+        "source": "derived"
+      },
+      {
+        "name": "repeatability.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/repeatability.json",
+        "source": "derived"
+      },
+      {
+        "name": "run-001.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/context-prime/run-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "run-002.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/context-prime/run-002.json",
+        "source": "derived"
+      },
+      {
+        "name": "repeatability.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/context-prime/repeatability.json",
+        "source": "derived"
+      },
+      {
+        "name": "promotion-001.json",
+        "kind": "config",
+        "path": "improvement/promotion-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "promotion-validation.log",
+        "kind": "file",
+        "path": "improvement/promotion-validation.log",
+        "source": "derived"
+      },
+      {
+        "name": "rollback-001.json",
+        "kind": "config",
+        "path": "improvement/rollback-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "post-rollback-compare.txt",
+        "kind": "file",
+        "path": "improvement/post-rollback-compare.txt",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "After phase `003`, the agent-improver package and packet hierarchy were clean, but two important proof points were still missing: a successful guarded promotion path for the canonical handover target, and explicit repeatability evidence for the second target `context-prime`. Without those artifacts, the system said promotion was guarded, but it had not yet shown the full success path end to end in a child phase under `041`.",
+    "created_at": "2026-04-12T09:02:50.187Z",
+    "last_save_at": "2026-04-12T09:06:00.321Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
+  "spec_folder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "043",
+      "cli skill improved prompting",
+      "mirror cards",
+      "improve-prompt",
+      "prompt quality card",
+      "043 plan",
+      "prompt quality integration",
+      "mirror card plan",
+      "043 tasks",
+      "mirror card tasks",
+      "043 checklist",
+      "prompt quality verification",
+      "043 decision record",
+      "mirror card adr",
+      "043 implementation summary",
+      "mirror cards delivered"
+    ],
+    "key_topics": [
+      "043",
+      "cli",
+      "skill",
+      "improved",
+      "prompting",
+      "mirror",
+      "cards",
+      "improve-prompt",
+      "prompt",
+      "quality",
+      "card",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
+      ".opencode/skill/cli-claude-code/assets/prompt_quality_card.md",
+      ".opencode/skill/cli-codex/assets/prompt_quality_card.md",
+      ".opencode/skill/cli-copilot/assets/prompt_quality_card.md",
+      ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
+      ".opencode/skill/sk-improve-prompt/SKILL.md",
+      "1.3.0.0",
+      ".opencode/command/improve/prompt.md",
+      ".opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+      "check-prompt-quality-card-sync.sh",
+      "bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+      "skill_advisor.py",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "1.2.0.0",
+      "spec.md",
+      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md"
+    ],
+    "entities": [
+      {
+        "name": "cli_prompt_quality_card.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_quality_card.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-claude-code/assets/prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_quality_card.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-codex/assets/prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_quality_card.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/assets/prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_quality_card.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "1.3.0.0",
+        "kind": "file",
+        "path": "1.3.0.0",
+        "source": "derived"
+      },
+      {
+        "name": "prompt.md",
+        "kind": "doc",
+        "path": ".opencode/command/improve/prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "check-prompt-quality-card-sync.sh",
+        "kind": "script",
+        "path": ".opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-prompt-quality-card-sync.sh",
+        "kind": "script",
+        "path": "check-prompt-quality-card-sync.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-prompt-quality-card-sync.sh",
+        "kind": "script",
+        "path": "bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The four CLI orchestration skills currently build dispatch prompts ad hoc from their local prompt-template assets. That keeps dispatches lightweight, but it leaves framework choice, prompt-quality checks, and escalation behavior implicit. This packet adds a two-tier prompt-quality layer: a tiny guard-safe mirror card that every CLI skill can load by default, and a fresh-context `@improve-prompt` agent that handles only the hard cases.",
+    "created_at": "2026-04-12T09:02:50.198Z",
+    "last_save_at": "2026-04-12T09:06:00.334Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

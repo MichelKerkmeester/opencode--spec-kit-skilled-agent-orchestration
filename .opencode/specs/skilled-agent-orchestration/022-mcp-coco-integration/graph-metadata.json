@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/022-mcp-coco-integration",
+  "spec_folder": "skilled-agent-orchestration/022-mcp-coco-integration",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cocoindex",
+      "semantic code search",
+      "coco-index integration",
+      "code search mcp",
+      "cocoindex_code",
+      "coco-index plan",
+      "semantic code search plan",
+      "cocoindex_code mcp config",
+      "cocoindex tasks",
+      "coco-index tasks",
+      "cocoindex_code tasks",
+      "semantic search tasks",
+      "cocoindex checklist",
+      "coco-index verification",
+      "cocoindex_code checklist",
+      "cocoindex implementation",
+      "cocoindex summary",
+      "coco-index integration summary",
+      "semantic code search delivered",
+      "code indexing",
+      "coco-index",
+      "code intelligence"
+    ],
+    "key_topics": [
+      "cocoindex",
+      "semantic",
+      "code",
+      "search",
+      "coco-index",
+      "integration",
+      "mcp",
+      "plan",
+      "config",
+      "tasks",
+      "checklist",
+      "verification"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "bash .opencode/skill/mcp-coco-index/scripts/install.sh",
+      ".mcp.json",
+      "opencode.json",
+      ".claude/mcp.json",
+      ".agents/settings.json",
+      ".gemini/settings.json",
+      ".codex/config.toml",
+      ".opencode/skill/mcp-coco-index/scripts/common.sh",
+      ".opencode/skill/mcp-coco-index/scripts/doctor.sh",
+      ".opencode/skill/mcp-coco-index/scripts/ensure_ready.sh",
+      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/mcp-coco-index/references/cross_cli_playbook.md",
+      ".opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md",
+      "research/research.md",
+      "doctor.sh",
+      "ensure_ready.sh",
+      "common.sh",
+      "0.2.3",
+      "bash .opencode/skill/mcp-coco-index/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json",
+      "bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json"
+    ],
+    "entities": [
+      {
+        "name": "install.sh",
+        "kind": "script",
+        "path": "bash .opencode/skill/mcp-coco-index/scripts/install.sh",
+        "source": "derived"
+      },
+      {
+        "name": ".mcp.json",
+        "kind": "config",
+        "path": ".mcp.json",
+        "source": "derived"
+      },
+      {
+        "name": "opencode.json",
+        "kind": "config",
+        "path": "opencode.json",
+        "source": "derived"
+      },
+      {
+        "name": "mcp.json",
+        "kind": "config",
+        "path": ".claude/mcp.json",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".agents/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "config.toml",
+        "kind": "file",
+        "path": ".codex/config.toml",
+        "source": "derived"
+      },
+      {
+        "name": "common.sh",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-coco-index/scripts/common.sh",
+        "source": "derived"
+      },
+      {
+        "name": "doctor.sh",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-coco-index/scripts/doctor.sh",
+        "source": "derived"
+      },
+      {
+        "name": "ensure_ready.sh",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-coco-index/scripts/ensure_ready.sh",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "cross_cli_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/references/cross_cli_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "downstream_adoption_checklist.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "doctor.sh",
+        "kind": "script",
+        "path": "doctor.sh",
+        "source": "derived"
+      },
+      {
+        "name": "ensure_ready.sh",
+        "kind": "script",
+        "path": "ensure_ready.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "OpenCode had no semantic code search capability. All code exploration relied on Grep (exact/regex text patterns), Glob (file path patterns), and Read (full file retrieval). The @context agent had to re-discover code structure every session with no persistent index and no way to query code by intent or concept. Searching for \"find authentication middleware\" with Grep required knowing the exact identifiers; with no semantic layer, fuzzy or conceptual queries returned zero results.",
+    "created_at": "2026-04-12T09:02:50.170Z",
+    "last_save_at": "2026-04-12T09:06:00.299Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

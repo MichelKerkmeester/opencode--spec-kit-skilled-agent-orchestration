@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill",
+  "spec_folder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill",
+  "parent_id": "skilled-agent-orchestration/041-sk-recursive-agent-loop",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "agent improvement full skill",
+      "sk-improve-agent phase 2",
+      "benchmark harness",
+      "multi-target agent improvement",
+      "agent improvement full skill plan",
+      "benchmark harness plan",
+      "phase 2 loop plan",
+      "agent improvement full skill tasks",
+      "benchmark harness tasks",
+      "agent improvement full skill checklist",
+      "benchmark harness verification",
+      "agent improvement full skill decisions",
+      "benchmark harness ADR",
+      "agent improvement full skill summary",
+      "implementation summary stub"
+    ],
+    "key_topics": [
+      "agent",
+      "improvement",
+      "full",
+      "skill",
+      "sk-improve-agent",
+      "phase",
+      "benchmark",
+      "harness",
+      "multi-target",
+      "plan",
+      "loop",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs",
+      "node --check .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+      "node --check .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
+      "node --check .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+      "node --check .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs",
+      "python3.11",
+      "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py",
+      "python3 .opencode/skill/scripts/skill_advisor.py \"recursive agent benchmark harness for handover and context-prime\" --threshold 0.8",
+      "review/parallel-review-summary.md",
+      "improvement/benchmark-runs/handover/run-001.json",
+      "improvement/benchmark-runs/handover/run-002.json",
+      "improvement/benchmark-runs/handover/repeatability.json",
+      "improvement/benchmark-runs/context-prime/run-001.json",
+      "improvement/benchmark-runs/context-prime/run-candidate-weak.json",
+      "improvement/score-context-prime-candidate-001.json",
+      "improvement/agent-improvement-dashboard.md",
+      "improvement/experiment-registry.json"
+    ],
+    "entities": [
+      {
+        "name": "run-benchmark.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "promote-candidate.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": "node --check .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": "node --check .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "run-benchmark.cjs",
+        "kind": "file",
+        "path": "node --check .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "promote-candidate.cjs",
+        "kind": "file",
+        "path": "node --check .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "python3.11",
+        "kind": "file",
+        "path": "python3.11",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "python3 -m py_compile .opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py \"recursive agent benchmark harness for handover and context-prime\" --threshold 0.8",
+        "kind": "file",
+        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"recursive agent benchmark harness for handover and context-prime\" --threshold 0.8",
+        "source": "derived"
+      },
+      {
+        "name": "parallel-review-summary.md",
+        "kind": "doc",
+        "path": "review/parallel-review-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "run-001.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/run-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "run-002.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/run-002.json",
+        "source": "derived"
+      },
+      {
+        "name": "repeatability.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/handover/repeatability.json",
+        "source": "derived"
+      },
+      {
+        "name": "run-001.json",
+        "kind": "config",
+        "path": "improvement/benchmark-runs/context-prime/run-001.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet `041-sk-improve-agent-loop` shipped the evaluator-first MVP and proved that the loop can safely operate on one canonical target with explicit promotion and rollback boundaries. Phase `002-sk-improve-agent-full-skill` defines the next step: stronger benchmark-backed evaluation, reusable runtime structure, target-specific scoring profiles, controlled expansion to a second structured target, and packaging rules for mirror sync without weakening the trust boundary.",
+    "created_at": "2026-04-12T09:02:50.186Z",
+    "last_save_at": "2026-04-12T09:06:00.319Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation",
+  "spec_folder": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation",
+  "parent_id": "system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "investigates",
+      "whether",
+      "modus-style",
+      "connected-doc",
+      "hints",
+      "exist",
+      "public",
+      "only",
+      "low-authority",
+      "appendix",
+      "search"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/search/fsrs.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-ux-hooks.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/fsrs.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search-integration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search-ux-hooks.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-ux-hooks.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search-quality-filter.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigate Connected",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Doc Hints",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Constraints",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase investigates whether Modus-style connected-doc hints should exist in Public only as a low-authority appendix to search results. It focuses on hint labeling, trigger thresholds, merge rules, and benchmark design so that any future hint layer stays subordinate to current graph and causal authorities. It does not ship a new result channel.",
+    "created_at": "2026-04-12T09:02:53.505Z",
+    "last_save_at": "2026-04-12T09:06:03.554Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

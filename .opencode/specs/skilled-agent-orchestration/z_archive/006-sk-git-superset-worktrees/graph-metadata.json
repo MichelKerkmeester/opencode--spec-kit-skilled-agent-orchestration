@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/z_archive/006-sk-git-superset-worktrees",
+  "spec_folder": "skilled-agent-orchestration/z_archive/006-sk-git-superset-worktrees",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "sk-git superset alignment",
+      "worktree superset",
+      "git skill worktree update",
+      "sk-git superset plan",
+      "worktree alignment implementation",
+      "git skill superset update",
+      "tasks",
+      "git",
+      "superset",
+      "worktree",
+      "alignment",
+      "006",
+      "sk-git superset checklist",
+      "worktree alignment verification",
+      "decision",
+      "record",
+      "decision record"
+    ],
+    "key_topics": [
+      "sk-git",
+      "superset",
+      "alignment",
+      "worktree",
+      "git",
+      "skill",
+      "update",
+      "plan",
+      "implementation",
+      "tasks",
+      "006",
+      "checklist"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/worktree.json",
+      ".opencode/skill/sk-git/SKILL.md",
+      ".opencode/skill/sk-git/references/worktree_workflows.md",
+      ".opencode/skill/sk-git/references/finish_workflows.md",
+      ".opencode/skill/sk-git/references/shared_patterns.md",
+      ".opencode/skill/sk-git/references/quick_reference.md",
+      ".opencode/skill/sk-git/assets/worktree_checklist.md",
+      ".opencode/skill/sk-git/assets/config_template.json",
+      "plan.md",
+      "checklist.md",
+      "decision-record.md",
+      ".superset/config.json",
+      "worktree.json",
+      "\"isolated workspace\": 2.0",
+      "\"parallel agents\": 1.8",
+      "<main-repo>/.opencode/worktree.json",
+      "worktree_config_template.json",
+      ".superset/worktree.json",
+      "spec.md",
+      "assets/worktree_config_template.json"
+    ],
+    "entities": [
+      {
+        "name": "worktree.json",
+        "kind": "config",
+        "path": ".opencode/worktree.json",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "worktree_workflows.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/worktree_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "finish_workflows.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/finish_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "shared_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/shared_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "worktree_checklist.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-git/assets/worktree_checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "config_template.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-git/assets/config_template.json",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "config.json",
+        "kind": "config",
+        "path": ".superset/config.json",
+        "source": "derived"
+      },
+      {
+        "name": "worktree.json",
+        "kind": "config",
+        "path": "worktree.json",
+        "source": "derived"
+      },
+      {
+        "name": "\"isolated workspace\": 2.0",
+        "kind": "file",
+        "path": "\"isolated workspace\": 2.0",
+        "source": "derived"
+      },
+      {
+        "name": "\"parallel agents\": 1.8",
+        "kind": "file",
+        "path": "\"parallel agents\": 1.8",
+        "source": "derived"
+      },
+      {
+        "name": "worktree.json",
+        "kind": "config",
+        "path": "<main-repo>/.opencode/worktree.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Adapt the sk-git skill's worktree handling from Superset IDE's git worktree model. Superset treats each workspace as an isolated worktree with centralized storage, config-driven lifecycle hooks, and structured init/teardown flows. The current sk-git skill uses a simpler, manual-choice model that lacks these capabilities. This adaptation translates Superset's desktop-app patterns into CLI/AI-skill documentation.",
+    "created_at": "2026-04-12T09:02:50.202Z",
+    "last_save_at": "2026-04-12T09:06:00.339Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
+  }
+}

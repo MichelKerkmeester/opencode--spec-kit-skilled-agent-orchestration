@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.007",
+      "skill rename",
+      "sk-improve-agent",
+      "sk-improve-prompt",
+      "rename closeout",
+      "skill rename plan",
+      "skill rename tasks",
+      "skill rename checklist",
+      "skill rename decision record",
+      "improve-agent",
+      "skill rename implementation summary"
+    ],
+    "key_topics": [
+      "042",
+      "007",
+      "skill",
+      "rename",
+      "sk-improve-agent",
+      "sk-improve-prompt",
+      "closeout",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "decision-record.md",
+      "README.md",
+      ".opencode/agent/improve-agent.md",
+      ".claude/agents/improve-agent.md",
+      ".gemini/agents/improve-agent.md",
+      ".codex/agents/improve-agent.toml",
+      "generate-context.js",
+      "memory/.gitkeep"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".opencode/agent/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".claude/agents/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".gemini/agents/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.toml",
+        "kind": "file",
+        "path": ".codex/agents/improve-agent.toml",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": ".gitkeep",
+        "kind": "file",
+        "path": "memory/.gitkeep",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Rename",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This phase closes the documentation gap around a skill-folder rename that had already shipped in the repo. The two improver skills are now canonically named `sk-improve-agent` and `sk-improve-prompt`, their changelog directories were moved to `14--sk-improve-prompt/` and `15--sk-improve-agent/`, and the live runtime-agent files already use the `improve-agent` naming convention. The packet records that truth so future maintainers can trust the renamed paths without reconstructing the rename from git history.",
+    "created_at": "2026-04-12T09:02:50.196Z",
+    "last_save_at": "2026-04-12T09:06:00.332Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}
