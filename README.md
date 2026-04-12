@@ -200,7 +200,7 @@ Documentation depth scales with task complexity.
 | **1** | < 100 | spec.md, plan.md, tasks.md, implementation-summary.md | Small features, bug fixes, single-file changes |
 | **2** | 100 - 499 | Level 1 + checklist.md | Features needing QA verification, multi-file changes |
 | **3** | 500+ | Level 2 + decision-record.md | Architecture changes, complex refactors |
-| **3+** | Complexity 80+ | Level 3 + governance extensions | Multi-agent work, enterprise sign-offs |
+| **3+** | Complexity 80+ | Level 3 + approval workflow, compliance checkpoints, stakeholder matrix | Regulated work, formal sign-offs, multi-workstream coordination |
 
 The LOC ranges are guidance, not hard rules. Risk, complexity and the number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
