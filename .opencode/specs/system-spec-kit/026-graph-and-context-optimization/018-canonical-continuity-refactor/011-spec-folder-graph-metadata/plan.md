@@ -1,11 +1,7 @@
 ---
 title: "Implementation Plan: 018 / 011 — graph-metadata.json rollout"
 description: "Five-phase implementation plan for introducing graph-metadata.json as the packet-level graph contract across canonical save, indexing, validation, and workflow surfaces."
-trigger_phrases:
-  - "018 011 plan"
-  - "graph metadata implementation plan"
-  - "graph metadata rollout plan"
-  - "canonical continuity graph rollout"
+trigger_phrases: ["018 011 plan", "graph metadata implementation plan", "graph metadata rollout plan", "canonical continuity graph rollout"]
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"

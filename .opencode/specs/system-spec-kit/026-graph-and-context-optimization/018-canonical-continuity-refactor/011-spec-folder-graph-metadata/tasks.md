@@ -1,11 +1,7 @@
 ---
 title: "Tasks: 018 / 011 — graph-metadata.json rollout"
 description: "Ordered implementation tasks for the five-phase graph-metadata.json rollout."
-trigger_phrases:
-  - "018 011 tasks"
-  - "graph metadata tasks"
-  - "graph metadata rollout tasks"
-  - "canonical continuity graph task ledger"
+trigger_phrases: ["018 011 tasks", "graph metadata tasks", "graph metadata rollout tasks", "canonical continuity graph task ledger"]
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"
@@ -44,15 +40,15 @@ _memory:
 
 ### Phase 1A: Schema + Parser
 
-- [ ] T001 Create `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-schema.ts` under the existing `.opencode/skill/system-spec-kit/mcp_server/lib/graph/` directory and export the v1 schema contract. (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/`, `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md`) Done when every Iteration 4 top-level, `manual.*`, and `derived.*` field is typed and validated. Supports `REQ-001`, `REQ-002`. Research: Iterations 4 and 10.
-- [ ] T002 Add parser and merge helpers for graph metadata reads, writes, and manual-plus-derived reconciliation. (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/`, `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts`) Done when malformed files fail cleanly, schema version mismatches are handled explicitly, and merge logic preserves `manual.*` while rebuilding `derived.*`. Supports `REQ-002`, `REQ-004`, `REQ-012`. Research: Iterations 4, 5, and 10.
+- [ ] T001 Create new `graph-metadata-schema.ts` beside the existing graph library contract files. (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md`) Done when every Iteration 4 top-level, `manual.*`, and `derived.*` field is typed and validated. Supports `REQ-001`, `REQ-002`. Research: Iterations 4 and 10.
+- [ ] T002 Add parser and merge helpers for graph metadata reads, writes, and manual-plus-derived reconciliation in the graph library module. (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md`, `.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts`) Done when malformed files fail cleanly, schema version mismatches are handled explicitly, and merge logic preserves `manual.*` while rebuilding `derived.*`. Supports `REQ-002`, `REQ-004`, `REQ-012`. Research: Iterations 4, 5, and 10.
 - [ ] T003 Add unit coverage for valid schema, invalid schema, merge behavior, and version compatibility. (`.opencode/skill/system-spec-kit/mcp_server/tests/graph-payload-validator.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges-unit.vitest.ts`) Done when Phase 1 tests prove the parser contract before any save-path or discovery integration lands. Supports `REQ-002`, `REQ-004`. Research: Iteration 10.
 
 ### Phase 1B: Save-Path Integration
 
 - [ ] T004 Add a post-save graph-metadata refresh hook to `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` and `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`. (`.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`, `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`) Done when canonical save refreshes graph metadata even when no legacy context markdown file is written. Supports `REQ-003`, `REQ-004`. Research: Iterations 1, 5, 8, and 10.
 - [ ] T005 Derive packet metadata fields from canonical docs and save payload. (`.opencode/skill/system-spec-kit/scripts/core/workflow.ts`, `.opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts`, `spec.md`, `implementation-summary.md`) Done when `trigger_phrases`, `key_files`, `status`, `importance_tier`, `parent_id`, `children_ids`, and `causal_summary` are generated from the sources specified in the spec. Supports `REQ-003`, `REQ-004`, `REQ-012`. Research: Iterations 4 and 5.
-- [ ] T006 Implement atomic read-merge-write behavior for `graph-metadata.json` so manual packet relationships survive every save. (`.opencode/skill/system-spec-kit/scripts/core/workflow.ts`, `.opencode/skill/system-spec-kit/mcp_server/lib/graph/`) Done when existing `manual.depends_on`, `manual.supersedes`, and `manual.related_to` persist across repeated saves. Supports `REQ-004`. Research: Iterations 4, 5, and 10.
+- [ ] T006 Implement atomic read-merge-write behavior for `graph-metadata.json` so manual packet relationships survive every save. (`.opencode/skill/system-spec-kit/scripts/core/workflow.ts`, `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md`) Done when existing `manual.depends_on`, `manual.supersedes`, and `manual.related_to` persist across repeated saves. Supports `REQ-004`. Research: Iterations 4, 5, and 10.
 - [ ] T007 Add save-path regression tests for canonical-save authority and workflow refresh behavior. (`.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts`, `.opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts`, `.opencode/skill/system-spec-kit/scripts/tests/workflow-session-id.vitest.ts`) Done when tests cover the no-legacy-markdown case and the manual-field preservation case. Supports `REQ-003`, `REQ-004`. Research: Iteration 10.
 <!-- /ANCHOR:phase-1 -->
 
@@ -71,9 +67,9 @@ _memory:
 
 ### Phase 2B: Backfill
 
-- [ ] T013 Create a backfill entry point under the existing scripts tree for packet graph metadata generation. (`.opencode/skill/system-spec-kit/scripts/`, `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`) Done when the script can walk valid spec folders and emit or preview `graph-metadata.json` files. Supports `REQ-008`, `REQ-009`. Research: Iteration 7.
-- [ ] T014 Read canonical packet docs and optional `description.json` inputs to derive best-effort packet metadata. (`.opencode/skill/system-spec-kit/scripts/`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts`) Done when identity, status, topics, key files, and source docs can be reconstructed without requiring legacy memory folders. Supports `REQ-008`. Research: Iteration 7.
-- [ ] T015 Add dry-run output, coverage reporting, and manual-review flags for ambiguous packets. (`.opencode/skill/system-spec-kit/scripts/`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/`) Done when the backfill can flag missing summaries, ambiguous status, and prose-only relationship hints instead of guessing. Supports `REQ-008`, `REQ-009`. Research: Iteration 7.
+- [ ] T013 Create a backfill entry point under the existing scripts tree for packet graph metadata generation. (`.opencode/skill/system-spec-kit/scripts/README.md`, `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`) Done when the script can walk valid spec folders and emit or preview `graph-metadata.json` files. Supports `REQ-008`, `REQ-009`. Research: Iteration 7.
+- [ ] T014 Read canonical packet docs and optional `description.json` inputs to derive best-effort packet metadata. (`.opencode/skill/system-spec-kit/scripts/README.md`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts`) Done when identity, status, topics, key files, and source docs can be reconstructed without requiring legacy memory folders. Supports `REQ-008`. Research: Iteration 7.
+- [ ] T015 Add dry-run output, coverage reporting, and manual-review flags for ambiguous packets. (`.opencode/skill/system-spec-kit/scripts/README.md`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts`) Done when the backfill can flag missing summaries, ambiguous status, and prose-only relationship hints instead of guessing. Supports `REQ-008`, `REQ-009`. Research: Iteration 7.
 <!-- /ANCHOR:phase-2 -->
 
 ---

@@ -1,12 +1,7 @@
 ---
 title: "Feature Specification: 018 / 011 — graph-metadata.json packet contract"
 description: "Define a dedicated per-spec-folder graph-metadata.json contract so packet relationships, ranking signals, and key files can be refreshed on canonical save and indexed without reviving legacy memory markdown."
-trigger_phrases:
-  - "018 011 spec"
-  - "graph metadata json"
-  - "spec folder graph metadata"
-  - "canonical continuity graph contract"
-  - "graph metadata packet contract"
+trigger_phrases: ["018 011 spec", "graph metadata json", "spec folder graph metadata", "canonical continuity graph contract", "graph metadata packet contract"]
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"

@@ -1,11 +1,7 @@
 ---
 title: "Decision Record: 018 / 011 — graph-metadata.json architecture"
 description: "Accepted ADRs for the dedicated graph-metadata.json contract, the manual-versus-derived split, and merge-based save refresh."
-trigger_phrases:
-  - "018 011 decision record"
-  - "graph metadata adr"
-  - "graph metadata architecture decisions"
-  - "graph metadata merge adr"
+trigger_phrases: ["018 011 decision record", "graph metadata adr", "graph metadata architecture decisions", "graph metadata merge adr"]
 importance_tier: "critical"
 contextType: "planning"
 status: "planned"
@@ -18,14 +14,14 @@ _memory:
     next_safe_action: "Use these ADRs as hard implementation guardrails"
     key_files: ["decision-record.md", "research.md", "plan.md"]
 ---
-# Decision Record: 018 / 011 — graph-metadata.json architecture
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+# Decision Record: 018 / 011 — graph-metadata.json architecture
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-001: Use a dedicated `graph-metadata.json` file per spec-folder root
 
 ### Metadata
@@ -39,6 +35,7 @@ _memory:
 
 ---
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
 Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.continuity`, but Iteration 1 confirmed that the graph stack still expects packet-level metadata that used to arrive through legacy memory saves. Iteration 3 compared four storage options, and Iteration 9 clarified why `description.json` is the wrong boundary for high-churn graph state.
@@ -47,17 +44,21 @@ Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.co
 
 - The solution must preserve `_memory.continuity` as a thin resume surface, not turn it back into a large packet metadata dump.
 - The solution must avoid overloading `description.json`, which is both incomplete across the repo and scoped to folder discovery plus tracking history.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
+<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
 **We chose**: a dedicated `graph-metadata.json` file in each spec-folder root, indexed as one `graph_metadata` row in `memory_index`.
 
 **How it works**: canonical save completion refreshes the file on every save, even when no legacy context markdown is emitted. The file holds packet identity at the top level, keeps manual packet relationships in one merge-safe section, and regenerates derived fields such as trigger phrases, status, key files, entities, and timestamps in another.
+<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
+<!-- ANCHOR:adr-001-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -68,9 +69,11 @@ Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.co
 | Extend `description.json` | Existing root file, easy to discover | Wrong concern boundary, high churn risk, incomplete repo coverage | 5/10 |
 
 **Why this one**: it restores the missing packet-level graph input with the smallest architectural change. It also reuses existing `memory_index` and `causal_edges` plumbing instead of inventing a new storage system.
+<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
 
+<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 **What improves**:
@@ -87,9 +90,11 @@ Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.co
 | Manual relationship edits get overwritten by save refresh | H | Preserve `manual.*` fields and fully regenerate only `derived.*` |
 | Validation becomes noisy before old folders are backfilled | M | Roll out presence checks in warning-first mode |
 | Graph metadata drifts away from canonical docs | M | Regenerate derived fields on every canonical save |
+<!-- /ANCHOR:adr-001-consequences -->
 
 ---
 
+<!-- ANCHOR:adr-001-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -101,9 +106,11 @@ Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.co
 | 5 | **Open Horizons?** | PASS | The schema supports later code-graph enrichment and retroactive backfill |
 
 **Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
 
+<!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
 **What changes**:
@@ -111,10 +118,12 @@ Phase 018 moved canonical continuity into git-tracked spec docs plus `_memory.co
 - Discovery, indexing, graph-edge processing, and validation gain explicit support for `graph-metadata.json`.
 
 **How to roll back**: remove the new discovery and refresh path, stop generating `graph-metadata.json`, and fall back to current packet-doc-only behavior while reopening the design question. Do not move the graph state into `_memory.continuity` or `description.json` as a shortcut.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
 
 ---
 
-## ADR-002: Split packet metadata into `manual` and `derived` sections
+### ADR-002: Split packet metadata into `manual` and `derived` sections
 
 ### Metadata
 
@@ -202,7 +211,7 @@ Iteration 4 showed that packet relationships and packet facts do not share the s
 
 ---
 
-## ADR-003: Refresh graph metadata by merge, not blind overwrite
+### ADR-003: Refresh graph metadata by merge, not blind overwrite
 
 ### Metadata
 
@@ -288,6 +297,7 @@ Iteration 5 identified the lifecycle rule that matters most: graph metadata must
 - Tests cover manual preservation, derived regeneration, and atomic write semantics.
 
 **How to roll back**: disable the graph-metadata refresh path entirely rather than weakening merge guarantees.
+
 
 ---
 

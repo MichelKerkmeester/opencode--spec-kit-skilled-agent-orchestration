@@ -1,10 +1,7 @@
 ---
 title: "Implementation Summary: 018 / 011 — graph-metadata.json rollout shell"
 description: "Planned-shell summary for the future implementation of graph-metadata.json. No runtime code has landed yet."
-trigger_phrases:
-  - "018 011 implementation summary"
-  - "graph metadata rollout shell"
-  - "graph metadata planned summary"
+trigger_phrases: ["018 011 implementation summary", "graph metadata rollout shell", "graph metadata planned summary"]
 importance_tier: "important"
 contextType: "planning"
 status: "planned"
@@ -17,11 +14,10 @@ _memory:
     next_safe_action: "Populate this file after runtime changes and verification land"
     key_files: ["implementation-summary.md", "research.md", "spec.md", "plan.md"]
 ---
-# Implementation Summary
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+# Implementation Summary
 
 ---
 
@@ -77,7 +73,7 @@ The shell was rebuilt from direct inspection of live runtime files, packet resea
 |-------|--------|
 | Packet doc rewrite | PASS, the Level 3 implementation packet now matches the settled research direction |
 | Runtime/source audit | PASS, grounded in direct reads of the verified `.opencode/skill/system-spec-kit/...` runtime files |
-| Strict packet validation | Pending final validation run after this rewrite |
+| Strict packet validation | PASS, `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata --strict` exited cleanly on 2026-04-12 |
 <!-- /ANCHOR:verification -->
 
 ---

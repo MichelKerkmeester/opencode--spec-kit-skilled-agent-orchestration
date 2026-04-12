@@ -1,11 +1,7 @@
 ---
 title: "Verification Checklist: 018 / 011 — graph-metadata.json rollout"
 description: "Verification Date: 2026-04-12"
-trigger_phrases:
-  - "018 011 checklist"
-  - "graph metadata checklist"
-  - "graph metadata rollout verification"
-  - "canonical continuity graph checklist"
+trigger_phrases: ["018 011 checklist", "graph metadata checklist", "graph metadata rollout verification", "canonical continuity graph checklist"]
 importance_tier: "important"
 contextType: "planning"
 status: "planned"
@@ -18,10 +14,9 @@ _memory:
     next_safe_action: "Use checklist items as exit gates during implementation"
     key_files: ["checklist.md", "tasks.md", "spec.md"]
 ---
-# Verification Checklist: 018 / 011 — graph-metadata.json rollout
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+# Verification Checklist: 018 / 011 — graph-metadata.json rollout
 
 ---
 
