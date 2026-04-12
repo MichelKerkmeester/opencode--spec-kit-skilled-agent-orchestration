@@ -94,7 +94,7 @@ Six-tier system for prioritizing memory relevance:
 <!-- ANCHOR:mcp-tools -->
 ## 3. MCP TOOLS
 
-> **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `shared_memory_enable`.
+> **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `checkpoint_create`.
 
 ### Tool Reference (43 tools)
 
@@ -119,10 +119,6 @@ Six-tier system for prioritizing memory relevance:
 | L5: Lifecycle | `checkpoint_list()` | List available checkpoints | Find restore points |
 | L5: Lifecycle | `checkpoint_restore()` | Restore from checkpoint | Rollback if needed |
 | L5: Lifecycle | `checkpoint_delete()` | Delete a checkpoint | Clean up old snapshots |
-| L5: Shared | `shared_space_upsert()` | Create or update a shared memory space | Set up team shared memory |
-| L5: Shared | `shared_space_membership_set()` | Add or remove members from shared space | Manage space access |
-| L5: Shared | `shared_memory_status()` | Get status of shared memory spaces | Check shared memory health |
-| L5: Shared | `shared_memory_enable()` | Enable shared memory subsystem globally | Toggle shared memory |
 | L6: Analysis | `task_preflight()` | Capture epistemic baseline before task execution | Start of implementation work |
 | L6: Analysis | `task_postflight()` | Capture epistemic state after task, calculate Learning Index | After completing implementation |
 | L6: Analysis | `memory_drift_why()` | Trace causal chain for a memory ("why was this decided?") | Understand decision lineage |
@@ -173,7 +169,6 @@ Six-tier system for prioritizing memory relevance:
 - `tenantId` (string, optional): Tenant boundary for governed retrieval
 - `userId` (string, optional): User boundary for governed retrieval
 - `agentId` (string, optional): Agent boundary for governed retrieval
-- `sharedSpaceId` (string, optional): Shared-space boundary for governed retrieval
 - `includeContent`: Include full file content in results
 - `includeConstitutional`: Include constitutional tier memories
 - `anchors`: Array of anchor IDs for targeted section retrieval (token-efficient)
@@ -193,7 +188,6 @@ When operating in shared or multi-actor deployments, always provide scope parame
 | `tenantId` | string | No | - | Tenant boundary for governed retrieval |
 | `userId` | string | No | - | User boundary for governed retrieval |
 | `agentId` | string | No | - | Agent boundary for governed retrieval |
-| `sharedSpaceId` | string | No | - | Shared-space boundary for governed retrieval |
 | `includeConstitutional` | boolean | No | true | Include constitutional memories |
 | `includeContent` | boolean | No | false | Embed full file content in results |
 | `includeContiguity` | boolean | No | false | Include adjacent memories |

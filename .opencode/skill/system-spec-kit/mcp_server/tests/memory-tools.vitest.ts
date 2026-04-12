@@ -44,7 +44,6 @@ describe('memory-tools dispatch', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
       limit: 7,
     });
 
@@ -53,7 +52,6 @@ describe('memory-tools dispatch', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
       limit: 7,
       autoDetectIntent: true,
       enableDedup: true,

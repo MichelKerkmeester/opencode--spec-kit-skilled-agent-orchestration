@@ -1605,7 +1605,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           userId: 'user-a',
           agentId: 'agent-a',
           sessionId: 'session-a',
-          sharedSpaceId: 'shared-a',
         },
       });
 
@@ -1618,7 +1617,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           userId: 'user-a',
           agentId: 'agent-a',
           sessionId: 'session-a',
-          sharedSpaceId: 'shared-a',
         }),
       );
     });
@@ -1674,7 +1672,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           userId: 'user-p',
           agentId: 'agent-p',
           sessionId: 'session-p',
-          sharedSpaceId: 'shared-p',
         },
       });
 
@@ -1691,7 +1688,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           userId: 'user-p',
           agentId: 'agent-p',
           sessionId: 'session-p',
-          sharedSpaceId: 'shared-p',
         },
       );
     });

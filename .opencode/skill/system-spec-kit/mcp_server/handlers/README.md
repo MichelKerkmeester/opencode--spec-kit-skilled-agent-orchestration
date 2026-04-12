@@ -1,10 +1,9 @@
 ---
 title: "Handlers"
-description: "MCP tool handlers, save/index orchestration helpers, and shared-memory auth utilities."
+description: "MCP tool handlers and save/index orchestration helpers."
 trigger_phrases:
   - "MCP handlers"
   - "memory handlers"
-  - "shared-memory handler"
 ---
 
 # Handlers
@@ -39,7 +38,6 @@ Primary MCP handler modules:
 - `session-learning.ts` - Task preflight, postflight, and learning history handlers.
 - `causal-graph.ts` - Causal link, unlink, stats, and drift-why handlers.
 - `eval-reporting.ts` - Ablation, k-sensitivity, and dashboard handlers.
-- `shared-memory.ts` - Shared-memory lifecycle handlers plus caller/admin auth validation.
 
 Code graph handlers (`code-graph/` subdirectory):
 
@@ -66,7 +64,6 @@ Internal helpers in this folder:
 ## 2. IMPLEMENTED STATE
 
 - Public handlers expose camelCase functions plus snake_case compatibility aliases where the MCP surface still needs them.
-- `shared-memory.ts` exports `resolveAdminActor()` and `validateCallerAuth()` so shared-space mutations enforce explicit actor identity, tenant scope, and configured admin ownership.
 - `quality-loop.ts` supports `emitEvalMetrics` so callers can suppress eval-side writes while still using the quality loop itself.
 - `pe-gating.ts` now leans on `lib/storage/document-helpers.ts` for document-aware weights and keeps content-hash-aware update paths aligned with lineage and incremental-index state.
 - `memory-index.ts` and `mutation-hooks.ts` work together so index, update, and stale-delete flows clear trigger, constitutional, graph, co-activation, and degree caches.
@@ -77,7 +74,6 @@ Internal helpers in this folder:
 ## 3. HARDENING NOTES
 
 - `handlers/index.ts` is intentionally lazy so startup stays lighter and optional modules do not load until the tool surface needs them.
-- Shared-memory enablement writes the documentation stub in `shared-spaces/` but the runtime implementation remains in `handlers/shared-memory.ts` and `lib/collab/shared-spaces.ts`.
 - Save-time fixes persist accepted metadata changes and carry rewritten body content in memory until later hard-reject gates finish under the spec-folder lock.
 - Post-mutation invalidation clears `clearDegreeCache()` alongside trigger and constitutional caches so graph-derived retrieval signals cannot serve stale data after mutations.
 
@@ -88,6 +84,5 @@ Internal helpers in this folder:
 - `../tools/README.md`
 - `../core/README.md`
 - `../hooks/README.md`
-- `../shared-spaces/README.md`
 
 <!-- /ANCHOR:related -->

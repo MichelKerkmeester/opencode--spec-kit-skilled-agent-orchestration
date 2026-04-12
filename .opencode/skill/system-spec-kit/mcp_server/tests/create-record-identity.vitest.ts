@@ -31,8 +31,7 @@ function createMinimalDb(): Database.Database {
       tenant_id TEXT,
       user_id TEXT,
       agent_id TEXT,
-      session_id TEXT,
-      shared_space_id TEXT
+      session_id TEXT
     );
   `);
   return db;

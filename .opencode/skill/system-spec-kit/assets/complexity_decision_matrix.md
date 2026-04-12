@@ -16,7 +16,7 @@ Quick reference for complexity-based level selection and feature enabling.
 
 This matrix provides quick-reference guidance for selecting the appropriate documentation level based on task complexity. Use it to determine which templates to use and which features to enable.
 
-For cross-phase campaigns or shared-memory coordination work, treat boundary-management overhead as part of the complexity score. Tasks that span multiple spec folders, runtime families, or shared spaces should be scored as coordination-heavy even when each individual edit is small.
+For cross-phase campaigns, treat boundary-management overhead as part of the complexity score. Tasks that span multiple spec folders or runtime families should be scored as coordination-heavy even when each individual edit is small.
 
 ### Usage
 
@@ -24,7 +24,7 @@ For cross-phase campaigns or shared-memory coordination work, treat boundary-man
 2. Match the score to a level in Section 2
 3. Verify feature requirements in Section 4
 4. Use the CLI commands in Section 8 to create your spec folder
-5. If the work crosses phases or shared spaces, add coordination weight before choosing a level
+5. If the work crosses phases or multiple runtime ownership boundaries, add coordination weight before choosing a level
 
 ---
 

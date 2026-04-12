@@ -355,7 +355,6 @@ describe('vector-index schema migration refinements', () => {
     expect(indexes[1]?.sql).toContain('spec_folder');
     expect(indexes[1]?.sql).toContain('content_hash');
     expect(indexes[1]?.sql).toContain('embedding_status');
-    expect(indexes[1]?.sql).toContain('shared_space_id');
     expect(indexes[1]?.sql).toContain('id DESC');
   });
 });

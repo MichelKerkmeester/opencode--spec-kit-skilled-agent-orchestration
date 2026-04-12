@@ -334,7 +334,7 @@ Expired rows excluded from multi-concept search; constitutional injection respec
 Fast recall path.
 
 #### Current Reality
-Prompt: `Run trigger matching for resume previous session blockers with cognitive=true and governed scope fields. Capture the evidence needed to prove In-scope trigger hits still return fast with cognitive enrichment, while mismatched tenant/user/agent/shared-space rows are filtered out before results are returned. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run trigger matching for resume previous session blockers with cognitive=true and governed scope fields. Capture the evidence needed to prove In-scope trigger hits still return fast with cognitive enrichment, while mismatched tenant/user/agent rows are filtered out before results are returned. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Fast in-scope trigger hits + cognitive enrichment; out-of-scope matches filtered
 
@@ -2497,20 +2497,6 @@ Governed save requires provenance; ephemeral save requires deleteAfter; scope mi
 > **Feature File:** [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md)
 > **Catalog:** [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 
-### 123 | Shared-space deny-by-default rollout (Phase 6)
-
-#### Description
-Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls.
-
-#### Current Reality
-Prompt: `Validate Phase 6 shared-memory rollout controls with two collaborators. Capture the evidence needed to prove Non-members are denied by default; explicit membership grants access; collaborator B can retrieve collaborator A's shared memory inside the same allowed space; and kill switch blocks access immediately even for existing members. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Non-members denied; explicit membership grants access; shared members can see each other's rows; kill switch blocks everyone immediately
-
-#### Test Execution
-> **Feature File:** [123](17--governance/123-shared-space-deny-by-default-rollout-phase-6.md)
-> **Catalog:** [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md)
-
 ### 124 | Automatic archival lifecycle coverage
 
 #### Description
@@ -2528,14 +2514,14 @@ Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are sync
 ### 125 | Hydra roadmap capability flags
 
 #### Description
-Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping shared memory and dormant adaptive ranking default-off until explicitly enabled.
+Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping dormant adaptive ranking default-off until explicitly enabled.
 
 #### Current Reality
-Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true, capabilities.adaptiveRanking:false, and capabilities.sharedMemory:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses canonical SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false while capabilities.sharedMemory stays false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot uses SPECKIT_MEMORY_SHARED_MEMORY=true and reports capabilities.sharedMemory:true; fifth snapshot sets SPECKIT_MEMORY_SHARED_MEMORY=false plus SPECKIT_HYDRA_SHARED_MEMORY=true and still reports capabilities.sharedMemory:false because the canonical key wins. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"scope-governance" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses canonical SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false plus SPECKIT_HYDRA_ADAPTIVE_RANKING=true and still reports capabilities.adaptiveRanking:false because the canonical key wins. Return a concise user-facing pass/fail verdict with the main reason.`
 
-First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`, `capabilities.adaptiveRanking:false`, and `capabilities.sharedMemory:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` while `capabilities.sharedMemory:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot reports `capabilities.sharedMemory:true`; fifth snapshot confirms canonical `SPECKIT_MEMORY_*` precedence over the legacy Hydra alias
+First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms canonical `SPECKIT_MEMORY_*` precedence over the legacy Hydra alias
 
-Shared-memory roadmap metadata now stays default-off until explicitly enabled, and dormant adaptive ranking default-off stays intact until a roadmap env var opts it in. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in behavior and canonical-over-legacy resolver precedence
+Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in behavior and canonical-over-legacy resolver precedence
 
 #### Test Execution
 > **Feature File:** [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md)
@@ -2824,20 +2810,6 @@ Constitutional memory manager
 #### Test Execution
 > **Feature File:** [147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md)
 > **Catalog:** [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md)
-
-### 148 | Shared-memory disabled-by-default and first-run setup
-
-#### Description
-Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent.
-
-#### Current Reality
-Prompt: `Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:manage shared command shows setup prompt when disabled; and partial shared-space updates preserve existing rolloutCohort and metadata fields when they are omitted from the update request. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Default-off works; enable persists and is idempotent; env var overrides DB state; setup prompt appears when disabled; partial updates preserve cohort and metadata
-
-#### Test Execution
-> **Feature File:** [148](17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md)
-> **Catalog:** [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md)
 
 ### 149 | Rendered memory template contract
 
@@ -3668,7 +3640,6 @@ This split playbook keeps automated coverage references in three places:
 | 120 | Features | Unified graph rollback and explainability (Phase 3) | [120](10--graph-signal-activation/120-unified-graph-rollback-and-explainability-phase-3.md) | [10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md](../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
 | 121 | Features | Adaptive shadow proposal and rollback (Phase 4) | [121](11--scoring-and-calibration/121-adaptive-shadow-proposal-and-rollback-phase-4.md) | [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) |
 | 122 | Features | Governed ingest and scope isolation (Phase 5) | [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md) | [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) |
-| 123 | Features | Shared-space deny-by-default rollout (Phase 6) | [123](17--governance/123-shared-space-deny-by-default-rollout-phase-6.md) | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
 | 124 | Features | Automatic archival lifecycle coverage | [124](05--lifecycle/124-automatic-archival-lifecycle-coverage.md) | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
 | 125 | Features | Memory roadmap capability flags | [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md) | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) <br> Cross-cutting roadmap test - maps to umbrella flag reference. |
 | 126 | Features | Memory roadmap baseline snapshot | [126](09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md) | [09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md) |
@@ -3691,7 +3662,6 @@ This split playbook keeps automated coverage references in three places:
 | 145 | Features | Contextual tree injection (P1-4) | [145](15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md) | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
 | 146 | Features | Dynamic server instructions (P1-6) | [146](14--pipeline-architecture/146-dynamic-server-instructions-p1-6.md) | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
 | 147 | Features | Constitutional memory manager command | [147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md) | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
-| 148 | Features | Shared-memory disabled-by-default and first-run setup | [148](17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md) | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
 | 149 | Features | Rendered memory template contract | [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
 | 150 | Features | Source-dist alignment validation | [150](16--tooling-and-scripts/150-source-dist-alignment-validation.md) | [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) |
 | 151 | Features | MODULE_MAP.md accuracy validation | [151](16--tooling-and-scripts/151-module-map-accuracy.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |

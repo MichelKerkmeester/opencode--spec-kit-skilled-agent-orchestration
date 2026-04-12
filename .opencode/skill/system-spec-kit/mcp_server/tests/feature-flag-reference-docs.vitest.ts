@@ -72,7 +72,6 @@ const hydraFlagDefaults = [
   ['SPECKIT_HYDRA_ADAPTIVE_RANKING', 'false'],
   ['SPECKIT_HYDRA_SCOPE_ENFORCEMENT', 'true'],
   ['SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS', 'true'],
-  ['SPECKIT_HYDRA_SHARED_MEMORY', 'false'],
 ] as const;
 
 const canonicalHydraAliases = {
@@ -82,7 +81,6 @@ const canonicalHydraAliases = {
   SPECKIT_HYDRA_ADAPTIVE_RANKING: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
   SPECKIT_HYDRA_SCOPE_ENFORCEMENT: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
   SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-  SPECKIT_HYDRA_SHARED_MEMORY: 'SPECKIT_MEMORY_SHARED_MEMORY',
 } as const;
 
 function expectHydraFlagRow(
@@ -124,8 +122,8 @@ describe('Hydra roadmap flag documentation', () => {
       const docPath = path.join(FEATURE_FLAG_DOCS, doc);
       const docContent = fs.readFileSync(docPath, 'utf8');
 
-      expectHydraFlagRow(docContent, 'SPECKIT_HYDRA_PHASE', 'shared-rollout');
-      expect(docContent).toMatch(/(?:unknown|unsupported) values fall back to `shared-rollout`/i);
+      expectHydraFlagRow(docContent, 'SPECKIT_HYDRA_PHASE', 'scope-governance');
+      expect(docContent).toMatch(/(?:unknown|unsupported) values fall back to `scope-governance`/i);
 
       for (const [env, defaultValue] of hydraFlagDefaults) {
         expectHydraFlagRow(docContent, env, defaultValue);
@@ -133,7 +131,7 @@ describe('Hydra roadmap flag documentation', () => {
     });
   }
 
-  it('manual playbook 125 matches the dormant adaptive plus explicit opt-in contract', () => {
+  it('manual playbook 125 matches the dormant adaptive plus canonical-over-legacy contract', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
     const featureFilePath = path.join(
       SKILL_ROOT,
@@ -149,24 +147,18 @@ describe('Hydra roadmap flag documentation', () => {
     expect(playbookContent).toContain('capabilities.graphUnified:true');
     expect(playbookContent).toContain('capabilities.adaptiveRanking:false');
 
-    expect(featureFileContent).toContain('phase:\\"shared-rollout\\"');
+    expect(featureFileContent).toContain('phase:\\"scope-governance\\"');
     expect(featureFileContent).toContain('capabilities.graphUnified:true');
     expect(featureFileContent).toContain('capabilities.adaptiveRanking:false');
-    expect(featureFileContent).toContain('SPECKIT_HYDRA_GRAPH_UNIFIED=false');
+    expect(featureFileContent).toContain('SPECKIT_MEMORY_ROADMAP_PHASE=graph');
     expect(featureFileContent).toContain('capabilities.graphUnified:false');
-    expect(featureFileContent).toContain('SPECKIT_HYDRA_ADAPTIVE_RANKING=true');
+    expect(featureFileContent).toContain('SPECKIT_MEMORY_ADAPTIVE_RANKING=true');
     expect(featureFileContent).toContain('capabilities.adaptiveRanking:true');
   });
 });
 
 describe('Public API barrel exports', () => {
-  it('exposes rollout metadata and read-only Hybrid RAG Fusion surfaces', () => {
-    expect(api.LAYER_DEFINITIONS.L5.tools).toContain('shared_memory_status');
-    expect(api.TOOL_LAYER_MAP.shared_memory_status).toBe('L5');
-    expect(api.getLayerForTool('shared_memory_status')).toBe('L5');
-    expect(api.getLayerTokenBudget('shared_memory_status')).toBe(1000);
-    expect(typeof api.getSharedRolloutMetrics).toBe('function');
-    expect(typeof api.getSharedRolloutCohortSummary).toBe('function');
+  it('exposes roadmap metadata and read-only Hybrid RAG Fusion surfaces', () => {
     expect(typeof api.getMemoryRoadmapPhase).toBe('function');
     expect(typeof api.getMemoryRoadmapCapabilityFlags).toBe('function');
     expect(typeof api.getMemoryRoadmapDefaults).toBe('function');

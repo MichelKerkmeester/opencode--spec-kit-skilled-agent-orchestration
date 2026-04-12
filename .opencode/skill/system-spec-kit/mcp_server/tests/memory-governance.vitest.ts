@@ -52,8 +52,8 @@ describe('Phase 5 memory governance', () => {
   it('denies all rows when enforcement is on and scope is empty', () => {
     process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
     const rows = [
-      { tenant_id: 'a', user_id: 'u1', agent_id: null, session_id: null, shared_space_id: null },
-      { tenant_id: 'b', user_id: 'u2', agent_id: null, session_id: null, shared_space_id: null },
+      { tenant_id: 'a', user_id: 'u1', agent_id: null, session_id: null },
+      { tenant_id: 'b', user_id: 'u2', agent_id: null, session_id: null },
     ];
 
     const filtered = filterRowsByScope(rows, {});
@@ -229,25 +229,24 @@ describe('Phase 5 memory governance', () => {
   it('reuses cached scope predicates and benchmarks scoped filtering', () => {
     process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
     const rows = [
-      { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-1' },
-      { id: 2, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-2' },
-      { id: 3, tenant_id: 'tenant-a', user_id: 'user-2', session_id: 'session-1', shared_space_id: 'space-1' },
-      { id: 4, tenant_id: 'tenant-b', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-1' },
+      { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1' },
+      { id: 2, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-2' },
+      { id: 3, tenant_id: 'tenant-a', user_id: 'user-2', session_id: 'session-1' },
+      { id: 4, tenant_id: 'tenant-b', user_id: 'user-1', session_id: 'session-1' },
     ];
-    const allowedSharedSpaceIds = new Set(['space-1']);
 
     const predicate = createScopeFilterPredicate({
       tenantId: 'tenant-a',
       userId: 'user-1',
       sessionId: 'session-1',
-    }, allowedSharedSpaceIds);
+    });
 
-    expect(rows.filter(predicate).map((row) => row.id)).toEqual([1, 3]);
+    expect(rows.filter(predicate).map((row) => row.id)).toEqual([1]);
     expect(filterRowsByScope(rows, {
       tenantId: 'tenant-a',
       userId: 'user-1',
       sessionId: 'session-1',
-    }, allowedSharedSpaceIds).map((row) => row.id)).toEqual([1, 3]);
+    }).map((row) => row.id)).toEqual([1]);
 
     const benchmark = benchmarkScopeFilter(rows, {
       tenantId: 'tenant-a',
@@ -255,13 +254,12 @@ describe('Phase 5 memory governance', () => {
       sessionId: 'session-1',
     }, {
       iterations: 3,
-      allowedSharedSpaceIds,
     });
 
     expect(benchmark.iterations).toBe(3);
     expect(benchmark.totalRows).toBe(4);
-    expect(benchmark.matchedRows).toBe(2);
-    expect(benchmark.filteredRows).toBe(2);
+    expect(benchmark.matchedRows).toBe(1);
+    expect(benchmark.filteredRows).toBe(3);
     expect(benchmark.elapsedMs).toBeGreaterThanOrEqual(0);
     expect(benchmark.averageMsPerIteration).toBeGreaterThanOrEqual(0);
   });

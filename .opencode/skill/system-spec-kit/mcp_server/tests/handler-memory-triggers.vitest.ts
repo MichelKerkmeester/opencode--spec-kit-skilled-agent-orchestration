@@ -297,7 +297,6 @@ describe('Sprint-0 reliability fixes', () => {
             tenant_id: 'tenant-a',
             user_id: 'user-1',
             agent_id: 'agent-1',
-            shared_space_id: 'shared-1',
           },
           {
             id: 22,
@@ -305,7 +304,6 @@ describe('Sprint-0 reliability fixes', () => {
             tenant_id: 'tenant-b',
             user_id: 'user-2',
             agent_id: 'agent-2',
-            shared_space_id: 'shared-2',
           },
         ]),
       })),
@@ -318,7 +316,6 @@ describe('Sprint-0 reliability fixes', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
     });
     const payload = parseEnvelope(response);
     const data = getRecord(payload.data) ?? {};

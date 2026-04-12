@@ -37,7 +37,6 @@ describe('deep-research contract parity', () => {
     '.claude/agents/deep-research.md',
     '.gemini/agents/deep-research.md',
     '.codex/agents/deep-research.toml',
-    '.agents/agents/deep-research.md',
   ];
 
   const commandAssets = [
@@ -109,7 +108,7 @@ describe('deep-research contract parity', () => {
 
   it('exposes a machine-readable capability matrix for every supported runtime surface', () => {
     const runtimeIds = capabilityModule.listRuntimeCapabilityIds();
-    expect(runtimeIds).toEqual(['opencode', 'claude', 'codex', 'gemini', 'agents']);
+    expect(runtimeIds).toEqual(['opencode', 'claude', 'codex', 'gemini']);
 
     const matrix = capabilityModule.loadRuntimeCapabilities().matrix;
     for (const runtime of matrix.runtimes) {

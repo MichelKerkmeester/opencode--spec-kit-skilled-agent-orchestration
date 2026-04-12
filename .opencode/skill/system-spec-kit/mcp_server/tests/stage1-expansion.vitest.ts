@@ -139,7 +139,7 @@ vi.mock('../utils/db-helpers', () => ({
 }));
 
 // Mock governance scope filter
-const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) => {
+const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope: Record<string, unknown>) => {
   const scopeEnforcementEnabled = process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
     || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true';
   const hasGovernanceScope = Boolean(
@@ -147,7 +147,6 @@ const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope
     || scope.userId
     || scope.agentId
     || scope.sessionId
-    || scope.sharedSpaceId
   );
 
   if (scopeEnforcementEnabled && !hasGovernanceScope) {
@@ -159,24 +158,15 @@ const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope
     const userMatches = !scope.userId || row.user_id === scope.userId;
     const agentMatches = !scope.agentId || row.agent_id === scope.agentId;
     const sessionMatches = !scope.sessionId || row.session_id === scope.sessionId;
-    const sharedMatches = !scope.sharedSpaceId || (
-      row.shared_space_id === scope.sharedSpaceId
-      && (!allowedSharedSpaceIds || allowedSharedSpaceIds.has(String(row.shared_space_id)))
-    );
-    return tenantMatches && userMatches && agentMatches && sessionMatches && sharedMatches;
+    return tenantMatches && userMatches && agentMatches && sessionMatches;
   });
 });
 vi.mock('../lib/governance/scope-governance', () => ({
-  filterRowsByScope: (rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) =>
-    mockFilterRowsByScope(rows, scope, allowedSharedSpaceIds),
+  filterRowsByScope: (rows: Array<Record<string, unknown>>, scope: Record<string, unknown>) =>
+    mockFilterRowsByScope(rows, scope),
   isScopeEnforcementEnabled: () =>
     process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
     || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true',
-}));
-
-const mockGetAllowedSharedSpaceIds = vi.fn((_db: unknown, _scope: Record<string, unknown>) => undefined as Set<string> | undefined);
-vi.mock('../lib/collab/shared-spaces', () => ({
-  getAllowedSharedSpaceIds: (db: unknown, scope: Record<string, unknown>) => mockGetAllowedSharedSpaceIds(db, scope),
 }));
 
 // -- Import SUT after mocks ---------------------------------------------------
@@ -234,7 +224,6 @@ describe('Stage-1: Expansion & Dedup', () => {
     mockQuerySummaryEmbeddings.mockReset().mockReturnValue([]);
     mockRequireDb.mockReset().mockReturnValue({});
     mockFilterRowsByScope.mockClear();
-    mockGetAllowedSharedSpaceIds.mockReset().mockReturnValue(undefined);
     mockCheapSeedRetrieve.mockReset().mockReturnValue([]);
     mockRewrite.mockReset().mockResolvedValue({
       abstract: 'abstract variant',
@@ -458,7 +447,6 @@ describe('Stage-1: Expansion & Dedup', () => {
     mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
     mockIsMemorySummariesEnabled.mockReturnValue(true);
     mockCheckScaleGate.mockReturnValue(true);
-    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
     mockQuerySummaryEmbeddings.mockReturnValue([
       { memoryId: 8, similarity: 0.84 },
       { memoryId: 9, similarity: 0.81 },
@@ -477,7 +465,6 @@ describe('Stage-1: Expansion & Dedup', () => {
           is_archived: 0,
           context_type: 'general',
           tenant_id: 'tenant-a',
-          shared_space_id: 'shared-allowed',
         },
         9: {
           id: 9,
@@ -491,7 +478,6 @@ describe('Stage-1: Expansion & Dedup', () => {
           is_archived: 0,
           context_type: 'general',
           tenant_id: 'tenant-b',
-          shared_space_id: 'shared-blocked',
         },
       })
     );
@@ -502,7 +488,6 @@ describe('Stage-1: Expansion & Dedup', () => {
     const result = await executeStage1({
       config: makeConfig({
         tenantId: 'tenant-a',
-        sharedSpaceId: 'shared-allowed',
       }),
     });
 
@@ -523,7 +508,6 @@ describe('Stage-1: Expansion & Dedup', () => {
         title: 'baseline',
         importance_tier: 'normal',
         tenant_id: 'tenant-a',
-        shared_space_id: 'allowed-space',
       },
     ]);
     mockVectorSearch.mockReturnValue([
@@ -532,23 +516,19 @@ describe('Stage-1: Expansion & Dedup', () => {
         title: 'constitutional allowed',
         importance_tier: 'constitutional',
         tenant_id: 'tenant-a',
-        shared_space_id: 'allowed-space',
       },
       {
         id: 3,
         title: 'constitutional blocked',
         importance_tier: 'constitutional',
-        tenant_id: 'tenant-a',
-        shared_space_id: 'blocked-space',
+        tenant_id: 'tenant-b',
       },
     ]);
-    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['allowed-space']));
 
     const result = await executeStage1({
       config: makeConfig({
         includeConstitutional: true,
         tenantId: 'tenant-a',
-        sharedSpaceId: 'allowed-space',
       }),
     });
 
@@ -573,29 +553,27 @@ describe('Stage-1: Expansion & Dedup', () => {
   it('T11: deep-mode LLM reformulation results are scope-filtered before merge', async () => {
     mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
     mockIsLlmReformulationEnabled.mockReturnValue(true);
-    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
 
     const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
     mockSearch
       .mockResolvedValueOnce([
-        { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+        { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a' },
       ])
       .mockResolvedValueOnce([
-        { id: 1, title: 'baseline duplicate', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+        { id: 1, title: 'baseline duplicate', tenant_id: 'tenant-a' },
       ])
       .mockResolvedValueOnce([
-        { id: 2, title: 'reform blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
+        { id: 2, title: 'reform blocked', tenant_id: 'tenant-b' },
       ])
       .mockResolvedValueOnce([
-        { id: 1, title: 'reform duplicate', score: 0.77, tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
-        { id: 3, title: 'reform allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+        { id: 1, title: 'reform duplicate', score: 0.77, tenant_id: 'tenant-a' },
+        { id: 3, title: 'reform allowed', tenant_id: 'tenant-a' },
       ]);
 
     const result = await executeStage1({
       config: makeConfig({
         mode: 'deep',
         tenantId: 'tenant-a',
-        sharedSpaceId: 'shared-allowed',
       }),
     });
 
@@ -612,23 +590,21 @@ describe('Stage-1: Expansion & Dedup', () => {
   it('T12: deep-mode HyDE results are scope-filtered before merge', async () => {
     mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
     mockIsHyDEEnabled.mockReturnValue(true);
-    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
 
     const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
     mockSearch.mockResolvedValue([
-      { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+      { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a' },
     ]);
     mockRunHyDE.mockResolvedValue([
-      { id: 1, title: 'hyde duplicate', score: 0.94, tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
-      { id: 2, title: 'hyde allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
-      { id: 3, title: 'hyde blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
+      { id: 1, title: 'hyde duplicate', score: 0.94, tenant_id: 'tenant-a' },
+      { id: 2, title: 'hyde allowed', tenant_id: 'tenant-a' },
+      { id: 3, title: 'hyde blocked', tenant_id: 'tenant-b' },
     ]);
 
     const result = await executeStage1({
       config: makeConfig({
         mode: 'deep',
         tenantId: 'tenant-a',
-        sharedSpaceId: 'shared-allowed',
       }),
     });
 

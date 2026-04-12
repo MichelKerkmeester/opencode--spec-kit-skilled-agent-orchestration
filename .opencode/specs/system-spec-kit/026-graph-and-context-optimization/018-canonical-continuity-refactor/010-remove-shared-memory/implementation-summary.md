@@ -69,7 +69,7 @@ The `shared` mode was removed from `/memory:manage`, the shared-memory guide and
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The pass started with direct reads of the shared-memory modules, generic scope contracts, save/checkpoint/search helpers, and documentation indices. From there, the implementation removed the dedicated feature modules first, then trimmed the active contracts and helper paths that still mentioned shared space scope, then deleted the documentation/test inventory that advertised the feature. Verification closed the loop with the requested workspace commands plus the final residue grep.
+The pass started with direct reads of the shared-memory modules, generic scope contracts, save/checkpoint/search helpers, and documentation indices. From there, the implementation removed the dedicated feature modules first, then trimmed the active contracts and helper paths that still mentioned shared space scope, then deleted the documentation/test inventory that advertised the feature. Verification closed the loop with package-local equivalents for the requested workspace commands, targeted regression suites that covered the shared-memory removal plus adjacent stale assertions exposed by the package runner, and the final residue grep.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -82,6 +82,7 @@ The pass started with direct reads of the shared-memory modules, generic scope c
 | Delete shared-memory files instead of leaving stubs | The operator explicitly asked for a hard delete with no deprecation surface. |
 | Remove `sharedSpaceId` from live contracts instead of ignoring it at runtime | The final grep requirement makes the active codebase responsible for acting like shared memory never existed. |
 | Keep only the schema-column exception in `vector-index-schema.ts` | SQLite column removal is unsafe here, so the schema definitions remain while the runtime stops using them. |
+| Fix adjacent stale test expectations that blocked verification | The package-level runner surfaced assertion drift outside the deleted shared-memory tests, so the verification pass updated those stale expectations instead of leaving the suite blocked. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -91,10 +92,10 @@ The pass started with direct reads of the shared-memory modules, generic scope c
 
 | Check | Result |
 |-------|--------|
-| `npm run --workspace=@spec-kit/mcp-server typecheck` | PASS |
-| `npm run --workspace=@spec-kit/scripts typecheck` | PASS |
-| `npm run build --workspace=@spec-kit/scripts` | PASS |
-| Remaining test suite | PASS |
+| `npm run --workspace=@spec-kit/mcp-server typecheck` | BLOCKED by local npm workspace bug: `Cannot use --no-workspaces and --workspace at the same time`; package-local equivalent `cd .opencode/skill/system-spec-kit/mcp_server && npm run typecheck` passed |
+| `npm run --workspace=@spec-kit/scripts typecheck` | BLOCKED by the same local npm workspace bug; package-local equivalent `cd .opencode/skill/system-spec-kit/scripts && npm run typecheck` passed |
+| `npm run build --workspace=@spec-kit/scripts` | BLOCKED by the same local npm workspace bug; package-local equivalent `cd .opencode/skill/system-spec-kit/scripts && npm run build` passed |
+| Targeted regression suites | PASS: `npm run test:core -- scripts/tests/deep-research-contract-parity.vitest.ts`, `npm run test:core -- scripts/tests/progressive-validation.vitest.ts`, `./node_modules/.bin/vitest run tests/retrieval-telemetry.vitest.ts tests/review-fixes.vitest.ts`, `./node_modules/.bin/vitest run tests/vector-index-impl.vitest.ts` |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/010-remove-shared-memory` | PASS |
 | Final shared-reference grep | PASS, with only the allowed schema/doc exceptions remaining |
 <!-- /ANCHOR:verification -->

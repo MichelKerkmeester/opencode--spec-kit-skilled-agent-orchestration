@@ -8,7 +8,7 @@
 import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 
 // R6: Derive phase type from the canonical array to keep them in sync.
-const SUPPORTED_PHASES_ARRAY = ['baseline', 'lineage', 'graph', 'adaptive', 'scope-governance', 'shared-rollout'] as const;
+const SUPPORTED_PHASES_ARRAY = ['baseline', 'lineage', 'graph', 'adaptive', 'scope-governance'] as const;
 
 /** Canonical rollout phases used by memory roadmap tracking. */
 type MemoryRoadmapPhase = typeof SUPPORTED_PHASES_ARRAY[number];
@@ -20,7 +20,6 @@ interface MemoryRoadmapCapabilityFlags {
   adaptiveRanking: boolean;
   scopeEnforcement: boolean;
   governanceGuardrails: boolean;
-  sharedMemory: boolean;
 }
 
 /** Rollout defaults snapshot for telemetry and migration checkpoints. */
@@ -58,7 +57,6 @@ const CAPABILITY_ENV = {
   adaptiveRanking: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
   scopeEnforcement: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
   governanceGuardrails: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-  sharedMemory: 'SPECKIT_MEMORY_SHARED_MEMORY',
 } as const;
 
 const LEGACY_CAPABILITY_ENV = {
@@ -67,7 +65,6 @@ const LEGACY_CAPABILITY_ENV = {
   adaptiveRanking: 'SPECKIT_HYDRA_ADAPTIVE_RANKING',
   scopeEnforcement: 'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
   governanceGuardrails: 'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
-  sharedMemory: 'SPECKIT_HYDRA_SHARED_MEMORY',
 } as const;
 
 const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set(SUPPORTED_PHASES_ARRAY);
@@ -116,7 +113,7 @@ function isMemoryRoadmapCapabilityEnabled(
   return isFeatureEnabled(canonicalFlag, normalizeIdentity(canonicalFlag, identity));
 }
 
-/** Resolves the active memory roadmap phase from env, defaulting to shared-rollout. */
+/** Resolves the active memory roadmap phase from env, defaulting to scope-governance. */
 function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
   // B4: Check canonical env first, then legacy, before falling back to default.
   const canonicalPhase = process.env[PHASE_ENV]?.trim().toLowerCase();
@@ -127,7 +124,7 @@ function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
   if (legacyPhase && SUPPORTED_PHASES.has(legacyPhase as MemoryRoadmapPhase)) {
     return legacyPhase as MemoryRoadmapPhase;
   }
-  return 'shared-rollout';
+  return 'scope-governance';
 }
 
 /** Returns the full capability snapshot for memory roadmap controls. */
@@ -154,13 +151,6 @@ function getMemoryRoadmapCapabilityFlags(identity?: string): MemoryRoadmapCapabi
       [CAPABILITY_ENV.governanceGuardrails, LEGACY_CAPABILITY_ENV.governanceGuardrails],
       identity,
     ),
-    // M4 FIX: Default sharedMemory to false to match runtime gate behavior and docs.
-    // The runtime in shared-spaces.ts keeps shared memory opt-in until env/config enablement.
-    sharedMemory: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.sharedMemory, LEGACY_CAPABILITY_ENV.sharedMemory],
-      identity,
-      false,
-    ),
   };
 }
 
@@ -169,7 +159,7 @@ function getMemoryRoadmapDefaults(identity?: string): MemoryRoadmapDefaults {
   return {
     phase: getMemoryRoadmapPhase(),
     capabilities: getMemoryRoadmapCapabilityFlags(identity),
-    scopeDimensionsTracked: 5, // tenant/user/agent/session/sharedSpace
+    scopeDimensionsTracked: 4, // tenant/user/agent/session
   };
 }
 

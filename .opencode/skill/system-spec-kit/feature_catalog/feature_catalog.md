@@ -92,7 +92,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer MCP surface. The command layer wraps the memory-focused subset under **4 top-level memory slash commands** plus the `/memory:manage shared` subcommand namespace, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer MCP surface. The command layer wraps the memory-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
@@ -100,7 +100,6 @@ The Spec Kit Memory MCP server exposes **43 tools** overall across the 7-layer M
 | `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
 | `/memory:manage` | 19 primary + 1 helper | owns + borrows | Primary home: `memory_stats`, `memory_list`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`; helper access: `memory_search` |
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
-| `/memory:manage shared` | 4 | subcommand namespace | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
 | `/spec_kit:resume` | broader helper surface | shared | Primary recovery chain: `memory_context`, `memory_search`, `memory_list`; wrapper also allows `memory_stats`, `memory_match_triggers`, `memory_delete`, `memory_update`, plus health, indexing, validation, checkpoint, and CocoIndex helpers |
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
@@ -167,7 +166,7 @@ This is the lightweight search entry point for callers that want the main semant
 
 #### Current Reality
 
-`memory_quick_search` is a live MCP tool, not just a README alias. The dispatcher in `tools/memory-tools.ts` validates the tool's narrowed input schema and forwards the call to `memory_search` with a fixed profile: `autoDetectIntent=true`, `enableDedup=true`, `includeContent=true`, `includeConstitutional=true`, and `rerank=true`. The public arguments are intentionally narrow: `query`, `limit`, `specFolder`, `tenantId`, `userId`, `agentId`, and `sharedSpaceId`. That makes it useful for fast governed retrieval while keeping the heavyweight search configuration surface on `memory_search`.
+`memory_quick_search` is a live MCP tool, not just a README alias. The dispatcher in `tools/memory-tools.ts` validates the tool's narrowed input schema and forwards the call to `memory_search` with a fixed profile: `autoDetectIntent=true`, `enableDedup=true`, `includeContent=true`, `includeConstitutional=true`, and `rerank=true`. The public arguments are intentionally narrow: `query`, `limit`, `specFolder`, `tenantId`, `userId`, and `agentId`. That makes it useful for fast governed retrieval while keeping the heavyweight search configuration surface on `memory_search`.
 
 #### Source Files
 
@@ -185,7 +184,7 @@ This is the speed-first search option. Instead of doing a deep analysis of your 
 
 When you need speed over depth, trigger matching delivers. Rather than generating embeddings and running multi-channel search, it performs direct string matching of your prompt against stored trigger phrases. The performance target is under 100ms. Think of it as the "fast path" that sacrifices recall for latency.
 
-A governed-scope pass now runs immediately after raw trigger matching. `memory_match_triggers` accepts optional `tenantId`, `userId`, `agentId`, and `sharedSpaceId` boundaries, then looks up each match in `memory_index` and drops out-of-scope rows before cognitive enrichment begins. That closes the trigger-phrase leak where another tenant or actor's memory could surface before normal retrieval filtering kicked in.
+A governed-scope pass now runs immediately after raw trigger matching. `memory_match_triggers` accepts optional `tenantId`, `userId`, and `agentId` boundaries, then looks up each match in `memory_index` and drops out-of-scope rows before cognitive enrichment begins. That closes the trigger-phrase leak where another tenant or actor's memory could surface before normal retrieval filtering kicked in.
 
 Where this tool gets interesting is the cognitive pipeline. When you provide a session ID with `include_cognitive=true`, the system applies FSRS-based attention decay (scores degrade each turn via `0.98^(turn-1)` exponential decay), memory activation (matched memories get their attention score set to 1.0), co-activation spreading (each activated memory spreads activation to related memories through the co-occurrence graph), tier classification (maps effective retrievability to HOT, WARM, COLD, DORMANT or ARCHIVED) and tiered content injection.
 
@@ -331,7 +330,7 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 
 #### Current Reality
 
-**SHIPPED.** `/spec_kit:resume` owns session recovery and continuation. Its primary recovery chain relies on 3 shared memory tools: `memory_context`, `memory_search`, and `memory_list`. `memory_stats` remains diagnostic/helper access, and the live wrapper also permits `memory_match_triggers`, `memory_delete`, `memory_update`, health, indexing, validation, checkpoint, and CocoIndex helpers that support the broader recovery workflow.
+**SHIPPED.** `/spec_kit:resume` owns session recovery and continuation. Its primary recovery chain relies on 3 borrowed tools: `memory_context`, `memory_search`, and `memory_list`. `memory_stats` remains diagnostic/helper access, and the live wrapper also permits `memory_match_triggers`, `memory_delete`, `memory_update`, health, indexing, validation, checkpoint, and CocoIndex helpers that support the broader recovery workflow.
 
 The primary recovery path calls `memory_context` in `resume` mode with anchors targeting `state`, `next-steps`, `summary`, and `blockers`. Resume mode uses a 1200-token budget with `minState=WARM`, `includeContent=true`, dedup and decay both disabled.
 
@@ -504,29 +503,6 @@ Every time the system saves or changes your data, it wraps the operation in a sa
 #### Source Files
 
 See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutation/06-transaction-wrappers-on-mutation-handlers.md) for full implementation and test file listings.
-
----
-
-### Namespace management CRUD tools (shared-memory lifecycle)
-
-#### Description
-
-Shared-memory spaces let multiple users or agents access the same pool of knowledge under a deny-by-default membership model. Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering: create or update spaces, control user/agent access, inspect rollout status, and enable the subsystem. All four tools are live under the `/memory:manage shared` command.
-
-#### Current Reality
-
-**SHIPPED.** The shared-memory lifecycle is live with 4 L5 tools managed by `/memory:manage shared`:
-
-- **`shared_space_upsert`** -- Creates or updates a shared-memory space with `tenantId`, `name`, and actor identity (`actorUserId` or `actorAgentId`). The first successful create auto-grants `owner` access to the acting caller.
-- **`shared_space_membership_set`** -- Controls user/agent access with a deny-by-default model. Requires `tenantId`, `subjectType` (`user` or `agent`), `subjectId`, `role` (`owner`, `editor`, or `viewer`), and actor identity. Membership mutations must be performed by an existing owner.
-- **`shared_memory_status`** -- Reports enablement state, space inventory, and membership for optional tenant/user/agent scope filters.
-- **`shared_memory_enable`** -- Activates the opt-in shared-memory subsystem (creates infrastructure tables, persists enablement, generates a README in `shared-spaces/`).
-
-The original full namespace CRUD (`list/create/switch/delete`) for complete multi-tenant isolation remains deferred. Current scoping relies on logical `specFolder` filtering augmented by the shared-memory tools above.
-
-#### Source Files
-
-See [`02--mutation/07-namespace-management-crud-tools.md`](02--mutation/07-namespace-management-crud-tools.md) for full implementation and test file listings.
 
 ---
 
@@ -1920,7 +1896,7 @@ Not all memories should decay at the same rate. A decision record from six month
 
 FSRS decay rates now vary by a two-dimensional multiplier matrix. On the context axis: decisions never decay (stability set to Infinity), research memories get 2x stability and implementation/discovery/general memories follow the standard rate. On the tier axis: constitutional and critical memories never decay, important memories get 1.5x stability, normal memories follow the standard, temporary memories decay at 0.5x and deprecated at 0.25x.
 
-The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. The shared memory-type config validator now rejects `halfLifeDays: 0` in addition to negative values, matching the `positive number or null` contract and blocking undefined zero-half-life schedules from entering classification-backed decay configuration. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
+The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. The memory-type config validator now rejects `halfLifeDays: 0` in addition to negative values, matching the `positive number or null` contract and blocking undefined zero-half-life schedules from entering classification-backed decay configuration. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
 
 #### Source Files
 
@@ -4022,30 +3998,6 @@ See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-
 
 ---
 
-### Shared-memory rollout, deny-by-default membership, and kill switch
-
-#### Description
-
-Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is **disabled by default** and requires explicit first-run setup via `shared_memory_enable` or `/memory:manage shared`. Access is deny-by-default: nobody gets access unless explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong.
-
-#### Current Reality
-
-Phase 6 introduced shared-memory spaces with governance-first rollout controls. The subsystem is disabled by default with two-tier enablement: env var override (`SPECKIT_MEMORY_SHARED_MEMORY=true`) or DB config persistence via `shared_memory_enable`. The `/memory:manage shared` command includes a first-run enablement gate.
-
-Access is deny-by-default: a caller can use a shared space only when explicit membership exists for the current identity. Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
-
-Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary. When a row belongs to an allowed shared space, retrieval now treats membership as the boundary: tenant alignment is still required, but exact actor and session matching are skipped so collaborator B can retrieve collaborator A's shared memories inside the same space.
-
-`shared_space_upsert` also preserves rollout cohort and metadata on partial updates, so renaming a space or toggling rollout state no longer clears previously stored cohort labels or structured metadata.
-
-#### Source Files
-
-See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`](17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) for full implementation and test file listings.
-
-> **Playbook:** [123](../manual_testing_playbook/manual_testing_playbook.md), [148](../manual_testing_playbook/manual_testing_playbook.md)
-
----
-
 ## 19. FEATURE FLAG REFERENCE
 
 Current mapping: this content is tracked under spec `006-ux-hooks-automation`.
@@ -4494,13 +4446,12 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | inherited from `SPECKIT_GRAPH_SIGNALS` | enum (`off`, `trace_only`, `bounded_runtime`) | `lib/search/search-flags.ts` | Controls the bounded graph-walk ladder. `off` disables the walk bonus, `trace_only` keeps rollout state and diagnostics visible with zero applied bonus, and `bounded_runtime` applies the capped Stage 2 graph-walk bonus while preserving deterministic ordering protections. |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Canonical / legacy alias pair for the memory-roadmap phase label. Code resolves `SPECKIT_MEMORY_ROADMAP_PHASE` first, then falls back to `SPECKIT_HYDRA_PHASE`. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `shared-rollout`. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Canonical / legacy alias pair for the memory-roadmap phase label. Code resolves `SPECKIT_MEMORY_ROADMAP_PHASE` first, then falls back to `SPECKIT_HYDRA_PHASE`. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, and `scope-governance`; unknown values fall back to `scope-governance`. |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. It remains default-on for roadmap metadata snapshots and rename-window lineage compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. It remains default-on for roadmap metadata and governed-scope compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. It remains default-on for roadmap metadata and governed-ingest compatibility paths; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Roadmap metadata now defaults this flag to off unless explicitly enabled with `true` or `1`, matching the live shared-spaces runtime gate. This keeps snapshots and telemetry from claiming shared memory is live before rollout enables it. |
 | `SPECKIT_HYBRID_DECAY_POLICY` | `true` | boolean | `lib/cognitive/fsrs-scheduler.ts` | **Default ON (graduated).** Type-aware no-decay FSRS policy. Decision/constitutional/critical context types receive Infinity stability (never decay). Separate from TM-03. |
 | `SPECKIT_HYDE` | `true` | boolean | `lib/search/hyde.ts` | **Default ON (graduated).** HyDE (Hypothetical Document Embeddings). Generates a pseudo-document (~200 tokens, markdown-memory format) for deep low-confidence queries (top score < 0.45), embeds it, and uses the embedding as an additional retrieval channel. HyDE is active in the query pipeline by default and merges results into the candidate set unless `SPECKIT_HYDE_ACTIVE=false` forces shadow-only logging. Budget: 1 LLM call per cache miss. |
 | `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | `lib/feedback/feedback-ledger.ts` | **Default ON (graduated).** Shadow-only implicit feedback event ledger. Records 5 event types with confidence tiers (strong/medium/weak). No ranking side effects. |
@@ -4678,13 +4629,12 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | (Also listed under Search Pipeline.) Enables writes to the eval database during retrieval operations. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | (Also listed under Search Pipeline.) Enables verbose file-count diagnostics during index scans. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Opt-in retrieval telemetry. Detailed latency/mode/fallback/quality metrics and architecture updates are recorded only when this is explicitly `'true'`. |
-| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Used by telemetry, eval baselines, migration checkpoint metadata, and rename-window compatibility paths. Unsupported values fall back to `shared-rollout`. |
+| `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Used by telemetry, eval baselines, migration checkpoint metadata, and rename-window compatibility paths. Unsupported values fall back to `scope-governance`. |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. Consumed by default-on roadmap metadata snapshots and rename-window lineage compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. Still distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by default-on roadmap snapshots and governed-scope compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by default-on roadmap snapshots and governed-ingest compatibility checks; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by roadmap snapshots and shared-memory rollout compatibility checks, but now defaults off until explicitly enabled with `true` or `1` so metadata cannot get ahead of the live rollout gate. |
 | `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Default ON via rollout policy; active unless explicitly disabled. See category 1 for full description (updated 2026-03-25 per deep review). |
 
 #### Source Files

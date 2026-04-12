@@ -68,7 +68,7 @@ const memorySearch: ToolDefinition = {
       },
       specFolder: { type: 'string', description: 'Limit search to a specific spec folder (e.g., "011-spec-kit-memory-upgrade")' },
       tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval. When provided with scope enforcement, results are isolated to this tenant.' },
-      userId: { type: 'string', description: 'User boundary for governed retrieval. Filters private or shared-space user-scoped memories.' },
+      userId: { type: 'string', description: 'User boundary for governed retrieval. Filters private user-scoped memories.' },
       agentId: { type: 'string', description: 'Agent boundary for governed retrieval. Filters agent-scoped memories.' },
       limit: { type: 'number', default: 10, minimum: 1, maximum: 100, description: 'Maximum number of results to return (1-100)' },
       sessionId: {

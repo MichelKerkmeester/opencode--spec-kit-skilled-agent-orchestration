@@ -48,7 +48,6 @@ function createMinimalDb(): Database.Database {
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
-      shared_space_id TEXT,
       content_hash TEXT,
       content_text TEXT,
       quality_score REAL DEFAULT 0,
@@ -75,7 +74,6 @@ function insertIndexedMemory(
     userId?: string | null;
     agentId?: string | null;
     sessionId?: string | null;
-    sharedSpaceId?: string | null;
   } = {},
 ): number {
   const hash = sha256(content);
@@ -90,10 +88,9 @@ function insertIndexedMemory(
       tenant_id,
       user_id,
       agent_id,
-      session_id,
-      shared_space_id
+      session_id
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     specFolder,
     filePath,
@@ -105,7 +102,6 @@ function insertIndexedMemory(
     scope.userId ?? null,
     scope.agentId ?? null,
     scope.sessionId ?? null,
-    scope.sharedSpaceId ?? null,
   );
   return result.lastInsertRowid as number;
 }
@@ -268,7 +264,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         content,
         'Tenant A',
         'success',
-        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+        { tenantId: 'tenant-a', userId: 'user-a' },
       );
 
       const result = checkContentHashDedup(
@@ -277,7 +273,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         false,
         [],
         undefined,
-        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+        { tenantId: 'tenant-a', userId: 'user-a' },
       );
 
       expect(result?.status).toBe('duplicate');
@@ -397,12 +393,11 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         false,
         [],
         undefined,
-        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+        { tenantId: 'tenant-a', userId: 'user-a' },
       );
 
       expect(capturedSql).toContain('tenant_id = ?');
-      expect(capturedSql).toContain('shared_space_id = ?');
-      expect(capturedSql).toContain('user_id IS NULL');
+      expect(capturedSql).toContain('user_id = ?');
       expect(capturedSql).not.toContain('? IS NULL');
     });
 

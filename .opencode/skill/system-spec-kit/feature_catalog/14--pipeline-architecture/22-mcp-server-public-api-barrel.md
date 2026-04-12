@@ -32,7 +32,7 @@ Provider and storage bootstrap surfaces are also promoted through the same bound
 
 The barrel also intentionally promotes several curated internal helpers. Folder-discovery helpers from `lib/search/folder-discovery.ts` include `generatePerFolderDescription`, `savePerFolderDescription`, `loadPerFolderDescription`, `extractKeywords`, `slugifyFolderName`, and the `PerFolderDescription` type. Entity extraction support comes from `lib/extraction/entity-extractor.ts` via `extractEntities` and `rebuildAutoEntities`. For benchmarking and instrumentation, the barrel exports namespace objects `sessionBoost`, `causalBoost`, and `workingMemory`, plus `initExtractionAdapter`, `getExtractionMetrics`, `resetExtractionMetrics`, and the `ExtractionMetrics` type from `lib/extraction/extraction-adapter.ts`.
 
-Finally, the barrel exposes architecture and rollout metadata surfaces that would otherwise require deep internal imports. From `lib/architecture/layer-definitions.ts`, it exports `LAYER_DEFINITIONS`, `TOOL_LAYER_MAP`, `getLayerForTool`, `getLayerTokenBudget`, `LayerDefinition`, and `LayerId`. From `lib/collab/shared-spaces.ts`, it exports rollout reporting helpers `getSharedRolloutMetrics` and `getSharedRolloutCohortSummary` plus the related shared-space types. From `lib/config/capability-flags.ts`, it exports `getMemoryRoadmapCapabilityFlags`, `getMemoryRoadmapDefaults`, `getMemoryRoadmapPhase`, and `MemoryRoadmapCapabilityFlags`. The result is a single public barrel that spans evaluation, runtime bootstrap, search, provider orchestration, script-facing helper utilities, and rollout metadata, while keeping consumers on one stable import path.
+Finally, the barrel exposes architecture and roadmap metadata surfaces that would otherwise require deep internal imports. From `lib/architecture/layer-definitions.ts`, it exports `LAYER_DEFINITIONS`, `TOOL_LAYER_MAP`, `getLayerForTool`, `getLayerTokenBudget`, `LayerDefinition`, and `LayerId`. From `lib/config/capability-flags.ts`, it exports `getMemoryRoadmapCapabilityFlags`, `getMemoryRoadmapDefaults`, `getMemoryRoadmapPhase`, and `MemoryRoadmapCapabilityFlags`. The result is a single public barrel that spans evaluation, runtime bootstrap, search, provider orchestration, script-facing helper utilities, and roadmap metadata, while keeping consumers on one stable import path.
 
 ---
 
@@ -54,7 +54,6 @@ Finally, the barrel exposes architecture and rollout metadata surfaces that woul
 | `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working-memory benchmarking namespace exported by the barrel |
 | `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter metrics and lifecycle helpers promoted by the barrel |
 | `mcp_server/lib/architecture/layer-definitions.ts` | Lib | Layer metadata, tool-layer mapping, and token budget helpers |
-| `mcp_server/lib/collab/shared-spaces.ts` | Lib | Shared rollout metrics and cohort summary helpers |
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Roadmap capability flag and default/phase helpers |
 | `mcp_server/api/README.md` | Docs | Consumer policy documenting `api/` as the approved public surface |
 
@@ -63,7 +62,6 @@ Finally, the barrel exposes architecture and rollout metadata surfaces that woul
 |------|-------|
 | `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct barrel export contract for search and top-level API surfaces |
 | `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Rollout metadata and capability-flag exports exposed by the top-level barrel |
-| `mcp_server/tests/shared-spaces.vitest.ts` | Shared rollout metrics exposed through the public barrel |
 | `mcp_server/tests/memory-roadmap-flags.vitest.ts` | Memory-roadmap phase/default/capability helpers exposed through the public barrel |
 
 ---

@@ -26,7 +26,6 @@ function createGovernanceDb(): Database.Database {
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
-      shared_space_id TEXT,
       delete_after TEXT
     )
   `);

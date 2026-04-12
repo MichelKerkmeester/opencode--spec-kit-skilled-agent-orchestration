@@ -94,7 +94,7 @@ The last three code-audit phases map to existing catalog categories rather than 
 
 ### Command-Surface Contract
 
-The memory system exposes **43 tools** overall, while the day-to-day command layer uses **4 main memory slash commands**, the `/memory:manage shared` subcommand area, and `/spec_kit:resume` for session recovery. Think of commands as doors into the system: the full MCP server has more rooms than the command layer exposes directly. Each door only opens access to the tools it needs. The source of truth for primary ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. The recovery contract lives in `.opencode/command/spec_kit/resume.md`.
+The memory system exposes **43 tools** overall, while the day-to-day command layer uses **4 main memory slash commands** and `/spec_kit:resume` for session recovery. Think of commands as doors into the system: the full MCP server has more rooms than the command layer exposes directly. Each door only opens access to the tools it needs. The source of truth for primary ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. The recovery contract lives in `.opencode/command/spec_kit/resume.md`.
 
 | Command | What It Does | Tools It Can Use |
 |---------|-------------|-----------------|
@@ -102,7 +102,6 @@ The memory system exposes **43 tools** overall, while the day-to-day command lay
 | `/memory:learn` | Create and manage always-surface rules (6 tools, borrowed) | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
 | `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion (19 primary tools plus `memory_search` helper access) | Primary home: `memory_stats`, `memory_list`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`; helper access: `memory_search` |
 | `/memory:save` | Save conversation context (4 tools, borrowed) | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
-| `/memory:manage shared` | Shared-memory subcommand area under `/memory:manage` (4 tools) | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
 | `/spec_kit:resume` | Continue or recover prior work (primary chain uses 3 shared tools, with extra helpers behind the scenes) | `memory_context`, `memory_search`, `memory_list` plus `memory_stats`, `memory_match_triggers`, `memory_delete`, `memory_update`, and health, indexing, validation, checkpoint, and CocoIndex helpers in the wrapper |
 
 Some commands own their tools (they are the primary home) while others borrow tools from `/memory:search` or `/memory:manage`. A borrowed tool works the same way; it is just administered somewhere else.
@@ -127,7 +126,7 @@ This is the lightweight search entry point for callers that want the main semant
 
 ### Trigger phrase matching (memory_match_triggers)
 
-This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers. It now also checks tenant, user, agent, and shared-space boundaries after matching so one tenant's trigger phrases do not leak into another tenant's results.
+This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers. It now also checks tenant, user, and agent boundaries after matching so one tenant's trigger phrases do not leak into another tenant's results.
 
 ### Hybrid search pipeline
 
@@ -190,10 +189,6 @@ After a search result is shown to you, you can tell the system whether it was he
 ### Transaction wrappers on mutation handlers
 
 Every time the system saves or changes your data, it wraps the operation in a safety net. If anything goes wrong mid-save, all changes roll back so you never end up with half-written or corrupted information. This is like a bank transfer that either completes fully or does not happen at all.
-
-### Namespace management CRUD tools (shared-memory lifecycle)
-
-Shared-memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools live under `/memory:manage shared`: `shared_space_upsert` creates or updates a space with tenant and actor identity, `shared_space_membership_set` controls who gets access using a deny-by-default model (nobody gets in unless explicitly granted `owner`, `editor`, or `viewer` access), `shared_memory_status` reports what is enabled and who has access, and `shared_memory_enable` turns on the subsystem for the first time. The first create auto-grants the acting caller owner access so the space is not locked out from the start. Think of it like a shared office with a keycard lock: you must first turn on the lock system, then add names to the access list. The original plan for full workspace management (list/create/switch/delete) is still deferred since the shared-memory tools cover the current need.
 
 ### Prediction-error save arbitration
 
@@ -963,7 +958,6 @@ This feature controls who can save and read memories and keeps a record of every
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools handle the lifecycle under `/memory:manage shared`: `shared_memory_enable` turns on the subsystem, `shared_space_upsert` creates or updates spaces, `shared_space_membership_set` controls who gets in, and `shared_memory_status` reports the current state. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via `/memory:manage shared enable`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership with a role (`owner`, `editor`, or `viewer`). An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency. Shared members can now see each other's shared memories without needing an exact actor or session match, and partial space updates no longer erase saved cohort or metadata fields.
 
 ---
 
@@ -1091,7 +1085,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. Those roadmap flags are resolved live each time the helper runs, canonical `SPECKIT_MEMORY_*` keys override the older `SPECKIT_HYDRA_*` aliases, and shared memory stays off in roadmap snapshots until rollout is explicitly enabled so telemetry does not claim sharing is live before runtime access allows it.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. Those roadmap flags are resolved live each time the helper runs, canonical `SPECKIT_MEMORY_*` keys override the older `SPECKIT_HYDRA_*` aliases, and adaptive ranking stays off in roadmap snapshots until explicitly enabled so telemetry does not claim dormant behavior is live before runtime access allows it.
 
 ### 7. CI and Build (informational)
 

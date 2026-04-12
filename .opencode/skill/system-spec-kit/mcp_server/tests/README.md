@@ -34,7 +34,7 @@ What this suite covers:
 - Search, scoring, graph, and retrieval-pipeline behavior.
 - MCP handler dispatch, response envelopes, validation, and runtime startup behavior.
 - Save/index regressions including content-hash dedup, quality-loop behavior, and incremental-index edge cases.
-- Eval, shared-memory, governance, lineage, and public-API surfaces.
+- Eval, governance, lineage, and public-API surfaces.
 
 Use the current file inventory and Vitest output as the source of truth:
 
@@ -69,8 +69,8 @@ npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/api-public-surf
 # Save/index regressions
 npx vitest run tests/content-hash-dedup.vitest.ts tests/handler-memory-index-cooldown.vitest.ts tests/memory-save-pipeline-enforcement.vitest.ts
 
-# Shared-memory surface
-npx vitest run tests/shared-memory-handlers.vitest.ts tests/shared-spaces.vitest.ts
+# Governance surface
+npx vitest run tests/governance-e2e.vitest.ts tests/memory-governance.vitest.ts
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -86,7 +86,7 @@ This directory is too large for a byte-for-byte README listing, so treat the gro
 | Handler and protocol surface | `handler-memory-search.vitest.ts`, `handler-memory-save.vitest.ts`, `mcp-input-validation.vitest.ts`, `mcp-response-envelope.vitest.ts`, `startup-checks.vitest.ts` | MCP entrypoints and server-facing responses |
 | Save/index regressions | `content-hash-dedup.vitest.ts`, `memory-save-dedup-order.vitest.ts`, `handler-memory-index-cooldown.vitest.ts`, `chunking-orchestrator-swap.vitest.ts`, `memory-save-ux-regressions.vitest.ts` | Refinement work covered by this audit family |
 | Eval and reporting | `ablation-framework.vitest.ts`, `bm25-baseline.vitest.ts`, `reporting-dashboard.vitest.ts`, `eval-logger.vitest.ts`, `memory-state-baseline.vitest.ts` | Baselines, ablations, dashboard, and telemetry |
-| Shared memory and governance | `shared-memory-handlers.vitest.ts`, `shared-spaces.vitest.ts`, `governance-e2e.vitest.ts`, `memory-governance.vitest.ts` | Scope enforcement, actor auth, and collab lifecycle |
+| Governance and scope | `governance-e2e.vitest.ts`, `memory-governance.vitest.ts`, `scope-governance.vitest.ts` | Scope enforcement, actor auth, and governed lifecycle |
 | Public API and docs parity | `api-public-surfaces.vitest.ts`, `feature-flag-reference-docs.vitest.ts`, `hydra-spec-pack-consistency.vitest.ts` | Public imports and documentation alignment |
 | Infrastructure and utilities | `batch-processor.vitest.ts`, `tool-input-schema.vitest.ts`, `transaction-manager.vitest.ts`, `retry-manager-health.vitest.ts`, `vector-index-store-remediation.vitest.ts` | Shared helpers and runtime hardening |
 
@@ -105,7 +105,7 @@ Recent/high-signal suites relevant to the memory database refinement work:
 - `batch-processor.vitest.ts` - retry-aware batch helper semantics used by ingestion/index flows.
 - `quality-loop.vitest.ts` - verify-fix-verify scoring and rejection behavior.
 - `handler-memory-index-cooldown.vitest.ts` - scan cooldown, stale-delete behavior, and partial-failure handling.
-- `shared-memory-handlers.vitest.ts` and `shared-spaces.vitest.ts` - shared-memory auth, lifecycle, and rollout behavior.
+- `governance-e2e.vitest.ts` and `memory-governance.vitest.ts` - governed scope enforcement and actor-identity behavior.
 - `api-public-surfaces.vitest.ts` - public `api/` export contract.
 - `context-server-error-envelope.vitest.ts`, `envelope.vitest.ts`, and `response-profile-formatters.vitest.ts` - serialized response and profile behavior.
 
@@ -148,7 +148,7 @@ npx vitest run tests/feature-flag-reference-docs.vitest.ts
 Broader confidence runs:
 
 ```bash
-npx vitest run tests/shared-memory-handlers.vitest.ts tests/shared-spaces.vitest.ts
+npx vitest run tests/governance-e2e.vitest.ts tests/memory-governance.vitest.ts
 npx vitest run tests/content-hash-dedup.vitest.ts tests/quality-loop.vitest.ts tests/batch-processor.vitest.ts
 ```
 

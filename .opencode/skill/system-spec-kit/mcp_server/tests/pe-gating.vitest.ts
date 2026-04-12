@@ -13,7 +13,6 @@ function makeCandidate(
     user_id: string | null;
     agent_id: string | null;
     session_id: string | null;
-    shared_space_id: string | null;
   }> = {}
 ): Record<string, unknown> {
   return {
@@ -25,7 +24,6 @@ function makeCandidate(
     user_id: null,
     agent_id: null,
     session_id: null,
-    shared_space_id: null,
     ...overrides,
   };
 }

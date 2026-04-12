@@ -260,8 +260,6 @@ function applyFixtureEnv(rootDir: string, dbDir: string, dbPath: string): void {
   process.env.SPEC_KIT_DB_DIR = dbDir;
   process.env.SPECKIT_DB_DIR = dbDir;
   process.env.MEMORY_DB_PATH = dbPath;
-  process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = ADMIN_USER_ID;
-  process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
   process.env.SPECKIT_ABLATION = 'true';
   process.env.EMBEDDINGS_PROVIDER = 'hf-local';
   delete process.env.VOYAGE_API_KEY;
@@ -494,7 +492,7 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
         },
         {
           heading: '## SUMMARY',
-          body: 'Checkpoint restore uses transaction rollback guarantees. Graph rollout diagnostics remain stable. Shared memory is governed by tenant and actor identity.',
+          body: 'Checkpoint restore uses transaction rollback guarantees. Graph rollout diagnostics remain stable. Governance relies on tenant and actor identity.',
         },
       ],
       {
@@ -581,12 +579,12 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
       ]),
     },
     {
-      title: 'Shared Memory Governance Notes',
-      filePath: path.join(targetSpecAbsolute, 'memory', 'shared-memory-governance.md'),
+      title: 'Governed Memory Notes',
+      filePath: path.join(targetSpecAbsolute, 'memory', 'governed-memory-notes.md'),
       specFolder: targetSpecFolder,
-      content: buildMemoryDoc('Shared Memory Governance Notes', 'Governed shared memory behavior.', [
-        'Shared memory is deny-by-default until membership is granted.',
-        'Actor identity and tenant scoping are required for shared space mutations.',
+      content: buildMemoryDoc('Governed Memory Notes', 'Governed memory behavior.', [
+        'Actor identity and tenant scoping are required for governed memory operations.',
+        'Resume and save flows stay inside the caller-provided tenant and actor scope.',
       ]),
     },
     {

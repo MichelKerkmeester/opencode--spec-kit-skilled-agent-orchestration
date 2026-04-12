@@ -270,7 +270,6 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           tenantId: 'tenant-a',
           userId: 'user-1',
           agentId: 'agent-1',
-          sharedSpaceId: 'shared-1',
         }),
         5000,
         'scope-forward-deep'
@@ -281,7 +280,6 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         tenantId: 'tenant-a',
         userId: 'user-1',
         agentId: 'agent-1',
-        sharedSpaceId: 'shared-1',
       }));
     });
 
@@ -293,7 +291,6 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           tenantId: 'tenant-a',
           userId: 'user-1',
           agentId: 'agent-1',
-          sharedSpaceId: 'shared-1',
         }),
         5000,
         'scope-forward-resume'
@@ -303,7 +300,6 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         tenantId: 'tenant-a',
         userId: 'user-1',
         agentId: 'agent-1',
-        sharedSpaceId: 'shared-1',
       }));
     });
   });

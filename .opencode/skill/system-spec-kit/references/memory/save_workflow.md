@@ -22,9 +22,7 @@ Direct phase-folder targets are supported. If the explicit CLI target resolves t
 
 ### Governed Save Boundaries
 
-The save workflow stays compatible with private, agent-scoped, and shared-memory operation. When the surrounding runtime enables governance, save and follow-up retrieval flows may carry `tenantId`, `userId`, `agentId`, and `sharedSpaceId` so memory capture stays inside the intended boundary.
-
-Shared-memory saves do not bypass rollout or access checks. Enable the subsystem first and manage deny-by-default memberships through `/memory:manage shared` before relying on shared-space save targets or shared retrieval follow-ups.
+The save workflow stays compatible with private and agent-scoped operation. When the surrounding runtime enables governance, save and follow-up retrieval flows may carry `tenantId`, `userId`, and `agentId` so memory capture stays inside the intended boundary.
 
 ### Execution Paths
 

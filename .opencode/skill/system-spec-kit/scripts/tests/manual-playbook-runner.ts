@@ -545,27 +545,6 @@ function defaultArgsForTool(
       };
     case 'eval_reporting_dashboard':
       return { format: 'json', limit: 2 };
-    case 'shared_memory_enable':
-      return {};
-    case 'shared_memory_status':
-      return { tenantId: 'tenant-a', actorUserId: fixture.adminUserId };
-    case 'shared_space_upsert':
-      return {
-        actorUserId: fixture.adminUserId,
-        spaceId: 'space-9',
-        tenantId: 'tenant-a',
-        name: 'Gate I Shared Space',
-        rolloutEnabled: true,
-      };
-    case 'shared_space_membership_set':
-      return {
-        actorUserId: fixture.adminUserId,
-        spaceId: 'space-9',
-        tenantId: 'tenant-a',
-        subjectType: 'user',
-        subjectId: 'runner-user',
-        role: 'editor',
-      };
     case 'session_health':
       return {};
     case 'session_resume':
@@ -645,10 +624,6 @@ function handlerNameForTool(toolName: string): string | null {
     memory_causal_unlink: 'handleMemoryCausalUnlink',
     eval_run_ablation: 'handleEvalRunAblation',
     eval_reporting_dashboard: 'handleEvalReportingDashboard',
-    shared_memory_enable: 'handleSharedMemoryEnable',
-    shared_memory_status: 'handleSharedMemoryStatus',
-    shared_space_upsert: 'handleSharedSpaceUpsert',
-    shared_space_membership_set: 'handleSharedSpaceMembershipSet',
   };
   return passthrough[toolName] ?? null;
 }
@@ -865,18 +840,6 @@ function summarizeResponse(toolName: string, payload: unknown): {
         break;
       case 'eval_reporting_dashboard':
         facts.push('dashboard report returned');
-        break;
-      case 'shared_memory_enable':
-        facts.push('shared memory enabled');
-        break;
-      case 'shared_memory_status':
-        facts.push('shared memory status returned');
-        break;
-      case 'shared_space_upsert':
-        facts.push('shared space upserted');
-        break;
-      case 'shared_space_membership_set':
-        facts.push('shared space membership updated');
         break;
       case 'session_resume':
         facts.push('resume payload returned', 'session recovered');

@@ -34,9 +34,6 @@ const AUTHORITATIVE_TABLES = [
   'learned_feedback_audit',
   'session_learning',
   'governance_audit',
-  'shared_spaces',
-  'shared_space_members',
-  'shared_space_conflicts',
   'session_state',
   'session_sent_memories',
   'memory_summaries',
@@ -213,13 +210,12 @@ function seedDatabase(database: Database.Database): void {
       user_id,
       agent_id,
       session_id,
-      shared_space_id,
       context_type,
       channel,
       content_hash,
       content_text,
       learned_triggers
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     1,
     'specs/022-hybrid-rag-fusion',
@@ -236,7 +232,6 @@ function seedDatabase(database: Database.Database): void {
     'user-a',
     'agent-a',
     'sess-1',
-    'space-1',
     'implementation',
     'default',
     'hash-alpha',
@@ -261,13 +256,12 @@ function seedDatabase(database: Database.Database): void {
       user_id,
       agent_id,
       session_id,
-      shared_space_id,
       context_type,
       channel,
       content_hash,
       content_text,
       learned_triggers
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     2,
     'specs/022-hybrid-rag-fusion',
@@ -284,7 +278,6 @@ function seedDatabase(database: Database.Database): void {
     'user-a',
     'agent-a',
     'sess-1',
-    'space-1',
     'research',
     'default',
     'hash-beta',
@@ -360,25 +353,9 @@ function seedDatabase(database: Database.Database): void {
 
   database.prepare(`
     INSERT INTO governance_audit (
-      id, action, decision, memory_id, logical_key, tenant_id, user_id, agent_id, session_id, shared_space_id, reason, metadata, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(1, 'scope_check', 'allow', 1, 'specs/022-hybrid-rag-fusion::/tmp/specs/022/alpha.md::_', 'tenant-a', 'user-a', 'agent-a', 'sess-1', 'space-1', 'seed governance', '{"phase":"seed"}', later);
-
-  database.prepare(`
-    INSERT INTO shared_spaces (space_id, tenant_id, name, rollout_enabled, rollout_cohort, kill_switch, metadata, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run('space-1', 'tenant-a', 'Hybrid Space', 1, 'pilot-a', 0, '{"phase":"seed"}', now, later);
-
-  database.prepare(`
-    INSERT INTO shared_space_members (space_id, subject_type, subject_id, role, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).run('space-1', 'user', 'user-a', 'owner', now, later);
-
-  database.prepare(`
-    INSERT INTO shared_space_conflicts (
-      id, space_id, logical_key, existing_memory_id, incoming_memory_id, strategy, actor, metadata, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(1, 'space-1', 'specs/022-hybrid-rag-fusion::/tmp/specs/022/alpha.md::_', 1, 2, 'manual_review', 'tester', '{"phase":"seed"}', later);
+      id, action, decision, memory_id, logical_key, tenant_id, user_id, agent_id, session_id, reason, metadata, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(1, 'scope_check', 'allow', 1, 'specs/022-hybrid-rag-fusion::/tmp/specs/022/alpha.md::_', 'tenant-a', 'user-a', 'agent-a', 'sess-1', 'seed governance', '{"phase":"seed"}', later);
 
   database.prepare(`
     INSERT INTO session_state (

@@ -43,7 +43,6 @@ Important `index.ts` extras:
 - Folder-discovery helpers from `lib/search/folder-discovery`.
 - Entity extraction helpers from `lib/extraction/entity-extractor`.
 - Layer metadata from `lib/architecture/layer-definitions`.
-- Shared rollout metrics/types from `lib/collab/shared-spaces`.
 - Roadmap capability flags from `lib/config/capability-flags`.
 
 <!-- /ANCHOR:available-modules -->

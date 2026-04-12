@@ -41,7 +41,7 @@ Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the oper
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Module Categories | 29 | architecture, cache, chunking, code-graph, cognitive, collab, config, contracts, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, spec, storage, telemetry, utils, validation |
+| Module Categories | 28 | architecture, cache, chunking, code-graph, cognitive, config, contracts, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, spec, storage, telemetry, utils, validation |
 | Cognitive Features | 10+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, archival manager, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
@@ -280,9 +280,6 @@ lib/                            # TypeScript source files
 │   ├── extraction-adapter.ts   # Extraction adapter
 │   ├── redaction-gate.ts       # Redaction gate
 │   └── README.md               # Module documentation
-│
-├── collab/                     # Shared-memory collaboration (1 module)
-│   └── shared-spaces.ts        # Shared spaces, memberships, rollout and kill switch
 │
 ├── feedback/                   # Feedback learning utilities (4 modules)
 │   ├── batch-learning.ts       # Batch feedback aggregation pipeline

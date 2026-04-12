@@ -63,7 +63,6 @@ function deleteAncillaryMemoryRows(database: Database.Database, id: number): voi
     'DELETE FROM memory_summaries WHERE memory_id = ?',
     'DELETE FROM memory_entities WHERE memory_id = ?',
     'DELETE FROM memory_lineage WHERE memory_id = ?',
-    'DELETE FROM shared_space_conflicts WHERE existing_memory_id = ? OR incoming_memory_id = ?',
   ];
 
   for (const sql of ancillaryTables) {

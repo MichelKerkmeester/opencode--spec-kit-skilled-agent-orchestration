@@ -78,7 +78,7 @@ Delete the shared-memory feature end to end while preserving only the unavoidabl
 | `.opencode/command/memory/manage.md` | Modify | Remove the `shared` mode from command docs and allowed tools. |
 | `.opencode/skill/system-spec-kit/feature_catalog/**` | Modify/Delete | Delete shared-memory catalog entries and index references. |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/**` | Modify/Delete | Delete shared-memory playbook scenarios and index references. |
-| `.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md` | Delete | Remove the shared-memory guide entirely. |
+| The dedicated shared-memory database guide file | Delete | Remove the standalone shared-memory guide entirely. |
 | `.opencode/skill/system-spec-kit/shared-spaces/` | Delete | Remove the documentation-only shared-spaces directory. |
 <!-- /ANCHOR:scope -->
 
@@ -115,6 +115,18 @@ Delete the shared-memory feature end to end while preserving only the unavoidabl
 - **SC-003**: Shared-memory docs, feature-catalog rows, playbook scenarios, and shared-only tests are gone.
 - **SC-004**: Typecheck, build, tests, strict packet validation, and final grep all pass.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+### Acceptance Scenarios
+
+**Given** the MCP server enumerates lifecycle tools, **when** the live tool surface and tool catalog are inspected, **then** none of the four removed shared-memory tools appear.
+
+**Given** retrieval, trigger, save, checkpoint, or preflight handlers receive governed-scope requests, **when** they execute after this phase, **then** they continue to work without any `sharedSpaceId` parameter or shared-space filtering branch.
+
+**Given** operators open command docs, MCP docs, feature-catalog pages, or manual playbook indices, **when** they search for shared-memory workflows, **then** they find no active shared-memory setup, rollout, or membership guidance.
+
+**Given** the exact shared-reference grep is run after implementation, **when** results are reviewed, **then** the only remaining hits are the kept `shared_space_id` column definitions in `vector-index-schema.ts` and the 010 packet docs that describe the removal.
 
 ---
 

@@ -168,7 +168,6 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           reason: 'scope-test',
           userId: 'user-1',
           agentId: 'agent-1',
-          sharedSpaceId: 'space-1',
         },
       });
       try {
@@ -179,7 +178,6 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           tenantId: 'tenant-a',
           userId: 'user-1',
           agentId: 'agent-1',
-          sharedSpaceId: 'space-1',
         });
         expect(spy).toHaveBeenCalledWith({
           name: 'scoped-checkpoint',
@@ -189,13 +187,11 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
             tenantId: 'tenant-a',
             userId: 'user-1',
             agentId: 'agent-1',
-            sharedSpaceId: 'space-1',
           },
           scope: {
             tenantId: 'tenant-a',
             userId: 'user-1',
             agentId: 'agent-1',
-            sharedSpaceId: 'space-1',
           },
         });
       } finally {
@@ -274,7 +270,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           createdAt: '2026-03-25T12:00:00.000Z',
           gitBranch: null,
           snapshotSize: 50,
-          metadata: { userId: 'user-1', sharedSpaceId: 'space-1' },
+          metadata: { userId: 'user-1', agentId: 'agent-1' },
         },
         {
           id: 2,
@@ -283,14 +279,14 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           createdAt: '2026-03-25T12:01:00.000Z',
           gitBranch: null,
           snapshotSize: 50,
-          metadata: { userId: 'user-2', sharedSpaceId: 'space-1' },
+          metadata: { userId: 'user-2', agentId: 'agent-1' },
         },
       ]);
       try {
         const result = await handler.handleCheckpointList({
           tenantId: 'tenant-a',
           userId: 'user-1',
-          sharedSpaceId: 'space-1',
+          agentId: 'agent-1',
         });
         const parsed = JSON.parse(result.content[0].text);
         expect(parsed.data?.count).toBe(1);
@@ -299,7 +295,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(listSpy).toHaveBeenCalledWith(null, 50, {
           tenantId: 'tenant-a',
           userId: 'user-1',
-          sharedSpaceId: 'space-1',
+          agentId: 'agent-1',
         });
       } finally {
         listSpy.mockRestore();
@@ -517,7 +513,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         git_branch: null,
         memory_snapshot: Buffer.from(''),
         file_snapshot: null,
-        metadata: JSON.stringify({ sharedSpaceId: 'space-2' }),
+        metadata: JSON.stringify({ userId: 'user-2' }),
       } satisfies CheckpointEntry);
       const deleteSpy = vi.spyOn(checkpointStorageMod, 'deleteCheckpoint');
       try {
@@ -525,7 +521,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           name: 'scoped-delete',
           confirmName: 'scoped-delete',
           tenantId: 'tenant-a',
-          sharedSpaceId: 'space-1',
+          userId: 'user-1',
         });
         expect(result.isError).toBe(true);
         const parsed = JSON.parse(result.content[0].text);
@@ -541,7 +537,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       const response = await handler.handleCheckpointDelete({
         name: 'missing-tenant-delete',
         confirmName: 'missing-tenant-delete',
-        sharedSpaceId: 'space-1',
+        userId: 'user-1',
       });
       const parsed = JSON.parse(response.content[0].text);
       expect(response.isError).toBe(true);

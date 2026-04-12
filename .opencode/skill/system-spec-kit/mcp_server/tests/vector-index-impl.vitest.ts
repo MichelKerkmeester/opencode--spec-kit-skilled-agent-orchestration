@@ -132,8 +132,8 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(missingExports).toEqual([]);
     });
 
-    it('has correct constants EMBEDDING_DIM=768 and DEFAULT_DB_PATH', () => {
-      expect(mod.EMBEDDING_DIM).toBe(768);
+    it('has correct constants EMBEDDING_DIM=1024 and DEFAULT_DB_PATH', () => {
+      expect(mod.EMBEDDING_DIM).toBe(1024);
       expect(typeof mod.DEFAULT_DB_PATH).toBe('string');
       expect(mod.DEFAULT_DB_PATH.length).toBeGreaterThan(0);
     });

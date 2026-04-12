@@ -16,7 +16,7 @@ This feature controls who can save and read memories and keeps a record of every
 
 ## 2. CURRENT REALITY
 
-Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent`, `session`, and optional shared space) so reads and writes are evaluated against explicit actor boundaries.
+Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent`, and `session`) so reads and writes are evaluated against explicit actor boundaries.
 
 Governed ingest now requires provenance metadata (`provenanceSource`, `provenanceActor`) when scoped identity fields are provided. Ingest attempts that carry scope identifiers without required provenance are rejected instead of being accepted as ambiguous writes.
 
@@ -36,7 +36,7 @@ The governance audit trail remains queryable after runtime operations. Audit row
 |------|-------|------|
 | `mcp_server/lib/governance/scope-governance.ts` | Lib | Governed-ingest validation, scope filtering, audit writes, and audit review via `reviewGovernanceAudit()` |
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Defines governance storage, including `governance_audit` and supporting schema/indexes |
-| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies scope filtering and shared-space allowlists during candidate generation |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies governed scope filtering during candidate generation |
 | `mcp_server/handlers/memory-save.ts` | Handler | Validates governed ingest and transactionally applies governance metadata with fail-safe cleanup on failure |
 | `mcp_server/handlers/memory-search.ts` | Handler | Normalizes scoped retrieval context before pipeline execution |
 

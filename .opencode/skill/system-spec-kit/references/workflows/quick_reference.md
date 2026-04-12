@@ -126,7 +126,7 @@ If the runtime does not surface command menus clearly, use this compact command 
 **Memory commands**
 - `/memory:save` - preserve the current session context into spec memory
 - `/memory:search` - retrieve prior context, decisions, and analysis
-- `/memory:manage` - run maintenance, checkpoint, cleanup, and shared-memory operations
+- `/memory:manage` - run maintenance, checkpoint, cleanup, and ingest operations
 - `/memory:learn` - create or manage constitutional always-surface rules
 
 **Nested changelog generator**

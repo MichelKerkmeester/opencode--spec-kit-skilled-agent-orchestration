@@ -505,7 +505,6 @@ More content follows.
               tenant_id: 'tenant-a',
               user_id: 'user-a',
               agent_id: null,
-              shared_space_id: null,
             };
           }
         })
@@ -581,7 +580,6 @@ More content follows.
               tenant_id: 'tenant-b',
               user_id: null,
               agent_id: null,
-              shared_space_id: null,
             }
           ],
         },
@@ -609,7 +607,6 @@ More content follows.
               tenant_id: 'tenant-b',
               user_id: 'user-b',
               agent_id: null,
-              shared_space_id: null,
               content_text: testContent,
             };
           },

@@ -30,7 +30,6 @@ function insertMemory(
     userId?: string | null;
     agentId?: string | null;
     sessionId?: string | null;
-    sharedSpaceId?: string | null;
   },
 ): void {
   database.prepare(`
@@ -51,9 +50,8 @@ function insertMemory(
       tenant_id,
       user_id,
       agent_id,
-      session_id,
-      shared_space_id
-    ) VALUES (?, ?, ?, ?, ?, '[]', 0.5, ?, ?, 'pending', 'normal', 'general', ?, ?, ?, ?, ?, ?)
+      session_id
+    ) VALUES (?, ?, ?, ?, ?, '[]', 0.5, ?, ?, 'pending', 'normal', 'general', ?, ?, ?, ?, ?)
   `).run(
     params.id,
     params.specFolder,
@@ -67,7 +65,6 @@ function insertMemory(
     params.userId ?? null,
     params.agentId ?? null,
     params.sessionId ?? null,
-    params.sharedSpaceId ?? null,
   );
 }
 

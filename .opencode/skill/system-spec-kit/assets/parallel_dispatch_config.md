@@ -16,7 +16,7 @@ Configuration for smart parallel sub-agent dispatch based on task complexity sco
 
 Defines when and how to dispatch parallel agents for complex tasks. Use this configuration to determine if a task benefits from parallel exploration vs. direct execution.
 
-This guidance also applies to cross-phase documentation campaigns and shared-space research sweeps. When work spans multiple spec folders or shared-memory contexts, keep each dispatched workstream anchored to one explicit phase or shared-space boundary so evidence and follow-up saves remain attributable.
+This guidance also applies to cross-phase documentation campaigns. When work spans multiple spec folders, keep each dispatched workstream anchored to one explicit phase boundary so evidence and follow-up saves remain attributable.
 
 ### Usage
 
@@ -24,7 +24,7 @@ This guidance also applies to cross-phase documentation campaigns and shared-spa
 2. Check score against decision thresholds (<20% = direct, ≥20% + 2 domains = ask user)
 3. For Step 6 Planning, use the 4-agent parallel exploration pattern
 4. Apply override phrases when user specifies execution preference
-5. For campaign-style work, keep each parallel branch scoped to one phase family or one shared-space boundary before recombining results
+5. For campaign-style work, keep each parallel branch scoped to one phase family before recombining results
 
 ---
 

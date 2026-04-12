@@ -14,8 +14,8 @@
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "env": {
-        "EMBEDDINGS_PROVIDER": "hf-local",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite",
+        "EMBEDDINGS_PROVIDER": "auto",
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/database/context-index-hf.sqlite",
         "SPECKIT_ADAPTIVE_FUSION": "true",
         "SPECKIT_SESSION_BOOST": "true",
         "SPECKIT_CAUSAL_BOOST": "true"
@@ -42,3 +42,4 @@
     }
   }
 }
+

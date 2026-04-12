@@ -1,7 +1,7 @@
 ---
-description: Manage memory database and shared-memory lifecycle - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, and shared-space operations
-argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>] | [shared [--actor-user <id>|--actor-agent <id>] <enable|create|member|status> ...]"
-allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel, spec_kit_memory_shared_space_upsert, spec_kit_memory_shared_space_membership_set, spec_kit_memory_shared_memory_status, spec_kit_memory_shared_memory_enable
+description: Manage memory database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, and ingest operations
+argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>]"
+allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel
 ---
 
 # 🚨 MANDATORY FIRST ACTION - DO NOT SKIP
@@ -16,13 +16,13 @@ allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, 
 BEFORE executing ANY workflow:
 
 1. PARSE $ARGUMENTS to determine mode
-2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, shared)
+2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest)
    - IF $ARGUMENTS is empty → mode = "stats" (default)
 3. For modes requiring <id>: VERIFY id is provided and numeric
 4. For modes requiring <name>: VERIFY name is provided
 
 IF mode unrecognized:
-  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, shared"
+  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest"
 
 IF required parameter missing:
   → STATUS=FAIL ERROR="Missing required parameter for <mode>"
@@ -32,12 +32,12 @@ IF required parameter missing:
 
 # Memory Management Command
 
-Unified management interface for the memory database and shared-memory lifecycle: scan for new files, cleanup old memories, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, run async ingest, and manage shared spaces.
+Unified management interface for the memory database: scan for new files, cleanup old memories, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, and run async ingest jobs.
 
 ```yaml
 role: Memory Database Administrator
-purpose: Unified management interface for memory database maintenance, checkpoint operations, async ingest, and shared-memory lifecycle management
-action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, or shared based on arguments
+purpose: Unified management interface for memory database maintenance, checkpoint operations, and async ingest management
+action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, or ingest based on arguments
 operating_mode:
   workflow: interactive_management
   approvals: cleanup_delete_restore_require_confirmation
@@ -54,11 +54,10 @@ Provide a unified interface for memory database **management** operations:
 - Validation feedback and deletion
 - Health checks and diagnostics
 - Checkpoint creation, restoration, listing, and deletion
-- Shared-memory setup, shared-space creation, membership changes, and rollout inspection
 
 **Separation from `/memory:search`:**
 - `/memory:search` = RETRIEVAL + ANALYSIS (intent-aware search, epistemic baselines, causal graph, evaluation)
-- `/memory:manage` = MANAGEMENT + SHARED-MEMORY LIFECYCLE (modify, delete, maintain, checkpoint, ingest, shared spaces)
+- `/memory:manage` = MANAGEMENT LIFECYCLE (modify, delete, maintain, checkpoint, ingest)
 
 ---
 
@@ -91,11 +90,6 @@ Provide a unified interface for memory database **management** operations:
 | `ingest start <path1> [path2 ...]`       | Start Ingest      | `/memory:manage ingest start /path/file.md`            |
 | `ingest status <jobId>`                  | Ingest Status     | `/memory:manage ingest status abc-123`                 |
 | `ingest cancel <jobId>`                  | Cancel Ingest     | `/memory:manage ingest cancel abc-123`                 |
-| `shared (--actor-user <id> \| --actor-agent <id>)` | Shared Overview   | `/memory:manage shared --actor-agent spec-kit`         |
-| `shared enable (--actor-user <id> \| --actor-agent <id>)` | Enable Shared     | `/memory:manage shared enable --actor-agent spec-kit`  |
-| `shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create Shared Space | `/memory:manage shared create team-alpha tenant-1 "Team Alpha" --actor-user user-1` |
-| `shared member <spaceId> <tenantId> <subjectType> <subjectId> <role> (--actor-user <id> \| --actor-agent <id>)` | Set Membership | `/memory:manage shared member team-alpha tenant-1 user user-42 editor --actor-user user-1` |
-| `shared status [--tenant <id>] (--actor-user <id> \| --actor-agent <id>)` | Shared Status | `/memory:manage shared status --tenant tenant-1 --actor-user user-42` |
 
 ### Importance Tiers
 
@@ -133,11 +127,6 @@ Provide a unified interface for memory database **management** operations:
 | `/memory:manage ingest start /path/file.md`            | Start async ingest job    |
 | `/memory:manage ingest status abc-123`                 | Check ingest progress     |
 | `/memory:manage ingest cancel abc-123`                 | Cancel ingest job         |
-| `/memory:manage shared --actor-agent spec-kit`         | Shared overview           |
-| `/memory:manage shared enable --actor-agent spec-kit`  | Enable shared memory      |
-| `/memory:manage shared create ...`                     | Create or update shared space |
-| `/memory:manage shared member ...`                     | Set shared-space membership |
-| `/memory:manage shared status --actor-agent spec-kit`  | Inspect rollout status    |
 
 ---
 
@@ -164,11 +153,6 @@ $ARGUMENTS
     │   ├─ "start <paths>"   → Start async job
     │   ├─ "status <jobId>"  → Check progress
     │   └─ "cancel <jobId>"  → Cancel running job
-    └─ "shared <sub>"       → SHARED MEMORY LIFECYCLE (Section 16)
-        ├─ "enable"          → First-time setup
-        ├─ "create ..."      → Create or update shared space
-        ├─ "member ..."      → Set shared-space membership
-        └─ "status ..."      → Inspect rollout state
 ```
 
 ---
@@ -827,172 +811,7 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 
 ---
 
-## 16. SHARED MEMORY LIFECYCLE
-
-**Trigger:** `/memory:manage shared [enable|create|member|status]`
-
-This namespace manages shared-memory setup, shared-space creation, membership changes, and rollout inspection without requiring a separate top-level command.
-
-### Shared Enablement Gate
-
-Before routing any `shared` subcommand, parse caller identity first. The shared-memory tools currently require exactly one explicit caller identity in the command payload.
-
-```text
-1. Parse actor identity: exactly one of --actor-user <id> or --actor-agent <id>
-2. Parse the nested subcommand after `shared`
-3. IF subcommand is missing:
-   → IF shared memory disabled:
-       Display first-time setup prompt and offer `enable`
-     ELSE:
-       Display shared overview dashboard
-4. IF subcommand is not `enable` AND shared memory is disabled:
-   → Display the setup prompt below
-   → WAIT for confirmation
-   → On "yes": call shared_memory_enable({ actorUserId|actorAgentId })
-   → Continue only after setup completes
-5. For shared overview or status checks, call shared_memory_status({ tenantId, actorUserId, actorAgentId })
-6. Route to the requested shared subcommand workflow
-```
-
-When shared memory is disabled, display:
-
-```text
-MEMORY:MANAGE SHARED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Shared memory is not yet enabled for this workspace.
-
-  This will:
-  - Create shared-memory infrastructure tables
-  - Persist enablement in the database
-  - Generate a README in shared-spaces/
-
-  Enable shared memory? (yes/no)
-```
-
-### Shared Overview
-
-**Trigger:** `/memory:manage shared (--actor-user <id> | --actor-agent <id>)`
-
-```text
-MEMORY:MANAGE SHARED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-→ Available Subcommands ──────────────────────────
-
-  [enable]   Enable shared memory (first-time setup)
-  [create]   Create or update a shared-memory space
-  [member]   Set deny-by-default membership
-  [status]   Inspect rollout state and accessible spaces
-
-  Note: Spaces stay deny-by-default after bootstrap. The first successful
-  create auto-grants `owner` to the acting caller, and later access changes
-  still require explicit membership updates by an existing owner.
-
-STATUS=OK ACTION=shared-overview
-```
-
-### Shared Enable
-
-**Trigger:** `/memory:manage shared enable (--actor-user <id> | --actor-agent <id>)`
-
-`shared_memory_enable()` requires exactly one explicit caller identity until the transport provides a server-minted principal. Only the configured shared-memory admin can complete first-run enablement. If the runtime does not provide a trusted caller binding, surface the auth error verbatim instead of retrying with guessed parameters.
-
-Call `spec_kit_memory_shared_memory_enable({ actorUserId|actorAgentId })`. On success:
-
-```text
-MEMORY:MANAGE SHARED ENABLE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Shared memory is now enabled.
-  Use `/memory:manage shared ...` to manage spaces and memberships.
-
-STATUS=OK ACTION=shared-enable
-```
-
-### Shared Create or Update
-
-**Trigger:** `/memory:manage shared create <spaceId> <tenantId> <name> (--actor-user <id> | --actor-agent <id>)`
-
-Workflow:
-1. Parse `spaceId`, `tenantId`, `name`, and exactly one actor identity
-2. Validate one and only one actor identity is present: `--actor-user <id>` or `--actor-agent <id>`
-3. Apply optional rollout parameters (`rolloutEnabled`, `rolloutCohort`, `killSwitch`)
-4. Call `shared_space_upsert()` with the parsed parameters
-5. Display confirmation with bootstrap-owner details
-
-```text
-MEMORY:MANAGE SHARED CREATE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Space       <spaceId>
-  Tenant      <tenantId>
-  Name        <name>
-  Actor       <user:<actorUserId>|agent:<actorAgentId>>
-  Rollout     <enabled|disabled>
-  Kill Switch <off|ON>
-  Owner Grant <bootstrap owner granted|existing owner verified>
-
-STATUS=OK ACTION=shared-create SPACE=<spaceId>
-```
-
-### Shared Membership
-
-**Trigger:** `/memory:manage shared member <spaceId> <tenantId> <subjectType> <subjectId> <role> (--actor-user <id> | --actor-agent <id>)`
-
-Workflow:
-1. Parse `spaceId`, `tenantId`, actor identity, `subjectType`, `subjectId`, and `role`
-2. Validate exactly one actor identity is present
-3. Validate `subjectType` is `user` or `agent`
-4. Validate `role` is `owner`, `editor`, or `viewer`
-5. Call `shared_space_membership_set()` and display confirmation
-
-```text
-MEMORY:MANAGE SHARED MEMBER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Space       <spaceId>
-  Tenant      <tenantId>
-  Subject     <subjectType>:<subjectId>
-  Role        <role>
-  Actor       <user:<actorUserId>|agent:<actorAgentId>>
-
-STATUS=OK ACTION=shared-member SPACE=<spaceId>
-```
-
-### Shared Status
-
-**Trigger:** `/memory:manage shared status [--tenant <id>] (--actor-user <id> | --actor-agent <id>)`
-
-Workflow:
-1. Parse optional `tenantId`
-2. Validate exactly one actor identity is present: `--actor-user <id>` or `--actor-agent <id>`
-3. Call `shared_memory_status({ tenantId, actorUserId, actorAgentId })`
-4. Display rollout state and caller-visible spaces from `spaces[]` plus `rolloutSummary`
-
-```text
-MEMORY:MANAGE SHARED STATUS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-→ Rollout ────────────────────────────────────────
-  Feature     <enabled|disabled>
-  Spaces      <rolloutSummary.totalSpaces> visible
-  Accessible  <rolloutSummary.currentlyAccessibleSpaces> now
-
-→ Caller Spaces ─────────────────────────────────
-  <spaceId>   <name>   <role>   <live|blocked>   <kill-switch|normal>
-  <spaceId>   <name>   <role>   <live|blocked>   <kill-switch|normal>
-
-Notes:
-- `spaces[]` includes caller-visible memberships even when rollout is disabled or the kill switch is on.
-- `allowedSharedSpaceIds[]` is the narrower set currently readable through indexed retrieval.
-
-STATUS=OK ACTION=shared-status
-```
-
----
-
-## 17. ERROR HANDLING
+## 16. ERROR HANDLING
 
 | Condition                | Response                                                                                                                         |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -1008,21 +827,15 @@ STATUS=OK ACTION=shared-status
 | Database not initialized | `STATUS=FAIL ERROR="Database not initialized. Run memory_index_scan() to create schema, or restart the MCP server."`             |
 | Ingest job not found     | `STATUS=FAIL ERROR="Job '<jobId>' not found"`                                                                                    |
 | Too many ingest paths    | `STATUS=FAIL ERROR="Maximum 50 paths per job"`                                                                                   |
-| Shared memory disabled   | Offer `/memory:manage shared enable --actor-user <id>` or first-time setup prompt                                                 |
-| Shared enable denied     | `STATUS=FAIL ERROR="Only the configured shared-memory admin can enable shared memory"`; verify authenticated caller context      |
-| Invalid shared role      | `STATUS=FAIL ERROR="role must be owner, editor, or viewer"`                                                                      |
-| Invalid shared subject   | `STATUS=FAIL ERROR="subjectType must be user or agent"`                                                                          |
-| Shared space not found   | `STATUS=FAIL ERROR="Space '<spaceId>' not found"`                                                                                |
 
 ---
 
-## 18. RELATED COMMANDS
+## 17. RELATED COMMANDS
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:manage shared`: Shared-memory spaces
 
 ---
 <!-- APPENDIX: Reference material for AI agent implementation -->
@@ -1049,10 +862,6 @@ STATUS=OK ACTION=shared-status
 | INGEST START       | `memory_ingest_start()`                                                 | SINGLE   | Show error msg  |
 | INGEST STATUS      | `memory_ingest_status()`                                                | SINGLE   | Show error msg  |
 | INGEST CANCEL      | `memory_ingest_cancel()`                                                | SINGLE   | Show error msg  |
-| SHARED ENABLE      | `shared_memory_enable()`                                                | SINGLE   | Show error msg  |
-| SHARED CREATE      | `shared_space_upsert()`                                                 | SINGLE   | Show error msg  |
-| SHARED MEMBER      | `shared_space_membership_set()`                                         | SINGLE   | Show error msg  |
-| SHARED STATUS      | `shared_memory_status()`                                                | SINGLE   | Show error msg  |
 
 ### Tool Signatures
 
@@ -1073,10 +882,6 @@ spec_kit_memory_checkpoint_delete({ name: "<name>", confirmName: "<name>" })
 spec_kit_memory_memory_ingest_start({ paths: ["<path1>", "<path2>"], specFolder: "optional" })
 spec_kit_memory_memory_ingest_status({ jobId: "<jobId>" })
 spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
-spec_kit_memory_shared_memory_enable({ actorUserId, actorAgentId })
-spec_kit_memory_shared_space_upsert({ spaceId, tenantId, name, actorUserId, actorAgentId, rolloutEnabled, rolloutCohort, killSwitch })
-spec_kit_memory_shared_space_membership_set({ spaceId, tenantId, subjectType, subjectId, role, actorUserId, actorAgentId })
-spec_kit_memory_shared_memory_status({ tenantId, actorUserId, actorAgentId })
 ```
 
 > **Feature Flag Behavior:** `SPECKIT_ADAPTIVE_FUSION` affects scan and search behavior: when enabled, index scans apply adaptive weight profiles during embedding and artifact-class routing during re-indexing. `SPECKIT_EXTENDED_TELEMETRY` enables detailed per-operation metrics for scan, search, and health calls. **Mutation Ledger:** cleanup and delete operations are recorded in the append-only mutation ledger, providing a full audit trail that can be reviewed when investigating unexpected state changes.

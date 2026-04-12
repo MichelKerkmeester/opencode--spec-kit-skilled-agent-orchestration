@@ -10,16 +10,10 @@ vi.mock('../utils', () => ({
   requireDb: mockRequireDb,
 }));
 
-import { handleSharedMemoryStatus, validateCallerAuth } from '../handlers/shared-memory';
 import { TOOL_DEFINITIONS, getSchema, validateToolArgs } from '../tool-schemas';
 import { validateToolInputSchema } from '../utils/tool-input-schema';
 
 const ORIGINAL_STRICT_SCHEMAS_ENV = process.env.SPECKIT_STRICT_SCHEMAS;
-const ORIGINAL_TRUST_CALLER_BINDING_ENV = process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
-
-function parseEnvelope(response: Awaited<ReturnType<typeof handleSharedMemoryStatus>>): Record<string, unknown> {
-  return JSON.parse(response.content[0].text) as Record<string, unknown>;
-}
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -30,13 +24,6 @@ afterEach(() => {
   } else {
     process.env.SPECKIT_STRICT_SCHEMAS = ORIGINAL_STRICT_SCHEMAS_ENV;
   }
-  if (ORIGINAL_TRUST_CALLER_BINDING_ENV === undefined) {
-    delete process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY;
-  } else {
-    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = ORIGINAL_TRUST_CALLER_BINDING_ENV;
-  }
-  delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID;
-  delete process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID;
 });
 
 /* ───────────────────────────────────────────────────────────────
@@ -347,7 +334,6 @@ describe('memory_search limit contract', () => {
         tenantId: 'tenant-a',
         userId: 'user-1',
         agentId: 'agent-1',
-        sharedSpaceId: 'shared-1',
       });
     }).not.toThrow();
   });
@@ -372,7 +358,6 @@ describe('governed retrieval schema propagation', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
     };
 
     expect(() => {
@@ -399,7 +384,6 @@ describe('governed retrieval schema propagation', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
     };
 
     expect(() => {
@@ -415,7 +399,6 @@ describe('governed retrieval schema propagation', () => {
       tenantId: 'tenant-a',
       userId: 'user-1',
       agentId: 'agent-1',
-      sharedSpaceId: 'shared-1',
     };
 
     expect(() => {
@@ -423,84 +406,6 @@ describe('governed retrieval schema propagation', () => {
     }).not.toThrow();
     expect(validateToolArgs('memory_match_triggers', args)).toEqual(args);
   });
-});
-
-describe('shared-memory admin actor schema', () => {
-  it('public schemas expose actor identity fields without top-level exclusivity combinators', () => {
-    for (const toolName of ['shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status', 'shared_memory_enable']) {
-      const tool = TOOL_DEFINITIONS.find((entry) => entry.name === toolName);
-      const schema = tool?.inputSchema as { properties?: Record<string, unknown> } | undefined;
-      expect(schema?.properties).toMatchObject({
-        actorUserId: { type: 'string' },
-        actorAgentId: { type: 'string' },
-      });
-      expect(schema).not.toHaveProperty('oneOf');
-      expect(schema).not.toHaveProperty('not');
-    }
-  });
-
-  it('runtime accepts exactly one actor identity for shared_space_upsert', () => {
-    expect(() => {
-      validateToolArgs('shared_space_upsert', {
-        spaceId: 'space-1',
-        tenantId: 'tenant-a',
-        name: 'Alpha',
-        actorUserId: 'user-1',
-      });
-    }).not.toThrow();
-  });
-
-  it('handler auth rejects shared_space_upsert when actor identity is omitted', () => {
-    process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
-    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
-    expect(() => {
-      validateCallerAuth({
-        tool: 'shared_space_upsert',
-      }, 'tenant-a');
-    }).toThrow(/Caller authentication is required/);
-  });
-
-  it('handler auth rejects shared_space_membership_set when both actor identities are provided', () => {
-    process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID = 'admin-1';
-    process.env.SPECKIT_SHARED_MEMORY_TRUST_CALLER_IDENTITY = 'true';
-    expect(() => {
-      validateCallerAuth({
-        tool: 'shared_space_membership_set',
-        actorUserId: 'user-1',
-        actorAgentId: 'agent-1',
-      }, 'tenant-a');
-    }).toThrow(/Provide only one actor identity/);
-  });
-
-  it('handler requires caller identity for shared_memory_status', async () => {
-    const response = await handleSharedMemoryStatus({
-      tenantId: 'tenant-a',
-    });
-    const envelope = parseEnvelope(response);
-    const data = envelope.data as Record<string, unknown>;
-
-    expect(response.isError).toBe(true);
-    expect(data.error).toBe('Caller authentication is required for shared-memory operations.');
-    expect((data.details as Record<string, unknown>).reason).toBe('actor_identity_required');
-  });
-
-  it('runtime accepts shared_memory_status with one actor identity', () => {
-    expect(() => {
-      validateToolArgs('shared_memory_status', {
-        tenantId: 'tenant-a',
-        actorAgentId: 'agent-1',
-      });
-    }).not.toThrow();
-  });
-
-  it('runtime accepts shared_memory_enable with one actor identity', () => {
-    expect(() => {
-      validateToolArgs('shared_memory_enable', {
-        actorUserId: 'user-1',
-      });
-    }).not.toThrow();
-  });
-
   it('public causal tool schemas expose string memory identifiers', () => {
     const driftWhy = TOOL_DEFINITIONS.find((entry) => entry.name === 'memory_drift_why');
     const causalLink = TOOL_DEFINITIONS.find((entry) => entry.name === 'memory_causal_link');

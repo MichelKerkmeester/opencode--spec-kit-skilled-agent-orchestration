@@ -18,7 +18,7 @@ This matrix helps determine the appropriate documentation level for any task. Us
 - Starting a new spec folder and need to choose Level 1, 2, or 3
 - Scope changes mid-implementation and level escalation may be needed
 - Uncertain whether complexity/risk factors should override LOC guidance
-- Coordinating a campaign that spans multiple phase folders, runtime families, or shared-memory spaces
+- Coordinating a campaign that spans multiple phase folders or runtime families
 
 ### Usage
 
@@ -26,7 +26,7 @@ This matrix helps determine the appropriate documentation level for any task. Us
 2. Evaluate secondary factors (complexity, risk, dependencies, testing needs)
 3. If factors suggest higher level than LOC indicates, escalate
 4. When in doubt, choose the higher level
-5. Treat cross-phase or shared-space coordination as a reason to escalate even when raw LOC stays modest
+5. Treat cross-phase coordination as a reason to escalate even when raw LOC stays modest
 
 ---
 

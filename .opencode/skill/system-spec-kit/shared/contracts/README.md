@@ -97,7 +97,7 @@ contracts/
 
 - **Algorithms**: `../algorithms/` consumes `DegradedModeContract` pattern in adaptive fusion fallback paths
 - **MCP Server**: `../mcp_server/` uses `ContextEnvelope` and `RetrievalTrace` for instrumented responses
-- **Types**: `../types.ts` defines shared memory and scoring types used alongside trace contracts
+- **Types**: `../types.ts` defines scoring types used alongside trace contracts
 
 <!-- /ANCHOR:related -->
 

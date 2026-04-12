@@ -16,7 +16,7 @@ When you want fast search results without configuring the full 31-parameter surf
 
 ## 2. CURRENT REALITY
 
-The `memory_quick_search` tool is defined in `tool-schemas.ts` as an E3 (ergonomics) entry point. It accepts 3 primary parameters — `query` (required, 2-1000 chars), `limit` (optional, 1-100, default 10), and `specFolder` (optional) — plus governance boundary fields (`tenantId`, `userId`, `agentId`, `sharedSpaceId`).
+The `memory_quick_search` tool is defined in `tool-schemas.ts` as an E3 (ergonomics) entry point. It accepts 3 primary parameters — `query` (required, 2-1000 chars), `limit` (optional, 1-100, default 10), and `specFolder` (optional) — plus governance boundary fields (`tenantId`, `userId`, `agentId`).
 
 In the dispatch layer (`tools/memory-tools.ts`), the `memory_quick_search` case validates the incoming arguments against the `memoryQuickSearchSchema` (Zod schema in `schemas/tool-input-schemas.ts`), then constructs a full `SearchArgs` object with the following hardcoded defaults:
 

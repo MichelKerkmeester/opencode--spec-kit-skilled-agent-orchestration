@@ -1079,10 +1079,10 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
   });
 
   describe('Handler: Checkpoint Scope Validation', () => {
-    it('EXT-H13: handleCheckpointList rejects whitespace tenantId when sharedSpaceId is provided', async () => {
+    it('EXT-H13: handleCheckpointList rejects whitespace tenantId when userId is provided', async () => {
       await expect(handler.handleCheckpointList({
         tenantId: '   ',
-        sharedSpaceId: 'space-1',
+        userId: 'user-1',
       })).rejects.toThrow(/tenantId must be a non-empty string/i);
     });
   });

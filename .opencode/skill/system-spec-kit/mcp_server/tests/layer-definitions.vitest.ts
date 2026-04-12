@@ -158,12 +158,12 @@ describe('Layer Definitions Tests', () => {
       expect(unmapped).toEqual([]);
     });
 
-    it('shared_memory_status appears in exactly one layer and is mapped to that layer', () => {
-      const matchingLayers = Object.values(LD).filter((layer) => layer.tools.includes('shared_memory_status'));
+    it('checkpoint_create appears in exactly one layer and is mapped to that layer', () => {
+      const matchingLayers = Object.values(LD).filter((layer) => layer.tools.includes('checkpoint_create'));
 
       expect(matchingLayers).toHaveLength(1);
       expect(matchingLayers[0].id).toBe('L5');
-      expect(mod.TOOL_LAYER_MAP['shared_memory_status']).toBe(matchingLayers[0].id);
+      expect(mod.TOOL_LAYER_MAP.checkpoint_create).toBe(matchingLayers[0].id);
     });
 
     it('tool definition prefixes stay aligned with TOOL_LAYER_MAP', () => {

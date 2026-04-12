@@ -123,5 +123,8 @@
         }
       }
     }
+  },
+  "general": {
+    "enableAutoUpdate": true
   }
 }

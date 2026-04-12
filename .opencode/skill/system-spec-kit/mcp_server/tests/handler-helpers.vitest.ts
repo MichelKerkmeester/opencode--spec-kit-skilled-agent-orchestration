@@ -451,7 +451,6 @@ describe('findSimilarMemories', () => {
         file_path: 'scoped.md',
         tenant_id: 'tenant-a',
         user_id: 'user-a',
-        shared_space_id: 'space-a',
       },
       {
         id: 2,
@@ -462,25 +461,22 @@ describe('findSimilarMemories', () => {
         file_path: 'missing-tenant.md',
         tenant_id: null,
         user_id: 'user-a',
-        shared_space_id: 'space-a',
       },
       {
         id: 3,
         similarity: 96,
-        content_text: 'missing-shared-space',
+        content_text: 'missing-user',
         stability: 1,
         difficulty: 1,
-        file_path: 'missing-space.md',
+        file_path: 'missing-user.md',
         tenant_id: 'tenant-a',
-        user_id: 'user-a',
-        shared_space_id: null,
+        user_id: null,
       },
     ] as Array<Record<string, unknown>>);
 
     const result = peGating.findSimilarMemories(new Float32Array([0.1, 0.2, 0.3]), {
       tenantId: 'tenant-a',
       userId: 'user-a',
-      sharedSpaceId: 'space-a',
     });
 
     expect(result.map((memory) => memory.id)).toEqual([1]);

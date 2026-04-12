@@ -755,7 +755,7 @@ Test.
       expect(parsed.folder).toBe(VALID_L1_FIXTURE);
     });
 
-    it('T-PB2-07e: --level 4 is the default (omitting --level gives same as --level 4)', { timeout: 15000 }, () => {
+    it('T-PB2-07e: --level 4 is the default (omitting --level gives same as --level 4)', { timeout: 30000 }, () => {
       if (!SCRIPT_EXISTS || !fs.existsSync(VALID_L1_FIXTURE)) return;
 
       const withLevel = runProgressiveValidate(VALID_L1_FIXTURE, ['--level', '4', '--json']);

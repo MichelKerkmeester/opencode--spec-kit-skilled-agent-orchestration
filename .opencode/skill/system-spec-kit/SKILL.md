@@ -151,7 +151,7 @@ INTENT_SIGNALS = {
     "EVALUATION": {"weight": 3, "keywords": ["evaluate", "ablation", "benchmark", "baseline", "metrics"]},
     "SCORING_CALIBRATION": {"weight": 3, "keywords": ["calibration", "scoring", "normalization", "decay", "interference"]},
     "ROLLOUT_FLAGS": {"weight": 3, "keywords": ["feature flag", "rollout", "toggle", "enable", "disable"]},
-    "GOVERNANCE": {"weight": 3, "keywords": ["governance", "shared memory", "tenant", "retention", "audit"]},
+    "GOVERNANCE": {"weight": 3, "keywords": ["governance", "tenant", "retention", "audit"]},
 }
 
 RESOURCE_MAP = {
@@ -225,7 +225,6 @@ COMMAND_BOOSTS = {
     "/memory:manage": "MEMORY",
     "/memory:learn": "MEMORY",
     "/spec_kit:resume": "MEMORY",
-    "/memory:manage shared": "GOVERNANCE",
 }
 
 LOADING_LEVELS = {
@@ -559,7 +558,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
-**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, with shared-memory operations available under `/memory:manage shared`, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 47 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -576,13 +575,9 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
 | `memory_stats()`                | L3    | System statistics and memory counts                |
 | `memory_health()`              | L3    | Diagnostics: orphan detection, index consistency   |
-| `shared_memory_status()`        | L5    | Shared-memory subsystem status check               |
 | `memory_index_scan()`          | L7    | Workspace scanning and re-indexing                 |
 | `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
 | `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
-| `shared_memory_enable()`        | L5    | Enable shared-memory collaboration subsystem       |
-| `shared_space_upsert()`         | L5    | Create or update shared collaboration space        |
-| `shared_space_membership_set()` | L5    | Set membership for shared collaboration space      |
 
 > **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
@@ -609,8 +604,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - Preflight parses are revalidated inside the write lock when file contents change, and duplicate short-circuits verify stored content before trusting a stale hash hit.
 - Delete and replacement paths now treat vector cleanup and projection replacement as integrity-critical instead of best-effort, so stale vector/projection rows do not silently survive successful writes.
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
-- Governed save and retrieval flows can carry `tenantId`, `userId`, `agentId`, and `sharedSpaceId` so private, agent-scoped, and shared-space memory boundaries stay aligned end to end.
-- Shared-memory collaboration is opt-in: use `/memory:manage shared` to enable rollout, create spaces, and manage deny-by-default memberships before relying on shared-space save or retrieval flows.
+- Governed save and retrieval flows can carry `tenantId`, `userId`, and `agentId` so private and agent-scoped memory boundaries stay aligned end to end.
 
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
 
@@ -687,21 +681,19 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 
 | Flag | Default | Effect |
 | ---- | ------- | ------ |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Canonical roadmap phase selector used for telemetry, evaluation baselines, and migration checkpoints |
-| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | Legacy alias for the roadmap phase selector |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | Canonical roadmap phase selector used for telemetry, evaluation baselines, and migration checkpoints |
+| `SPECKIT_HYDRA_PHASE` | `scope-governance` | Legacy alias for the roadmap phase selector |
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Canonical capability flag for the lineage-state milestone |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Canonical capability flag for the unified-graph milestone |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Enables shadow adaptive ranking (feedback-driven score adjustments, SQLite-persisted thresholds). Set `true` for shadow mode; combine with `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted` to apply to live results. |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | Ranking mode when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`: `shadow` (silent proposals) or `promoted` (applied to live ranking). No effect when ranking is disabled. |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Canonical capability flag for scope-enforcement rollout tracking |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Canonical capability flag for governance-guardrail rollout tracking |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:manage shared` or explicit env enablement |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; accepts same `true`/`false` values |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY`; default OFF |
 
 > **48 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 

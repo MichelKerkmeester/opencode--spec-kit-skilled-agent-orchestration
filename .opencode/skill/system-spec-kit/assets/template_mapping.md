@@ -24,7 +24,7 @@ For cross-phase campaigns, keep one template set per owning phase folder rather 
 2. Copy the required templates using the provided bash commands
 3. Follow the step-by-step template usage guide for proper folder setup
 4. Verify all placeholders are filled before proceeding
-5. When work spans multiple phases or shared spaces, create or update the template set inside the owning phase folder and reference the sibling branches explicitly
+5. When work spans multiple phases or multiple ownership branches, create or update the template set inside the owning phase folder and reference the sibling branches explicitly
 
 ---
 

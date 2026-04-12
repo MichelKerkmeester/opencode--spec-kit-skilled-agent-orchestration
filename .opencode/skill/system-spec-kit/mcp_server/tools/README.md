@@ -29,7 +29,7 @@ Files in this directory:
 - `memory-tools.ts` - dispatch for search, quick search, triggers, save, CRUD, stats, health, validate, and bulk delete.
 - `causal-tools.ts` - dispatch for causal graph operations.
 - `checkpoint-tools.ts` - dispatch for checkpoints and learning-history style lifecycle helpers.
-- `lifecycle-tools.ts` - dispatch for ingestion jobs and shared-memory lifecycle tools.
+- `lifecycle-tools.ts` - dispatch for ingestion jobs and lifecycle tools.
 - `types.ts` - shared MCP response type aliases and typed arg shapes.
 - `index.ts` - exports `ALL_DISPATCHERS` and `dispatchTool()`.
 

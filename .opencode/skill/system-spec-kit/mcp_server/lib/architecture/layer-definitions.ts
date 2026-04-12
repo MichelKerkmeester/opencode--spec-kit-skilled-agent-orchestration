@@ -83,7 +83,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 1000,
     priority: 5,
     useCase: 'Create checkpoints before major changes, restore previous states.',
-    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'shared_memory_enable', 'shared_memory_status', 'shared_space_upsert', 'shared_space_membership_set']
+    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete']
   },
   L6: {
     id: 'L6',

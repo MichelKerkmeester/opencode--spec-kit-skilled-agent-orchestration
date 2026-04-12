@@ -51,7 +51,7 @@ Exports from `cognitive.ts`:
 - `safeParseCognitiveConfigFromEnv()` — returns result object with success/errors.
 
 Important: canonical scoring behavior lives in TypeScript modules (not this README), primarily `lib/scoring/composite-scoring.ts` and related handlers.
-Important: feature-flag and shared-memory enablement checks are resolved at runtime in helper functions such as `isSharedMemoryEnabled()` and the various `is*Enabled()` lookups under `lib/` and `handlers/`; do not treat this folder as a frozen startup snapshot of MCP behavior.
+Important: feature-flag checks are resolved at runtime in the various `is*Enabled()` lookups under `lib/` and `handlers/`; do not treat this folder as a frozen startup snapshot of MCP behavior.
 
 
 <!-- /ANCHOR:implemented-state -->

@@ -23,14 +23,12 @@ These entries describe roadmap metadata, not the main search/runtime controls. C
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
-| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Canonical phase-label resolver for roadmap snapshots. The canonical key wins first, and unsupported values fall back to `shared-rollout`. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Canonical phase-label resolver for roadmap snapshots. The canonical key wins first, and unsupported values fall back to `scope-governance`. |
 | `SPECKIT_MEMORY_LINEAGE_STATE` / `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on lineage metadata flag for roadmap snapshots and rename-window compatibility paths. |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` / `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Roadmap metadata for the unified-graph milestone. This stays separate from the live `SPECKIT_GRAPH_UNIFIED` retrieval gate. |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` / `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts`, `mcp_server/lib/cognitive/adaptive-ranking.ts` | Default-off adaptive-ranking roadmap flag. When enabled, the runtime can enter shadow or promoted adaptive ranking modes, but the roadmap metadata remains the source of truth here. |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` / `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on scope-enforcement metadata for governed retrieval and compatibility snapshots. |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` / `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on governance-guardrails metadata for governed ingest and compatibility snapshots. |
-| `SPECKIT_MEMORY_SHARED_MEMORY` / `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts`, `mcp_server/lib/collab/shared-spaces.ts` | Default-off shared-memory metadata. Explicit enablement still requires the shared-memory runtime path, and canonical values take precedence over legacy aliases. |
-
 Roadmap capability entries are evaluated at call time, not frozen import-time. That means canonical `SPECKIT_MEMORY_*` values override legacy `SPECKIT_HYDRA_*` aliases whenever both are set, and the roadmap snapshot stays distinct from live runtime defaults.
 
 ---

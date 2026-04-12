@@ -23,10 +23,8 @@ const parentDocs = {
 };
 
 const runtimeReferences = [
-  'mcp_server/lib/collab/shared-spaces.ts',
   'mcp_server/lib/governance/scope-governance.ts',
   'mcp_server/lib/search/vector-index-mutations.ts',
-  'mcp_server/tests/shared-spaces.vitest.ts',
   'mcp_server/tests/memory-governance.vitest.ts',
   'mcp_server/tests/hydra-spec-pack-consistency.vitest.ts',
 ];
@@ -44,13 +42,11 @@ const staleReferences = [
   'mcp_server/test/search/graph-fusion.test.ts',
   'mcp_server/test/search/adaptive-ranking.test.ts',
   'mcp_server/test/security/scope-isolation.test.ts',
-  'mcp_server/test/collab/shared-memory.test.ts',
 ];
 
 const featureCatalogDocs = [
   path.join(SKILL_ROOT, 'feature_catalog', '14--pipeline-architecture', '22-lineage-state-active-projection-and-asof-resolution.md'),
   path.join(SKILL_ROOT, 'feature_catalog', '17--governance', '03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md'),
-  path.join(SKILL_ROOT, 'feature_catalog', '17--governance', '04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md'),
   path.join(SKILL_ROOT, 'feature_catalog', '19--feature-flag-reference', '01-1-search-pipeline-features-speckit.md'),
 ];
 
@@ -70,13 +66,11 @@ describe('Hydra spec-pack truth sync', () => {
 
     expect(specContent).toContain('acts as the Level 3 coordination record for the delivered Hydra roadmap');
     expect(specContent).toContain('Live five-CLI proof capture plus CLI-proof wording alignment');
-    expect(specContent).toContain('describe shared memory as opt-in live access rather than universally enabled rollout');
     expect(specContent).toMatch(/`\d+` files, `\d+` tests, `\d+` skipped, and `\d+` todo/);
     expect(specContent).not.toContain('root-only normalization pass');
     expect(specContent).not.toContain('Editing any phase subfolder under `001-` through `006-`');
 
     expect(planContent).toContain('all six child phase packs as one coherent documentation set');
-    expect(planContent).toContain('shared-space owner enforcement and retention-sweep database routing');
     expect(planContent).toMatch(/The scripts-side targeted multi-CLI closure suite passed `\d+` files and `\d+` tests\./);
     expect(planContent).toContain('Live prompt proof was captured for all five required CLIs');
     expect(planContent).not.toContain('without touching phase subfolders');
@@ -106,7 +100,7 @@ describe('Hydra spec-pack truth sync', () => {
     expect(tasksContent).toContain('.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md');
     expect(tasksContent).toContain('Fix retention sweeps so deletion uses the passed database handle');
     expect(checklistContent).toMatch(/\*\*Verification Date\*\*: \d{4}-\d{2}-\d{2}/);
-    expect(checklistContent).toContain('Hydra follow-up verification passed across targeted governed-retrieval, shared-space admin, graph-ranking, and retention regressions');
+    expect(checklistContent).toContain('Hydra follow-up verification passed across targeted');
     expect(checklistContent).toMatch(/`\d+` passed files, `\d+` passed tests, `\d+` skipped, and `\d+` todo/);
     expect(checklistContent).toContain('Live prompt proof was captured for all five CLIs with timestamps');
   });
@@ -121,7 +115,6 @@ describe('Hydra spec-pack truth sync', () => {
 
     expect(playbookContent).toContain('### 121 | Adaptive shadow proposal and rollback (Phase 4)');
     expect(playbookContent).toContain('### 122 | Governed ingest and scope isolation (Phase 5)');
-    expect(playbookContent).toContain('### 123 | Shared-space deny-by-default rollout (Phase 6)');
     expect(playbookContent).toContain('### 125 | Hydra roadmap capability flags');
     expect(playbookContent).toContain('### 129 | Lineage state active projection and asOf resolution');
     expect(playbookContent).toContain('### 130 | Lineage backfill rollback drill');
@@ -134,7 +127,6 @@ describe('Hydra spec-pack truth sync', () => {
     const summaryContent = readDoc(parentDocs.implementationSummary);
 
     expect(summaryContent).toContain('Hydra closure pass now leaves the parent pack and all six phase packs');
-    expect(summaryContent).toContain('owner-only shared-space operations now enforce explicit actor identity plus owner authorization');
     expect(summaryContent).toContain('The earlier retention sweep database-handle fix remains in place, so retention sweeps now delete through the passed database handle');
     expect(summaryContent).toContain('npm run test:hydra:phase1');
     expect(summaryContent).toContain('npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts');

@@ -102,17 +102,6 @@ Notes:
   - `lib/extraction/*`
   - `lib/session/*`
 
-### `collab/`
-
-- Purpose: Owns shared-space collaboration primitives: shared-space definitions, membership, rollout flags, conflict tracking, and shared-memory metrics. This is the current home for multi-actor/shared-memory tenancy behavior.
-- Key files:
-  - `shared-spaces.ts` — shared-space schema/runtime, memberships, conflict summaries, and rollout controls.
-- Primary consumers:
-  - `handlers/shared-memory.ts`
-  - `handlers/memory-save.ts`
-  - `lib/governance/*`
-  - `lib/search/*`
-
 ### `config/`
 
 - Purpose: Owns canonical configuration for memory/document types and roadmap capability flags. It is the configuration surface for decay classes, document-type inference defaults, and phase/capability toggles.
@@ -191,7 +180,7 @@ Notes:
 
 ### `governance/`
 
-- Purpose: Owns scope enforcement, governed ingest normalization, audit recording, and retention sweeps. This is the boundary for tenant/user/agent/session/shared-space policy decisions.
+- Purpose: Owns scope enforcement, governed ingest normalization, audit recording, and retention sweeps. This is the boundary for tenant/user/agent/session policy decisions.
 - Key files:
   - `scope-governance.ts` — scope normalization, policy decisions, filter helpers, and governance audit writes.
   - `retention.ts` — scoped retention sweep logic over expired memories.

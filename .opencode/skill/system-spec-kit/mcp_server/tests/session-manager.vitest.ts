@@ -248,7 +248,7 @@ describe('Session Manager Tests (T001-T008)', () => {
     it('T006: Different sessions maintain separate tracking', () => {
       const session1: string = 'session-unique-001';
       const session2: string = 'session-unique-002';
-      const memory: MemoryObject = createMemory({ id: 400, anchorId: 'shared-memory' });
+      const memory: MemoryObject = createMemory({ id: 400, anchorId: 'session-memory' });
 
       sessionManager.markMemorySent(session1, memory);
 

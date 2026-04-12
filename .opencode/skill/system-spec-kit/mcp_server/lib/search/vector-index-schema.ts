@@ -127,7 +127,6 @@ const SAVE_PARENT_CONTENT_HASH_SCOPE_INDEX_SQL = `
     user_id,
     agent_id,
     session_id,
-    shared_space_id,
     id DESC
   )
   WHERE parent_id IS NULL
@@ -1446,6 +1445,7 @@ function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
     { name: 'tenant_id', sql: 'ALTER TABLE memory_index ADD COLUMN tenant_id TEXT' },
     { name: 'user_id', sql: 'ALTER TABLE memory_index ADD COLUMN user_id TEXT' },
     { name: 'agent_id', sql: 'ALTER TABLE memory_index ADD COLUMN agent_id TEXT' },
+    // unused after Phase 018/010 shared-memory removal
     { name: 'shared_space_id', sql: 'ALTER TABLE memory_index ADD COLUMN shared_space_id TEXT' },
     { name: 'provenance_source', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_source TEXT' },
     { name: 'provenance_actor', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_actor TEXT' },
@@ -1479,7 +1479,6 @@ export function ensureGovernanceTables(database: Database.Database): void {
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
-      shared_space_id TEXT,
       reason TEXT,
       metadata TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -1490,70 +1489,17 @@ export function ensureGovernanceTables(database: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_governance_audit_action
       ON governance_audit(action, decision, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_governance_audit_scope
-      ON governance_audit(tenant_id, user_id, agent_id, session_id, shared_space_id);
+      ON governance_audit(tenant_id, user_id, agent_id, session_id);
   `);
 
   if (hasTable(database, 'memory_index')) {
     database.exec(`
       CREATE INDEX IF NOT EXISTS idx_memory_scope_hierarchy
-        ON memory_index(tenant_id, user_id, agent_id, session_id, shared_space_id);
+        ON memory_index(tenant_id, user_id, agent_id, session_id);
       CREATE INDEX IF NOT EXISTS idx_memory_retention_delete_after
         ON memory_index(delete_after);
     `);
   }
-}
-
-export function ensureSharedSpaceTables(database: Database.Database): void {
-  ensureGovernanceTables(database);
-
-  database.exec(`
-    CREATE TABLE IF NOT EXISTS shared_spaces (
-      space_id TEXT PRIMARY KEY,
-      tenant_id TEXT NOT NULL,
-      name TEXT NOT NULL,
-      rollout_enabled INTEGER DEFAULT 0,
-      rollout_cohort TEXT,
-      kill_switch INTEGER DEFAULT 0,
-      metadata TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  database.exec(`
-    CREATE TABLE IF NOT EXISTS shared_space_members (
-      space_id TEXT NOT NULL,
-      subject_type TEXT NOT NULL CHECK(subject_type IN ('user', 'agent')),
-      subject_id TEXT NOT NULL,
-      role TEXT NOT NULL CHECK(role IN ('owner', 'editor', 'viewer')),
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (space_id, subject_type, subject_id)
-    )
-  `);
-
-  database.exec(`
-    CREATE TABLE IF NOT EXISTS shared_space_conflicts (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      space_id TEXT NOT NULL,
-      logical_key TEXT NOT NULL,
-      existing_memory_id INTEGER,
-      incoming_memory_id INTEGER,
-      strategy TEXT NOT NULL,
-      actor TEXT NOT NULL,
-      metadata TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  database.exec(`
-    CREATE INDEX IF NOT EXISTS idx_shared_spaces_tenant
-      ON shared_spaces(tenant_id, rollout_enabled, kill_switch);
-    CREATE INDEX IF NOT EXISTS idx_shared_space_members_subject
-      ON shared_space_members(subject_type, subject_id, role);
-    CREATE INDEX IF NOT EXISTS idx_shared_space_conflicts_space
-      ON shared_space_conflicts(space_id, created_at DESC);
-  `);
 }
 
 /**
@@ -2312,7 +2258,6 @@ export function create_schema(
     ensureCompanionTables(database);
     ensureLineageTables(database);
     ensureGovernanceTables(database);
-    ensureSharedSpaceTables(database);
     const compatibility = validate_backward_compatibility(database);
     if (!compatibility.compatible) {
       logger.warn(
@@ -2355,6 +2300,7 @@ export function create_schema(
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
+      -- unused after Phase 018/010 shared-memory removal
       shared_space_id TEXT,
       context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general')),
       channel TEXT DEFAULT 'default',
@@ -2450,7 +2396,6 @@ export function create_schema(
   ensureCompanionTables(database);
   ensureLineageTables(database);
   ensureGovernanceTables(database);
-  ensureSharedSpaceTables(database);
 
   // the rollout (REQ-S2-001) — create embedding_cache table
   ensureEmbeddingCacheSchema(database);
@@ -2468,7 +2413,7 @@ export function create_schema(
     CREATE INDEX IF NOT EXISTS idx_importance_tier ON memory_index(importance_tier);
     CREATE INDEX IF NOT EXISTS idx_access_importance ON memory_index(access_count DESC, importance_weight DESC);
     CREATE INDEX IF NOT EXISTS idx_memories_scope ON memory_index(spec_folder, session_id, context_type);
-    CREATE INDEX IF NOT EXISTS idx_memories_governed_scope ON memory_index(tenant_id, user_id, agent_id, session_id, shared_space_id);
+    CREATE INDEX IF NOT EXISTS idx_memories_governed_scope ON memory_index(tenant_id, user_id, agent_id, session_id);
     CREATE INDEX IF NOT EXISTS idx_channel ON memory_index(channel);
     CREATE INDEX IF NOT EXISTS idx_spec_folder_created_at ON memory_index(spec_folder, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_trigger_cache_source
@@ -2494,7 +2439,6 @@ export function create_schema(
       user_id,
       agent_id,
       session_id,
-      shared_space_id,
       id DESC
     )
       WHERE parent_id IS NULL;

@@ -629,16 +629,14 @@ function selectTableRows(
   options: {
     specFolder: string | null;
     memoryIds: number[];
-    sharedSpaceIds: string[];
     scope?: ScopeContext;
-    allowedSharedSpaceIds?: ReadonlySet<string>;
   },
 ): Array<Record<string, unknown>> {
-  const { specFolder, memoryIds, sharedSpaceIds, scope = {}, allowedSharedSpaceIds } = options;
+  const { specFolder, memoryIds, scope = {} } = options;
   const normalizedScope = normalizeScopeContext(scope);
   const hasScope = hasScopeConstraints(normalizedScope);
   const scopePredicate = hasScope
-    ? createScopeFilterPredicate<Record<string, unknown>>(normalizedScope, allowedSharedSpaceIds)
+    ? createScopeFilterPredicate<Record<string, unknown>>(normalizedScope)
     : null;
 
   if (tableName === 'memory_index') {
@@ -679,64 +677,6 @@ function selectTableRows(
   }
 
   const columns = new Set(getTableColumns(database, tableName));
-
-  if (tableName === 'shared_spaces') {
-    if (sharedSpaceIds.length > 0) {
-      return batchedInQuery<Record<string, unknown>>(
-        database,
-        'SELECT * FROM shared_spaces WHERE space_id IN (__PLACEHOLDERS__)',
-        sharedSpaceIds,
-      );
-    }
-    if (normalizedScope.tenantId) {
-      return database.prepare(
-        'SELECT * FROM shared_spaces WHERE tenant_id = ?'
-      ).all(normalizedScope.tenantId) as Array<Record<string, unknown>>;
-    }
-    return hasScope ? [] : database.prepare('SELECT * FROM shared_spaces').all() as Array<Record<string, unknown>>;
-  }
-
-  if (tableName === 'shared_space_members') {
-    if (sharedSpaceIds.length > 0) {
-      return batchedInQuery<Record<string, unknown>>(
-        database,
-        'SELECT * FROM shared_space_members WHERE space_id IN (__PLACEHOLDERS__)',
-        sharedSpaceIds,
-      );
-    }
-    return hasScope ? [] : database.prepare('SELECT * FROM shared_space_members').all() as Array<Record<string, unknown>>;
-  }
-
-  if (tableName === 'shared_space_conflicts') {
-    if (memoryIds.length > 0) {
-      return dedupeRowsById([
-        ...batchedInQuery<Record<string, unknown>>(
-          database,
-          `
-            SELECT * FROM shared_space_conflicts
-            WHERE existing_memory_id IN (__PLACEHOLDERS__)
-          `,
-          memoryIds,
-        ),
-        ...batchedInQuery<Record<string, unknown>>(
-          database,
-          `
-            SELECT * FROM shared_space_conflicts
-            WHERE incoming_memory_id IN (__PLACEHOLDERS__)
-          `,
-          memoryIds,
-        ),
-      ]);
-    }
-    if (sharedSpaceIds.length > 0) {
-      return batchedInQuery<Record<string, unknown>>(
-        database,
-        'SELECT * FROM shared_space_conflicts WHERE space_id IN (__PLACEHOLDERS__)',
-        sharedSpaceIds,
-      );
-    }
-    return hasScope ? [] : database.prepare('SELECT * FROM shared_space_conflicts').all() as Array<Record<string, unknown>>;
-  }
 
   if (specFolder && columns.has('spec_folder')) {
     return database.prepare(
@@ -791,9 +731,7 @@ function createTableSnapshot(
   options: {
     specFolder: string | null;
     memoryIds: number[];
-    sharedSpaceIds: string[];
     scope?: ScopeContext;
-    allowedSharedSpaceIds?: ReadonlySet<string>;
   },
 ): TableSnapshot | null {
   if (!tableExists(database, tableName)) {
@@ -889,7 +827,6 @@ function clearTableForRestoreScope(
   options: {
     checkpointSpecFolder: string | null;
     memoryIds: number[];
-    sharedSpaceIds: string[];
     edgeIds: number[];
     scope?: ScopeContext;
     allowFullTableFallback?: boolean;
@@ -898,7 +835,6 @@ function clearTableForRestoreScope(
   const {
     checkpointSpecFolder,
     memoryIds,
-    sharedSpaceIds,
     edgeIds,
     scope = {},
     allowFullTableFallback = true,
@@ -938,27 +874,6 @@ function clearTableForRestoreScope(
     return;
   }
 
-  if (tableName === 'shared_spaces') {
-    deleteRowsByStringIds(database, tableName, 'space_id', sharedSpaceIds);
-    return;
-  }
-
-  if (tableName === 'shared_space_members') {
-    deleteRowsByStringIds(database, tableName, 'space_id', sharedSpaceIds);
-    return;
-  }
-
-  if (tableName === 'shared_space_conflicts') {
-    if (sharedSpaceIds.length > 0) {
-      deleteRowsByStringIds(database, tableName, 'space_id', sharedSpaceIds);
-    }
-    if (memoryIds.length > 0) {
-      deleteRowsByIds(database, tableName, 'existing_memory_id', memoryIds);
-      deleteRowsByIds(database, tableName, 'incoming_memory_id', memoryIds);
-    }
-    return;
-  }
-
   if (tableName === 'memory_corrections') {
     if (memoryIds.length === 0) {
       return;
@@ -978,11 +893,6 @@ function clearTableForRestoreScope(
     return;
   }
 
-  if (sharedSpaceIds.length > 0 && columns.has('shared_space_id')) {
-    deleteRowsByStringIds(database, tableName, 'shared_space_id', sharedSpaceIds);
-    return;
-  }
-
   if (columns.has('spec_folder')) {
     database.prepare(`DELETE FROM ${tableName} WHERE spec_folder = ?`).run(checkpointSpecFolder);
     return;
@@ -990,11 +900,6 @@ function clearTableForRestoreScope(
 
   if (memoryIds.length > 0 && columns.has('memory_id')) {
     deleteRowsByIds(database, tableName, 'memory_id', memoryIds);
-    return;
-  }
-
-  if (sharedSpaceIds.length > 0 && columns.has('shared_space_id')) {
-    deleteRowsByStringIds(database, tableName, 'shared_space_id', sharedSpaceIds);
     return;
   }
 
@@ -1051,7 +956,6 @@ function restoreMergeTableAtomically(
   options: {
     checkpointSpecFolder: string | null;
     memoryIds: number[];
-    sharedSpaceIds: string[];
     edgeIds: number[];
     scope: ScopeContext;
   },
@@ -1406,13 +1310,8 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
       const {
         memories,
         memoryIds: scopedMemoryIds,
-        allowedSharedSpaceIds,
         normalizedScope,
       } = getScopedMemories(database, specFolder, scope);
-      const sharedSpaceIds = Array.from(new Set([
-        ...getSharedSpaceIdsFromMemories(memories),
-        ...allowedSharedSpaceIds,
-      ]));
       const tables: Record<string, TableSnapshot> = {};
 
       for (const tableName of CHECKPOINT_MANIFEST.snapshot) {
@@ -1423,9 +1322,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
         const tableSnapshot = createTableSnapshot(database, tableName, {
           specFolder,
           memoryIds: scopedMemoryIds,
-          sharedSpaceIds,
           scope: normalizedScope,
-          allowedSharedSpaceIds,
         });
         if (!tableSnapshot) {
           continue;
@@ -1471,7 +1368,6 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
           ...(normalizedScope.tenantId ? { tenantId: normalizedScope.tenantId } : {}),
           ...(normalizedScope.userId ? { userId: normalizedScope.userId } : {}),
           ...(normalizedScope.agentId ? { agentId: normalizedScope.agentId } : {}),
-          ...(normalizedScope.sharedSpaceId ? { sharedSpaceId: normalizedScope.sharedSpaceId } : {}),
           memoryCount: memories.length,
           vectorCount: vectors.length,
           includeEmbeddings: _includeEmbeddings,
@@ -1504,7 +1400,6 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
           ...(normalizedScope.tenantId ? { tenantId: normalizedScope.tenantId } : {}),
           ...(normalizedScope.userId ? { userId: normalizedScope.userId } : {}),
           ...(normalizedScope.agentId ? { agentId: normalizedScope.agentId } : {}),
-          ...(normalizedScope.sharedSpaceId ? { sharedSpaceId: normalizedScope.sharedSpaceId } : {}),
           memoryCount: memories.length,
         },
       };
@@ -1615,23 +1510,13 @@ function restoreCheckpoint(
 
     const checkpointSpecFolder = checkpoint.spec_folder ?? null;
     const snapshotMemoryIds = getMemoryIds(memoryRows);
-    const { normalizedScope, allowedSharedSpaceIds } = getScopeFilterContext(database, scope);
+    const { normalizedScope } = getScopeFilterContext(database, scope);
     const currentScopedMemoryIds = checkpointSpecFolder
       ? getCurrentScopedMemoryIds(database, checkpointSpecFolder, normalizedScope)
       : getCurrentScopedMemoryIds(database, null, normalizedScope);
     const scopedMemoryIdsToReplace = Array.from(
       new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])
     );
-    const currentScopedSharedSpaceIds = checkpointSpecFolder
-      ? []
-      : getSharedSpaceIdsFromMemories(
-        getScopedMemories(database, null, normalizedScope).memories,
-      );
-    const sharedSpaceIds = Array.from(new Set([
-      ...getSharedSpaceIdsFromMemories(memoryRows),
-      ...currentScopedSharedSpaceIds,
-      ...allowedSharedSpaceIds,
-    ]));
     const edgeIds = getEdgeIds(tableSnapshots.causal_edges?.rows ?? []);
 
     // T107 FIX: Validate every row BEFORE any DB mutations.
@@ -1709,7 +1594,6 @@ function restoreCheckpoint(
               clearTableForRestoreScope(database, tableName, {
                 checkpointSpecFolder,
                 memoryIds: scopedMemoryIdsToReplace,
-                sharedSpaceIds,
                 edgeIds,
                 scope: normalizedScope,
               });
@@ -1841,7 +1725,6 @@ function restoreCheckpoint(
             const mergeResult = restoreMergeTableAtomically(database, tableName, tableSnapshot, {
               checkpointSpecFolder,
               memoryIds: scopedMemoryIdsToReplace,
-              sharedSpaceIds,
               edgeIds,
               scope: normalizedScope,
             });

@@ -14,14 +14,12 @@ const FLAG_NAMES = [
   'SPECKIT_MEMORY_ADAPTIVE_RANKING',
   'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
   'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-  'SPECKIT_MEMORY_SHARED_MEMORY',
   'SPECKIT_HYDRA_PHASE',
   'SPECKIT_HYDRA_LINEAGE_STATE',
   'SPECKIT_HYDRA_GRAPH_UNIFIED',
   'SPECKIT_HYDRA_ADAPTIVE_RANKING',
   'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
   'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
-  'SPECKIT_HYDRA_SHARED_MEMORY',
   'SPEC_KIT_DB_DIR',
   'SPECKIT_DB_DIR',
   'SPECKIT_GRAPH_UNIFIED',
@@ -54,16 +52,14 @@ describe('Memory roadmap flags', () => {
     }
   });
 
-  it('defaults to the shared-rollout phase with adaptive ranking dormant by default', () => {
-    expect(getMemoryRoadmapPhase()).toBe('shared-rollout');
+  it('defaults to the scope-governance phase with adaptive ranking dormant by default', () => {
+    expect(getMemoryRoadmapPhase()).toBe('scope-governance');
     expect(getMemoryRoadmapCapabilityFlags()).toEqual({
       lineageState: true,
       graphUnified: true,
       adaptiveRanking: false,
       scopeEnforcement: true,
       governanceGuardrails: true,
-      // M4 FIX: sharedMemory defaults to false to match runtime gate behavior
-      sharedMemory: false,
     });
   });
 
@@ -114,8 +110,8 @@ describe('Memory roadmap flags', () => {
     expect(getMemoryRoadmapCapabilityFlags('legacy-adaptive-session').adaptiveRanking).toBe(true);
   });
 
-  it('tracks all five scope dimensions in roadmap defaults', () => {
-    expect(getMemoryRoadmapDefaults().scopeDimensionsTracked).toBe(5);
+  it('tracks the four active scope dimensions in roadmap defaults', () => {
+    expect(getMemoryRoadmapDefaults().scopeDimensionsTracked).toBe(4);
   });
 
   it('uses the shared database directory resolver when db-dir env vars are unset', async () => {
@@ -131,8 +127,8 @@ describe('Memory roadmap flags', () => {
     expect(resolveDatabasePaths().databaseDir).toBe(path.dirname(DB_PATH));
   });
 
-  it('falls back to shared-rollout for unknown phase labels', () => {
+  it('falls back to scope-governance for unknown phase labels', () => {
     process.env.SPECKIT_MEMORY_ROADMAP_PHASE = 'future-phase';
-    expect(getMemoryRoadmapPhase()).toBe('shared-rollout');
+    expect(getMemoryRoadmapPhase()).toBe('scope-governance');
   });
 });

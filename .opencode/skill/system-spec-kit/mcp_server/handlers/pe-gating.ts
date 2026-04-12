@@ -61,8 +61,8 @@ interface IndexResult extends Record<string, unknown> {
 }
 
 /** Find memories with similar embeddings for PE gating deduplication */
-function findSimilarMemories(embedding: Float32Array | null, options: { limit?: number; specFolder?: string | null; tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null } = {}): SimilarMemory[] {
-  const { limit = 5, specFolder = null, tenantId = null, userId = null, agentId = null, sessionId = null, sharedSpaceId = null } = options;
+function findSimilarMemories(embedding: Float32Array | null, options: { limit?: number; specFolder?: string | null; tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null } = {}): SimilarMemory[] {
+  const { limit = 5, specFolder = null, tenantId = null, userId = null, agentId = null, sessionId = null } = options;
 
   if (!embedding) {
     return [];
@@ -100,7 +100,6 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
         if (!matchesScopedValue(agentId, r.agent_id)) continue;
         // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
         if (!matchesScopedValue(sessionId, r.session_id)) continue;
-        if (!matchesScopedValue(sharedSpaceId, r.shared_space_id)) continue;
         if (typeof r.id === 'number' && seenScopedIds.has(r.id)) continue;
 
         const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;

@@ -38,7 +38,6 @@ describe('Vector index schema compatibility validator', () => {
           tenant_id TEXT,
           user_id TEXT,
           agent_id TEXT,
-          shared_space_id TEXT,
           parent_id INTEGER,
           canonical_file_path TEXT,
           created_at TEXT,
@@ -64,7 +63,6 @@ describe('Vector index schema compatibility validator', () => {
             user_id,
             agent_id,
             session_id,
-            shared_space_id,
             id DESC
           )
           WHERE parent_id IS NULL;

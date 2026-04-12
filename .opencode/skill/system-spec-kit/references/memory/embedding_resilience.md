@@ -30,9 +30,7 @@ The embedding resilience system ensures semantic search remains functional even 
 
 **Availability over precision.** When high-quality embeddings fail, fall back to lower-quality alternatives rather than failing entirely. Keyword search is better than no search.
 
-Governance boundaries still apply in every degradation mode. Fallback providers, cached embeddings, and keyword-only recovery must preserve the caller's `tenantId`, `userId`, `agentId`, and `sharedSpaceId` boundaries rather than widening scope to "find something."
-
-For shared-memory rollout, degraded retrieval still assumes the shared space was explicitly enabled and membership was granted through `/memory:manage shared`. Resilience improves availability inside an allowed boundary; it does not weaken deny-by-default access rules.
+Governance boundaries still apply in every degradation mode. Fallback providers, cached embeddings, and keyword-only recovery must preserve the caller's `tenantId`, `userId`, and `agentId` boundaries rather than widening scope to "find something."
 
 ---
 
