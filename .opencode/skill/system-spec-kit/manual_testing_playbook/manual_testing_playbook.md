@@ -39,7 +39,7 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
-- [Phase 018 audit](#phase-018-audit)
+- [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
 - [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
@@ -345,12 +345,12 @@ Fast in-scope trigger hits + cognitive enrichment; out-of-scope matches filtered
 ### EX-004 | Hybrid search pipeline
 
 #### Description
-Channel fusion sanity.
+Confirm multi-channel fusion stays coherent when routing and fallback interact.
 
 #### Current Reality
-Prompt: `Validate hybrid search fallback and score-alias sync behavior. Capture the evidence needed to prove Tier-3 structural fallback excludes archived rows unless includeArchived=true; co-activation boosts update score, rrfScore and intentAdjustedScore together; session boost preserves the original attentionScore while exposing the boosted rank as sessionBoostScore. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a retrieval validation operator, validate Hybrid search pipeline against memory_search({ query:"graph rollout trace check", limit:10, includeTrace:true, bypassCache:true }). Verify multi-channel fusion stays coherent when routing and fallback interact. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
-Tier-3 structural fallback excludes archived rows unless includeArchived=true; co-activation boost keeps score aliases synchronized; session boost preserves attentionScore and writes sessionBoostScore
+Non-empty result set with trace evidence of multi-channel contribution; aligned boosted scores across the exposed score aliases; `useGraph:false` suppresses both graph and degree contributions even during fallback; lexical fallback only uses still-allowed lexical channels
 
 #### Test Execution
 > **Feature File:** [EX-004](01--retrieval/004-hybrid-search-pipeline.md)
@@ -373,16 +373,12 @@ Deep-mode reformulation and HyDE candidates pass the same scope, tier, contextTy
 ### EX-006 | Memory indexing (memory_save)
 
 #### Description
-New memory ingestion.
+Spec-doc anchored continuity save routing.
 
 #### Current Reality
-Prompt: `Index memory file and report action. Capture the evidence needed to prove Save action reported; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a mutation validation operator, validate Memory indexing (memory_save) against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
-Save action reported; searchable result appears; no template-contract or insufficiency rejection
-
-Additional audit scenario: `Prime a search cache for a query that currently returns zero hits, save a matching memory, then rerun the same query immediately. Capture the evidence needed to prove the new memory appears without waiting for cache TTL expiry. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Post-insert cached search refreshes immediately; new memory visible without TTL wait
+Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection
 
 #### Test Execution
 > **Feature File:** [EX-006](02--mutation/006-memory-indexing-memory-save.md)
@@ -2447,9 +2443,9 @@ intentAdjustedScore set at Step 4 in trace; downstream signals modify score fiel
 Confirm collision resolution.
 
 #### Current Reality
-Prompt: `Validate memory filename collision prevention. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a memory-quality validation operator, confirm collision resolution for ensureUniqueMemoryFilename. Verify duplicate saves reserve distinct filenames across the -1 and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.`
 
-
+Second save produces filename with `-1` suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) | 0` coercion; and `memoryNameHistory` is updated.
 
 #### Test Execution
 > **Feature File:** [119](13--memory-quality-and-indexing/119-memory-filename-uniqueness-ensureuniquememoryfilename.md)
@@ -3358,10 +3354,12 @@ These 30 catalog entries are explicitly documented here even when validation is 
 ### M-001 | Context Recovery and Continuation
 
 #### Description
-Canonical memory/spec-kit workflow.
+Canonical resume workflow through `/spec_kit:resume` and the packet recovery ladder.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a retrieval validation operator, validate Context Recovery and Continuation against /spec_kit:resume specs/<target-spec>. Verify resume-ready state summary and next steps via /spec_kit:resume and the canonical packet ladder. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: Resume-ready state summary and next steps via `/spec_kit:resume` and the canonical packet ladder.
 
 #### Test Execution
 > **Feature File:** [M-001](01--retrieval/001-context-recovery-and-continuation.md)
@@ -3369,10 +3367,12 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 ### M-002 | Targeted Memory Lookup
 
 #### Description
-Canonical memory/spec-kit workflow.
+Precise fact-level retrieval through targeted anchored lookup.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a retrieval validation operator, validate Targeted Memory Lookup against memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]}). Verify precise fact-level retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: precise fact-level retrieval.
 
 #### Test Execution
 > **Feature File:** [M-002](01--retrieval/002-targeted-memory-lookup.md)
@@ -3380,12 +3380,12 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 ### M-003 | Context Save + Index Update
 
 #### Description
-Canonical memory/spec-kit workflow.
+Context save plus immediate index visibility.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
-
 Prompt: `Save fresh context for the target spec folder, run an index scan immediately after the save, and verify the saved artifacts are discoverable in retrieval results. Capture the save and index evidence, and return a concise user-facing pass/fail verdict with the main reason.`
+
+Expected signals: saved context artifacts are discoverable.
 
 
 #### Test Execution
@@ -3394,10 +3394,12 @@ Prompt: `Save fresh context for the target spec folder, run an index scan immedi
 ### M-004 | Main-Agent Review and Verdict Handoff
 
 #### Description
-Canonical memory/spec-kit workflow.
+Severity-ranked findings and deterministic verdict handoff.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a tooling validation operator, validate Main-Agent Review and Verdict Handoff against @review. Verify severity-ranked findings and final verdict. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: severity-ranked findings and final verdict.
 
 #### Test Execution
 > **Feature File:** [M-004](16--tooling-and-scripts/004-main-agent-review-and-verdict-handoff.md)
@@ -3405,10 +3407,12 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 ### M-005 | Outsourced Agent Memory Capture Round-Trip
 
 #### Description
-#### M-005a: JSON-mode hard-fail (REQ-001)
+Outsourced agent output round-trips into searchable saved context.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a memory-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: Agent output contains structured memory section; saved context is discoverable via search.
 
 #### Test Execution
 > **Feature File:** [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md)
@@ -3416,10 +3420,12 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 ### M-006 | Stateless Enrichment and Alignment Guardrails
 
 #### Description
-#### M-006a: Unborn-HEAD and dirty snapshot fallback
+Continuity-ladder precedence and alignment guardrails for captured-session saves.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
 
 #### Test Execution
 > **Feature File:** [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md)
@@ -3427,10 +3433,10 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 ### M-007 | Session Capturing Pipeline Quality
 
 #### Description
-Canonical memory/spec-kit workflow.
+Session-capturing hardening, structured-input authority, and save-quality closure.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a tooling validation operator, validate Session Capturing Pipeline Quality against grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts. Verify part I hardening remains active.; Native fallback ordering behaves deterministically across all five configured capture backends.; Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Minimum scenario family now required for M-007:
 - structured `--stdin` save with explicit CLI target precedence
@@ -3448,10 +3454,12 @@ Proof rule:
 ### M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log)
 
 #### Description
-Canonical memory/spec-kit workflow.
+Repeated save/update activity remains visible through direct operator runs.
 
 #### Current Reality
-Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+Prompt: `As a mutation validation operator, validate Feature 09 Direct Manual Scenario (Per-memory History Log) against memory_save({ filePath:"<sandbox-spec-doc>", force:true }). Verify repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+Expected signals: repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage.
 
 #### Test Execution
 > **Feature File:** [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md)
