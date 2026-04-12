@@ -53,6 +53,23 @@ const HOTSPOT_SPREAD_THRESHOLD = 0.15;
  */
 const CLUSTER_DIVERSITY_THRESHOLD = 0.20;
 
+/**
+ * Common multi-label public suffixes used by the domain clustering heuristic.
+ * @type {ReadonlySet<string>}
+ */
+const MULTI_LABEL_PUBLIC_SUFFIXES = new Set([
+  'ac.uk',
+  'co.jp',
+  'co.nz',
+  'co.uk',
+  'com.au',
+  'com.br',
+  'gov.uk',
+  'net.au',
+  'org.au',
+  'org.uk',
+]);
+
 /* ---------------------------------------------------------------
    2. ACTIVATION GATES
 ----------------------------------------------------------------*/
@@ -167,8 +184,7 @@ function generateHotspotInventory(files, metrics) {
     const complexity = typeof f.complexity === 'number' ? f.complexity : 1;
     const churnRate = typeof f.churnRate === 'number' ? f.churnRate : 0;
     const issueCount = typeof f.issueCount === 'number' ? f.issueCount : 0;
-
-    const hotspotScore = (complexity * 0.4) + (churnRate * 0.35) + (issueCount * 0.25);
+    const hotspotScore = computeFileHotspotScore({ complexity, churnRate, issueCount });
 
     return {
       path: f.path || '',
@@ -536,7 +552,7 @@ function extractDirectory(filePath) {
 
 /**
  * Compute hotspot spread: fraction of directories that contain files
- * with above-median complexity or churn.
+ * with above-median composite hotspot score.
  * @param {Array<object>} files
  * @returns {number}
  */
@@ -546,17 +562,16 @@ function computeHotspotSpread(files) {
   const allDirs = new Set();
   const hotDirs = new Set();
 
-  // Compute median complexity
-  const complexities = files
-    .map(f => typeof f.complexity === 'number' ? f.complexity : 1)
+  const hotspotScores = files
+    .map((file) => computeFileHotspotScore(file))
     .sort((a, b) => a - b);
-  const median = complexities[Math.floor(complexities.length / 2)] || 1;
+  const median = hotspotScores[Math.floor(hotspotScores.length / 2)] || 0;
 
   for (const f of files) {
     const dir = extractDirectory(f.path || '');
     allDirs.add(dir);
-    const complexity = typeof f.complexity === 'number' ? f.complexity : 1;
-    if (complexity >= median) {
+    const hotspotScore = computeFileHotspotScore(f);
+    if (hotspotScore >= median) {
       hotDirs.add(dir);
     }
   }
@@ -582,16 +597,78 @@ function computeClusterDiversity(domains) {
 
 /**
  * Assign a default cluster to a domain based on its name.
- * Simple heuristic: uses the top-level domain category.
+ * Groups subdomains by registrable domain rather than raw TLD.
  * @param {object} source
  * @returns {string}
  */
 function assignCluster(source) {
-  if (!source || !source.domain) return 'unclustered';
-  // Simple heuristic: split by dot and use first meaningful segment
-  const parts = source.domain.split('.');
-  if (parts.length >= 2) return parts[parts.length - 1];
-  return parts[0] || 'unclustered';
+  const domain = extractDomainHost(source);
+  if (!domain) return 'unclustered';
+  return computeRegistrableDomain(domain) || domain || 'unclustered';
+}
+
+/**
+ * Compute the composite hotspot score used for file ranking and spread.
+ * @param {object} file
+ * @returns {number}
+ */
+function computeFileHotspotScore(file) {
+  const complexity = typeof file.complexity === 'number' ? file.complexity : 1;
+  const churnRate = typeof file.churnRate === 'number' ? file.churnRate : 0;
+  const issueCount = typeof file.issueCount === 'number' ? file.issueCount : 0;
+  return (complexity * 0.4) + (churnRate * 0.35) + (issueCount * 0.25);
+}
+
+/**
+ * Normalize a domain-like value from either source.domain or source.url.
+ * @param {object} source
+ * @returns {string|null}
+ */
+function extractDomainHost(source) {
+  if (!source || typeof source !== 'object') return null;
+  const domain = normalizeDomainValue(source.domain);
+  if (domain) return domain;
+
+  if (typeof source.url === 'string' && source.url.trim()) {
+    try {
+      return normalizeDomainValue(new URL(source.url).hostname);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Normalize a raw domain/hostname string.
+ * @param {unknown} value
+ * @returns {string|null}
+ */
+function normalizeDomainValue(value) {
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim().toLowerCase().replace(/\.$/, '');
+  return normalized || null;
+}
+
+/**
+ * Best-effort registrable-domain heuristic for clustering related hosts.
+ * @param {string} domain
+ * @returns {string|null}
+ */
+function computeRegistrableDomain(domain) {
+  const normalized = normalizeDomainValue(domain);
+  if (!normalized) return null;
+
+  const parts = normalized.split('.').filter(Boolean);
+  if (parts.length <= 2) return normalized;
+
+  const multiLabelSuffix = `${parts[parts.length - 2]}.${parts[parts.length - 1]}`;
+  if (MULTI_LABEL_PUBLIC_SUFFIXES.has(multiLabelSuffix) && parts.length >= 3) {
+    return parts.slice(-3).join('.');
+  }
+
+  return parts.slice(-2).join('.');
 }
 
 /* ---------------------------------------------------------------

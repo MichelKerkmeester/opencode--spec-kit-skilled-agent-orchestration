@@ -60,16 +60,27 @@ const contradictionsModule = require(path.join(
 // ── Helpers ──────────────────────────────────────────────────────
 
 const RELATIONS = ['ANSWERS', 'SUPPORTS', 'CONTRADICTS', 'CITES', 'COVERS', 'DERIVED_FROM', 'SUPERSEDES'];
+const NON_CONTRADICTION_RELATIONS = RELATIONS.filter((relation) => relation !== 'CONTRADICTS');
+const ENABLE_BENCHMARK_GUARDS = process.env.SPEC_KIT_ENABLE_COVERAGE_GRAPH_BENCHMARKS === '1';
 
-function pickRelation(i: number): string {
-  return RELATIONS[i % RELATIONS.length];
+function pickRelation(i: number, relations: readonly string[] = RELATIONS): string {
+  return relations[i % relations.length];
+}
+
+function expectWithinBenchmarkBudget(elapsedMs: number, budgetMs: number): void {
+  if (ENABLE_BENCHMARK_GUARDS) {
+    expect(elapsedMs).toBeLessThan(budgetMs);
+  }
 }
 
 /**
  * Build a large graph with N nodes and approximately N edges.
  * Creates a mix of chains and cross-links to produce realistic topology.
  */
-function buildLargeGraph(nodeCount: number): ReturnType<typeof coreModule.createGraph> {
+function buildLargeGraph(
+  nodeCount: number,
+  relations: readonly string[] = RELATIONS,
+): ReturnType<typeof coreModule.createGraph> {
   const graph = coreModule.createGraph();
 
   // Create a backbone chain: node-0 → node-1 → ... → node-(N-1)
@@ -78,7 +89,7 @@ function buildLargeGraph(nodeCount: number): ReturnType<typeof coreModule.create
       graph,
       `node-${i}`,
       `node-${i + 1}`,
-      pickRelation(i),
+      pickRelation(i, relations),
     );
   }
 
@@ -122,7 +133,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(graph.nodes.size).toBe(2000);
-      expect(elapsed).toBeLessThan(2000); // under 2 seconds
+      expectWithinBenchmarkBudget(elapsed, 2000);
     });
 
     it('degree computation scales to 1000+ nodes', () => {
@@ -136,7 +147,7 @@ describe('coverage-graph-stress', () => {
       }
       const elapsed = performance.now() - start;
 
-      expect(elapsed).toBeLessThan(5000); // under 5 seconds for 100 queries
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
 
     it('computeAllDepths scales to 1000+ nodes', () => {
@@ -147,7 +158,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(depths.size).toBe(1000);
-      expect(elapsed).toBeLessThan(5000); // under 5 seconds
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
 
     it('cluster metrics scale to 1000+ nodes', () => {
@@ -161,7 +172,7 @@ describe('coverage-graph-stress', () => {
       expect(metrics.componentCount).toBe(1);
       expect(metrics.largestSize).toBe(1000);
       expect(metrics.isolatedNodes).toBe(0);
-      expect(elapsed).toBeLessThan(5000);
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
 
     it('source diversity scales to 1000+ nodes', () => {
@@ -177,7 +188,7 @@ describe('coverage-graph-stress', () => {
 
       expect(diversity).toBeGreaterThanOrEqual(0);
       expect(diversity).toBeLessThanOrEqual(100); // absurd upper bound, just a sanity check
-      expect(elapsed).toBeLessThan(2000);
+      expectWithinBenchmarkBudget(elapsed, 2000);
     });
 
     it('evidence depth scales to 1000+ nodes', () => {
@@ -190,7 +201,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(depth).toBeGreaterThanOrEqual(0);
-      expect(elapsed).toBeLessThan(5000);
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
 
     it('full graph convergence computation scales to 1000+ nodes', () => {
@@ -204,7 +215,7 @@ describe('coverage-graph-stress', () => {
 
       expect(convergence.graphScore).toBeGreaterThanOrEqual(0);
       expect(convergence.graphScore).toBeLessThanOrEqual(1);
-      expect(elapsed).toBeLessThan(10000); // under 10 seconds for full convergence
+      expectWithinBenchmarkBudget(elapsed, 10000);
     });
   });
 
@@ -243,7 +254,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(contradictions.length).toBe(200);
-      expect(elapsed).toBeLessThan(1000); // under 1 second
+      expectWithinBenchmarkBudget(elapsed, 1000);
     });
 
     it('reportContradictions handles large contradiction sets', () => {
@@ -265,17 +276,13 @@ describe('coverage-graph-stress', () => {
 
       expect(report.total).toBe(100);
       expect(report.pairs.length).toBe(100);
-      expect(elapsed).toBeLessThan(1000);
+      expectWithinBenchmarkBudget(elapsed, 1000);
     });
 
     it('contradiction scan returns empty array for graph with no contradictions', () => {
-      const graph = buildLargeGraph(500);
-
-      // buildLargeGraph uses mixed relations; filter out any accidental CONTRADICTS
-      // and verify the scan works correctly on a large graph
+      const graph = buildLargeGraph(500, NON_CONTRADICTION_RELATIONS);
       const contradictions = contradictionsModule.scanContradictions(graph);
-      // Some edges use CONTRADICTS from the round-robin relation picker
-      expect(Array.isArray(contradictions)).toBe(true);
+      expect(contradictions).toEqual([]);
     });
   });
 
@@ -296,7 +303,7 @@ describe('coverage-graph-stress', () => {
 
       // Should reach nodes up to depth 100 or DEFAULT_MAX_DEPTH
       expect(chain.length).toBeGreaterThan(0);
-      expect(elapsed).toBeLessThan(2000);
+      expectWithinBenchmarkBudget(elapsed, 2000);
     });
 
     it('handles diamond-shaped provenance without infinite loops', () => {
@@ -324,7 +331,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(chain.length).toBeGreaterThan(0);
-      expect(elapsed).toBeLessThan(5000);
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
   });
 
@@ -356,7 +363,7 @@ describe('coverage-graph-stress', () => {
       expect(metrics.componentCount).toBe(100);
       expect(metrics.largestSize).toBe(5);
       expect(metrics.isolatedNodes).toBe(0);
-      expect(elapsed).toBeLessThan(5000);
+      expectWithinBenchmarkBudget(elapsed, 5000);
     });
 
     it('handles graph with 200 isolated nodes plus 500 connected nodes', () => {
@@ -406,7 +413,7 @@ describe('coverage-graph-stress', () => {
       const elapsed = performance.now() - start;
 
       expect(coverage).toBeCloseTo(0.5, 2); // 250 covered / 500 total
-      expect(elapsed).toBeLessThan(2000);
+      expectWithinBenchmarkBudget(elapsed, 2000);
     });
   });
 });

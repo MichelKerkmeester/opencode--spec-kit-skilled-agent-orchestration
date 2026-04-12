@@ -8,7 +8,11 @@ category: "Integration Scanner"
 
 Validates that the --output flag writes scan results to a valid JSON file at the specified path.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the --output flag writes scan results to a valid JSON file at the specified path against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify File `/tmp/test-scan-output.json` is created after the command completes. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug --output=/tmp/test-scan-output.json && cat /tmp/test-scan-output.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug --output=/tmp/test-scan-output.json && python3 -c "import json; d=json.load(open('/tmp/test-scan-output.json')); assert d['status']=='complete'; assert 'surfaces' in d; assert 'summary' in d; print('PASS: valid JSON with expected structure')"
 ```
 
-## Expected Signals
+## Expected
 
 - File `/tmp/test-scan-output.json` is created after the command completes
 - The file contains valid JSON (parseable without errors)

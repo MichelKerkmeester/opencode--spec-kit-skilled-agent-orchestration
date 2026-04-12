@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `104` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 104 | Mutation save-path UX parity and no-op hardening | Confirm duplicate-save and unchanged-save no-op behavior, FSRS corruption guard, and atomic-save parity/hints | `As a runtime-hook validation operator, confirm duplicate-save and unchanged-save no-op behavior, FSRS corruption guard, and atomic-save parity/hints against npx vitest run tests/memory-save-ux-regressions.vitest.ts. Verify suite passes and assertions show no false postMutationHooks on duplicate or unchanged saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `npx vitest run tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering duplicate-content and unchanged-content save no-op responses 3) inspect assertions verifying FSRS fields (`review_count`, `last_review`) are not reset on no-op saves 4) inspect assertions covering atomic-save `postMutationHooks`, hints, and partial-indexing guidance parity | Suite passes and assertions show no false `postMutationHooks` on `duplicate` or `unchanged` saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses | Test transcript + highlighted assertion names or output snippets | PASS if both duplicate and unchanged no-ops suppress false hook metadata, FSRS fields are preserved, and atomic-save responses match the primary save contract | Inspect `tests/memory-save-ux-regressions.vitest.ts` and handler save-path wiring |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm duplicate-save and unchanged-save no-op behavior, FSRS corruption guard, and atomic-save parity/hints against npx vitest run tests/memory-save-ux-regressions.vitest.ts. Verify suite passes and assertions show no false postMutationHooks on duplicate or unchanged saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `npx vitest run tests/memory-save-ux-regressions.vitest.ts`
+2. inspect assertions covering duplicate-content and unchanged-content save no-op responses
+3. inspect assertions verifying FSRS fields (`review_count`, `last_review`) are not reset on no-op saves
+4. inspect assertions covering atomic-save `postMutationHooks`, hints, and partial-indexing guidance parity
+
+### Expected
+
+Suite passes and assertions show no false `postMutationHooks` on `duplicate` or `unchanged` saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses
+
+### Evidence
+
+Test transcript + highlighted assertion names or output snippets
+
+### Pass / Fail
+
+- **Pass**: both duplicate and unchanged no-ops suppress false hook metadata, FSRS fields are preserved, and atomic-save responses match the primary save contract
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `tests/memory-save-ux-regressions.vitest.ts` and handler save-path wiring
 
 ## 4. REFERENCES
 

@@ -47,6 +47,8 @@ user_inputs:
 # ─────────────────────────────────────────────────────────────────
 field_handling:
   # Field mapping: target_path -> target_profile (inferred), agent_name (basename without .md)
+  derived_fields:
+    agent_name: "Basename of target_path without .md; use this as the real scan-integration.cjs agent identifier."
   defaults:
     scoring_mode_empty: "dynamic"
     max_iterations_empty: "5"
@@ -119,12 +121,21 @@ workflow:
   phase_init:
     description: "Create runtime structure, scan integration surfaces, present init gate, record baseline"
     steps:
+      gate_session_boundary:
+        type: approval_gate
+        description: "Confirm a fresh standalone session boundary before init writes"
+        present: |
+          improve-agent currently supports only fresh `new` sessions.
+          If `{spec_folder}/improvement` already contains prior state, archive or replace it instead of resuming in place.
+          Options:
+          A) Continue with a fresh session boundary
+          B) Cancel
       step_create_directories:
         description: "Create improvement runtime directories"
         command: "mkdir -p {spec_folder}/improvement/candidates {spec_folder}/improvement/benchmark-runs/{target_profile}"
       step_scan_integration:
         description: "Map all surfaces the target agent touches across the repo"
-        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
+        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json"
       step_generate_profile:
         description: "Generate dynamic scoring profile from the agent's own rules (skip if static profile)"
         condition: "scoring_mode == 'dynamic'"
@@ -156,7 +167,7 @@ workflow:
     steps:
       step_scan_integration:
         description: "Refresh integration surface map before each iteration"
-        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={target_profile} --output={spec_folder}/improvement/integration-report.json"
+        command: "node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={agent_name} --output={spec_folder}/improvement/integration-report.json"
       gate_before_candidate:
         type: approval_gate
         description: "Operator authorizes candidate generation for this iteration"
@@ -171,15 +182,27 @@ workflow:
       step_emit_journal_event_candidate_generated:
         description: "Emit candidate_generated journal event after the candidate is written"
         command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit candidate_generated --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"candidatePath\":\"{candidate_path}\"}'"
+      step_record_candidate_lineage:
+        description: "Record the generated candidate in the packet-local lineage graph"
+        command: "node -e \"const lineage=require('./.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs'); lineage.recordCandidate('{spec_folder}/improvement/candidate-lineage.json',{candidateId:'{candidate_id}',sessionId:'{session_id}',waveIndex:0,mutationType:'candidate-proposal',parentCandidateId:null,iteration:Number('{iteration}')});\""
       step_score_candidate:
         description: "Score candidate across 5 dimensions (dynamic) or keyword checks (static)"
         command: "node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs --candidate={candidate_path} --baseline={target_path} --manifest={spec_folder}/improvement/target-manifest.jsonc --profile={target_profile} --target={target_path} --output={score_output_path}"
       step_emit_journal_event_candidate_scored:
         description: "Emit candidate_scored journal event after scoring completes"
         command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit candidate_scored --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"scoreOutputPath\":\"{score_output_path}\",\"weightedScore\":\"{weighted_score}\"}'"
+      step_record_mutation_coverage:
+        description: "Record mutation coverage and per-dimension trajectory from the scored candidate"
+        command: "node -e \"const fs=require('node:fs'); const coverage=require('./.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const dimensions=Array.isArray(score.dimensions)?score.dimensions:[]; const scores=Object.fromEntries(dimensions.map((entry)=>[entry.name,entry.score])); coverage.recordMutation('{spec_folder}/improvement/mutation-coverage.json',{dimension:'composite',mutationType:'candidate-proposal',candidateId:'{candidate_id}',iteration:Number('{iteration}'),outcome:score.recommendation||'scored'}); coverage.recordTrajectory('{spec_folder}/improvement/mutation-coverage.json',{iteration:Number('{iteration}'),scores,weightedScore:Number('{weighted_score}')});\""
       step_run_benchmark:
         description: "Run fixture tests against packet-local outputs"
         action: "Run profile fixtures against packet-local outputs under benchmark-runs/{target_profile}/"
+      step_measure_benchmark_stability:
+        description: "Measure replay stability for the current scored candidate and emit a repeatability report"
+        command: "node -e \"const fs=require('node:fs'); const stability=require('./.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const result=stability.measureStability([score],{minReplayCount:3,warningThreshold:0.95}); fs.writeFileSync('{spec_folder}/improvement/benchmark-runs/{target_profile}/iteration-{iteration}-repeatability.json',JSON.stringify(result,null,2)+'\\n');\""
+      step_detect_trade_offs:
+        description: "Analyze the scored trajectory for Pareto trade-offs before reduction"
+        command: "node -e \"const fs=require('node:fs'); const detector=require('./.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs'); const trajectory=detector.getTrajectory('{spec_folder}/improvement/improvement-journal.jsonl'); const tradeOffs=detector.detectTradeOffs(trajectory); fs.writeFileSync('{spec_folder}/improvement/trade-off-report.json',JSON.stringify({iteration:Number('{iteration}'),tradeOffs},null,2)+'\\n');\""
       step_append_ledger:
         description: "Record scored results in append-only JSONL ledger"
         action: "Append prompt-score and benchmark records into agent-improvement-state.jsonl"

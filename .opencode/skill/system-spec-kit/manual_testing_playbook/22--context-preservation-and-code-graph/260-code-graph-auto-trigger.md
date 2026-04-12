@@ -33,13 +33,90 @@ This scenario validates Code graph auto-trigger (ensureCodeGraphReady).
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 260a | Code graph auto-trigger | Empty graph triggers full scan | `As a context-and-code-graph validation operator, validate Empty graph triggers full scan against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'full_scan', reason includes 'empty' or 'no nodes'. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts` | ReadyResult.action === 'full_scan', reason includes 'empty' or 'no nodes' | Test output showing action and reason | PASS if full_scan triggered on empty graph | Check getDb() returns valid database, verify code_nodes table exists |
-| 260b | Code graph auto-trigger | Git HEAD change triggers selective reindex | `As a context-and-code-graph validation operator, validate Git HEAD change triggers selective reindex against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'selective_reindex', files array lists changed files. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts` | ReadyResult.action === 'selective_reindex', files array lists changed files | Test output showing action and file list | PASS if selective reindex triggered with correct file list | Check getCurrentGitHead() and getLastGitHead() comparison logic |
-| 260c | Code graph auto-trigger | Fresh graph returns action=none | `As a context-and-code-graph validation operator, validate Fresh graph returns action=none against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'none', reason includes 'fresh'. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts` | ReadyResult.action === 'none', reason includes 'fresh' | Test output showing no-op result | PASS if no indexing triggered on fresh graph | Verify setLastGitHead() was called after previous scan |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Empty graph triggers full scan against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'full_scan', reason includes 'empty' or 'no nodes'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+
+### Expected
+
+ReadyResult.action === 'full_scan', reason includes 'empty' or 'no nodes'
+
+### Evidence
+
+Test output showing action and reason
+
+### Pass / Fail
+
+- **Pass**: full_scan triggered on empty graph
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check getDb() returns valid database, verify code_nodes table exists
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Git HEAD change triggers selective reindex against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'selective_reindex', files array lists changed files. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+
+### Expected
+
+ReadyResult.action === 'selective_reindex', files array lists changed files
+
+### Evidence
+
+Test output showing action and file list
+
+### Pass / Fail
+
+- **Pass**: selective reindex triggered with correct file list
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check getCurrentGitHead() and getLastGitHead() comparison logic
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Fresh graph returns action=none against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify readyResult.action === 'none', reason includes 'fresh'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+
+### Expected
+
+ReadyResult.action === 'none', reason includes 'fresh'
+
+### Evidence
+
+Test output showing no-op result
+
+### Pass / Fail
+
+- **Pass**: no indexing triggered on fresh graph
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify setLastGitHead() was called after previous scan
 
 ## 4. REFERENCES
 

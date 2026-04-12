@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `112` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 112 | Cross-process DB hot rebinding | Confirm marker-file triggers DB reinitialization | `As a pipeline validation operator, confirm marker-file triggers DB reinitialization against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) start MCP server 2) create a test memory via MCP: `memory_save(filePath)` and note its title 3) from a separate terminal, run `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox` (non-dry-run — this mutates the DB and writes the `DB_UPDATED_FILE` marker) 4) immediately call `memory_stats()` via MCP → verify server detects marker and reinitializes DB 5) verify no stale data from pre-rebind state 6) run `memory_health()` → verify healthy status post-rebind | Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind | memory_stats output post-rebind + memory_health output + marker file detection evidence | PASS if server detects marker file, reinitializes DB, returns current (non-stale) data, and health is healthy | Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitialization clears caches; check for stale connection handles |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm marker-file triggers DB reinitialization against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. start MCP server
+2. create a test memory via MCP: `memory_save(filePath)` and note its title
+3. from a separate terminal, run `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox` (non-dry-run — this mutates the DB and writes the `DB_UPDATED_FILE` marker)
+4. immediately call `memory_stats()` via MCP → verify server detects marker and reinitializes DB
+5. verify no stale data from pre-rebind state
+6. run `memory_health()` → verify healthy status post-rebind
+
+### Expected
+
+Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind
+
+### Evidence
+
+memory_stats output post-rebind + memory_health output + marker file detection evidence
+
+### Pass / Fail
+
+- **Pass**: server detects marker file, reinitializes DB, returns current (non-stale) data, and health is healthy
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitialization clears caches; check for stale connection handles
 
 ## 4. REFERENCES
 

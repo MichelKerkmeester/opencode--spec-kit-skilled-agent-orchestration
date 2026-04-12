@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `089` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 089 | Code standards alignment | Confirm standards conformance | `As a tooling validation operator, confirm standards conformance against the documented validation surface. Verify affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) inspect affected files 2) verify naming/comments/import order 3) record mismatches | Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found | File inspection evidence showing naming/comments/import compliance + mismatch list (if any) | PASS if all affected files conform to naming, commenting, and import order standards with zero mismatches | Inspect code standards definition; verify linter rules cover the standards; check for files missed by alignment pass |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm standards conformance against the documented validation surface. Verify affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. inspect affected files
+2. verify naming/comments/import order
+3. record mismatches
+
+### Expected
+
+Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found
+
+### Evidence
+
+File inspection evidence showing naming/comments/import compliance + mismatch list (if any)
+
+### Pass / Fail
+
+- **Pass**: all affected files conform to naming, commenting, and import order standards with zero mismatches
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect code standards definition; verify linter rules cover the standards; check for files missed by alignment pass
 
 ## 4. REFERENCES
 

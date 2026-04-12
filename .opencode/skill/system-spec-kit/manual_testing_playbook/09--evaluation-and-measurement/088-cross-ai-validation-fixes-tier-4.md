@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `088` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 088 | Cross-AI validation fixes (Tier 4) | Confirm tier-4 fix pack behavior | `As an evaluation validation operator, confirm tier-4 fix pack behavior against the documented validation surface. Verify each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) inspect each fix location 2) run representative flows 3) record behavior | Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality | Fix location inspection + representative flow outputs + regression check evidence | PASS if all tier-4 fix locations produce corrected behavior and no regressions are observed | Inspect each fix from Phase 018 tier-4 changelog; run targeted tests for each fix area; check for unintended side effects |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm tier-4 fix pack behavior against the documented validation surface. Verify each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. inspect each fix location
+2. run representative flows
+3. record behavior
+
+### Expected
+
+Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality
+
+### Evidence
+
+Fix location inspection + representative flow outputs + regression check evidence
+
+### Pass / Fail
+
+- **Pass**: all tier-4 fix locations produce corrected behavior and no regressions are observed
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect each fix from Phase 018 tier-4 changelog; run targeted tests for each fix area; check for unintended side effects
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `028` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 028 | Embedding cache (R18) | Confirm cache hit/miss behavior | `As a scoring validation operator, confirm cache hit/miss behavior against the documented validation surface. Verify cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Embed content/model pair 2) Repeat 3) Confirm hit and metadata update | Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit | Cache hit/miss output + timing comparison + metadata timestamp verification | PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated | Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm cache hit/miss behavior against the documented validation surface. Verify cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Embed content/model pair
+2. Repeat
+3. Confirm hit and metadata update
+
+### Expected
+
+Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit
+
+### Evidence
+
+Cache hit/miss output + timing comparison + metadata timestamp verification
+
+### Pass / Fail
+
+- **Pass**: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp
+- **Fail**: Cache hit still calls embedding API or timestamps not updated
+
+### Failure Triage
+
+Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy
 
 ## 4. REFERENCES
 

@@ -35,13 +35,90 @@ This scenario validates Cross-runtime fallback.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 252a | Cross-runtime fallback | Codex CLI detected with hookPolicy=unavailable | `As a context-and-code-graph validation operator, validate Codex CLI detected with hookPolicy=unavailable against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() with CODEX_CLI=1 returns { runtime: 'codex-cli', hookPolicy: 'unavailable' }. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts` | `detectRuntime()` with `CODEX_CLI=1` returns `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }` | Test output showing detection result | PASS if codex-cli detected with unavailable hookPolicy | Check env var detection order in `runtime-detection.ts` — CODEX_CLI or CODEX_SANDBOX |
-| 252b | Cross-runtime fallback | Copilot CLI detects repo hook wiring dynamically | `As a context-and-code-graph validation operator, validate Copilot CLI detects repo hook wiring dynamically against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with COPILOT_CLI=1 returns { runtime: 'copilot-cli', hookPolicy: 'enabled' } in this repo and disabled_by_scope in a temp repo without .github/hooks/*.json. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts` | `detectRuntime()` with `COPILOT_CLI=1` returns `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo and `disabled_by_scope` in a temp repo without `.github/hooks/*.json` | Test output showing both branches | PASS if both enabled and missing-config branches are covered | Check repo `.github/hooks/*.json` and temp-dir no-hook branch |
-| 252c | Cross-runtime fallback | Gemini CLI fallback remains config-driven | `As a context-and-code-graph validation operator, validate Gemini CLI fallback remains config-driven against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with GEMINI_CLI=1 returns hookPolicy based on .gemini/settings.json, and getRecoveryApproach() follows it. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts` | `detectRuntime()` with `GEMINI_CLI=1` returns hookPolicy based on `.gemini/settings.json`, and `getRecoveryApproach()` follows it | Test output showing detection and recovery approach | PASS if gemini-cli still respects config-driven fallback | Check env var detection for GEMINI_CLI or GOOGLE_GENAI_USE_VERTEXAI |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Codex CLI detected with hookPolicy=unavailable against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() with CODEX_CLI=1 returns { runtime: 'codex-cli', hookPolicy: 'unavailable' }. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts
+
+### Expected
+
+detectRuntime()` with `CODEX_CLI=1` returns `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }
+
+### Evidence
+
+Test output showing detection result
+
+### Pass / Fail
+
+- **Pass**: codex-cli detected with unavailable hookPolicy
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check env var detection order in `runtime-detection.ts` — CODEX_CLI or CODEX_SANDBOX
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Copilot CLI detects repo hook wiring dynamically against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with COPILOT_CLI=1 returns { runtime: 'copilot-cli', hookPolicy: 'enabled' } in this repo and disabled_by_scope in a temp repo without .github/hooks/*.json. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts
+
+### Expected
+
+detectRuntime()` with `COPILOT_CLI=1` returns `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo and `disabled_by_scope` in a temp repo without `.github/hooks/*.json
+
+### Evidence
+
+Test output showing both branches
+
+### Pass / Fail
+
+- **Pass**: both enabled and missing-config branches are covered
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check repo `.github/hooks/*.json` and temp-dir no-hook branch
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Gemini CLI fallback remains config-driven against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify detectRuntime() with GEMINI_CLI=1 returns hookPolicy based on .gemini/settings.json, and getRecoveryApproach() follows it. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts
+
+### Expected
+
+`detectRuntime()` with `GEMINI_CLI=1` returns hookPolicy based on `.gemini/settings.json`, and `getRecoveryApproach()` follows it
+
+### Evidence
+
+Test output showing detection and recovery approach
+
+### Pass / Fail
+
+- **Pass**: gemini-cli still respects config-driven fallback
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check env var detection for GEMINI_CLI or GOOGLE_GENAI_USE_VERTEXAI
 
 ## 4. REFERENCES
 

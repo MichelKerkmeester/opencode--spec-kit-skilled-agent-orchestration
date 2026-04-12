@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `095` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 095 | Strict Zod schema validation (P0-1) | Confirm schema enforcement rejects hallucinated params | `As a pipeline validation operator, confirm schema enforcement rejects hallucinated params against memory_search({query:"test", bogus:1}). Verify zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) call any MCP tool with an extra unknown parameter (e.g., `memory_search({query:"test", bogus:1})`) 2) verify Zod strict error is returned 3) set `SPECKIT_STRICT_SCHEMAS=false` and confirm `.passthrough()` allows the extra param 4) verify validation runs per-tool in handler, not duplicated at server dispatch | Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer | Tool outputs + Zod error messages | PASS if strict mode rejects unknown params and passthrough mode allows them | Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm schema enforcement rejects hallucinated params against memory_search({query:"test", bogus:1}). Verify zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. call any MCP tool with an extra unknown parameter (e.g., `memory_search({query:"test", bogus:1})`)
+2. verify Zod strict error is returned
+3. set `SPECKIT_STRICT_SCHEMAS=false` and confirm `.passthrough()` allows the extra param
+4. verify validation runs per-tool in handler, not duplicated at server dispatch
+
+### Expected
+
+Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer
+
+### Evidence
+
+Tool outputs + Zod error messages
+
+### Pass / Fail
+
+- **Pass**: strict mode rejects unknown params and passthrough mode allows them
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching
 
 ## 4. REFERENCES
 

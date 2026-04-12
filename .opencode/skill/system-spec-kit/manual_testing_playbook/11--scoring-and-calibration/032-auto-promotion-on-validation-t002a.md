@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `032` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 032 | Auto-promotion on validation (T002a) | Confirm promotion thresholds/throttle | `As a scoring validation operator, confirm promotion thresholds/throttle against the documented validation surface. Verify positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Submit positive validations 2) Check tier changes 3) Verify throttle/audit | Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged | Tier change log + throttle enforcement evidence + promotion audit trail | PASS: Promotion occurs at threshold count; throttle blocks re-promotion within window; audit row created; FAIL: Promotion at wrong threshold or throttle bypassed | Verify promotion threshold configuration → Check throttle window duration → Inspect audit logging |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm promotion thresholds/throttle against the documented validation surface. Verify positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Submit positive validations
+2. Check tier changes
+3. Verify throttle/audit
+
+### Expected
+
+Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged
+
+### Evidence
+
+Tier change log + throttle enforcement evidence + promotion audit trail
+
+### Pass / Fail
+
+- **Pass**: Promotion occurs at threshold count; throttle blocks re-promotion within window; audit row created
+- **Fail**: Promotion at wrong threshold or throttle bypassed
+
+### Failure Triage
+
+Verify promotion threshold configuration → Check throttle window duration → Inspect audit logging
 
 ## 4. REFERENCES
 

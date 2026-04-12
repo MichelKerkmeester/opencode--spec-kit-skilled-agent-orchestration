@@ -26,11 +26,35 @@ Operators run the exact prompt and command sequence for `230` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 230 | Shadow-scoring retirement | Confirm runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable | `Validate that shadow-scoring execution and persistence remain retired even when the legacy flag is set, while comparison and historical stats helpers stay safe to call. Run the targeted checks, capture the evidence that proves the runtime path is shut off, and return a concise pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npx vitest run tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts` 3) `sed -n '230,420p' lib/eval/shadow-scoring.ts` 4) `rg -n "runShadowScoring|logShadowComparison|getShadowStats|compareShadowResults|SPECKIT_SHADOW_SCORING" lib/eval/shadow-scoring.ts tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts` | The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface | Vitest transcript plus the source excerpts showing the retired runtime/write paths and the retained comparison helpers | PASS if the targeted checks prove runtime execution and write paths are retired while comparison and historical read helpers remain intact | Inspect `lib/eval/shadow-scoring.ts`; confirm the test sandbox DB path is isolated; verify no environment leakage or stale eval DB state is affecting the results |
+### Prompt
 
----
+```
+Validate that shadow-scoring execution and persistence remain retired even when the legacy flag is set, while comparison and historical stats helpers stay safe to call. Run the targeted checks, capture the evidence that proves the runtime path is shut off, and return a concise pass/fail verdict with the main reason.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `npx vitest run tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts`
+3. `sed -n '230,420p' lib/eval/shadow-scoring.ts`
+4. `rg -n "runShadowScoring|logShadowComparison|getShadowStats|compareShadowResults|SPECKIT_SHADOW_SCORING" lib/eval/shadow-scoring.ts tests/shadow-scoring.vitest.ts tests/mpab-quality-gate-integration.vitest.ts`
+
+### Expected
+
+The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface
+
+### Evidence
+
+Vitest transcript plus the source excerpts showing the retired runtime/write paths and the retained comparison helpers
+
+### Pass / Fail
+
+- **Pass**: the targeted checks prove runtime execution and write paths are retired while comparison and historical read helpers remain intact
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `lib/eval/shadow-scoring.ts`; confirm the test sandbox DB path is isolated; verify no environment leakage or stale eval DB state is affecting the results
 
 ## 4. REFERENCES
 

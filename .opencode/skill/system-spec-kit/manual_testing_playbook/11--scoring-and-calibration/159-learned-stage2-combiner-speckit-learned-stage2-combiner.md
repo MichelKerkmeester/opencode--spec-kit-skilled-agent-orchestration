@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `159` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 159 | Learned Stage 2 combiner (SPECKIT_LEARNED_STAGE2_COMBINER) | Verify shadow scoring produces comparison output | `As a scoring validation operator, verify shadow scoring produces comparison output against SPECKIT_LEARNED_STAGE2_COMBINER=true. Verify shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual); null when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_LEARNED_STAGE2_COMBINER=true` 2) Train model via `trainRegularizedLinearRanker(examples)` 3) Call `shadowScore(model, features, manualScore, true)` 4) Verify ShadowResult shape 5) `npx vitest run tests/learned-combiner.vitest.ts` | shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual); null when flag OFF | ShadowResult output + test transcript showing shadow-only behavior | PASS if shadowScore() returns non-null ShadowResult with valid scores when flag ON, null when OFF; FAIL if shadow scoring affects live ranking or scores out of range | Verify isLearnedStage2CombinerEnabled() → Check model training succeeded (non-null) → Inspect predict() clamping → Verify FEATURE_NAMES order matches extractFeatureVector() |
+### Prompt
 
----
+```
+As a scoring validation operator, verify shadow scoring produces comparison output against SPECKIT_LEARNED_STAGE2_COMBINER=true. Verify shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual); null when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_LEARNED_STAGE2_COMBINER=true`
+2. Train model via `trainRegularizedLinearRanker(examples)`
+3. Call `shadowScore(model, features, manualScore, true)`
+4. Verify ShadowResult shape
+5. `npx vitest run tests/learned-combiner.vitest.ts`
+
+### Expected
+
+shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual); null when flag OFF
+
+### Evidence
+
+ShadowResult output + test transcript showing shadow-only behavior
+
+### Pass / Fail
+
+- **Pass**: shadowScore() returns non-null ShadowResult with valid scores when flag ON, null when OFF
+- **Fail**: shadow scoring affects live ranking or scores out of range
+
+### Failure Triage
+
+Verify isLearnedStage2CombinerEnabled() → Check model training succeeded (non-null) → Inspect predict() clamping → Verify FEATURE_NAMES order matches extractFeatureVector()
 
 ## 4. REFERENCES
 

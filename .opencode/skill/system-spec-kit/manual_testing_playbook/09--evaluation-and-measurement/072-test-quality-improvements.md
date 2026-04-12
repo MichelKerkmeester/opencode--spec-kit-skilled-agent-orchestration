@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `072` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 072 | Test quality improvements | Confirm test quality remediations | `As an evaluation validation operator, confirm test quality remediations against the documented validation surface. Verify tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) inspect changed tests 2) verify teardown/assertion patterns 3) record reliability signals | Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained | Test inspection evidence + teardown/assertion pattern samples + reliability signal notes | PASS if changed tests follow quality patterns (proper teardown, specific assertions, no flaky timing) | Inspect specific test changes; verify teardown completeness; check for residual flaky patterns |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm test quality remediations against the documented validation surface. Verify tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. inspect changed tests
+2. verify teardown/assertion patterns
+3. record reliability signals
+
+### Expected
+
+Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained
+
+### Evidence
+
+Test inspection evidence + teardown/assertion pattern samples + reliability signal notes
+
+### Pass / Fail
+
+- **Pass**: changed tests follow quality patterns (proper teardown, specific assertions, no flaky timing)
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect specific test changes; verify teardown completeness; check for residual flaky patterns
 
 ## 4. REFERENCES
 

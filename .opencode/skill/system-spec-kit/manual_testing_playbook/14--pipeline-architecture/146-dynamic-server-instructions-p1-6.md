@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `146` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 146 | Dynamic server instructions (P1-6) | Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning | `As a pipeline validation operator, verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning against setInstructions(). Verify startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Start the MCP server and capture startup logs 2) Verify `setInstructions()` was called with a non-empty instructions string 3) Verify instructions include: memory count, spec folder count, available channels, and active feature flags 4) If 11+ stale memories exist, verify a stale warning is included 5) Restart with `SPECKIT_DYNAMIC_INIT=false` and verify `setInstructions()` receives an empty string | Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions | Server startup log + instructions content snapshot + flag toggle comparison | PASS if enabled mode emits overview with counts/channels and disabled mode yields empty string | Inspect `context-server.ts` `buildServerInstructions`, `startup-checks.ts`, and `SPECKIT_DYNAMIC_INIT` flag handling |
+### Prompt
 
----
+```
+As a pipeline validation operator, verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning against setInstructions(). Verify startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Start the MCP server and capture startup logs
+2. Verify `setInstructions()` was called with a non-empty instructions string
+3. Verify instructions include: memory count, spec folder count, available channels, and active feature flags
+4. If 11+ stale memories exist, verify a stale warning is included
+5. Restart with `SPECKIT_DYNAMIC_INIT=false` and verify `setInstructions()` receives an empty string
+
+### Expected
+
+Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions
+
+### Evidence
+
+Server startup log + instructions content snapshot + flag toggle comparison
+
+### Pass / Fail
+
+- **Pass**: enabled mode emits overview with counts/channels and disabled mode yields empty string
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `context-server.ts` `buildServerInstructions`, `startup-checks.ts`, and `SPECKIT_DYNAMIC_INIT` flag handling
 
 ## 4. REFERENCES
 

@@ -239,6 +239,18 @@ workflow:
           - dimension_queue: "Ordered list of dimensions to review"
           - inventory_pass: true
 
+      step_normalize_review_dimensions:
+        action: "Normalize reviewDimensions once during init for config + JSONL reuse"
+        outputs:
+          - review_dimensions_normalized: "Canonical string[] for deep-review-config.json"
+          - review_dimensions_json: "JSON.stringify(review_dimensions_normalized) for JSONL config record"
+        normalize: |
+          Accept {review_dimensions} in any of these shapes and convert once:
+            - "all" → ["correctness","security","traceability","maintainability"]
+            - "correctness,security" → ["correctness","security"]
+            - ["correctness"] → ["correctness"]
+          Every element MUST be one of the four canonical dimension names.
+
       step_create_config:
         action: "Create deep-review-config.json from template with review-specific fields"
         template: .opencode/skill/sk-deep-review/assets/deep_review_config.json
@@ -252,8 +264,8 @@ workflow:
           continuedFromRun: null
           reviewTarget: "{review_target}"
           reviewTargetType: "{review_target_type}"
-          # Normalize to JSON array before writing (expand "all" to ["correctness","security","traceability","maintainability"]).
-          reviewDimensions: "{review_dimensions}"
+          # Reuse the single normalized init-time value from step_normalize_review_dimensions.
+          reviewDimensions: "{review_dimensions_normalized}"
           reviewScopeFiles: "{review_scope_files}"
           severityThreshold: "P2"
           crossReference:
@@ -272,13 +284,7 @@ workflow:
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record including review fields and lineage metadata"
-        pre_serialize:
-          review_dimensions_json: |
-            Normalize {review_dimensions} into a proper JSON array before substituting into `content` below. Accepted shapes on input:
-              - "all" → JSON.stringify(["correctness","security","traceability","maintainability"])
-              - "correctness,security" → JSON.stringify(["correctness","security"])
-              - ["correctness"] → JSON.stringify(["correctness"])
-            The resulting string must parse via JSON.parse(...) as a string[], and every element MUST be one of the four canonical dimension names. Never wrap the raw template variable as `["{review_dimensions}"]` — that collapses multiple dimensions into a single string element and breaks replay tooling.
+        note: "Reuse review_dimensions_json from step_normalize_review_dimensions. Never re-normalize or wrap the raw template value."
         content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":{review_dimensions_json},"sessionId":"{ISO_8601_NOW}","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{spec_folder}/review/deep-review-state.jsonl"
 
@@ -516,7 +522,7 @@ workflow:
       step_emit_blocked_stop:
         action: "Persist blocked-stop evidence whenever the review legal-stop decision tree vetoes STOP"
         if_blocked:
-          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}},"claimAdjudicationGate":{"pass":{claim_adjudication_gate_pass},"activeP0P1":{claim_adjudication_active_count}}},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}},"claimAdjudicationGate":{"pass":{claim_adjudication_gate_pass},"activeP0P1":{claim_adjudication_active_count}}},"graphBlockerDetail":{graph_blockers_json},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
           log: "Blocked STOP persisted for review loop. Failed gates: {blocked_by_csv}. Recovery strategy: {recovery_strategy}"
         if_not_blocked:
           proceed: true

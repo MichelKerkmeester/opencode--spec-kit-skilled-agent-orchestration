@@ -8,14 +8,18 @@ category: "5D Scorer"
 
 Validates that dynamic 5D scoring works on an agent without a pre-built profile, proving the dynamic profile generation path.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that dynamic 5D scoring works on an agent without a pre-built profile, proving the dynamic profile generation path against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `evaluationMode` field equals `"dynamic-5d"`. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs \
   --candidate=.opencode/agent/orchestrate.md --dynamic
 ```
 
-## Expected Signals
+## Expected
 
 - `evaluationMode` field equals `"dynamic-5d"`
 - `profileId` is derived from the agent name (e.g., `"orchestrate"`)

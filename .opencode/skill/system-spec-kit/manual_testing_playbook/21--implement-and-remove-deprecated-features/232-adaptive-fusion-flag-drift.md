@@ -26,11 +26,36 @@ Operators run the exact prompt and command sequence for `232` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 232 | Adaptive-fusion flag drift | Confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch | `As a canonical-continuity validation operator, confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch against cd .opencode/skill/system-spec-kit/mcp_server. Verify the targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls hybridAdaptiveFuse(...) without a flag gate in hybrid-search.ts, and INSTALL_GUIDE.md still documents SPECKIT_ADAPTIVE_FUSION as an operator-facing disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npx vitest run tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts` 3) `sed -n '985,1015p' lib/search/hybrid-search.ts` 4) `rg -n "SPECKIT_ADAPTIVE_FUSION" INSTALL_GUIDE.md` 5) `rg -n "hybridAdaptiveFuse" lib/search/hybrid-search.ts tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts` | The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch | Vitest transcript plus the runtime-source excerpt and the install-guide lines that still advertise the stale flag behavior | PASS if the targeted checks prove adaptive fusion stays active in the live runtime path while the install guide still reflects stale flag-toggle guidance | Inspect `lib/search/hybrid-search.ts` and `INSTALL_GUIDE.md`; confirm the checked-in docs match the tested source tree and that no alternate fusion gate was introduced elsewhere in the pipeline |
+### Prompt
 
----
+```
+As a canonical-continuity validation operator, confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch against cd .opencode/skill/system-spec-kit/mcp_server. Verify the targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls hybridAdaptiveFuse(...) without a flag gate in hybrid-search.ts, and INSTALL_GUIDE.md still documents SPECKIT_ADAPTIVE_FUSION as an operator-facing disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `npx vitest run tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts`
+3. `sed -n '985,1015p' lib/search/hybrid-search.ts`
+4. `rg -n "SPECKIT_ADAPTIVE_FUSION" INSTALL_GUIDE.md`
+5. `rg -n "hybridAdaptiveFuse" lib/search/hybrid-search.ts tests/adaptive-fusion.vitest.ts tests/hybrid-search.vitest.ts`
+
+### Expected
+
+The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch
+
+### Evidence
+
+Vitest transcript plus the runtime-source excerpt and the install-guide lines that still advertise the stale flag behavior
+
+### Pass / Fail
+
+- **Pass**: the targeted checks prove adaptive fusion stays active in the live runtime path while the install guide still reflects stale flag-toggle guidance
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `lib/search/hybrid-search.ts` and `INSTALL_GUIDE.md`; confirm the checked-in docs match the tested source tree and that no alternate fusion gate was introduced elsewhere in the pipeline
 
 ## 4. REFERENCES
 

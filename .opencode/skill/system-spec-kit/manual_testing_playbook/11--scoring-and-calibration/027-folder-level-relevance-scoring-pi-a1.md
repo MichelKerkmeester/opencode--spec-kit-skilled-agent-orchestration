@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `027` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 027 | Folder-level relevance scoring (PI-A1) | Confirm folder-first retrieval | `As a scoring validation operator, confirm folder-first retrieval against the documented validation surface. Verify folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create varied folders 2) Run global query 3) Verify folder pre-ranking | Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking | Query output showing folder-level ranking + individual result ordering within folders | PASS: Folders ranked first; individual results ordered within folder context; global query returns folder-prioritized results; FAIL: Folder ranking missing or individual results ignore folder context | Verify folder scoring algorithm → Check pre-ranking stage insertion point → Inspect folder metadata availability |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm folder-first retrieval against the documented validation surface. Verify folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create varied folders
+2. Run global query
+3. Verify folder pre-ranking
+
+### Expected
+
+Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking
+
+### Evidence
+
+Query output showing folder-level ranking + individual result ordering within folders
+
+### Pass / Fail
+
+- **Pass**: Folders ranked first; individual results ordered within folder context; global query returns folder-prioritized results
+- **Fail**: Folder ranking missing or individual results ignore folder context
+
+### Failure Triage
+
+Verify folder scoring algorithm → Check pre-ranking stage insertion point → Inspect folder metadata availability
 
 ## 4. REFERENCES
 

@@ -26,11 +26,34 @@ Operators run the exact prompt and command sequence for `EX-009` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `As a mutation validation operator, validate Tier cleanup with safety against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")` -> `memory_bulk_delete(tier:"temporary",specFolder:"<sandbox-spec>",confirm:true)` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Scoped deletion count + checkpoint created | Bulk delete output + checkpoint listing | PASS if scoped deletions in sandbox and checkpoint present | Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed |
+### Prompt
 
----
+```
+As a mutation validation operator, validate Tier cleanup with safety against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")
+2. memory_bulk_delete(tier:"temporary",specFolder:"<sandbox-spec>",confirm:true)
+3. checkpoint_list(specFolder:"<sandbox-spec>")
+
+### Expected
+
+Scoped deletion count + checkpoint created
+
+### Evidence
+
+Bulk delete output + checkpoint listing
+
+### Pass / Fail
+
+- **Pass**: scoped deletions in sandbox and checkpoint present
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed
 
 ## 4. REFERENCES
 

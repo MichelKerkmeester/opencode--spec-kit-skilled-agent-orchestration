@@ -8,7 +8,11 @@ category: "Runtime Truth"
 
 Validates that `mutation-coverage.cjs` tracks per-dimension score history across iterations, and that convergence eligibility requires at least 3 stable data points with all dimension deltas within the configured stability delta.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that mutation-coverage.cjs tracks per-dimension score history across iterations, and that convergence eligibility requires at least 3 stable data points with all dimension deltas within the configured stability delta against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `recordTrajectory()` appends per-dimension scores with iteration number and timestamp. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node -e "
@@ -63,7 +67,7 @@ console.log('PASS');
 " && rm -f /tmp/trajectory-verify.json /tmp/trajectory-verify-unstable.json
 ```
 
-## Expected Signals
+## Expected
 
 - `recordTrajectory()` appends per-dimension scores with iteration number and timestamp
 - `getTrajectory()` returns the full score history as an array of data points

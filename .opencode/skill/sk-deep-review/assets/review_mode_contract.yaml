@@ -151,10 +151,6 @@ contract:
       description: Continue the current review lineage without changing generation.
     - id: restart
       description: Start a new generation for the same target and archive the prior review packet state.
-    - id: fork
-      description: Start a new review branch with parent linkage and full ancestry preserved.
-    - id: completed-continue
-      description: Snapshot the completed report, reopen the lineage, and continue with amendment-only deltas.
 
   lineageFields:
     - sessionId
@@ -480,7 +476,7 @@ validation:
     - id: jsonl-parity
       description: Ensure JSONL iteration and synthesis-event fields match the outputs contract.
     - id: lifecycle-parity
-      description: Ensure lifecycle mode docs and workflow branches agree on new, resume, restart, fork, and completed-continue semantics.
+      description: "Ensure lifecycle mode docs and workflow branches agree on the three supported modes: new, resume, and restart."
     - id: reducer-contract
       description: Ensure reducer inputs, outputs, and findings-registry metrics are documented consistently across assets and runtime mirrors.
     - id: duplicate-literal-lint

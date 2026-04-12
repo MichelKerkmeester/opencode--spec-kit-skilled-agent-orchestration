@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `102` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 102 | node-llama-cpp optionalDependencies | Confirm install succeeds without native build tools | `As a scoring validation operator, confirm install succeeds without native build tools against mcp_server/package.json. Verify node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) inspect `mcp_server/package.json` → verify `node-llama-cpp` is in `optionalDependencies` not `dependencies` 2) run `npm install` on a clean environment without C++ build tools → verify install completes without error 3) verify `local-reranker.ts` uses dynamic `import()` and gracefully degrades when module is absent | node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent | package.json content + install output | PASS if install succeeds and reranker gracefully falls back when module missing | Check `package.json` optionalDependencies section |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm install succeeds without native build tools against mcp_server/package.json. Verify node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. inspect `mcp_server/package.json` → verify `node-llama-cpp` is in `optionalDependencies` not `dependencies`
+2. run `npm install` on a clean environment without C++ build tools → verify install completes without error
+3. verify `local-reranker.ts` uses dynamic `import()` and gracefully degrades when module is absent
+
+### Expected
+
+node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent
+
+### Evidence
+
+package.json content + install output
+
+### Pass / Fail
+
+- **Pass**: install succeeds and reranker gracefully falls back when module missing
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `package.json` optionalDependencies section
 
 ## 4. REFERENCES
 

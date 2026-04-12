@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `029` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 029 | Double intent weighting investigation (G2) | Confirm no hybrid double-weight | `As a scoring validation operator, confirm no hybrid double-weight against the documented validation surface. Verify stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run hybrid query 2) Inspect stage trace 3) Confirm stage-2 intent skip | Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally | Stage trace output for hybrid vs non-hybrid queries + intent weight comparison | PASS: Hybrid queries skip stage-2 intent weighting; non-hybrid queries apply it; no double-weight in any case; FAIL: Double intent weighting detected in hybrid path | Check hybrid detection logic → Verify stage-2 guard condition → Inspect intent weight application point |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm no hybrid double-weight against the documented validation surface. Verify stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run hybrid query
+2. Inspect stage trace
+3. Confirm stage-2 intent skip
+
+### Expected
+
+Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally
+
+### Evidence
+
+Stage trace output for hybrid vs non-hybrid queries + intent weight comparison
+
+### Pass / Fail
+
+- **Pass**: Hybrid queries skip stage-2 intent weighting; non-hybrid queries apply it; no double-weight in any case
+- **Fail**: Double intent weighting detected in hybrid path
+
+### Failure Triage
+
+Check hybrid detection logic → Verify stage-2 guard condition → Inspect intent weight application point
 
 ## 4. REFERENCES
 

@@ -153,8 +153,9 @@ workflow:
           skip_to: step_create_config
         note_deferred_branches: "fork and completed-continue are deferred and no longer runtime-supported in this release. The reducer still reads `lineageMode` from config for dashboards and analysis, but only `new`, `resume`, and `restart` are live. See sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract for the one-session contract."
         on_completed_session:
-          log: "Prior session already completed. Either archive the completed research/ tree and start a fresh session, or jump straight to synthesis with the existing artifacts."
-          skip_to: phase_synthesis
+          log: "Prior session already completed. Do not route directly to synthesis; archive the completed research/ tree or start a fresh packet instead."
+          halt: true
+          message: "Completed deep-research packet detected. Archive or replace the existing research/ tree before starting a new session."
         on_invalid_state:
           halt: true
           message: "Existing deep-research state is incomplete or contradictory. Repair or archive the invalid research packet before continuing."

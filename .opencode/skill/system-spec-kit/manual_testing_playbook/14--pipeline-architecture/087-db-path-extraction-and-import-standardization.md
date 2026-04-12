@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `087` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 087 | DB_PATH extraction and import standardization | Confirm shared DB path resolution | `As a pipeline validation operator, confirm shared DB path resolution against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) vary DB env vars 2) run scripts/tools 3) confirm shared resolver output | All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge | DB path resolver output from multiple scripts + env var configuration evidence | PASS if all entry points resolve the same DB path and env var precedence is consistent across scripts/tools | Verify shared resolver module is imported by all consumers; check env var precedence order; inspect for hardcoded path fallbacks |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm shared DB path resolution against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. vary DB env vars
+2. run scripts/tools
+3. confirm shared resolver output
+
+### Expected
+
+All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge
+
+### Evidence
+
+DB path resolver output from multiple scripts + env var configuration evidence
+
+### Pass / Fail
+
+- **Pass**: all entry points resolve the same DB path and env var precedence is consistent across scripts/tools
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify shared resolver module is imported by all consumers; check env var precedence order; inspect for hardcoded path fallbacks
 
 ## 4. REFERENCES
 

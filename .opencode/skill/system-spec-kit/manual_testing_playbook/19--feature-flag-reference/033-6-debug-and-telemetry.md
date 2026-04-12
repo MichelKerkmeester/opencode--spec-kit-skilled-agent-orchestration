@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-033` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-033 | 6. Debug and Telemetry | Observability toggle check | `As a feature-flag validation operator, validate Observability toggle check against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 })` | Debug/telemetry controls identified | Search output | PASS if opt-in vs inert controls are clearly separated | Check feature flag governance section |
+### Prompt
 
----
+```
+As a feature-flag validation operator, validate Observability toggle check against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 })
+
+### Expected
+
+Debug/telemetry controls identified
+
+### Evidence
+
+Search output
+
+### Pass / Fail
+
+- **Pass**: opt-in vs inert controls are clearly separated
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check feature flag governance section
 
 ## 4. REFERENCES
 

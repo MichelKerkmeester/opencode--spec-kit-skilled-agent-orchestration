@@ -8,13 +8,17 @@ category: "End-to-End Loop"
 
 Validates the complete `/improve:improve-agent` loop end-to-end using the debug agent as the target.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate the complete /improve:improve-agent loop end-to-end using the debug agent as the target against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Init phase creates `improvement/` directory with config, charter, strategy, and manifest. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
 /improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/041-sk-improve-agent-loop/008-sk-improve-agent-holistic-evaluation --iterations=1
 ```
 
-## Expected Signals
+## Expected
 
 - Init phase creates `improvement/` directory with config, charter, strategy, and manifest
 - Integration scan runs and produces `integration-report.json`

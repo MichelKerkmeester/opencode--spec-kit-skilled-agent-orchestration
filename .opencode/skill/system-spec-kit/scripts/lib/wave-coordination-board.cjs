@@ -28,6 +28,19 @@ const BOARD_STATUSES = Object.freeze([
 ]);
 
 /**
+ * Allowed board status transitions.
+ * @type {Readonly<Record<string, ReadonlyArray<string>>>}
+ */
+const BOARD_STATUS_TRANSITIONS = Object.freeze({
+  initialized: Object.freeze(['planning', 'failed']),
+  planning: Object.freeze(['executing', 'failed']),
+  executing: Object.freeze(['merging', 'failed']),
+  merging: Object.freeze(['completed', 'failed']),
+  completed: Object.freeze([]),
+  failed: Object.freeze([]),
+});
+
+/**
  * Valid finding merge states.
  * @type {ReadonlyArray<string>}
  */
@@ -210,7 +223,7 @@ function buildFindingRecord(finding, segmentId, board, segmentResult) {
 
 /**
  * Merge a finding record into the board.
- * Uses findingId as the primary key for deduplication.
+ * Uses the full 5-key composite for exact-merge dedupe.
  * Preserves conflict and duplicate metadata.
  *
  * @param {object} board - Board object
@@ -220,18 +233,22 @@ function mergeFinding(board, findingRecord) {
   if (!board || typeof board !== 'object' || !findingRecord || typeof findingRecord !== 'object') {
     return board;
   }
+  const mergeKey = buildFindingCompositeKey(findingRecord);
   const existingIndex = board.findings.findIndex(
-    f => f.findingId === findingRecord.findingId
+    (existingRecord) => buildFindingCompositeKey(existingRecord) === mergeKey,
   );
+  const siblingIndex = board.findings.findIndex((existingRecord) => {
+    if (buildFindingCompositeKey(existingRecord) === mergeKey) return false;
+    return buildFindingGroupKey(existingRecord) === buildFindingGroupKey(findingRecord);
+  });
 
   if (existingIndex >= 0) {
     const existing = board.findings[existingIndex];
 
-    // Check for conflict: same findingId, different evidence or severity
-    if (existing.severity !== findingRecord.severity ||
-        existing.evidence !== findingRecord.evidence) {
+    if (hasFindingConflict(existing, findingRecord)) {
       board.conflicts.push({
         findingId: findingRecord.findingId,
+        mergeKey,
         existingSegment: existing.segment,
         newSegment: findingRecord.segment,
         existingSeverity: existing.severity,
@@ -240,31 +257,56 @@ function mergeFinding(board, findingRecord) {
         detectedAt: new Date().toISOString(),
       });
 
-      // If new finding has higher severity, promote it
-      if (compareSeverity(findingRecord.severity, existing.severity) > 0) {
-        findingRecord.mergeState = 'promoted';
-        board.promotions.push({
-          findingId: findingRecord.findingId,
-          fromSeverity: existing.severity,
-          toSeverity: findingRecord.severity,
-          fromSegment: existing.segment,
-          toSegment: findingRecord.segment,
-          promotedAt: new Date().toISOString(),
-        });
+      if (compareSeverity(findingRecord.severity, existing.severity) >= 0) {
+        findingRecord.mergeState = compareSeverity(findingRecord.severity, existing.severity) > 0
+          ? 'promoted'
+          : 'resolved';
         board.findings[existingIndex] = findingRecord;
       } else {
         findingRecord.mergeState = 'conflict';
       }
     } else {
-      // Exact duplicate
       board.dedupeLog.push({
         findingId: findingRecord.findingId,
+        mergeKey,
         duplicateSegment: findingRecord.segment,
         originalSegment: existing.segment,
         deduplicatedAt: new Date().toISOString(),
       });
       findingRecord.mergeState = 'duplicate';
     }
+  } else if (siblingIndex >= 0) {
+    const sibling = board.findings[siblingIndex];
+
+    if (hasFindingConflict(sibling, findingRecord)) {
+      board.conflicts.push({
+        findingId: findingRecord.findingId,
+        mergeKey,
+        existingSegment: sibling.segment,
+        newSegment: findingRecord.segment,
+        existingSeverity: sibling.severity,
+        newSeverity: findingRecord.severity,
+        resolution: 'pending',
+        detectedAt: new Date().toISOString(),
+      });
+
+      if (compareSeverity(findingRecord.severity, sibling.severity) > 0) {
+        findingRecord.mergeState = 'promoted';
+        board.promotions.push({
+          findingId: findingRecord.findingId,
+          mergeKey,
+          fromSeverity: sibling.severity,
+          toSeverity: findingRecord.severity,
+          fromSegment: sibling.segment,
+          toSegment: findingRecord.segment,
+          promotedAt: new Date().toISOString(),
+        });
+      } else {
+        findingRecord.mergeState = 'conflict';
+      }
+    }
+
+    board.findings.push(findingRecord);
   } else {
     board.findings.push(findingRecord);
   }
@@ -272,10 +314,61 @@ function mergeFinding(board, findingRecord) {
   // Record merge history
   board.mergeHistory.push({
     findingId: findingRecord.findingId,
+    mergeKey,
     segment: findingRecord.segment,
     mergeState: findingRecord.mergeState,
     timestamp: new Date().toISOString(),
   });
+}
+
+/**
+ * Transition the authoritative board status using the allowed-transition matrix.
+ *
+ * @param {object} board
+ * @param {string} targetStatus
+ * @returns {{ success: boolean, previousStatus: string, currentStatus: string, error?: string }}
+ */
+function transitionBoardStatus(board, targetStatus) {
+  if (!board || typeof board !== 'object') {
+    return { success: false, previousStatus: 'unknown', currentStatus: 'unknown', error: 'Invalid board' };
+  }
+
+  if (!BOARD_STATUSES.includes(targetStatus)) {
+    return {
+      success: false,
+      previousStatus: board.status || 'unknown',
+      currentStatus: board.status || 'unknown',
+      error: `Invalid target status: ${targetStatus}`,
+    };
+  }
+
+  const allowedStatuses = BOARD_STATUS_TRANSITIONS[board.status];
+  if (!Array.isArray(allowedStatuses)) {
+    return {
+      success: false,
+      previousStatus: board.status || 'unknown',
+      currentStatus: board.status || 'unknown',
+      error: `Invalid current status: ${board.status}`,
+    };
+  }
+
+  if (!allowedStatuses.includes(targetStatus)) {
+    return {
+      success: false,
+      previousStatus: board.status,
+      currentStatus: board.status,
+      error: `Cannot transition board from "${board.status}" to "${targetStatus}" (allowed next status(es): ${allowedStatuses.length > 0 ? allowedStatuses.join(', ') : 'none'})`,
+    };
+  }
+
+  const previousStatus = board.status;
+  board.status = targetStatus;
+  board.updatedAt = new Date().toISOString();
+  return {
+    success: true,
+    previousStatus,
+    currentStatus: targetStatus,
+  };
 }
 
 /* ---------------------------------------------------------------
@@ -413,6 +506,55 @@ function compareSeverity(a, b) {
 }
 
 /**
+ * Build the canonical 5-key merge-dedup key for a finding record.
+ * @param {object} findingRecord
+ * @returns {string}
+ */
+function buildFindingCompositeKey(findingRecord) {
+  return [
+    normalizeMergeKeyPart(findingRecord && findingRecord.sessionId),
+    normalizeMergeKeyPart(findingRecord && findingRecord.generation),
+    normalizeMergeKeyPart(findingRecord && findingRecord.segment),
+    normalizeMergeKeyPart(findingRecord && findingRecord.wave),
+    normalizeMergeKeyPart(findingRecord && findingRecord.findingId),
+  ].join('::');
+}
+
+/**
+ * Build the logical finding-group key used for cross-segment comparisons.
+ * @param {object} findingRecord
+ * @returns {string}
+ */
+function buildFindingGroupKey(findingRecord) {
+  return [
+    normalizeMergeKeyPart(findingRecord && findingRecord.sessionId),
+    normalizeMergeKeyPart(findingRecord && findingRecord.generation),
+    normalizeMergeKeyPart(findingRecord && findingRecord.findingId),
+  ].join('::');
+}
+
+/**
+ * Normalize a merge-key component into a stable string.
+ * @param {unknown} value
+ * @returns {string}
+ */
+function normalizeMergeKeyPart(value) {
+  if (value === null || value === undefined) return '';
+  return String(value);
+}
+
+/**
+ * Determine whether two finding records disagree on authoritative fields.
+ * @param {object} existing
+ * @param {object} candidate
+ * @returns {boolean}
+ */
+function hasFindingConflict(existing, candidate) {
+  return existing.severity !== candidate.severity ||
+    existing.evidence !== candidate.evidence;
+}
+
+/**
  * Recalculate board stats from current state.
  * @param {object} board
  */
@@ -439,10 +581,12 @@ function recalculateStats(board) {
 module.exports = {
   // Constants
   BOARD_STATUSES,
+  BOARD_STATUS_TRANSITIONS,
   FINDING_MERGE_STATES,
   // Board operations
   createBoard,
   updateBoard,
+  transitionBoardStatus,
   // Finding operations
   buildFindingRecord,
   mergeFinding,

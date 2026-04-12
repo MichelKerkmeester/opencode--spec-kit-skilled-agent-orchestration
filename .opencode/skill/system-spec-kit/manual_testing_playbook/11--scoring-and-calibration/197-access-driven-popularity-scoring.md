@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `197` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 197 | Access-driven popularity scoring | Confirm batched access accumulation, thresholded flushes, and popularity-driven ranking effects | `As a scoring validation operator, confirm batched access accumulation, thresholded flushes, and popularity-driven ranking effects against access_count. Verify accumulator rises in 0.1 steps; flush occurs after the threshold is crossed; persisted fields update for the target memory; composite scoring or ranking reflects a popularity boost; colder control memory remains relatively less active for dormancy purposes. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Prepare or identify two comparable memories that match the same retrieval query 2) Run the shared query once to establish a baseline ranking 3) Retrieve the target memory repeatedly until the accumulator crosses the flush threshold 4) Inspect accumulator state and persisted `access_count` plus `last_accessed` for target vs control 5) Re-run the ranking query and compare popularity-sensitive ordering and dormancy signals | Accumulator rises in 0.1 steps; flush occurs after the threshold is crossed; persisted fields update for the target memory; composite scoring or ranking reflects a popularity boost; colder control memory remains relatively less active for dormancy purposes | Baseline and post-access query results, accumulator snapshots, persisted access metadata, and operator transcript | PASS: target retrievals batch correctly, persistence updates are visible, and the hot memory gains a measurable popularity advantage; FAIL: accumulator does not flush, persisted metadata does not change, or ranking stays indistinguishable from baseline without explanation | Verify repeated retrievals hit the same target memory -> Inspect accumulator threshold and flush path -> Check `access_count` and `last_accessed` persistence writes -> Review composite scoring popularity contribution -> Confirm dormancy logic is reading updated access data |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm batched access accumulation, thresholded flushes, and popularity-driven ranking effects against access_count. Verify accumulator rises in 0.1 steps; flush occurs after the threshold is crossed; persisted fields update for the target memory; composite scoring or ranking reflects a popularity boost; colder control memory remains relatively less active for dormancy purposes. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Prepare or identify two comparable memories that match the same retrieval query
+2. Run the shared query once to establish a baseline ranking
+3. Retrieve the target memory repeatedly until the accumulator crosses the flush threshold
+4. Inspect accumulator state and persisted `access_count` plus `last_accessed` for target vs control
+5. Re-run the ranking query and compare popularity-sensitive ordering and dormancy signals
+
+### Expected
+
+Accumulator rises in 0.1 steps; flush occurs after the threshold is crossed; persisted fields update for the target memory; composite scoring or ranking reflects a popularity boost; colder control memory remains relatively less active for dormancy purposes
+
+### Evidence
+
+Baseline and post-access query results, accumulator snapshots, persisted access metadata, and operator transcript
+
+### Pass / Fail
+
+- **Pass**: target retrievals batch correctly, persistence updates are visible, and the hot memory gains a measurable popularity advantage
+- **Fail**: accumulator does not flush, persisted metadata does not change, or ranking stays indistinguishable from baseline without explanation
+
+### Failure Triage
+
+Verify repeated retrievals hit the same target memory -> Inspect accumulator threshold and flush path -> Check `access_count` and `last_accessed` persistence writes -> Review composite scoring popularity contribution -> Confirm dormancy logic is reading updated access data
 
 ## 4. REFERENCES
 

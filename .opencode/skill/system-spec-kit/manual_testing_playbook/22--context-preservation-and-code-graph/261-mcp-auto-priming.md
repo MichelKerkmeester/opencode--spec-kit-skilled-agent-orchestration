@@ -32,14 +32,119 @@ This scenario validates MCP auto-priming.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 261a | MCP auto-priming | First tool call delivers Prime Package | `As a context-and-code-graph validation operator, validate First tool call delivers Prime Package against memory_stats({}). Verify response envelope hints include primePackage with constitutional memories. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_stats({})` via MCP | Response envelope hints include primePackage with constitutional memories | MCP response JSON showing primePackage field | PASS if primePackage present with non-empty constitutional array | Check isSessionPrimed() state and memory-surface hook wiring |
-| 261b | MCP auto-priming | Second tool call skips Prime Package (one-shot) | `As a context-and-code-graph validation operator, validate Second tool call skips Prime Package (one-shot) against memory_stats({}). Verify response envelope hints do NOT include primePackage. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_stats({})` again | Response envelope hints do NOT include primePackage | MCP response JSON showing no primePackage | PASS if primePackage absent on second call | Verify priming flag is set after first call in memory-surface.ts |
-| 261c | MCP auto-priming | session_health confirms primed status | `As a context-and-code-graph validation operator, validate session_health confirms primed status against session_health({}). Verify primingStatus === 'primed' in response. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_health({})` via MCP | primingStatus === 'primed' in response | session_health response JSON | PASS if primingStatus is 'primed' after at least one tool call | Check getSessionTimestamps() and isSessionPrimed() |
-| 261d | MCP auto-priming | Session-scoped priming isolation | `As a context-and-code-graph validation operator, validate Session-scoped priming isolation against memory_context({ input: "prime A", sessionId: "prime-session-a" }). Verify each session receives its own first-call PrimePackage because priming is tracked per explicit session identity. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_context({ input: "prime A", sessionId: "prime-session-a" })`; then in a fresh second MCP session call `memory_context({ input: "prime B", sessionId: "prime-session-b" })` | Each session receives its own first-call PrimePackage because priming is tracked per explicit session identity | Two MCP response envelopes showing independent primePackage delivery for session A and session B | PASS if the second session receives its own PrimePackage independently of the first session | Check `hooks/memory-surface.ts` session-scoped priming set and session identity propagation |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate First tool call delivers Prime Package against memory_stats({}). Verify response envelope hints include primePackage with constitutional memories. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_stats({})` via MCP
+
+### Expected
+
+Response envelope hints include primePackage with constitutional memories
+
+### Evidence
+
+MCP response JSON showing primePackage field
+
+### Pass / Fail
+
+- **Pass**: primePackage present with non-empty constitutional array
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check isSessionPrimed() state and memory-surface hook wiring
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Second tool call skips Prime Package (one-shot) against memory_stats({}). Verify response envelope hints do NOT include primePackage. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_stats({})` again
+
+### Expected
+
+Response envelope hints do NOT include primePackage
+
+### Evidence
+
+MCP response JSON showing no primePackage
+
+### Pass / Fail
+
+- **Pass**: primePackage absent on second call
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify priming flag is set after first call in memory-surface.ts
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate session_health confirms primed status against session_health({}). Verify primingStatus === 'primed' in response. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_health({})` via MCP
+
+### Expected
+
+primingStatus === 'primed' in response
+
+### Evidence
+
+session_health response JSON
+
+### Pass / Fail
+
+- **Pass**: primingStatus is 'primed' after at least one tool call
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check getSessionTimestamps() and isSessionPrimed()
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Session-scoped priming isolation against memory_context({ input: "prime A", sessionId: "prime-session-a" }). Verify each session receives its own first-call PrimePackage because priming is tracked per explicit session identity. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_context({ input: "prime A", sessionId: "prime-session-a" })`; then in a fresh second MCP session call `memory_context({ input: "prime B", sessionId: "prime-session-b" })`
+
+### Expected
+
+Each session receives its own first-call PrimePackage because priming is tracked per explicit session identity
+
+### Evidence
+
+Two MCP response envelopes showing independent primePackage delivery for session A and session B
+
+### Pass / Fail
+
+- **Pass**: the second session receives its own PrimePackage independently of the first session
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `hooks/memory-surface.ts` session-scoped priming set and session identity propagation
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `040` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 040 | Signal vocabulary expansion (TM-08) | Confirm signal category detection | `As a memory-quality validation operator, confirm signal category detection against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories | Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary | Trigger match output showing detected signal categories + prompt-to-category mapping | PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified | Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm signal category detection against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Use correction/preference prompts
+2. Trigger matching
+3. Verify categories
+
+### Expected
+
+Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary
+
+### Evidence
+
+Trigger match output showing detected signal categories + prompt-to-category mapping
+
+### Pass / Fail
+
+- **Pass**: >=3 signal categories correctly classified from varied prompts
+- **Fail**: Categories missing or misclassified
+
+### Failure Triage
+
+Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration
 
 ## 4. REFERENCES
 

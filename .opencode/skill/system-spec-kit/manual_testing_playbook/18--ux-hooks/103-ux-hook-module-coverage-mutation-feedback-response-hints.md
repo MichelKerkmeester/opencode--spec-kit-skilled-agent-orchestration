@@ -24,11 +24,32 @@ Operators run the exact prompt and command sequence for `103` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 103 | UX hook module coverage (`mutation-feedback`, `response-hints`) | Confirm new hook modules return the finalized metadata and hint shape | `As a runtime-hook validation operator, confirm new hook modules against npx vitest run tests/hooks-ux-feedback.vitest.ts. Verify test output shows suite pass (6 tests), including latency/cache-clear booleans, errors: string[] field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `npx vitest run tests/hooks-ux-feedback.vitest.ts` | Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions | Test transcript + snippet for passing assertions | PASS if `tests/hooks-ux-feedback.vitest.ts` passes all 6 tests with no failing assertions | Inspect hook exports and fixture payloads if assertion fails |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm new hook modules against npx vitest run tests/hooks-ux-feedback.vitest.ts. Verify test output shows suite pass (6 tests), including latency/cache-clear booleans, errors: string[] field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `npx vitest run tests/hooks-ux-feedback.vitest.ts`
+
+### Expected
+
+Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions
+
+### Evidence
+
+Test transcript + snippet for passing assertions
+
+### Pass / Fail
+
+- **Pass**: `tests/hooks-ux-feedback.vitest.ts` passes all 6 tests with no failing assertions
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect hook exports and fixture payloads if assertion fails
 
 ## 4. REFERENCES
 

@@ -25,9 +25,33 @@ The shipped ranking path is RRF-only. Source-only checks may confirm the live pa
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 034 | Relative score fusion in shadow mode (R14/N1) [deprecated] | Record retirement of the RSF live-runtime scenario and preserve single-pass RRF weighting guardrails | `N/A for live RSF execution. Use source-only checks to confirm production ranking still stays on RRF and that hybrid search now precomputes adaptive weights before building the live fusion lists.` | 1) `rg -n "getAdaptiveWeights|const fusionLists = lists|fuseResultsMulti\\(fusionLists\\)" .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`<br>2) Confirm this tombstone and the linked catalog tombstone still frame RSF as retired documentation only, with no live RSF execution steps. | This tombstone clearly marks the scenario as deprecated, contains no live RSF validation steps, and the source grep shows `getAdaptiveWeights(...)` plus the single-pass `fusionLists` -> `fuseResultsMulti(...)` live path | Saved `rg` output plus the current tombstone text and linked catalog tombstone reference | PASS if the tombstone is clearly a retirement note, contains no active RSF runtime test steps, and the source-only check confirms the live path stays on single-pass RRF; FAIL if it still instructs operators to validate live RSF behavior or if the single-pass RRF anchors are missing | If active-runtime wording reappears, keep it out of the active playbook index and leave this tombstone as the deprecation record. If the source grep fails, inspect `mcp_server/lib/search/hybrid-search.ts` and `shared/algorithms/adaptive-fusion.ts` for a fusion-path regression before updating the tombstone |
+### Prompt
+
+```
+N/A for live RSF execution. Use source-only checks to confirm production ranking still stays on RRF and that hybrid search now precomputes adaptive weights before building the live fusion lists.
+```
+
+### Commands
+
+1. `rg -n "getAdaptiveWeights|const fusionLists = lists|fuseResultsMulti\\(fusionLists\\)" .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`
+2. Confirm this tombstone and the linked catalog tombstone still frame RSF as retired documentation only, with no live RSF execution steps.
+
+### Expected
+
+This tombstone clearly marks the scenario as deprecated, contains no live RSF validation steps, and the source grep shows `getAdaptiveWeights(...)` plus the single-pass `fusionLists` -> `fuseResultsMulti(...)` live path
+
+### Evidence
+
+Saved `rg` output plus the current tombstone text and linked catalog tombstone reference
+
+### Pass / Fail
+
+- **Pass**: the tombstone is clearly a retirement note, contains no active RSF runtime test steps, and the source-only check confirms the live path stays on single-pass RRF
+- **Fail**: it still instructs operators to validate live RSF behavior or if the single-pass RRF anchors are missing
+
+### Failure Triage
+
+If active-runtime wording reappears, keep it out of the active playbook index and leave this tombstone as the deprecation record. If the source grep fails, inspect `mcp_server/lib/search/hybrid-search.ts` and `shared/algorithms/adaptive-fusion.ts` for a fusion-path regression before updating the tombstone
 
 ## 4. REFERENCES
 

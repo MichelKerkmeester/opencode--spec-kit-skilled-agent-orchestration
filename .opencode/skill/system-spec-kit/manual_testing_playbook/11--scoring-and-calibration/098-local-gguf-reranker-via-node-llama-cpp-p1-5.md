@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `098` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 098 | Local GGUF reranker via node-llama-cpp (P1-5) | Confirm reranker gating and graceful fallback | `As a scoring validation operator, confirm reranker gating and graceful fallback against RERANKER_LOCAL=1. Verify reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) set `RERANKER_LOCAL=1` (truthy but not `'true'`) → verify reranker is NOT activated (strict string equality) 2) set `RERANKER_LOCAL=true` without model file → verify silent fallback 3) set `SPECKIT_RERANKER_MODEL=/custom/path` → verify the custom-model threshold applies at 2GB instead of the default 8GB 4) with valid model, verify sequential scoring (not parallel) in logs | Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs | Reranker log output + fallback behavior | PASS if strict `=== 'true'` check works, custom model lowers threshold, and scoring is sequential | Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLocal()` |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm reranker gating and graceful fallback against RERANKER_LOCAL=1. Verify reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. set `RERANKER_LOCAL=1` (truthy but not `'true'`) → verify reranker is NOT activated (strict string equality)
+2. set `RERANKER_LOCAL=true` without model file → verify silent fallback
+3. set `SPECKIT_RERANKER_MODEL=/custom/path` → verify the custom-model threshold applies at 2GB instead of the default 8GB
+4. with valid model, verify sequential scoring (not parallel) in logs
+
+### Expected
+
+Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs
+
+### Evidence
+
+Reranker log output + fallback behavior
+
+### Pass / Fail
+
+- **Pass**: strict `=== 'true'` check works, custom model lowers threshold, and scoring is sequential
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLocal()`
 
 ## 4. REFERENCES
 

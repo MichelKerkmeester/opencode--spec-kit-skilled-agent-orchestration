@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-030` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-030 | 3. MCP Configuration | MCP limits audit | `As a feature-flag validation operator, validate MCP limits audit against memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 }). Verify mCP guardrails returned. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 })` | MCP guardrails returned | Search output | PASS if defaults + keys identified | Verify in config files directly |
+### Prompt
 
----
+```
+As a feature-flag validation operator, validate MCP limits audit against memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 }). Verify mCP guardrails returned. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 })
+
+### Expected
+
+MCP guardrails returned
+
+### Evidence
+
+Search output
+
+### Pass / Fail
+
+- **Pass**: defaults + keys identified
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify in config files directly
 
 ## 4. REFERENCES
 

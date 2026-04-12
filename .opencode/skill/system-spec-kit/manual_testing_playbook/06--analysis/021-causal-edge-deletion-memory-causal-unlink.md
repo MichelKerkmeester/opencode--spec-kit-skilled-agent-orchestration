@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `EX-021` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `As an analysis validation operator, validate Edge correction against checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" })` -> `memory_causal_unlink({ edgeId:"<edge-id>" })` -> `memory_drift_why({ memoryId:"<memory-id>", direction:"both", maxDepth:4 })` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed and checkpoint exists | Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed |
+### Prompt
 
----
+```
+As an analysis validation operator, validate Edge correction against checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" })
+2. memory_causal_unlink({ edgeId:"<edge-id>" })
+3. memory_drift_why({ memoryId:"<memory-id>", direction:"both", maxDepth:4 })
+
+### Expected
+
+Removed edge absent in trace
+
+### Evidence
+
+Unlink + trace outputs
+
+### Pass / Fail
+
+- **Pass**: edge removed and checkpoint exists
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed
 
 ## 4. REFERENCES
 

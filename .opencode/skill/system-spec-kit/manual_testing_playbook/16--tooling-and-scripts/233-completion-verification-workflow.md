@@ -24,11 +24,38 @@ Operators run the completion gate against compliant, lightweight, and intentiona
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 233 | Completion Verification Workflow | Confirm advisory handling, COMPLETE status, and evidence-aware blocking for `check-completion.sh` | `Validate the completion verification workflow across Level 1 advisory cases, compliant Level 3 checklists, and degraded evidence cases. Capture the evidence needed to prove missing checklist files do not hard-fail lightweight specs, compliant checklists return COMPLETE, and checked P0/P1 items without evidence are blocked. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/062-template-compliant-level1` 2) `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json` 3) `TMP_DIR="$(mktemp -d /tmp/speckit-completion-XXXXXX)"` 4) `cp -R .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 "$TMP_DIR/level3-missing-evidence"` 5) `perl -0pi -e 's/ \\[EVIDENCE:[^\\n]+\\]//' "$TMP_DIR/level3-missing-evidence/checklist.md"` 6) `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh "$TMP_DIR/level3-missing-evidence" --json || true` 7) `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh "$TMP_DIR/level3-missing-evidence" --strict || true` | Level 1 fixture returns advisory exit 0; compliant Level 3 fixture reports COMPLETE; degraded fixture reports blocking status such as EVIDENCE_MISSING or another non-pass status with non-zero exit | Command transcript, JSON output for the compliant and degraded runs, and the modified checklist diff in the temp fixture | PASS if the lightweight fixture does not hard-fail, the compliant fixture reports COMPLETE, and the degraded fixture blocks completion with a non-zero exit and explicit reason | Inspect `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`, especially checklist parsing, inherited priority logic, and evidence marker detection |
+### Prompt
 
----
+```
+Validate the completion verification workflow across Level 1 advisory cases, compliant Level 3 checklists, and degraded evidence cases. Capture the evidence needed to prove missing checklist files do not hard-fail lightweight specs, compliant checklists return COMPLETE, and checked P0/P1 items without evidence are blocked. Return a concise user-facing pass/fail verdict with the main reason.
+```
+
+### Commands
+
+1. `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/062-template-compliant-level1`
+2. `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json`
+3. `TMP_DIR="$(mktemp -d /tmp/speckit-completion-XXXXXX)"`
+4. `cp -R .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 "$TMP_DIR/level3-missing-evidence"`
+5. `perl -0pi -e 's/ \\[EVIDENCE:[^\\n]+\\]//' "$TMP_DIR/level3-missing-evidence/checklist.md"`
+6. `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh "$TMP_DIR/level3-missing-evidence" --json || true`
+7. `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh "$TMP_DIR/level3-missing-evidence" --strict || true`
+
+### Expected
+
+Level 1 fixture returns advisory exit 0; compliant Level 3 fixture reports COMPLETE; degraded fixture reports blocking status such as EVIDENCE_MISSING or another non-pass status with non-zero exit
+
+### Evidence
+
+Command transcript, JSON output for the compliant and degraded runs, and the modified checklist diff in the temp fixture
+
+### Pass / Fail
+
+- **Pass**: the lightweight fixture does not hard-fail, the compliant fixture reports COMPLETE, and the degraded fixture blocks completion with a non-zero exit and explicit reason
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`, especially checklist parsing, inherited priority logic, and evidence marker detection
 
 ## 4. REFERENCES
 

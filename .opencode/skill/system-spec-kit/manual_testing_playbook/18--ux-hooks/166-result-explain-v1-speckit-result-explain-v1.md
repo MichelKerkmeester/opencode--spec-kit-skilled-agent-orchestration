@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `166` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 166 | Result explain v1 (SPECKIT_RESULT_EXPLAIN_V1) | Verify why.summary + topSignals in results | `As a runtime-hook validation operator, verify why.summary + topSignals in results against SPECKIT_RESULT_EXPLAIN_V1=true. Verify why.summary non-empty; topSignals array with valid SignalLabel entries; channelContribution (vector/fts/graph) in debug only; no why when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_RESULT_EXPLAIN_V1=true` 2) `memory_search({ query: "test explainability" })` 3) Inspect each result for why.summary + why.topSignals 4) Re-run with debug.enabled=true 5) Verify channelContribution present in debug mode | why.summary non-empty; topSignals array with valid SignalLabel entries; channelContribution (vector/fts/graph) in debug only; no why when flag OFF | Result JSON with why field + debug channelContribution | PASS if slim tier present and debug tier includes channelContribution; FAIL if summary missing, topSignals empty, or channelContribution leaks in non-debug | Verify isResultExplainEnabled() → Inspect extractSignals() for PipelineRow → Check resolveEffectiveScore() → Verify channelAttribution detection → Check SignalLabel types |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, verify why.summary + topSignals in results against SPECKIT_RESULT_EXPLAIN_V1=true. Verify why.summary non-empty; topSignals array with valid SignalLabel entries; channelContribution (vector/fts/graph) in debug only; no why when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_RESULT_EXPLAIN_V1=true`
+2. `memory_search({ query: "test explainability" })`
+3. Inspect each result for why.summary + why.topSignals
+4. Re-run with debug.enabled=true
+5. Verify channelContribution present in debug mode
+
+### Expected
+
+why.summary non-empty; topSignals array with valid SignalLabel entries; channelContribution (vector/fts/graph) in debug only; no why when flag OFF
+
+### Evidence
+
+Result JSON with why field + debug channelContribution
+
+### Pass / Fail
+
+- **Pass**: slim tier present and debug tier includes channelContribution
+- **Fail**: summary missing, topSignals empty, or channelContribution leaks in non-debug
+
+### Failure Triage
+
+Verify isResultExplainEnabled() → Inspect extractSignals() for PipelineRow → Check resolveEffectiveScore() → Verify channelAttribution detection → Check SignalLabel types
 
 ## 4. REFERENCES
 

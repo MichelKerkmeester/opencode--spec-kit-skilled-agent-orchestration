@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `081` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 081 | Graph and cognitive memory fixes | Confirm graph/cognitive fix bundle | `As a graph-signal validation operator, confirm graph/cognitive fix bundle against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) trigger self-loop/depth/cache scenarios 2) verify clamps/invalidations 3) capture results | Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned | Self-loop attempt output + depth clamp evidence + cache invalidation trace | PASS if self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation | Inspect self-loop guard logic; verify depth clamp constants; check cache invalidation trigger points |
+### Prompt
 
----
+```
+As a graph-signal validation operator, confirm graph/cognitive fix bundle against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. trigger self-loop/depth/cache scenarios
+2. verify clamps/invalidations
+3. capture results
+
+### Expected
+
+Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned
+
+### Evidence
+
+Self-loop attempt output + depth clamp evidence + cache invalidation trace
+
+### Pass / Fail
+
+- **Pass**: self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect self-loop guard logic; verify depth clamp constants; check cache invalidation trigger points
 
 ## 4. REFERENCES
 

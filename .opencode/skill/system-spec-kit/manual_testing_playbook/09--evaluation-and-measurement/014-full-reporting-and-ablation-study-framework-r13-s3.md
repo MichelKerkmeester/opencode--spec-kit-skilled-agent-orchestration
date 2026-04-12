@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `014` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 014 | Full reporting and ablation study framework (R13-S3) | Confirm ablation+report workflow | `As an evaluation validation operator, confirm ablation+report workflow against the documented validation surface. Verify ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run ablation channel-off 2) Check snapshots 3) Validate dashboard | Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report | Ablation snapshot files + dashboard text or JSON output + per-channel metrics | PASS: Ablation completes with per-channel deltas and dashboard generates valid text or JSON output; FAIL: Missing channel data or dashboard generation error | Verify eval dataset exists → Check ablation channel-off logic → Inspect snapshot storage path → Validate dashboard template |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm ablation+report workflow against the documented validation surface. Verify ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run ablation channel-off
+2. Check snapshots
+3. Validate dashboard
+
+### Expected
+
+Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report
+
+### Evidence
+
+Ablation snapshot files + dashboard text or JSON output + per-channel metrics
+
+### Pass / Fail
+
+- **Pass**: Ablation completes with per-channel deltas and dashboard generates valid text or JSON output
+- **Fail**: Missing channel data or dashboard generation error
+
+### Failure Triage
+
+Verify eval dataset exists → Check ablation channel-off logic → Inspect snapshot storage path → Validate dashboard template
 
 ## 4. REFERENCES
 

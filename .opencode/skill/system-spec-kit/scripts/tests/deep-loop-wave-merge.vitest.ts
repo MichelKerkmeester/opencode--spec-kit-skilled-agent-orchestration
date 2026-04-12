@@ -12,9 +12,11 @@ const board = require(path.join(
   '.opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs',
 )) as {
   BOARD_STATUSES: ReadonlyArray<string>;
+  BOARD_STATUS_TRANSITIONS: Readonly<Record<string, readonly string[]>>;
   FINDING_MERGE_STATES: ReadonlyArray<string>;
   createBoard: (opts: { sessionId: string; generation?: number; loopType: string; target?: string }) => any;
   updateBoard: (board: any, results: any[]) => any;
+  transitionBoardStatus: (board: any, status: string) => { success: boolean; previousStatus: string; currentStatus: string; error?: string };
   buildFindingRecord: (finding: any, segmentId: string, board: any) => any;
   mergeFinding: (board: any, record: any) => void;
   renderDashboard: (board: any) => string;
@@ -77,26 +79,35 @@ describe('wave-coordination-board', () => {
       expect(b.stats.totalFindings).toBe(1);
     });
 
-    it('deduplicates identical findings', () => {
+    it('deduplicates repeated merges only when the full 5-key composite matches', () => {
       const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
       board.updateBoard(b, [
-        { segmentId: 'seg-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
-        { segmentId: 'seg-2', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
       ]);
       expect(b.findings.length).toBe(1);
       expect(b.dedupeLog.length).toBe(1);
     });
 
+    it('preserves cross-segment findings that share a logical findingId', () => {
+      const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
+      board.updateBoard(b, [
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
+        { segmentId: 'seg-2', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P1', evidence: 'e1' }] },
+      ]);
+      expect(b.findings.length).toBe(2);
+      expect(b.dedupeLog.length).toBe(0);
+    });
+
     it('detects conflicts for different severity on same findingId', () => {
       const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
       board.updateBoard(b, [
-        { segmentId: 'seg-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P2', evidence: 'e1' }] },
-        { segmentId: 'seg-2', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P0', evidence: 'e2' }] },
+        { segmentId: 'seg-1', waveId: 'wave-1', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P2', evidence: 'e1' }] },
+        { segmentId: 'seg-2', waveId: 'wave-2', findings: [{ findingId: 'f1', title: 'Bug', severity: 'P0', evidence: 'e2' }] },
       ]);
       expect(b.conflicts.length).toBe(1);
       expect(b.promotions.length).toBe(1);
-      // The promoted finding should now be P0
-      const promoted = b.findings.find((f: any) => f.findingId === 'f1');
+      const promoted = b.findings.find((f: any) => f.segment === 'seg-2');
       expect(promoted.severity).toBe('P0');
     });
 
@@ -109,10 +120,33 @@ describe('wave-coordination-board', () => {
       expect(b.mergeHistory.length).toBe(2);
       for (const entry of b.mergeHistory) {
         expect(entry).toHaveProperty('findingId');
+        expect(entry).toHaveProperty('mergeKey');
         expect(entry).toHaveProperty('segment');
         expect(entry).toHaveProperty('mergeState');
         expect(entry).toHaveProperty('timestamp');
       }
+    });
+  });
+
+  describe('transitionBoardStatus', () => {
+    it('uses the authoritative board transition matrix', () => {
+      expect(board.BOARD_STATUS_TRANSITIONS.initialized).toEqual(['planning', 'failed']);
+      expect(board.BOARD_STATUS_TRANSITIONS.merging).toEqual(['completed', 'failed']);
+    });
+
+    it('allows adjacent board transitions', () => {
+      const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
+      const result = board.transitionBoardStatus(b, 'planning');
+      expect(result.success).toBe(true);
+      expect(b.status).toBe('planning');
+    });
+
+    it('rejects skipped board transitions', () => {
+      const b = board.createBoard({ sessionId: 's1', loopType: 'review' });
+      const result = board.transitionBoardStatus(b, 'executing');
+      expect(result.success).toBe(false);
+      expect(result.error).toContain('allowed next status');
+      expect(b.status).toBe('initialized');
     });
   });
 
@@ -127,6 +161,7 @@ describe('wave-coordination-board', () => {
       expect(record.sessionId).toBe('s1');
       expect(record.generation).toBe(2);
       expect(record.segment).toBe('seg-1');
+      expect(record.wave).toBeNull();
       expect(record.findingId).toBe('f1');
       expect(record.mergeState).toBe('original');
       expect(record.provenance.sourceSegment).toBe('seg-1');

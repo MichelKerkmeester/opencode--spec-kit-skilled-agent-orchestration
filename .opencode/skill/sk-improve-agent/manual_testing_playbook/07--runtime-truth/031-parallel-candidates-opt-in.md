@@ -8,7 +8,11 @@ category: "Runtime Truth"
 
 Validates that the default configuration has `parallelWaves.enabled: false` and that an improvement session running with default settings only generates sequential single-candidate iterations (no parallel wave spawning).
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the default configuration has parallelWaves.enabled: false and that an improvement session running with default settings only generates sequential single-candidate iterations (no parallel wave spawning) against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `improvement_config.json` has `parallelWaves.enabled: false` by default. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 # Verify default config
@@ -20,7 +24,7 @@ console.log('parallelWaves config:', JSON.stringify(config.parallelWaves, null, 
 
 Then run an improvement session with default settings:
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)
@@ -53,7 +57,7 @@ if (fs.existsSync(lineagePath)) {
 "
 ```
 
-## Expected Signals
+## Expected
 
 - `improvement_config.json` has `parallelWaves.enabled: false` by default
 - `parallelWaves.maxCandidates: 3` (configured but not active)

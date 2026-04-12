@@ -12,6 +12,7 @@ const lifecycle = require(path.join(
   '.opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs',
 )) as {
   LIFECYCLE_PHASES: ReadonlyArray<string>;
+  LIFECYCLE_TRANSITIONS: Readonly<Record<string, readonly string[]>>;
   SEGMENT_STATUSES: ReadonlyArray<string>;
   MAX_PARALLEL_SEGMENTS: number;
   MERGE_STRATEGIES: Readonly<Record<string, string>>;
@@ -46,6 +47,12 @@ describe('wave-lifecycle', () => {
 
     it('lifecycle phases are frozen', () => {
       expect(Object.isFrozen(lifecycle.LIFECYCLE_PHASES)).toBe(true);
+    });
+
+    it('exports the allowed adjacent transition matrix', () => {
+      expect(lifecycle.LIFECYCLE_TRANSITIONS.prepass).toEqual(['plan']);
+      expect(lifecycle.LIFECYCLE_TRANSITIONS.join).toEqual(['merge']);
+      expect(lifecycle.LIFECYCLE_TRANSITIONS.merge).toEqual([]);
     });
   });
 
@@ -203,16 +210,39 @@ describe('wave-lifecycle', () => {
 
     it('rejects backward transitions', () => {
       const ctx = lifecycle.createWaveContext('test', 'review') as any;
+      lifecycle.advancePhase(ctx, 'plan');
       lifecycle.advancePhase(ctx, 'fan-out');
       const r2 = lifecycle.advancePhase(ctx, 'plan');
       expect(r2.success).toBe(false);
       expect(r2.error).toContain('Cannot transition backward');
     });
 
+    it('rejects skipped transitions that bypass an adjacent phase', () => {
+      const ctx = lifecycle.createWaveContext('test', 'review') as any;
+      const result = lifecycle.advancePhase(ctx, 'fan-out');
+      expect(result.success).toBe(false);
+      expect(result.error).toContain('allowed next phase');
+      expect(ctx.phase).toBe('prepass');
+    });
+
     it('rejects invalid phases', () => {
       const ctx = lifecycle.createWaveContext('test', 'review') as any;
       const r = lifecycle.advancePhase(ctx, 'invalid-phase');
       expect(r.success).toBe(false);
+    });
+
+    it('treats merge as a terminal phase', () => {
+      const ctx = lifecycle.createWaveContext('test', 'review') as any;
+      lifecycle.advancePhase(ctx, 'plan');
+      lifecycle.advancePhase(ctx, 'fan-out');
+      lifecycle.advancePhase(ctx, 'prune');
+      lifecycle.advancePhase(ctx, 'promote');
+      lifecycle.advancePhase(ctx, 'join');
+      lifecycle.advancePhase(ctx, 'merge');
+
+      const result = lifecycle.advancePhase(ctx, 'merge');
+      expect(result.success).toBe(false);
+      expect(result.error).toContain('allowed next phase(s): none');
     });
   });
 

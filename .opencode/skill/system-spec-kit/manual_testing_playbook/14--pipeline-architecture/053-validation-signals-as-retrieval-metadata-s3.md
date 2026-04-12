@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `053` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 053 | Validation signals as retrieval metadata (S3) | Confirm bounded multiplier | `As a pipeline validation operator, confirm bounded multiplier against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Prepare docs with varied validations 2) run stage-2 3) verify 0.8-1.2 bounds | Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier | Stage-2 output with multiplier values + bounds verification + zero-validation behavior | PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral | Verify multiplier formula → Check bounds clamping → Inspect validation count resolution |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm bounded multiplier against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Prepare docs with varied validations
+2. run stage-2
+3. verify 0.8-1.2 bounds
+
+### Expected
+
+Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier
+
+### Evidence
+
+Stage-2 output with multiplier values + bounds verification + zero-validation behavior
+
+### Pass / Fail
+
+- **Pass**: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0
+- **Fail**: Multiplier out of bounds or zero-validation not neutral
+
+### Failure Triage
+
+Verify multiplier formula → Check bounds clamping → Inspect validation count resolution
 
 ## 4. REFERENCES
 

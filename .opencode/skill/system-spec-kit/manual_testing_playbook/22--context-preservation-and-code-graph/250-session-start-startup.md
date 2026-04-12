@@ -37,13 +37,90 @@ This scenario validates SessionStart priming (startup).
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 250a | SessionStart priming (startup) | Fresh startup outputs Spec Kit Memory tool overview | `As a context-and-code-graph validation operator, validate Fresh startup outputs Spec Kit Memory tool overview against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout "Session Priming" section lists memory_context, memory_match_triggers, memory_search, code graph tools. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | Stdout "Session Priming" section lists `memory_context`, `memory_match_triggers`, `memory_search`, code graph tools | Test output showing tool names in stdout | PASS if all 7+ tools listed in session priming output | Check `session-prime.ts` handleStartup() for expected tool names |
-| 250b | SessionStart priming (startup) | CocoIndex availability check returns correct status | `As a context-and-code-graph validation operator, validate CocoIndex availability check returns correct status against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify cocoIndex line shows "available" when binary exists or "not installed" when missing. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | CocoIndex line shows "available" when binary exists or "not installed" when missing | Test output showing CocoIndex status line | PASS if CocoIndex status matches filesystem reality | Verify `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` path |
-| 250c | SessionStart priming (startup) | Startup output within SESSION_PRIME_TOKEN_BUDGET | `As a context-and-code-graph validation operator, validate Startup output within SESSION_PRIME_TOKEN_BUDGET against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify output length <= 8000 chars (2000 tokens x 4 chars/token). Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | Output length <= 8000 chars (2000 tokens x 4 chars/token) | Test output showing char count | PASS if output within 2000-token budget | Check `shared.ts` SESSION_PRIME_TOKEN_BUDGET constant |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Fresh startup outputs Spec Kit Memory tool overview against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout "Session Priming" section lists memory_context, memory_match_triggers, memory_search, code graph tools. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+Stdout "Session Priming" section lists `memory_context`, `memory_match_triggers`, `memory_search`, code graph tools
+
+### Evidence
+
+Test output showing tool names in stdout
+
+### Pass / Fail
+
+- **Pass**: all 7+ tools listed in session priming output
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `session-prime.ts` handleStartup() for expected tool names
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate CocoIndex availability check returns correct status against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify cocoIndex line shows "available" when binary exists or "not installed" when missing. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+CocoIndex line shows "available" when binary exists or "not installed" when missing
+
+### Evidence
+
+Test output showing CocoIndex status line
+
+### Pass / Fail
+
+- **Pass**: CocoIndex status matches filesystem reality
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` path
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Startup output within SESSION_PRIME_TOKEN_BUDGET against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify output length <= 8000 chars (2000 tokens x 4 chars/token). Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+Output length <= 8000 chars (2000 tokens x 4 chars/token)
+
+### Evidence
+
+Test output showing char count
+
+### Pass / Fail
+
+- **Pass**: output within 2000-token budget
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `shared.ts` SESSION_PRIME_TOKEN_BUDGET constant
 
 ## 4. REFERENCES
 

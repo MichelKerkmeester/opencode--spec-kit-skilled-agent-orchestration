@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `135` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 135 | Grep traceability for feature catalog code references | Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits | `As a tooling validation operator, verify grep -r "// Feature catalog: <feature>" mcp_server/ returns handler + lib hits against grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/. Verify each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Pick 3 features with known multi-layer implementations (e.g., "Hybrid search pipeline", "Classification-based decay", "Prediction-error save arbitration") 2) For each: `grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/` 3) Verify each grep returns hits in both `handlers/` and `lib/` directories 4) Verify all returned files exist and contain the annotation | Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist | Grep output for 3 features showing file paths and line numbers | PASS if all 3 features return multi-layer hits with no orphaned file references | Check annotation placement after MODULE: header → Verify feature name spelling matches catalog H3 heading exactly |
+### Prompt
 
----
+```
+As a tooling validation operator, verify grep -r "// Feature catalog: <feature>" mcp_server/ returns handler + lib hits against grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/. Verify each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Pick 3 features with known multi-layer implementations (e.g., "Hybrid search pipeline", "Classification-based decay", "Prediction-error save arbitration")
+2. For each: `grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/`
+3. Verify each grep returns hits in both `handlers/` and `lib/` directories
+4. Verify all returned files exist and contain the annotation
+
+### Expected
+
+Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist
+
+### Evidence
+
+Grep output for 3 features showing file paths and line numbers
+
+### Pass / Fail
+
+- **Pass**: all 3 features return multi-layer hits with no orphaned file references
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check annotation placement after MODULE: header → Verify feature name spelling matches catalog H3 heading exactly
 
 ## 4. REFERENCES
 

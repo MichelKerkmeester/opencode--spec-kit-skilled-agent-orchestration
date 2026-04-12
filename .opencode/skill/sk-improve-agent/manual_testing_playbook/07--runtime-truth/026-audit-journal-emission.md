@@ -8,10 +8,14 @@ category: "Runtime Truth"
 
 Validates that the improvement journal captures events for each lifecycle boundary: `session_start`, `candidate_generated`, `candidate_scored`, `gate_evaluation`, and `session_end`.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the improvement journal captures events for each lifecycle boundary: session_start, candidate_generated, candidate_scored, gate_evaluation, and session_end against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `improvement-journal.jsonl` file created at the configured journal path. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=1
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=1
 ```
 
 ### Verification (copy-paste)
@@ -30,7 +34,7 @@ print(f'PASS — {len(events)} events, types: {sorted(set(types))}')
 "
 ```
 
-## Expected Signals
+## Expected
 
 - `improvement-journal.jsonl` file created at the configured journal path
 - Events appear in chronological order (each has a `timestamp` field)

@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `219` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 219 | Embeddings and Retry API | Verify the public provider API stays stable while embedding generation, caching, batching, retry backoff, and recovery behavior remain wired through the documented layers | `As a pipeline validation operator, verify the public provider API stays stable while embedding generation, caching, batching, retry backoff, and recovery behavior remain wired through the documented layers against mcp_server/api/providers.ts. Verify mcp_server/api/providers.ts is a pure public re-export surface; shared/embeddings.ts contains the documented weighted text, cache, batching, and profile helpers; retry-manager.ts encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Inspect `mcp_server/api/providers.ts` and capture the exported public symbols 2) Inspect `shared/embeddings.ts` and confirm the documented weighted text construction, cache policy, lazy provider setup, batch behavior, and profile helpers are present 3) Inspect `mcp_server/lib/providers/retry-manager.ts` and confirm queue states, retry delays, circuit breaker rules, sanitized provider errors, and success-path refresh logic 4) Run an import smoke test or equivalent script check that consumes the public symbols from `mcp_server/api/providers` only 5) Correlate the public API with the shared and retry layers to confirm the documented responsibilities line up end to end | `mcp_server/api/providers.ts` is a pure public re-export surface; `shared/embeddings.ts` contains the documented weighted text, cache, batching, and profile helpers; `retry-manager.ts` encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state | Public export capture + annotated snippets or notes from `shared/embeddings.ts` + retry-manager evidence showing queue/backoff/circuit-breaker behavior + import smoke-test transcript or equivalent script proof | PASS if the stable API surface, shared embedding substrate, and retry orchestration layers align with the documented contract; FAIL if public exports are incomplete, shared embedding lifecycle helpers are missing, or retry recovery behavior is not present | Check `mcp_server/api/providers.ts` for missing or renamed re-exports -> inspect `shared/embeddings.ts` for drift in cache, batching, or profile helpers -> verify retry delay, max retry, and circuit breaker logic in `retry-manager.ts` -> confirm public callers are not forced to import private provider modules directly |
+### Prompt
 
----
+```
+As a pipeline validation operator, verify the public provider API stays stable while embedding generation, caching, batching, retry backoff, and recovery behavior remain wired through the documented layers against mcp_server/api/providers.ts. Verify mcp_server/api/providers.ts is a pure public re-export surface; shared/embeddings.ts contains the documented weighted text, cache, batching, and profile helpers; retry-manager.ts encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Inspect `mcp_server/api/providers.ts` and capture the exported public symbols
+2. Inspect `shared/embeddings.ts` and confirm the documented weighted text construction, cache policy, lazy provider setup, batch behavior, and profile helpers are present
+3. Inspect `mcp_server/lib/providers/retry-manager.ts` and confirm queue states, retry delays, circuit breaker rules, sanitized provider errors, and success-path refresh logic
+4. Run an import smoke test or equivalent script check that consumes the public symbols from `mcp_server/api/providers` only
+5. Correlate the public API with the shared and retry layers to confirm the documented responsibilities line up end to end
+
+### Expected
+
+`mcp_server/api/providers.ts` is a pure public re-export surface; `shared/embeddings.ts` contains the documented weighted text, cache, batching, and profile helpers; `retry-manager.ts` encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state
+
+### Evidence
+
+Public export capture + annotated snippets or notes from `shared/embeddings.ts` + retry-manager evidence showing queue/backoff/circuit-breaker behavior + import smoke-test transcript or equivalent script proof
+
+### Pass / Fail
+
+- **Pass**: the stable API surface, shared embedding substrate, and retry orchestration layers align with the documented contract
+- **Fail**: public exports are incomplete, shared embedding lifecycle helpers are missing, or retry recovery behavior is not present
+
+### Failure Triage
+
+Check `mcp_server/api/providers.ts` for missing or renamed re-exports -> inspect `shared/embeddings.ts` for drift in cache, batching, or profile helpers -> verify retry delay, max retry, and circuit breaker logic in `retry-manager.ts` -> confirm public callers are not forced to import private provider modules directly
 
 ## 4. REFERENCES
 

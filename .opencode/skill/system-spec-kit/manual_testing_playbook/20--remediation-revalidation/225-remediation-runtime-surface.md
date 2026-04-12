@@ -26,11 +26,36 @@ Operators run the exact prompt and command sequence for `225` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 225 | Runtime remediation, revalidation, and auto-repair workflows | Confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals | `As a remediation validation operator, confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts. Verify targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts` 2) `cd .opencode/skill/system-spec-kit/mcp_server && node -e "const fs=require('fs'); const path=require('path'); const p=path.resolve(process.cwd(),'handlers','../../../scripts/dist/memory/validate-memory-quality.js'); console.log(p); console.log(fs.existsSync(p) ? 'exists' : 'missing')"` 3) inspect assertions covering `memory_save` preflight, V-rule disposition handling, quality-loop rejection or repair, and downstream save-quality-gate outcomes 4) inspect assertions covering `memory_health` confirmation-required auto-repair and bounded repair metadata 5) inspect assertions covering `memory_validate` and checkpoint pathways that preserve revalidation or rollback signals | Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence | Test transcript + load-path check output + key assertion output for save-time guards, confirmation gating, repair metadata, and checkpoint or validation signals | PASS if the targeted suites pass, the compiled validator path resolves, and the evidence confirms the remediation surface enforces save-time guards, bounded operator repair, and rollback-aware revalidation behavior end to end | Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflight.ts`, `mcp_server/handlers/v-rule-bridge.ts`, `mcp_server/handlers/quality-loop.ts`, `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/handlers/checkpoints.ts`, and `mcp_server/handlers/memory-crud-health.ts` if any remediation-stage signal is missing or contradictory |
+### Prompt
 
----
+```
+As a remediation validation operator, confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts. Verify targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts`
+2. `cd .opencode/skill/system-spec-kit/mcp_server && node -e "const fs=require('fs'); const path=require('path'); const p=path.resolve(process.cwd(),'handlers','../../../scripts/dist/memory/validate-memory-quality.js'); console.log(p); console.log(fs.existsSync(p) ? 'exists' : 'missing')"`
+3. inspect assertions covering `memory_save` preflight, V-rule disposition handling, quality-loop rejection or repair, and downstream save-quality-gate outcomes
+4. inspect assertions covering `memory_health` confirmation-required auto-repair and bounded repair metadata
+5. inspect assertions covering `memory_validate` and checkpoint pathways that preserve revalidation or rollback signals
+
+### Expected
+
+Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence
+
+### Evidence
+
+Test transcript + load-path check output + key assertion output for save-time guards, confirmation gating, repair metadata, and checkpoint or validation signals
+
+### Pass / Fail
+
+- **Pass**: the targeted suites pass, the compiled validator path resolves, and the evidence confirms the remediation surface enforces save-time guards, bounded operator repair, and rollback-aware revalidation behavior end to end
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflight.ts`, `mcp_server/handlers/v-rule-bridge.ts`, `mcp_server/handlers/quality-loop.ts`, `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/handlers/checkpoints.ts`, and `mcp_server/handlers/memory-crud-health.ts` if any remediation-stage signal is missing or contradictory
 
 ## 4. REFERENCES
 

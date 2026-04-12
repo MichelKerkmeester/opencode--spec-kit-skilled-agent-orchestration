@@ -26,11 +26,33 @@ Operators run the exact prompt and command sequence for `EX-007` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-007 | Memory metadata update (memory_update) | Metadata + re-embed update | `As a mutation validation operator, validate Metadata + re-embed update against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_update(id,title,triggers)` -> `memory_search(new title)` | Updated metadata reflected in retrieval | Update output + search | PASS if updated title retrievable | Retry with allowPartialUpdate if embedding fails |
+### Prompt
 
----
+```
+As a mutation validation operator, validate Metadata + re-embed update against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_update(id,title,triggers)
+2. memory_search(new title)
+
+### Expected
+
+Updated metadata reflected in retrieval
+
+### Evidence
+
+Update output + search
+
+### Pass / Fail
+
+- **Pass**: updated title retrievable
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Retry with allowPartialUpdate if embedding fails
 
 ## 4. REFERENCES
 

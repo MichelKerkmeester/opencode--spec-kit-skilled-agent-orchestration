@@ -10,6 +10,16 @@ Manual validation matrix for the holistic agent evaluation framework. Each scena
 
 ---
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. TEST MATRIX](#2--test-matrix)
+- [3. REVIEW PROTOCOL](#3--review-protocol)
+- [4. FEATURE FILES](#4--feature-files)
+- [5. RELATED RESOURCES](#5--related-resources)
+
+---
+
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,7 +36,7 @@ Validates that the sk-improve-agent skill correctly discovers integration surfac
 | 04 Benchmark Integration | 2 | Integration report flag, backward compat without flag |
 | 05 Reducer Dimensions | 3 | Dimensional tracking, dashboard rendering, plateau stop |
 | 06 End-to-End Loop | 5 | Full pipeline, any-agent support, mutation coverage, trade-offs, lineage |
-| 07 Runtime Truth | 7 | Stop-reason taxonomy, journal audit, resume, legal-stop gates, benchmark stability, trajectory, parallel opt-in |
+| 07 Runtime Truth | 10 | Stop-reason taxonomy, journal audit, fresh-session continuation, legal-stop gates, benchmark stability, trajectory, parallel opt-in, journal wiring, insufficient sample propagation, replay consumer artifacts |
 
 ### Prerequisites
 
@@ -90,21 +100,24 @@ Run each scenario command from the repo root. Compare output against expected si
 | --- | --- | --- | --- | --- |
 | 06-001 | Full pipeline debug target | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec}` | Init creates runtime, scan runs, candidate generated, scored with dimensions | All phases complete without error |
 | 06-002 | Any-agent pipeline | `/improve:improve-agent ".opencode/agent/review.md" :confirm --spec-folder={spec}` | Dynamic profile generated, 5-dimension scores produced | Non-hardcoded agent evaluates successfully |
-| 06-003 | Mutation coverage graph | `/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Coverage graph with improvement namespace, dimension nodes, exhausted mutations | Graph isolated to improvement namespace |
-| 06-004 | Trade-off detection | `/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Trade-off detected on cross-dimension regression, candidate not auto-promoted | Trade-off event fired, promotion blocked |
-| 06-005 | Candidate lineage | `/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Lineage graph with parent-child references, session-id, wave-index | Lineage traversable root to leaf |
+| 06-003 | Mutation coverage graph | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Coverage graph with improvement namespace, dimension nodes, exhausted mutations | Graph isolated to improvement namespace |
+| 06-004 | Trade-off detection | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Trade-off detected on cross-dimension regression, candidate not auto-promoted | Trade-off event fired, promotion blocked |
+| 06-005 | Candidate lineage | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=3` | Lineage graph with parent-child references, session-id, wave-index | Lineage traversable root to leaf |
 
 ### 07 Runtime Truth
 
 | ID | Scenario | Command | Expected Signals | Pass Criteria |
 | --- | --- | --- | --- | --- |
-| 07-001 | Stop-reason taxonomy | `/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2` | `session_ended` event with valid `stopReason` and `sessionOutcome` | Both values from frozen taxonomy enums |
-| 07-002 | Audit journal emission | `/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=1` | Journal contains `session_start`, `candidate_generated`, `candidate_scored`, `gate_evaluation`, `session_end` | All 5 lifecycle events present |
-| 07-003 | Resume continuation | `/improve:agent ... --resume` | `continuedFromIteration` set, journal has 2 `session_start` events | Continues from last completed iteration |
-| 07-004 | Legal-stop gates | `/improve:agent ... --iterations=5` | `legal_stop_evaluated` with 5 gate bundles, `blocked_stop` on failure | `blockedStop` recorded when gates fail |
+| 07-001 | Stop-reason taxonomy | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2` | `session_ended` event with valid `stopReason` and `sessionOutcome` | Both values from frozen taxonomy enums |
+| 07-002 | Audit journal emission | `/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=1` | Journal contains `session_start`, `candidate_generated`, `candidate_scored`, `gate_evaluation`, `session_end` | All 5 lifecycle events present |
+| 07-003 | Fresh-session continuation after archive | `archive previous improvement/ -> /improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2` | Archived evidence preserved, new session starts in `new` mode, fresh journal begins at iteration 1 | Current-release continuation guidance is documented truthfully |
+| 07-004 | Legal-stop gates | `/improve:improve-agent ... --iterations=5` | `legal_stop_evaluated` with 5 gate bundles, `blocked_stop` on failure | `blockedStop` recorded when gates fail |
 | 07-005 | Benchmark stability | `node benchmark-stability.cjs` (unit) | Mean, stddev, coefficient per dimension, `isStable()` result | Stable=true for low variance, false for high |
 | 07-006 | Dimension trajectory | `node mutation-coverage.cjs` (unit) | Trajectory recorded, convergence requires 3+ stable points | Convergence rejected <3 points, accepted when stable |
 | 07-007 | Parallel candidates opt-in | Config check + default session | `parallelWaves.enabled: false`, single candidate per iteration | No parallel wave behavior with defaults |
+| 07-008 | Journal wiring boundary coverage | `/improve:improve-agent ".opencode/agent/debug.md" :auto --spec-folder={spec} --iterations=2` | Journal boundaries emit at session start, iteration lifecycle checkpoints, and session end | Command doc, YAML, and helper enums stay synchronized |
+| 07-009 | Insufficient sample propagation | `low-sample fixture -> trade-off-detector.cjs -> benchmark-stability.cjs -> reduce-state.cjs` | `insufficientData` and `insufficientSample` stay distinct in the registry and dashboard | Low-sample runtime truth stays diagnosable |
+| 07-010 | Replay consumer artifact verification | `node reduce-state.cjs {spec}/improvement` plus one-artifact-missing reruns | Replay summaries populate when artifacts exist and resolve to `null` individually when one is missing | Replay-consumer degradation stays graceful |
 
 ---
 
@@ -146,7 +159,7 @@ For each scenario:
 | `04--benchmark-integration/` | 014-without-integration, 015-with-integration |
 | `05--reducer-dimensions/` | 017-no-dimensions, 018-with-dimensions, 019-plateau-detection |
 | `06--end-to-end-loop/` | 020-full-pipeline, 021-any-agent, 022-mutation-coverage-graph-tracking, 023-trade-off-detection, 024-candidate-lineage |
-| `07--runtime-truth/` | 025-stop-reason-taxonomy, 026-audit-journal-emission, 027-resume-continuation, 028-legal-stop-gates, 029-benchmark-stability, 030-dimension-trajectory, 031-parallel-candidates-opt-in |
+| `07--runtime-truth/` | 025-stop-reason-taxonomy, 026-audit-journal-emission, 027-resume-continuation, 028-legal-stop-gates, 029-benchmark-stability, 030-dimension-trajectory, 031-parallel-candidates-opt-in, 032-journal-wiring, 033-insufficient-sample, 034-replay-consumer |
 
 ---
 

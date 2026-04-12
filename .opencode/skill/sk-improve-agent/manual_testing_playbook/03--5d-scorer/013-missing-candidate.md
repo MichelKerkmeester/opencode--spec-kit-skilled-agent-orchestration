@@ -8,14 +8,18 @@ category: "5D Scorer"
 
 Validates that providing a nonexistent candidate file results in an infra_failure status and exit code 1.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that providing a nonexistent candidate file results in an infra_failure status and exit code 1 against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Exit code is 1 (not 0). Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs \
   --candidate=nonexistent-file.md --dynamic; echo "Exit: $?"
 ```
 
-## Expected Signals
+## Expected
 
 - Exit code is 1 (not 0)
 - Output is valid JSON (no stack trace)

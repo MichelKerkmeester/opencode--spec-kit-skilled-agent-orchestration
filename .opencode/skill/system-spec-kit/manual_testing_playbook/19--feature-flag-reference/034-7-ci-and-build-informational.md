@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-034` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-034 | 7. CI and Build (informational) | Branch metadata source audit | `As a feature-flag validation operator, validate Branch metadata source audit against memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 }). Verify branch source vars surfaced. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 })` | Branch source vars surfaced | Search output | PASS if all listed vars are found | Search CI scripts and runtime helpers |
+### Prompt
 
----
+```
+As a feature-flag validation operator, validate Branch metadata source audit against memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 }). Verify branch source vars surfaced. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 })
+
+### Expected
+
+Branch source vars surfaced
+
+### Evidence
+
+Search output
+
+### Pass / Fail
+
+- **Pass**: all listed vars are found
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Search CI scripts and runtime helpers
 
 ## 4. REFERENCES
 

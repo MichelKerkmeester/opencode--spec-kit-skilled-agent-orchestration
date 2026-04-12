@@ -20,6 +20,7 @@ export default defineConfig({
     ],
     exclude: [
       'mcp_server/tests/memory-save.vitest.ts',
+      'mcp_server/tests/archive/**',
     ],
     setupFiles: [
       path.resolve(import.meta.dirname, 'test', 'vitest-setup.ts'),

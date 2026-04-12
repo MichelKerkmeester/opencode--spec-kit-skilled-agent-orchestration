@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `012` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 012 | Agent consumption instrumentation (G-NEW-2) | Confirm wiring with inert runtime | `As an evaluation validation operator, confirm wiring with inert runtime against the documented validation surface. Verify logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Trigger retrieval handlers 2) Inspect logger gate 3) Confirm no-op telemetry | Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors | Instrumentation trace showing handler wiring + logger gate state + empty telemetry output | PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors | Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm wiring with inert runtime against the documented validation surface. Verify logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Trigger retrieval handlers
+2. Inspect logger gate
+3. Confirm no-op telemetry
+
+### Expected
+
+Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors
+
+### Evidence
+
+Instrumentation trace showing handler wiring + logger gate state + empty telemetry output
+
+### Pass / Fail
+
+- **Pass**: Handlers execute without error and produce no telemetry output (inert mode)
+- **Fail**: Telemetry output produced or handler errors
+
+### Failure Triage
+
+Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle
 
 ## 4. REFERENCES
 

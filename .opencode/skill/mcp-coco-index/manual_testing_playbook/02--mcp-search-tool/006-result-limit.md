@@ -17,7 +17,7 @@ This scenario validates Result limit for `MCP-006`. It focuses on Verify `limit`
 Operators run the exact prompt and command sequence for `MCP-006` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify `limit` controls output count
-- Prompt: `Compare CocoIndex search with 1 result vs 10 results. Capture the evidence needed to prove Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a manual-testing orchestrator, compare CocoIndex search with 1 result vs 10 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count
 - Pass/fail: PASS if step 2 returns exactly 1 AND step 4 returns more than 1 (up to 10); FAIL if `limit` is ignored
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `MCP-006` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| MCP-006 | Result limit | Verify `limit` controls output count | `Compare CocoIndex search with 1 result vs 10 results. Capture the evidence needed to prove Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "error handling", "limit": 1 })` -> 2. Count results (expect exactly 1) -> 3. `mcp__cocoindex_code__search({ "query": "error handling", "limit": 10 })` -> 4. Count results (expect up to 10) | Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count | Side-by-side result counts from both calls | PASS if step 2 returns exactly 1 AND step 4 returns more than 1 (up to 10); FAIL if `limit` is ignored | Verify `limit` parameter type is integer; check default (5) if parameter omitted |
+| MCP-006 | Result limit | Verify `limit` controls output count | `As a manual-testing orchestrator, compare CocoIndex search with 1 result vs 10 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "error handling", "limit": 1 })` -> 2. Count results (expect exactly 1) -> 3. `mcp__cocoindex_code__search({ "query": "error handling", "limit": 10 })` -> 4. Count results (expect up to 10) | Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count | Side-by-side result counts from both calls | PASS if step 2 returns exactly 1 AND step 4 returns more than 1 (up to 10); FAIL if `limit` is ignored | Verify `limit` parameter type is integer; check default (5) if parameter omitted |
 
 
 ---

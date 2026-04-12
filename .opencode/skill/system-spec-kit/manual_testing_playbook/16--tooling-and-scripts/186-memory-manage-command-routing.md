@@ -24,11 +24,41 @@ Operators run the exact prompt and command sequence for `186` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 186 | /memory:manage command routing | Verify `/memory:manage` default stats dashboard and subcommand routing | `As a tooling validation operator, verify /memory:manage default stats dashboard and subcommand routing against /memory:manage. Verify no-args shows stats dashboard; each subcommand routes to the correct MCP tool; unrecognized mode returns STATUS=FAIL error. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Invoke `/memory:manage` with no arguments and verify the stats dashboard appears showing total, size, indexed date, tier distribution, and top folders via `memory_stats()` + `memory_list({ limit: 10, sortBy: "updated_at" })` 2) Invoke `/memory:manage scan` and verify `memory_index_scan()` is called 3) Invoke `/memory:manage scan --force` and verify force re-index is triggered 4) Invoke `/memory:manage health` and verify `memory_health()` is called 5) Invoke `/memory:manage checkpoint list` and verify `checkpoint_list()` is called 6) Invoke `/memory:manage checkpoint create test-snap` and verify `checkpoint_create()` is called 7) Invoke `/memory:manage ingest status abc-123` and verify `memory_ingest_status()` is called 8) Invoke `/memory:manage delete 42` and verify confirmation prompt appears before `memory_delete()` 9) Invoke `/memory:manage bulk-delete temporary --older-than 30` and verify confirmation prompt appears before `memory_bulk_delete()` 10) Invoke `/memory:manage invalid-mode` and verify `STATUS=FAIL ERROR="Unknown mode"` is returned | No-args shows stats dashboard; each subcommand routes to the correct MCP tool; unrecognized mode returns STATUS=FAIL error | Tool invocation logs for each subcommand; stats dashboard output for default mode; error output for unrecognized mode | PASS: Default shows stats dashboard, each subcommand invokes its dedicated tool, unrecognized mode errors cleanly; FAIL: Default mode skips stats, subcommand routes to wrong tool, or unrecognized mode does not error | Verify argument routing logic in Section 4 of manage.md → Check mode parsing in mandatory first action → Confirm tool-to-mode mapping → Inspect confirmation gates on destructive operations (delete, bulk-delete, checkpoint restore) |
+### Prompt
 
----
+```
+As a tooling validation operator, verify /memory:manage default stats dashboard and subcommand routing against /memory:manage. Verify no-args shows stats dashboard; each subcommand routes to the correct MCP tool; unrecognized mode returns STATUS=FAIL error. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Invoke `/memory:manage` with no arguments and verify the stats dashboard appears showing total, size, indexed date, tier distribution, and top folders via `memory_stats()` + `memory_list({ limit: 10, sortBy: "updated_at" })`
+2. Invoke `/memory:manage scan` and verify `memory_index_scan()` is called
+3. Invoke `/memory:manage scan --force` and verify force re-index is triggered
+4. Invoke `/memory:manage health` and verify `memory_health()` is called
+5. Invoke `/memory:manage checkpoint list` and verify `checkpoint_list()` is called
+6. Invoke `/memory:manage checkpoint create test-snap` and verify `checkpoint_create()` is called
+7. Invoke `/memory:manage ingest status abc-123` and verify `memory_ingest_status()` is called
+8. Invoke `/memory:manage delete 42` and verify confirmation prompt appears before `memory_delete()`
+9. Invoke `/memory:manage bulk-delete temporary --older-than 30` and verify confirmation prompt appears before `memory_bulk_delete()`
+10. Invoke `/memory:manage invalid-mode` and verify `STATUS=FAIL ERROR="Unknown mode"` is returned
+
+### Expected
+
+No-args shows stats dashboard; each subcommand routes to the correct MCP tool; unrecognized mode returns STATUS=FAIL error
+
+### Evidence
+
+Tool invocation logs for each subcommand; stats dashboard output for default mode; error output for unrecognized mode
+
+### Pass / Fail
+
+- **Pass**: Default shows stats dashboard, each subcommand invokes its dedicated tool, unrecognized mode errors cleanly
+- **Fail**: Default mode skips stats, subcommand routes to wrong tool, or unrecognized mode does not error
+
+### Failure Triage
+
+Verify argument routing logic in Section 4 of manage.md → Check mode parsing in mandatory first action → Confirm tool-to-mode mapping → Inspect confirmation gates on destructive operations (delete, bulk-delete, checkpoint restore)
 
 ## 4. REFERENCES
 

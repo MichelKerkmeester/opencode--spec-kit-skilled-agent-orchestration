@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `162` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 162 | HyDE (SPECKIT_HYDE) | Verify HyDE pseudo-document generated | `As a query-intelligence validation operator, verify HyDE pseudo-document generated against SPECKIT_HYDE=true. Verify hyDEResult with pseudoDocument and Float32Array embedding; low-confidence threshold at 0.45; active merge by default (SPECKIT_HYDE_ACTIVE ON); shadow-only when SPECKIT_HYDE_ACTIVE=false; LLM cache shared. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_HYDE=true` 2) `memory_search({ query: "obscure topic with few matches", mode: "deep" })` 3) Inspect HyDEResult for pseudoDocument + embedding 4) Verify active merge (default, SPECKIT_HYDE_ACTIVE is ON) 5) Set `SPECKIT_HYDE_ACTIVE=false`, verify shadow-only (logged, not merged) 6) Check LLM cache populated | HyDEResult with pseudoDocument and Float32Array embedding; low-confidence threshold at 0.45; active merge by default (SPECKIT_HYDE_ACTIVE ON); shadow-only when SPECKIT_HYDE_ACTIVE=false; LLM cache shared | HyDEResult output + merge verification + shadow log + cache key verification | PASS if pseudo-document generated for low-confidence query, merged by default, and shadow-only with SPECKIT_HYDE_ACTIVE=false; FAIL if no generation or merge behavior mismatches flag state | Verify isHyDEEnabled() → Check LOW_CONFIDENCE_THRESHOLD (0.45) → Inspect baseline result scores → Verify getLlmCache() key → Check HYDE_TIMEOUT_MS (8000) → Verify isHyDEActive() gate |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, verify HyDE pseudo-document generated against SPECKIT_HYDE=true. Verify hyDEResult with pseudoDocument and Float32Array embedding; low-confidence threshold at 0.45; active merge by default (SPECKIT_HYDE_ACTIVE ON); shadow-only when SPECKIT_HYDE_ACTIVE=false; LLM cache shared. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_HYDE=true`
+2. `memory_search({ query: "obscure topic with few matches", mode: "deep" })`
+3. Inspect HyDEResult for pseudoDocument + embedding
+4. Verify active merge (default, SPECKIT_HYDE_ACTIVE is ON)
+5. Set `SPECKIT_HYDE_ACTIVE=false`, verify shadow-only (logged, not merged)
+6. Check LLM cache populated
+
+### Expected
+
+HyDEResult with pseudoDocument and Float32Array embedding; low-confidence threshold at 0.45; active merge by default (SPECKIT_HYDE_ACTIVE ON); shadow-only when SPECKIT_HYDE_ACTIVE=false; LLM cache shared
+
+### Evidence
+
+HyDEResult output + merge verification + shadow log + cache key verification
+
+### Pass / Fail
+
+- **Pass**: pseudo-document generated for low-confidence query, merged by default, and shadow-only with SPECKIT_HYDE_ACTIVE=false
+- **Fail**: no generation or merge behavior mismatches flag state
+
+### Failure Triage
+
+Verify isHyDEEnabled() → Check LOW_CONFIDENCE_THRESHOLD (0.45) → Inspect baseline result scores → Verify getLlmCache() key → Check HYDE_TIMEOUT_MS (8000) → Verify isHyDEActive() gate
 
 ## 4. REFERENCES
 

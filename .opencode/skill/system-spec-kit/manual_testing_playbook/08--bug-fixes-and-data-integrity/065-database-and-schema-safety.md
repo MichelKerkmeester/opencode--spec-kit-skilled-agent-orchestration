@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `065` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `As a data-integrity validation operator, confirm Sprint 8 DB safety bundle against the documented validation surface. Verify mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm Sprint 8 DB safety bundle against the documented validation surface. Verify mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run affected mutation paths
+2. inspect SQL outcomes
+3. confirm no partial corruption
+
+### Expected
+
+Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure
+
+### Evidence
+
+Mutation output + SQL inspection results + schema constraint verification
+
+### Pass / Fail
+
+- **Pass**: all mutation paths complete atomically with no partial corruption and schema constraints hold
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB
 
 ## 4. REFERENCES
 

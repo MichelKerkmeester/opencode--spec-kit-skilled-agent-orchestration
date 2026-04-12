@@ -11,10 +11,25 @@
  * consistent across the CJS and TS layers.
  */
 
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { describe, expect, it, beforeEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
+import {
+  VALID_RELATIONS,
+  RESEARCH_WEIGHTS,
+  REVIEW_WEIGHTS,
+  closeDb,
+  getEdges,
+  initDb,
+  upsertEdge,
+  upsertNode,
+  type CoverageEdge,
+  type CoverageNode,
+} from '../../mcp_server/lib/coverage-graph/coverage-graph-db.js';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
@@ -64,53 +79,56 @@ const contradictionsModule = require(path.join(
   reportContradictions: (graph: any) => { total: number; pairs: Array<object>; byNode: Map<string, object[]> };
 };
 
-// ── TS layer constants (extracted statically to avoid better-sqlite3 dep) ──
-
-/**
- * These constants mirror the VALID_RELATIONS and weight maps from
- * coverage-graph-db.ts. We define them here as test fixtures so we
- * do not need to import the TS module (which depends on better-sqlite3).
- *
- * IMPORTANT: If coverage-graph-db.ts changes, these must be updated.
- * The test suite below will catch any drift.
- */
-const TS_VALID_RELATIONS = {
-  research: ['ANSWERS', 'SUPPORTS', 'CONTRADICTS', 'SUPERSEDES', 'DERIVED_FROM', 'COVERS', 'CITES'] as const,
-  review: ['COVERS', 'EVIDENCE_FOR', 'CONTRADICTS', 'RESOLVES', 'CONFIRMS', 'ESCALATES', 'IN_DIMENSION', 'IN_FILE'] as const,
+const DB_NAMESPACE = {
+  specFolder: 'specs/coverage-graph-integration',
+  loopType: 'research' as const,
+  sessionId: 'integration-session',
 };
 
-const TS_RESEARCH_WEIGHTS: Record<string, number> = {
-  ANSWERS: 1.3,
-  SUPPORTS: 1.0,
-  CONTRADICTS: 0.8,
-  SUPERSEDES: 1.5,
-  DERIVED_FROM: 1.0,
-  COVERS: 1.1,
-  CITES: 1.0,
-};
+function makeNode(id: string, kind: CoverageNode['kind'], name: string): CoverageNode {
+  return {
+    id,
+    specFolder: DB_NAMESPACE.specFolder,
+    loopType: DB_NAMESPACE.loopType,
+    sessionId: DB_NAMESPACE.sessionId,
+    kind,
+    name,
+  };
+}
 
-const TS_REVIEW_WEIGHTS: Record<string, number> = {
-  COVERS: 1.3,
-  EVIDENCE_FOR: 1.0,
-  CONTRADICTS: 0.8,
-  RESOLVES: 1.5,
-  CONFIRMS: 1.0,
-  ESCALATES: 1.2,
-  IN_DIMENSION: 1.0,
-  IN_FILE: 1.0,
-};
-
-// Weight bounds matching both layers
-const MIN_WEIGHT = 0.0;
-const MAX_WEIGHT = 2.0;
+function makeEdge(id: string, sourceId: string, targetId: string, relation: CoverageEdge['relation'], weight: number): CoverageEdge {
+  return {
+    id,
+    specFolder: DB_NAMESPACE.specFolder,
+    loopType: DB_NAMESPACE.loopType,
+    sessionId: DB_NAMESPACE.sessionId,
+    sourceId,
+    targetId,
+    relation,
+    weight,
+  };
+}
 
 // ═════════════════════════════════════════════════════════════════
 // TEST SUITES
 // ═════════════════════════════════════════════════════════════════
 
 describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
+  let tempDir = '';
+
   beforeEach(() => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'coverage-graph-integration-'));
+    initDb(tempDir);
     coreModule.resetEdgeIdCounter();
+  });
+
+  afterEach(() => {
+    try {
+      closeDb();
+    } catch {
+      // best-effort cleanup for temporary integration DBs
+    }
+    fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
   // ── REQ-GT-001: Research relation name alignment ──────────────
@@ -118,13 +136,13 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
   describe('REQ-GT-001: research relation name alignment', () => {
     it('CJS RESEARCH_RELATION_WEIGHTS keys match TS VALID_RELATIONS.research', () => {
       const cjsRelations = Object.keys(coreModule.RESEARCH_RELATION_WEIGHTS).sort();
-      const tsRelations = [...TS_VALID_RELATIONS.research].sort();
+      const tsRelations = [...VALID_RELATIONS.research].sort();
       expect(cjsRelations).toEqual(tsRelations);
     });
 
     it('CJS research weight values match TS RESEARCH_WEIGHTS', () => {
       for (const [relation, cjsWeight] of Object.entries(coreModule.RESEARCH_RELATION_WEIGHTS)) {
-        expect(TS_RESEARCH_WEIGHTS[relation]).toBe(cjsWeight);
+        expect(RESEARCH_WEIGHTS[relation as keyof typeof RESEARCH_WEIGHTS]).toBe(cjsWeight);
       }
     });
 
@@ -142,7 +160,7 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
   describe('REQ-GT-002: review relation name alignment', () => {
     it('CJS and TS review sets share core relations (COVERS, EVIDENCE_FOR, CONTRADICTS, RESOLVES, CONFIRMS)', () => {
       const cjsRelations = new Set(Object.keys(coreModule.REVIEW_RELATION_WEIGHTS));
-      const tsRelations = new Set(TS_VALID_RELATIONS.review);
+      const tsRelations = new Set(VALID_RELATIONS.review);
       const expectedShared = ['COVERS', 'EVIDENCE_FOR', 'CONTRADICTS', 'RESOLVES', 'CONFIRMS'];
 
       for (const rel of expectedShared) {
@@ -152,7 +170,7 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
     });
 
     it('CJS review has in-memory-only relations (SUPPORTS, DERIVED_FROM) not in TS DB set', () => {
-      const tsRelations = new Set(TS_VALID_RELATIONS.review);
+      const tsRelations = new Set(VALID_RELATIONS.review);
       const cjsOnlyRelations = Object.keys(coreModule.REVIEW_RELATION_WEIGHTS)
         .filter(r => !tsRelations.has(r));
 
@@ -162,7 +180,7 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
 
     it('TS review relations include additional DB-only relations (ESCALATES, IN_DIMENSION, IN_FILE)', () => {
       const cjsRelations = new Set(Object.keys(coreModule.REVIEW_RELATION_WEIGHTS));
-      const tsOnlyRelations = [...TS_VALID_RELATIONS.review].filter(r => !cjsRelations.has(r));
+      const tsOnlyRelations = [...VALID_RELATIONS.review].filter(r => !cjsRelations.has(r));
 
       // These are expected TS-only relations for DB projection (structural, not semantic)
       expect(tsOnlyRelations.sort()).toEqual(['ESCALATES', 'IN_DIMENSION', 'IN_FILE'].sort());
@@ -171,17 +189,17 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
     it('shared review relations have matching weights', () => {
       const cjsRelations = Object.keys(coreModule.REVIEW_RELATION_WEIGHTS);
       for (const relation of cjsRelations) {
-        if (TS_REVIEW_WEIGHTS[relation] !== undefined) {
-          expect(TS_REVIEW_WEIGHTS[relation]).toBe(
+        if (REVIEW_WEIGHTS[relation as keyof typeof REVIEW_WEIGHTS] !== undefined) {
+          expect(REVIEW_WEIGHTS[relation as keyof typeof REVIEW_WEIGHTS]).toBe(
             coreModule.REVIEW_RELATION_WEIGHTS[relation],
           );
         }
       }
     });
 
-    it('CJS review has EVIDENCE_FOR but TS DB may map to EVIDENCES (naming check)', () => {
-      // The CJS core module uses EVIDENCE_FOR; verify it is present
+    it('TS review relations expose EVIDENCE_FOR directly', () => {
       expect(coreModule.REVIEW_RELATION_WEIGHTS).toHaveProperty('EVIDENCE_FOR');
+      expect(VALID_RELATIONS.review).toContain('EVIDENCE_FOR');
     });
   });
 
@@ -204,31 +222,42 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
       expect(coreModule.clampWeight(-Infinity)).toBeNull();
     });
 
-    it('TS layer uses same [0.0, 2.0] bounds via CHECK constraint', () => {
-      // Verify the TS constants match
-      expect(MIN_WEIGHT).toBe(0.0);
-      expect(MAX_WEIGHT).toBe(2.0);
+    it('TS layer clamps persisted edge weights to the same [0.0, 2.0] range', () => {
+      upsertNode(makeNode('finding-clamped', 'FINDING', 'Finding clamped'));
+      upsertNode(makeNode('question-clamped', 'QUESTION', 'Question clamped'));
+
+      const edgeId = upsertEdge(
+        makeEdge('edge-clamped', 'finding-clamped', 'question-clamped', 'ANSWERS', 5.0),
+      );
+
+      expect(edgeId).toBe('edge-clamped');
+      expect(getEdges(DB_NAMESPACE)).toEqual([
+        expect.objectContaining({
+          id: 'edge-clamped',
+          weight: 2.0,
+        }),
+      ]);
     });
 
     it('all CJS default relation weights are within [0.0, 2.0]', () => {
       for (const w of Object.values(coreModule.RESEARCH_RELATION_WEIGHTS)) {
-        expect(w).toBeGreaterThanOrEqual(MIN_WEIGHT);
-        expect(w).toBeLessThanOrEqual(MAX_WEIGHT);
+        expect(w).toBeGreaterThanOrEqual(0.0);
+        expect(w).toBeLessThanOrEqual(2.0);
       }
       for (const w of Object.values(coreModule.REVIEW_RELATION_WEIGHTS)) {
-        expect(w).toBeGreaterThanOrEqual(MIN_WEIGHT);
-        expect(w).toBeLessThanOrEqual(MAX_WEIGHT);
+        expect(w).toBeGreaterThanOrEqual(0.0);
+        expect(w).toBeLessThanOrEqual(2.0);
       }
     });
 
     it('all TS default relation weights are within [0.0, 2.0]', () => {
-      for (const w of Object.values(TS_RESEARCH_WEIGHTS)) {
-        expect(w).toBeGreaterThanOrEqual(MIN_WEIGHT);
-        expect(w).toBeLessThanOrEqual(MAX_WEIGHT);
+      for (const w of Object.values(RESEARCH_WEIGHTS)) {
+        expect(w).toBeGreaterThanOrEqual(0.0);
+        expect(w).toBeLessThanOrEqual(2.0);
       }
-      for (const w of Object.values(TS_REVIEW_WEIGHTS)) {
-        expect(w).toBeGreaterThanOrEqual(MIN_WEIGHT);
-        expect(w).toBeLessThanOrEqual(MAX_WEIGHT);
+      for (const w of Object.values(REVIEW_WEIGHTS)) {
+        expect(w).toBeGreaterThanOrEqual(0.0);
+        expect(w).toBeLessThanOrEqual(2.0);
       }
     });
 
@@ -264,12 +293,15 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
       expect(graph.edges.size).toBe(1);
     });
 
-    it('TS schema has CHECK(source_id != target_id) constraint', () => {
-      // This is a contract verification — the TS SCHEMA_SQL contains:
-      // CHECK(source_id != target_id)
-      // We verify this by confirming the contract expectation
-      const selfLoopConstraintDocumented = true; // From reading coverage-graph-db.ts line 178
-      expect(selfLoopConstraintDocumented).toBe(true);
+    it('TS edge upsert rejects self-loops before they reach the database', () => {
+      upsertNode(makeNode('loop-node', 'QUESTION', 'Loop node'));
+
+      const edgeId = upsertEdge(
+        makeEdge('edge-self-loop', 'loop-node', 'loop-node', 'ANSWERS', 1.0),
+      );
+
+      expect(edgeId).toBeNull();
+      expect(getEdges(DB_NAMESPACE)).toEqual([]);
     });
 
     it('self-loop prevention works with empty string node IDs', () => {
@@ -300,14 +332,14 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
     });
 
     it('TS VALID_RELATIONS has separate entries for research and review', () => {
-      expect(TS_VALID_RELATIONS.research).toBeDefined();
-      expect(TS_VALID_RELATIONS.review).toBeDefined();
-      expect(TS_VALID_RELATIONS.research).not.toEqual(TS_VALID_RELATIONS.review);
+      expect(VALID_RELATIONS.research).toBeDefined();
+      expect(VALID_RELATIONS.review).toBeDefined();
+      expect(VALID_RELATIONS.research).not.toEqual(VALID_RELATIONS.review);
     });
 
     it('research-only relations are not in review set', () => {
       const researchOnly = ['ANSWERS', 'SUPERSEDES', 'DERIVED_FROM', 'CITES'];
-      const reviewRelations = new Set(TS_VALID_RELATIONS.review);
+      const reviewRelations = new Set(VALID_RELATIONS.review);
 
       for (const rel of researchOnly) {
         expect(reviewRelations.has(rel)).toBe(false);
@@ -316,7 +348,7 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
 
     it('review-only relations are not in research set', () => {
       const reviewOnly = ['EVIDENCE_FOR', 'RESOLVES', 'CONFIRMS', 'ESCALATES', 'IN_DIMENSION', 'IN_FILE'];
-      const researchRelations = new Set(TS_VALID_RELATIONS.research);
+      const researchRelations = new Set(VALID_RELATIONS.research);
 
       for (const rel of reviewOnly) {
         expect(researchRelations.has(rel)).toBe(false);
@@ -325,8 +357,8 @@ describe('coverage-graph-integration: CJS ↔ TS contract alignment', () => {
 
     it('shared relations (COVERS, SUPPORTS, CONTRADICTS) exist in both sets', () => {
       const shared = ['COVERS', 'CONTRADICTS'];
-      const researchSet = new Set(TS_VALID_RELATIONS.research);
-      const reviewSet = new Set(TS_VALID_RELATIONS.review);
+      const researchSet = new Set(VALID_RELATIONS.research);
+      const reviewSet = new Set(VALID_RELATIONS.review);
 
       for (const rel of shared) {
         expect(researchSet.has(rel)).toBe(true);

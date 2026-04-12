@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `007` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 007 | Observer effect mitigation (D4) | Confirm non-blocking logging failures | `As an evaluation validation operator, confirm non-blocking logging failures against the documented validation surface. Verify search returns normal results even when eval logging throws; no latency spike from logging failure. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Induce eval logging failure 2) Run search 3) Confirm search unaffected | Search returns normal results even when eval logging throws; no latency spike from logging failure | Search output during induced logging failure + timing comparison with/without failure | PASS: Search completes successfully and returns expected results despite logging failure; FAIL: Search fails or blocks on logging error | Verify observer pattern is non-blocking → Check try/catch wrapping on eval logger → Inspect async error handling |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm non-blocking logging failures against the documented validation surface. Verify search returns normal results even when eval logging throws; no latency spike from logging failure. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Induce eval logging failure
+2. Run search
+3. Confirm search unaffected
+
+### Expected
+
+Search returns normal results even when eval logging throws; no latency spike from logging failure
+
+### Evidence
+
+Search output during induced logging failure + timing comparison with/without failure
+
+### Pass / Fail
+
+- **Pass**: Search completes successfully and returns expected results despite logging failure
+- **Fail**: Search fails or blocks on logging error
+
+### Failure Triage
+
+Verify observer pattern is non-blocking → Check try/catch wrapping on eval logger → Inspect async error handling
 
 ## 4. REFERENCES
 

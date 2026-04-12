@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `001` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 001 | Graph channel ID fix (G1) | Confirm graph hits are non-zero when edges exist | `As a data-integrity validation operator, confirm graph hits are non-zero when edges exist against the documented validation surface. Verify graph channel returns >0 hits when causal edges exist. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create linked memories 2) Run graph-capable query 3) Verify graph hits | Graph channel returns >0 hits when causal edges exist | Command transcript + search output showing non-zero graph hits | PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges | Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm graph hits are non-zero when edges exist against the documented validation surface. Verify graph channel returns >0 hits when causal edges exist. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create linked memories
+2. Run graph-capable query
+3. Verify graph hits
+
+### Expected
+
+Graph channel returns >0 hits when causal edges exist
+
+### Evidence
+
+Command transcript + search output showing non-zero graph hits
+
+### Pass / Fail
+
+- **Pass**: Graph channel contributes >=1 hit when causal edges exist
+- **Fail**: Graph hits = 0 despite valid edges
+
+### Failure Triage
+
+Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags
 
 ## 4. REFERENCES
 

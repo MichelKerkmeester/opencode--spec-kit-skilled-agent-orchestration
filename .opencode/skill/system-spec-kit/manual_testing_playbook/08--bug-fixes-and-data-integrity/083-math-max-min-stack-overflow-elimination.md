@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `083` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 083 | Math.max/min stack overflow elimination | Confirm large-array safety | `As a data-integrity validation operator, confirm large-array safety against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm large-array safety against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run large-array paths
+2. verify no RangeError
+3. compare numeric outputs
+
+### Expected
+
+Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path
+
+### Evidence
+
+Large-array test output + numeric comparison evidence + error-free execution proof
+
+### Pass / Fail
+
+- **Pass**: large arrays process without RangeError and produce correct min/max values
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays
 
 ## 4. REFERENCES
 

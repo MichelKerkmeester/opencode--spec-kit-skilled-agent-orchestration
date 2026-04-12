@@ -8,7 +8,11 @@ category: "Benchmark Integration"
 
 Validates that running a benchmark without the --integration-report flag produces output with no integration-specific fields.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that running a benchmark without the --integration-report flag produces output with no integration-specific fields against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Benchmark completes successfully with exit code 0. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 mkdir -p /tmp/bench-test-empty && \
@@ -18,7 +22,7 @@ node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
   --output=/tmp/bench-no-integration.json
 ```
 
-## Expected Signals
+## Expected
 
 - Benchmark completes successfully with exit code 0
 - Output JSON at `/tmp/bench-no-integration.json` is valid and contains:

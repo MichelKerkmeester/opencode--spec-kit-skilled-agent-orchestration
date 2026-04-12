@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `PHASE-001` and confirm 
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| PHASE-001 | Phase detection scoring | Run `recommend-level.sh --recommend-phases --json` on a high-complexity spec and verify scoring output | `As a tooling validation operator, run recommend-level.sh --recommend-phases --json on a high-complexity spec and verify scoring output against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --recommend-phases --json specs/<target-spec>. Verify jSON output contains recommended_phases (boolean), phase_score (number), suggested_phase_count (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create or identify a high-complexity spec folder (>500 LOC, multiple concerns) 2) `bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --recommend-phases --json specs/<target-spec>` 3) Inspect JSON output for `recommended_phases`, `phase_score`, and `suggested_phase_count` fields 4) Verify all 4 scoring dimensions are present in output: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%) 5) Run on a simple spec folder and confirm `recommended_phases` is false | JSON output contains `recommended_phases` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low | Command transcript + JSON output snapshot | PASS if all three top-level fields are present and correctly typed, 4 dimensions are scored, and simple vs complex specs produce differentiated results | Verify spec folder path exists and contains spec.md; check script has execute permission; inspect scoring dimension weights for miscalibration |
+### Prompt
 
----
+```
+As a tooling validation operator, run recommend-level.sh --recommend-phases --json on a high-complexity spec and verify scoring output against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --recommend-phases --json specs/<target-spec>. Verify jSON output contains recommended_phases (boolean), phase_score (number), suggested_phase_count (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create or identify a high-complexity spec folder (>500 LOC, multiple concerns)
+2. `bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --recommend-phases --json specs/<target-spec>`
+3. Inspect JSON output for `recommended_phases`, `phase_score`, and `suggested_phase_count` fields
+4. Verify all 4 scoring dimensions are present in output: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%)
+5. Run on a simple spec folder and confirm `recommended_phases` is false
+
+### Expected
+
+JSON output contains `recommended_phases` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low
+
+### Evidence
+
+Command transcript + JSON output snapshot
+
+### Pass / Fail
+
+- **Pass**: all three top-level fields are present and correctly typed, 4 dimensions are scored, and simple vs complex specs produce differentiated results
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify spec folder path exists and contains spec.md; check script has execute permission; inspect scoring dimension weights for miscalibration
 
 ## 4. REFERENCES
 

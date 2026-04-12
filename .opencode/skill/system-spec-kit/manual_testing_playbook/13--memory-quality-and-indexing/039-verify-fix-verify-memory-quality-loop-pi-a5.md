@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `039` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 039 | Verify-fix-verify memory quality loop (PI-A5) | Confirm retry then reject path | `As a memory-quality validation operator, confirm retry then reject path against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Submit low-quality memory 2) Observe retries 3) Confirm final reject | Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged | Retry attempt log + final reject output + rejection reason message | PASS: Quality loop retries up to max attempts then rejects with reason; FAIL: No retry attempted or infinite retry loop | Verify quality check criteria → Check max retry configuration → Inspect rejection reason generation |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm retry then reject path against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Submit low-quality memory
+2. Observe retries
+3. Confirm final reject
+
+### Expected
+
+Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged
+
+### Evidence
+
+Retry attempt log + final reject output + rejection reason message
+
+### Pass / Fail
+
+- **Pass**: Quality loop retries up to max attempts then rejects with reason
+- **Fail**: No retry attempted or infinite retry loop
+
+### Failure Triage
+
+Verify quality check criteria → Check max retry configuration → Inspect rejection reason generation
 
 ## 4. REFERENCES
 

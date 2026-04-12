@@ -8,7 +8,11 @@ category: "Integration Scanner"
 
 Validates that scanning a nonexistent agent produces graceful error handling instead of a crash.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that scanning a nonexistent agent produces graceful error handling instead of a crash against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `status: "complete"` (exit code 0 -- the script completes gracefully, it does not crash). Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=nonexistent-agent-xyz
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=nonex
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=nonexistent-agent-xyz | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['status']=='complete'; assert d['surfaces']['canonical']['exists']==False; assert d['summary']['missingCount']>0; print('PASS')"
 ```
 
-## Expected Signals
+## Expected
 
 - `status: "complete"` (exit code 0 -- the script completes gracefully, it does not crash)
 - `surfaces.canonical.exists: false`

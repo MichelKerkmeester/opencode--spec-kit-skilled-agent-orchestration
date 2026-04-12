@@ -24,11 +24,33 @@ Operators run the exact prompt and command sequence for `128` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 128 | Schema compatibility validation | Verify backward-compatibility validation flags required schema gaps without throwing on partial databases | `As a tooling validation operator, verify backward-compatibility validation flags required schema gaps without throwing on partial databases against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts` | Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage | Test transcript + suite summary | PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift |
+### Prompt
 
----
+```
+As a tooling validation operator, verify backward-compatibility validation flags required schema gaps without throwing on partial databases against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts`
+
+### Expected
+
+Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage
+
+### Evidence
+
+Test transcript + suite summary
+
+### Pass / Fail
+
+- **Pass**: `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift
 
 ## 4. REFERENCES
 

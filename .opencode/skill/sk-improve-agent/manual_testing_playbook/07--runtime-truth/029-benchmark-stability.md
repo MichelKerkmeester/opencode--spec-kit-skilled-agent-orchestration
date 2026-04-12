@@ -8,7 +8,11 @@ category: "Runtime Truth"
 
 Validates that `benchmark-stability.cjs` correctly computes mean, standard deviation, and stability coefficient from repeated benchmark results, and that `isStable()` returns true only when variance is below threshold.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that benchmark-stability.cjs correctly computes mean, standard deviation, and stability coefficient from repeated benchmark results, and that isStable() returns true only when variance is below threshold against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `measureStability()` returns `{ dimensions, stable, warnings }` with per-dimension stats. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node -e "
@@ -59,7 +63,7 @@ console.log('PASS');
 "
 ```
 
-## Expected Signals
+## Expected
 
 - `measureStability()` returns `{ dimensions, stable, warnings }` with per-dimension stats
 - Each dimension entry contains: `coefficient` (0.0-1.0), `mean`, `stddev`, `samples`

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `002` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 002 | Chunk collapse deduplication (G3) | Confirm dedup in default mode | `As a data-integrity validation operator, confirm dedup in default mode against memory_search(includeContent:false). Verify no duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save multi-chunk overlap 2) `memory_search(includeContent:false)` 3) Verify no duplicates | No duplicate memory IDs in results; collapsed chunks yield unique parents only | Search output with result IDs + dedup count before/after collapse | PASS: Zero duplicate parent IDs in collapsed results; FAIL: Same parent ID appears >1 time in output | Check chunk parentId linkage → Verify dedup runs after collapse stage → Inspect includeContent flag behavior |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm dedup in default mode against memory_search(includeContent:false). Verify no duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save multi-chunk overlap
+2. `memory_search(includeContent:false)`
+3. Verify no duplicates
+
+### Expected
+
+No duplicate memory IDs in results; collapsed chunks yield unique parents only
+
+### Evidence
+
+Search output with result IDs + dedup count before/after collapse
+
+### Pass / Fail
+
+- **Pass**: Zero duplicate parent IDs in collapsed results
+- **Fail**: Same parent ID appears >1 time in output
+
+### Failure Triage
+
+Check chunk parentId linkage → Verify dedup runs after collapse stage → Inspect includeContent flag behavior
 
 ## 4. REFERENCES
 

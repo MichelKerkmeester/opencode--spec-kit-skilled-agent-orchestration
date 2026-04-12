@@ -26,11 +26,34 @@ Operators run the exact prompt and command sequence for `EX-006` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-006 | Memory indexing (memory_save) | Spec-doc anchored continuity save routing | `As a mutation validation operator, validate Spec-doc anchored continuity save routing against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if the document is indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
+### Prompt
 
----
+```
+As a mutation validation operator, validate Spec-doc anchored continuity save routing against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_save(filePath)
+2. memory_stats()
+3. memory_search(title)
+
+### Expected
+
+Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection
+
+### Evidence
+
+Save output + follow-up search
+
+### Pass / Fail
+
+- **Pass**: the document is indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Validate file path/type, rendered anchor/frontmatter shape, and content quality
 
 ## 4. REFERENCES
 

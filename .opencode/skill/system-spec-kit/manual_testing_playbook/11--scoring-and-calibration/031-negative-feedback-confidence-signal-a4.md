@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `031` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 031 | Negative feedback confidence signal (A4) | Confirm demotion floor+recovery | `As a scoring validation operator, confirm demotion floor+recovery against the documented validation surface. Verify negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Submit negatives 2) Query multiplier 3) Verify floor/half-life recovery | Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time | Confidence multiplier values after negatives + floor verification + recovery curve data | PASS: Multiplier decreases with negatives, never below floor; recovery toward 1.0 over half-life; FAIL: Multiplier reaches 0 or no recovery observed | Verify demotion formula → Check floor configuration → Inspect half-life recovery timer |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm demotion floor+recovery against the documented validation surface. Verify negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Submit negatives
+2. Query multiplier
+3. Verify floor/half-life recovery
+
+### Expected
+
+Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time
+
+### Evidence
+
+Confidence multiplier values after negatives + floor verification + recovery curve data
+
+### Pass / Fail
+
+- **Pass**: Multiplier decreases with negatives, never below floor; recovery toward 1.0 over half-life
+- **Fail**: Multiplier reaches 0 or no recovery observed
+
+### Failure Triage
+
+Verify demotion formula → Check floor configuration → Inspect half-life recovery timer
 
 ## 4. REFERENCES
 

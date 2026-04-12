@@ -16,10 +16,7 @@
     "parentSessionId": null,
     "lineageMode": "new",
     "allowedModes": [
-      "new",
-      "resume",
-      "restart",
-      "fork"
+      "new"
     ],
     "generation": 1
   },
@@ -74,12 +71,6 @@
     "path": "improvement/improvement-journal.jsonl",
     "sessionId": "",
     "emitLifecycleEvents": true
-  },
-  "sessionResume": {
-    "enabled": false,
-    "continuedFromIteration": null,
-    "parentSessionId": null,
-    "resumeMode": "new"
   },
   "coverageGraph": {
     "enabled": true,

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `060` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 060 | Cross-document entity linking (S5) | Confirm guarded supports-edge linking | `As a retrieval-enhancement validation operator, confirm guarded supports-edge linking against the documented validation surface. Verify supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) ensure shared entities across docs 2) run linker 3) verify density guards | Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied | Linker output showing created edges + density guard metrics + entity normalization evidence | PASS if supports-edges are created for shared entities and density guards cap edge count appropriately | Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm guarded supports-edge linking against the documented validation surface. Verify supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. ensure shared entities across docs
+2. run linker
+3. verify density guards
+
+### Expected
+
+Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied
+
+### Evidence
+
+Linker output showing created edges + density guard metrics + entity normalization evidence
+
+### Pass / Fail
+
+- **Pass**: supports-edges are created for shared entities and density guards cap edge count appropriately
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `037` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `As a query-intelligence validation operator, confirm complexity-tier budgets against the documented validation surface. Verify token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback | Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget | Budget allocation per complexity tier + default fallback budget verification | PASS: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits; FAIL: All tiers get same budget or flag-disabled produces error | Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, confirm complexity-tier budgets against the documented validation surface. Verify token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run classed queries
+2. Inspect budgets
+3. Disable flag fallback
+
+### Expected
+
+Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget
+
+### Evidence
+
+Budget allocation per complexity tier + default fallback budget verification
+
+### Pass / Fail
+
+- **Pass**: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits
+- **Fail**: All tiers get same budget or flag-disabled produces error
+
+### Failure Triage
+
+Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits
 
 ## 4. REFERENCES
 

@@ -19,6 +19,7 @@ const coreModule = require(path.join(
   updateEdge: (graph: ReturnType<typeof coreModule.createGraph>, edgeId: string, updates: { weight?: number; metadata?: object; relation?: string }) => boolean;
   deleteEdge: (graph: ReturnType<typeof coreModule.createGraph>, edgeId: string) => boolean;
   traverseProvenance: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string, maxDepth?: number) => Array<{ id: string; depth: number; relation: string; weight: number; path: string[] }>;
+  getEdges: (graph: ReturnType<typeof coreModule.createGraph>, sessionId?: string) => Array<object>;
   getEdgesFrom: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string) => Array<object>;
   getEdgesTo: (graph: ReturnType<typeof coreModule.createGraph>, nodeId: string) => Array<object>;
   clampWeight: (weight: number) => number | null;
@@ -132,6 +133,12 @@ describe('coverage-graph-core', () => {
       const edgeId = coreModule.insertEdge(graph, 'a', 'b', 'CITES');
       const edge = graph.edges.get(edgeId!) as { weight: number };
       expect(edge.weight).toBe(1.0);
+    });
+
+    it('normalizes session identifiers when filtering graph records', () => {
+      const graph = coreModule.createGraph();
+      coreModule.insertEdge(graph, 'a', 'b', 'CITES', 1.0, { sessionId: 'sess-1' });
+      expect(coreModule.getEdges(graph, '  sess-1  ').length).toBe(1);
     });
   });
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `063` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 063 | Feature flag governance | Confirm governance policy conformance | `As a governance validation operator, confirm governance policy conformance against the documented validation surface. Verify all flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps | All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found | Flag inventory + compliance report + gap list | PASS if all flags have documented governance metadata and compliance gaps are identified | Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking |
+### Prompt
 
----
+```
+As a governance validation operator, confirm governance policy conformance against the documented validation surface. Verify all flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. enumerate flags
+2. verify age/limits/review cadence
+3. record compliance gaps
+
+### Expected
+
+All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found
+
+### Evidence
+
+Flag inventory + compliance report + gap list
+
+### Pass / Fail
+
+- **Pass**: all flags have documented governance metadata and compliance gaps are identified
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking
 
 ## 4. REFERENCES
 

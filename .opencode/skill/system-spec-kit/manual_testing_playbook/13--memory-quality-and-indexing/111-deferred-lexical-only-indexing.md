@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `111` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 111 | Deferred lexical-only indexing | Confirm embedding-failure fallback and BM25 searchability | `As a memory-quality validation operator, confirm embedding-failure fallback and BM25 searchability against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) simulate embedding failure (e.g., set invalid `OPENAI_API_KEY`) 2) `memory_save(filePath)` → verify memory saved with `embedding_status='pending'` 3) `memory_search({query:"<title of saved memory>"})` → verify BM25/FTS5 retrieval works (lexical match) 4) restore valid API key 5) run `node cli.js reindex` → verify `embedding_status` transitions to `'success'` and `retry_count` increments 6) `memory_search({query:"<semantic query>"})` → verify vector search now works | Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex | Save output showing pending status + lexical search result + reindex output + post-reindex semantic search result | PASS if embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding | Verify embedding_status column exists in schema; check BM25/FTS5 index includes pending memories; inspect reindex retry logic and retry_count tracking |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm embedding-failure fallback and BM25 searchability against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. simulate embedding failure (e.g., set invalid `OPENAI_API_KEY`)
+2. `memory_save(filePath)` → verify memory saved with `embedding_status='pending'`
+3. `memory_search({query:"<title of saved memory>"})` → verify BM25/FTS5 retrieval works (lexical match)
+4. restore valid API key
+5. run `node cli.js reindex` → verify `embedding_status` transitions to `'success'` and `retry_count` increments
+6. `memory_search({query:"<semantic query>"})` → verify vector search now works
+
+### Expected
+
+Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex
+
+### Evidence
+
+Save output showing pending status + lexical search result + reindex output + post-reindex semantic search result
+
+### Pass / Fail
+
+- **Pass**: embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify embedding_status column exists in schema; check BM25/FTS5 index includes pending memories; inspect reindex retry logic and retry_count tracking
 
 ## 4. REFERENCES
 

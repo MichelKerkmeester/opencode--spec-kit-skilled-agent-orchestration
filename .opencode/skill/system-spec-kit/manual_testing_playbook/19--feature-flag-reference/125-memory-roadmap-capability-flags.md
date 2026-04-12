@@ -45,11 +45,36 @@ Operators run the exact prompt and command sequence for `125` and confirm the ex
 4. Compare the outputs and explicitly map them back to the user-facing conclusion.
 5. Return a short final answer that distinguishes default-off roadmap behavior from explicit canonical opt-in behavior.
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 125 | Memory roadmap capability flags | Verify runtime roadmap resolvers use the canonical `SPECKIT_MEMORY_*` keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled | `As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify first snapshot remains phase:\"scope-governance\" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false; second snapshot reports phase:\"graph\" with capabilities.graphUnified:false; third snapshot reports capabilities.adaptiveRanking:true; fourth snapshot confirms canonical opt-out by returning capabilities.adaptiveRanking:false. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` 3) `SPECKIT_MEMORY_ROADMAP_PHASE=graph SPECKIT_MEMORY_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` 4) `SPECKIT_MEMORY_ADAPTIVE_RANKING=true node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-c')))"` 5) `SPECKIT_MEMORY_ADAPTIVE_RANKING=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-d')))"` | First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms canonical opt-out by returning `capabilities.adaptiveRanking:false` | Four JSON snapshots from the dist build | PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata, adaptive ranking stays off by default in roadmap snapshots, and explicit opt-in/opt-out behavior stays correct | Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the listed env vars are set in each run |
+### Prompt
 
----
+```
+As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify first snapshot remains phase:\"scope-governance\" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false; second snapshot reports phase:\"graph\" with capabilities.graphUnified:false; third snapshot reports capabilities.adaptiveRanking:true; fourth snapshot confirms canonical opt-out by returning capabilities.adaptiveRanking:false. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"`
+3. `SPECKIT_MEMORY_ROADMAP_PHASE=graph SPECKIT_MEMORY_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"`
+4. `SPECKIT_MEMORY_ADAPTIVE_RANKING=true node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-c')))"`
+5. `SPECKIT_MEMORY_ADAPTIVE_RANKING=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-d')))"`
+
+### Expected
+
+First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms canonical opt-out by returning `capabilities.adaptiveRanking:false`
+
+### Evidence
+
+Four JSON snapshots from the dist build
+
+### Pass / Fail
+
+- **Pass**: the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata, adaptive ranking stays off by default in roadmap snapshots, and explicit opt-in/opt-out behavior stays correct
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the listed env vars are set in each run
 
 ## 4. SOURCE FILES
 

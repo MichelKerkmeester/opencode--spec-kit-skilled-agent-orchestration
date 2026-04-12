@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `056` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `As a retrieval-enhancement validation operator, confirm directive enrichment against the documented validation surface. Verify directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm directive enrichment against the documented validation surface. Verify directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. save constitutional directive
+2. run retrieval
+3. inspect directive metadata
+
+### Expected
+
+Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated
+
+### Evidence
+
+Save output + retrieval output showing directive metadata + tier classification evidence
+
+### Pass / Fail
+
+- **Pass**: constitutional directives are injected into retrieval results with correct metadata and tier
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling
 
 ## 4. REFERENCES
 

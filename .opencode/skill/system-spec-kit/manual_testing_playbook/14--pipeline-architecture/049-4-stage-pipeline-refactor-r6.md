@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `049` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 049 | 4-stage pipeline refactor (R6) | Confirm stage flow and invariant | `As a pipeline validation operator, confirm stage flow and invariant against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run verbose stage metadata 2) inspect stage transitions 3) confirm stage-4 immutability | Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage | Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated | Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm stage flow and invariant against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run verbose stage metadata
+2. inspect stage transitions
+3. confirm stage-4 immutability
+
+### Expected
+
+Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage
+
+### Evidence
+
+Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification
+
+### Pass / Fail
+
+- **Pass**: All 4 stages execute in sequence; stage-4 scores unchanged after completion
+- **Fail**: Stage skipped or stage-4 scores mutated
+
+### Failure Triage
+
+Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `092` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 092 | Implemented: auto entity extraction (R10) | Confirm deferred->implemented status | `As a memory-quality validation operator, confirm deferred->implemented status against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults | Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied | Save output + entity extraction results + default configuration evidence | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings | Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm deferred->implemented status against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. save entity-rich memory
+2. inspect entity outputs
+3. verify defaults
+
+### Expected
+
+Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied
+
+### Evidence
+
+Save output + entity extraction results + default configuration evidence
+
+### Pass / Fail
+
+- **Pass**: entity extraction runs automatically on save and produces correctly typed entities with default settings
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration
 
 ## 4. REFERENCES
 

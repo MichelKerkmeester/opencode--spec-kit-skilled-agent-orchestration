@@ -1252,3 +1252,1384 @@ I’ve got the existing wave-executor packet and the affected modules. Now I’m
   │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs
   └ L180:290 (111 lines read)
 
+● Read rubric.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/rubric.cjs
+  └ L1:260 (253 lines read)
+
+● Search (grep)
+  │ "graphBonus|graphMetrics\.|waveMetrics\.|convergenceScore|graphConvergence|stopOutcome\." in
+  │ **/*.{cjs,ts,json} (.opencode/skill/system-spec-kit/scripts/optimizer)
+  └ 56 lines found
+
+● Read graph-aware-stop.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts
+  └ L180:310 (89 lines read)
+
+I’ve isolated the concrete mismatches: hotspot spread is thresholding the wrong signal, board merge dedupe is under-keyed, lifecycle allows phase skipping, cycle depth handling is weaker than the documented SCC behavior, and replay corpus omits the top-level metrics the runner reads. I’m updating code and tests together so each fix lands on its contract.
+
+● Edit
+  └ Create ~/.copilot/session-state/b0eb3d6e-80a0-4e80-94ef-e60eb0803c60/plan.md
+
+● Insert wave fix todos (sql)
+  │ INSERT OR REPLACE INTO todos (id, title, description, status) VALUES
+  └ 3 row(s) inserted. Last inserted row ID: 3.
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/mcp_server/package.json
+  └ 67 lines read
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/package.json
+  └ 51 lines read
+
+● Run targeted baseline vitest suite (shell)
+  │ cd .opencode/skill/system-spec-kit && npx vitest run
+  │ scripts/tests/deep-loop-wave-planner.vitest.ts scripts/tests/deep-loop-wave-executor.vitest.ts
+  │ scripts/tests/deep-loop-wave-merge.vitest.ts scripts/tests/optimizer-replay-runner.vitest.ts
+  │ scripts/tests/optimizer-replay-corpus.vitest.ts --reporter=verbose
+  └ 3 lines...
+
+The targeted suite didn’t run from the workspace root because `vitest` isn’t on PATH there. I’m switching to the workspace’s existing invocation pattern instead of inventing a new one.
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/scripts/package.json
+  └ 34 lines read
+
+✗ Run targeted baseline tests via workspace vitest (shell)
+  │ cd .opencode/skill/system-spec-kit && node mcp_server/node_modules/vitest/vitest.mjs run --root
+  │ scripts --config ../mcp_server/vitest.config.ts tests/deep-loop-wave-planner.vitest.ts
+  │ tests/deep-loop-wave-executor.vitest.ts tests/deep-loop-wave-merge.vitest.ts
+  │ tests/optimizer-replay-runner.vitest.ts tests/optimizer-replay-corpus.vitest.ts
+  │ --reporter=verbose
+  └ Permission denied and could not request permission from user
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L1:140 (140 lines read)
+
+✗ Run targeted baseline tests from scripts workspace (shell)
+  │ cd .opencode/skill/system-spec-kit/scripts && node node_modules/vitest/vitest.mjs run
+  │ tests/deep-loop-wave-planner.vitest.ts tests/deep-loop-wave-executor.vitest.ts
+  │ tests/deep-loop-wave-merge.vitest.ts tests/optimizer-replay-runner.vitest.ts
+  │ tests/optimizer-replay-corpus.vitest.ts --config ../mcp_server/vitest.config.ts
+  │ --reporter=verbose
+  └ Permission denied and could not request permission from user
+
+● Search (grep)
+  │ "transitionBoardStatus|BOARD_STATUS_TRANSITIONS|status transition" in **/*.vitest.ts
+  │ (.opencode/skill/system-spec-kit/scripts/tests)
+  └ No matches found
+
+● Search (grep)
+  │ "coverage-graph-core|coverage-graph-signals|computeDegree|computeAllDepths|computeClusterMetrics
+  │ |computeMomentum" in **/*.vitest.ts (.opencode/skill/system-spec-kit/scripts/tests)
+  └ 7 lines found
+
+● Search (glob)
+  │ "**/scripts/tests/*coverage*graph*.vitest.ts" in .opencode/skill/system-spec-kit
+  └ 6 files found
+
+● Search (glob)
+  │ "**/scripts/tests/*graph*.vitest.ts" in .opencode/skill/system-spec-kit
+  └ 10 files found
+
+● Read coverage-graph-signals.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts
+  └ 196 lines read
+
+● Read coverage-graph-core.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts
+  └ 250 lines read
+
+✗ Edit
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  │ Create .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-session.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-planner.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-merge.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+
+✗ Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L160:178 (19 lines read)
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L48:80 (33 lines read)
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L537:595 (59 lines read)
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L177:188 (11 lines read)
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L583:660 (78 lines read)
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L659:720 (42 lines read)
+
+● Read wave-lifecycle.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  └ L20:60 (41 lines read)
+
+● Read wave-lifecycle.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  └ L320:372 (53 lines read)
+
+● Read wave-lifecycle.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  └ L417:440 (24 lines read)
+
+● Read wave-lifecycle.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  └ L440:470 (25 lines read)
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ L212:330 (119 lines read)
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ L16:60 (45 lines read)
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ L394:475 (82 lines read)
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ L475:570 (96 lines read)
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ L570:620 (30 lines read)
+
+● Read coverage-graph-session.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-session.cjs
+  └ L1:220 (126 lines read)
+
+● Read coverage-graph-core.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+  └ L1:130 (130 lines read)
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ L1:140 (140 lines read)
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ L140:340 (201 lines read)
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ L340:430 (71 lines read)
+
+● Read replay-runner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs
+  └ L1:70 (70 lines read)
+
+● Read replay-runner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs
+  └ L204:245 (42 lines read)
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ L60:150 (90 lines read)
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ L188:290 (103 lines read)
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ L360:420 (61 lines read)
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ L290:360 (71 lines read)
+
+● Read coverage-graph-core.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts
+  └ L1:140 (140 lines read)
+
+● Read deep-loop-wave-planner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-planner.vitest.ts
+  └ L252:320 (42 lines read)
+
+● Read deep-loop-wave-executor.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts
+  └ L1:240 (240 lines read)
+
+● Read deep-loop-wave-merge.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-merge.vitest.ts
+  └ L1:240 (240 lines read)
+
+● Read coverage-graph-signals.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts
+  └ L1:220 (196 lines read)
+
+● Read optimizer-replay-runner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ L1:190 (190 lines read)
+
+● Read optimizer-replay-corpus.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+  └ L156:260 (105 lines read)
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+
+● Read deep-loop-wave-executor.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts
+  └ L234:280 (47 lines read)
+
+● Read optimizer-replay-runner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ L1:190 (190 lines read)
+
+The code changes are in. I’m on the verification pass now with the focused scripts workspace suite, then I’ll do the lightweight alignment checks on the changed scope.
+
+✗ Run focused scripts vitest suite (shell)
+  │ cd .opencode/skill/system-spec-kit/scripts && npm test -- --config
+  │ ../mcp_server/vitest.config.ts tests/deep-loop-wave-planner.vitest.ts
+  │ tests/deep-loop-wave-executor.vitest.ts tests/deep-loop-wave-merge.vitest.ts
+  │ tests/coverage-graph-core.vitest.ts tests/coverage-graph-signals.vitest.ts
+  │ tests/optimizer-replay-runner.vitest.ts tests/optimizer-replay-corpus.vitest.ts
+  └ Permission denied and could not request permission from user
+
+● Todo started wave-planner-lifecycle
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/scripts/package.json
+  └ L1:120 (34 lines read)
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/package.json
+  └ L1:120 (51 lines read)
+
+● Inspect vitest paths and tool versions (shell)
+  │ cd .opencode/skill/system-spec-kit/scripts && ls -l node_modules/vitest/vitest.mjs
+  │ node_modules/.bin/vitest && node -v && npm -v
+  └ 5 lines...
+
+The workspace has Vitest installed; the npm wrapper is what tripped over permissions here. I’m switching to the direct `node .../vitest.mjs` path and keeping the scope tight to the touched contracts.
+
+● Todo started replay-schema-tests
+
+● Run focused vitest suite directly (shell)
+  │ cd .opencode/skill/system-spec-kit && node mcp_server/node_modules/vitest/vitest.mjs run
+  │ scripts/tests/deep-loop-wave-planner.vitest.ts scripts/tests/deep-loop-wave-executor.vitest.ts
+  │ scripts/tests/deep-loop-wave-merge.vitest.ts scripts/tests/coverage-graph-core.vitest.ts
+  │ scripts/tests/coverage-graph-signals.vitest.ts scripts/tests/optimizer-replay-runner.vitest.ts
+  │ scripts/tests/optimizer-replay-corpus.vitest.ts --config mcp_server/vitest.config.ts --root .
+  └ 132 lines...
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ L1:260 (260 lines read)
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ L260:420 (151 lines read)
+
+● Read graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts
+  └ L1:260 (260 lines read)
+
+● Read graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts
+  └ L260:420 (161 lines read)
+
+● Read coverage-graph-session.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-session.cjs
+  └ L1:220 (126 lines read)
+
+● Read coverage-graph-core.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+  └ L1:180 (180 lines read)
+
+The failing suite narrowed it down: `coverage-graph-signals` still has a real depth/session bug, not just stale expectations. I’m probing the helper outputs directly so I can patch the root cause instead of papering over the tests.
+
+● Read graph-signals.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts
+  └ L1:220 (220 lines read)
+
+● Inspect coverage graph depth helpers (shell)
+  │ cd .opencode/skill/system-spec-kit && node - <<'NODE'
+  │ const core = require('./scripts/lib/coverage-graph-core.cjs');
+  │ const signals = require('./scripts/lib/coverage-graph-signals.cjs');
+  │ const graph = core.createGraph();
+  │ core.insertEdge(graph, 'a', 'b', 'ANSWERS');…
+  └ 17 lines...
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+
+I found the actual bug: the SCC depth logic was dropping the first indexed node because it used `||` instead of null-safe `??`, so root components vanished from the depth map. I patched that and also propagated edge session IDs onto auto-created graph nodes so the shared session filter works consistently.
+
+● Re-run focused vitest suite (shell)
+  │ cd .opencode/skill/system-spec-kit && node mcp_server/node_modules/vitest/vitest.mjs run
+  │ scripts/tests/deep-loop-wave-planner.vitest.ts scripts/tests/deep-loop-wave-executor.vitest.ts
+  │ scripts/tests/deep-loop-wave-merge.vitest.ts scripts/tests/coverage-graph-core.vitest.ts
+  │ scripts/tests/coverage-graph-signals.vitest.ts scripts/tests/optimizer-replay-runner.vitest.ts
+  │ scripts/tests/optimizer-replay-corpus.vitest.ts --config mcp_server/vitest.config.ts --root .
+  └ 8 lines...
+
+● Run alignment verifier on scripts scope (shell)
+  │ python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root
+  │ .opencode/skill/system-spec-kit/scripts
+  └ 11 lines...
+
+● Typecheck system-spec-kit workspace (shell)
+  │ cd .opencode/skill/system-spec-kit && npm run typecheck
+  └ 13 lines...
+
+✔ Todo completed 2 items
+  │ board-coverage-signals
+  └ replay-schema-tests
+
+● Summarize modified files (shell)
+  │ git --no-pager status --short && echo '---' && git --no-pager diff --stat --
+  │ .opencode/skill/system-spec-kit/scripts/lib .opencode/skill/system-spec-kit/scripts/optimizer
+  │ .opencode/skill/system-spec-kit/scripts/tests
+  └ 35 lines...
+
+Fixed the requested wave executor and replay correctness issues with targeted changes in `system-spec-kit/scripts`.
+
+1. `wave-segment-planner.cjs`: `computeHotspotSpread()` now uses the existing composite hotspot score, and `assignCluster()` now groups by registrable domain (`bbc.co.uk`, `nytimes.com`) instead of raw TLD.
+2. `wave-lifecycle.cjs`: phase advancement now goes through an explicit adjacent-transition matrix, so skipped phases are rejected.
+3. `wave-coordination-board.cjs`: merge dedupe now keys on the full `(sessionId, generation, segment, wave, findingId)` tuple, and board status changes now go through an authoritative transition API.
+4. `coverage-graph-core.cjs` + new `coverage-graph-session.cjs`: session normalization/filtering is centralized, and auto-created graph nodes now inherit session IDs from session-scoped edges.
+5. `coverage-graph-signals.cjs`: recent-edge activity is exposed as `computeRecentEdgeActivity()` with `computeMomentum` kept as a compatibility alias, and SCC depth handling now matches the documented cycle behavior.
+6. `replay-corpus.cjs` + `replay-runner.cjs`: replay metric extraction is normalized so corpus entries emit the exact top-level `graphMetrics` / `waveMetrics` shape that `replayRun()` consumes.
+
+I also updated the focused Vitest coverage around the changed contracts so the new behavior is pinned down.
+
+
+Changes   +108 -22
+Requests  1 Premium (13m 25s)
+Tokens    ↑ 8.6m • ↓ 47.3k • 8.2m (cached) • 18.1k (reasoning)
+--- Batch 3-wave-and-libs done | Sun Apr 12 14:05:27 CEST 2026 ---
+
+--- Batch 4-workflows-and-docs | Sun Apr 12 14:05:27 CEST 2026 ---
+● skill(sk-code-opencode)
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Fix workflow YAML issues, agent definitio…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":"trig...
+
+I’m pulling the current command, agent, and reference surfaces together first so the edits stay aligned and minimal. After that I’ll patch the mismatches in one pass and verify the changed scope.
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ 1 line read
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ 1 line read
+
+● Read spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  └ 1 line read
+
+● Read spec_kit_deep-research_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  └ 1 line read
+
+● skill(system-spec-kit)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ 183 lines read
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ 217 lines read
+
+● Read deep-review.md
+  │ .opencode/agent/deep-review.md
+  └ 1 line read
+
+● Read deep-research.md
+  │ .opencode/agent/deep-research.md
+  └ 1 line read
+
+● Read deep_research_config.json
+  │ .opencode/skill/sk-deep-research/assets/deep_research_config.json
+  └ 67 lines read
+
+● Read review_mode_contract.yaml
+  │ .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+  └ 491 lines read
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ 130 lines read
+
+● Read convergence.md
+  │ .opencode/skill/sk-deep-review/references/convergence.md
+  └ 1 line read
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ 1 line read
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ 1 line read
+
+● Read package.json
+  └ 5 lines read
+
+● Search (glob)
+  │ "specs/**/*deep*"
+  └ No matches found
+
+● Search (glob)
+  │ ".opencode/specs/**/*deep*"
+  └ 8 files found
+
+● Run skill advisor (shell)
+  │ python3 .opencode/skill/scripts/skill_advisor.py "Fix workflow YAML issues, agent definitions,
+  │ and reference doc accuracy across .opencode command, agent, and skill files for deep-review,
+  │ deep-research, and improve-agent" --threshold 0.8
+  └ 59 lines...
+
+I found the main surfaces; next I’m tracing the exact event fields and loop contracts so the docs and YAML changes match runtime behavior instead of just each other. Then I’ll patch the small set of affected sections together.
+
+● Track task todos (sql)
+  │ INSERT OR REPLACE INTO todos (id, title, description, status) VALUES
+  └ 3 row(s) inserted. Last inserted row ID: 3.
+
+● Search (grep)
+  │ "reduce-state\.cjs|scan-integration\.cjs|mutation-coverage\.cjs|candidate-lineage\.cjs|trade-off
+  │ -detector\.cjs|benchmark-stability\.cjs" in **/*.{md,json,jsonc,cjs,js}
+  │ (.opencode/skill/sk-improve-agent)
+  └ 7 lines found
+
+● Search (grep)
+  │ "blocked_stop|graphBlockerDetail|reviewDimensions|convergenceSignals|findingsNew|findingsRefined
+  │ |graphEvents" in **/*.{md,yaml,yml,json,cjs,js} (.opencode/skill/sk-deep-review)
+  └ 7 lines found
+
+● Search (grep)
+  │ "completed-session|fork|completed-continue|wave|delta-vs-full|full replay|config.*Step 1|Step 1"
+  │ in **/*.{md,yaml,yml,json,cjs,js} (.opencode/skill/sk-deep-research)
+  └ 58 lines found
+
+● Search (grep)
+  │ "review-mode-contract|iteration template|ITERATION|canonical template|reduce-state\.cjs|jsonl
+  │ delta" (.opencode/agent/deep-review.md)
+  └ 2 lines found
+
+● Search (grep)
+  │ "Step 1|config|INPUTS|deep_research_config|workflow" (.opencode/agent/deep-research.md)
+  └ 11 lines found
+
+● Search (grep)
+  │ "030-sk-deep-research-review-mode|improve-agent|deep-review|deep-research" (.opencode/specs)
+  └ 7 files found
+
+● Search (grep)
+  │ "graphBlockerDetail|blocked_stop|reviewDimensions|completed-session|synthesize|session-boundary|
+  │ mutation-coverage|candidate-lineage|trade-off-detector|benchmark-stability|delta-vs-full|wave|fu
+  │ ll replay|replay" in *.{yaml,yml,md,json,jsonc,cjs,js,ts} (.opencode)
+  └ 7 lines found
+
+I’ve narrowed it to a few contract mismatches: lifecycle modes, blocked-stop payload shape, one overly broad synthesize route, and stale/implied loop steps in improve-agent. I’m drilling into the exact snippets now so the patch stays surgical.
+
+● Search (grep)
+  │ "blocked_stop|graphBlockerDetail|reviewDimensions|step_normalize|phase_init|phase_loop"
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml)
+  └ 12 lines found
+
+● Search (grep)
+  │ "blocked_stop|graphBlockerDetail|reviewDimensions|step_normalize|phase_init|phase_loop"
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml)
+  └ 13 lines found
+
+● Search (grep)
+  │ "completed-session|synthesize|phase_synthesis|step_classify_session|on_completed_session|on_resu
+  │ me|lineageMode" (.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml)
+  └ 12 lines found
+
+● Search (grep)
+  │ "completed-session|synthesize|phase_synthesis|step_classify_session|on_completed_session|on_resu
+  │ me|lineageMode" (.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml)
+  └ 15 lines found
+
+● Search (grep)
+  │ "session-boundary|scan-integration|mutation-coverage|candidate-lineage|trade-off-detector|benchm
+  │ ark-stability|phase_init|phase_loop|gate_init"
+  │ (.opencode/command/improve/assets/improve_improve-agent_auto.yaml)
+  └ 7 lines found
+
+● Search (grep)
+  │ "session-boundary|scan-integration|mutation-coverage|candidate-lineage|trade-off-detector|benchm
+  │ ark-stability|phase_init|phase_loop|gate_init"
+  │ (.opencode/command/improve/assets/improve_improve-agent_confirm.yaml)
+  └ 8 lines found
+
+● Search (grep)
+  │ "blocked_stop|graphBlockerDetail|graphBlockers|legal_stop_evaluated|graph convergence gate|graph
+  │ blocker" in **/*.{md,yaml,yml,json,cjs,js} (.opencode/skill/sk-deep-review)
+  └ 43 lines found
+
+● Search (grep)
+  │ "# Iteration N:|## Focus|## Findings|## Ruled Out|## Dead Ends|## Recommended Next Focus|##
+  │ Assessment" (.opencode/skill/sk-deep-review/scripts/reduce-state.cjs)
+  └ No matches found
+
+● Search (grep)
+  │ "delta|replay|full replay|delta-vs-full|wave|reference-only"
+  │ (.opencode/skill/sk-deep-review/references/loop_protocol.md)
+  └ 13 lines found
+
+● Search (grep)
+  │ "delta|replay|full replay|delta-vs-full|wave|reference-only|completed-session"
+  │ (.opencode/skill/sk-deep-research/references/loop_protocol.md)
+  └ 21 lines found
+
+● Read copilot-tool-output-1775995594140-nui8vj.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775995594140-nui8vj.txt
+  └ L1:120 (118 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L100:170 (71 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L236:286 (51 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L474:490 (16 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L100:170 (71 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L244:294 (51 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L507:523 (16 lines read)
+
+● Read spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  └ L124:160 (37 lines read)
+
+● Read spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  └ L336:356 (21 lines read)
+
+● Read spec_kit_deep-research_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  └ L124:168 (45 lines read)
+
+● Read spec_kit_deep-research_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  └ L404:424 (21 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L110:170 (61 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L118:205 (87 lines read)
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L1:220 (220 lines read)
+
+● Read mutation-coverage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs
+  └ L1:220 (219 lines read)
+
+● Read candidate-lineage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs
+  └ L1:220 (180 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L1:220 (220 lines read)
+
+● Read benchmark-stability.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs
+  └ L1:220 (219 lines read)
+
+● Search (grep)
+  │ "process\.argv|module\.exports|main\(|if \(require\.main === module\)|Usage:"
+  │ (.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs)
+  └ 1 line found
+
+● Search (grep)
+  │ "process\.argv|module\.exports|main\(|if \(require\.main === module\)|Usage:"
+  │ (.opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs)
+  └ 1 line found
+
+● Search (grep)
+  │ "process\.argv|module\.exports|main\(|if \(require\.main === module\)|Usage:"
+  │ (.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs)
+  └ 1 line found
+
+● Search (grep)
+  │ "process\.argv|module\.exports|main\(|if \(require\.main === module\)|Usage:"
+  │ (.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs)
+  └ 1 line found
+
+● Search (grep)
+  │ "session-boundary|boundary gate|session boundary|sessionBoundary" in
+  │ **/*.{md,json,jsonc,cjs,js,yaml,yml} (.opencode/skill/sk-improve-agent)
+  └ No matches found
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L620:690 (71 lines read)
+
+● Read convergence.md
+  │ .opencode/skill/sk-deep-review/references/convergence.md
+  └ L44:100 (57 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L164:188 (25 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L146:160 (15 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L416:428 (13 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L40:108 (69 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L347:416 (70 lines read)
+
+● Read deep-review.md
+  │ .opencode/agent/deep-review.md
+  └ L136:190 (55 lines read)
+
+● Read deep-research.md
+  │ .opencode/agent/deep-research.md
+  └ L58:90 (33 lines read)
+
+● Read review_mode_contract.yaml
+  │ .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+  └ L144:168 (25 lines read)
+
+● Read deep-review.md
+  │ .opencode/agent/deep-review.md
+  └ L188:250 (63 lines read)
+
+● Search (grep)
+  │ "sessionResume|continuedFromIteration|resumeMode|parentSessionId" in
+  │ **/*.{md,json,jsonc,cjs,js,yaml,yml} (.opencode/skill/sk-improve-agent)
+  └ 18 lines found
+
+● Search (grep)
+  │ "lifecycleModes|fork|completed-continue|lineageMode" in **/*.{md,yaml,yml,json}
+  │ (.opencode/skill/sk-deep-review)
+  └ 39 lines found
+
+● Search (grep)
+  │ "reviewDimensions\s*:\s*"\{review_dimensions\}"|review_dimensions_json|Normalize
+  │ \{review_dimensions\}" (.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml)
+  └ 4 lines found
+
+● Search (grep)
+  │ "reviewDimensions\s*:\s*"\{review_dimensions\}"|review_dimensions_json|Normalize
+  │ \{review_dimensions\}" (.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml)
+  └ 4 lines found
+
+● Read README.md
+  │ .opencode/skill/sk-improve-agent/README.md
+  └ L1:220 (220 lines read)
+
+● Search (grep)
+  │ "measureStability\(|detectTradeOffs\(|recordMutation\(|recordCandidate\(" in
+  │ **/*.{cjs,js,md,yaml,yml} (.opencode/skill/sk-improve-agent)
+  └ 11 lines found
+
+● Search (grep)
+  │ "session boundary|lineage boundary|resume semantics|fresh session|new session" in
+  │ **/*.{md,yaml,yml,json,jsonc,cjs,js} (.opencode/skill/sk-improve-agent)
+  └ 2 lines found
+
+● Search (grep)
+  │ "reviewDimensions":\{|reviewDimensions":\[|reviewDimensions\s*:\s*\["
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml)
+  └ 1 line found
+
+● Search (grep)
+  │ "reviewDimensions":\{|reviewDimensions":\[|reviewDimensions\s*:\s*\["
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml)
+  └ 1 line found
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-improve-agent/references/loop_protocol.md
+  └ L1:240 (108 lines read)
+
+● Search (grep)
+  │ "mutation-coverage\.cjs|candidate-lineage\.cjs|trade-off-detector\.cjs|benchmark-stability\.cjs"
+  │ in **/*.{md,yaml,yml,json,jsonc,cjs,js} (.opencode)
+  └ 7 lines found
+
+I’ve got the runtime truth now: improve-agent is single-lineage only, the review reducer already expects `graphBlockerDetail`, and the deep-review iteration template still carries extra non-canonical sections beyond what the reducer keys on. I’m moving to the patch with those exact contracts.
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L280:330 (51 lines read)
+
+● Read improvement_strategy.md
+  │ .opencode/skill/sk-improve-agent/assets/improvement_strategy.md
+  └ L120:170 (30 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L520:540 (21 lines read)
+
+● Read quick_reference.md
+  │ .opencode/skill/sk-deep-review/references/quick_reference.md
+  └ L80:96 (17 lines read)
+
+● Read quick_reference.md
+  │ .opencode/skill/sk-deep-research/references/quick_reference.md
+  └ L76:88 (12 lines read)
+
+● Read state_format.md
+  │ .opencode/skill/sk-deep-review/references/state_format.md
+  └ L288:308 (21 lines read)
+
+● Read state_format.md
+  │ .opencode/skill/sk-deep-review/references/state_format.md
+  └ L522:536 (15 lines read)
+
+● Read deep_review_config.json
+  │ .opencode/skill/sk-deep-review/assets/deep_review_config.json
+  └ 84 lines read
+
+● Read deep_research_dashboard.md
+  │ .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
+  └ L1:50 (49 lines read)
+
+● Read deep_research_strategy.md
+  │ .opencode/skill/sk-deep-research/assets/deep_research_strategy.md
+  └ L118:136 (18 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L476:492 (16 lines read)
+
+● Search (grep)
+  │ "latestJSONLDelta|priorReducedState|replay|full JSONL|delta|full state|Reducer contract"
+  │ (.opencode/skill/sk-deep-research/references/loop_protocol.md)
+  └ 4 lines found
+
+● Search (grep)
+  │ "latestJSONLDelta|priorReducedState|replay|full JSONL|delta|full state|Reducer contract"
+  │ (.opencode/skill/sk-deep-review/references/loop_protocol.md)
+  └ 13 lines found
+
+● Search (grep)
+  │ "step_create_config|deep-review-config.json|populate:|template:
+  │ .opencode/skill/sk-deep-review/assets/deep_review_config.json"
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml)
+  └ 19 lines found
+
+● Search (grep)
+  │ "step_create_config|deep-review-config.json|populate:|template:
+  │ .opencode/skill/sk-deep-review/assets/deep_review_config.json"
+  │ (.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml)
+  └ 19 lines found
+
+● Read mutation-coverage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs
+  └ L220:320 (72 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L220:340 (112 lines read)
+
+● Read benchmark-stability.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs
+  └ L220:340 (119 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L150:220 (71 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L214:234 (21 lines read)
+
+● Search (grep)
+  │ "full replay|delta replay|latestJSONLDelta|priorReducedState|reducer"
+  │ (.opencode/skill/sk-deep-research/references/loop_protocol.md)
+  └ 7 lines found
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L170:230 (60 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L229:280 (52 lines read)
+
+● Search (grep)
+  │ "repeatability_report|repeatability_output_path|benchmark_output_path|score_output_path|integrat
+  │ ion_report_summary|candidate_id"
+  │ (.opencode/command/improve/assets/improve_improve-agent_confirm.yaml)
+  └ 5 lines found
+
+● Search (grep)
+  │ "repeatability_report|repeatability_output_path|benchmark_output_path|score_output_path|candidat
+  │ e_id" (.opencode/command/improve/assets/improve_improve-agent_auto.yaml)
+  └ 3 lines found
+
+● Read run-benchmark.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+  └ L1:260 (260 lines read)
+
+● Search (grep)
+  │ "benchmark_output_path|repeatability_output_path" in **/*.{md,yaml,yml,cjs,js,json,jsonc}
+  │ (.opencode/skill/sk-improve-agent)
+  └ No matches found
+
+I’ve got the exact deltas and I’m applying them as a narrow contract patch: one blocked-stop field, one shared review-dimension normalization path, one completed-session halt, one improve-agent session-boundary guard plus explicit analysis steps, and the requested doc/config trims.
+
+✗ Edit
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  │ Edit .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  │ Edit .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  │ Edit .opencode/agent/deep-review.md
+  │ Edit .opencode/agent/deep-research.md
+  │ Edit .opencode/skill/sk-deep-research/assets/deep_research_config.json
+  │ Edit .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+  │ Edit .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  │ Edit .opencode/skill/sk-deep-review/references/convergence.md
+  │ Edit .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ Edit .opencode/skill/sk-deep-review/references/loop_protocol.md
+
+The patch hit a context mismatch in the review YAMLs, so I’m re-reading the exact local blocks and then applying the same changes in smaller hunks to avoid touching unrelated text.
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L282:315 (34 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L290:322 (32 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L44:66 (23 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L46:68 (23 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L230:281 (51 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L238:289 (51 lines read)
+
+● Edit
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ Edit .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  │ Edit .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  │ Edit .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  │ Edit .opencode/agent/deep-review.md
+  │ Edit .opencode/agent/deep-research.md
+  │ Edit .opencode/skill/sk-deep-research/assets/deep_research_config.json
+  │ Edit .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+  │ Edit .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  │ Edit .opencode/skill/sk-deep-review/references/convergence.md
+  │ Edit .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ Edit .opencode/skill/sk-deep-review/references/loop_protocol.md
+
+The contract edits are in. I’m doing a quick pass over the changed snippets now for structural issues — especially the new improve-agent gate and inline node commands — before I run the scoped verifier.
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L118:214 (97 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L112:200 (89 lines read)
+
+● Read deep-review.md
+  │ .opencode/agent/deep-review.md
+  └ L146:212 (67 lines read)
+
+● Read convergence.md
+  │ .opencode/skill/sk-deep-review/references/convergence.md
+  └ L58:96 (38 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L222:230 (9 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L347:408 (61 lines read)
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ L1:110 (110 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L230:279 (50 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L483:488 (5 lines read)
+
+● Read spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  └ L488:494 (7 lines read)
+
+● Read spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  └ L521:527 (7 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L150:156 (7 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-review/references/loop_protocol.md
+  └ L420:428 (9 lines read)
+
+The edits are in place. I’m running the repo’s scoped alignment check plus a diff sanity pass now to catch any format or contract drift in the changed `.opencode` surfaces.
+
+● Todo started inspect-contracts
+
+● Check diff formatting and stat (shell)
+  │ git --no-pager diff --check --
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml …
+  └ 38 lines...
+
+● Run alignment verifier on .opencode (shell)
+  │ python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode
+  └ 15 lines...
+
+The broad `.opencode` verifier tripped on existing repo-wide findings, not just this patch. I’m narrowing it to the touched files/directories now so I can confirm the actual changed surface cleanly.
+
+● Search (grep)
+  │ "deep-review_auto|deep-review_confirm|deep-research_auto|deep-research_confirm|improve_improve-a
+  │ gent_auto|improve_improve-agent_confirm|\.opencode/agent/deep-review\.md|\.opencode/agent/deep-r
+  │ esearch\.md|deep_research_config\.json|review_mode_contract\.yaml|improvement_config\.json|refer
+  │ ences/convergence\.md|references/loop_protocol\.md"
+  │ (/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775996175114-lk3itv.txt)
+  └ No matches found
+
+● Run narrower alignment checks (shell)
+  │ python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root
+  │ .opencode/agent && python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py
+  │ --root .opencode/command/improve/assets && python3
+  │ .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root
+  │ .opencode/command/spec_kit/assets && python3 …
+  └ 59 lines...
+
+The scope-specific checks are clean. I’m doing one last structural parse on the edited YAML/JSON files so the contract changes are validated by actual parsers, not just text diffing.
+
+● Todo started patch-files
+
+● Parse YAML JSON and inspect diff (shell)
+  │ ruby -e 'require "yaml";
+  │ files=%w[.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml …
+  └ 28 lines...
+
+The parser pass is still running, most likely stuck behind the long diff output rather than the parsers themselves. I’m reading the remaining output directly and then I’ll wrap this up.
+
+● Read shell output Waiting up to 10 seconds for command output
+  └ 1 line...
+
+That shell looks hung rather than failing meaningfully, so I’m stopping it and rerunning the structural checks in a smaller form.
+
+● Stop shell
+  └ 1 line...
+
+● Parse edited YAML and JSON files (shell)
+  │ ruby -e 'require "yaml";
+  │ files=%w[.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml …
+  └ 23 lines...
+
+I found one real issue: `review_mode_contract.yaml` has an invalid YAML scalar around the lifecycle-parity description. I’m fixing that syntax only, then re-running the parse.
+
+● Read review_mode_contract.yaml
+  │ .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+  └ L460:490 (28 lines read)
+
+● Todo started patch-files
+
+● Edit
+  └ Edit .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml
+
+The issue was just an unquoted colon in a description field. I’ve patched that and I’m re-running the structural parse now.
+
+● Todo started patch-files
+
+● Re-parse edited YAML JSON and diff check (shell)
+  │ ruby -e 'require "yaml";
+  │ files=%w[.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml …
+  └ 31 lines...
+
+Everything parses cleanly now. I’m doing one quick diffstat/status pass so the final handoff reflects the exact edited surface.
+
+✔ Todo completed verify-scope
+
+● Show diffstat and status for edited files (shell)
+  │ git --no-pager diff --stat -- .opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+  │ .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml …
+  └ 52 lines...
+
+Done. I applied the requested targeted updates across the 14 `.opencode` workflow, agent, config, and reference files, including:
+
+1. **Deep-review workflows**: added `graphBlockerDetail` to `blocked_stop` and normalized `reviewDimensions` once during init.
+2. **Deep-research workflows**: removed direct `completed-session -> synthesize` routing.
+3. **Improve-agent workflows**: added the session-boundary gate, explicit loop analysis steps, and passed the real agent identifier into `scan-integration.cjs`.
+4. **Docs/configs**: aligned the deep-review/deep-research agent docs, removed dormant lifecycle fields/modes from the requested config files, and corrected the reference docs to match actual reducer/runtime behavior.
+
+I also caught and fixed one real syntax issue in `review_mode_contract.yaml` while validating the patch. The edited YAML and JSON files now parse cleanly, and the changed-file diff is limited to the requested surface.
+
+
+Changes   +114 -99
+Requests  1 Premium (14m 37s)
+Tokens    ↑ 4.3m • ↓ 46.4k • 4.1m (cached) • 14.8k (reasoning)
+--- Batch 4-workflows-and-docs done | Sun Apr 12 14:20:05 CEST 2026 ---
+
+--- Batch 5-tests | Sun Apr 12 14:20:05 CEST 2026 ---
+● skill(sk-code-opencode)
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/scripts/tests/*coverage-graph*.vitest.ts"
+  └ 6 files found
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts"
+  └ 1 file found
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts"
+  └ 1 file found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/tests/*.{vitest.ts,ts}"
+  └ 5 files found
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-*.vitest.ts"
+  └ 2 files found
+
+● Search (glob)
+  │ "specs/**/*"
+  └ No matches found
+
+I’ve got the target suites; next I’m pulling the real sources and nearby test patterns so I can make the smallest changes that fix the quality issues cleanly.
+
+● Read coverage-graph-integration.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  └ 1 line read
+
+● Read coverage-graph-stress.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts
+  └ 412 lines read
+
+● Read session-isolation.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  └ 333 lines read
+
+● Read optimizer-replay-runner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ 270 lines read
+
+● Read benchmark-stability.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ 268 lines read
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ 211 lines read
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/package.json
+  └ 51 lines read
+
+✗ Read package.json
+  │ .opencode/skill/sk-improve-agent/package.json
+  └ Path does not exist
+
+● Search (glob)
+  │ ".opencode/specs/**/*session*isolation*"
+  └ No matches found
+
+● Search (glob)
+  │ ".opencode/specs/**/*coverage*graph*"
+  └ No matches found
+
+● memory_context (MCP: spec_kit_memory) · input: "Fix test quality issues in system-spec-kit and sk…
+  └ {"summary":"Context retrieved via focused mode (focused strategy) [truncated:...
+
+I found one suite that already has low-level collision coverage; I’m now tracing the production contracts and handlers so the replacements assert real behavior instead of just structure.
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/scripts/package.json
+  └ 34 lines read
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/mcp_server/package.json
+  └ 67 lines read
+
+✗ Read package.json
+  │ .opencode/skill/sk-improve-agent/scripts/package.json
+  └ Path does not exist
+
+● Read coverage-graph-integration.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  └ L1:260 (260 lines read)
+
+● Read replay-runner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs
+  └ L1:260 (260 lines read)
+
+● Search (grep)
+  │ "contract|type .*Convergence|CoverageGraph|contradiction|scanContradictions|reportContradictions
+  │ |session_ended|session_end|stabilityWarning|DEFAULT_WARNING_THRESHOLD|evaluateConvergence" in
+  │ *.{ts,js,cjs,mjs} (.opencode/skill)
+  └ 7 lines found
+
+● Read benchmark-stability.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs
+  └ L1:260 (260 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:260 (260 lines read)
+
+I’ve got the main patterns now. Next I’m reading the production contract/constants and the handler-level read paths so I can replace the weak assertions with behavior tied to real source of truth.
+
+● Read coverage-graph-integration.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  └ L261:520 (220 lines read)
+
+● Read coverage-graph-db.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts
+  └ L1:260 (260 lines read)
+
+● Read query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts
+  └ L1:260 (175 lines read)
+
+● Read status.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/status.ts
+  └ L1:260 (101 lines read)
+
+● Read convergence.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts
+  └ L1:260 (260 lines read)
+
+● Read coverage-graph-contradictions.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-contradictions.cjs
+  └ L1:260 (202 lines read)
+
+● Read benchmark-stability.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs
+  └ L261:420 (78 lines read)
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/package.json"
+  └ No matches found
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/*"
+  └ 3 files found
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/mcp_server/tests/archive/*"
+  └ No matches found
+
+● Search (grep)
+  │ "scanContradictions\(|reportContradictions\(|contradictionDensity\(|sessionId" in *.vitest.ts
+  │ (.opencode/skill/system-spec-kit/scripts/tests)
+  └ 7 lines found
+
+● Search (grep)
+  │ "session_end|session_ended|benchmarkPlateau|generateWeightRecommendations|stabilityWarning" in
+  │ *.vitest.ts (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 15 lines found
+
+● Read sample-config-baseline.json
+  │ .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-config-baselin
+  │ e.json
+  └ 7 lines read
+
+● Read sample-config-candidate.json
+  │ .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-config-candida
+  │ te.json
+  └ 7 lines read
+
+● Read sample-040-corpus.jsonl
+  │ .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jso
+  │ nl
+  └ L1:120 (6 lines read)
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts"
+  └ 8 files found
+
+I’ve confirmed the shadow contract is still hard-coded in the integration suite, and one “TS schema” check is literally `const documented = true`. I’m replacing those with imports and real DB-backed assertions next.
+
+● Search (grep)
+  │ "export function (upsertNode|upsertEdge|getNode|getNodes|getEdge|getEdges|getEdgesFrom|createSna
+  │ pshot|closeDb)|function clampWeight|MIN_WEIGHT|MAX_WEIGHT|throw new Error|return false"
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts)
+  └ 19 lines found
+
+● Read coverage-graph-db.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts
+  └ L260:620 (361 lines read)
+
+● Read coverage-graph-query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+  └ L1:320 (320 lines read)
+
+● Read coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  └ L1:320 (319 lines read)
+
+● Read coverage-graph-core.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts
+  └ L1:260 (257 lines read)
+
+● Read coverage-graph-convergence.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-convergence.vitest.ts
+  └ L1:260 (260 lines read)
+
+● Read coverage-graph-cross-layer.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts
+  └ L1:260 (260 lines read)
+
+● Search (grep)
+  │ "sessionId|metadata|insertEdge\(|createGraph\(|normalizeSessionId|getEdges\("
+  │ (.opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs)
+  └ 21 lines found
+
+● Read coverage-graph-core.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+  └ L1:320 (319 lines read)
+
+● Run baseline spec-kit scripts tests (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && npm run typecheck && npm run test --workspace=@spec-kit/scripts -- --runInBand
+  └ 32 lines...
+
+I’m at the point of making edits. Before I patch, I’m checking the two suites headed for archive and the sk-improve-agent test runner layout so the follow-up validation uses the right commands.
+
+● Read coverage-graph-db.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-db.vitest.ts
+  └ L1:80 (79 lines read)
+
+● Read coverage-graph-tools.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-tools.vitest.ts
+  └ L1:80 (80 lines read)
+
+● List directory .opencode/skill/sk-improve-agent
+  └ 7 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/*vitest*.{ts,js,mjs,cjs}"
+  └ 5 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/package.json"
+  └ No matches found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/vitest.config.*"
+  └ No matches found
+
+● Read vitest.config.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts
+  └ L1:220 (38 lines read)
+
+● Search (grep)
+  │ "archive" in *.{ts,js,cjs,mjs,json} (.opencode/skill/system-spec-kit)
+  └ 7 lines found
+
+● Edit
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-stress.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts
+  └ Create .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-contradictions.vitest.ts
+
+● Edit
+  │ Edit .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ Edit .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+
+The main edits are in. I’m doing one read-through on the patched sections before I run the focused test passes, mainly to catch type/import mismatches in the new DB-backed assertions and the session-collision handler coverage.

@@ -25,17 +25,233 @@ Operators invoke `generate-context.js --json` with controlled payloads and inspe
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 155 | Post-save quality review | JSON mode save with all fields populated correctly | `As a memory-quality validation operator, validate JSON mode save with all fields populated correctly against sessionSummary. Verify pOST-SAVE QUALITY REVIEW -- PASSED with 0 issues. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose full JSON payload: `sessionSummary` = descriptive title, `triggerPhrases` = keyword array, `keyDecisions` = 2+ items, `importanceTier` = "important", `contextType` = "implementation" 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 3) Capture stdout 4) Locate `POST-SAVE QUALITY REVIEW` block 5) Assert status = PASSED and issues = 0 | `POST-SAVE QUALITY REVIEW -- PASSED` with 0 issues | CLI stdout REVIEW block | PASS if REVIEW shows PASSED and 0 issues; FAIL if any issue is reported for a fully valid payload | Check `scripts/core/post-save-review.ts` for false-positive conditions |
-| 155 | Post-save quality review | JSON mode save with generic title | `As a memory-quality validation operator, validate JSON mode save with generic title against node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>. Verify [HIGH] severity issue for title; fix instruction references sessionSummary. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose payload that would yield a generic title 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 3) Capture stdout 4) Locate `POST-SAVE QUALITY REVIEW` block 5) Assert a `[HIGH]` issue is reported for the title field 6) Assert a fix instruction is present | `[HIGH]` severity issue for title; fix instruction references `sessionSummary` | CLI stdout REVIEW block | PASS if HIGH title issue reported with fix; FAIL if no issue or wrong severity | Inspect title-quality check in `scripts/core/post-save-review.ts` and the generic-title detection list |
-| 155 | Post-save quality review | JSON mode save with path fragment triggers | `As a memory-quality validation operator, validate JSON mode save with path fragment triggers against triggerPhrases. Verify [HIGH] severity issue for trigger_phrases; fix instruction present. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose payload with `triggerPhrases` = ["auth refactor"] but arrange for heuristic override 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 3) Capture stdout 4) Assert a `[HIGH]` issue for `trigger_phrases` containing path fragments | `[HIGH]` severity issue for trigger_phrases; fix instruction present | CLI stdout REVIEW block | PASS if HIGH trigger_phrases issue reported; FAIL if path fragments pass undetected | Check path-fragment detection regex in `scripts/core/post-save-review.ts` |
-| 155 | Post-save quality review | JSON mode save with mismatched importance_tier | `As a memory-quality validation operator, validate JSON mode save with mismatched importance_tier against importanceTier. Verify [MEDIUM] severity issue for importance_tier; expected vs actual values shown. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose payload with `importanceTier` = "important" 2) Force or simulate a pipeline override to "normal" 3) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 4) Capture stdout 5) Assert a `[MEDIUM]` issue for `importance_tier` | `[MEDIUM]` severity issue for importance_tier; expected vs actual values shown | CLI stdout REVIEW block | PASS if MEDIUM importance_tier issue reported; FAIL if mismatch goes unreported | Inspect importance_tier comparison in `scripts/core/post-save-review.ts` and input-normalizer passthrough |
-| 155 | Post-save quality review | JSON mode save with 0 decisions when payload has keyDecisions | `As a memory-quality validation operator, validate JSON mode save with 0 decisions when payload has keyDecisions against keyDecisions. Verify [MEDIUM] severity issue for decision_count; notes expected count from payload. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose payload with `keyDecisions` = ["Decision A", "Decision B"] 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>` 3) Capture stdout 4) Assert a `[MEDIUM]` issue for `decision_count` = 0 despite non-empty payload | `[MEDIUM]` severity issue for decision_count; notes expected count from payload | CLI stdout REVIEW block | PASS if MEDIUM decision_count issue reported; FAIL if zero count is not detected | Check decision counting in `scripts/extractors/collect-session-data.ts` and the metadata-block parser in `scripts/core/post-save-review.ts` |
-| 155 | Post-save quality review | AI follows fix instructions to resolve HIGH issues | `As a memory-quality validation operator, validate AI follows fix instructions to resolve HIGH issues against [HIGH]. Verify frontmatter fields match payload values after patch; no remaining mismatches for patched fields. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Perform a save that produces at least one `[HIGH]` issue (e.g., title or trigger_phrases) 2) Read the emitted fix instructions from the REVIEW block 3) Apply the patch to the rendered memory file frontmatter 4) Re-read the file 5) Assert patched field matches the payload value | Frontmatter fields match payload values after patch; no remaining mismatches for patched fields | Before/after frontmatter diff | PASS if all patched fields match payload; FAIL if any patched field still differs | Verify fix instruction precision — instructions must name the exact field and target value |
-| 155-F | Post-save quality review | Score penalty advisory logging | `As a memory-quality validation operator, validate Score penalty advisory logging against the documented validation surface. Verify "Post-save review: quality_score penalty" present in stdout with negative value. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Compose payload that produces a generic title (triggers HIGH issue) 2) Run generate-context.js --json 3) Capture stdout 4) Locate "Post-save review: quality_score penalty" log line 5) Assert penalty value is negative (e.g., -0.10) | "Post-save review: quality_score penalty" present in stdout with negative value | CLI stdout | PASS if penalty log line present with correct value; FAIL if no penalty log despite HIGH issue | Check computeReviewScorePenalty in post-save-review.ts and advisory logging in workflow.ts |
+### Prompt
+
+```
+As a memory-quality validation operator, validate JSON mode save with all fields populated correctly against sessionSummary. Verify pOST-SAVE QUALITY REVIEW -- PASSED with 0 issues. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose full JSON payload: `sessionSummary` = descriptive title, `triggerPhrases` = keyword array, `keyDecisions` = 2+ items, `importanceTier` = "important", `contextType` = "implementation"
+2. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>`
+3. Capture stdout
+4. Locate `POST-SAVE QUALITY REVIEW` block
+5. Assert status = PASSED and issues = 0
+
+### Expected
+
+`POST-SAVE QUALITY REVIEW -- PASSED` with 0 issues
+
+### Evidence
+
+CLI stdout REVIEW block
+
+### Pass / Fail
+
+- **Pass**: REVIEW shows PASSED and 0 issues
+- **Fail**: any issue is reported for a fully valid payload
+
+### Failure Triage
+
+Check `scripts/core/post-save-review.ts` for false-positive conditions
 
 ---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate JSON mode save with generic title against node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>. Verify [HIGH] severity issue for title; fix instruction references sessionSummary. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose payload that would yield a generic title
+2. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>`
+3. Capture stdout
+4. Locate `POST-SAVE QUALITY REVIEW` block
+5. Assert a `[HIGH]` issue is reported for the title field
+6. Assert a fix instruction is present
+
+### Expected
+
+[HIGH]` severity issue for title; fix instruction references `sessionSummary
+
+### Evidence
+
+CLI stdout REVIEW block
+
+### Pass / Fail
+
+- **Pass**: HIGH title issue reported with fix
+- **Fail**: no issue or wrong severity
+
+### Failure Triage
+
+Inspect title-quality check in `scripts/core/post-save-review.ts` and the generic-title detection list
+
+---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate JSON mode save with path fragment triggers against triggerPhrases. Verify [HIGH] severity issue for trigger_phrases; fix instruction present. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose payload with `triggerPhrases` = ["auth refactor"] but arrange for heuristic override
+2. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>`
+3. Capture stdout
+4. Assert a `[HIGH]` issue for `trigger_phrases` containing path fragments
+
+### Expected
+
+`[HIGH]` severity issue for trigger_phrases; fix instruction present
+
+### Evidence
+
+CLI stdout REVIEW block
+
+### Pass / Fail
+
+- **Pass**: HIGH trigger_phrases issue reported
+- **Fail**: path fragments pass undetected
+
+### Failure Triage
+
+Check path-fragment detection regex in `scripts/core/post-save-review.ts`
+
+---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate JSON mode save with mismatched importance_tier against importanceTier. Verify [MEDIUM] severity issue for importance_tier; expected vs actual values shown. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose payload with `importanceTier` = "important"
+2. Force or simulate a pipeline override to "normal"
+3. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>`
+4. Capture stdout
+5. Assert a `[MEDIUM]` issue for `importance_tier`
+
+### Expected
+
+`[MEDIUM]` severity issue for importance_tier; expected vs actual values shown
+
+### Evidence
+
+CLI stdout REVIEW block
+
+### Pass / Fail
+
+- **Pass**: MEDIUM importance_tier issue reported
+- **Fail**: mismatch goes unreported
+
+### Failure Triage
+
+Inspect importance_tier comparison in `scripts/core/post-save-review.ts` and input-normalizer passthrough
+
+---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate JSON mode save with 0 decisions when payload has keyDecisions against keyDecisions. Verify [MEDIUM] severity issue for decision_count; notes expected count from payload. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose payload with `keyDecisions` = ["Decision A", "Decision B"]
+2. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>' <spec-folder>`
+3. Capture stdout
+4. Assert a `[MEDIUM]` issue for `decision_count` = 0 despite non-empty payload
+
+### Expected
+
+`[MEDIUM]` severity issue for decision_count; notes expected count from payload
+
+### Evidence
+
+CLI stdout REVIEW block
+
+### Pass / Fail
+
+- **Pass**: MEDIUM decision_count issue reported
+- **Fail**: zero count is not detected
+
+### Failure Triage
+
+Check decision counting in `scripts/extractors/collect-session-data.ts` and the metadata-block parser in `scripts/core/post-save-review.ts`
+
+---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate AI follows fix instructions to resolve HIGH issues against [HIGH]. Verify frontmatter fields match payload values after patch; no remaining mismatches for patched fields. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Perform a save that produces at least one `[HIGH]` issue (e.g., title or trigger_phrases)
+2. Read the emitted fix instructions from the REVIEW block
+3. Apply the patch to the rendered memory file frontmatter
+4. Re-read the file
+5. Assert patched field matches the payload value
+
+### Expected
+
+Frontmatter fields match payload values after patch; no remaining mismatches for patched fields
+
+### Evidence
+
+Before/after frontmatter diff
+
+### Pass / Fail
+
+- **Pass**: all patched fields match payload
+- **Fail**: any patched field still differs
+
+### Failure Triage
+
+Verify fix instruction precision — instructions must name the exact field and target value
+
+---
+
+### Prompt
+
+```
+As a memory-quality validation operator, validate Score penalty advisory logging against the documented validation surface. Verify "Post-save review: quality_score penalty" present in stdout with negative value. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Compose payload that produces a generic title (triggers HIGH issue)
+2. Run generate-context.js --json
+3. Capture stdout
+4. Locate "Post-save review: quality_score penalty" log line
+5. Assert penalty value is negative (e.g., -0.10)
+
+### Expected
+
+"Post-save review: quality_score penalty" present in stdout with negative value
+
+### Evidence
+
+CLI stdout
+
+### Pass / Fail
+
+- **Pass**: penalty log line present with correct value
+- **Fail**: no penalty log despite HIGH issue
+
+### Failure Triage
+
+Check computeReviewScorePenalty in post-save-review.ts and advisory logging in workflow.ts
 
 ## 4. REFERENCES
 

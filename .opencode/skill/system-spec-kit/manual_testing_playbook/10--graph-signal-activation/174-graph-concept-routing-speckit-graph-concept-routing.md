@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `174` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 174 | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | Verify query-time alias matching activates graph channel for matched concepts | `As a graph-signal validation operator, verify query-time alias matching activates graph channel for matched concepts against SPECKIT_GRAPH_CONCEPT_ROUTING. Verify isGraphConceptRoutingEnabled() returns true; noun phrases extracted from query; alias table consulted in SQLite; canonical concept names returned; graph channel activated for matched concepts. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_GRAPH_CONCEPT_ROUTING` is unset or `true` 2) `memory_search({ query: "how does memory decay work" })` 3) Inspect entity-linker output for noun phrase extraction 4) Verify alias table matching returns canonical concepts 5) Confirm graph channel activated for matched concepts in stage1-candidate-gen | isGraphConceptRoutingEnabled() returns true; noun phrases extracted from query; alias table consulted in SQLite; canonical concept names returned; graph channel activated for matched concepts | Entity linker output + concept matches + graph channel activation log + test transcript | PASS if indirect concept references activate graph channel via noun phrase extraction and alias matching; FAIL if noun phrases not extracted, alias table skipped, or graph channel not activated | Verify isGraphConceptRoutingEnabled() → Confirm flag is not forced off → Check entity-linker.ts noun phrase extraction → Inspect alias table in SQLite → Verify stage1-candidate-gen graph channel activation logic |
+### Prompt
 
----
+```
+As a graph-signal validation operator, verify query-time alias matching activates graph channel for matched concepts against SPECKIT_GRAPH_CONCEPT_ROUTING. Verify isGraphConceptRoutingEnabled() returns true; noun phrases extracted from query; alias table consulted in SQLite; canonical concept names returned; graph channel activated for matched concepts. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_GRAPH_CONCEPT_ROUTING` is unset or `true`
+2. `memory_search({ query: "how does memory decay work" })`
+3. Inspect entity-linker output for noun phrase extraction
+4. Verify alias table matching returns canonical concepts
+5. Confirm graph channel activated for matched concepts in stage1-candidate-gen
+
+### Expected
+
+isGraphConceptRoutingEnabled() returns true; noun phrases extracted from query; alias table consulted in SQLite; canonical concept names returned; graph channel activated for matched concepts
+
+### Evidence
+
+Entity linker output + concept matches + graph channel activation log + test transcript
+
+### Pass / Fail
+
+- **Pass**: indirect concept references activate graph channel via noun phrase extraction and alias matching
+- **Fail**: noun phrases not extracted, alias table skipped, or graph channel not activated
+
+### Failure Triage
+
+Verify isGraphConceptRoutingEnabled() → Confirm flag is not forced off → Check entity-linker.ts noun phrase extraction → Inspect alias table in SQLite → Verify stage1-candidate-gen graph channel activation logic
 
 ## 4. REFERENCES
 

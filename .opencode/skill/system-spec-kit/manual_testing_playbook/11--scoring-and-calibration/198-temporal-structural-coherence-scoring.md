@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `198` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 198 | Temporal-structural coherence scoring | Confirm structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop | `As a scoring validation operator, confirm structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop against the documented validation surface. Verify structural checks evaluate content presence, minimum length, and headings; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; low-coherence variants are rejected or downgraded; retry attempts are immediate and bounded. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Prepare a well-formed control memory plus flawed variants covering short or heading-less content, future-dated completion claims, and broken causal-link metadata 2) Run the quality loop or ingest path for each case 3) Inspect the coherence score breakdown and quality-loop decision for control vs flawed variants 4) Confirm penalties apply to temporal and causal-link issues without inventing broader chronology logic 5) For an auto-fixable case, capture the retry cycle and confirm retries occur immediately with no backoff and stop within the configured limit | Structural checks evaluate content presence, minimum length, and headings; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; low-coherence variants are rejected or downgraded; retry attempts are immediate and bounded | Quality-loop transcript, coherence score breakdown, control-vs-variant results, and retry timing evidence | PASS: coherence penalties appear for the flawed variants, low-quality cases are blocked or downgraded, and retry timing stays immediate and bounded; FAIL: penalties are missing, weak content passes without explanation, or retries show unexpected backoff or unbounded looping | Verify control content satisfies structural checks -> Inspect coherence penalty branches for future-dated claims and causal links -> Confirm rejection threshold or downgrade path -> Check retry loop configuration and attempt count -> Ensure broader chronology analysis was not assumed in the verdict |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop against the documented validation surface. Verify structural checks evaluate content presence, minimum length, and headings; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; low-coherence variants are rejected or downgraded; retry attempts are immediate and bounded. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Prepare a well-formed control memory plus flawed variants covering short or heading-less content, future-dated completion claims, and broken causal-link metadata
+2. Run the quality loop or ingest path for each case
+3. Inspect the coherence score breakdown and quality-loop decision for control vs flawed variants
+4. Confirm penalties apply to temporal and causal-link issues without inventing broader chronology logic
+5. For an auto-fixable case, capture the retry cycle and confirm retries occur immediately with no backoff and stop within the configured limit
+
+### Expected
+
+Structural checks evaluate content presence, minimum length, and headings; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; low-coherence variants are rejected or downgraded; retry attempts are immediate and bounded
+
+### Evidence
+
+Quality-loop transcript, coherence score breakdown, control-vs-variant results, and retry timing evidence
+
+### Pass / Fail
+
+- **Pass**: coherence penalties appear for the flawed variants, low-quality cases are blocked or downgraded, and retry timing stays immediate and bounded
+- **Fail**: penalties are missing, weak content passes without explanation, or retries show unexpected backoff or unbounded looping
+
+### Failure Triage
+
+Verify control content satisfies structural checks -> Inspect coherence penalty branches for future-dated claims and causal links -> Confirm rejection threshold or downgrade path -> Check retry loop configuration and attempt count -> Ensure broader chronology analysis was not assumed in the verdict
 
 ## 4. REFERENCES
 

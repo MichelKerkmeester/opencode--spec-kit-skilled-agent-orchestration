@@ -14,7 +14,7 @@ This scenario validates that queries classified as `hybrid` by the query-intent 
 ## 2. CURRENT REALITY
 
 - Objective: Verify that hybrid queries (mixing structural keywords like "function", "calls" with semantic keywords like "explain", "examples") are classified as hybrid and append `graphContext` metadata to the normal `memory_context` response.
-- Prompt: `Send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context. Capture the evidence needed to prove: (1) query-intent classifier returns intent=hybrid, (2) routedBackend is hybrid or structural as appropriate, (3) graphContext is present when the graph has matching anchors, and (4) the base memory_context response still remains intact. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a manual-testing orchestrator, send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as hybrid, response contains queryIntentRouting, graphContext appears when graph seeds resolve, and the normal semantic response body remains present. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Intent classified as `hybrid`, response contains `queryIntentRouting`, `graphContext` appears when graph seeds resolve, and the normal semantic response body remains present
 - Pass/fail: PASS if hybrid routing is confirmed and graphContext is appended successfully; FAIL if graph augmentation is missing when expected or the response structure breaks
 

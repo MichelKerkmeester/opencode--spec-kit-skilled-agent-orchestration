@@ -6,16 +6,20 @@ category: "Runtime Truth"
 
 # Journal Wiring Boundary Coverage
 
-Validates that the `/improve:agent` autonomous workflow wires `improvement-journal.cjs` at every required boundary: `session_start`, per-iteration lifecycle checkpoints, and `session_end`.
+Validates that the `/improve:improve-agent` autonomous workflow wires `improvement-journal.cjs` at every required boundary: `session_start`, per-iteration lifecycle checkpoints, and `session_end`.
 
-Given: a fresh `/improve:agent` `:auto` session.
+Given: a fresh `/improve:improve-agent` `:auto` session.
 When: the operator runs the session end-to-end or inspects `.opencode/command/improve/assets/improve_improve-agent_auto.yaml`.
 Then: journal events appear in `improvement-journal.jsonl` for every boundary, the CLI example in `.opencode/command/improve/agent.md` executes as written against a temp target, and the frozen `STOP_REASONS` / `SESSION_OUTCOMES` enums match the helper validator.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the /improve:improve-agent autonomous workflow wires improvement-journal.cjs at every required boundary: session_start, per-iteration lifecycle checkpoints, and session_end against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :auto --spec-folder={spec} --iterations=2
+/improve:improve-agent ".opencode/agent/debug.md" :auto --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)
@@ -80,7 +84,7 @@ PY
 rm -rf "$TMP_SPEC"
 ```
 
-## Expected Signals
+## Expected
 
 - `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:
   - `session_start` before the first loop iteration

@@ -24,11 +24,32 @@ Operators validate the internal workflow layer through the regression suites tha
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 240 | Core Workflow Infrastructure | Confirm the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests | `As a tooling validation operator, confirm the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests against cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts. Verify all targeted Vitest suites pass with no failing assertions across weighting, review, scoring, authority, or workflow seams. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts` | All targeted Vitest suites pass with no failing assertions across weighting, review, scoring, authority, or workflow seams | Vitest transcript showing passing suite counts and file names | PASS if the targeted suites pass together without failures; FAIL if any shared workflow seam regresses | Inspect `scripts/core/memory-indexer.ts`, `post-save-review.ts`, `quality-scorer.ts`, `config.ts`, and workflow entrypoints if any targeted suite fails |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests against cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts. Verify all targeted Vitest suites pass with no failing assertions across weighting, review, scoring, authority, or workflow seams. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts`
+
+### Expected
+
+All targeted Vitest suites pass with no failing assertions across weighting, review, scoring, authority, or workflow seams
+
+### Evidence
+
+Vitest transcript showing passing suite counts and file names
+
+### Pass / Fail
+
+- **Pass**: the targeted suites pass together without failures
+- **Fail**: any shared workflow seam regresses
+
+### Failure Triage
+
+Inspect `scripts/core/memory-indexer.ts`, `post-save-review.ts`, `quality-scorer.ts`, `config.ts`, and workflow entrypoints if any targeted suite fails
 
 ## 4. REFERENCES
 

@@ -24,11 +24,34 @@ Operators create a Level 2 spec folder via the @speckit agent and verify that al
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 181 | Template Compliance Contract Enforcement | Verify Layer 1 + Layer 2 produce compliant spec documents on first generation | `As a tooling validation operator, verify Layer 1 + Layer 2 produce compliant spec documents on first generation against bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>. Verify all 5 Level 2 files pass validation; exit code 0; no missing anchors, no wrong headers, no structural violations. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create a Level 2 spec folder via @speckit agent for a test feature 2) `bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>` 3) Check exit code and capture stdout/stderr output | All 5 Level 2 files pass validation; exit code 0; no missing anchors, no wrong headers, no structural violations | validate.sh --strict stdout showing 0 errors + exit code 0 + per-file validation results | PASS if 0 errors on first generation across all 5 document types; FAIL if any file requires post-hoc correction to pass --strict | Inspect template definitions in `templates/`; verify @speckit agent contract loading in SKILL.md; check validate.sh rule set for false positives |
+### Prompt
 
----
+```
+As a tooling validation operator, verify Layer 1 + Layer 2 produce compliant spec documents on first generation against bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>. Verify all 5 Level 2 files pass validation; exit code 0; no missing anchors, no wrong headers, no structural violations. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create a Level 2 spec folder via @speckit agent for a test feature
+2. `bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>`
+3. Check exit code and capture stdout/stderr output
+
+### Expected
+
+All 5 Level 2 files pass validation; exit code 0; no missing anchors, no wrong headers, no structural violations
+
+### Evidence
+
+validate.sh --strict stdout showing 0 errors + exit code 0 + per-file validation results
+
+### Pass / Fail
+
+- **Pass**: 0 errors on first generation across all 5 document types
+- **Fail**: any file requires post-hoc correction to pass --strict
+
+### Failure Triage
+
+Inspect template definitions in `templates/`; verify @speckit agent contract loading in SKILL.md; check validate.sh rule set for false positives
 
 ## 4. REFERENCES
 

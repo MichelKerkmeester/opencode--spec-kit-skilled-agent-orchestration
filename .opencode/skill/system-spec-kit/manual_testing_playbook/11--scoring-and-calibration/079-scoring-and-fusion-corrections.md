@@ -25,11 +25,34 @@ Operators verify that the implementing symbols are present in the expected sourc
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 079 | Scoring and fusion corrections | Confirm phase-017 correction bundle plus T315 single-pass fusion | `Validate the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.` | 1) `rg -n "calculateFiveFactorScore|normalizeCompositeScores|computeInterferenceScoresBatch|bm25Search|applyIntentWeights|resolveEffectiveScore|withSyncedScoreAliases|syncScoreAliasesInPlace|const fusionLists = lists|keywordFusionResults|fuseResultsMulti\\(fusionLists\\)" .opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/scoring/interference-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`<br>2) `rg -n "getAdaptiveWeights|canonicalRrfId|fuseResultsCrossVariant" .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts .opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts`<br>3) `cd .opencode/skill/system-spec-kit/mcp_server && node ./node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/score-normalization.vitest.ts tests/hybrid-search.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/adaptive-fusion.vitest.ts tests/score-resolution-consistency.vitest.ts tests/interference.vitest.ts tests/intent-weighting.vitest.ts` | Source grep returns matches for all expected symbols, including the single-pass fusion anchors; Vitest reports all eight files passing and no `FAIL` lines; current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)` | Saved `rg` output showing each symbol in the expected implementation files plus the final Vitest summary | PASS if both `rg` commands return all expected symbols and the Vitest command exits 0 with zero failed files/tests. FAIL if any symbol is missing, any target file fails, or Vitest exits non-zero. | If a symbol is missing, inspect the corresponding implementation file listed in step 1 or 2. Use `mcp_server/lib/search/hybrid-search.ts` first when the missing anchor is `fusionLists`, `keywordFusionResults`, or `fuseResultsMulti(fusionLists)`. If Vitest fails, use the first failing file to localize the regression: `composite-scoring.vitest.ts` / `score-normalization.vitest.ts` for normalization math, `hybrid-search.vitest.ts` for BM25 scope handling and single-pass fusion wiring, `unit-rrf-fusion.vitest.ts` and `adaptive-fusion.vitest.ts` for fusion logic, `score-resolution-consistency.vitest.ts` for alias resolution, `interference.vitest.ts` for threshold wiring, and `intent-weighting.vitest.ts` for recency-aware intent weighting. |
+### Prompt
 
----
+```
+Validate the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.
+```
+
+### Commands
+
+1. `rg -n "calculateFiveFactorScore|normalizeCompositeScores|computeInterferenceScoresBatch|bm25Search|applyIntentWeights|resolveEffectiveScore|withSyncedScoreAliases|syncScoreAliasesInPlace|const fusionLists = lists|keywordFusionResults|fuseResultsMulti\\(fusionLists\\)" .opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/scoring/interference-scoring.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`
+2. `rg -n "getAdaptiveWeights|canonicalRrfId|fuseResultsCrossVariant" .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts .opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts`
+3. `cd .opencode/skill/system-spec-kit/mcp_server && node ./node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/score-normalization.vitest.ts tests/hybrid-search.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/adaptive-fusion.vitest.ts tests/score-resolution-consistency.vitest.ts tests/interference.vitest.ts tests/intent-weighting.vitest.ts`
+
+### Expected
+
+Source grep returns matches for all expected symbols, including the single-pass fusion anchors; Vitest reports all eight files passing and no `FAIL` lines; current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)`
+
+### Evidence
+
+Saved `rg` output showing each symbol in the expected implementation files plus the final Vitest summary
+
+### Pass / Fail
+
+- **Pass**: both `rg` commands return all expected symbols and the Vitest command exits 0 with zero failed files/tests
+- **Fail**: any symbol is missing, any target file fails, or Vitest exits non-zero.
+
+### Failure Triage
+
+If a symbol is missing, inspect the corresponding implementation file listed in step 1 or 2. Use `mcp_server/lib/search/hybrid-search.ts` first when the missing anchor is `fusionLists`, `keywordFusionResults`, or `fuseResultsMulti(fusionLists)`. If Vitest fails, use the first failing file to localize the regression: `composite-scoring.vitest.ts` / `score-normalization.vitest.ts` for normalization math, `hybrid-search.vitest.ts` for BM25 scope handling and single-pass fusion wiring, `unit-rrf-fusion.vitest.ts` and `adaptive-fusion.vitest.ts` for fusion logic, `score-resolution-consistency.vitest.ts` for alias resolution, `interference.vitest.ts` for threshold wiring, and `intent-weighting.vitest.ts` for recency-aware intent weighting.
 
 ## 4. REFERENCES
 

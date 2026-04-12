@@ -1,20 +1,14 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
-  "description": "Spec: 002 CodeSight 20-iteration research phase covering detector discipline, AST and regex provenance, MCP/cache behavior, profile-generation safety, scanner heuristics, and blast-radius analysis patterns for Public.",
+  "description": "Feature Specification: 002-codesight Research Phase",
   "keywords": [
-    "spec",
-    "002",
-    "codesight",
+    "feature",
+    "specification",
+    "002-codesight",
     "research",
-    "ast",
-    "detectors",
-    "profiles",
-    "blast-radius",
-    "mcp-cache",
-    "scanner-heuristics",
-    "memory-audit"
+    "phase"
   ],
-  "lastUpdated": "2026-04-08T08:55:00.000Z",
+  "lastUpdated": "2026-04-12T12:20:48.512Z",
   "specId": "002",
   "folderSlug": "codesight",
   "parentChain": [

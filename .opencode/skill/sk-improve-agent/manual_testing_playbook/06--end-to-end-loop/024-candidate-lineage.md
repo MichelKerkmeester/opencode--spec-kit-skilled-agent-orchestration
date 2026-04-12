@@ -8,13 +8,17 @@ category: "End-to-End Loop"
 
 Validates that the improvement loop maintains a candidate lineage graph that tracks the parent-child relationships between candidate proposals, including session ID, wave index, spawning mutation type, and parent node references.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the improvement loop maintains a candidate lineage graph that tracks the parent-child relationships between candidate proposals, including session ID, wave index, spawning mutation type, and parent node references against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Candidate lineage graph created with per-session node entries. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
 ```
 
-## Expected Signals
+## Expected
 
 - Candidate lineage graph created with per-session node entries
 - Each candidate node stores: session-id, wave-index (default 0 for single-wave), spawning mutation type, parent node reference

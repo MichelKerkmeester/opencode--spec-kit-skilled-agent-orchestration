@@ -1,13 +1,14 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
-  "description": "Spec: 004-graphify Research Phase (complete)",
+  "description": "Feature Specification: 004-graphify Research Phase",
   "keywords": [
-    "spec",
+    "feature",
+    "specification",
     "004-graphify",
     "research",
     "phase"
   ],
-  "lastUpdated": "2026-04-08T10:33:19+0200",
+  "lastUpdated": "2026-04-12T12:20:48.520Z",
   "specId": "004",
   "folderSlug": "graphify",
   "parentChain": [

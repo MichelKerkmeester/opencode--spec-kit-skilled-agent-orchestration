@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `158` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 158 | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) | Verify graph weight cap and community score capping | `As a graph-signal validation operator, verify graph weight cap and community score capping against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify applyGraphWeightCap() clamps to [0, 0.05]; applyCommunityScoring() caps at 0.03; shouldActivateLouvain() respects thresholds; calibrateGraphWeight() enforces N2a/N2b caps. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_GRAPH_CALIBRATION_PROFILE=true` 2) `memory_search({ query: "test calibration", mode: "deep" })` 3) Inspect Stage 2 graph weight contribution 4) `npx vitest run tests/graph-calibration.vitest.ts` | applyGraphWeightCap() clamps to [0, 0.05]; applyCommunityScoring() caps at 0.03; shouldActivateLouvain() respects thresholds; calibrateGraphWeight() enforces N2a/N2b caps | Test transcript with cap verification + scoring context before/after calibration | PASS if graph weight capped at 0.05, community score capped at 0.03, and Louvain thresholds enforced; FAIL if any score exceeds its cap or Louvain activates below threshold | Verify isGraphCalibrationEnabled() → Check loadCalibrationProfile() env overrides → Inspect GRAPH_WEIGHT_CAP constant (0.05) → Verify COMMUNITY_SCORE_CAP constant (0.03) → Check Louvain minDensity (0.3) and minSize (10) |
+### Prompt
 
----
+```
+As a graph-signal validation operator, verify graph weight cap and community score capping against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify applyGraphWeightCap() clamps to [0, 0.05]; applyCommunityScoring() caps at 0.03; shouldActivateLouvain() respects thresholds; calibrateGraphWeight() enforces N2a/N2b caps. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_GRAPH_CALIBRATION_PROFILE=true`
+2. `memory_search({ query: "test calibration", mode: "deep" })`
+3. Inspect Stage 2 graph weight contribution
+4. `npx vitest run tests/graph-calibration.vitest.ts`
+
+### Expected
+
+applyGraphWeightCap() clamps to [0, 0.05]; applyCommunityScoring() caps at 0.03; shouldActivateLouvain() respects thresholds; calibrateGraphWeight() enforces N2a/N2b caps
+
+### Evidence
+
+Test transcript with cap verification + scoring context before/after calibration
+
+### Pass / Fail
+
+- **Pass**: graph weight capped at 0.05, community score capped at 0.03, and Louvain thresholds enforced
+- **Fail**: any score exceeds its cap or Louvain activates below threshold
+
+### Failure Triage
+
+Verify isGraphCalibrationEnabled() → Check loadCalibrationProfile() env overrides → Inspect GRAPH_WEIGHT_CAP constant (0.05) → Verify COMMUNITY_SCORE_CAP constant (0.03) → Check Louvain minDensity (0.3) and minSize (10)
 
 ## 4. REFERENCES
 

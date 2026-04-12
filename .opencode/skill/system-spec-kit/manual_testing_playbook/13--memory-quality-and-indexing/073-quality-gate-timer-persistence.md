@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `073` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 073 | Quality gate timer persistence | Confirm restart persistence | `As a memory-quality validation operator, confirm restart persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) set activation timestamp 2) restart service 3) verify persisted timestamp | Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart | Pre-restart timestamp + post-restart timestamp comparison + quality gate status | PASS if activation timestamp persists across restart and quality gate honors the original timer | Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm restart persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. set activation timestamp
+2. restart service
+3. verify persisted timestamp
+
+### Expected
+
+Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart
+
+### Evidence
+
+Pre-restart timestamp + post-restart timestamp comparison + quality gate status
+
+### Pass / Fail
+
+- **Pass**: activation timestamp persists across restart and quality gate honors the original timer
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart
 
 ## 4. REFERENCES
 

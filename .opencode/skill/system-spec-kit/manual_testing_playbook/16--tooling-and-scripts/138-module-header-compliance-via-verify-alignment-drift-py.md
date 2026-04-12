@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `138` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 138 | MODULE: header compliance via verify_alignment_drift.py | Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings | `As a tooling validation operator, verify verify_alignment_drift.py returns 0 TS-MODULE-HEADER findings against cd .opencode/skill/system-spec-kit. Verify verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit` 2) `python3 ../sk-code-opencode/scripts/verify_alignment_drift.py --root .` 3) Grep output for `TS-MODULE-HEADER` findings 4) Verify 0 findings | verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings | Script output showing PASS verdict + finding count | PASS if 0 TS-MODULE-HEADER findings reported | Check for new .ts files without MODULE: header → Add 3-line header block → Re-run verifier |
+### Prompt
 
----
+```
+As a tooling validation operator, verify verify_alignment_drift.py returns 0 TS-MODULE-HEADER findings against cd .opencode/skill/system-spec-kit. Verify verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit`
+2. `python3 ../sk-code-opencode/scripts/verify_alignment_drift.py --root .`
+3. Grep output for `TS-MODULE-HEADER` findings
+4. Verify 0 findings
+
+### Expected
+
+verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
+
+### Evidence
+
+Script output showing PASS verdict + finding count
+
+### Pass / Fail
+
+- **Pass**: 0 TS-MODULE-HEADER findings reported
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check for new .ts files without MODULE: header → Add 3-line header block → Re-run verifier
 
 ## 4. REFERENCES
 

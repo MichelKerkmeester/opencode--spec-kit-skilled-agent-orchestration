@@ -25,7 +25,7 @@ This scenario validates Full index build for `CCC-002`. It focuses on Verify `cc
 Operators run the exact prompt and command sequence for `CCC-002` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify `ccc index` reports file count and chunk count
-- Prompt: `Build the full semantic index for this project. Capture the evidence needed to prove Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a manual-testing orchestrator, build the full semantic index for this project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Output contains numeric file and chunk counts (for example `Files:` and `Chunks:` or similar metric lines)
 - Pass/fail: PASS if output contains non-zero file count AND non-zero chunk count; FAIL if either count is zero or missing
 
@@ -36,7 +36,7 @@ Operators run the exact prompt and command sequence for `CCC-002` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CCC-002 | Full index build | Verify `ccc index` reports file count and chunk count | `Build the full semantic index for this project. Capture the evidence needed to prove Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: ccc index` -> 2. Capture output containing file count and chunk count | Output contains numeric file and chunk counts (for example `Files:` and `Chunks:` or similar metric lines) | Index build transcript with file/chunk counts highlighted | PASS if output contains non-zero file count AND non-zero chunk count; FAIL if either count is zero or missing | Check `.cocoindex_code/settings.yml` include_patterns; verify project has indexable source files; check daemon connectivity |
+| CCC-002 | Full index build | Verify `ccc index` reports file count and chunk count | `As a manual-testing orchestrator, build the full semantic index for this project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: ccc index` -> 2. Capture output containing file count and chunk count | Output contains numeric file and chunk counts (for example `Files:` and `Chunks:` or similar metric lines) | Index build transcript with file/chunk counts highlighted | PASS if output contains non-zero file count AND non-zero chunk count; FAIL if either count is zero or missing | Check `.cocoindex_code/settings.yml` include_patterns; verify project has indexable source files; check daemon connectivity |
 
 
 ---

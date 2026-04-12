@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `167` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 167 | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) | Verify quick profile reduced response shape | `As a runtime-hook validation operator, verify quick profile reduced response shape against SPECKIT_RESPONSE_PROFILE_V1=true. Verify quick: topResult + oneLineWhy + omittedCount + tokenReduction; research: results + evidenceDigest + followUps; resume: state + nextSteps + blockers; full response when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_RESPONSE_PROFILE_V1=true` 2) `memory_search({ query: "test profiles", profile: "quick" })` 3) Verify QuickProfile shape 4) Re-run with profile=research, verify ResearchProfile 5) Re-run with profile=resume, verify ResumeProfile | quick: topResult + oneLineWhy + omittedCount + tokenReduction; research: results + evidenceDigest + followUps; resume: state + nextSteps + blockers; full response when flag OFF | Response JSON per profile + token savings calculation | PASS if each profile shape correct and full response when flag OFF; FAIL if shape fields missing or token savings absent | Verify SPECKIT_RESPONSE_PROFILE_V1 env → Inspect profile-formatters.ts profile routing → Check estimateTokens() → Verify QuickProfile.tokenReduction.savingsPercent → Check fallback for unknown profile names |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, verify quick profile reduced response shape against SPECKIT_RESPONSE_PROFILE_V1=true. Verify quick: topResult + oneLineWhy + omittedCount + tokenReduction; research: results + evidenceDigest + followUps; resume: state + nextSteps + blockers; full response when flag OFF. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_RESPONSE_PROFILE_V1=true`
+2. `memory_search({ query: "test profiles", profile: "quick" })`
+3. Verify QuickProfile shape
+4. Re-run with profile=research, verify ResearchProfile
+5. Re-run with profile=resume, verify ResumeProfile
+
+### Expected
+
+quick: topResult + oneLineWhy + omittedCount + tokenReduction; research: results + evidenceDigest + followUps; resume: state + nextSteps + blockers; full response when flag OFF
+
+### Evidence
+
+Response JSON per profile + token savings calculation
+
+### Pass / Fail
+
+- **Pass**: each profile shape correct and full response when flag OFF
+- **Fail**: shape fields missing or token savings absent
+
+### Failure Triage
+
+Verify SPECKIT_RESPONSE_PROFILE_V1 env → Inspect profile-formatters.ts profile routing → Check estimateTokens() → Verify QuickProfile.tokenReduction.savingsPercent → Check fallback for unknown profile names
 
 ## 4. REFERENCES
 

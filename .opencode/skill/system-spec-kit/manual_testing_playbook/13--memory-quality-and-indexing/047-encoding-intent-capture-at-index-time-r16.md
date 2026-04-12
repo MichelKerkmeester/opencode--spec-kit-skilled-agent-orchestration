@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `047` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 047 | Encoding-intent capture at index time (R16) | Confirm persisted intent labels | `As a memory-quality validation operator, confirm persisted intent labels against the documented validation surface. Verify intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save doc/code/structured examples 2) inspect metadata 3) verify read-only intent field | Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels | Metadata output showing intent labels per content type + read-only verification | PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save | Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm persisted intent labels against the documented validation surface. Verify intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save doc/code/structured examples
+2. inspect metadata
+3. verify read-only intent field
+
+### Expected
+
+Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels
+
+### Evidence
+
+Metadata output showing intent labels per content type + read-only verification
+
+### Pass / Fail
+
+- **Pass**: Correct intent label assigned per content type; labels immutable after save
+- **Fail**: Wrong label or label modified post-save
+
+### Failure Triage
+
+Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement
 
 ## 4. REFERENCES
 

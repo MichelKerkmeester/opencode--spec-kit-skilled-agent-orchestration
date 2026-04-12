@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `199` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 199 | Content-aware memory filename generation | Verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable | `As a memory-quality validation operator, verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable against the documented validation surface. Verify preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches slugToTitle() output; pathless batch inputs receive distinct synthetic keys. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Use one spec folder and perform two memory-save flows with clearly different task/session summaries 2) Confirm the saved filenames are different and reflect the task/session wording rather than repeating the folder slug 3) Open each saved file and verify the H1 heading matches the derived filename title 4) Exercise a batch/pathless save case with multiple inputs lacking file paths and verify each item gets a unique synthetic key and distinct slug decision 5) Capture one long task name and confirm the slug is lowercased, hyphenated, and truncated at a word boundary | Preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches `slugToTitle()` output; pathless batch inputs receive distinct synthetic keys | Saved filenames + opened file headings + batch/pathless save output + normalization example | PASS if same-folder saves produce distinct content-aware filenames and matching headings without falling back to the folder slug unnecessarily; FAIL if filenames collapse to the folder slug, headings diverge from filenames, or pathless batch items overwrite one another | Inspect `preferredMemoryTask` selection in workflow orchestration; verify session candidate precedence; review `generateContentSlug()` normalization/truncation rules; check pathless batch key assignment before slug generation |
+### Prompt
 
----
+```
+As a memory-quality validation operator, verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable against the documented validation surface. Verify preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches slugToTitle() output; pathless batch inputs receive distinct synthetic keys. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Use one spec folder and perform two memory-save flows with clearly different task/session summaries
+2. Confirm the saved filenames are different and reflect the task/session wording rather than repeating the folder slug
+3. Open each saved file and verify the H1 heading matches the derived filename title
+4. Exercise a batch/pathless save case with multiple inputs lacking file paths and verify each item gets a unique synthetic key and distinct slug decision
+5. Capture one long task name and confirm the slug is lowercased, hyphenated, and truncated at a word boundary
+
+### Expected
+
+Preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches `slugToTitle()` output; pathless batch inputs receive distinct synthetic keys
+
+### Evidence
+
+Saved filenames + opened file headings + batch/pathless save output + normalization example
+
+### Pass / Fail
+
+- **Pass**: same-folder saves produce distinct content-aware filenames and matching headings without falling back to the folder slug unnecessarily
+- **Fail**: filenames collapse to the folder slug, headings diverge from filenames, or pathless batch items overwrite one another
+
+### Failure Triage
+
+Inspect `preferredMemoryTask` selection in workflow orchestration; verify session candidate precedence; review `generateContentSlug()` normalization/truncation rules; check pathless batch key assignment before slug generation
 
 ## 4. REFERENCES
 

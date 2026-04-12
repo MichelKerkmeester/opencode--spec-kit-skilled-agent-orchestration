@@ -25,11 +25,33 @@ Operators run the exact prompt and command sequence for `EX-002` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-002 | Semantic and lexical search (memory_search) | Hybrid precision check | `As a retrieval validation operator, validate Hybrid precision check against memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 }). Verify relevant ranked results with hybrid signals. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 })` -> `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20, bypassCache:true })` | Relevant ranked results with hybrid signals | Search output snapshot | PASS if top results match query intent | Lower minState; disable cache and retry |
+### Prompt
 
----
+```
+As a retrieval validation operator, validate Hybrid precision check against memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 }). Verify relevant ranked results with hybrid signals. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 })
+2. memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20, bypassCache:true })
+
+### Expected
+
+Relevant ranked results with hybrid signals
+
+### Evidence
+
+Search output snapshot
+
+### Pass / Fail
+
+- **Pass**: top results match query intent
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Lower minState; disable cache and retry
 
 ## 4. REFERENCES
 

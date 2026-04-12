@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `054` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 054 | Learned relevance feedback (R11) | Confirm learned trigger safeguards | `As a pipeline validation operator, confirm learned trigger safeguards against the documented validation surface. Verify learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) submit helpful validation/queryId 2) inspect learned triggers 3) verify safeguards | Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning | Learned trigger list + safeguard enforcement evidence + queryId validation | PASS: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers; FAIL: Triggers learned without queryId or safeguard limits exceeded | Verify trigger learning pipeline → Check safeguard limits → Inspect queryId validation |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm learned trigger safeguards against the documented validation surface. Verify learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. submit helpful validation/queryId
+2. inspect learned triggers
+3. verify safeguards
+
+### Expected
+
+Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning
+
+### Evidence
+
+Learned trigger list + safeguard enforcement evidence + queryId validation
+
+### Pass / Fail
+
+- **Pass**: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers
+- **Fail**: Triggers learned without queryId or safeguard limits exceeded
+
+### Failure Triage
+
+Verify trigger learning pipeline → Check safeguard limits → Inspect queryId validation
 
 ## 4. REFERENCES
 

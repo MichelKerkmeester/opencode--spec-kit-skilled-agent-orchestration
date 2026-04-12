@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `187` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 187 | Quick search (memory_quick_search) | Verify `memory_quick_search` simplified query-only retrieval | `As a retrieval validation operator, verify memory_quick_search simplified query-only retrieval against memory_quick_search({ query: "authentication" }). Verify query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Call `memory_quick_search({ query: "authentication" })` with no optional parameters and verify results are returned 2) Call `memory_quick_search({ query: "authentication", specFolder: "specs/<known-spec>" })` and verify results are scoped to the specified folder 3) Call `memory_quick_search({ query: "authentication", limit: 3 })` and verify at most 3 results are returned 4) Call `memory_quick_search({ query: "authentication", tenantId: "tenant-1" })` and verify governed retrieval boundary is respected 5) Compare `memory_quick_search` results with `memory_context` results for the same query to confirm quick_search provides a simplified fast-path alternative | Query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately | Tool outputs for each call showing result count, specFolder scoping, limit adherence, and tenant filtering | PASS: Quick search returns relevant results, specFolder narrows scope, limit is respected, governed boundaries filter; FAIL: Quick search returns no results for a known query, specFolder is ignored, limit is exceeded, or governed boundaries do not filter | Verify `memory_quick_search` tool is listed in search.md allowed-tools → Check L2 layer routing → Confirm query parameter is required → Inspect optional parameter handling for specFolder, limit, tenantId, userId, agentId |
+### Prompt
 
----
+```
+As a retrieval validation operator, verify memory_quick_search simplified query-only retrieval against memory_quick_search({ query: "authentication" }). Verify query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_quick_search({ query: "authentication" })` with no optional parameters and verify results are returned
+2. Call `memory_quick_search({ query: "authentication", specFolder: "specs/<known-spec>" })` and verify results are scoped to the specified folder
+3. Call `memory_quick_search({ query: "authentication", limit: 3 })` and verify at most 3 results are returned
+4. Call `memory_quick_search({ query: "authentication", tenantId: "tenant-1" })` and verify governed retrieval boundary is respected
+5. Compare `memory_quick_search` results with `memory_context` results for the same query to confirm quick_search provides a simplified fast-path alternative
+
+### Expected
+
+Query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately
+
+### Evidence
+
+Tool outputs for each call showing result count, specFolder scoping, limit adherence, and tenant filtering
+
+### Pass / Fail
+
+- **Pass**: Quick search returns relevant results, specFolder narrows scope, limit is respected, governed boundaries filter
+- **Fail**: Quick search returns no results for a known query, specFolder is ignored, limit is exceeded, or governed boundaries do not filter
+
+### Failure Triage
+
+Verify `memory_quick_search` tool is listed in search.md allowed-tools → Check L2 layer routing → Confirm query parameter is required → Inspect optional parameter handling for specFolder, limit, tenantId, userId, agentId
 
 ## 4. REFERENCES
 

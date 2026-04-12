@@ -18,9 +18,7 @@
     "allowedModes": [
       "new",
       "resume",
-      "restart",
-      "fork",
-      "completed-continue"
+      "restart"
     ],
     "generation": 1,
     "continuedFromRun": null

@@ -26,11 +26,32 @@ Operators run the exact prompt and command sequence for `EX-010` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-010 | Validation feedback (memory_validate) | Feedback learning loop | `As a mutation validation operator, validate Feedback learning loop against memory_validate(memoryId,helpful:true,queryId). Verify confidence/promotion metadata updates. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_validate(memoryId,helpful:true,queryId)` | Confidence/promotion metadata updates | Validation response | PASS if feedback persisted and metadata returned | Retry with valid memoryId/queryId |
+### Prompt
 
----
+```
+As a mutation validation operator, validate Feedback learning loop against memory_validate(memoryId,helpful:true,queryId). Verify confidence/promotion metadata updates. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_validate(memoryId,helpful:true,queryId)
+
+### Expected
+
+Confidence/promotion metadata updates
+
+### Evidence
+
+Validation response
+
+### Pass / Fail
+
+- **Pass**: feedback persisted and metadata returned
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Retry with valid memoryId/queryId
 
 ## 4. REFERENCES
 

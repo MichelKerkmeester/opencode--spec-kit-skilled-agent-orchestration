@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `171` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 171 | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | Verify calibrated bonus replaces flat convergence bonus in RRF fusion | `As a scoring validation operator, verify calibrated bonus replaces flat convergence bonus in RRF fusion against SPECKIT_CALIBRATED_OVERLAP_BONUS. Verify isCalibratedOverlapBonusEnabled() returns true; bonus uses beta=0.15 scaling with mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; falls back to CONVERGENCE_BONUS=0.10 when OFF. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_CALIBRATED_OVERLAP_BONUS` is unset or `true` 2) `memory_search({ query: "query producing multi-channel overlap" })` 3) Inspect fuseResultsMulti() output for calibrated bonus values 4) Verify bonus <= 0.06 5) Set flag to `false`, re-run, verify flat 0.10 bonus applied | isCalibratedOverlapBonusEnabled() returns true; bonus uses beta=0.15 scaling with mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; falls back to CONVERGENCE_BONUS=0.10 when OFF | fuseResultsMulti() output scores + bonus breakdown + test transcript | PASS if calibrated bonus applied with correct beta=0.15 and cap=0.06 for overlapping results; FAIL if flat 0.10 bonus applied, bonus exceeds cap, or flag defaults OFF | Verify isCalibratedOverlapBonusEnabled() → Confirm flag is not forced off → Check CALIBRATED_OVERLAP_BETA=0.15 constant → Verify CALIBRATED_OVERLAP_MAX=0.06 cap → Inspect fuseResultsMulti() overlap detection logic |
+### Prompt
 
----
+```
+As a scoring validation operator, verify calibrated bonus replaces flat convergence bonus in RRF fusion against SPECKIT_CALIBRATED_OVERLAP_BONUS. Verify isCalibratedOverlapBonusEnabled() returns true; bonus uses beta=0.15 scaling with mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; falls back to CONVERGENCE_BONUS=0.10 when OFF. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_CALIBRATED_OVERLAP_BONUS` is unset or `true`
+2. `memory_search({ query: "query producing multi-channel overlap" })`
+3. Inspect fuseResultsMulti() output for calibrated bonus values
+4. Verify bonus <= 0.06
+5. Set flag to `false`, re-run, verify flat 0.10 bonus applied
+
+### Expected
+
+isCalibratedOverlapBonusEnabled() returns true; bonus uses beta=0.15 scaling with mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; falls back to CONVERGENCE_BONUS=0.10 when OFF
+
+### Evidence
+
+fuseResultsMulti() output scores + bonus breakdown + test transcript
+
+### Pass / Fail
+
+- **Pass**: calibrated bonus applied with correct beta=0.15 and cap=0.06 for overlapping results
+- **Fail**: flat 0.10 bonus applied, bonus exceeds cap, or flag defaults OFF
+
+### Failure Triage
+
+Verify isCalibratedOverlapBonusEnabled() → Confirm flag is not forced off → Check CALIBRATED_OVERLAP_BETA=0.15 constant → Verify CALIBRATED_OVERLAP_MAX=0.06 cap → Inspect fuseResultsMulti() overlap detection logic
 
 ## 4. REFERENCES
 

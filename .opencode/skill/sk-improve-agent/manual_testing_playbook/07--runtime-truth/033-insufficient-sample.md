@@ -12,7 +12,11 @@ Given: a session fixture with only 2 trade-off trajectory points and 1 benchmark
 When: the operator runs `trade-off-detector.cjs`, `benchmark-stability.cjs`, and `reduce-state.cjs` against that low-sample runtime.
 Then: the helper states remain distinct, the reducer records `insufficientDataIterations` and `insufficientSampleIterations`, and the dashboard surfaces low-sample messaging instead of collapsing both cases into a generic failure.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that low-sample guards propagate insufficientData and insufficientSample states from the helpers into the reducer registry and the dashboard's Sample Quality reporting against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `trade-off-detector.cjs` returns `{ state: "insufficientData", dataPoints: 2, minRequired: 3 }` for the low-sample trajectory. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
 Run the low-sample fixture through trade-off detection, benchmark stability, and the reducer once T050 lands.
@@ -58,7 +62,7 @@ grep -n "## Sample Quality\|insufficientSampleIterations\|insufficientDataIterat
 cat "$FIXTURE/experiment-registry.json" | jq '.insufficientDataIterations, .insufficientSampleIterations'
 ```
 
-## Expected Signals
+## Expected
 
 - `trade-off-detector.cjs` returns `{ state: "insufficientData", dataPoints: 2, minRequired: 3 }` for the low-sample trajectory
 - `benchmark-stability.cjs` returns `{ state: "insufficientSample", replayCount: 1, minRequired: 3 }` for the low-sample benchmark replays

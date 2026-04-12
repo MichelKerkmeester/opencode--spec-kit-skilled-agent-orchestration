@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `020` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 020 | Graph momentum scoring (N2a) | Confirm 7-day delta bonus | `As a graph-signal validation operator, confirm 7-day delta bonus against the documented validation surface. Verify 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Seed snapshots now/7d 2) Query 3) Verify capped bonus | 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced | Momentum scoring output with delta values + cap verification + zero-history node check | PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history | Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula |
+### Prompt
 
----
+```
+As a graph-signal validation operator, confirm 7-day delta bonus against the documented validation surface. Verify 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Seed snapshots now/7d
+2. Query
+3. Verify capped bonus
+
+### Expected
+
+7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced
+
+### Evidence
+
+Momentum scoring output with delta values + cap verification + zero-history node check
+
+### Pass / Fail
+
+- **Pass**: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced
+- **Fail**: Uncapped bonus or non-zero for missing history
+
+### Failure Triage
+
+Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula
 
 ## 4. REFERENCES
 

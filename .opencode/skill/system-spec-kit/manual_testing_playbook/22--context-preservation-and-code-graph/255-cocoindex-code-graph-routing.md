@@ -40,13 +40,90 @@ This scenario validates CocoIndex bridge.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 255a | CocoIndex bridge | Semantic query routes to CocoIndex and returns meaning-based results | `As a context-and-code-graph validation operator, validate Semantic query routes to CocoIndex and returns meaning-based results against Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" }). Verify results are semantically related files (e.g., search handler, query router) rather than exact string matches. Return a concise pass/fail verdict with the main reason and cited evidence.` | `Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" })` | Results are semantically related files (e.g., search handler, query router) rather than exact string matches | CocoIndex search output listing relevant file paths with similarity scores | PASS if results are conceptually relevant to the query meaning | Verify CocoIndex MCP server is running and index is built |
-| 255b | CocoIndex bridge | Structural query routes to code_graph and returns edge-based results | `As a context-and-code-graph validation operator, validate Structural query routes to code_graph and returns edge-based results against Manual: call code_graph_query({ operation: "calls_to", subject: "allocateBudget" }). Verify returns exact caller functions with file paths and line numbers from code_edges table. Return a concise pass/fail verdict with the main reason and cited evidence.` | `Manual: call code_graph_query({ operation: "calls_to", subject: "allocateBudget" })` | Returns exact caller functions with file paths and line numbers from code_edges table | Code graph query output showing caller/callee relationships | PASS if callers are exact function references from the graph database | Verify code graph is indexed and contains allocateBudget node |
-| 255c | CocoIndex bridge | code_graph_context expands in neighborhood, outline, and impact modes | `As a context-and-code-graph validation operator, validate code_graph_context expands in neighborhood, outline, and impact modes against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify neighborhood returns 1-hop neighbors, outline returns file symbols, impact returns reverse callers. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts` | Neighborhood returns 1-hop neighbors, outline returns file symbols, impact returns reverse callers | Test output showing each mode's distinct results | PASS if all 3 modes return non-empty, mode-appropriate results | Check `code-graph-context.ts` for mode handling logic |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Semantic query routes to CocoIndex and returns meaning-based results against Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" }). Verify results are semantically related files (e.g., search handler, query router) rather than exact string matches. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" })
+
+### Expected
+
+Results are semantically related files (e.g., search handler, query router) rather than exact string matches
+
+### Evidence
+
+CocoIndex search output listing relevant file paths with similarity scores
+
+### Pass / Fail
+
+- **Pass**: results are conceptually relevant to the query meaning
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify CocoIndex MCP server is running and index is built
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Structural query routes to code_graph and returns edge-based results against Manual: call code_graph_query({ operation: "calls_to", subject: "allocateBudget" }). Verify returns exact caller functions with file paths and line numbers from code_edges table. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Manual: call code_graph_query({ operation: "calls_to", subject: "allocateBudget" })
+
+### Expected
+
+Returns exact caller functions with file paths and line numbers from code_edges table
+
+### Evidence
+
+Code graph query output showing caller/callee relationships
+
+### Pass / Fail
+
+- **Pass**: callers are exact function references from the graph database
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify code graph is indexed and contains allocateBudget node
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate code_graph_context expands in neighborhood, outline, and impact modes against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify neighborhood returns 1-hop neighbors, outline returns file symbols, impact returns reverse callers. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts
+
+### Expected
+
+Neighborhood returns 1-hop neighbors, outline returns file symbols, impact returns reverse callers
+
+### Evidence
+
+Test output showing each mode's distinct results
+
+### Pass / Fail
+
+- **Pass**: all 3 modes return non-empty, mode-appropriate results
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `code-graph-context.ts` for mode handling logic
 
 ## 4. REFERENCES
 

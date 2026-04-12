@@ -37,13 +37,90 @@ This scenario validates Compact merger.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 258a | Compact merger | All 5 non-empty sources render as titled sections in priority order | `As a context-and-code-graph validation operator, validate All 5 non-empty sources render as titled sections in priority order against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify output contains "## Constitutional Rules", "## Active Files & Structural Context", "## Semantic Neighbors", "## Session State / Next Steps", "## Triggered Memories". Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | Output contains "## Constitutional Rules", "## Active Files & Structural Context", "## Semantic Neighbors", "## Session State / Next Steps", "## Triggered Memories" | Test output showing rendered section headers | PASS if all 5 sections present with correct headers when all inputs non-empty | Check `mergeCompactBrief()` section construction in compact-merger.ts |
-| 258b | Compact merger | Budget allocation and per-source truncation within 4000-token total | `As a context-and-code-graph validation operator, validate Budget allocation and per-source truncation within 4000-token total against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify mergedBrief.metadata.totalTokenEstimate <= 4000, each section within its granted budget. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | `MergedBrief.metadata.totalTokenEstimate <= 4000`, each section within its granted budget | Test output showing allocation and token estimates | PASS if total within budget and no section exceeds its granted allocation | Check `allocateBudget()` integration and `truncateToTokens()` |
-| 258c | Compact merger | File-level deduplication and metadata accuracy | `As a context-and-code-graph validation operator, validate File-level deduplication and metadata accuracy against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify duplicate file paths removed from lower-priority sections, metadata has sourceCount, mergedAt, deduplicatedFiles. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | Duplicate file paths removed from lower-priority sections, metadata has sourceCount, mergedAt, deduplicatedFiles | Test output showing dedup count and metadata fields | PASS if duplicate file paths removed and all metadata fields present with correct values | Check `deduplicateFilePaths()` and metadata construction |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate All 5 non-empty sources render as titled sections in priority order against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify output contains "## Constitutional Rules", "## Active Files & Structural Context", "## Semantic Neighbors", "## Session State / Next Steps", "## Triggered Memories". Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+Output contains "## Constitutional Rules", "## Active Files & Structural Context", "## Semantic Neighbors", "## Session State / Next Steps", "## Triggered Memories"
+
+### Evidence
+
+Test output showing rendered section headers
+
+### Pass / Fail
+
+- **Pass**: all 5 sections present with correct headers when all inputs non-empty
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `mergeCompactBrief()` section construction in compact-merger.ts
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Budget allocation and per-source truncation within 4000-token total against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify mergedBrief.metadata.totalTokenEstimate <= 4000, each section within its granted budget. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+`MergedBrief.metadata.totalTokenEstimate <= 4000`, each section within its granted budget
+
+### Evidence
+
+Test output showing allocation and token estimates
+
+### Pass / Fail
+
+- **Pass**: total within budget and no section exceeds its granted allocation
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `allocateBudget()` integration and `truncateToTokens()`
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate File-level deduplication and metadata accuracy against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify duplicate file paths removed from lower-priority sections, metadata has sourceCount, mergedAt, deduplicatedFiles. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+Duplicate file paths removed from lower-priority sections, metadata has sourceCount, mergedAt, deduplicatedFiles
+
+### Evidence
+
+Test output showing dedup count and metadata fields
+
+### Pass / Fail
+
+- **Pass**: duplicate file paths removed and all metadata fields present with correct values
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `deduplicateFilePaths()` and metadata construction
 
 ## 4. REFERENCES
 

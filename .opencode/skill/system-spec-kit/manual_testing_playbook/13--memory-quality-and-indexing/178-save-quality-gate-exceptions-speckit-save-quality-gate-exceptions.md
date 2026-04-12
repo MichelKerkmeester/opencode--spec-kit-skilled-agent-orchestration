@@ -26,11 +26,36 @@ Operators run the exact prompt and command sequence for `178` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 178 | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) | Verify short-critical quality gate exception for decision documents with structural signals | `As a memory-quality validation operator, verify short-critical quality gate exception for decision documents with structural signals against SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS. Verify isSaveQualityGateExceptionsEnabled() returns true; decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50; non-decision types rejected; < 2 signals rejected; Layer 1/2/3 validation still runs for other checks. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` is unset or `true` 2) `memory_save({ title: "Chose SQLite over PostgreSQL", content: "Embedded deployment decision", context_type: "decision", anchors: ["architecture", "database"] })` 3) Verify save succeeds despite content < 50 chars 4) Save same content with context_type=general, verify rejection 5) Save decision with only 1 structural signal, verify rejection | isSaveQualityGateExceptionsEnabled() returns true; decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50; non-decision types rejected; < 2 signals rejected; Layer 1/2/3 validation still runs for other checks | Save result (pass/warn/reject) + structural signal count + quality gate layer outputs + test transcript | PASS if short decision with >= 2 structural signals bypasses length check; FAIL if decision rejected despite signals, non-decision bypasses, or < 2 signals allow bypass | Verify isSaveQualityGateExceptionsEnabled() → Confirm flag is not forced off → Check SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 → Inspect structural signal detection logic → Verify MIN_CONTENT_LENGTH=50 bypass path → Check Layer 1 exception routing |
+### Prompt
 
----
+```
+As a memory-quality validation operator, verify short-critical quality gate exception for decision documents with structural signals against SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS. Verify isSaveQualityGateExceptionsEnabled() returns true; decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50; non-decision types rejected; < 2 signals rejected; Layer 1/2/3 validation still runs for other checks. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` is unset or `true`
+2. `memory_save({ title: "Chose SQLite over PostgreSQL", content: "Embedded deployment decision", context_type: "decision", anchors: ["architecture", "database"] })`
+3. Verify save succeeds despite content < 50 chars
+4. Save same content with context_type=general, verify rejection
+5. Save decision with only 1 structural signal, verify rejection
+
+### Expected
+
+isSaveQualityGateExceptionsEnabled() returns true; decision + >= 2 structural signals → bypass MIN_CONTENT_LENGTH=50; non-decision types rejected; < 2 signals rejected; Layer 1/2/3 validation still runs for other checks
+
+### Evidence
+
+Save result (pass/warn/reject) + structural signal count + quality gate layer outputs + test transcript
+
+### Pass / Fail
+
+- **Pass**: short decision with >= 2 structural signals bypasses length check
+- **Fail**: decision rejected despite signals, non-decision bypasses, or < 2 signals allow bypass
+
+### Failure Triage
+
+Verify isSaveQualityGateExceptionsEnabled() → Confirm flag is not forced off → Check SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 → Inspect structural signal detection logic → Verify MIN_CONTENT_LENGTH=50 bypass path → Check Layer 1 exception routing
 
 ## 4. REFERENCES
 

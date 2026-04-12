@@ -8,13 +8,17 @@ category: "End-to-End Loop"
 
 Validates that the improvement loop maintains a mutation coverage graph with `loop_type: "improvement"` namespace, tracking explored dimensions, tried mutation types, and exhausted mutation sets across iterations.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the improvement loop maintains a mutation coverage graph with loop_type: "improvement" namespace, tracking explored dimensions, tried mutation types, and exhausted mutation sets across iterations against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Coverage graph created with `loop_type: "improvement"` namespace (isolated from research/review graphs). Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
 ```
 
-## Expected Signals
+## Expected
 
 - Coverage graph created with `loop_type: "improvement"` namespace (isolated from research/review graphs)
 - Graph nodes include dimension nodes (structural, ruleCoherence, integration, outputQuality, systemFitness)

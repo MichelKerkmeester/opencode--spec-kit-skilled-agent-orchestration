@@ -24,11 +24,37 @@ Operators verify the maintenance surface through dry-run migrations, targeted re
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 239 | Memory Maintenance and Migration CLIs | Confirm dry-run migration reporting, cleanup/parser regression coverage, and ranking output | `As a tooling validation operator, confirm dry-run migration reporting, cleanup/parser regression coverage, and ranking output against node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json. Verify backfill dry-run succeeds and writes /tmp/frontmatter-dry-run.json; cleanup and parser scripts pass; rank-memories prints structured ranking output for the sample dataset. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json` 2) `node .opencode/skill/system-spec-kit/scripts/tests/test-frontmatter-backfill.js` 3) `node .opencode/skill/system-spec-kit/scripts/tests/test-cleanup-orphaned-vectors.js` 4) `node .opencode/skill/system-spec-kit/scripts/tests/test-ast-parser.js` 5) `printf '[{\"path\":\"memory/demo.md\",\"title\":\"Demo Memory\",\"importance_tier\":\"important\",\"updated_at\":\"2026-03-26T00:00:00.000Z\"}]' > /tmp/memories.json` 6) `node .opencode/skill/system-spec-kit/scripts/dist/memory/rank-memories.js /tmp/memories.json` | Backfill dry-run succeeds and writes `/tmp/frontmatter-dry-run.json`; cleanup and parser scripts pass; rank-memories prints structured ranking output for the sample dataset | Dry-run report file, regression-script transcripts, and rank-memories stdout | PASS if the dry-run/report path works, the regression scripts pass, and ranking output is produced without crashing | Inspect `scripts/memory/backfill-frontmatter.ts`, `cleanup-orphaned-vectors.ts`, `ast-parser.ts`, and `rank-memories.ts` if one command fails or returns malformed output |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm dry-run migration reporting, cleanup/parser regression coverage, and ranking output against node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json. Verify backfill dry-run succeeds and writes /tmp/frontmatter-dry-run.json; cleanup and parser scripts pass; rank-memories prints structured ranking output for the sample dataset. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json`
+2. `node .opencode/skill/system-spec-kit/scripts/tests/test-frontmatter-backfill.js`
+3. `node .opencode/skill/system-spec-kit/scripts/tests/test-cleanup-orphaned-vectors.js`
+4. `node .opencode/skill/system-spec-kit/scripts/tests/test-ast-parser.js`
+5. `printf '[{\"path\":\"memory/demo.md\",\"title\":\"Demo Memory\",\"importance_tier\":\"important\",\"updated_at\":\"2026-03-26T00:00:00.000Z\"}]' > /tmp/memories.json`
+6. `node .opencode/skill/system-spec-kit/scripts/dist/memory/rank-memories.js /tmp/memories.json`
+
+### Expected
+
+Backfill dry-run succeeds and writes `/tmp/frontmatter-dry-run.json`; cleanup and parser scripts pass; rank-memories prints structured ranking output for the sample dataset
+
+### Evidence
+
+Dry-run report file, regression-script transcripts, and rank-memories stdout
+
+### Pass / Fail
+
+- **Pass**: the dry-run/report path works, the regression scripts pass, and ranking output is produced without crashing
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/memory/backfill-frontmatter.ts`, `cleanup-orphaned-vectors.ts`, `ast-parser.ts`, and `rank-memories.ts` if one command fails or returns malformed output
 
 ## 4. REFERENCES
 

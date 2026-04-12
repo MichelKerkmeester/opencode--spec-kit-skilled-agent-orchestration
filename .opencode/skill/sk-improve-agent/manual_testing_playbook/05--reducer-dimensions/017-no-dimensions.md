@@ -8,7 +8,11 @@ category: "Reducer Dimensions"
 
 Validates backward compatibility: JSONL records that lack dimension fields still produce a normal reducer dashboard.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate backward compatibility: JSONL records that lack dimension fields still produce a normal reducer dashboard against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Reducer completes without errors, exit code 0. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 # Setup: create a minimal test JSONL without dimensions
@@ -20,7 +24,7 @@ echo '{}' > /tmp/reducer-test-nodim/agent-improvement-config.json
 node .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs /tmp/reducer-test-nodim
 ```
 
-## Expected Signals
+## Expected
 
 - Reducer completes without errors, exit code 0
 - Dashboard generated at `/tmp/reducer-test-nodim/agent-improvement-dashboard.md`

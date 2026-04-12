@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `066` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `As a scoring validation operator, confirm Sprint 8 scoring fixes against the documented validation surface. Verify score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm Sprint 8 scoring fixes against the documented validation surface. Verify score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run targeted queries
+2. inspect score/rank outputs
+3. verify corrected behavior
+
+### Expected
+
+Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values
+
+### Evidence
+
+Query output with score/rank values + before/after comparison where applicable
+
+### Pass / Fail
+
+- **Pass**: scoring corrections produce expected rank ordering and no anomalous score values
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN
 
 ## 4. REFERENCES
 

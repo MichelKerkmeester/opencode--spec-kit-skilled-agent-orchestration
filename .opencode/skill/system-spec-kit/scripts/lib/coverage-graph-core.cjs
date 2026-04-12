@@ -8,6 +8,10 @@
 // used by deep-research and deep-review semantic coverage tracking.
 // ---------------------------------------------------------------
 
+const {
+  matchesSession,
+} = require('./coverage-graph-session.cjs');
+
 /* ---------------------------------------------------------------
    1. CONSTANTS
 ----------------------------------------------------------------*/
@@ -86,35 +90,6 @@ function createGraph() {
   };
 }
 
-function getNodeSessionId(node) {
-  if (!node || typeof node !== 'object') return null;
-  if (typeof node.sessionId === 'string' && node.sessionId) return node.sessionId;
-  if (node.metadata && typeof node.metadata === 'object' && typeof node.metadata.sessionId === 'string' && node.metadata.sessionId) {
-    return node.metadata.sessionId;
-  }
-  return null;
-}
-
-function getEdgeSessionId(graph, edge) {
-  if (!edge || typeof edge !== 'object') return null;
-  if (typeof edge.sessionId === 'string' && edge.sessionId) return edge.sessionId;
-  if (edge.metadata && typeof edge.metadata === 'object' && typeof edge.metadata.sessionId === 'string' && edge.metadata.sessionId) {
-    return edge.metadata.sessionId;
-  }
-  const sourceSessionId = getNodeSessionId(graph.nodes.get(edge.source));
-  const targetSessionId = getNodeSessionId(graph.nodes.get(edge.target));
-  if (sourceSessionId && (!targetSessionId || targetSessionId === sourceSessionId)) return sourceSessionId;
-  return targetSessionId;
-}
-
-function matchesSession(graph, record, sessionId, recordType) {
-  if (!sessionId) return true;
-  const actualSessionId = recordType === 'edge'
-    ? getEdgeSessionId(graph, record)
-    : getNodeSessionId(record);
-  return actualSessionId === sessionId;
-}
-
 /* ---------------------------------------------------------------
    3. EDGE OPERATIONS
 ----------------------------------------------------------------*/
@@ -158,10 +133,18 @@ function insertEdge(graph, source, target, relation, weight, metadata) {
 
   // Ensure source and target nodes exist
   if (!graph.nodes.has(source)) {
-    graph.nodes.set(source, { id: source, createdAt: new Date().toISOString() });
+    graph.nodes.set(source, {
+      id: source,
+      sessionId: typeof metadata.sessionId === 'string' && metadata.sessionId ? metadata.sessionId : undefined,
+      createdAt: new Date().toISOString(),
+    });
   }
   if (!graph.nodes.has(target)) {
-    graph.nodes.set(target, { id: target, createdAt: new Date().toISOString() });
+    graph.nodes.set(target, {
+      id: target,
+      sessionId: typeof metadata.sessionId === 'string' && metadata.sessionId ? metadata.sessionId : undefined,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   graph.edges.set(edgeId, {

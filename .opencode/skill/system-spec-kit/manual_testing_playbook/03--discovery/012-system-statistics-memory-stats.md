@@ -28,11 +28,32 @@ Partial bucket present and included in totals
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-012 | System statistics (memory_stats) | System baseline snapshot | `As a discovery validation operator, validate System baseline snapshot against memory_stats(folderRanking:composite,includeScores:true). Verify counts, tiers, folder ranking present. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_stats(folderRanking:composite,includeScores:true)` | Counts, tiers, folder ranking present | Stats output | PASS if dashboard fields populated | Retry with default ranking on scoring error |
+### Prompt
 
----
+```
+As a discovery validation operator, validate System baseline snapshot against memory_stats(folderRanking:composite,includeScores:true). Verify counts, tiers, folder ranking present. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_stats(folderRanking:composite,includeScores:true)
+
+### Expected
+
+Counts, tiers, folder ranking present
+
+### Evidence
+
+Stats output
+
+### Pass / Fail
+
+- **Pass**: dashboard fields populated
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Retry with default ranking on scoring error
 
 ## 4. REFERENCES
 

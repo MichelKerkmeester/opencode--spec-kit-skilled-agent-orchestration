@@ -151,7 +151,7 @@ Reducer contract for every loop refresh:
 
 | Reducer Part | Canonical Value | Notes |
 |--------------|-----------------|-------|
-| Inputs | `latestJSONLDelta`, `newIterationFile`, `priorReducedState` | The reducer replays only the newest JSONL delta plus the latest iteration artifact against the prior reduced state. |
+| Inputs | `latestJSONLDelta`, `newIterationFile`, `priorReducedState` | Normal loop refresh is delta-only: replay just the newest JSONL slice plus the latest iteration artifact against the prior reduced state. |
 | Outputs | `findingsRegistry`, `dashboardMetrics`, `strategyUpdates` | The same refresh pass updates the canonical registry, refreshes dashboard metrics, and applies strategy updates. |
 | Metrics | `dimensionsCovered`, `findingsBySeverity`, `openFindings`, `resolvedFindings`, `convergenceScore` | These metrics drive convergence decisions, dashboard summaries, and synthesis readiness. |
 
@@ -422,6 +422,8 @@ Recompute the convergence outcome from JSONL state before finalizing the report:
 3. Recompute `traceabilityChecks.summary` and confirm required protocol statuses match the recorded coverage vote
 4. Re-run the evidence, scope, and coverage gates against stored findings and scope data
 5. Compare the replayed decision and stop reason to the recorded synthesis event
+
+This synthesis-stage replay is a **full-history audit replay** over the stored JSONL state. It is intentionally different from the per-iteration delta reducer refresh above.
 
 Replay passes only when the recomputed decision, thresholds, and gate outcomes agree with the persisted result. If replay fails, log a warning in the audit appendix but proceed with synthesis.
 

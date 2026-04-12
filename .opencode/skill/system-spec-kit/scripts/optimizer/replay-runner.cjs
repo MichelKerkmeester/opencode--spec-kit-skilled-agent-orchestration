@@ -27,6 +27,41 @@ const DEFAULT_CONFIG = Object.freeze({
 });
 
 /* ---------------------------------------------------------------
+   1A. METRIC NORMALIZATION
+----------------------------------------------------------------*/
+
+/**
+ * Normalize replay metrics from the corpus entry into the canonical shape
+ * used by graphBonus evaluation.
+ *
+ * @param {object} corpusEntry
+ * @returns {{ graphMetrics: { graphConvergence: number }|null, waveMetrics: { convergenceScore: number }|null }}
+ */
+function extractReplayMetrics(corpusEntry) {
+  if (!corpusEntry || typeof corpusEntry !== 'object') {
+    return { graphMetrics: null, waveMetrics: null };
+  }
+
+  const graphConvergence = getFiniteMetric(corpusEntry.graphMetrics && corpusEntry.graphMetrics.graphConvergence);
+  const convergenceScore = getFiniteMetric(corpusEntry.waveMetrics && corpusEntry.waveMetrics.convergenceScore);
+
+  return {
+    graphMetrics: graphConvergence === null ? null : { graphConvergence },
+    waveMetrics: convergenceScore === null ? null : { convergenceScore },
+  };
+}
+
+/**
+ * Return a finite numeric metric or null when unavailable.
+ *
+ * @param {unknown} value
+ * @returns {number|null}
+ */
+function getFiniteMetric(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+/* ---------------------------------------------------------------
    2. CONVERGENCE EVALUATION
 ----------------------------------------------------------------*/
 
@@ -208,9 +243,10 @@ function replayRun(corpusEntry, config) {
 
   // Check for graph/wave metrics in the corpus entry and apply graph bonus
   let graphBonus = 1.0;
-  if (corpusEntry.graphMetrics || corpusEntry.waveMetrics) {
-    const graphMetrics = corpusEntry.graphMetrics || {};
-    const waveMetrics = corpusEntry.waveMetrics || {};
+  const normalizedMetrics = extractReplayMetrics(corpusEntry);
+  if (normalizedMetrics.graphMetrics || normalizedMetrics.waveMetrics) {
+    const graphMetrics = normalizedMetrics.graphMetrics || {};
+    const waveMetrics = normalizedMetrics.waveMetrics || {};
     // Apply a 1.1x bonus when graph convergence signals are present and positive
     if (graphMetrics.graphConvergence > 0 || waveMetrics.convergenceScore > 0) {
       graphBonus = 1.1;
@@ -296,6 +332,7 @@ function compareResults(baseline, candidate) {
 
 module.exports = {
   DEFAULT_CONFIG,
+  extractReplayMetrics,
   evaluateConvergence,
   replayRun,
   compareResults,

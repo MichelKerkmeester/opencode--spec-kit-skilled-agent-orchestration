@@ -28,11 +28,35 @@ Operators run the exact prompt and command sequence for `076` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 076 | Activation window persistence | Confirm the archived activation-timestamp persistence record remains source-accurate | `As a pipeline validation operator, confirm the archived activation-timestamp persistence record remains source-accurate against save-quality-gate.ts. Verify archived record stays source-accurate; historical activation timestamp persistence is documented; no live phase-018 flow depends on the retired timer path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Inspect the archived catalog and playbook records 2) Inspect the historical source anchors in `save-quality-gate.ts` and the associated tests 3) Confirm the archived wording stays historical-only 4) Confirm no live phase-018 flow depends on this timer path | Archived record stays source-accurate; historical activation timestamp persistence is documented; no live phase-018 flow depends on the retired timer path | Archived doc text plus source/test anchors showing the historical timer behavior | PASS if the archival record is accurate and clearly marked retired; FAIL if it implies the timer path is still live or contradicts the source files | Inspect `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/tests/save-quality-gate.vitest.ts`, and any current save-pipeline references for unintended live dependencies |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm the archived activation-timestamp persistence record remains source-accurate against save-quality-gate.ts. Verify archived record stays source-accurate; historical activation timestamp persistence is documented; no live phase-018 flow depends on the retired timer path. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Inspect the archived catalog and playbook records
+2. Inspect the historical source anchors in `save-quality-gate.ts` and the associated tests
+3. Confirm the archived wording stays historical-only
+4. Confirm no live phase-018 flow depends on this timer path
+
+### Expected
+
+Archived record stays source-accurate; historical activation timestamp persistence is documented; no live phase-018 flow depends on the retired timer path
+
+### Evidence
+
+Archived doc text plus source/test anchors showing the historical timer behavior
+
+### Pass / Fail
+
+- **Pass**: the archival record is accurate and clearly marked retired
+- **Fail**: it implies the timer path is still live or contradicts the source files
+
+### Failure Triage
+
+Inspect `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/tests/save-quality-gate.vitest.ts`, and any current save-pipeline references for unintended live dependencies
 
 ## 4. REFERENCES
 

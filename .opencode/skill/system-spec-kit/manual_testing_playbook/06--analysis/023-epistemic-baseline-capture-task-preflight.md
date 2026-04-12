@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-023` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-023 | Epistemic baseline capture (task_preflight) | Pre-task baseline logging | `As an analysis validation operator, validate Pre-task baseline logging against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.` | `task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Baseline record created | Preflight output | PASS if baseline persisted | Retry with complete fields |
+### Prompt
 
----
+```
+As an analysis validation operator, validate Pre-task baseline logging against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)
+
+### Expected
+
+Baseline record created
+
+### Evidence
+
+Preflight output
+
+### Pass / Fail
+
+- **Pass**: baseline persisted
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Retry with complete fields
 
 ## 4. REFERENCES
 

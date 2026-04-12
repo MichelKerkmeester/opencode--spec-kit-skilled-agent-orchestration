@@ -36,13 +36,90 @@ This scenario validates Runtime detection.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 253a | Runtime detection | Claude Code detected with hookPolicy=enabled and hooks available | `As a context-and-code-graph validation operator, validate Claude Code detected with hookPolicy=enabled and hooks available against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify cLAUDE_CODE=1 yields { runtime: 'claude-code', hookPolicy: 'enabled' }, areHooksAvailable() returns true, getRecoveryApproach() returns 'hooks'. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts` | `CLAUDE_CODE=1` yields `{ runtime: 'claude-code', hookPolicy: 'enabled' }`, `areHooksAvailable()` returns true, `getRecoveryApproach()` returns 'hooks' | Test output showing detection and helper results | PASS if claude-code identified with enabled hooks | Check env var checks: CLAUDE_CODE, CLAUDE_SESSION_ID, MCP_SERVER_NAME |
-| 253b | Runtime detection | All 4 runtimes produce correct hookPolicy values | `As a context-and-code-graph validation operator, validate All 4 runtimes produce correct hookPolicy values against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts` | claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven | Test output showing all hookPolicy values | PASS if all runtime branches match the current repo/config rules | Verify `HookPolicy` type union covers all values |
-| 253c | Runtime detection | Unknown runtime fallback when no env vars match | `As a context-and-code-graph validation operator, validate Unknown runtime fallback when no env vars match against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify no matching env vars yields { runtime: 'unknown', hookPolicy: 'unknown' }. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts` | No matching env vars yields `{ runtime: 'unknown', hookPolicy: 'unknown' }` | Test output showing unknown detection | PASS if clean environment returns unknown/unknown | Ensure test clears all runtime-related env vars before assertion |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Claude Code detected with hookPolicy=enabled and hooks available against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify cLAUDE_CODE=1 yields { runtime: 'claude-code', hookPolicy: 'enabled' }, areHooksAvailable() returns true, getRecoveryApproach() returns 'hooks'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts
+
+### Expected
+
+`CLAUDE_CODE=1` yields `{ runtime: 'claude-code', hookPolicy: 'enabled' }`, `areHooksAvailable()` returns true, `getRecoveryApproach()` returns 'hooks'
+
+### Evidence
+
+Test output showing detection and helper results
+
+### Pass / Fail
+
+- **Pass**: claude-code identified with enabled hooks
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check env var checks: CLAUDE_CODE, CLAUDE_SESSION_ID, MCP_SERVER_NAME
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate All 4 runtimes produce correct hookPolicy values against cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts. Verify claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts
+
+### Expected
+
+claude-code=enabled, codex-cli=unavailable, copilot-cli=enabled in this repo plus disabled_by_scope in the no-hook temp repo, gemini-cli=config-driven
+
+### Evidence
+
+Test output showing all hookPolicy values
+
+### Pass / Fail
+
+- **Pass**: all runtime branches match the current repo/config rules
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify `HookPolicy` type union covers all values
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Unknown runtime fallback when no env vars match against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify no matching env vars yields { runtime: 'unknown', hookPolicy: 'unknown' }. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts
+
+### Expected
+
+No matching env vars yields `{ runtime: 'unknown', hookPolicy: 'unknown' }`
+
+### Evidence
+
+Test output showing unknown detection
+
+### Pass / Fail
+
+- **Pass**: clean environment returns unknown/unknown
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Ensure test clears all runtime-related env vars before assertion
 
 ## 4. REFERENCES
 

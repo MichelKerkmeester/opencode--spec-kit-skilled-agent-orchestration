@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `156` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | Verify dirty-node tracking fires in write_local mode | `As a graph-signal validation operator, verify dirty-node tracking fires in write_local mode against SPECKIT_GRAPH_REFRESH_MODE=write_local. Verify markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_GRAPH_REFRESH_MODE=write_local` 2) `memory_save({ ... })` with content containing entity relationships 3) Verify `onWrite()` return shape 4) `npx vitest run tests/graph-lifecycle.vitest.ts` | markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute | GraphRefreshResult output with mode='write_local', dirtyNodes >= 1, localRecomputed=true + test transcript | PASS if onWrite() returns mode='write_local', localRecomputed=true, dirtyNodes >= 1, and skipped=false; FAIL if dirty-node set remains empty or localRecomputed=false | Check resolveGraphRefreshMode() → Verify SPECKIT_GRAPH_REFRESH_MODE env is set → Inspect markDirty() input nodeIds → Check estimateComponentSize() threshold (default 50) |
+### Prompt
 
----
+```
+As a graph-signal validation operator, verify dirty-node tracking fires in write_local mode against SPECKIT_GRAPH_REFRESH_MODE=write_local. Verify markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_GRAPH_REFRESH_MODE=write_local`
+2. `memory_save({ ... })` with content containing entity relationships
+3. Verify `onWrite()` return shape
+4. `npx vitest run tests/graph-lifecycle.vitest.ts`
+
+### Expected
+
+markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute
+
+### Evidence
+
+GraphRefreshResult output with mode='write_local', dirtyNodes >= 1, localRecomputed=true + test transcript
+
+### Pass / Fail
+
+- **Pass**: onWrite() returns mode='write_local', localRecomputed=true, dirtyNodes >= 1, and skipped=false
+- **Fail**: dirty-node set remains empty or localRecomputed=false
+
+### Failure Triage
+
+Check resolveGraphRefreshMode() → Verify SPECKIT_GRAPH_REFRESH_MODE env is set → Inspect markDirty() input nodeIds → Check estimateComponentSize() threshold (default 50)
 
 ## 4. REFERENCES
 

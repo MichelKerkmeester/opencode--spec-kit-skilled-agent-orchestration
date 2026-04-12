@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `011` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 011 | BM25/FTS5-only baseline (G-NEW-1) | Confirm baseline reproducibility | `As an evaluation validation operator, confirm baseline reproducibility against ENABLE_BM25=true. Verify bM25 path is active; BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Set `ENABLE_BM25=true` and disable non-BM25 channels 2) Run the corpus twice 3) Record MRR@5 and trace output for both runs 4) Confirm the trace shows BM25-only and no vector/graph/trigger contribution | BM25 path is active; BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace | BM25 baseline output with MRR@5 value + channel trace showing BM25-only + evidence that BM25 was explicitly active for the run | PASS: MRR@5 is deterministic across 2 runs with the BM25 path active and only the BM25 channel active; FAIL: BM25 path is missing, non-BM25 channels contribute, or MRR varies | Verify all non-BM25 channels are disabled, confirm BM25 path activation, check BM25 index health, and inspect channel activation flags before treating the run as a valid BM25-only baseline |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm baseline reproducibility against ENABLE_BM25=true. Verify bM25 path is active; BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Set `ENABLE_BM25=true` and disable non-BM25 channels
+2. Run the corpus twice
+3. Record MRR@5 and trace output for both runs
+4. Confirm the trace shows BM25-only and no vector/graph/trigger contribution
+
+### Expected
+
+BM25 path is active; BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace
+
+### Evidence
+
+BM25 baseline output with MRR@5 value + channel trace showing BM25-only + evidence that BM25 was explicitly active for the run
+
+### Pass / Fail
+
+- **Pass**: MRR@5 is deterministic across 2 runs with the BM25 path active and only the BM25 channel active
+- **Fail**: BM25 path is missing, non-BM25 channels contribute, or MRR varies
+
+### Failure Triage
+
+Verify all non-BM25 channels are disabled, confirm BM25 path activation, check BM25 index health, and inspect channel activation flags before treating the run as a valid BM25-only baseline
 
 ## 4. REFERENCES
 

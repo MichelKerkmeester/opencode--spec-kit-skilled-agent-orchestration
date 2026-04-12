@@ -51,7 +51,7 @@ function makeEdge(id: string, sessionId: string, sourceId: string, targetId: str
 }
 
 function parseHandlerData(
-  response: Awaited<ReturnType<typeof handleCoverageGraphConvergence>>,
+  response: { content: Array<{ text: string }> },
 ): Record<string, any> {
   return JSON.parse(response.content[0]?.text ?? '{}').data ?? {};
 }
@@ -329,5 +329,107 @@ describe('coverage graph session isolation — shared-ID collisions', () => {
 
     expect(getNode(nsX, 'q-shared')?.name).toBe('Question X v2');
     expect(getNode(nsY, 'q-shared')?.name).toBe('Question Y v1');
+  });
+
+  it('keeps higher-level handler reads session-scoped when logical IDs collide', async () => {
+    const sharedQuestionId = 'q-shared';
+    const sharedFindingOneId = 'f-shared-1';
+    const sharedFindingTwoId = 'f-shared-2';
+    const sharedSourceOneId = 's-shared-1';
+    const sharedSourceTwoId = 's-shared-2';
+    const sharedClaimSourceId = 'claim-shared-a';
+    const sharedClaimTargetId = 'claim-shared-b';
+
+    const sessionXNodes: CoverageNode[] = [
+      collisionNode(SESSION_X, sharedQuestionId, 'Question X'),
+      makeNode(sharedFindingOneId, SESSION_X, 'FINDING', 'Finding X1'),
+      makeNode(sharedFindingTwoId, SESSION_X, 'FINDING', 'Finding X2'),
+      makeNode(sharedSourceOneId, SESSION_X, 'SOURCE', 'Source X1', { quality_class: 'primary' }),
+      makeNode(sharedSourceTwoId, SESSION_X, 'SOURCE', 'Source X2', { quality_class: 'secondary' }),
+      makeNode(sharedClaimSourceId, SESSION_X, 'CLAIM', 'Claim X A'),
+      makeNode(sharedClaimTargetId, SESSION_X, 'CLAIM', 'Claim X B'),
+    ];
+    const sessionYNodes: CoverageNode[] = [
+      collisionNode(SESSION_Y, sharedQuestionId, 'Question Y'),
+      makeNode(sharedFindingOneId, SESSION_Y, 'FINDING', 'Finding Y1'),
+      makeNode(sharedClaimSourceId, SESSION_Y, 'CLAIM', 'Claim Y A'),
+      makeNode(sharedClaimTargetId, SESSION_Y, 'CLAIM', 'Claim Y B'),
+    ];
+
+    const sessionXEdges: CoverageEdge[] = [
+      collisionEdge(SESSION_X, 'answers-shared-1', sharedFindingOneId, sharedQuestionId),
+      collisionEdge(SESSION_X, 'answers-shared-2', sharedFindingTwoId, sharedQuestionId),
+      makeEdge('cites-shared-1', SESSION_X, sharedFindingOneId, sharedSourceOneId, 'CITES'),
+      makeEdge('cites-shared-2', SESSION_X, sharedFindingTwoId, sharedSourceTwoId, 'CITES'),
+      makeEdge('contradiction-shared', SESSION_X, sharedClaimSourceId, sharedClaimTargetId, 'CONTRADICTS'),
+    ];
+    const sessionYEdges: CoverageEdge[] = [
+      collisionEdge(SESSION_Y, 'answers-shared-1', sharedFindingOneId, sharedQuestionId),
+    ];
+
+    for (const node of [...sessionXNodes, ...sessionYNodes]) {
+      upsertNode(node);
+    }
+    for (const edge of [...sessionXEdges, ...sessionYEdges]) {
+      upsertEdge(edge);
+    }
+
+    const queryX = parseHandlerData(await handleCoverageGraphQuery({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_X,
+      queryType: 'contradictions',
+    }));
+    const queryY = parseHandlerData(await handleCoverageGraphQuery({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_Y,
+      queryType: 'contradictions',
+    }));
+    const statusX = parseHandlerData(await handleCoverageGraphStatus({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_X,
+    }));
+    const statusY = parseHandlerData(await handleCoverageGraphStatus({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_Y,
+    }));
+    const convergenceX = parseHandlerData(await handleCoverageGraphConvergence({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_X,
+    }));
+    const convergenceY = parseHandlerData(await handleCoverageGraphConvergence({
+      specFolder: SHARED_SPEC,
+      loopType: SHARED_LOOP_TYPE,
+      sessionId: SESSION_Y,
+    }));
+
+    expect(queryX.totalContradictions).toBe(1);
+    expect(queryX.contradictions).toEqual([
+      expect.objectContaining({
+        edgeId: 'contradiction-shared',
+        sourceId: sharedClaimSourceId,
+        targetId: sharedClaimTargetId,
+        sourceName: 'Claim X A',
+        targetName: 'Claim X B',
+      }),
+    ]);
+    expect(queryY.totalContradictions).toBe(0);
+    expect(queryY.contradictions).toEqual([]);
+
+    expect(statusX.totalNodes).toBe(sessionXNodes.length);
+    expect(statusX.totalEdges).toBe(sessionXEdges.length);
+    expect(statusX.edgesByRelation.CONTRADICTS).toBe(1);
+    expect(statusY.totalNodes).toBe(sessionYNodes.length);
+    expect(statusY.totalEdges).toBe(sessionYEdges.length);
+    expect(statusY.edgesByRelation.CONTRADICTS ?? 0).toBe(0);
+
+    expect(convergenceX.signals.questionCoverage).toBe(1);
+    expect(convergenceX.signals.sourceDiversity).toBe(2);
+    expect(convergenceY.signals.questionCoverage).toBe(0);
+    expect(convergenceY.signals.sourceDiversity).toBe(0);
   });
 });

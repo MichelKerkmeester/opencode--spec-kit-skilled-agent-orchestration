@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `067` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 067 | Search pipeline safety | Confirm Sprint 8 pipeline safety fixes | `As a pipeline validation operator, confirm Sprint 8 pipeline safety fixes against the documented validation surface. Verify pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run summary/lexical heavy queries 2) inspect filters/tokenization 3) verify safety outcomes | Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions | Query output for heavy/edge-case inputs + filter inspection + tokenization output | PASS if pipeline safely handles summary/lexical heavy queries with correct filtering and tokenization | Inspect error handling in pipeline stages; verify filter boundary conditions; check tokenizer for malformed input handling |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm Sprint 8 pipeline safety fixes against the documented validation surface. Verify pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run summary/lexical heavy queries
+2. inspect filters/tokenization
+3. verify safety outcomes
+
+### Expected
+
+Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions
+
+### Evidence
+
+Query output for heavy/edge-case inputs + filter inspection + tokenization output
+
+### Pass / Fail
+
+- **Pass**: pipeline safely handles summary/lexical heavy queries with correct filtering and tokenization
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect error handling in pipeline stages; verify filter boundary conditions; check tokenizer for malformed input handling
 
 ## 4. REFERENCES
 

@@ -21,9 +21,37 @@ Operators drive a canonical save through the phase-018 writer substrate and conf
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 202 | Canonical continuity save substrate | Verify routed canonical saves, anchor-aware merge, atomic promotion, and continuity persistence | `As a memory-quality validation operator, verify routed canonical saves, anchor-aware merge, atomic promotion, and continuity persistence against contentRouter. Verify contentRouter chooses the right tier; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; _memory.continuity stays thin and readable. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save a routed session chunk that has both target and non-target content 2) Confirm `contentRouter` picks the intended destination 3) Confirm `anchorMergeOperation` uses the correct merge mode and preserves the target anchor 4) Confirm `atomicIndexMemory` writes the canonical output 5) Read the saved file and confirm `_memory.continuity` is present and thin 6) Confirm the resume ladder can read the saved continuity state | contentRouter chooses the right tier; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; `_memory.continuity` stays thin and readable | Save output, saved doc contents, and the continuity block readback | PASS if the routed save lands in the correct anchor and the continuity block is preserved; FAIL if the route is wrong, the merge mode is wrong, or the continuity block is missing/bloated | Inspect `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor-merge-operation.ts`, `mcp_server/handlers/save/atomic-index-memory.ts`, and `mcp_server/lib/continuity/thin-continuity-record.ts` |
+### Prompt
+
+```
+As a memory-quality validation operator, verify routed canonical saves, anchor-aware merge, atomic promotion, and continuity persistence against contentRouter. Verify contentRouter chooses the right tier; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; _memory.continuity stays thin and readable. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save a routed session chunk that has both target and non-target content
+2. Confirm `contentRouter` picks the intended destination
+3. Confirm `anchorMergeOperation` uses the correct merge mode and preserves the target anchor
+4. Confirm `atomicIndexMemory` writes the canonical output
+5. Read the saved file and confirm `_memory.continuity` is present and thin
+6. Confirm the resume ladder can read the saved continuity state
+
+### Expected
+
+contentRouter chooses the right tier; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; `_memory.continuity` stays thin and readable
+
+### Evidence
+
+Save output, saved doc contents, and the continuity block readback
+
+### Pass / Fail
+
+- **Pass**: the routed save lands in the correct anchor and the continuity block is preserved
+- **Fail**: the route is wrong, the merge mode is wrong, or the continuity block is missing/bloated
+
+### Failure Triage
+
+Inspect `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor-merge-operation.ts`, `mcp_server/handlers/save/atomic-index-memory.ts`, and `mcp_server/lib/continuity/thin-continuity-record.ts`
 
 ## 4. REFERENCES
 

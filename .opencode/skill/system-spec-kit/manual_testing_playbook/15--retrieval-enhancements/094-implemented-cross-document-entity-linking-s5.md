@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `094` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 094 | Implemented: cross-document entity linking (S5) | Confirm deferred->implemented status | `As a retrieval-enhancement validation operator, confirm deferred->implemented status against the documented validation surface. Verify entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run entity linker 2) inspect supports edges 3) verify density guards | Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified | Entity linker output + supports-edge inspection + density guard metrics | PASS if entity linker produces correctly typed supports-edges and density guards enforce limits | Verify entity linker implementation is active; check supports-edge schema; inspect density guard threshold and enforcement |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm deferred->implemented status against the documented validation surface. Verify entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run entity linker
+2. inspect supports edges
+3. verify density guards
+
+### Expected
+
+Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified
+
+### Evidence
+
+Entity linker output + supports-edge inspection + density guard metrics
+
+### Pass / Fail
+
+- **Pass**: entity linker produces correctly typed supports-edges and density guards enforce limits
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify entity linker implementation is active; check supports-edge schema; inspect density guard threshold and enforcement
 
 ## 4. REFERENCES
 

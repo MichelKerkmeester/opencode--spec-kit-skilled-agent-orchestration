@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `021` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 021 | Causal depth signal (N2b) | Confirm normalized depth scoring | `As a graph-signal validation operator, confirm normalized depth scoring against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Build multi-level graph with a shortcut edge or rooted cycle 2) Score depth 3) Verify normalized output | Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer | Depth scoring output across multi-level graph + normalization range verification | PASS: All depth scores in [0,1]; deeper nodes score >= shallower nodes on the same chain; shortcut targets still reflect the deeper path; FAIL: Out-of-range values or incorrect depth ordering | Verify normalization formula → Check SCC condensation / longest-path traversal → Inspect graph depth counting |
+### Prompt
 
----
+```
+As a graph-signal validation operator, confirm normalized depth scoring against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Build multi-level graph with a shortcut edge or rooted cycle
+2. Score depth
+3. Verify normalized output
+
+### Expected
+
+Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer
+
+### Evidence
+
+Depth scoring output across multi-level graph + normalization range verification
+
+### Pass / Fail
+
+- **Pass**: All depth scores in [0,1]; deeper nodes score >= shallower nodes on the same chain; shortcut targets still reflect the deeper path
+- **Fail**: Out-of-range values or incorrect depth ordering
+
+### Failure Triage
+
+Verify normalization formula → Check SCC condensation / longest-path traversal → Inspect graph depth counting
 
 ## 4. REFERENCES
 

@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-022` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-022 | Causal chain tracing (memory_drift_why) | Decision why-trace | `As an analysis validation operator, validate Decision why-trace against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_drift_why(memoryId,direction:both,maxDepth:4)` | Chain includes expected relations | Trace output | PASS if causal path returned | Lower depth/rel filters if empty |
+### Prompt
 
----
+```
+As an analysis validation operator, validate Decision why-trace against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_drift_why(memoryId,direction:both,maxDepth:4)
+
+### Expected
+
+Chain includes expected relations
+
+### Evidence
+
+Trace output
+
+### Pass / Fail
+
+- **Pass**: causal path returned
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Lower depth/rel filters if empty
 
 ## 4. REFERENCES
 

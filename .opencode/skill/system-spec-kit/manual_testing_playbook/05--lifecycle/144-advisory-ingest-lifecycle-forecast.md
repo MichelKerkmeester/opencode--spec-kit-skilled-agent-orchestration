@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `144` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 144 | Advisory ingest lifecycle forecast | Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress | `As a lifecycle validation operator, verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress against memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] }). Verify status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] })` and capture `jobId` 2) Immediately call `memory_ingest_status({ jobId:"<job-id>" })` and verify `forecast` contains `etaSeconds`, `etaConfidence`, `failureRisk`, `riskSignals`, and `caveat` 3) Confirm early or queued states return a low-confidence caveat instead of throwing 4) Poll until indexing progresses and verify forecast values update while staying advisory 5) If extended telemetry is enabled, confirm lifecycle forecast diagnostics are attached without changing the status contract | Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive | Start/status transcript across early and progressing states + optional telemetry snapshot when enabled | PASS if forecast fields are always present, sparse states degrade safely, and progressing jobs update the advisory values without handler failure | Inspect `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, and `lib/telemetry/retrieval-telemetry.ts` if forecast fields disappear or throw |
+### Prompt
 
----
+```
+As a lifecycle validation operator, verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress against memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] }). Verify status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] })` and capture `jobId`
+2. Immediately call `memory_ingest_status({ jobId:"<job-id>" })` and verify `forecast` contains `etaSeconds`, `etaConfidence`, `failureRisk`, `riskSignals`, and `caveat`
+3. Confirm early or queued states return a low-confidence caveat instead of throwing
+4. Poll until indexing progresses and verify forecast values update while staying advisory
+5. If extended telemetry is enabled, confirm lifecycle forecast diagnostics are attached without changing the status contract
+
+### Expected
+
+Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive
+
+### Evidence
+
+Start/status transcript across early and progressing states + optional telemetry snapshot when enabled
+
+### Pass / Fail
+
+- **Pass**: forecast fields are always present, sparse states degrade safely, and progressing jobs update the advisory values without handler failure
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, and `lib/telemetry/retrieval-telemetry.ts` if forecast fields disappear or throw
 
 ## 4. REFERENCES
 

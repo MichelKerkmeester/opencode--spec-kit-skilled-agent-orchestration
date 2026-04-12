@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `062` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 062 | Progressive validation for spec documents (PI-B2) | Confirm level 1-4 behavior | `As a tooling validation operator, confirm level 1-4 behavior against the documented validation surface. Verify each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run level1..4 2) inspect fixes/diffs 3) verify exit/report behavior | Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels | Validation output per level + exit codes + applied fix diffs | PASS if levels 1-4 produce progressively stricter validation and exit codes match severity | Verify validation level definitions; check exit code mapping; inspect auto-fix application logic |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm level 1-4 behavior against the documented validation surface. Verify each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. run level1..4
+2. inspect fixes/diffs
+3. verify exit/report behavior
+
+### Expected
+
+Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels
+
+### Evidence
+
+Validation output per level + exit codes + applied fix diffs
+
+### Pass / Fail
+
+- **Pass**: levels 1-4 produce progressively stricter validation and exit codes match severity
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify validation level definitions; check exit code mapping; inspect auto-fix application logic
 
 ## 4. REFERENCES
 

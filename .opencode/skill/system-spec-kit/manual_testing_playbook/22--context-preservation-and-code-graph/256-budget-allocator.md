@@ -36,13 +36,90 @@ This scenario validates Budget allocator.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 256a | Budget allocator | Floor distribution: each source gets min(floor, actualSize) | `As a context-and-code-graph validation operator, validate Floor distribution: each source gets min(floor, actualSize) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify each source.granted = min(source.floor, source.actualSize), unused floor added to overflow. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts` | Each source.granted = min(source.floor, source.actualSize), unused floor added to overflow | Test output showing allocation values | PASS if floor allocation matches min(floor, actualSize) for each source | Check `allocateBudget()` Step 1 logic |
-| 256b | Budget allocator | Overflow redistribution follows priority order (constitutional first) | `As a context-and-code-graph validation operator, validate Overflow redistribution follows priority order (constitutional first) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify when sources need more than floor, overflow given by priority: constitutional > codeGraph > cocoIndex > triggered. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts` | When sources need more than floor, overflow given by priority: constitutional > codeGraph > cocoIndex > triggered | Test output showing bonus allocations | PASS if highest-priority sources receive overflow before lower-priority | Verify PRIORITY_ORDER array in `budget-allocator.ts` |
-| 256c | Budget allocator | Total cap enforcement: never exceeds 4000 tokens, trim in reverse priority | `As a context-and-code-graph validation operator, validate Total cap enforcement: never exceeds 4000 tokens, trim in reverse priority against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify allocationResult.totalUsed <= 4000, excess trimmed from triggered first, then cocoIndex, codeGraph, constitutional. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts` | `AllocationResult.totalUsed <= 4000`, excess trimmed from triggered first, then cocoIndex, codeGraph, constitutional | Test output showing totalUsed and trim results | PASS if totalUsed <= 4000 in all scenarios and trim follows reverse priority | Check Step 3 trim logic with reversed PRIORITY_ORDER |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Floor distribution: each source gets min(floor, actualSize) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify each source.granted = min(source.floor, source.actualSize), unused floor added to overflow. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts
+
+### Expected
+
+Each source.granted = min(source.floor, source.actualSize), unused floor added to overflow
+
+### Evidence
+
+Test output showing allocation values
+
+### Pass / Fail
+
+- **Pass**: floor allocation matches min(floor, actualSize) for each source
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `allocateBudget()` Step 1 logic
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Overflow redistribution follows priority order (constitutional first) against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify when sources need more than floor, overflow given by priority: constitutional > codeGraph > cocoIndex > triggered. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts
+
+### Expected
+
+When sources need more than floor, overflow given by priority: constitutional > codeGraph > cocoIndex > triggered
+
+### Evidence
+
+Test output showing bonus allocations
+
+### Pass / Fail
+
+- **Pass**: highest-priority sources receive overflow before lower-priority
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify PRIORITY_ORDER array in `budget-allocator.ts`
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Total cap enforcement: never exceeds 4000 tokens, trim in reverse priority against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts. Verify allocationResult.totalUsed <= 4000, excess trimmed from triggered first, then cocoIndex, codeGraph, constitutional. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/budget-allocator.vitest.ts
+
+### Expected
+
+`AllocationResult.totalUsed <= 4000`, excess trimmed from triggered first, then cocoIndex, codeGraph, constitutional
+
+### Evidence
+
+Test output showing totalUsed and trim results
+
+### Pass / Fail
+
+- **Pass**: totalUsed <= 4000 in all scenarios and trim follows reverse priority
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check Step 3 trim logic with reversed PRIORITY_ORDER
 
 ## 4. REFERENCES
 

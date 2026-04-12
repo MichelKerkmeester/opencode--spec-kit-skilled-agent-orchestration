@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `005` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 005 | Evaluation database and schema (R13-S1) | Confirm eval data isolation | `As an evaluation validation operator, confirm eval data isolation against the documented validation surface. Verify eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Trigger retrieval events 2) Query eval DB tables 3) Confirm isolation | Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB | Eval DB schema dump + retrieval event rows + main DB integrity check | PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables | Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm eval data isolation against the documented validation surface. Verify eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Trigger retrieval events
+2. Query eval DB tables
+3. Confirm isolation
+
+### Expected
+
+Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB
+
+### Evidence
+
+Eval DB schema dump + retrieval event rows + main DB integrity check
+
+### Pass / Fail
+
+- **Pass**: Eval data isolated in dedicated tables; main DB unaffected
+- **Fail**: Eval writes pollute main memory tables
+
+### Failure Triage
+
+Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries
 
 ## 4. REFERENCES
 

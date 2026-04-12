@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `137` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 137 | Multi-feature annotation coverage | Verify known multi-feature files have annotation count >= 2 | `As a tooling validation operator, verify known multi-feature files have annotation count >= 2 against handlers/memory-save.ts. Verify all known multi-feature files carry >= 2 annotations; annotations are semantically appropriate. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Identify files known to implement 2+ features (e.g., `handlers/memory-save.ts`, `handlers/memory-search.ts`, `handlers/memory-crud-delete.ts`) 2) For each: count `// Feature catalog:` lines 3) Verify count >= 2 for each multi-feature file 4) Spot-check that listed features are semantically correct for the file's implementation | All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate | File list with annotation counts + sample content verification | PASS if all checked multi-feature files have >= 2 annotations and no obviously-missing features | Review file implementation scope → Compare against catalog feature boundaries → Add missing annotations |
+### Prompt
 
----
+```
+As a tooling validation operator, verify known multi-feature files have annotation count >= 2 against handlers/memory-save.ts. Verify all known multi-feature files carry >= 2 annotations; annotations are semantically appropriate. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Identify files known to implement 2+ features (e.g., `handlers/memory-save.ts`, `handlers/memory-search.ts`, `handlers/memory-crud-delete.ts`)
+2. For each: count `// Feature catalog:` lines
+3. Verify count >= 2 for each multi-feature file
+4. Spot-check that listed features are semantically correct for the file's implementation
+
+### Expected
+
+All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate
+
+### Evidence
+
+File list with annotation counts + sample content verification
+
+### Pass / Fail
+
+- **Pass**: all checked multi-feature files have >= 2 annotations and no obviously-missing features
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Review file implementation scope → Compare against catalog feature boundaries → Add missing annotations
 
 ## 4. REFERENCES
 

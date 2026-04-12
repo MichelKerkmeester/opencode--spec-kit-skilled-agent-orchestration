@@ -8,7 +8,11 @@ category: "Profile Generator"
 
 Validates that the profile generator correctly extracts ALWAYS and NEVER behavioral rules from a target agent definition.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the profile generator correctly extracts ALWAYS and NEVER behavioral rules from a target agent definition against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify JSON output with `derivedChecks.ruleCoherence` array. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.open
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md | python3 -c "import sys,json; d=json.load(sys.stdin); rc=d['derivedChecks']['ruleCoherence']; a=sum(1 for r in rc if r['type']=='always'); n=sum(1 for r in rc if r['type']=='never'); assert a>=3 and n>=2; print(f'PASS: {a} always, {n} never')"
 ```
 
-## Expected Signals
+## Expected
 
 - JSON output with `derivedChecks.ruleCoherence` array
 - Each entry has `type` field set to `"always"` or `"never"` and a `rule` or `text` field with verbatim text from the agent file

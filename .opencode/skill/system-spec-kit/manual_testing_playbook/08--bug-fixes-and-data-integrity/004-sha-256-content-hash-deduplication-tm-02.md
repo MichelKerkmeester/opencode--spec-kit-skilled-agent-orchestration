@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `004` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 004 | SHA-256 content-hash deduplication (TM-02) | Confirm identical re-save skips embedding | `As a data-integrity validation operator, confirm identical re-save skips embedding against the documented validation surface. Verify second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct canonical_file_path = ? / file_path = ? probes and exact scope clauses such as tenant_id = ? or user_id IS NULL. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save once 2) Save identical payload 3) Verify embedding skipped 4) Capture SQL-shape evidence for the unchanged-save and content-hash probes | Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL` | Save output for both calls + DB query showing single embedding row + SQL/test evidence showing no `(canonical_file_path = ? OR file_path = ?)` and no `? IS NULL` predicates | PASS: Re-save skips embedding, reports duplicate, and emits exact-match SQL without nullable OR scope predicates; FAIL: Duplicate embedding created, hash mismatch, or SQL still depends on nullable OR predicates | Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query shape (`T320-1`, `T320-2`) |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm identical re-save skips embedding against the documented validation surface. Verify second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct canonical_file_path = ? / file_path = ? probes and exact scope clauses such as tenant_id = ? or user_id IS NULL. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save once
+2. Save identical payload
+3. Verify embedding skipped
+4. Capture SQL-shape evidence for the unchanged-save and content-hash probes
+
+### Expected
+
+Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`
+
+### Evidence
+
+Save output for both calls + DB query showing single embedding row + SQL/test evidence showing no `(canonical_file_path = ? OR file_path = ?)` and no `? IS NULL` predicates
+
+### Pass / Fail
+
+- **Pass**: Re-save skips embedding, reports duplicate, and emits exact-match SQL without nullable OR scope predicates
+- **Fail**: Duplicate embedding created, hash mismatch, or SQL still depends on nullable OR predicates
+
+### Failure Triage
+
+Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query shape (`T320-1`, `T320-2`)
 
 ## 4. REFERENCES
 

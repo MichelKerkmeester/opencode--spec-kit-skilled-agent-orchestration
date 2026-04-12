@@ -224,6 +224,8 @@ After agent completes:
 1. Verify `{spec_folder}/research/iterations/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
 3. Run reducer with `{ latestJSONLDelta, newIterationFile, priorReducedState }`
+   - This is a **delta refresh**, not a full replay of every historical JSONL row on each iteration.
+   - The reducer consumes only the newest JSONL slice plus the latest iteration artifact against the previously reduced packet state.
 4. Verify reducer refreshed `deep-research-strategy.md`, `findings-registry.json`, and `deep-research-dashboard.md`
 5. Verify the refreshed packet surfaces reflect the new iteration evidence
 6. Extract `newInfoRatio` from JSONL record
@@ -347,7 +349,7 @@ When agent dispatch fails after the earlier recovery tiers are exhausted:
 <!-- ANCHOR:wave-orchestration-protocol -->
 ## 3a. WAVE ORCHESTRATION PROTOCOL (REFERENCE-ONLY)
 
-An optional parallel execution mode for research topics with multiple independent questions. Treat this as reference guidance unless the runtime explicitly supports it; the live workflow remains sequential.
+An optional parallel execution concept for research topics with multiple independent questions. Treat this as reference guidance only; the live workflow remains sequential and does **not** emit wave-specific JSONL events or routing today.
 
 ### When to Use Waves
 
@@ -355,7 +357,7 @@ An optional parallel execution mode for research topics with multiple independen
 - Questions do not depend on each other's answers
 - Parallelism is beneficial (time-constrained research, broad survey)
 
-### Wave Execution Model
+### Wave Execution Model (conceptual only)
 
 ```
 Wave 1: Dispatch N agents on independent questions
@@ -364,7 +366,7 @@ Wave 1: Dispatch N agents on independent questions
   +-- Agent B: Question 2 --> iteration-002.md (newInfoRatio: 0.3)
   +-- Agent C: Question 3 --> iteration-003.md (newInfoRatio: 0.7)
   |
-Scoring: Rank by newInfoRatio, prune below median when wave support is enabled
+Scoring: Rank by newInfoRatio, prune below median only in a future runtime that explicitly adds wave support
   |
 Wave 2: Follow-up on top-K questions (K = ceil(N/2))
   +-- Agent A: Question 1 follow-up --> iteration-004.md
@@ -375,12 +377,12 @@ Repeat until convergence
 
 ### Scoring and Pruning
 
-After each wave completes:
+In a future wave-enabled runtime:
 1. Rank all wave iterations by `newInfoRatio`
 2. Compute wave median: `median([i.newInfoRatio for i in wave_iterations])`
-3. **Prune**: Questions with newInfoRatio below median are deprioritized when wave support is enabled
-4. **Promote**: Top-K questions (K = ceil(N/2)) get follow-up iterations
-5. Pruned questions are moved to the ideas backlog, not discarded
+3. **Prune**: Questions with newInfoRatio below median would be deprioritized
+4. **Promote**: Top-K questions (K = ceil(N/2)) would get follow-up iterations
+5. Pruned questions would move to the ideas backlog, not be discarded
 
 ### Breakthrough Detection
 
@@ -393,23 +395,14 @@ When any single iteration in a wave achieves `newInfoRatio > 2x wave_average`:
 
 ### Wave JSONL Records
 
-Wave iterations use standard iteration records with an additional field:
-```json
-{"type":"iteration","run":N,"wave":1,"status":"complete",...}
-```
-
-Wave events:
-```json
-{"type":"event","event":"wave_complete","wave":1,"iterations":[1,2,3],"medianRatio":0.5}
-{"type":"event","event":"breakthrough","wave":1,"iteration":2,"ratio":0.95}
-```
+Wave-specific fields and events are **not part of the current persisted contract**. Until a runtime explicitly ships wave support, keep iteration records and events on the standard sequential schema only.
 
 ### Integration with Sequential Loop
 
 - Waves are an ALTERNATIVE to sequential iteration, not a replacement
 - The convergence algorithm applies identically (uses all iteration records)
-- Wave mode can transition to sequential mode when questions narrow to 1-2
-- Sequential mode can spawn a wave when new independent questions emerge
+- A future wave-capable runtime could transition back to sequential mode when questions narrow to 1-2
+- The current runtime never spawns a wave automatically
 
 ---
 

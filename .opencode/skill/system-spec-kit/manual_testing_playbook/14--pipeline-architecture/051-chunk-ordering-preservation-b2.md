@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `051` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 051 | Chunk ordering preservation (B2) | Confirm ordered reassembly | `As a pipeline validation operator, confirm ordered reassembly against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save ordered marker chunks 2) collapse 3) verify original order preserved | Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts | Collapsed output with marker sequence verification + original order comparison | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing | Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm ordered reassembly against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save ordered marker chunks
+2. collapse
+3. verify original order preserved
+
+### Expected
+
+Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts
+
+### Evidence
+
+Collapsed output with marker sequence verification + original order comparison
+
+### Pass / Fail
+
+- **Pass**: Marker sequence in collapsed output matches original save order
+- **Fail**: Markers out of order or missing
+
+### Failure Triage
+
+Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle
 
 ## 4. REFERENCES
 

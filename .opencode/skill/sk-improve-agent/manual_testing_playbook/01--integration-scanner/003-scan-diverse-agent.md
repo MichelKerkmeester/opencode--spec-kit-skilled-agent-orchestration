@@ -8,7 +8,11 @@ category: "Integration Scanner"
 
 Validates that scanning the debug agent discovers a broad set of integration surfaces (20+ expected).
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that scanning the debug agent discovers a broad set of integration surfaces (20+ expected) against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `status: "complete"`. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug | python3 -c "import sys,json; d=json.load(sys.stdin); s=d['summary']; assert s['totalSurfaces']>=20; assert s['commandCount']>=1; assert s['skillCount']>=5; print(f'PASS: {s[\"totalSurfaces\"]} surfaces, {s[\"commandCount\"]} commands, {s[\"skillCount\"]} skills')"
 ```
 
-## Expected Signals
+## Expected
 
 - `status: "complete"`
 - `summary.totalSurfaces >= 20`

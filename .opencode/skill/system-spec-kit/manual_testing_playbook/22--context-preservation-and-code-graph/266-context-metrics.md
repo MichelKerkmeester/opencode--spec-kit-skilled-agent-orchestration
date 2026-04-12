@@ -33,13 +33,90 @@ This scenario validates Context preservation metrics (context-metrics.ts).
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 266a | Context preservation metrics | Tool call events tracked and recency computed | `As a context-and-code-graph validation operator, validate Tool call events tracked and recency computed against memory_stats({}). Verify toolCallCount > 0 in metrics, recency factor close to 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_stats({})` then `session_health({})` | toolCallCount > 0 in metrics, recency factor close to 1.0 | session_health response qualityScore.factors.recency | PASS if recency > 0.9 immediately after tool call | Check recordMetricEvent() in context-metrics.ts |
-| 266b | Context preservation metrics | Memory recovery tracked and factor updated | `As a context-and-code-graph validation operator, validate Memory recovery tracked and factor updated against memory_context({ mode: "resume" }). Verify recovery factor === 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_context({ mode: "resume" })` then `session_health({})` | recovery factor === 1.0 | session_health response qualityScore.factors.recovery | PASS if recovery factor is 1.0 after resume call | Check memory_recovery event recording and factor computation |
-| 266c | Context preservation metrics | Quality level mapping from composite score | `As a context-and-code-graph validation operator, validate Quality level mapping from composite score against session_health({}). Verify qualityScore.level matches expected level for score value. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_health({})` after several interactions | qualityScore.level matches expected level for score value | session_health response qualityScore | PASS if level is 'healthy' when score >= 0.7, 'degraded' when >= 0.4, 'critical' when < 0.4 | Check threshold constants in context-metrics.ts |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Tool call events tracked and recency computed against memory_stats({}). Verify toolCallCount > 0 in metrics, recency factor close to 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_stats({})` then `session_health({})`
+
+### Expected
+
+toolCallCount > 0 in metrics, recency factor close to 1.0
+
+### Evidence
+
+session_health response qualityScore.factors.recency
+
+### Pass / Fail
+
+- **Pass**: recency > 0.9 immediately after tool call
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check recordMetricEvent() in context-metrics.ts
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Memory recovery tracked and factor updated against memory_context({ mode: "resume" }). Verify recovery factor === 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_context({ mode: "resume" })` then `session_health({})`
+
+### Expected
+
+recovery factor === 1.0
+
+### Evidence
+
+session_health response qualityScore.factors.recovery
+
+### Pass / Fail
+
+- **Pass**: recovery factor is 1.0 after resume call
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check memory_recovery event recording and factor computation
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Quality level mapping from composite score against session_health({}). Verify qualityScore.level matches expected level for score value. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_health({})` after several interactions
+
+### Expected
+
+qualityScore.level matches expected level for score value
+
+### Evidence
+
+session_health response qualityScore
+
+### Pass / Fail
+
+- **Pass**: level is 'healthy' when score >= 0.7, 'degraded' when >= 0.4, 'critical' when < 0.4
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check threshold constants in context-metrics.ts
 
 ## 4. REFERENCES
 

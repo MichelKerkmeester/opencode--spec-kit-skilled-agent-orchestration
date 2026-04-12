@@ -8,14 +8,18 @@ category: "5D Scorer"
 
 Validates that each dimension in the 5D scorer output includes a details array showing individual check results.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that each dimension in the 5D scorer output includes a details array showing individual check results against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `dimensions` array contains 5 objects with names: `structural`, `ruleCoherence`, `integration`, `outputQuality`, `systemFitness`. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs \
   --candidate=.opencode/agent/debug.md
 ```
 
-## Expected Signals
+## Expected
 
 - `dimensions` array contains 5 objects with names: `structural`, `ruleCoherence`, `integration`, `outputQuality`, `systemFitness`
 - Each dimension object has a `details` array of individual check objects

@@ -24,11 +24,37 @@ Operators run the exact prompt and command sequence for `168` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 168 | Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) | Verify additive disclosure payload and cursor pagination | `As a runtime-hook validation operator, verify additive disclosure payload and cursor pagination against memory_search({ query: "broad query", limit: 20 }). Verify full data.results; summaryLayer with count + digest; Snippet[] with snippet <= 100 chars, detailAvailable, resultId; continuation cursor; page size = 5; cursor TTL = 5 min. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_search({ query: "broad query", limit: 20 })` 2) Verify full `data.results` remains present 3) Verify `data.progressiveDisclosure` shape 4) Extract continuation cursor 5) Re-request with `memory_search({ cursor })` for next page 6) `npx vitest run tests/progressive-disclosure.vitest.ts tests/memory-search-ux-hooks.vitest.ts` | full `data.results`; summaryLayer with count + digest; Snippet[] with snippet <= 100 chars, detailAvailable, resultId; continuation cursor; page size = 5; cursor TTL = 5 min | Response JSON + pagination test with cursor + test transcript | PASS if full results are preserved and disclosure metadata + cursor pagination work; FAIL if results are replaced by snippets or disclosure metadata is missing | Verify SPECKIT_PROGRESSIVE_DISCLOSURE_V1 env → Check DEFAULT_PAGE_SIZE (5) → Inspect SNIPPET_MAX_LENGTH (100) → Verify hashQuery() cursor key → Check DEFAULT_CURSOR_TTL_MS (300000) → Inspect cursorStore map |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, verify additive disclosure payload and cursor pagination against memory_search({ query: "broad query", limit: 20 }). Verify full data.results; summaryLayer with count + digest; Snippet[] with snippet <= 100 chars, detailAvailable, resultId; continuation cursor; page size = 5; cursor TTL = 5 min. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_search({ query: "broad query", limit: 20 })`
+2. Verify full `data.results` remains present
+3. Verify `data.progressiveDisclosure` shape
+4. Extract continuation cursor
+5. Re-request with `memory_search({ cursor })` for next page
+6. `npx vitest run tests/progressive-disclosure.vitest.ts tests/memory-search-ux-hooks.vitest.ts`
+
+### Expected
+
+full `data.results`; summaryLayer with count + digest; Snippet[] with snippet <= 100 chars, detailAvailable, resultId; continuation cursor; page size = 5; cursor TTL = 5 min
+
+### Evidence
+
+Response JSON + pagination test with cursor + test transcript
+
+### Pass / Fail
+
+- **Pass**: full results are preserved and disclosure metadata + cursor pagination work
+- **Fail**: results are replaced by snippets or disclosure metadata is missing
+
+### Failure Triage
+
+Verify SPECKIT_PROGRESSIVE_DISCLOSURE_V1 env → Check DEFAULT_PAGE_SIZE (5) → Inspect SNIPPET_MAX_LENGTH (100) → Verify hashQuery() cursor key → Check DEFAULT_CURSOR_TTL_MS (300000) → Inspect cursorStore map
 
 ## 4. REFERENCES
 

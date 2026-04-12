@@ -8,10 +8,14 @@ category: "Runtime Truth"
 
 Validates that every completed improvement session emits a `session_ended` event with a valid `stopReason` and `sessionOutcome` drawn from the frozen taxonomies defined in `improvement-journal.cjs`.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that every completed improvement session emits a session_ended event with a valid stopReason and sessionOutcome drawn from the frozen taxonomies defined in improvement-journal.cjs against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Journal contains at least one `session_ended` or `session_end` event. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=2
 ```
 
 ### Verification (copy-paste)
@@ -33,7 +37,7 @@ print('PASS')
 "
 ```
 
-## Expected Signals
+## Expected
 
 - Journal contains at least one `session_ended` or `session_end` event
 - `details.stopReason` is one of: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`

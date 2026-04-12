@@ -8,7 +8,11 @@ category: "Benchmark Integration"
 
 Validates that running a benchmark with --integration-report adds integrationScore and related fields to the output.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that running a benchmark with --integration-report adds integrationScore and related fields to the output against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Benchmark output at `/tmp/bench-with-integration.json` includes all standard benchmark fields PLUS:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 # Step 1: Generate the integration report
@@ -25,7 +29,7 @@ node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
   --integration-report=/tmp/integration-for-bench.json
 ```
 
-## Expected Signals
+## Expected
 
 - Benchmark output at `/tmp/bench-with-integration.json` includes all standard benchmark fields PLUS:
   - `integrationScore` -- number between 0 and 100, computed as weighted average: 60% mirror + 20% command + 20% skill

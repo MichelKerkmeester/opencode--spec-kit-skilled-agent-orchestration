@@ -221,13 +221,13 @@ describe('benchmark-stability', () => {
       expect(result.report).toContain('Insufficient');
     });
 
-    it('generates recommendations when sufficient sessions exist', () => {
-      const sessions = Array.from({ length: 6 }, (_, i) => ({
+    it('applies the weight-adjustment heuristics directly', () => {
+      const sessions = Array.from({ length: 6 }, () => ({
         scores: {
-          structural: 95 - i,
-          ruleCoherence: 70 + i,
+          structural: 70,
+          ruleCoherence: 90,
           integration: 92,
-          outputQuality: 88,
+          outputQuality: 99,
           systemFitness: 93,
         },
       }));
@@ -245,6 +245,9 @@ describe('benchmark-stability', () => {
       expect(result.recommendations).toBeDefined();
       expect(result.report).toContain('Weight Optimization Report');
       expect(result.report).toContain('advisory only');
+      expect(result.recommendations!.structural).toBeGreaterThan(currentWeights.structural);
+      expect(result.recommendations!.outputQuality).toBeLessThan(currentWeights.outputQuality);
+      expect(result.recommendations!.ruleCoherence).toBeCloseTo(currentWeights.ruleCoherence, 2);
 
       // All weights should sum to approximately 1.0
       const totalWeight = Object.values(result.recommendations!).reduce((s, w) => s + w, 0);

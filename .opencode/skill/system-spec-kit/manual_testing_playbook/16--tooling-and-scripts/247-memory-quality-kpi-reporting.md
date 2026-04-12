@@ -24,11 +24,35 @@ Operators verify that the KPI reporter can scan the full active specs tree or on
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 247 | Memory Quality KPI Reporting | Confirm global and scoped KPI scans, JSON output, and stderr summary behavior | `As a tooling validation operator, confirm global and scoped KPI scans, JSON output, and stderr summary behavior against bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh. Verify both commands emit JSON; stderr includes KPI Summary:; scoped run preserves the requested scope and exits 0. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh` 2) `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh system-spec-kit/022-hybrid-rag-fusion` 3) `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh system-spec-kit/022-hybrid-rag-fusion > /tmp/quality-kpi.json` 4) `node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('/tmp/quality-kpi.json','utf8')); console.log(data.scope, data.totalFiles, data.rates.emptyTriggerPhrasesRate)"` | Both commands emit JSON; stderr includes `KPI Summary:`; scoped run preserves the requested scope and exits 0 | Full-run transcript, scoped-run transcript, and parsed `/tmp/quality-kpi.json` output | PASS if the script returns JSON plus the stderr summary for both modes and the scoped JSON reflects the requested spec path | Inspect `scripts/kpi/quality-kpi.sh`, markdown traversal logic, and trigger-phrase counting if scope handling or JSON generation is wrong |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm global and scoped KPI scans, JSON output, and stderr summary behavior against bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh. Verify both commands emit JSON; stderr includes KPI Summary:; scoped run preserves the requested scope and exits 0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh`
+2. `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh system-spec-kit/022-hybrid-rag-fusion`
+3. `bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh system-spec-kit/022-hybrid-rag-fusion > /tmp/quality-kpi.json`
+4. `node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('/tmp/quality-kpi.json','utf8')); console.log(data.scope, data.totalFiles, data.rates.emptyTriggerPhrasesRate)"`
+
+### Expected
+
+Both commands emit JSON; stderr includes `KPI Summary:`; scoped run preserves the requested scope and exits 0
+
+### Evidence
+
+Full-run transcript, scoped-run transcript, and parsed `/tmp/quality-kpi.json` output
+
+### Pass / Fail
+
+- **Pass**: the script returns JSON plus the stderr summary for both modes and the scoped JSON reflects the requested spec path
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/kpi/quality-kpi.sh`, markdown traversal logic, and trigger-phrase counting if scope handling or JSON generation is wrong
 
 ## 4. REFERENCES
 

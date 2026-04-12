@@ -26,11 +26,35 @@ Operators run the exact prompt and command sequence for `227` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 227 | Feedback-driven revalidation | Confirm memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals | `As a remediation validation operator, confirm memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts. Verify validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts` 2) inspect assertions covering confidence and validation-counter updates for positive and negative `memory_validate` calls 3) inspect assertions covering best-effort adaptive feedback writes plus positive-only promotion thresholds and non-promotable tiers 4) inspect assertions covering persisted negative-feedback events, bounded learned-feedback behavior, and ground-truth capture fields | Validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded | Test transcript + key assertion output for confidence tracking, adaptive feedback, promotion semantics, negative-feedback persistence, and learned-feedback safeguards | PASS if the targeted suites pass and the evidence confirms memory_validate preserves confidence tracking, adaptive feedback, guarded promotion, negative-feedback persistence, and bounded learned-feedback behavior | Inspect `mcp_server/handlers/checkpoints.ts`, `mcp_server/lib/scoring/confidence-tracker.ts`, `mcp_server/lib/cognitive/adaptive-ranking.ts`, `mcp_server/lib/search/auto-promotion.ts`, `mcp_server/lib/scoring/negative-feedback.ts`, `mcp_server/lib/search/learned-feedback.ts`, and `mcp_server/lib/eval/ground-truth-feedback.ts` if validation outcomes or bounded learning signals regress |
+### Prompt
 
----
+```
+As a remediation validation operator, confirm memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts. Verify validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts`
+2. inspect assertions covering confidence and validation-counter updates for positive and negative `memory_validate` calls
+3. inspect assertions covering best-effort adaptive feedback writes plus positive-only promotion thresholds and non-promotable tiers
+4. inspect assertions covering persisted negative-feedback events, bounded learned-feedback behavior, and ground-truth capture fields
+
+### Expected
+
+Validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded
+
+### Evidence
+
+Test transcript + key assertion output for confidence tracking, adaptive feedback, promotion semantics, negative-feedback persistence, and learned-feedback safeguards
+
+### Pass / Fail
+
+- **Pass**: the targeted suites pass and the evidence confirms memory_validate preserves confidence tracking, adaptive feedback, guarded promotion, negative-feedback persistence, and bounded learned-feedback behavior
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `mcp_server/handlers/checkpoints.ts`, `mcp_server/lib/scoring/confidence-tracker.ts`, `mcp_server/lib/cognitive/adaptive-ranking.ts`, `mcp_server/lib/search/auto-promotion.ts`, `mcp_server/lib/scoring/negative-feedback.ts`, `mcp_server/lib/search/learned-feedback.ts`, and `mcp_server/lib/eval/ground-truth-feedback.ts` if validation outcomes or bounded learning signals regress
 
 ## 4. REFERENCES
 

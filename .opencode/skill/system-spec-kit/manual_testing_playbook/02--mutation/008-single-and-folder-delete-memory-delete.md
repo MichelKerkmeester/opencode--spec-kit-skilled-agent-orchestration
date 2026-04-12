@@ -26,11 +26,34 @@ Operators run the exact prompt and command sequence for `EX-008` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-008 | Single and folder delete (memory_delete) | Atomic single delete | `As a mutation validation operator, validate Atomic single delete against checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>"). Verify deleted item absent from retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>")` -> `memory_delete(id)` -> `memory_search(old title)` | Deleted item absent from retrieval | Delete output + search | PASS if deleted item not found and checkpoint exists | Restore `pre-ex008-delete`; verify sandbox folder |
+### Prompt
 
----
+```
+As a mutation validation operator, validate Atomic single delete against checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>"). Verify deleted item absent from retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>")
+2. memory_delete(id)
+3. memory_search(old title)
+
+### Expected
+
+Deleted item absent from retrieval
+
+### Evidence
+
+Delete output + search
+
+### Pass / Fail
+
+- **Pass**: deleted item not found and checkpoint exists
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Restore `pre-ex008-delete`; verify sandbox folder
 
 ## 4. REFERENCES
 

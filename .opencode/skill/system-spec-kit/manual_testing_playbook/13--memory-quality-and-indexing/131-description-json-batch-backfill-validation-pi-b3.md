@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `131` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 131 | Description.json batch backfill validation (PI-B3) | Confirm batch-generated folder descriptions exist and conform to schema | `As a memory-quality validation operator, confirm batch-generated folder descriptions exist and conform to schema against specId. Verify description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Count spec folders with spec.md 2) Count description.json files — expect parity with the current active spec inventory 3) Validate JSON syntax of all files 4) Run explicit C1 conformance checks: `specId` is string, `parentChain` is array of strings, and `memorySequence` is number 5) Spot-check schema fields at depth 1, 3, 5+ 6) Run generateFolderDescriptions → verify per-folder files preferred over spec.md | Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback | Folder count comparison showing `spec.md`/`description.json` parity + JSON syntax validation results + explicit C1 schema checklist evidence + schema field spot-check evidence | PASS if description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback | Verify generateFolderDescriptions covers the current spec inventory → Check JSON schema validation and C1 field-type rules → Inspect per-folder vs spec.md preference logic |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm batch-generated folder descriptions exist and conform to schema against specId. Verify description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Count spec folders with spec.md
+2. Count description.json files — expect parity with the current active spec inventory
+3. Validate JSON syntax of all files
+4. Run explicit C1 conformance checks: `specId` is string, `parentChain` is array of strings, and `memorySequence` is number
+5. Spot-check schema fields at depth 1, 3, 5+
+6. Run generateFolderDescriptions → verify per-folder files preferred over spec.md
+
+### Expected
+
+Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback
+
+### Evidence
+
+Folder count comparison showing `spec.md`/`description.json` parity + JSON syntax validation results + explicit C1 schema checklist evidence + schema field spot-check evidence
+
+### Pass / Fail
+
+- **Pass**: description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify generateFolderDescriptions covers the current spec inventory → Check JSON schema validation and C1 field-type rules → Inspect per-folder vs spec.md preference logic
 
 ## 4. REFERENCES
 

@@ -12,7 +12,11 @@ Given: an improvement runtime where `improvement-journal.jsonl`, `candidate-line
 When: the operator runs `reduce-state.cjs` and then repeats the run with one artifact removed at a time from a disposable runtime copy.
 Then: the registry contains `journalSummary`, `candidateLineage`, and `mutationCoverage`; the dashboard renders each as a distinct replay-consumer section; and any missing artifact resolves to `null` without throwing.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate ADR-002 Option A replay-consumer behavior: reduce-state.cjs reads improvement-journal.jsonl, candidate-lineage.json, and mutation-coverage.json, writes their summaries into the registry, and degrades gracefully when any one artifact is missing against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `experiment-registry.json` contains:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
 node .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs {spec}/improvement
@@ -75,7 +79,7 @@ done
 rm -rf "$RUNTIME_COPY"
 ```
 
-## Expected Signals
+## Expected
 
 - `experiment-registry.json` contains:
   - `journalSummary` with `lastSessionStart`, `lastSessionEnd`, `totalEvents`, `eventTypeCounts`, `stopReason`, `sessionOutcome`

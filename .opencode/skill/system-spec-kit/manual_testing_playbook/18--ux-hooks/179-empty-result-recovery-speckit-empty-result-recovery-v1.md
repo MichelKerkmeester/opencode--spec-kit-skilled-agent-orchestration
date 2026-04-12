@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `179` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 179 | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | Verify structured recovery payloads for empty/weak search results | `As a runtime-hook validation operator, verify structured recovery payloads for empty/weak search results against SPECKIT_EMPTY_RESULT_RECOVERY_V1. Verify recovery payload contains status (no_results/low_confidence/partial); root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap); suggested actions (retry_broader/switch_mode/save_memory/ask_user); alternative query suggestions; thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_EMPTY_RESULT_RECOVERY_V1` is unset or `true` 2) `memory_search({ query: "completely nonexistent topic xyzzy" })` — triggers no_results 3) Search for vague/low-signal query — triggers low_confidence 4) Search with narrow specFolder filter — triggers partial 5) Inspect recovery payload for each: status, reason, actions, alternative queries | Recovery payload contains status (no_results/low_confidence/partial); root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap); suggested actions (retry_broader/switch_mode/save_memory/ask_user); alternative query suggestions; thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3 | Recovery payload JSON per status + root cause + action list + alternative queries + test transcript | PASS if all 3 statuses produce structured payloads with reason, actions, and alternatives; FAIL if status missing, payload fields incomplete, or thresholds incorrect | Verify recovery-payload.ts module loaded → Confirm flag is not forced off → Check DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4 → Verify PARTIAL_RESULT_MIN=3 → Inspect reason inference logic → Check alternative query generation |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, verify structured recovery payloads for empty/weak search results against SPECKIT_EMPTY_RESULT_RECOVERY_V1. Verify recovery payload contains status (no_results/low_confidence/partial); root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap); suggested actions (retry_broader/switch_mode/save_memory/ask_user); alternative query suggestions; thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_EMPTY_RESULT_RECOVERY_V1` is unset or `true`
+2. `memory_search({ query: "completely nonexistent topic xyzzy" })` — triggers no_results
+3. Search for vague/low-signal query — triggers low_confidence
+4. Search with narrow specFolder filter — triggers partial
+5. Inspect recovery payload for each: status, reason, actions, alternative queries
+
+### Expected
+
+Recovery payload contains status (no_results/low_confidence/partial); root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap); suggested actions (retry_broader/switch_mode/save_memory/ask_user); alternative query suggestions; thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3
+
+### Evidence
+
+Recovery payload JSON per status + root cause + action list + alternative queries + test transcript
+
+### Pass / Fail
+
+- **Pass**: all 3 statuses produce structured payloads with reason, actions, and alternatives
+- **Fail**: status missing, payload fields incomplete, or thresholds incorrect
+
+### Failure Triage
+
+Verify recovery-payload.ts module loaded → Confirm flag is not forced off → Check DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4 → Verify PARTIAL_RESULT_MIN=3 → Inspect reason inference logic → Check alternative query generation
 
 ## 4. REFERENCES
 

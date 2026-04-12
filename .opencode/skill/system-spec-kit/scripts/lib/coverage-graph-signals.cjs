@@ -5,8 +5,14 @@
 // ---------------------------------------------------------------
 // Extracted and adapted from mcp_server/lib/graph/graph-signals.ts
 // Provides signal computation for in-memory coverage graphs:
-// degree, depth, momentum, and cluster metrics.
+// degree, depth, recent-edge activity, and cluster metrics.
 // ---------------------------------------------------------------
+
+const {
+  getFilteredEdges,
+  getFilteredNodeIds,
+  matchesSession,
+} = require('./coverage-graph-session.cjs');
 
 /* ---------------------------------------------------------------
    1. DEGREE
@@ -22,53 +28,6 @@ function isValidGraph(graph) {
     typeof graph === 'object' &&
     graph.nodes instanceof Map &&
     graph.edges instanceof Map;
-}
-
-function getNodeSessionId(node) {
-  if (!node || typeof node !== 'object') return null;
-  if (typeof node.sessionId === 'string' && node.sessionId) return node.sessionId;
-  if (node.metadata && typeof node.metadata === 'object' && typeof node.metadata.sessionId === 'string' && node.metadata.sessionId) {
-    return node.metadata.sessionId;
-  }
-  return null;
-}
-
-function getEdgeSessionId(graph, edge) {
-  if (!edge || typeof edge !== 'object') return null;
-  if (typeof edge.sessionId === 'string' && edge.sessionId) return edge.sessionId;
-  if (edge.metadata && typeof edge.metadata === 'object' && typeof edge.metadata.sessionId === 'string' && edge.metadata.sessionId) {
-    return edge.metadata.sessionId;
-  }
-  const sourceSessionId = getNodeSessionId(graph.nodes.get(edge.source));
-  const targetSessionId = getNodeSessionId(graph.nodes.get(edge.target));
-  if (sourceSessionId && (!targetSessionId || targetSessionId === sourceSessionId)) return sourceSessionId;
-  return targetSessionId;
-}
-
-function matchesSession(graph, record, sessionId, recordType) {
-  if (!sessionId) return true;
-  const actualSessionId = recordType === 'edge'
-    ? getEdgeSessionId(graph, record)
-    : getNodeSessionId(record);
-  return actualSessionId === sessionId;
-}
-
-function getFilteredNodeIds(graph, sessionId) {
-  const results = [];
-  if (!isValidGraph(graph)) return results;
-  for (const [nodeId, node] of graph.nodes.entries()) {
-    if (matchesSession(graph, node, sessionId, 'node')) results.push(nodeId);
-  }
-  return results;
-}
-
-function getFilteredEdges(graph, sessionId) {
-  const results = [];
-  if (!isValidGraph(graph)) return results;
-  for (const edge of graph.edges.values()) {
-    if (matchesSession(graph, edge, sessionId, 'edge')) results.push(edge);
-  }
-  return results;
 }
 
 /**
@@ -141,12 +100,10 @@ function buildAdjacencyList(graph, sessionId) {
 
 /**
  * Compute the longest path depth from any root node to the given node.
- * Uses BFS-based topological longest-path on the DAG.
- * Handles cycles by capping at the number of nodes (graceful degradation).
+ * Uses longest-path on the DAG formed by collapsing strongly connected
+ * components so cycles share one bounded depth layer.
  *
- * Adapted from graph-signals.ts computeComponentDepths():
- * - Simplified for in-memory graph without SCC decomposition
- * - Uses Kahn's algorithm for topological ordering with longest-path tracking
+ * Adapted from graph-signals.ts computeComponentDepths().
  *
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @param {string} nodeId - Node identifier
@@ -158,41 +115,7 @@ function computeDepth(graph, nodeId, sessionId) {
   if (!matchesSession(graph, graph.nodes.get(nodeId), sessionId, 'node')) return 0;
 
   const { adjacency, inDegree } = buildAdjacencyList(graph, sessionId);
-
-  // Kahn's algorithm with longest-path tracking
-  const depths = new Map();
-  const remaining = new Map(inDegree);
-  const queue = [];
-
-  // Seed roots (in-degree = 0)
-  for (const [id, deg] of remaining) {
-    if (deg === 0) {
-      depths.set(id, 0);
-      queue.push(id);
-    }
-  }
-
-  let queueIndex = 0;
-  while (queueIndex < queue.length) {
-    const current = queue[queueIndex++];
-    const currentDepth = depths.get(current) || 0;
-
-    for (const neighbor of (adjacency.get(current) || [])) {
-      const candidateDepth = currentDepth + 1;
-      if (candidateDepth > (depths.get(neighbor) || 0)) {
-        depths.set(neighbor, candidateDepth);
-      }
-
-      const nextDeg = (remaining.get(neighbor) || 0) - 1;
-      remaining.set(neighbor, nextDeg);
-      if (nextDeg === 0) {
-        queue.push(neighbor);
-      }
-    }
-  }
-
-  // For nodes in cycles that never reached in-degree 0, assign 0
-  return depths.get(nodeId) || 0;
+  return computeComponentDepths(adjacency, Array.from(inDegree.keys())).depthByNode.get(nodeId) || 0;
 }
 
 /**
@@ -204,62 +127,23 @@ function computeDepth(graph, nodeId, sessionId) {
 function computeAllDepths(graph, sessionId) {
   if (!isValidGraph(graph)) return new Map();
   const { adjacency, inDegree } = buildAdjacencyList(graph, sessionId);
-  const depths = new Map();
-  const remaining = new Map(inDegree);
-  const queue = [];
-
-  for (const [id, deg] of remaining) {
-    if (deg === 0) {
-      depths.set(id, 0);
-      queue.push(id);
-    }
-  }
-
-  let queueIndex = 0;
-  while (queueIndex < queue.length) {
-    const current = queue[queueIndex++];
-    const currentDepth = depths.get(current) || 0;
-
-    for (const neighbor of (adjacency.get(current) || [])) {
-      const candidateDepth = currentDepth + 1;
-      if (candidateDepth > (depths.get(neighbor) || 0)) {
-        depths.set(neighbor, candidateDepth);
-      }
-
-      const nextDeg = (remaining.get(neighbor) || 0) - 1;
-      remaining.set(neighbor, nextDeg);
-      if (nextDeg === 0) {
-        queue.push(neighbor);
-      }
-    }
-  }
-
-  // Ensure every node has a depth entry
-  for (const nodeId of getFilteredNodeIds(graph, sessionId)) {
-    if (!depths.has(nodeId)) depths.set(nodeId, 0);
-  }
-
-  return depths;
+  return computeComponentDepths(adjacency, Array.from(inDegree.keys())).depthByNode;
 }
 
 /* ---------------------------------------------------------------
-   3. MOMENTUM
+   3. RECENT EDGE ACTIVITY
 ----------------------------------------------------------------*/
 
 /**
- * Compute momentum for a node: edge activity within a recent window.
+ * Compute recent edge activity for a node within a recent window.
  * Counts edges created within the last `windowSize` milliseconds.
- *
- * Adapted from graph-signals.ts computeMomentum():
- * - Uses edge createdAt timestamps instead of degree_snapshots table
- * - Windowed activity count rather than delta comparison
  *
  * @param {{ nodes: Map, edges: Map }} graph - In-memory coverage graph
  * @param {string} nodeId - Node identifier
  * @param {number} [windowSize=300000] - Window in milliseconds (default 5 minutes)
  * @returns {number} Count of edges involving this node within the window
  */
-function computeMomentum(graph, nodeId, windowSize, sessionId) {
+function computeRecentEdgeActivity(graph, nodeId, windowSize, sessionId) {
   if (!isValidGraph(graph) || typeof nodeId !== 'string' || !nodeId) return 0;
   const node = graph.nodes.get(nodeId);
   if (!node || !matchesSession(graph, node, sessionId, 'node')) return 0;
@@ -282,6 +166,8 @@ function computeMomentum(graph, nodeId, windowSize, sessionId) {
 
   return count;
 }
+
+const computeMomentum = computeRecentEdgeActivity;
 
 /* ---------------------------------------------------------------
    4. CLUSTER METRICS
@@ -361,6 +247,148 @@ function computeClusterMetrics(graph, sessionId) {
   };
 }
 
+/**
+ * Collapse cycles into strongly connected components so longest-path
+ * depth remains stable in cyclic graphs.
+ *
+ * @param {Map<string, string[]>} adjacency
+ * @param {string[]} allNodes
+ * @returns {{ componentByNode: Map<string, number>, components: string[][] }}
+ */
+function buildStronglyConnectedComponents(adjacency, allNodes) {
+  const componentByNode = new Map();
+  const components = [];
+  const indices = new Map();
+  const lowLinks = new Map();
+  const stack = [];
+  const inStack = new Set();
+  let nextIndex = 0;
+
+  function strongConnect(nodeId) {
+    indices.set(nodeId, nextIndex);
+    lowLinks.set(nodeId, nextIndex);
+    nextIndex++;
+
+    stack.push(nodeId);
+    inStack.add(nodeId);
+
+    for (const neighbor of adjacency.get(nodeId) || []) {
+      if (!indices.has(neighbor)) {
+        strongConnect(neighbor);
+        lowLinks.set(nodeId, Math.min(lowLinks.get(nodeId) ?? 0, lowLinks.get(neighbor) ?? 0));
+      } else if (inStack.has(neighbor)) {
+        lowLinks.set(nodeId, Math.min(lowLinks.get(nodeId) ?? 0, indices.get(neighbor) ?? 0));
+      }
+    }
+
+    if ((lowLinks.get(nodeId) ?? -1) !== (indices.get(nodeId) ?? -2)) {
+      return;
+    }
+
+    const componentId = components.length;
+    const members = [];
+
+    while (stack.length > 0) {
+      const member = stack.pop();
+      if (member === undefined) break;
+
+      inStack.delete(member);
+      componentByNode.set(member, componentId);
+      members.push(member);
+
+      if (member === nodeId) break;
+    }
+
+    components.push(members);
+  }
+
+  for (const nodeId of allNodes) {
+    if (!indices.has(nodeId)) {
+      strongConnect(nodeId);
+    }
+  }
+
+  return { componentByNode, components };
+}
+
+/**
+ * Compute longest-path depths on the SCC-collapsed component DAG.
+ *
+ * @param {Map<string, string[]>} adjacency
+ * @param {string[]} allNodes
+ * @returns {{ depthByNode: Map<string, number>, maxDepth: number }}
+ */
+function computeComponentDepths(adjacency, allNodes) {
+  const { componentByNode, components } = buildStronglyConnectedComponents(adjacency, allNodes);
+  const componentAdjacency = new Map();
+  const componentInDegree = new Map();
+
+  for (let componentId = 0; componentId < components.length; componentId++) {
+    componentAdjacency.set(componentId, new Set());
+    componentInDegree.set(componentId, 0);
+  }
+
+  for (const [sourceId, neighbors] of adjacency.entries()) {
+    const sourceComponent = componentByNode.get(sourceId);
+    if (sourceComponent === undefined) continue;
+
+    const componentNeighbors = componentAdjacency.get(sourceComponent);
+    if (!componentNeighbors) continue;
+
+    for (const neighborId of neighbors) {
+      const targetComponent = componentByNode.get(neighborId);
+      if (targetComponent === undefined || targetComponent === sourceComponent || componentNeighbors.has(targetComponent)) {
+        continue;
+      }
+
+      componentNeighbors.add(targetComponent);
+      componentInDegree.set(targetComponent, (componentInDegree.get(targetComponent) || 0) + 1);
+    }
+  }
+
+  const remainingInDegree = new Map(componentInDegree);
+  const componentDepths = new Map();
+  const queue = [];
+
+  for (let componentId = 0; componentId < components.length; componentId++) {
+    if ((remainingInDegree.get(componentId) || 0) === 0) {
+      componentDepths.set(componentId, 0);
+      queue.push(componentId);
+    }
+  }
+
+  let maxDepth = 0;
+  let queueIndex = 0;
+
+  while (queueIndex < queue.length) {
+    const componentId = queue[queueIndex++];
+    const componentDepth = componentDepths.get(componentId) || 0;
+
+    for (const neighborComponent of componentAdjacency.get(componentId) || []) {
+      const candidateDepth = componentDepth + 1;
+      if (candidateDepth > (componentDepths.get(neighborComponent) || 0)) {
+        componentDepths.set(neighborComponent, candidateDepth);
+        if (candidateDepth > maxDepth) maxDepth = candidateDepth;
+      }
+
+      const nextInDegree = (remainingInDegree.get(neighborComponent) || 0) - 1;
+      remainingInDegree.set(neighborComponent, nextInDegree);
+      if (nextInDegree === 0) {
+        queue.push(neighborComponent);
+      }
+    }
+  }
+
+  const depthByNode = new Map();
+  for (const nodeId of allNodes) {
+    const componentId = componentByNode.get(nodeId);
+    if (componentId === undefined) continue;
+    depthByNode.set(nodeId, componentDepths.get(componentId) || 0);
+  }
+
+  return { depthByNode, maxDepth };
+}
+
 /* ---------------------------------------------------------------
    5. EXPORTS
 ----------------------------------------------------------------*/
@@ -369,11 +397,14 @@ module.exports = {
   computeDegree,
   computeDepth,
   computeAllDepths,
+  computeRecentEdgeActivity,
   computeMomentum,
   computeClusterMetrics,
 
   // Internal helpers exposed for testing
   __testables: {
     buildAdjacencyList,
+    buildStronglyConnectedComponents,
+    computeComponentDepths,
   },
 };

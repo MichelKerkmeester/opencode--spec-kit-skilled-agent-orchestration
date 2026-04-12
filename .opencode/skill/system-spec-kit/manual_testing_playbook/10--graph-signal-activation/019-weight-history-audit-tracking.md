@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `019` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 019 | Weight history audit tracking | Confirm edge change logging + rollback | `As a graph-signal validation operator, confirm edge change logging + rollback against the documented validation surface. Verify audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Mutate edge strengths 2) Inspect audit rows 3) Run rollback | Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only | Audit table rows showing before/after values + rollback verification + row count after rollback | PASS: Each mutation produces audit row with old/new values; rollback restores prior weights; FAIL: Missing audit rows or rollback data loss | Check audit table schema → Verify trigger/hook on edge mutation → Inspect rollback query logic |
+### Prompt
 
----
+```
+As a graph-signal validation operator, confirm edge change logging + rollback against the documented validation surface. Verify audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Mutate edge strengths
+2. Inspect audit rows
+3. Run rollback
+
+### Expected
+
+Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only
+
+### Evidence
+
+Audit table rows showing before/after values + rollback verification + row count after rollback
+
+### Pass / Fail
+
+- **Pass**: Each mutation produces audit row with old/new values; rollback restores prior weights
+- **Fail**: Missing audit rows or rollback data loss
+
+### Failure Triage
+
+Check audit table schema → Verify trigger/hook on edge mutation → Inspect rollback query logic
 
 ## 4. REFERENCES
 

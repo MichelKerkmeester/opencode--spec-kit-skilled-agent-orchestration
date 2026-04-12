@@ -24,11 +24,33 @@ Operators run the exact prompt and command sequence for `EX-013` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-013 | Health diagnostics (memory_health) | Index/FTS integrity check | `As a discovery validation operator, validate Index/FTS integrity check against memory_health(reportMode:full). Verify healthy/degraded status and diagnostics. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_health(reportMode:full)` -> `memory_health(reportMode:divergent_aliases)` | healthy/degraded status and diagnostics | Health outputs | PASS if report completes with actionable diagnostics | Run index_scan(force) if FTS mismatch |
+### Prompt
 
----
+```
+As a discovery validation operator, validate Index/FTS integrity check against memory_health(reportMode:full). Verify healthy/degraded status and diagnostics. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_health(reportMode:full)
+2. memory_health(reportMode:divergent_aliases)
+
+### Expected
+
+healthy/degraded status and diagnostics
+
+### Evidence
+
+Health outputs
+
+### Pass / Fail
+
+- **Pass**: report completes with actionable diagnostics
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Run index_scan(force) if FTS mismatch
 
 ## 4. REFERENCES
 

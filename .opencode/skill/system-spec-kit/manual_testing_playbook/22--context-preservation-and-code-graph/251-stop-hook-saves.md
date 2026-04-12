@@ -36,13 +36,90 @@ This scenario validates Stop hook token tracking.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 251a | Stop hook token tracking | Transcript JSONL parsing extracts token counts and model | `As a context-and-code-graph validation operator, validate Transcript JSONL parsing extracts token counts and model against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify parseTranscript() returns correct promptTokens, completionTokens, totalTokens, messageCount, model. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts` | `parseTranscript()` returns correct `promptTokens`, `completionTokens`, `totalTokens`, `messageCount`, `model` | Test output showing parsed token values | PASS if aggregated tokens match expected fixture totals | Check `claude-transcript.ts` for JSONL field mapping (`input_tokens`, `output_tokens`) |
-| 251b | Stop hook token tracking | Cost estimation per model pricing tier | `As a context-and-code-graph validation operator, validate Cost estimation per model pricing tier against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify estimateCost() returns correct USD for Opus ($15/$75/1M), Sonnet ($3/$15/1M), Haiku ($0.25/$1.25/1M). Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts` | `estimateCost()` returns correct USD for Opus ($15/$75/1M), Sonnet ($3/$15/1M), Haiku ($0.25/$1.25/1M) | Test output showing cost values | PASS if cost estimates match per-model pricing to 4 decimal places | Verify pricing constants in `claude-transcript.ts` estimateCost() |
-| 251c | Stop hook token tracking | Incremental parsing via byte offset and metric snapshot storage | `As a context-and-code-graph validation operator, validate Incremental parsing via byte offset and metric snapshot storage against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify parsing from startOffset skips prior lines, newOffset advances, metrics stored in hook state JSON. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts` | Parsing from `startOffset` skips prior lines, `newOffset` advances, metrics stored in hook state JSON | Test output showing offset values and state write | PASS if re-parse from newOffset yields zero new messages, and state contains metrics | Check byte offset calculation with `Buffer.byteLength` for UTF-8 |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Transcript JSONL parsing extracts token counts and model against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify parseTranscript() returns correct promptTokens, completionTokens, totalTokens, messageCount, model. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts
+
+### Expected
+
+parseTranscript()` returns correct `promptTokens`, `completionTokens`, `totalTokens`, `messageCount`, `model
+
+### Evidence
+
+Test output showing parsed token values
+
+### Pass / Fail
+
+- **Pass**: aggregated tokens match expected fixture totals
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `claude-transcript.ts` for JSONL field mapping (`input_tokens`, `output_tokens`)
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Cost estimation per model pricing tier against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify estimateCost() returns correct USD for Opus ($15/$75/1M), Sonnet ($3/$15/1M), Haiku ($0.25/$1.25/1M). Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts
+
+### Expected
+
+`estimateCost()` returns correct USD for Opus ($15/$75/1M), Sonnet ($3/$15/1M), Haiku ($0.25/$1.25/1M)
+
+### Evidence
+
+Test output showing cost values
+
+### Pass / Fail
+
+- **Pass**: cost estimates match per-model pricing to 4 decimal places
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify pricing constants in `claude-transcript.ts` estimateCost()
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Incremental parsing via byte offset and metric snapshot storage against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts. Verify parsing from startOffset skips prior lines, newOffset advances, metrics stored in hook state JSON. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-stop-token-tracking.vitest.ts
+
+### Expected
+
+Parsing from `startOffset` skips prior lines, `newOffset` advances, metrics stored in hook state JSON
+
+### Evidence
+
+Test output showing offset values and state write
+
+### Pass / Fail
+
+- **Pass**: re-parse from newOffset yields zero new messages, and state contains metrics
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check byte offset calculation with `Buffer.byteLength` for UTF-8
 
 ## 4. REFERENCES
 

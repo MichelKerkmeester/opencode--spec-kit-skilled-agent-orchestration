@@ -293,7 +293,7 @@ This section records wave planning and capacity guidance for the manual testing 
 ### What Belongs In Per-Feature Files
 
 - Real user request
-- Orchestrator prompt
+- Prompt field following the Role -> Context -> Action -> Format contract
 - Expected delegation or alternate-CLI routing
 - Desired user-visible outcome
 - Feature-specific acceptance caveats or isolation constraints
@@ -308,7 +308,7 @@ This section records wave planning and capacity guidance for the manual testing 
 Verify {OBJECTIVE}.
 
 #### Current Reality
-Prompt: `{EXACT_PROMPT}`
+Prompt: `As a {ROLE}, {ACTION} against {TARGET}. Verify {EXPECTED_OUTCOME}. Return {OUTPUT_FORMAT}.`
 
 {CURRENT_REALITY_SUMMARY}
 
@@ -328,7 +328,7 @@ Desired user-visible outcome: {DESIRED_USER_OUTCOME}
 Verify {OBJECTIVE_2}.
 
 #### Current Reality
-Prompt: `{EXACT_PROMPT_2}`
+Prompt: `As a {ROLE_2}, {ACTION_2} against {TARGET_2}. Verify {EXPECTED_OUTCOME_2}. Return {OUTPUT_FORMAT_2}.`
 
 {CURRENT_REALITY_SUMMARY_2}
 
@@ -390,8 +390,8 @@ Operators run the exact prompt and command sequence for `{FEATURE_ID}` and confi
 
 - Objective: {OBJECTIVE}
 - Real user request: `{REAL_USER_REQUEST}`
-- Orchestrator prompt: `{EXACT_PROMPT}`
-- Expected process: {EXPECTED_PROCESS}
+- Prompt: `As a {ROLE}, {ACTION} against {TARGET}. Verify {EXPECTED_OUTCOME}. Return {OUTPUT_FORMAT}.`
+- Expected execution process: {EXPECTED_PROCESS}
 - Expected signals: {EXPECTED_SIGNALS}
 - Desired user-visible outcome: {DESIRED_USER_OUTCOME}
 - Pass/fail: PASS if {PASS_CONDITION}; FAIL if {FAIL_CONDITION}

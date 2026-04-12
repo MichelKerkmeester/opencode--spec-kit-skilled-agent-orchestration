@@ -33,13 +33,90 @@ This scenario validates Gemini CLI hooks.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 265a | Gemini CLI hooks | Session-prime outputs additionalContext on startup | `Validate 265a session-prime startup` | `echo '{"session_id":"test","source":"startup","cwd":"."}' \| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-prime.js` | JSON output with hookSpecificOutput.additionalContext string | Hook script stdout | PASS if valid JSON with additionalContext field containing context text | Check formatGeminiOutput() and session-prime handleStartup() |
-| 265b | Gemini CLI hooks | Compact-inject returns empty when no cached payload | `Validate 265b compact-inject no-op` | `echo '{"session_id":"test","hook_event_name":"BeforeAgent","prompt":"test"}' \| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/compact-inject.js` | No output or empty JSON (no cached compact payload) | Hook script stdout | PASS if no additionalContext injected when no cache exists | Check readAndClearCompactPrime() returns null |
-| 265c | Gemini CLI hooks | Shared stdin parser handles Gemini format | `As a context-and-code-graph validation operator, validate Shared stdin parser handles Gemini format against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/ --grep gemini. Verify parseGeminiStdin returns GeminiHookInput with session_id, source, cwd. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/ --grep gemini` | parseGeminiStdin returns GeminiHookInput with session_id, source, cwd | Test output | PASS if all fields parsed correctly from Gemini JSON format | Check parseGeminiStdin() buffer concatenation and JSON.parse |
+### Prompt
+
+```
+Validate 265a session-prime startup
+```
+
+### Commands
+
+1. echo '{"session_id":"test","source":"startup","cwd":"."}' \| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-prime.js
+
+### Expected
+
+JSON output with hookSpecificOutput.additionalContext string
+
+### Evidence
+
+Hook script stdout
+
+### Pass / Fail
+
+- **Pass**: valid JSON with additionalContext field containing context text
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check formatGeminiOutput() and session-prime handleStartup()
 
 ---
+
+### Prompt
+
+```
+Validate 265b compact-inject no-op
+```
+
+### Commands
+
+1. echo '{"session_id":"test","hook_event_name":"BeforeAgent","prompt":"test"}' \| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/compact-inject.js
+
+### Expected
+
+No output or empty JSON (no cached compact payload)
+
+### Evidence
+
+Hook script stdout
+
+### Pass / Fail
+
+- **Pass**: no additionalContext injected when no cache exists
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check readAndClearCompactPrime() returns null
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Shared stdin parser handles Gemini format against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/ --grep gemini. Verify parseGeminiStdin returns GeminiHookInput with session_id, source, cwd. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/ --grep gemini
+
+### Expected
+
+parseGeminiStdin returns GeminiHookInput with session_id, source, cwd
+
+### Evidence
+
+Test output
+
+### Pass / Fail
+
+- **Pass**: all fields parsed correctly from Gemini JSON format
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check parseGeminiStdin() buffer concatenation and JSON.parse
 
 ## 4. REFERENCES
 

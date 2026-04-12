@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-025` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-025 | Learning history (memory_get_learning_history) | Trend review | `As an analysis validation operator, validate Trend review against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_get_learning_history(specFolder,onlyComplete:true)` | Historical entries returned | History output | PASS if completed cycles listed | Remove filter if no results |
+### Prompt
 
----
+```
+As an analysis validation operator, validate Trend review against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_get_learning_history(specFolder,onlyComplete:true)
+
+### Expected
+
+Historical entries returned
+
+### Evidence
+
+History output
+
+### Pass / Fail
+
+- **Pass**: completed cycles listed
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Remove filter if no results
 
 ## 4. REFERENCES
 

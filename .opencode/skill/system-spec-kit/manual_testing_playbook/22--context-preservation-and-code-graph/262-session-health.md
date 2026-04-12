@@ -33,14 +33,119 @@ This scenario validates Session health tool (session_health).
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 262a | Session health tool | Fresh session returns status=ok with healthy quality | `As a context-and-code-graph validation operator, validate Fresh session returns status=ok with healthy quality against session_health({}). Verify status === 'ok', qualityScore.level === 'healthy', recency factor close to 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_health({})` immediately after `memory_stats({})` | status === 'ok', qualityScore.level === 'healthy', recency factor close to 1.0 | session_health response JSON | PASS if status is 'ok' and quality level is 'healthy' | Check FIFTEEN_MINUTES_MS threshold and recency decay in context-metrics.ts |
-| 262b | Session health tool | Detail fields and graph freshness | `As a context-and-code-graph validation operator, validate Detail fields and graph freshness against session_health({}). Verify sessionAgeMs > 0, lastToolCallAgoMs >= 0, graphFreshness in [fresh, stale, empty, error], primingStatus in [primed, not_primed]. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_health({})` | sessionAgeMs > 0, lastToolCallAgoMs >= 0, graphFreshness in [fresh, stale, empty, error], primingStatus in [primed, not_primed] | Response fields and values | PASS if all detail fields present with valid values | Check getCodeGraphStatusSnapshot() and getSessionTimestamps() |
-| 262c | Session health tool | Quality score 4-factor breakdown | `As a context-and-code-graph validation operator, validate Quality score 4-factor breakdown against session_health({}). Verify qualityScore.factors has recency, recovery, graphFreshness, continuity each 0.0-1.0. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_health({})` | qualityScore.factors has recency, recovery, graphFreshness, continuity each 0.0-1.0 | Factor values in response | PASS if all 4 factors present and within [0.0, 1.0] range | Check computeQualityScore() in context-metrics.ts |
-| 262d | Session health tool | session_health excluded from idle timer | `As a context-and-code-graph validation operator, validate session_health excluded from idle timer against memory_stats({}). Verify lastToolCallAgoMs continues increasing from the last non-health tool call instead of resetting on session_health. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_stats({})`, wait, call `session_health({})`, wait again, call `session_health({})` a second time | `lastToolCallAgoMs` continues increasing from the last non-health tool call instead of resetting on `session_health` | Two `session_health` responses showing increasing `lastToolCallAgoMs` despite an intervening health check | PASS if `lastToolCallAgoMs` reflects time since the last non-health tool call, not the `session_health` call itself | Check `hooks/memory-surface.ts` `recordToolCall()` usage and confirm `session_health` reads timestamps without mutating them |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Fresh session returns status=ok with healthy quality against session_health({}). Verify status === 'ok', qualityScore.level === 'healthy', recency factor close to 1.0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_health({})` immediately after `memory_stats({})`
+
+### Expected
+
+status === 'ok', qualityScore.level === 'healthy', recency factor close to 1.0
+
+### Evidence
+
+session_health response JSON
+
+### Pass / Fail
+
+- **Pass**: status is 'ok' and quality level is 'healthy'
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check FIFTEEN_MINUTES_MS threshold and recency decay in context-metrics.ts
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Detail fields and graph freshness against session_health({}). Verify sessionAgeMs > 0, lastToolCallAgoMs >= 0, graphFreshness in [fresh, stale, empty, error], primingStatus in [primed, not_primed]. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_health({})`
+
+### Expected
+
+sessionAgeMs > 0, lastToolCallAgoMs >= 0, graphFreshness in [fresh, stale, empty, error], primingStatus in [primed, not_primed]
+
+### Evidence
+
+Response fields and values
+
+### Pass / Fail
+
+- **Pass**: all detail fields present with valid values
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check getCodeGraphStatusSnapshot() and getSessionTimestamps()
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Quality score 4-factor breakdown against session_health({}). Verify qualityScore.factors has recency, recovery, graphFreshness, continuity each 0.0-1.0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_health({})`
+
+### Expected
+
+qualityScore.factors has recency, recovery, graphFreshness, continuity each 0.0-1.0
+
+### Evidence
+
+Factor values in response
+
+### Pass / Fail
+
+- **Pass**: all 4 factors present and within [0.0, 1.0] range
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check computeQualityScore() in context-metrics.ts
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate session_health excluded from idle timer against memory_stats({}). Verify lastToolCallAgoMs continues increasing from the last non-health tool call instead of resetting on session_health. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_stats({})`, wait, call `session_health({})`, wait again, call `session_health({})` a second time
+
+### Expected
+
+lastToolCallAgoMs` continues increasing from the last non-health tool call instead of resetting on `session_health
+
+### Evidence
+
+Two `session_health` responses showing increasing `lastToolCallAgoMs` despite an intervening health check
+
+### Pass / Fail
+
+- **Pass**: `lastToolCallAgoMs` reflects time since the last non-health tool call, not the `session_health` call itself
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `hooks/memory-surface.ts` `recordToolCall()` usage and confirm `session_health` reads timestamps without mutating them
 
 ## 4. REFERENCES
 

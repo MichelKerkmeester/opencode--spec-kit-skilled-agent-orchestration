@@ -24,11 +24,35 @@ Operators verify that the phase-system reference is not just descriptive: the sh
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 236 | Phase-System Knowledge Node | Confirm the documented phase model aligns with the live creation, workflow, and validation surfaces | `As a tooling validation operator, confirm the documented phase model aligns with the live creation, workflow, and validation surfaces against bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh. Verify phase-system tests pass; recursive validation exits 0 on the valid fixture; direct phase-link check passes without warn/error output. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh` 2) `node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js` 3) `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/skill/system-spec-kit/scripts/tests/fixtures/phase-validation/valid-phase --recursive` 4) `bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh .opencode/skill/system-spec-kit/scripts/tests/fixtures/phase-validation/valid-phase` | Phase-system tests pass; recursive validation exits 0 on the valid fixture; direct phase-link check passes without warn/error output | Test transcript, recursive validation output, and direct rule output | PASS if all four commands succeed and the valid fixture is treated as phase-coherent across both orchestrated and direct checks | Inspect `nodes/phase-system.md`, `scripts/tests/test-phase-system.sh`, `scripts/spec/validate.sh`, and `scripts/rules/check-phase-links.sh` if the documented model diverges from executable behavior |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm the documented phase model aligns with the live creation, workflow, and validation surfaces against bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh. Verify phase-system tests pass; recursive validation exits 0 on the valid fixture; direct phase-link check passes without warn/error output. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh`
+2. `node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js`
+3. `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/skill/system-spec-kit/scripts/tests/fixtures/phase-validation/valid-phase --recursive`
+4. `bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh .opencode/skill/system-spec-kit/scripts/tests/fixtures/phase-validation/valid-phase`
+
+### Expected
+
+Phase-system tests pass; recursive validation exits 0 on the valid fixture; direct phase-link check passes without warn/error output
+
+### Evidence
+
+Test transcript, recursive validation output, and direct rule output
+
+### Pass / Fail
+
+- **Pass**: all four commands succeed and the valid fixture is treated as phase-coherent across both orchestrated and direct checks
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `nodes/phase-system.md`, `scripts/tests/test-phase-system.sh`, `scripts/spec/validate.sh`, and `scripts/rules/check-phase-links.sh` if the documented model diverges from executable behavior
 
 ## 4. REFERENCES
 

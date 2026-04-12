@@ -30,10 +30,15 @@ const replayRunner = require(path.join(
     recoveryAttempts: number;
     recoverySuccesses: number;
     totalFindings: number;
-    relevantFindings: number;
-    stopReason: string;
-    perIterationSignals: object[];
-    finalSignals: object | null;
+      relevantFindings: number;
+      stopReason: string;
+      perIterationSignals: object[];
+      graphBonus: number;
+      finalSignals: object | null;
+    };
+  extractReplayMetrics: (corpusEntry: Record<string, any>) => {
+    graphMetrics: { graphConvergence: number } | null;
+    waveMetrics: { convergenceScore: number } | null;
   };
   compareResults: (
     baseline: Record<string, any>,
@@ -148,6 +153,16 @@ describe('Deterministic Replay Runner (T003)', () => {
       expect(result.totalFindings).toBeGreaterThan(0);
     });
 
+    it('uses normalized corpus metrics for graph bonus decisions', () => {
+      const entry = loadSampleCorpusEntry();
+      const metrics = replayRunner.extractReplayMetrics(entry);
+      expect(metrics.graphMetrics).toBeNull();
+      expect(metrics.waveMetrics).toEqual({ convergenceScore: 0.62 });
+
+      const result = replayRunner.replayRun(entry, { maxIterations: 7 });
+      expect(result.graphBonus).toBe(1.1);
+    });
+
     it('should handle empty iterations', () => {
       const entry = {
         id: 'empty-test',
@@ -165,22 +180,41 @@ describe('Deterministic Replay Runner (T003)', () => {
       expect(result.stopReason).toBe('maxIterationsReached');
     });
 
-    it('should produce different results for different configs', () => {
-      const entry = loadSampleCorpusEntry();
-      const baseline = JSON.parse(
-        fs.readFileSync(path.join(FIXTURES_DIR, 'sample-config-baseline.json'), 'utf8'),
-      );
-      const candidate = JSON.parse(
-        fs.readFileSync(path.join(FIXTURES_DIR, 'sample-config-candidate.json'), 'utf8'),
-      );
+    it('should distinguish configs when fixtures straddle convergence thresholds', () => {
+      const entry = {
+        id: 'threshold-straddle',
+        packetFamily: '040',
+        sourceRun: 'fixture',
+        config: {},
+        iterations: [
+          { run: 1, findingsCount: 1, newInfoRatio: 0.09 },
+          { run: 2, findingsCount: 1, newInfoRatio: 0.07 },
+        ],
+        stopOutcome: { stopReason: 'converged' },
+      };
 
-      const baselineResult = replayRunner.replayRun(entry, baseline);
-      const candidateResult = replayRunner.replayRun(entry, candidate);
+      const looseThresholdResult = replayRunner.replayRun(entry, {
+        convergenceThreshold: 0.10,
+        maxIterations: 7,
+      });
+      const strictThresholdResult = replayRunner.replayRun(entry, {
+        convergenceThreshold: 0.08,
+        maxIterations: 7,
+      });
 
-      // Results may differ because different thresholds change convergence behavior
-      // At minimum, the per-iteration signals should reflect different thresholds
-      expect(baselineResult.perIterationSignals[0]).toBeDefined();
-      expect(candidateResult.perIterationSignals[0]).toBeDefined();
+      expect(looseThresholdResult.converged).toBe(true);
+      expect(looseThresholdResult.iterationsUsed).toBe(1);
+      expect(looseThresholdResult.perIterationSignals[0]).toMatchObject({
+        belowThreshold: true,
+        newInfoRatio: 0.09,
+      });
+
+      expect(strictThresholdResult.converged).toBe(true);
+      expect(strictThresholdResult.iterationsUsed).toBe(2);
+      expect(strictThresholdResult.perIterationSignals[0]).toMatchObject({
+        belowThreshold: false,
+        newInfoRatio: 0.09,
+      });
     });
   });
 

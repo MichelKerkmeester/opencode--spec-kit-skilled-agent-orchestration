@@ -8,7 +8,11 @@ category: "Reducer Dimensions"
 
 Validates that JSONL records containing dimension data produce a Dimensional Progress table in the reducer output.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that JSONL records containing dimension data produce a Dimensional Progress table in the reducer output against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Reducer completes without errors, exit code 0. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 # Setup: create a test JSONL WITH dimensions
@@ -23,7 +27,7 @@ node .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs /tmp/reducer-test
 grep "Dimensional Progress" /tmp/reducer-test-dim/agent-improvement-dashboard.md && grep "structural" /tmp/reducer-test-dim/agent-improvement-dashboard.md && echo "PASS"
 ```
 
-## Expected Signals
+## Expected
 
 - Reducer completes without errors, exit code 0
 - Dashboard generated at `/tmp/reducer-test-dim/agent-improvement-dashboard.md`

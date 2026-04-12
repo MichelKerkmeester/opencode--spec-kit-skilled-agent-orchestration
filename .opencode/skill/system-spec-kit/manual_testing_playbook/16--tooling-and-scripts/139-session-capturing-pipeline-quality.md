@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `139` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 139 | Session capturing pipeline quality | Canonical coverage sourced from M-007 session-capturing closure verification | `As a tooling validation operator, validate Canonical coverage sourced from M-007 session-capturing closure verification against the documented validation surface. Verify coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (toolCalls, exchanges), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise pass/fail verdict with the main reason and cited evidence.` | See the canonical M-007 snippet for the full automated, standards, and manual execution matrix. | Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. | M-007 execution evidence plus the linked session-capturing feature catalog entry. | PASS if the M-007 closure matrix passes and covers the session-capturing quality contract; FAIL if the canonical M-007 coverage is incomplete or contradictory. | Inspect the M-007 snippet, the session-capturing catalog entry, and the related closure evidence before introducing any alternative scenario wording. |
+### Prompt
 
----
+```
+As a tooling validation operator, validate Canonical coverage sourced from M-007 session-capturing closure verification against the documented validation surface. Verify coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (toolCalls, exchanges), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. See the canonical M-007 snippet for the full automated, standards, and manual execution matrix.
+
+### Expected
+
+Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness.
+
+### Evidence
+
+M-007 execution evidence plus the linked session-capturing feature catalog entry.
+
+### Pass / Fail
+
+- **Pass**: the M-007 closure matrix passes and covers the session-capturing quality contract
+- **Fail**: the canonical M-007 coverage is incomplete or contradictory.
+
+### Failure Triage
+
+Inspect the M-007 snippet, the session-capturing catalog entry, and the related closure evidence before introducing any alternative scenario wording.
 
 ## 4. REFERENCES
 

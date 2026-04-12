@@ -97,6 +97,57 @@ function resolveApprovedCorpusPath(rawPath, label, expectedType) {
   return realPath;
 }
 
+function findLastRecord(records, predicate) {
+  if (!Array.isArray(records)) return null;
+  for (let index = records.length - 1; index >= 0; index--) {
+    const record = records[index];
+    if (predicate(record)) return record;
+  }
+  return null;
+}
+
+function getFiniteMetric(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function pickFiniteMetric(candidates) {
+  for (const candidate of candidates) {
+    const metric = getFiniteMetric(candidate);
+    if (metric !== null) return metric;
+  }
+  return null;
+}
+
+function extractReplayMetrics(iterations, events, stopEvent) {
+  const latestIterationWithSignals = findLastRecord(
+    iterations,
+    (iteration) => iteration && iteration.convergenceSignals && typeof iteration.convergenceSignals === 'object',
+  );
+  const latestSignals = latestIterationWithSignals && latestIterationWithSignals.convergenceSignals
+    ? latestIterationWithSignals.convergenceSignals
+    : {};
+  const latestGraphEvent = findLastRecord(
+    events,
+    (eventRecord) => eventRecord && eventRecord.event === 'graph_convergence',
+  );
+
+  const graphConvergence = pickFiniteMetric([
+    latestGraphEvent && latestGraphEvent.score,
+    latestGraphEvent && latestGraphEvent.signals && latestGraphEvent.signals.score,
+    latestGraphEvent && latestGraphEvent.signals && latestGraphEvent.signals.blendedScore,
+    latestSignals.graphConvergence,
+  ]);
+  const convergenceScore = pickFiniteMetric([
+    latestSignals.compositeStop,
+    stopEvent && stopEvent.legalStop && stopEvent.legalStop.replayInputs && stopEvent.legalStop.replayInputs.stopScore,
+  ]);
+
+  return {
+    graphMetrics: graphConvergence === null ? null : { graphConvergence },
+    waveMetrics: convergenceScore === null ? null : { convergenceScore },
+  };
+}
+
 /* ---------------------------------------------------------------
    2. CORPUS ENTRY SCHEMA
 ----------------------------------------------------------------*/
@@ -142,6 +193,14 @@ function validateCorpusEntry(entry) {
 
   if (entry.stopOutcome && typeof entry.stopOutcome !== 'object') {
     errors.push('stopOutcome must be an object');
+  }
+
+  if (entry.graphMetrics !== undefined && entry.graphMetrics !== null && typeof entry.graphMetrics !== 'object') {
+    errors.push('graphMetrics must be an object when provided');
+  }
+
+  if (entry.waveMetrics !== undefined && entry.waveMetrics !== null && typeof entry.waveMetrics !== 'object') {
+    errors.push('waveMetrics must be an object when provided');
   }
 
   return { valid: errors.length === 0, errors };
@@ -206,16 +265,13 @@ function extractCorpusEntry(records, packetFamily, sourceRunId, options) {
   // Find the LAST terminal event (synthesis_complete, stop_decision, etc.)
   // An intermediate stop_decision before the real synthesis_complete must not
   // freeze stopOutcome — iterate all events and keep the final match.
-  let stopEvent = null;
-  for (const e of events) {
-    if (
-      e.event === 'synthesis_complete' ||
-      e.event === 'stop_decision' ||
-      e.event === 'stopped'
-    ) {
-      stopEvent = e;
-    }
-  }
+  const stopEvent = findLastRecord(events, (eventRecord) => (
+    eventRecord &&
+    (eventRecord.event === 'synthesis_complete' ||
+      eventRecord.event === 'stop_decision' ||
+      eventRecord.event === 'stopped')
+  ));
+  const replayMetrics = extractReplayMetrics(iterations, events, stopEvent);
 
   const familyInfo = PACKET_FAMILIES[packetFamily] || {
     role: 'unknown',
@@ -259,15 +315,13 @@ function extractCorpusEntry(records, packetFamily, sourceRunId, options) {
           totalIterations: iterations.length,
           verdict: null,
         },
+    graphMetrics: replayMetrics.graphMetrics,
+    waveMetrics: replayMetrics.waveMetrics,
     metadata: {
       extractedAt,
       sourceRecordCount: records.length,
-      hasGraphMetrics: iterations.some(
-        (i) => i.convergenceSignals && i.convergenceSignals.graphCoverage !== undefined,
-      ),
-      hasWaveMetrics: iterations.some(
-        (i) => i.convergenceSignals && i.convergenceSignals.waveSegments !== undefined,
-      ),
+      hasGraphMetrics: replayMetrics.graphMetrics !== null,
+      hasWaveMetrics: replayMetrics.waveMetrics !== null,
     },
   };
 

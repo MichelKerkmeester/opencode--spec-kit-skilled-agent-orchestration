@@ -8,13 +8,17 @@ category: "End-to-End Loop"
 
 Validates that the improvement loop detects when a mutation improves one dimension at the cost of another, reports the trade-off explicitly, and does not auto-promote candidates with unresolved trade-offs.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the improvement loop detects when a mutation improves one dimension at the cost of another, reports the trade-off explicitly, and does not auto-promote candidates with unresolved trade-offs against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Dimension trajectory tracked per iteration (at least 3 data points before convergence claim). Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment --iterations=3
 ```
 
-## Expected Signals
+## Expected
 
 - Dimension trajectory tracked per iteration (at least 3 data points before convergence claim)
 - Trade-off detected when one dimension delta is positive and another is negative beyond threshold

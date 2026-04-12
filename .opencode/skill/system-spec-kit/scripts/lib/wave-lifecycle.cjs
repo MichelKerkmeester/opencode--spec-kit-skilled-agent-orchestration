@@ -32,6 +32,20 @@ const LIFECYCLE_PHASES = Object.freeze([
 ]);
 
 /**
+ * Allowed adjacent lifecycle transitions.
+ * @type {Readonly<Record<string, ReadonlyArray<string>>>}
+ */
+const LIFECYCLE_TRANSITIONS = Object.freeze({
+  prepass: Object.freeze(['plan']),
+  plan: Object.freeze(['fan-out']),
+  'fan-out': Object.freeze(['prune']),
+  prune: Object.freeze(['promote']),
+  promote: Object.freeze(['join']),
+  join: Object.freeze(['merge']),
+  merge: Object.freeze([]),
+});
+
+/**
  * Valid segment statuses.
  * @type {ReadonlyArray<string>}
  */
@@ -332,6 +346,7 @@ function advancePhase(waveContext, targetPhase) {
 
   const currentIndex = LIFECYCLE_PHASES.indexOf(waveContext.phase);
   const targetIndex = LIFECYCLE_PHASES.indexOf(targetPhase);
+  const allowedTransitions = LIFECYCLE_TRANSITIONS[waveContext.phase];
 
   if (targetIndex < 0) {
     return {
@@ -342,13 +357,25 @@ function advancePhase(waveContext, targetPhase) {
     };
   }
 
-  // Allow forward transitions only (no backward jumps)
-  if (targetIndex <= currentIndex) {
+  if (!Array.isArray(allowedTransitions)) {
     return {
       success: false,
       previousPhase: waveContext.phase,
       currentPhase: waveContext.phase,
-      error: `Cannot transition backward from "${waveContext.phase}" to "${targetPhase}"`,
+      error: `Invalid current phase: ${waveContext.phase}`,
+    };
+  }
+
+  if (!allowedTransitions.includes(targetPhase)) {
+    const isBackward = currentIndex >= 0 && targetIndex < currentIndex;
+    const allowedLabel = allowedTransitions.length > 0 ? allowedTransitions.join(', ') : 'none';
+    return {
+      success: false,
+      previousPhase: waveContext.phase,
+      currentPhase: waveContext.phase,
+      error: isBackward
+        ? `Cannot transition backward from "${waveContext.phase}" to "${targetPhase}" (allowed next phase(s): ${allowedLabel})`
+        : `Cannot transition from "${waveContext.phase}" to "${targetPhase}" (allowed next phase(s): ${allowedLabel})`,
     };
   }
 
@@ -417,6 +444,7 @@ function compareSeverity(a, b) {
 module.exports = {
   // Constants
   LIFECYCLE_PHASES,
+  LIFECYCLE_TRANSITIONS,
   SEGMENT_STATUSES,
   MAX_PARALLEL_SEGMENTS,
   MERGE_STRATEGIES,

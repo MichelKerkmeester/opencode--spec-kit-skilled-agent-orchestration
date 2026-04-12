@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-026 | Ablation studies (eval_run_ablation) | Full plus focused channel-impact verification | `As an evaluation validation operator, validate Full plus focused channel-impact verification against eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true }). Verify baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are explicit. Return a concise pass/fail verdict with the main reason and cited evidence.` | `eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true })` -> `eval_run_ablation({ mode:"ablation", channels:["fts5"], groundTruthQueryIds:[1,99999], storeResults:true, includeFormattedReport:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are explicit | Full ablation report, focused fts5 report with query-ID warnings, and dashboard output | PASS if the runs are cleanly comparable or the output isolates missing-ID/provenance/truncation invalidation before any channel verdict is trusted | Validate ground-truth mapping against the active parent-memory DB; inspect missing-query-ID warnings and runtime logs for token-budget truncation if Recall@K collapses |
+### Prompt
 
----
+```
+As an evaluation validation operator, validate Full plus focused channel-impact verification against eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true }). Verify baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are explicit. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true })
+2. eval_run_ablation({ mode:"ablation", channels:["fts5"], groundTruthQueryIds:[1,99999], storeResults:true, includeFormattedReport:true })
+3. eval_reporting_dashboard({ format:"json", limit:10 })
+
+### Expected
+
+Baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are explicit
+
+### Evidence
+
+Full ablation report, focused fts5 report with query-ID warnings, and dashboard output
+
+### Pass / Fail
+
+- **Pass**: the runs are cleanly comparable or the output isolates missing-ID/provenance/truncation invalidation before any channel verdict is trusted
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Validate ground-truth mapping against the active parent-memory DB; inspect missing-query-ID warnings and runtime logs for token-budget truncation if Recall@K collapses
 
 ## 4. REFERENCES
 

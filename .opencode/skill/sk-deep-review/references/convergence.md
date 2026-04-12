@@ -78,6 +78,7 @@ Every terminal stop and every blocked-stop vote MUST emit the shared stop contra
     "hotspotSaturationGate": { "pass": true },
     "claimAdjudicationGate": { "pass": true, "activeP0P1": 2 }
   },
+  "graphBlockerDetail": [],
   "recoveryStrategy": "Dispatch the next iteration at the maintainability dimension and re-check after resolving the remaining P0.",
   "timestamp": "2026-03-24T15:02:00Z",
   "sessionId": "rvw-2026-03-24T10-00-00Z",
@@ -87,8 +88,9 @@ Every terminal stop and every blocked-stop vote MUST emit the shared stop contra
 
 - `blockedBy`: array of gate names that failed (string[] — never structured objects). Empty when STOP is legal, in which case no `blocked_stop` event is emitted.
 - `gateResults`: named sub-records keyed by `convergenceGate`, `dimensionCoverageGate`, `p0ResolutionGate`, `evidenceDensityGate`, `hotspotSaturationGate`, and `claimAdjudicationGate`. Each sub-record has a `pass` boolean plus gate-specific fields (score, covered/missing, activeP0, avgEvidencePerFinding, activeP0P1). The reducer reads these verbatim and does not coerce shapes.
+- `graphBlockerDetail`: array of structured graph blockers copied from the latest graph convergence decision. Empty when graph convergence did not veto STOP.
 - `recoveryStrategy`: human-readable one-liner describing what the next iteration should do before another stop attempt.
-- When the graph convergence verdict is `STOP_BLOCKED`, the same event is emitted with `blocked_gate == "graph_blockers"` folded into `blockedBy` and the structured blocker objects preserved under `graph_blocker_detail_json` (see phase 008 P1-02 closure in the auto YAML).
+- When the graph convergence verdict is `STOP_BLOCKED`, fold the graph blocker gate name into `blockedBy` and preserve the structured blocker objects under `graphBlockerDetail`.
 
 ### Decision Priority
 

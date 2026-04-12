@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `212` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 212 | Mutation hook result contract expansion | Confirm post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details | `As a runtime-hook validation operator, confirm post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify hook and UX feedback suites pass, hook results include latencyMs, cache-clear booleans, toolCacheInvalidated, and errors, and UX feedback assertions reflect those values in response hints. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts` 2) inspect assertions covering `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors` 3) inspect assertions proving UX feedback/hint builders surface the contract fields without dropping error context | Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints | Test transcript + highlighted assertion names or output snippets showing contract-field and hint coverage | PASS if the suites pass and the assertions prove the expanded hook-result contract is present and consumable end to end | Inspect `handlers/memory-crud-types.ts`, `handlers/mutation-hooks.ts`, and `hooks/mutation-feedback.ts` if any field disappears or changes type |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify hook and UX feedback suites pass, hook results include latencyMs, cache-clear booleans, toolCacheInvalidated, and errors, and UX feedback assertions reflect those values in response hints. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts`
+2. inspect assertions covering `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`
+3. inspect assertions proving UX feedback/hint builders surface the contract fields without dropping error context
+
+### Expected
+
+Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints
+
+### Evidence
+
+Test transcript + highlighted assertion names or output snippets showing contract-field and hint coverage
+
+### Pass / Fail
+
+- **Pass**: the suites pass and the assertions prove the expanded hook-result contract is present and consumable end to end
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `handlers/memory-crud-types.ts`, `handlers/mutation-hooks.ts`, and `hooks/mutation-feedback.ts` if any field disappears or changes type
 
 ## 4. REFERENCES
 

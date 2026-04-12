@@ -8,8 +8,8 @@
     "graph",
     "upgrades"
   ],
-  "lastUpdated": "2026-04-10T12:04:52.963Z",
-  "specId": "014",
+  "lastUpdated": "2026-04-12T12:20:48.565Z",
+  "specId": "005",
   "folderSlug": "code-graph-upgrades",
   "parentChain": [
     "system-spec-kit",

@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `045` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 045 | Smarter memory content generation (S1) | Confirm quality/structure output and pathless batch-type isolation | `As a memory-quality validation operator, confirm quality/structure output and pathless batch-type isolation against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Generate from mixed content 2) Inspect structure retention 3) Run batch type inference with two or more pathless inputs 4) Verify distinct inference results plus concise coherence | Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results | Generated memory content + structure analysis + pathless-batch inference output | PASS: Structure preserved, output concise (<=2x input density), sections coherent, and pathless batch inputs stay isolated; FAIL: Structure lost, verbose output, incoherent sections, or pathless batch inputs collapse together | Verify content generation template → Check structure preservation rules → Inspect `inferMemoryTypesBatch()` fallback-key handling in `type-inference.ts` |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm quality/structure output and pathless batch-type isolation against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Generate from mixed content
+2. Inspect structure retention
+3. Run batch type inference with two or more pathless inputs
+4. Verify distinct inference results plus concise coherence
+
+### Expected
+
+Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results
+
+### Evidence
+
+Generated memory content + structure analysis + pathless-batch inference output
+
+### Pass / Fail
+
+- **Pass**: Structure preserved, output concise (<=2x input density), sections coherent, and pathless batch inputs stay isolated
+- **Fail**: Structure lost, verbose output, incoherent sections, or pathless batch inputs collapse together
+
+### Failure Triage
+
+Verify content generation template → Check structure preservation rules → Inspect `inferMemoryTypesBatch()` fallback-key handling in `type-inference.ts`
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `036` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 036 | Confidence-based result truncation (R15-ext) | Confirm relevance-cliff cutoff | `As a query-intelligence validation operator, confirm relevance-cliff cutoff against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee | Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace | Truncated output with cutoff point + min-result count verification + cliff threshold in trace | PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results | Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, confirm relevance-cliff cutoff against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run long-tail query
+2. Inspect cutoff math
+3. Verify min-result guarantee
+
+### Expected
+
+Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace
+
+### Evidence
+
+Truncated output with cutoff point + min-result count verification + cliff threshold in trace
+
+### Pass / Fail
+
+- **Pass**: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace
+- **Fail**: No truncation or fewer than min-count results
+
+### Failure Triage
+
+Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution
 
 ## 4. REFERENCES
 

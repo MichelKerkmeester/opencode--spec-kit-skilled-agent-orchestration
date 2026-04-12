@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `023` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 023 | Score normalization | Confirm batch min-max behavior | `As a scoring validation operator, confirm batch min-max behavior against the documented validation surface. Verify normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run varied-score query 2) Inspect normalized range 3) Check equal/single cases | Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled | Normalized output with range verification + edge case test results | PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores | Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm batch min-max behavior against the documented validation surface. Verify normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run varied-score query
+2. Inspect normalized range
+3. Check equal/single cases
+
+### Expected
+
+Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled
+
+### Evidence
+
+Normalized output with range verification + edge case test results
+
+### Pass / Fail
+
+- **Pass**: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0
+- **Fail**: Out-of-range values or division-by-zero on equal scores
+
+### Failure Triage
+
+Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order
 
 ## 4. REFERENCES
 

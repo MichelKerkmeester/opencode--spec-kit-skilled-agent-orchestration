@@ -217,6 +217,23 @@ describe('Replay Corpus Builder (T001)', () => {
       expect(result.warnings.some((w: string) => w.includes('graph metrics unavailable'))).toBe(true);
     });
 
+    it('emits replay metrics in the shape consumed by replayRun', () => {
+      const content = fs.readFileSync(
+        path.join(FIXTURES_DIR, 'sample-040-corpus.jsonl'),
+        'utf8',
+      );
+      const result = replayCorpus.buildCorpus('040', {
+        jsonlContent: content,
+      });
+
+      expect(result.errors).toHaveLength(0);
+      const entry = result.corpus[0] as Record<string, any>;
+      expect(entry.graphMetrics).toBeNull();
+      expect(entry.waveMetrics).toEqual({ convergenceScore: 0.62 });
+      expect(entry.metadata.hasWaveMetrics).toBe(true);
+      expect(result.warnings.some((w: string) => w.includes('wave metrics unavailable'))).toBe(false);
+    });
+
     it('should error when no input source is provided', () => {
       const result = replayCorpus.buildCorpus('040', {});
       expect(result.errors.length).toBeGreaterThan(0);

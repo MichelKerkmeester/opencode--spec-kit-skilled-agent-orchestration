@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `025` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 025 | Interference scoring (TM-01) | Confirm cluster penalty | `As a scoring validation operator, confirm cluster penalty against the documented validation surface. Verify active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save two or more active near-duplicate memories in the same spec folder plus one inactive or deprecated near-duplicate sibling 2) Query the cluster topic 3) Verify the active duplicates receive the penalty while the inactive or deprecated sibling does not inflate the active interference count 4) Compare against a non-duplicate control memory in the same folder | Active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count | Query output showing penalized vs unpenalized scores + state/tier verification for the inactive sibling | PASS: Active duplicates are penalized while inactive siblings stay ignored and non-duplicates retain their scores; FAIL: No penalty applies, inactive rows still count, or false positives appear | Verify similarity threshold, retrievable-row predicates, and penalty formula in `interference-scoring.ts` |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm cluster penalty against the documented validation surface. Verify active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save two or more active near-duplicate memories in the same spec folder plus one inactive or deprecated near-duplicate sibling
+2. Query the cluster topic
+3. Verify the active duplicates receive the penalty while the inactive or deprecated sibling does not inflate the active interference count
+4. Compare against a non-duplicate control memory in the same folder
+
+### Expected
+
+Active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count
+
+### Evidence
+
+Query output showing penalized vs unpenalized scores + state/tier verification for the inactive sibling
+
+### Pass / Fail
+
+- **Pass**: Active duplicates are penalized while inactive siblings stay ignored and non-duplicates retain their scores
+- **Fail**: No penalty applies, inactive rows still count, or false positives appear
+
+### Failure Triage
+
+Verify similarity threshold, retrievable-row predicates, and penalty formula in `interference-scoring.ts`
 
 ## 4. REFERENCES
 

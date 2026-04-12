@@ -8,10 +8,14 @@ category: "Runtime Truth"
 
 Validates that when convergence math signals stop but one or more of the 5 gate bundles fail, the session records a `blockedStop` rather than `converged`, and the blocked-stop event includes the failing gate details.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that when convergence math signals stop but one or more of the 5 gate bundles fail, the session records a blockedStop rather than converged, and the blocked-stop event includes the failing gate details against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `legal_stop_evaluated` event emitted with `gateResults` containing all 5 gate bundles:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
-/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=5
+/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec} --iterations=5
 ```
 
 ### Verification (copy-paste)
@@ -41,7 +45,7 @@ else:
 "
 ```
 
-## Expected Signals
+## Expected
 
 - `legal_stop_evaluated` event emitted with `gateResults` containing all 5 gate bundles:
   - `contractGate`: structural >= 90 AND systemFitness >= 90

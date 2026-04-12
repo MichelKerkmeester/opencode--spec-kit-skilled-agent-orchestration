@@ -8,7 +8,11 @@ category: "Profile Generator"
 
 Validates that the profile generator extracts OUTPUT VERIFICATION checklist items from the debug agent definition.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the profile generator extracts OUTPUT VERIFICATION checklist items from the debug agent definition against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify JSON output with `derivedChecks.outputChecks` array. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.open
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md | python3 -c "import sys,json; d=json.load(sys.stdin); oc=d['derivedChecks']['outputChecks']; assert len(oc)>=5, f'Only {len(oc)} outputChecks'; assert all('id' in c and 'check' in c and 'weight' in c for c in oc); print(f'PASS: {len(oc)} outputChecks')"
 ```
 
-## Expected Signals
+## Expected
 
 - JSON output with `derivedChecks.outputChecks` array
 - Each entry has `id`, `check`, and `weight` fields

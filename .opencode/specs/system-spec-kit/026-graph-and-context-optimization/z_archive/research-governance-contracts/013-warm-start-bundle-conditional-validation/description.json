@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/013-warm-start-bundle-conditional-validation",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation",
   "description": "Feature Specification: Warm-Start Bundle Conditional Validation",
   "keywords": [
     "feature",
@@ -9,12 +9,14 @@
     "conditional",
     "validation"
   ],
-  "lastUpdated": "2026-04-10T12:04:52.959Z",
+  "lastUpdated": "2026-04-12T12:20:48.571Z",
   "specId": "013",
   "folderSlug": "warm-start-bundle-conditional-validation",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "z_archive",
+    "research-governance-contracts"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

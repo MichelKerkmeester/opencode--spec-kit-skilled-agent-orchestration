@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `216` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 216 | End-to-end success-envelope verification | Confirm finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together | `As a runtime-hook validation operator, confirm finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify context-server and hook suites pass, success envelopes append auto-surface hints, preserve autoSurfacedContext, and keep meta.tokenCount aligned with the finalized serialized payload. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts` 2) inspect assertions covering success-path hint append 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final serialized-envelope token-count alignment | Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload | Test transcript + key assertion output for success-envelope and token-alignment coverage | PASS if the targeted suites pass and the assertions prove the final success envelope preserves hints, context, and token metadata end to end | Inspect `context-server.ts`, `hooks/index.ts`, and `hooks/response-hints.ts` if any success-envelope field or final token count regresses |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify context-server and hook suites pass, success envelopes append auto-surface hints, preserve autoSurfacedContext, and keep meta.tokenCount aligned with the finalized serialized payload. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts`
+2. inspect assertions covering success-path hint append
+3. inspect assertions covering preserved `autoSurfacedContext`
+4. inspect assertions covering final serialized-envelope token-count alignment
+
+### Expected
+
+Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload
+
+### Evidence
+
+Test transcript + key assertion output for success-envelope and token-alignment coverage
+
+### Pass / Fail
+
+- **Pass**: the targeted suites pass and the assertions prove the final success envelope preserves hints, context, and token metadata end to end
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `context-server.ts`, `hooks/index.ts`, and `hooks/response-hints.ts` if any success-envelope field or final token count regresses
 
 ## 4. REFERENCES
 

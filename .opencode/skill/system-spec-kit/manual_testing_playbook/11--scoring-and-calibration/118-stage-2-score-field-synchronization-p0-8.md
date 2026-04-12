@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `118` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 118 | Stage-2 score field synchronization (P0-8) | Verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting | `As a scoring validation operator, verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting against memory_search({ query:"non hybrid intent weighting sync check", includeTrace:true }). Verify intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value. Return a concise pass/fail verdict with the main reason and cited evidence.` | **Precondition:** Memory database with varied content. 1) Call `memory_search({ query:"non hybrid intent weighting sync check", includeTrace:true })` targeting non-hybrid flow 2) Inspect trace: verify `intentAdjustedScore` is set at Step 4 3) Verify subsequent artifact routing and feedback signals modify `score` 4) Verify final `intentAdjustedScore >= score` (Math.max sync applied) 5) Verify `resolveEffectiveScore()` returns the synchronized value | intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value | Search trace output showing score field progression through pipeline stages | PASS if intentAdjustedScore is synchronized with score via Math.max and resolveEffectiveScore returns the correct final value | Inspect stage-2 intent weighting logic; verify Math.max sync placement; check resolveEffectiveScore fallback chain for non-hybrid flow |
+### Prompt
 
----
+```
+As a scoring validation operator, verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting against memory_search({ query:"non hybrid intent weighting sync check", includeTrace:true }). Verify intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. **Precondition:** Memory database with varied content.
+2. Call `memory_search({ query:"non hybrid intent weighting sync check", includeTrace:true })` targeting non-hybrid flow
+3. Inspect trace: verify `intentAdjustedScore` is set at Step 4
+4. Verify subsequent artifact routing and feedback signals modify `score`
+5. Verify final `intentAdjustedScore >= score` (Math.max sync applied)
+6. Verify `resolveEffectiveScore()` returns the synchronized value
+
+### Expected
+
+intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value
+
+### Evidence
+
+Search trace output showing score field progression through pipeline stages
+
+### Pass / Fail
+
+- **Pass**: intentAdjustedScore is synchronized with score via Math.max and resolveEffectiveScore returns the correct final value
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect stage-2 intent weighting logic; verify Math.max sync placement; check resolveEffectiveScore fallback chain for non-hybrid flow
 
 ## 4. REFERENCES
 

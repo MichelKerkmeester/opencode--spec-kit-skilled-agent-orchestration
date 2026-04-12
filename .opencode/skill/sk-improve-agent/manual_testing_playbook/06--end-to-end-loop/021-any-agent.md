@@ -8,13 +8,17 @@ category: "End-to-End Loop"
 
 Validates the complete `/improve:improve-agent` loop targeting a non-standard agent (debug.md) to confirm the pipeline is not hardcoded to specific agents.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate the complete /improve:improve-agent loop targeting a non-standard agent (debug.md) to confirm the pipeline is not hardcoded to specific agents against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Dynamic profile generated on-the-fly (debug.md has no static profile). Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```text
 /improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/skilled-agent-orchestration/041-sk-improve-agent-loop/008-sk-improve-agent-holistic-evaluation --iterations=1
 ```
 
-## Expected Signals
+## Expected
 
 - Dynamic profile generated on-the-fly (debug.md has no static profile)
 - Integration scan discovers debug agent surfaces

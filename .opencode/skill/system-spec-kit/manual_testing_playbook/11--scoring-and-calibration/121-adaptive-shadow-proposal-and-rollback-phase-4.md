@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `121` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 121 | Adaptive shadow proposal and rollback (Phase 4) | Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly | `As a scoring validation operator, confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly against SPECKIT_MEMORY_ADAPTIVE_RANKING=true. Verify adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Set `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` and leave `SPECKIT_MEMORY_ADAPTIVE_MODE` unset 2) Trigger access/validation events for one memory 3) Run `memory_search({ query:"adaptive shadow check", includeTrace:true })` 4) Verify response includes `adaptiveShadow` proposal data while production ordering remains the live result order 5) Disable the flag and repeat | Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output | Search output with `adaptiveShadow` payload + before/after flag comparison + signal capture evidence from validation/access paths | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable | Verify adaptive signals were recorded from access/validation → Inspect bounded delta cap → Confirm disable path clears proposal output without schema rollback |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly against SPECKIT_MEMORY_ADAPTIVE_RANKING=true. Verify adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Set `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` and leave `SPECKIT_MEMORY_ADAPTIVE_MODE` unset
+2. Trigger access/validation events for one memory
+3. Run `memory_search({ query:"adaptive shadow check", includeTrace:true })`
+4. Verify response includes `adaptiveShadow` proposal data while production ordering remains the live result order
+5. Disable the flag and repeat
+
+### Expected
+
+Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output
+
+### Evidence
+
+Search output with `adaptiveShadow` payload + before/after flag comparison + signal capture evidence from validation/access paths
+
+### Pass / Fail
+
+- **Pass**: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly
+- **Fail**: Live order changes under shadow mode or proposal persists after disable
+
+### Failure Triage
+
+Verify adaptive signals were recorded from access/validation → Inspect bounded delta cap → Confirm disable path clears proposal output without schema rollback
 
 ## 4. REFERENCES
 

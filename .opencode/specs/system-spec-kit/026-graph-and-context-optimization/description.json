@@ -1,16 +1,14 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization",
-  "description": "Feature Specification: Graph and Context Optimization (Parent Packet)",
+  "description": "Feature Specification: Graph and Context Optimization",
   "keywords": [
     "feature",
     "specification",
     "graph",
     "context",
-    "optimization",
-    "parent",
-    "packet"
+    "optimization"
   ],
-  "lastUpdated": "2026-04-09T06:37:39.190Z",
+  "lastUpdated": "2026-04-12T12:20:48.496Z",
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [

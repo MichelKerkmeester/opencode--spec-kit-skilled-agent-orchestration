@@ -28,11 +28,34 @@ Operators run the exact prompt and command sequence for `024` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 024 | Cold-start novelty boost (N4) | Confirm novelty removed from hot path | `As a scoring validation operator, confirm novelty removed from hot path against the documented validation surface. Verify novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Inspect code path 2) Run search 3) Verify telemetry fixed to zero | Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path | Search telemetry output showing novelty=0 + code path inspection confirming removal | PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active | Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm novelty removed from hot path against the documented validation surface. Verify novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Inspect code path
+2. Run search
+3. Verify telemetry fixed to zero
+
+### Expected
+
+Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path
+
+### Evidence
+
+Search telemetry output showing novelty=0 + code path inspection confirming removal
+
+### Pass / Fail
+
+- **Pass**: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation
+- **Fail**: Non-zero novelty in telemetry or hot-path code still active
+
+### Failure Triage
+
+Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty
 
 ## 4. REFERENCES
 

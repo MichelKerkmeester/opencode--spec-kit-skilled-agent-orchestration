@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `013` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 013 | Scoring observability (T010) | Confirm sample logging + fail-safe | `As an evaluation validation operator, confirm sample logging + fail-safe against the documented validation surface. Verify sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run many searches 2) Inspect sampled rows 3) Force write error and confirm safety | Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected | Observability log rows + forced error output + sample rate verification across N queries | PASS: Sampled rows logged at expected rate and write error produces graceful fallback; FAIL: No sampled rows or search crashes on write error | Check sample rate configuration → Verify write error try/catch → Inspect observability table schema |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm sample logging + fail-safe against the documented validation surface. Verify sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run many searches
+2. Inspect sampled rows
+3. Force write error and confirm safety
+
+### Expected
+
+Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected
+
+### Evidence
+
+Observability log rows + forced error output + sample rate verification across N queries
+
+### Pass / Fail
+
+- **Pass**: Sampled rows logged at expected rate and write error produces graceful fallback
+- **Fail**: No sampled rows or search crashes on write error
+
+### Failure Triage
+
+Check sample rate configuration → Verify write error try/catch → Inspect observability table schema
 
 ## 4. REFERENCES
 

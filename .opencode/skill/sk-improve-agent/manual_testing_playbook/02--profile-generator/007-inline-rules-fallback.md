@@ -8,7 +8,11 @@ category: "Profile Generator"
 
 Validates that NEVER rules embedded inline (outside a dedicated RULES section) are still extracted as a fallback.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that NEVER rules embedded inline (outside a dedicated RULES section) are still extracted as a fallback against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify JSON output with `derivedChecks.ruleCoherence` array. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.open
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/debug.md | python3 -c "import sys,json; d=json.load(sys.stdin); rc=d['derivedChecks']['ruleCoherence']; nevers=[r for r in rc if r['type']=='never']; assert len(nevers)>=1, f'Only {len(nevers)} never-rules'; print(f'PASS: {len(nevers)} never-rules extracted via body scan')"
 ```
 
-## Expected Signals
+## Expected
 
 - JSON output with `derivedChecks.ruleCoherence` array
 - At least 1 entry with `type: "never"` extracted from inline "NEVER" patterns in the debug agent body text

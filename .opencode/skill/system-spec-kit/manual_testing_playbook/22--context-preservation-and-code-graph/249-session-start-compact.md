@@ -37,13 +37,90 @@ This scenario validates SessionStart priming (compact).
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 249a | SessionStart priming (compact) | Cached payload read from hook state and injected to stdout | `As a context-and-code-graph validation operator, validate Cached payload read from hook state and injected to stdout against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout includes "Recovered Context (Post-Compaction)" with payload text, "Recovery Instructions" mentioning 3-source merge. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | Stdout includes "Recovered Context (Post-Compaction)" with payload text, "Recovery Instructions" mentioning 3-source merge | Test output showing stdout sections | PASS if cached payload appears in stdout with correct headers | Verify hook state fixture has valid `pendingCompactPrime` object |
-| 249b | SessionStart priming (compact) | pendingCompactPrime cleared from state after injection | `As a context-and-code-graph validation operator, validate pendingCompactPrime cleared from state after injection against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify updateState() called with pendingCompactPrime: null after successful injection. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | `updateState()` called with `pendingCompactPrime: null` after successful injection | Test output confirming state cleared | PASS if state no longer contains pendingCompactPrime after injection | Check `hook-state.ts` updateState logic |
-| 249c | SessionStart priming (compact) | Fallback when no cached payload exists | `As a context-and-code-graph validation operator, validate Fallback when no cached payload exists against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout contains "Context Recovery" section instructing /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts` | Stdout contains "Context Recovery" section instructing `/spec_kit:resume` | Test output showing fallback message | PASS if fallback message appears when pendingCompactPrime is null | Verify test fixture simulates missing cache state |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Cached payload read from hook state and injected to stdout against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout includes "Recovered Context (Post-Compaction)" with payload text, "Recovery Instructions" mentioning 3-source merge. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+Stdout includes "Recovered Context (Post-Compaction)" with payload text, "Recovery Instructions" mentioning 3-source merge
+
+### Evidence
+
+Test output showing stdout sections
+
+### Pass / Fail
+
+- **Pass**: cached payload appears in stdout with correct headers
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify hook state fixture has valid `pendingCompactPrime` object
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate pendingCompactPrime cleared from state after injection against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify updateState() called with pendingCompactPrime: null after successful injection. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+`updateState()` called with `pendingCompactPrime: null` after successful injection
+
+### Evidence
+
+Test output confirming state cleared
+
+### Pass / Fail
+
+- **Pass**: state no longer contains pendingCompactPrime after injection
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `hook-state.ts` updateState logic
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Fallback when no cached payload exists against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify stdout contains "Context Recovery" section instructing /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts
+
+### Expected
+
+Stdout contains "Context Recovery" section instructing `/spec_kit:resume`
+
+### Evidence
+
+Test output showing fallback message
+
+### Pass / Fail
+
+- **Pass**: fallback message appears when pendingCompactPrime is null
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify test fixture simulates missing cache state
 
 ## 4. REFERENCES
 

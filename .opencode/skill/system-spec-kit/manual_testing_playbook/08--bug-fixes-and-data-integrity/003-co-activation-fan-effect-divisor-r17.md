@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `003` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 003 | Co-activation fan-effect divisor (R17) | Confirm hub dampening | `As a data-integrity validation operator, confirm hub dampening against the documented validation surface. Verify hub node score dampened proportionally to fan-out degree; non-hub scores unaffected. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create high-degree hub 2) Run repeated queries 3) Compare dominance | Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected | Query output showing hub vs non-hub score comparison across repeated queries | PASS: Hub node contribution decreases as degree increases; no single hub dominates >50% of top-5; FAIL: Hub monopolizes results | Check fan-effect divisor formula → Verify degree count accuracy → Inspect co-activation weight cap |
+### Prompt
 
----
+```
+As a data-integrity validation operator, confirm hub dampening against the documented validation surface. Verify hub node score dampened proportionally to fan-out degree; non-hub scores unaffected. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create high-degree hub
+2. Run repeated queries
+3. Compare dominance
+
+### Expected
+
+Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected
+
+### Evidence
+
+Query output showing hub vs non-hub score comparison across repeated queries
+
+### Pass / Fail
+
+- **Pass**: Hub node contribution decreases as degree increases; no single hub dominates >50% of top-5
+- **Fail**: Hub monopolizes results
+
+### Failure Triage
+
+Check fan-effect divisor formula → Verify degree count accuracy → Inspect co-activation weight cap
 
 ## 4. REFERENCES
 

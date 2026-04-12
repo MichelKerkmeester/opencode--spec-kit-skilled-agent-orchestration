@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `059` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `As a retrieval-enhancement validation operator, confirm scale-gated summary channel against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm scale-gated summary channel against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. check corpus size threshold
+2. run stage-1
+3. verify channel activation rules
+
+### Expected
+
+Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
+
+### Evidence
+
+Search output showing channel activation status + corpus size count + fusion contribution evidence
+
+### Pass / Fail
+
+- **Pass**: summary channel activates above threshold and remains inert below it
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `069` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 069 | Entity normalization consolidation | Confirm shared normalization path | `As a memory-quality validation operator, confirm shared normalization path against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity | Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence | Extractor output + linker output + side-by-side comparison showing parity | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode | Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm shared normalization path against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. feed unicode entities
+2. compare extractor/linker outputs
+3. verify parity
+
+### Expected
+
+Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence
+
+### Evidence
+
+Extractor output + linker output + side-by-side comparison showing parity
+
+### Pass / Fail
+
+- **Pass**: extractor and linker produce identical normalized entities for all test inputs including unicode
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases
 
 ## 4. REFERENCES
 

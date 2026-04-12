@@ -24,11 +24,33 @@ Operators validate the extractor-layer contract through the loader smoke test pl
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 241 | Session Extraction and Enrichment | Confirm extractor loading, enrichment behavior, and phase classification stability | `As a tooling validation operator, confirm extractor loading, enrichment behavior, and phase classification stability against cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js. Verify extractor loader script passes; all targeted Vitest suites pass; no regression in enrichment or phase-classification expectations. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` 2) `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/session-enrichment.vitest.ts tests/phase-classification.vitest.ts tests/description-enrichment.vitest.ts` | Extractor loader script passes; all targeted Vitest suites pass; no regression in enrichment or phase-classification expectations | Loader script output and Vitest transcript | PASS if the loader smoke test and all targeted suites pass; FAIL if extraction, enrichment, or classification behavior regresses | Inspect `scripts/extractors/file-extractor.ts`, `diagram-extractor.ts`, `session-activity-signal.ts`, and the extractor barrel if module loading or enrichment semantics fail |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm extractor loading, enrichment behavior, and phase classification stability against cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js. Verify extractor loader script passes; all targeted Vitest suites pass; no regression in enrichment or phase-classification expectations. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js`
+2. `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/session-enrichment.vitest.ts tests/phase-classification.vitest.ts tests/description-enrichment.vitest.ts`
+
+### Expected
+
+Extractor loader script passes; all targeted Vitest suites pass; no regression in enrichment or phase-classification expectations
+
+### Evidence
+
+Loader script output and Vitest transcript
+
+### Pass / Fail
+
+- **Pass**: the loader smoke test and all targeted suites pass
+- **Fail**: extraction, enrichment, or classification behavior regresses
+
+### Failure Triage
+
+Inspect `scripts/extractors/file-extractor.ts`, `diagram-extractor.ts`, `session-activity-signal.ts`, and the extractor barrel if module loading or enrichment semantics fail
 
 ## 4. REFERENCES
 

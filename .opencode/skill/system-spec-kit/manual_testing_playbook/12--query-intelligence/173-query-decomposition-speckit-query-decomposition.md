@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `173` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 173 | Query decomposition (SPECKIT_QUERY_DECOMPOSITION) | Verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries | `As a query-intelligence validation operator, verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries against SPECKIT_QUERY_DECOMPOSITION. Verify isQueryDecompositionEnabled() returns true; conjunction splitting on coordinating conjunctions; wh-question word detection; MAX_FACETS=3 enforced; no LLM calls; deep-mode only; graceful fallback on error. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_QUERY_DECOMPOSITION` is unset or `true` 2) `memory_search({ query: "What is the memory save workflow and how does query expansion work?", mode: "deep" })` 3) Inspect decomposition output for sub-queries 4) Verify sub-query count <= 3 5) Run same query in non-deep mode, verify no decomposition | isQueryDecompositionEnabled() returns true; conjunction splitting on coordinating conjunctions; wh-question word detection; MAX_FACETS=3 enforced; no LLM calls; deep-mode only; graceful fallback on error | Decomposed sub-query list + retrieval results per facet + test transcript | PASS if multi-faceted query decomposes into <= 3 focused sub-queries in deep mode using rule-based heuristics; FAIL if > 3 sub-queries, runs outside deep mode, uses LLM, or fails without fallback | Verify isQueryDecompositionEnabled() → Confirm flag is not forced off → Check MAX_FACETS=3 constant → Inspect conjunction splitting regex → Verify deep-mode gate in stage1-candidate-gen → Check graceful fallback path |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries against SPECKIT_QUERY_DECOMPOSITION. Verify isQueryDecompositionEnabled() returns true; conjunction splitting on coordinating conjunctions; wh-question word detection; MAX_FACETS=3 enforced; no LLM calls; deep-mode only; graceful fallback on error. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_QUERY_DECOMPOSITION` is unset or `true`
+2. `memory_search({ query: "What is the memory save workflow and how does query expansion work?", mode: "deep" })`
+3. Inspect decomposition output for sub-queries
+4. Verify sub-query count <= 3
+5. Run same query in non-deep mode, verify no decomposition
+
+### Expected
+
+isQueryDecompositionEnabled() returns true; conjunction splitting on coordinating conjunctions; wh-question word detection; MAX_FACETS=3 enforced; no LLM calls; deep-mode only; graceful fallback on error
+
+### Evidence
+
+Decomposed sub-query list + retrieval results per facet + test transcript
+
+### Pass / Fail
+
+- **Pass**: multi-faceted query decomposes into <= 3 focused sub-queries in deep mode using rule-based heuristics
+- **Fail**: > 3 sub-queries, runs outside deep mode, uses LLM, or fails without fallback
+
+### Failure Triage
+
+Verify isQueryDecompositionEnabled() → Confirm flag is not forced off → Check MAX_FACETS=3 constant → Inspect conjunction splitting regex → Verify deep-mode gate in stage1-candidate-gen → Check graceful fallback path
 
 ## 4. REFERENCES
 

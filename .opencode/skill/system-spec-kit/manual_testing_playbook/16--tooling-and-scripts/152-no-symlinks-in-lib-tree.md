@@ -32,11 +32,35 @@ Operators run a symlink scan and confirm the lib/ tree contains no symlinks. The
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 152 | No symlinks in lib/ tree | Verify zero symlinks under mcp_server/lib/ | `As a tooling validation operator, verify zero symlinks under mcp_server/lib/ against cd .opencode/skill/system-spec-kit. Verify zero symlinks found. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit` 2) `find mcp_server/lib -type l` 3) Verify output is empty 4) `echo $?` to confirm exit 0 | Zero symlinks found | find command output (should be empty) | PASS if find returns no output | Identify symlink -> determine if intentional -> replace with canonical import path -> remove symlink -> update imports -> re-verify |
+### Prompt
 
----
+```
+As a tooling validation operator, verify zero symlinks under mcp_server/lib/ against cd .opencode/skill/system-spec-kit. Verify zero symlinks found. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit`
+2. `find mcp_server/lib -type l`
+3. Verify output is empty
+4. `echo $?` to confirm exit 0
+
+### Expected
+
+Zero symlinks found
+
+### Evidence
+
+find command output (should be empty)
+
+### Pass / Fail
+
+- **Pass**: find returns no output
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Identify symlink -> determine if intentional -> replace with canonical import path -> remove symlink -> update imports -> re-verify
 
 ## 4. REFERENCES
 

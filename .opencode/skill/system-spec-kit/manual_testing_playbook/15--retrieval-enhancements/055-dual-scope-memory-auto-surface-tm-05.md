@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `055` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 055 | Dual-scope memory auto-surface (TM-05) | Confirm auto-surface hooks | `As a retrieval-enhancement validation operator, confirm auto-surface hooks against the documented validation surface. Verify non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) invoke non-memory-aware tool path 2) trigger compaction 3) verify surfaced memories | Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context | Auto-surface hook trace + surfaced memory list + context relevance assessment | PASS: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories; FAIL: Hook does not fire or surfaced memories irrelevant | Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm auto-surface hooks against the documented validation surface. Verify non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. invoke non-memory-aware tool path
+2. trigger compaction
+3. verify surfaced memories
+
+### Expected
+
+Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context
+
+### Evidence
+
+Auto-surface hook trace + surfaced memory list + context relevance assessment
+
+### Pass / Fail
+
+- **Pass**: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories
+- **Fail**: Hook does not fire or surfaced memories irrelevant
+
+### Failure Triage
+
+Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories
 
 ## 4. REFERENCES
 

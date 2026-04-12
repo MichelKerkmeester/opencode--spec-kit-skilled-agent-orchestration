@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `101` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 101 | memory_delete confirm schema tightening | Confirm confirm field accepts only literal true | `As a mutation validation operator, confirm confirm field accepts only literal true against memory_delete({id:1, confirm:true}). Verify confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_delete({id:1, confirm:true})` → verify accepted 2) `memory_delete({id:1, confirm:false})` → verify Zod rejection (literal true required) 3) `memory_delete({specFolder:"test", confirm:true})` → verify bulk delete path accepts 4) `memory_delete({specFolder:"test"})` (no confirm) → verify Zod rejection for bulk path | confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path | Tool validation outputs | PASS if only `confirm:true` is accepted, `confirm:false` is rejected | Inspect `tool-schemas.ts` memory_delete union schema |
+### Prompt
 
----
+```
+As a mutation validation operator, confirm confirm field accepts only literal true against memory_delete({id:1, confirm:true}). Verify confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_delete({id:1, confirm:true})` → verify accepted
+2. `memory_delete({id:1, confirm:false})` → verify Zod rejection (literal true required)
+3. `memory_delete({specFolder:"test", confirm:true})` → verify bulk delete path accepts
+4. `memory_delete({specFolder:"test"})` (no confirm) → verify Zod rejection for bulk path
+
+### Expected
+
+confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path
+
+### Evidence
+
+Tool validation outputs
+
+### Pass / Fail
+
+- **Pass**: only `confirm:true` is accepted, `confirm:false` is rejected
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `tool-schemas.ts` memory_delete union schema
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `018` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 018 | Edge density measurement | Confirm edges-per-node thresholding | `As a graph-signal validation operator, confirm edges-per-node thresholding against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Query edge+node counts 2) Compute ratio 3) Check threshold handling | Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary | Edge+node counts + computed ratio + threshold gate activation state | PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold | Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic |
+### Prompt
 
----
+```
+As a graph-signal validation operator, confirm edges-per-node thresholding against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Query edge+node counts
+2. Compute ratio
+3. Check threshold handling
+
+### Expected
+
+Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary
+
+### Evidence
+
+Edge+node counts + computed ratio + threshold gate activation state
+
+### Pass / Fail
+
+- **Pass**: Ratio = edges/nodes matches manual calculation; gate state correct at boundary
+- **Fail**: Ratio miscalculated or gate ignores threshold
+
+### Failure Triage
+
+Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic
 
 ## 4. REFERENCES
 

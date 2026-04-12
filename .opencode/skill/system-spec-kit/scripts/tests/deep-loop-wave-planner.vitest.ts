@@ -262,8 +262,32 @@ describe('wave-segment-planner', () => {
       expect(planner.computeHotspotSpread([])).toBe(0);
     });
 
+    it('computeHotspotSpread uses composite hotspot score, not raw complexity median', () => {
+      const spread = planner.computeHotspotSpread([
+        { path: 'src/hot/a.ts', complexity: 1, churnRate: 8, issueCount: 6 },
+        { path: 'src/hot/b.ts', complexity: 1, churnRate: 8, issueCount: 6 },
+        { path: 'src/complex/c.ts', complexity: 10, churnRate: 0, issueCount: 0 },
+        { path: 'src/cold/d.ts', complexity: 1, churnRate: 0, issueCount: 0 },
+      ]);
+
+      expect(spread).toBeCloseTo(1 / 3, 5);
+    });
+
     it('computeClusterDiversity returns 0 for empty input', () => {
       expect(planner.computeClusterDiversity([])).toBe(0);
+    });
+
+    it('groups subdomains by registrable domain cluster', () => {
+      const ledger = planner.generateDomainLedger([
+        { domain: 'news.bbc.co.uk', authority: 0.8 },
+        { domain: 'sport.bbc.co.uk', authority: 0.7 },
+        { domain: 'api.nytimes.com', authority: 0.9 },
+      ]);
+
+      expect(ledger.clusters.map((entry: any) => entry.cluster).sort()).toEqual([
+        'bbc.co.uk',
+        'nytimes.com',
+      ]);
     });
   });
 });

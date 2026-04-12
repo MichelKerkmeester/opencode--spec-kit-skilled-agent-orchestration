@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `163` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 163 | Query surrogates (SPECKIT_QUERY_SURROGATES) | Verify surrogates generated and matched | `As a query-intelligence validation operator, verify surrogates generated and matched against SPECKIT_QUERY_SURROGATES=true. Verify surrogateMetadata with aliases, headings, summary, surrogateQuestions; query matching returns score > MIN_MATCH_THRESHOLD; no LLM calls. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_QUERY_SURROGATES=true` 2) `memory_save({ ... })` with content containing abbreviations and headings 3) Inspect stored SurrogateMetadata 4) `memory_search({ query: "abbreviation term" })` 5) Verify SurrogateMatchResult 6) `npx vitest run tests/query-surrogates.vitest.ts` | SurrogateMetadata with aliases, headings, summary, surrogateQuestions; query matching returns score > MIN_MATCH_THRESHOLD; no LLM calls | SurrogateMetadata output + SurrogateMatchResult + test transcript | PASS if surrogates generated and matching returns boost scores; FAIL if surrogates empty or matching returns zero for known terms | Verify isQuerySurrogatesEnabled() → Check extractAliases() for parenthetical patterns → Inspect MAX_SURROGATE_QUESTIONS (5) → Verify MIN_MATCH_THRESHOLD (0.15) → Check MAX_SUMMARY_LENGTH (200) |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, verify surrogates generated and matched against SPECKIT_QUERY_SURROGATES=true. Verify surrogateMetadata with aliases, headings, summary, surrogateQuestions; query matching returns score > MIN_MATCH_THRESHOLD; no LLM calls. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_QUERY_SURROGATES=true`
+2. `memory_save({ ... })` with content containing abbreviations and headings
+3. Inspect stored SurrogateMetadata
+4. `memory_search({ query: "abbreviation term" })`
+5. Verify SurrogateMatchResult
+6. `npx vitest run tests/query-surrogates.vitest.ts`
+
+### Expected
+
+SurrogateMetadata with aliases, headings, summary, surrogateQuestions; query matching returns score > MIN_MATCH_THRESHOLD; no LLM calls
+
+### Evidence
+
+SurrogateMetadata output + SurrogateMatchResult + test transcript
+
+### Pass / Fail
+
+- **Pass**: surrogates generated and matching returns boost scores
+- **Fail**: surrogates empty or matching returns zero for known terms
+
+### Failure Triage
+
+Verify isQuerySurrogatesEnabled() → Check extractAliases() for parenthetical patterns → Inspect MAX_SURROGATE_QUESTIONS (5) → Verify MIN_MATCH_THRESHOLD (0.15) → Check MAX_SUMMARY_LENGTH (200)
 
 ## 4. REFERENCES
 

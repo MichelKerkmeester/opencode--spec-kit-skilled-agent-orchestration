@@ -24,11 +24,32 @@ Operators run the exact prompt and command sequence for `EX-027` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-027 | Reporting dashboard (eval_reporting_dashboard) | Eval reporting pass | `As an evaluation validation operator, validate Eval reporting pass against eval_reporting_dashboard({ format:"text", limit:2 }). Verify trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; most recent sprint groups are selected by lastSeen while output remains chronological; chunk-backed rows aggregate to parent memory IDs. Return a concise pass/fail verdict with the main reason and cited evidence.` | `eval_reporting_dashboard({ format:"text", limit:2 })` and `eval_reporting_dashboard({ format:"json", limit:2 })` | Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; most recent sprint groups are selected by `lastSeen` while output remains chronological; chunk-backed rows aggregate to parent memory IDs | Dashboard output in text and JSON plus source-backed confirmation of parent-memory normalization and sprint ordering if needed | PASS if report generates without error in supported formats and the kept sprint groups plus ordering semantics match the documented contract | Retry with `format:"json"` or `format:"text"`; inspect `handlers/eval-reporting.ts` and `lib/eval/reporting-dashboard.ts` if chunk IDs leak through or sprint ordering contradicts recency selection |
+### Prompt
 
----
+```
+As an evaluation validation operator, validate Eval reporting pass against eval_reporting_dashboard({ format:"text", limit:2 }). Verify trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; most recent sprint groups are selected by lastSeen while output remains chronological; chunk-backed rows aggregate to parent memory IDs. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. eval_reporting_dashboard({ format:"text", limit:2 })` and `eval_reporting_dashboard({ format:"json", limit:2 })
+
+### Expected
+
+Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; most recent sprint groups are selected by `lastSeen` while output remains chronological; chunk-backed rows aggregate to parent memory IDs
+
+### Evidence
+
+Dashboard output in text and JSON plus source-backed confirmation of parent-memory normalization and sprint ordering if needed
+
+### Pass / Fail
+
+- **Pass**: report generates without error in supported formats and the kept sprint groups plus ordering semantics match the documented contract
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Retry with `format:"json"` or `format:"text"`; inspect `handlers/eval-reporting.ts` and `lib/eval/reporting-dashboard.ts` if chunk IDs leak through or sprint ordering contradicts recency selection
 
 ## 4. REFERENCES
 

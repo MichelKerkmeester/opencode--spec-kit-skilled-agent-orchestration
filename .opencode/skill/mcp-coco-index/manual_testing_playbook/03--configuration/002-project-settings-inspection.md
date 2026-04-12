@@ -17,7 +17,7 @@ This scenario validates Project settings inspection for `CFG-002`. It focuses on
 Operators run the exact prompt and command sequence for `CFG-002` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify project settings contain language extension patterns
-- Prompt: `Inspect the CocoIndex Code project settings for language coverage. Capture the evidence needed to prove include_patterns. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.)
 - Pass/fail: PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `CFG-002` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CFG-002 | Project settings inspection | Verify project settings contain language extension patterns | `Inspect the CocoIndex Code project settings for language coverage. Capture the evidence needed to prove include_patterns. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: cat .cocoindex_code/settings.yml` -> 2. Locate `include_patterns` field -> 3. Count unique file extension patterns | `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.) | Contents of `settings.yml` with include_patterns section; count of extension patterns | PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing | Run `ccc init -f` to regenerate defaults; compare against supported languages in tool_reference.md |
+| CFG-002 | Project settings inspection | Verify project settings contain language extension patterns | `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: cat .cocoindex_code/settings.yml` -> 2. Locate `include_patterns` field -> 3. Count unique file extension patterns | `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.) | Contents of `settings.yml` with include_patterns section; count of extension patterns | PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing | Run `ccc init -f` to regenerate defaults; compare against supported languages in tool_reference.md |
 
 
 ---

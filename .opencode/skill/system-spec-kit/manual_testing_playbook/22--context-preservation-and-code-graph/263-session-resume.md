@@ -35,14 +35,119 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 263a | Session resume tool | Memory resume sub-call returns context | `As a context-and-code-graph validation operator, validate Memory resume sub-call returns context against session_resume({}). Verify memory field is non-empty object with resume data or error + hint. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_resume({})` via MCP | memory field is non-empty object with resume data or error + hint | session_resume response JSON memory field | PASS if memory field present with data or graceful error | Check handleMemoryContext() with mode=resume in session-resume.ts |
-| 263b | Session resume tool | Code graph status sub-call returns counts | `As a context-and-code-graph validation operator, validate Code graph status sub-call returns counts against session_resume({}). Verify codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_resume({})` via MCP | codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0 | session_resume response JSON codeGraph field | PASS if codeGraph field has all required fields with valid types | Check graphDb.getStats() and code-graph-db.ts query |
-| 263c | Session resume tool | CocoIndex availability check | `As a context-and-code-graph validation operator, validate CocoIndex availability check against session_resume({}). Verify cocoIndex.available is boolean, binaryPath is string. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_resume({})` via MCP | cocoIndex.available is boolean, binaryPath is string | session_resume response JSON cocoIndex field | PASS if cocoIndex fields present with correct types | Check `cocoindex-path.ts` plus the availability probe used by session-resume.ts |
-| 263d | Session resume tool | Structural readiness and recovery hinting | `As a context-and-code-graph validation operator, validate Structural readiness and recovery hinting against session_resume({}). Verify structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `session_resume({})` via MCP in both healthy and degraded graph states | structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints | session_resume response JSON structuralContext + hints | PASS if structural contract fields are surfaced and degraded states recommend session_bootstrap; FAIL if required contract fields are missing or recovery hint is wrong | Check buildStructuralBootstrapContract() and degraded hint injection in session-resume.ts |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Memory resume sub-call returns context against session_resume({}). Verify memory field is non-empty object with resume data or error + hint. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_resume({})` via MCP
+
+### Expected
+
+memory field is non-empty object with resume data or error + hint
+
+### Evidence
+
+session_resume response JSON memory field
+
+### Pass / Fail
+
+- **Pass**: memory field present with data or graceful error
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check handleMemoryContext() with mode=resume in session-resume.ts
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Code graph status sub-call returns counts against session_resume({}). Verify codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_resume({})` via MCP
+
+### Expected
+
+codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0
+
+### Evidence
+
+session_resume response JSON codeGraph field
+
+### Pass / Fail
+
+- **Pass**: codeGraph field has all required fields with valid types
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check graphDb.getStats() and code-graph-db.ts query
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate CocoIndex availability check against session_resume({}). Verify cocoIndex.available is boolean, binaryPath is string. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_resume({})` via MCP
+
+### Expected
+
+cocoIndex.available is boolean, binaryPath is string
+
+### Evidence
+
+session_resume response JSON cocoIndex field
+
+### Pass / Fail
+
+- **Pass**: cocoIndex fields present with correct types
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `cocoindex-path.ts` plus the availability probe used by session-resume.ts
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Structural readiness and recovery hinting against session_resume({}). Verify structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_resume({})` via MCP in both healthy and degraded graph states
+
+### Expected
+
+structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints
+
+### Evidence
+
+session_resume response JSON structuralContext + hints
+
+### Pass / Fail
+
+- **Pass**: structural contract fields are surfaced and degraded states recommend session_bootstrap
+- **Fail**: required contract fields are missing or recovery hint is wrong
+
+### Failure Triage
+
+Check buildStructuralBootstrapContract() and degraded hint injection in session-resume.ts
 
 ## 4. REFERENCES
 

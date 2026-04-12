@@ -8,7 +8,11 @@ category: "Profile Generator"
 
 Validates that the --output flag writes a valid profile JSON file for the review agent.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that the --output flag writes a valid profile JSON file for the review agent against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify File `/tmp/test-profile.json` is created after the command completes. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/review.md --output=/tmp/test-profile.json && cat /tmp/test-profile.json | python3 -c "import sys,json; d=json.load(sys.stdin); assert 'id' in d and 'derivedChecks' in d; print('Valid profile')"
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.open
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent=.opencode/agent/review.md --output=/tmp/test-profile.json && python3 -c "import json; d=json.load(open('/tmp/test-profile.json')); assert 'id' in d; assert 'derivedChecks' in d; assert 'agentMeta' in d; print(f'PASS: id={d[\"id\"]}, keys={list(d.keys())}')"
 ```
 
-## Expected Signals
+## Expected
 
 - File `/tmp/test-profile.json` is created after the command completes
 - The file contains valid JSON (parseable without errors)

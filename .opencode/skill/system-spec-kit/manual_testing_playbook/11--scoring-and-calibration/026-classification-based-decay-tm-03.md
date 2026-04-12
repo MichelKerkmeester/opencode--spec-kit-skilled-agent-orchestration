@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `026` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 026 | Classification-based decay (TM-03) | Confirm class+tier decay matrix and zero-half-life rejection | `As a scoring validation operator, confirm class+tier decay matrix and zero-half-life rejection against halfLifeDays: 0. Verify decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Load the documented class/tier decay matrix 2) Validate representative class+tier outputs against the matrix 3) Submit a config with `halfLifeDays: 0` 4) Confirm validation rejects it with the positive-number-or-null error | Decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error | Scoring path output with per-class/tier decay multipliers + config-validation output for `halfLifeDays: 0` | PASS: Each class+tier combination produces the documented multiplier, and zero half-life config is rejected up front; FAIL: Multipliers missing, mismatch the matrix, or `halfLifeDays: 0` passes validation | Verify decay matrix configuration → Check classification assignment → Inspect `validateHalfLifeConfig()` in `memory-types.ts` → Confirm the positive-number-or-null guard |
+### Prompt
 
----
+```
+As a scoring validation operator, confirm class+tier decay matrix and zero-half-life rejection against halfLifeDays: 0. Verify decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Load the documented class/tier decay matrix
+2. Validate representative class+tier outputs against the matrix
+3. Submit a config with `halfLifeDays: 0`
+4. Confirm validation rejects it with the positive-number-or-null error
+
+### Expected
+
+Decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error
+
+### Evidence
+
+Scoring path output with per-class/tier decay multipliers + config-validation output for `halfLifeDays: 0`
+
+### Pass / Fail
+
+- **Pass**: Each class+tier combination produces the documented multiplier, and zero half-life config is rejected up front
+- **Fail**: Multipliers missing, mismatch the matrix, or `halfLifeDays: 0` passes validation
+
+### Failure Triage
+
+Verify decay matrix configuration → Check classification assignment → Inspect `validateHalfLifeConfig()` in `memory-types.ts` → Confirm the positive-number-or-null guard
 
 ## 4. REFERENCES
 

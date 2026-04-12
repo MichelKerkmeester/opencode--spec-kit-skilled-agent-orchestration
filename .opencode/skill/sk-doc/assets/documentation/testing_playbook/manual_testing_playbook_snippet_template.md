@@ -62,8 +62,8 @@ Operators run the exact prompt and command sequence for `{FEATURE_ID}` and confi
 
 - Objective: {OBJECTIVE}
 - Real user request: `{REAL_USER_REQUEST}`
-- Orchestrator prompt: `{EXACT_PROMPT}`
-- Expected process: {EXPECTED_PROCESS}
+- Prompt: `As a {ROLE}, {ACTION} against {TARGET}. Verify {EXPECTED_OUTCOME}. Return {OUTPUT_FORMAT}.`
+- Expected execution process: {EXPECTED_PROCESS}
 - Expected signals: {EXPECTED_SIGNALS}
 - Desired user-visible outcome: {DESIRED_USER_OUTCOME}
 - Pass/fail: PASS if {PASS_CONDITION}; FAIL if {FAIL_CONDITION}
@@ -72,17 +72,31 @@ Operators run the exact prompt and command sequence for `{FEATURE_ID}` and confi
 
 ## 3. TEST EXECUTION
 
-### Recommended Orchestration Process
+### Prompt
 
-1. Restate the user request in plain user language.
-2. Decide whether the scenario should stay local, delegate to sub-agents, or invoke another CLI/runtime.
-3. Execute the deterministic steps exactly as written.
-4. Compare the observed output against the desired user-visible outcome.
-5. Return a concise final answer that a real user would understand.
+- Prompt: `As a {ROLE}, {ACTION} against {TARGET}. Verify {EXPECTED_OUTCOME}. Return {OUTPUT_FORMAT}.`
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| {FEATURE_ID} | {FEATURE_NAME} | Verify {OBJECTIVE} | `{EXACT_PROMPT}` | 1. `{COMMAND_1}` -> 2. `{COMMAND_2}` | Step 1: {SIGNAL_1}; Step 2: {SIGNAL_2} | {EVIDENCE_DESCRIPTION} | PASS if {PASS_CONDITION}; FAIL if {FAIL_CONDITION} | {TRIAGE_STEPS} |
+### Commands
+
+1. `{COMMAND_1}`
+2. `{COMMAND_2}`
+
+### Expected
+
+{EXPECTED_SIGNALS}
+
+### Evidence
+
+{EVIDENCE_DESCRIPTION}
+
+### Pass / Fail
+
+- **Pass**: {PASS_CONDITION}
+- **Fail**: {FAIL_CONDITION}
+
+### Failure Triage
+
+{TRIAGE_STEPS}
 
 ### Optional Supplemental Checks
 

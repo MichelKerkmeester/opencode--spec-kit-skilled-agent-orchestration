@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `033` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 033 | Query complexity router (R15) | Confirm query-class routing | `As a query-intelligence validation operator, confirm query-class routing against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run simple/moderate/complex 2) Inspect selected channels 3) Disable flag fallback | Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing | Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior | PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error | Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, confirm query-class routing against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Run simple/moderate/complex
+2. Inspect selected channels
+3. Disable flag fallback
+
+### Expected
+
+Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing
+
+### Evidence
+
+Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior
+
+### Pass / Fail
+
+- **Pass**: Channel count increases with complexity class; disabled flag uses default routing
+- **Fail**: All queries use same channels or flag-disabled produces error
+
+### Failure Triage
+
+Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior
 
 ## 4. REFERENCES
 

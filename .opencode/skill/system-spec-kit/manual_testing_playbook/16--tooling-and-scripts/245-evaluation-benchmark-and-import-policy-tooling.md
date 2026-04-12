@@ -24,11 +24,36 @@ Operators validate the evaluation surface through the main runners, the ground-t
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 245 | Evaluation, benchmark, and import-policy tooling | Confirm ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage | `As a tooling validation operator, confirm ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage against npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run. Verify mapping preview logs DB provenance; ablation and BM25 runners complete with report output; performance benchmark writes performance-benchmark-metrics.json and performance-benchmark-report.md into the target scratch directory; policy suites pass. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run` 2) `SPECKIT_ABLATION=true npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts` 3) `npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-bm25-baseline.ts --verbose` 4) `npx tsx --tsconfig .opencode/skill/system-spec-kit/scripts/tsconfig.json .opencode/skill/system-spec-kit/scripts/evals/run-performance-benchmarks.ts system-spec-kit/022-hybrid-rag-fusion` 5) `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/architecture-boundary-enforcement.vitest.ts tests/import-policy-rules.vitest.ts` | Mapping preview logs DB provenance; ablation and BM25 runners complete with report output; performance benchmark writes `performance-benchmark-metrics.json` and `performance-benchmark-report.md` into the target scratch directory; policy suites pass | Runner stdout plus the generated benchmark artifacts under the target spec folder's `scratch/` directory and the Vitest transcript | PASS if all five steps complete and the benchmark artifacts plus policy checks match the documented current behavior, with invalid benchmarks explicitly labeled | Inspect `scripts/evals/map-ground-truth-ids.ts`, `run-ablation.ts`, `run-bm25-baseline.ts`, `run-performance-benchmarks.ts`, `check-architecture-boundaries.ts`, and `import-policy-rules.ts` if provenance, runner behavior, or policy checks fail |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage against npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run. Verify mapping preview logs DB provenance; ablation and BM25 runners complete with report output; performance benchmark writes performance-benchmark-metrics.json and performance-benchmark-report.md into the target scratch directory; policy suites pass. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run`
+2. `SPECKIT_ABLATION=true npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts`
+3. `npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-bm25-baseline.ts --verbose`
+4. `npx tsx --tsconfig .opencode/skill/system-spec-kit/scripts/tsconfig.json .opencode/skill/system-spec-kit/scripts/evals/run-performance-benchmarks.ts system-spec-kit/022-hybrid-rag-fusion`
+5. `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/architecture-boundary-enforcement.vitest.ts tests/import-policy-rules.vitest.ts`
+
+### Expected
+
+Mapping preview logs DB provenance; ablation and BM25 runners complete with report output; performance benchmark writes `performance-benchmark-metrics.json` and `performance-benchmark-report.md` into the target scratch directory; policy suites pass
+
+### Evidence
+
+Runner stdout plus the generated benchmark artifacts under the target spec folder's `scratch/` directory and the Vitest transcript
+
+### Pass / Fail
+
+- **Pass**: all five steps complete and the benchmark artifacts plus policy checks match the documented current behavior, with invalid benchmarks explicitly labeled
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/evals/map-ground-truth-ids.ts`, `run-ablation.ts`, `run-bm25-baseline.ts`, `run-performance-benchmarks.ts`, `check-architecture-boundaries.ts`, and `import-policy-rules.ts` if provenance, runner behavior, or policy checks fail
 
 ## 4. REFERENCES
 

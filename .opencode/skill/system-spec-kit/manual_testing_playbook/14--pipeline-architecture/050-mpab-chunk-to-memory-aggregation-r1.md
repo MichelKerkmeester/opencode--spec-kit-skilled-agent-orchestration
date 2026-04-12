@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `050` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 050 | MPAB chunk-to-memory aggregation (R1) | Confirm MPAB formula | `As a pipeline validation operator, confirm MPAB formula against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create parent+chunks 2) run stage-3 aggregation 3) compare manual formula | MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value | Stage-3 aggregation output + manual MPAB formula calculation + comparison | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions | Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm MPAB formula against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create parent+chunks
+2. run stage-3 aggregation
+3. compare manual formula
+
+### Expected
+
+MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value
+
+### Evidence
+
+Stage-3 aggregation output + manual MPAB formula calculation + comparison
+
+### Pass / Fail
+
+- **Pass**: Computed MPAB score matches manual calculation within 0.001 tolerance
+- **Fail**: Score deviation >0.001 or missing chunk contributions
+
+### Failure Triage
+
+Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point
 
 ## 4. REFERENCES
 

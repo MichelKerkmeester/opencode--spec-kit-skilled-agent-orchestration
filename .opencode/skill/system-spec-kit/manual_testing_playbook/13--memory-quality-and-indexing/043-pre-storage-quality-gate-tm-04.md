@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `043` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 043 | Pre-storage quality gate (TM-04) | Confirm 3-layer gate behavior | `As a memory-quality validation operator, confirm 3-layer gate behavior against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Submit one structural failure, one semantic-quality failure, and one duplicate-content case 2) observe block vs warn behavior at each step 3) capture returned warnings and save outcome | Structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory | Tool output per failure class plus warnings/save outcome | PASS: Each failure class triggers the correct gate stage with accurate blocking vs advisory behavior; FAIL: A stage is skipped, severity is wrong, or the scenario claims a persisted decision log that runtime does not emit | Verify gate ordering, warning surfacing, and save-path branching in the actual runtime output |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm 3-layer gate behavior against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Submit one structural failure, one semantic-quality failure, and one duplicate-content case
+2. observe block vs warn behavior at each step
+3. capture returned warnings and save outcome
+
+### Expected
+
+Structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory
+
+### Evidence
+
+Tool output per failure class plus warnings/save outcome
+
+### Pass / Fail
+
+- **Pass**: Each failure class triggers the correct gate stage with accurate blocking vs advisory behavior
+- **Fail**: A stage is skipped, severity is wrong, or the scenario claims a persisted decision log that runtime does not emit
+
+### Failure Triage
+
+Verify gate ordering, warning surfacing, and save-path branching in the actual runtime output
 
 ## 4. REFERENCES
 

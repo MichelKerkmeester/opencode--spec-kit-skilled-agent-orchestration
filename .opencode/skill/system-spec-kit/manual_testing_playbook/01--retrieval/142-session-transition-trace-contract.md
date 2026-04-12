@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `142` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 142 | Session transition trace contract | Verify `memory_context` emits trace-only session transitions with no non-trace leakage | `As a retrieval validation operator, verify memory_context emits trace-only session transitions with no non-trace leakage against memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true }). Verify trace-enabled responses include spec-shaped sessionTransition; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true })` 2) Verify each result exposes `trace.sessionTransition.previousState`, `currentState`, `confidence`, and ordered `signalSources` 3) Repeat without `includeTrace` and verify `sessionTransition` is absent 4) Confirm the non-trace response does not expose transition data in top-level metadata | Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled | Two `memory_context` outputs with and without `includeTrace` + field-level comparison | PASS if trace-only gating holds and the contract fields are present only in the traced call | Inspect `handlers/memory-context.ts`, `handlers/memory-search.ts`, and `lib/search/session-transition.ts` if fields leak or ordering drifts |
+### Prompt
 
----
+```
+As a retrieval validation operator, verify memory_context emits trace-only session transitions with no non-trace leakage against memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true }). Verify trace-enabled responses include spec-shaped sessionTransition; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true })`
+2. Verify each result exposes `trace.sessionTransition.previousState`, `currentState`, `confidence`, and ordered `signalSources`
+3. Repeat without `includeTrace` and verify `sessionTransition` is absent
+4. Confirm the non-trace response does not expose transition data in top-level metadata
+
+### Expected
+
+Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled
+
+### Evidence
+
+Two `memory_context` outputs with and without `includeTrace` + field-level comparison
+
+### Pass / Fail
+
+- **Pass**: trace-only gating holds and the contract fields are present only in the traced call
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `handlers/memory-context.ts`, `handlers/memory-search.ts`, and `lib/search/session-transition.ts` if fields leak or ordering drifts
 
 ## 4. REFERENCES
 

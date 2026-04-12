@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `105` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 105 | Context-server success-envelope finalization | Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract | `As a runtime-hook validation operator, confirm appendAutoSurfaceHints() runs before budget enforcement and preserves the finalized envelope contract against npx vitest run tests/context-server.vitest.ts. Verify context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `npx vitest run tests/context-server.vitest.ts` 2) inspect assertions covering appended success hints 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final token metadata after hint append and before budget enforcement | Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata | Test transcript + key assertion output | PASS if `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end | Inspect `context-server.ts` success-path assembly and expected envelope fields |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm appendAutoSurfaceHints() runs before budget enforcement and preserves the finalized envelope contract against npx vitest run tests/context-server.vitest.ts. Verify context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `npx vitest run tests/context-server.vitest.ts`
+2. inspect assertions covering appended success hints
+3. inspect assertions covering preserved `autoSurfacedContext`
+4. inspect assertions covering final token metadata after hint append and before budget enforcement
+
+### Expected
+
+Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata
+
+### Evidence
+
+Test transcript + key assertion output
+
+### Pass / Fail
+
+- **Pass**: `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `context-server.ts` success-path assembly and expected envelope fields
 
 ## 4. REFERENCES
 

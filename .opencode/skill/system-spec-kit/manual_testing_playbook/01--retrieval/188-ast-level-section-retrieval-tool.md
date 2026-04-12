@@ -25,11 +25,35 @@ Operators review the exact feature entry and nearby retrieval references for `18
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 188 | AST-level section retrieval tool | Verify deferred AST heading-level retrieval remains unshipped and correctly bounded | `As a retrieval validation operator, verify deferred AST heading-level retrieval remains unshipped and correctly bounded against feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md. Verify feature is marked planned/deferred; no implementation/source files are present; current retrieval remains anchor-aware thinning. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Read `feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` and confirm it states `PLANNED (Sprint 019): DEFERRED` 2) Verify the entry names `read_spec_section(filePath, heading)` as the planned interface and says Markdown AST parsing via `remark` is deferred until docs routinely exceed about 1000 lines 3) Search the repository for `read_spec_section(` and confirm there is no production implementation or source file for the tool yet 4) Confirm current retrieval references still point to R7 anchor-aware thinning as the active approach rather than heading-level AST extraction | Feature is marked planned/deferred; no implementation/source files are present; current retrieval remains anchor-aware thinning | Feature catalog excerpt showing deferred status; repository search output showing no implementation; reference showing R7 anchor-aware thinning is still current | PASS: Deferred status, no implementation, and current-approach notes all align; FAIL: code or runtime wiring exists without catalog updates, or the feature entry no longer matches reality | Reconcile documentation drift if implementation exists; update the feature catalog if status changed; if docs are routinely above threshold, confirm whether implementation should move from deferred to active |
+### Prompt
 
----
+```
+As a retrieval validation operator, verify deferred AST heading-level retrieval remains unshipped and correctly bounded against feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md. Verify feature is marked planned/deferred; no implementation/source files are present; current retrieval remains anchor-aware thinning. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Read `feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md` and confirm it states `PLANNED (Sprint 019): DEFERRED`
+2. Verify the entry names `read_spec_section(filePath, heading)` as the planned interface and says Markdown AST parsing via `remark` is deferred until docs routinely exceed about 1000 lines
+3. Search the repository for `read_spec_section(` and confirm there is no production implementation or source file for the tool yet
+4. Confirm current retrieval references still point to R7 anchor-aware thinning as the active approach rather than heading-level AST extraction
+
+### Expected
+
+Feature is marked planned/deferred; no implementation/source files are present; current retrieval remains anchor-aware thinning
+
+### Evidence
+
+Feature catalog excerpt showing deferred status; repository search output showing no implementation; reference showing R7 anchor-aware thinning is still current
+
+### Pass / Fail
+
+- **Pass**: Deferred status, no implementation, and current-approach notes all align
+- **Fail**: code or runtime wiring exists without catalog updates, or the feature entry no longer matches reality
+
+### Failure Triage
+
+Reconcile documentation drift if implementation exists; update the feature catalog if status changed; if docs are routinely above threshold, confirm whether implementation should move from deferred to active
 
 ## 4. REFERENCES
 

@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-024` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-024 | Post-task learning measurement (task_postflight) | Learning closeout | `As an analysis validation operator, validate Learning closeout against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.` | `task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Delta/learning record saved | Postflight output | PASS if completion recorded | Verify taskId matches preflight |
+### Prompt
 
----
+```
+As an analysis validation operator, validate Learning closeout against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)
+
+### Expected
+
+Delta/learning record saved
+
+### Evidence
+
+Postflight output
+
+### Pass / Fail
+
+- **Pass**: completion recorded
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify taskId matches preflight
 
 ## 4. REFERENCES
 

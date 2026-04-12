@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `145` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 145 | Contextual tree injection (P1-4) | Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled | `As a retrieval-enhancement validation operator, verify hierarchical spec-folder headers are injected into search results when SPECKIT_CONTEXT_HEADERS=true and suppressed when disabled against memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 }). Verify enabled: results with spec-folder paths have [parent > child — description] headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 })` with `SPECKIT_CONTEXT_HEADERS=true` (default) 2) Verify results with spec-folder file paths have a `[parent > child — desc]` header prepended to content 3) Verify header is truncated at 100 characters 4) Restart with `SPECKIT_CONTEXT_HEADERS=false` and repeat search 5) Verify no contextual headers are prepended | Enabled: results with spec-folder paths have `[parent > child — description]` headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged | Search outputs with and without flag + header format verification | PASS if enabled mode injects correctly formatted headers and disabled mode skips injection entirely | Inspect `lib/search/hybrid-search.ts` `injectContextualTree`, `lib/search/search-flags.ts` `isContextHeadersEnabled`, and description cache population |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, verify hierarchical spec-folder headers are injected into search results when SPECKIT_CONTEXT_HEADERS=true and suppressed when disabled against memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 }). Verify enabled: results with spec-folder paths have [parent > child — description] headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 })` with `SPECKIT_CONTEXT_HEADERS=true` (default)
+2. Verify results with spec-folder file paths have a `[parent > child — desc]` header prepended to content
+3. Verify header is truncated at 100 characters
+4. Restart with `SPECKIT_CONTEXT_HEADERS=false` and repeat search
+5. Verify no contextual headers are prepended
+
+### Expected
+
+Enabled: results with spec-folder paths have `[parent > child — description]` headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged
+
+### Evidence
+
+Search outputs with and without flag + header format verification
+
+### Pass / Fail
+
+- **Pass**: enabled mode injects correctly formatted headers and disabled mode skips injection entirely
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `lib/search/hybrid-search.ts` `injectContextualTree`, `lib/search/search-flags.ts` `isContextHeadersEnabled`, and description cache population
 
 ## 4. REFERENCES
 

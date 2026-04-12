@@ -24,11 +24,32 @@ Operators run the exact prompt and command sequence for `EX-016` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-016 | Checkpoint listing (checkpoint_list) | Recovery asset discovery | `As a lifecycle validation operator, validate Recovery asset discovery against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_list(specFolder,limit)` | Available restore points displayed | List output | PASS if checkpoints returned | Remove spec filter if empty |
+### Prompt
 
----
+```
+As a lifecycle validation operator, validate Recovery asset discovery against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. checkpoint_list(specFolder,limit)
+
+### Expected
+
+Available restore points displayed
+
+### Evidence
+
+List output
+
+### Pass / Fail
+
+- **Pass**: checkpoints returned
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Remove spec filter if empty
 
 ## 4. REFERENCES
 

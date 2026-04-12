@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `134` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 134 | Startup pending-file recovery lifecycle coverage | Verify startup recovery scans allowed roots and preserves stale pending files for manual review | `As a lifecycle validation operator, verify startup recovery scans allowed roots and preserves stale pending files for manual review against recoverAllPendingFiles. Verify committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create a pending file where DB row is committed, then run startup recovery (`recoverAllPendingFiles` path) 2) Verify committed pending file is renamed to original path 3) Create a stale pending file with no DB row 4) Verify stale pending file is not renamed and is reported for manual review 5) Verify scan roots include configured memory base roots plus `.opencode/specs` and constitutional locations | Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees | Recovery output + filesystem checks + startup scan log evidence | PASS if committed/stale behavior diverges correctly and startup scan root set includes expected allowed locations | Inspect `context-server.ts` recovery root derivation and `transaction-manager.ts` stale pending detection |
+### Prompt
 
----
+```
+As a lifecycle validation operator, verify startup recovery scans allowed roots and preserves stale pending files for manual review against recoverAllPendingFiles. Verify committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Create a pending file where DB row is committed, then run startup recovery (`recoverAllPendingFiles` path)
+2. Verify committed pending file is renamed to original path
+3. Create a stale pending file with no DB row
+4. Verify stale pending file is not renamed and is reported for manual review
+5. Verify scan roots include configured memory base roots plus `.opencode/specs` and constitutional locations
+
+### Expected
+
+Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees
+
+### Evidence
+
+Recovery output + filesystem checks + startup scan log evidence
+
+### Pass / Fail
+
+- **Pass**: committed/stale behavior diverges correctly and startup scan root set includes expected allowed locations
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `context-server.ts` recovery root derivation and `transaction-manager.ts` stale pending detection
 
 ## 4. REFERENCES
 

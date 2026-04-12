@@ -25,11 +25,36 @@ Operators run the exact prompt and command sequence for `160` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 160 | Shadow feedback (SPECKIT_SHADOW_FEEDBACK) | Verify shadow_scoring_log entries created | `As a scoring validation operator, verify shadow_scoring_log entries created against SPECKIT_SHADOW_FEEDBACK=true. Verify shadow_scoring_log rows with rank deltas; compareRanks() produces Kendall tau and NDCG delta; evaluatePromotionGate() returns recommendation; no live ranking mutation. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_SHADOW_FEEDBACK=true` 2) Call `runShadowEvaluation(db, queryIds, liveRanksFn, shadowRanksFn)` 3) Query `SELECT * FROM shadow_scoring_log` 4) Check `evaluatePromotionGate(db)` 5) `npx vitest run tests/shadow-scoring-holdout.vitest.ts` | shadow_scoring_log rows with rank deltas; compareRanks() produces Kendall tau and NDCG delta; evaluatePromotionGate() returns recommendation; no live ranking mutation | shadow_scoring_log rows + ShadowEvaluationReport output + test transcript | PASS if shadow_scoring_log has entries after evaluation and live rankings unchanged; FAIL if log empty or live ranking columns mutated | Verify isShadowFeedbackEnabled() → Check initShadowScoringLog() created tables → Inspect selectHoldoutQueries() output → Verify logRankDelta() insert count → Check PROMOTION_THRESHOLD_WEEKS (2) |
+### Prompt
 
----
+```
+As a scoring validation operator, verify shadow_scoring_log entries created against SPECKIT_SHADOW_FEEDBACK=true. Verify shadow_scoring_log rows with rank deltas; compareRanks() produces Kendall tau and NDCG delta; evaluatePromotionGate() returns recommendation; no live ranking mutation. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_SHADOW_FEEDBACK=true`
+2. Call `runShadowEvaluation(db, queryIds, liveRanksFn, shadowRanksFn)`
+3. Query `SELECT * FROM shadow_scoring_log`
+4. Check `evaluatePromotionGate(db)`
+5. `npx vitest run tests/shadow-scoring-holdout.vitest.ts`
+
+### Expected
+
+shadow_scoring_log rows with rank deltas; compareRanks() produces Kendall tau and NDCG delta; evaluatePromotionGate() returns recommendation; no live ranking mutation
+
+### Evidence
+
+shadow_scoring_log rows + ShadowEvaluationReport output + test transcript
+
+### Pass / Fail
+
+- **Pass**: shadow_scoring_log has entries after evaluation and live rankings unchanged
+- **Fail**: log empty or live ranking columns mutated
+
+### Failure Triage
+
+Verify isShadowFeedbackEnabled() → Check initShadowScoringLog() created tables → Inspect selectHoldoutQueries() output → Verify logRankDelta() insert count → Check PROMOTION_THRESHOLD_WEEKS (2)
 
 ## 4. REFERENCES
 

@@ -24,11 +24,33 @@ Operators run the exact prompt and command sequence for `EX-015` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-015 | Checkpoint creation (checkpoint_create) | Pre-destructive backup | `As a lifecycle validation operator, validate Pre-destructive backup against checkpoint_create(name,specFolder). Verify new checkpoint listed. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create(name,specFolder)` -> `checkpoint_list()` | New checkpoint listed | Create/list outputs | PASS if checkpoint discoverable | Validate folder and naming rules |
+### Prompt
 
----
+```
+As a lifecycle validation operator, validate Pre-destructive backup against checkpoint_create(name,specFolder). Verify new checkpoint listed. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. checkpoint_create(name,specFolder)
+2. checkpoint_list()
+
+### Expected
+
+New checkpoint listed
+
+### Evidence
+
+Create/list outputs
+
+### Pass / Fail
+
+- **Pass**: checkpoint discoverable
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Validate folder and naming rules
 
 ## 4. REFERENCES
 

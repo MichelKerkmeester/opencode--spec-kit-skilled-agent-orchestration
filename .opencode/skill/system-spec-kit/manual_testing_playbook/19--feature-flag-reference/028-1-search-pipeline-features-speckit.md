@@ -25,11 +25,33 @@ Operators run the exact prompt and command sequence for `EX-028` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-028 | 1. Search Pipeline Features (SPECKIT_*) | Flag catalog verification with inert and retired surface cleanup | `As a feature-flag validation operator, validate Flag catalog verification with inert and retired surface cleanup against memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 }). Verify accurate active/inert/retired classification; retired topics absent from active manual-test guidance. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 })` -> `memory_context({ input: "Classify live search-pipeline flags versus inert compatibility shims and retired topics", mode: "deep", sessionId: "ex028" })` | Accurate active/inert/retired classification; retired topics absent from active manual-test guidance | Search/context outputs + catalog cross-check notes | PASS if classifications are internally consistent and retired topics are not framed as active checks | Validate against code/config docs; remove any manual-test wording that still treats retired topics as live search-pipeline behavior |
+### Prompt
 
----
+```
+As a feature-flag validation operator, validate Flag catalog verification with inert and retired surface cleanup against memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 }). Verify accurate active/inert/retired classification; retired topics absent from active manual-test guidance. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 })
+2. memory_context({ input: "Classify live search-pipeline flags versus inert compatibility shims and retired topics", mode: "deep", sessionId: "ex028" })
+
+### Expected
+
+Accurate active/inert/retired classification; retired topics absent from active manual-test guidance
+
+### Evidence
+
+Search/context outputs + catalog cross-check notes
+
+### Pass / Fail
+
+- **Pass**: classifications are internally consistent and retired topics are not framed as active checks
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Validate against code/config docs; remove any manual-test wording that still treats retired topics as live search-pipeline behavior
 
 ## 4. REFERENCES
 

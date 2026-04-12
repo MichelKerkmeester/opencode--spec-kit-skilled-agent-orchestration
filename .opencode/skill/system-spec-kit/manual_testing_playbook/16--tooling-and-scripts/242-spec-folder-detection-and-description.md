@@ -24,11 +24,35 @@ Operators validate the folder-selection and metadata surface through the functio
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 242 | Spec-Folder Detection and Description Metadata | Confirm folder detection, alignment safety, subfolder resolution, and description generation | `As a tooling validation operator, confirm folder detection, alignment safety, subfolder resolution, and description generation against cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js. Verify functional tests pass; subfolder resolution stays green; description generation completes for the explicit spec path without traversal or alignment failure. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js` 2) `cd .opencode/skill/system-spec-kit/scripts && node tests/test-alignment-validator.js` 3) `cd .opencode/skill/system-spec-kit/scripts && node tests/test-subfolder-resolution.js` 4) `npx tsx .opencode/skill/system-spec-kit/scripts/spec-folder/generate-description.ts .opencode/specs/system-spec-kit/022-hybrid-rag-fusion .opencode/specs --description "Manual scenario description"` | Functional tests pass; subfolder resolution stays green; description generation completes for the explicit spec path without traversal or alignment failure | JS test transcripts and the updated `description.json` output or timestamp under the target spec folder | PASS if all three test scripts pass and the explicit description refresh succeeds | Inspect `scripts/spec-folder/folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, and `generate-description.ts` if a path cannot be resolved or description generation fails |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm folder detection, alignment safety, subfolder resolution, and description generation against cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js. Verify functional tests pass; subfolder resolution stays green; description generation completes for the explicit spec path without traversal or alignment failure. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js`
+2. `cd .opencode/skill/system-spec-kit/scripts && node tests/test-alignment-validator.js`
+3. `cd .opencode/skill/system-spec-kit/scripts && node tests/test-subfolder-resolution.js`
+4. `npx tsx .opencode/skill/system-spec-kit/scripts/spec-folder/generate-description.ts .opencode/specs/system-spec-kit/022-hybrid-rag-fusion .opencode/specs --description "Manual scenario description"`
+
+### Expected
+
+Functional tests pass; subfolder resolution stays green; description generation completes for the explicit spec path without traversal or alignment failure
+
+### Evidence
+
+JS test transcripts and the updated `description.json` output or timestamp under the target spec folder
+
+### Pass / Fail
+
+- **Pass**: all three test scripts pass and the explicit description refresh succeeds
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/spec-folder/folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, and `generate-description.ts` if a path cannot be resolved or description generation fails
 
 ## 4. REFERENCES
 

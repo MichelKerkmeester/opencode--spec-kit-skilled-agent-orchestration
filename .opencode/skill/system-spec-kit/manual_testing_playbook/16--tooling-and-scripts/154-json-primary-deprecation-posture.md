@@ -32,11 +32,34 @@ Operators verify the JSON-first save contract: structured JSON succeeds and dire
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 154 | JSON-primary deprecation posture | Verify JSON-first save contract without removing positional file input support | `Test the generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) --stdin with valid structured payload should succeed, and (3) direct positional JSON file input should still succeed on the same structured path. Return a pass/fail verdict for each path.` | 1) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0 2) `printf '{"specFolder":"test","sessionSummary":"test"}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin <spec-folder>` → expect exit 0 3) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json <spec-folder>` → expect exit 0 | Path 1: exit 0, Path 2: exit 0, Path 3: exit 0 | CLI exit codes and stdout/stderr output | PASS if all three paths match documented behavior | Check generate-context.ts argument parsing, loader routing, and structured-input authority |
+### Prompt
 
----
+```
+Test the generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) --stdin with valid structured payload should succeed, and (3) direct positional JSON file input should still succeed on the same structured path. Return a pass/fail verdict for each path.
+```
+
+### Commands
+
+1. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0
+2. `printf '{"specFolder":"test","sessionSummary":"test"}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin <spec-folder>` → expect exit 0
+3. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json <spec-folder>` → expect exit 0
+
+### Expected
+
+Path 1: exit 0, Path 2: exit 0, Path 3: exit 0
+
+### Evidence
+
+CLI exit codes and stdout/stderr output
+
+### Pass / Fail
+
+- **Pass**: all three paths match documented behavior
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check generate-context.ts argument parsing, loader routing, and structured-input authority
 
 ## 4. REFERENCES
 

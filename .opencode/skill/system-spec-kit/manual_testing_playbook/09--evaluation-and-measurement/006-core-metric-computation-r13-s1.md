@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `006` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 006 | Core metric computation (R13-S1) | Confirm metric battery outputs | `As an evaluation validation operator, confirm metric battery outputs against the documented validation surface. Verify metric battery returns precision, recall, MRR, NDCG values; all within valid ranges. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Seed ground truth 2) Run eval metrics 3) Verify metric set | Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges | Eval metric output with ground truth comparison + per-metric values | PASS: All core metrics computed with values in [0,1] range; FAIL: Missing metrics or out-of-range values | Verify ground truth corpus is seeded → Check metric computation functions → Inspect edge cases (empty results, single result) |
+### Prompt
 
----
+```
+As an evaluation validation operator, confirm metric battery outputs against the documented validation surface. Verify metric battery returns precision, recall, MRR, NDCG values; all within valid ranges. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Seed ground truth
+2. Run eval metrics
+3. Verify metric set
+
+### Expected
+
+Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges
+
+### Evidence
+
+Eval metric output with ground truth comparison + per-metric values
+
+### Pass / Fail
+
+- **Pass**: All core metrics computed with values in [0,1] range
+- **Fail**: Missing metrics or out-of-range values
+
+### Failure Triage
+
+Verify ground truth corpus is seeded → Check metric computation functions → Inspect edge cases (empty results, single result)
 
 ## 4. REFERENCES
 

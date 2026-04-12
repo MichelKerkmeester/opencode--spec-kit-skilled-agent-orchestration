@@ -108,6 +108,14 @@ describe('improvement-journal', () => {
       });
       expect(result.valid).toBe(true);
     });
+
+    it('accepts the session_end alias with stop reason and outcome', () => {
+      const result = journal.validateEvent({
+        eventType: 'session_end',
+        details: { stopReason: 'benchmarkPlateau', sessionOutcome: 'advisoryOnly' },
+      });
+      expect(result.valid).toBe(true);
+    });
   });
 
   describe('emitEvent', () => {
@@ -206,6 +214,20 @@ describe('improvement-journal', () => {
       const result = journal.getSessionResult(journalPath);
       expect(result.stopReason).toBe('converged');
       expect(result.sessionOutcome).toBe('promoted');
+    });
+
+    it('returns stop reason and outcome from session_end alias', () => {
+      journal.emitEvent(journalPath, {
+        eventType: 'session_end',
+        details: {
+          stopReason: 'benchmarkPlateau',
+          sessionOutcome: 'advisoryOnly',
+        },
+      });
+
+      const result = journal.getSessionResult(journalPath);
+      expect(result.stopReason).toBe('benchmarkPlateau');
+      expect(result.sessionOutcome).toBe('advisoryOnly');
     });
   });
 });

@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `116` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 116 | Chunking safe swap atomicity (P0-6) | Verify re-chunking stages replacements before delete, cleans staged replacements on finalize failure, and preserves old state on rollback | `As a data-integrity validation operator, verify re-chunking stages replacements before delete, cleans staged replacements on finalize failure, and preserves old state on rollback against memory_save(). Verify new chunks indexed in staged state before old deletion; old children keep original linkage on finalize failure; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure. Return a concise pass/fail verdict with the main reason and cited evidence.` | **Precondition:** Create a parent memory with child chunks via `memory_save()`. 1) Trigger re-chunk on the parent 2) Verify new chunks are staged with `parent_id IS NULL` before finalize 3) Verify finalize links new chunks, updates the parent, nulls old-child `parent_id`, and deletes old children in one transaction 4) Inject finalize failure and verify staged replacement chunks are deleted while old children keep the original parent link 5) Simulate all-chunks-failed indexing and verify the old parent BM25 document remains in place | New chunks indexed in staged state before old deletion; old children keep original linkage on finalize failure; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure | Re-chunk output + staged chunk evidence + old-child linkage snapshot + staged chunk cleanup evidence + BM25 parent verification after forced failure | PASS if new chunks are staged before deletion, finalize failure leaves no staged residue, old children survive both finalize failure and all-chunks-failed rollback, and parent BM25 is unchanged until finalize completes | Inspect chunking orchestrator finalize transaction; verify `parent_id` unlink happens inside the transaction; check rollback/cleanup path for staged chunks; verify parent BM25 mutation happens after chunk success/finalize only |
+### Prompt
 
----
+```
+As a data-integrity validation operator, verify re-chunking stages replacements before delete, cleans staged replacements on finalize failure, and preserves old state on rollback against memory_save(). Verify new chunks indexed in staged state before old deletion; old children keep original linkage on finalize failure; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. **Precondition:** Create a parent memory with child chunks via `memory_save()`.
+2. Trigger re-chunk on the parent
+3. Verify new chunks are staged with `parent_id IS NULL` before finalize
+4. Verify finalize links new chunks, updates the parent, nulls old-child `parent_id`, and deletes old children in one transaction
+5. Inject finalize failure and verify staged replacement chunks are deleted while old children keep the original parent link
+6. Simulate all-chunks-failed indexing and verify the old parent BM25 document remains in place
+
+### Expected
+
+New chunks indexed in staged state before old deletion; old children keep original linkage on finalize failure; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure
+
+### Evidence
+
+Re-chunk output + staged chunk evidence + old-child linkage snapshot + staged chunk cleanup evidence + BM25 parent verification after forced failure
+
+### Pass / Fail
+
+- **Pass**: new chunks are staged before deletion, finalize failure leaves no staged residue, old children survive both finalize failure and all-chunks-failed rollback, and parent BM25 is unchanged until finalize completes
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect chunking orchestrator finalize transaction; verify `parent_id` unlink happens inside the transaction; check rollback/cleanup path for staged chunks; verify parent BM25 mutation happens after chunk success/finalize only
 
 ## 4. REFERENCES
 

@@ -25,11 +25,35 @@ Operators run the exact prompt and command sequence for `161` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 161 | LLM reformulation (SPECKIT_LLM_REFORMULATION) | Verify reformulation pipeline runs in deep mode | `As a query-intelligence validation operator, verify reformulation pipeline runs in deep mode against memory_search({ query: "complex multi-faceted query", mode: "deep" }). Verify cheapSeedRetrieve() returns FTS5/BM25 seeds; abstract >= 5 chars; variants array max 2; LLM cache hit on repeat; no-op in non-deep mode. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_search({ query: "complex multi-faceted query", mode: "deep" })` 2) Inspect reformulation output for abstract + variants 3) Verify cache populated 4) Re-run same query, verify cache hit | cheapSeedRetrieve() returns FTS5/BM25 seeds; abstract >= 5 chars; variants array max 2; LLM cache hit on repeat; no-op in non-deep mode | ReformulationResult output + cache hit log + test transcript | PASS if reformulation produces valid abstract + variants in deep mode and skips in non-deep; FAIL if abstract empty, variants > 2, or runs outside deep mode | Verify isLlmReformulationEnabled() → Check LLM_REFORMULATION_ENDPOINT configured → Inspect cheapSeedRetrieve() for FTS5 results → Verify normalizeQuery() cache key → Check REFORMULATION_TIMEOUT_MS (8000) |
+### Prompt
 
----
+```
+As a query-intelligence validation operator, verify reformulation pipeline runs in deep mode against memory_search({ query: "complex multi-faceted query", mode: "deep" }). Verify cheapSeedRetrieve() returns FTS5/BM25 seeds; abstract >= 5 chars; variants array max 2; LLM cache hit on repeat; no-op in non-deep mode. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_search({ query: "complex multi-faceted query", mode: "deep" })`
+2. Inspect reformulation output for abstract + variants
+3. Verify cache populated
+4. Re-run same query, verify cache hit
+
+### Expected
+
+cheapSeedRetrieve() returns FTS5/BM25 seeds; abstract >= 5 chars; variants array max 2; LLM cache hit on repeat; no-op in non-deep mode
+
+### Evidence
+
+ReformulationResult output + cache hit log + test transcript
+
+### Pass / Fail
+
+- **Pass**: reformulation produces valid abstract + variants in deep mode and skips in non-deep
+- **Fail**: abstract empty, variants > 2, or runs outside deep mode
+
+### Failure Triage
+
+Verify isLlmReformulationEnabled() → Check LLM_REFORMULATION_ENDPOINT configured → Inspect cheapSeedRetrieve() for FTS5 results → Verify normalizeQuery() cache key → Check REFORMULATION_TIMEOUT_MS (8000)
 
 ## 4. REFERENCES
 

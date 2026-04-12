@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `058` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `As a retrieval-enhancement validation operator, confirm maintenance cycle behavior against the documented validation surface. Verify consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm maintenance cycle behavior against the documented validation surface. Verify consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. trigger cycle
+2. inspect contradiction/hebbian/staleness outputs
+3. verify logs
+
+### Expected
+
+Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
+
+### Evidence
+
+Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness)
+
+### Pass / Fail
+
+- **Pass**: all three consolidation sub-processes execute and produce expected outputs without errors
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle
 
 ## 4. REFERENCES
 

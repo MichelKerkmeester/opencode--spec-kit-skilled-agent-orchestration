@@ -8,7 +8,11 @@ category: "Reducer Dimensions"
 
 Validates that three or more consecutive identical dimension scores trigger the plateau stop condition.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that three or more consecutive identical dimension scores trigger the plateau stop condition against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify Reducer completes without errors, exit code 0. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 # Setup: create a test JSONL with 3 identical dimension score entries
@@ -26,7 +30,7 @@ node .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs /tmp/reducer-test
 cat /tmp/reducer-test-plateau/experiment-registry.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('PASS' if any('plateau' in str(v).lower() for v in [d]) else 'CHECK MANUALLY')"
 ```
 
-## Expected Signals
+## Expected
 
 - Reducer completes without errors, exit code 0
 - Dashboard generated at `/tmp/reducer-test-plateau/agent-improvement-dashboard.md`

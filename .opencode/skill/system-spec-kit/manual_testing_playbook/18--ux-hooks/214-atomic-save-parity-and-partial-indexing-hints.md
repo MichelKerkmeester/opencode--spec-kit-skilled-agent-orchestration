@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `214` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 214 | Atomic-save parity and partial-indexing hints | Confirm atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots | `As a runtime-hook validation operator, confirm atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts. Verify save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts` 2) inspect assertions covering successful atomic-save `postMutationHooks` contract parity 3) inspect assertions covering partial-indexing hints and duplicate or unchanged hook suppression 4) inspect assertions covering `structuredClone` snapshot isolation for after-tool callbacks | Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation | Test transcript + key assertion output for parity, partial-indexing, and callback snapshot coverage | PASS if the targeted suites pass and the assertions confirm atomic-save parity, partial-indexing guidance, no-op suppression, and callback snapshot protection | Inspect `handlers/memory-save.ts`, `handlers/save/response-builder.ts`, `handlers/save/post-insert.ts`, and `context-server.ts` if parity or snapshot behavior regresses |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts. Verify save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts`
+2. inspect assertions covering successful atomic-save `postMutationHooks` contract parity
+3. inspect assertions covering partial-indexing hints and duplicate or unchanged hook suppression
+4. inspect assertions covering `structuredClone` snapshot isolation for after-tool callbacks
+
+### Expected
+
+Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation
+
+### Evidence
+
+Test transcript + key assertion output for parity, partial-indexing, and callback snapshot coverage
+
+### Pass / Fail
+
+- **Pass**: the targeted suites pass and the assertions confirm atomic-save parity, partial-indexing guidance, no-op suppression, and callback snapshot protection
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `handlers/memory-save.ts`, `handlers/save/response-builder.ts`, `handlers/save/post-insert.ts`, and `context-server.ts` if parity or snapshot behavior regresses
 
 ## 4. REFERENCES
 

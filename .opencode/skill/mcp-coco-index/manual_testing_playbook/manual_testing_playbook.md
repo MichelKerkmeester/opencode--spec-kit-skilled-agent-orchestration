@@ -189,7 +189,7 @@ This section records wave planning and capacity guidance for the manual testing 
 Verify `ccc init` creates project config; second call reports already initialized; `--force` re-creates.
 
 #### Current Reality
-Prompt: `Initialize a new CocoIndex Code project in the current directory. Capture the evidence needed to prove Step 2: output contains "Initialized" or creates .cocoindex_code/; Step 3: file exists; Step 4: output contains "already" or exits without error; Step 5: succeeds without error; Step 6: file exists. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, initialize a new CocoIndex Code project in the current directory against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: output contains "Initialized" or creates .cocoindex_code/; Step 3: file exists; Step 4: output contains "already" or exits without error; Step 5: succeeds without error; Step 6: file exists. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 2: output contains "Initialized" or creates `.cocoindex_code/`; Step 3: file exists; Step 4: output contains "already" or exits without error; Step 5: succeeds without error; Step 6: file exists
 
@@ -202,7 +202,7 @@ Step 2: output contains "Initialized" or creates `.cocoindex_code/`; Step 3: fil
 Verify `ccc index` reports file count and chunk count.
 
 #### Current Reality
-Prompt: `Build the full semantic index for this project. Capture the evidence needed to prove Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, build the full semantic index for this project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.`
 
 Output contains numeric file and chunk counts (for example `Files:` and `Chunks:` or similar metric lines)
 
@@ -215,7 +215,7 @@ Output contains numeric file and chunk counts (for example `Files:` and `Chunks:
 Verify incremental indexing picks up new content and drops deleted content.
 
 #### Current Reality
-Prompt: `Create a temp file, reindex, search for it, delete it, reindex again. Capture the evidence needed to prove Step 3: search returns at least 1 result referencing ccc_test_incremental.py; Step 6: search returns 0 results for that file. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, create a temp file, reindex, search for it, delete it, reindex again against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 3: search returns at least 1 result referencing ccc_test_incremental.py; Step 6: search returns 0 results for that file. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 3: search returns at least 1 result referencing `ccc_test_incremental.py`; Step 6: search returns 0 results for that file
 
@@ -228,7 +228,7 @@ Step 3: search returns at least 1 result referencing `ccc_test_incremental.py`; 
 Verify `--lang` (repeatable) and `--limit` filters work.
 
 #### Current Reality
-Prompt: `Search for "function" filtered to Python and TypeScript with limit 3. Capture the evidence needed to prove Step 1: returns results; Step 2: all file extensions are .py, .ts, or .tsx; Step 3: result count <= 3. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search for "function" filtered to Python and TypeScript with limit 3 against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: returns results; Step 2: all file extensions are .py, .ts, or .tsx; Step 3: result count <= 3. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 1: returns results; Step 2: all file extensions are `.py`, `.ts`, or `.tsx`; Step 3: result count <= 3
 
@@ -241,7 +241,7 @@ Step 1: returns results; Step 2: all file extensions are `.py`, `.ts`, or `.tsx`
 Verify `ccc reset --all` clears index; status shows empty; rebuild succeeds.
 
 #### Current Reality
-Prompt: `Reset the CocoIndex Code index completely and rebuild. Capture the evidence needed to prove Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step 4: rebuilds with non-zero counts; Step 5: shows non-zero file and chunk counts. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, reset the CocoIndex Code index completely and rebuild against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step 4: rebuilds with non-zero counts; Step 5: shows non-zero file and chunk counts. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step 4: rebuilds with non-zero counts; Step 5: shows non-zero file and chunk counts
 
@@ -258,7 +258,7 @@ Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step
 Verify MCP search returns results with file paths, scores, and line ranges.
 
 #### Current Reality
-Prompt: `Use CocoIndex to search for "fibonacci calculation". Capture the evidence needed to prove Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-facing pass/fail verdict with the main reason.`
 
 Results array with at least 1 entry; each entry contains `file` (string), `score` (float 0.0-1.0), `lines` (start/end), `snippet` (string), `language` (string)
 
@@ -271,7 +271,7 @@ Results array with at least 1 entry; each entry contains `file` (string), `score
 Verify `languages` parameter restricts results to a single language.
 
 #### Current Reality
-Prompt: `Search CocoIndex for "function" filtered to Python only. Capture the evidence needed to prove All result file paths end in .py; no .ts, .js, .go, etc. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search CocoIndex for "function" filtered to Python only against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify All result file paths end in .py; no .ts, .js, .go, etc. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All result file paths end in `.py`; no `.ts`, `.js`, `.go`, etc.
 
@@ -284,7 +284,7 @@ All result file paths end in `.py`; no `.ts`, `.js`, `.go`, etc.
 Verify `languages` parameter accepts multiple languages.
 
 #### Current Reality
-Prompt: `Search CocoIndex for "function" in both Python and JavaScript. Capture the evidence needed to prove Results contain mix of .py and .js files; no other extensions. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Results contain mix of `.py` and `.js` files; no other extensions
 
@@ -297,7 +297,7 @@ Results contain mix of `.py` and `.js` files; no other extensions
 Verify `paths` parameter restricts results to a specific directory.
 
 #### Current Reality
-Prompt: `Search CocoIndex for "skill" only under .opencode/skill/. Capture the evidence needed to prove All result paths begin with .opencode/skill/; no results from other directories. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search CocoIndex for "skill" only under .opencode/skill/ against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify All result paths begin with .opencode/skill/; no results from other directories. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All result paths begin with `.opencode/skill/`; no results from other directories
 
@@ -310,7 +310,7 @@ All result paths begin with `.opencode/skill/`; no results from other directorie
 Verify `languages`, `paths`, and `limit` work together.
 
 #### Current Reality
-Prompt: `Search CocoIndex for "config" in Python under .opencode/ with 2 results. Capture the evidence needed to prove Result count <= 2; all files are .py; all paths start with .opencode/. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search CocoIndex for "config" in Python under .opencode/ with 2 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Result count <= 2; all files are .py; all paths start with .opencode/. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Result count <= 2; all files are `.py`; all paths start with `.opencode/`
 
@@ -323,7 +323,7 @@ Result count <= 2; all files are `.py`; all paths start with `.opencode/`
 Verify `limit` controls output count.
 
 #### Current Reality
-Prompt: `Compare CocoIndex search with 1 result vs 10 results. Capture the evidence needed to prove Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, compare CocoIndex search with 1 result vs 10 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count
 
@@ -336,7 +336,7 @@ Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Ste
 Verify `refresh_index: false` skips reindexing and still returns results.
 
 #### Current Reality
-Prompt: `Search CocoIndex for "test" without triggering a reindex. Capture the evidence needed to prove Results array is non-empty; response time is noticeably faster than a refreshing search (no index wait notice). Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search CocoIndex for "test" without triggering a reindex against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array is non-empty; response time is noticeably faster than a refreshing search (no index wait notice). Return a concise user-facing pass/fail verdict with the main reason.`
 
 Results array is non-empty; response time is noticeably faster than a refreshing search (no index wait notice)
 
@@ -353,7 +353,7 @@ Results array is non-empty; response time is noticeably faster than a refreshing
 Verify global settings contain the documented default embedding model.
 
 #### Current Reality
-Prompt: `Check the CocoIndex Code global settings for the embedding model. Capture the evidence needed to prove Settings file exists; embedding.model matches a documented model such as the default local sentence-transformers/all-MiniLM-L6-v2 or a LiteLLM model like voyage/voyage-code-3. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, check the CocoIndex Code global settings for the embedding model against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Settings file exists; embedding.model matches a documented model such as the default local sentence-transformers/all-MiniLM-L6-v2 or a LiteLLM model like voyage/voyage-code-3. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Settings file exists; `embedding.model` matches a documented model such as `sentence-transformers/all-MiniLM-L6-v2` or `voyage/voyage-code-3`
 
@@ -366,7 +366,7 @@ Settings file exists; `embedding.model` matches a documented model such as `sent
 Verify project settings contain language extension patterns.
 
 #### Current Reality
-Prompt: `Inspect the CocoIndex Code project settings for language coverage. Capture the evidence needed to prove include_patterns. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.`
 
 `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.)
 
@@ -379,7 +379,7 @@ Prompt: `Inspect the CocoIndex Code project settings for language coverage. Capt
 Verify `ccc status` shows indexed file count and chunk count.
 
 #### Current Reality
-Prompt: `Check the CocoIndex Code status for this initialized project. Capture the evidence needed to prove Output shows numeric file count > 0 and numeric chunk count > 0. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, check the CocoIndex Code status for this initialized project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output shows numeric file count > 0 and numeric chunk count > 0. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Output shows numeric file count > 0 and numeric chunk count > 0
 
@@ -396,7 +396,7 @@ Output shows numeric file count > 0 and numeric chunk count > 0
 Verify daemon starts automatically when a CLI command is issued after it has been stopped.
 
 #### Current Reality
-Prompt: `Stop the daemon, then search -- verify auto-start. Capture the evidence needed to prove Step 1: daemon stops or reports already stopped; Step 3: search returns at least 1 result; Step 5: daemon reports running. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, stop the daemon, then search -- against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify auto-start against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: daemon stops or reports already stopped; Step 3: search returns at least 1 result; Step 5: daemon reports running. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 1: daemon stops or reports already stopped; Step 3: search returns at least 1 result; Step 5: daemon reports running
 
@@ -409,7 +409,7 @@ Step 1: daemon stops or reports already stopped; Step 3: search returns at least
 Verify `ccc daemon status` shows version and uptime; PID and socket files exist.
 
 #### Current Reality
-Prompt: `Check daemon status and verify runtime files. Capture the evidence needed to prove Step 1: output includes version or uptime information; Step 2: both daemon.pid and daemon.sock files exist. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, check daemon status and against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify runtime files against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: output includes version or uptime information; Step 2: both daemon.pid and daemon.sock files exist. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Step 1: output includes version or uptime information; Step 2: both `daemon.pid` and `daemon.sock` files exist
 
@@ -426,7 +426,7 @@ Step 1: output includes version or uptime information; Step 2: both `daemon.pid`
 Verify `--semantic` triggers CocoIndex search and `!semantic(...)` appears in reason field when skill references found.
 
 #### Current Reality
-Prompt: `Test skill advisor with semantic search for a deployment query. Capture the evidence needed to prove JSON output is valid; at least one recommendation entry contains !semantic( in its reason field; CocoIndex search was invoked (visible in processing or reason text). Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, test skill advisor with semantic search for a deployment query against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify JSON output is valid; at least one recommendation entry contains !semantic( in its reason field; CocoIndex search was invoked (visible in processing or reason text). Return a concise user-facing pass/fail verdict with the main reason.`
 
 JSON output is valid; at least one recommendation entry contains `!semantic(` in its `reason` field; CocoIndex search was invoked (visible in processing or reason text)
 
@@ -439,7 +439,7 @@ JSON output is valid; at least one recommendation entry contains `!semantic(` in
 Verify `--semantic-hits` with JSON array boosts confidence for the referenced skill.
 
 #### Current Reality
-Prompt: `Run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits. Capture both JSON outputs and prove sk-git appears in the semantic-hits run, its confidence is higher than in the baseline run, and the boosted reason references semantic input. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify sk-git appears in the semantic-hits run, its confidence is higher than in the baseline run, and the boosted reason references semantic input. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted `reason` references semantic input
 
@@ -456,7 +456,7 @@ Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its conf
 Verify search returns empty results gracefully for a nonsense query (no crash, no error).
 
 #### Current Reality
-Prompt: `Search for a completely nonsensical term that has no matches. Capture the evidence needed to prove Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace
 
@@ -475,7 +475,7 @@ These scenarios validate CocoIndex-related behavior when the Spec Kit Memory que
 Verify that semantic/conceptual queries are classified as intent=semantic and stay on the semantic path rather than the structural code graph path.
 
 #### Current Reality
-Prompt: `Send "find examples of error handling patterns in this codebase" to memory_context. Confirm intent is classified as semantic, routedBackend is semantic when present, and no graphContext is injected.`
+Prompt: `As a manual-testing orchestrator, send a semantic query like "find examples of error handling patterns in this codebase" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as 'semantic', routedBackend is semantic when present, no graphContext block in the response, no structural graph data injected into primary results. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Intent classified as 'semantic', semantic response shape preserved, no structural graph data injected via graphContext.
 
@@ -488,7 +488,7 @@ Intent classified as 'semantic', semantic response shape preserved, no structura
 Verify that hybrid intent queries append structural graph context to the normal semantic response when graph anchors resolve.
 
 #### Current Reality
-Prompt: `Send "find all validation functions and explain their error handling approach" to memory_context. Confirm intent=hybrid, routing metadata is present, and graphContext is appended when the graph resolves anchors.`
+Prompt: `As a manual-testing orchestrator, send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as hybrid, response contains queryIntentRouting, graphContext appears when graph seeds resolve, and the normal semantic response body remains present. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Intent classified as 'hybrid', response contains routing metadata plus graphContext when graph anchors resolve.
 
@@ -501,7 +501,7 @@ Intent classified as 'hybrid', response contains routing metadata plus graphCont
 Verify that `session_bootstrap` exposes CocoIndex availability on the canonical first-call recovery path, and that `session_resume` still exposes the direct CocoIndex field on the detailed resume surface.
 
 #### Current Reality
-Prompt: `Call session_bootstrap and session_resume, verify the CocoIndex availability fields on both surfaces, then validate graceful degradation in an environment where the ccc binary is absent.`
+Prompt: `As a manual-testing orchestrator, call session_bootstrap and session_resume, then examine the CocoIndex status fields against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify session_bootstrap.resume.cocoIndex.available and session_resume.cocoIndex.available match binary presence on disk; both binaryPath values are non-empty strings; session_bootstrap includes structuralContext; both calls complete without error regardless of binary availability. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Bootstrap exposes `resume.cocoIndex` plus structural context, direct resume exposes `cocoIndex`, and both calls succeed even when the `ccc` binary is unavailable.
 

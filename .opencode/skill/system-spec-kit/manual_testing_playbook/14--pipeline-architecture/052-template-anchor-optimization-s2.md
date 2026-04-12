@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `052` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 052 | Template anchor optimization (S2) | Confirm anchor metadata enrichment | `As a pipeline validation operator, confirm anchor metadata enrichment against the documented validation surface. Verify anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save anchored memory 2) query pipeline metadata 3) verify no score mutation | Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence | Pipeline metadata showing anchor enrichment + score comparison with/without anchors | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected | Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline |
+### Prompt
 
----
+```
+As a pipeline validation operator, confirm anchor metadata enrichment against the documented validation surface. Verify anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Save anchored memory
+2. query pipeline metadata
+3. verify no score mutation
+
+### Expected
+
+Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence
+
+### Evidence
+
+Pipeline metadata showing anchor enrichment + score comparison with/without anchors
+
+### Pass / Fail
+
+- **Pass**: Anchor metadata present; scores identical with/without anchor enrichment
+- **Fail**: Anchor metadata missing or score mutation detected
+
+### Failure Triage
+
+Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline
 
 ## 4. REFERENCES
 

@@ -24,11 +24,36 @@ Operators run the exact prompt and command sequence for `169` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 169 | Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) | Verify additive session metadata on session-aware searches | `As a runtime-hook validation operator, verify additive session metadata on session-aware searches against memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] }). Verify data.sessionState with activeGoal/seenResultIds/preferredAnchors; data.goalRefinement with activeGoal/applied; follow-up search can deprioritize seen results; session TTL 30 min; LRU at 100 sessions. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] })` 2) Inspect `data.sessionState` and `data.goalRefinement` 3) `memory_search({ query: "related second search", sessionId: "test-session" })` 4) Verify session metadata persists and follow-up behavior is visible 5) `npx vitest run tests/session-state.vitest.ts tests/memory-search-ux-hooks.vitest.ts` | `data.sessionState` with activeGoal/seenResultIds/preferredAnchors; `data.goalRefinement` with activeGoal/applied; follow-up search can deprioritize seen results; session TTL 30 min; LRU at 100 sessions | Response JSON before/after follow-up + test transcript | PASS if session metadata is present and follow-up behavior is visible; FAIL if metadata is missing or session context is ignored | Verify isSessionRetrievalStateEnabled() → Check SessionStateManager.getOrCreate() → Inspect SEEN_DEDUP_FACTOR (0.3) → Verify seenResultIds tracking → Check SESSION_TTL_MS (1800000) → Verify MAX_SESSIONS (100) LRU |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, verify additive session metadata on session-aware searches against memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] }). Verify data.sessionState with activeGoal/seenResultIds/preferredAnchors; data.goalRefinement with activeGoal/applied; follow-up search can deprioritize seen results; session TTL 30 min; LRU at 100 sessions. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] })`
+2. Inspect `data.sessionState` and `data.goalRefinement`
+3. `memory_search({ query: "related second search", sessionId: "test-session" })`
+4. Verify session metadata persists and follow-up behavior is visible
+5. `npx vitest run tests/session-state.vitest.ts tests/memory-search-ux-hooks.vitest.ts`
+
+### Expected
+
+`data.sessionState` with activeGoal/seenResultIds/preferredAnchors; `data.goalRefinement` with activeGoal/applied; follow-up search can deprioritize seen results; session TTL 30 min; LRU at 100 sessions
+
+### Evidence
+
+Response JSON before/after follow-up + test transcript
+
+### Pass / Fail
+
+- **Pass**: session metadata is present and follow-up behavior is visible
+- **Fail**: metadata is missing or session context is ignored
+
+### Failure Triage
+
+Verify isSessionRetrievalStateEnabled() → Check SessionStateManager.getOrCreate() → Inspect SEEN_DEDUP_FACTOR (0.3) → Verify seenResultIds tracking → Check SESSION_TTL_MS (1800000) → Verify MAX_SESSIONS (100) LRU
 
 ## 4. REFERENCES
 

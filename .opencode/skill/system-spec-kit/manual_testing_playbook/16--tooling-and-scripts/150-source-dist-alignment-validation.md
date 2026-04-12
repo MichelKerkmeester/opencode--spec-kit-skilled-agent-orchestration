@@ -32,11 +32,35 @@ Operators run the alignment script and confirm zero violations. The script scans
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 150 | Source-dist alignment validation | Verify check-source-dist-alignment.ts reports 0 violations | `As a tooling validation operator, verify check-source-dist-alignment.ts reports 0 violations against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned, exit code 0. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit` 2) `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` 3) Check exit code is 0 4) Verify "violations: 0" in output | 0 violations, all dist files aligned, exit code 0 | Script summary output showing scanned count, aligned count, violations count | PASS if 0 violations and exit 0 | Identify orphaned dist file -> check if source was deleted/renamed -> either restore source, remove dist artifact, or add time-bounded allowlist entry |
+### Prompt
 
----
+```
+As a tooling validation operator, verify check-source-dist-alignment.ts reports 0 violations against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned, exit code 0. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit`
+2. `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts`
+3. Check exit code is 0
+4. Verify "violations: 0" in output
+
+### Expected
+
+0 violations, all dist files aligned, exit code 0
+
+### Evidence
+
+Script summary output showing scanned count, aligned count, violations count
+
+### Pass / Fail
+
+- **Pass**: 0 violations and exit 0
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Identify orphaned dist file -> check if source was deleted/renamed -> either restore source, remove dist artifact, or add time-bounded allowlist entry
 
 ## 4. REFERENCES
 

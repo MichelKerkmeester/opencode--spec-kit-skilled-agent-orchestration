@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `129` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 129 | Lineage state active projection and asOf resolution | Verify append-first lineage projection, deterministic `asOf` resolution, and timestamp ordering across non-ISO or timezone variants | `As a pipeline validation operator, verify append-first lineage projection, deterministic asOf resolution, and timestamp ordering across non-ISO or timezone variants against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-lineage-state.vitest.ts` 3) Inspect the output for active projection, `asOf`, integrity failure coverage, and timestamp-order coverage for variant date formats | Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants | Test transcript + suite summary | PASS if `memory-lineage-state.vitest.ts` completes with all tests passing and the transcript shows both valid and malformed lineage cases plus timestamp-order coverage that depends on parsed epoch comparisons | Re-run `npm test -- --run tests/memory-lineage-state.vitest.ts -t asOf`; inspect `validateTransitionInput()` in `lib/storage/lineage-state.ts` and `lib/search/vector-index-schema.ts` if projection or timestamp assertions drift |
+### Prompt
 
----
+```
+As a pipeline validation operator, verify append-first lineage projection, deterministic asOf resolution, and timestamp ordering across non-ISO or timezone variants against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `npm test -- --run tests/memory-lineage-state.vitest.ts`
+3. Inspect the output for active projection, `asOf`, integrity failure coverage, and timestamp-order coverage for variant date formats
+
+### Expected
+
+Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants
+
+### Evidence
+
+Test transcript + suite summary
+
+### Pass / Fail
+
+- **Pass**: `memory-lineage-state.vitest.ts` completes with all tests passing and the transcript shows both valid and malformed lineage cases plus timestamp-order coverage that depends on parsed epoch comparisons
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Re-run `npm test -- --run tests/memory-lineage-state.vitest.ts -t asOf`; inspect `validateTransitionInput()` in `lib/storage/lineage-state.ts` and `lib/search/vector-index-schema.ts` if projection or timestamp assertions drift
 
 ## 4. REFERENCES
 

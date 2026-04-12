@@ -25,11 +25,40 @@ Operators run the exact prompt and command sequence for `185` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 185 | /memory:search command routing | Verify `/memory:search` command routing logic covers no-args, retrieval, and analysis modes | `As a retrieval validation operator, verify /memory:search command routing logic covers no-args, retrieval, and analysis modes against /memory:search. Verify no-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands each route to the correct tool. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Invoke `/memory:search` with no arguments and verify the interactive intent selection prompt appears (Add feature, Fix bug, Refactor, Security audit, Understand, Find spec, Find decision, Analysis tools) 2) Invoke `/memory:search "implement auth"` and verify retrieval mode activates with auto-detected `add_feature` intent and appropriate weight boosts (implementation 1.5x, architecture 1.3x, patterns 1.2x) 3) Invoke `/memory:search "auth bug" --intent:fix_bug` and verify the explicit intent override is respected 4) Invoke `/memory:search preflight specs/007-test T1` and verify `task_preflight()` is called 5) Invoke `/memory:search postflight specs/007-test T1` and verify `task_postflight()` is called 6) Invoke `/memory:search history specs/007-test` and verify `memory_get_learning_history()` is called 7) Invoke `/memory:search causal 42` and verify `memory_drift_why()` is called 8) Invoke `/memory:search ablation` and verify `eval_run_ablation()` is called 9) Invoke `/memory:search dashboard` and verify `eval_reporting_dashboard()` is called | No-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands each route to the correct tool | Tool invocation logs for each subcommand; intent detection output for retrieval queries; interactive prompt display for no-args case | PASS: No-args prompts for intent, retrieval returns intent-weighted results, each analysis subcommand invokes its dedicated tool; FAIL: No-args proceeds without prompt, retrieval ignores intent, or an analysis subcommand routes to the wrong tool | Verify argument routing logic in Section 4 of search.md → Check intent detection keywords → Confirm analysis subcommand first-token matching → Inspect tool coverage matrix for correct tool-to-subcommand mapping |
+### Prompt
 
----
+```
+As a retrieval validation operator, verify /memory:search command routing logic covers no-args, retrieval, and analysis modes against /memory:search. Verify no-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands each route to the correct tool. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Invoke `/memory:search` with no arguments and verify the interactive intent selection prompt appears (Add feature, Fix bug, Refactor, Security audit, Understand, Find spec, Find decision, Analysis tools)
+2. Invoke `/memory:search "implement auth"` and verify retrieval mode activates with auto-detected `add_feature` intent and appropriate weight boosts (implementation 1.5x, architecture 1.3x, patterns 1.2x)
+3. Invoke `/memory:search "auth bug" --intent:fix_bug` and verify the explicit intent override is respected
+4. Invoke `/memory:search preflight specs/007-test T1` and verify `task_preflight()` is called
+5. Invoke `/memory:search postflight specs/007-test T1` and verify `task_postflight()` is called
+6. Invoke `/memory:search history specs/007-test` and verify `memory_get_learning_history()` is called
+7. Invoke `/memory:search causal 42` and verify `memory_drift_why()` is called
+8. Invoke `/memory:search ablation` and verify `eval_run_ablation()` is called
+9. Invoke `/memory:search dashboard` and verify `eval_reporting_dashboard()` is called
+
+### Expected
+
+No-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands each route to the correct tool
+
+### Evidence
+
+Tool invocation logs for each subcommand; intent detection output for retrieval queries; interactive prompt display for no-args case
+
+### Pass / Fail
+
+- **Pass**: No-args prompts for intent, retrieval returns intent-weighted results, each analysis subcommand invokes its dedicated tool
+- **Fail**: No-args proceeds without prompt, retrieval ignores intent, or an analysis subcommand routes to the wrong tool
+
+### Failure Triage
+
+Verify argument routing logic in Section 4 of search.md → Check intent detection keywords → Confirm analysis subcommand first-token matching → Inspect tool coverage matrix for correct tool-to-subcommand mapping
 
 ## 4. REFERENCES
 

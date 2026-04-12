@@ -24,11 +24,36 @@ Operators verify that the lifecycle surface behaves like a coordinated toolkit: 
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 237 | Spec Lifecycle Automation | Confirm lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces | `As a tooling validation operator, confirm lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help. Verify recommendation and archive help text is available; upgrade-level regression suite passes; completeness JSON emits percentage-style data; completion status is returned for the fixture. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help` 2) `bash .opencode/skill/system-spec-kit/scripts/tests/test-upgrade-level.sh` 3) `bash .opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json` 4) `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json` 5) `bash .opencode/skill/system-spec-kit/scripts/spec/archive.sh --help` | Recommendation and archive help text is available; upgrade-level regression suite passes; completeness JSON emits percentage-style data; completion status is returned for the fixture | Help output, upgrade test transcript, completeness JSON, and completion JSON | PASS if the lifecycle entrypoints are reachable and the upgrade/completion signals match the documented toolchain behavior | Inspect `scripts/spec/recommend-level.sh`, `scripts/tests/test-upgrade-level.sh`, `scripts/spec/calculate-completeness.sh`, and `scripts/spec/archive.sh` if a lifecycle stage is missing or inconsistent |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help. Verify recommendation and archive help text is available; upgrade-level regression suite passes; completeness JSON emits percentage-style data; completion status is returned for the fixture. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help`
+2. `bash .opencode/skill/system-spec-kit/scripts/tests/test-upgrade-level.sh`
+3. `bash .opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json`
+4. `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/063-template-compliant-level3 --json`
+5. `bash .opencode/skill/system-spec-kit/scripts/spec/archive.sh --help`
+
+### Expected
+
+Recommendation and archive help text is available; upgrade-level regression suite passes; completeness JSON emits percentage-style data; completion status is returned for the fixture
+
+### Evidence
+
+Help output, upgrade test transcript, completeness JSON, and completion JSON
+
+### Pass / Fail
+
+- **Pass**: the lifecycle entrypoints are reachable and the upgrade/completion signals match the documented toolchain behavior
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/spec/recommend-level.sh`, `scripts/tests/test-upgrade-level.sh`, `scripts/spec/calculate-completeness.sh`, and `scripts/spec/archive.sh` if a lifecycle stage is missing or inconsistent
 
 ## 4. REFERENCES
 

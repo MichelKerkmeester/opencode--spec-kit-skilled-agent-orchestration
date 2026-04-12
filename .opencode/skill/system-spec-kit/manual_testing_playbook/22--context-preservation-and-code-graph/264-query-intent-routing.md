@@ -31,13 +31,90 @@ This scenario validates Query-intent routing in memory_context.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 264a | Query-intent routing | Structural query routes to code graph | `As a context-and-code-graph validation operator, validate Structural query routes to code graph against memory_context({ input: "what functions call handleMemoryContext" }). Verify response includes code graph data (symbols, edges), intent classified as 'structural'. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_context({ input: "what functions call handleMemoryContext" })` | Response includes code graph data (symbols, edges), intent classified as 'structural' | memory_context response with code graph results | PASS if code graph results present and classifier shows structural intent | Check STRUCTURAL_KEYWORDS in query-intent-classifier.ts and memory_context integration |
-| 264b | Query-intent routing | Semantic query routes to memory pipeline | `As a context-and-code-graph validation operator, validate Semantic query routes to memory pipeline against memory_context({ input: "find examples of error handling patterns" }). Verify response includes memory hits with similarity scores, intent classified as 'semantic'. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_context({ input: "find examples of error handling patterns" })` | Response includes memory hits with similarity scores, intent classified as 'semantic' | memory_context response with memory results | PASS if memory/semantic results present and classifier shows semantic intent | Check SEMANTIC_KEYWORDS and memory_context fallback path |
-| 264c | Query-intent routing | Hybrid query merges both backends | `As a context-and-code-graph validation operator, validate Hybrid query merges both backends against memory_context({ input: "find all validation functions and explain their approach" }). Verify response includes both code graph and memory results, intent classified as 'hybrid'. Return a concise pass/fail verdict with the main reason and cited evidence.` | Call `memory_context({ input: "find all validation functions and explain their approach" })` | Response includes both code graph and memory results, intent classified as 'hybrid' | memory_context response with merged results | PASS if both backends contribute results | Check hybrid scoring threshold and merge logic |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Structural query routes to code graph against memory_context({ input: "what functions call handleMemoryContext" }). Verify response includes code graph data (symbols, edges), intent classified as 'structural'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_context({ input: "what functions call handleMemoryContext" })`
+
+### Expected
+
+Response includes code graph data (symbols, edges), intent classified as 'structural'
+
+### Evidence
+
+memory_context response with code graph results
+
+### Pass / Fail
+
+- **Pass**: code graph results present and classifier shows structural intent
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check STRUCTURAL_KEYWORDS in query-intent-classifier.ts and memory_context integration
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Semantic query routes to memory pipeline against memory_context({ input: "find examples of error handling patterns" }). Verify response includes memory hits with similarity scores, intent classified as 'semantic'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_context({ input: "find examples of error handling patterns" })`
+
+### Expected
+
+Response includes memory hits with similarity scores, intent classified as 'semantic'
+
+### Evidence
+
+memory_context response with memory results
+
+### Pass / Fail
+
+- **Pass**: memory/semantic results present and classifier shows semantic intent
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check SEMANTIC_KEYWORDS and memory_context fallback path
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Hybrid query merges both backends against memory_context({ input: "find all validation functions and explain their approach" }). Verify response includes both code graph and memory results, intent classified as 'hybrid'. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `memory_context({ input: "find all validation functions and explain their approach" })`
+
+### Expected
+
+Response includes both code graph and memory results, intent classified as 'hybrid'
+
+### Evidence
+
+memory_context response with merged results
+
+### Pass / Fail
+
+- **Pass**: both backends contribute results
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check hybrid scoring threshold and merge logic
 
 ## 4. REFERENCES
 

@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `093` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `As a retrieval-enhancement validation operator, confirm deferred->implemented status against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
+### Prompt
 
----
+```
+As a retrieval-enhancement validation operator, confirm deferred->implemented status against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. save long memory
+2. inspect summary persistence
+3. verify scale-gated usage
+
+### Expected
+
+Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
+
+### Evidence
+
+Save output + summary field in DB record + scale gate threshold verification
+
+### Pass / Fail
+
+- **Pass**: summaries are generated and persisted for long memories and scale gate correctly controls activation
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration
 
 ## 4. REFERENCES
 

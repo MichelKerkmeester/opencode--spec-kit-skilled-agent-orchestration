@@ -25,11 +25,32 @@ Operators run the exact prompt and command sequence for `EX-032` and confirm the
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-032 | 5. Embedding and API | Provider selection audit | `As a feature-flag validation operator, validate Provider selection audit against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 })` | Provider rules and key precedence shown | Search output | PASS if provider routing is clear | Verify env in runtime |
+### Prompt
 
----
+```
+As a feature-flag validation operator, validate Provider selection audit against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 })
+
+### Expected
+
+Provider rules and key precedence shown
+
+### Evidence
+
+Search output
+
+### Pass / Fail
+
+- **Pass**: provider routing is clear
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Verify env in runtime
 
 ## 4. REFERENCES
 

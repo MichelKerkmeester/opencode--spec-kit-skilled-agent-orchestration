@@ -25,12 +25,71 @@ Operators run the exact prompt and command sequence for `165` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | Verify merge/recommend behavior | `As a memory-quality validation operator, verify merge/recommend behavior against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` 2) Save memory A, then save near-duplicate B (sim >= 0.96) 3) Verify auto-merge 4) Save memory C (0.88 <= sim < 0.96 vs A) 5) Verify AssistiveRecommendation logged 6) `npx vitest run tests/assistive-reconsolidation.vitest.ts` | auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier | classifyAssistiveSimilarity() output + AssistiveRecommendation log + test transcript | PASS if correct tier at each threshold and no destructive action for review; FAIL if wrong tier or destructive action for borderline | Verify isAssistiveReconsolidationEnabled() → Check ASSISTIVE_AUTO_MERGE_THRESHOLD (0.96) → Check ASSISTIVE_REVIEW_THRESHOLD (0.88) → Inspect classifyBorderlinePair() logic → Verify recommendation persistence |
-| 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | Verify predecessor change detection in companion reconsolidation path | `As a memory-quality validation operator, verify predecessor change detection in companion reconsolidation path against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify companion merge path aborts with predecessor_changed or predecessor_gone; no stale merged row is inserted; assistive layer remains recommendation/shadow-only rather than performing a destructive content merge. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Enable `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` 2) seed a merge-eligible predecessor used by the companion reconsolidation module 3) begin async merge preparation 4) mutate, archive, or delete the predecessor before transaction re-read 5) verify `predecessor_changed` or `predecessor_gone` is surfaced and no stale merged row is inserted 6) `npx vitest run .opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation.vitest.ts -t \"Aborts merge when predecessor changes during embedding generation\"` | Companion merge path aborts with `predecessor_changed` or `predecessor_gone`; no stale merged row is inserted; assistive layer remains recommendation/shadow-only rather than performing a destructive content merge | Targeted vitest output plus DB evidence showing no merged row was inserted after predecessor mutation | PASS if predecessor mutation blocks the companion merge and assistive behavior remains non-destructive; FAIL if stale merge still commits or assistive layer mutates state outside its documented bounds | Verify predecessor snapshot comparison (`content_hash`, `updated_at`) → Check shared reconsolidation guardrails → Confirm assistive bridge still limits itself to shadow-archive/recommend behavior |
+### Prompt
+
+```
+As a memory-quality validation operator, verify merge/recommend behavior against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `SPECKIT_ASSISTIVE_RECONSOLIDATION=true`
+2. Save memory A, then save near-duplicate B (sim >= 0.96)
+3. Verify auto-merge
+4. Save memory C (0.88 <= sim < 0.96 vs A)
+5. Verify AssistiveRecommendation logged
+6. `npx vitest run tests/assistive-reconsolidation.vitest.ts`
+
+### Expected
+
+auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier
+
+### Evidence
+
+classifyAssistiveSimilarity() output + AssistiveRecommendation log + test transcript
+
+### Pass / Fail
+
+- **Pass**: correct tier at each threshold and no destructive action for review
+- **Fail**: wrong tier or destructive action for borderline
+
+### Failure Triage
+
+Verify isAssistiveReconsolidationEnabled() → Check ASSISTIVE_AUTO_MERGE_THRESHOLD (0.96) → Check ASSISTIVE_REVIEW_THRESHOLD (0.88) → Inspect classifyBorderlinePair() logic → Verify recommendation persistence
 
 ---
+
+### Prompt
+
+```
+As a memory-quality validation operator, verify predecessor change detection in companion reconsolidation path against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify companion merge path aborts with predecessor_changed or predecessor_gone; no stale merged row is inserted; assistive layer remains recommendation/shadow-only rather than performing a destructive content merge. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Enable `SPECKIT_ASSISTIVE_RECONSOLIDATION=true`
+2. seed a merge-eligible predecessor used by the companion reconsolidation module
+3. begin async merge preparation
+4. mutate, archive, or delete the predecessor before transaction re-read
+5. verify `predecessor_changed` or `predecessor_gone` is surfaced and no stale merged row is inserted
+6. `npx vitest run .opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation.vitest.ts -t \"Aborts merge when predecessor changes during embedding generation\"`
+
+### Expected
+
+Companion merge path aborts with `predecessor_changed` or `predecessor_gone`; no stale merged row is inserted; assistive layer remains recommendation/shadow-only rather than performing a destructive content merge
+
+### Evidence
+
+Targeted vitest output plus DB evidence showing no merged row was inserted after predecessor mutation
+
+### Pass / Fail
+
+- **Pass**: predecessor mutation blocks the companion merge and assistive behavior remains non-destructive
+- **Fail**: stale merge still commits or assistive layer mutates state outside its documented bounds
+
+### Failure Triage
+
+Verify predecessor snapshot comparison (`content_hash`, `updated_at`) → Check shared reconsolidation guardrails → Confirm assistive bridge still limits itself to shadow-archive/recommend behavior
 
 ## 4. REFERENCES
 

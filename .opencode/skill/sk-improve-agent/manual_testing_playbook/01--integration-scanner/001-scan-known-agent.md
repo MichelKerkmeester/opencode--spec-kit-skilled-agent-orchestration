@@ -8,7 +8,11 @@ category: "Integration Scanner"
 
 Validates that scanning a known agent discovers all integration surfaces and confirms mirror alignment.
 
-## Prompt / Command
+## Prompt
+
+- Prompt: `As a manual-testing orchestrator, validate that scanning a known agent discovers all integration surfaces and confirms mirror alignment against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `status: "complete"` at root level. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`
+
+## Commands
 
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
@@ -20,7 +24,7 @@ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug
 node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=debug | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['summary']['mirrorSyncStatus']=='all-aligned'; print('PASS')"
 ```
 
-## Expected Signals
+## Expected
 
 - `status: "complete"` at root level
 - `surfaces.canonical.exists: true`

@@ -65,6 +65,7 @@ Every iteration follows this exact sequence:
 
 #### Step 1: Read State
 Read these files (paths provided in dispatch context):
+- `research/deep-research-config.json` -- Understand lifecycle mode, budgets, and packet boundaries
 - `research/deep-research-state.jsonl` -- Understand iteration history
 - `research/deep-research-strategy.md` -- Understand what to investigate
 - `research/findings-registry.json` (if exists) -- Understand open/resolved questions and key findings

@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `211` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 211 | Schema and type contract synchronization | Confirm `checkpoint_delete.confirmName` and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries | `As a runtime-hook validation operator, confirm checkpoint_delete.confirmName and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify checkpoint-delete tests reject missing or mismatched confirmName, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering missing, mismatched, and matching `confirmName` payloads 3) inspect assertions covering shared mutation-hook result fields in hook wiring and save responses | Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized | Test transcript + key assertion output for schema validation and shared result-contract coverage | PASS if the contract suites pass and the assertions confirm `confirmName` is required everywhere while mutation-hook result fields stay aligned across runtime and response boundaries | Inspect `handlers/checkpoints.ts`, `schemas/tool-input-schemas.ts`, `tool-schemas.ts`, `tools/types.ts`, and hook result type definitions if any contract diverges |
+### Prompt
 
----
+```
+As a runtime-hook validation operator, confirm checkpoint_delete.confirmName and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify checkpoint-delete tests reject missing or mismatched confirmName, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts`
+2. inspect assertions covering missing, mismatched, and matching `confirmName` payloads
+3. inspect assertions covering shared mutation-hook result fields in hook wiring and save responses
+
+### Expected
+
+Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized
+
+### Evidence
+
+Test transcript + key assertion output for schema validation and shared result-contract coverage
+
+### Pass / Fail
+
+- **Pass**: the contract suites pass and the assertions confirm `confirmName` is required everywhere while mutation-hook result fields stay aligned across runtime and response boundaries
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `handlers/checkpoints.ts`, `schemas/tool-input-schemas.ts`, `tool-schemas.ts`, `tools/types.ts`, and hook result type definitions if any contract diverges
 
 ## 4. REFERENCES
 

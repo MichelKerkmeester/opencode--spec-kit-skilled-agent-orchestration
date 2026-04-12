@@ -36,13 +36,90 @@ This scenario validates Working-set tracker.
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 257a | Working-set tracker | File tracking with recency-weighted scoring and getTopRoots ordering | `As a context-and-code-graph validation operator, validate File tracking with recency-weighted scoring and getTopRoots ordering against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify trackFile() records accesses, getTopRoots() returns files sorted by frequency * recency_decay. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | `trackFile()` records accesses, `getTopRoots()` returns files sorted by frequency * recency_decay | Test output showing tracked files and their scores/ordering | PASS if frequently + recently accessed files rank highest in getTopRoots | Check scoring formula: `accessCount / (1 + (now - lastAccessedAt) / 600_000)` |
-| 257b | Working-set tracker | Auto-eviction beyond maxFiles and serialization roundtrip | `As a context-and-code-graph validation operator, validate Auto-eviction beyond maxFiles and serialization roundtrip against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify tracker evicts when size > 2 * maxFiles, deserialize(serialize()) preserves all entries. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | Tracker evicts when size > 2 * maxFiles, `deserialize(serialize())` preserves all entries | Test output showing eviction count and deserialized state | PASS if eviction triggers at correct threshold and serialized state fully roundtrips | Check `evictOldest()` and Map-based serialization |
-| 257c | Working-set tracker | Tracked files feed into compact merger output | `As a context-and-code-graph validation operator, validate Tracked files feed into compact merger output against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify merger output contains "Active Files & Structural Context" section listing working-set top roots. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts` | Merger output contains "Active Files & Structural Context" section listing working-set top roots | Test output showing merger sections with tracked file paths | PASS if working-set files appear in the merged compact brief | Check compact-inject.ts buildMergedContext() codeGraph input |
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate File tracking with recency-weighted scoring and getTopRoots ordering against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify trackFile() records accesses, getTopRoots() returns files sorted by frequency * recency_decay. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+`trackFile()` records accesses, `getTopRoots()` returns files sorted by frequency * recency_decay
+
+### Evidence
+
+Test output showing tracked files and their scores/ordering
+
+### Pass / Fail
+
+- **Pass**: frequently + recently accessed files rank highest in getTopRoots
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check scoring formula: `accessCount / (1 + (now - lastAccessedAt) / 600_000)`
 
 ---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Auto-eviction beyond maxFiles and serialization roundtrip against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify tracker evicts when size > 2 * maxFiles, deserialize(serialize()) preserves all entries. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+Tracker evicts when size > 2 * maxFiles, `deserialize(serialize())` preserves all entries
+
+### Evidence
+
+Test output showing eviction count and deserialized state
+
+### Pass / Fail
+
+- **Pass**: eviction triggers at correct threshold and serialized state fully roundtrips
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check `evictOldest()` and Map-based serialization
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Tracked files feed into compact merger output against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify merger output contains "Active Files & Structural Context" section listing working-set top roots. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts
+
+### Expected
+
+Merger output contains "Active Files & Structural Context" section listing working-set top roots
+
+### Evidence
+
+Test output showing merger sections with tracked file paths
+
+### Pass / Fail
+
+- **Pass**: working-set files appear in the merged compact brief
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check compact-inject.ts buildMergedContext() codeGraph input
 
 ## 4. REFERENCES
 

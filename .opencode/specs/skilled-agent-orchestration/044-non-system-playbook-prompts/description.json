@@ -1,0 +1,20 @@
+{
+  "specFolder": "skilled-agent-orchestration/044-non-system-playbook-prompts",
+  "description": "Feature Specification: Non-System Playbook Prompt Modernization",
+  "keywords": [
+    "feature",
+    "specification",
+    "non-system",
+    "playbook",
+    "prompt",
+    "modernization"
+  ],
+  "lastUpdated": "2026-04-12T12:20:48.482Z",
+  "specId": "044",
+  "folderSlug": "non-system-playbook-prompts",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

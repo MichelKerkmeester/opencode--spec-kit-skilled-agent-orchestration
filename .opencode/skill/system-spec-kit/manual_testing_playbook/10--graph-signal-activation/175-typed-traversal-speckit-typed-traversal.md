@@ -25,11 +25,37 @@ Operators run the exact prompt and command sequence for `175` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 175 | Typed traversal (SPECKIT_TYPED_TRAVERSAL) | Verify sparse-first policy + intent-aware edge traversal scoring | `As a graph-signal validation operator, verify sparse-first policy + intent-aware edge traversal scoring against SPECKIT_TYPED_TRAVERSAL. Verify isTypedTraversalEnabled() returns true; sparse-first: density < 0.5 → 1-hop; INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit; edge prior tiers: 1.0/0.75/0.5; MAX_BOOST_PER_HOP=0.05; MAX_COMBINED_BOOST=0.20. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Confirm `SPECKIT_TYPED_TRAVERSAL` is unset or `true` 2) Run search against a sparse graph (density < 0.5) 3) Verify traversal constrained to SPARSE_MAX_HOPS=1 4) Run search with classified intent (e.g., fix_bug) 5) Verify INTENT_EDGE_PRIORITY mapping applied 6) Confirm score = seedScore * edgePrior * hopDecay * freshness | isTypedTraversalEnabled() returns true; sparse-first: density < 0.5 → 1-hop; INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit; edge prior tiers: 1.0/0.75/0.5; MAX_BOOST_PER_HOP=0.05; MAX_COMBINED_BOOST=0.20 | Causal boost output + traversal hop count + edge prior values + scoring breakdown + test transcript | PASS if sparse-first constrains to 1-hop and intent-aware scoring uses correct formula and edge priors; FAIL if sparse graphs allow > 1 hop, intent mapping missing, or scoring formula wrong | Verify isTypedTraversalEnabled() → Confirm flag is not forced off → Check SPARSE_DENSITY_THRESHOLD=0.5 → Inspect SPARSE_MAX_HOPS=1 enforcement → Verify INTENT_EDGE_PRIORITY mappings → Check scoring formula components |
+### Prompt
 
----
+```
+As a graph-signal validation operator, verify sparse-first policy + intent-aware edge traversal scoring against SPECKIT_TYPED_TRAVERSAL. Verify isTypedTraversalEnabled() returns true; sparse-first: density < 0.5 → 1-hop; INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit; edge prior tiers: 1.0/0.75/0.5; MAX_BOOST_PER_HOP=0.05; MAX_COMBINED_BOOST=0.20. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Confirm `SPECKIT_TYPED_TRAVERSAL` is unset or `true`
+2. Run search against a sparse graph (density < 0.5)
+3. Verify traversal constrained to SPARSE_MAX_HOPS=1
+4. Run search with classified intent (e.g., fix_bug)
+5. Verify INTENT_EDGE_PRIORITY mapping applied
+6. Confirm score = seedScore * edgePrior * hopDecay * freshness
+
+### Expected
+
+isTypedTraversalEnabled() returns true; sparse-first: density < 0.5 → 1-hop; INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit; edge prior tiers: 1.0/0.75/0.5; MAX_BOOST_PER_HOP=0.05; MAX_COMBINED_BOOST=0.20
+
+### Evidence
+
+Causal boost output + traversal hop count + edge prior values + scoring breakdown + test transcript
+
+### Pass / Fail
+
+- **Pass**: sparse-first constrains to 1-hop and intent-aware scoring uses correct formula and edge priors
+- **Fail**: sparse graphs allow > 1 hop, intent mapping missing, or scoring formula wrong
+
+### Failure Triage
+
+Verify isTypedTraversalEnabled() → Confirm flag is not forced off → Check SPARSE_DENSITY_THRESHOLD=0.5 → Inspect SPARSE_MAX_HOPS=1 enforcement → Verify INTENT_EDGE_PRIORITY mappings → Check scoring formula components
 
 ## 4. REFERENCES
 

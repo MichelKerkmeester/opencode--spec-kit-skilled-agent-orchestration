@@ -24,11 +24,33 @@ Operators run the exact prompt and command sequence for `126` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 126 | Memory roadmap baseline snapshot | Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing | `As an evaluation validation operator, verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-state-baseline.vitest.ts` | Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage | Test transcript + suite summary | PASS if `memory-state-baseline.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; inspect `lib/eval/memory-state-baseline.ts` and eval DB path resolution if assertions drift |
+### Prompt
 
----
+```
+As an evaluation validation operator, verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `cd .opencode/skill/system-spec-kit/mcp_server`
+2. `npm test -- --run tests/memory-state-baseline.vitest.ts`
+
+### Expected
+
+Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage
+
+### Evidence
+
+Test transcript + suite summary
+
+### Pass / Fail
+
+- **Pass**: `memory-state-baseline.vitest.ts` completes with all tests passing and no failures
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; inspect `lib/eval/memory-state-baseline.ts` and eval DB path resolution if assertions drift
 
 ## 4. REFERENCES
 

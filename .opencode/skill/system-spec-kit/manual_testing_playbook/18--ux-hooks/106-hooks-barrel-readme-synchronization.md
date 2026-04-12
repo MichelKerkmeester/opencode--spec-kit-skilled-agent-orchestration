@@ -24,11 +24,34 @@ Operators run the exact prompt and command sequence for `106` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 106 | Hooks barrel + README synchronization | Confirm hooks index exports and docs cover the finalized modules and contract fields | `Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `rg "mutation-feedback" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg "response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 3) `rg "mutation-feedback\|response-hints\|MutationHookResult\|postMutationHooks" .opencode/skill/system-spec-kit/mcp_server/hooks/README.md` | Both barrel and README reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks` | ripgrep output snippets | PASS if both files reference the new modules and contract fields | Inspect hooks/index.ts exports and hooks/README.md for missing entries |
+### Prompt
 
----
+```
+Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.
+```
+
+### Commands
+
+1. `rg "mutation-feedback" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts`
+2. `rg "response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts`
+3. `rg "mutation-feedback\|response-hints\|MutationHookResult\|postMutationHooks" .opencode/skill/system-spec-kit/mcp_server/hooks/README.md`
+
+### Expected
+
+Both barrel and README reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`
+
+### Evidence
+
+ripgrep output snippets
+
+### Pass / Fail
+
+- **Pass**: both files reference the new modules and contract fields
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect hooks/index.ts exports and hooks/README.md for missing entries
 
 ## 4. REFERENCES
 

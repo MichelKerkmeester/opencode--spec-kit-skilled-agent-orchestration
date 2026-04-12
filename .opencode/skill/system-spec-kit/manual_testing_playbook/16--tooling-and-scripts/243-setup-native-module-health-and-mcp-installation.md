@@ -24,11 +24,35 @@ Operators verify the setup surface from least to most invasive: prerequisite val
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 243 | Setup, Native Module Health, and MCP Installation | Confirm prerequisite validation, native-module diagnostics, marker recording, and installer execution | `As a tooling validation operator, confirm prerequisite validation, native-module diagnostics, marker recording, and installer execution against bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate. Verify prerequisite JSON is emitted; native probe prints diagnostic lines and recovery hint when needed; .node-version-marker is written; installer either completes or reports existing MCP configuration without silent failure. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate` 2) `cd .opencode/skill/system-spec-kit && bash scripts/setup/check-native-modules.sh` 3) `cd .opencode/skill/system-spec-kit && node scripts/setup/record-node-version.js` 4) `cd .opencode/skill/system-spec-kit && bash scripts/setup/install.sh --skip-verify` | Prerequisite JSON is emitted; native probe prints diagnostic lines and recovery hint when needed; `.node-version-marker` is written; installer either completes or reports existing MCP configuration without silent failure | JSON prerequisite output, native-module probe transcript, record-node-version stdout, and installer transcript | PASS if the first three steps succeed and the installer run is explicit about success, rebuild needs, or existing configuration | Inspect `scripts/setup/check-prerequisites.sh`, `check-native-modules.sh`, `rebuild-native-modules.sh`, `record-node-version.js`, and `install.sh` if setup state or native-module health is misreported |
+### Prompt
 
----
+```
+As a tooling validation operator, confirm prerequisite validation, native-module diagnostics, marker recording, and installer execution against bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate. Verify prerequisite JSON is emitted; native probe prints diagnostic lines and recovery hint when needed; .node-version-marker is written; installer either completes or reports existing MCP configuration without silent failure. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate`
+2. `cd .opencode/skill/system-spec-kit && bash scripts/setup/check-native-modules.sh`
+3. `cd .opencode/skill/system-spec-kit && node scripts/setup/record-node-version.js`
+4. `cd .opencode/skill/system-spec-kit && bash scripts/setup/install.sh --skip-verify`
+
+### Expected
+
+Prerequisite JSON is emitted; native probe prints diagnostic lines and recovery hint when needed; `.node-version-marker` is written; installer either completes or reports existing MCP configuration without silent failure
+
+### Evidence
+
+JSON prerequisite output, native-module probe transcript, record-node-version stdout, and installer transcript
+
+### Pass / Fail
+
+- **Pass**: the first three steps succeed and the installer run is explicit about success, rebuild needs, or existing configuration
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect `scripts/setup/check-prerequisites.sh`, `check-native-modules.sh`, `rebuild-native-modules.sh`, `record-node-version.js`, and `install.sh` if setup state or native-module health is misreported
 
 ## 4. REFERENCES
 

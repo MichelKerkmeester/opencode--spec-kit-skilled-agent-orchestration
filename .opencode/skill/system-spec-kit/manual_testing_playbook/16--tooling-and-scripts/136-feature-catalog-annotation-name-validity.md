@@ -24,11 +24,35 @@ Operators run the exact prompt and command sequence for `136` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 136 | Feature catalog annotation name validity | Verify all annotation names cross-reference against catalog H3 headings with 0 invalid | `As a tooling validation operator, verify all annotation names cross-reference against catalog H3 headings with 0 invalid against the documented validation surface. Verify sort -u 2) Extract all H3 headings from feature_catalog/FEATURE_CATALOG.md: grep "^### " FEATURE_CATALOG.md 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Extract all unique annotation names: `grep -rho "// Feature catalog: .*" .opencode/skill/system-spec-kit/mcp_server/ .opencode/skill/system-spec-kit/shared/ \ | sort -u` 2) Extract all H3 headings from `feature_catalog/FEATURE_CATALOG.md`: `grep "^### " FEATURE_CATALOG.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches | 0 invalid annotation names; every `// Feature catalog:` value matches an H3 heading in the catalog | Sorted annotation list + H3 heading list + diff showing 0 invalid entries | PASS if cross-reference produces 0 mismatches |
+### Prompt
 
----
+```
+As a tooling validation operator, verify all annotation names cross-reference against catalog H3 headings with 0 invalid against the documented validation surface. Extract the annotation names, compare them with the H3 headings from `feature_catalog/FEATURE_CATALOG.md`, report any mismatches, and return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Extract all unique annotation names: `grep -rho "// Feature catalog: .*" .opencode/skill/system-spec-kit/mcp_server/ .opencode/skill/system-spec-kit/shared/ | sort -u`
+2. Extract all H3 headings from `feature_catalog/FEATURE_CATALOG.md`: `grep "^### " FEATURE_CATALOG.md`
+3. Cross-reference: every annotation name must match an H3 heading exactly
+4. Report any mismatches
+
+### Expected
+
+0 invalid annotation names; every `// Feature catalog:` value matches an H3 heading in the catalog.
+
+### Evidence
+
+Sorted annotation list + H3 heading list + diff showing 0 invalid entries.
+
+### Pass / Fail
+
+- **Pass**: cross-reference produces 0 mismatches
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Inspect the extracted annotation comments and the catalog H3 headings if any names fail to match exactly.
 
 ## 4. REFERENCES
 

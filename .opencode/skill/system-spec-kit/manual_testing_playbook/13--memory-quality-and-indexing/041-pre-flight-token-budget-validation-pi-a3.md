@@ -25,11 +25,34 @@ Operators run the exact prompt and command sequence for `041` and confirm the ex
 
 ## 3. TEST EXECUTION
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| 041 | Pre-flight token budget validation (PI-A3) | Confirm save-time preflight warn/fail behavior | `As a memory-quality validation operator, confirm save-time preflight warn/fail behavior against memory_save({filePath:"<sandbox-file>", dryRun:true}). Verify token estimate is computed before embedding/database writes; near-limit input emits PF021 warning; over-limit input emits PF020 failure; behavior follows MCP_CHARS_PER_TOKEN, MCP_MAX_MEMORY_TOKENS, and MCP_TOKEN_WARNING_THRESHOLD. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Prepare saved context artifacts near and over the save-time token limit 2) Run `memory_save({filePath:"<sandbox-file>", dryRun:true})` or the equivalent save preflight path 3) Verify warning/failure payloads from `preflight.ts` | Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` | Preflight response payloads showing estimated tokens, warning/failure codes, and env-sensitive thresholds | PASS: Save-time preflight returns the expected warning/failure result without indexing side effects; FAIL: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior | Verify `preflight.ts` token counting math → Check `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` wiring → Inspect dry-run/save preflight behavior |
+### Prompt
 
----
+```
+As a memory-quality validation operator, confirm save-time preflight warn/fail behavior against memory_save({filePath:"<sandbox-file>", dryRun:true}). Verify token estimate is computed before embedding/database writes; near-limit input emits PF021 warning; over-limit input emits PF020 failure; behavior follows MCP_CHARS_PER_TOKEN, MCP_MAX_MEMORY_TOKENS, and MCP_TOKEN_WARNING_THRESHOLD. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Prepare saved context artifacts near and over the save-time token limit
+2. Run `memory_save({filePath:"<sandbox-file>", dryRun:true})` or the equivalent save preflight path
+3. Verify warning/failure payloads from `preflight.ts`
+
+### Expected
+
+Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD`
+
+### Evidence
+
+Preflight response payloads showing estimated tokens, warning/failure codes, and env-sensitive thresholds
+
+### Pass / Fail
+
+- **Pass**: Save-time preflight returns the expected warning/failure result without indexing side effects
+- **Fail**: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior
+
+### Failure Triage
+
+Verify `preflight.ts` token counting math → Check `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` wiring → Inspect dry-run/save preflight behavior
 
 ## 4. REFERENCES
 
