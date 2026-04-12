@@ -100,12 +100,8 @@ describe('Gate D resume ladder in memory-context', () => {
     }
   });
 
-  // TODO(026.018.004-gate-d-deep-review): resume ladder doesn't find the temp
-  // specFolder fixtures because it searches the workspace's .opencode/specs/
-  // root via findSpecDocuments(). Test/production path mismatch — either mock
-  // the workspace root or thread the temp folder through. Skipped for Gate D
-  // commit; deep-review will pick this up.
-  it.skip('prefers handover.md over continuity and spec docs', async () => {
+  // Deep-review regression coverage for the Gate D resume ladder temp-fixture path.
+  it('prefers handover.md over continuity and spec docs', async () => {
     const specFolder = makeTempSpecFolder();
     tempFolders.push(specFolder);
 
@@ -143,8 +139,8 @@ describe('Gate D resume ladder in memory-context', () => {
     expect(memorySearchSpy).not.toHaveBeenCalled();
   });
 
-  // TODO(026.018.004-gate-d-deep-review): same fixture/path mismatch — skipped.
-  it.skip('falls back to _memory.continuity when handover is absent', async () => {
+  // Deep-review regression coverage for continuity fallback in temp spec fixtures.
+  it('falls back to _memory.continuity when handover is absent', async () => {
     const specFolder = makeTempSpecFolder();
     tempFolders.push(specFolder);
 
@@ -176,8 +172,8 @@ describe('Gate D resume ladder in memory-context', () => {
     expect(memorySearchSpy).not.toHaveBeenCalled();
   });
 
-  // TODO(026.018.004-gate-d-deep-review): same fixture/path mismatch — skipped.
-  it.skip('falls back to spec docs when continuity is malformed', async () => {
+  // Deep-review regression coverage for spec-doc fallback when continuity is malformed.
+  it('falls back to spec docs when continuity is malformed', async () => {
     const specFolder = makeTempSpecFolder();
     tempFolders.push(specFolder);
 

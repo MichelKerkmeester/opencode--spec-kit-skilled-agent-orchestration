@@ -159,9 +159,8 @@ describe('session-resume handler', () => {
     expect(parsed.data.graphOps.doctor.surface).toBe('memory_health');
   });
 
-  // TODO(026.018.004-gate-d-deep-review): same cached session scope priority
-  // issue as resume-ladder test. Skipped for Gate D commit.
-  it.skip('uses the cached session scope only when specFolder is omitted', async () => {
+  // Deep-review regression coverage for cached session scope priority.
+  it('uses the cached session scope only when specFolder is omitted', async () => {
     const workspacePath = createWorkspace();
     workspacesToRemove.push(workspacePath);
     const specFolder = 'system-spec-kit/026-root/004-gate-d';

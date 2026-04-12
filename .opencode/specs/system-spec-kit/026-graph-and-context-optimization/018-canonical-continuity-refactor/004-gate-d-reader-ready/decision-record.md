@@ -1,20 +1,24 @@
 ---
 title: "Decision Record: Gate D — Reader Ready"
 description: "Reader-ready ADRs for helper placement and archive-threshold handling."
-trigger_phrases:
-  - "gate d"
-  - "reader ready"
-  - "decision record"
-  - "resume ladder"
-  - "archived hit rate"
+trigger_phrases: ["gate d", "reader ready", "decision record", "resume ladder", "archived hit rate"]
 importance_tier: "important"
 contextType: "implementation"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/004-gate-d-reader-ready"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Marked Gate D ADR packet complete after syncing shipped evidence"
+    next_safe_action: "Reuse ADR-001 and ADR-002 if a follow-on reader packet opens"
+    key_files: ["decision-record.md", "implementation-summary.md"]
 ---
-# Decision Record: Gate D — Reader Ready
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+# Decision Record: Gate D — Reader Ready
 
 ---
 

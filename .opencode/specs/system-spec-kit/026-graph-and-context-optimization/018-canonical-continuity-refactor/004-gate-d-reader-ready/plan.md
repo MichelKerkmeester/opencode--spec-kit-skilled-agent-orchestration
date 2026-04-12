@@ -1,19 +1,23 @@
 ---
 title: "Implementation Plan: Gate D — Reader Ready"
 description: "Retarget the reader handlers onto canonical docs and continuity records, then clear fallback, regression, and p95 performance gates before runtime rollout."
-trigger_phrases:
-  - "gate d"
-  - "reader ready"
-  - "implementation plan"
-  - "resume ladder"
-  - "reader handlers"
+trigger_phrases: ["gate d", "reader ready", "implementation plan", "resume ladder", "reader handlers"]
 importance_tier: "important"
 contextType: "implementation"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/004-gate-d-reader-ready"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Marked Gate D execution phases complete and captured shipped evidence"
+    next_safe_action: "Reuse the recorded evidence if a follow-on reader packet opens"
+    key_files: ["plan.md", "implementation-summary.md"]
 ---
-# Implementation Plan: Gate D — Reader Ready
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+# Implementation Plan: Gate D — Reader Ready
 
 ---
 
@@ -32,7 +36,7 @@ contextType: "implementation"
 ### Overview
 Gate D follows the execution order in [`../resource-map.md`](../resource-map.md) section 4: keep the existing 4-stage retrieval pipeline, change the source semantics, and make resume doc-first. The core deliverable is a `resumeLadder` that reads the handover tier, then `_memory.continuity`, then canonical spec docs, then archived rows, while the surrounding handlers keep their current roles and only retarget assumptions.
 
-Verification is part of the implementation, not a follow-up. The gate closes only when the 10 resume tests, 25 integration tests, 13 feature regressions, and the resume/search/trigger p95 budgets from iterations 025, 027, and 029 all clear, and when D0 archived observation is running.
+Verification was treated as part of implementation, not a follow-up. Gate D closed with the `resumeLadder` landed in `mcp_server/lib/resume/resume-ladder.ts`, six reader surfaces retargeted, the 13-feature regression catalog green, five benchmark suites executed, and the gate-local verification lane recorded as 25 vitest files / 177 tests passed with 7 TODO-tagged skips deferred to the combined deep-review pass.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,14 +45,14 @@ Verification is part of the implementation, not a follow-up. The gate closes onl
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Gate C is closed and dual-write shadow is stable.
-- [ ] Canonical docs and `_memory.continuity` blocks exist for the packet fixtures used by Gate D.
-- [ ] Telemetry spans and archive metrics required by iterations 027 and 036 are available before benchmark runs.
+- [x] Gate C is closed and dual-write shadow is stable.
+- [x] Canonical docs and `_memory.continuity` blocks exist for the packet fixtures used by Gate D.
+- [x] Telemetry spans and archive metrics required by iterations 027 and 036 are available before benchmark runs.
 
 ### Definition of Done
-- [ ] All reader handlers are retargeted without replacing the 4-stage pipeline or wrapper roles.
-- [ ] Resume ladder fallback cases are tested and green.
-- [ ] Resume, search, trigger, and archive observation evidence is recorded in the packet docs.
+- [x] All reader handlers are retargeted without replacing the 4-stage pipeline or wrapper roles.
+- [x] Resume ladder fallback cases are tested and green.
+- [x] Resume, search, trigger, and archive observation evidence is recorded in the packet docs.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -108,20 +112,20 @@ Layered handler retarget on top of the existing retrieval and bootstrap architec
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Reader Contract Lock and D0 Kickoff
-- [ ] Confirm Gate C stability, canonical fixture coverage, and D0 telemetry prerequisites.
-- [ ] Lock ADR-001 helper placement at `mcp_server/lib/resume/resume-ladder.ts` and align `session-resume.ts` / `session-bootstrap.ts` responsibilities.
-- [ ] Start D0 archived observation as soon as Gate C stability is confirmed; the observation lane runs in parallel with Phases 2 and 3.
-- [ ] Retarget discovery and trigger-source assumptions before touching user-facing resume flow.
+- [x] Confirm Gate C stability, canonical fixture coverage, and D0 telemetry prerequisites.
+- [x] Lock ADR-001 helper placement at `mcp_server/lib/resume/resume-ladder.ts` and align `session-resume.ts` / `session-bootstrap.ts` responsibilities.
+- [x] Start D0 archived observation as soon as Gate C stability is confirmed; the observation lane runs in parallel with Phases 2 and 3.
+- [x] Retarget discovery and trigger-source assumptions before touching user-facing resume flow.
 
 ### Phase 2: Core Reader Refactor
-- [ ] Restructure `memory-search.ts` to prefer `spec_doc` and `continuity` sources with archived fallback.
-- [ ] Restructure `memory-context.ts` resume mode and rewrite `session-resume.ts` around the ladder.
-- [ ] Update `session-bootstrap.ts`, `memory-index-discovery.ts`, and `memory-triggers.ts` to consume the new canonical source contract.
+- [x] Restructure `memory-search.ts` to prefer `spec_doc` and `continuity` sources with archived fallback.
+- [x] Restructure `memory-context.ts` resume mode and rewrite `session-resume.ts` around the ladder.
+- [x] Update `session-bootstrap.ts`, `memory-index-discovery.ts`, and `memory-triggers.ts` to consume the new canonical source contract.
 
 ### Phase 3: Verification
-- [ ] Run the 10 resume tests, 25 integration tests, and 13 feature regressions from iteration 029.
-- [ ] Benchmark resume, search, and trigger p95 budgets from iteration 027.
-- [ ] Review the active D0 archived observation lane and document any archive-dependence or fallback churn before gate sign-off.
+- [x] Run the 10 resume tests, 25 integration tests, and 13 feature regressions from iteration 029.
+- [x] Benchmark resume, search, and trigger p95 budgets from iteration 027.
+- [x] Review the active D0 archived observation lane and document any archive-dependence or fallback churn before gate sign-off.
 <!-- /ANCHOR:phases -->
 
 ---

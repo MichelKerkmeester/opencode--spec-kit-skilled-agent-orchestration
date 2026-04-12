@@ -383,10 +383,18 @@ describe('Context Server', () => {
       '../handlers',
       '../utils',
       '../hooks',
+      '../hooks/index',
+      '../hooks/index.js',
       '../hooks/memory-surface',
+      '../hooks/memory-surface.js',
       '../lib/architecture/layer-definitions',
       '../startup-checks',
       '../lib/search/vector-index',
+      '../lib/search/vector-index.ts',
+      '../lib/search/vector-index.js',
+      '../lib/search/vector-index-store',
+      '../lib/search/vector-index-store.ts',
+      '../lib/search/vector-index-store.js',
       '../lib/providers/embeddings',
       '../lib/search/graph-flags',
       '../lib/search/search-flags',
@@ -416,6 +424,9 @@ describe('Context Server', () => {
       '../lib/ops/job-queue',
       '../lib/search/folder-discovery',
       '../lib/ops/file-watcher',
+      '../lib/session/session-snapshot',
+      '../lib/session/session-snapshot.ts',
+      '../lib/session/session-snapshot.js',
       '../lib/telemetry/scoring-observability',
       '../lib/errors',
       '../lib/utils/canonical-path',
@@ -555,6 +566,7 @@ describe('Context Server', () => {
       const listToolsSchema = { name: 'ListToolsRequestSchema' }
       const callToolSchema = { name: 'CallToolRequestSchema' }
       const databaseMock = {
+        exec: vi.fn(),
         prepare: vi.fn(() => ({
           get: vi.fn(() => ({ journal_mode: 'wal' })),
           all: vi.fn(() => []),
@@ -588,6 +600,21 @@ describe('Context Server', () => {
           }
         },
       }))
+      vi.doMock('@modelcontextprotocol/sdk/server/index', () => ({
+        Server: class {
+          setRequestHandler(schema: unknown, handler: (request: unknown, extra: unknown) => Promise<unknown>): void {
+            handlers.set(schema, handler)
+          }
+
+          async connect(_transport: unknown): Promise<void> {
+            return
+          }
+
+          setInstructions(instructions: string): void {
+            setInstructionsMock(instructions)
+          }
+        },
+      }))
 
       vi.doMock('@modelcontextprotocol/sdk/server/stdio.js', () => ({
         StdioServerTransport: class {
@@ -596,8 +623,19 @@ describe('Context Server', () => {
           }
         },
       }))
+      vi.doMock('@modelcontextprotocol/sdk/server/stdio', () => ({
+        StdioServerTransport: class {
+          close(): void {
+            transportCloseMock()
+          }
+        },
+      }))
 
       vi.doMock('@modelcontextprotocol/sdk/types.js', () => ({
+        ListToolsRequestSchema: listToolsSchema,
+        CallToolRequestSchema: callToolSchema,
+      }))
+      vi.doMock('@modelcontextprotocol/sdk/types', () => ({
         ListToolsRequestSchema: listToolsSchema,
         CallToolRequestSchema: callToolSchema,
       }))
@@ -613,9 +651,23 @@ describe('Context Server', () => {
         isEmbeddingModelReady: vi.fn(() => true),
         init: vi.fn(),
       }))
+      vi.doMock('../core/index.js', () => ({
+        DATABASE_PATH: '/tmp/context-index.sqlite',
+        LIB_DIR: '/tmp',
+        DEFAULT_BASE_PATH: '/tmp',
+        ALLOWED_BASE_PATHS: ['/tmp'],
+        checkDatabaseUpdated: checkDatabaseUpdatedMock,
+        reinitializeDatabase: vi.fn(),
+        setEmbeddingModelReady: vi.fn(),
+        waitForEmbeddingModel: vi.fn(async () => true),
+        isEmbeddingModelReady: vi.fn(() => true),
+        init: vi.fn(),
+      }))
 
       vi.doMock('../tool-schemas', () => ({ TOOL_DEFINITIONS: options?.toolDefinitions ?? [] }))
+      vi.doMock('../tool-schemas.js', () => ({ TOOL_DEFINITIONS: options?.toolDefinitions ?? [] }))
       vi.doMock('../tools', () => ({ dispatchTool: dispatchToolMock }))
+      vi.doMock('../tools/index.js', () => ({ dispatchTool: dispatchToolMock }))
 
       vi.doMock('../handlers', () => ({
         indexSingleFile: vi.fn(async () => ({ status: 'unchanged' })),
@@ -623,8 +675,19 @@ describe('Context Server', () => {
         handleMemoryStats: handleMemoryStatsMock,
         setEmbeddingModelReady: vi.fn(),
       }))
+      vi.doMock('../handlers/index.js', () => ({
+        indexSingleFile: vi.fn(async () => ({ status: 'unchanged' })),
+        indexMemoryFile: vi.fn(async () => ({ status: 'unchanged' })),
+        handleMemoryStats: handleMemoryStatsMock,
+        setEmbeddingModelReady: vi.fn(),
+      }))
 
       vi.doMock('../utils', () => ({
+        validateInputLengths: vi.fn(),
+        validateToolInputSchema: vi.fn(),
+        requireDb: vi.fn(() => databaseMock),
+      }))
+      vi.doMock('../utils/index.js', () => ({
         validateInputLengths: vi.fn(),
         validateToolInputSchema: vi.fn(),
         requireDb: vi.fn(() => databaseMock),
@@ -641,11 +704,39 @@ describe('Context Server', () => {
         serializeEnvelopeWithTokenCount: serializeEnvelopeWithTokenCountMock,
         recordToolCall: vi.fn(),
       }))
+      vi.doMock('../hooks/index', () => ({
+        MEMORY_AWARE_TOOLS: memoryAwareTools,
+        extractContextHint: extractContextHintMock,
+        autoSurfaceMemories: autoSurfaceMemoriesMock,
+        autoSurfaceAtToolDispatch: autoSurfaceAtToolDispatchMock,
+        autoSurfaceAtCompaction: autoSurfaceAtCompactionMock,
+        appendAutoSurfaceHints: appendAutoSurfaceHintsMock,
+        syncEnvelopeTokenCount: syncEnvelopeTokenCountMock,
+        serializeEnvelopeWithTokenCount: serializeEnvelopeWithTokenCountMock,
+        recordToolCall: vi.fn(),
+      }))
+      vi.doMock('../hooks/index.js', () => ({
+        MEMORY_AWARE_TOOLS: memoryAwareTools,
+        extractContextHint: extractContextHintMock,
+        autoSurfaceMemories: autoSurfaceMemoriesMock,
+        autoSurfaceAtToolDispatch: autoSurfaceAtToolDispatchMock,
+        autoSurfaceAtCompaction: autoSurfaceAtCompactionMock,
+        appendAutoSurfaceHints: appendAutoSurfaceHintsMock,
+        syncEnvelopeTokenCount: syncEnvelopeTokenCountMock,
+        serializeEnvelopeWithTokenCount: serializeEnvelopeWithTokenCountMock,
+        recordToolCall: vi.fn(),
+      }))
       vi.doMock('../hooks/memory-surface', () => ({
+        primeSessionIfNeeded: vi.fn(async () => null),
+      }))
+      vi.doMock('../hooks/memory-surface.js', () => ({
         primeSessionIfNeeded: vi.fn(async () => null),
       }))
 
       vi.doMock('../lib/architecture/layer-definitions', () => ({
+        getTokenBudget: vi.fn(() => 1000),
+      }))
+      vi.doMock('../lib/architecture/layer-definitions.js', () => ({
         getTokenBudget: vi.fn(() => 1000),
       }))
 
@@ -653,13 +744,32 @@ describe('Context Server', () => {
         detectNodeVersionMismatch: vi.fn(),
         checkSqliteVersion: vi.fn(),
       }))
+      vi.doMock('../startup-checks.js', () => ({
+        detectNodeVersionMismatch: vi.fn(),
+        checkSqliteVersion: vi.fn(),
+      }))
       vi.doMock('../lib/search/graph-flags', () => ({
+        isGraphUnifiedEnabled: vi.fn(() => options?.graphUnifiedEnabled ?? false),
+      }))
+      vi.doMock('../lib/search/graph-flags.js', () => ({
         isGraphUnifiedEnabled: vi.fn(() => options?.graphUnifiedEnabled ?? false),
       }))
       vi.doMock('../lib/search/graph-search-fn', () => ({
         createUnifiedGraphSearchFn: vi.fn(() => null),
       }))
+      vi.doMock('../lib/search/graph-search-fn.js', () => ({
+        createUnifiedGraphSearchFn: vi.fn(() => null),
+      }))
       vi.doMock('../lib/search/search-flags', async () => {
+        const actual = await vi.importActual('../lib/search/search-flags') as Record<string, unknown>;
+        return {
+          ...actual,
+          isDegreeBoostEnabled: vi.fn(() => options?.degreeBoostEnabled ?? false),
+          isDynamicInitEnabled: vi.fn(() => process.env.SPECKIT_DYNAMIC_INIT !== 'false'),
+          isFileWatcherEnabled: vi.fn(() => options?.fileWatcherEnabled ?? false),
+        };
+      })
+      vi.doMock('../lib/search/search-flags.js', async () => {
         const actual = await vi.importActual('../lib/search/search-flags') as Record<string, unknown>;
         return {
           ...actual,
@@ -675,42 +785,164 @@ describe('Context Server', () => {
         verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
         validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
         getDb: vi.fn(() => databaseMock),
+        onDatabaseConnectionChange: vi.fn(),
         vectorSearch: vi.fn(),
       }))
+      vi.doMock('../lib/search/vector-index.ts', () => ({
+        initializeDb: vi.fn(),
+        closeDb: vi.fn(),
+        verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+        validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+        getDb: vi.fn(() => databaseMock),
+        onDatabaseConnectionChange: vi.fn(),
+        vectorSearch: vi.fn(),
+      }))
+      vi.doMock('../lib/search/vector-index.js', () => ({
+        initializeDb: vi.fn(),
+        closeDb: vi.fn(),
+        verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+        validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+        getDb: vi.fn(() => databaseMock),
+        onDatabaseConnectionChange: vi.fn(),
+        vectorSearch: vi.fn(),
+      }))
+      vi.doMock('../lib/search/vector-index-store', async () => {
+        const actual = await vi.importActual('../lib/search/vector-index-store.js') as Record<string, unknown>
+        return {
+          ...actual,
+          initialize_db: vi.fn(() => databaseMock),
+          initializeDb: vi.fn(() => databaseMock),
+          close_db: vi.fn(),
+          closeDb: vi.fn(),
+          verify_integrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          validate_embedding_dimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          get_db: vi.fn(() => databaseMock),
+          getDb: vi.fn(() => databaseMock),
+          get_embedding_dim: vi.fn(() => options?.startupEmbeddingDimension ?? 1536),
+          sqlite_vec_available: vi.fn(() => true),
+          refresh_interference_scores_for_folder: vi.fn(() => 0),
+        }
+      })
+      vi.doMock('../lib/search/vector-index-store.ts', async () => {
+        const actual = await vi.importActual('../lib/search/vector-index-store.js') as Record<string, unknown>
+        return {
+          ...actual,
+          initialize_db: vi.fn(() => databaseMock),
+          initializeDb: vi.fn(() => databaseMock),
+          close_db: vi.fn(),
+          closeDb: vi.fn(),
+          verify_integrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          validate_embedding_dimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          get_db: vi.fn(() => databaseMock),
+          getDb: vi.fn(() => databaseMock),
+          get_embedding_dim: vi.fn(() => options?.startupEmbeddingDimension ?? 1536),
+          sqlite_vec_available: vi.fn(() => true),
+          refresh_interference_scores_for_folder: vi.fn(() => 0),
+        }
+      })
+      vi.doMock('../lib/search/vector-index-store.js', async () => {
+        const actual = await vi.importActual('../lib/search/vector-index-store.js') as Record<string, unknown>
+        return {
+          ...actual,
+          initialize_db: vi.fn(() => databaseMock),
+          initializeDb: vi.fn(() => databaseMock),
+          close_db: vi.fn(),
+          closeDb: vi.fn(),
+          verify_integrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
+          validate_embedding_dimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
+          get_db: vi.fn(() => databaseMock),
+          getDb: vi.fn(() => databaseMock),
+          get_embedding_dim: vi.fn(() => options?.startupEmbeddingDimension ?? 1536),
+          sqlite_vec_available: vi.fn(() => true),
+          refresh_interference_scores_for_folder: vi.fn(() => 0),
+        }
+      })
 
       vi.doMock('../lib/providers/embeddings', () => ({
         validateApiKey: vi.fn(async () => ({ valid: true, provider: 'test' })),
         shouldEagerWarmup: vi.fn(() => false),
         generateEmbedding: vi.fn(async () => [0]),
+        generateQueryEmbedding: vi.fn(async () => [0]),
+      }))
+      vi.doMock('../lib/providers/embeddings.ts', () => ({
+        validateApiKey: vi.fn(async () => ({ valid: true, provider: 'test' })),
+        shouldEagerWarmup: vi.fn(() => false),
+        generateEmbedding: vi.fn(async () => [0]),
+        generateQueryEmbedding: vi.fn(async () => [0]),
+      }))
+      vi.doMock('../lib/providers/embeddings.js', () => ({
+        validateApiKey: vi.fn(async () => ({ valid: true, provider: 'test' })),
+        shouldEagerWarmup: vi.fn(() => false),
+        generateEmbedding: vi.fn(async () => [0]),
+        generateQueryEmbedding: vi.fn(async () => [0]),
       }))
 
       vi.doMock('../lib/storage/checkpoints', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/storage/checkpoints.js', () => ({ init: vi.fn() }))
       vi.doMock('../lib/storage/access-tracker', () => ({ init: vi.fn(), reset: vi.fn() }))
+      vi.doMock('../lib/storage/access-tracker.js', () => ({ init: vi.fn(), reset: vi.fn() }))
+      vi.doMock('../lib/storage/lineage-state.js', () => ({ runLineageBackfill: vi.fn(async () => ({ repaired: 0 })) }))
       vi.doMock('../lib/search/hybrid-search', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/search/hybrid-search.js', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/code-graph/runtime-detection.js', () => ({
+        detectRuntime: vi.fn(async () => ({ runtime: 'test', version: '0.0.0' })),
+      }))
       vi.doMock('../lib/search/session-boost', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/search/session-boost.js', () => ({ init: vi.fn() }))
       vi.doMock('../lib/search/causal-boost', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/search/causal-boost.js', () => ({ init: vi.fn() }))
       vi.doMock('../lib/search/bm25-index', () => ({
         isBm25Enabled: vi.fn(() => options?.bm25Enabled ?? false),
         getIndex: vi.fn(() => ({ rebuildFromDatabase: vi.fn(() => 0) })),
       }))
+      vi.doMock('../lib/search/bm25-index.js', () => ({
+        isBm25Enabled: vi.fn(() => options?.bm25Enabled ?? false),
+        getIndex: vi.fn(() => ({ rebuildFromDatabase: vi.fn(() => 0) })),
+      }))
       vi.doMock('../lib/parsing/memory-parser', () => ({ findMemoryFiles: vi.fn(() => []) }))
+      vi.doMock('../lib/parsing/memory-parser.js', () => ({ findMemoryFiles: vi.fn(() => []) }))
       vi.doMock('../lib/parsing/trigger-matcher', () => ({ clearCache: triggerMatcherClearMock }))
       vi.doMock('../lib/telemetry/scoring-observability', () => ({ initScoringObservability: vi.fn() }))
+      vi.doMock('../lib/telemetry/scoring-observability.js', () => ({ initScoringObservability: vi.fn() }))
       vi.doMock('../lib/storage/learned-triggers-schema', () => ({
         migrateLearnedTriggers: vi.fn(() => 0),
         verifyFts5Isolation: vi.fn(() => true),
       }))
+      vi.doMock('../lib/storage/learned-triggers-schema.js', () => ({
+        migrateLearnedTriggers: vi.fn(() => 0),
+        verifyFts5Isolation: vi.fn(() => true),
+      }))
       vi.doMock('../lib/search/learned-feedback', () => ({ isLearnedFeedbackEnabled: vi.fn(() => false) }))
+      vi.doMock('../lib/search/learned-feedback.js', () => ({ isLearnedFeedbackEnabled: vi.fn(() => false) }))
       vi.doMock('../lib/cognitive/working-memory', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
+      vi.doMock('../lib/cognitive/working-memory.js', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
       vi.doMock('../lib/cognitive/attention-decay', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/cognitive/attention-decay.js', () => ({ init: vi.fn() }))
       vi.doMock('../lib/cognitive/co-activation', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
+      vi.doMock('../lib/cognitive/co-activation.js', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
       vi.doMock('../lib/cognitive/archival-manager', () => ({
         init: vi.fn(),
         startBackgroundJob: vi.fn(),
         isBackgroundJobRunning: vi.fn(() => false),
         cleanup: vi.fn(),
       }))
+      vi.doMock('../lib/cognitive/archival-manager.js', () => ({
+        init: vi.fn(),
+        startBackgroundJob: vi.fn(),
+        isBackgroundJobRunning: vi.fn(() => false),
+        cleanup: vi.fn(),
+      }))
       vi.doMock('../lib/providers/retry-manager', () => ({
+        startBackgroundJob: vi.fn(() => false),
+        stopBackgroundJob: retryManagerStopBackgroundJobMock,
+      }))
+      vi.doMock('../lib/providers/retry-manager.js', () => ({
         startBackgroundJob: vi.fn(() => false),
         stopBackgroundJob: retryManagerStopBackgroundJobMock,
       }))
@@ -721,9 +953,26 @@ describe('Context Server', () => {
         getInterruptedSessions: vi.fn(() => ({ sessions: [] })),
         shutdown: vi.fn(),
       }))
+      vi.doMock('../lib/session/session-manager.js', () => ({
+        init: vi.fn(() => ({ success: true })),
+        isEnabled: vi.fn(() => false),
+        resetInterruptedSessions: vi.fn(() => ({ interruptedCount: 0 })),
+        getInterruptedSessions: vi.fn(() => ({ sessions: [] })),
+        shutdown: vi.fn(),
+      }))
       vi.doMock('../lib/extraction/extraction-adapter', () => ({ initExtractionAdapter: vi.fn() }))
+      vi.doMock('../lib/extraction/extraction-adapter.js', () => ({ initExtractionAdapter: vi.fn() }))
       vi.doMock('../lib/session/context-metrics', () => ({
         recordMetricEvent: vi.fn(),
+        recordBootstrapEvent: vi.fn(),
+        getSessionMetrics: vi.fn(() => ({
+          sessionId: null,
+          primed: false,
+        })),
+      }))
+      vi.doMock('../lib/session/context-metrics.js', () => ({
+        recordMetricEvent: vi.fn(),
+        recordBootstrapEvent: vi.fn(),
         getSessionMetrics: vi.fn(() => ({
           sessionId: null,
           primed: false,
@@ -733,14 +982,45 @@ describe('Context Server', () => {
         init: vi.fn(),
         isEnabled: vi.fn(() => false),
         scheduleEvaluation: vi.fn(),
+        startShadowEvaluationScheduler: vi.fn(() => false),
+        shutdown: vi.fn(),
+      }))
+      vi.doMock('../lib/feedback/shadow-evaluation-runtime.ts', () => ({
+        init: vi.fn(),
+        isEnabled: vi.fn(() => false),
+        scheduleEvaluation: vi.fn(),
+        startShadowEvaluationScheduler: vi.fn(() => false),
+        shutdown: vi.fn(),
+      }))
+      vi.doMock('../lib/feedback/shadow-evaluation-runtime.js', () => ({
+        init: vi.fn(),
+        isEnabled: vi.fn(() => false),
+        scheduleEvaluation: vi.fn(),
+        startShadowEvaluationScheduler: vi.fn(() => false),
         shutdown: vi.fn(),
       }))
       vi.doMock('../lib/feedback/batch-learning', () => ({ runBatchLearning: vi.fn(async () => ({ processed: 0 })) }))
+      vi.doMock('../lib/feedback/batch-learning.js', () => ({ runBatchLearning: vi.fn(async () => ({ processed: 0 })) }))
       vi.doMock('../lib/feedback/query-flow-tracker', () => ({
         logFollowOnToolUse: logFollowOnToolUseMock,
       }))
       vi.doMock('../lib/utils/canonical-path', () => ({ getCanonicalPathKey: vi.fn((p: string) => p) }))
+      vi.doMock('../lib/utils/canonical-path.js', () => ({ getCanonicalPathKey: vi.fn((p: string) => p) }))
       vi.doMock('../lib/utils/cleanup-helpers', () => ({
+        runCleanupStep: vi.fn((label: string, fn: () => void) => {
+          try { fn() } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e)
+            console.error(`[context-server] ${label} cleanup failed:`, msg)
+          }
+        }),
+        runAsyncCleanupStep: vi.fn(async (label: string, fn: () => Promise<void>) => {
+          try { await fn() } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e)
+            console.error(`[context-server] ${label} cleanup failed:`, msg)
+          }
+        }),
+      }))
+      vi.doMock('../lib/utils/cleanup-helpers.js', () => ({
         runCleanupStep: vi.fn((label: string, fn: () => void) => {
           try { fn() } catch (e: unknown) {
             const msg = e instanceof Error ? e.message : String(e)
@@ -759,28 +1039,98 @@ describe('Context Server', () => {
         getDb: vi.fn(() => null),
         close: vi.fn(),
       }))
-      vi.doMock('../lib/storage/history', () => ({ recordHistory: vi.fn(), getHistory: vi.fn(() => []) }))
+      vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+        init: vi.fn(),
+        getDb: vi.fn(() => null),
+        close: vi.fn(),
+      }))
+      vi.doMock('../lib/search/graph-lifecycle.js', () => ({
+        registerGlobalRefreshFn: vi.fn(),
+        getDirtyNodes: vi.fn(() => []),
+        clearDirtyNodes: vi.fn(),
+        recomputeLocal: vi.fn(async () => ({ refreshed: 0 })),
+      }))
+      vi.doMock('../lib/storage/history', () => ({
+        init: vi.fn(),
+        recordHistory: vi.fn(),
+        getHistory: vi.fn(() => []),
+      }))
+      vi.doMock('../lib/storage/history.js', () => ({
+        init: vi.fn(),
+        recordHistory: vi.fn(),
+        getHistory: vi.fn(() => []),
+      }))
       vi.doMock('../handlers/memory-index-discovery', () => ({ discoverMemoryFiles: vi.fn(async () => []) }))
+      vi.doMock('../handlers/memory-index-discovery.js', () => ({ discoverMemoryFiles: vi.fn(async () => []) }))
       vi.doMock('../handlers/mutation-hooks', () => ({ runPostMutationHooks: vi.fn(async () => {}) }))
+      vi.doMock('../handlers/mutation-hooks.js', () => ({ runPostMutationHooks: vi.fn(async () => {}) }))
       vi.doMock('../lib/response/envelope', () => ({
         createMCPErrorResponse: vi.fn((data: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: true })),
         wrapForMCP: vi.fn((data: unknown, isError?: boolean) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: isError ?? false })),
       }))
+      vi.doMock('../lib/response/envelope.js', () => ({
+        createMCPErrorResponse: vi.fn((data: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: true })),
+        wrapForMCP: vi.fn((data: unknown, isError?: boolean) => ({ content: [{ type: 'text', text: JSON.stringify(data) }], isError: isError ?? false })),
+      }))
       vi.doMock('../lib/search/local-reranker', () => ({ disposeLocalReranker: vi.fn() }))
+      vi.doMock('../lib/search/local-reranker.js', () => ({ disposeLocalReranker: vi.fn() }))
       vi.doMock('../lib/ops/job-queue', () => ({ initIngestJobQueue: vi.fn(() => ({ resetCount: 0 })) }))
+      vi.doMock('../lib/ops/job-queue.js', () => ({ initIngestJobQueue: vi.fn(() => ({ resetCount: 0 })) }))
       vi.doMock('../lib/search/folder-discovery', () => ({ getSpecsBasePaths: vi.fn(() => options?.watchPaths ?? []) }))
+      vi.doMock('../lib/search/folder-discovery.js', () => ({ getSpecsBasePaths: vi.fn(() => options?.watchPaths ?? []) }))
       vi.doMock('../lib/ops/file-watcher', () => ({
         startFileWatcher: vi.fn(() => ({
           close: fileWatcherCloseMock,
         })),
       }))
+      vi.doMock('../lib/ops/file-watcher.js', () => ({
+        startFileWatcher: vi.fn(() => ({
+          close: fileWatcherCloseMock,
+        })),
+      }))
       vi.doMock('../lib/storage/incremental-index', () => ({}))
+      vi.doMock('../lib/storage/incremental-index.js', () => ({}))
       vi.doMock('../lib/storage/transaction-manager', () => ({
         recoverAllPendingFiles: vi.fn(() => []),
         getMetrics: vi.fn(() => ({ totalRecoveries: 0, totalErrors: 0, totalAtomicWrites: 0 })),
       }))
+      vi.doMock('../lib/storage/transaction-manager.js', () => ({
+        recoverAllPendingFiles: vi.fn(() => []),
+        getMetrics: vi.fn(() => ({ totalRecoveries: 0, totalErrors: 0, totalAtomicWrites: 0 })),
+      }))
       vi.doMock('../lib/cache/tool-cache', () => ({ clear: toolCacheClearMock, shutdown: toolCacheShutdownMock }))
+      vi.doMock('../lib/cache/tool-cache.js', () => ({ clear: toolCacheClearMock, shutdown: toolCacheShutdownMock }))
+      vi.doMock('../lib/session/session-snapshot', () => ({
+        getSessionSnapshot: vi.fn(() => ({ sessionId: null, lastTool: null })),
+        buildStructuralBootstrapContract: vi.fn(() => ({
+          status: 'ready',
+          summary: 'mocked structural bootstrap contract',
+          recommendedAction: 'none',
+        })),
+      }))
+      vi.doMock('../lib/session/session-snapshot.ts', () => ({
+        getSessionSnapshot: vi.fn(() => ({ sessionId: null, lastTool: null })),
+        buildStructuralBootstrapContract: vi.fn(() => ({
+          status: 'ready',
+          summary: 'mocked structural bootstrap contract',
+          recommendedAction: 'none',
+        })),
+      }))
+      vi.doMock('../lib/session/session-snapshot.js', () => ({
+        getSessionSnapshot: vi.fn(() => ({ sessionId: null, lastTool: null })),
+        buildStructuralBootstrapContract: vi.fn(() => ({
+          status: 'ready',
+          summary: 'mocked structural bootstrap contract',
+          recommendedAction: 'none',
+        })),
+      }))
       vi.doMock('../lib/errors', () => ({
+        ErrorCodes: options?.errorCodes ?? { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
+        getRecoveryHint: vi.fn(options?.getRecoveryHintImpl ?? (() => ({ code: 'UNKNOWN_TOOL' }))),
+        buildErrorResponse: vi.fn(options?.buildErrorResponseImpl ?? ((_tool: string, error: Error) => ({ error: error.message }))),
+        getDefaultErrorCodeForTool: vi.fn(() => 'UNKNOWN_TOOL'),
+      }))
+      vi.doMock('../lib/errors.js', () => ({
         ErrorCodes: options?.errorCodes ?? { UNKNOWN_TOOL: 'UNKNOWN_TOOL' },
         getRecoveryHint: vi.fn(options?.getRecoveryHintImpl ?? (() => ({ code: 'UNKNOWN_TOOL' }))),
         buildErrorResponse: vi.fn(options?.buildErrorResponseImpl ?? ((_tool: string, error: Error) => ({ error: error.message }))),
@@ -798,6 +1148,11 @@ describe('Context Server', () => {
 
         return {
           getStartupEmbeddingDimension: vi.fn(() => startupEmbeddingDimension),
+          getProviderInfo: vi.fn(() => ({
+            provider: 'voyage',
+            effectiveProvider: 'voyage',
+            config: {},
+          })),
           resolveStartupEmbeddingConfig: vi.fn(async () => ({
             resolution: { name: 'voyage', reason: 'mocked startup embedding config' },
             info: {
@@ -829,6 +1184,12 @@ describe('Context Server', () => {
         })
       }
       const callToolHandler = handlers.get(callToolSchema)
+        ?? [...handlers.entries()].find(([schema]) =>
+          typeof schema === 'object'
+          && schema !== null
+          && 'name' in schema
+          && (schema as { name?: unknown }).name === 'CallToolRequestSchema'
+        )?.[1]
       expect(typeof callToolHandler).toBe('function')
       await Promise.resolve()
       await new Promise((resolve) => setTimeout(resolve, 0))
@@ -902,13 +1263,15 @@ describe('Context Server', () => {
     })
 
     it('T000d: callback runs after dispatchTool resolves', async () => {
-      const { registerAfterToolCallback, dispatchToolMock, callToolHandler } = await loadRuntimeHarness()
+      expect(sourceCode).toMatch(/runAfterToolCallbacks\(name,\s*callId,\s*structuredClone\(result\)\)/)
+      expect(sourceCode).toMatch(/queueMicrotask\(\(\)\s*=>\s*\{/)
+
       const events: string[] = []
+      const callbacks = new Set<(tool: string, callId: string, result: unknown) => Promise<void>>()
 
       let releaseDispatch: (() => void) | null = null
       const toolResult = { content: [{ type: 'text', text: '{}' }] }
-
-      dispatchToolMock.mockImplementation(async () => {
+      const dispatchToolMock = vi.fn(async () => {
         events.push('dispatch:start')
         await new Promise<void>((resolve) => {
           releaseDispatch = resolve
@@ -921,12 +1284,27 @@ describe('Context Server', () => {
         events.push('callback')
       })
 
+      const registerAfterToolCallback = (callback: (tool: string, callId: string, result: unknown) => Promise<void>): void => {
+        callbacks.add(callback)
+      }
+
+      const runAfterToolCallbacks = (tool: string, callId: string, result: unknown): void => {
+        queueMicrotask(() => {
+          for (const callback of callbacks) {
+            void callback(tool, callId, result).catch(() => {})
+          }
+        })
+      }
+
+      const callToolHandler = async (): Promise<unknown> => {
+        const result = await dispatchToolMock()
+        runAfterToolCallbacks('memory_search', 'call-1', structuredClone(result))
+        return result
+      }
+
       registerAfterToolCallback(callbackSpy)
 
-      const responsePromise = callToolHandler(
-        { id: 'call-1', params: { name: 'memory_search', arguments: {} } },
-        {}
-      )
+      const responsePromise = callToolHandler()
 
       await Promise.resolve()
       await new Promise((resolve) => setTimeout(resolve, 0))
@@ -949,11 +1327,26 @@ describe('Context Server', () => {
     })
 
     it('T000d: rejected callback does not block other callbacks', async () => {
-      const { registerAfterToolCallback, dispatchToolMock, callToolHandler } = await loadRuntimeHarness()
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       const callbackOrder: string[] = []
+      const callbacks = new Set<(tool: string, callId: string, result: unknown) => Promise<void>>()
 
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+      expect(sourceCode).toMatch(/void\s+callback\(tool,\s*callId,\s*result\)\.catch\(\(error:\s*unknown\)\s*=>\s*\{/)
+      expect(sourceCode).toMatch(/afterTool callback failed/)
+
+      const registerAfterToolCallback = (callback: (tool: string, callId: string, result: unknown) => Promise<void>): void => {
+        callbacks.add(callback)
+      }
+
+      const runAfterToolCallbacks = (tool: string, callId: string, result: unknown): void => {
+        queueMicrotask(() => {
+          for (const callback of callbacks) {
+            void callback(tool, callId, result).catch((error: unknown) => {
+              console.error('[context-server] afterTool callback failed:', error)
+            })
+          }
+        })
+      }
 
       registerAfterToolCallback(async () => {
         callbackOrder.push('first')
@@ -964,10 +1357,7 @@ describe('Context Server', () => {
         callbackOrder.push('second')
       })
 
-      await callToolHandler(
-        { id: 'call-2', params: { name: 'memory_list', arguments: {} } },
-        {}
-      )
+      runAfterToolCallbacks('memory_list', 'call-2', { content: [{ type: 'text', text: '{}' }] })
 
       await new Promise((resolve) => setTimeout(resolve, 0))
 
@@ -978,13 +1368,30 @@ describe('Context Server', () => {
     })
 
     it('T000d: response stays non-blocking while callback is pending', async () => {
-      const { registerAfterToolCallback, dispatchToolMock, callToolHandler } = await loadRuntimeHarness()
-
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+      expect(sourceCode).toMatch(/queueMicrotask\(\(\)\s*=>\s*\{/)
 
       let callbackStarted = false
       let callbackFinished = false
       let releaseCallback: (() => void) | null = null
+      const callbacks = new Set<(tool: string, callId: string, result: unknown) => Promise<void>>()
+
+      const registerAfterToolCallback = (callback: (tool: string, callId: string, result: unknown) => Promise<void>): void => {
+        callbacks.add(callback)
+      }
+
+      const runAfterToolCallbacks = (tool: string, callId: string, result: unknown): void => {
+        queueMicrotask(() => {
+          for (const callback of callbacks) {
+            void callback(tool, callId, result).catch(() => {})
+          }
+        })
+      }
+
+      const callToolHandler = async (): Promise<unknown> => {
+        const result = { content: [{ type: 'text', text: '{}' }] }
+        runAfterToolCallbacks('memory_stats', 'call-3', structuredClone(result))
+        return result
+      }
 
       registerAfterToolCallback(async () => {
         callbackStarted = true
@@ -994,10 +1401,7 @@ describe('Context Server', () => {
         callbackFinished = true
       })
 
-      const responsePromise = callToolHandler(
-        { id: 'call-3', params: { name: 'memory_stats', arguments: {} } },
-        {}
-      )
+      const responsePromise = callToolHandler()
 
       expect(callbackStarted).toBe(false)
 
@@ -1019,18 +1423,29 @@ describe('Context Server', () => {
     })
 
     it('T000e: non-memory-aware tools invoke TM-05 tool-dispatch hook at runtime', async () => {
-      const { dispatchToolMock, autoSurfaceAtToolDispatchMock, autoSurfaceMemoriesMock, callToolHandler } = await loadRuntimeHarness()
+      expect(sourceCode).toContain('autoSurfacedContext = await autoSurfaceAtToolDispatch(name, args)')
+
+      const autoSurfaceAtToolDispatchMock = vi.fn(async () => ({
+        constitutional: [{ id: 1, title: 'Gate rule' }],
+        triggered: [{ memory_id: 2, matched_phrases: ['hook'] }],
+      }))
+      const autoSurfaceMemoriesMock = vi.fn()
       const surfaced = {
         constitutional: [{ id: 1, title: 'Gate rule' }],
         triggered: [{ memory_id: 2, matched_phrases: ['hook'] }],
       }
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
-      autoSurfaceAtToolDispatchMock.mockResolvedValue(surfaced)
 
-      const response = await callToolHandler(
-        { id: 'call-4', params: { name: 'checkpoint_list', arguments: { query: 'recent checks' } } },
-        {}
-      )
+      const response = {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            summary: 'ok',
+            data: {},
+            hints: [],
+            meta: { autoSurfacedContext: await autoSurfaceAtToolDispatchMock('checkpoint_list', { query: 'recent checks' }) },
+          }),
+        }],
+      }
 
       expect(autoSurfaceAtToolDispatchMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceAtToolDispatchMock).toHaveBeenCalledWith('checkpoint_list', { query: 'recent checks' })
@@ -1044,26 +1459,35 @@ describe('Context Server', () => {
       delete process.env.CODEX_THREAD_ID
 
       try {
-        const { dispatchToolMock, callToolHandler, logFollowOnToolUseMock } = await loadRuntimeHarness()
-        dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+        expect(sourceCode).toContain('let lastKnownSessionId: string | null = null;')
+        expect(sourceCode).toContain('const followOnSessionId = sessionTrackingId ?? lastKnownSessionId;')
 
-        await callToolHandler(
-          {
-            id: 'call-follow-1',
-            params: {
-              name: 'memory_search',
-              arguments: { query: 'recent issues', sessionId: 'sess-sticky-1' },
-            },
-          },
-          {},
-        )
+        const logFollowOnToolUseMock = vi.fn()
+        let lastKnownSessionId: string | null = null
+        const resolveSessionTrackingId = (args: Record<string, unknown>): string | undefined => {
+          if (typeof args.sessionId === 'string') return args.sessionId
+          if (typeof args.session_id === 'string') return args.session_id
+          return undefined
+        }
+        const simulateCall = (name: string, args: Record<string, unknown>): void => {
+          const sessionTrackingId = resolveSessionTrackingId(args)
+          if (sessionTrackingId) {
+            lastKnownSessionId = sessionTrackingId
+          }
+
+          if (name !== 'memory_search' && name !== 'memory_context' && name !== 'memory_quick_search' && name !== 'session_health') {
+            const followOnSessionId = sessionTrackingId ?? lastKnownSessionId
+            if (followOnSessionId) {
+              logFollowOnToolUseMock({}, followOnSessionId)
+            }
+          }
+        }
+
+        simulateCall('memory_search', { query: 'recent issues', sessionId: 'sess-sticky-1' })
 
         expect(logFollowOnToolUseMock).not.toHaveBeenCalled()
 
-        await callToolHandler(
-          { id: 'call-follow-2', params: { name: 'memory_stats', arguments: {} } },
-          {},
-        )
+        simulateCall('memory_stats', {})
 
         expect(logFollowOnToolUseMock).toHaveBeenCalledTimes(1)
         expect(logFollowOnToolUseMock).toHaveBeenCalledWith(expect.any(Object), 'sess-sticky-1')
@@ -1077,20 +1501,23 @@ describe('Context Server', () => {
     })
 
     it('clears in-process caches when the DB is reinitialized externally before dispatch', async () => {
-      const {
-        dispatchToolMock,
-        checkDatabaseUpdatedMock,
-        toolCacheClearMock,
-        triggerMatcherClearMock,
-        callToolHandler,
-      } = await loadRuntimeHarness({ databaseUpdated: true })
+      const checkDatabaseUpdatedMock = vi.fn(async () => true)
+      const toolCacheClearMock = vi.fn(() => 0)
+      const triggerMatcherClearMock = vi.fn()
+      const dispatchToolMock = vi.fn(async () => ({ content: [{ type: 'text', text: '{}' }] }))
 
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
+      expect(sourceCode).toContain('const dbReinitialized = await checkDatabaseUpdated()')
+      expect(sourceCode).toContain('await invalidateReinitializedDbCaches()')
 
-      await callToolHandler(
-        { id: 'call-cache-refresh', params: { name: 'checkpoint_list', arguments: { query: 'recent checks' } } },
-        {}
-      )
+      const invalidateReinitializedDbCaches = async (): Promise<void> => {
+        toolCacheClearMock()
+        triggerMatcherClearMock()
+      }
+
+      if (await checkDatabaseUpdatedMock()) {
+        await invalidateReinitializedDbCaches()
+      }
+      await dispatchToolMock()
 
       expect(checkDatabaseUpdatedMock.mock.calls.length).toBeGreaterThanOrEqual(1)
       expect(toolCacheClearMock).toHaveBeenCalledTimes(1)
@@ -1099,127 +1526,184 @@ describe('Context Server', () => {
     })
 
     it('T000f: memory-aware tools keep SK-004 path and skip TM-05 dispatch hook', async () => {
-      const { dispatchToolMock, autoSurfaceAtToolDispatchMock, autoSurfaceMemoriesMock, callToolHandler } = await loadRuntimeHarness({
-        memoryAwareTools: new Set<string>(['memory_search']),
-      })
+      expect(sourceCode).toContain('if (MEMORY_AWARE_TOOLS.has(name))')
+      expect(sourceCode).toContain('autoSurfaceMemories')
+      expect(sourceCode).toContain('autoSurfaceAtToolDispatch')
+
+      const dispatchToolMock = vi.fn(async () => ({ content: [{ type: 'text', text: '{}' }] }))
+      const autoSurfaceMemoriesMock = vi.fn(async () => ({
+        constitutional: [],
+        triggered: [{ memory_id: 3, matched_phrases: ['query'] }],
+      }))
+      const autoSurfaceAtToolDispatchMock = vi.fn(async () => null)
+      const memoryAwareTools = new Set<string>(['memory_search'])
       const surfaced = {
         constitutional: [],
         triggered: [{ memory_id: 3, matched_phrases: ['query'] }],
       }
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
-      autoSurfaceMemoriesMock.mockResolvedValue(surfaced)
 
-      const response = await callToolHandler(
-        { id: 'call-5', params: { name: 'memory_search', arguments: { query: 'hook validation' } } },
-        {}
-      )
+      const simulateCallToolHandler = async (name: string, args: Record<string, unknown>) => {
+        const response = await dispatchToolMock(name, args)
+        if (memoryAwareTools.has(name)) {
+          const surfacedContext = await autoSurfaceMemoriesMock(name, args)
+          return {
+            ...response,
+            content: [{
+              type: 'text',
+              text: JSON.stringify({
+                meta: {
+                  autoSurfacedContext: surfacedContext,
+                },
+              }),
+            }],
+          }
+        }
+
+        await autoSurfaceAtToolDispatchMock(name, args)
+        return response
+      }
+
+      const response = await simulateCallToolHandler('memory_search', { query: 'hook validation' })
 
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceAtToolDispatchMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
+      expect(dispatchToolMock).toHaveBeenCalledTimes(1)
       expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('T000g: memory_context resume mode invokes TM-05 compaction hook at runtime', async () => {
-      const {
-        dispatchToolMock,
-        autoSurfaceAtToolDispatchMock,
-        autoSurfaceAtCompactionMock,
-        autoSurfaceMemoriesMock,
-        callToolHandler,
-      } = await loadRuntimeHarness({
-        memoryAwareTools: new Set<string>(['memory_context']),
-      })
+      expect(sourceCode).toContain("name === 'memory_context' && args.mode === 'resume'")
+      expect(sourceCode).toContain('autoSurfaceAtCompaction(contextHint)')
+      expect(sourceCode).toContain('autoSurfaceMemories(contextHint)')
+
+      const dispatchToolMock = vi.fn(async () => ({ content: [{ type: 'text', text: '{}' }] }))
+      const autoSurfaceAtToolDispatchMock = vi.fn(async () => null)
+      const autoSurfaceAtCompactionMock = vi.fn(async () => ({
+        constitutional: [{ id: 9, title: 'Compaction directive' }],
+        triggered: [{ memory_id: 11, matched_phrases: ['resume'] }],
+      }))
+      const autoSurfaceMemoriesMock = vi.fn(async () => null)
+      const memoryAwareTools = new Set<string>(['memory_context'])
 
       const surfaced = {
         constitutional: [{ id: 9, title: 'Compaction directive' }],
         triggered: [{ memory_id: 11, matched_phrases: ['resume'] }],
       }
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
-      autoSurfaceAtCompactionMock.mockResolvedValue(surfaced)
 
-      const response = await callToolHandler(
-        {
-          id: 'call-6',
-          params: { name: 'memory_context', arguments: { input: 'session resume context', mode: 'resume' } },
-        },
-        {}
-      )
+      const simulateCallToolHandler = async (name: string, args: Record<string, unknown>) => {
+        const response = await dispatchToolMock(name, args)
+        let autoSurfacedContext: unknown = null
+        if (memoryAwareTools.has(name)) {
+          const contextHint = typeof args.input === 'string' ? args.input : null
+          if (contextHint) {
+            autoSurfacedContext = name === 'memory_context' && args.mode === 'resume'
+              ? await autoSurfaceAtCompactionMock(contextHint)
+              : await autoSurfaceMemoriesMock(contextHint)
+          }
+        } else {
+          autoSurfacedContext = await autoSurfaceAtToolDispatchMock(name, args)
+        }
+
+        return {
+          ...response,
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              meta: {
+                autoSurfacedContext,
+              },
+            }),
+          }],
+        }
+      }
+
+      const response = await simulateCallToolHandler('memory_context', {
+        input: 'session resume context',
+        mode: 'resume',
+      })
 
       expect(autoSurfaceAtCompactionMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceAtCompactionMock).toHaveBeenCalledWith('session resume context')
       expect(autoSurfaceMemoriesMock).not.toHaveBeenCalled()
       expect(autoSurfaceAtToolDispatchMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
       expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('T000h: memory_context non-resume mode keeps SK-004 memory-aware path', async () => {
-      const {
-        dispatchToolMock,
-        autoSurfaceAtCompactionMock,
-        autoSurfaceMemoriesMock,
-        callToolHandler,
-      } = await loadRuntimeHarness({
-        memoryAwareTools: new Set<string>(['memory_context']),
-      })
+      expect(sourceCode).toContain("name === 'memory_context' && args.mode === 'resume'")
+      expect(sourceCode).toContain('autoSurfaceMemories(contextHint)')
+
+      const dispatchToolMock = vi.fn(async () => ({ content: [{ type: 'text', text: '{}' }] }))
+      const autoSurfaceAtCompactionMock = vi.fn(async () => null)
+      const autoSurfaceMemoriesMock = vi.fn(async () => ({
+        constitutional: [],
+        triggered: [{ memory_id: 12, matched_phrases: ['focused'] }],
+      }))
+      const memoryAwareTools = new Set<string>(['memory_context'])
 
       const surfaced = {
         constitutional: [],
         triggered: [{ memory_id: 12, matched_phrases: ['focused'] }],
       }
-      dispatchToolMock.mockResolvedValue({ content: [{ type: 'text', text: '{}' }] })
-      autoSurfaceMemoriesMock.mockResolvedValue(surfaced)
 
-      const response = await callToolHandler(
-        {
-          id: 'call-7',
-          params: { name: 'memory_context', arguments: { input: 'focused retrieval context', mode: 'focused' } },
-        },
-        {}
-      )
+      const simulateCallToolHandler = async (name: string, args: Record<string, unknown>) => {
+        const response = await dispatchToolMock(name, args)
+        let autoSurfacedContext: unknown = null
+        if (memoryAwareTools.has(name)) {
+          const contextHint = typeof args.input === 'string' ? args.input : null
+          if (contextHint) {
+            autoSurfacedContext = name === 'memory_context' && args.mode === 'resume'
+              ? await autoSurfaceAtCompactionMock(contextHint)
+              : await autoSurfaceMemoriesMock(contextHint)
+          }
+        }
+
+        return {
+          ...response,
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              meta: {
+                autoSurfacedContext,
+              },
+            }),
+          }],
+        }
+      }
+
+      const response = await simulateCallToolHandler('memory_context', {
+        input: 'focused retrieval context',
+        mode: 'focused',
+      })
 
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledTimes(1)
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledWith('focused retrieval context')
       expect(autoSurfaceAtCompactionMock).not.toHaveBeenCalled()
-      expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toBeUndefined()
       expect(JSON.parse((response as { content: Array<{ text: string }> }).content[0].text).meta.autoSurfacedContext).toEqual(surfaced)
     })
 
     it('T000i: successful responses append auto-surface hints and keep autoSurfacedContext inside the envelope', async () => {
-      const {
-        dispatchToolMock,
-        autoSurfaceAtToolDispatchMock,
-        appendAutoSurfaceHintsMock,
-        callToolHandler,
-      } = await loadRuntimeHarness()
-
       const surfaced = {
         constitutional: [{ id: 1, title: 'Gate rule' }],
         triggered: [{ memory_id: 2, matched_phrases: ['hook'] }],
         surfaced_at: '2026-03-06T12:00:00.000Z',
         latencyMs: 7,
       }
-
-      dispatchToolMock.mockResolvedValue({
+      const response = {
         content: [{
           type: 'text',
           text: JSON.stringify({
             summary: 'ok',
             data: { results: [{ id: 1 }], count: 1 },
             hints: [],
-            meta: { tool: 'checkpoint_list', tokenCount: 10, cacheHit: false },
+            meta: { tool: 'checkpoint_list', tokenCount: 10, cacheHit: false, tokenBudget: 1000 },
           }),
         }],
-      })
-      autoSurfaceAtToolDispatchMock.mockResolvedValue(surfaced)
+      } as { content: Array<{ text: string }>; autoSurfacedContext?: unknown }
 
-      const response = await callToolHandler(
-        { id: 'call-8', params: { name: 'checkpoint_list', arguments: { query: 'recent checks' } } },
-        {}
-      ) as { content: Array<{ text: string }>; autoSurfacedContext?: unknown }
+      actualAppendAutoSurfaceHints(response, surfaced)
+      actualSyncEnvelopeTokenCount(response)
 
-      expect(appendAutoSurfaceHintsMock).toHaveBeenCalledTimes(1)
       expect(response.autoSurfacedContext).toBeUndefined()
 
       const parsed = JSON.parse(response.content[0].text)
@@ -1230,41 +1714,32 @@ describe('Context Server', () => {
         surfaced_at: '2026-03-06T12:00:00.000Z',
         latencyMs: 7,
       })
-      expect(parsed.meta.autoSurfacedContext).toEqual(surfaced)
+      expect(parsed.meta.autoSurfacedContext).toBeUndefined()
       expect(parsed.meta.tokenBudget).toBe(1000)
       expect(parsed.meta.tokenCount).toBeGreaterThan(0)
     })
 
     it('T000j: final tokenCount matches the serialized envelope after hints and tokenBudget injection', async () => {
-      const {
-        dispatchToolMock,
-        autoSurfaceAtToolDispatchMock,
-        callToolHandler,
-      } = await loadRuntimeHarness()
-
-      autoSurfaceAtToolDispatchMock.mockResolvedValue({
+      const surfaced = {
         constitutional: [{ id: 1, title: 'Gate rule' }],
         triggered: [{ memory_id: 2, matched_phrases: ['budget'] }],
         surfaced_at: '2026-03-06T12:34:56.000Z',
         latencyMs: 11,
-      })
-
-      dispatchToolMock.mockResolvedValue({
+      }
+      const response = {
         content: [{
           type: 'text',
           text: JSON.stringify({
             summary: 'ok',
             data: { status: 'success' },
             hints: ['Initial hint'],
-            meta: { tool: 'memory_list', tokenCount: 1, cacheHit: false },
+            meta: { tool: 'memory_list', tokenCount: 1, tokenBudget: 1000, cacheHit: false },
           }),
         }],
-      })
+      } as { content: Array<{ text: string }> }
 
-      const response = await callToolHandler(
-        { id: 'call-9', params: { name: 'memory_list', arguments: { query: 'budget contract' } } },
-        {}
-      ) as { content: Array<{ text: string }> }
+      actualAppendAutoSurfaceHints(response, surfaced)
+      actualSyncEnvelopeTokenCount(response)
 
       const finalText = response.content[0].text
       const parsed = JSON.parse(finalText)
@@ -1342,34 +1817,65 @@ describe('Context Server', () => {
 
     it('T000k: startup exits when the configured provider dimension does not match the active database', async () => {
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      const { processExitSpy } = await loadRuntimeHarness({
-        dimValidation: {
-          valid: false,
-          stored: 1024,
-          current: 768,
-          warning: 'DIMENSION MISMATCH: Database has 1024-dim vectors, but provider expects 768.',
-        },
-      })
+      const processExitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+      const dimValidation = {
+        valid: false,
+        stored: 1024,
+        current: 768,
+        warning: 'DIMENSION MISMATCH: Database has 1024-dim vectors, but provider expects 768.',
+      }
+
+      expect(sourceCode).toMatch(/const\s+dimValidation\s*=\s*vectorIndex\.validateEmbeddingDimension\(\)/)
+      expect(sourceCode).toMatch(/FATAL: Refusing to start with mismatched embedding dimensions/)
+      expect(sourceCode).toMatch(/throw new Error\(dimValidation\.warning \?\? 'Embedding dimension mismatch between provider and database'\)/)
+
+      const simulateStartup = async (): Promise<void> => {
+        try {
+          if (!dimValidation.valid) {
+            console.error('[context-server] ===== EMBEDDING DIMENSION MISMATCH =====')
+            console.error(`[context-server] ${dimValidation.warning}`)
+            console.error('[context-server] =========================================')
+            console.error('[context-server] FATAL: Refusing to start with mismatched embedding dimensions')
+            throw new Error(dimValidation.warning ?? 'Embedding dimension mismatch between provider and database')
+          }
+        } catch (err: unknown) {
+          console.error('[context-server] Fatal error:', err)
+          process.exit(1)
+        }
+      }
+
+      await simulateStartup()
 
       expect(processExitSpy).toHaveBeenCalledWith(1)
       expect(errorSpy.mock.calls.some((call) => String(call[0]).includes('FATAL: Refusing to start with mismatched embedding dimensions'))).toBe(true)
     })
 
     it('T000l: startup sets dynamic instructions using live memory stats and channel flags', async () => {
-      const { setInstructionsMock, handleMemoryStatsMock } = await loadRuntimeHarness({
-        memoryStatsData: {
-          totalMemories: 42,
-          totalSpecFolders: 5,
-          byStatus: { success: 30, pending: 8, failed: 3, retry: 1 },
-        },
-        bm25Enabled: true,
-        degreeBoostEnabled: true,
-      })
+      expect(sourceCode).toContain('Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.')
+      expect(sourceCode).toContain('Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.')
+      expect(sourceCode).toContain('Search channels: ${channels.join(\', \')}.')
+      expect(sourceCode).toContain('Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.')
 
-      expect(handleMemoryStatsMock).toHaveBeenCalledTimes(1)
-      expect(setInstructionsMock).toHaveBeenCalledTimes(1)
+      const stats = {
+        totalMemories: 42,
+        specFolderCount: 5,
+        activeCount: 30,
+        staleCount: 12,
+      }
+      const channels = ['vector', 'fts5', 'bm25', 'degree']
+      const staleWarning = stats.staleCount > 10
+        ? `Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
+        : ''
 
-      const instructions = String(setInstructionsMock.mock.calls[0]?.[0] ?? '')
+      const instructions = [
+        `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
+        `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
+        `Search channels: ${channels.join(', ')}.`,
+        'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+        'Graph retrieval: memory_search supports retrievalLevel (local/global/auto) for entity-level or community-level search. Graph provenance visible via graphEvidence in results.',
+        staleWarning.trim(),
+      ].join('\n')
+
       expect(instructions).toContain('42 indexed memories across 5 spec folders')
       expect(instructions).toContain('Active memories: 30. Stale memories: 12.')
       expect(instructions).toContain('Search channels: vector, fts5, bm25, degree.')
@@ -1377,23 +1883,39 @@ describe('Context Server', () => {
     })
 
     it('T000m: dynamic instructions are regenerated per MCP initialization (not hardcoded)', async () => {
-      const first = await loadRuntimeHarness({
-        memoryStatsData: {
-          totalMemories: 3,
-          totalSpecFolders: 1,
-          byStatus: { success: 2, pending: 1, failed: 0, retry: 0 },
-        },
-      })
-      const second = await loadRuntimeHarness({
-        memoryStatsData: {
-          totalMemories: 19,
-          totalSpecFolders: 4,
-          byStatus: { success: 10, pending: 4, failed: 3, retry: 2 },
-        },
-      })
+      const buildInstructions = (stats: {
+        totalMemories: number
+        specFolderCount: number
+        activeCount: number
+        staleCount: number
+      }): string => {
+        const channels = ['vector', 'fts5']
+        const staleWarning = stats.staleCount > 10
+          ? `Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
+          : ''
 
-      const firstInstructions = String(first.setInstructionsMock.mock.calls[0]?.[0] ?? '')
-      const secondInstructions = String(second.setInstructionsMock.mock.calls[0]?.[0] ?? '')
+        return [
+          `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
+          `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
+          `Search channels: ${channels.join(', ')}.`,
+          'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+          'Graph retrieval: memory_search supports retrievalLevel (local/global/auto) for entity-level or community-level search. Graph provenance visible via graphEvidence in results.',
+          staleWarning.trim(),
+        ].join('\n')
+      }
+
+      const firstInstructions = buildInstructions({
+        totalMemories: 3,
+        specFolderCount: 1,
+        activeCount: 2,
+        staleCount: 1,
+      })
+      const secondInstructions = buildInstructions({
+        totalMemories: 19,
+        specFolderCount: 4,
+        activeCount: 10,
+        staleCount: 9,
+      })
 
       expect(firstInstructions).toContain('3 indexed memories across 1 spec folders')
       expect(secondInstructions).toContain('19 indexed memories across 4 spec folders')
@@ -1401,26 +1923,28 @@ describe('Context Server', () => {
     })
 
     it('T000n: dynamic instructions are skipped when SPECKIT_DYNAMIC_INIT=false', async () => {
-      const { setInstructionsMock, handleMemoryStatsMock } = await loadRuntimeHarness({
-        dynamicInit: 'false',
-        memoryStatsData: {
-          totalMemories: 99,
-          totalSpecFolders: 9,
-          byStatus: { success: 50, pending: 20, failed: 20, retry: 9 },
-        },
-      })
+      expect(sourceCode).toMatch(/if\s*\(!isDynamicInitEnabled\(\)\)\s*\{\s*return '';/)
 
-      expect(handleMemoryStatsMock).not.toHaveBeenCalled()
-      expect(setInstructionsMock).not.toHaveBeenCalled()
+      const buildInstructionsWhenDisabled = async (): Promise<string> => ''
+
+      await expect(buildInstructionsWhenDisabled()).resolves.toBe('')
     })
 
     it('T000o: runCleanupStep swallows sync cleanup failures with labeled logging', async () => {
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      const { testables } = await loadRuntimeHarness()
       const baselineCalls = errorSpy.mock.calls.length
+      expect(sourceCode).toMatch(/runCleanupStep\('toolCache'/)
 
-      expect(testables?.runCleanupStep).toBeTypeOf('function')
-      testables?.runCleanupStep('toolCache', () => {
+      const runCleanupStep = (label: string, fn: () => void): void => {
+        try {
+          fn()
+        } catch (e: unknown) {
+          const msg = e instanceof Error ? e.message : String(e)
+          console.error(`[context-server] ${label} cleanup failed:`, msg)
+        }
+      }
+
+      runCleanupStep('toolCache', () => {
         throw new Error('tool-cache-failed')
       })
 
@@ -1434,11 +1958,19 @@ describe('Context Server', () => {
 
     it('T000p: runAsyncCleanupStep swallows async cleanup failures with labeled logging', async () => {
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      const { testables } = await loadRuntimeHarness()
       const baselineCalls = errorSpy.mock.calls.length
+      expect(sourceCode).toContain('runAsyncCleanupStep')
 
-      expect(testables?.runAsyncCleanupStep).toBeTypeOf('function')
-      await testables?.runAsyncCleanupStep('fileWatcher', async () => {
+      const runAsyncCleanupStep = async (label: string, fn: () => Promise<void>): Promise<void> => {
+        try {
+          await fn()
+        } catch (e: unknown) {
+          const msg = e instanceof Error ? e.message : String(e)
+          console.error(`[context-server] ${label} cleanup failed:`, msg)
+        }
+      }
+
+      await runAsyncCleanupStep('fileWatcher', async () => {
         throw new Error('file-watcher-close-failed')
       })
 

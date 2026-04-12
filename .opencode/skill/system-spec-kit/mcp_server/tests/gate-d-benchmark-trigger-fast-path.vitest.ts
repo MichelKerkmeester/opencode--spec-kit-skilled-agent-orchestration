@@ -6,6 +6,7 @@ interface MockMemoryRow {
   file_path: string;
   title: string | null;
   trigger_phrases: string;
+  embedding_status: string;
   importance_weight: number | null;
   document_type: string | null;
   anchor_id: string | null;
@@ -146,8 +147,9 @@ describe('Gate D benchmark — trigger fast path', () => {
         file_path: '/.opencode/specs/system-spec-kit/026-gate-d/spec.md',
         title: 'Gate D spec',
         trigger_phrases: '[]',
+        embedding_status: 'success',
         importance_weight: 0.9,
-        document_type: 'spec_doc',
+        document_type: 'spec',
         anchor_id: null,
         content_text: buildSpecDocContent('Gate D spec', ['reader ready', 'canonical resume']),
       },
@@ -157,6 +159,7 @@ describe('Gate D benchmark — trigger fast path', () => {
         file_path: '/.opencode/specs/system-spec-kit/026-gate-d/implementation-summary.md',
         title: 'Gate D continuity',
         trigger_phrases: '[]',
+        embedding_status: 'success',
         importance_weight: 0.8,
         document_type: 'continuity',
         anchor_id: '_memory.continuity',
@@ -165,10 +168,8 @@ describe('Gate D benchmark — trigger fast path', () => {
     ]);
   });
 
-  // TODO(026.018.004-gate-d-deep-review): perf budget assertion fails under
-  // current load — needs perf tuning OR a more lenient budget. Skipped for
-  // Gate D commit; deep-review will pick up the perf regression analysis.
-  it.skip('keeps the canonical trigger fast path under the Gate D latency budget', async () => {
+  // Deep-review benchmark coverage for the Gate D trigger fast path latency budget.
+  it('keeps the canonical trigger fast path under the Gate D latency budget', async () => {
     const durations: number[] = [];
     const ITERATIONS = 120;
 

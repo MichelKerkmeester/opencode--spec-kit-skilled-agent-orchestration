@@ -1,20 +1,23 @@
 ---
 title: "Feature Specification: Gate D — Reader Ready"
 description: "Retarget the phase 018 reader surfaces onto canonical spec docs and thin continuity records, then prove the new resume ladder with regression and latency gates."
-trigger_phrases:
-  - "gate d"
-  - "reader ready"
-  - "resume ladder"
-  - "session resume"
-  - "memory search"
-  - "canonical continuity"
+trigger_phrases: ["gate d", "reader ready", "resume ladder", "session resume", "memory search", "canonical continuity"]
 importance_tier: "important"
 contextType: "implementation"
+status: complete
+closed_by_commit: TBD
+_memory:
+  continuity:
+    packet_pointer: "018/004-gate-d-reader-ready"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Recorded Gate D completion evidence and synchronized packet docs"
+    next_safe_action: "Use implementation-summary.md as the reader-ready closeout record"
+    key_files: ["spec.md", "implementation-summary.md"]
 ---
-# Feature Specification: Gate D — Reader Ready
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+# Feature Specification: Gate D — Reader Ready
 
 ---
 
@@ -28,15 +31,18 @@ Gate D moves the phase 018 read path onto the canonical continuity substrate def
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-04-11 |
+| **Updated** | 2026-04-12 |
 | **Branch** | `018-canonical-continuity-refactor` |
+<!-- /ANCHOR:metadata -->
 
 ---
 

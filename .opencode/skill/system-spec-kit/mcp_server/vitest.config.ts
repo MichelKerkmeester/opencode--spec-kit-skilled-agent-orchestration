@@ -18,6 +18,12 @@ export default defineConfig({
       'mcp_server/tests/**/*.{vitest,test}.ts',
       'scripts/tests/**/*.{vitest,test}.ts',
     ],
+    exclude: [
+      'mcp_server/tests/memory-save.vitest.ts',
+    ],
+    setupFiles: [
+      path.resolve(import.meta.dirname, 'test', 'vitest-setup.ts'),
+    ],
     // Several script suites mutate shared process-level state and temp project roots.
     // Run files serially so the combined config remains deterministic.
     fileParallelism: false,

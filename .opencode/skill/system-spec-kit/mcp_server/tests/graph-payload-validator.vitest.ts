@@ -104,19 +104,11 @@ describe('code graph query trust emission', () => {
       queryStartupHighlights: vi.fn(() => []),
     }));
 
-    vi.doMock('../lib/context/shared-payload.js', async () => {
-      const actual = await vi.importActual<typeof import('../lib/context/shared-payload.js')>(
-        '../lib/context/shared-payload.js',
+    const sharedPayload = await import('../lib/context/shared-payload.js');
+    vi.spyOn(sharedPayload, 'attachStructuralTrustFields').mockImplementation(() => {
+      throw new sharedPayload.StructuralTrustPayloadError(
+        'code_graph_query outline payload rejects collapsed scalar fields: trust.',
       );
-
-      return {
-        ...actual,
-        attachStructuralTrustFields: vi.fn(() => {
-          throw new actual.StructuralTrustPayloadError(
-            'code_graph_query outline payload rejects collapsed scalar fields: trust.',
-          );
-        }),
-      };
     });
 
     const { handleCodeGraphQuery } = await import('../handlers/code-graph/query.js');

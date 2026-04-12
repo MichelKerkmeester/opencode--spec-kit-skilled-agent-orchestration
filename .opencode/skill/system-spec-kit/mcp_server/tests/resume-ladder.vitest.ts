@@ -213,10 +213,8 @@ describe('resume-ladder', () => {
     expect(result.keyFiles).toContain('mcp_server/tests/session-resume.vitest.ts');
   });
 
-  // TODO(026.018.004-gate-d-deep-review): cached session scope priority test
-  // fails — explicit specFolder isn't winning over cached scope. Need to verify
-  // resolveSessionScope priority logic. Skipped for Gate D commit.
-  it.skip('keeps explicit specFolder overrides ahead of cached scope fallbacks', () => {
+  // Deep-review regression coverage for explicit specFolder priority over cached scope.
+  it('keeps explicit specFolder overrides ahead of cached scope fallbacks', () => {
     const workspacePath = createWorkspace();
     workspacesToRemove.push(workspacePath);
     const fallbackSpecFolder = 'system-spec-kit/026-root/003-stale';

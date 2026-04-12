@@ -87,10 +87,8 @@ afterAll(() => {
 });
 
 describe('Gate D resume perf benchmark', () => {
-  // TODO(026.018.004-gate-d-deep-review): perf budget assertion needs tuning
-  // OR a more lenient budget. Skipped for Gate D commit; deep-review will pick
-  // up the perf regression analysis.
-  it.skip(
+  // Deep-review benchmark coverage for the Gate D resume ladder latency profile.
+  it(
     'measures session-resume happy path using the canonical 3-level ladder',
     async () => {
       process.chdir(REPO_ROOT);
