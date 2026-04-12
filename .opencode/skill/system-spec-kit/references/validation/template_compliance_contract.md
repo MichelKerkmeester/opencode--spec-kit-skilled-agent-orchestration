@@ -205,7 +205,7 @@ All 6 sub-anchors are required per ADR, in the order shown above.
 ## 6. LEVEL 3+ CONTRACT
 
 Same structural contract as Level 3. Extended governance requirements
-(AI protocols, sign-offs, extended checklists) are content-level concerns
+(approval tracking, compliance checkpoints, extended checklists) are content-level concerns
 enforced by quality-audit.sh, not by structural template contracts.
 
 ---

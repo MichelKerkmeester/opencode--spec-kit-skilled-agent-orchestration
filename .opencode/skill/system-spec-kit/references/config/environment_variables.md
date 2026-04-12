@@ -172,7 +172,7 @@ The canonical runtime surface now uses `SPECKIT_*`, `SPECKIT_MEMORY_*`, and rela
 | Family | Examples | Use |
 |--------|----------|-----|
 | `SPECKIT_*` | `SPECKIT_RRF`, `SPECKIT_PARSER`, `SPECKIT_FILE_WATCHER` | Core retrieval, graph, indexing, and response behavior |
-| `SPECKIT_MEMORY_*` | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT`, `SPECKIT_MEMORY_ROADMAP_PHASE` | Memory roadmap and governance controls |
+| `SPECKIT_MEMORY_*` | `SPECKIT_MEMORY_ROADMAP_PHASE`, `SPECKIT_MEMORY_ADAPTIVE_RANKING` | Memory roadmap and adaptive ranking controls |
 | Compatibility aliases | `SPEC_KIT_DB_DIR` (alias for `SPECKIT_DB_DIR`) | Legacy compatibility only where explicitly documented |
 
 ### 8.2 Graduated Search Pipeline Flags (SPECKIT_ prefix)
@@ -295,12 +295,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
 | `SPECKIT_EXTENDED_TELEMETRY` | OFF | S5 | Opt-in 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture snapshots |
-| `SPECKIT_HYDRA_PHASE` | `scope-governance` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | ON | S7 | Legacy roadmap metadata flag for the lineage-state milestone |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | ON | S7 | Legacy roadmap metadata flag for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | OFF | S7 | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; enables shadow adaptive ranking when set to `true` |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | ON | S7 | Legacy roadmap metadata flag for scope-enforcement tracking |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | ON | S7 | Legacy roadmap metadata flag for governance-guardrail tracking |
+| ~~`SPECKIT_HYDRA_*`~~ | - | - | Removed in commit `6f2c2c939`. All HYDRA aliases, SCOPE_ENFORCEMENT, and GOVERNANCE_GUARDRAILS flags deleted with the shared-memory infrastructure. |
 | `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
 | `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
 | `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
@@ -327,13 +322,13 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_MEMORY_LINEAGE_STATE` | ON | S7 | Canonical alias for `SPECKIT_HYDRA_LINEAGE_STATE` |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | ON | S7 | Capability flag for the lineage-state milestone |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | OFF | S7 | Enables shadow adaptive ranking. Default OFF; set `true` to activate feedback-driven, SQLite-persisted score adjustments in the reranking stage. Pair with `SPECKIT_MEMORY_ADAPTIVE_MODE` to control rollout stage. |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SCOPE_ENFORCEMENT |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GRAPH_UNIFIED |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | S7 | Canonical phase label for Hydra roadmap tracking |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Capability flag for the unified-graph milestone |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | S7 | Canonical phase label for roadmap tracking |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | S7 | Adaptive ranking mode when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`: `shadow` (default; proposals run silently alongside production) or `promoted` (score adjustments applied to live results). No effect when ranking is disabled. |
+| ~~`SPECKIT_MEMORY_SCOPE_ENFORCEMENT`~~ | - | - | Removed in commit `6f2c2c939` |
+| ~~`SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS`~~ | - | - | Removed in commit `6f2c2c939` |
 
 > **Adaptive ranking capabilities (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a memory is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.
 

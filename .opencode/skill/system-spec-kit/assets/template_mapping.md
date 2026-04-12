@@ -238,9 +238,9 @@ specs/046-enterprise-migration/
 ```
 
 **Additional expectations:**
-- **Extended checklist**: 100-150 items with P0/P1/P2 prioritization and sign-off tracking
+- **Extended checklist**: 100-150 items with P0/P1/P2 prioritization and approval tracking
 - **AI execution framework**: Pre-task checklists, execution rules, status tracking for multi-agent work
-- **Approval workflow**: Stakeholder matrix with sign-off tracking and compliance checkpoints
+- **Approval workflow**: Stakeholder tracking with reviewer checkpoints and compliance gates
 
 **Enforcement:** Hard block if any required file missing. All Level 3+ templates include `SPECKIT_LEVEL: 3+` frontmatter.
 

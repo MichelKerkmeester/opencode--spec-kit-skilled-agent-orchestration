@@ -503,7 +503,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 4. Build dependency graph showing all task relationships
 5. Add effort estimates per phase
 6. Expand checklist to 100+ items covering all validation areas
-7. Add sign-off section with appropriate approvers
+7. Add approval tracking section with reviewers
 8. Organize workstreams if parallel work streams exist
 9. Remove all sample content and placeholders
 
@@ -531,7 +531,7 @@ bash upgrade-level.sh specs/042-feature/ --to 2
 # Upgrade to Level 3 (chains through intermediate levels automatically)
 bash upgrade-level.sh specs/042-feature/ --to 3
 
-# Upgrade to Level 3+ (enterprise governance)
+# Upgrade to Level 3+ (approval workflow + compliance)
 bash upgrade-level.sh specs/042-feature/ --to 3+
 
 # Preview changes without modifying files
@@ -842,8 +842,8 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - [research template](../../templates/research.md) - Optional research template copied into `research/research.md`
 
 **Composed Level 3+ (All addendums ~1075 LOC):**
-- All Level 3 templates + enterprise governance
-- Extended checklist with sign-off, AI protocols
+- All Level 3 templates + approval workflow, compliance, stakeholders
+- Extended checklist with approval tracking
 
 **Session Management Templates (Any Level):**
 - [handover.md](../../templates/handover.md) - Session context transfer
