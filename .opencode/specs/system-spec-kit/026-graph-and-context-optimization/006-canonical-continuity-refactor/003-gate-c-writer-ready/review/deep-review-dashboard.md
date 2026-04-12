@@ -1,29 +1,61 @@
-# Deep Review Dashboard: Gate C - Writer Ready
+---
+title: Deep Review Dashboard
+description: Gate C post-remediation validation overview.
+---
 
-| Metric | Value |
-|--------|-------|
-| Session | `B1329442-BD14-42DA-AE7A-1F1C41134956` |
-| Verdict | **CONDITIONAL** |
-| Iterations completed | 5 / 10 allocated max |
-| Batch allocation used | 5 / 10 batch iterations |
-| Dimensions covered | 4 / 4 |
-| Active findings | 0 P0 / 1 P1 / 1 P2 |
-| Convergence score | 0.31 |
-| Release readiness state | unknown |
+# Deep Review Dashboard - Gate C Writer-ready
 
-## Summary
-- Gate C’s routed-save guardrails are mostly intact: validator-plan wiring, forced-drop rejection, and promote-before-index rollback all checked out.
-- One active P1 remains in the live handler path: task updates are hardwired to `phase-1`.
-- One P2 advisory explains the escape path: handler integration coverage never exercises non-phase-1 task routing.
+## 1. STATUS
+<!-- MACHINE-OWNED: START -->
+- Target: Gate C writer-ready validation
+- Target Type: files
+- Started: 2026-04-12T19:11:09Z
+- Session: 32E3E661-190C-4C33-AF24-EEB0213CD223 (generation 2, lineage restart)
+- Status: ITERATING
+- Release Readiness: in-progress
+- Iteration: 5 of 30
+- Provisional Verdict: PASS
+- hasAdvisories: false
+<!-- MACHINE-OWNED: END -->
 
-## Iteration Metrics
-| Iteration | Focus | New Findings | Ratio |
-|-----------|-------|--------------|-------|
-| 001 | Correctness - task_update anchor routing | +1 P1 | 1.00 |
-| 002 | Traceability - validator-plan wiring | none | 0.00 |
-| 003 | Security - forced `drop` override path | none | 0.00 |
-| 004 | Maintainability - handler-level coverage depth | +1 P2 | 0.17 |
-| 005 | Cross-reference - final consistency check | none | 0.00 |
+## 2. FINDINGS SUMMARY
+<!-- MACHINE-OWNED: START -->
+- **P0 (Critical):** 0 active, 0 new this slice, 0 upgrades, 0 resolved
+- **P1 (Major):** 0 active, 0 new this slice, 0 upgrades, 0 resolved
+- **P2 (Minor):** 0 active, 0 new this slice, 0 upgrades, 0 resolved
+- **Dimensions covered:** correctness, security
+- **Convergence score:** 0.74
+<!-- MACHINE-OWNED: END -->
 
-## Next Action
-- Derive `likely_phase_anchor` from the actual task context, then add handler-level coverage for `phase-2` and `phase-3` task updates.
+## 3. PROGRESS
+<!-- MACHINE-OWNED: START -->
+| # | Focus | Files | Dimensions | New P0/P1/P2 | Ratio | Status |
+|---|-------|-------|------------|---------------|-------|--------|
+| 4 | Phase-aware canonical routing | 4 | correctness | 0 / 0 / 0 | 0.00 | complete |
+| 5 | Fail-closed merge/save guardrails | 3 | security | 0 / 0 / 0 | 0.00 | complete |
+<!-- MACHINE-OWNED: END -->
+
+## 4. COVERAGE
+<!-- MACHINE-OWNED: START -->
+- Files reviewed: 8 / 8 total
+- Dimensions complete: 2 / 4 total
+- Core protocols complete: 2 / 2 required in this slice
+- Overlay protocols complete: 0 / 0 applicable
+<!-- MACHINE-OWNED: END -->
+
+## 5. TREND
+<!-- MACHINE-OWNED: START -->
+- Severity trend (last 2): P0:0 P1:0 P2:0
+- New findings trend (last 2): 0, 0
+- Routing/guardrail trend (last 2): pass -> pass
+<!-- MACHINE-OWNED: END -->
+
+## 6. NEXT FOCUS
+<!-- MACHINE-OWNED: START -->
+Gate C validation slice complete. Extend only for packet traceability/maintainability checks if another pass is requested.
+<!-- MACHINE-OWNED: END -->
+
+## 7. ACTIVE RISKS
+<!-- MACHINE-OWNED: START -->
+- No active Gate C runtime risks were confirmed in this post-remediation validation slice.
+<!-- MACHINE-OWNED: END -->

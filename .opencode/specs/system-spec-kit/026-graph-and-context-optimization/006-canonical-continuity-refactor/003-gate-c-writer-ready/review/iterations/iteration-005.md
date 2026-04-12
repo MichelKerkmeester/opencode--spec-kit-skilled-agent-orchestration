@@ -1,31 +1,29 @@
-# Review Iteration 005: Cross-Reference - Final Consistency Check
+# Review Iteration 005: Security - Fail-Closed Merge and Atomic-Save Guardrails
 
 ## Focus
-Cross-check the Gate C packet, routed save code, validator bridge, and test surfaces for any remaining contradictions beyond the task-update routing defect and coverage gap.
+Verify that the Gate C write path rejects malformed canonical-doc payloads and rolls back safely on downstream save/index failures.
 
 ## Scope
-- Review target: Gate C `spec.md` and `tasks.md`, `content-router.ts`, `memory-save.ts`, `spec-doc-structure.ts`, `atomic-index-memory.ts`
-- Dimension: traceability, maintainability
+- Review target: `spec-doc-structure.ts`, `anchor-merge-operation.ts`, and `atomic-index-memory.ts`
+- Dimension: security
 
 ## Scorecard
 | File | Corr | Sec | Trace | Maint |
 |------|------|-----|-------|-------|
-| `003-gate-c-writer-ready/spec.md` | 8 | 8 | 8 | 7 |
-| `003-gate-c-writer-ready/tasks.md` | 8 | 8 | 8 | 7 |
-| `content-router.ts` | 7 | 7 | 8 | 7 |
-| `memory-save.ts` | 4 | 8 | 6 | 6 |
-| `spec-doc-structure.ts` | 8 | 9 | 8 | 7 |
-| `atomic-index-memory.ts` | 8 | 8 | 8 | 7 |
+| `spec-doc-structure.ts` | 8 | 9 | 8 | 8 |
+| `anchor-merge-operation.ts` | 8 | 9 | 8 | 8 |
+| `atomic-index-memory.ts` | 8 | 9 | 8 | 8 |
 
 ## Findings
-No new findings in this iteration.
+- No new P0/P1/P2 findings confirmed in this iteration.
 
 ## Cross-Reference Results
 ### Core Protocols
-- Confirmed: `atomicIndexMemory()` preserves the promote-before-index rollback path [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:326] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:352].
-- Confirmed: the validator bridge runs before indexing and blocks forced-drop contamination.
-- Contradictions: the task-update path remains the only material correctness defect surfaced in this slice.
-- Unknowns: whether later batches will broaden task-update context derivation for multi-phase packets.
+- Confirmed: canonical doc validation now rejects contamination markers and mismatched structural fingerprints instead of silently accepting them [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:845] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:918].
+- Confirmed: anchor merge aborts when conflict markers or anchor-graph corruption are detected, preventing compromised merged content from advancing down the write path [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:569] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:642].
+- Confirmed: the atomic save path snapshots original content and restores it if indexing/promotion fails, so partial failures do not leave corrupted spec docs behind [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:180] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:326].
+- Contradictions: none
+- Unknowns: none
 
 ### Overlay Protocols
 - Confirmed: none relevant in this slice
@@ -33,22 +31,24 @@ No new findings in this iteration.
 - Unknowns: none
 
 ## Ruled Out
-- Missing atomic rollback in the indexed save path: ruled out by direct `atomicIndexMemory()` review.
-- Forced-drop validator bypass: ruled out in iteration 003 and reconfirmed here.
+- Drop-shaped payloads bypass canonical validation: ruled out by the contamination and fingerprint checks before merge/save completion.
+- Atomic save leaves corrupted files behind after index failure: ruled out by the explicit rollback-and-restore path.
 
 ## Sources Reviewed
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:845]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:918]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:569]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:642]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:180]
 - [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:326]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:352]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1227]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1246]
 
 ## Assessment
-- Confirmed findings: 0 new
+- Confirmed findings: 0
 - New findings ratio: 0.00
-- noveltyJustification: Final cross-reference pass confirmed the batch-local Gate C issues are bounded to task-update routing and its shallow handler coverage.
-- Dimensions addressed: traceability, maintainability
+- noveltyJustification: This pass confirmed the intended fail-closed protections and found no new security defect.
+- Dimensions addressed: security
 
 ## Reflection
-- What worked: combining code, packet docs, and tests gave a bounded final review surface.
-- What did not work: none
-- Next adjustment: fix the phase-anchor routing and add handler coverage for phase-2/phase-3 task updates before claiming the routed task-update path is complete.
+- What worked: reviewing validation, merge, and rollback surfaces together made it possible to check the full failure path instead of isolated helpers.
+- What did not work: none; the guardrail surfaces remained consistent across the reviewed flow.
+- Next adjustment: no further Gate C runtime review needed in this validation slice.

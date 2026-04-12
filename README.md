@@ -4,11 +4,11 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 20 skills, 21 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 21 skills, 23 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
-**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 11 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
+**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 12 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
 
 <!-- ANCHOR:table-of-contents -->
 
@@ -58,9 +58,9 @@ The framework adds three layers on top of the base platform:
 
 | | |
 |---|---|
-| **🤖 11 Agents** | 11 custom specialists, multi-runtime |
-| **🎯 20 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
-| **⌨️ 21 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility |
+| **🤖 12 Agents** | 12 custom specialists, multi-runtime |
+| **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
+| **⌨️ 23 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility |
 | **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings — natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
@@ -740,10 +740,9 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Resolves correct component folder, calculates next version number
 - Generates formatted changelog file matching 370+ existing entries. Modes: `:auto`, `:confirm`
 
-**Prompt**
-- Creates or improves AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
-- Applies DEPTH thinking methodology (3-10 iteration rounds)
-- CLEAR quality scoring with 40+/50 pass threshold. 5 output formats.
+**Prompt (planned)**
+- `/create:prompt` is a reserved surface, but there is no shipped `.opencode/command/create/prompt.md` entry point in this repo snapshot
+- Use `/improve:prompt` or the `sk-improve-prompt` skill directly when you need prompt work today
 
 **Feature Catalog**
 - Creates or updates feature catalog packages with category routing
@@ -799,7 +798,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skills Library
 
-20 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
+21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
 #### DOCUMENTATION
 
@@ -1072,7 +1071,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 ## ❓ FAQ
 
-**Q: Do I need all 20 skills installed to use the framework?**
+**Q: Do I need all 21 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -`system-spec-kit` and `sk-doc` - cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
@@ -1148,7 +1147,7 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 - **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** - Spaces, roles, membership, kill switch
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
-- **[→ Skills Index](.opencode/skill/README.md)** - All 19 skills with invocation patterns
+- **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference
 - **[→ Feature Catalog (Simple Terms)](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md)** - Plain-language companion
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
@@ -1162,4 +1161,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.2 | Last updated: 2026-04-11 | Framework: 12 agents, 20 skills, 21 commands, 56 MCP tools (47 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.2 | Last updated: 2026-04-12 | Framework: 12 agents, 21 skills, 23 commands, 56 MCP tools (47 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

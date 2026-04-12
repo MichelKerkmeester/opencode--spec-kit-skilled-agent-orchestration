@@ -113,8 +113,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    B) Interactive — confirm at each iteration                   │
    │                                                                │
    │ **Q3. Scoring Mode**:                                          │
-   │    A) Dynamic — 5-dimension integration-aware (any agent)      │
-   │    B) Static — legacy profile (handover/context-prime only)     │
+   │    A) Dynamic — 5-dimension integration-aware (current release) │
    │                                                                │
    │ Reply format: "handover, A, A, A" or                           │
    │ ".opencode/agent/debug.md, B, B, A"                            │
@@ -124,10 +123,10 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 9. Parse response and store ALL results:
    - target_path = [from Q0 or $ARGUMENTS]
-   - target_profile = [derived: handover, context-prime, or dynamic]
+   - target_profile = [derived dynamic profile for the selected target]
    - spec_folder = [from Q1 or --spec-folder]
    - execution_mode = [AUTONOMOUS/INTERACTIVE from suffix or Q2]
-   - scoring_mode = [dynamic/static from Q3]
+   - scoring_mode = [dynamic from Q3]
    - max_iterations = [from --iterations or default 5]
 
 10. SET STATUS: ✅ PASSED
@@ -160,7 +159,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 | ---------------------- | ------------- | ---------- | ----------------------- |
 | general_agent_verified | ✅ Yes         | ______     | Automatic check         |
 | target_path            | ✅ Yes         | ______     | Q0 or $ARGUMENTS        |
-| target_profile         | ✅ Yes         | ______     | Derived from target     |
+| target_profile         | ✅ Yes         | ______     | Derived from target rules |
 | spec_folder            | ✅ Yes         | ______     | Q1 or --spec-folder     |
 | execution_mode         | ✅ Yes         | ______     | Suffix or Q2            |
 | scoring_mode           | ✅ Yes         | ______     | Q3                      |
@@ -231,7 +230,6 @@ $ARGUMENTS
 | Mode | Flag | Profiles | Use When |
 | --- | --- | --- | --- |
 | Dynamic | `--dynamic` | Any agent (generated on-the-fly) | Evaluating arbitrary agents, integration health checks |
-| Static | `--profile=ID` | handover, context-prime (hardcoded) | Promotion workflows with static fixture sets |
 
 ---
 
@@ -251,15 +249,11 @@ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent={agen
 
 Review the integration report: mirror sync status, command coverage, skill references.
 
-### Step 3: Generate or Load Profile
+### Step 3: Generate Profile
 
-**Dynamic mode (scoring_mode = dynamic):**
 ```bash
 node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent={target_path} --output={spec_folder}/improvement/dynamic-profile.json
 ```
-
-**Static mode (scoring_mode = static):**
-Load profile from `.opencode/skill/sk-improve-agent/assets/target-profiles/{target_profile}.json`
 
 ### Step 4: Initialize Runtime
 
@@ -278,7 +272,7 @@ Load the matching YAML workflow based on execution mode:
 Execute the YAML workflow step by step. Each iteration:
 1. Scan integration surfaces (refresh)
 2. Dispatch `@improve-agent` to write one bounded candidate
-3. Score candidate (dynamic 5D or static profile)
+3. Score candidate with the dynamic 5-dimension profile
 4. Run benchmark fixtures
 5. Append results to JSONL ledger
 6. Reduce state, refresh dashboard
@@ -345,7 +339,7 @@ Do **not** document or attempt journal replay, iteration carry-forward, or `resu
 
 ## 5. EXAMPLES
 
-### Evaluate Handover Agent (Static Profile, Interactive)
+### Evaluate Handover Agent (Interactive)
 
 ```
 /improve:agent ".opencode/agent/handover.md" :confirm --spec-folder=specs/041/008
@@ -379,7 +373,7 @@ Agent Improvement Loop Complete
 ────────────────────────────────
 
 Target: .opencode/agent/handover.md
-Profile: handover (static)
+Profile: generated dynamic profile
 Scoring: 5-dimension dynamic
 Iterations: 3
 
@@ -406,7 +400,7 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 ## 7. NOTES
 
 - **Skill dependency**: Requires `sk-improve-agent` at `.opencode/skill/sk-improve-agent/`
-- **Promotion**: Only handover target with static profile is promotion-eligible. Dynamic profiles produce assessment only.
+- **Promotion**: Promotion remains guarded by evidence, repeatability, and operator approval.
 - **Scoring**: All 5 dimensions are deterministic (regex, string matching, file existence). No LLM-as-judge.
 - **Stop rules**: Loop stops on dimension plateau (3+ identical scores), max iterations, or infra failure threshold.
 - **Runtime parity**: Agent exists across 4 runtimes (.opencode, .claude, .codex, .agents). Scanner checks all.
@@ -439,7 +433,7 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 - Skipped integration scan before candidate generation
 - Loaded wrong YAML workflow for execution mode
 - Dispatched agents from this markdown command body (YAML owns loop execution)
-- Promoted a non-eligible target (only handover with static profile can promote)
+- Claimed a target-specific promotion carve-out that is not part of the current release contract
 - Modified canonical agent file directly instead of writing packet-local candidate
 
 **VIOLATION RECOVERY PROTOCOL:**

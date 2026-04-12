@@ -198,22 +198,23 @@ These review weights are also initial estimates inherited from memory-causal gra
 
 #### Table: `coverage_nodes`
 
-- `id TEXT PRIMARY KEY`
 - `spec_folder TEXT NOT NULL`
 - `loop_type TEXT NOT NULL CHECK(loop_type IN ('research', 'review'))`
 - `session_id TEXT NOT NULL`
+- `id TEXT NOT NULL`
 - `kind TEXT NOT NULL`
 - `name TEXT NOT NULL`
 - `content_hash TEXT`
 - `iteration INTEGER`
-- `metadata JSON`
-- `created_at DATETIME DEFAULT CURRENT_TIMESTAMP`
-- `updated_at DATETIME DEFAULT CURRENT_TIMESTAMP`
+- `metadata TEXT`
+- `created_at TEXT DEFAULT (datetime('now'))`
+- `updated_at TEXT DEFAULT (datetime('now'))`
+- `PRIMARY KEY (spec_folder, loop_type, session_id, id)`
 
 Required indexes:
 - `idx_coverage_folder_type(spec_folder, loop_type)`
 - `idx_coverage_kind(kind)`
-- `idx_coverage_session(session_id)`
+- `idx_coverage_session(spec_folder, loop_type, session_id)`
 - `idx_coverage_iteration(iteration)`
 
 Research node kinds and metadata:
@@ -231,34 +232,43 @@ Review node kinds and metadata:
 
 #### Table: `coverage_edges`
 
-- `id TEXT PRIMARY KEY`
 - `spec_folder TEXT NOT NULL`
 - `loop_type TEXT NOT NULL`
-- `source_id TEXT NOT NULL REFERENCES coverage_nodes(id)`
-- `target_id TEXT NOT NULL REFERENCES coverage_nodes(id)`
+- `session_id TEXT NOT NULL`
+- `id TEXT NOT NULL`
+- `source_id TEXT NOT NULL`
+- `target_id TEXT NOT NULL`
 - `relation TEXT NOT NULL`
-- `weight REAL DEFAULT 1.0 CHECK(weight >= 0.0 AND weight <= 1.5)`
-- `metadata JSON`
-- `created_at DATETIME DEFAULT CURRENT_TIMESTAMP`
+- `weight REAL DEFAULT 1.0 CHECK(weight >= 0.0 AND weight <= 2.0)`
+- `metadata TEXT`
+- `created_at TEXT DEFAULT (datetime('now'))`
 - `CHECK(source_id != target_id)`
+- `PRIMARY KEY (spec_folder, loop_type, session_id, id)`
+- `FOREIGN KEY (spec_folder, loop_type, session_id, source_id) REFERENCES coverage_nodes (spec_folder, loop_type, session_id, id)`
+- `FOREIGN KEY (spec_folder, loop_type, session_id, target_id) REFERENCES coverage_nodes (spec_folder, loop_type, session_id, id)`
 
 Required indexes:
-- `idx_coverage_edge_source(source_id)`
-- `idx_coverage_edge_target(target_id)`
+- `idx_coverage_edge_source(spec_folder, loop_type, session_id, source_id)`
+- `idx_coverage_edge_target(spec_folder, loop_type, session_id, target_id)`
 - `idx_coverage_edge_relation(relation)`
 - `idx_coverage_edge_folder_type(spec_folder, loop_type)`
+- `idx_coverage_edge_session(spec_folder, loop_type, session_id)`
 
 #### Table: `coverage_snapshots`
 
 - `id INTEGER PRIMARY KEY AUTOINCREMENT`
 - `spec_folder TEXT NOT NULL`
 - `loop_type TEXT NOT NULL`
+- `session_id TEXT NOT NULL`
 - `iteration INTEGER NOT NULL`
-- `metrics JSON`
+- `metrics TEXT`
 - `node_count INTEGER`
 - `edge_count INTEGER`
-- `created_at DATETIME DEFAULT CURRENT_TIMESTAMP`
-- `UNIQUE(spec_folder, loop_type, iteration)`
+- `created_at TEXT DEFAULT (datetime('now'))`
+- `UNIQUE(spec_folder, loop_type, session_id, iteration)`
+
+Required indexes:
+- `idx_coverage_snapshot_session(session_id)`
 
 Research snapshot metrics:
 - `questionCoverage`

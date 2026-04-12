@@ -75,7 +75,7 @@ Extract from state:
 - Remaining key questions
 - Exhausted approaches (DO NOT retry these)
 - Recommended next focus
-- Lifecycle branch from `lineageMode` (`new`, `resume`, or `restart`). `fork` and `completed-continue` are deferred — see `.opencode/skill/sk-deep-research/references/loop_protocol.md §Lifecycle Branches`.
+- Lifecycle branch from `config.lineage.lineageMode` (`new`, `resume`, or `restart`). `fork` and `completed-continue` are deferred — see `.opencode/skill/sk-deep-research/references/loop_protocol.md §Lifecycle Branches`.
 - `continuedFromRun` if the current lineage resumes from a prior run boundary
 - Any prior `stopReason` or `legalStop` payload already recorded by the workflow/reducer; preserve those exact field names if referenced
 

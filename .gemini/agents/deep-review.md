@@ -49,11 +49,11 @@ Every iteration follows this exact sequence:
 
 ```
 1. READ STATE ──────> Read JSONL + strategy + config
-2. DETERMINE FOCUS ─> Select dimension from `strategy.nextFocus` ("Next Focus")
+2. DETERMINE FOCUS ─> Select dimension from strategy "Next Focus"
 3. EXECUTE REVIEW ──> 3-5 analysis actions (Read, Grep, Glob, Bash)
 4. CLASSIFY FINDINGS > Assign P0/P1/P2 with file:line evidence
 5. WRITE FINDINGS ──> Create review/iterations/iteration-NNN.md
-6. UPDATE STRATEGY ─> Edit only AGENT-OWNED strategy sections
+6. UPDATE STRATEGY ─> Edit review/deep-review-strategy.md sections
 7. APPEND JSONL ────> Add ONE iteration record
 ```
 
@@ -73,32 +73,15 @@ Extract from state:
 - Exhausted approaches (DO NOT retry these)
 - Recommended next focus
 - Stuck count
-- `continuedFromRun` if this lineage resumes from a prior run boundary
-- Any workflow-owned `stopReason` or `legalStop` state already recorded; preserve those exact field names if referenced
-
-#### Ownership Boundary
-
-<!-- AGENT-OWNED -->
-Agent-owned strategy sections:
-- `strategy.nextFocus` ("Next Focus")
-- `strategy.exhaustedApproaches` ("Exhausted Approaches")
-- `strategy.notes` ("What Worked", "What Failed", and other narrative strategy notes)
-
-<!-- REDUCER-OWNED: read-only for agent -->
-Reducer-owned strategy sections and synchronized surfaces:
-- Completed-dimension rollups, running finding totals, and coverage percentages
-- Convergence scores, timing data, token/tool metrics, and machine-generated status summaries
-- `review/deep-review-findings-registry.json` and `review/deep-review-dashboard.md`
-- Any reducer-generated cross-reference rollups or release-readiness summaries
 
 #### Step 2: Determine Focus
 
-**MANDATORY PRE-CHECK**: Before choosing a focus, read `strategy.exhaustedApproaches` ("Exhausted Approaches"):
+**MANDATORY PRE-CHECK**: Before choosing a focus, read strategy.md "Exhausted Approaches" section:
 - Any category marked `BLOCKED` -- NEVER retry these approaches or any variation of them
 - Any category marked `PRODUCTIVE` -- PREFER these for related questions
 - If the chosen focus falls within a BLOCKED category, select an alternative
 
-Use `strategy.nextFocus` ("Next Focus") to determine which dimension and specific area to review.
+Use strategy.md "Next Focus" section to determine which dimension and specific area to review.
 
 If "Next Focus" is empty or vague:
 - Pick the first unchecked dimension from "Review Dimensions"
@@ -121,7 +104,13 @@ Perform 3-5 analysis actions using available tools:
 | Bash | Run analysis commands | `wc -l`, file structure checks |
 | memory_search | Check prior research findings | Find related spec folder work |
 
-**Budget**: Choose a budget profile before starting review actions: `scan` (9-11 calls), `verify` (11-13 calls), or `adjudicate` (8-10 calls).
+**Dimension-specific review strategies:**
+- **Correctness**: Read logic flows, grep for error handling patterns, and test edge cases against observable intent.
+- **Security**: Grep for auth patterns, input validation, data exposure, and sensitive state transitions.
+- **Traceability**: Cross-reference spec/checklist/runtime claims against shipped files and linked artifacts.
+- **Maintainability**: Read for pattern drift, documentation clarity, and ease of safe follow-on changes.
+
+**Budget**: Choose a budget profile before starting review actions: `scan` (9-11 calls), `verify` (11-13 calls), or `adjudicate` (8-10 calls). If approaching the profile ceiling, prioritize writing findings over additional analysis.
 
 **Quality Rule**: Every finding must cite a source:
 - `[SOURCE: path/to/file:line]` for codebase evidence
@@ -154,32 +143,79 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `review/iterations/iteration-NNN.md` with the standard iteration structure including Focus, Scope, Scorecard, Findings (with P0/P1/P2 sections), Cross-Reference Results, Ruled Out, Sources Reviewed, Assessment, and Reflection sections.
+
+Create `review/iterations/iteration-NNN.md`. Use exactly one canonical template. The reducer at `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:202` reads only the heading plus these exact sections: `## Focus`, `## Findings`, `## Ruled Out`, `## Dead Ends`, `## Recommended Next Focus`, and `## Assessment`. Inside `## Findings`, use only `### P0`, `### P1`, and `### P2`, with bullets of the form `- **FNNN**: Title — file:line — Description`. Do not add alternate skeletons or rename sections.
+
+```markdown
+# Iteration [N]: [Focus label, e.g. "Correctness contracts on review loop runtime"]
+
+## Focus
+[1–3 sentences describing the dimension, files, and scope investigated this iteration.]
+
+## Findings
+
+### P0
+- **F001**: [Title] — `file:line` — [Description with file:line evidence and why it blocks release]
+
+### P1
+- **F002**: [Title] — `file:line` — [Description]
+
+### P2
+- **F003**: [Title] — `file:line` — [Description]
+
+> Use sequential finding IDs across the whole session (iteration 2 starts at F00K where K = last F-id used in iteration 1). The reducer deduplicates on the `FNNN` prefix, so collisions are silent.
+> For every P0/P1 finding, also emit a typed claim-adjudication packet (schema in state_format.md §9 and loop_protocol.md Step 4a) so `step_post_iteration_claim_adjudication` can validate it. A missing or malformed packet vetoes STOP via the `claimAdjudicationGate` on the next convergence check.
+
+```json
+{"type":"claim-adjudication","findingId":"F002","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0","confidence":0.9,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
+```
+
+## Ruled Out
+- [Approach]: [Why] — [file:line evidence]
+
+## Dead Ends
+- [Direction]: [Why the current evidence does not justify escalation]
+
+## Recommended Next Focus
+[What the next iteration should investigate. Rotate dimensions unless the current dimension is still incomplete.]
+
+## Assessment
+- New findings ratio: [0.XX]
+- Dimensions addressed: [list]
+- Novelty justification: [1 sentence]
+```
 
 #### Step 6: Update Strategy
 Edit `review/deep-review-strategy.md`:
 
-1. Add new entries to `strategy.notes` ("What Worked" / "What Failed") with iteration number
-2. Add ruled-out-but-checked items to the strategy notes if they will help future iterations
-3. If an approach is fully exhausted, update `strategy.exhaustedApproaches`
-4. Set `strategy.nextFocus` for the next iteration
-5. Do NOT edit reducer-owned running totals, coverage percentages, convergence scores, dashboard metrics, or machine-generated cross-reference rollups
+1. Mark dimension as reviewed if covered (move from "Review Dimensions" to "Completed Dimensions" with score)
+2. Update "Running Findings" counts (P0/P1/P2 totals)
+3. Add new entries to "What Worked" with iteration number
+4. Add new entries to "What Failed" with iteration number
+5. If an approach is fully exhausted, move it to "Exhausted Approaches"
+6. Set "Next Focus" for next iteration
 
 #### Step 7: Append JSONL
-Append ONE line to `review/deep-review-state.jsonl` with the standard iteration record structure.
+Append ONE line to `review/deep-review-state.jsonl`:
 
-> **Note:** The orchestrator enriches each iteration record with optional `segment` (default: 1) and `convergenceSignals` fields after the agent writes it. Lifecycle or blocked-stop records owned by the workflow/reducer must use canonical names `stopReason`, `legalStop`, and `continuedFromRun`. Do not invent aliases such as `reason` or `stop_reason`.
+```json
+{"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","findingsSummary":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"findingsRefined":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":{"summary":{"required":N,"executed":N,"pass":N,"partial":N,"fail":N,"blocked":N,"notApplicable":N,"gatingFailures":N},"results":[{"protocolId":"spec_code","status":"pass|partial|fail","gateClass":"hard|advisory","applicable":true,"counts":{"pass":N,"partial":N,"fail":N},"evidence":["path/to/file:line"],"findingRefs":["P1-001"],"summary":"One-line traceability result."}]},"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
+```
 
-**newFindingsRatio calculation (severity-weighted)**:
-```
-SEVERITY_WEIGHTS = { P0: 10.0, P1: 5.0, P2: 1.0 }
-weightedNew = sum(weight for each fully new finding)
-weightedRefinement = sum(weight * 0.5 for each refinement finding)
-weightedTotal = sum(weight for all findings this iteration)
-newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
-```
-- If no findings at all, set to 0.0
-- **P0 override rule**: If ANY new P0 discovered, set `newFindingsRatio = max(calculated, 0.50)`.
+**Status values**: `complete | timeout | error | stuck | insight | thought`
+- `complete`: Normal iteration with evidence gathering and findings
+- `timeout`: Iteration exceeded time/tool budget before finishing
+- `error`: Unrecoverable failure during iteration
+- `stuck`: No productive review avenues remain for current focus
+- `insight`: Low newFindingsRatio but important conceptual finding (e.g., cross-reference contradiction)
+- `thought`: Analytical-only iteration (e.g., severity reassessment, deduplication)
+
+**Required fields**:
+- `noveltyJustification`: 1-sentence explanation of how newFindingsRatio was calculated
+- `ruledOut`: Array of items investigated but not an issue this iteration (may be empty `[]`)
+
+**Optional fields**:
+- `focusTrack`: Label tagging this iteration to a review track (e.g., "security", "correctness")
 
 ---
 

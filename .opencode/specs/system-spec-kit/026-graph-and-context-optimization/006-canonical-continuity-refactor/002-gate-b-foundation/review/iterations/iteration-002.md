@@ -1,64 +1,54 @@
-# Review Iteration 002: Traceability - Gate B Packet Contract vs Cleanup Reality
+# Review Iteration 002: Correctness - Anchor-Aware Causal Edge Identity
 
 ## Focus
-Check whether the complete Gate B packet still matches the post-cleanup runtime contract that downstream gates are supposed to inherit.
+Verify that the Gate B remediation actually fixed the anchor-aware identity bug in runtime code, not just the review packet narrative.
 
 ## Scope
-- Review target: Gate B `spec.md`, `tasks.md`, and `implementation-summary.md`
-- Spec refs: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:33]
-- Dimension: traceability
+- Review target: `vector-index-schema.ts`, `causal-edges.ts`, and `reconsolidation.ts`
+- Dimension: correctness
 
 ## Scorecard
 | File | Corr | Sec | Trace | Maint |
 |------|------|-----|-------|-------|
-| `002-gate-b-foundation/spec.md` | 6 | 8 | 4 | 6 |
-| `002-gate-b-foundation/tasks.md` | 8 | 8 | 8 | 7 |
-| `002-gate-b-foundation/implementation-summary.md` | 8 | 8 | 8 | 7 |
+| `vector-index-schema.ts` | 9 | 8 | 8 | 8 |
+| `causal-edges.ts` | 9 | 8 | 8 | 8 |
+| `reconsolidation.ts` | 8 | 8 | 7 | 7 |
 
 ## Findings
-### P1-002: Gate B spec still requires removed archive-ranking and telemetry work
-- Dimension: traceability
-- Evidence: the Gate B spec says the active post-cleanup contract no longer uses archived-tier ranking or `archived_hit_rate` [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:33], but the same spec still keeps those removed items in scope and acceptance criteria [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:81] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:119] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:120]. The task ledger and implementation summary explicitly say those surfaces were removed by cleanup [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:76] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:78] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:149] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:150].
-- Impact: the packet is marked complete while its authoritative `spec.md` still demands removed ranking, telemetry, and helper-script work. That leaves downstream phases and future reviewers with two incompatible definitions of “Gate B complete.”
-- Skeptic: the spec may intentionally preserve historical requirements for auditability, while tasks and implementation-summary capture the final cleanup delta.
-- Referee: the packet status is `complete`, the requirements are written as current acceptance criteria, and later gates inherit this spec as the source of truth. Historical context belongs in a changelog or explicit supersession note, not as active requirements inside a complete packet.
-- Final severity: P1
-
-```json
-{"type":"claim-adjudication","claim":"Gate B's complete packet still contains active archived-ranking and telemetry requirements that the cleanup contract says were removed.","evidenceRefs":[".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:33",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:81",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:119",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:120",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:76",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:78",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:149",".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:150"],"counterevidenceSought":"Checked whether the spec had an explicit supersession note or deactivated requirement language for the removed ranking and telemetry work.","alternativeExplanation":"The spec may have been left partially historical after cleanup, but the packet's complete status and live acceptance-criteria framing still make it authoritative for downstream traceability.","finalSeverity":"P1","confidence":0.93,"downgradeTrigger":"Downgrade if the packet adds a clear supersession marker that deactivates the ranking/telemetry requirements while preserving them only for historical context."}
-```
+- No new P0/P1/P2 findings confirmed in this iteration.
 
 ## Cross-Reference Results
 ### Core Protocols
-- Confirmed: tasks and implementation summary agree that archived-tier ranking and `archived_hit_rate` were removed during cleanup.
-- Contradictions: `spec.md` still treats those removed items as active scope and acceptance criteria.
-- Unknowns: whether a follow-on packet is supposed to rewrite `spec.md` or whether this packet simply missed a closeout sync.
+- Confirmed: the `causal_edges` rebuild now uses `UNIQUE(source_id, target_id, relation, source_anchor, target_anchor)` so anchor-distinct edges no longer share the same identity key [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1286].
+- Confirmed: the live read/update path now qualifies edge lookups with `COALESCE(source_anchor, '')` and `COALESCE(target_anchor, '')`, so inserts and updates preserve anchor identity in both existence checks and writes [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:267] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:291].
+- Confirmed: reconsolidation now writes source/target anchors when it creates supersedes edges, so the upstream producer matches the new schema/read path [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:973] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:979].
+- Contradictions: none
+- Unknowns: none
 
 ### Overlay Protocols
 - Confirmed: none relevant in this slice
-- Contradictions: none beyond the packet contract drift above
+- Contradictions: none
 - Unknowns: none
 
 ## Ruled Out
-- Tasks ledger hiding the cleanup contract: ruled out. The task and summary surfaces are internally consistent with each other.
+- Prior anchor-collapse defect: ruled out because the schema key and runtime lookup/update path now both include source/target anchors.
+- Supersedes-edge anchor omission: ruled out because reconsolidation explicitly passes `source_anchor` and `target_anchor` into the insert payload.
 
 ## Sources Reviewed
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:33]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:81]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:119]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:120]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:76]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:78]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:149]
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:150]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1286]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:1313]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:267]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:291]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:973]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:979]
 
 ## Assessment
-- Confirmed findings: 1
-- New findings ratio: 0.50
-- noveltyJustification: The second Gate B pass found a packet closeout drift that changes what later gates would treat as the shipped Gate B contract.
-- Dimensions addressed: traceability
+- Confirmed findings: 0
+- New findings ratio: 0.00
+- noveltyJustification: This iteration added only high-confidence runtime confirmation; it did not surface a new defect.
+- Dimensions addressed: correctness
 
 ## Reflection
-- What worked: Reading the completed packet against its own cleanup narrative was enough to isolate the drift without broad repo churn.
-- What did not work: The packet does not clearly separate historical intent from active requirements.
-- Next adjustment: Finish with a focused security pass and avoid reopening the same packet/code-drift question.
+- What worked: reviewing the schema migration, storage path, and reconsolidation writer together gave a full end-to-end proof that the remediation landed.
+- What did not work: relying on packet summaries alone would not have proved the live identity path is fixed.
+- Next adjustment: move from runtime correctness to packet/runtime traceability, because post-remediation drift can still leave the gate misleading.

@@ -170,7 +170,7 @@ workflow:
             set:
               lineage_mode: "resume"
               parent_session_id: "{session_id}"
-            append_jsonl: '{"type":"event","event":"resumed","mode":"review","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"timestamp":"{ISO_8601_NOW}","generation":{generation}}'
+            append_jsonl: '{"type":"event","event":"resumed","mode":"review","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"archivedPath":null,"timestamp":"{ISO_8601_NOW}","generation":{generation}}'
             skip_to: gate_init_approval
           on_restart_choice:
             archive: "{spec_folder}/review -> {spec_folder}/review_archive/{timestamp_slug}"

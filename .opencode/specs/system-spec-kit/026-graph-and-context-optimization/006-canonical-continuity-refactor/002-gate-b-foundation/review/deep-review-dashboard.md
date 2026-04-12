@@ -1,26 +1,61 @@
-# Deep Review Dashboard: Gate B - Foundation
+---
+title: Deep Review Dashboard
+description: Gate B post-remediation validation overview.
+---
 
-| Metric | Value |
-|--------|-------|
-| Session | `4F1FCBD8-91BF-4802-8F12-1EF32FB1FD71` |
-| Verdict | **CONDITIONAL** |
-| Iterations completed | 3 / 10 allocated max |
-| Batch allocation used | 3 / 10 batch iterations |
-| Dimensions covered | 3 / 4 |
-| Active findings | 0 P0 / 2 P1 / 0 P2 |
-| Convergence score | 0.28 |
-| Release readiness state | unknown |
+# Deep Review Dashboard - Gate B Foundation
 
-## Summary
-- Gate B has one direct code defect: anchor-aware `causal_edges` still de-duplicate on `(source_id,target_id,relation)`, so distinct anchor pairs cannot coexist.
-- The packet closeout is also out of sync with itself: `spec.md` still requires archive-ranking and telemetry work that the cleanup contract says was removed.
+## 1. STATUS
+<!-- MACHINE-OWNED: START -->
+- Target: Gate B foundation validation
+- Target Type: files
+- Started: 2026-04-12T19:11:09Z
+- Session: 7214182F-97B4-4458-A660-83EC44E92F0A (generation 2, lineage restart)
+- Status: ITERATING
+- Release Readiness: in-progress
+- Iteration: 3 of 30
+- Provisional Verdict: CONDITIONAL
+- hasAdvisories: false
+<!-- MACHINE-OWNED: END -->
 
-## Iteration Metrics
-| Iteration | Focus | New Findings | Ratio |
-|-----------|-------|--------------|-------|
-| 001 | Correctness - anchor-aware causal edge semantics | +1 P1 | 1.00 |
-| 002 | Traceability - packet contract vs cleanup reality | +1 P1 | 0.50 |
-| 003 | Security - reviewed storage query paths | none | 0.00 |
+## 2. FINDINGS SUMMARY
+<!-- MACHINE-OWNED: START -->
+- **P0 (Critical):** 0 active, 0 new this slice, 0 upgrades, 0 resolved
+- **P1 (Major):** 1 active, 1 new this slice, 0 upgrades, 0 resolved
+- **P2 (Minor):** 0 active, 0 new this slice, 0 upgrades, 0 resolved
+- **Dimensions covered:** correctness, traceability
+- **Convergence score:** 0.58
+<!-- MACHINE-OWNED: END -->
 
-## Next Action
-- Fix the causal-edge identity model, then reconcile Gate B `spec.md` with the cleanup contract before downstream gates treat the packet as authoritative.
+## 3. PROGRESS
+<!-- MACHINE-OWNED: START -->
+| # | Focus | Files | Dimensions | New P0/P1/P2 | Ratio | Status |
+|---|-------|-------|------------|---------------|-------|--------|
+| 2 | Anchor-aware causal edge identity | 3 | correctness | 0 / 0 / 0 | 0.00 | complete |
+| 3 | Packet/runtime traceability after archive-ranking cleanup | 5 | traceability | 0 / 1 / 0 | 0.50 | complete |
+<!-- MACHINE-OWNED: END -->
+
+## 4. COVERAGE
+<!-- MACHINE-OWNED: START -->
+- Files reviewed: 8 / 8 total
+- Dimensions complete: 2 / 4 total
+- Core protocols complete: 2 / 2 required in this slice
+- Overlay protocols complete: 0 / 0 applicable
+<!-- MACHINE-OWNED: END -->
+
+## 5. TREND
+<!-- MACHINE-OWNED: START -->
+- Severity trend (last 2): P0:0 P1:1 P2:0
+- New findings trend (last 2): 0, 1
+- Traceability trend (last 2): pass -> fail
+<!-- MACHINE-OWNED: END -->
+
+## 6. NEXT FOCUS
+<!-- MACHINE-OWNED: START -->
+Gate B validation slice complete. Extend only to sweep adjacent packet artifacts for the same stale archive-ranking contract.
+<!-- MACHINE-OWNED: END -->
+
+## 7. ACTIVE RISKS
+<!-- MACHINE-OWNED: START -->
+- Gate B `spec.md` still requires removed archive-ranking and `archived_hit_rate` behavior, so future follow-up work could falsely treat the cleaned-up runtime as incomplete.
+<!-- MACHINE-OWNED: END -->

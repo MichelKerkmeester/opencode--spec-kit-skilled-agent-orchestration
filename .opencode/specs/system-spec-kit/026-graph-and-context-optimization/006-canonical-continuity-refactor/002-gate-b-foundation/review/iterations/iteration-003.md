@@ -1,27 +1,40 @@
-# Review Iteration 003: Security - Reviewed Storage Query Paths
+# Review Iteration 003: Traceability - Gate B Packet Still Requires Removed Archive-Ranking Work
 
 ## Focus
-Look for new security regressions in the Gate B storage helpers after the anchor-field migration, especially SQL construction risks around edge writes and checkpoint snapshots.
+Verify that the Gate B packet now describes the cleaned-up runtime accurately, and flag any remaining spec-to-code contradictions created by the remediation.
 
 ## Scope
-- Review target: `causal-edges.ts`, `checkpoints.ts`, `reconsolidation.ts`
-- Spec refs: [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:79]
-- Dimension: security
+- Review target: Gate B `spec.md`, `tasks.md`, `implementation-summary.md`, `stage2-fusion.ts`, and `memory-crud-stats.ts`
+- Dimension: traceability
 
 ## Scorecard
 | File | Corr | Sec | Trace | Maint |
 |------|------|-----|-------|-------|
-| `causal-edges.ts` | 5 | 8 | 7 | 6 |
-| `checkpoints.ts` | 7 | 8 | 7 | 7 |
-| `reconsolidation.ts` | 6 | 8 | 7 | 6 |
+| `002-gate-b-foundation/spec.md` | 6 | 8 | 4 | 5 |
+| `002-gate-b-foundation/tasks.md` | 8 | 8 | 8 | 8 |
+| `002-gate-b-foundation/implementation-summary.md` | 8 | 8 | 8 | 8 |
+| `stage2-fusion.ts` | 8 | 8 | 8 | 7 |
+| `memory-crud-stats.ts` | 8 | 8 | 8 | 7 |
 
 ## Findings
-No new findings in this iteration.
+### P1-001: Gate B `spec.md` still mandates removed archive-ranking and `archived_hit_rate` behavior
+- Dimension: traceability
+- Evidence: the live Gate B spec still promises archive-ranking behavior and archived-hit telemetry in the active requirements/success criteria, including archive demotion work and `archived_hit_rate` rollout outputs [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:63] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:65] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:118] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:119]. But the same packet now marks that work N/A in `tasks.md` [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:76] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:78], and `implementation-summary.md` explicitly records that archive-ranking penalty work and the `archived_hit_rate` metric were removed from the final change set [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:149] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:150]. The current runtime also no longer contains those branches: `stage2-fusion.ts` documents the active scoring inputs without an archive-weighting stage [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:17], and `memory-crud-stats.ts` exposes aggregate CRUD and folder-ranking stats without any `archived_hit_rate` field [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts:177].
+- Impact: the packet is self-contradictory post-remediation, so future follow-up work can incorrectly treat the cleaned-up runtime as incomplete or try to resurrect removed rollout requirements.
+- Why this is not P2: this is not cosmetic wording drift; it changes the declared contract for what Gate B is supposed to ship and validate.
+- Final severity: P1
+
+## Claim Adjudication
+- Claim: "Gate B packet matches the cleaned-up post-remediation runtime."
+- Evidence for claim: `tasks.md` and `implementation-summary.md` both record the cleanup, and the inspected runtime no longer includes archive-ranking or `archived_hit_rate`.
+- Strongest counter-evidence: `spec.md` still requires those removed behaviors in live requirement/success-criteria sections.
+- Referee decision: claim rejected. The packet remains materially inconsistent until `spec.md` is updated.
 
 ## Cross-Reference Results
 ### Core Protocols
-- Confirmed: reviewed Gate B queries continue to use prepared statements with placeholders for dynamic values [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:251] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:256] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:572] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:984].
-- Unknowns: broader checkpoint restore authorization is outside the scope of these files and this batch allocation.
+- Confirmed: `tasks.md` and `implementation-summary.md` consistently describe the cleaned-up runtime.
+- Contradictions: `spec.md` still requires removed archive-ranking and `archived_hit_rate` behavior.
+- Unknowns: none
 
 ### Overlay Protocols
 - Confirmed: none relevant in this slice
@@ -29,22 +42,28 @@ No new findings in this iteration.
 - Unknowns: none
 
 ## Ruled Out
-- SQL injection in the reviewed Gate B storage paths: ruled out by placeholder-based prepared statements in the inspected writes and snapshot reads.
+- Archive-weighting still active in `stage2-fusion.ts`: ruled out by direct review of the current scoring pipeline description.
+- `archived_hit_rate` still emitted from `memory-crud-stats.ts`: ruled out by direct review of the current stats result shape.
 
 ## Sources Reviewed
-- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:79]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:251]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts:256]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:572]
-- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts:984]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:63]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:65]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:118]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/spec.md:119]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:76]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/tasks.md:78]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:149]
+- [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md:150]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:17]
+- [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts:177]
 
 ## Assessment
-- Confirmed findings: 0 new
-- New findings ratio: 0.00
-- noveltyJustification: The security pass did not add a new issue and cleanly bounded the open Gate B risks to correctness and traceability.
-- Dimensions addressed: security
+- Confirmed findings: 1
+- New findings ratio: 0.50
+- noveltyJustification: The runtime bug is fixed, but this iteration found a new post-remediation packet contradiction that can still misdirect future work.
+- Dimensions addressed: traceability
 
 ## Reflection
-- What worked: A narrow query-safety pass was enough to rule out the obvious storage-layer security regressions.
-- What did not work: This slice cannot say much about operator authorization because that lives outside the reviewed files.
-- Next adjustment: Carry the two active P1s forward and reserve any later Gate B time for maintainability or downgrade-path review.
+- What worked: checking the spec against both the implementation summary and the live runtime exposed a real residual contract mismatch.
+- What did not work: assuming the packet cleanup was complete because the code and tasks were already aligned would have missed the stale spec requirements.
+- Next adjustment: move to Gate C and validate the write-path routing plus fail-closed guardrails that were remediated there.

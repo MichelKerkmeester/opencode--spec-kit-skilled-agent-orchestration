@@ -1,0 +1,30 @@
+=== Phase 009 Fix Dispatch ===
+Start: Sun Apr 12 21:11:00 CEST 2026
+Primary: codex exec --model gpt-5.4 -c model_reasoning_effort=high -c service_tier=fast --full-auto
+Fallback: copilot -p --model gpt-5.4 --allow-all-tools
+--- Batch 1-correctness | Sun Apr 12 21:11:00 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 1-correctness done | Sun Apr 12 21:11:14 CEST 2026 ---
+
+--- Batch 2-security | Sun Apr 12 21:11:14 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 2-security done | Sun Apr 12 21:11:30 CEST 2026 ---
+
+--- Batch 3-traceability-refs | Sun Apr 12 21:11:30 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 3-traceability-refs done | Sun Apr 12 21:11:45 CEST 2026 ---
+
+--- Batch 4-traceability-mirrors | Sun Apr 12 21:11:45 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 4-traceability-mirrors done | Sun Apr 12 21:24:58 CEST 2026 ---
+
+--- Batch 5-maintainability-code | Sun Apr 12 21:24:58 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 5-maintainability-code done | Sun Apr 12 21:25:09 CEST 2026 ---
+
+--- Batch 6-maintainability-playbooks | Sun Apr 12 21:25:09 CEST 2026 ---
+  codex: SUCCESS
+--- Batch 6-maintainability-playbooks done | Sun Apr 12 21:25:26 CEST 2026 ---
+
+=== ALL BATCHES COMPLETE ===
+End: Sun Apr 12 21:25:26 CEST 2026

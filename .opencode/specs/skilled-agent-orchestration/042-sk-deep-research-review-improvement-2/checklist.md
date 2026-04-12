@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: Deep Research and Deep Review Runtime Improvement Bundle [042]"
-description: "Parent verification index for child phases 001-004."
+description: "Parent verification index for child phases 001-008 plus archived closing-audit remediation."
 trigger_phrases:
   - "042"
   - "verification checklist"
@@ -37,6 +37,11 @@ contextType: "planning"
 | **Phase 2** | [./002-semantic-coverage-graph/](./002-semantic-coverage-graph/) | Coverage graph extraction, DB/tool behavior, reducer/MCP seam, graph event docs, strict phase validation | Implemented; all 23 tasks completed |
 | **Phase 3** | [./003-wave-executor/](./003-wave-executor/) | Fan-out/join proof, deterministic segmentation, activation gates, keyed merge, resume safety, strict phase validation | Implemented; all 13 tasks completed |
 | **Phase 4** | [./004-offline-loop-optimizer/](./004-offline-loop-optimizer/) | Deterministic replay, bounded search, advisory-only promotion, deferred `4b` guardrails, strict phase validation | Implemented (4a: 7 tasks); Deferred (4b: 3 tasks blocked) |
+| **Phase 5** | [./005-agent-improver-deep-loop-alignment/](./005-agent-improver-deep-loop-alignment/) | Journal wiring, improve-agent runtime-truth parity, advisory optimizer alignment | Implemented; child tasks complete |
+| **Phase 6** | [./006-graph-testing-and-playbook-alignment/](./006-graph-testing-and-playbook-alignment/) | Coverage-graph Vitest coverage, playbook parity, root discovery-surface alignment | Implemented; child tasks complete |
+| **Phase 7** | [./007-graph-aware-stop-gate/](./007-graph-aware-stop-gate/) | Graph-aware convergence workflow wiring, reducer fail-closed reconciliation, state-log parity | Implemented; child tasks complete |
+| **Phase 8** | [./008-further-deep-loop-improvements/](./008-further-deep-loop-improvements/) | Follow-on runtime hardening, release packaging, phase-008 remediation | Implemented; child tasks complete |
+| **Closing Audit** | [./review/archive-rvw-2026-04-11/review-report.md](./review/archive-rvw-2026-04-11/review-report.md) | 10-iteration Codex deep-review release gate plus Lane 1-5 remediation mapping | Archived; 16 findings routed into the same packet |
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -72,7 +77,7 @@ contextType: "planning"
 
 - [x] CHK-PARENT-040 [P1] Parent overview docs summarize the child phases without duplicating child implementation detail. ✓ Verified in: spec.md, plan.md, and implementation-summary.md §What Was Built
 - [x] CHK-PARENT-041 [P1] Phase 1 child checklist remains the verification source of truth and is linked correctly. ✓ Verified in: ./001-runtime-truth-foundation/checklist.md (linked from this checklist §Pre-Implementation)
-- [x] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds). ✓ Verified in: §Pre-Implementation table (rows Phase 2–4) and implementation-summary.md §Verification rows Phase 5–8
+- [ ] CHK-PARENT-042 [P1] Phases 2–8 are clearly marked with their verification mechanism (child task completion, phase-scoped checklists where present, and deep review rounds). Reopened during the root-doc sync pass; refresh the packet-level verification trace against the updated §Pre-Implementation table and implementation-summary.md §Verification before re-closing.
 - [x] CHK-PARENT-043 [P1] The archived closing-audit report is linked from this checklist and from the root `implementation-summary.md` so operators can trace the 16 closing-audit findings to the Lane 1–5 remediation commits. ✓ Verified in: ./review/archive-rvw-2026-04-11/review-report.md and implementation-summary.md §How It Was Delivered (Lane 1–5 paragraphs with commits be79ed0a0, 17b5f28ed, 86c7fbc9d, 2c4f74b9f, f99739742)
 <!-- /ANCHOR:docs -->
 
@@ -82,8 +87,8 @@ contextType: "planning"
 ## File Organization
 
 - [x] CHK-PARENT-050 [P1] Root packet links resolve to the intended child folders and parent summary files. ✓ Verified in: spec.md, plan.md §IMPLEMENTATION PHASES child-plan links, and §Pre-Implementation child checklist links
-- [x] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize. ✓ Verified in: §Verification Summary table rows reconciled against ./001-runtime-truth-foundation/ through ./008-further-deep-loop-improvements/
-- [x] CHK-PARENT-052 [P1] Packet-root spec.md, tasks.md, checklist.md, and implementation-summary.md are reconciled with phases 5–8 and the closing-audit Lane 1–5 remediation (not the original four-phase topology). ✓ Verified in: implementation-summary.md §How It Was Delivered (Phases 005–008 + Lane 1–5) and commit f99739742 (Lane 5 release-readiness reconciliation); also commit e0417a643 (post-remediation sync)
+- [ ] CHK-PARENT-051 [P1] Parent packet status/count summaries match the child task sources they summarize. Reopened during the root-doc sync pass; rerun the child-to-parent count reconciliation after the updated plan/checklist topology lands.
+- [ ] CHK-PARENT-052 [P1] Packet-root spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md are reconciled with phases 5–8 and the closing-audit Lane 1–5 remediation (not the original four-phase topology). Reopened during the root-doc sync pass; close only after a fresh packet-wide reconciliation pass confirms all root docs agree.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -96,5 +101,5 @@ contextType: "planning"
 | Child checklists present | 1 | Phase 1 checklist remains the only fully detailed child checklist; phases 2–8 were verified through their respective tasks.md, plan gates, and deep review rounds |
 | Child phases verified via tasks/plan gates | 7 | Phases 2–8 verified through task completion and deep review; phase 8 additionally gated by the 10-iteration Codex closing audit |
 | Closing audit | 1 | 10-iteration Codex `spec_kit:deep-review` session `rvw-2026-04-11T13-50-06Z` produced a CONDITIONAL verdict with 16 findings (0 P0 / 10 P1 / 6 P2); all 16 routed to Lane 1–5 remediation inside this same packet |
-| Parent packet status | Implemented | All 8 phases implemented and verified; closing-audit Lane 1–5 remediation absorbed into the packet; only Phase 4b remains explicitly deferred |
+| Parent packet status | Implemented; root-doc verification refresh pending | All 8 phases are implemented and the closing-audit Lane 1–5 remediation is absorbed into this packet, but CHK-PARENT-042/051/052 remain reopened until the refreshed root-doc verification sweep is rerun |
 <!-- /ANCHOR:summary -->

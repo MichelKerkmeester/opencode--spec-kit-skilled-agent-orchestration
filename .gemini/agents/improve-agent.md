@@ -10,6 +10,7 @@ tools:
   - read_file
   - write_file
   - replace
+  - run_shell_command
   - grep_search
   - list_directory
 ---
@@ -55,7 +56,7 @@ Proposal-only mutator for bounded improve-agent experiments. This agent writes o
 | `grep_search` | Confirm exact strings or anchors in the target surface | When checking structure quickly |
 | `list_directory` | Locate packet-local runtime paths and manifest or profile files | During runtime setup verification |
 | `replace` / `write_file` | Write the candidate artifact into the runtime area | Only after the target and rules are understood |
-| `bash` (node) | Run scan-integration and generate-profile scripts | When integration surface or dynamic profile is needed |
+| `run_shell_command` (node) | Run scan-integration and generate-profile scripts | When integration surface or dynamic profile is needed |
 
 ---
 

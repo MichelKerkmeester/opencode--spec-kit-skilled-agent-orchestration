@@ -1,121 +1,128 @@
 ---
 title: Deep Review Strategy
-description: Gate C batch-local review tracking for the canonical continuity refactor.
+description: Gate C post-remediation validation tracking for the canonical continuity refactor.
 ---
 
-# Deep Review Strategy - Gate C Writer Ready
+# Deep Review Strategy - Gate C Writer-ready
 
 ## 1. OVERVIEW
 
 ### Purpose
-Track the Gate C slice of Batch 1/5 across the routed writer, merge, validator, and atomic save surfaces.
+Track the post-remediation Gate C validation pass while keeping the canonical write path and guardrail code read-only.
 
 ### Usage
-- Batch scope: Gate C iterations 6-10 only
-- Current phase focus: routed task-update correctness, validator/security cross-checks, and integration-test coverage
+- Validation scope: iterations 004-005 of the post-remediation pass
+- Current phase focus: confirm phase-aware routing works end-to-end and ensure the merge/save validators fail closed
 - Reducer handoff: `deep-review-findings-registry.json`
 
 ## 2. TOPIC
-Gate C writer-ready review for routed task updates, canonical save guardrails, and handler-level verification depth.
+Gate C post-remediation validation for phase-aware canonical routing and fail-closed protections across the merge/save pipeline.
 
 ## 3. REVIEW DIMENSIONS (remaining)
 <!-- MACHINE-OWNED: START -->
-- [x] D1 Correctness — reviewed in iteration 001
-- [x] D2 Security — reviewed in iteration 003
-- [x] D3 Traceability — reviewed in iteration 002 and iteration 005
-- [x] D4 Maintainability — reviewed in iteration 004
+- [x] D1 Correctness — reviewed in iteration 004
+- [x] D2 Security — reviewed in iteration 005
+- [ ] D3 Traceability — not allocated in this validation slice
+- [ ] D4 Maintainability — not allocated in this validation slice
 <!-- MACHINE-OWNED: END -->
 
 ## 4. NON-GOALS
-- Do not edit routed save code during review.
-- Do not reopen Gate B storage or Gate D reader-path concerns except where the Gate C save path depends on them.
-- Do not treat unit-router behavior as proof of the handler integration without checking the actual save wiring.
+- Do not reopen Gate B anchor-identity work in this packet.
+- Do not modify the reviewed runtime or test files during validation.
+- Do not widen the slice into full packet/document cleanup beyond the writer-ready path.
 
 ## 5. STOP CONDITIONS
-- Stop after the allocated five Gate C iterations for this batch.
-- Stop early only for a confirmed P0 on canonical write corruption or validation bypass.
+- Stop after the assigned Gate C validation iterations.
+- Stop early only for a confirmed P0 or release-blocking P1 in the canonical write path.
 
 ## 6. COMPLETED DIMENSIONS
 <!-- MACHINE-OWNED: START -->
 | Dimension | Verdict | Iteration | Summary |
 |-----------|---------|-----------|---------|
-| D1 Correctness | CONDITIONAL | 001 | `memory-save.ts` hardcodes `likely_phase_anchor: 'phase-1'`, so routed task updates do not honor later phase anchors. |
-| D3 Traceability | PASS | 002 | Validator plan wiring and canonical rule ordering are present. |
-| D2 Security | PASS | 003 | Forced `drop` overrides are re-blocked by `CROSS_ANCHOR_CONTAMINATION` before indexing. |
-| D4 Maintainability | PASS with advisory | 004 | Handler integration coverage only exercises the phase-1 task anchor, which let the routing bug survive. |
+| D1 Correctness | PASS | 004 | The save handler now derives likely phase anchors before routing, and the router/test surfaces confirm phase-2 and phase-3 payloads no longer collapse onto phase 1. |
+| D2 Security | PASS | 005 | Spec-doc contamination checks, anchor-merge corruption checks, and atomic rollback/promotion logic all fail closed for the reviewed save path. |
 <!-- MACHINE-OWNED: END -->
 
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
-- **P1 (Major):** 1 active
-- **P2 (Minor):** 1 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+- **P1 (Major):** 0 active
+- **P2 (Minor):** 0 active
+- **Delta this slice:** +0 P0, +0 P1, +0 P2
 <!-- MACHINE-OWNED: END -->
 
 ## 8. WHAT WORKED
-- Contract-to-integration comparison: reading router helpers next to `memory-save.ts` exposed the hardcoded phase anchor quickly (iteration 001)
-- Validator path tracing: following `validatorPlan` into `runSpecDocStructureRule()` cleanly ruled out the forced-drop override concern (iteration 003)
-- Test-surface comparison: contrasting router unit coverage with handler fixtures isolated the missing integration depth (iteration 004)
+- Reviewing the routed save entry point, router logic, and focused tests together provided an end-to-end proof that the phase-aware remediation landed.
+- Splitting the second pass onto fail-closed validation/merge/rollback guards kept the verification sharp without re-litigating already settled routing evidence.
 
 ## 9. WHAT FAILED
-- The existing tests are strong at the isolated router layer but not representative of the save-handler wiring for later phase anchors.
+- None. This slice produced confirmation-only results with no new defects.
 
 ## 10. EXHAUSTED APPROACHES (do not retry)
-### Forced-drop override security check -- PRODUCTIVE (iteration 003)
-- What worked: follow `routeOverrideAccepted` into the canonical validator plan and `CROSS_ANCHOR_CONTAMINATION`
-- Prefer for: future Gate C security regression checks
+### Phase-aware canonical routing recheck -- PRODUCTIVE (iteration 004)
+- What worked: compare `memory-save.ts` phase-anchor derivation with the router's fallback order and focused tests
+- Prefer for: future regressions where routing seems to ignore phase context
+
+### Fail-closed canonical save guardrails -- PRODUCTIVE (iteration 005)
+- What worked: trace contamination validation, anchor-merge corruption guards, and atomic rollback/promotion in one pass
+- Prefer for: future regressions involving partial-save corruption or invalid canonical docs
 
 ## 11. RULED OUT DIRECTIONS
-- Forced `drop` override reaching disk unchanged: ruled out because `memory-save.ts` always runs `CROSS_ANCHOR_CONTAMINATION`, and the validator hard-fails if a drop-shaped payload is routed as anything else.
-- Atomic rollback missing from the indexed save path: ruled out by direct `atomicIndexMemory()` review.
+- Phase-2 canonical payloads still fall back to phase 1: ruled out by the current routed-save context build and focused routing tests.
+- Explicit phase-3 anchors ignored during routing: ruled out by the current handler and router path plus focused tests.
+- Drop-shaped payloads can bypass canonical-doc validation: ruled out by the contamination and fingerprint checks in iteration 005.
+- Atomic save leaves partially corrupted docs behind after index failure: ruled out by the rollback/promotion path in iteration 005.
 
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
-Gate C batch slice complete. If a later extension pass is requested, retest task-update routing after a fix and expand integration coverage for phase-2/phase-3 handler flows.
+Gate C validation slice complete. If extended, spend the next pass on maintainability/traceability around the writer-ready packet docs rather than the runtime path.
 <!-- MACHINE-OWNED: END -->
 
 ## 13. KNOWN CONTEXT
-- Gate C is the writer-critical path and explicitly depends on `tasks.md` phase anchors for task updates.
-- The packet task ledger contains `phase-1`, `phase-2`, and `phase-3` anchors, so hardcoded phase targeting is materially wrong.
+- Commit `9efe2bce2` remediated the writer-ready routing bug and associated guardrail issues.
+- The focused routing and save-path tests passed in this session; this slice was a source-level confirmation pass rather than a new implementation cycle.
 
 ## 14. CROSS-REFERENCE STATUS
 <!-- MACHINE-OWNED: START -->
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
-| `spec_code` | core | partial | 001 | Routed task updates do not fully honor phase anchors in the handler integration path. |
-| `checklist_evidence` | core | partial | 004 | Packet tests exist, but handler integration coverage only exercises phase-1 task routing. |
-| `skill_agent` | overlay | notApplicable | 005 | No skill/agent runtime overlays reviewed here. |
-| `agent_cross_runtime` | overlay | notApplicable | 005 | No cross-runtime surfaces in Gate C scope. |
-| `feature_catalog_code` | overlay | notApplicable | 005 | No feature-catalog surface in Gate C scope. |
-| `playbook_capability` | overlay | notApplicable | 005 | No playbook surface in Gate C scope. |
+| `spec_code` | core | pass | 004 | The save handler and router both use likely phase-anchor signals before canonical routing, matching the intended Gate C behavior. |
+| `checklist_evidence` | core | pass | 004 | Focused routing tests cover inferred phase-2 and explicit phase-3 saves. |
+| `spec_code` | core | pass | 005 | Validation, merge, and atomic-save guardrails reject or roll back invalid canonical writes instead of silently accepting them. |
+| `checklist_evidence` | core | pass | 005 | The reviewed guardrails align with the fail-closed remediation intent for the writer-ready path. |
+| `skill_agent` | overlay | notApplicable | 004-005 | No skill/agent runtime overlays were reviewed here. |
+| `agent_cross_runtime` | overlay | notApplicable | 004-005 | No cross-runtime artifacts reviewed here. |
+| `feature_catalog_code` | overlay | notApplicable | 004-005 | No feature-catalog surface in Gate C scope. |
+| `playbook_capability` | overlay | notApplicable | 004-005 | No playbook surface in Gate C scope. |
 <!-- MACHINE-OWNED: END -->
 
 ## 15. FILES UNDER REVIEW
 <!-- MACHINE-OWNED: START -->
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
 |------|---------------------|----------------|----------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts` | D1, D3 | 005 | 1 P1 | partial |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | D1, D2, D3 | 005 | 1 P1 | partial |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts` | D2, D4 | 004 | 0 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts` | D2, D3 | 003 | 0 | complete |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts` | D3, D4 | 004 | 0 | complete |
-| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | D3 | 005 | 0 | complete |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/003-gate-c-writer-ready/spec.md` | D1, D2 | 004-005 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | D1 | 004 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts` | D1 | 004 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts` | D1 | 004 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts` | D1 | 004 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts` | D2 | 005 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts` | D2 | 005 | 0 | complete |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts` | D2 | 005 | 0 | complete |
 <!-- MACHINE-OWNED: END -->
 
 ## 16. REVIEW BOUNDARIES
 <!-- MACHINE-OWNED: START -->
-- Max iterations: 10
-- Convergence threshold: 0.15
+- Max iterations: 30
+- Convergence threshold: 0.10
 - Rolling STOP threshold: 0.08
 - No-progress threshold: 0.05
 - Coverage stabilization passes required: 1
-- Session lineage: sessionId=B1329442-BD14-42DA-AE7A-1F1C41134956, parentSessionId=null, generation=1, lineageMode=new
+- Session lineage: sessionId=32E3E661-190C-4C33-AF24-EEB0213CD223, parentSessionId=B132D4D1-D7E3-46E4-9A6F-9C6F3F88F9E7, generation=2, lineageMode=restart
 - Findings registry: `deep-review-findings-registry.json`
-- Release-readiness states: unknown | converged | release-blocking
-- Per-iteration budget: review-only batch slice
-- Severity threshold: P2
+- Release-readiness states: in-progress | converged | release-blocking
+- Per-iteration budget: verification-only slice
+- Severity threshold: P1
 - Review target type: files
 - Cross-reference checks: core=`spec_code`, `checklist_evidence`; overlay=`feature_catalog_code`, `playbook_capability`
-- Started: 2026-04-12T17:01:22Z
+- Started: 2026-04-12T19:11:09Z
 <!-- MACHINE-OWNED: END -->

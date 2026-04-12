@@ -139,80 +139,46 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `review/iterations/iteration-NNN.md` with this structure:
+
+Create `review/iterations/iteration-NNN.md`. Use exactly one canonical template. The reducer at `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:202` reads only the heading plus these exact sections: `## Focus`, `## Findings`, `## Ruled Out`, `## Dead Ends`, `## Recommended Next Focus`, and `## Assessment`. Inside `## Findings`, use only `### P0`, `### P1`, and `### P2`, with bullets of the form `- **FNNN**: Title — file:line — Description`. Do not add alternate skeletons or rename sections.
 
 ```markdown
-# Review Iteration [N]: [Dimension] - [Focus Area]
+# Iteration [N]: [Focus label, e.g. "Correctness contracts on review loop runtime"]
 
 ## Focus
-[What dimension and specific area was reviewed]
-
-## Scope
-- Review target: [files reviewed]
-- Spec refs: [if applicable]
-- Dimension: [dimension name]
-
-## Scorecard
-| File | Corr | Sec | Trace | Maint |
-|------|------|-----|-------|-------|
-[per-file scores for files reviewed this iteration]
+[1–3 sentences describing the dimension, files, and scope investigated this iteration.]
 
 ## Findings
-### P0-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Cross-reference: [SOURCE: spec/checklist if applicable]
-- Impact: [description]
-- Hunter: [finding assessment]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P0
 
-### P1-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P1
+### P0
+- **F001**: [Title] — `file:line` — [Description with file:line evidence and why it blocks release]
+
+### P1
+- **F002**: [Title] — `file:line` — [Description]
+
+### P2
+- **F003**: [Title] — `file:line` — [Description]
+
+> Use sequential finding IDs across the whole session (iteration 2 starts at F00K where K = last F-id used in iteration 1). The reducer deduplicates on the `FNNN` prefix, so collisions are silent.
+> For every P0/P1 finding, also emit a typed claim-adjudication packet (schema in state_format.md §9 and loop_protocol.md Step 4a) so `step_post_iteration_claim_adjudication` can validate it. A missing or malformed packet vetoes STOP via the `claimAdjudicationGate` on the next convergence check.
 
 ```json
-{"type":"claim-adjudication","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0|P1","confidence":0.90,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
+{"type":"claim-adjudication","findingId":"F002","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0","confidence":0.9,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
 ```
 
-### P2-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Final severity: P2
-
-## Cross-Reference Results
-### Core Protocols
-- Confirmed: [alignment checks that passed]
-- Contradictions: [misalignments found]
-- Unknowns: [could not verify]
-
-### Overlay Protocols
-- Confirmed: [overlay-specific checks that passed]
-- Contradictions: [runtime or integration drift found]
-- Unknowns: [could not verify]
-
 ## Ruled Out
-[Investigated but not an issue, with reasoning]
+- [Approach]: [Why] — [file:line evidence]
 
-## Sources Reviewed
-[All files read this iteration with SOURCE: file:line]
+## Dead Ends
+- [Direction]: [Why the current evidence does not justify escalation]
+
+## Recommended Next Focus
+[What the next iteration should investigate. Rotate dimensions unless the current dimension is still incomplete.]
 
 ## Assessment
-- Confirmed findings: [N]
 - New findings ratio: [0.XX]
-- noveltyJustification: [1 sentence]
 - Dimensions addressed: [list]
-
-## Reflection
-- What worked: [effective approach]
-- What did not work: [ineffective approach]
-- Next adjustment: [suggestion for next iteration]
+- Novelty justification: [1 sentence]
 ```
 
 #### Step 6: Update Strategy
@@ -239,6 +205,13 @@ Append ONE line to `review/deep-review-state.jsonl`:
 - `stuck`: No productive review avenues remain for current focus
 - `insight`: Low newFindingsRatio but important conceptual finding (e.g., cross-reference contradiction)
 - `thought`: Analytical-only iteration (e.g., severity reassessment, deduplication)
+
+**Required fields**:
+- `noveltyJustification`: 1-sentence explanation of how newFindingsRatio was calculated
+- `ruledOut`: Array of items investigated but not an issue this iteration (may be empty `[]`)
+
+**Optional fields**:
+- `focusTrack`: Label tagging this iteration to a review track (e.g., "security", "correctness")
 
 **Required fields**:
 - `noveltyJustification`: 1-sentence explanation of how newFindingsRatio was calculated
