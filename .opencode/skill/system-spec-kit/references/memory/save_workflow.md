@@ -14,11 +14,11 @@ Complete guide to saving conversation context, execution methods, and retrieval.
 
 ### Core Principle
 
-Execute memory operations through whichever method fits your workflow - slash commands for convenience, direct scripts for control. All paths produce identical output with consistent naming for reliable retrieval and index into the same 3-source memory system (schema v23).
+Execute save operations through whichever method fits your workflow - slash commands for convenience, direct scripts for control. All paths feed the same canonical save entrypoint, update the target packet's continuity surfaces, and reindex the resulting packet docs for retrieval.
 
 When direct CLI mode includes an explicit spec-folder argument, that target is authoritative. Session-learning matches, JSON `SPEC_FOLDER` fields, and auto-detect may inform diagnostics, but they must not reroute the save to another folder.
 
-Direct phase-folder targets are supported. If the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` preserves that target and writes memory files into the selected phase folder's `memory/` directory.
+Direct phase-folder targets are supported. If the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` preserves that target and updates the selected phase folder's canonical continuity surfaces instead of rerouting elsewhere.
 
 ### Governed Save Boundaries
 
@@ -66,8 +66,8 @@ The memory system supports **2 independent execution paths**. Any method can be 
 │                             │                                  │
 │                             ▼                                  │
 │                    ┌─────────────────┐                         │
-│                    │ specs/###/      │                         │
-│                    │ memory/*.md     │                         │
+│                    │ canonical packet│                         │
+│                    │ continuity docs │                         │
 │                    └─────────────────┘                         │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
@@ -149,7 +149,7 @@ The memory system supports **2 independent execution paths**. Any method can be 
 2. AI agent analyzes conversation history
 3. AI agent creates structured JSON summary (any agent can invoke generate-context.js for memory — this is an exception to the @speckit exclusivity rule)
 4. AI agent calls `generate-context.js` with JSON data
-5. Context saved to active spec folder's `memory/` directory
+5. Canonical continuity updated inside the active root-spec or phase packet
 
 ### Validation Checkpoints
 
@@ -158,16 +158,16 @@ The memory system supports **2 independent execution paths**. Any method can be 
 | Command exists   | `ls .opencode/command/memory/` | Create command file       |
 | AI agent active  | Check response capability      | Use Direct Script instead |
 | Spec folder arg  | Passed via CLI argument        | Specify folder manually   |
-| Write permission | `test -w specs/###/memory/`    | Check folder permissions  |
+| Write permission | `test -w specs/###/`           | Check packet permissions  |
 
 ### Example Output
 
 ```
 ✓ Context analyzed (12 exchanges detected)
 ✓ Spec folder: 049-anchor-context-retrieval
-✓ Memory file: 28_11_25_14-30__context-save.md
-✓ 3 anchors generated
-✓ Summary: 847 tokens
+✓ Continuity surfaces updated for: 049-anchor-context-retrieval
+✓ Primary continuity block: implementation-summary.md::_memory.continuity
+✓ Packet docs reindexed
 ```
 
 ---
@@ -235,7 +235,7 @@ echo '{"specFolder":"049-anchor-context-retrieval","sessionSummary":"..."}' | \
 
 If both the JSON payload and the CLI provide a spec folder, the explicit CLI argument wins.
 
-If that explicit CLI argument resolves to a phase folder, the command keeps that explicit target and saves into the selected phase folder's own `memory/` directory.
+If that explicit CLI argument resolves to a phase folder, the command keeps that explicit target and updates the selected phase folder's own canonical continuity surfaces.
 
 ### Validation Checkpoints
 
@@ -253,48 +253,38 @@ If that explicit CLI argument resolves to a phase folder, the command keeps that
 <!-- ANCHOR:output-format -->
 ## 5. OUTPUT FORMAT
 
-### File Naming
+### Canonical Output Surfaces
 
-**Primary Document Format**: `{date}_{time}__{topic}.md`
+The Phase 018 save path is packet-first. `generate-context.js` no longer treats a standalone timestamped `memory/*.md` file as the primary continuity artifact. Instead it updates continuity inside the selected packet and reindexes the affected docs.
 
-| Component | Format | Example |
-|-----------|--------|---------|
-| Date | DD-MM-YY | 07-12-25 |
-| Time | HH-MM | 14-30 |
-| Separator | `__` (double underscore) | __ |
-| Topic | kebab-case from spec folder | oauth-implementation |
+| Surface | Role |
+|---------|------|
+| `implementation-summary.md` | Primary continuity document carrying `_memory.continuity` in frontmatter |
+| Routed packet docs | Canonical narrative updates applied in-place to spec/plan/tasks/checklist/decision/summary surfaces as appropriate |
+| `handover.md` | Separate first-class recovery surface created by `/spec_kit:handover`, not by routine `/memory:save` |
 
-**Full Example**: `07-12-25_14-30__oauth-implementation.md`
+### Continuity Block Shape
 
-**Metadata File**: `metadata.json` (alongside primary document)
-
-### Naming Rules
-
-1. **Date first** - Enables chronological sorting
-2. **Double underscore** - Clear delimiter between timestamp and topic
-3. **Kebab-case** - Consistent, URL-safe topic names
-4. **No spaces** - Prevents path resolution issues
+```yaml
+_memory:
+  continuity:
+    packet_pointer: "026/.../007-018-sk-system-speckit-revisit"
+    last_updated_at: "2026-04-12T00:00:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Aligned save/recovery docs to packet-first continuity"
+    next_safe_action: "Run strict packet validation"
+    key_files:
+      - "implementation-summary.md"
+      - "spec.md"
+```
 
 ### Output Location
 
 ```
 specs/###-feature-name/
-└── memory/
-    ├── 07-12-25_14-30__feature-name.md   # Primary document
-    └── metadata.json                      # Session statistics
-```
-
-### Multiple Sessions
-
-When multiple saves occur in the same spec folder:
-
-```
-specs/049-oauth-implementation/
-└── memory/
-    ├── 07-12-25_09-15__oauth-implementation.md  # Morning session
-    ├── 07-12-25_14-30__oauth-implementation.md  # Afternoon session
-    ├── 08-12-25_10-00__oauth-implementation.md  # Next day
-    └── metadata.json                             # Latest session stats
+├── implementation-summary.md    # carries _memory.continuity
+├── spec.md / plan.md / tasks.md # canonical packet docs
+└── handover.md                  # optional, separate command-managed surface
 ```
 
 ---
@@ -303,37 +293,17 @@ specs/049-oauth-implementation/
 <!-- ANCHOR:document-structure -->
 ## 6. DOCUMENT STRUCTURE
 
-### Primary Document Sections
+### Canonical Continuity Expectations
 
-```markdown
-# Session Summary
+The save path updates packet docs rather than creating a separate primary session note. In practice that means:
 
-## Overview
-[Brief session description]
-
-## Key Decisions
-[Decision documentation]
-
-## Implementation Details
-[What was built]
-
-## Conversation Flow
-[Full dialogue with timestamps]
-
-> **Redaction Policy**: Before persisting conversation flow data, scrub API keys, tokens, credentials, and PII.
-> Summary-first is the recommended default.
-> Raw full-dialogue capture should be opt-in only and must pass the redaction filter before write.
-
-## Files Modified
-[List of changed files]
-
-## Session Metadata
-[Statistics and timing]
-```
+- `implementation-summary.md` carries the thin `_memory.continuity` block.
+- packet narrative remains in canonical docs rather than a parallel memory note.
+- recovery begins with `handover.md`, then `_memory.continuity`, then the rest of the packet docs.
 
 ### Anchor Tags
 
-Each section includes HTML comment anchors for targeted retrieval:
+Packet docs should continue to use HTML comment anchors for targeted retrieval:
 
 ```html
 Content here...
@@ -341,32 +311,21 @@ Content here...
 
 **Categories**: `implementation`, `decision`, `guide`, `architecture`, `files`, `discovery`, `integration`
 
-### Section Requirements
-
-| Section | Required | Purpose |
-|---------|----------|---------|
-| Overview | Yes | Quick context summary |
-| Key Decisions | Yes | Searchable decision log |
-| Implementation Details | Conditional | When code was written |
-| Conversation Flow | Yes | Full dialogue preservation |
-| Files Modified | Conditional | When files changed |
-| Session Metadata | Yes | Statistics and timing |
-
 ### All Indexed Content Sources (3)
 
-This workflow writes memory files in `specs/*/memory/` (source 1). During `memory_index_scan()`, the memory system indexes all 3 sources:
+The canonical save path updates packet docs first. During `memory_index_scan()`, the memory system indexes three supporting source families:
 
 | Content Type | Location | Weight | Indexed By |
 |-------------|----------|--------|------------|
-| Memory files | `specs/*/memory/*.{md,txt}` | 0.5 | `findMemoryFiles()` |
+| Spec documents | `.opencode/specs/**/*.md` and `specs/**/*.md` | Per-type multiplier | `findSpecDocuments()` |
 | Constitutional rules | `.opencode/skill/*/constitutional/*.md` | 1.0 | `findConstitutionalFiles()` |
-| Spec documents | `.opencode/specs/**/*.md` | Per-type multiplier | `findSpecDocuments()` |
+| Legacy memory artifacts | `specs/*/memory/*.{md,txt}` when present | 0.5 | `findMemoryFiles()` |
 
 Spec documents are controlled by the `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Spec documents use per-document scoring multipliers (e.g., spec: 1.4x, plan: 1.3x, constitutional: 2.0x) and schema v23 fields (`document_type`, `spec_level`).
 
 For retrieval, `memory_context()` routes queries across 7 intents (including `find_spec` and `find_decision`) and applies intent-aware weighting.
 
-> **Tip:** Add `<!-- ANCHOR:name -->` tags to spec documents and memory files to enable section-level retrieval.
+> **Tip:** Add `<!-- ANCHOR:name -->` tags to spec documents and continuity-rich packet sections so targeted retrieval can pull only the sections you need.
 
 ---
 
@@ -424,27 +383,22 @@ For retrieval, `memory_context()` routes queries across 7 intents (including `fi
 
 ### Token Efficiency Comparison
 
-| Approach          | Tokens  | Savings | Use Case              |
-| ----------------- | ------- | ------- | --------------------- |
-| Full file read    | ~12,000 | -       | Need complete context |
-| Anchor extraction | ~800    | ~58-90% | Targeted retrieval    |
+| Approach | Tokens | Savings | Use Case |
+|----------|--------|---------|----------|
+| Full packet-doc read | ~12,000 | - | Need complete context |
+| Anchor extraction | ~800 | ~58-90% | Targeted retrieval |
 
 ### Quick Commands
 
 ```bash
-# Find anchors by keyword (UPPERCASE format)
-grep -l "ANCHOR:.*decision.*auth" specs/*/memory/*.{md,txt}
+# Find anchors by keyword in packet docs
+grep -r "ANCHOR:.*decision.*auth" .opencode/specs/*/implementation-summary.md .opencode/specs/*/handover.md .opencode/specs/*/spec.md
 
 # List all anchors in a file
-grep "<!-- ANCHOR:" specs/049-*/memory/*.{md,txt}
+grep "<!-- ANCHOR:" .opencode/specs/049-*/*.md
 
 # Extract specific section
 sed -n '/<!-- ANCHOR:decision-jwt-049 -->/,/<!-- \/ANCHOR:decision-jwt-049 -->/p' file.md
-
-# Count anchors per spec folder
-for d in specs/*/memory/; do
-  echo "$(grep -r 'ANCHOR:' "$d" 2>/dev/null | wc -l) $d"
-done | sort -rn
 ```
 
 ---
@@ -455,7 +409,7 @@ done | sort -rn
 <!-- ANCHOR:context-recovery -->
 ## 9. CONTEXT RECOVERY
 
-**CRITICAL:** Before implementing ANY changes in a spec folder with memory files, you MUST search for relevant anchors.
+**CRITICAL:** Before implementing ANY changes in a spec folder, rebuild context from canonical packet continuity first: `handover.md -> _memory.continuity -> spec docs`.
 
 ### Recovery Protocol
 
@@ -499,11 +453,11 @@ done | sort -rn
 ### Search Commands
 
 ```bash
-# Search within current spec folder (UPPERCASE format)
-grep -r "ANCHOR:.*keyword" specs/###-current-spec/memory/*.{md,txt}
+# Search within current spec folder
+grep -r "ANCHOR:.*keyword" .opencode/specs/###-current-spec/*.md .opencode/specs/###-current-spec/**/**/*.md
 
 # Cross-spec search if broader context needed
-grep -r "ANCHOR:.*keyword" specs/*/memory/*.{md,txt}
+grep -r "ANCHOR:.*keyword" .opencode/specs/**/*.md
 
 # Extract specific anchor directly (UPPERCASE format)
 sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->/p' file.md
@@ -512,7 +466,7 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ### Response Templates
 
 **When context found:**
-> "Based on prior decision in memory file [filename], I see that [summary]. I'll build on this by..."
+> "Based on `handover.md` / `_memory.continuity` / packet docs, I see that [summary]. I'll build on this by..."
 
 **When no context found:**
 > "No prior context found for [task keywords] - proceeding with fresh implementation."
@@ -538,10 +492,9 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ### Output Location
 
 ```
-□ File placed in specs/###-name/memory/ directory
-□ memory/ subdirectory created if missing
-□ metadata.json updated or created alongside
-□ No files in spec folder root (use memory/)
+□ `_memory.continuity` updated in `implementation-summary.md`
+□ Canonical packet docs reflect the saved continuity state
+□ No manual continuity artifact was created outside the packet docs
 ```
 
 ### Document Structure
@@ -559,7 +512,7 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 <!-- ANCHOR:post-save-quality-review -->
 ## 10.5. POST-SAVE QUALITY REVIEW (026 Calibration)
 
-After `generate-context.js` completes, it emits a **POST-SAVE QUALITY REVIEW** block. This review checks the saved memory file for common issues that degrade retrieval quality.
+After `generate-context.js` completes, it emits a **POST-SAVE QUALITY REVIEW** block. This review checks the saved canonical continuity surfaces for common issues that degrade retrieval quality.
 
 ### Issue Severities
 
@@ -601,14 +554,13 @@ The context template (`templates/context_template.md`) defines the expected outp
 | Issue                   | Cause               | Solution                           |
 | ----------------------- | ------------------- | ---------------------------------- |
 | "Spec folder not found" | Invalid folder name | Check `ls specs/` for correct name |
-| "Permission denied"     | File permissions    | `chmod -R u+rw specs/###/memory/`  |
+| "Permission denied"     | File permissions    | `chmod -R u+rw specs/###/`         |
 | "JSON parse error"      | Malformed input     | Validate with `jq . < input.json`  |
 | "No anchors found"      | Empty or new memory | Normal for new specs               |
 | "Script not found"      | Wrong path          | Verify skill installation          |
 | `Invalid date format`   | Wrong separator/order | Use DD-MM-YY with hyphens        |
 | `Topic contains spaces` | Space in filename   | Convert to kebab-case              |
 | `Missing anchor closing`| Incomplete anchor   | Add `<!-- /ANCHOR:... -->`         |
-| `metadata.json parse error` | Invalid JSON    | Validate JSON syntax               |
 | "Saved to wrong folder" | Non-authoritative invocation path | Re-run with explicit CLI target; direct CLI mode does not reroute |
 | "Saved to wrong folder" | Explicit CLI target was omitted or too broad | Re-run with the exact root-spec or phase-folder CLI target you intend to save into |
 

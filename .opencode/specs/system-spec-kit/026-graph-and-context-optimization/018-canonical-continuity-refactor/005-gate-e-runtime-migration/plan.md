@@ -4,7 +4,8 @@ description: "Cutover plan."
 trigger_phrases: ["gate e", "plan"]
 importance_tier: "important"
 contextType: "implementation"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
@@ -50,10 +51,10 @@ This packet does not assume the repo-wide exit gate is already satisfied. It tra
 
 ### Definition of Done
 
-- [ ] Canonical continuity is the only live runtime path.
-- [ ] Required mapped surfaces are updated or remaining gaps are explicitly recorded.
-- [ ] CLI handback docs match the shipped `generate-context.js` contract.
-- [ ] Packet-local validation passes and the implementation summary records real results.
+- [x] Canonical continuity is the only live runtime path. [Evidence: Gate E handover records the single canonical flip and removal of rollout control-plane scaffolding]
+- [x] Required mapped surfaces are updated and recorded. [Evidence: Gate E handover records `178` touched files across commands, agents, workflows, skills, README sweeps, and packet docs]
+- [x] CLI handback docs match the shipped `generate-context.js` contract. [Evidence: `scripts/tests/outsourced-agent-handback-docs.vitest.ts` and `scripts/tests/generate-context-cli-authority.vitest.ts` passed on 2026-04-12]
+- [x] Packet-local validation passes and the implementation summary records real results. [Evidence: `bash ./.opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .../005-gate-e-runtime-migration` passed on 2026-04-12]
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -80,26 +81,26 @@ The implementation path sets canonical continuity unconditionally, then the doc 
 
 ### Phase 1: Canonical runtime flip
 
-- [ ] Locate the remaining feature-flag or control-plane plumbing for canonical continuity.
-- [ ] Set the new path as canonical immediately, or remove the retired flag if it no longer serves a purpose.
-- [ ] Remove rollout-era shadow and state-machine scaffolding from active runtime-facing surfaces.
-- [ ] Verify a sample save end to end before calling the cutover complete.
+- [x] Locate the remaining feature-flag or control-plane plumbing for canonical continuity. [Evidence: Gate E handover records the removed rollout helper module and deleted rollout control-plane path]
+- [x] Set the new path as canonical immediately, or remove the retired flag if it no longer serves a purpose. [Evidence: Gate E handover records a single canonical flip with no staged promotion ladder]
+- [x] Remove rollout-era shadow and state-machine scaffolding from active runtime-facing surfaces. [Evidence: Gate E handover records deleted shadow telemetry and rollout control plane]
+- [x] Verify a sample save end to end before calling the cutover complete. [Evidence: `tests/memory-save-integration.vitest.ts` passed on 2026-04-12 (`1` file / `10` tests)]
 
 ### Phase 2: Parallel doc parity fanout
 
-- [ ] Update command and workflow surfaces.
-- [ ] Update agent surfaces.
-- [ ] Update the 8 CLI handback files to the current JSON-primary contract.
-- [ ] Update `sk-*` and system-spec-kit internal docs.
-- [ ] Update top-level docs and mapped sub-READMEs.
-- [ ] Sweep for retired continuity language in the updated surfaces.
+- [x] Update command and workflow surfaces. [Evidence: Gate E handover records `11` commands and `14` workflow YAMLs updated]
+- [x] Update agent surfaces. [Evidence: Gate E handover records `10` agent files updated]
+- [x] Update the 8 CLI handback files to the current JSON-primary contract. [Evidence: Gate E handover records the CLI handback batch; 2026-04-12 CLI contract suite passed]
+- [x] Update `sk-*` and system-spec-kit internal docs. [Evidence: Gate E handover records `12` skill READMEs updated]
+- [x] Update top-level docs and mapped sub-READMEs. [Evidence: Gate E handover records `4` top-level docs plus `112` README parity updates]
+- [x] Sweep for retired continuity language in the updated surfaces. [Evidence: the canonical fanout removed shadow/state-machine guidance from the recorded Gate E surfaces]
 
 ### Phase 3: Packet and repo closeout
 
-- [ ] Run packet-local markdown validation.
-- [ ] Run `validate.sh --strict` for this packet and capture the result.
-- [ ] Update `implementation-summary.md` with touched files, validation state, and any sample post-flip metrics that actually exist.
-- [ ] Mark the packet complete only after the evidence is attached.
+- [x] Run packet-local markdown validation. [Evidence: packet docs rewrote cleanly and strict validation passed on 2026-04-12]
+- [x] Run `validate.sh --strict` for this packet and capture the result. [Evidence: `PASS`, `0` errors / `0` warnings on 2026-04-12]
+- [x] Update `implementation-summary.md` with touched files, validation state, and the sample post-flip metrics that actually exist. [Evidence: closeout summary now records the 178-file fanout, strict validation, CLI contract suite, and sample-save integration]
+- [x] Mark the packet complete only after the evidence is attached.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->

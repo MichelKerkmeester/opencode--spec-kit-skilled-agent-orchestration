@@ -15,7 +15,7 @@ _memory:
     recent_action: "Recorded Gate B archived-tier cleanup follow-through"
     next_safe_action: "Have orchestrator commit the validated Gate B cleanup"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/002-gate-b-foundation/implementation-summary.md"]
-description: "Gate B closed against the rebaselined live DB state. The migration rehearsed cleanly on a copy, production moved schema_version 25 -> 26, 183 legacy memory-path rows were archived with the 1 pre-existing non-memory archived row preserved, and anchor-aware causal traversal plus archived observability were verified."
+description: "Gate B closed against the rebaselined live DB state, then the cleanup pass removed archived-tier ranking and metric behavior while preserving the v26 anchor-aware schema and archive compatibility contract."
 trigger_phrases: ["gate b implementation summary", "foundation closeout", "canonical continuity", "phase 018", "archive flip"]
 importance_tier: "important"
 contextType: "documentation"
@@ -51,7 +51,7 @@ Gate B completed on the rebaselined live DB contract. The foundation step preser
 2. Production schema bootstrap advanced from `schema_version 25` to `26`.
 3. `causal_edges` now has `source_anchor` and `target_anchor` columns plus both anchor indexes.
 4. The archive flip marked the `183` legacy memory-path rows archived without touching the existing non-memory archived row.
-5. Archived ranking and archived-hit observability are both exposed and verified.
+5. The later Gate B cleanup removes archived-tier ranking and `archived_hit_rate`, leaving archive state as a compatibility-only schema concern.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -114,20 +114,20 @@ After the rehearsal passed, the canonical schema chain was updated so fresh boot
 | Live 2-hop sample path | `1 -> 10 -> 11` |
 | `EXPLAIN QUERY PLAN` | Uses `idx_causal_edges_source_anchor` and `idx_causal_edges_target_anchor` |
 
-### Ranking and metrics
+### Post-cleanup runtime contract
 
 | Check | Result |
 |-------|--------|
-| `archived_hit_rate` presented slots | `396` |
-| `archived_hit_rate` archived slots | `64` |
-| `archived_hit_rate` rate | `0.161616` |
+| `stage2-fusion.ts` archived weighting branch | Removed |
+| `memory-crud-stats.ts` `archived_hit_rate` field | Removed |
+| Active `is_archived` behavior | Deprecated compatibility column only |
 
 ### Focused verification suite
 
 | Check | Result |
 |-------|--------|
 | Test files passed | `7` |
-| Tests passed | `199` |
+| Tests passed | `223` |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -135,9 +135,8 @@ After the rehearsal passed, the canonical schema chain was updated so fresh boot
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. The current `archived_hit_rate` sample is a point-in-time reading, not a stabilized Gate F permanence signal.
-2. The original planning docs in this packet still contain the earlier 155-row assumption; this summary records the actual rebaselined execution outcome.
-3. `closed_by_commit` is intentionally left as `TBD` for the orchestrator to fill.
+1. Some older packet prose started from the superseded 155-row and archived-observability assumptions; the current completion pass re-synchronizes the packet to the rebaselined post-cleanup contract.
+2. `closed_by_commit` is intentionally left as `TBD` because this completion pass does not run git.
 <!-- /ANCHOR:limitations -->
 
 ### Gate B Post-Flight Cleanup

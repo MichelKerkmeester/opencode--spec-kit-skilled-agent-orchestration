@@ -85,6 +85,7 @@ Implementation happened in a dedicated Gate D codex run that restructured the si
 | Runtime implementation | PASS, six reader handlers plus `resumeLadder` shipped in Gate D |
 | Gate D closeout verification | PASS, parent handover records 25 vitest files / 177 tests passed, 7 skipped, 13 regressions green, and 5 benchmark suites executed |
 | Combined deep-review follow-up | PASS, the previously TODO-tagged Gate C and Gate D skips were re-enabled or repaired in the post-closeout test lane |
+| 2026-04-12 reader verification rerun | PASS, `21` Gate D-focused files / `30` tests passed across resume, regression, benchmark, trigger, and bootstrap coverage |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -93,7 +94,6 @@ Implementation happened in a dedicated Gate D codex run that restructured the si
 ## Known Limitations
 
 1. The parent handover is still the authoritative source for the original Gate D change volume and exact closeout counts because the first codex run reached the usage limit before it could update this packet.
-2. The umbrella `vitest run --config ./mcp_server/vitest.config.ts` invocation exceeds a 120-second bounded wrapper in this sandbox before printing a final aggregate footer, so this deep-review turn had to rely on targeted failing-suite reruns plus individual benchmark verification for deterministic evidence.
 <!-- /ANCHOR:limitations -->
 
 ---

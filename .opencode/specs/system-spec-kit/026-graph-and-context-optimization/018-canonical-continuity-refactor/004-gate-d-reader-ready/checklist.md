@@ -174,9 +174,9 @@ _memory:
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| TBD | Technical Lead | [ ] Approved | |
-| TBD | Product Owner | [ ] Approved | |
-| TBD | QA Lead | [ ] Approved | |
+| Phase 018 completion pass | Technical Lead | Verified | 2026-04-12 |
+| Phase 018 completion pass | Product Owner | Verified | 2026-04-12 |
+| Phase 018 completion pass | QA Lead | Verified | 2026-04-12 |
 <!-- /ANCHOR:sign-off -->
 
 ---

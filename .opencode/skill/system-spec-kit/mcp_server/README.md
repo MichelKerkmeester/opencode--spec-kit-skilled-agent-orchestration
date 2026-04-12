@@ -56,7 +56,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 | **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
 | **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
-| **Memory states** | 5 | HOT, WARM, COLD, DORMANT, ARCHIVED |
+| **Memory states** | 4 active | HOT, WARM, COLD, DORMANT |
 | **Intent types** | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | **Causal relations** | 6 | caused, enabled, supersedes, contradicts, derived_from, supports |
 | **Retrieval modes** | 5 | auto, quick, deep, focused, resume |
@@ -74,7 +74,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 | **Sessions** | Stateless | Working memory with attention decay, ~50% token savings via deduplication |
 | **Section retrieval** | Returns full documents | ANCHOR-based chunking with ~93% token savings |
 | **Duplicate handling** | Indexes everything | 4-outcome Prediction Error gating (create, reinforce, update, supersede) |
-| **Memory state** | Everything treated equally | 5-state cognitive lifecycle (HOT through ARCHIVED) with FSRS-driven transitions |
+| **Memory state** | Everything treated equally | 4 active cognitive states (HOT through DORMANT) with FSRS-driven transitions |
 | **Save quality** | Accept everything | 3-layer gate (structure, semantic sufficiency, duplicate) with dry-run preview |
 | **Explainability** | Black box | Confidence scoring (high/medium/low) + two-tier trace (basic and debug) |
 | **Access control** | None | Shared spaces with deny-by-default membership and kill switches |
@@ -89,7 +89,7 @@ The memory system exposes 47 MCP tools through 4 memory slash commands plus the 
 | `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
 | `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
 | `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, shared-memory spaces and memberships | 19 primary tools + 1 helper |
-| `/memory:save` | Save conversation context | 4 tools |
+| `/memory:save` | Update packet continuity and supporting generated context artifacts | 4 tools |
 | `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface; primary chain uses 3 shared memory tools |
 
 ### Requirements
@@ -339,9 +339,11 @@ A critical decision never fades. A temporary debugging note fades within days.
 
 **Negative feedback with 30-day decay** -- demotes unhelpful memories, but the penalty fades over time. This prevents permanent blacklisting and allows memories to recover relevance as the project evolves.
 
-**Five cognitive states** based on access patterns:
+**Four active cognitive states** based on access patterns:
 
-**HOT** (just used) >> **WARM** (recently relevant) >> **COLD** (not accessed lately) >> **DORMANT** (inactive) >> **ARCHIVED** (stored but rarely surfaced)
+**HOT** (just used) >> **WARM** (recently relevant) >> **COLD** (not accessed lately) >> **DORMANT** (inactive)
+
+The active continuity and recovery ladder uses only the four live states above.
 
 When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
 
@@ -484,7 +486,7 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 **Contextual tree injection** -- labels each result with its position in the project hierarchy ("Project > Feature > Detail") so you always know where it belongs.
 
-**ANCHOR-based section retrieval** -- memory files can include `<!-- ANCHOR:name -->` markers. The search system indexes individual sections separately, allowing retrieval of just "decisions" or "next-steps" from a large document (~93% token savings). Files above 50K characters are always chunk-split.
+**ANCHOR-based section retrieval** -- indexed packet docs and generated continuity artifacts can include `<!-- ANCHOR:name -->` markers. The search system indexes individual sections separately, allowing retrieval of just "decisions" or "next-steps" from a large document (~93% token savings). Files above 50K characters are always chunk-split.
 
 **Provenance-rich response envelopes** (when `includeTrace` is enabled) -- show exactly how each result was found: which channels contributed, how scores were calculated and where the information originated.
 
@@ -634,7 +636,7 @@ The main search tool. You type what you are looking for in plain language and th
 | `sharedSpaceId` | string | Shared-memory boundary |
 | `limit` | number | 1-100 results (default 10) |
 | `tier` | string | Filter by importance tier |
-| `minState` | string | Minimum state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
+| `minState` | string | Minimum active state: `HOT`, `WARM`, `COLD`, `DORMANT` |
 | `rerank` | boolean | Apply cross-encoder reranking |
 | `useDecay` | boolean | Apply FSRS decay to scores |
 | `intent` | string | Adjust channel weights for task type |
@@ -755,7 +757,7 @@ Get the big picture. How many memories are stored, when they were last updated, 
 | `folderRanking` | string | `count`, `recency`, `importance` or `composite` |
 | `excludePatterns` | string[] | Glob patterns to exclude |
 | `includeScores` | boolean | Include composite quality scores |
-| `includeArchived` | boolean | Include ARCHIVED state memories in counts |
+| `includeArchived` | boolean | Include archived/test/scratch folders in folder-level stats |
 | `limit` | number | Max folders to return |
 
 ---
@@ -1093,7 +1095,7 @@ Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results a
 
 ##### `memory_index_scan`
 
-Scan the workspace for new or changed memory files and add them to the index. Use after adding files manually or after a git pull. Processes three source families: constitutional rules, spec documents and spec memories. Spec documents stay indexed by default; during scan they run through the save pipeline in warn-only quality mode so validation issues surface as warnings instead of silently bypassing retrieval.
+Scan the workspace for new or changed packet continuity docs and supporting generated context artifacts and add them to the index. Use after adding files manually or after a git pull. Processes three source families: constitutional rules, spec documents, and supporting generated context artifacts. Spec documents stay indexed by default; during scan they run through the save pipeline in warn-only quality mode so validation issues surface as warnings instead of silently bypassing retrieval.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1704,7 +1706,7 @@ Constitutional memories are rules that never change: coding standards, architect
 
 **Q: How much disk space does the database use?**
 
-A typical project with a few hundred memory files uses 10-50 MB. The vector table (1024-dimension float32 embeddings) is the largest contributor. Check with `memory_stats` using `includeScores: true`.
+A typical project with a few hundred indexed packet docs and generated continuity artifacts uses 10-50 MB. The vector table (1024-dimension float32 embeddings) is the largest contributor. Check with `memory_stats` using `includeScores: true`.
 
 ---
 

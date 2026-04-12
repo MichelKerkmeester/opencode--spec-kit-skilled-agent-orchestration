@@ -129,7 +129,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - phase_names = [from Q7 or --phase-names, or null for auto-generate]
 
 9. Execute background operations:
-   - IF memory_choice == A: Load most recent memory file
+   - IF memory_choice == A: Load the most recent indexed continuity support artifact
    - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
 
@@ -310,7 +310,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
-**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to create memory files directly.
+**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity support artifacts directly; the script refreshes the indexed support artifact while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
 
 **Step 14 (Session Handover Check):** Display handover prompt offering `/spec_kit:handover`. Recommended if: continuing later, another dev may pick up, implementation has nuances. Wait for user response before marking workflow complete.
 

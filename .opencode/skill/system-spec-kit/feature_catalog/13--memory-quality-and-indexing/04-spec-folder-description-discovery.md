@@ -36,7 +36,7 @@ vector queries. If the target folder can be identified from the description
 alone, the system skips full-corpus search entirely. Runs behind the
 `SPECKIT_FOLDER_DISCOVERY` flag (default ON).
 
-Memory filename collisions are prevented by `ensureUniqueMemoryFilename()`,
+Generated continuity artifact filename collisions are prevented by `ensureUniqueMemoryFilename()`,
 which appends `-1`, `-2`, etc. suffixes when a filename already exists in
 the target directory.
 

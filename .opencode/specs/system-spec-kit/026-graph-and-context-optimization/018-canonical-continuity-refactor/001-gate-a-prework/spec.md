@@ -4,7 +4,7 @@ title: "Gate A — Pre-work"
 feature: phase-018-gate-a-prework
 level: 2
 status: complete
-closed_by_commit: d35fc6e9a
+closed_by_commit: TBD
 parent: 018-canonical-continuity-refactor
 gate: A
 description: "Remove known template and packet-prep blockers before Gate B schema and runtime work begins."
@@ -38,7 +38,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Planned |
+| **Status** | Complete |
 | **Created** | 2026-04-11 |
 | **Branch** | TBD — assigned when Gate A implementation kicks off |
 <!-- /ANCHOR:metadata -->

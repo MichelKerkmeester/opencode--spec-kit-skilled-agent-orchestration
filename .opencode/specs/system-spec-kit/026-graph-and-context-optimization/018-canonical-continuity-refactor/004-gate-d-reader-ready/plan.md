@@ -206,9 +206,9 @@ Fixture + telemetry -------------------------------------------------┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Baseline benchmark numbers captured before reader retarget lands.
-- [ ] Archive metrics and `resume.fast_path_source` dashboard confirmed.
-- [ ] Stable fixture corpus checked into the expected test lane.
+- [x] Baseline benchmark numbers captured before reader retarget lands. [Evidence: Gate D benchmark suite passed on 2026-04-12 across `tests/gate-d-benchmark-session-resume.vitest.ts`, `tests/gate-d-benchmark-memory-search.vitest.ts`, and `tests/gate-d-trigger-perf-benchmark.vitest.ts`]
+- [x] Archive metrics and `resume.fast_path_source` dashboard behavior confirmed. [Evidence: `tests/session-bootstrap-gate-d.vitest.ts`, `tests/gate-d-regression-ablation-drift.vitest.ts`, and `tests/gate-d-resume-perf.vitest.ts` passed on 2026-04-12]
+- [x] Stable fixture corpus checked into the expected test lane. [Evidence: the 2026-04-12 Gate D sweep passed `tests/memory-context.resume-gate-d.vitest.ts`, `tests/gate-d-regression-session-dedup.vitest.ts`, and `tests/gate-d-regression-trigger-fast-match.vitest.ts`]
 
 ### Rollback Procedure
 1. Revert the reader-handler patch set and disable the doc-first resume ladder.

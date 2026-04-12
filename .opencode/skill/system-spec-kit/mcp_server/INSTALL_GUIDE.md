@@ -486,7 +486,7 @@ opencode
 **Index new memories:**
 ```
 # Ask your AI assistant:
-"Scan for new memory files and index them"
+"Scan for new packet continuity docs and supporting artifacts"
 # This calls memory_index_scan() internally
 ```
 
@@ -552,7 +552,7 @@ Query expansion activates automatically when you use `mode="deep"`.
 **Key parameters:**
 - `query`: Natural language search query
 - `limit`: Max results (default 10)
-- `minState`: Minimum memory state (HOT, WARM, COLD, DORMANT, ARCHIVED)
+- `minState`: Minimum active memory state (HOT, WARM, COLD, DORMANT)
 - `intent`: Task intent for weight adjustments (add_feature, fix_bug, refactor, etc.)
 - `includeContent`: Embed full file content in results
 
@@ -560,13 +560,13 @@ Query expansion activates automatically when you use `mode="deep"`.
 
 `memory_match_triggers()` provides sub-50ms keyword-based matching. Use it for immediate context surfacing at the start of a conversation.
 
-### memory_save: Index a Memory File
+### memory_save: Index a Continuity Source
 
-`memory_save()` indexes a single new or updated memory file into the database. For bulk indexing, use `memory_index_scan()` instead.
+`memory_save()` indexes a single new or updated continuity-bearing document into the database. For bulk indexing, use `memory_index_scan()` instead.
 
 ### memory_index_scan: Bulk Indexing
 
-`memory_index_scan()` scans the workspace for new or changed memory files and indexes them.
+`memory_index_scan()` scans the workspace for new or changed packet continuity docs and supporting generated context artifacts and indexes them.
 
 **Options:**
 - `force`: Re-index all files, ignoring content hash
@@ -699,7 +699,7 @@ I need to add a new feature for user profiles
 # After updating spec docs or canonical continuity surfaces in a packet
 
 # Ask your AI:
-"Scan for new memory files and index them"
+"Scan for new packet continuity docs and supporting artifacts"
 ```
 
 **Behind the scenes:**
@@ -736,7 +736,7 @@ sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
 # Shows the memory count
 
 # If 0 or very low:
-# Ask your AI: "Index all memory files"
+# Ask your AI: "Reindex packet continuity docs and supporting artifacts"
 
 # Restart your AI client after indexing completes
 ```
@@ -860,7 +860,7 @@ sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
   "SELECT embedding_status, COUNT(*) FROM memory_index GROUP BY embedding_status"
 ```
 
-Recovery: ask your AI "Index all memory files" (calls `memory_index_scan({ force: true })`). Restart your MCP client after manual database operations.
+Recovery: ask your AI "Reindex packet continuity docs and supporting artifacts" (calls `memory_index_scan({ force: true })`). Restart your MCP client after manual database operations.
 
 **MCP server not appearing in tools**
 
@@ -961,10 +961,10 @@ cp .opencode/skill/system-spec-kit/mcp_server/database/rollback-YYYYMMDD-HHMMSS.
 
 **Step 7: Restart your AI client and re-index**
 
-Restart OpenCode, Claude Code, or Claude Desktop. Then ask your AI assistant to index all memory files:
+Restart OpenCode, Claude Code, or Claude Desktop. Then ask your AI assistant to reindex packet continuity docs and supporting artifacts:
 
 ```
-Index all memory files
+Reindex packet continuity docs and supporting artifacts
 ```
 
 This calls `memory_index_scan({ force: true })` to repopulate the search index from the restored database.

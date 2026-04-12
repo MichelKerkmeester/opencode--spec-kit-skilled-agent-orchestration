@@ -564,7 +564,7 @@ workflow:
 
   step_8_save_context:
     purpose: Save conversation context
-    activities: [Invoke system-spec-kit skill, Preserve decisions/insights/changes, Index memory file for search]
+    activities: [Invoke system-spec-kit skill, Preserve decisions/insights/changes, Index generated continuity artifact for search]
     tool_invocation:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: "Activate context saving"
@@ -585,7 +585,7 @@ workflow:
       mcp_tool: memory_save
       invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__implementation_session.md" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after memory file written to disk"
+      when: "Immediately after the generated continuity artifact is written to disk"
     anchor_requirements:
       enforcement: MANDATORY
       minimum_anchors: 2

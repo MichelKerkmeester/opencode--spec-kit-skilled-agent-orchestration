@@ -285,7 +285,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_TYPED_TRAVERSAL` | ON | R-011 | Sparse-first policy + intent-aware edge traversal. Density < 0.5 constrains to 1-hop. Score: seedScore * edgePrior * hopDecay * freshness |
 | `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | ON | R-011 | Structured recovery payloads for empty/weak search results. Classifies outcome, diagnoses cause, suggests alternatives |
 | `SPECKIT_RESULT_CONFIDENCE_V1` | ON | R-011 | Per-result calibrated confidence from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker (0.20), anchor density (0.15) |
-| `SPECKIT_BATCH_LEARNED_FEEDBACK` | ON | R-011 | Weekly batch feedback learning. Confidence-weighted signals (strong=1.0, medium=0.5, weak=0.1), min-support 3 sessions, boost-cap 0.10. Shadow-only |
+| `SPECKIT_BATCH_LEARNED_FEEDBACK` | ON | R-011 | Weekly batch feedback learning. Confidence-weighted signals (strong=1.0, medium=0.5, weak=0.1), min-support 3 sessions, boost-cap 0.10. Audit-only until promoted |
 | `SPECKIT_ASSISTIVE_RECONSOLIDATION` | ON | R-011 | Three-tier assistive reconsolidation: auto-merge (>=0.96), review (>=0.88), keep-separate (<0.88). Review-tier logs recommendation only |
 | `SPECKIT_RESULT_EXPLAIN_V1` | ON | R-011 | Two-tier result explainability: slim (summary + topSignals) and debug (per-channel breakdown). Set `false` to disable |
 | `SPECKIT_RESPONSE_PROFILE_V1` | ON | R-011 | Mode-aware response profiles: quick, research, resume, debug. Set `false` to disable. Original response when profile omitted |

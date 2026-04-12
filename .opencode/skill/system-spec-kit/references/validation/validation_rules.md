@@ -176,7 +176,7 @@ cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007
 ### Excluded Paths
 
 - `**/scratch/**` - Scratch files are never scanned
-- `**/memory/**` - Memory files use different validation (ANCHORS_VALID)
+- `**/memory/**` - Generated continuity artifacts use different validation (ANCHORS_VALID)
 - `**/templates/**` - Template files are expected to have placeholders
 
 ### Examples
@@ -481,11 +481,11 @@ Add evidence to non-P2 items:
 ## 9. ANCHORS_VALID
 
 **Severity:** ERROR  
-**Description:** Validates that memory files use proper ANCHOR format with matching open/close pairs.
+**Description:** Validates that generated continuity artifacts and other indexed support docs use proper ANCHOR format with matching open/close pairs.
 
 ### What Are Anchors?
 
-Anchors are structured markers that define semantic boundaries in memory files. They enable:
+Anchors are structured markers that define semantic boundaries in indexed continuity sources. They enable:
 - Targeted memory retrieval
 - Section-specific context loading
 - Semantic search indexing

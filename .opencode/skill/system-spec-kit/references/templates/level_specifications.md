@@ -757,16 +757,17 @@ Some templates are not level-specific but can be used at any documentation level
 - Even simple Level 1 tasks benefit from documenting what was actually done
 - Each level's template is progressively more detailed to match the complexity expectations
 
-### Auto-Generated Context (Not Templates)
+### Canonical Continuity (Not Templates)
 
-| Folder | Purpose | Creation Method |
-|--------|---------|-----------------|
-| `memory/` | Session context preservation | `generate-context.js` runtime script via `/memory:save` |
+| Surface | Purpose | Creation Method |
+|---------|---------|-----------------|
+| `_memory.continuity` in `implementation-summary.md` | Thin packet continuity state for resume and handoff recovery | `generate-context.js` runtime script via `/memory:save` |
 | `scratch/` | Temporary workspace (disposable) | Manual creation (no template needed) |
 
 **Important:**
-- Memory files are auto-generated and should NOT be created manually
+- Canonical continuity is script-managed and should NOT be authored manually
 - Use `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' specs/###-folder/`
+- Recovery should follow `handover.md -> _memory.continuity -> spec docs`
 - Scratch folder contents are temporary and should be cleaned up after work completes
 
 ---
@@ -848,8 +849,8 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - [handover.md](../../templates/handover.md) - Session context transfer
 - [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation
 
-**Non-Template Folders:**
-- `memory/` - Context preservation (auto-generated via generate-context.js)
+**Non-Template Helpers:**
+- canonical continuity inside packet docs, primarily `_memory.continuity` in `implementation-summary.md`
 - `scratch/` - Temporary workspace (create ad-hoc files as needed)
 
 ### Related Skills

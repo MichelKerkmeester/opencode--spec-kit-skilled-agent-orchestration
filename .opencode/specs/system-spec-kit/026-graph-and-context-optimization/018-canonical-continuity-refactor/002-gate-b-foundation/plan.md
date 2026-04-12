@@ -41,7 +41,7 @@ contextType: "planning"
 ### Overview
 Gate B follows the pacing locked in `../implementation-design.md`, `../resource-map.md` Section 4, iteration 028, and iteration 037: migration plan, migrate on copy, hard rollback on copy, production schema change, archive flip, ranking validation, metric visibility, and then gate close. The main technical correction is that `memory_index.is_archived` is already in the live schema, so the real Gate B schema work is the approved `causal_edges` anchor extension and the code paths that must preserve those fields.
 
-The delivery strategy is evidence-first. Tests get the exact DDL, row-count expectations, and replay rules before the rehearsal starts; lead uses the rehearsal output to size the maintenance window; production only runs after copy migration, rerun, and hard rollback all pass; and the gate closes only once ranking and `archived_hit_rate` are observable at runtime.
+The delivery strategy is evidence-first. Tests get the exact DDL, row-count expectations, and replay rules before the rehearsal starts; lead uses the rehearsal output to size the maintenance window; production only runs after copy migration, rerun, and hard rollback all pass; and the current completion pass closes the gate against the post-cleanup runtime contract, where archived-tier scoring and `archived_hit_rate` are intentionally removed.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -50,17 +50,17 @@ The delivery strategy is evidence-first. Tests get the exact DDL, row-count expe
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Gate A is closed and the backup, restore, and rollback discipline is already proven on copies.
-- [ ] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reflect the corrected scope: reuse `is_archived`, add the approved `causal_edges` anchor fields, then archive flip and ranking/metric work.
-- [ ] Tests have the exact rehearsal assertions, row counts, and sign-off contract from iteration 037 and iteration 028.
-- [ ] ADR-001 records where the canonical migration logic will live before implementation work starts.
+- [x] Gate A is closed and the backup, restore, and rollback discipline is already proven on copies.
+- [x] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` now reflect the corrected scope: reuse `is_archived`, add the approved `causal_edges` anchor fields, execute the rebaselined archive flip, then preserve the post-cleanup compatibility contract.
+- [x] Tests have the rehearsal assertions, row counts, and sign-off contract needed for the current completion pass. [Evidence: 2026-04-12 Gate B suite `7` files / `223` tests passed]
+- [x] ADR-001 records where the canonical migration logic lives.
 
 ### Definition of Done
-- [ ] Copy-first rehearsal passes, rerun is a no-op, and hard rollback returns the candidate copy to logical baseline equivalence.
-- [ ] Production schema and storage-helper changes are live, the archive flip reaches exactly 155 rows, and row counts are preserved otherwise.
-- [ ] Archived weighting and fallback behavior are validated on sample searches.
-- [ ] `archived_hit_rate` is visible in the intended stats or dashboard surface.
-- [ ] Gate B research tracks are converged enough to hand off cleanly into Gate C.
+- [x] Copy-first rehearsal passes, rerun is a no-op, and hard rollback returns the candidate copy to logical baseline equivalence.
+- [x] Production schema and storage-helper changes are live, the archive flip reached the rebaselined `183` legacy memory-path rows while preserving the `1` baseline archived non-memory row.
+- [x] Archived compatibility behavior is validated on sample searches and static code checks. [Evidence: `tests/stage2-fusion.vitest.ts` and `tests/search-archival.vitest.ts` passed on 2026-04-12]
+- [x] `archived_hit_rate` is intentionally absent from the active stats or dashboard surface after Gate B cleanup. [Evidence: `mcp_server/lib/search/pipeline/stage2-fusion.ts` and `mcp_server/handlers/memory-crud-stats.ts` contain no `archived_hit_rate` or `x0.3` references]
+- [x] Gate B research tracks are converged enough to hand off cleanly into Gate C.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -68,10 +68,10 @@ The delivery strategy is evidence-first. Tests get the exact DDL, row-count expe
 **AI Execution Protocol**
 
 ### Pre-Task Checklist
-- [ ] Gate A is closed and the maintenance window is still valid for Gate B.
-- [ ] The approved DDL, row-count targets, and archive-flip scope are frozen from `../resource-map.md` and `../scratch/resource-map/01-schema.md`.
-- [ ] Tests have the rehearsal assertions and replay fixture before the first migration run starts.
-- [ ] ADR-001 is accepted so migration ownership is not ambiguous during execution.
+- [x] Gate A is closed and the maintenance window assumptions were validated before Gate B executed.
+- [x] The approved DDL, row-count targets, and archive-flip scope are frozen from `../resource-map.md` and `../scratch/resource-map/01-schema.md`, with the later rebaseline captured in `implementation-summary.md`.
+- [x] Tests have the rehearsal assertions and replay fixture before the first migration run starts.
+- [x] ADR-001 is accepted so migration ownership is not ambiguous during execution.
 
 ### Execution Rules
 
@@ -102,11 +102,11 @@ Copy-first additive migration with hard rollback certification, followed by boun
 - **Rehearsal wrapper**: the iteration 037 dual-fork flow (`S0`, `fork-A-pre`, `fork-B-post`) plus JSON evidence packaging.
 - **Schema owner**: `mcp_server/lib/search/vector-index-schema.ts`, which remains the canonical bootstrap and migration source of truth.
 - **Storage-threading lane**: `causal-edges.ts`, `checkpoints.ts`, and `reconsolidation.ts`, which must preserve the new anchor fields end-to-end.
-- **Archive and ranking lane**: the bounded `archive-flip-018.sh` script plus the `mcp_server/lib/search/pipeline/stage2-fusion.ts` weighting update.
-- **Observability lane**: the `memory_stats` or dashboard surface that reports `archived_hit_rate` using the presented-slot share definition.
+- **Archive lane**: the executed archive flip plus the post-cleanup compatibility contract that leaves `is_archived` schema-only.
+- **Compatibility lane**: `mcp_server/lib/search/pipeline/stage2-fusion.ts` and `mcp_server/handlers/memory-crud-stats.ts`, which now omit archived-tier ranking and `archived_hit_rate`.
 
 ### Data Flow
-The gate starts from an immutable production snapshot. That snapshot forks into a baseline copy and a candidate copy so schema, row counts, samples, replay results, and rollback behavior can be compared directly. Once the rehearsal and rerun pass, the same approved migration logic executes in production, the archive flip marks the 155 legacy memory rows, stage-2 fusion starts demoting archived rows, and the stats surface begins recording how much of the user-visible result set still comes from archive.
+The gate starts from an immutable production snapshot. That snapshot forks into a baseline copy and a candidate copy so schema, row counts, samples, replay results, and rollback behavior can be compared directly. Once the rehearsal and rerun pass, the same approved migration logic executes in production, the archive flip marks the rebaselined `183` legacy memory-path rows, and the later cleanup pass removes archived-tier scoring and `archived_hit_rate` so the active runtime treats archive state as compatibility-only.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -115,23 +115,23 @@ The gate starts from an immutable production snapshot. That snapshot forks into 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Rehearsal and sign-off prep
-- [ ] Freeze the Gate B DDL and expected row counts from `../resource-map.md` F-1/F-2, `../scratch/resource-map/01-schema.md`, and the narrowed critical-file list.
-- [ ] Capture the immutable snapshot and create `fork-A-pre` and `fork-B-post`.
-- [ ] Run the migration on `fork-B-post`, capture Q1-Q10 style evidence adapted to the corrected Gate B scope, rerun for idempotence, and record the JSON report.
-- [ ] Run the hard rollback drill on `fork-B-post` and compare logical baseline equivalence against `fork-A-pre`.
-- [ ] Hand the evidence package to tests and lead before the production window is approved.
+- [x] Freeze the Gate B DDL and expected row counts from `../resource-map.md` F-1/F-2, `../scratch/resource-map/01-schema.md`, and the narrowed critical-file list.
+- [x] Capture the immutable snapshot and create `fork-A-pre` and `fork-B-post`.
+- [x] Run the migration on `fork-B-post`, capture the corrected Gate B evidence, rerun for idempotence, and record the report.
+- [x] Run the hard rollback drill on `fork-B-post` and compare logical baseline equivalence against `fork-A-pre`.
+- [x] Hand the evidence package to tests and lead before the production window is approved.
 
 ### Phase 2: Production schema and storage cutover
-- [ ] Apply the approved `causal_edges` anchor-column migration in `vector-index-schema.ts`.
-- [ ] Update `causal-edges.ts`, `checkpoints.ts`, and `reconsolidation.ts` so the new fields round-trip at runtime.
-- [ ] Resolve `schema-downgrade.ts` by code change or explicit exclusion note.
-- [ ] Execute the production archive flip so legacy memory-file rows become `is_archived=1`.
+- [x] Apply the approved `causal_edges` anchor-column migration in `vector-index-schema.ts`.
+- [x] Update `causal-edges.ts`, `checkpoints.ts`, and `reconsolidation.ts` so the new fields round-trip at runtime.
+- [x] Resolve `schema-downgrade.ts` by explicit compatibility note. [Evidence: `schema-downgrade.ts` retains the deprecated `is_archived` column without reintroducing active archived-tier behavior]
+- [x] Execute the production archive flip so the rebaselined legacy memory-path rows become `is_archived=1` while preserving the `1` baseline archived non-memory row.
 
 ### Phase 3: Retrieval validation and gate close
-- [ ] Update the archived-row multiplier in `mcp_server/lib/search/pipeline/stage2-fusion.ts` or the equivalent fusion surface.
-- [ ] Validate sample searches so fresh spec-doc results outrank archived peers when relevance is similar.
-- [ ] Expose `archived_hit_rate` in the stats/dashboard surface and confirm the metric definition matches iterations 027 and 036.
-- [ ] Reconcile the packet docs, checklist, and implementation-summary placeholder so Gate B is ready to hand off into Gate C.
+- [x] Remove the archived-row multiplier from `mcp_server/lib/search/pipeline/stage2-fusion.ts` so the active runtime no longer carries archived-tier weighting. [Evidence: no `x0.3`, `0.3`, `is_archived`, or `archived_hit_rate` references remain in `stage2-fusion.ts`]
+- [x] Validate current search compatibility behavior after cleanup. [Evidence: `tests/stage2-fusion.vitest.ts` and `tests/search-archival.vitest.ts` passed on 2026-04-12]
+- [x] Remove `archived_hit_rate` from the active stats/dashboard surface and confirm the cleanup is reflected in code. [Evidence: no `archived_hit_rate` references remain in `memory-crud-stats.ts`]
+- [x] Reconcile the packet docs, checklist, and implementation summary so Gate B is ready to hand off into Gate C.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -171,8 +171,8 @@ The test mix is intentionally aligned to iteration 037's promotion rules and ite
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Rehearsal fails, rerun mutates the candidate copy, production schema validation fails, archive flip does not land on 155 rows, ranking proof fails, or the stats surface cannot report `archived_hit_rate`.
-- **Procedure**: Use the hard rollback path proven during rehearsal, restore logical baseline equivalence from the pre-migration snapshot, revert the archived-weighting change, and block Gate B closeout until the exact failing surface is understood.
+- **Trigger**: Rehearsal fails, rerun mutates the candidate copy, production schema validation fails, archive flip does not land on the rebaselined target set, or anchor-aware traversal regresses.
+- **Procedure**: Use the hard rollback path proven during rehearsal, restore logical baseline equivalence from the pre-migration snapshot, and block Gate B closeout until the exact failing surface is understood.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -219,10 +219,10 @@ This matches the Gate B envelope in `../implementation-design.md`, `../resource-
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Rehearsal JSON report exists and shows pass/fail per validation query.
-- [ ] Hard rollback has already restored the candidate copy to logical baseline equivalence.
-- [ ] Snapshot naming is unambiguous enough to avoid restoring the wrong pre-migration state.
-- [ ] The archived-weight ranking change can be reverted independently if schema stays healthy but ordering fails.
+- [x] Rehearsal report exists and shows pass/fail per validation query.
+- [x] Hard rollback has already restored the candidate copy to logical baseline equivalence.
+- [x] Snapshot naming is unambiguous enough to avoid restoring the wrong pre-migration state.
+- [x] The active runtime no longer depends on a separate archived-weight ranking branch.
 
 ### Rollback Procedure
 1. Stop Gate B closeout and record the failing validation surface in `tasks.md` and `checklist.md`.

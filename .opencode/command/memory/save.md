@@ -101,8 +101,8 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 
 #### Check 1: Anchor Format Validation
 
-- Scan conversation for existing memory file references
-- If memory files were read during session, verify they contain BOTH opening AND closing ANCHOR tags
+- Scan conversation for existing continuity support artifact references
+- If support artifacts under `memory/` were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
 - Pattern: `<!-- ANCHOR:id --> ... <!-- /ANCHOR:id -->`
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)
@@ -199,7 +199,7 @@ Extract from the current conversation:
 
 ### Step 3: Anchor Generation (MANDATORY)
 
-Every memory file MUST include anchors for section-specific retrieval (enables 93% token savings).
+Every generated continuity support artifact MUST include anchors for section-specific retrieval (enables 93% token savings).
 
 **Anchor Format:**
 ```html
@@ -259,7 +259,7 @@ Content...
 
 ### Step 4: Create JSON Data (AI CONSTRUCTS THIS)
 
-**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. The script requires proper JSON input to produce high-quality memory files.
+**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. The script requires proper JSON input to produce high-quality continuity artifacts plus canonical spec-doc updates.
 
 **Required JSON Structure:**
 ```json
@@ -356,7 +356,7 @@ rm "$TEMP_FILE"
 - `decision-record.md`
 - frontmatter `_memory.continuity`
 
-If compatibility artifacts are emitted during migration cleanup, they are secondary to the canonical packet update and should not be treated as the source of truth.
+If compatibility artifacts are emitted during migration cleanup, they remain secondary to the canonical packet update and should not be treated as the source of truth.
 
 ### Step 6: Report Results
 
@@ -528,7 +528,7 @@ spec_kit_memory_memory_index_scan({
 })
 ```
 
-`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing memory file. Used by the `[t]` edit triggers action in the post-save review.
+`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing indexed continuity support artifact. Used by the `[t]` edit triggers action in the post-save review.
 
 ---
 
@@ -578,7 +578,7 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 
 | Parameter        | Type    | Default    | Description                                         |
 | ---------------- | ------- | ---------- | --------------------------------------------------- |
-| `filePath`       | string  | *required* | Absolute path to the memory file                    |
+| `filePath`       | string  | *required* | Absolute path to the generated continuity support artifact |
 | `force`          | boolean | false      | Force re-index even if content hash unchanged       |
 | `dryRun`         | boolean | false      | Validate only without saving                        |
 | `skipPreflight`  | boolean | false      | Skip pre-flight validation checks (not recommended) |
@@ -642,7 +642,7 @@ Prevents redundant saves of the same conversation content (accidental duplicates
 
 **Detection:** Generate SHA-256 fingerprint of (topic + files + timeframe), compare against most recent memory in target folder. If match AND time delta < 1 hour → DUPLICATE DETECTED. Delta 1-4h → suggest review. Delta > 4h → proceed normally.
 
-> **026 Compaction Note:** Post-026 context compaction uses bootstrap hardening (`session_bootstrap()`) rather than the removed `context-prime` agent. When a compaction event triggers a save, the dedup check uses the compacted session's fingerprint. If the pre-compaction session already saved context to the same folder within 1 hour, the duplicate detection fires as expected.
+> **026 Compaction Note:** Post-026 context compaction uses bootstrap hardening (`session_bootstrap()`) on the canonical resume/bootstrap path. When a compaction event triggers a save, the dedup check uses the compacted session's fingerprint. If the pre-compaction session already saved context to the same folder within 1 hour, the duplicate detection fires as expected.
 
 **User Options on Duplicate:**
 

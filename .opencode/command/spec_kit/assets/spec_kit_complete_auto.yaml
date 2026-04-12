@@ -968,13 +968,13 @@ workflow:
     - Preserve full dialogue flow with decisions
     - Auto-generate workflow flowcharts
     - Preserve file changes and implementation details
-    - Index memory file for immediate search availability
+    - Index the generated continuity support artifact for immediate search availability
     memory_creation:
       enforcement: HARD_BLOCK
       method: "MUST use structured JSON input with generate-context.js"
       command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]"
-      forbidden: { tools: [Write, Edit], action: "NEVER manually create memory files", paths: ["*/memory/*.md", "specs/*/memory/*"] }
-      violation_recovery: "DELETE manual file → run generate-context.js → verify ANCHORs → index via memory_save"
+      forbidden: { tools: [Write, Edit], action: "NEVER manually author continuity support artifacts under memory/", paths: ["*/memory/*.md", "specs/*/memory/*"] }
+      violation_recovery: "DELETE the manually authored support artifact -> run generate-context.js -> verify ANCHORs -> index via memory_save"
     tool_invocation:
       command: 'Read(".opencode/skill/system-spec-kit/SKILL.md")'
     outputs:
@@ -985,7 +985,7 @@ workflow:
       mcp_tool: memory_save
       invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__session.md" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after memory file is written to disk"
+      when: "Immediately after the support artifact is written to disk"
 
     anchor_requirements:
       enforcement: MANDATORY

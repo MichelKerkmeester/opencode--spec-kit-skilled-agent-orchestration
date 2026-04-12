@@ -232,7 +232,7 @@ Use `/spec_kit:debug` after 3 or more failed fix attempts on the same task. The 
 
 **Q: Can I resume a spec folder that was never explicitly handed over?**
 
-Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder regardless of whether a handover document exists. It prefers a fresh `handover.md`, then uses resume-mode memory retrieval, `CONTINUE_SESSION.md`, and anchored search fallbacks when needed. If no saved state is found, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session improves the quality of what `resume` can recover, but it is not required.
+Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder even if you never wrote a handover. The canonical recovery ladder is `handover.md` -> `_memory.continuity` -> canonical spec docs. If one rung is missing, resume continues with the next packet-local source. If no saved state exists anywhere in that ladder, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session still improves the first recovery pass, but it is not required.
 
 **Q: How does `:with-phases` relate to the parent spec folder?**
 

@@ -459,7 +459,7 @@ SEMANTIC MEMORY (context/research):
   memory_search()         # Hybrid search (use includeContent: true for full content)
   memory_match_triggers() # Fast trigger matching
   memory_list()           # Browse memories
-  memory_save()           # Index memory file
+  memory_save()           # Index generated continuity support artifact
   memory_index_scan()     # Bulk indexing
 
 SEQUENTIAL THINKING (optional):
@@ -475,7 +475,7 @@ SEMANTIC MEMORY (context/research):
   memory_search()         # Hybrid search (use includeContent: true for full content)
   memory_match_triggers() # Fast trigger matching
   memory_list()           # Browse memories
-  memory_save()           # Index memory file
+  memory_save()           # Index generated continuity support artifact
   memory_index_scan()     # Bulk indexing
 ```
 
@@ -612,7 +612,7 @@ Commands are slash-prefixed shortcuts for common workflows.
 | `/memory:search`  | Unified retrieval and analysis             | Context, epistemic, causal data |
 | `/memory:learn`   | Manage constitutional memories             | Memory rule files and budget    |
 | `/memory:manage`  | Manage database, ingest, and shared spaces | Operational status or mutations |
-| `/memory:save`    | Save current context                       | Memory file in spec folder      |
+| `/memory:save`    | Save current context                       | Canonical continuity refresh in the active spec packet |
 
 **SpecKit Commands (8)**
 
@@ -939,7 +939,7 @@ User Message
 ### Post-Execution Rules
 
 **Memory Save Rule (HARD BLOCK)**
-- Trigger: "save context", "save memory", `/memory:save`, memory file creation
+- Trigger: "save context", "save memory", `/memory:save`, continuity support artifact refresh
 - If spec folder established at Gate 3, use it (do not re-ask)
 - Script: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
 - Violation: Write tool on `memory/` path means DELETE and re-run via script

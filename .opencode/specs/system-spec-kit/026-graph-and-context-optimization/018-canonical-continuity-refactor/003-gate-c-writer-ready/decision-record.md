@@ -1,24 +1,23 @@
 ---
 title: "Gate C — Writer Ready"
-description: "Gate C ADR set for the canonical writer boundaries, validator ordering, classifier fallback, proof guardrails, and continuity schema."
+description: "Gate C ADR set for the canonical writer boundaries, validator ordering, classifier fallback, rollback-safe writer guardrails, and continuity schema."
 trigger_phrases: ["gate c", "writer ready", "decision record", "phase 018", "continuity"]
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
-gate: "C"
-parent: "018-canonical-continuity-refactor"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
-    last_updated_at: "2026-04-11T20:11:09Z"
+    last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Aligned ADRs with current Gate C proof wording"
-    next_safe_action: "Patch implementation placeholder"
+    recent_action: "Accepted Gate C ADR set during the completion pass"
+    next_safe_action: "Keep Gate C ADRs bundled with the final packet docs"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/decision-record.md"]
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Gate C — Writer Ready
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -36,13 +35,13 @@ A single compound decision record carrying the five architectural choices needed
 | **Level** | 3+ |
 | **Gate** | C |
 | **Date** | 2026-04-11 |
-| **Status** | Proposed |
+| **Status** | Accepted |
 
 ---
 
 ### Sub-decision 1: Four new writer modules
 
-**Deciders**: Packet owner, runtime owner, validation reviewer | **Status**: Proposed | **Date**: 2026-04-11
+**Deciders**: Packet owner, runtime owner, validation reviewer | **Status**: Accepted | **Date**: 2026-04-11
 
 <!-- ANCHOR:adr-001-context -->
 ### Context
@@ -130,7 +129,7 @@ A single compound decision record carrying the five architectural choices needed
 
 ### Sub-decision 2: Tier 3 classifier uses a strict JSON LLM contract
 
-**Deciders**: Runtime owner, routing owner, QA reviewer | **Status**: Proposed | **Date**: 2026-04-11
+**Deciders**: Runtime owner, routing owner, QA reviewer | **Status**: Accepted | **Date**: 2026-04-11
 
 ### Context
 
@@ -206,7 +205,7 @@ See `../research/iterations/iteration-031.md` section 3 "Prompt template" and se
 
 ### Sub-decision 3: The validator bridge enforces ordered, fail-closed writer rules
 
-**Deciders**: Validation owner, runtime owner, packet owner | **Status**: Proposed | **Date**: 2026-04-11
+**Deciders**: Validation owner, runtime owner, packet owner | **Status**: Accepted | **Date**: 2026-04-11
 
 ### Context
 
@@ -279,26 +278,26 @@ The current shell validator does not understand continuity blocks, merge legalit
 
 ---
 
-### Sub-decision 4: Gate C uses proof-mode control-plane guardrails
+### Sub-decision 4: Gate C keeps rollback-safe writer guardrails without observation-window state
 
-**Deciders**: Incident commander, runtime owner, QA/on-call lead | **Status**: Proposed | **Date**: 2026-04-11
+**Deciders**: Incident commander, runtime owner, QA/on-call lead | **Status**: Accepted | **Date**: 2026-04-11
 
 ### Context
 
-Gate C still needs an auditable control plane. Iterations 032, 033, and 034 remain useful for thresholds, event names, and rollback signals, yet Gate C should describe only the non-serving proof path it still owns.
+Gate C still needs auditable rollback-safe writer behavior. Iterations 032, 033, and 034 remain useful historical inputs for thresholds and rollback signals, but the live Phase 018 contract no longer carries an observation window, `shadow_only` state, or downstream promotion ladder.
 
 **Constraints**:
-- Gate C stays non-serving while proof evidence is collected.
-- No downstream promotion ladder is part of the live Gate C contract.
-- Correctness-loss incidents for `resume` and `trigger_match` must block handoff immediately.
+- No observation window or `shadow_only` proving state is part of the live Gate C contract.
+- Canonical writes must fail closed on routed validation, refusal, or rollback errors.
+- Gate D and Gate E inherit packet-local evidence and rollback guarantees, not live proving-state transitions.
 
 ---
 
 ### Decision
 
-**We chose**: proof-mode control-plane guardrails that record when Gate C proof collection is active, blocked, or disabled, without treating downstream promotion states as the packet's source of truth.
+**We chose**: rollback-safe writer guardrails centered on routed validation, pending-route/manual-review refusal, and atomic promotion rollback, without separate proof-mode state.
 
-**How it works**: Gate C enables non-serving parity and rollback telemetry, emits control-plane events for proof start or failure, and blocks handoff the moment the iter 032/033 thresholds are breached. Any later canonical flip is follow-on work, not part of this packet's live contract.
+**How it works**: Gate C validates before promotion, routes low-confidence content to manual-review artifacts instead of guessing, and restores the original on-disk state when canonical promotion or indexing fails. Any later rollout controls belong to Gate E, not this packet.
 
 ---
 
@@ -306,11 +305,11 @@ Gate C still needs an auditable control plane. Iterations 032, 033, and 034 rema
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Proof-mode guardrails** | Auditable, rollback-safe, aligned with the directive | Requires explicit proof-pack tracking | 9/10 |
+| **Rollback-safe writer guardrails** | Auditable, rollback-safe, aligned with the directive | Requires explicit test and validation coverage | 9/10 |
 | Downstream promotion ladder | Familiar from research | Carries superseded rollout detail into Gate C docs | 3/10 |
 | Direct canonical flip in Gate C | Faster on paper | Blurs Gate C and Gate E responsibilities | 2/10 |
 
-**Why this one**: It keeps rollback visible, preserves the useful event surface, and matches the current direction that Gate C ends with a proof pack rather than a promotion ladder.
+**Why this one**: It keeps rollback visible, preserves manual-review refusal paths, and matches the current direction that Gate C ends on routed writer correctness rather than observation-era proving state.
 
 ---
 
@@ -321,13 +320,13 @@ Gate C still needs an auditable control plane. Iterations 032, 033, and 034 rema
 - Parity, latency, and fingerprint alerts map directly to blocking handoff behavior.
 
 **What it costs**:
-- Control-plane tables and dashboards must exist before claiming success. Mitigation: treat them as P0 Gate C work.
+- Rejection and rollback behavior must stay covered by targeted tests and strict validation. Mitigation: keep them in the Gate C completion subset.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Missing telemetry blocks proof closure | M | Gate C checklist requires live spans and reducers |
+| Missing targeted rollback/refusal coverage blocks close | M | Gate C checklist requires live rejection-path tests and strict validation |
 
 ---
 
@@ -335,11 +334,11 @@ Gate C still needs an auditable control plane. Iterations 032, 033, and 034 rema
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | Proof collection without guardrails is unsafe |
+| 1 | **Necessary?** | PASS | Canonical writes without rollback-safe guardrails are unsafe |
 | 2 | **Beyond Local Maxima?** | PASS | Rejected staged rollout carry-over and direct flip options |
-| 3 | **Sufficient?** | PASS | Active, blocked, and disabled proof states cover Gate C needs |
-| 4 | **Fits Goal?** | PASS | Gate C closes on proof-pack evidence, not rollout time |
-| 5 | **Open Horizons?** | PASS | The same event surface can support later gates without freezing old stage names |
+| 3 | **Sufficient?** | PASS | Validation, refusal, and rollback paths cover Gate C needs |
+| 4 | **Fits Goal?** | PASS | Gate C closes on routed writer correctness, not rollout time |
+| 5 | **Open Horizons?** | PASS | Later gates can add rollout controls without reviving old stage names |
 
 **Checks Summary**: 5/5 PASS
 
@@ -348,16 +347,16 @@ Gate C still needs an auditable control plane. Iterations 032, 033, and 034 rema
 ### Implementation
 
 **What changes**:
-- Add or reuse the Gate C control-plane row, cache semantics, and event log.
-- Wire proof-blocking events to parity, latency, resume, trigger, and fingerprint signals.
+- Keep routed validation, refusal artifacts, and atomic rollback behavior wired to the canonical writer path.
+- Verify rejection-path handling through targeted tests instead of a proving-state control plane.
 
-**How to roll back**: Disable the active proof path, preserve the event trail, and keep the new writer non-serving until the blocking issue is closed.
+**How to roll back**: Restore the original file state when a promoted canonical save is rejected or fails indexing, and keep the writer blocked until the underlying error is resolved.
 
 ---
 
 ### Sub-decision 5: `_memory.continuity` stays thin, 14 fields, 2KB, fail-closed
 
-**Deciders**: Packet owner, validation owner, runtime owner | **Status**: Proposed | **Date**: 2026-04-11
+**Deciders**: Packet owner, validation owner, runtime owner | **Status**: Accepted | **Date**: 2026-04-11
 
 ### Context
 

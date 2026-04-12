@@ -174,9 +174,7 @@ specs/043-add-email-validation/
 ├── spec.md                      (REQUIRED - from spec.md)
 ├── plan.md                      (REQUIRED - from plan.md)
 ├── tasks.md                     (REQUIRED - from tasks.md)
-├── implementation-summary.md    (REQUIRED - from implementation-summary.md)
-└── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.js)
+└── implementation-summary.md    (REQUIRED - from implementation-summary.md, carries `_memory.continuity`)
 ```
 
 **Content expectations:**
@@ -196,9 +194,7 @@ specs/044-modal-component/
 ├── plan.md                      (REQUIRED - from Level 1)
 ├── tasks.md                     (REQUIRED - from Level 1)
 ├── implementation-summary.md    (REQUIRED - from Level 1)
-├── checklist.md                 (REQUIRED - adds QA validation)
-└── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.js)
+└── checklist.md                 (REQUIRED - adds QA validation)
 ```
 
 **Additional expectations:**
@@ -218,9 +214,7 @@ specs/045-user-dashboard/
 ├── implementation-summary.md    (REQUIRED - from Level 2)
 ├── checklist.md                 (REQUIRED - from Level 2)
 ├── decision-record.md           (REQUIRED - architecture decisions)
-├── research/research.md                  (OPTIONAL - comprehensive research)
-└── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.js)
+└── research/research.md         (OPTIONAL - comprehensive research)
 ```
 
 **Additional expectations:**
@@ -240,9 +234,7 @@ specs/046-enterprise-migration/
 ├── implementation-summary.md    (REQUIRED - from Level 3)
 ├── checklist.md                 (REQUIRED - from Level 3, +extended items 100-150, +sign-offs, +compliance)
 ├── decision-record.md           (REQUIRED - from Level 3, +decision authority, +review requirements)
-├── research/research.md                  (OPTIONAL - comprehensive research)
-└── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.js)
+└── research/research.md         (OPTIONAL - comprehensive research)
 ```
 
 **Additional expectations:**
@@ -297,9 +289,9 @@ Accountability reminder (remove after filling):
 -->
 ```
 
-### 5. Memory File Anchors
+### 5. Continuity Artifact Anchors
 
-Memory files in `memory/` folders MUST use paired anchors for semantic indexing:
+Generated continuity artifacts in `memory/` folders MUST use paired anchors for semantic indexing:
 
 **Required Format:**
 ```markdown
@@ -319,7 +311,7 @@ Content that will be indexed...
 - `next-steps` - Planned next actions
 - `context` - Background context
 
-**Generation:** Use `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"###-name","sessionSummary":"..."}' specs/###-name/` to auto-generate properly formatted memory files.
+**Generation:** Use `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"###-name","sessionSummary":"..."}' specs/###-name/` to update the packet's canonical continuity surfaces, primarily `_memory.continuity` inside `implementation-summary.md`.
 
 ---
 

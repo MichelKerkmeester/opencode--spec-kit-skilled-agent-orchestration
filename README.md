@@ -277,8 +277,8 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 
 **Memory Scripts** (10 in `scripts/memory/`):
 
-- **`generate-context.ts`** - Primary workflow for saving session context to memory files
-- **`backfill-frontmatter.ts`** - Add missing frontmatter to existing memory files
+- **`generate-context.ts`** - Primary workflow for updating packet continuity and supporting generated context artifacts
+- **`backfill-frontmatter.ts`** - Add missing frontmatter to existing generated context artifacts and indexed spec docs
 - **`reindex-embeddings.ts`** - Rebuild embedding vectors for stored memories
 - **`cleanup-orphaned-vectors.ts`** - Remove vector entries with no matching memory
 - **`rebuild-auto-entities.ts`** - Regenerate auto-extracted entity catalog
@@ -343,7 +343,7 @@ For the full spec folder workflow, template architecture (81 templates), gate de
 
 ### 🧠 Memory Engine
 
-The Memory Engine is a local-first cognitive memory system built as an MCP server. Memory files are created via `generate-context.js` and stored in spec folders as supporting artifacts. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes supporting context with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
+The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
 The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full 47-tool API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
@@ -409,7 +409,7 @@ Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed var
 - **Auto-promotion** - Memories earn higher tiers through positive validation
 - **Negative feedback** - 30-day decay prevents permanent blacklisting
 
-Five cognitive states: **HOT** >> **WARM** >> **COLD** >> **DORMANT** >> **ARCHIVED**. These are internal retrieval weights, not the continuity or recovery contract.
+Four active cognitive states drive normal retrieval weighting: **HOT** >> **WARM** >> **COLD** >> **DORMANT**.
 
 
 #### CAUSAL GRAPH
@@ -684,7 +684,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 #### MEMORY
 
 **Save**
-- Saves current session context to a timestamped memory file via `generate-context.js`
+- Updates packet continuity and supporting generated context artifacts via `generate-context.js`
 - AI composes structured JSON with session summary, key decisions and findings
 - Indexes immediately for future retrieval via `memory_save()` or `memory_index_scan()`
 
@@ -1059,7 +1059,7 @@ A: Gate 3 blocks file modifications until a spec folder answer is provided. You 
 
 **Q: How does the memory system know what is relevant to my current task?**
 
-A: Memory files use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. For recovery, start with `/spec_kit:resume` and the packet-local continuity ladder `handover.md` -> `_memory.continuity` -> canonical spec docs. After that, `memory_match_triggers()` can do a fast trigger/cognitive pass, while `memory_context()` and `memory_search()` handle deeper retrieval with intent routing, reranking, and filtering.
+A: Packet continuity and any supporting generated context artifacts use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. For recovery, start with `/spec_kit:resume` and the packet-local continuity ladder `handover.md` -> `_memory.continuity` -> canonical spec docs. After that, `memory_match_triggers()` can do a fast trigger/cognitive pass, while `memory_context()` and `memory_search()` handle deeper retrieval with intent routing, reranking, and filtering.
 
 ---
 

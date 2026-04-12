@@ -30,7 +30,7 @@ user_inputs:
 # SESSION DETECTION
 # ─────────────────────────────────────────────────────────────────
 session_detection:
-  priority_order: ["CLI argument", "Deterministic candidate ranking", "Semantic memory search", "Trigger phrase matching", "Most recent memory file by mtime"]
+  priority_order: ["CLI argument", "Deterministic candidate ranking", "Semantic memory search", "Trigger phrase matching", "Most recent indexed continuity support artifact by mtime"]
   note: "Stateless architecture - no .spec-active marker file used. Deterministic ranking is preferred before memory-only fallback."
   deterministic_ranking:
     roots: ["specs/", ".opencode/specs/"]

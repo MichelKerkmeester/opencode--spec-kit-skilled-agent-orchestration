@@ -39,7 +39,7 @@ The constitutional tier is the highest importance level in the Spec Kit Memory s
 
 ### What is the constitutional/ Directory?
 
-The `constitutional/` directory contains memory files that are **always surfaced** at the top of every `memory_search()` result. These are operational rules, safety constraints and critical context that AI agents must always have access to, regardless of what they're searching for.
+The `constitutional/` directory contains constitutional memory docs that are **always surfaced** at the top of every `memory_search()` result. These are operational rules, safety constraints and critical context that AI agents must always have access to, regardless of what they're searching for.
 
 Think of constitutional memories as the "system prompt" for your memory system: rules that apply globally and should never be forgotten.
 
@@ -91,7 +91,7 @@ For spec-folder continuity, constitutional memories are supporting guidance, not
 # 1. Navigate to constitutional directory
 cd .opencode/skill/system-spec-kit/constitutional/
 
-# 2. Create a new constitutional memory file
+# 2. Create a new constitutional memory doc
 touch my-rule.md
 
 # 3. Add required frontmatter and content (see template below)
@@ -268,7 +268,7 @@ Constitutional memories are limited to **~2000 tokens total** per search to prev
 
 ### 5.1 YAML Frontmatter Requirements
 
-Every constitutional memory file MUST have this frontmatter:
+Every constitutional memory doc MUST have this frontmatter:
 
 ```yaml
 ---

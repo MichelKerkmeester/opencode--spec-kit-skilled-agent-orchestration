@@ -21,7 +21,7 @@ Phase 6 is the first follow-on packet after the original five-phase remediation 
 
 ## Research Focus
 
-- Trigger phrase duplication across memory files.
+- Trigger phrase duplication across generated continuity artifacts.
 - Observations and decisions duplication across files.
 - `key_topics` and `FILES` table duplication.
 - `OVERVIEW` and `SUMMARY` boilerplate duplication.

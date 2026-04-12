@@ -4,7 +4,8 @@ description: "Cutover ADRs."
 trigger_phrases: ["gate e", "decision record"]
 importance_tier: "important"
 contextType: "implementation"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"

@@ -76,7 +76,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh --json spe
 
 ### generate-context.js runtime entrypoint
 
-Generates memory files from conversation context for future session recovery.
+Updates the target packet's canonical continuity surfaces from conversation context so future recovery can rebuild from `handover.md -> _memory.continuity -> spec docs`.
 
 **Usage:**
 ```bash
@@ -225,14 +225,14 @@ The `generate-context.js` script orchestrates a 12-step workflow via `workflow.t
 |------|------|-------------|
 | **1** | Load Data | Load collected data from JSON file or preloaded data |
 | **2** | Detect Spec Folder | Find target spec folder with alignment validation |
-| **3** | Setup Context Directory | Create memory directory structure |
+| **3** | Resolve Target Packet | Lock onto the explicit root-spec or phase-folder target |
 | **4-7** | Parallel Extraction | Extract session data, conversations, decisions, diagrams, and workflow flowchart (parallel execution) |
 | **7.5** | Semantic Summary | Generate implementation summary with file change analysis |
-| **8** | Populate Template | Fill context template with extracted data |
-| **9** | Write Files | Atomic file writes with rollback on failure |
-| **9.5** | State Embedding | Embed state in memory file (V13.0 format) |
+| **8** | Populate Continuity Payload | Shape routed packet updates and continuity metadata |
+| **9** | Write Canonical Surfaces | Apply atomic packet updates with rollback on failure |
+| **9.5** | State Embedding | Embed `_memory.continuity` into the routed packet docs |
 | **10** | Success Confirmation | Log summary of saved content |
-| **11** | Semantic Indexing | Generate embeddings and index in vector database |
+| **11** | Semantic Indexing | Re-index the updated packet docs in the vector database |
 | **12** | Retry Processing | Process any pending embeddings from retry queue |
 
 ### Parallel Extraction (Steps 4-7)
@@ -255,8 +255,8 @@ Steps 4-7 run in parallel for performance:
 
 | File | Purpose |
 |------|---------|
-| `{date}_{time}__{topic}.md` | Main memory file with ANCHOR format |
-| `metadata.json` | Statistics and embedding info |
+| `implementation-summary.md` | Carries the `_memory.continuity` frontmatter sub-block and routed continuity narrative |
+| Target packet docs | Canonical spec/plan/tasks/checklist/decision/summary surfaces updated in-place as routed |
 
 ### Quality Scoring
 
@@ -270,7 +270,7 @@ Low quality sessions (<20 score) receive a warning header in the output.
 
 ### Post-Save Quality Review
 
-After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This review checks the saved memory file and reports issues at three severity levels:
+After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This review checks the saved canonical continuity surfaces and reports issues at three severity levels:
 
 | Severity | Action |
 |----------|--------|

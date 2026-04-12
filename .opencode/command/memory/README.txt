@@ -63,7 +63,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | **search** | `/memory:search <query> [--intent:<type>]` or `/memory:search <subcommand>` | Unified retrieval and analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
 | **manage** | `/memory:manage <subcommand>` | Database operations plus shared-memory lifecycle (scan, cleanup, tier, health, checkpoint, ingest, shared) |
-| **save** | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
+| **save** | `/memory:save <spec-folder>` | Update packet continuity with semantic indexing |
 
 ### Intent Types for Search Command (Retrieval Mode)
 
@@ -165,7 +165,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # View database stats
 /memory:manage stats
 
-# Scan for new memory files
+# Scan for new continuity artifacts
 /memory:manage scan
 
 # Force re-index all files
@@ -229,7 +229,7 @@ The `/memory:manage` command accepts these subcommands:
 | Subcommand | Arguments | Description |
 |------------|-----------|-------------|
 | `stats` | (none) | Show memory database statistics |
-| `scan` | `[--force]` | Scan workspace for new/changed memory files |
+| `scan` | `[--force]` | Scan workspace for new/changed continuity artifacts and canonical spec docs |
 | `cleanup` | (none) | Remove orphaned or invalid entries |
 | `bulk-delete` | `<tier> [--older-than <days>] [--folder <spec>]` | Bulk delete by tier |
 | `tier` | `<id> <tier>` | Change importance tier of a memory |
@@ -320,7 +320,7 @@ All 47 MCP tools mapped to their primary command home:
 
 **Q: What is the difference between `/memory:search` and `/spec_kit:resume`?**
 
-`/memory:search` retrieves and searches existing memories using a query or subcommand. `/spec_kit:resume` handles session continuation and interrupted-session recovery: it reconstructs context from recent handovers, resume-mode memory retrieval, crash breadcrumbs, and progress artifacts. Use `search` for knowledge lookup and `resume` when you need to continue prior work.
+`/memory:search` retrieves and searches indexed knowledge using a query or subcommand. `/spec_kit:resume` handles session continuation and interrupted-session recovery: it reconstructs packet context from `handover.md`, then `_memory.continuity`, then canonical spec docs before deeper memory tools engage. Use `search` for knowledge lookup and `resume` when you need to continue prior work.
 
 **Q: Do I need to run `/memory:manage shared enable` before every shared-memory operation?**
 
@@ -334,7 +334,7 @@ Use `/memory:learn` to create constitutional memories: short, always-surface rul
 
 **Q: What happens if I run `/memory:manage scan --force` on a large workspace?**
 
-The scan re-indexes all memory files regardless of whether their content has changed. This is slower than incremental scanning but useful after bulk renames or moves. For routine maintenance, omit `--force` to skip files whose content hash is unchanged.
+The scan re-indexes all previously indexed continuity artifacts and canonical spec docs regardless of whether their content has changed. This is slower than incremental scanning but useful after bulk renames or moves. For routine maintenance, omit `--force` to skip files whose content hash is unchanged.
 
 <!-- /ANCHOR:faq -->
 
@@ -348,7 +348,7 @@ The scan re-indexes all memory files regardless of whether their content has cha
 | "No results" from knowledge | Query too narrow or no matching memories | Broaden query or try different intent |
 | Save fails | Spec folder path invalid or missing | Verify path exists under `specs/` |
 | Resume finds no session | No saved context from prior session | Use `/spec_kit:plan` to start fresh or `/memory:search` with a manual query |
-| Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and `.opencode/specs/` |
+| Manage scan finds 0 files | No continuity sources found in expected directories | Check generated artifacts under `specs/**/memory/`, constitutional rules under `.opencode/skill/*/constitutional/`, and canonical spec docs under `.opencode/specs/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
 | Search ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |
 | Ablation warns about missing IDs | `groundTruthQueryIds` do not exist in the active static dataset | Fix the requested IDs or rerun `scripts/evals/map-ground-truth-ids.ts` after DB rebuild/swap |

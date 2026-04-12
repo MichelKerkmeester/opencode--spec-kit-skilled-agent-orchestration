@@ -52,7 +52,7 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `handover.md` | Session handover template |
 | `debug-delegation.md` | Debug delegation template |
 | `examples/` | Filled references only |
-| `memory/` | Memory workflow notes (no manual memory files) |
+| `memory/` | Generated continuity support artifacts (never hand-authored) |
 | `changelog/` | Packet-local nested changelog templates for root specs and phase children |
 | `scratch/` | Temporary workspace for non-committed artifacts |
 | `sharded/` | Sharded template set |

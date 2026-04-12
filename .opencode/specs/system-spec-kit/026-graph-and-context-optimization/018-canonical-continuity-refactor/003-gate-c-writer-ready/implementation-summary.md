@@ -5,20 +5,19 @@ trigger_phrases: ["gate c", "writer ready", "implementation summary", "phase 018
 importance_tier: "critical"
 contextType: "implementation"
 level: "3+"
-gate: "C"
-parent: "018-canonical-continuity-refactor"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready"
-    last_updated_at: "2026-04-11T20:31:00Z"
+    last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Recorded Gate C continuation evidence"
-    next_safe_action: "Complete remaining Gate C proof work"
+    recent_action: "Recorded Gate C completion-pass evidence"
+    next_safe_action: "Keep Gate C packet docs grouped in the final commit-ready list"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready/implementation-summary.md"]
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -30,7 +29,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-gate-c-writer-ready |
-| **Completed** | 2026-04-12 review refresh; Gate C remains in progress overall |
+| **Completed** | 2026-04-12 completion pass |
 | **Level** | 3+ |
 <!-- /ANCHOR:metadata -->
 
@@ -51,7 +50,7 @@ The concrete continuation behavior now in tree:
 - `create-record.ts` persists routed saves with the target spec-doc identity and inferred document type, so index rows align to the canonical destination instead of the legacy `memory/` source path.
 - `anchor-merge-operation.ts` now accepts the synthetic `adr-NNN` target and appends new ADRs against the real `decision-record.md` root body.
 
-The packet docs in this folder were also aligned to the current reality of Gate C continuation work, including the explicit removal of dead observation-window wording.
+The packet docs in this folder were also aligned to the final Gate C reality, including explicit N/A treatment for deleted observation-era concepts and closure of the gate task/checklist evidence.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -79,7 +78,7 @@ No observation-window concepts were added back. Anything tied to `shadow_only`, 
 
 | Decision | Why |
 |----------|-----|
-| ADR-001 through ADR-005 | These ADRs define the writer boundaries, validator order, Tier 3 contract, proof guardrails, and continuity schema that the implementation must follow. |
+| ADR-001 through ADR-005 | These ADRs define the writer boundaries, validator order, Tier 3 contract, rollback-safe guardrails, and continuity schema that the implementation follows. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -89,13 +88,13 @@ No observation-window concepts were added back. Anything tied to `shadow_only`, 
 
 | Check | Result |
 |-------|--------|
-| `node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts` | PASS, 9 files / 214 tests |
-| `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/workflow-canonical-continuity.vitest.ts --config ../mcp_server/vitest.config.ts` | PASS, 1 file / 4 tests |
+| `node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts` | PASS, 9 files / 215 tests |
+| `node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts` | PASS, 1 file / 10 tests |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/003-gate-c-writer-ready` | PASS, exit 0 with 0 errors / 0 warnings |
 | `npm run --workspace=@spec-kit/mcp-server typecheck` | PASS |
 | `npm run --workspace=@spec-kit/scripts typecheck` | PASS |
 
-Part 1 evidence still stands alongside this continuation: 14 verified tests in the original Gate C landing plus the earlier 103 MCP test passes already called out by the orchestrator.
+Part 1 evidence still stands alongside this completion pass: the already-landed writer/module work remained intact while the final packet verification was refreshed and the Gate C docs were closed cleanly.
 <!-- /ANCHOR:verification -->
 
 ---
@@ -103,9 +102,7 @@ Part 1 evidence still stands alongside this continuation: 14 verified tests in t
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Gate C is still partial overall.** The canonical writer path is now live, but the full 243-test catalog, broader parity pack, and the larger proof-run checklist are not complete in this continuation.
-2. **The broader proof pack is still incomplete.** The targeted writer-path suites and both workspace typechecks are now green, but the packet still tracks the larger 243-test catalog and parity-pack work outside this continuation slice.
-3. **Tasks and checklist remain mostly open by design.** The packet still tracks unfinished proof and rollout work that belongs to the rest of Gate C, not just this continuation slice.
+1. **`closed_by_commit` remains `TBD`.** Git commit and push were intentionally skipped in this sandbox-limited completion pass.
 <!-- /ANCHOR:limitations -->
 
 ---

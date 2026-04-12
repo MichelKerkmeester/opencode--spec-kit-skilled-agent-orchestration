@@ -198,7 +198,7 @@ When reviewing plan.md references to codebase patterns, use CocoIndex semantic s
 ```
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]
 ```
-DO NOT use Write/Edit for memory files directly. After script, call `memory_save({ filePath })` for MCP availability.
+DO NOT use Write/Edit to author continuity support artifacts directly. After the script runs, call `memory_save({ filePath })` for MCP availability.
 
 ### Memory Context Loading
 

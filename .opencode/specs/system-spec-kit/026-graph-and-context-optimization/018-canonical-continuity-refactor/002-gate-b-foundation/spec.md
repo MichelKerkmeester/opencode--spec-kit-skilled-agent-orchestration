@@ -15,7 +15,7 @@ _memory:
     recent_action: "Recorded Gate B archived-tier cleanup follow-through"
     next_safe_action: "Have orchestrator commit the validated Gate B cleanup"
     key_files: [".opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/002-gate-b-foundation/spec.md"]
-description: "Establish the irreversible foundation for phase 018 by rehearsing the migration on a copy, adding the approved causal-edge anchor fields, flipping 155 legacy memory rows to archived, and exposing the ranking and metric signals needed before writer and reader retargeting begins."
+description: "Establish the irreversible foundation for phase 018 by rehearsing the migration on a copy, adding the approved causal-edge anchor fields, executing the rebaselined archive flip, and preserving the post-cleanup compatibility contract before writer and reader retargeting begins."
 trigger_phrases: ["gate b", "foundation", "canonical continuity", "phase 018", "archive flip"]
 importance_tier: "important"
 contextType: "planning"
@@ -28,9 +28,9 @@ contextType: "planning"
 
 ## EXECUTIVE SUMMARY
 
-Gate B is the one-way-door foundation step for phase 018. It is where phase 018 proves the migration on a copy, updates `causal_edges` for anchor-aware continuity, flips the 155 legacy memory-file rows to `is_archived=1`, and makes archived retrieval observable before any writer or reader retargeting lands.
+Gate B is the one-way-door foundation step for phase 018. It is where phase 018 proves the migration on a copy, updates `causal_edges` for anchor-aware continuity, and executes the rebaselined archive flip for the `183` legacy memory-path rows while preserving the `1` pre-existing archived non-memory baseline row.
 
-The grounding corrects one early research assumption: `memory_index.is_archived` already exists in `vector-index-schema.ts` and in the downgrade rebuild path, so Gate B does not add a new `memory_index` column. The approved schema delta is the `causal_edges` anchor extension plus supporting indexes, followed by the archive flip, archived-weight ranking change (`x0.3`), and `archived_hit_rate` visibility.
+The grounding corrects two early research assumptions. First, `memory_index.is_archived` already exists in `vector-index-schema.ts` and in the downgrade rebuild path, so Gate B does not add a new `memory_index` column. Second, the active post-cleanup contract no longer uses archived-tier ranking (`x0.3`) or `archived_hit_rate`; those rollout-era behaviors were removed under the Phase 018 no-observation directive after the archive flip landed.
 
 **Key Decisions**: keep the canonical migration source of truth in `vector-index-schema.ts`; require a hard rollback rehearsal on a DB copy before the production window opens.
 
@@ -45,7 +45,7 @@ The grounding corrects one early research assumption: `memory_index.is_archived`
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Planned |
+| **Status** | Complete |
 | **Created** | 2026-04-11 |
 | **Branch** | `[UNCERTAIN: branch not assigned for Gate B implementation]` |
 <!-- /ANCHOR:metadata -->

@@ -913,7 +913,7 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `rerank` | boolean | true | Enable cross-encoder reranking |
 | `applyLengthPenalty` | boolean | true | Penalize very long memories during reranking |
 | `applyStateLimits` | boolean | false | Enforce per-tier quantity limits for result diversity |
-| `minState` | string | `WARM` | Minimum memory state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
+| `minState` | string | `WARM` | Minimum active memory state: `HOT`, `WARM`, `COLD`, `DORMANT` |
 | `autoDetectIntent` | boolean | true | Auto-detect intent from query if not explicitly set |
 | `trackAccess` | boolean | false | Write FSRS strengthening updates on read (off by default to avoid write-on-read) |
 | `mode` | string | `auto` | `auto` (standard) or `deep` (multi-query expansion). Note: deep mode does not guarantee expansion for simple queries |

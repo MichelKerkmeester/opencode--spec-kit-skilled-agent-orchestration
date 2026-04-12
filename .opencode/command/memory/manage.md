@@ -1102,7 +1102,7 @@ spec_kit_memory_shared_memory_status({ tenantId, actorUserId, actorAgentId })
 | `folderRanking` | string | `count` | Rank folders by: `count`, `recency`, `importance`, `composite` (weighted multi-factor score) |
 | `excludePatterns` | string[] | — | Regex patterns to exclude folders (e.g., `["z_archive", "scratch"]`) |
 | `includeScores` | boolean | false | Include score breakdown for each folder |
-| `includeArchived` | boolean | false | Include archived/test/scratch folders |
+| `includeArchived` | boolean | false | Include archived/test/scratch folders for historical-compatibility reporting only |
 | `limit` | number | 10 | Maximum folders to return (max 100) |
 
 ### memory_health: Full Parameters

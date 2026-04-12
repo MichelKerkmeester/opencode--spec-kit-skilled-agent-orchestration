@@ -49,7 +49,7 @@
 ### Tools & Search
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` — NEVER manually create memory files.
+- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` — NEVER manually author packet continuity artifacts.
   - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
 - **CocoIndex Code MCP** — semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** — worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
@@ -199,7 +199,7 @@ When multiple inputs are needed, consolidate into a SINGLE prompt — never spli
 ### 🔒 POST-EXECUTION RULES
 
 #### MEMORY SAVE RULE [HARD] BLOCK
-Trigger: "save context", "save memory", `/memory:save`, memory file creation
+Trigger: "save context", "save memory", `/memory:save`, continuity support artifact refresh
 - If spec folder established at Gate 3 → USE IT (don't re-ask). Carry-over applies ONLY to memory saves
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
 - **Script:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
@@ -292,7 +292,6 @@ Use the agent directory that matches the active runtime/provider profile:
 
 - **`@general`** — Implementation, complex tasks
 - **`@context`** — Retrieval-first exploration agent for codebase search, pattern discovery, and context loading using memory triggers/context, memory search, CocoIndex, and direct code evidence as needed
-- **`@context-prime`** — Lightweight bootstrap agent for session start or after `/clear`. Loads memory context, checks code graph and CocoIndex health, returns a compact Prime Package with spec folder, task status, system health, and recommended next steps
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)

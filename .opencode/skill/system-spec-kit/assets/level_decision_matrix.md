@@ -214,7 +214,7 @@ The spec validation system (`validate.sh`) checks documentation quality using th
 | ----------------------- | ------- | ------- | ------- | -------- | ---------------------------------------------- |
 | **FILE_EXISTS**         | ✓       | ✓       | ✓       | error    | Required files must exist for the level        |
 | **PLACEHOLDER_FILLED**  | ✓       | ✓       | ✓       | warning  | Template placeholders must be replaced         |
-| **ANCHORS_VALID**       | ✓       | ✓       | ✓       | warning  | Memory files must have balanced anchor pairs   |
+| **ANCHORS_VALID**       | ✓       | ✓       | ✓       | warning  | Generated continuity artifacts must have balanced anchor pairs   |
 | **CHECKLIST_HAS_ITEMS** | —       | ✓       | ✓       | warning  | checklist.md must contain actionable items     |
 | **DECISION_RECORDED**   | —       | —       | ✓       | warning  | decision-record.md must document key decisions |
 
@@ -233,7 +233,7 @@ The spec validation system (`validate.sh`) checks documentation quality using th
 - Details: Searches for patterns like `<PROJECT_NAME>`, `<DESCRIPTION>`, or other unresolved placeholder tokens.
 
 **ANCHORS_VALID**
-- Purpose: Validates that memory files have balanced ANCHOR open/close pairs
+- Purpose: Validates that generated continuity artifacts have balanced ANCHOR open/close pairs
 - Applies to: All levels with `memory/` folders
 - Severity: warning (default)
 - Details: Each `<!-- ANCHOR: id -->` must have matching `<!-- /ANCHOR: id -->`. Unbalanced anchors break semantic memory indexing.

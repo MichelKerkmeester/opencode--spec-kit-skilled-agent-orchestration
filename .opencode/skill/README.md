@@ -341,7 +341,7 @@ python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/my-skill
 ### Save context with system-spec-kit
 
 ```bash
-# Generate a memory file from structured JSON (never use Write tool directly)
+# Generate canonical packet continuity from structured JSON (never use Write tool directly)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   --json '{"specFolder":"specs/019-readme","sessionSummary":"Updated skill README"}' \
   specs/019-readme

@@ -75,7 +75,7 @@ Together, these systems enable context-aware development with traceability, hard
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
 ├── skill/           — 20 domain expertise skill modules with bundled resources
-└── specs/           — Spec folder storage for documentation and memory files
+└── specs/           — Spec folder storage for canonical packet docs and supporting generated context artifacts
 ```
 
 **Directory Descriptions:**
@@ -85,7 +85,7 @@ Together, these systems enable context-aware development with traceability, hard
 - **`install_guides/`**: Comprehensive setup documentation including `SET-UP - AGENTS.md`, skill installation guides and configuration examples.
 - **`skill/scripts/`**: Skill routing utilities including `skill_advisor.py` (routing engine) and setup guides. Agent provider scripts are in `agent/scripts/`.
 - **`skill/`**: Self-contained skill modules with `SKILL.md` entry points, bundled references, scripts and assets for domain-specific workflows.
-- **`specs/`**: Archived or system-level spec folders. User spec folders typically live in project root `/specs/`.
+- **`specs/`**: Repository-owned or system-level spec folders. User spec folders typically live in project root `/specs/`.
 
 <!-- /ANCHOR:directory-structure -->
 
@@ -170,7 +170,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 
 ### Memory Commands (`/memory:*`)
 
-- `/memory:save`: Save session context to memory files (auto-indexed)
+- `/memory:save`: Update packet continuity via `generate-context.js` (auto-indexed)
 - `/memory:manage`: Memory database maintenance plus shared-memory lifecycle (`shared` setup, spaces, memberships, rollout)
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
 - `/memory:search`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
@@ -243,18 +243,18 @@ System prompt defining:
 
 The Spec Kit Memory MCP provides persistent context across sessions:
 
-- **Storage:** Memory files in `specs/[###-name]/memory/` using ANCHOR format for structured retrieval
+- **Storage:** Canonical packet docs plus supporting generated context artifacts in `specs/[###-name]/`
 - **Engine:** SQLite + `sqlite-vec` with provider auto-detection (Voyage, OpenAI, HF Local)
 - **Retrieval:** Graph-first routing (structural Code Graph before semantic CocoIndex), hybrid search across vector, BM25, FTS5, trigger matching and typed-weighted degree channels with RRF + RSF (Reciprocal Similarity Fusion) fusion, 3-tier FTS fallback (FTS5 full-text -> BM25 keyword scoring -> Grep/Glob filesystem search when graph and semantic channels miss), cross-encoder reranking, query complexity routing (simple/moderate/complex), confidence truncation (2x median gap), persistent embedding cache and interference scoring
 - **Architecture:** 7-layer tool hierarchy (L1 Orchestration to L7 Maintenance)
-- **Indexing:** 3 sources (spec memories, constitutional files, spec documents) with `includeSpecDocs: true` default
+- **Indexing:** 3 sources (supporting generated context artifacts, constitutional files, spec documents) with `includeSpecDocs: true` default
 - **Schema:** v15 adds `document_type` and `spec_level` columns for document-type scoring and filtering
 - **Features:** Constitutional tier, session deduplication, causal lineage tracking, temporal decay, learning analytics, typed retrieval contracts, artifact-class routing, adaptive fusion, append-only mutation ledger, extended retrieval telemetry, session-cognitive automation (attention-based decay, tiered content injection, co-activation of related memories), persistent embedding cache (SQLite `embedding_cache` table), interference scoring (TM-01 penalty), classification-based decay (TM-03 context-type + importance-tier multipliers), query complexity routing (simple/moderate/complex tier dispatch), RSF fusion (single-pair, multi-list, cross-variant alternatives to RRF), channel min-representation (QUALITY_FLOOR=0.2), confidence truncation (2x median gap, min 3 results), dynamic token budget (1500/2500/4000 by tier), cold-start N4 boost, min-max score normalization, co-activation fan-effect (sqrt divisor), CORRECTION/PREFERENCE signal categories, pre-flight token budget estimation, verify-fix-verify quality loop, spec folder description discovery, post-save quality gates (structure/semantic/duplicate with heuristic calibration and trigger sanitization), graph-first structural routing (Code Graph -> CocoIndex -> Memory), 3-tier FTS fallback chain (PI-A2), CocoIndex semantic code search bridge, and ~14 `SPECKIT_*` feature flags
 - **Hardening (Spec126):** import-path fixes, `specFolder` filtering, metadata preservation, vector metadata plumbing and stable causal edge semantics
 
 **Spec Kit workflow features:** `upgrade-level.sh`, auto-populate workflow, `check-placeholders.sh` and anchor tags.
 
-**Memory File Format:** ANCHOR tags for semantic sections (`summary`, `state`, `decisions`, `context`, `artifacts`, `next-steps`, `blockers`).
+**Generated Context Format:** ANCHOR tags for semantic sections (`summary`, `state`, `decisions`, `context`, `artifacts`, `next-steps`, `blockers`) remain indexable, but packet continuity is still anchored first on `handover.md`, `_memory.continuity`, and canonical spec docs.
 
 **Unified Entry Point:** `memory_context()` provides intent-aware routing with 7 intents: `add_feature`, `fix_bug`, `understand`, `refactor`, `security_audit`, `find_spec`, `find_decision`.
 
@@ -318,7 +318,7 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 
 **Memory Operations:**
 - Save context: `/memory:save` or trigger via "save context" phrase
-- Resume work: `/spec_kit:resume` or `memory_search({ specFolder, anchors: ['state', 'next-steps'] })`
+- Resume work: `/spec_kit:resume` as the canonical recovery surface
 - Explore memories: `memory_stats()`, `memory_list()`, `memory_health()`
 
 ### Common Workflows

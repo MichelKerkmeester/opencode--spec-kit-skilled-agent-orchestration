@@ -10,7 +10,7 @@ audited_post_018: true
 
 5-layer active enforcement system that routes AI tool selection: semantic queries to CocoIndex, structural queries to Code Graph, exact text to Grep — replacing passive CLAUDE.md instructions with MCP-level enforcement.
 
-Phase 025 addresses the root cause of AI tool misjudgment by adding active enforcement at the MCP layer. Five complementary layers work together: (1) buildServerInstructions() injects routing rules into every MCP session, (2) PrimePackage includes routingRules directives during session priming, (3) tool response hints detect code-search patterns and redirect to appropriate tools, (4) runtime instruction files (CLAUDE.md, CODEX.md, GEMINI.md) contain active decision trees, and (5) context-prime agent definitions output routing rules. This makes correct tool selection structurally enforced rather than instructionally suggested.
+Phase 025 addresses the root cause of AI tool misjudgment by adding active enforcement at the MCP layer. Five complementary layers work together: (1) buildServerInstructions() injects routing rules into every MCP session, (2) PrimePackage includes routingRules directives during session priming, (3) tool response hints detect code-search patterns and redirect to appropriate tools, (4) runtime instruction files (CLAUDE.md, CODEX.md, GEMINI.md) contain active decision trees, and (5) the canonical resume/bootstrap surfaces (`/spec_kit:resume`, `session_bootstrap()`, `session_resume()`) reuse the same routing contract instead of a separate bootstrap agent. This makes correct tool selection structurally enforced rather than instructionally suggested.
 
 ---
 

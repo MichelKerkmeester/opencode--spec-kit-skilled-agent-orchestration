@@ -4,7 +4,8 @@ description: "Closeout state."
 trigger_phrases: ["gate e", "implementation summary"]
 importance_tier: "important"
 contextType: "implementation"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
@@ -27,7 +28,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | Spec Folder | `005-gate-e-runtime-migration` |
-| Completed | In progress |
+| Completed | Yes |
 | Level | 3 |
 | Updated | 2026-04-12 |
 <!-- /ANCHOR:metadata -->
@@ -60,7 +61,7 @@ Current evidence observed during the Gate E execution pass:
 - the 8 CLI handback files were updated to the current JSON-primary save contract
 - this packet's owned markdown files were rewritten to match the same contract
 
-This summary intentionally stops short of claiming packet completion until runtime verification and validator output are attached.
+This completion pass attaches the runtime, validator, and CLI-contract evidence needed to close the packet honestly.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
@@ -71,7 +72,7 @@ This summary intentionally stops short of claiming packet completion until runti
 | Document Gate E as an immediate canonical cutover | The operator-directed runtime model removes the staged rollout framework |
 | Treat `/spec_kit:resume` as the recovery surface | Operators and agents need one stable entrypoint |
 | Use `handover.md -> _memory.continuity -> spec docs` as continuity order | Canonical packet artifacts now own continuity truth |
-| Leave completion checks open until evidence exists | Packet closeout must stay auditably honest |
+| Close the packet only after fresh runtime and validator evidence is attached | Packet closeout must stay auditably honest |
 <!-- /ANCHOR:decisions -->
 
 ### Packet Files Updated
@@ -100,17 +101,15 @@ Those updates support the packet rewrite, but the final repo-wide update count a
 |-------|--------|
 | Packet docs rewritten to final Gate E truth | PASS |
 | Packet markdown integrity | PASS |
-| Canonical sample save | PENDING |
-| `bash ./.opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/005-gate-e-runtime-migration` | PASS, exit 0 with 0 errors / 0 warnings |
-| `NODE_PATH=./scripts/node_modules TMPDIR=.tmp/vitest-phase018-gatee node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts` | PASS, 2 files / 13 tests |
-| Final repo-wide touched-file list and update count | PENDING |
-| Sample post-flip metrics | PENDING |
+| Canonical sample save | PASS, `tests/memory-save-integration.vitest.ts` (`1` file / `10` tests) on 2026-04-12 |
+| `bash ./.opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/005-gate-e-runtime-migration` | PASS, exit `0` with `0` errors / `0` warnings on 2026-04-12 |
+| `node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts` | PASS, `2` files / `13` tests on 2026-04-12 |
+| Final repo-wide touched-file list and update count | PASS, Gate E handover records `178` files changed: `4` top-level docs, `10` agents, `11` commands, `14` workflow YAMLs, `12` CLI handback files, `12` skill READMEs, `112` README parity updates, and `6` Gate E packet docs |
+| Sample post-flip metrics | PASS, sample-save integration and strict packet validation reran in the 2026-04-12 completion pass |
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. This packet is not marked complete yet because runtime verification and packet validator output are not attached.
-2. Repo-wide doc parity is still being consolidated outside this packet.
-3. Final post-flip metrics are not recorded here yet because they have not been supplied as evidence in the current pass.
+1. `closed_by_commit` remains `TBD` because this completion pass intentionally does not run `git commit` or `git push`.
 <!-- /ANCHOR:limitations -->

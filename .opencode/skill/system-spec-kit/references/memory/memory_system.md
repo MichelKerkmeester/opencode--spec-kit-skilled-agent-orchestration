@@ -14,7 +14,7 @@ Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and structured memory files. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
+The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and packet-first continuity. Phase 018 makes `handover.md -> _memory.continuity -> spec docs` the canonical recovery chain; indexed legacy memory artifacts remain supporting retrieval material rather than the primary continuity surface. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
 
 ### Architecture
 
@@ -23,7 +23,7 @@ The Spec Kit Memory system provides context preservation across sessions through
 | MCP Server | `mcp_server/context-server.ts` | Spec Kit Memory MCP with vector search |
 | Database | `mcp_server/dist/database/context-index.sqlite` | SQLite with FTS5 + vector embeddings (canonical runtime path; `mcp_server/database/context-index.sqlite` is a compatibility symlink) |
 | Constitutional | `constitutional/` | Always-surface rules (Gate 3 enforcement) |
-| Scripts | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Memory file generation with ANCHOR format |
+| Scripts | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Canonical continuity save entrypoint for packet docs |
 
 ### Core Capabilities
 
@@ -39,15 +39,15 @@ The memory system indexes content from three distinct sources:
 
 | Source | Location Pattern | Memory Type | Default Tier | Discovery |
 |--------|-----------------|-------------|--------------|-----------|
-| **Memory Files** | `specs/*/memory/*.{md,txt}` | Varies (episodic, procedural, etc.) | `normal` | `findMemoryFiles()` |
-| **Constitutional Rules** | `.opencode/skill/*/constitutional/*.md` | `meta-cognitive` | `constitutional` | `findConstitutionalFiles()` |
 | **Spec Documents** | `specs/**/*.md` and `.opencode/specs/**/*.md` | Per-type (spec, plan, tasks, etc.) | `normal` | `findSpecDocuments()` |
+| **Constitutional Rules** | `.opencode/skill/*/constitutional/*.md` | `meta-cognitive` | `constitutional` | `findConstitutionalFiles()` |
+| **Legacy Memory Artifacts** | `specs/*/memory/*.{md,txt}` when present | Varies (episodic, procedural, etc.) | `normal` | `findMemoryFiles()` |
 
 **Content Source Behavior:**
 
-- **Memory Files** — Session-specific context generated via `generate-context.js`. Subject to temporal decay.
+- **Spec Documents** — Canonical packet continuity source. Recovery should read `handover.md`, then `_memory.continuity`, then the rest of the packet docs before widening into search.
 - **Constitutional Rules** — Always-surface critical rules. Injected at top of every search result. No decay.
-- **Spec Documents** — Discovered via `findSpecDocuments()` which walks both `specs/` and `.opencode/specs/`. Indexes spec folder documentation (specs, plans, tasks, checklists, decision records, implementation summaries, research, handovers) with per-type scoring multipliers. Controlled by `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Causal chains are created via `createSpecDocumentChain()` linking spec->plan->tasks->implementation_summary.
+- **Legacy Memory Artifacts** — Older indexed session notes still discoverable when present, but no longer the primary save target or operator guidance surface.
 
 **Spec Document Indexing Pipeline:**
 1. `findSpecDocuments()` walks both supported specs roots and discovers supported doc filenames
@@ -106,7 +106,7 @@ Six-tier system for prioritizing memory relevance:
 | L2: Core | `memory_search()` | Semantic search with vector similarity | Find prior decisions on auth |
 | L2: Core | `memory_quick_search()` | Simplified search wrapper for fast lookups | Quick keyword-based retrieval |
 | L2: Core | `memory_match_triggers()` | Fast keyword matching (<50ms) with cognitive features | Gate enforcement |
-| L2: Core | `memory_save()` | Index a memory file. Re-generates embedding when **content hash** changes. Title-only changes do not trigger re-embedding. | After generate-context.js |
+| L2: Core | `memory_save()` | Index a saved continuity artifact or spec doc. Re-generates embedding when **content hash** changes. Title-only changes do not trigger re-embedding. | After generate-context.js |
 | L3: Discovery | `memory_list()` | Browse stored memories with pagination (parent rows by default) | Review session history |
 | L3: Discovery | `memory_stats()` | Get memory system statistics with composite scoring | Check index health |
 | L3: Discovery | `memory_health()` | Check health status of memory system | Diagnose issues |
@@ -133,7 +133,7 @@ Six-tier system for prioritizing memory relevance:
 | L6: Analysis | `eval_reporting_dashboard()` | Generate evaluation and reporting dashboard data | Review system metrics |
 | L6: Analysis | `code_graph_query()` | Query structural relationships such as callers, imports, and outlines | Find what calls a symbol or which files import a module |
 | L6: Analysis | `code_graph_context()` | Expand CocoIndex or symbol seeds into compact graph neighborhoods | Pull structural context for an LLM prompt |
-| L7: Maintenance | `memory_index_scan()` | Bulk scan and index memory files | After creating multiple files |
+| L7: Maintenance | `memory_index_scan()` | Bulk scan and index packet docs, constitutional files, and any legacy memory artifacts | After continuity or spec-doc updates |
 | L7: Maintenance | `memory_ingest_start()` | Start async bulk memory ingestion | Import large memory sets |
 | L7: Maintenance | `memory_ingest_status()` | Check status of running ingestion job | Monitor import progress |
 | L7: Maintenance | `memory_ingest_cancel()` | Cancel a running ingestion job | Stop runaway imports |
@@ -224,7 +224,7 @@ The system detects query intent and applies task-specific search weights. Seven 
 |-----------|----------|
 | `specFolder: "007-auth"` | Filters results to that folder, but constitutional memories still appear first |
 | `includeConstitutional: false` | Explicitly excludes constitutional memories from results |
-| `includeContent: true` | Embeds full memory file content in results (eliminates separate load calls) |
+| `includeContent: true` | Embeds full indexed document content in results (eliminates separate load calls) |
 
 ### Usage Examples
 
@@ -257,11 +257,11 @@ memory_search({
 
 ### Anchor-Based Retrieval (Token-Efficient)
 
-The `anchors` parameter enables **targeted section retrieval** from memory files, reducing token usage by ~90% when you only need specific sections.
+The `anchors` parameter enables **targeted section retrieval** from indexed documents, reducing token usage by ~90% when you only need specific sections.
 
 **When to Use Anchors:**
 - You need only specific sections (summary, decisions) not full content
-- Token efficiency is important (large memory files)
+- Token efficiency is important (large packet docs)
 - Loading context for specific purposes (e.g., resume work, review decisions)
 
 **Common Anchor Patterns:**
@@ -306,9 +306,9 @@ memory_search({
 })
 ```
 
-**Anchor Format in Memory Files:**
+**Anchor Format in Indexed Continuity Sources:**
 
-Memory files use HTML comment anchors:
+Indexed continuity-bearing docs and generated support artifacts use HTML comment anchors:
 ```markdown
 Brief summary of the session...
 
@@ -317,7 +317,7 @@ Brief summary of the session...
 ```
 
 **Token Savings:**
-- Full memory file: ~2000 tokens
+- Full indexed document: ~2000 tokens
 - With `anchors: ['summary']`: ~150 tokens (93% savings)
 - With `anchors: ['summary', 'decisions']`: ~300 tokens (85% savings)
 
@@ -350,7 +350,7 @@ Use exact folder names when filtering. This is intentional for precise filtering
 
 ### Parent vs Chunk Rows
 
-- By default, `memory_list()` filters to `parent_id IS NULL`, so dashboards and maintenance flows show one row per memory file.
+- By default, `memory_list()` filters to `parent_id IS NULL`, so dashboards and maintenance flows show one row per indexed parent document.
 - Use `includeChunks: true` only when chunk-level diagnostics are needed.
 
 ### Spec Folder Filtering
@@ -437,18 +437,18 @@ memory_search({
 
 ### Current Limitation
 
-> **Note:** By default, memory files are indexed on MCP server startup. Changes made after startup are not automatically detected unless the optional `SPECKIT_FILE_WATCHER` feature is enabled.
+> **Note:** By default, indexed markdown is discovered on MCP server startup. Changes made after startup are not automatically detected unless the optional `SPECKIT_FILE_WATCHER` feature is enabled.
 
 ### Workarounds
 
-To index new or modified memory files:
+To index new or modified continuity-bearing docs:
 
 1. **Single file:** Use `memory_save` tool to index a specific file
    ```javascript
-   memory_save({ filePath: "specs/007-auth/memory/session.md" })
+   memory_save({ filePath: "specs/007-auth/implementation-summary.md" })
    ```
 
-2. **Batch scan:** Use `memory_index_scan` tool to scan and index all memory files
+2. **Batch scan:** Use `memory_index_scan` tool to scan and index all affected docs
    ```javascript
    memory_index_scan({ specFolder: "007-auth" })
    ```
@@ -522,7 +522,7 @@ The memory system uses content hashing and session-aware deduplication to preven
 
 **Source:** `lib/parsing/memory-parser.ts:347-349`
 
-Each memory file is hashed using SHA-256 of its **raw content** (no normalization):
+Each indexed continuity source is hashed using SHA-256 of its **raw content** (no normalization):
 
 ```typescript
 function computeContentHash(content: string): string {
@@ -589,7 +589,7 @@ Session deduplication (`enableDedup: true` with `sessionId`) provides significan
 
 > [VERIFIED: matches source code as of 2026-02-08]
 
-Memories are classified into five states based on their **retrievability score** (R), not calendar-day thresholds.
+Indexed rows are classified into five states based on their **retrievability score** (R), not calendar-day thresholds. This is retrieval internals, not the operator-facing continuity ladder: packet recovery still starts from `handover.md -> _memory.continuity -> spec docs`.
 
 **Source:** `lib/cognitive/tier-classifier.ts:26-33, 211-256, 261-299`
 
@@ -597,23 +597,20 @@ Memories are classified into five states based on their **retrievability score**
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                 5-STATE MODEL (Retrievability-Based)             │
+│                 4-STATE MODEL (Retrievability-Based)             │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  R ≥ 0.80    →  HOT       (high recall probability)            │
 │  R ≥ 0.25    →  WARM      (moderate recall)                    │
 │  R ≥ 0.05    →  COLD      (low recall)                         │
 │  R < 0.05    →  DORMANT   (very low recall)                    │
-│  R < 0.02                                                       │
-│  AND days > 90 → ARCHIVED (frozen, excluded by default)         │
-│                                                                 │
 │  Constitutional/Critical tiers → always HOT (R = 1.0)           │
 │  Pinned memories (is_pinned=1) → always HOT (R = 1.0)          │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-Thresholds are configurable via environment variables (`HOT_THRESHOLD`, `WARM_THRESHOLD`, `COLD_THRESHOLD`, `ARCHIVED_DAYS_THRESHOLD`) with validation that HOT > WARM > COLD.
+Thresholds are configurable via environment variables (`HOT_THRESHOLD`, `WARM_THRESHOLD`, `COLD_THRESHOLD`) with validation that HOT > WARM > COLD.
 
 ### State Classification
 
@@ -627,9 +624,6 @@ function classifyState(
 ): TierState {
   // ... resolve r and days from input ...
 
-  if (days > TIER_CONFIG.archivedDaysThreshold && r < STATE_THRESHOLDS.DORMANT) {
-    return 'ARCHIVED';
-  }
   if (r >= TIER_CONFIG.hotThreshold) return 'HOT';   // default 0.80
   if (r >= TIER_CONFIG.warmThreshold) return 'WARM';  // default 0.25
   if (r >= TIER_CONFIG.coldThreshold) return 'COLD';  // default 0.05
@@ -646,8 +640,7 @@ The richer `classifyTier()` function wraps this with half-life support, pinned-m
 | **HOT** | R ≥ 0.80 | Always (max 5) | High recall — recently reviewed or important |
 | **WARM** | R ≥ 0.25 | Always (max 10) | Moderate recall — still relevant |
 | **COLD** | R ≥ 0.05 | Relevance-based | Low recall — aging out |
-| **DORMANT** | R < 0.05 | High relevance only | Very low recall — candidate for archival |
-| **ARCHIVED** | R < 0.02 + 90+ days | Explicit only | Frozen — excluded from default searches |
+| **DORMANT** | R < 0.05 | High relevance only | Very low recall — lowest active state in the continuity contract |
 
 HOT and WARM states have per-query limits (`maxHotMemories: 5`, `maxWarmMemories: 10`) to prevent context flooding.
 

@@ -2,7 +2,7 @@
 title: "Session recovery via /spec_kit:resume"
 description: "Reconstructs interrupted session state through the unified spec-folder resume workflow."
 audited_post_018: true
-phase_018_change: Aligned the recovery ladder to `handover.md -> _memory.continuity -> spec docs` and removed legacy CONTINUE_SESSION wording from the primary path.
+phase_018_change: Aligned the recovery ladder to `handover.md -> _memory.continuity -> spec docs` and removed the legacy crash-prompt wording from the primary path.
 ---
 
 # Session recovery via /spec_kit:resume
@@ -73,7 +73,7 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 |------|-------|
 | `mcp_server/tests/memory-context.vitest.ts` | Resume-mode token budget, anchor selection, and auto-resume routing |
 | `mcp_server/tests/continue-session.vitest.ts` | Session recovery generation helpers and crash-recovery data shape |
-| `mcp_server/tests/crash-recovery.vitest.ts` | Crash breadcrumb generation and recovery write path |
+| `mcp_server/tests/crash-recovery.vitest.ts` | Supplemental recovery prompt generation and recovery write path |
 | `mcp_server/tests/recovery-hints.vitest.ts` | User-facing recovery hint routing for expired sessions |
 
 ---

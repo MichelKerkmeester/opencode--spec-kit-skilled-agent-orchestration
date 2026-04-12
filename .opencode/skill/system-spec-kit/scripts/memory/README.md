@@ -35,13 +35,13 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 ## 2. CURRENT INVENTORY
 
 
-- `generate-context.ts` - generate memory output from spec folder or JSON input with content-aware candidate selection
+- `generate-context.ts` - update canonical packet continuity and supporting generated context artifacts from spec-folder or JSON input
 - `rank-memories.ts` - rank memory candidates by scoring rules
 - `cleanup-orphaned-vectors.ts` - remove stale vector rows not linked to active memories
 - `validate-memory-quality.ts` - validates post-render memory quality against scoring thresholds before indexing/reporting; includes post-save quality gates (structure, semantic sufficiency, duplicate detection), heuristic calibration, and trigger sanitization
 - `reindex-embeddings.ts` - force full embedding reindex across memory/spec documents
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
-- `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
+- `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and supporting generated context artifacts
 - `rebuild-auto-entities.ts` - rebuild auto-entity metadata from indexed content
 - `fix-memory-h1.mjs` - One-shot migration script — fixes H1 heading format in older generated memory artifacts
 
@@ -105,7 +105,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 <!-- ANCHOR:frontmatter-normalization-reindex -->
 ## 6. FRONTMATTER NORMALIZATION + REINDEX
 
-Use the backfill CLI to normalize indexed markdown metadata across templates, spec docs, and memory files.
+Use the backfill CLI to normalize indexed markdown metadata across templates, spec docs, and supporting generated context artifacts.
 
 Managed keys:
 - `title`

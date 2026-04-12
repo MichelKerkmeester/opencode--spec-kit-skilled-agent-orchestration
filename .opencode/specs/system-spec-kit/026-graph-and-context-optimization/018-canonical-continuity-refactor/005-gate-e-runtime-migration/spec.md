@@ -4,7 +4,8 @@ description: "Canonical cutover."
 trigger_phrases: ["gate e", "runtime migration"]
 importance_tier: "important"
 contextType: "implementation"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
@@ -33,7 +34,7 @@ The operator-facing recovery surface is `/spec_kit:resume`. Canonical continuity
 |-------|-------|
 | Level | 3 |
 | Priority | P0 |
-| Status | In Progress |
+| Status | Complete |
 | Created | 2026-04-11 |
 | Updated | 2026-04-12 |
 | Branch | `main` |
@@ -192,8 +193,8 @@ As a repo reader, I want command, skill, agent, and README docs to match the liv
 1. **Given** the old rollout ladder text still appears in the packet, **when** Gate E packet docs are rewritten, **then** the phase describes an immediate canonical migration instead of staged rollout buckets.
 2. **Given** `/spec_kit:resume` is the operator recovery surface, **when** continuity guidance is read, **then** it points to `../handover.md`, `_memory.continuity`, and canonical spec docs in that order.
 3. **Given** the CLI handback files are part of the Gate E fanout, **when** the packet describes contract alignment, **then** it references the current JSON-primary `generate-context.js` behavior.
-4. **Given** runtime validation has not been attached yet, **when** checklist and summary files are updated, **then** completion-only checks remain open.
-5. **Given** some doc slices are already updated outside this packet, **when** implementation progress is summarized, **then** the packet records those slices as supporting evidence without inflating final update counts.
+4. **Given** runtime validation is rerun in the completion pass, **when** checklist and summary files are updated, **then** the packet closes only with attached validator, sample-save, and CLI-contract evidence.
+5. **Given** some doc slices were updated outside this packet, **when** implementation progress is summarized, **then** the packet records those slices as supporting evidence without inflating final update counts.
 6. **Given** strict packet validation runs after the rewrite, **when** template and frontmatter issues surface, **then** the packet is corrected before closeout is reported.
 
 ### AI Execution Protocol

@@ -77,7 +77,7 @@ This agent is LEAF-only.
 - Fabricate details not present in source files
 - Leave placeholder text such as `[extracted from context]`
 - Skip attempt-number handling when `handover.md` already exists
-- Depend on non-canonical memory files or retired continuity concepts as the primary recovery path
+- Depend on non-canonical support artifacts under `memory/` or retired continuity concepts as the primary recovery path
 
 ## 4. VERIFICATION BEFORE RETURN
 

@@ -4,7 +4,8 @@ description: "Execution tasks."
 trigger_phrases: ["gate e", "tasks"]
 importance_tier: "important"
 contextType: "implementation"
-status: "in_progress"
+status: complete
+closed_by_commit: TBD
 _memory:
   continuity:
     packet_pointer: "018/005-gate-e-runtime-migration"
@@ -25,10 +26,10 @@ _memory:
 
 | Prefix | Meaning |
 |--------|---------|
-| `[ ]` | Pending |
+| `pending` | Pending marker (not used in this closed packet) |
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
-| `[B]` | Blocked |
+| `[B]` | Historical blocked marker retained for lineage only |
 
 Task format: `T### Description`
 <!-- /ANCHOR:notation -->
@@ -46,29 +47,29 @@ Task format: `T### Description`
 
 - [x] T004 Locate the remaining rollout control-plane storage and determine whether canonical should be forced or the retired flag removed entirely.
 - [x] T005 Remove workflow-level rollout and shadow-preview scaffolding from the active implementation path.
-- [ ] T006 Verify a sample save end to end against the canonical path.
+- [x] T006 Verify a sample save end to end against the canonical path. [Evidence: `tests/memory-save-integration.vitest.ts` passed on 2026-04-12 (`1` file / `10` tests)]
 - [x] T007 [P] Update the memory command slice to canonical continuity wording.
 - [x] T008 [P] Update the owned agent slices to canonical continuity wording and `/spec_kit:resume` recovery guidance.
 - [x] T009 [P] Update the 8 CLI handback files to the current `generate-context.js` JSON-primary contract.
-- [ ] T010 [P] Finish the remaining mapped doc-parity batches outside this packet: workflow YAMLs, `sk-*` and system-spec-kit internals, top-level docs, memory-relevant sub-READMEs, and doc-parity sub-READMEs.
+- [x] T010 [P] Finish the remaining mapped doc-parity batches outside this packet: workflow YAMLs, `sk-*` and system-spec-kit internals, top-level docs, memory-relevant sub-READMEs, and doc-parity sub-READMEs. [Evidence: Gate E handover records `178` touched files across the mapped parity batches]
 <!-- /ANCHOR:phase-2 -->
 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
 - [x] T011 Verify packet markdown integrity after the Gate E rewrite.
-- [ ] T012 Run `validate.sh --strict` on this packet and record the result.
-- [ ] T013 Record the final touched-file list, validation state, and any real post-flip metrics in `implementation-summary.md`.
-- [ ] T014 Mark packet frontmatter and closeout status as complete only after runtime verification and validator evidence exist.
+- [x] T012 Run `validate.sh --strict` on this packet and record the result. [Evidence: `PASS`, `0` errors / `0` warnings on 2026-04-12]
+- [x] T013 Record the final touched-file list, validation state, and any real post-flip metrics in `implementation-summary.md`. [Evidence: summary updated with `178` touched files, strict validation, CLI contract suite, and sample-save integration]
+- [x] T014 Mark packet frontmatter and closeout status as complete only after runtime verification and validator evidence exist.
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] Canonical runtime verification is complete.
-- [ ] Required mapped parity surfaces are complete or remaining gaps are explicitly called out.
-- [ ] Packet validator state is attached.
-- [ ] `implementation-summary.md` reflects final evidence rather than placeholders.
+- [x] Canonical runtime verification is complete.
+- [x] Required mapped parity surfaces are complete and recorded.
+- [x] Packet validator state is attached.
+- [x] `implementation-summary.md` reflects final evidence rather than placeholders.
 <!-- /ANCHOR:completion -->
 
 <!-- ANCHOR:cross-refs -->

@@ -1,6 +1,6 @@
 ---
 title: "Post-save quality review"
-description: "After a memory file is written, a post-save quality review compares saved frontmatter against the original JSON payload and emits machine-readable severity-graded findings before indexing begins."
+description: "After canonical packet continuity is written, a post-save quality review compares saved frontmatter against the original JSON payload and emits machine-readable severity-graded findings before indexing begins."
 audited_post_018: true
 ---
 
@@ -8,7 +8,7 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-The post-save quality review runs after the memory file is written (Step 10.5 in the save workflow) and before indexing starts (Step 11). It compares the saved frontmatter and MEMORY METADATA block against the original JSON payload to detect propagation failures and field-level quality issues.
+The post-save quality review runs after canonical packet continuity is written (Step 10.5 in the save workflow) and before indexing starts (Step 11). It compares the saved frontmatter and continuity metadata against the original JSON payload to detect propagation failures and field-level quality issues.
 
 This is a verification step that catches cases where the rendering pipeline silently dropped or degraded caller-supplied fields — generic titles, path-fragment trigger phrases, missing decisions, wrong contextType — before those problems become permanent in the index. Think of it as a proof-reader who checks the printed form against the original application to make sure nothing was lost in transcription.
 
@@ -29,7 +29,7 @@ Current detection checks:
 
 Each finding is emitted with a severity level:
 
-- **HIGH** — Title and `trigger_phrases` propagation failures that would materially mislabel the saved memory.
+- **HIGH** — Title and `trigger_phrases` propagation failures that would materially mislabel the saved continuity record.
 - **MEDIUM** — `importance_tier` mismatch or `decision_count = 0` when the payload carried `keyDecisions`.
 - **LOW** — Advisory `context_type` or `description` degradation that does not block the save path.
 
@@ -47,7 +47,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 ### 3.2 Severity model
 
-- **HIGH**: Title or `trigger_phrases` drift that materially misstates the saved memory.
+- **HIGH**: Title or `trigger_phrases` drift that materially misstates the saved continuity record.
 - **MEDIUM**: `importance_tier` or `decision_count` drift that should be fixed before trusting indexing quality.
 - **LOW**: `context_type` or `description` drift that is worth tightening but is not treated as a blocking propagation failure.
 

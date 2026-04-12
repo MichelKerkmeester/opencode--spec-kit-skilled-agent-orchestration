@@ -152,7 +152,7 @@ Manage the Spec Kit Memory system for context preservation across sessions.
 | Search | `/memory:search <query>` or `/memory:search <subcommand>` | Unified retrieval + analysis (intent-aware search, epistemic, causal, eval) |
 | Learn | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories |
 | Manage | `/memory:manage <subcommand>` | Database operations plus shared-memory lifecycle (`scan`, `cleanup`, `tier`, `health`, `checkpoint`, `ingest`, `shared ...`) |
-| Save | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
+| Save | `/memory:save <spec-folder>` | Update packet continuity with semantic indexing |
 
 ### Spec Kit Commands
 
@@ -266,7 +266,7 @@ A: Use `/spec_kit:plan` when you want to produce a spec and plan document for re
 
 **Q: How do I recover a session that was interrupted?**
 
-A: Run `/spec_kit:resume`. This loads the most relevant continuation context for the active spec folder, including recent handover state, resume-mode memory retrieval, crash breadcrumbs, and task progress so you can pick up where you left off.
+A: Run `/spec_kit:resume`. This is the canonical recovery surface for packet work. It rebuilds context from `handover.md`, then `_memory.continuity`, then the packet's canonical spec docs before deeper MCP retrieval surfaces kick in.
 
 <!-- /ANCHOR:faq -->
 

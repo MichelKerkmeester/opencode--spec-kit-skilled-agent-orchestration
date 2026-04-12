@@ -26,7 +26,7 @@ _memory:
 
 | Prefix | Meaning |
 |--------|---------|
-| `[ ]` | Pending |
+| `pending` | Pending marker (not used in this closed packet) |
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |

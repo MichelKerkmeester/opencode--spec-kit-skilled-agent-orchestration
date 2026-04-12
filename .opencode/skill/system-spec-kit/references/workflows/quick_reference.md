@@ -182,7 +182,7 @@ Say: "save context" or "save conversation"
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/
 ```
 
-❌ DO NOT use Write/Edit tools to create memory files directly.
+❌ DO NOT use Write/Edit tools to author continuity surfaces directly.
 
 ---
 
@@ -504,9 +504,9 @@ Before presenting documentation to user:
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/###-folder/
 ```
 
-❌ DO NOT use Write/Edit tools to create memory files directly.
+❌ DO NOT use Write/Edit tools to author continuity surfaces directly.
 
-> **Memory Context Loading Integration:** Memory loading implements AGENTS.md Memory Context Loading. When resuming work on an existing spec folder with memory files, display options: `[1] [2] [3] [all] [skip]` for memory selection.
+> **Recovery Integration:** Packet recovery is canonical-first. Start from `handover.md`, then `_memory.continuity` in `implementation-summary.md`, then the rest of the packet docs before widening into supporting indexed retrieval.
 
 **Phased Resume**: When the target folder has child phases, first resolve
 whether you need the coordination root or an active child.
@@ -514,10 +514,9 @@ Load/save memory in the child packet by default.
 Only load root memory when updating coordination snapshots.
 
 **Save location:**
-- Primary: `specs/###-folder/memory/`
-- No workspace-root fallback; save memory only in the active spec folder's `memory/` directory
-
-**Filename pattern:** `DD-MM-YY_HH-MM__short-description.md`
+- Primary: the active packet's canonical continuity surfaces
+- Core continuity block: `_memory.continuity` in `implementation-summary.md`
+- No workspace-root fallback; direct CLI targets stay inside the selected root spec or phase packet
 
 ### Session Handover
 

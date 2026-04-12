@@ -123,7 +123,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - research_intent = [add_feature/fix_bug/refactor/understand from Q5]
 
 9. Execute background operations:
-   - IF memory_choice == A: Load most recent memory file
+   - IF memory_choice == A: Load the most recent indexed continuity support artifact
    - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
 

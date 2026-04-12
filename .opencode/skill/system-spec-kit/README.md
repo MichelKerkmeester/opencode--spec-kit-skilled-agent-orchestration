@@ -59,14 +59,14 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 | Category                    | Count                | Details                                                                                         |
 | --------------------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
-| **MCP Tools**               | 43                   | Across 7 layers (L1-L7), including code graph, CocoIndex lifecycle, and session bootstrap tools |
+| **MCP Tools**               | 47                   | Across 7 layers (L1-L7), including code graph, CocoIndex lifecycle, and session bootstrap tools |
 | **Commands**                | 12                   | 8 spec_kit + 4 memory                                                                           |
 | **Documentation Levels**    | 4                    | Levels 1, 2, 3, 3+                                                                              |
 | **Feature Catalog Entries** | 291                  | Across 22 categories                                                                            |
-| **Search Channels**         | 5                    | Vector, FTS5, BM25, Causal Graph, Degree                                                        |
+| **Search Channels**         | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree, plus CocoIndex for semantic code discovery       |
 | **Pipeline Stages**         | 4                    | Gather, Score, Rerank, Filter                                                                   |
 | **Importance Tiers**        | 6                    | constitutional through deprecated                                                               |
-| **Memory States**           | 5                    | HOT through ARCHIVED                                                                            |
+| **Memory States**           | 4 active | HOT, WARM, COLD, DORMANT |
 | **Template Architecture**   | CORE + ADDENDUM v2.2 | Composable layers per level                                                                     |
 | **Script Modules**          | 12 spec + 10 memory  | TypeScript, JavaScript and Bash                                                                 |
 | **Requirements**            | Node.js 18+          | TypeScript 5.0+, Bash 4.0+                                                                      |
@@ -89,7 +89,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
-| **Spec Kit Memory MCP**       | 43-tool MCP server providing persistent semantic memory, graph intelligence, and session orchestration across sessions, models and tools                                                                       |
+| **Spec Kit Memory MCP**       | 47-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
 | **Session Continuity**        | `generate-context.js` updates the canonical continuity surfaces for a spec folder so `/spec_kit:resume` can rebuild the next session from packet-local sources                                              |
@@ -317,7 +317,7 @@ The memory system lives in an MCP server that gives AI assistants persistent mem
 
 Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the memory stays the same because it lives on your machine, not inside any AI's context window.
 
-For full architecture details, the 43-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
+For full architecture details, the 47-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
 #### Hybrid Search
 
@@ -366,7 +366,7 @@ Not all memories are equally useful forever. The system uses FSRS (Free Spaced R
 
 Decay speed is also controlled by content type (decisions decay slower than general notes). Memories earn promotions through positive feedback: 5 thumbs-up promotes normal to important, 10 promotes to critical.
 
-Five cognitive states track access patterns: **HOT** (just used) through **WARM**, **COLD**, **DORMANT** to **ARCHIVED**. Hot memories get full content in results. Warm ones appear as summaries. Cold and below only surface if they score well enough.
+Four active cognitive states track access patterns: **HOT** (just used), **WARM**, **COLD**, and **DORMANT**. Hot memories get full content in results. Warm ones appear as summaries. Cold and dormant content only surfaces if it still scores well enough.
 
 #### Causal Graph
 
@@ -446,12 +446,12 @@ Spec Kit exposes 12 top-level workflow commands: 8 `spec_kit` + 4 `memory` opera
 
 | Command          | Tool Count | Purpose                                                                                                                                 |
 | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `/memory:save`   | 4          | Save conversation context to a spec folder's `memory/` directory with semantic indexing                                                 |
+| `/memory:save`   | 4          | Update packet continuity surfaces and supporting generated context artifacts with semantic indexing                                      |
 | `/memory:search` | 13         | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types                                                           |
 | `/memory:manage` | 20         | Database maintenance plus shared-memory lifecycle: stats, scan, cleanup, bulk-delete, checkpoints, ingest, spaces, memberships, rollout |
 | `/memory:learn`  | 6          | Constitutional memory manager: create, list, edit, remove always-surface rules                                                          |
 
-Session recovery lives in `/spec_kit:resume`, which uses shared memory tools for resume-mode retrieval, crash breadcrumbs, and continuation routing.
+Session recovery lives in `/spec_kit:resume`, which rebuilds packet context in this order: `handover.md`, then `_memory.continuity`, then canonical spec docs before deeper memory retrieval is needed.
 
 Some commands own their tools (they are the primary home) while others borrow tools from `/memory:search` or `/memory:manage`. A borrowed tool works the same way -- it is just administered somewhere else.
 
@@ -551,14 +551,14 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 | Script                        | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
 | `generate-context.ts`         | Source for the runtime memory-save entrypoint `scripts/dist/memory/generate-context.js` |
-| `backfill-frontmatter.ts`     | Add missing frontmatter to existing memory files            |
+| `backfill-frontmatter.ts`     | Add missing frontmatter to existing generated context artifacts |
 | `rank-memories.ts`            | Rank memories by relevance for a query                      |
 | `reindex-embeddings.ts`       | Rebuild embedding vectors for stored memories               |
 | `cleanup-orphaned-vectors.ts` | Remove vector entries with no matching memory               |
 | `rebuild-auto-entities.ts`    | Regenerate auto-extracted entity catalog                    |
 | `validate-memory-quality.ts`  | Run quality checks on stored memory content                 |
 | `ast-parser.ts`               | Parse markdown AST for section extraction                   |
-| `fix-memory-h1.mjs`           | Fix heading levels in memory files                          |
+| `fix-memory-h1.mjs`           | Fix heading levels in older generated context artifacts     |
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
 
@@ -623,7 +623,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`README.md`](./README.md)                                                   | This file -- what Spec Kit does, how to use it, where to find things                                 |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                       | API boundary contract between `scripts/` and `mcp_server/`                                           |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md)                   | Shared memory guide with spaces, roles and kill switch                                               |
-| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 43-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)               | Step-by-step installation with embedding providers and environment                                   |
 | [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh)                         | Create spec folders with level-appropriate template files                                            |
@@ -639,7 +639,7 @@ The **spec folder workflow** is the filing system. Every time you modify files, 
 
 The **memory system** is the librarian. When a session ends, `generate-context.js` updates the packet's canonical continuity surfaces so the next session can recover from packet-local sources first. The MCP server indexes those packet docs into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `/spec_kit:resume` rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs. If you need deeper retrieval after that, `session_bootstrap()` bundles resume context, health, and structural readiness into one follow-up recovery call before broader `memory_context` work begins.
 
-The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation and packet-local changelog closeout when applicable. `/memory:save` saves context. `/spec_kit:resume` recovers or continues a previous session.
+The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation and packet-local changelog closeout when applicable. `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
 
 ```text
 Session starts
@@ -792,7 +792,7 @@ Or use the command:
 /memory:save 043-user-profile-update
 ```
 
-**Result**: A timestamped memory file in `memory/`, indexed and searchable within seconds.
+**Result**: The packet's continuity surfaces and any supporting generated context artifacts are updated, indexed, and searchable within seconds.
 
 ### Example 4: Create a Phase Decomposition
 
@@ -1017,7 +1017,7 @@ A: The memory system can index any markdown file, beyond spec folder contents. B
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 43-tool API reference, 5-channel hybrid retrieval, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 47-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 
@@ -1062,7 +1062,7 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | [`SKILL.md`](./SKILL.md)                                                                         | AI agent instructions: routing, gates, validation, template application                              |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                                           | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 43-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)                                   | Step-by-step installation with embedding providers and environment variables                         |
 | [`SHARED_MEMORY_DATABASE.md`](./SHARED_MEMORY_DATABASE.md)                                       | Shared memory guide with spaces, roles, kill switch                                                  |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md)                     | Detailed memory system reference                                                                     |

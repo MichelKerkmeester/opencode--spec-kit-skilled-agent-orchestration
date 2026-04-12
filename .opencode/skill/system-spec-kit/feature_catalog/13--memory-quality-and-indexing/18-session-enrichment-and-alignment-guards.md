@@ -30,7 +30,7 @@ Git extraction also preserves uncommitted file context in freshly initialized re
 
 Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
 
-Phase 018 adds a supporting continuity ladder on the document side: `handover.md` now overrides older research notes when they conflict, `_memory.continuity` is a thin frontmatter block rather than a separate external memory file, and spec-doc content remains the final source of truth for recovery.
+Phase 018 adds a supporting continuity ladder on the document side: `handover.md` now overrides older research notes when they conflict, `_memory.continuity` is a thin frontmatter block rather than a separate external continuity artifact, and spec-doc content remains the final source of truth for recovery.
 
 Status: Implemented and covered by targeted Vitest regressions.
 

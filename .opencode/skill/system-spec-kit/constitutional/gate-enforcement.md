@@ -77,14 +77,14 @@ Full definitions: **AGENTS.md § 2 — MANDATORY GATES**
 
 **ACTION:**
 1. Parse handoff for: Spec folder path, Last Action, Next Action
-2. Validate against most recent memory file in spec folder
+2. Validate against canonical packet continuity in this order: `handover.md` -> `_memory.continuity` -> spec docs
 3. IF mismatch → Report and ask:
    - A) Trust handoff message
-   - B) Trust memory file
+   - B) Trust canonical continuity
    - C) Investigate both
 4. IF validated → Proceed with "Continuation validated"
 
-**RATIONALE:** Handoff messages may be stale or from a different branch. Always cross-check against memory.
+**RATIONALE:** Handoff messages may be stale or from a different branch. Always cross-check against the packet's canonical continuity surfaces before continuing.
 
 <!-- /ANCHOR:continuation-validation -->
 
