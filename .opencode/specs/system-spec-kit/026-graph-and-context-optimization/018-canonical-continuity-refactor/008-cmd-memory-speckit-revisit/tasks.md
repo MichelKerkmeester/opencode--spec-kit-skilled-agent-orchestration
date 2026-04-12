@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/008-018-cmd-memory-speckit-revisit"
+    packet_pointer: "018/008-cmd-memory-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Recorded the completed 008 revisit tasks"
@@ -61,7 +61,7 @@ _memory:
 ## Phase 3: Verification
 
 - [x] T009 Record the reviewed/updated counts plus the blocked-wrapper list in this packet.
-- [x] T010 Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/008-018-cmd-memory-speckit-revisit` -> `RESULT: PASSED` (0 errors, 0 warnings).
+- [x] T010 Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/008-cmd-memory-speckit-revisit` -> `RESULT: PASSED` (0 errors, 0 warnings).
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->

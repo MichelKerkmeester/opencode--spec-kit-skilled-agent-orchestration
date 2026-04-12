@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/008-018-cmd-memory-speckit-revisit"
+    packet_pointer: "018/008-cmd-memory-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Completed the command-surface revisit plan for the 016 release-alignment targets"

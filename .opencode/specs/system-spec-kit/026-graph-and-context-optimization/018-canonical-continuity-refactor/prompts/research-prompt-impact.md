@@ -54,7 +54,7 @@ Effort estimates are the most error-prone output. Every row in the impact matrix
 
 ## 0. PRIOR SEED — READ FIRST
 
-Before iterating, read `../phase-017-rerun-seed.md` at the spec folder root. It carries 10 key findings from the phase 017 10-iteration rerun, including the ~147-file integration surface inventory, the 52 engineer-day effort estimate, the dependency order, and the M4 migration strategy. Phase 018 impact analysis should verify and refine these numbers with line-level citations, not re-derive them from scratch.
+Before iterating, read `../scratch/phase-017-rerun-seed.md` at the spec folder root. It carries 10 key findings from the phase 017 10-iteration rerun, including the ~147-file integration surface inventory, the 52 engineer-day effort estimate, the dependency order, and the M4 migration strategy. Phase 018 impact analysis should verify and refine these numbers with line-level citations, not re-derive them from scratch.
 
 ---
 

@@ -18,7 +18,7 @@ Design HOW to implement Option C (Wiki-Style Spec Kit Updates with thin continui
 
 ### Prior work
 - Phase 017 generation 1: single-shot codex delegation, recommendation = Option C, retrofitted with skeletal state files 2026-04-11T12:15:00Z
-- Phase 017 generation 2: 10-iteration rerun, composite score 0.92, validated Option C recommendation, produced the seed at `../phase-017-rerun-seed.md`
+- Phase 017 generation 2: 10-iteration rerun, composite score 0.92, validated Option C recommendation, produced the seed at `../scratch/phase-017-rerun-seed.md`
 
 ### Note on worker substitution
 User requested `gpt-5.4 high fast` as the worker. cli-codex demonstrated instability in this session (multiple exit 143/144/2 failures). Substituted to in-session claude-opus-4-6 acting as both orchestrator and worker, following the same pattern as phase 017 generation 2. This preserves the sk-deep-research protocol compliance (init → iterate → synthesize → save with real state files) while avoiding the cli-codex failure mode.
@@ -60,7 +60,7 @@ Investigate HOW to refactor the Spec Kit memory system into a wiki-style model w
 - Do NOT write or edit any code, templates, memory files, generators, handlers, or MCP surfaces — read-only research
 - Do NOT relitigate Option C vs A/B/F — fixed in phase 017
 - Do NOT re-evaluate migration options M1/M2/M3 — M4 is fixed
-- Do NOT re-derive findings that `../phase-017-rerun-seed.md` already captured — cite them instead
+- Do NOT re-derive findings that `../scratch/phase-017-rerun-seed.md` already captured — cite them instead
 - Do NOT propose schema changes beyond what's strictly necessary
 - Do NOT bulk-convert the 155 existing memory files — M4 archives them in place
 - Do NOT design new MCP tools — retarget existing ones
@@ -140,7 +140,7 @@ From phase 017:
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
 
-**Iteration 1**: Read `../phase-017-rerun-seed.md` + phase 017 iteration files + refresh mental model of `memory-save.ts`, `memory-context.ts`, `generate-context.ts`, `nested-changelog.ts` (the read-transform-write pattern model). Build an updated architecture diagram that reflects the post-Option-C target state, not the current state.
+**Iteration 1**: Read `../scratch/phase-017-rerun-seed.md` + phase 017 iteration files + refresh mental model of `memory-save.ts`, `memory-context.ts`, `generate-context.ts`, `nested-changelog.ts` (the read-transform-write pattern model). Build an updated architecture diagram that reflects the post-Option-C target state, not the current state.
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->

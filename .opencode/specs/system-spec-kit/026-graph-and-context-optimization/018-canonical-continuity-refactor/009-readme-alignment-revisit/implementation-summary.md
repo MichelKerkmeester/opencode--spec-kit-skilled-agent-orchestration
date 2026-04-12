@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/009-018-readme-alignment-revisit"
+    packet_pointer: "018/009-readme-alignment-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Recorded the 009 revisit evidence"
@@ -26,7 +26,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| Packet | `009-018-readme-alignment-revisit` |
+| Packet | `009-readme-alignment-revisit` |
 | Completed | 2026-04-12 |
 | Source Scope | [016 003 README audit](../../016-release-alignment/003-readme-alignment/readme-audit.md) plus the first-party `system-spec-kit` README extension |
 | Reviewed | 34 audit targets + 20 first-party README spot-checks |
@@ -75,7 +75,7 @@ The 11-file update set was applied directly to the README discovery surfaces, th
 
 - Re-read every edited file after patching via targeted `sed` / `rg` checks.
 - Re-scanned the 34-file target set plus the 89 first-party `system-spec-kit` README set and confirmed there were no remaining stale hits requiring README edits inside the reviewed scope.
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/009-018-readme-alignment-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/009-readme-alignment-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->

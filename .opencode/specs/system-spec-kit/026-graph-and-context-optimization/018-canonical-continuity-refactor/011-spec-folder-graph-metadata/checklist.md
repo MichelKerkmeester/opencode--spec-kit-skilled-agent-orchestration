@@ -1,20 +1,20 @@
 ---
 title: "018 / 011 — Graph metadata verification checklist"
-description: "Verification Date: 2026-04-12"
-trigger_phrases: ["018 011 checklist", "graph metadata checklist", "graph metadata verification"]
+description: "P0/P1/P2 verification checklist for implementing graph-metadata.json."
+trigger_phrases: ["018 011 checklist", "graph metadata verification", "graph metadata rollout checklist"]
 importance_tier: "important"
-contextType: "research"
-status: "complete"
+contextType: "planning"
+status: "planned"
 _memory:
   continuity:
     packet_pointer: "018/011-spec-folder-graph-metadata"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Completed the verification checklist and passed strict validation"
-    next_safe_action: "Open implementation phase"
-    key_files: ["checklist.md", "implementation-summary.md"]
+    recent_action: "Rewrote the packet checklist as an implementation-time verification contract"
+    next_safe_action: "Use these checks to validate each phase as code lands"
+    key_files: ["checklist.md", "spec.md", "tasks.md"]
 ---
-# Verification Checklist: 018 / 011 — Per-spec-folder graph metadata
+# Verification Checklist: 018 / 011 — Spec-folder graph metadata
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -26,9 +26,9 @@ _memory:
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
-| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
-| **[P1]** | Required | Must complete OR get user approval |
-| **[P2]** | Optional | Can defer with documented reason |
+| **[P0]** | Hard blocker | Cannot claim implementation complete until all pass |
+| **[P1]** | Required | Must pass before rollout or be explicitly waived by the user |
+| **[P2]** | Advisory | Can remain pending only with documented rationale |
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -36,9 +36,9 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md`. [EVIDENCE: File spec.md]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md`. [EVIDENCE: File plan.md]
-- [x] CHK-003 [P1] Dependencies identified and available through direct repo inspection. [EVIDENCE: File research.md]
+- [ ] CHK-001 [P0] The implemented schema matches Section 5 of [spec.md](./spec.md), and any intentional divergence from Iteration 4 is documented before merge. Reqs: `REQ-001`, `REQ-002`. Evidence: schema file review plus schema tests.
+- [ ] CHK-002 [P0] The requirement-to-task-to-checklist traceability table in [spec.md](./spec.md) still matches the shipped code paths and tests. Reqs: `REQ-001` through `REQ-013`. Evidence: manual packet review before completion.
+- [ ] CHK-003 [P1] All verified repo surfaces named in [plan.md](./plan.md) still exist before implementation starts, or the packet docs are updated before code changes begin. Reqs: `REQ-004`, `REQ-005`, `REQ-010`. Evidence: `ls`, `rg --files`, or equivalent path verification.
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -46,10 +46,9 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Packet docs were authored from live file reads, not assumptions. [EVIDENCE: File research.md]
-- [x] CHK-011 [P0] No unresolved validator-breaking template mismatches remain in the authored structure after remediation. [EVIDENCE: Test bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata]
-- [x] CHK-012 [P1] Save/index/graph/runtime interactions are described with concrete file evidence. [EVIDENCE: File research.md]
-- [x] CHK-013 [P1] The recommendation follows Phase 018 project patterns instead of reintroducing legacy memory-file sprawl. [EVIDENCE: File decision-record.md]
+- [ ] CHK-010 [P0] Manual relationship fields survive refresh unchanged while derived fields are regenerated deterministically. Reqs: `REQ-003`, `REQ-005`. Evidence: parser and save-path tests.
+- [ ] CHK-011 [P0] No implementation path overloads `description.json` or `_memory.continuity` with packet graph state. Reqs: `REQ-001`, `REQ-013`. Evidence: code review across save, resume, and discovery surfaces.
+- [ ] CHK-012 [P1] The implementation continues to reuse `memory_index`, `document_type`, and `causal_edges` instead of adding a new storage layer. Reqs: `REQ-006`, `REQ-007`, `REQ-013`. Evidence: migration diff plus schema review.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -57,10 +56,11 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All requested acceptance criteria are documented in `spec.md`. [EVIDENCE: File spec.md]
-- [x] CHK-021 [P0] Manual testing complete. [EVIDENCE: Test bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/011-spec-folder-graph-metadata]
-- [x] CHK-022 [P1] Edge cases are covered in `spec.md` and `research.md`. [EVIDENCE: File spec.md]
-- [x] CHK-023 [P1] Error and degradation scenarios are addressed in the migration and indexing sections. [EVIDENCE: File research.md]
+- [ ] CHK-020 [P0] Unit tests pass for valid schema, invalid schema, merge behavior, and schema versioning. Reqs: `REQ-002`, `REQ-003`. Evidence: test run in `scripts/tests/`.
+- [ ] CHK-021 [P0] Canonical save integration proves graph metadata refresh runs even when `ctxFileWritten` is false and no legacy `memory/` directory exists. Reqs: `REQ-004`, `REQ-005`. Evidence: targeted save-path test run plus one manual structured save.
+- [ ] CHK-022 [P1] Discovery, indexing, graph-edge upsert, and packet-query ranking tests prove `graph_metadata` rows behave correctly in the current pipeline. Reqs: `REQ-006`, `REQ-007`, `REQ-008`, `REQ-013`. Evidence: integration tests plus packet query smoke checks.
+- [ ] CHK-023 [P1] Backfill dry-run and report tests cover missing descriptions, weak summaries, and manual-review flags without mutating files. Reqs: `REQ-009`, `REQ-012`. Evidence: backfill dry-run output and test assertions.
+- [ ] CHK-024 [P1] Validation proves warning-first `GRAPH_METADATA_PRESENT` behavior works before the rollout threshold is promoted to error. Reqs: `REQ-011`. Evidence: `validate.sh` output against covered and uncovered folders.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -68,9 +68,9 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No secrets or credentials were added to packet docs. [EVIDENCE: File spec.md]
-- [x] CHK-031 [P0] The design preserves validator and schema enforcement for future implementation. [EVIDENCE: File plan.md]
-- [x] CHK-032 [P1] Access-control behavior is unchanged because this packet is research-only. [EVIDENCE: File implementation-summary.md]
+- [ ] CHK-030 [P0] Graph metadata reads and writes stay inside approved spec roots and use existing atomic-write protections. Reqs: `REQ-004`, `REQ-005`. Evidence: code review and path-security tests.
+- [ ] CHK-031 [P1] Packet relationship parsing rejects invalid targets and does not create unintended self-loops or cross-scope edges. Reqs: `REQ-007`, `REQ-013`. Evidence: causal-edge integration tests.
+- [ ] CHK-032 [P1] Backfill and rollout reporting do not leak unrelated paths, secrets, or out-of-scope workspace data. Reqs: `REQ-009`, `REQ-012`. Evidence: dry-run report review and test fixtures.
 <!-- /ANCHOR:security -->
 
 ---
@@ -78,9 +78,9 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` are synchronized around the same recommendation. [EVIDENCE: File tasks.md]
-- [x] CHK-041 [P1] `research.md` contains all 10 requested iteration sections. [EVIDENCE: File research.md]
-- [x] CHK-042 [P2] `decision-record.md` and `implementation-summary.md` capture the final recommendation and closeout state.
+- [ ] CHK-040 [P1] `/spec_kit:plan`, `/spec_kit:complete`, `/spec_kit:resume`, and `/memory:search` docs match the implemented runtime behavior. Reqs: `REQ-008`, `REQ-010`. Evidence: command doc review plus runtime path verification.
+- [ ] CHK-041 [P1] The final implementation packet runs `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict <packet>` successfully after doc/runtime parity updates land. Reqs: `REQ-006`, `REQ-010`, `REQ-011`. Evidence: exact command output captured in `implementation-summary.md`.
+- [ ] CHK-042 [P2] `implementation-summary.md` records actual changed files, test commands, rollout state, and any warning-first caveats instead of generic closeout prose. Reqs: `REQ-010`, `REQ-011`. Evidence: final packet review.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -88,9 +88,7 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] All created files stay inside the requested packet-local phase folder. [EVIDENCE: File tasks.md]
-- [x] CHK-051 [P1] No scratch-only artifacts were left behind in the packet. [EVIDENCE: File checklist.md]
-- [x] CHK-052 [P2] No legacy `memory/` packet files were reintroduced.
+- [ ] CHK-050 [P1] `graph-metadata.json` remains a root-level file in each spec folder, and no implementation step relocates packet graph state into `memory/`, `description.json`, or doc frontmatter as a substitute. Reqs: `REQ-001`, `REQ-010`, `REQ-013`. Evidence: changed-file review plus backfill output review.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -98,11 +96,11 @@ _memory:
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-| Category | Total | Verified |
-|----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 9 | 9/9 |
-| P2 Items | 3 | 3/3 |
+| Category | Total Items | Status |
+|----------|-------------|--------|
+| P0 Items | 7 | Planned |
+| P1 Items | 10 | Planned |
+| P2 Items | 1 | Planned |
 
-**Verification Date**: 2026-04-12
+Use this checklist during implementation. It is intentionally unchecked because this packet is planning-only.
 <!-- /ANCHOR:summary -->

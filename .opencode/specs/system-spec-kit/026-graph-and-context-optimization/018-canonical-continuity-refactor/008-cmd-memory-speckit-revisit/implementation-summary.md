@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/008-018-cmd-memory-speckit-revisit"
+    packet_pointer: "018/008-cmd-memory-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Recorded the 008 revisit evidence"
@@ -26,7 +26,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| Packet | `008-018-cmd-memory-speckit-revisit` |
+| Packet | `008-cmd-memory-speckit-revisit` |
 | Completed | 2026-04-12 |
 | Source Scope | [016 002 reference map](../../016-release-alignment/002-cmd-memory-and-speckit/reference-map.md) |
 | Reviewed | 44 |
@@ -112,7 +112,7 @@ The following target files were re-read and confirmed to still contain pre-018 c
 - Re-read every edited file after patching via targeted `sed` / `rg` checks.
 - Re-scanned the 44-file target set and reduced the remaining drift to the seven blocked wrapper mirrors only.
 - Verified the sandbox limitation with a direct write probe under `.agents/commands/`.
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/008-018-cmd-memory-speckit-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/008-cmd-memory-speckit-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->

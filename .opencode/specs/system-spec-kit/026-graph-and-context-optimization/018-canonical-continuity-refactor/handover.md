@@ -140,7 +140,7 @@ All Codex execution prompts live at (rewritten 2026-04-11T21:30Z to remove obser
 - `/tmp/execute-gate-f-cleanup.prompt` — Cleanup Verification (NEW, replaces the old execute-gate-f-setup.prompt)
 - `/tmp/execute-gate-f-setup.prompt` — old observation kickoff (superseded, do not use)
 
-If `/tmp` is wiped (system reboot), regenerate from `autonomous-execution-runbook.md` §3 / §4 templates plus:
+If `/tmp` is wiped (system reboot), regenerate from `scratch/autonomous-execution-runbook.md` §3 / §4 templates plus:
 - Per-gate scope from `001-gate-a-prework/` through `006-gate-f-archive-permanence/`
 - Resource map at `resource-map.md`
 - Iter detail at `research/iterations/iteration-NNN.md`
@@ -245,9 +245,9 @@ If everything is lost (this file, /tmp prompts, cron jobs, background tasks):
 
 1. `git log --oneline --all | head -20` to see last commit
 2. `git status` to see worktree state
-3. Read `autonomous-execution-runbook.md` v2 + `resource-map.md` v2 to reconstruct execution plan
+3. Read `scratch/autonomous-execution-runbook.md` v2 + `resource-map.md` v2 to reconstruct execution plan
 4. Read `verify-phases-review.md` to know which gates were cleaned up in prior session
 5. Check each child packet's `implementation-summary.md` to see which gates already shipped
-6. Resume from the next-unshipped gate per §3 §4 §5 of `autonomous-execution-runbook.md`
+6. Resume from the next-unshipped gate per §3 §4 §5 of `scratch/autonomous-execution-runbook.md`
 
 The pipeline is recoverable from git history alone if everything else is wiped.

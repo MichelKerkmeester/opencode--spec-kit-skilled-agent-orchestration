@@ -1,7 +1,7 @@
 # Phase 018 Implementation Design Research — Progressive Synthesis
 
 > **Lineage**: Generation 1, in-session 20-iteration rerun (orchestrator+worker: claude-opus-4-6), 2026-04-11T13:30:00Z — 15:10:00Z
-> **Based on**: phase 017 rerun findings (`../phase-017-rerun-seed.md`) + 20 iterations of design work
+> **Based on**: phase 017 rerun findings (`../scratch/phase-017-rerun-seed.md`) + 20 iterations of design work
 > **Status**: Loop complete, composite score 0.95, all 9 key questions answered
 
 ## Executive Summary

@@ -14,11 +14,11 @@ maps_to_questions: [Q1, Q9]
 
 ## Goal
 
-Ground the 20-iteration loop. Read `../phase-017-rerun-seed.md` to internalize the 10 prior findings. Refresh the mental model of the key code paths. Produce a single annotated architecture diagram showing the **current state** next to the **post-Option-C target state** so subsequent iterations have a shared vocabulary.
+Ground the 20-iteration loop. Read `../scratch/phase-017-rerun-seed.md` to internalize the 10 prior findings. Refresh the mental model of the key code paths. Produce a single annotated architecture diagram showing the **current state** next to the **post-Option-C target state** so subsequent iterations have a shared vocabulary.
 
 ## Inputs read this iteration
 
-1. `../phase-017-rerun-seed.md` (F1-F10 + 6 refinements)
+1. `../scratch/phase-017-rerun-seed.md` (F1-F10 + 6 refinements)
 2. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-001.md` (phase 017 architecture baseline)
 3. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-002.md` (16-stage pipeline mapping)
 4. `../../017-memory-refactor-or-deprecation/research/iterations/iteration-004.md` (redundancy matrix)

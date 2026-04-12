@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/009-018-readme-alignment-revisit"
+    packet_pointer: "018/009-readme-alignment-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "009 revisit closed"

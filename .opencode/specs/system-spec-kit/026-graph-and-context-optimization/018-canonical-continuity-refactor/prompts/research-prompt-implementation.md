@@ -40,7 +40,7 @@ The loop driver reads this prompt file as the seed for the strategy template, th
 
 ## 0. PRIOR SEED — READ FIRST
 
-Before iterating, read `../phase-017-rerun-seed.md` at the spec folder root. It carries 10 key findings from the phase 017 10-iteration rerun that phase 018 should build on, not re-derive. Specifically:
+Before iterating, read `../scratch/phase-017-rerun-seed.md` at the spec folder root. It carries 10 key findings from the phase 017 10-iteration rerun that phase 018 should build on, not re-derive. Specifically:
 
 - Option C is fixed (iteration 6 scored 24/30)
 - M4 migration strategy is fixed (iteration 7)

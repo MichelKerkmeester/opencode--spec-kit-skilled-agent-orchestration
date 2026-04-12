@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/007-018-sk-system-speckit-revisit"
+    packet_pointer: "018/007-sk-system-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Checked the 007 revisit verification gates"

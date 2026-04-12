@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/007-018-sk-system-speckit-revisit"
+    packet_pointer: "018/007-sk-system-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Recorded the completed 007 revisit tasks"
@@ -55,7 +55,7 @@ _memory:
 ## Phase 3: Verification
 
 - [x] T007 Record the reviewed/updated counts in this packet.
-- [x] T008 Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/007-018-sk-system-speckit-revisit` -> `RESULT: PASSED` (0 errors, 0 warnings).
+- [x] T008 Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/007-sk-system-speckit-revisit` -> `RESULT: PASSED` (0 errors, 0 warnings).
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->

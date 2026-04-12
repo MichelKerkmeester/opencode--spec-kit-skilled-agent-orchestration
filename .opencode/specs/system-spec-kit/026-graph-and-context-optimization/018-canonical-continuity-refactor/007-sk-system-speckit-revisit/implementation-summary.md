@@ -8,7 +8,7 @@ status: complete
 closed_by_commit: TBD
 _memory:
   continuity:
-    packet_pointer: "018/007-018-sk-system-speckit-revisit"
+    packet_pointer: "018/007-sk-system-speckit-revisit"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Recorded the 007 revisit evidence"
@@ -26,7 +26,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| Packet | `007-018-sk-system-speckit-revisit` |
+| Packet | `007-sk-system-speckit-revisit` |
 | Completed | 2026-04-12 |
 | Source Scope | [016 001 reference map](../../016-release-alignment/001-sk-system-speckit/reference-map.md) |
 | Reviewed | 63 |
@@ -96,7 +96,7 @@ The 32-file update set was applied directly to the authoritative `system-spec-ki
 
 - Re-read every edited file after patching via targeted `sed` / `rg` checks.
 - Re-scanned the 63-file target set for stale Phase 018 drift markers and reduced the remaining hits to legitimate packet-status / folder-filter / parameter-name references only.
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/007-018-sk-system-speckit-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/specs/system-spec-kit/026-graph-and-context-optimization/018-canonical-continuity-refactor/007-sk-system-speckit-revisit` -> `RESULT: PASSED` with 0 errors and 0 warnings.
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->
