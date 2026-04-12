@@ -1,6 +1,6 @@
 ---
 title: "Level 3+ Templates [template:level_3+/README.md]"
-description: "Governance-heavy templates for high-complexity or regulated work."
+description: "Extended templates for high-complexity work needing approval tracking and workstream coordination."
 trigger_phrases:
   - "level 3+"
   - "governance"
@@ -26,7 +26,7 @@ _memory:
 ---
 # Level 3+ Templates
 
-Use for work that needs formal governance, compliance traceability, and coordinated execution.
+Use for high-complexity work that needs approval tracking, compliance checkpoints, and coordinated multi-workstream execution.
 
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
@@ -44,9 +44,9 @@ Use for work that needs formal governance, compliance traceability, and coordina
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-- Formal approval workflow is required.
+- Approval workflow with reviewer checkpoints is required.
 - Compliance checkpoints must be documented.
-- Workstreams or multi-agent coordination are expected.
+- Multiple workstreams need coordination.
 - Complexity is high enough that Level 3 is not sufficient.
 - Under Gate E, the packet remains the continuity source of truth: `/spec_kit:resume` rebuilds context from `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts stay supporting only.
 

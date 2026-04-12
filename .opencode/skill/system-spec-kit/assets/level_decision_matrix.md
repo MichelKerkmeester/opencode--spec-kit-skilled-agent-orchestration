@@ -39,7 +39,7 @@ This matrix helps determine the appropriate documentation level for any task. Us
 | **1: Baseline**     | <100             | `spec.md` + `plan.md` + `tasks.md` + `implementation-summary.md`    | (foundation)                       | All features - minimum documentation |
 | **2: Verification** | 100-499          | Level 1 + `checklist.md`                                            | QA checklist                       | Needs systematic validation          |
 | **3: Full**         | ≥500             | Level 2 + `decision-record.md`                                      | ADR + optional research            | Complex/architectural changes        |
-| **3+: Extended**    | Complexity 80+   | Level 3 + AI protocols + extended checklist + sign-offs             | Governance + orchestration         | Multi-agent workflows, enterprise    |
+| **3+: Extended**    | Complexity 80+   | Level 3 + approval workflow + compliance + stakeholders             | Review tracking + coordination     | High-complexity, multi-workstream    |
 
 **Progressive Enhancement Model:**
 ```text

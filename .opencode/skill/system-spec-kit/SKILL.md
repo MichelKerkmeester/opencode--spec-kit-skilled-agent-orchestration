@@ -396,7 +396,7 @@ Level 2 (Verification): +Quality gates, NFRs, edge cases (~875 LOC)
          ↓ +Arch
 Level 3 (Full):         +Architecture decisions, ADRs, risk matrix (~1090 LOC)
          ↓ +Govern
-Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
+Level 3+ (Extended):    +Approval workflow, compliance, stakeholders (~1075 LOC)
 ```
 
 | Level  | LOC Guidance | Required Files                                        | What It ADDS                                |
@@ -404,7 +404,7 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 | **1**  | <100         | spec.md, plan.md, tasks.md, implementation-summary.md | Essential what/why/how                      |
 | **2**  | 100-499      | Level 1 + checklist.md                                | Quality gates, verification, NFRs           |
 | **3**  | ≥500         | Level 2 + decision-record.md                          | Architecture decisions, ADRs                |
-| **3+** | Complex      | Level 3 + extended content                            | Governance, approval workflow, AI protocols |
+| **3+** | Complex      | Level 3 + extended content                            | Approval workflow, compliance, stakeholder tracking |
 
 **Level Selection Examples:**
 

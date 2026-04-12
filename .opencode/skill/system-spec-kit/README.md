@@ -237,7 +237,7 @@ Not every change needs the same amount of paperwork. A one-line bug fix does not
 | **1**  | < 100          | spec.md, plan.md, tasks.md, implementation-summary.md | Small features, bug fixes, single-file changes       |
 | **2**  | 100 - 499      | Level 1 + checklist.md                                | Features needing QA verification, multi-file changes |
 | **3**  | 500+           | Level 2 + decision-record.md                          | Architecture changes, complex refactors              |
-| **3+** | Complexity 80+ | Level 3 + governance extensions                       | Multi-agent work, enterprise sign-offs               |
+| **3+** | Complexity 80+ | Level 3 + approval workflow, compliance, stakeholders  | High-complexity work needing review tracking          |
 
 The LOC ranges are guidance, not hard rules. Risk, complexity and the number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
@@ -459,7 +459,7 @@ Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each le
 Level 1:  CORE only               → 4 files, ~455 LOC
 Level 2:  CORE + L2-VERIFY        → 6 files, ~875 LOC  (adds checklist.md)
 Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.md)
-Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance extensions)
+Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds approval workflow, compliance, stakeholders)
 ```
 
 #### Core Templates
@@ -483,7 +483,7 @@ Each addendum adds sections and files for its level:
 | -------------------- | ----- | ------------------------------------------------------ |
 | `level2-verify/`     | 2+    | Quality gates, NFRs, edge cases, checklist template    |
 | `level3-arch/`       | 3+    | Architecture decisions, ADRs, risk matrix              |
-| `level3plus-govern/` | 3+    | Enterprise governance, AI protocols, sign-off sections |
+| `level3plus-govern/` | 3+    | Approval workflow, compliance checkpoints, stakeholder tracking |
 | `phase/`             | Any   | Phase decomposition headers for parent/child folders   |
 
 **Location**: `templates/addendum/`

@@ -93,7 +93,7 @@ Level 2 (Verification): Level 1 + checklist.md
                               ↓
 Level 3 (Full):         Level 2 + decision-record.md + optional research/research.md
                               ↓
-Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
+Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder tracking
 ```
 
 | Level               | Required Files                     | Adds To Previous        | Copy Commands              |
@@ -101,7 +101,7 @@ Level 3+ (Extended):    Level 3 + AI protocols + extended checklist + sign-offs
 | **1: Baseline**     | `spec.md` + `plan.md` + `tasks.md` + `implementation-summary.md` | (foundation)            | See Level 1 commands below |
 | **2: Verification** | Level 1 + `checklist.md`           | QA checklist            | See Level 2 commands below |
 | **3: Full**         | Level 2 + `decision-record.md`     | ADR + optional research | See Level 3 commands below |
-| **3+: Extended**    | Level 3 + AI protocols + extended checklist + sign-offs | Governance + orchestration | See Level 3+ commands below |
+| **3+: Extended**    | Level 3 + approval workflow + compliance + stakeholders | Review tracking + coordination | See Level 3+ commands below |
 
 **Level 1 Copy Commands (Baseline):**
 ```bash
@@ -458,7 +458,7 @@ Get explicit "yes/go ahead/proceed" before ANY file changes.
 - [checklist.md](../templates/level_3/checklist.md) - Full validation checklist template
 - [decision-record.md](../templates/level_3/decision-record.md) - Architecture Decision Records template
 
-**Level 3+ Templates (Extended/Enterprise):**
+**Level 3+ Templates (Extended):**
 - [spec.md](../templates/level_3+/spec.md) - Requirements with approval workflow and compliance checkpoints
 - [plan.md](../templates/level_3+/plan.md) - Implementation plan with AI execution framework and workstream coordination
 - [tasks.md](../templates/level_3+/tasks.md) - Task breakdown with 3-tier format and AI execution protocol
