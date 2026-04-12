@@ -24,13 +24,6 @@
       ],
       "environment": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "SPECKIT_ADAPTIVE_FUSION": "true",
-        "SPECKIT_SESSION_BOOST": "true",
-        "SPECKIT_CAUSAL_BOOST": "true",
-        "SPECKIT_HYDE_ACTIVE": "true",
-        "SPECKIT_ENTITY_LINKING": "true",
-        "SPECKIT_GRAPH_CONCEPT_ROUTING": "true",
-        "SPECKIT_GRAPH_REFRESH_MODE": "write_local",
         "_NOTE_1_DATABASE": "DB path auto-derived from provider profile (no MEMORY_DB_PATH needed)",
         "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
         "_NOTE_3_EMBEDDINGS_PROVIDER": "Current: 'auto' (VOYAGE_API_KEY -> OPENAI_API_KEY -> hf-local). Options: 'auto', 'voyage', 'openai', 'hf-local'",
