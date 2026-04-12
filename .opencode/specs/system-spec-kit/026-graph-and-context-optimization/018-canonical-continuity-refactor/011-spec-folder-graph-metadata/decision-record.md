@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: 018 / 011 — graph-metadata.json architecture"
-description: "Accepted ADRs for the dedicated graph-metadata.json contract, the manual-versus-derived split, and merge-based save refresh."
+description: "Accepted ADRs for the dedicated graph-metadata.json contract, the manual-versus-derived split, merge-based save refresh, and direct _memory.continuity frontmatter edits."
 trigger_phrases: ["018 011 decision record", "graph metadata adr", "graph metadata architecture decisions", "graph metadata merge adr"]
 importance_tier: "critical"
 contextType: "planning"
@@ -297,6 +297,94 @@ Iteration 5 identified the lifecycle rule that matters most: graph metadata must
 - Tests cover manual preservation, derived regeneration, and atomic write semantics.
 
 **How to roll back**: disable the graph-metadata refresh path entirely rather than weakening merge guarantees.
+
+---
+
+### ADR-004: Allow direct AI edits to `_memory.continuity` frontmatter; reserve `generate-context.js` for DB indexing and embeddings
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-12 |
+| **Deciders** | Codex implementation pass for Phase 018 / 011 |
+| **Research Basis** | Phase 018 canonical continuity model plus current `CLAUDE.md` and `/memory:save` workflow review |
+
+### Context
+
+The old memory-save rule assumed the primary artifact was a standalone markdown file under `memory/`, so forcing every continuity update through `generate-context.js` was the safest way to keep routing, anchors, and indexing aligned. Post-018, canonical continuity now lives in `_memory.continuity` frontmatter inside spec docs that the AI is already editing for other packet work.
+
+For small session updates, pushing six frontmatter fields through the full save pipeline adds overhead without improving the truth source. The AI already has the freshest session state at edit time, while the script still matters for database refresh, embedding generation, and any compatibility output that depends on its routing logic.
+
+### Constraints
+
+- Direct edits must stay limited to `_memory.continuity` blocks inside canonical spec docs.
+- The change must not re-open manual creation of standalone `memory/*.md` continuity artifacts.
+- Indexed saves, embedding refresh, and `description.json` refresh still need one canonical script path.
+
+---
+
+### Decision
+
+**We chose**: allow direct AI edits to `_memory.continuity` YAML blocks in canonical spec docs for session continuity updates, while keeping `generate-context.js` as the canonical path for DB indexing, embedding generation, `description.json` refresh, and full save workflows.
+
+**How it works**: if the task is only to update doc-local continuity hints, the AI may patch the frontmatter in-place. If the task also needs indexed retrieval freshness, embeddings, compatibility artifacts, or save-workflow side effects, the AI must still run `generate-context.js`.
+
+---
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Direct `_memory.continuity` edits + scripted indexed saves** | Fast for small continuity updates, preserves canonical indexing path, matches post-018 architecture | Requires clear boundary guidance | 10/10 |
+| Keep `generate-context.js` mandatory for every frontmatter change | One workflow to teach, guaranteed side effects | Unnecessary overhead for small doc-local updates, mismatched to canonical spec-doc ownership | 5/10 |
+| Return to standalone `memory/*.md` continuity files | Restores old script-only model | Reopens the packet-sprawl model that Phase 018 retired | 1/10 |
+
+**Why this one**: it matches the new canonical continuity model without weakening the save pipeline where that pipeline still adds real value.
+
+---
+
+### Consequences
+
+**What improves**:
+- Session continuity updates become faster and easier to apply when the canonical source is already open in a spec doc.
+- The rules now match post-018 reality instead of treating spec-doc frontmatter like a legacy memory-file workflow.
+
+**What it costs**:
+- Operators must distinguish between continuity-only edits and indexed saves. Mitigation: document the boundary clearly in `CLAUDE.md` and `/memory:save`.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Direct edits are mistaken for indexed saves | H | State explicitly that DB sync, embeddings, and `description.json` refresh still require `generate-context.js` |
+| Someone resumes manually creating standalone memory files | M | Keep the hard ban on manual `memory/*.md` continuity artifacts |
+| Frontmatter edits drift from save-workflow expectations | M | Limit the exception to `_memory.continuity` only and keep all broader save behavior on the script path |
+
+---
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Canonical continuity is now frontmatter in docs, not standalone memory markdown |
+| 2 | **Beyond Local Maxima?** | PASS | The decision separates doc-local continuity updates from indexed save side effects instead of forcing one path for both |
+| 3 | **Sufficient?** | PASS | One narrow exception handles the real workflow pain without changing packet graph boundaries |
+| 4 | **Fits Goal?** | PASS | Preserves script authority where indexing and embeddings matter while simplifying frontmatter maintenance |
+| 5 | **Open Horizons?** | PASS | Leaves room for future save automation without reintroducing the legacy memory-file model |
+
+**Checks Summary**: 5/5 PASS
+
+---
+
+### Implementation
+
+**What changes**:
+- `CLAUDE.md` updates the Memory Save Rule so direct `_memory.continuity` edits are allowed, but indexed saves still go through `generate-context.js`.
+- `/memory:save` documents the same boundary and keeps standalone memory-file creation forbidden.
+
+**How to roll back**: restore the script-only rule for `_memory.continuity` frontmatter edits and remove the direct-edit allowance from the operator docs.
 
 
 ---
