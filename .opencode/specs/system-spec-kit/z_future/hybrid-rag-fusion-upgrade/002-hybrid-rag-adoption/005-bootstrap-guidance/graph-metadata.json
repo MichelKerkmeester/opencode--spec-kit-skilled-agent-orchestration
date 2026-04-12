@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance
+Status: planned
+Importance Tier: important
+Summary: This sub-phase scopes richer startup and resume guidance at current bootstrap surfaces. It covers bounded hint blocks, recovery nudges, and profile formatting opportunities. It does not introduce a new wake-up tool or replace `session_bootstrap`.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, scopes, richer, startup, resume, guidance, current, bootstrap, surfaces, covers, bounded, hint
+Key Files: context-server.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, session-bootstrap.ts, memory-context.ts, tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

@@ -107,7 +107,7 @@ afterEach(() => {
 });
 
 describe('sk-deep-review reducer — fail-closed behavior', () => {
-  it('reports corruptionWarnings and flags hasCorruption when JSONL is malformed', () => {
+  it('throws fail-closed corruption errors when JSONL is malformed and lenient is false', () => {
     const specFolder = makeTempSpecFolder('corruption');
     writeConfig(specFolder);
     writeIterationStub(specFolder);
@@ -122,13 +122,9 @@ describe('sk-deep-review reducer — fail-closed behavior', () => {
       'utf8',
     );
 
-    const result = reducer.reduceReviewState(specFolder, { write: true });
-
-    expect(result.hasCorruption).toBe(true);
-    expect(result.corruptionWarnings).toHaveLength(1);
-    expect(result.corruptionWarnings[0].line).toBe(2);
-    expect(result.corruptionWarnings[0].error).toMatch(/not valid JSON|JSON/);
-    expect(result.registry.corruptionWarnings).toEqual(result.corruptionWarnings);
+    expect(() => reducer.reduceReviewState(specFolder, { write: true })).toThrowError(
+      /parseJsonl detected 1 corrupt line\(s\)/,
+    );
   });
 
   it('throws a descriptive error when a machine-owned strategy anchor is missing', () => {

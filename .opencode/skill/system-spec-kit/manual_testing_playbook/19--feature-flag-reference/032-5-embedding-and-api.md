@@ -17,7 +17,7 @@ This scenario validates 5. Embedding and API for `EX-032`. It focuses on Provide
 Operators run the exact prompt and command sequence for `EX-032` and confirm the expected signals without contradicting evidence.
 
 - Objective: Provider selection audit
-- Prompt: `Retrieve embedding provider selection rules. Capture the evidence needed to prove Provider rules and key precedence shown. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a feature-flag validation operator, validate 5. Embedding and API against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Provider rules and key precedence shown
 - Pass/fail: PASS if provider routing is clear
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-032` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-032 | 5. Embedding and API | Provider selection audit | `Retrieve embedding provider selection rules. Capture the evidence needed to prove Provider rules and key precedence shown. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 })` | Provider rules and key precedence shown | Search output | PASS if provider routing is clear | Verify env in runtime |
+| EX-032 | 5. Embedding and API | Provider selection audit | `As a feature-flag validation operator, validate Provider selection audit against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 })` | Provider rules and key precedence shown | Search output | PASS if provider routing is clear | Verify env in runtime |
 
 ---
 

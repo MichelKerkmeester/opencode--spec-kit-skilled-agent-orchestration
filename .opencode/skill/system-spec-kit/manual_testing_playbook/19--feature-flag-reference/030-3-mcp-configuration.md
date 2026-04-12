@@ -17,7 +17,7 @@ This scenario validates 3. MCP Configuration for `EX-030`. It focuses on MCP lim
 Operators run the exact prompt and command sequence for `EX-030` and confirm the expected signals without contradicting evidence.
 
 - Objective: MCP limits audit
-- Prompt: `Find MCP validation settings defaults. Capture the evidence needed to prove MCP guardrails returned. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a feature-flag validation operator, validate 3. MCP Configuration against memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 }). Verify mCP guardrails returned. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: MCP guardrails returned
 - Pass/fail: PASS if defaults + keys identified
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-030` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-030 | 3. MCP Configuration | MCP limits audit | `Find MCP validation settings defaults. Capture the evidence needed to prove MCP guardrails returned. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 })` | MCP guardrails returned | Search output | PASS if defaults + keys identified | Verify in config files directly |
+| EX-030 | 3. MCP Configuration | MCP limits audit | `As a feature-flag validation operator, validate MCP limits audit against memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 }). Verify mCP guardrails returned. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 })` | MCP guardrails returned | Search output | PASS if defaults + keys identified | Verify in config files directly |
 
 ---
 

@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Public should change any FSRS-related decay defaults or multipliers after the current `memory_review` work settles. It focuses on measurement, not immediate tuning: the packet must compare today's classification-based decay against any Modus-inspired adjustments and define what evidence is required before changing defaults. It does not ship a due-state model or review queue.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, public, change, fsrs-related, decay, defaults, multipliers, current, work, settles
+Key Files: .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts, .opencode/skill/system-spec-kit/mcp_server/lib/search/fsrs.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/tests/fsrs-scheduler.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/tests/fsrs-hybrid-decay.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

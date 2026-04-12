@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Session Capturing Pipeline Quality against grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts. Verify part I hardening remains active.; Native fallback ordering behaves deterministically across all five configured capture backends.; Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.

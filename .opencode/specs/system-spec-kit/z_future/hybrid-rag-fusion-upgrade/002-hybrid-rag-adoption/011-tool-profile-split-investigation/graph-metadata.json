@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Public should experiment with Engram-style tool-profile packaging similar to `ProfileAgent` and `ProfileAdmin`, but only as a delivery-layer teaching aid. It studies token savings, operator clarity, and failure modes without changing tool registration or ownership. It does not reduce the current tool surface or ship a new authority lane.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, public, experiment, engram-style, tool-profile, packaging, similar, profileagent, profileadmin, only
+Key Files: tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/references/workflows/quick_reference.md, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

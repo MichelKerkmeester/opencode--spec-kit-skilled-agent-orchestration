@@ -23,6 +23,7 @@ import {
 import {
   findContradictions,
   findCoverageGaps,
+  findUnverifiedClaims,
 } from '../../mcp_server/lib/coverage-graph/coverage-graph-query.js';
 import {
   computeNodeSignals,
@@ -411,5 +412,84 @@ describe('coverage-graph cross-layer integration', () => {
 
     expect(findContradictions(researchNs)).toHaveLength(1);
     expect(computeResearchSignals(researchNs).contradictionDensity).toBe(1);
+  });
+
+  it('scopes review gap and verification checks to the full namespace', () => {
+    const sessionId = 'shared-review-session';
+    const alphaNs: Namespace = { specFolder: 'spec-alpha', loopType: 'review', sessionId };
+    const betaNs: Namespace = { specFolder: 'spec-beta', loopType: 'review', sessionId };
+
+    upsertNode(makeReviewNode(alphaNs.specFolder, sessionId, 'shared-dimension', 'DIMENSION', 'Correctness'));
+    upsertNode(makeReviewNode(alphaNs.specFolder, sessionId, 'shared-file', 'FILE', 'alpha.ts', { hotspot_score: 2 }));
+    upsertNode(makeReviewNode(alphaNs.specFolder, sessionId, 'shared-finding', 'FINDING', 'Alpha finding', { severity: 'P0' }));
+
+    upsertNode(makeReviewNode(betaNs.specFolder, sessionId, 'shared-dimension', 'DIMENSION', 'Beta dimension'));
+    upsertNode(makeReviewNode(betaNs.specFolder, sessionId, 'shared-file', 'FILE', 'beta.ts', { hotspot_score: 2 }));
+    upsertNode(makeReviewNode(betaNs.specFolder, sessionId, 'shared-finding', 'FINDING', 'Beta finding', { severity: 'P0' }));
+    upsertNode(makeReviewNode(betaNs.specFolder, sessionId, 'beta-remediation', 'REMEDIATION', 'Beta remediation'));
+
+    upsertEdge(makeEdge({
+      id: 'beta-cover',
+      specFolder: betaNs.specFolder,
+      loopType: betaNs.loopType,
+      sessionId,
+      sourceId: 'shared-dimension',
+      targetId: 'shared-file',
+      relation: 'COVERS',
+      weight: 1.3,
+    }));
+    upsertEdge(makeEdge({
+      id: 'beta-resolve',
+      specFolder: betaNs.specFolder,
+      loopType: betaNs.loopType,
+      sessionId,
+      sourceId: 'beta-remediation',
+      targetId: 'shared-finding',
+      relation: 'RESOLVES',
+      weight: 1.5,
+    }));
+
+    expect(findCoverageGaps(alphaNs).map(gap => gap.nodeId).sort()).toEqual([
+      'shared-dimension',
+      'shared-file',
+    ]);
+    expect(findUnverifiedClaims(alphaNs).map(node => node.id)).toEqual(['shared-finding']);
+    expect(computeReviewSignals(alphaNs)).toMatchObject({
+      dimensionCoverage: 0,
+      p0ResolutionRate: 0,
+      hotspotSaturation: 0,
+    });
+  });
+
+  it('joins contradiction nodes on the full composite namespace key', () => {
+    const sessionId = 'shared-research-session';
+    const alphaNs: Namespace = { specFolder: 'spec-research-alpha', loopType: 'research', sessionId };
+    const betaNs: Namespace = { specFolder: 'spec-research-beta', loopType: 'research', sessionId };
+
+    upsertNode(makeResearchNode(alphaNs.specFolder, sessionId, 'shared-source', 'FINDING', 'Alpha source'));
+    upsertNode(makeResearchNode(alphaNs.specFolder, sessionId, 'shared-target', 'FINDING', 'Alpha target'));
+    upsertEdge(makeEdge({
+      id: 'alpha-contradiction',
+      specFolder: alphaNs.specFolder,
+      loopType: alphaNs.loopType,
+      sessionId,
+      sourceId: 'shared-source',
+      targetId: 'shared-target',
+      relation: 'CONTRADICTS',
+      weight: 0.8,
+    }));
+
+    upsertNode(makeResearchNode(betaNs.specFolder, sessionId, 'shared-source', 'FINDING', 'Beta source'));
+    upsertNode(makeResearchNode(betaNs.specFolder, sessionId, 'shared-target', 'FINDING', 'Beta target'));
+
+    expect(findContradictions(alphaNs)).toEqual([
+      expect.objectContaining({
+        edgeId: 'alpha-contradiction',
+        sourceId: 'shared-source',
+        targetId: 'shared-target',
+        sourceName: 'Alpha source',
+        targetName: 'Alpha target',
+      }),
+    ]);
   });
 });

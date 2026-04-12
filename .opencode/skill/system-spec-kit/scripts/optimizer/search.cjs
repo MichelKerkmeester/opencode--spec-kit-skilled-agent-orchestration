@@ -8,6 +8,9 @@
 // accepted and rejected (REQ-007, REQ-008).
 // ---------------------------------------------------------------
 
+const fs = require('fs');
+const path = require('path');
+
 const { replayRun } = require('./replay-runner.cjs');
 const { scoreRun } = require('./rubric.cjs');
 
@@ -16,17 +19,135 @@ const { scoreRun } = require('./rubric.cjs');
 ----------------------------------------------------------------*/
 
 /**
+ * Step sizes for the manifest-declared tunable search space.
+ * @type {Readonly<Record<string, number>>}
+ */
+const SEARCH_STEP_OVERRIDES = Object.freeze({
+  convergenceThreshold: 0.01,
+  stuckThreshold: 1,
+  noProgressThreshold: 0.01,
+  compositeStopScore: 0.05,
+  maxIterations: 1,
+});
+
+const CANONICAL_MANIFEST_PATH = path.join(__dirname, 'optimizer-manifest.json');
+
+function loadCanonicalManifest() {
+  return JSON.parse(fs.readFileSync(CANONICAL_MANIFEST_PATH, 'utf8'));
+}
+
+function deriveParamSpaceFromManifest(manifest) {
+  if (!manifest || typeof manifest !== 'object') {
+    throw new Error('Canonical optimizer manifest is required');
+  }
+
+  const paramSpace = {};
+  for (const field of manifest.tunableFields || []) {
+    const name = field && typeof field === 'object' ? field.name : null;
+    if (!name) continue;
+
+    const range = field.range;
+    const type = field.type;
+    if (!range || typeof range.min !== 'number' || typeof range.max !== 'number') {
+      continue;
+    }
+    if (type !== 'number' && type !== 'integer') {
+      continue;
+    }
+
+    const step = SEARCH_STEP_OVERRIDES[name];
+    if (typeof step !== 'number' || !Number.isFinite(step) || step <= 0) {
+      throw new Error(`Tunable field "${name}" is missing a canonical search step`);
+    }
+
+    paramSpace[name] = {
+      min: range.min,
+      max: range.max,
+      step,
+    };
+  }
+
+  return paramSpace;
+}
+
+function validateParamSpaceAgainstManifest(paramSpace, manifest) {
+  if (!paramSpace || typeof paramSpace !== 'object') {
+    return { valid: false, violations: ['Parameter space must be an object'] };
+  }
+  if (!manifest || typeof manifest !== 'object') {
+    return { valid: false, violations: ['Canonical optimizer manifest is required'] };
+  }
+
+  const violations = [];
+  const tunableFields = new Map();
+  for (const field of manifest.tunableFields || []) {
+    if (field && typeof field === 'object' && field.name) {
+      tunableFields.set(field.name, field);
+    }
+  }
+
+  const lockedFields = new Set(
+    (manifest.lockedFields || [])
+      .map((field) => (field && typeof field === 'object' ? field.name : null))
+      .filter(Boolean),
+  );
+
+  for (const [name, bounds] of Object.entries(paramSpace)) {
+    if (lockedFields.has(name)) {
+      violations.push(`Field "${name}" is locked and cannot be searched`);
+      continue;
+    }
+
+    const manifestField = tunableFields.get(name);
+    if (!manifestField) {
+      violations.push(`Field "${name}" is not declared tunable in the canonical manifest`);
+      continue;
+    }
+
+    if (!bounds || typeof bounds !== 'object') {
+      violations.push(`Field "${name}" must define min/max/step bounds`);
+      continue;
+    }
+
+    const { min, max, step } = bounds;
+    if (typeof min !== 'number' || typeof max !== 'number' || typeof step !== 'number') {
+      violations.push(`Field "${name}" must use numeric min/max/step bounds`);
+      continue;
+    }
+    if (!Number.isFinite(min) || !Number.isFinite(max) || !Number.isFinite(step) || step <= 0) {
+      violations.push(`Field "${name}" must use finite bounds and a positive step`);
+      continue;
+    }
+
+    const manifestRange = manifestField.range || {};
+    if (typeof manifestRange.min === 'number' && min < manifestRange.min) {
+      violations.push(`Field "${name}" minimum ${min} is below manifest minimum ${manifestRange.min}`);
+    }
+    if (typeof manifestRange.max === 'number' && max > manifestRange.max) {
+      violations.push(`Field "${name}" maximum ${max} exceeds manifest maximum ${manifestRange.max}`);
+    }
+    if (min > max) {
+      violations.push(`Field "${name}" has min ${min} greater than max ${max}`);
+    }
+    if (manifestField.type === 'integer' && (!Number.isInteger(min) || !Number.isInteger(max) || !Number.isInteger(step))) {
+      violations.push(`Field "${name}" requires integer min/max/step bounds`);
+    }
+  }
+
+  return {
+    valid: violations.length === 0,
+    violations,
+  };
+}
+
+const CANONICAL_MANIFEST = loadCanonicalManifest();
+
+/**
  * Default parameter space for numeric thresholds.
  * Each entry defines min, max, and step for a tunable field.
  * @type {Readonly<Record<string, { min: number; max: number; step: number }>>}
  */
-const DEFAULT_PARAM_SPACE = Object.freeze({
-  convergenceThreshold: { min: 0.01, max: 0.20, step: 0.01 },
-  stuckThreshold: { min: 1, max: 5, step: 1 },
-  noProgressThreshold: { min: 0.01, max: 0.15, step: 0.01 },
-  compositeStopScore: { min: 0.40, max: 0.80, step: 0.05 },
-  maxIterations: { min: 3, max: 20, step: 1 },
-});
+const DEFAULT_PARAM_SPACE = Object.freeze(deriveParamSpaceFromManifest(CANONICAL_MANIFEST));
 
 /* ---------------------------------------------------------------
    2. PARAMETER SAMPLING
@@ -153,7 +274,14 @@ function randomSearch(corpus, rubric, paramSpace, iterations, options) {
     };
   }
   const opts = options || {};
-  const space = paramSpace || DEFAULT_PARAM_SPACE;
+  let space = DEFAULT_PARAM_SPACE;
+  if (paramSpace !== undefined) {
+    const validation = validateParamSpaceAgainstManifest(paramSpace, CANONICAL_MANIFEST);
+    if (!validation.valid) {
+      throw new Error(`Invalid optimizer parameter space: ${validation.violations.join('; ')}`);
+    }
+    space = paramSpace;
+  }
   const maxIter = typeof iterations === 'number' && iterations > 0 ? iterations : 20;
   const seed = opts.seed ?? 42;
   const rng = createRNG(seed);

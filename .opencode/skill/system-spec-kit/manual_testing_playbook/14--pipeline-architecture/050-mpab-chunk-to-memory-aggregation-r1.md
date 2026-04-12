@@ -17,7 +17,7 @@ This scenario validates MPAB chunk-to-memory aggregation (R1) for `050`. It focu
 Operators run the exact prompt and command sequence for `050` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm MPAB formula
-- Prompt: `Verify MPAB chunk aggregation (R1). Capture the evidence needed to prove MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a pipeline validation operator, validate MPAB chunk-to-memory aggregation (R1) against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value
 - Pass/fail: PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `050` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 050 | MPAB chunk-to-memory aggregation (R1) | Confirm MPAB formula | `Verify MPAB chunk aggregation (R1). Capture the evidence needed to prove MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Create parent+chunks 2) run stage-3 aggregation 3) compare manual formula | MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value | Stage-3 aggregation output + manual MPAB formula calculation + comparison | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions | Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point |
+| 050 | MPAB chunk-to-memory aggregation (R1) | Confirm MPAB formula | `As a pipeline validation operator, confirm MPAB formula against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Create parent+chunks 2) run stage-3 aggregation 3) compare manual formula | MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value | Stage-3 aggregation output + manual MPAB formula calculation + comparison | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions | Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point |
 
 ---
 

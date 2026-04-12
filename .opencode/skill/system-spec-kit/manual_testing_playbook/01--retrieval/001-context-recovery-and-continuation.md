@@ -21,7 +21,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `/spec_kit:resume specs/<target-spec>. Capture the evidence needed to prove the resume-ready state summary and next steps come from handover.md first, then _memory.continuity, then supporting spec docs. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a retrieval validation operator, validate Context Recovery and Continuation against /spec_kit:resume specs/<target-spec>. Verify resume-ready state summary and next steps via /spec_kit:resume and the canonical packet ladder. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   1. `/spec_kit:resume specs/<target-spec>` — primary recovery surface
   2. If the packet is thin, verify `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder: "specs/<target-spec>", includeContent: true })` is used as the helper recovery path

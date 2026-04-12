@@ -16,6 +16,8 @@ import {
   type CoverageEdge,
   type CoverageNode,
 } from '../../mcp_server/lib/coverage-graph/coverage-graph-db.js';
+import { handleCoverageGraphQuery } from '../../mcp_server/handlers/coverage-graph/query.js';
+import { handleCoverageGraphStatus } from '../../mcp_server/handlers/coverage-graph/status.js';
 import { handleCoverageGraphConvergence } from '../../mcp_server/handlers/coverage-graph/convergence.js';
 
 const SPEC_FOLDER = 'specs/042-session-scope';
@@ -52,6 +54,10 @@ function parseHandlerData(
   response: Awaited<ReturnType<typeof handleCoverageGraphConvergence>>,
 ): Record<string, any> {
   return JSON.parse(response.content[0]?.text ?? '{}').data ?? {};
+}
+
+function parseHandlerError(response: { content: Array<{ text: string }> }): string {
+  return JSON.parse(response.content[0]?.text ?? '{}').error ?? '';
 }
 
 describe('coverage graph session isolation', () => {
@@ -162,7 +168,7 @@ describe('coverage graph session isolation', () => {
     ]);
   });
 
-  it('computes convergence from the session-scoped subset and defaults to all sessions when sessionId is omitted', async () => {
+  it('computes convergence from the session-scoped subset', async () => {
     const scopedData = parseHandlerData(await handleCoverageGraphConvergence({
       specFolder: SPEC_FOLDER,
       loopType: LOOP_TYPE,
@@ -179,21 +185,26 @@ describe('coverage graph session isolation', () => {
     expect(scopedData.edgeCount).toBe(4);
     expect(scopedData.signals.questionCoverage).toBe(1);
     expect(scopedData.signals.sourceDiversity).toBe(2);
+  });
 
-    const aggregateData = parseHandlerData(await handleCoverageGraphConvergence({
+  it('requires sessionId for public coverage graph read handlers', async () => {
+    const queryError = parseHandlerError(await handleCoverageGraphQuery({
       specFolder: SPEC_FOLDER,
       loopType: LOOP_TYPE,
-    }));
-
-    expect(aggregateData.namespace).toMatchObject({
+      queryType: 'coverage_gaps',
+    } as any));
+    const statusError = parseHandlerError(await handleCoverageGraphStatus({
       specFolder: SPEC_FOLDER,
       loopType: LOOP_TYPE,
-    });
-    expect(aggregateData.namespace.sessionId).toBeUndefined();
-    expect(aggregateData.scopeMode).toBe('all_sessions_default');
-    expect(aggregateData.nodeCount).toBe(7);
-    expect(aggregateData.edgeCount).toBe(5);
-    expect(aggregateData.signals.questionCoverage).toBe(0.5);
+    } as any));
+    const convergenceError = parseHandlerError(await handleCoverageGraphConvergence({
+      specFolder: SPEC_FOLDER,
+      loopType: LOOP_TYPE,
+    } as any));
+
+    expect(queryError).toContain('sessionId is required');
+    expect(statusError).toContain('sessionId is required');
+    expect(convergenceError).toContain('sessionId is required');
   });
 });
 

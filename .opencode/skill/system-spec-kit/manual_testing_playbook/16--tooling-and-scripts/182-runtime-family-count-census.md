@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Audit runtime agent family counts. Capture the evidence needed to prove OpenCode (base), Claude, Codex, and Gemini each expose exactly 9 runtime agent files. Return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Runtime Family Count Census against the documented validation surface. Verify all four commands return 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   ```bash
   find .opencode/agent -maxdepth 1 -type f -name '*.md' | wc -l

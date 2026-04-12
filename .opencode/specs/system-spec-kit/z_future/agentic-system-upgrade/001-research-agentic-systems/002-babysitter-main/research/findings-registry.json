@@ -1,0 +1,75 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-checksummed-research-journal",
+      "text": "Q1: Checksummed Research Journal",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-journal-head-resume-fidelity",
+      "text": "Q2: Journal-Head Resume Fidelity",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-runtime-enforced-gates",
+      "text": "Q3: Runtime-Enforced Gates",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-auto-approval-audit-events",
+      "text": "Q4: Auto-Approval Audit Events",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-pending-action-queues",
+      "text": "Q5: Pending Action Queues",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-executable-methodology-packs",
+      "text": "Q6: Executable Methodology Packs",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-unified-runtime-manifest",
+      "text": "Q7: Unified Runtime Manifest",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-8-q8-marketplace-model-rejection",
+      "text": "Q8: Marketplace Model Rejection",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-9-q9-headless-internal-runner",
+      "text": "Q9: Headless Internal Runner",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-10-q10-lifecycle-hook-surface",
+      "text": "Q10: Lifecycle Hook Surface",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 30,
+    "openQuestions": 10,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.6,
+    "coverageBySources": {}
+  }
+}

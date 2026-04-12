@@ -30,7 +30,7 @@ export interface QueryArgs {
   loopType: LoopType;
   queryType: QueryType;
   nodeId?: string;
-  sessionId?: string;
+  sessionId: string;
   limit?: number;
   maxDepth?: number;
 }
@@ -51,6 +51,9 @@ export async function handleCoverageGraphQuery(
     if (args.loopType !== 'research' && args.loopType !== 'review') {
       return errorResponse('loopType must be "research" or "review"');
     }
+    if (!args.sessionId || typeof args.sessionId !== 'string') {
+      return errorResponse('sessionId is required for non-admin reads');
+    }
 
     const ns: Namespace = {
       specFolder: args.specFolder,
@@ -67,7 +70,7 @@ export async function handleCoverageGraphQuery(
         return okResponse({
           queryType: args.queryType,
           namespace: buildNamespacePayload(ns),
-          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+          scopeMode: 'session',
           gaps: gaps.slice(0, limit),
           totalGaps: gaps.length,
         });
@@ -78,7 +81,7 @@ export async function handleCoverageGraphQuery(
         return okResponse({
           queryType: 'unverified_claims',
           namespace: buildNamespacePayload(ns),
-          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+          scopeMode: 'session',
           claims: claims.slice(0, limit).map(c => ({
             id: c.id,
             kind: c.kind,
@@ -95,7 +98,7 @@ export async function handleCoverageGraphQuery(
         return okResponse({
           queryType: 'contradictions',
           namespace: buildNamespacePayload(ns),
-          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+          scopeMode: 'session',
           contradictions: contradictions.slice(0, limit),
           totalContradictions: contradictions.length,
         });
@@ -110,7 +113,7 @@ export async function handleCoverageGraphQuery(
         return okResponse({
           queryType: 'provenance_chain',
           namespace: buildNamespacePayload(ns),
-          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+          scopeMode: 'session',
           rootNodeId: args.nodeId,
           chain: chain.slice(0, limit),
           totalSteps: chain.length,
@@ -123,7 +126,7 @@ export async function handleCoverageGraphQuery(
         return okResponse({
           queryType: 'hot_nodes',
           namespace: buildNamespacePayload(ns),
-          scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+          scopeMode: 'session',
           hotNodes,
           totalReturned: hotNodes.length,
         });

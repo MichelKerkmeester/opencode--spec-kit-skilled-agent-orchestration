@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main",
+  "description": "Feature Specification: 001-agent-lightning-main Research Phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "001-agent-lightning-main",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-10T12:04:52.969Z",
+  "specId": "001",
+  "folderSlug": "agent-lightning-main",
+  "parentChain": [
+    "system-spec-kit",
+    "999-agentic-system-upgrade",
+    "001-research-agentic-systems"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "09-04-26_22-26__completed-a-10-iteration-deep-research-phase-on.md"
+  ]
+}

@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing
+Status: planned
+Importance Tier: important
+Summary: This sub-phase scopes pre-compaction preservation so the most fragile continuity moment uses existing transport and JSON-primary save authority. It covers compaction action-card placement, dedupe behavior, and fail-open posture. It does not introduce a blocking hook or a second preservation store.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, scopes, pre-compaction, preservation, fragile, continuity, moment, uses, existing, transport, json-primary, save
+Key Files: experimental.session.compacting, generate-context.js, .opencode/plugins/spec-kit-compact-code-graph.js, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, spec-kit-compact-code-graph.js, generate-context.ts, session-bootstrap.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

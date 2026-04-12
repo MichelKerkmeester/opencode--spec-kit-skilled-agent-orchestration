@@ -18,7 +18,7 @@ import {
 export interface StatusArgs {
   specFolder: string;
   loopType: LoopType;
-  sessionId?: string;
+  sessionId: string;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -35,6 +35,9 @@ export async function handleCoverageGraphStatus(
     }
     if (args.loopType !== 'research' && args.loopType !== 'review') {
       return errorResponse('loopType must be "research" or "review"');
+    }
+    if (!args.sessionId || typeof args.sessionId !== 'string') {
+      return errorResponse('sessionId is required for non-admin reads');
     }
 
     const ns: Namespace = {
@@ -66,12 +69,10 @@ export async function handleCoverageGraphStatus(
             namespace: {
               specFolder: args.specFolder,
               loopType: args.loopType,
-              ...(args.sessionId ? { sessionId: args.sessionId } : {}),
+              sessionId: args.sessionId,
             },
-            scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
-            notes: args.sessionId
-              ? ['Status metrics were computed from the session-scoped subgraph only.']
-              : ['No sessionId provided; status falls back to specFolder + loopType aggregation across all sessions for bootstrap/debugging use.'],
+            scopeMode: 'session',
+            notes: ['Status metrics were computed from the session-scoped subgraph only.'],
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
             nodesByKind: stats.nodesByKind,

@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze
+Status: planned
+Importance Tier: important
+Summary: This sub-phase defines the immutable architecture rule for the adoption work: new UX may add facades, profiles, wrappers, and guidance, but it may not replace or duplicate Public's existing memory, bootstrap, save, graph, or governance authorities. It does not ship any new operator-facing tool by itself.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, defines, immutable, architecture, rule, adoption, work, new, add, facades, profiles, wrappers
+Key Files: generate-context.js, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, tool-schemas.ts, memory-search.ts, memory-context.ts, session-bootstrap.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

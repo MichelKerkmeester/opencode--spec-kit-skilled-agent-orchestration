@@ -16,7 +16,7 @@ This scenario validates Startup runtime compatibility guards for `EX-035`. It fo
 Operators run the exact prompt and command sequence for `EX-035` and confirm the expected signals without contradicting evidence.
 
 - Objective: Startup diagnostics verification
-- Prompt: `Run the dedicated startup guard validation suite. Capture the evidence needed to prove Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a maintenance validation operator, validate Startup runtime compatibility guards against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript
 - Pass/fail: PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-035` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-035 | Startup runtime compatibility guards | Startup diagnostics verification | `Run the dedicated startup guard validation suite. Capture the evidence needed to prove Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise user-facing pass/fail verdict with the main reason.` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` | Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript | Test transcript + suite summary | PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatch`; inspect `startup-checks.ts` and test expectations if counts or assertions drift |
+| EX-035 | Startup runtime compatibility guards | Startup diagnostics verification | `As a maintenance validation operator, validate Startup diagnostics verification against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise pass/fail verdict with the main reason and cited evidence.` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` | Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript | Test transcript + suite summary | PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatch`; inspect `startup-checks.ts` and test expectations if counts or assertions drift |
 
 ---
 

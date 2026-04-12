@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Audit Gemini runtime path resolution. Capture the evidence needed to prove .gemini is a symlink to .agents, .gemini/agents is the runtime-facing path, and the resolved Gemini file set matches the backing storage. Return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Gemini Runtime Path Resolution against the documented validation surface. Verify readlink .gemini returns .agents; basename diff is empty; resolved count is 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   ```bash
   test -L .gemini

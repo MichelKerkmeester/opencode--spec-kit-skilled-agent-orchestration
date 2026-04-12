@@ -17,7 +17,7 @@ This scenario validates Stage 3 effectiveScore fallback chain for `074`. It focu
 Operators run the exact prompt and command sequence for `074` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm fallback order correctness
-- Prompt: `Validate Stage 3 effectiveScore fallback chain. Capture the evidence needed to prove Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a scoring validation operator, validate Stage 3 effectiveScore fallback chain against the documented validation surface. Verify fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score
 - Pass/fail: PASS if fallback chain follows correct priority order and produces valid scores for all missing-field combinations
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `074` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 074 | Stage 3 effectiveScore fallback chain | Confirm fallback order correctness | `Validate Stage 3 effectiveScore fallback chain. Capture the evidence needed to prove Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise user-facing pass/fail verdict with the main reason.` | 1) craft rows missing score fields 2) run stage 3 3) verify fallback order | Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score | Stage 3 output with score field trace showing fallback path taken for each test row | PASS if fallback chain follows correct priority order and produces valid scores for all missing-field combinations | Inspect resolveEffectiveScore implementation; verify fallback priority constants; test all combinations of missing fields |
+| 074 | Stage 3 effectiveScore fallback chain | Confirm fallback order correctness | `As a scoring validation operator, confirm fallback order correctness against the documented validation surface. Verify fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) craft rows missing score fields 2) run stage 3 3) verify fallback order | Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score | Stage 3 output with score field trace showing fallback path taken for each test row | PASS if fallback chain follows correct priority order and produces valid scores for all missing-field combinations | Inspect resolveEffectiveScore implementation; verify fallback priority constants; test all combinations of missing fields |
 
 ---
 

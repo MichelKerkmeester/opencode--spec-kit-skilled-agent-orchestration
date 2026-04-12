@@ -17,7 +17,7 @@ This scenario validates Query expansion (R12) for `038`. It focuses on Confirm p
 Operators run the exact prompt and command sequence for `038` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm parallel expansion + dedup
-- Prompt: `Validate query expansion (R12). Capture the evidence needed to prove Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a query-intelligence validation operator, validate Query expansion (R12) against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion
 - Pass/fail: PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `038` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 038 | Query expansion (R12) | Confirm parallel expansion + dedup | `Validate query expansion (R12). Capture the evidence needed to prove Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Complex query expansion 2) Parallel baseline+expanded 3) dedup + simple-query skip | Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion | Expanded query variants + dedup count + simple-query skip confirmation | PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output | Verify expansion trigger threshold → Check dedup logic → Inspect simple-query detection |
+| 038 | Query expansion (R12) | Confirm parallel expansion + dedup | `As a query-intelligence validation operator, confirm parallel expansion + dedup against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Complex query expansion 2) Parallel baseline+expanded 3) dedup + simple-query skip | Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion | Expanded query variants + dedup count + simple-query skip confirmation | PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output | Verify expansion trigger threshold → Check dedup logic → Inspect simple-query detection |
 
 ---
 

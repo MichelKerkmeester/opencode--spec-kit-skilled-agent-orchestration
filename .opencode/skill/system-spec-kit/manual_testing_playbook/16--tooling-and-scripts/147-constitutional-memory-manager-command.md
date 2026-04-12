@@ -16,7 +16,7 @@ This scenario validates Constitutional memory manager command for `147`. It focu
 Operators run the exact prompt and command sequence for `147` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify `/memory:learn` flows and active docs all reflect the constitutional-only workflow
-- Prompt: `Validate /memory:learn constitutional manager flow and documentation consistency. Capture the evidence needed to prove Constitutional memory manager. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Constitutional memory manager command against /memory:learn. Verify /memory:learn flows and active docs all reflect the constitutional-only workflow. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Constitutional memory manager
 - Pass/fail: PASS: Default flow shows overview, list/budget expose constitutional inventory, edit/remove guard with file discovery, active docs describe constitutional memory management; FAIL: `/memory:learn` missing-arg prompts instead of overview, active docs still describe legacy learning/corrections workflow
 

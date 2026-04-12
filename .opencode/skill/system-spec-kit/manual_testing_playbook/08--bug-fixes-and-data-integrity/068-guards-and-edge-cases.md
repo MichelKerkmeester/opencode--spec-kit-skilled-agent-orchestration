@@ -17,7 +17,7 @@ This scenario validates Guards and edge cases for `068`. It focuses on Confirm e
 Operators run the exact prompt and command sequence for `068` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm edge-case guard fixes
-- Prompt: `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a data-integrity validation operator, validate Guards and edge cases against the documented validation surface. Verify no double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state
 - Pass/fail: PASS if all known edge cases are handled without double-counting or incorrect fallback behavior
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `068` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 068 | Guards and edge cases | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
+| 068 | Guards and edge cases | Confirm edge-case guard fixes | `As a data-integrity validation operator, confirm edge-case guard fixes against the documented validation surface. Verify no double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
 
 ---
 

@@ -17,7 +17,7 @@ This scenario validates Math.max/min stack overflow elimination for `083`. It fo
 Operators run the exact prompt and command sequence for `083` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm large-array safety
-- Prompt: `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a data-integrity validation operator, validate Math.max/min stack overflow elimination against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path
 - Pass/fail: PASS if large arrays process without RangeError and produce correct min/max values
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `083` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 083 | Math.max/min stack overflow elimination | Confirm large-array safety | `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
+| 083 | Math.max/min stack overflow elimination | Confirm large-array safety | `As a data-integrity validation operator, confirm large-array safety against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
 
 ---
 

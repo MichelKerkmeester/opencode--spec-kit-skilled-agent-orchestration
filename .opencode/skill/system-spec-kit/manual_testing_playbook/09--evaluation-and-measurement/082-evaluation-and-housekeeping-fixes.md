@@ -16,7 +16,7 @@ This scenario validates Evaluation and housekeeping fixes for `082`. It focuses 
 Operators run the exact prompt and command sequence for `082` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm eval/housekeeping reliability
-- Prompt: `Validate evaluation and housekeeping fixes. Capture the evidence needed to prove Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an evaluation validation operator, validate Evaluation and housekeeping fixes against the documented validation surface. Verify run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly
 - Pass/fail: PASS if run-IDs are unique, upserts produce consistent state, and boundary guards reject invalid values
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `082` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 082 | Evaluation and housekeeping fixes | Confirm eval/housekeeping reliability | `Validate evaluation and housekeeping fixes. Capture the evidence needed to prove Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise user-facing pass/fail verdict with the main reason.` | 1) restart+eval runs 2) verify run-id and upsert behavior 3) inspect boundary guards | Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly | Eval run output with run-ID + upsert verification + boundary guard test evidence | PASS if run-IDs are unique, upserts produce consistent state, and boundary guards reject invalid values | Inspect run-ID generation logic; verify upsert idempotency; check boundary guard threshold values |
+| 082 | Evaluation and housekeeping fixes | Confirm eval/housekeeping reliability | `As an evaluation validation operator, confirm eval/housekeeping reliability against the documented validation surface. Verify run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) restart+eval runs 2) verify run-id and upsert behavior 3) inspect boundary guards | Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly | Eval run output with run-ID + upsert verification + boundary guard test evidence | PASS if run-IDs are unique, upserts produce consistent state, and boundary guards reject invalid values | Inspect run-ID generation logic; verify upsert idempotency; check boundary guard threshold values |
 
 ---
 

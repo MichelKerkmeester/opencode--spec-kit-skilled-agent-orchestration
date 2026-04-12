@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map
+Status: planned
+Importance Tier: important
+Summary: This sub-phase defines a task-to-tool routing map for the adoption packet. It explains which existing Public surfaces solve which operator problems and where thin facades fit. It does not create new runtime authority or rewrite the search and bootstrap engines.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, defines, task-to-tool, routing, map, adoption, packet, explains, existing, public, surfaces, solve
+Key Files: .opencode/skill/system-spec-kit/references/workflows/quick_reference.md, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/spec.md, references/workflows/quick_reference.md, context-server.ts, tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

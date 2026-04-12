@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay
+Status: planned
+Importance Tier: important
+Summary: This sub-phase scopes a compact diagnostics surface for operators and agents. It covers summarized health hints, repair posture, dry-run/preflight surfacing, and routing-oriented debug output. It does not create a second repair tool or automated rebuild authority.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, scopes, compact, diagnostics, surface, operators, agents, covers, summarized, health, hints, repair
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, memory-crud-health.ts, memory-save.ts, context-server.ts, tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

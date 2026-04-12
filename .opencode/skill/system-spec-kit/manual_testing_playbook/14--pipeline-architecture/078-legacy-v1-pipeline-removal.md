@@ -17,7 +17,7 @@ This scenario validates Legacy V1 pipeline removal for `078`. It focuses on Conf
 Operators run the exact prompt and command sequence for `078` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm V2-only runtime
-- Prompt: `Verify legacy V1 removal. Capture the evidence needed to prove V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a pipeline validation operator, validate Legacy V1 pipeline removal against the documented validation surface. Verify v1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain
 - Pass/fail: PASS if zero V1 pipeline references exist and all queries execute via V2 pipeline exclusively
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `078` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 078 | Legacy V1 pipeline removal | Confirm V2-only runtime | `Verify legacy V1 removal. Capture the evidence needed to prove V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise user-facing pass/fail verdict with the main reason.` | 1) search removed symbols 2) run queries 3) confirm V2-only execution | V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain | Symbol search output (no V1 references) + query execution trace showing V2 pipeline | PASS if zero V1 pipeline references exist and all queries execute via V2 pipeline exclusively | Search for V1 symbols across all files; check for conditional V1/V2 routing; verify V2 pipeline handles all former V1 query types |
+| 078 | Legacy V1 pipeline removal | Confirm V2-only runtime | `As a pipeline validation operator, confirm V2-only runtime against the documented validation surface. Verify v1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) search removed symbols 2) run queries 3) confirm V2-only execution | V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain | Symbol search output (no V1 references) + query execution trace showing V2 pipeline | PASS if zero V1 pipeline references exist and all queries execute via V2 pipeline exclusively | Search for V1 symbols across all files; check for conditional V1/V2 routing; verify V2 pipeline handles all former V1 query types |
 
 ---
 

@@ -24,7 +24,7 @@ This scenario validates the check-source-dist-alignment.ts script for `150`. It 
 Operators run the alignment script and confirm zero violations. The script scans all `.js` files under `dist/lib/`, maps each to its expected `.ts` source, and reports orphans.
 
 - Objective: Verify source-dist alignment passes with 0 violations
-- Prompt: `Run the source-dist alignment check and confirm no orphaned dist files exist. Capture the summary output as evidence. Return a concise pass/fail verdict.`
+- Prompt: `As a tooling validation operator, validate Source-dist alignment validation against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: 0 violations, all dist files aligned
 - Pass/fail: PASS if 0 violations reported and exit code is 0
 
@@ -34,7 +34,7 @@ Operators run the alignment script and confirm zero violations. The script scans
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 150 | Source-dist alignment validation | Verify check-source-dist-alignment.ts reports 0 violations | `Run the source-dist alignment check and confirm no orphaned dist files exist. Capture the summary output as evidence. Return a concise pass/fail verdict.` | 1) `cd .opencode/skill/system-spec-kit` 2) `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` 3) Check exit code is 0 4) Verify "violations: 0" in output | 0 violations, all dist files aligned, exit code 0 | Script summary output showing scanned count, aligned count, violations count | PASS if 0 violations and exit 0 | Identify orphaned dist file -> check if source was deleted/renamed -> either restore source, remove dist artifact, or add time-bounded allowlist entry |
+| 150 | Source-dist alignment validation | Verify check-source-dist-alignment.ts reports 0 violations | `As a tooling validation operator, verify check-source-dist-alignment.ts reports 0 violations against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned, exit code 0. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit` 2) `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` 3) Check exit code is 0 4) Verify "violations: 0" in output | 0 violations, all dist files aligned, exit code 0 | Script summary output showing scanned count, aligned count, violations count | PASS if 0 violations and exit 0 | Identify orphaned dist file -> check if source was deleted/renamed -> either restore source, remove dist artifact, or add time-bounded allowlist entry |
 
 ---
 

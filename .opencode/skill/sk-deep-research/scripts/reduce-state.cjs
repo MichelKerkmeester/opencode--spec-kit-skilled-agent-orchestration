@@ -268,9 +268,9 @@ function buildLineageState(config, eventRecords) {
   const latestLifecycleEvent = eventRecords
     .filter((record) => record.event === 'resumed' || record.event === 'restarted')
     .at(-1);
-
-  const eventHasContinuedFromRun = latestLifecycleEvent
-    && Object.prototype.hasOwnProperty.call(latestLifecycleEvent, 'continuedFromRun');
+  const eventContinuedFromRun = latestLifecycleEvent
+    ? latestLifecycleEvent.continuedFromRun ?? latestLifecycleEvent.fromIteration
+    : undefined;
   const eventHasParentSession = latestLifecycleEvent
     && Object.prototype.hasOwnProperty.call(latestLifecycleEvent, 'parentSessionId');
 
@@ -297,17 +297,27 @@ function buildLineageState(config, eventRecords) {
       : isFiniteNumber(configLineage.generation)
         ? configLineage.generation
         : 1,
-    continuedFromRun: eventHasContinuedFromRun
-      ? (isFiniteNumber(latestLifecycleEvent.continuedFromRun) ? latestLifecycleEvent.continuedFromRun : null)
+    continuedFromRun: eventContinuedFromRun !== undefined
+      ? (isFiniteNumber(eventContinuedFromRun) ? eventContinuedFromRun : null)
       : isFiniteNumber(configLineage.continuedFromRun)
         ? configLineage.continuedFromRun
         : null,
   };
 }
 
-function buildTerminalStopState(eventRecords) {
+function buildTerminalStopState(records) {
+  const eventRecords = records.filter((record) => record?.type === 'event');
   const latestSynthesisComplete = eventRecords.filter((record) => record.event === 'synthesis_complete').at(-1);
   if (!latestSynthesisComplete) {
+    return null;
+  }
+
+  const latestSynthesisIndex = records.lastIndexOf(latestSynthesisComplete);
+  const latestIterationIndex = Math.max(
+    records.findLastIndex((record) => record?.type === 'iteration'),
+    records.findLastIndex((record) => record?.type === 'event' && (record?.event === 'resumed' || record?.event === 'restarted')),
+  );
+  if (latestSynthesisIndex < latestIterationIndex) {
     return null;
   }
 
@@ -815,8 +825,16 @@ function reduceResearchState(specFolder, options = {}) {
         .map((fileName) => parseIterationFile(path.join(iterationDir, fileName)))
     : [];
 
-  const terminalStop = buildTerminalStopState(events);
+  const terminalStop = buildTerminalStopState(parsedRecords);
   const lineage = buildLineageState(config, events);
+  config.lineage = {
+    ...(config.lineage && typeof config.lineage === 'object' ? config.lineage : {}),
+    sessionId: lineage.sessionId,
+    parentSessionId: lineage.parentSessionId,
+    lineageMode: lineage.lineageMode,
+    generation: lineage.generation,
+    continuedFromRun: lineage.continuedFromRun,
+  };
   const status = deriveDashboardStatus(config, records, events, terminalStop);
   const registry = buildRegistry(strategyQuestions, iterationFiles, records, events, {
     lineage,

@@ -1,0 +1,75 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-fresh-context-loop-value",
+      "text": "Q1: Fresh Context Loop Value",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-tradeoffs-of-clean-restarts",
+      "text": "Q2: Tradeoffs of Clean Restarts",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-git-as-memory-boundary",
+      "text": "Q3: Git as Memory Boundary",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-append-only-learning-log",
+      "text": "Q4: Append-only Learning Log",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-one-window-story-sizing",
+      "text": "Q5: One-Window Story Sizing",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-bash-spine-vs-yaml-stack",
+      "text": "Q6: Bash Spine vs YAML Stack",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-archive-rotation-and-restart-safety",
+      "text": "Q7: Archive Rotation and Restart Safety",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-8-q8-guidance-propagation-surfaces",
+      "text": "Q8: Guidance Propagation Surfaces",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-9-q9-one-task-per-implementation-run",
+      "text": "Q9: One Task Per Implementation Run",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-10-q10-adopt-vs-reject-boundary",
+      "text": "Q10: Adopt vs Reject Boundary",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 30,
+    "openQuestions": 10,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.85,
+    "coverageBySources": {}
+  }
+}

@@ -104,7 +104,7 @@ function computeCompositeScore(
 export interface ConvergenceArgs {
   specFolder: string;
   loopType: LoopType;
-  sessionId?: string;
+  sessionId: string;
   iteration?: number;
   persistSnapshot?: boolean;
 }
@@ -154,6 +154,9 @@ export async function handleCoverageGraphConvergence(
     if (args.loopType !== 'research' && args.loopType !== 'review') {
       return errorResponse('loopType must be "research" or "review"');
     }
+    if (!args.sessionId || typeof args.sessionId !== 'string') {
+      return errorResponse('sessionId is required for non-admin reads');
+    }
 
     const ns: Namespace = {
       specFolder: args.specFolder,
@@ -171,7 +174,7 @@ export async function handleCoverageGraphConvergence(
         blockers: [],
         trace: [],
         namespace: buildNamespacePayload(ns),
-        scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
+        scopeMode: 'session',
         nodeCount: 0,
         edgeCount: 0,
       });
@@ -183,21 +186,19 @@ export async function handleCoverageGraphConvergence(
 
     // Persist snapshot if requested
     if (args.persistSnapshot && args.iteration !== undefined) {
-      if (args.sessionId) {
-        createSnapshot({
-          specFolder: args.specFolder,
-          loopType: args.loopType,
-          sessionId: args.sessionId,
-          iteration: args.iteration,
-          metrics: {
-            ...signals,
-            nodeCount: stats.totalNodes,
-            edgeCount: stats.totalEdges,
-          },
+      createSnapshot({
+        specFolder: args.specFolder,
+        loopType: args.loopType,
+        sessionId: args.sessionId,
+        iteration: args.iteration,
+        metrics: {
+          ...signals,
           nodeCount: stats.totalNodes,
           edgeCount: stats.totalEdges,
-        });
-      }
+        },
+        nodeCount: stats.totalNodes,
+        edgeCount: stats.totalEdges,
+      });
     }
 
     // Evaluate convergence
@@ -249,13 +250,9 @@ export async function handleCoverageGraphConvergence(
       trace,
       momentum,
       namespace: buildNamespacePayload(ns),
-      scopeMode: args.sessionId ? 'session' : 'all_sessions_default',
-      notes: args.sessionId
-        ? ['Convergence signals were computed from the session-scoped subgraph only.']
-        : ['No sessionId provided; convergence falls back to specFolder + loopType aggregation across all sessions for bootstrap/debugging use.'],
-      snapshotPersistence: args.persistSnapshot && !args.sessionId
-        ? 'skipped_without_sessionId'
-        : (args.persistSnapshot ? 'persisted' : 'not_requested'),
+      scopeMode: 'session',
+      notes: ['Convergence signals were computed from the session-scoped subgraph only.'],
+      snapshotPersistence: args.persistSnapshot ? 'persisted' : 'not_requested',
       nodeCount: stats.totalNodes,
       edgeCount: stats.totalEdges,
       lastIteration: stats.lastIteration,

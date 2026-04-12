@@ -36,6 +36,47 @@ const PROMOTION_DECISIONS = Object.freeze({
   BLOCKED: 'blocked',
 });
 
+const PROMOTION_AUDIT_DIR = path.resolve(__dirname, 'audit', 'promotion-reports');
+
+function isPathWithin(candidatePath, rootPath) {
+  const relative = path.relative(rootPath, candidatePath);
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function ensureCanonicalDirectory(dirPath, label) {
+  fs.mkdirSync(dirPath, { recursive: true });
+  const resolvedPath = path.resolve(dirPath);
+  const realPath = fs.realpathSync(dirPath);
+
+  if (path.normalize(realPath) !== path.normalize(resolvedPath)) {
+    throw new Error(`${label} must not traverse symlinks`);
+  }
+
+  return realPath;
+}
+
+function resolvePromotionAuditPath(outputPath) {
+  const auditRoot = ensureCanonicalDirectory(PROMOTION_AUDIT_DIR, 'Promotion audit directory');
+  const candidatePath = path.isAbsolute(outputPath)
+    ? path.resolve(outputPath)
+    : path.resolve(auditRoot, outputPath);
+
+  if (!isPathWithin(candidatePath, auditRoot)) {
+    throw new Error(`Promotion reports must be saved under ${auditRoot}`);
+  }
+
+  const parentDir = ensureCanonicalDirectory(path.dirname(candidatePath), 'Promotion audit parent directory');
+  if (!isPathWithin(parentDir, auditRoot)) {
+    throw new Error(`Promotion report parent directory must stay under ${auditRoot}`);
+  }
+
+  if (fs.existsSync(candidatePath) && fs.lstatSync(candidatePath).isSymbolicLink()) {
+    throw new Error('Promotion report output path must not be a symlink');
+  }
+
+  return candidatePath;
+}
+
 /* ---------------------------------------------------------------
    2. PREREQUISITE CHECKING
 ----------------------------------------------------------------*/
@@ -139,7 +180,7 @@ function checkManifestBoundary(candidate, manifest) {
  * @param {object} candidate.score - The rubric score result.
  * @param {object} baselineScore - The baseline rubric score result.
  * @param {object} [options={}] - Additional options.
- * @param {object} [options.manifest] - Optimizer manifest for boundary checking.
+ * @param {object} options.manifest - Optimizer manifest for boundary checking.
  * @returns {{ decision: string; improved: boolean; regressions: string[]; improvements: string[]; manifestCheck: object|null; prerequisiteCheck: object; advisoryOnly: boolean }}
  */
 function evaluateCandidate(candidate, baselineScore, options) {
@@ -162,21 +203,25 @@ function evaluateCandidate(candidate, baselineScore, options) {
   // advisoryOnly is ALWAYS true regardless of prerequisite state.
   const advisoryOnly = true;
 
-  // Check manifest boundaries if manifest provided
-  let manifestCheck = null;
-  if (opts.manifest) {
+  let manifestCheck;
+  if (!opts.manifest || typeof opts.manifest !== 'object') {
+    manifestCheck = {
+      valid: false,
+      violations: ['Canonical optimizer manifest is required'],
+    };
+  } else {
     manifestCheck = checkManifestBoundary(candidate.config, opts.manifest);
-    if (!manifestCheck.valid) {
-      return {
-        decision: PROMOTION_DECISIONS.BLOCKED,
-        improved: false,
-        regressions: manifestCheck.violations,
-        improvements: [],
-        manifestCheck,
-        prerequisiteCheck,
-        advisoryOnly: true,
-      };
-    }
+  }
+  if (!manifestCheck.valid) {
+    return {
+      decision: PROMOTION_DECISIONS.BLOCKED,
+      improved: false,
+      regressions: manifestCheck.violations,
+      improvements: [],
+      manifestCheck,
+      prerequisiteCheck,
+      advisoryOnly: true,
+    };
   }
 
   // Compare scores
@@ -318,11 +363,8 @@ function savePromotionReport(report, outputPath) {
   if (!report || typeof report !== 'object' || typeof outputPath !== 'string' || !outputPath) {
     return false;
   }
-  const dir = path.dirname(outputPath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(outputPath, JSON.stringify(report, null, 2), 'utf8');
+  const resolvedOutputPath = resolvePromotionAuditPath(outputPath);
+  fs.writeFileSync(resolvedOutputPath, JSON.stringify(report, null, 2), 'utf8');
   return true;
 }
 
@@ -333,6 +375,7 @@ function savePromotionReport(report, outputPath) {
 module.exports = {
   PROMOTION_PREREQUISITES,
   PROMOTION_DECISIONS,
+  PROMOTION_AUDIT_DIR,
   checkPrerequisites,
   checkManifestBoundary,
   evaluateCandidate,

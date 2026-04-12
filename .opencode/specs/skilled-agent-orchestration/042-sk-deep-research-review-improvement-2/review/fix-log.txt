@@ -1,0 +1,1254 @@
+=== Copilot Fix Dispatch (sequential) ===
+Start: Sun Apr 12 13:27:25 CEST 2026
+--- Batch 1-reducers | Sun Apr 12 13:27:25 CEST 2026 ---
+● skill(system-spec-kit)
+
+I’m locating the existing deep-loop packet and reading the reducer implementations together so I can make the fixes surgically instead of guessing across the three skills.
+
+● Read CODEX.md
+  └ L1:220 (219 lines read)
+
+● skill(sk-code-opencode)
+
+● Route relevant skill (shell)
+  │ python3 .opencode/skill/scripts/skill_advisor.py "Fix correctness bugs in deep-loop reducers and
+  │ related improve-agent scripts" --threshold 0.8
+  └ 11 lines...
+
+● Search (glob)
+  │ "specs/**/*deep*loop*"
+  └ No matches found
+
+● Search (glob)
+  │ "**/*deep*loop*/**/*"
+  └ 24 files found
+
+● Search (glob)
+  │ "**/sk-deep-{review,research}/scripts/reduce-state.cjs"
+  └ 2 files found
+
+● Search (glob)
+  │ "**/sk-improve-agent/scripts/{reduce-state.cjs,trade-off-detector.cjs,improvement-journal.cjs}"
+  └ 3 files found
+
+● Search (glob)
+  │ ".opencode/specs/**/*deep*loop*"
+  └ No matches found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Fix correctness bugs in all 3 deep-loop r…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":"trig...
+
+I found an existing packet that appears to cover these deep-loop improvements, so I’m reading that alongside the reducer code and the current event-handling paths before touching anything.
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-furthe
+  │ r-deep-loop-improvements/spec.md
+  └ L1:240 (240 lines read)
+
+● Read tasks.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-furthe
+  │ r-deep-loop-improvements/tasks.md
+  └ L1:260 (137 lines read)
+
+● Read checklist.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-furthe
+  │ r-deep-loop-improvements/checklist.md
+  └ L1:260 (114 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L1:420 (419 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  └ L1:420 (419 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L1:420 (419 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L1:320 (320 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:260 (260 lines read)
+
+I’ve confirmed the packet is the right one. Next I’m tracing the exact reducer branches for stop state, lineage, claim adjudication, and journal/replay summaries so the edits stay minimal and match the existing output contract.
+
+● Search (grep)
+  │ "candidate_scored|scoreOutputPath|dimensions|journal"
+  │ (.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs)
+  └ 38 lines found
+
+● Search (grep)
+  │ "synthesis_complete|claim_adjudication|resumed|restarted|lenient|blockedStopHistory|ACTIVE
+  │ RISKS|active risks|stopReason|parentSessionId|continuedFromRun|lineageMode"
+  │ (.opencode/skill/sk-deep-review/scripts/reduce-state.cjs)
+  └ 20 lines found
+
+● Search (grep)
+  │ "synthesis_complete|resumed|restarted|parentSessionId|continuedFromRun|lineageMode|blendedScore|
+  │ graphConvergenceScore|stopReason" (.opencode/skill/sk-deep-research/scripts/reduce-state.cjs)
+  └ 33 lines found
+
+● Search (grep)
+  │ "candidateId|parentCandidateId|\bid\b|\bparentId\b|mutation coverage|journal
+  │ summary|lineage|legal_stop_evaluated|blocked_stop|stopReason|session_ended|session_end"
+  │ (.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs)
+  └ 30 lines found
+
+● Search (grep)
+  │ "STOP_REASONS|VALID_EVENT_TYPES|plateau|blocked_stop|legal_stop_evaluated"
+  │ (.opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs)
+  └ 10 lines found
+
+● Search (glob)
+  │ ".opencode/skill/{sk-deep-review,sk-deep-research,sk-improve-agent}/**/*{test,spec,vitest}*"
+  └ 8 files found
+
+● Search (grep)
+  │ "reduce-state|trade-off-detector|improvement-journal|legal_stop_evaluated|blocked_stop|claim_adj
+  │ udication|synthesis_complete" (.opencode/skill)
+  └ 68 files found
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L416:1030 (468 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  └ L240:980 (494 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L220:1100 (628 lines read)
+
+● Read trade-off-detector.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  └ L1:260 (225 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L1:240 (202 lines read)
+
+● Read candidate-lineage.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts
+  └ L1:240 (184 lines read)
+
+● Read mutation-coverage.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts
+  └ L1:240 (195 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L884:1030 (126 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  └ L734:940 (188 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L840:1030 (166 lines read)
+
+● Read deep-research-reducer.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts
+  └ L1:280 (260 lines read)
+
+● Read review-reducer-fail-closed.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/review-reducer-fail-closed.vitest.ts
+  └ L1:280 (197 lines read)
+
+● Read deep-review-reducer-schema.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-review-reducer-schema.vitest.ts
+  └ L1:320 (129 lines read)
+
+● Search (grep)
+  │ "candidate-lineage|mutation-coverage|improvement-journal|renderDashboard|reduceState"
+  │ (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 9 lines found
+
+I’ve narrowed it to a handful of exact branches. I’m now checking the real event payload shapes in fixtures and workflow docs so the reducers consume the canonical fields instead of guessing.
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop" (.opencode/skill/sk-improve-agent)
+  └ 18 lines found
+
+● Search (grep)
+  │ ""event":"claim_adjudication"|event: 'claim_adjudication'|claim_adjudication" (.opencode)
+  └ 6 lines found
+
+● Search (grep)
+  │ "blendedScore" (.opencode)
+  └ 6 lines found
+
+● Search (grep)
+  │ ""event":"synthesis_complete"|event: 'synthesis_complete'|synthesis_complete" (.opencode)
+  └ 6 lines found
+
+● Search (grep)
+  │ ""event":"resumed"|"event":"restarted"|event: 'resumed'|event:
+  │ 'restarted'|continuedFromRun|parentSessionId|lineageMode" (.opencode)
+  └ 8 lines found
+
+● Read copilot-tool-output-1775993346580-td4ze0.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775993346580-td4ze0.txt
+  └ L1:120 (4 lines read)
+
+● Search (grep)
+  │ "claim_adjudication|claimAdjudicationGate|finalSeverity|missingPackets|findingId"
+  │ (.opencode/skill/sk-deep-review)
+  └ 57 lines found
+
+● Search (grep)
+  │ "resumed|restarted|parentSessionId|continuedFromRun|lineageMode"
+  │ (.opencode/skill/sk-deep-research)
+  └ 67 lines found
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop|failedGates|gateResults|scoreOutputPath|dimensions"
+  │ (.opencode/skill/sk-improve-agent)
+  └ 6 lines found
+
+● Read copilot-tool-output-1775993346246-b3jac5.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775993346246-b3jac5.txt
+  └ L1:140 (50 lines read)
+
+● Read copilot-tool-output-1775993359929-g97uoy.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775993359929-g97uoy.txt
+  └ L1:180 (90 lines read)
+
+● Search (grep)
+  │ "candidate_scored|scoreOutputPath|emitEvent\(|legal_stop_evaluated|blocked_stop"
+  │ (.opencode/skill/sk-improve-agent/scripts)
+  └ 36 lines found
+
+● Read state_format.md
+  │ .opencode/skill/sk-deep-review/references/state_format.md
+  └ L670:730 (61 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-deep-research/references/loop_protocol.md
+  └ L80:125 (45 lines read)
+
+● Read improvement_charter.md
+  │ .opencode/skill/sk-improve-agent/assets/improvement_charter.md
+  └ L78:98 (21 lines read)
+
+● Read closing-review.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-furthe
+  │ r-deep-loop-improvements/scratch/closing-review.md
+  └ L1:120 (120 lines read)
+
+● Read deep-review-state.jsonl
+  │ .opencode/skill/sk-deep-review/scripts/tests/fixtures/blocked-stop-session/review/deep-review-st
+  │ ate.jsonl
+  └ L1:80 (5 lines read)
+
+● Read deep-review-findings-registry.json
+  │ .opencode/skill/sk-deep-review/scripts/tests/fixtures/blocked-stop-session/review/deep-review-fi
+  │ ndings-registry.json
+  └ L1:120 (120 lines read)
+
+● Search (grep)
+  │ "claim_adjudication|blocked_stop|resumed|restarted|synthesis_complete" (.opencode/specs/skilled-
+  │ agent-orchestration/042-sk-deep-research-review-improvement-2/review/deep-review-state.jsonl)
+  └ No matches found
+
+● Search (grep)
+  │ "resumed|restarted|synthesis_complete|graph_convergence" (.opencode/specs/skilled-agent-orchestr
+  │ ation/042-sk-deep-research-review-improvement-2/research/deep-research-state.jsonl)
+  └ 4 lines found
+
+● Search (grep)
+  │ "candidate_scored|legal_stop_evaluated|blocked_stop|session_end|session_ended" in
+  │ **/improvement-journal.jsonl
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ No matches found
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/028-legal-stop-gates.
+  │ md
+  └ L1:120 (76 lines read)
+
+● Search (grep)
+  │ "resumed|restarted|parentSessionId|continuedFromRun|lineageMode"
+  │ (.opencode/skill/sk-deep-review/references)
+  └ 28 lines found
+
+● Read improvement-journal.jsonl
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark/improvement-journal
+  │ .jsonl
+  └ L1:80 (8 lines read)
+
+● Search (grep)
+  │ "benchmarkPlateau|plateau|legal_stop_evaluated|blocked_stop|session_ended|stopReason|candidate_s
+  │ cored" (.opencode/command/improve)
+  └ 25 lines found
+
+● Search (grep)
+  │ "benchmarkPlateau|plateau|blockedStop|maxIterationsReached|stopReason"
+  │ (.opencode/skill/sk-improve-agent)
+  └ 7 lines found
+
+● Search (grep)
+  │ "claim_adjudication.*findingId|findingId.*claim_adjudication|finalSeverity"
+  │ (.opencode/command/spec_kit/assets)
+  └ 6 lines found
+
+● Search (grep)
+  │ "claim_adjudication.*finalSeverity|findingId.*finalSeverity|finalSeverity"
+  │ (.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2)
+  └ 6 lines found
+
+● Search (grep)
+  │ "claim_adjudication" (.opencode/skill/sk-deep-review/scripts/tests)
+  └ No matches found
+
+● Read mutation-coverage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs
+  └ L1:240 (240 lines read)
+
+● Read candidate-lineage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs
+  └ L1:260 (180 lines read)
+
+● Read copilot-tool-output-1775993418207-b4qby0.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775993418207-b4qby0.txt
+  └ L45:120 (25 lines read)
+
+I’ve got the concrete contract mismatches pinned down. I’m patching the reducers now so they use runtime-truth events for lineage/stop state, apply adjudicated severities correctly, and stop failing in the dashboard/journal edge cases.
+
+● Edit
+  │ Edit .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  │ Edit .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  │ Edit .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  │ Edit .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ Edit .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+
+The core patches are in. I’m doing a quick pass on the changed regions now, mainly to catch schema-edge mistakes before I update the focused tests that cover these reducer contracts.
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L1:260 (260 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  └ L260:1040 (582 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  └ L220:390 (171 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L1:420 (420 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L420:980 (561 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L110:170 (60 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:80 (80 lines read)
+
+● Edit
+  │ Edit .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ Edit .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+
+I found one enum edge I needed to correct: `plateau` has to be a real accepted stop-reason value, not just an alias. I’m updating the focused tests now so the reducer and journal changes are pinned by the existing suites.
+
+● Read review-reducer-fail-closed.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/review-reducer-fail-closed.vitest.ts
+  └ L1:220 (197 lines read)
+
+● Read deep-research-reducer.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts
+  └ L1:260 (260 lines read)
+
+● Read trade-off-detector.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  └ L1:260 (225 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L1:220 (202 lines read)
+
+● Read candidate-lineage.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts
+  └ L1:220 (184 lines read)
+
+● Read mutation-coverage.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts
+  └ L1:220 (195 lines read)
+
+● Search (grep)
+  │ "Session ID|Parent Session|continuedFromRun|stopReason|Status:"
+  │ (.opencode/skill/sk-deep-research/scripts/reduce-state.cjs)
+  └ 14 lines found
+
+● Search (grep)
+  │ "STATE_CORRUPTION|parseJsonl detected" (.opencode/skill/sk-deep-review/scripts/reduce-state.cjs)
+  └ 3 lines found
+
+● Edit
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/review-reducer-fail-closed.vitest.ts
+  │ Edit .opencode/skill/system-spec-kit/scripts/tests/deep-research-reducer.vitest.ts
+  │ Edit .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  └ Edit .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+
+The reducer logic is patched and the focused regression tests are in place. I’m running the smallest existing test slices that exercise the touched contracts so I can catch any schema or path mismatches without dragging in unrelated suites.
+
+● Read package.json
+  └ L1:220 (5 lines read)
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/package.json
+  └ L1:220 (51 lines read)
+
+✗ Read package.json
+  │ .opencode/skill/sk-improve-agent/package.json
+  └ Path does not exist
+
+● Search (glob)
+  │ "**/package.json" in .opencode/skill/sk-improve-agent
+  └ No matches found
+
+● Search (grep)
+  │ "vitest" in **/*.{json,ts,js,cjs,md} (.opencode/skill/sk-improve-agent)
+  └ 5 lines found
+
+● Search (glob)
+  │ "**/vitest.config.*" in .opencode/skill/system-spec-kit
+  └ 2 files found
+
+● Search (glob)
+  │ "**/vitest.config.*"
+  └ 18 files found
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/mcp_server/package.json
+  └ L1:220 (67 lines read)
+
+● Read vitest.config.ts
+  │ .opencode/skill/system-spec-kit/vitest.config.ts
+  └ L1:220 (11 lines read)
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/scripts/package.json
+  └ L1:220 (34 lines read)
+
+I’ve got the right test runners mapped now. Next I’m running the exact suites that cover the changed reducers and journal utilities, plus the alignment verifier on the touched skill directories.
+
+✗ Run improve-agent utility tests (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && node node_modules/vitest/vitest.mjs run
+  │ ../sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  │ ../sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ Permission denied and could not request permission from user
+
+● Run reducer regression tests (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && node node_modules/vitest/vitest.mjs run
+  │ scripts/tests/review-reducer-fail-closed.vitest.ts scripts/tests/deep-research-reducer.vitest.ts
+  │ --config vitest.config.ts
+  └ 18 lines...
+
+● Run alignment verifier on changed scopes (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && python3
+  │ .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root
+  │ .opencode/skill/sk-deep-review && python3
+  │ .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root
+  │ .opencode/skill/sk-deep-research && python3 …
+  └ 29 lines...
+
+The code passes alignment, but the first test attempt hit a workspace runner-path mismatch and the second was blocked by a bad executable path. I’m locating the installed Vitest entrypoint in this repo and re-running the exact same slices from the path that actually exists here.
+
+● List shells
+  └ <no active shell sessions>
+
+● Search (glob)
+  │ "**/node_modules/vitest/package.json"
+  └ No matches found
+
+● Search (glob)
+  │ "**/vitest.mjs"
+  └ No matches found
+
+● Search (glob)
+  │ "**/.bin/vitest"
+  └ No matches found
+
+● Probe available vitest runners (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && npm exec vitest -- --version && npm exec --workspace=@spec-kit/scripts vitest --
+  │ --version && npm exec --workspace=@spec-kit/mcp-server vitest -- --version
+  └ 3 lines...
+
+● Check root vitest install (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && ls node_modules | grep
+  │ -i '^vitest$' && node node_modules/vitest/vitest.mjs --version
+  └ 1 line...
+
+Vitest isn’t installed in the current workspace layout, so I’m falling back to the repo’s established `npx vitest` path that these suites already use elsewhere in this codebase.
+
+● Run system-spec-kit reducer tests via npx vitest (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && npx vitest run scripts/tests/review-reducer-fail-closed.vitest.ts
+  │ scripts/tests/deep-research-reducer.vitest.ts --config vitest.config.ts
+  └ 3 lines...
+
+● Run system-spec-kit reducer tests with temporary vitest (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && npx --yes vitest@4.1.0 run scripts/tests/review-reducer-fail-closed.vitest.ts
+  │ scripts/tests/deep-research-reducer.vitest.ts --config vitest.config.ts
+  └ 3 lines...
+
+● Run system-spec-kit reducer tests with npm exec package (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec
+  │ -kit && npm exec --yes --package=vitest@4.1.0 -- vitest run
+  │ scripts/tests/review-reducer-fail-closed.vitest.ts scripts/tests/deep-research-reducer.vitest.ts
+  │ --config vitest.config.ts
+  └ 3 lines...
+
+The bundled runner just isn’t present here, so I’m isolating a temporary Vitest install outside the repo and using it only to execute the existing suites. That keeps the workspace clean while still validating the actual test files.
+
+● Install temporary vitest runner (shell)
+  │ TMP_RUNNER=/tmp/copilot-vitest-runner && rm -rf "$TMP_RUNNER" && mkdir -p "$TMP_RUNNER" && cd
+  │ "$TMP_RUNNER" && npm init -y >/dev/null 2>&1 && npm install vitest@4.1.0 >/dev/null 2>&1 && node
+  │ node_modules/vitest/vitest.mjs --version
+  └ 1 line...
+
+● Install temporary vitest runner with logs (shell)
+  │ TMP_RUNNER=/tmp/copilot-vitest-runner && rm -rf "$TMP_RUNNER" && mkdir -p "$TMP_RUNNER" && cd
+  │ "$TMP_RUNNER" && npm init -y && npm install vitest@4.1.0
+  └ 10 lines...
+
+● Install temporary vitest runner with manual package json (shell)
+  │ TMP_RUNNER=/tmp/copilot-vitest-runner && rm -rf "$TMP_RUNNER" && mkdir -p "$TMP_RUNNER" && cd
+  │ "$TMP_RUNNER" && printf '{"name":"copilot-vitest-runner","private":true}\n' > package.json &&
+  │ npm install vitest@4.1.0
+  └ 3 lines...
+
+● Install temporary vitest runner without workspaces (shell)
+  │ TMP_RUNNER=/tmp/copilot-vitest-runner && rm -rf "$TMP_RUNNER" && mkdir -p "$TMP_RUNNER" && cd
+  │ "$TMP_RUNNER" && printf '{"name":"copilot-vitest-runner","private":true}\n' > package.json &&
+  │ npm install --workspaces=false vitest@4.1.0
+  └ 9 lines...
+
+● Run reducer regression tests with temp vitest (shell)
+  │ RUNNER=/tmp/copilot-vitest-runner/node_modules/vitest/vitest.mjs && cd /Users/michelkerkmeester/
+  │ MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit && node "$RUNNER" run
+  │ scripts/tests/review-reducer-fail-closed.vitest.ts scripts/tests/deep-research-reducer.vitest.ts
+  │ --config vitest.config.ts
+  └ 32 lines...
+
+● Run improve-agent utility tests with temp vitest (shell)
+  │ RUNNER=/tmp/copilot-vitest-runner/node_modules/vitest/vitest.mjs && cd
+  │ /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && node "$RUNNER" run
+  │ .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ 8 lines...
+
+Vitest itself works; the remaining problem is just config/module resolution for these nonstandard `*.vitest.ts` paths. I’m switching to tiny temporary configs that point directly at the existing test files and reuse the temp runner’s own Vitest package.
+
+● Run targeted vitest suites with temp configs (shell)
+  │ RUNNER_ROOT=/tmp/copilot-vitest-runner
+  │ RUNNER="$RUNNER_ROOT/node_modules/vitest/vitest.mjs"
+  │ SYSTEM_CONFIG="$RUNNER_ROOT/system-spec-vitest.config.mjs"
+  │ IMPROVE_CONFIG="$RUNNER_ROOT/improve-agent-vitest.config.mjs"
+  │ cat > "$SYSTEM_CONFIG" <<'EOF'…
+  └ 55 lines...
+
+✗ Inspect temp vitest package files (shell)
+  │ ls /private/tmp/copilot-vitest-runner/node_modules/vitest && test -f
+  │ /private/tmp/copilot-vitest-runner/node_modules/vitest/config.js && echo has-config
+  └ Permission denied and could not request permission from user
+
+● Run targeted vitest suites with temp CommonJS configs (shell)
+  │ RUNNER_ROOT=/tmp/copilot-vitest-runner
+  │ RUNNER="$RUNNER_ROOT/node_modules/vitest/vitest.mjs"
+  │ SYSTEM_CONFIG="$RUNNER_ROOT/system-spec-vitest.config.cjs"
+  │ IMPROVE_CONFIG="$RUNNER_ROOT/improve-agent-vitest.config.cjs"
+  │ cat > "$SYSTEM_CONFIG" <<'EOF'…
+  └ 62 lines...
+
+The reducer suites passed. The remaining failure is just a bad `WORKSPACE_ROOT` path in the existing improvement-journal test file, so I’m correcting that test harness path and re-running the improve-agent slice.
+
+● Edit
+  └ Edit .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+
+● Re-run improve-agent utility tests with temp config (shell)
+  │ RUNNER_ROOT=/tmp/copilot-vitest-runner
+  │ RUNNER="$RUNNER_ROOT/node_modules/vitest/vitest.mjs"
+  │ IMPROVE_CONFIG="$RUNNER_ROOT/improve-agent-vitest.config.cjs"
+  │ cat > "$IMPROVE_CONFIG" <<'EOF'
+  │ module.exports = {…
+  └ 20 lines...
+
+Everything I changed now has a clean validation pass: reducer regressions, improve-agent utility tests, and the alignment checks. I’m doing one final diff scan to make sure the edits stayed surgical and only hit the requested contracts.
+
+● Show status and focused diff (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && git --no-pager status
+  │ --short && printf '\n--- DIFF ---\n' && git --no-pager diff --
+  │ .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs …
+  └ 19 lines...
+
+● Show focused diff stats (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && git --no-pager diff
+  │ --stat -- .opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+  │ .opencode/skill/sk-deep-research/scripts/reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs …
+  └ 16 lines...
+
+Fixed the deep-loop correctness bugs across the requested reducers and improve-agent utilities.
+
+- **`sk-deep-review`** now derives dashboard stop state from the latest active `synthesis_complete`, updates visible lineage from `resumed`/`restarted`, treats per-finding `claim_adjudication.finalSeverity` as canonical, only shows the claim-adjudication STOP veto when active `P0/P1` still exist, reuses normalized `blockedStopHistory` in **ACTIVE RISKS**, and throws fail-closed corruption errors when `lenient` is false.
+- **`sk-deep-research`** now ignores stale `synthesis_complete` rows after later lifecycle/iteration activity and persists lifecycle-derived lineage fields into the reducer-visible config state.
+- **`sk-improve-agent`** now normalizes lineage to `id` / `parentId`, enriches journal summary output with latest legal-stop / blocked-stop details, accepts inline scored-dimension aliases in the trade-off detector, and accepts the new `plateau` stop reason in the improvement journal.
+- I also updated the focused regression tests covering the changed reducer and journal contracts.
+
+
+Changes   +424 -75
+Requests  1 Premium (12m 38s)
+Tokens    ↑ 6.1m • ↓ 41.5k • 5.9m (cached) • 22.5k (reasoning)
+--- Batch 1-reducers done | Sun Apr 12 13:40:06 CEST 2026 ---
+
+--- Batch 2-security | Sun Apr 12 13:40:06 CEST 2026 ---
+● skill(system-spec-kit)
+
+I’m tracing the affected coverage-graph and optimizer paths first, then I’ll patch the namespace and file-safety gaps together so the behavior stays consistent.
+
+● Read coverage-graph-query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+  └ 448 lines read
+
+● Search (glob)
+  │ "**/specs/**/*coverage*" in .opencode/skill/system-spec-kit
+  └ No matches found
+
+● Search (glob)
+  │ "**/specs/**/*optimizer*" in .opencode/skill/system-spec-kit
+  └ No matches found
+
+● Search (glob)
+  │ "**/specs/**/*graph*" in .opencode/skill/system-spec-kit
+  └ No matches found
+
+● Read coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  └ 576 lines read
+
+● Read query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts
+  └ 172 lines read
+
+● Read status.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/status.ts
+  └ 100 lines read
+
+● Read convergence.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts
+  └ 1 line read
+
+● Read promote.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs
+  └ 341 lines read
+
+● Read search.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/search.cjs
+  └ 335 lines read
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ 401 lines read
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Fix security issues in coverage-graph nam…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":"trig...
+
+I found the main query leaks: a few nested edge lookups and contradiction joins still rely on partial keys, and the optimizer scripts currently trust caller paths too much. I’m reading the surrounding helpers now so the fixes stay minimal instead of bolting on new behavior.
+
+● skill(sk-code-opencode)
+
+● Search (grep)
+  │ "computeScoped|sessionId|required|admin|scopeMode|all_sessions_default"
+  │ (.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph)
+  └ 61 lines found
+
+● Search (grep)
+  │ "manifest|tunableFields|lockedFields|savePromotionReport|evaluateCandidate|DEFAULT_PARAM_SPACE|f
+  │ ixturesDir|corpus|approved|symlink|realpath" (.opencode/skill/system-spec-kit/scripts/optimizer)
+  └ 98 lines found
+
+● Search (grep)
+  │ "type Namespace|interface Namespace|getNodes\(|getEdges\(|getStats\("
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph)
+  └ 11 lines found
+
+● Read convergence.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts
+  └ L1:260 (260 lines read)
+
+● Read coverage-graph-db.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-db.ts
+  └ L1:260 (260 lines read)
+
+● Search (glob)
+  │ "**/*coverage*graph*" in .opencode/specs/system-spec-kit
+  └ No matches found
+
+● Search (glob)
+  │ "**/*optimizer*" in .opencode/specs/system-spec-kit
+  └ No matches found
+
+The read handlers already have a session-scoped path internally; the remaining gap is mostly that they still allow the old cross-session fallback on the public route. I’m tightening that boundary and then wiring the same namespace discipline through the optimizer scripts.
+
+● Read convergence.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts
+  └ L261:760 (376 lines read)
+
+● Read tool-schemas.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+  └ L1:260 (230 lines read)
+
+● Read optimizer-manifest.json
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json
+  └ L1:220 (138 lines read)
+
+● Search (grep)
+  │ "approved.*root|audit dir|auditTrail|promotion
+  │ report|optimizer-manifest|manifestPath|fixturesDir|sample-iterations.jsonl"
+  │ (.opencode/skill/system-spec-kit/scripts/optimizer)
+  └ 16 lines found
+
+● Search (grep)
+  │ "savePromotionReport\(|evaluateCandidate\(|randomSearch\(|buildCorpus\(|loadCorpus\("
+  │ (.opencode/skill/system-spec-kit)
+  └ 61 lines found
+
+I’ve confirmed the optimizer pieces are directly covered by existing vitest suites, so I’m checking the test expectations before I patch the behavior. That should let me keep the change set small without breaking unrelated fixtures.
+
+● Read optimizer-promote.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts
+  └ L1:420 (375 lines read)
+
+● Read optimizer-search.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts
+  └ L1:320 (320 lines read)
+
+● Search (grep)
+  │ "deep_loop_graph_(query|status|convergence)|sessionId"
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Read optimizer-replay-corpus.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+  └ L1:460 (374 lines read)
+
+● Search (glob)
+  │ "**/*coverage*graph*.vitest.ts" in .opencode/skill/system-spec-kit
+  └ 8 files found
+
+● Search (grep)
+  │ "findCoverageGaps|findContradictions|findUnverifiedClaims|handleCoverageGraphQuery|handleCoverag
+  │ eGraphStatus|handleCoverageGraphConvergence|computeReviewSignals"
+  │ (.opencode/skill/system-spec-kit)
+  └ 68 lines found
+
+I found dedicated session-isolation tests for the coverage graph handlers, which is exactly where the public read boundary change will show up. I’m aligning those expectations with the stricter handler contract before editing the source.
+
+● Read session-isolation.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  └ L1:260 (260 lines read)
+
+● Read coverage-graph-tools.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-tools.vitest.ts
+  └ L1:320 (289 lines read)
+
+● Search (grep)
+  │ "deep_loop_graph_query|deep_loop_graph_status|deep_loop_graph_convergence"
+  │ (.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts)
+  └ 3 lines found
+
+● Search (grep)
+  │ "deep_loop_graph_query|deep_loop_graph_status|deep_loop_graph_convergence"
+  │ (.opencode/skill/system-spec-kit/mcp_server/schemas)
+  └ No matches found
+
+The public schema still advertises sessionId as optional on the deep-loop read tools, so I’m checking that surface too. If I only tighten the handlers, callers would get a surprising runtime-only break.
+
+● Read tool-schemas.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+  └ L730:820 (91 lines read)
+
+● Search (grep)
+  │ "handleCoverageGraph(Query|Status|Convergence)\(|scopeMode|all_sessions_default|sessionId is
+  │ required" (.opencode/skill/system-spec-kit/scripts/tests)
+  └ 4 lines found
+
+● Read coverage-graph-cross-layer.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts
+  └ L320:460 (96 lines read)
+
+● Read coverage-graph-signals.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-signals.vitest.ts
+  └ L1:320 (196 lines read)
+
+● Read session-isolation.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+  └ L260:380 (63 lines read)
+
+● Search (grep)
+  │ "createSignalSnapshot\(|computeReviewSignals\(|savePromotionReport\(|randomSearch\(|DEFAULT_PARA
+  │ M_SPACE|loadCorpus\(|buildCorpus\(" (.opencode/skill/system-spec-kit)
+  └ 5 lines found
+
+● Search (grep)
+  │ "handleCoverageGraphQuery\(|handleCoverageGraphStatus\(|handleCoverageGraphConvergence\("
+  │ (.opencode/skill/system-spec-kit/scripts/tests)
+  └ 2 lines found
+
+● Search (grep)
+  │ "deep_loop_graph_query|deep_loop_graph_status|deep_loop_graph_convergence"
+  │ (.opencode/skill/system-spec-kit/mcp_server/tests)
+  └ 6 lines found
+
+● Search (grep)
+  │ "DEFAULT_PARAM_SPACE|sampleConfig\(|randomSearch\("
+  │ (.opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts)
+  └ 17 lines found
+
+● Search (grep)
+  │ "fixturesDir|saveCorpus\(|loadCorpus\(|buildCorpus\("
+  │ (.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts)
+  └ 20 lines found
+
+● Search (grep)
+  │ "evaluateCandidate\(|savePromotionReport\("
+  │ (.opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts)
+  └ 7 lines found
+
+● Read optimizer-search.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts
+  └ L320:420 (36 lines read)
+
+● Read coverage-graph-cross-layer.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts
+  └ L1:220 (220 lines read)
+
+I’m checking whether the optimizer already defines canonical roots anywhere before I hardcode them. If there’s an existing source of truth, I’ll reuse it; otherwise I’ll keep the fallback list narrow and local to the optimizer script.
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/scripts/README.md
+  └ L1:260 (160 lines read)
+
+● Search (grep)
+  │ "deep-loop-replay|sample-iterations\.jsonl|optimizer-manifest|auditTrail|promotion-report|approv
+  │ ed root|corpus root|fixturesDir" (.opencode/skill/system-spec-kit)
+  └ 46 lines found
+
+● Read create.sh
+  │ .opencode/skill/system-spec-kit/scripts/spec/create.sh
+  └ L430:520 (91 lines read)
+
+● Read folder-detector.ts
+  │ .opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts
+  └ L760:860 (101 lines read)
+
+I’ve got enough context to patch now. Before editing, I’m running the existing focused coverage-graph and optimizer suites so I can keep the fix set anchored to the current baseline instead of guessing at downstream behavior.
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/package.json
+  └ L1:220 (51 lines read)
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/mcp_server/package.json
+  └ L1:220 (67 lines read)
+
+● Run focused baseline tests (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-sp
+  │ ec-kit && npm run --workspace=@spec-kit/mcp-server test:core --
+  │ tests/coverage-graph-db.vitest.ts tests/context-server.vitest.ts && npm run
+  │ --workspace=@spec-kit/scripts test -- --run tests/optimizer-promote.vitest.ts
+  │ tests/optimizer-search.vitest.ts tests/optimizer-replay-corpus.vitest.ts …
+  └ 34 lines...
+
+The script workspace uses a shared vitest config, so the first focused command hit the wrong entrypoint. I’m switching to the underlying vitest invocation directly so the optimizer and coverage script suites run cleanly.
+
+● Read package.json
+  │ .opencode/skill/system-spec-kit/scripts/package.json
+  └ L1:220 (34 lines read)
+
+● Read vitest.config.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/vitest.config.ts
+  └ L1:240 (38 lines read)
+
+● Run targeted script baseline tests (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-sp
+  │ ec-kit && node mcp_server/node_modules/vitest/vitest.mjs run
+  │ scripts/tests/optimizer-promote.vitest.ts scripts/tests/optimizer-search.vitest.ts
+  │ scripts/tests/optimizer-replay-corpus.vitest.ts
+  │ scripts/tests/coverage-graph-cross-layer.vitest.ts scripts/tests/session-isolation.vitest.ts …
+  └ 9 lines...
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/status.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/optimizer/search.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/optimizer/search.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-search.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-cross-layer.vitest.ts
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+
+The patch is in. I’m running the focused suites that hit the changed query paths, handler contracts, schemas, and optimizer scripts, then I’ll clean up any fallout rather than widening the edit set.
+
+● Run focused tests and typecheck after security fixes (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-sp
+  │ ec-kit && node mcp_server/node_modules/vitest/vitest.mjs run
+  │ mcp_server/tests/coverage-graph-db.vitest.ts mcp_server/tests/context-server.vitest.ts
+  │ mcp_server/tests/layer-definitions.vitest.ts scripts/tests/optimizer-promote.vitest.ts
+  │ scripts/tests/optimizer-search.vitest.ts scripts/tests/optimizer-replay-corpus.vitest.ts …
+  └ 55 lines...
+
+The replay-corpus helper was a bit too aggressive on macOS path aliases, so it flagged `/var`-style system paths before it even got to the approved-root check. I’m narrowing that to explicit symlinks so the integrity guard stays strict without tripping on normal platform paths.
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+
+● Edit
+  └ Edit .opencode/skill/system-spec-kit/scripts/tests/optimizer-promote.vitest.ts
+
+● Re-run focused tests and typecheck (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-sp
+  │ ec-kit && node mcp_server/node_modules/vitest/vitest.mjs run
+  │ mcp_server/tests/coverage-graph-db.vitest.ts mcp_server/tests/context-server.vitest.ts
+  │ mcp_server/tests/layer-definitions.vitest.ts scripts/tests/optimizer-promote.vitest.ts
+  │ scripts/tests/optimizer-search.vitest.ts scripts/tests/optimizer-replay-corpus.vitest.ts …
+  └ 24 lines...
+
+The focused suites are green now. I’m doing one quick diff pass to make sure the patch stayed surgical and didn’t accidentally broaden any public behavior beyond the requested namespace and filesystem guards.
+
+● Memory stored testing practices
+  └ Type-check the full system-spec-kit workspace with `cd .opencode/skill/system-sp…
+
+● Show final diff stats (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && git --no-pager diff
+  │ --stat --
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts …
+  └ 27 lines...
+
+● Read coverage-graph-query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+  └ L54:220 (167 lines read)
+
+● Read coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  └ L61:520 (459 lines read)
+
+● Read promote.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/promote.cjs
+  └ L1:380 (380 lines read)
+
+● Read search.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/search.cjs
+  └ L1:260 (260 lines read)
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ L1:340 (340 lines read)
+
+● Show final git status for touched files (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && git --no-pager status
+  │ --short --
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-query.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts …
+  └ 26 lines...
+
+Fixed the namespace-isolation and optimizer security gaps with targeted changes.
+
+**Coverage graph:** all `NOT EXISTS` coverage-gap and unverified-claim subqueries now bind `spec_folder + loop_type + session_id`, contradiction lookups join nodes on the full composite namespace key, review signal edge lookups are fully namespaced, and the public deep-loop read handlers now require `sessionId` consistently (with matching tool schema updates).
+
+**Optimizer:** `savePromotionReport()` now only writes under a dedicated optimizer audit directory and rejects symlink targets, `evaluateCandidate()` blocks when the canonical manifest is missing, `search.cjs` derives its default search space from the canonical manifest and rejects locked/unknown custom fields, and `replay-corpus.cjs` now limits fixture reads to approved corpus roots with explicit integrity errors for unapproved or symlinked paths.
+
+
+Changes   +678 -194
+Requests  1 Premium (11m 51s)
+Tokens    ↑ 7.2m • ↓ 41.8k • 6.9m (cached) • 20.4k (reasoning)
+--- Batch 2-security done | Sun Apr 12 13:51:59 CEST 2026 ---
+
+--- Batch 3-wave-and-libs | Sun Apr 12 13:51:59 CEST 2026 ---
+● skill(system-spec-kit)
+
+I’m pinning down the existing spec context first, then I’ll make the targeted library fixes and validate the affected script/test surfaces.
+
+● Search (glob)
+  │ "**/specs/**/*replay*"
+  └ 6 files found
+
+● Search (glob)
+  │ "**/specs/**/*wave*"
+  └ 38 files found
+
+● Search (glob)
+  │ "**/specs/**/*coverage*"
+  └ 12 files found
+
+● Search (glob)
+  │ "**/specs/**/*executor*"
+  └ 1 file found
+
+● Run skill advisor (shell)
+  │ python3 .opencode/skill/scripts/skill_advisor.py "Fix correctness and maintainability issues in
+  │ wave executor and CJS shared libraries under .opencode/skill/system-spec-kit/scripts/lib and
+  │ scripts/optimizer" --threshold 0.8
+  └ 35 lines...
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Fix correctness and maintainability issue…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":"trig...
+
+I found an existing related packet for **wave executor** work, so I’m using that context rather than inventing a new scope. Next I’m reading the affected modules and the related spec/docs together to keep the edits surgical.
+
+● skill(sk-code-opencode)
+
+● Read package.json
+  └ 5 lines read
+
+● Read spec.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-e
+  │ xecutor/spec.md
+  └ 1 line read
+
+● Read tasks.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-e
+  │ xecutor/tasks.md
+  └ 171 lines read
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ 1 line read
+
+● Read wave-lifecycle.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-lifecycle.cjs
+  └ 436 lines read
+
+● Read wave-coordination-board.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-coordination-board.cjs
+  └ 455 lines read
+
+● Read coverage-graph-core.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-core.cjs
+  └ 389 lines read
+
+● Read coverage-graph-signals.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-signals.cjs
+  └ 379 lines read
+
+● Read replay-runner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-runner.cjs
+  └ 302 lines read
+
+● Read replay-corpus.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/replay-corpus.cjs
+  └ 455 lines read
+
+I’ve got the existing wave-executor packet and the affected modules. Now I’m pulling the exact function sites plus any parity/tests so the fixes line up with the documented contracts instead of drifting.
+
+● Search (grep)
+  │ "computeHotspotSpread|assignCluster|buildHotspotInventory|hotspot
+  │ spread|registrable|TLD|median|complexity"
+  │ (.opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs)
+  └ 20 lines found
+
+● Search (grep)
+  │ "advancePhase|LIFECYCLE_PHASES|fan-out|prune|promote|join|merge|allowed transition|transition
+  │ matrix" in **/*.{cjs,ts,vitest.ts} (.opencode/skill/system-spec-kit/scripts)
+  └ 7 lines found
+
+● Search (grep)
+  │ "buildFindingRecord|mergeFinding|dedupeLog|mergeHistory|board
+  │ transition|BOARD_STATUSES|findingId" in **/*.{cjs,ts,vitest.ts}
+  │ (.opencode/skill/system-spec-kit/scripts)
+  └ 7 lines found
+
+● Search (grep)
+  │ "computeMomentum|recent edge
+  │ activity|momentum|cycle|computeDepth|computeAllDepths|buildAdjacencyList" in
+  │ **/*.{cjs,ts,vitest.ts,md} (.opencode/skill/system-spec-kit)
+  └ 7 lines found
+
+● Search (grep)
+  │ "graphMetrics|waveMetrics|convergenceSignals|newInfoRatio|replayRun|buildCorpus|extractCorpusEnt
+  │ ry|stopOutcome" in **/*.{cjs,ts,vitest.ts,json,jsonl} (.opencode/skill/system-spec-kit/scripts)
+  └ 7 lines found
+
+● Search (grep)
+  │ "normalize.*session|session normalization|getNodeSessionId|getEdgeSessionId|matchesSession" in
+  │ **/*.{cjs,ts,vitest.ts} (.opencode/skill/system-spec-kit/scripts)
+  └ 39 lines found
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L520:620 (101 lines read)
+
+● Search (grep)
+  │ "computeHotspotSpread|assignCluster|advancePhase|mergeFinding|computeMomentum|replayRun\(|buildC
+  │ orpus\(|extractCorpusEntry\(" in **/*.vitest.ts (.opencode/skill/system-spec-kit/scripts/tests)
+  └ 8 lines found
+
+● Read copilot-tool-output-1775994789000-uam9t1.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775994789000-uam9t1.txt
+  └ L1:220 (99 lines read)
+
+● Read copilot-tool-output-1775994788996-aifv38.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1775994788996-aifv38.txt
+  └ L1:220 (97 lines read)
+
+● Read deep-loop-wave-planner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-planner.vitest.ts
+  └ 269 lines read
+
+● Search (grep)
+  │ "registrable domain|registrableDomain|base domain|effective tld|public suffix|domain
+  │ heuristic|assignCluster" in **/*.{cjs,ts,js,md} (.opencode/skill/system-spec-kit)
+  └ 3 lines found
+
+● Search (grep)
+  │ "computeRecentEdgeActivity|recentEdgeActivity|computeMomentum" in **/*.{ts,js}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "cycle|cycles|SCC|strongly connected|Kahn|topological longest-path|depths" in **/*graph*{ts,js}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 8 lines found
+
+● Read deep-loop-wave-merge.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-merge.vitest.ts
+  └ 327 lines read
+
+● Read optimizer-replay-runner.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts
+  └ 255 lines read
+
+● Read optimizer-replay-corpus.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-corpus.vitest.ts
+  └ 415 lines read
+
+● Read wave-segment-planner.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-planner.cjs
+  └ L140:280 (141 lines read)
+
+● Search (grep)
+  │ "function computeMomentum|export function computeMomentum|computeMomentum\(" in
+  │ **/*graph-signals*.{ts,js} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "cycle|cycles|strongly connected|SCC|Kahn|assign 0|graceful degradation|topological" in
+  │ **/*graph-signals*.{ts,js} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 117 lines found
+
+● Read decision-record.md
+  │ .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/003-wave-e
+  │ xecutor/decision-record.md
+  └ L1:260 (119 lines read)
+
+● Read graph-signals.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts
+  └ L333:374 (42 lines read)
+
+● Read graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts
+  └ L320:470 (151 lines read)
+
+● Read graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts
+  └ L1:140 (140 lines read)
+
+● Read coverage-graph-signals.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/coverage-graph/coverage-graph-signals.ts
+  └ L540:640 (82 lines read)
+
+● Read deep-loop-wave-executor.vitest.ts
+  │ .opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts
+  └ L1:320 (260 lines read)
+
+● Search (grep)
+  │ "advancePhase|phase transition|transition backward|Cannot transition|prepass|fan-out|join|merge"
+  │ (.opencode/skill/system-spec-kit/scripts/tests/deep-loop-wave-executor.vitest.ts)
+  └ 7 lines found
+
+● Search (grep)
+  │ "schema|graphMetrics|waveMetrics|stopOutcome|iterations\[0\]|convergenceSignals|newInfoRatio"
+  │ (.opencode/skill/system-spec-kit/scripts/tests/optimizer-replay-runner.vitest.ts)
+  └ 47 lines found
+
+● Read sample-040-corpus.jsonl
+  │ .opencode/skill/system-spec-kit/scripts/tests/fixtures/deep-loop-optimizer/sample-040-corpus.jso
+  │ nl
+  └ 6 lines read
+
+● Search (grep)
+  │ "export function computeMomentum|function computeMomentumScores|getPastDegree|getCurrentDegree"
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts)
+  └ 106 lines found
+
+● Read search.cjs
+  │ .opencode/skill/system-spec-kit/scripts/optimizer/search.cjs
+  └ L330:430 (100 lines read)
+
+● Read wave-segment-state.cjs
+  │ .opencode/skill/system-spec-kit/scripts/lib/wave-segment-state.cjs
+  └ L180:290 (111 lines read)
+

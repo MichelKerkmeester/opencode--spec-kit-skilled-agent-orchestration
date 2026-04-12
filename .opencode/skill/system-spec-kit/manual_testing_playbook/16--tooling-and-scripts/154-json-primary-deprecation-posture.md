@@ -24,7 +24,7 @@ This scenario validates the phase 017 JSON-primary deprecation posture. It confi
 Operators verify the JSON-first save contract: structured JSON succeeds and direct positional file input still succeeds.
 
 - Objective: Verify JSON-primary preference without removing positional file input support
-- Prompt: `Test the generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) --stdin with valid structured payload should succeed, and (3) direct positional JSON file input should still succeed on the same structured path. Return a pass/fail verdict for each path.`
+- Prompt: `As a tooling validation operator, validate JSON-primary deprecation posture against the documented validation surface. Verify jSON-primary preference without removing positional file input support. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Path 1 exits 0, Path 2 exits 0, Path 3 exits 0
 - Pass/fail: PASS if all three paths behave as documented; FAIL if any path has unexpected behavior
 

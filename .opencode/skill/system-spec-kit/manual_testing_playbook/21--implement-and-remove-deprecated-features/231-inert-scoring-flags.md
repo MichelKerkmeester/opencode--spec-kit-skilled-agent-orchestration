@@ -18,7 +18,7 @@ This scenario validates Inert scoring flags and compatibility shims for `231`. I
 Operators run the exact prompt and command sequence for `231` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic
-- Prompt: `Validate that retired scoring controls remain compatibility shims: novelty boost stays permanently inert and legacy graph-flag helpers only forward to the newer rollout resolver. Run the targeted checks, capture the evidence that proves the old controls cannot re-enable a deprecated path, and return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a canonical-continuity validation operator, validate Inert scoring flags and compatibility shims against the documented validation surface. Verify retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: The targeted scoring and rollout tests pass, `calculateNoveltyBoost()` always returns `0`, novelty telemetry stays disabled, and `getGraphWalkRolloutState()` continues to mirror `resolveGraphWalkRolloutState()` instead of restoring separate legacy flag behavior
 - Pass/fail: PASS if the targeted checks prove novelty boost is inert and the graph-flag module acts only as a compatibility shim over the newer rollout logic
 

@@ -351,5 +351,31 @@ describe('Random Search Optimizer (T004)', () => {
       expect(config.maxIterations).toBeLessThanOrEqual(20);
       expect(Number.isInteger(config.maxIterations)).toBe(true);
     });
+
+    it('should reject custom parameter spaces with unknown fields', () => {
+      const corpus = loadTestCorpus();
+      const testRubric = rubricModule.defineRubric();
+
+      expect(() => search.randomSearch(
+        corpus,
+        testRubric,
+        { unknownField: { min: 0, max: 1, step: 0.1 } },
+        1,
+        { seed: 42 },
+      )).toThrow(/not declared tunable/i);
+    });
+
+    it('should reject custom parameter spaces with locked fields', () => {
+      const corpus = loadTestCorpus();
+      const testRubric = rubricModule.defineRubric();
+
+      expect(() => search.randomSearch(
+        corpus,
+        testRubric,
+        { sessionId: { min: 1, max: 1, step: 1 } },
+        1,
+        { seed: 42 },
+      )).toThrow(/locked/i);
+    });
   });
 });

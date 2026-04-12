@@ -17,7 +17,7 @@ This scenario validates Causal chain tracing (memory_drift_why) for `EX-022`. It
 Operators run the exact prompt and command sequence for `EX-022` and confirm the expected signals without contradicting evidence.
 
 - Objective: Decision why-trace
-- Prompt: `Trace both directions to depth 4. Capture the evidence needed to prove Chain includes expected relations. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an analysis validation operator, validate Causal chain tracing (memory_drift_why) against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Chain includes expected relations
 - Pass/fail: PASS if causal path returned
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-022` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-022 | Causal chain tracing (memory_drift_why) | Decision why-trace | `Trace both directions to depth 4. Capture the evidence needed to prove Chain includes expected relations. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_drift_why(memoryId,direction:both,maxDepth:4)` | Chain includes expected relations | Trace output | PASS if causal path returned | Lower depth/rel filters if empty |
+| EX-022 | Causal chain tracing (memory_drift_why) | Decision why-trace | `As an analysis validation operator, validate Decision why-trace against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_drift_why(memoryId,direction:both,maxDepth:4)` | Chain includes expected relations | Trace output | PASS if causal path returned | Lower depth/rel filters if empty |
 
 ---
 

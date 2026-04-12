@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
-const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../../');
+const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
 const require = createRequire(import.meta.url);
 
 const journal = require(path.join(
@@ -41,6 +41,7 @@ describe('improvement-journal', () => {
       expect(journal.STOP_REASONS).toBeDefined();
       expect(Object.isFrozen(journal.STOP_REASONS)).toBe(true);
       expect(journal.STOP_REASONS.converged).toBe('converged');
+      expect(journal.STOP_REASONS.plateau).toBe('plateau');
       expect(journal.STOP_REASONS.maxIterationsReached).toBe('maxIterationsReached');
       expect(journal.STOP_REASONS.blockedStop).toBe('blockedStop');
       expect(journal.STOP_REASONS.manualStop).toBe('manualStop');
@@ -98,6 +99,14 @@ describe('improvement-journal', () => {
         details: { stopReason: 'madeUpReason' },
       });
       expect(invalid.valid).toBe(false);
+    });
+
+    it('accepts the plateau stop reason on session_ended events', () => {
+      const result = journal.validateEvent({
+        eventType: 'session_ended',
+        details: { stopReason: 'plateau', sessionOutcome: 'keptBaseline' },
+      });
+      expect(result.valid).toBe(true);
     });
   });
 

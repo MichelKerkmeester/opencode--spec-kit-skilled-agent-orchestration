@@ -17,7 +17,7 @@ This scenario validates 6. Debug and Telemetry for `EX-033`. It focuses on Obser
 Operators run the exact prompt and command sequence for `EX-033` and confirm the expected signals without contradicting evidence.
 
 - Objective: Observability toggle check
-- Prompt: `List telemetry/debug vars and separate opt-in flags from inert flags. Capture the evidence needed to prove Debug/telemetry controls identified. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a feature-flag validation operator, validate 6. Debug and Telemetry against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Debug/telemetry controls identified
 - Pass/fail: PASS if opt-in vs inert controls are clearly separated
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-033` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-033 | 6. Debug and Telemetry | Observability toggle check | `List telemetry/debug vars and separate opt-in flags from inert flags. Capture the evidence needed to prove Debug/telemetry controls identified. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 })` | Debug/telemetry controls identified | Search output | PASS if opt-in vs inert controls are clearly separated | Check feature flag governance section |
+| EX-033 | 6. Debug and Telemetry | Observability toggle check | `As a feature-flag validation operator, validate Observability toggle check against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 })` | Debug/telemetry controls identified | Search output | PASS if opt-in vs inert controls are clearly separated | Check feature flag governance section |
 
 ---
 

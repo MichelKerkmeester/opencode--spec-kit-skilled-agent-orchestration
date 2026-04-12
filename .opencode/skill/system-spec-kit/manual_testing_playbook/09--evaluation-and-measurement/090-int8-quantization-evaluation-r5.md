@@ -16,7 +16,7 @@ This scenario validates INT8 quantization evaluation (R5) for `090`. It focuses 
 Operators run the exact prompt and command sequence for `090` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm no-go decision remains valid
-- Prompt: `Re-evaluate INT8 quantization decision criteria. Capture the evidence needed to prove Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an evaluation validation operator, validate INT8 quantization evaluation (R5) against the documented validation surface. Verify quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data
 - Pass/fail: PASS if no-go decision is reaffirmed with current metrics or criteria change warrants re-evaluation with documented rationale
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `090` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 090 | INT8 quantization evaluation (R5) | Confirm no-go decision remains valid | `Re-evaluate INT8 quantization decision criteria. Capture the evidence needed to prove Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise user-facing pass/fail verdict with the main reason.` | 1) gather thresholds metrics 2) compare go/no-go criteria 3) record decision | Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data | Threshold metrics summary + go/no-go criteria comparison + documented decision with evidence | PASS if no-go decision is reaffirmed with current metrics or criteria change warrants re-evaluation with documented rationale | Review original no-go rationale; gather updated benchmark data; compare quality degradation thresholds with current acceptable limits |
+| 090 | INT8 quantization evaluation (R5) | Confirm no-go decision remains valid | `As an evaluation validation operator, confirm no-go decision remains valid against the documented validation surface. Verify quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) gather thresholds metrics 2) compare go/no-go criteria 3) record decision | Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data | Threshold metrics summary + go/no-go criteria comparison + documented decision with evidence | PASS if no-go decision is reaffirmed with current metrics or criteria change warrants re-evaluation with documented rationale | Review original no-go rationale; gather updated benchmark data; compare quality degradation thresholds with current acceptable limits |
 
 ---
 

@@ -17,7 +17,7 @@ This scenario validates RRF K-value sensitivity analysis (FUT-5) for `030`. It f
 Operators run the exact prompt and command sequence for `030` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm K sensitivity measurements
-- Prompt: `Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a scoring validation operator, validate RRF K-value sensitivity analysis (FUT-5) against the documented validation surface. Verify k-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns
 - Pass/fail: PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `030` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 030 | RRF K-value sensitivity analysis (FUT-5) | Confirm K sensitivity measurements | `Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run K grid 2) Compare metrics 3) Select best K rationale | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
+| 030 | RRF K-value sensitivity analysis (FUT-5) | Confirm K sensitivity measurements | `As a scoring validation operator, confirm K sensitivity measurements against the documented validation surface. Verify k-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run K grid 2) Compare metrics 3) Select best K rationale | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
 
 ---
 

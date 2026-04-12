@@ -121,7 +121,9 @@ function resolveScoreOutputPath(scoreOutputPath, journalPath) {
 
 function extractScoredDimensions(event, journalPath, scoreOutputCache) {
   const details = isPlainObject(event.details) ? event.details : {};
-  const inlineDimensions = normalizeDimensions(details.dimensions || event.dimensions);
+  const inlineDimensions = normalizeDimensions(
+    details.scoredDimensions || details.dimensions || event.scoredDimensions || event.dimensions
+  );
   if (inlineDimensions.length > 0) {
     return inlineDimensions;
   }

@@ -17,7 +17,7 @@ This scenario validates Tier-2 fallback channel forcing for `077`. It focuses on
 Operators run the exact prompt and command sequence for `077` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm force-all-channels in tier-2
-- Prompt: `Validate tier-2 fallback channel forcing. Capture the evidence needed to prove Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a retrieval-enhancement validation operator, validate Tier-2 fallback channel forcing against the documented validation surface. Verify tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels
 - Pass/fail: PASS if tier-2 fallback forces all channels active and results show multi-channel contribution
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `077` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 077 | Tier-2 fallback channel forcing | Confirm force-all-channels in tier-2 | `Validate tier-2 fallback channel forcing. Capture the evidence needed to prove Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels. Return a concise user-facing pass/fail verdict with the main reason.` | 1) trigger tier-2 fallback 2) inspect options 3) confirm all channels forced | Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels | Tier-2 trigger evidence + channel options snapshot + per-channel contribution in results | PASS if tier-2 fallback forces all channels active and results show multi-channel contribution | Inspect tier-2 trigger conditions; verify forceAllChannels flag propagation; check channel activation logic |
+| 077 | Tier-2 fallback channel forcing | Confirm force-all-channels in tier-2 | `As a retrieval-enhancement validation operator, confirm force-all-channels in tier-2 against the documented validation surface. Verify tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) trigger tier-2 fallback 2) inspect options 3) confirm all channels forced | Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels | Tier-2 trigger evidence + channel options snapshot + per-channel contribution in results | PASS if tier-2 fallback forces all channels active and results show multi-channel contribution | Inspect tier-2 trigger conditions; verify forceAllChannels flag propagation; check channel activation logic |
 
 ---
 

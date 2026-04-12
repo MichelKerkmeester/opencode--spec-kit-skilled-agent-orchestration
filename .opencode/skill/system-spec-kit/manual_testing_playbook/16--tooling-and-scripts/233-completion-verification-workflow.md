@@ -16,7 +16,7 @@ This scenario validates completion verification workflow for `233`. It focuses o
 Operators run the completion gate against compliant, lightweight, and intentionally degraded fixtures and confirm the workflow returns the expected advisory, pass, and blocking states.
 
 - Objective: Confirm advisory handling, COMPLETE status, and evidence-aware blocking for `check-completion.sh`
-- Prompt: `Validate the completion verification workflow across Level 1 advisory cases, compliant Level 3 checklists, and degraded evidence cases. Capture the evidence needed to prove missing checklist files do not hard-fail lightweight specs, compliant checklists return COMPLETE, and checked P0/P1 items without evidence are blocked. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Completion Verification Workflow against the documented validation surface. Verify advisory handling, COMPLETE status, and evidence-aware blocking for check-completion.sh. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: missing checklist returns exit 0 advisory; compliant checklist returns COMPLETE; degraded checklist returns non-zero with evidence or blocking status
 - Pass/fail: PASS if advisory, COMPLETE, and blocking outcomes match the fixture state and exit codes remain consistent with the script contract
 

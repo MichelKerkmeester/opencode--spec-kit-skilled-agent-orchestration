@@ -16,7 +16,7 @@ This scenario validates Schema compatibility validation for `128`. It focuses on
 Operators run the exact prompt and command sequence for `128` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify backward-compatibility validation flags required schema gaps without throwing on partial databases
-- Prompt: `Run the schema compatibility validation suite. Capture the evidence needed to prove Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Schema compatibility validation against cd .opencode/skill/system-spec-kit/mcp_server. Verify backward-compatibility validation flags required schema gaps without throwing on partial databases. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage
 - Pass/fail: PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `128` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 128 | Schema compatibility validation | Verify backward-compatibility validation flags required schema gaps without throwing on partial databases | `Run the schema compatibility validation suite. Capture the evidence needed to prove Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts` | Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage | Test transcript + suite summary | PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift |
+| 128 | Schema compatibility validation | Verify backward-compatibility validation flags required schema gaps without throwing on partial databases | `As a tooling validation operator, verify backward-compatibility validation flags required schema gaps without throwing on partial databases against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts` | Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage | Test transcript + suite summary | PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift |
 
 ---
 

@@ -182,6 +182,8 @@ function buildJournalSummary(filePath) {
   let lastSessionEnd = null;
   let stopReason = null;
   let sessionOutcome = null;
+  let latestLegalStop = null;
+  let latestBlockedStop = null;
 
   for (const event of events) {
     const eventType = typeof event.eventType === 'string' ? event.eventType : null;
@@ -207,6 +209,21 @@ function buildJournalSummary(filePath) {
           ? details.sessionOutcome
           : sessionOutcome;
     }
+
+    if (eventType === 'legal_stop_evaluated') {
+      latestLegalStop = {
+        timestamp,
+        gateResults: isPlainObject(details.gateResults) ? details.gateResults : {},
+      };
+    }
+
+    if (eventType === 'blocked_stop') {
+      latestBlockedStop = {
+        timestamp,
+        failedGates: Array.isArray(details.failedGates) ? details.failedGates : [],
+        reason: typeof details.reason === 'string' ? details.reason : null,
+      };
+    }
   }
 
   return {
@@ -216,6 +233,8 @@ function buildJournalSummary(filePath) {
     eventTypeCounts: sortObjectKeys(eventTypeCounts),
     stopReason,
     sessionOutcome,
+    latestLegalStop,
+    latestBlockedStop,
   };
 }
 
@@ -224,17 +243,17 @@ function normalizeLineageNode(node) {
     return null;
   }
 
-  const candidateId =
+  const id =
     typeof node.candidateId === 'string'
       ? node.candidateId
       : typeof node.id === 'string'
         ? node.id
         : null;
-  if (!candidateId) {
+  if (!id) {
     return null;
   }
 
-  const parentCandidateId =
+  const parentId =
     typeof node.parentCandidateId === 'string'
       ? node.parentCandidateId
       : typeof node.parentId === 'string'
@@ -242,8 +261,10 @@ function normalizeLineageNode(node) {
         : null;
 
   return {
-    candidateId,
-    parentCandidateId,
+    id,
+    parentId,
+    candidateId: id,
+    parentCandidateId: parentId,
   };
 }
 
@@ -254,7 +275,7 @@ function buildCandidateLineageSummary(filePath) {
   }
 
   const nodes = data.nodes.map((node) => normalizeLineageNode(node)).filter(Boolean);
-  const nodeById = new Map(nodes.map((node) => [node.candidateId, node]));
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
   const memo = new Map();
 
   function getDepth(nodeId, trail = new Set()) {
@@ -270,7 +291,7 @@ function buildCandidateLineageSummary(filePath) {
 
     trail.add(nodeId);
     const node = nodeById.get(nodeId);
-    const parentId = typeof node.parentCandidateId === 'string' ? node.parentCandidateId : null;
+    const parentId = typeof node.parentId === 'string' ? node.parentId : null;
     const depth = parentId ? getDepth(parentId, trail) + 1 : 0;
     trail.delete(nodeId);
     memo.set(nodeId, depth);
@@ -285,7 +306,7 @@ function buildCandidateLineageSummary(filePath) {
   return {
     lineageDepth,
     totalCandidates: nodes.length,
-    currentLeaf: nodes.length > 0 ? nodes[nodes.length - 1].candidateId : null,
+    currentLeaf: nodes.length > 0 ? nodes[nodes.length - 1].id : null,
   };
 }
 
@@ -863,10 +884,22 @@ function renderJournalSummarySection(summary) {
 | Total events | ${formatDashboardValue(summary.totalEvents)} |
 | Stop reason | ${formatDashboardValue(summary.stopReason)} |
 | Session outcome | ${formatDashboardValue(summary.sessionOutcome)} |
+| Latest legal-stop evaluation | ${formatDashboardValue(summary.latestLegalStop?.timestamp)} |
+| Latest blocked stop | ${formatDashboardValue(summary.latestBlockedStop?.timestamp)} |
 
 ### Event Types
 
 ${renderEventTypeCounts(summary.eventTypeCounts)}
+
+${summary.latestLegalStop ? `### Latest legal-stop evaluation
+
+- Gates: ${formatDashboardValue(Object.keys(summary.latestLegalStop.gateResults || {}).sort().join(', ') || 'none')}
+` : ''}
+${summary.latestBlockedStop ? `### Latest blocked stop
+
+- Failed gates: ${formatDashboardValue(summary.latestBlockedStop.failedGates.join(', ') || 'none')}
+- Reason: ${formatDashboardValue(summary.latestBlockedStop.reason)}
+` : ''}
 `;
 }
 

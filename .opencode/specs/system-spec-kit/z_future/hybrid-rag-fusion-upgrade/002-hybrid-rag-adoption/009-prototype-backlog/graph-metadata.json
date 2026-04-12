@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog
+Status: planned
+Importance Tier: important
+Summary: This sub-phase records prototype-only candidates that survived the research but were not approved for immediate implementation. It covers weak-result lexical fallback, connected-doc hints, bounded wake-up/read formatting, quote-carrying evidence snippets, and temporal-fact follow-up discussion. It does not promote any of them to default runtime behavior.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, records, prototype-only, candidates, survived, research, approved, immediate, implementation, covers, weak-result, lexical
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts, .opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/decision-record.md, memory-search.ts, session-bootstrap.ts, fsrs-scheduler.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

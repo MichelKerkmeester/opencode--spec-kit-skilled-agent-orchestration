@@ -18,7 +18,7 @@ This scenario validates Validation feedback (memory_validate) for `EX-010`. It f
 Operators run the exact prompt and command sequence for `EX-010` and confirm the expected signals without contradicting evidence.
 
 - Objective: Feedback learning loop
-- Prompt: `Record positive validation with queryId. Capture the evidence needed to prove Confidence/promotion metadata updates. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a mutation validation operator, validate Validation feedback (memory_validate) against memory_validate(memoryId,helpful:true,queryId). Verify confidence/promotion metadata updates. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Confidence/promotion metadata updates
 - Pass/fail: PASS if feedback persisted and metadata returned
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `EX-010` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-010 | Validation feedback (memory_validate) | Feedback learning loop | `Record positive validation with queryId. Capture the evidence needed to prove Confidence/promotion metadata updates. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_validate(memoryId,helpful:true,queryId)` | Confidence/promotion metadata updates | Validation response | PASS if feedback persisted and metadata returned | Retry with valid memoryId/queryId |
+| EX-010 | Validation feedback (memory_validate) | Feedback learning loop | `As a mutation validation operator, validate Feedback learning loop against memory_validate(memoryId,helpful:true,queryId). Verify confidence/promotion metadata updates. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_validate(memoryId,helpful:true,queryId)` | Confidence/promotion metadata updates | Validation response | PASS if feedback persisted and metadata returned | Retry with valid memoryId/queryId |
 
 ---
 

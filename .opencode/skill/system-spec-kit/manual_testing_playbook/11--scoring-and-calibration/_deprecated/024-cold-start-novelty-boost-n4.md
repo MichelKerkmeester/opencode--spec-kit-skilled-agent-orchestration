@@ -20,7 +20,7 @@ This scenario validates Cold-start novelty boost (N4) for `024`. It focuses on C
 Operators run the exact prompt and command sequence for `024` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm novelty removed from hot path
-- Prompt: `Confirm N4 novelty hot-path removal. Capture the evidence needed to prove Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a scoring validation operator, validate Cold-start novelty boost (N4) against the documented validation surface. Verify novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path
 - Pass/fail: PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active
 
@@ -30,7 +30,7 @@ Operators run the exact prompt and command sequence for `024` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 024 | Cold-start novelty boost (N4) | Confirm novelty removed from hot path | `Confirm N4 novelty hot-path removal. Capture the evidence needed to prove Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Inspect code path 2) Run search 3) Verify telemetry fixed to zero | Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path | Search telemetry output showing novelty=0 + code path inspection confirming removal | PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active | Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty |
+| 024 | Cold-start novelty boost (N4) | Confirm novelty removed from hot path | `As a scoring validation operator, confirm novelty removed from hot path against the documented validation surface. Verify novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Inspect code path 2) Run search 3) Verify telemetry fixed to zero | Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path | Search telemetry output showing novelty=0 + code path inspection confirming removal | PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active | Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty |
 
 ---
 

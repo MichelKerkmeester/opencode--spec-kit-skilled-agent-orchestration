@@ -17,7 +17,7 @@ This scenario validates Learning history (memory_get_learning_history) for `EX-0
 Operators run the exact prompt and command sequence for `EX-025` and confirm the expected signals without contradicting evidence.
 
 - Objective: Trend review
-- Prompt: `Show completed learning history. Capture the evidence needed to prove Historical entries returned. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an analysis validation operator, validate Learning history (memory_get_learning_history) against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Historical entries returned
 - Pass/fail: PASS if completed cycles listed
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-025` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-025 | Learning history (memory_get_learning_history) | Trend review | `Show completed learning history. Capture the evidence needed to prove Historical entries returned. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_get_learning_history(specFolder,onlyComplete:true)` | Historical entries returned | History output | PASS if completed cycles listed | Remove filter if no results |
+| EX-025 | Learning history (memory_get_learning_history) | Trend review | `As an analysis validation operator, validate Trend review against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_get_learning_history(specFolder,onlyComplete:true)` | Historical entries returned | History output | PASS if completed cycles listed | Remove filter if no results |
 
 ---
 

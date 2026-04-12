@@ -21,6 +21,7 @@ const path = require('node:path');
 const STOP_REASONS = Object.freeze({
   converged: 'converged',
   benchmarkPlateau: 'benchmarkPlateau',
+  plateau: 'plateau',
   maxIterationsReached: 'maxIterationsReached',
   blockedStop: 'blockedStop',
   manualStop: 'manualStop',

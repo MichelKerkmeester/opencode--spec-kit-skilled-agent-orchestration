@@ -18,7 +18,7 @@ This scenario validates Tier-based bulk deletion (memory_bulk_delete) for `EX-00
 Operators run the exact prompt and command sequence for `EX-009` and confirm the expected signals without contradicting evidence.
 
 - Objective: Tier cleanup with safety
-- Prompt: `Delete temporary tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a mutation validation operator, validate Tier-based bulk deletion (memory_bulk_delete) against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Scoped deletion count + checkpoint created
 - Pass/fail: PASS if scoped deletions in sandbox and checkpoint present
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `EX-009` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `Delete temporary tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")` -> `memory_bulk_delete(tier:"temporary",specFolder:"<sandbox-spec>",confirm:true)` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Scoped deletion count + checkpoint created | Bulk delete output + checkpoint listing | PASS if scoped deletions in sandbox and checkpoint present | Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed |
+| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `As a mutation validation operator, validate Tier cleanup with safety against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")` -> `memory_bulk_delete(tier:"temporary",specFolder:"<sandbox-spec>",confirm:true)` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Scoped deletion count + checkpoint created | Bulk delete output + checkpoint listing | PASS if scoped deletions in sandbox and checkpoint present | Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed |
 
 ---
 

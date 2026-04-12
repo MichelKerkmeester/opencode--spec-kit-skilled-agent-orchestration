@@ -18,7 +18,7 @@ This scenario validates Memory indexing (memory_save) for `EX-006`. It focuses o
 Operators run the exact prompt and command sequence for `EX-006` and confirm the expected signals without contradicting evidence.
 
 - Objective: Spec-doc anchored continuity save routing
-- Prompt: `Save a spec doc and report action. Capture the evidence needed to prove Routed save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a mutation validation operator, validate Memory indexing (memory_save) against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection
 - Pass/fail: PASS if the document is indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `EX-006` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-006 | Memory indexing (memory_save) | Spec-doc anchored continuity save routing | `Save a spec doc and report action. Capture the evidence needed to prove Routed save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if the document is indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
+| EX-006 | Memory indexing (memory_save) | Spec-doc anchored continuity save routing | `As a mutation validation operator, validate Spec-doc anchored continuity save routing against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if the document is indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
 
 ---
 

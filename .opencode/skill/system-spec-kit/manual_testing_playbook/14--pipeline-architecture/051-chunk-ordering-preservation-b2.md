@@ -17,7 +17,7 @@ This scenario validates Chunk ordering preservation (B2) for `051`. It focuses o
 Operators run the exact prompt and command sequence for `051` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm ordered reassembly
-- Prompt: `Validate chunk ordering preservation (B2). Capture the evidence needed to prove Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a pipeline validation operator, validate Chunk ordering preservation (B2) against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts
 - Pass/fail: PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `051` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 051 | Chunk ordering preservation (B2) | Confirm ordered reassembly | `Validate chunk ordering preservation (B2). Capture the evidence needed to prove Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save ordered marker chunks 2) collapse 3) verify original order preserved | Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts | Collapsed output with marker sequence verification + original order comparison | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing | Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle |
+| 051 | Chunk ordering preservation (B2) | Confirm ordered reassembly | `As a pipeline validation operator, confirm ordered reassembly against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Save ordered marker chunks 2) collapse 3) verify original order preserved | Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts | Collapsed output with marker sequence verification + original order comparison | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing | Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle |
 
 ---
 

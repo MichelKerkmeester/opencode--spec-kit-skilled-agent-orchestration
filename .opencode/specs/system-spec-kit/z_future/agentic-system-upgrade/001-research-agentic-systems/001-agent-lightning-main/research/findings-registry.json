@@ -1,0 +1,75 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-backend-agnostic-tracer-contract",
+      "text": "Q1: Backend-Agnostic Tracer Contract",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-rollout-and-attempt-control-plane",
+      "text": "Q2: Rollout And Attempt Control Plane",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-structured-reward-signals-versus-scalar-feedback",
+      "text": "Q3: Structured Reward Signals Versus Scalar Feedback",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-adapter-boundary-for-reducer-pipelines",
+      "text": "Q4: Adapter Boundary For Reducer Pipelines",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-trainer-pluggability-and-loop-drivers",
+      "text": "Q5: Trainer Pluggability And Loop Drivers",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-selective-multi-agent-targeting",
+      "text": "Q6: Selective Multi-Agent Targeting",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-framework-wrappers-versus-session-hooks",
+      "text": "Q7: Framework Wrappers Versus Session Hooks",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-8-q8-operational-metrics-and-convergence-signals",
+      "text": "Q8: Operational Metrics And Convergence Signals",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-9-q9-resource-versioning-for-templates-and-prompts",
+      "text": "Q9: Resource Versioning For Templates And Prompts",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-10-q10-phase-005-overlap-and-rl-specific-scope-control",
+      "text": "Q10: Phase-005 Overlap And RL-Specific Scope Control",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 30,
+    "openQuestions": 10,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.85,
+    "coverageBySources": {}
+  }
+}

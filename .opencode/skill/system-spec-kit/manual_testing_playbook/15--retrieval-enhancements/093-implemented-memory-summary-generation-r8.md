@@ -17,7 +17,7 @@ This scenario validates Implemented: memory summary generation (R8) for `093`. I
 Operators run the exact prompt and command sequence for `093` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm deferred->implemented status
-- Prompt: `Verify R8 implemented and gated. Capture the evidence needed to prove Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a retrieval-enhancement validation operator, validate Implemented: memory summary generation (R8) against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
 - Pass/fail: PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `093` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `Verify R8 implemented and gated. Capture the evidence needed to prove Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise user-facing pass/fail verdict with the main reason.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
+| 093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `As a retrieval-enhancement validation operator, confirm deferred->implemented status against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
 
 ---
 

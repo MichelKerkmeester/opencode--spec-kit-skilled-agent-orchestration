@@ -19,7 +19,7 @@ This scenario is retained only as a historical retirement record. Do not use it 
 The shipped ranking path is RRF-only. Source-only checks may confirm the live path still precomputes adaptive weights and builds a single `fusionLists` payload for `fuseResultsMulti(...)`.
 
 - Objective: Record retirement of the RSF live-runtime scenario and preserve the source-only guardrail
-- Prompt: `N/A for live RSF execution. Use source-only checks to confirm production ranking still stays on RRF and that hybrid search now precomputes adaptive weights before building the live fusion lists.`
+- Prompt: `As a query-intelligence validation operator, validate Relative score fusion in shadow mode (R14/N1) [deprecated] against the documented validation surface. Verify record retirement of the RSF live-runtime scenario and preserve the source-only guardrail. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: This tombstone clearly marks the scenario as deprecated, contains no live RSF validation steps, and the source-only check shows `getAdaptiveWeights(...)` plus a single-pass `fusionLists` -> `fuseResultsMulti(...)` path
 - Pass/fail: PASS if the page is clearly a retirement note, contains no active RSF runtime test steps, and the source-only check confirms the live path stays on single-pass RRF; FAIL if it reintroduces live RSF validation or the source anchors disappear
 

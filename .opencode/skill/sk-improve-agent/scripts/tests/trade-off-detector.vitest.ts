@@ -195,6 +195,42 @@ describe('trade-off-detector', () => {
       expect(trajectory).toHaveLength(1);
       expect(trajectory[0].scores.structural).toBe(90);
     });
+
+    it('loads scored dimensions through scoreOutputPath when the journal row omits inline dimensions', () => {
+      const journalPath = path.join(tmpDir, 'journal.jsonl');
+      const scoreOutputPath = path.join(tmpDir, 'score-output.json');
+
+      fs.writeFileSync(
+        scoreOutputPath,
+        JSON.stringify({
+          dimensions: [
+            { name: 'integration', score: 91 },
+            { name: 'systemFitness', score: 94 },
+          ],
+        }),
+        'utf8'
+      );
+
+      fs.writeFileSync(
+        journalPath,
+        [
+          JSON.stringify({
+            eventType: 'candidate_scored',
+            iteration: 2,
+            details: {
+              scoreOutputPath,
+            },
+          }),
+        ].join('\n') + '\n',
+        'utf8'
+      );
+
+      const trajectory = detector.getTrajectory(journalPath) as Array<{ iteration: number; scores: Record<string, number> }>;
+      expect(trajectory).toHaveLength(1);
+      expect(trajectory[0].iteration).toBe(2);
+      expect(trajectory[0].scores.integration).toBe(91);
+      expect(trajectory[0].scores.systemFitness).toBe(94);
+    });
   });
 
   describe('checkParetoDominance', () => {

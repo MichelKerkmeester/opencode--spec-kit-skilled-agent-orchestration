@@ -17,7 +17,7 @@ This scenario validates 4. Memory and Storage for `EX-031`. It focuses on Storag
 Operators run the exact prompt and command sequence for `EX-031` and confirm the expected signals without contradicting evidence.
 
 - Objective: Storage precedence check
-- Prompt: `Explain DB path precedence env vars. Capture the evidence needed to prove Precedence chain identified. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a feature-flag validation operator, validate 4. Memory and Storage against memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 }). Verify precedence chain identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Precedence chain identified
 - Pass/fail: PASS if precedence is unambiguous
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-031` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-031 | 4. Memory and Storage | Storage precedence check | `Explain DB path precedence env vars. Capture the evidence needed to prove Precedence chain identified. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 })` -> `memory_context({ input: "Explain DB path precedence env vars", mode: "focused", sessionId: "ex031" })` | Precedence chain identified | Search/context output | PASS if precedence is unambiguous | Cross-check shared config loader and vector-index store override path |
+| EX-031 | 4. Memory and Storage | Storage precedence check | `As a feature-flag validation operator, validate Storage precedence check against memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 }). Verify precedence chain identified. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 })` -> `memory_context({ input: "Explain DB path precedence env vars", mode: "focused", sessionId: "ex031" })` | Precedence chain identified | Search/context output | PASS if precedence is unambiguous | Cross-check shared config loader and vector-index store override path |
 
 ---
 

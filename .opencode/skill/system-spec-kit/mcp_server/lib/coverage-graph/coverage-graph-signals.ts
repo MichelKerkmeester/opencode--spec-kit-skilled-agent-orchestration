@@ -70,6 +70,38 @@ type ResearchSignalEdgeLike = {
   relation: string;
 };
 
+interface SqlFragment {
+  clause: string;
+  params: unknown[];
+}
+
+function buildNamespacePredicate(alias: string, ns: Namespace): SqlFragment {
+  const prefix = alias ? `${alias}.` : '';
+  const clauses = [`${prefix}spec_folder = ?`, `${prefix}loop_type = ?`];
+  const params: unknown[] = [ns.specFolder, ns.loopType];
+
+  if (ns.sessionId) {
+    clauses.push(`${prefix}session_id = ?`);
+    params.push(ns.sessionId);
+  }
+
+  return {
+    clause: clauses.join(' AND '),
+    params,
+  };
+}
+
+function buildCompositeNodeJoin(
+  nodeAlias: string,
+  edgeAlias: string,
+  edgeNodeColumn: 'source_id' | 'target_id',
+): string {
+  return `${nodeAlias}.spec_folder = ${edgeAlias}.spec_folder
+      AND ${nodeAlias}.loop_type = ${edgeAlias}.loop_type
+      AND ${nodeAlias}.session_id = ${edgeAlias}.session_id
+      AND ${nodeAlias}.id = ${edgeAlias}.${edgeNodeColumn}`;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. NODE-LEVEL SIGNALS
 // ───────────────────────────────────────────────────────────────
@@ -377,44 +409,52 @@ export function computeResearchEvidenceDepthFromData(
  */
 export function computeReviewSignals(ns: Namespace): ReviewConvergenceSignals {
   const d = getDb();
-  const { specFolder, loopType } = ns;
+  const nodeNamespace = buildNamespacePredicate('', ns);
+  const scopedNodeNamespace = buildNamespacePredicate('n', ns);
+  const edgeNamespace = buildNamespacePredicate('e', ns);
+  const bareEdgeNamespace = buildNamespacePredicate('', ns);
 
   // dimensionCoverage: dimensions with >= 1 COVERS edge / all dimensions
   const allDimensions = (d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'DIMENSION'`,
-  ).get(specFolder, loopType) as { c: number }).c;
+    `SELECT COUNT(*) as c FROM coverage_nodes WHERE ${nodeNamespace.clause} AND kind = 'DIMENSION'`,
+  ).get(...nodeNamespace.params) as { c: number }).c;
 
   const coveredDimensions = (d.prepare(`
     SELECT COUNT(*) as c FROM coverage_nodes n
-    WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = 'DIMENSION'
+    WHERE ${scopedNodeNamespace.clause} AND n.kind = 'DIMENSION'
       AND EXISTS (
-        SELECT 1 FROM coverage_edges e WHERE e.source_id = n.id AND e.relation = 'COVERS'
+        SELECT 1 FROM coverage_edges e
+        WHERE ${edgeNamespace.clause}
+          AND e.source_id = n.id
+          AND e.relation = 'COVERS'
       )
-  `).get(specFolder, loopType) as { c: number }).c;
+  `).get(...scopedNodeNamespace.params, ...edgeNamespace.params) as { c: number }).c;
 
   const dimensionCoverage = allDimensions > 0 ? coveredDimensions / allDimensions : 0;
 
   // findingStability: findings with 0 CONTRADICTS edges / all findings
   const allFindings = (d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_nodes WHERE spec_folder = ? AND loop_type = ? AND kind = 'FINDING'`,
-  ).get(specFolder, loopType) as { c: number }).c;
+    `SELECT COUNT(*) as c FROM coverage_nodes WHERE ${nodeNamespace.clause} AND kind = 'FINDING'`,
+  ).get(...nodeNamespace.params) as { c: number }).c;
 
   const stableFindings = (d.prepare(`
     SELECT COUNT(*) as c FROM coverage_nodes n
-    WHERE n.spec_folder = ? AND n.loop_type = ? AND n.kind = 'FINDING'
+    WHERE ${scopedNodeNamespace.clause} AND n.kind = 'FINDING'
       AND NOT EXISTS (
         SELECT 1 FROM coverage_edges e
-        WHERE (e.source_id = n.id OR e.target_id = n.id) AND e.relation = 'CONTRADICTS'
+        WHERE ${edgeNamespace.clause}
+          AND (e.source_id = n.id OR e.target_id = n.id)
+          AND e.relation = 'CONTRADICTS'
       )
-  `).get(specFolder, loopType) as { c: number }).c;
+  `).get(...scopedNodeNamespace.params, ...edgeNamespace.params) as { c: number }).c;
 
   const findingStability = allFindings > 0 ? stableFindings / allFindings : 0;
 
   // p0ResolutionRate: P0 findings with RESOLVES edge / P0 findings
   const allP0 = d.prepare(`
     SELECT id, metadata FROM coverage_nodes
-    WHERE spec_folder = ? AND loop_type = ? AND kind = 'FINDING'
-  `).all(specFolder, loopType) as Array<{ id: string; metadata: string | null }>;
+    WHERE ${nodeNamespace.clause} AND kind = 'FINDING'
+  `).all(...nodeNamespace.params) as Array<{ id: string; metadata: string | null }>;
 
   let p0Count = 0;
   let p0Resolved = 0;
@@ -426,8 +466,8 @@ export function computeReviewSignals(ns: Namespace): ReviewConvergenceSignals {
         if (meta.severity === 'P0') {
           p0Count++;
           const hasResolve = (d.prepare(
-            `SELECT COUNT(*) as c FROM coverage_edges WHERE target_id = ? AND relation = 'RESOLVES'`,
-          ).get(finding.id) as { c: number }).c;
+            `SELECT COUNT(*) as c FROM coverage_edges e WHERE ${edgeNamespace.clause} AND e.target_id = ? AND e.relation = 'RESOLVES'`,
+          ).get(...edgeNamespace.params, finding.id) as { c: number }).c;
           if (hasResolve > 0) p0Resolved++;
         }
       } catch { /* skip */ }
@@ -438,13 +478,13 @@ export function computeReviewSignals(ns: Namespace): ReviewConvergenceSignals {
 
   // evidenceDensity: average EVIDENCE_FOR edges per finding
   const totalEvidenceEdges = (d.prepare(
-    `SELECT COUNT(*) as c FROM coverage_edges WHERE spec_folder = ? AND loop_type = ? AND relation = 'EVIDENCE_FOR'`,
-  ).get(specFolder, loopType) as { c: number }).c;
+    `SELECT COUNT(*) as c FROM coverage_edges WHERE ${bareEdgeNamespace.clause} AND relation = 'EVIDENCE_FOR'`,
+  ).get(...bareEdgeNamespace.params) as { c: number }).c;
 
   const evidenceDensity = allFindings > 0 ? totalEvidenceEdges / allFindings : 0;
 
   // hotspotSaturation: hotspot files with >= 2 dimension coverage / hotspot files
-  const hotspotSaturation = computeHotspotSaturation(d, specFolder, loopType);
+  const hotspotSaturation = computeHotspotSaturation(d, ns);
 
   return {
     dimensionCoverage,
@@ -455,12 +495,14 @@ export function computeReviewSignals(ns: Namespace): ReviewConvergenceSignals {
   };
 }
 
-function computeHotspotSaturation(d: Database.Database, specFolder: string, loopType: string): number {
+function computeHotspotSaturation(d: Database.Database, ns: Namespace): number {
+  const nodeNamespace = buildNamespacePredicate('', ns);
+  const edgeNamespace = buildNamespacePredicate('e', ns);
   // Find FILE nodes with hotspot_score > 0 in metadata
   const files = d.prepare(`
     SELECT id, metadata FROM coverage_nodes
-    WHERE spec_folder = ? AND loop_type = ? AND kind = 'FILE'
-  `).all(specFolder, loopType) as Array<{ id: string; metadata: string | null }>;
+    WHERE ${nodeNamespace.clause} AND kind = 'FILE'
+  `).all(...nodeNamespace.params) as Array<{ id: string; metadata: string | null }>;
 
   const hotspotFiles: string[] = [];
   for (const f of files) {
@@ -482,9 +524,12 @@ function computeHotspotSaturation(d: Database.Database, specFolder: string, loop
     const dimCoverage = (d.prepare(`
       SELECT COUNT(DISTINCT e.source_id) as c
       FROM coverage_edges e
-      JOIN coverage_nodes n ON n.id = e.source_id
-      WHERE e.target_id = ? AND e.relation = 'COVERS' AND n.kind = 'DIMENSION'
-    `).get(fileId) as { c: number }).c;
+      JOIN coverage_nodes n ON ${buildCompositeNodeJoin('n', 'e', 'source_id')}
+      WHERE ${edgeNamespace.clause}
+        AND e.target_id = ?
+        AND e.relation = 'COVERS'
+        AND n.kind = 'DIMENSION'
+    `).get(...edgeNamespace.params, fileId) as { c: number }).c;
 
     if (dimCoverage >= 2) saturated++;
   }

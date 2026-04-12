@@ -17,7 +17,7 @@ This scenario validates Scoring and ranking corrections for `066`. It focuses on
 Operators run the exact prompt and command sequence for `066` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm Sprint 8 scoring fixes
-- Prompt: `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a scoring validation operator, validate Scoring and ranking corrections against the documented validation surface. Verify score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values
 - Pass/fail: PASS if scoring corrections produce expected rank ordering and no anomalous score values
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `066` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
+| 066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `As a scoring validation operator, confirm Sprint 8 scoring fixes against the documented validation surface. Verify score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
 
 ---
 

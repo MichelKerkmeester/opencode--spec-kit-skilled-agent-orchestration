@@ -257,4 +257,42 @@ describe('deep-research reducer', () => {
     expect(firstDashboard).toContain('convergenceScore: 0.61');
     expect(firstDashboard).toContain('Question C');
   });
+
+  it('prefers the latest lifecycle lineage and latest active synthesis_complete stop state', () => {
+    const specFolder = makeFixtureSpecFolder();
+    writeFile(
+      path.join(specFolder, 'research', 'deep-research-state.jsonl'),
+      [
+        '{"type":"config","topic":"Reducer fixture topic","maxIterations":5,"convergenceThreshold":0.05,"createdAt":"2026-04-03T00:00:00Z","specFolder":"fixture"}',
+        '{"type":"iteration","run":1,"status":"complete","focus":"First pass","findingsCount":2,"newInfoRatio":0.8,"answeredQuestions":["Question A"],"keyQuestions":["Question A","Question B"],"sourcesQueried":["https://example.com/one"],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:05:00Z","durationMs":1000}',
+        '{"type":"event","event":"synthesis_complete","sessionId":"session-002","stopReason":"stale-stop","totalIterations":1,"timestamp":"2026-04-03T00:06:00Z"}',
+        '{"type":"event","event":"resumed","sessionId":"session-003","parentSessionId":"session-002","lineageMode":"resume","generation":3,"fromIteration":2,"timestamp":"2026-04-03T00:07:00Z"}',
+        '{"type":"iteration","run":2,"status":"complete","focus":"Second pass","findingsCount":1,"newInfoRatio":0.2,"answeredQuestions":["Question B"],"keyQuestions":["Question B"],"sourcesQueried":["https://example.com/two"],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:08:00Z","durationMs":1000}',
+        '{"type":"event","event":"synthesis_complete","sessionId":"session-003","stopReason":"plateau","totalIterations":2,"timestamp":"2026-04-03T00:09:00Z"}',
+        '',
+      ].join('\n'),
+    );
+
+    const result = reducerModule.reduceResearchState(specFolder, { write: true });
+    const dashboard = fs.readFileSync(result.dashboardPath, 'utf8');
+    const registry = JSON.parse(fs.readFileSync(result.registryPath, 'utf8')) as {
+      status: string;
+      sessionId: string;
+      parentSessionId: string | null;
+      continuedFromRun: number | null;
+      terminalStop: { stopReason: string | null } | null;
+    };
+
+    expect(registry.status).toBe('COMPLETE');
+    expect(registry.sessionId).toBe('session-003');
+    expect(registry.parentSessionId).toBe('session-002');
+    expect(registry.continuedFromRun).toBe(2);
+    expect(registry.terminalStop?.stopReason).toBe('plateau');
+
+    expect(dashboard).toContain('- Status: COMPLETE');
+    expect(dashboard).toContain('- Session ID: session-003');
+    expect(dashboard).toContain('- Parent Session: session-002');
+    expect(dashboard).toContain('- continuedFromRun: 2');
+    expect(dashboard).toContain('- stopReason: plateau');
+  });
 });

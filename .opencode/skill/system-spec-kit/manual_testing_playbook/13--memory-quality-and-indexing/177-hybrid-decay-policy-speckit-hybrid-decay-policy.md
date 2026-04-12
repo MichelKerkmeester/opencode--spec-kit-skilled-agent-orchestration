@@ -18,7 +18,7 @@ This scenario validates hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) for `1
 Operators confirm the hybrid-decay symbols are present in the implementing code, then rerun the targeted Vitest files that cover flag gating, no-decay classification, Infinity stability, and separation from TM-03.
 
 - Objective: Verify type-aware no-decay FSRS policy for decision/constitutional/critical types
-- Prompt: `Test the default-on SPECKIT_HYBRID_DECAY_POLICY behavior. Confirm the implementing symbols exist in the expected code, rerun the hybrid-decay regression tests, and verify that decision, constitutional, and critical context types resolve to no-decay while other types stay on the standard FSRS schedule. Return a concise pass/fail verdict with the first failing symbol or test if anything breaks.`
+- Prompt: `As a memory-quality validation operator, validate Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) against the documented validation surface. Verify type-aware no-decay FSRS policy for decision/constitutional/critical types. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: `rg` finds `SPECKIT_HYBRID_DECAY_POLICY`, `HYBRID_NO_DECAY_CONTEXT_TYPES`, `classifyHybridDecay`, `getHybridDecayMultiplier`, `applyHybridDecayPolicy`, `calculateRetrievability`, and the central `isHybridDecayPolicyEnabled()` accessor; the Vitest run exits 0; the current baseline summary is `Test Files 2 passed (2)` and `Tests 30 passed (30)`.
 - Pass/fail: PASS if the expected symbols are present and the targeted Vitest run exits 0 with no failed tests. FAIL if any symbol is missing, protected types do not map to Infinity/no-decay, or the test run fails.
 

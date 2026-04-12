@@ -50,6 +50,53 @@ const ITERATION_TYPES = new Set(['iteration']);
  */
 const EVENT_TYPES = new Set(['event']);
 
+const REPO_ROOT = path.resolve(__dirname, '../../../../..');
+const APPROVED_CORPUS_ROOTS = Object.freeze([
+  path.join(REPO_ROOT, '.opencode', 'specs'),
+  path.join(REPO_ROOT, 'specs'),
+  path.resolve(__dirname, '../tests/fixtures/deep-loop-replay'),
+]);
+
+function isPathWithin(candidatePath, rootPath) {
+  const relative = path.relative(rootPath, candidatePath);
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function getApprovedCorpusRoots() {
+  return APPROVED_CORPUS_ROOTS
+    .filter((rootPath) => fs.existsSync(rootPath))
+    .map((rootPath) => fs.realpathSync(rootPath));
+}
+
+function resolveApprovedCorpusPath(rawPath, label, expectedType) {
+  const candidatePath = path.resolve(rawPath);
+
+  if (!fs.existsSync(candidatePath)) {
+    throw new Error(`${label} does not exist: ${rawPath}`);
+  }
+
+  const stats = fs.lstatSync(candidatePath);
+  if (stats.isSymbolicLink()) {
+    throw new Error(`${label} must not be a symlink: ${rawPath}`);
+  }
+
+  const realPath = fs.realpathSync(candidatePath);
+
+  if (expectedType === 'dir' && !stats.isDirectory()) {
+    throw new Error(`${label} must be a directory: ${rawPath}`);
+  }
+  if (expectedType === 'file' && !stats.isFile()) {
+    throw new Error(`${label} must be a file: ${rawPath}`);
+  }
+
+  const approvedRoots = getApprovedCorpusRoots();
+  if (!approvedRoots.some((rootPath) => isPathWithin(realPath, rootPath))) {
+    throw new Error(`${label} must resolve under an approved corpus root`);
+  }
+
+  return realPath;
+}
+
 /* ---------------------------------------------------------------
    2. CORPUS ENTRY SCHEMA
 ----------------------------------------------------------------*/
@@ -270,16 +317,23 @@ function buildCorpus(packetFamily, options = {}) {
   if (options.jsonlContent) {
     parsed = parseJSONL(options.jsonlContent);
   } else if (options.fixturesDir) {
-    const jsonlPath = path.join(
-      options.fixturesDir,
-      packetFamily,
-      'sample-iterations.jsonl',
-    );
-    if (!fs.existsSync(jsonlPath)) {
-      errors.push(`JSONL fixture not found: ${jsonlPath}`);
+    let fixturesRoot;
+    try {
+      fixturesRoot = resolveApprovedCorpusPath(options.fixturesDir, 'Corpus fixtures directory', 'dir');
+    } catch (error) {
+      errors.push(`Corpus integrity error: ${error instanceof Error ? error.message : String(error)}`);
       return { corpus, errors, warnings, familyInfo };
     }
-    const content = fs.readFileSync(jsonlPath, 'utf8');
+
+    const jsonlPath = path.join(fixturesRoot, packetFamily, 'sample-iterations.jsonl');
+    let resolvedJsonlPath;
+    try {
+      resolvedJsonlPath = resolveApprovedCorpusPath(jsonlPath, 'Corpus JSONL fixture', 'file');
+    } catch (error) {
+      errors.push(`Corpus integrity error: ${error instanceof Error ? error.message : String(error)}`);
+      return { corpus, errors, warnings, familyInfo };
+    }
+    const content = fs.readFileSync(resolvedJsonlPath, 'utf8');
     parsed = parseJSONL(content);
   } else {
     errors.push('Either fixturesDir or jsonlContent must be provided');

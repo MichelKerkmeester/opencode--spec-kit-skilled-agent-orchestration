@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Audit runtime agent naming parity. Capture the evidence needed to prove base (.opencode/agent/) matches Claude and Gemini, Codex traces lineage to base after extension normalization, deep-research is the active name, and stale research naming is absent. Return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Runtime Lineage Naming Parity against the documented validation surface. Verify all diff commands produce no output; rg finds no active research/research.md. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   ```bash
   diff -u <(find .opencode/agent -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort) <(find .claude/agents -maxdepth 1 -type f -name '*.md' -exec basename {} \; | sort)

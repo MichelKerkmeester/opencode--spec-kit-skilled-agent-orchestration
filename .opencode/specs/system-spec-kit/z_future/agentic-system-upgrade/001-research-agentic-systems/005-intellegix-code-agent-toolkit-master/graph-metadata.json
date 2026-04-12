@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master",
+  "spec_folder": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master",
+  "parent_id": "system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005 intellegix research spec",
+      "intellegix code agent toolkit phase spec",
+      "agentic systems phase 005 spec",
+      "005 intellegix research plan",
+      "intellegix code agent toolkit execution plan",
+      "005 intellegix tasks",
+      "intellegix research tasks",
+      "005 intellegix implementation summary",
+      "intellegix research closeout"
+    ],
+    "key_topics": [
+      "005",
+      "intellegix",
+      "research",
+      "spec",
+      "code",
+      "agent",
+      "toolkit",
+      "phase",
+      "agentic",
+      "systems",
+      "plan",
+      "execution"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "phase-research-prompt.md",
+      "research/deep-research-state.jsonl",
+      "research/research.md",
+      "research/deep-research-dashboard.md",
+      "validate.sh",
+      "spec.md",
+      "plan.md",
+      "implementation-summary.md",
+      "iteration-001.md",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      "iteration-002.md",
+      ".opencode/skill/sk-deep-research/references/state_format.md",
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      "iteration-003.md",
+      "iteration-004.md",
+      ".opencode/skill/sk-deep-research/references/convergence.md",
+      "iteration-006.md",
+      ".opencode/agent/orchestrate.md"
+    ],
+    "entities": [
+      {
+        "name": "phase-research-prompt.md",
+        "kind": "doc",
+        "path": "phase-research-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-002.md",
+        "kind": "doc",
+        "path": "iteration-002.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-003.md",
+        "kind": "doc",
+        "path": "iteration-003.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Produce a complete 30-iteration research packet that:",
+    "created_at": "2026-04-12T09:02:53.487Z",
+    "last_save_at": "2026-04-12T09:06:03.532Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

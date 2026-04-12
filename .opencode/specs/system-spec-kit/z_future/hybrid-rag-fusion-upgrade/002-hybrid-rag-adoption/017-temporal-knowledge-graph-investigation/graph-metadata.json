@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Public should ever add a bounded temporal-fact sidecar inspired by MemPalace's separate temporal knowledge graph. It focuses on schema boundaries, citation requirements, invalidation workflow, and maintenance contracts so the idea can be judged as a narrow utility rather than a second memory authority. It does not ship temporal fact storage.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, public, ever, add, bounded, temporal-fact, sidecar, inspired, mempalace, separate
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, .opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

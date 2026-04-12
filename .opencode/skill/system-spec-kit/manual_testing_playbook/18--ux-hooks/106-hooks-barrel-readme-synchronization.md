@@ -16,7 +16,7 @@ This scenario validates Hooks barrel + README synchronization for `106`. It focu
 Operators run the exact prompt and command sequence for `106` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm hooks index exports and docs cover the finalized modules and contract fields
-- Prompt: `Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a runtime-hook validation operator, validate Hooks barrel + README synchronization against the documented validation surface. Verify hooks index exports and docs cover the finalized modules and contract fields. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Both barrel (`hooks/index.ts`) and README (`hooks/README.md`) reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`
 - Pass/fail: PASS if both files reference the new modules and contract fields
 

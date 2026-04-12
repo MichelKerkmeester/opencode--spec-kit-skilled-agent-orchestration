@@ -16,7 +16,7 @@ This scenario validates spec validation rule engine for `238`. It focuses on con
 Operators run the validation orchestrator against compliant, warning-bearing, and phased fixtures and confirm the engine exposes stable human and JSON results without collapsing the severity model.
 
 - Objective: Confirm clean validation, warning behavior, strict escalation, and recursive phase validation
-- Prompt: `Validate the spec validation rule engine. Capture the evidence needed to prove validate.sh passes a compliant Level 3 fixture, returns a warning-bearing non-pass result on a known-bad template fixture, escalates that warning path under --strict, and returns recursive phase results for a valid phase parent. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Spec Validation Rule Engine against the documented validation surface. Verify clean validation, warning behavior, strict escalation, and recursive phase validation. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: compliant fixture exits cleanly with JSON output; warning fixture returns non-zero; strict mode escalates warning-bearing runs; recursive phase validation emits aggregate phase results
 - Pass/fail: PASS if the orchestrator preserves the documented severity and recursion behavior across the four runs
 

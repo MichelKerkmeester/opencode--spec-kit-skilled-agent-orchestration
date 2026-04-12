@@ -18,7 +18,7 @@ This scenario validates Lazy-loading migration and warmup compatibility for `229
 Operators run the exact prompt and command sequence for `229` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces
-- Prompt: `Validate that embedding startup now stays on lazy initialization and that the legacy warmup flags only remain as deprecated compatibility surfaces. Run the targeted checks, capture the evidence that proves lazy startup is the shipped behavior, and return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a canonical-continuity validation operator, validate Lazy-loading migration and warmup compatibility against the documented validation surface. Verify lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: The targeted lazy-loading and context-server tests pass, `shouldEagerWarmup()` stays false by default, startup logs say lazy loading is enabled, and the deprecated warmup flags are only acknowledged in compatibility messaging
 - Pass/fail: PASS if the targeted checks confirm startup always follows the lazy path and the legacy warmup flags do not restore eager initialization behavior
 

@@ -18,7 +18,7 @@ This scenario validates Memory metadata update (memory_update) for `EX-007`. It 
 Operators run the exact prompt and command sequence for `EX-007` and confirm the expected signals without contradicting evidence.
 
 - Objective: Metadata + re-embed update
-- Prompt: `Update memory title and triggers. Capture the evidence needed to prove Updated metadata reflected in retrieval. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a mutation validation operator, validate Memory metadata update (memory_update) against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Updated metadata reflected in retrieval
 - Pass/fail: PASS if updated title retrievable
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `EX-007` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-007 | Memory metadata update (memory_update) | Metadata + re-embed update | `Update memory title and triggers. Capture the evidence needed to prove Updated metadata reflected in retrieval. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_update(id,title,triggers)` -> `memory_search(new title)` | Updated metadata reflected in retrieval | Update output + search | PASS if updated title retrievable | Retry with allowPartialUpdate if embedding fails |
+| EX-007 | Memory metadata update (memory_update) | Metadata + re-embed update | `As a mutation validation operator, validate Metadata + re-embed update against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_update(id,title,triggers)` -> `memory_search(new title)` | Updated metadata reflected in retrieval | Update output + search | PASS if updated title retrievable | Retry with allowPartialUpdate if embedding fails |
 
 ---
 

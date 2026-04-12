@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -220,6 +221,46 @@ describe('Replay Corpus Builder (T001)', () => {
       const result = replayCorpus.buildCorpus('040', {});
       expect(result.errors.length).toBeGreaterThan(0);
       expect(result.errors.some((e: string) => e.includes('fixturesDir'))).toBe(true);
+    });
+
+    it('should reject fixtures outside approved corpus roots', () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'optimizer-corpus-outside-'));
+      const packetDir = path.join(tempDir, '040');
+
+      try {
+        fs.mkdirSync(packetDir, { recursive: true });
+        fs.writeFileSync(
+          path.join(packetDir, 'sample-iterations.jsonl'),
+          '{"type":"config","maxIterations":7}\n{"type":"iteration","run":1,"status":"complete"}\n{"type":"event","event":"synthesis_complete","stopReason":"converged","totalIterations":1}\n',
+          'utf8',
+        );
+
+        const result = replayCorpus.buildCorpus('040', {
+          fixturesDir: tempDir,
+        });
+
+        expect(result.errors.some((e: string) => e.includes('Corpus integrity error'))).toBe(true);
+        expect(result.errors.some((e: string) => e.includes('approved corpus root'))).toBe(true);
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it('should reject symlinked fixtures directories', () => {
+      const symlinkPath = path.join(os.tmpdir(), `optimizer-corpus-link-${Date.now()}`);
+
+      try {
+        fs.symlinkSync(REPLAY_FIXTURES_DIR, symlinkPath);
+
+        const result = replayCorpus.buildCorpus('040', {
+          fixturesDir: symlinkPath,
+        });
+
+        expect(result.errors.some((e: string) => e.includes('Corpus integrity error'))).toBe(true);
+        expect(result.errors.some((e: string) => e.includes('symlink'))).toBe(true);
+      } finally {
+        if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+      }
     });
   });
 

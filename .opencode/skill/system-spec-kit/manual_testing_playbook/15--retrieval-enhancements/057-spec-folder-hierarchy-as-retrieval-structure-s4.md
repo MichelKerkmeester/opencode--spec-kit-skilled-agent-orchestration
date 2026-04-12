@@ -17,7 +17,7 @@ This scenario validates Spec folder hierarchy as retrieval structure (S4) for `0
 Operators run the exact prompt and command sequence for `057` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm hierarchy-aware retrieval
-- Prompt: `Validate spec-folder hierarchy retrieval (S4). Capture the evidence needed to prove Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a retrieval-enhancement validation operator, validate Spec folder hierarchy as retrieval structure (S4) against the documented validation surface. Verify self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking
 - Pass/fail: PASS if retrieval respects folder hierarchy with self > parent > sibling ordering
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `057` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 057 | Spec folder hierarchy as retrieval structure (S4) | Confirm hierarchy-aware retrieval | `Validate spec-folder hierarchy retrieval (S4). Capture the evidence needed to prove Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise user-facing pass/fail verdict with the main reason.` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring | Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking | Query output showing hierarchy-aware ranking + folder path evidence in results | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering | Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline |
+| 057 | Spec folder hierarchy as retrieval structure (S4) | Confirm hierarchy-aware retrieval | `As a retrieval-enhancement validation operator, confirm hierarchy-aware retrieval against the documented validation surface. Verify self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring | Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking | Query output showing hierarchy-aware ranking + folder path evidence in results | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering | Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline |
 
 ---
 

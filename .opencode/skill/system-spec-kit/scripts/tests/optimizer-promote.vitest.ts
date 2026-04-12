@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -15,6 +16,7 @@ const promote = require(path.join(
 )) as {
   PROMOTION_PREREQUISITES: readonly string[];
   PROMOTION_DECISIONS: Record<string, string>;
+  PROMOTION_AUDIT_DIR: string;
   checkPrerequisites: (context?: {
     replayFixturesExist?: boolean;
     behavioralSuitesExist?: boolean;
@@ -161,9 +163,23 @@ describe('Advisory Promotion Gate (T007)', () => {
         },
       };
 
-      const result = promote.evaluateCandidate(candidate, baselineScore);
+      const result = promote.evaluateCandidate(candidate, baselineScore, {
+        manifest,
+      });
       expect(result.decision).toBe('advisory-reject');
       expect(result.improved).toBe(false);
+    });
+
+    it('should block promotion when manifest is missing', () => {
+      const candidate = {
+        config: { convergenceThreshold: 0.05 },
+        score: { composite: 0.9, perDimension: {} },
+      };
+
+      const result = promote.evaluateCandidate(candidate, baselineScore);
+
+      expect(result.decision).toBe('blocked');
+      expect(result.regressions).toContain('Canonical optimizer manifest is required');
     });
 
     it('should block promotion when candidate touches locked fields', () => {
@@ -211,6 +227,7 @@ describe('Advisory Promotion Gate (T007)', () => {
 
       // Even with prerequisites met, the decision is advisory-*
       const result = promote.evaluateCandidate(candidate, baselineScore, {
+        manifest,
         prerequisites: {
           replayFixturesExist: true,
           behavioralSuitesExist: true,
@@ -355,13 +372,11 @@ describe('Advisory Promotion Gate (T007)', () => {
         'advisory-reject',
       );
 
-      const tmpPath = path.join(
-        process.env.TMPDIR || '/tmp',
-        `promotion-report-${Date.now()}.json`,
-      );
+      const fileName = `promotion-report-${Date.now()}.json`;
+      const tmpPath = path.join(promote.PROMOTION_AUDIT_DIR, fileName);
 
       try {
-        promote.savePromotionReport(report, tmpPath);
+        promote.savePromotionReport(report, fileName);
         expect(fs.existsSync(tmpPath)).toBe(true);
 
         const loaded = JSON.parse(fs.readFileSync(tmpPath, 'utf8'));
@@ -369,6 +384,39 @@ describe('Advisory Promotion Gate (T007)', () => {
         expect(loaded.advisoryOnly).toBe(true);
       } finally {
         if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+      }
+    });
+
+    it('should reject report paths outside the dedicated audit directory', () => {
+      const report = promote.generatePromotionReport(
+        { convergenceThreshold: 0.05 },
+        { composite: 0.7, perDimension: {} },
+        'advisory-reject',
+      );
+      const outsidePath = path.join(os.tmpdir(), `promotion-report-outside-${Date.now()}.json`);
+
+      expect(() => promote.savePromotionReport(report, outsidePath)).toThrow(/saved under/i);
+    });
+
+    it('should reject symlinked report outputs', () => {
+      const report = promote.generatePromotionReport(
+        { convergenceThreshold: 0.05 },
+        { composite: 0.7, perDimension: {} },
+        'advisory-reject',
+      );
+
+      fs.mkdirSync(promote.PROMOTION_AUDIT_DIR, { recursive: true });
+      const realFile = path.join(os.tmpdir(), `promotion-real-${Date.now()}.json`);
+      const symlinkPath = path.join(promote.PROMOTION_AUDIT_DIR, `promotion-link-${Date.now()}.json`);
+
+      try {
+        fs.writeFileSync(realFile, '{}', 'utf8');
+        fs.symlinkSync(realFile, symlinkPath);
+
+        expect(() => promote.savePromotionReport(report, symlinkPath)).toThrow(/symlink/i);
+      } finally {
+        if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+        if (fs.existsSync(realFile)) fs.unlinkSync(realFile);
       }
     });
   });

@@ -18,7 +18,7 @@ This scenario validates Transaction wrappers on mutation handlers for `085`. It 
 Operators run the exact prompt and command sequence for `085` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm atomic wrapper behavior
-- Prompt: `Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a mutation validation operator, validate Transaction wrappers on mutation handlers against the documented validation surface. Verify mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist
 - Pass/fail: PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `085` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 085 | Transaction wrappers on mutation handlers | Confirm atomic wrapper behavior | `Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.` | 1) inject mid-step fault 2) verify rollback 3) confirm consistent state | Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist | Fault injection output + rollback trace + post-rollback DB state verification | PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery | Inspect transaction wrapper implementation; verify rollback cleans up all partial writes; check for nested transaction handling |
+| 085 | Transaction wrappers on mutation handlers | Confirm atomic wrapper behavior | `As a mutation validation operator, confirm atomic wrapper behavior against the documented validation surface. Verify mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) inject mid-step fault 2) verify rollback 3) confirm consistent state | Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist | Fault injection output + rollback trace + post-rollback DB state verification | PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery | Inspect transaction wrapper implementation; verify rollback cleans up all partial writes; check for nested transaction handling |
 
 ---
 

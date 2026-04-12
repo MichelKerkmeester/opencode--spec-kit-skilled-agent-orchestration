@@ -17,7 +17,7 @@ This scenario validates 4-stage pipeline refactor (R6) for `049`. It focuses on 
 Operators run the exact prompt and command sequence for `049` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm stage flow and invariant
-- Prompt: `Trace one query through all 4 stages. Capture the evidence needed to prove Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a pipeline validation operator, validate 4-stage pipeline refactor (R6) against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage
 - Pass/fail: PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `049` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 049 | 4-stage pipeline refactor (R6) | Confirm stage flow and invariant | `Trace one query through all 4 stages. Capture the evidence needed to prove Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run verbose stage metadata 2) inspect stage transitions 3) confirm stage-4 immutability | Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage | Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated | Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard |
+| 049 | 4-stage pipeline refactor (R6) | Confirm stage flow and invariant | `As a pipeline validation operator, confirm stage flow and invariant against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run verbose stage metadata 2) inspect stage transitions 3) confirm stage-4 immutability | Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage | Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated | Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard |
 
 ---
 

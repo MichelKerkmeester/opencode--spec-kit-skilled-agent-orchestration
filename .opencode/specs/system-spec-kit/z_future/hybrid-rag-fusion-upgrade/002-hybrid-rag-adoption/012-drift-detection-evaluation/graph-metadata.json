@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates which Mex-style drift checker families should eventually apply to Public's spec and memory surfaces beyond the already-selected advisory checker trio. It focuses on checker scope, issue schema, false-positive control, and advisory-versus-blocking promotion rules. It does not ship new checker implementations in this packet.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, mex-style, drift, checker, families, eventually, apply, public, spec, memory, surfaces
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/scripts/spec/validate.sh, .opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts, .opencode/skill/system-spec-kit/references/validation/validation_rules.md, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

@@ -18,7 +18,7 @@ This scenario validates Shadow-scoring retirement for `230`. It focuses on confi
 Operators run the exact prompt and command sequence for `230` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable
-- Prompt: `Validate that shadow-scoring execution and persistence remain retired even when the legacy flag is set, while comparison and historical stats helpers stay safe to call. Run the targeted checks, capture the evidence that proves the runtime path is shut off, and return a concise pass/fail verdict with the main reason.`
+- Prompt: `As a canonical-continuity validation operator, validate Shadow-scoring retirement against the documented validation surface. Verify runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface
 - Pass/fail: PASS if the targeted checks prove runtime execution and write paths are retired while comparison and historical read helpers remain intact
 

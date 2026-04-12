@@ -17,7 +17,7 @@ This scenario validates Entity normalization consolidation for `069`. It focuses
 Operators run the exact prompt and command sequence for `069` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm shared normalization path
-- Prompt: `Validate entity normalization consolidation. Capture the evidence needed to prove Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a memory-quality validation operator, validate Entity normalization consolidation against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence
 - Pass/fail: PASS if extractor and linker produce identical normalized entities for all test inputs including unicode
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `069` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 069 | Entity normalization consolidation | Confirm shared normalization path | `Validate entity normalization consolidation. Capture the evidence needed to prove Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise user-facing pass/fail verdict with the main reason.` | 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity | Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence | Extractor output + linker output + side-by-side comparison showing parity | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode | Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases |
+| 069 | Entity normalization consolidation | Confirm shared normalization path | `As a memory-quality validation operator, confirm shared normalization path against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity | Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence | Extractor output + linker output + side-by-side comparison showing parity | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode | Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases |
 
 ---
 

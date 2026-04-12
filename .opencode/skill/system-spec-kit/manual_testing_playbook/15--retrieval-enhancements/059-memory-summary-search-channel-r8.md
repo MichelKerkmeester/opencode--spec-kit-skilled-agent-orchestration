@@ -17,7 +17,7 @@ This scenario validates Memory summary search channel (R8) for `059`. It focuses
 Operators run the exact prompt and command sequence for `059` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm scale-gated summary channel
-- Prompt: `Verify memory summary search channel (R8). Capture the evidence needed to prove Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a retrieval-enhancement validation operator, validate Memory summary search channel (R8) against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
 - Pass/fail: PASS if summary channel activates above threshold and remains inert below it
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `059` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `Verify memory summary search channel (R8). Capture the evidence needed to prove Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise user-facing pass/fail verdict with the main reason.` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
+| 059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `As a retrieval-enhancement validation operator, confirm scale-gated summary channel against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
 
 ---
 

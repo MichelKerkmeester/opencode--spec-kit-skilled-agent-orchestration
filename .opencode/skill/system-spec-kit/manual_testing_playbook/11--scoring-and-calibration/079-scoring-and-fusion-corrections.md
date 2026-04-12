@@ -17,7 +17,7 @@ This scenario validates scoring and fusion corrections for `079`. It focuses on 
 Operators verify that the implementing symbols are present in the expected source files, then rerun the targeted regression suite from the `@spec-kit/mcp-server` workspace.
 
 - Objective: Confirm the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement with executable source and regression checks.
-- Prompt: `Validate the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.`
+- Prompt: `As a scoring validation operator, validate Scoring and fusion corrections against the documented validation surface. Verify the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement with executable source and regression checks. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: `rg` finds the corrected scoring, normalization, fusion, BM25 scope, interference-threshold, score-alias, and single-pass fusion symbols; the targeted Vitest run exits 0 with all files passing; the current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)`.
 - Pass/fail: PASS if all required source anchors are present and the targeted Vitest bundle exits 0 with no failed tests.
 

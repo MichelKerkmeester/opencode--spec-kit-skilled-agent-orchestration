@@ -759,11 +759,11 @@ const deepLoopGraphQuery: ToolDefinition = {
       loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
       queryType: { type: 'string', enum: ['uncovered_questions', 'unverified_claims', 'contradictions', 'provenance_chain', 'coverage_gaps', 'hot_nodes'], description: 'Type of query to execute (required)' },
       nodeId: { type: 'string', description: 'Node ID (required for provenance_chain)' },
-      sessionId: { type: 'string', description: 'Optional session filter' },
+      sessionId: { type: 'string', minLength: 1, description: 'Session identifier for namespace isolation (required for non-admin reads)' },
       limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Max results to return' },
       maxDepth: { type: 'number', minimum: 1, maximum: 20, default: 10, description: 'Max traversal depth for provenance_chain' },
     },
-    required: ['specFolder', 'loopType', 'queryType'],
+    required: ['specFolder', 'loopType', 'queryType', 'sessionId'],
   },
 };
 
@@ -775,8 +775,9 @@ const deepLoopGraphStatus: ToolDefinition = {
     properties: {
       specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace (required)' },
       loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
+      sessionId: { type: 'string', minLength: 1, description: 'Session identifier for namespace isolation (required for non-admin reads)' },
     },
-    required: ['specFolder', 'loopType'],
+    required: ['specFolder', 'loopType', 'sessionId'],
   },
 };
 
@@ -788,10 +789,11 @@ const deepLoopGraphConvergence: ToolDefinition = {
     properties: {
       specFolder: { type: 'string', minLength: 1, description: 'Spec folder for namespace (required)' },
       loopType: { type: 'string', enum: ['research', 'review'], description: 'Loop type (required)' },
+      sessionId: { type: 'string', minLength: 1, description: 'Session identifier for namespace isolation (required for non-admin reads)' },
       iteration: { type: 'number', description: 'Current iteration number (used for snapshot persistence)' },
       persistSnapshot: { type: 'boolean', default: false, description: 'When true, persist a signal snapshot for this iteration' },
     },
-    required: ['specFolder', 'loopType'],
+    required: ['specFolder', 'loopType', 'sessionId'],
   },
 };
 

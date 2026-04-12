@@ -1,0 +1,75 @@
+{
+  "openQuestions": [
+    {
+      "id": "question-1-q1-completion-gates-and-stop-semantics",
+      "text": "Q1: Completion Gates And Stop Semantics",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-session-continuity-and-resume-semantics",
+      "text": "Q2: Session Continuity And Resume Semantics",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-budget-cooldown-and-model-fallback-controls",
+      "text": "Q3: Budget, Cooldown, And Model Fallback Controls",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-context-exhaustion-and-session-rotation",
+      "text": "Q4: Context Exhaustion And Session Rotation",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-multi-agent-manifests-and-file-locks",
+      "text": "Q5: Multi-Agent Manifests And File Locks",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-orchestrator-guardrails-and-sentinel-enforcement",
+      "text": "Q6: Orchestrator Guardrails And Sentinel Enforcement",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-council-synthesis-as-an-optional-research-mode",
+      "text": "Q7: Council Synthesis As An Optional Research Mode",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-8-q8-browser-backed-exploration-as-a-research-capability",
+      "text": "Q8: Browser-Backed Exploration As A Research Capability",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-9-q9-portfolio-governance-and-anti-overbuilding-rules",
+      "text": "Q9: Portfolio Governance And Anti-Overbuilding Rules",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-10-q10-tests-as-runtime-specification",
+      "text": "Q10: Tests As Runtime Specification",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 30,
+    "openQuestions": 10,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.85,
+    "coverageBySources": {}
+  }
+}

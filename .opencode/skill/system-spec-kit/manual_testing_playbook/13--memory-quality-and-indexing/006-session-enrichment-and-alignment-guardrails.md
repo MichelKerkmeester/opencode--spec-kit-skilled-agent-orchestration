@@ -21,7 +21,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run a memory save for a spec that edits generic code paths and verify enrichment/guard behavior. Capture the evidence needed to prove the save resolves through handover.md first, then _memory.continuity, then spec docs; keeps spec-folder and git enrichment as supporting context only; and does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Commands:
   - `memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" })`
 - Expected: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.

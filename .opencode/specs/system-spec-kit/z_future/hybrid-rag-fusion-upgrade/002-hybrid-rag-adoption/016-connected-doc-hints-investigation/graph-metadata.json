@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Modus-style connected-doc hints should exist in Public only as a low-authority appendix to search results. It focuses on hint labeling, trigger thresholds, merge rules, and benchmark design so that any future hint layer stays subordinate to current graph and causal authorities. It does not ship a new result channel.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, modus-style, connected-doc, hints, exist, public, only, low-authority, appendix, search
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/lib/search/fsrs.ts, .opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/tests/memory-search-ux-hooks.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

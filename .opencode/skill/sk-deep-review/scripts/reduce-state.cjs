@@ -56,6 +56,27 @@ function zeroSeverityMap() {
   return { P0: 0, P1: 0, P2: 0 };
 }
 
+function isFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function normalizeSeverity(value) {
+  return SEVERITY_KEYS.includes(value) ? value : null;
+}
+
+function getNestedField(record, fieldName) {
+  if (!record || typeof record !== 'object') {
+    return undefined;
+  }
+  if (record[fieldName] !== undefined) {
+    return record[fieldName];
+  }
+  if (record.details && typeof record.details === 'object' && record.details[fieldName] !== undefined) {
+    return record.details[fieldName];
+  }
+  return undefined;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. PARSERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -250,40 +271,213 @@ function uniqueById(items) {
   return result;
 }
 
+function normalizeTransitions(transitions, defaultIteration) {
+  const result = [];
+  const seen = new Set();
+  const rawTransitions = Array.isArray(transitions) ? transitions : [];
+
+  for (const entry of rawTransitions) {
+    if (!entry || typeof entry !== 'object') {
+      continue;
+    }
+    const iteration = isFiniteNumber(entry.iteration) ? entry.iteration : defaultIteration;
+    const from = entry.from === null ? null : normalizeSeverity(entry.from);
+    const to = normalizeSeverity(entry.to);
+    if (!to) {
+      continue;
+    }
+    const reason = normalizeText(entry.reason || '') || 'Claim adjudication';
+    const key = `${iteration}|${from ?? 'null'}|${to}|${reason}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    result.push({ iteration, from, to, reason });
+  }
+
+  return result;
+}
+
+function mergeTransitions(existingTransitions, incomingTransitions) {
+  return normalizeTransitions(
+    []
+      .concat(Array.isArray(existingTransitions) ? existingTransitions : [])
+      .concat(Array.isArray(incomingTransitions) ? incomingTransitions : []),
+    0,
+  );
+}
+
+function buildClaimAdjudicationByFinding(records) {
+  const adjudicationByFinding = new Map();
+
+  for (const record of records) {
+    if (record?.type !== 'event' || record?.event !== 'claim_adjudication') {
+      continue;
+    }
+
+    const findingId = normalizeText(getNestedField(record, 'findingId') || '');
+    const finalSeverity = normalizeSeverity(getNestedField(record, 'finalSeverity'));
+    if (!findingId || !finalSeverity) {
+      continue;
+    }
+
+    const run = isFiniteNumber(getNestedField(record, 'run'))
+      ? getNestedField(record, 'run')
+      : 0;
+    adjudicationByFinding.set(findingId, {
+      findingId,
+      finalSeverity,
+      transitions: normalizeTransitions(getNestedField(record, 'transitions'), run),
+      reason: normalizeText(getNestedField(record, 'reason') || ''),
+      run,
+      timestamp: normalizeText(getNestedField(record, 'timestamp') || ''),
+    });
+  }
+
+  return adjudicationByFinding;
+}
+
+function buildLineageState(config, records) {
+  const latestLifecycleEvent = records
+    .filter((record) => record?.type === 'event' && (record?.event === 'resumed' || record?.event === 'restarted'))
+    .at(-1);
+  const eventContinuedFromRun = latestLifecycleEvent
+    ? getNestedField(latestLifecycleEvent, 'continuedFromRun') ?? getNestedField(latestLifecycleEvent, 'fromIteration')
+    : undefined;
+
+  return {
+    sessionId: normalizeText(getNestedField(latestLifecycleEvent, 'sessionId') || '') || normalizeText(config.sessionId || '') || '',
+    parentSessionId: normalizeText(getNestedField(latestLifecycleEvent, 'parentSessionId') || '')
+      || normalizeText(config.parentSessionId || '')
+      || null,
+    lineageMode: normalizeText(getNestedField(latestLifecycleEvent, 'lineageMode') || '')
+      || normalizeText(config.lineageMode || '')
+      || 'new',
+    generation: isFiniteNumber(getNestedField(latestLifecycleEvent, 'generation'))
+      ? getNestedField(latestLifecycleEvent, 'generation')
+      : isFiniteNumber(config.generation)
+        ? config.generation
+        : 1,
+    continuedFromRun: isFiniteNumber(eventContinuedFromRun)
+      ? eventContinuedFromRun
+      : isFiniteNumber(config.continuedFromRun)
+        ? config.continuedFromRun
+        : null,
+  };
+}
+
+function buildTerminalStopState(records) {
+  let latestSynthesis = null;
+  let latestSynthesisIndex = -1;
+  let latestIterationIndex = -1;
+  let latestLifecycleIndex = -1;
+
+  records.forEach((record, index) => {
+    if (record?.type === 'iteration') {
+      latestIterationIndex = index;
+      return;
+    }
+    if (record?.type !== 'event') {
+      return;
+    }
+    if (record.event === 'synthesis_complete') {
+      latestSynthesis = record;
+      latestSynthesisIndex = index;
+    }
+    if (record.event === 'resumed' || record.event === 'restarted') {
+      latestLifecycleIndex = index;
+    }
+  });
+
+  if (!latestSynthesis) {
+    return null;
+  }
+  if (latestSynthesisIndex < Math.max(latestIterationIndex, latestLifecycleIndex)) {
+    return null;
+  }
+
+  return {
+    stopReason: normalizeText(getNestedField(latestSynthesis, 'stopReason') || '') || null,
+    totalIterations: isFiniteNumber(getNestedField(latestSynthesis, 'totalIterations'))
+      ? getNestedField(latestSynthesis, 'totalIterations')
+      : null,
+    timestamp: normalizeText(getNestedField(latestSynthesis, 'timestamp') || '') || null,
+  };
+}
+
+function deriveDashboardStatus(config, records, terminalStop) {
+  if (terminalStop) {
+    return 'COMPLETE';
+  }
+  const rawStatus = normalizeText(config.status || '').toLowerCase() || 'initialized';
+  if (rawStatus === 'complete' || rawStatus === 'completed') {
+    return 'COMPLETE';
+  }
+  if (rawStatus === 'running') {
+    return 'RUNNING';
+  }
+  return rawStatus.toUpperCase();
+}
+
+function createCorruptionError(stateLogPath, corruptionWarnings) {
+  const preview = corruptionWarnings
+    .slice(0, 3)
+    .map((warning) => `  - line ${warning.line}: ${warning.error}`)
+    .join('\n');
+  const error = new Error(
+    `[sk-deep-review] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
+    + 'Pass --lenient to the reducer CLI (or lenient:true to reduceReviewState) to ignore corruption.',
+  );
+  error.code = 'STATE_CORRUPTION';
+  error.corruptionWarnings = corruptionWarnings;
+  error.stateLogPath = stateLogPath;
+  return error;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 5. CORE LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
 
 function buildFindingRegistry(iterationFiles, iterationRecords) {
   const findingById = new Map();
+  const claimAdjudicationByFinding = buildClaimAdjudicationByFinding(iterationRecords);
 
   for (const iteration of iterationFiles) {
     for (const finding of iteration.findings) {
+      const claimAdjudication = claimAdjudicationByFinding.get(finding.findingId);
+      const canonicalSeverity = claimAdjudication?.finalSeverity || finding.severity;
       const existing = findingById.get(finding.findingId);
       if (!existing) {
         findingById.set(finding.findingId, {
           ...finding,
-          dimension: deriveDimension(finding, iteration),
+          severity: canonicalSeverity,
+          dimension: deriveDimension({ ...finding, severity: canonicalSeverity }, iteration),
           firstSeen: iteration.run,
           lastSeen: iteration.run,
           status: 'active',
-          transitions: [{
-            iteration: iteration.run,
-            from: null,
-            to: finding.severity,
-            reason: 'Initial discovery',
-          }],
+          transitions: mergeTransitions(
+            [{
+              iteration: iteration.run,
+              from: null,
+              to: canonicalSeverity,
+              reason: 'Initial discovery',
+            }],
+            claimAdjudication?.transitions,
+          ),
         });
       } else {
         existing.lastSeen = iteration.run;
-        if (existing.severity !== finding.severity) {
+        if (existing.severity !== canonicalSeverity) {
           existing.transitions.push({
             iteration: iteration.run,
             from: existing.severity,
-            to: finding.severity,
+            to: canonicalSeverity,
             reason: 'Severity adjusted in later iteration',
           });
-          existing.severity = finding.severity;
+          existing.severity = canonicalSeverity;
+        }
+        if (claimAdjudication?.transitions?.length) {
+          existing.transitions = mergeTransitions(existing.transitions, claimAdjudication.transitions);
         }
       }
     }
@@ -465,38 +659,44 @@ function buildBlockedStopHistory(records) {
   return records
     .filter((record) => record?.type === 'event' && record?.event === 'blocked_stop')
     .map((record) => {
-      const legacyLegalStop = record.legalStop && typeof record.legalStop === 'object'
-        ? record.legalStop
+      const nestedLegalStop = getNestedField(record, 'legalStop');
+      const legacyLegalStop = nestedLegalStop && typeof nestedLegalStop === 'object'
+        ? nestedLegalStop
         : {};
-      const blockedBy = normalizeBlockedByList(record.blockedBy, legacyLegalStop);
-      const graphBlockerDetail = Array.isArray(record.graphBlockerDetail)
-        ? record.graphBlockerDetail
-        : Array.isArray(record.blockedBy) && record.blockedBy.some((e) => e && typeof e === 'object')
-          ? record.blockedBy
+      const blockedByValue = getNestedField(record, 'blockedBy');
+      const graphBlockerDetailValue = getNestedField(record, 'graphBlockerDetail');
+      const blockedBy = normalizeBlockedByList(blockedByValue, legacyLegalStop);
+      const graphBlockerDetail = Array.isArray(graphBlockerDetailValue)
+        ? graphBlockerDetailValue
+        : Array.isArray(blockedByValue) && blockedByValue.some((e) => e && typeof e === 'object')
+          ? blockedByValue
           : [];
 
       return {
-        run: typeof record.run === 'number' ? record.run : 0,
+        run: isFiniteNumber(getNestedField(record, 'run')) ? getNestedField(record, 'run') : 0,
         blockedBy,
         graphBlockerDetail,
-        gateResults: record.gateResults && typeof record.gateResults === 'object'
-          ? record.gateResults
+        gateResults: getNestedField(record, 'gateResults') && typeof getNestedField(record, 'gateResults') === 'object'
+          ? getNestedField(record, 'gateResults')
           : legacyLegalStop.gateResults && typeof legacyLegalStop.gateResults === 'object'
             ? legacyLegalStop.gateResults
             : {},
-        recoveryStrategy: normalizeText(record.recoveryStrategy || ''),
-        timestamp: normalizeText(record.timestamp || ''),
+        recoveryStrategy: normalizeText(getNestedField(record, 'recoveryStrategy') || ''),
+        timestamp: normalizeText(getNestedField(record, 'timestamp') || ''),
       };
     });
 }
 
 function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config, corruptionWarnings = []) {
+  const lineage = buildLineageState(config, iterationRecords);
+  const terminalStop = buildTerminalStopState(iterationRecords);
   const { openFindings, resolvedFindings } = buildFindingRegistry(iterationFiles, iterationRecords);
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
   const convergenceScore = computeConvergenceScore(iterationRecords);
   const graphConvergence = buildGraphConvergenceRollup(iterationRecords);
   const blockedStopHistory = buildBlockedStopHistory(iterationRecords);
+  const status = deriveDashboardStatus(config, iterationRecords, terminalStop);
 
   // Part C REQ-018: split repeatedFindings into two semantically distinct buckets
   // so persistent-same-severity findings and severity-churn findings don't collapse.
@@ -519,9 +719,13 @@ function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, con
   const repeatedFindings = openFindings.filter((finding) => finding.lastSeen - finding.firstSeen >= 1);
 
   return {
-    sessionId: config.sessionId || '',
-    generation: config.generation ?? 1,
-    lineageMode: config.lineageMode || 'new',
+    sessionId: lineage.sessionId,
+    parentSessionId: lineage.parentSessionId,
+    generation: lineage.generation,
+    lineageMode: lineage.lineageMode,
+    continuedFromRun: lineage.continuedFromRun,
+    terminalStop,
+    status,
     openFindings,
     resolvedFindings,
     blockedStopHistory,
@@ -735,13 +939,16 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '## 2. STATUS',
     `- Review Target: ${config.reviewTarget || '[Unknown target]'} (${config.reviewTargetType || 'unknown'})`,
     `- Started: ${config.createdAt || '[Unknown start]'}`,
-    `- Status: ${String(config.status || 'initialized').toUpperCase()}`,
+    `- Status: ${registry.status || String(config.status || 'initialized').toUpperCase()}`,
     `- Iteration: ${iterationRecords.filter((record) => record.type === 'iteration').length} of ${config.maxIterations || 0}`,
     `- Provisional Verdict: ${verdict}`,
     `- hasAdvisories: ${hasAdvisories}`,
-    `- Session ID: ${config.sessionId || '[Unknown session]'}`,
-    `- Lifecycle Mode: ${config.lineageMode || 'new'}`,
-    `- Generation: ${config.generation ?? 1}`,
+    `- Session ID: ${registry.sessionId || '[Unknown session]'}`,
+    `- Parent Session: ${registry.parentSessionId ?? 'none'}`,
+    `- Lifecycle Mode: ${registry.lineageMode || 'new'}`,
+    `- Generation: ${registry.generation ?? 1}`,
+    `- continuedFromRun: ${registry.continuedFromRun ?? 'none'}`,
+    ...(registry.terminalStop?.stopReason ? [`- stopReason: ${registry.terminalStop.stopReason}`] : []),
     '',
     '<!-- /ANCHOR:status -->',
     '<!-- ANCHOR:findings-summary -->',
@@ -847,18 +1054,25 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
       }
       const latestClaimAdjudication = [...iterationRecords]
         .reverse()
-        .find((r) => r && r.type === 'event' && r.event === 'claim_adjudication');
-      if (latestClaimAdjudication && latestClaimAdjudication.passed === false) {
-        const missing = Array.isArray(latestClaimAdjudication.missingPackets) && latestClaimAdjudication.missingPackets.length > 0
-          ? ` (missing packets: ${latestClaimAdjudication.missingPackets.join(', ')})`
+        .find((record) => record
+          && record.type === 'event'
+          && record.event === 'claim_adjudication'
+          && typeof getNestedField(record, 'passed') === 'boolean'
+          && !normalizeText(getNestedField(record, 'findingId') || ''));
+      const activeP0P1 = severity.P0 + severity.P1;
+      const adjudicationActiveCount = isFiniteNumber(getNestedField(latestClaimAdjudication, 'activeP0P1'))
+        ? getNestedField(latestClaimAdjudication, 'activeP0P1')
+        : activeP0P1;
+      if (latestClaimAdjudication && getNestedField(latestClaimAdjudication, 'passed') === false && activeP0P1 > 0 && adjudicationActiveCount > 0) {
+        const missingPackets = getNestedField(latestClaimAdjudication, 'missingPackets');
+        const missing = Array.isArray(missingPackets) && missingPackets.length > 0
+          ? ` (missing packets: ${missingPackets.join(', ')})`
           : '';
         lines.push(`- Claim-adjudication gate last failed at run ${latestClaimAdjudication.run ?? '?'}${missing}. STOP is vetoed until every active P0/P1 has a typed claim-adjudication packet.`);
       }
-      const latestBlockedStop = [...iterationRecords]
-        .reverse()
-        .find((r) => r && r.type === 'event' && r.event === 'blocked_stop');
+      const latestBlockedStop = registry.blockedStopHistory?.at(-1);
       if (latestBlockedStop && Array.isArray(latestBlockedStop.blockedBy) && latestBlockedStop.blockedBy.length > 0) {
-        lines.push(`- Latest blocked_stop at run ${latestBlockedStop.run ?? '?'}: ${latestBlockedStop.blockedBy.join(', ')}. Recovery: ${latestBlockedStop.recoveryStrategy || 'see dashboard §BLOCKED STOPS'}.`);
+        lines.push(`- Latest blocked_stop at run ${latestBlockedStop.run ?? '?'}: ${formatBlockedByList(latestBlockedStop.blockedBy)}. Recovery: ${latestBlockedStop.recoveryStrategy || 'see dashboard §BLOCKED STOPS'}.`);
       }
       if (severity.P2 > 0 && lines.length === 0) {
         lines.push(`- ${severity.P2} active P2 finding(s) — advisory only; release is not blocked by P2 alone, but the debt is tracked here so it does not disappear.`);
@@ -898,6 +1112,16 @@ function reduceReviewState(specFolder, options = {}) {
 
   const config = readJson(configPath);
   const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
+  const lineage = buildLineageState(config, records);
+  const terminalStop = buildTerminalStopState(records);
+  config.sessionId = lineage.sessionId || config.sessionId || '';
+  config.parentSessionId = lineage.parentSessionId;
+  config.lineageMode = lineage.lineageMode;
+  config.generation = lineage.generation;
+  config.continuedFromRun = lineage.continuedFromRun;
+  if (terminalStop?.stopReason) {
+    config.stopReason = terminalStop.stopReason;
+  }
   const strategyContent = fs.existsSync(strategyPath) ? readUtf8(strategyPath) : '';
   const strategyDimensions = parseStrategyDimensions(strategyContent);
   const iterationFiles = fs.existsSync(iterationDir)
@@ -919,16 +1143,8 @@ function reduceReviewState(specFolder, options = {}) {
     writeUtf8(dashboardPath, dashboard);
   }
 
-  // Part C REQ-015: fail-closed on corruption. Callers can opt out via lenient:true.
   if (corruptionWarnings.length > 0 && !lenient) {
-    const preview = corruptionWarnings
-      .slice(0, 3)
-      .map((w) => `  - line ${w.line}: ${w.error}`)
-      .join('\n');
-    process.stderr.write(
-      `[sk-deep-review] parseJsonl detected ${corruptionWarnings.length} corrupt line(s) in ${stateLogPath}:\n${preview}\n`
-      + 'Pass --lenient to the reducer CLI (or lenient:true to reduceReviewState) to ignore corruption.\n',
-    );
+    throw createCorruptionError(stateLogPath, corruptionWarnings);
   }
 
   return {
@@ -981,11 +1197,11 @@ if (require.main === module) {
         2,
       )}\n`,
     );
-    // Part C REQ-015: non-zero exit when corruption detected and not lenient.
-    if (result.hasCorruption && !lenient) {
+  } catch (error) {
+    if (error && error.code === 'STATE_CORRUPTION') {
+      process.stderr.write(`${error.message}\n`);
       process.exit(2);
     }
-  } catch (error) {
     process.stderr.write(`[sk-deep-review] reducer failed: ${error instanceof Error ? error.message : String(error)}\n`);
     process.exit(3);
   }

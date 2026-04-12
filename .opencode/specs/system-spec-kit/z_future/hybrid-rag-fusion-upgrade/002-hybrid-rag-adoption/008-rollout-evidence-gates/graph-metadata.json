@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates
+Status: planned
+Importance Tier: important
+Summary: This sub-phase defines measurable gates for the adoption work: latency budgets, token caps, storage ceilings, compaction-survival checks, and named CI ownership. It covers the evidence pack required before public-surface rollout. It does not implement the runtime features themselves.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, defines, measurable, gates, adoption, work, latency, budgets, token, caps, storage, ceilings
+Key Files: generate-context.js, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/plugins/spec-kit-compact-code-graph.js, .opencode/skill/system-spec-kit/scripts/spec/validate.sh, memory-search.ts, session-bootstrap.ts, spec-kit-compact-code-graph.js, validate.sh, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

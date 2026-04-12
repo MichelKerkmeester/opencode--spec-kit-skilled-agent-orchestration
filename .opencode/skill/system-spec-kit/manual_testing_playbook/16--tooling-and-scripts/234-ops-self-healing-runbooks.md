@@ -16,7 +16,7 @@ This scenario validates ops self-healing runbooks for `234`. It focuses on confi
 Operators exercise the shell runbook surface end to end and confirm the dispatcher exposes the documented failure classes, returns ownership metadata, and emits deterministic recovery or escalation payloads.
 
 - Objective: Confirm runbook listing, metadata lookup, success drills, and escalation drills
-- Prompt: `Validate the ops self-healing runbooks. Capture the evidence needed to prove runbook.sh lists the documented failure classes, show returns owner and escalation metadata, success drills emit RECOVERY_COMPLETE payloads for supported classes, and escalation drills emit bounded ESCALATION payloads for degraded classes. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a tooling validation operator, validate Ops Self-Healing Runbooks against the documented validation surface. Verify runbook listing, metadata lookup, success drills, and escalation drills. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: `list` prints four classes; `show` prints trigger, owner, escalation, and drill command; supported success drills emit recovery payloads; degraded drills emit escalation payloads or non-zero aggregate status
 - Pass/fail: PASS if the dispatcher and metadata surface behave deterministically and the drill outcomes match the current degraded-versus-supported reality
 

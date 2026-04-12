@@ -17,7 +17,7 @@ This scenario validates Causal edge deletion (memory_causal_unlink) for `EX-021`
 Operators run the exact prompt and command sequence for `EX-021` and confirm the expected signals without contradicting evidence.
 
 - Objective: Edge correction
-- Prompt: `Delete edge and re-trace. Capture the evidence needed to prove Removed edge absent in trace. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an analysis validation operator, validate Causal edge deletion (memory_causal_unlink) against checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Removed edge absent in trace
 - Pass/fail: PASS if edge removed and checkpoint exists
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-021` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `Delete edge and re-trace. Capture the evidence needed to prove Removed edge absent in trace. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" })` -> `memory_causal_unlink({ edgeId:"<edge-id>" })` -> `memory_drift_why({ memoryId:"<memory-id>", direction:"both", maxDepth:4 })` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed and checkpoint exists | Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed |
+| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `As an analysis validation operator, validate Edge correction against checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" })` -> `memory_causal_unlink({ edgeId:"<edge-id>" })` -> `memory_drift_why({ memoryId:"<memory-id>", direction:"both", maxDepth:4 })` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed and checkpoint exists | Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed |
 
 ---
 

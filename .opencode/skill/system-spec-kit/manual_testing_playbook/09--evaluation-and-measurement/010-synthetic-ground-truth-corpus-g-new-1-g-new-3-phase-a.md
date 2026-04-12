@@ -16,7 +16,7 @@ This scenario validates Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
 Operators run the exact prompt and command sequence for `010` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm corpus coverage and hard negatives
-- Prompt: `Audit synthetic ground-truth corpus coverage. Capture the evidence needed to prove Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As an evaluation validation operator, validate Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) against the documented validation surface. Verify corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced
 - Pass/fail: PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `010` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 010 | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | Confirm corpus coverage and hard negatives | `Audit synthetic ground-truth corpus coverage. Capture the evidence needed to prove Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Open corpus 2) Count intents/tiers 3) Verify hard negatives/non-trigger prompts | Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced | Corpus audit report with intent counts, hard negative count, and tier histogram | PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives | Check corpus generation script → Verify intent taxonomy completeness → Inspect hard negative selection criteria |
+| 010 | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | Confirm corpus coverage and hard negatives | `As an evaluation validation operator, confirm corpus coverage and hard negatives against the documented validation surface. Verify corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Open corpus 2) Count intents/tiers 3) Verify hard negatives/non-trigger prompts | Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced | Corpus audit report with intent counts, hard negative count, and tier histogram | PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives | Check corpus generation script → Verify intent taxonomy completeness → Inspect hard negative selection criteria |
 
 ---
 

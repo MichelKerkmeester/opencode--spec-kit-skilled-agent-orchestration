@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Engram-style passive capture or close-session helpers belong in Public at all, and if so, whether they can exist only as thin wrappers over the current JSON-primary save workflow. It defines the research question, baseline measurements, and authority checks needed before any adopt/prototype/reject decision. It does not ship a new save surface.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, engram-style, passive, capture, close-session, helpers, belong, public, exist, only
+Key Files: generate-context.js, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, .opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts, .opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

@@ -16,7 +16,7 @@ This scenario validates Checkpoint deletion (checkpoint_delete) for `EX-018`. It
 Operators run the exact prompt and command sequence for `EX-018` and confirm the expected signals without contradicting evidence.
 
 - Objective: Old snapshot cleanup
-- Prompt: `Delete stale checkpoint by name. Capture the evidence needed to prove Removed checkpoint absent from list. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a lifecycle validation operator, validate Checkpoint deletion (checkpoint_delete) against checkpoint_list(specFolder:"<sandbox-spec>"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Removed checkpoint absent from list
 - Pass/fail: PASS if checkpoint removed from sandbox list
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-018` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-018 | Checkpoint deletion (checkpoint_delete) | Old snapshot cleanup | `Delete stale checkpoint by name. Capture the evidence needed to prove Removed checkpoint absent from list. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_list(specFolder:"<sandbox-spec>")` -> `checkpoint_delete(name:"<checkpoint-name>",confirmName:"<checkpoint-name>")` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Removed checkpoint absent from list | Before/after list outputs | PASS if checkpoint removed from sandbox list | Validate name, `confirmName`, and sandbox scope; retry |
+| EX-018 | Checkpoint deletion (checkpoint_delete) | Old snapshot cleanup | `As a lifecycle validation operator, validate Old snapshot cleanup against checkpoint_list(specFolder:"<sandbox-spec>"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.` | `checkpoint_list(specFolder:"<sandbox-spec>")` -> `checkpoint_delete(name:"<checkpoint-name>",confirmName:"<checkpoint-name>")` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Removed checkpoint absent from list | Before/after list outputs | PASS if checkpoint removed from sandbox list | Validate name, `confirmName`, and sandbox scope; retry |
 
 ---
 

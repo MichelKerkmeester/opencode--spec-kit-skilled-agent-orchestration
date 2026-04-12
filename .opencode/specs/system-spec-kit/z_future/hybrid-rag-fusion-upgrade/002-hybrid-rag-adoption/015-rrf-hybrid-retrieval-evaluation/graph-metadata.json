@@ -1,0 +1,9 @@
+Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation
+Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation
+Status: planned
+Importance Tier: important
+Summary: This sub-phase investigates whether Mnemosyne's documented BM25/vector/RRF pattern exposes any retrieval or operability gap that Public has not already closed. It is a measurement packet, not a plugin or wrapper proposal: the core question is whether current Public hybrid retrieval already covers the value, and what benchmark lanes are required to prove that. It does not ship a Mnemosyne-style facade.
+Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
+Key Topics: sub-phase, investigates, whether, mnemosyne, documented, bm25, vector, rrf, pattern, exposes, retrieval, operability
+Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts, .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts, .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts, .opencode/skill/system-spec-kit/mcp_server/tests/rrf-fusion.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts, .opencode/skill/system-spec-kit/mcp_server/tests/rrf-degree-channel.vitest.ts, spec.md, plan.md, tasks.md, checklist.md
+Source Docs: spec.md, plan.md, tasks.md, checklist.md

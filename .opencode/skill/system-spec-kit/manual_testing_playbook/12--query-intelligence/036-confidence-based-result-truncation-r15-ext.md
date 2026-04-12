@@ -17,7 +17,7 @@ This scenario validates Confidence-based result truncation (R15-ext) for `036`. 
 Operators run the exact prompt and command sequence for `036` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm relevance-cliff cutoff
-- Prompt: `Verify confidence-based truncation (R15-ext). Capture the evidence needed to prove Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a query-intelligence validation operator, validate Confidence-based result truncation (R15-ext) against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace
 - Pass/fail: PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `036` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 036 | Confidence-based result truncation (R15-ext) | Confirm relevance-cliff cutoff | `Verify confidence-based truncation (R15-ext). Capture the evidence needed to prove Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee | Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace | Truncated output with cutoff point + min-result count verification + cliff threshold in trace | PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results | Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution |
+| 036 | Confidence-based result truncation (R15-ext) | Confirm relevance-cliff cutoff | `As a query-intelligence validation operator, confirm relevance-cliff cutoff against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.` | 1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee | Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace | Truncated output with cutoff point + min-result count verification + cliff threshold in trace | PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results | Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution |
 
 ---
 

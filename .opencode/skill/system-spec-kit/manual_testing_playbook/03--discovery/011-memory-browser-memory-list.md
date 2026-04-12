@@ -16,7 +16,7 @@ This scenario validates Memory browser (memory_list) for `EX-011`. It focuses on
 Operators run the exact prompt and command sequence for `EX-011` and confirm the expected signals without contradicting evidence.
 
 - Objective: Folder inventory audit
-- Prompt: `List memories in target spec folder. Capture the evidence needed to prove Paginated list and totals. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a discovery validation operator, validate Memory browser (memory_list) against memory_list(specFolder,limit,offset). Verify paginated list and totals. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Paginated list and totals
 - Pass/fail: PASS if browsable inventory returned
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-011` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-011 | Memory browser (memory_list) | Folder inventory audit | `List memories in target spec folder. Capture the evidence needed to prove Paginated list and totals. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_list(specFolder,limit,offset)` | Paginated list and totals | List output | PASS if browsable inventory returned | Reduce filters; verify specFolder path |
+| EX-011 | Memory browser (memory_list) | Folder inventory audit | `As a discovery validation operator, validate Folder inventory audit against memory_list(specFolder,limit,offset). Verify paginated list and totals. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_list(specFolder,limit,offset)` | Paginated list and totals | List output | PASS if browsable inventory returned | Reduce filters; verify specFolder path |
 
 ---
 

@@ -17,7 +17,7 @@ This scenario validates 2. Session and Cache for `EX-029`. It focuses on Session
 Operators run the exact prompt and command sequence for `EX-029` and confirm the expected signals without contradicting evidence.
 
 - Objective: Session policy audit
-- Prompt: `Retrieve dedup/cache policy settings. Capture the evidence needed to prove Session/cache controls found. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `As a feature-flag validation operator, validate 2. Session and Cache against memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 }). Verify session/cache controls found. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Session/cache controls found
 - Pass/fail: PASS if all required keys surfaced
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `EX-029` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-029 | 2. Session and Cache | Session policy audit | `Retrieve dedup/cache policy settings. Capture the evidence needed to prove Session/cache controls found. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 })` | Session/cache controls found | Search output | PASS if all required keys surfaced | Expand query terms |
+| EX-029 | 2. Session and Cache | Session policy audit | `As a feature-flag validation operator, validate Session policy audit against memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 }). Verify session/cache controls found. Return a concise pass/fail verdict with the main reason and cited evidence.` | `memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 })` | Session/cache controls found | Search output | PASS if all required keys surfaced | Expand query terms |
 
 ---
 
