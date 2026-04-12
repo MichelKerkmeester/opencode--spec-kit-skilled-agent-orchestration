@@ -7,6 +7,7 @@
 // 1. IMPORTS
 // ─────────────────────────────────────────────────────────────────────────────
 const fs = require('node:fs');
+const path = require('node:path');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. CONSTANTS
@@ -69,6 +70,76 @@ function resolveMinDataPoints(options) {
   }
 
   return MIN_DATA_POINTS_DEFAULT;
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function readOptionalJson(filePath) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (_error) {
+    return null;
+  }
+}
+
+function normalizeDimensions(dimensions) {
+  if (Array.isArray(dimensions)) {
+    return dimensions.filter(
+      (dimension) =>
+        isPlainObject(dimension) &&
+        typeof dimension.name === 'string' &&
+        isFiniteNumber(dimension.score)
+    );
+  }
+
+  if (!isPlainObject(dimensions)) {
+    return [];
+  }
+
+  return Object.entries(dimensions)
+    .filter(([, score]) => isFiniteNumber(score))
+    .map(([name, score]) => ({ name, score }));
+}
+
+function resolveScoreOutputPath(scoreOutputPath, journalPath) {
+  if (typeof scoreOutputPath !== 'string' || !scoreOutputPath.trim()) {
+    return null;
+  }
+
+  if (path.isAbsolute(scoreOutputPath)) {
+    return scoreOutputPath;
+  }
+
+  return path.resolve(path.dirname(journalPath), scoreOutputPath);
+}
+
+function extractScoredDimensions(event, journalPath, scoreOutputCache) {
+  const details = isPlainObject(event.details) ? event.details : {};
+  const inlineDimensions = normalizeDimensions(details.dimensions || event.dimensions);
+  if (inlineDimensions.length > 0) {
+    return inlineDimensions;
+  }
+
+  const scoreOutputPath = resolveScoreOutputPath(
+    details.scoreOutputPath || event.scoreOutputPath,
+    journalPath
+  );
+  if (!scoreOutputPath) {
+    return [];
+  }
+
+  if (!scoreOutputCache.has(scoreOutputPath)) {
+    scoreOutputCache.set(scoreOutputPath, readOptionalJson(scoreOutputPath));
+  }
+  const scoreOutput = scoreOutputCache.get(scoreOutputPath);
+
+  return normalizeDimensions(scoreOutput?.dimensions || scoreOutput?.details?.dimensions);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -179,23 +250,29 @@ function getTrajectory(journalPath) {
       });
 
     // Extract score data from candidate_scored events
+    const scoreOutputCache = new Map();
+
     return events
-      .filter(
-        (e) =>
-          e.eventType === 'candidate_scored' &&
-          e.details &&
-          e.details.dimensions
-      )
-      .map((e) => {
+      .filter((event) => event.eventType === 'candidate_scored')
+      .map((event) => {
+        const dimensions = extractScoredDimensions(event, journalPath, scoreOutputCache);
+        if (dimensions.length === 0) {
+          return null;
+        }
+
         const scores = {};
-        for (const dim of e.details.dimensions) {
+        for (const dim of dimensions) {
           scores[dim.name] = dim.score;
         }
         return {
-          iteration: e.iteration || 0,
+          iteration:
+            (isPlainObject(event.details) && isFiniteNumber(event.details.iteration)
+              ? event.details.iteration
+              : event.iteration) || 0,
           scores,
         };
-      });
+      })
+      .filter(Boolean);
   } catch (_err) {
     return [];
   }

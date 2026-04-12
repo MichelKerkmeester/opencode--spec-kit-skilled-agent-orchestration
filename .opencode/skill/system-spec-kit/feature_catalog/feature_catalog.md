@@ -792,24 +792,6 @@ See [`05--lifecycle/06-startup-pending-file-recovery.md`](05--lifecycle/06-start
 
 ---
 
-### Automatic archival subsystem
-
-#### Description
-
-Memories that nobody has used for a long time get automatically moved to a storage-saving archive, like moving old files to a basement filing cabinet. They are still there if you need them but they do not take up space in the active search results. Important memories are protected and never get archived automatically.
-
-#### Current Reality
-
-The archival manager (`lib/cognitive/archival-manager.ts`) is a background job that identifies dormant memories and transitions them to archived status. It queries `memory_index` for memories that have not been accessed within a configurable threshold period, demotes their tier classification and removes BM25 index entries plus vector rows (`vec_memories`) to reclaim storage. Archived memories remain in the database for SQL-based recovery but are excluded from default search result sets.
-
-The archival sweep runs periodically and respects tier-based protection: constitutional and critical-tier memories are never auto-archived. Access tracker data (`access_count`, `last_accessed`) drives the dormancy decision. On unarchive, BM25 is restored from stored text fields, while vector re-embedding is explicitly deferred and logged for the next index scan (no immediate vector row recreation). The archival manager lazy-loads the tier classifier to avoid circular dependencies at import time.
-
-#### Source Files
-
-See [`05--lifecycle/07-automatic-archival-subsystem.md`](05--lifecycle/07-automatic-archival-subsystem.md) for full implementation and test file listings.
-
----
-
 ## 7. ANALYSIS
 
 ### Causal edge creation (memory_causal_link)
@@ -3642,7 +3624,7 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Dead feature flag functions:** `isShadowScoringEnabled()` was removed from `shadow-scoring.ts` and `search-flags.ts`. The former `isRsfEnabled()` helper was removed as part of RSF retirement. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
-**Dead module-level state:** `stmtCache` Map (archival-manager.ts, never populated), `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
+**Dead module-level state:** `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), and 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
 **Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts) was removed. `computeCausalDepthScores` is the live batch API. Also removed: `getSubgraphWeights` (graph-search-fn.ts, always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts, never imported), `'related'` weight entry (causal-edges.ts, invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts, never called).
 
@@ -4400,7 +4382,6 @@ These flags are the main control panel for how search works. They turn major ret
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/ablation-framework.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
-| `SPECKIT_ARCHIVAL` | `true` | boolean | `lib/cognitive/archival-manager.ts` | Enables the archival manager which promotes DORMANT memories to the ARCHIVED state based on access patterns. Disable to keep all memories in active tiers. |
 | `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | `handlers/save/reconsolidation-bridge.ts` | **Default ON (graduated).** Three-tier assistive reconsolidation. Classifies memory pairs by cosine similarity: shadow-archive (>=0.96; the internal `auto_merge` tier archives the older record), review (>=0.88), or keep-separate (<0.88). Review-tier pairs receive a logged recommendation (supersede or complement) but no destructive action (updated 2026-03-25 per deep review). |
 | `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
 | `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
@@ -4446,12 +4427,10 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | inherited from `SPECKIT_GRAPH_SIGNALS` | enum (`off`, `trace_only`, `bounded_runtime`) | `lib/search/search-flags.ts` | Controls the bounded graph-walk ladder. `off` disables the walk bonus, `trace_only` keeps rollout state and diagnostics visible with zero applied bonus, and `bounded_runtime` applies the capped Stage 2 graph-walk bonus while preserving deterministic ordering protections. |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Canonical / legacy alias pair for the memory-roadmap phase label. Code resolves `SPECKIT_MEMORY_ROADMAP_PHASE` first, then falls back to `SPECKIT_HYDRA_PHASE`. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, and `scope-governance`; unknown values fall back to `scope-governance`. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. It remains default-on for roadmap metadata snapshots and rename-window lineage compatibility paths; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. It remains default-on for roadmap metadata and governed-scope compatibility paths; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. It remains default-on for roadmap metadata and governed-ingest compatibility paths; set it to `false` or `0` to opt out explicitly. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Phase label for the memory-roadmap snapshot. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, and `scope-governance`; unknown values fall back to `scope-governance`. |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on lineage roadmap flag surfaced in metadata snapshots. |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults. |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Default-off adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata keeps this flag off unless explicitly enabled with `true` or `1`. |
 | `SPECKIT_HYBRID_DECAY_POLICY` | `true` | boolean | `lib/cognitive/fsrs-scheduler.ts` | **Default ON (graduated).** Type-aware no-decay FSRS policy. Decision/constitutional/critical context types receive Infinity stability (never decay). Separate from TM-03. |
 | `SPECKIT_HYDE` | `true` | boolean | `lib/search/hyde.ts` | **Default ON (graduated).** HyDE (Hypothetical Document Embeddings). Generates a pseudo-document (~200 tokens, markdown-memory format) for deep low-confidence queries (top score < 0.45), embeds it, and uses the embedding as an additional retrieval channel. HyDE is active in the query pipeline by default and merges results into the candidate set unless `SPECKIT_HYDE_ACTIVE=false` forces shadow-only logging. Budget: 1 LLM call per cache miss. |
 | `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | `lib/feedback/feedback-ledger.ts` | **Default ON (graduated).** Shadow-only implicit feedback event ledger. Records 5 event types with confidence tiers (strong/medium/weak). No ranking side effects. |
@@ -4629,12 +4608,6 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | (Also listed under Search Pipeline.) Enables writes to the eval database during retrieval operations. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | (Also listed under Search Pipeline.) Enables verbose file-count diagnostics during index scans. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Opt-in retrieval telemetry. Detailed latency/mode/fallback/quality metrics and architecture updates are recorded only when this is explicitly `'true'`. |
-| `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Used by telemetry, eval baselines, migration checkpoint metadata, and rename-window compatibility paths. Unsupported values fall back to `scope-governance`. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. Consumed by default-on roadmap metadata snapshots and rename-window lineage compatibility checks; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. Still distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by default-on roadmap snapshots and governed-scope compatibility checks; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by default-on roadmap snapshots and governed-ingest compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Default ON via rollout policy; active unless explicitly disabled. See category 1 for full description (updated 2026-03-25 per deep review). |
 
 #### Source Files

@@ -13,8 +13,6 @@ const ENV_FLAGS = [
   'SPECKIT_EMBEDDING_EXPANSION',
   'SPECKIT_COMPLEXITY_ROUTER',
   'SPECKIT_MEMORY_SUMMARIES',
-  'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
-  'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
 ] as const;
 
 const savedEnv: Record<string, string | undefined> = {};
@@ -140,8 +138,6 @@ vi.mock('../utils/db-helpers', () => ({
 
 // Mock governance scope filter
 const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope: Record<string, unknown>) => {
-  const scopeEnforcementEnabled = process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
-    || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true';
   const hasGovernanceScope = Boolean(
     scope.tenantId
     || scope.userId
@@ -149,7 +145,7 @@ const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope
     || scope.sessionId
   );
 
-  if (scopeEnforcementEnabled && !hasGovernanceScope) {
+  if (!hasGovernanceScope) {
     return [];
   }
 
@@ -164,9 +160,6 @@ const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope
 vi.mock('../lib/governance/scope-governance', () => ({
   filterRowsByScope: (rows: Array<Record<string, unknown>>, scope: Record<string, unknown>) =>
     mockFilterRowsByScope(rows, scope),
-  isScopeEnforcementEnabled: () =>
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
-    || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true',
 }));
 
 // -- Import SUT after mocks ---------------------------------------------------
@@ -536,9 +529,7 @@ describe('Stage-1: Expansion & Dedup', () => {
     expect(result.candidates.find((row) => row.id === 3)).toBeUndefined();
   });
 
-  it('T10: deny-by-default filters empty-scope candidates when enforcement is enabled', async () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
-
+  it('T10: leaves candidates untouched when no governance scope is provided', async () => {
     const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
     mockSearch.mockResolvedValue([
       { id: 42, score: 0.91, title: 'would-have-leaked', tenant_id: 'tenant-a' },
@@ -546,8 +537,8 @@ describe('Stage-1: Expansion & Dedup', () => {
 
     const result = await executeStage1({ config: makeConfig() });
 
-    expect(mockFilterRowsByScope).toHaveBeenCalled();
-    expect(result.candidates).toHaveLength(0);
+    expect(mockFilterRowsByScope).not.toHaveBeenCalled();
+    expect(result.candidates).toHaveLength(1);
   });
 
   it('T11: deep-mode LLM reformulation results are scope-filtered before merge', async () => {

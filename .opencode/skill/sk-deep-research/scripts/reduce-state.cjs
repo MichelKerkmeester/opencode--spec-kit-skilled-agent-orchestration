@@ -214,6 +214,35 @@ function uniqueById(items) {
   return result;
 }
 
+function isFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function computeGraphConvergenceScore(signals) {
+  if (!signals || typeof signals !== 'object' || Array.isArray(signals)) {
+    return 0;
+  }
+
+  const namedScore = signals.blendedScore
+    ?? signals.score
+    ?? signals.convergenceScore
+    ?? signals.compositeScore
+    ?? signals.stopScore
+    ?? signals.decisionScore;
+  if (isFiniteNumber(namedScore)) {
+    return namedScore;
+  }
+
+  const numericSignals = Object.values(signals)
+    .filter((value) => isFiniteNumber(value));
+  if (!numericSignals.length) {
+    return 0;
+  }
+
+  const sum = numericSignals.reduce((total, value) => total + value, 0);
+  return sum / numericSignals.length;
+}
+
 function buildGraphConvergenceRollup(eventRecords) {
   const latestGraphConvergence = eventRecords.filter((record) => record.event === 'graph_convergence').at(-1);
   const signals = latestGraphConvergence?.signals && typeof latestGraphConvergence.signals === 'object'
@@ -222,19 +251,109 @@ function buildGraphConvergenceRollup(eventRecords) {
   const blockers = Array.isArray(latestGraphConvergence?.blockers)
     ? latestGraphConvergence.blockers
     : [];
-  const blendedScore = Number.isFinite(signals.blendedScore)
-    ? signals.blendedScore
-    : Number.isFinite(signals.score)
-      ? signals.score
-      : 0;
 
   return {
-    graphConvergenceScore: blendedScore,
+    graphConvergenceScore: computeGraphConvergenceScore(signals),
     graphDecision: typeof latestGraphConvergence?.decision === 'string'
       ? latestGraphConvergence.decision
       : null,
     graphBlockers: blockers,
   };
+}
+
+function buildLineageState(config, eventRecords) {
+  const configLineage = config.lineage && typeof config.lineage === 'object'
+    ? config.lineage
+    : {};
+  const latestLifecycleEvent = eventRecords
+    .filter((record) => record.event === 'resumed' || record.event === 'restarted')
+    .at(-1);
+
+  const eventHasContinuedFromRun = latestLifecycleEvent
+    && Object.prototype.hasOwnProperty.call(latestLifecycleEvent, 'continuedFromRun');
+  const eventHasParentSession = latestLifecycleEvent
+    && Object.prototype.hasOwnProperty.call(latestLifecycleEvent, 'parentSessionId');
+
+  return {
+    sessionId: typeof latestLifecycleEvent?.sessionId === 'string' && latestLifecycleEvent.sessionId
+      ? latestLifecycleEvent.sessionId
+      : typeof configLineage.sessionId === 'string' && configLineage.sessionId
+        ? configLineage.sessionId
+        : null,
+    parentSessionId: eventHasParentSession
+      ? (typeof latestLifecycleEvent.parentSessionId === 'string' && latestLifecycleEvent.parentSessionId
+          ? latestLifecycleEvent.parentSessionId
+          : null)
+      : typeof configLineage.parentSessionId === 'string' && configLineage.parentSessionId
+        ? configLineage.parentSessionId
+        : null,
+    lineageMode: typeof latestLifecycleEvent?.lineageMode === 'string' && latestLifecycleEvent.lineageMode
+      ? latestLifecycleEvent.lineageMode
+      : typeof configLineage.lineageMode === 'string' && configLineage.lineageMode
+        ? configLineage.lineageMode
+        : 'new',
+    generation: isFiniteNumber(latestLifecycleEvent?.generation)
+      ? latestLifecycleEvent.generation
+      : isFiniteNumber(configLineage.generation)
+        ? configLineage.generation
+        : 1,
+    continuedFromRun: eventHasContinuedFromRun
+      ? (isFiniteNumber(latestLifecycleEvent.continuedFromRun) ? latestLifecycleEvent.continuedFromRun : null)
+      : isFiniteNumber(configLineage.continuedFromRun)
+        ? configLineage.continuedFromRun
+        : null,
+  };
+}
+
+function buildTerminalStopState(eventRecords) {
+  const latestSynthesisComplete = eventRecords.filter((record) => record.event === 'synthesis_complete').at(-1);
+  if (!latestSynthesisComplete) {
+    return null;
+  }
+
+  return {
+    stopReason: typeof latestSynthesisComplete.stopReason === 'string' && latestSynthesisComplete.stopReason
+      ? latestSynthesisComplete.stopReason
+      : null,
+    totalIterations: isFiniteNumber(latestSynthesisComplete.totalIterations)
+      ? latestSynthesisComplete.totalIterations
+      : null,
+    answeredCount: isFiniteNumber(latestSynthesisComplete.answeredCount)
+      ? latestSynthesisComplete.answeredCount
+      : null,
+    totalQuestions: isFiniteNumber(latestSynthesisComplete.totalQuestions)
+      ? latestSynthesisComplete.totalQuestions
+      : null,
+    timestamp: typeof latestSynthesisComplete.timestamp === 'string' && latestSynthesisComplete.timestamp
+      ? latestSynthesisComplete.timestamp
+      : null,
+  };
+}
+
+function deriveDashboardStatus(config, iterationRecords, eventRecords, terminalStop) {
+  if (terminalStop) {
+    return 'COMPLETE';
+  }
+
+  const latestStuckRecovery = eventRecords.filter((record) => record.event === 'stuckRecovery').at(-1);
+  const latestIterationTimestamp = getTimestampValue(iterationRecords.at(-1)?.timestamp);
+  const latestRecoveryTimestamp = getTimestampValue(latestStuckRecovery?.timestamp);
+  if (latestRecoveryTimestamp >= latestIterationTimestamp && latestRecoveryTimestamp > Number.NEGATIVE_INFINITY) {
+    return 'STUCK_RECOVERY';
+  }
+
+  if (iterationRecords.at(-1)?.status === 'stuck') {
+    return 'STUCK_RECOVERY';
+  }
+
+  const rawStatus = String(config.status || 'initialized').toLowerCase();
+  if (rawStatus === 'running') {
+    return 'ITERATING';
+  }
+  if (rawStatus === 'complete' || rawStatus === 'completed') {
+    return 'COMPLETE';
+  }
+  return rawStatus.toUpperCase();
 }
 
 function formatBlockedByList(blockedBy) {
@@ -340,7 +459,7 @@ function resolveNextFocus(registry, iterationFiles, iterationRecords) {
 // 4. CORE LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
 
-function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, eventRecords) {
+function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, eventRecords, reducerState = {}) {
   const answeredSet = new Set(
     iterationRecords.flatMap((record) => (Array.isArray(record.answeredQuestions) ? record.answeredQuestions : [])).map(normalizeText),
   );
@@ -403,8 +522,17 @@ function buildRegistry(strategyQuestions, iterationFiles, iterationRecords, even
       timestamp: typeof record.timestamp === 'string' ? record.timestamp : '',
     }));
   const graphConvergence = buildGraphConvergenceRollup(eventRecords);
+  const lineage = reducerState.lineage && typeof reducerState.lineage === 'object'
+    ? reducerState.lineage
+    : {};
 
   return {
+    sessionId: lineage.sessionId || '',
+    parentSessionId: lineage.parentSessionId ?? null,
+    lineageMode: lineage.lineageMode || 'new',
+    generation: lineage.generation ?? 1,
+    continuedFromRun: lineage.continuedFromRun ?? null,
+    terminalStop: reducerState.terminalStop || null,
     openQuestions: keyedQuestions.filter((question) => !question.resolved).map((question) => ({
       id: question.id,
       text: question.text,
@@ -526,6 +654,14 @@ function updateStrategyContent(strategyContent, registry, iterationFiles, iterat
 
 function renderDashboard(config, registry, iterationRecords, iterationFiles) {
   const latestIteration = iterationRecords.at(-1);
+  const terminalStop = registry.terminalStop && typeof registry.terminalStop === 'object'
+    ? registry.terminalStop
+    : null;
+  const sessionId = registry.sessionId || config.lineage?.sessionId || '[Unknown session]';
+  const parentSessionId = registry.parentSessionId ?? config.lineage?.parentSessionId ?? 'none';
+  const lineageMode = registry.lineageMode || config.lineage?.lineageMode || 'new';
+  const generation = registry.generation ?? config.lineage?.generation ?? 1;
+  const continuedFromRun = registry.continuedFromRun ?? config.lineage?.continuedFromRun ?? 'none';
   // Exclude "thought" iterations from rolling average — they are analytical-only
   // and produce no evidence, so including them would artificially lower the ratio.
   const evidenceRecords = iterationRecords.filter((record) => record.status !== 'thought');
@@ -562,12 +698,14 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
     '## 2. STATUS',
     `- Topic: ${config.topic || '[Unknown topic]'}`,
     `- Started: ${config.createdAt || '[Unknown start]'}`,
-    `- Status: ${String(config.status || 'initialized').toUpperCase()}`,
+    `- Status: ${registry.status || String(config.status || 'initialized').toUpperCase()}`,
     `- Iteration: ${registry.metrics.iterationsCompleted} of ${config.maxIterations || 0}`,
-    `- Session ID: ${config.lineage?.sessionId || '[Unknown session]'}`,
-    `- Parent Session: ${config.lineage?.parentSessionId || 'none'}`,
-    `- Lifecycle Mode: ${config.lineage?.lineageMode || 'new'}`,
-    `- Generation: ${config.lineage?.generation ?? 1}`,
+    `- Session ID: ${sessionId}`,
+    `- Parent Session: ${parentSessionId}`,
+    `- Lifecycle Mode: ${lineageMode}`,
+    `- Generation: ${generation}`,
+    `- continuedFromRun: ${continuedFromRun}`,
+    ...(terminalStop?.stopReason ? [`- stopReason: ${terminalStop.stopReason}`] : []),
     '',
     '<!-- /ANCHOR:status -->',
     '<!-- ANCHOR:progress -->',
@@ -677,10 +815,18 @@ function reduceResearchState(specFolder, options = {}) {
         .map((fileName) => parseIterationFile(path.join(iterationDir, fileName)))
     : [];
 
-  const registry = buildRegistry(strategyQuestions, iterationFiles, records, events);
+  const terminalStop = buildTerminalStopState(events);
+  const lineage = buildLineageState(config, events);
+  const status = deriveDashboardStatus(config, records, events, terminalStop);
+  const registry = buildRegistry(strategyQuestions, iterationFiles, records, events, {
+    lineage,
+    terminalStop,
+    status,
+  });
   // Expose corruptionWarnings as a top-level registry field for parity with
   // sk-deep-review (phase 008 REQ-015 research-side follow-up).
   registry.corruptionWarnings = corruptionWarnings;
+  registry.status = status;
   const strategy = updateStrategyContent(strategyContent, registry, iterationFiles, records);
   const dashboard = renderDashboard(config, registry, records, iterationFiles);
 
@@ -764,6 +910,10 @@ if (require.main === module) {
 
 module.exports = {
   buildGraphConvergenceRollup,
+  buildLineageState,
+  buildTerminalStopState,
+  computeGraphConvergenceScore,
+  deriveDashboardStatus,
   parseIterationFile,
   parseJsonl,
   parseJsonlDetailed,

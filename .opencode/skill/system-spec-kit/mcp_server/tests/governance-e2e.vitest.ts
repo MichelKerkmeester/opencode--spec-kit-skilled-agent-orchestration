@@ -41,16 +41,10 @@ describe('governance E2E', () => {
   });
 
   afterEach(() => {
-    delete process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT;
-    delete process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT;
-    delete process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS;
-    delete process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS;
     db.close();
   });
 
   it('isolates scoped retrieval to a single tenant and actor', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
-
     db.prepare(`
       INSERT INTO memory_index (id, spec_folder, file_path, tenant_id, user_id, session_id)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -83,9 +77,7 @@ describe('governance E2E', () => {
     });
   });
 
-  it('prevents cross-actor leakage when scope enforcement is enabled', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
-
+  it('prevents cross-actor leakage for explicit actor scope', () => {
     db.prepare(`
       INSERT INTO memory_index (id, spec_folder, file_path, tenant_id, user_id, session_id)
       VALUES (?, ?, ?, ?, ?, ?)

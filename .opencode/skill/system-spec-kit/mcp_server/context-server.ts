@@ -104,8 +104,6 @@ import * as workingMemory from './lib/cognitive/working-memory.js';
 import * as attentionDecay from './lib/cognitive/attention-decay.js';
 import * as coActivation from './lib/cognitive/co-activation.js';
 import { initScoringObservability } from './lib/telemetry/scoring-observability.js';
-// T059: Archival manager for automatic archival of ARCHIVED state memories
-import * as archivalManager from './lib/cognitive/archival-manager.js';
 // T099: Retry manager for background embedding retry job (REQ-031, CHK-179)
 import * as retryManager from './lib/providers/retry-manager.js';
 import { buildErrorResponse, getDefaultErrorCodeForTool, getRecoveryHint } from './lib/errors.js';
@@ -1360,7 +1358,6 @@ async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
   console.error(`[context-server] ${reason}`);
 
   runCleanupStep('sessionManager', () => sessionManager.shutdown());
-  runCleanupStep('archivalManager', () => archivalManager.cleanup());
   runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
   runCleanupStep('shadowEvaluationRuntime', () => shadowEvaluationRuntime.stopShadowEvaluationScheduler());
   runCleanupStep('accessTracker', () => accessTracker.reset());
@@ -1573,7 +1570,6 @@ async function main(): Promise<void> {
       workingMemory,
       attentionDecay,
       coActivation,
-      archivalManager,
     ],
   });
 
@@ -1723,21 +1719,6 @@ async function main(): Promise<void> {
     } catch (extractionErr: unknown) {
       const message = extractionErr instanceof Error ? extractionErr.message : String(extractionErr);
       throw new Error(`[context-server] Extraction adapter startup failed: ${message}`);
-    }
-
-    // T059: Archival Manager for automatic archival of ARCHIVED state memories
-    try {
-      archivalManager.init(database);
-      // Start background archival job (scans every hour by default)
-      archivalManager.startBackgroundJob();
-      if (archivalManager.isBackgroundJobRunning()) {
-        console.error(`[context-server] Archival manager initialized (background job started)`);
-      } else {
-        console.error(`[context-server] Archival manager initialized (background job: not started)`);
-      }
-    } catch (archivalErr: unknown) {
-      const message = archivalErr instanceof Error ? archivalErr.message : String(archivalErr);
-      console.warn('[context-server] Archival manager failed:', message);
     }
 
     // T099: Background retry job for pending embeddings (REQ-031, CHK-179)

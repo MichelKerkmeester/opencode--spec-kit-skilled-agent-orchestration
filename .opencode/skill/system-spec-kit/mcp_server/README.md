@@ -691,7 +691,7 @@ This is how you add new knowledge to the system. Point it at a markdown file and
 | `dryRun` | boolean | Preview validation without saving |
 | `skipPreflight` | boolean | Bypass quality gate (not recommended) |
 | `asyncEmbedding` | boolean | Return immediately, generate embedding in background |
-| `retentionPolicy` | string | `keep` (default), `ephemeral`, `shared` |
+| `retentionPolicy` | string | `keep` (default), `ephemeral` |
 | `deleteAfter` | string | ISO date for automatic deletion |
 | `sessionId` | string | Session attribution |
 | `tenantId` | string | Governance: tenant scope |

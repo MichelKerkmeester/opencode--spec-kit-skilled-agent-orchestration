@@ -387,13 +387,18 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
    - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
    - Use the returned `ENHANCED_PROMPT` as the final Copilot prompt.
 
+### CONCURRENCY LIMIT
+
+**Maximum 5 concurrent `copilot` processes at any time.** Before launching a new `copilot -p` call, check `pgrep -f "copilot" | wc -l`. If 5 or more are already running, wait for one to finish before starting another. This prevents system memory exhaustion when dispatching parallel batches. For large fix or review campaigns, prefer sequential dispatch (one at a time) or small parallel batches (2-3 max).
+
 ### NEVER
 
 1. **NEVER use interactive mode** (omit `-p`) as it will hang the conductor's shell.
 2. **NEVER expose `GH_TOKEN`** in logs or printed output.
 3. **NEVER assume Autopilot is perfect**; always verify the structural integrity of generated code.
 4. **NEVER ignore repository memory**; check for existing conventions before overriding.
-5. **NEVER invoke this skill from within Copilot CLI itself**
+5. **NEVER run more than 5 concurrent copilot processes** — system memory exhaustion risk.
+6. **NEVER invoke this skill from within Copilot CLI itself**
    - If you ARE Copilot CLI, you already have native access to all capabilities — do not self-delegate via CLI
    - Self-invocation creates a circular, wasteful loop; use your native tools directly instead
 

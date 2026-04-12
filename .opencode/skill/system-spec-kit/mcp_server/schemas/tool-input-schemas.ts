@@ -200,7 +200,7 @@ const memorySaveSchema = getSchema({
   routeAs: routeCategoryEnum.optional(),
   mergeModeHint: mergeModeHintEnum.optional(),
   // Governance args — accepted by tool-schemas.ts tool definition and
-  // validated at runtime by scope-governance.ts (F3.04 fix).
+  // validated at runtime by scope-governance.ts.
   tenantId: z.string().optional(),
   userId: z.string().optional(),
   agentId: z.string().optional(),
@@ -208,7 +208,7 @@ const memorySaveSchema = getSchema({
   provenanceSource: z.string().optional(),
   provenanceActor: z.string().optional(),
   governedAt: z.string().optional(),
-  retentionPolicy: z.enum(['keep', 'ephemeral', 'shared']).optional(),
+  retentionPolicy: z.enum(['keep', 'ephemeral']).optional(),
   deleteAfter: z.string().optional(),
 });
 

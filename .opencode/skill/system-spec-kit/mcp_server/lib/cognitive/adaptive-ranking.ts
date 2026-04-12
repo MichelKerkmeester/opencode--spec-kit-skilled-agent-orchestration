@@ -319,10 +319,7 @@ function compareAdaptiveRows(
 }
 
 function isAdaptiveEnabled(): boolean {
-  return isAdaptiveFlagEnabled(
-    'SPECKIT_MEMORY_ADAPTIVE_RANKING',
-    'SPECKIT_HYDRA_ADAPTIVE_RANKING',
-  );
+  return isAdaptiveFlagEnabled('SPECKIT_MEMORY_ADAPTIVE_RANKING');
 }
 
 /**

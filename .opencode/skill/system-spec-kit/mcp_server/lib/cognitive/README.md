@@ -47,9 +47,8 @@ Gate E alignment: canonical continuity does not come from low-priority rows or l
 | Decay          | 2       | ~650  | Memory forgetting curves (FSRS, attention)   |
 | Classification | 2       | ~960  | 5-state memory model + duplicate detection   |
 | Activation     | 2       | ~700  | Working memory + spreading activation        |
-| Lifecycle      | 1       | ~395  | Retained-history lifecycle management        |
 | Temporal       | 1       | ~158  | Time-based contiguity boosting and timelines |
-| **Total**      | **10**  | ~2860 | Complete cognitive memory lifecycle          |
+| **Total**      | **9**   | ~2465 | Complete cognitive memory lifecycle          |
 
 ### Architecture
 
@@ -72,8 +71,6 @@ Gate E alignment: canonical continuity does not come from low-priority rows or l
 │       ↓                                                         │
 │  Tier Classifier ───→ State = WARM → COLD → DORMANT              │
 │       ↓                                                         │
-│  Lifecycle Manager ──→ After 90 days → fallback evidence rows   │
-│       ↓                                                         │
 │  [Access Event]                                                 │
 │       ↓                                                         │
 │  Co-Activation ─────→ Spread to Related (+0.15 boost)           │
@@ -93,7 +90,6 @@ Gate E alignment: canonical continuity does not come from low-priority rows or l
 | **Spreading Activation**     | Boost related memories (+0.15 on access)                                              | Maintains semantic coherence         |
 | **Type-Specific Decay**      | Constitutional (none), Critical (none), Normal (0.80/turn)                            | Memory importance = retention time   |
 | **Testing Effect**           | Low retrievability = greater boost on success                                         | Harder recalls strengthen more       |
-| **Retained-History Lifecycle** | 90-day threshold with background job (2hr interval)                                 | Keeps cold rows as fallback evidence |
 | **Document-Aware Retrieval** | Uses indexed doc metadata (`spec`, `plan`, `decision_record`, etc.) in ranking inputs | Better relevance for spec workflows  |
 | **Event-Based Decay**        | Event-driven decay model (spec 136) replaces fixed per-turn decay with event triggers | Context-sensitive memory management  |
 | **Session-Attention Boost**  | `SPECKIT_SESSION_BOOST` boosts scores for memories active in the current session       | Recency-aware retrieval              |
@@ -245,14 +241,13 @@ half_life = 60 days → stability ≈ 4.69 days
 <!-- ANCHOR:structure -->
 
 ```
-cognitive/                      # TypeScript source files (10 modules)
+cognitive/                      # TypeScript source files (9 modules)
 ├── fsrs-scheduler.ts           # FSRS v4 power-law decay + TM-03 classification-based decay (340 lines)
 ├── prediction-error-gate.ts    # Duplicate detection & conflict logging (510 lines)
 ├── tier-classifier.ts          # 5-state model classifier (452 lines)
 ├── attention-decay.ts          # Multi-factor attention decay (409 lines)
 ├── co-activation.ts            # Spreading activation with R17 fan-effect sqrt divisor (350 lines)
 ├── working-memory.ts           # Session-scoped activation (410 lines)
-├── archival-manager.ts         # 90-day retained-history lifecycle (395 lines)
 ├── temporal-contiguity.ts      # Time-based contiguity boosting (158 lines)
 ├── pressure-monitor.ts         # Token pressure monitoring and context window management
 ├── rollout-policy.ts           # Feature flag rollout control and percentage-based activation
@@ -269,7 +264,6 @@ cognitive/                      # TypeScript source files (10 modules)
 | `prediction-error-gate.ts` | Conflict detection        | `evaluateMemory`, `detectContradiction`, `logConflict`                      |
 | `co-activation.ts`         | Semantic spreading (R17 fan-effect sqrt divisor) | `spreadActivation`, `populateRelatedMemories`, `boostScore`  |
 | `working-memory.ts`        | Session memory management | `setAttentionScore`, `getWorkingMemory`, `batchUpdateScores`                |
-| `archival-manager.ts`      | Retained-history lifecycle | `runArchivalScan`, `archiveMemory`, `startBackgroundJob`                   |
 | `temporal-contiguity.ts`   | Time-based linking        | `vectorSearchWithContiguity`, `getTemporalNeighbors`, `buildTimeline`       |
 | `pressure-monitor.ts`      | Token pressure monitoring | Context window management and pressure threshold tracking                   |
 | `rollout-policy.ts`        | Feature flag rollout      | Percentage-based activation and gradual feature rollout control             |
@@ -628,68 +622,30 @@ attentionDecayRate: 0.95      // 95% retention per decay cycle
 minAttentionScore: 0.1        // Below this = evicted
 ```
 
-### Retained-History Lifecycle
+### Working-Memory Maintenance
 
-**Purpose**: Keep inactive rows available as fallback evidence without treating them as canonical continuity
+**Purpose**: Keep session-scoped attention state bounded while preserving the live working set for active conversations
 
 **Usage**:
 ```typescript
 import {
   init,
-  startBackgroundJob,
-  stopBackgroundJob,
-  runArchivalScan,
-  archiveMemory,
-  unarchiveMemory,
-  checkMemoryArchivalStatus,
-  getArchivalCandidates,
-  getStats,
-  isBackgroundJobRunning,
-  ARCHIVAL_CONFIG,
-} from './archival-manager';
+  getWorkingMemory,
+  setAttentionScore,
+  cleanupOldSessions,
+} from './working-memory';
 
 // Initialize with database
 init(db);
 
-// Start background job (scans every 2 hours)
-startBackgroundJob();
-// Default interval: 7200000ms (2 hours)
+// Inspect the active working set
+const workingSet = getWorkingMemory('session-123');
 
-// Manual scan
-const scanResult = runArchivalScan();
-// scanResult = { scanned: 15, archived: 12 }  // archived rows are fallback evidence only
+// Refresh attention when a memory is used
+setAttentionScore('session-123', 42, 0.9);
 
-// Check specific memory status
-const status = checkMemoryArchivalStatus(memoryId);
-// status = { isArchived: boolean, shouldArchive: boolean }  // inspect retained-history status
-
-// Move in or out of retained-history state
-archiveMemory(memoryId);
-unarchiveMemory(memoryId);
-
-// Get archival candidates
-const candidates = getArchivalCandidates(50);
-// candidates = [{ id, title, spec_folder, file_path, created_at, importance_tier, access_count, confidence, reason }]
-
-// Get statistics
-const stats = getStats();
-// stats = { totalScanned, totalArchived, totalUnarchived, lastScanTime, errors }  // counts retained-history transitions
-
-// Stop background job
-stopBackgroundJob();
-```
-
-**Archival Configuration:**
-```bash
-SPECKIT_ARCHIVAL=true                          # Default: true (env var name)
-# ARCHIVAL_CONFIG defaults:
-# scanIntervalMs: 3600000                      # 1 hour scan interval
-# backgroundJobIntervalMs: 7200000             # 2 hours between background runs
-# batchSize: 50                                # Per scan
-# maxAgeDays: 90                               # Days before eligible for archival
-# maxAccessCount: 2                            # Low-access threshold
-# maxConfidence: 0.4                           # Low-confidence threshold
-# protectedTiers: ['constitutional', 'critical']
+// Drop expired sessions
+cleanupOldSessions();
 ```
 
 ### Temporal Contiguity
@@ -749,7 +705,6 @@ BOOST_FACTOR: 0.15       // Maximum similarity boost for temporally adjacent mem
 import Database from 'better-sqlite3';
 import * as decay from './attention-decay';
 import * as gate from './prediction-error-gate';
-import * as archival from './archival-manager';
 import * as workingMemory from './working-memory';
 import * as coActivation from './co-activation';
 
@@ -758,12 +713,8 @@ const db = new Database('memory.db');
 // Initialize modules that need database
 decay.init(db);
 gate.init(db);
-archival.init(db);
 workingMemory.init(db);
 coActivation.init(db);
-
-// Start background archival
-archival.startBackgroundJob();
 ```
 
 ### Example 2: Memory Access with FSRS Review
@@ -884,24 +835,14 @@ console.log('Decay rates:', decay.DECAY_CONFIG.decayRateByTier);
 
 **Symptom**: Memory consumption grows over time
 
-**Cause**: Retained-history cleanup is not running, so low-signal rows are not being downgraded
+**Cause**: Expired session state is not being cleaned up
 
 **Solution**:
 ```typescript
-import * as archival from './archival-manager';
+import * as workingMemory from './working-memory';
 
-// Check retained-history stats
-const stats = archival.getStats();
-console.log('Background job:', archival.isBackgroundJobRunning());
-
-// Start background job if not running
-if (!archival.isBackgroundJobRunning()) {
-  archival.startBackgroundJob();
-}
-
-// Manual retained-history sweep
-const scanResult = archival.runArchivalScan();
-console.log(`Moved ${scanResult.archived} old memories into fallback evidence`);
+// Remove expired sessions from the in-memory working set
+workingMemory.cleanupOldSessions();
 ```
 
 #### Duplicate Memories
@@ -998,14 +939,9 @@ A: When memories are accessed:
 
 ---
 
-**Q: Can I disable the retained-history sweep?**
+**Q: Can I disable working memory?**
 
-A: Yes, set `SPECKIT_ARCHIVAL=false` in environment or:
-```typescript
-import * as archival from './archival-manager';
-archival.stopBackgroundJob();
-```
-You will need to manually manage older fallback-evidence rows to prevent database growth.
+A: Yes. Set `SPECKIT_WORKING_MEMORY=false` in the environment. Search and retrieval still work, but the runtime stops maintaining session-scoped attention state.
 
 ---
 
@@ -1048,9 +984,7 @@ Note: `temporal-contiguity.js` in dist/ is **not** orphaned. It is compiled from
 | `HOT_THRESHOLD`           | 0.80    | Retrievability threshold for HOT state  |
 | `WARM_THRESHOLD`          | 0.25    | Retrievability threshold for WARM state |
 | `COLD_THRESHOLD`          | 0.05    | Retrievability threshold for COLD state |
-| `ARCHIVED_DAYS_THRESHOLD` | 90      | Days inactive before rows move to fallback evidence |
 | `SPECKIT_COACTIVATION`    | true    | Enable spreading activation             |
-| `SPECKIT_ARCHIVAL`        | true    | Enable background retained-history sweep |
 | `SPECKIT_WORKING_MEMORY`  | true    | Enable working memory sessions          |
 | `SPECKIT_SESSION_BOOST`   | false   | Enable session-based score boost from working_memory attention signals |
 | `SPECKIT_PRESSURE_POLICY` | false   | Enable pressure-aware mode for token budget monitoring and context window management |

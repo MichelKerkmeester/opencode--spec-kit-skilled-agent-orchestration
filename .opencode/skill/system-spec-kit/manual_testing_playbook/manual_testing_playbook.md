@@ -2497,34 +2497,20 @@ Governed save requires provenance; ephemeral save requires deleteAfter; scope mi
 > **Feature File:** [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md)
 > **Catalog:** [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 
-### 124 | Automatic archival lifecycle coverage
+### 125 | Memory roadmap capability flags
 
 #### Description
-Verify archive/unarchive keeps metadata rows while syncing BM25 and vec_memories behavior.
+Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping adaptive ranking default-off until explicitly enabled.
 
 #### Current Reality
-Prompt: `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior. Capture the evidence needed to prove Archived memory keeps metadata row with is_archived=1, BM25 artifacts are synchronized on archive/unarchive, vector rows are deleted on archive, and unarchive logs deferred vector re-embedding until next index scan; protected tiers are not auto-archived. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"scope-governance" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false and reports capabilities.adaptiveRanking:false again. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are synchronized on archive/unarchive, vector rows are deleted on archive, and unarchive logs deferred vector re-embedding until next index scan; protected tiers are not auto-archived
+First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms explicit canonical opt-out by returning `capabilities.adaptiveRanking:false` again
 
-#### Test Execution
-> **Feature File:** [124](05--lifecycle/124-automatic-archival-lifecycle-coverage.md)
-> **Catalog:** [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md)
-
-### 125 | Hydra roadmap capability flags
-
-#### Description
-Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping dormant adaptive ranking default-off until explicitly enabled.
-
-#### Current Reality
-Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"scope-governance" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses canonical SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false plus SPECKIT_HYDRA_ADAPTIVE_RANKING=true and still reports capabilities.adaptiveRanking:false because the canonical key wins. Return a concise user-facing pass/fail verdict with the main reason.`
-
-First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms canonical `SPECKIT_MEMORY_*` precedence over the legacy Hydra alias
-
-Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in behavior and canonical-over-legacy resolver precedence
+Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in and opt-out behavior.
 
 #### Test Execution
-> **Feature File:** [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md)
+> **Feature File:** [125](19--feature-flag-reference/125-memory-roadmap-capability-flags.md)
 > **Catalog:** [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 
 ### 126 | Memory roadmap baseline snapshot

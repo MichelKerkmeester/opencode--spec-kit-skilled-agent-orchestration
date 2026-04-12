@@ -30,7 +30,6 @@ The `access_count` feeds into composite scoring as a popularity signal, boosting
 |------|-------|------|
 | `mcp_server/lib/storage/access-tracker.ts` | Lib | Batched access tracking with accumulator |
 | `mcp_server/lib/scoring/composite-scoring.ts` | Lib | Composite scoring incorporating access counts |
-| `mcp_server/lib/cognitive/archival-manager.ts` | Lib | Dormancy detection using access data |
 
 ### Tests
 

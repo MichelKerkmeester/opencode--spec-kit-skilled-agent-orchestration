@@ -219,14 +219,42 @@ function buildJournalSummary(filePath) {
   };
 }
 
+function normalizeLineageNode(node) {
+  if (!isPlainObject(node)) {
+    return null;
+  }
+
+  const candidateId =
+    typeof node.candidateId === 'string'
+      ? node.candidateId
+      : typeof node.id === 'string'
+        ? node.id
+        : null;
+  if (!candidateId) {
+    return null;
+  }
+
+  const parentCandidateId =
+    typeof node.parentCandidateId === 'string'
+      ? node.parentCandidateId
+      : typeof node.parentId === 'string'
+        ? node.parentId
+        : null;
+
+  return {
+    candidateId,
+    parentCandidateId,
+  };
+}
+
 function buildCandidateLineageSummary(filePath) {
   const data = readOptionalJson(filePath);
   if (!isPlainObject(data) || !Array.isArray(data.nodes)) {
     return null;
   }
 
-  const nodes = data.nodes.filter((node) => isPlainObject(node) && typeof node.id === 'string');
-  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const nodes = data.nodes.map((node) => normalizeLineageNode(node)).filter(Boolean);
+  const nodeById = new Map(nodes.map((node) => [node.candidateId, node]));
   const memo = new Map();
 
   function getDepth(nodeId, trail = new Set()) {
@@ -242,7 +270,7 @@ function buildCandidateLineageSummary(filePath) {
 
     trail.add(nodeId);
     const node = nodeById.get(nodeId);
-    const parentId = typeof node.parentId === 'string' ? node.parentId : null;
+    const parentId = typeof node.parentCandidateId === 'string' ? node.parentCandidateId : null;
     const depth = parentId ? getDepth(parentId, trail) + 1 : 0;
     trail.delete(nodeId);
     memo.set(nodeId, depth);
@@ -257,7 +285,55 @@ function buildCandidateLineageSummary(filePath) {
   return {
     lineageDepth,
     totalCandidates: nodes.length,
-    currentLeaf: nodes.length > 0 ? nodes[nodes.length - 1].id : null,
+    currentLeaf: nodes.length > 0 ? nodes[nodes.length - 1].candidateId : null,
+  };
+}
+
+function buildMutationCoverageKey(entry) {
+  if (!isPlainObject(entry)) {
+    return null;
+  }
+
+  const dimension = typeof entry.dimension === 'string' ? entry.dimension : null;
+  const mutationType = typeof entry.mutationType === 'string' ? entry.mutationType : null;
+  if (!dimension || !mutationType) {
+    return null;
+  }
+
+  return `${dimension}::${mutationType}`;
+}
+
+function collectMutationCoverageKeys(entries) {
+  const keys = new Set();
+  if (!Array.isArray(entries)) {
+    return keys;
+  }
+
+  for (const entry of entries) {
+    const key = buildMutationCoverageKey(entry);
+    if (key) {
+      keys.add(key);
+    }
+  }
+
+  return keys;
+}
+
+function deriveMutationCoverageMetrics(data) {
+  const triedKeys = collectMutationCoverageKeys(data.mutations);
+  const exhaustedKeys = collectMutationCoverageKeys(data.exhausted);
+  const trackedKeys = new Set([...triedKeys, ...exhaustedKeys]);
+
+  if (trackedKeys.size === 0) {
+    return {
+      coverageRatio: null,
+      uncoveredMutations: null,
+    };
+  }
+
+  return {
+    coverageRatio: exhaustedKeys.size / trackedKeys.size,
+    uncoveredMutations: Math.max(trackedKeys.size - exhaustedKeys.size, 0),
   };
 }
 
@@ -268,10 +344,14 @@ function buildMutationCoverageSummary(filePath) {
   }
 
   const metrics = isPlainObject(data.metrics) ? data.metrics : {};
+  const derivedMetrics = deriveMutationCoverageMetrics(data);
   return {
-    coverageRatio: isFiniteNumber(metrics.coverageRatio) ? metrics.coverageRatio : null,
-    uncoveredMutations:
-      metrics.uncoveredMutations === undefined ? null : metrics.uncoveredMutations,
+    coverageRatio: isFiniteNumber(metrics.coverageRatio)
+      ? metrics.coverageRatio
+      : derivedMetrics.coverageRatio,
+    uncoveredMutations: isFiniteNumber(metrics.uncoveredMutations)
+      ? metrics.uncoveredMutations
+      : derivedMetrics.uncoveredMutations,
   };
 }
 
@@ -758,6 +838,73 @@ function renderSampleQualitySection(sampleQuality) {
 ${explanation}`;
 }
 
+function renderEventTypeCounts(eventTypeCounts) {
+  const rows = Object.entries(eventTypeCounts || {});
+  if (rows.length === 0) {
+    return '- none';
+  }
+  return rows.map(([eventType, count]) => `- ${eventType}: ${count}`).join('\n');
+}
+
+function renderJournalSummarySection(summary) {
+  if (!summary) {
+    return `## Journal Summary
+
+- Not available.
+`;
+  }
+
+  return `## Journal Summary
+
+| Field | Value |
+| --- | --- |
+| Last session start | ${formatDashboardValue(summary.lastSessionStart)} |
+| Last session end | ${formatDashboardValue(summary.lastSessionEnd)} |
+| Total events | ${formatDashboardValue(summary.totalEvents)} |
+| Stop reason | ${formatDashboardValue(summary.stopReason)} |
+| Session outcome | ${formatDashboardValue(summary.sessionOutcome)} |
+
+### Event Types
+
+${renderEventTypeCounts(summary.eventTypeCounts)}
+`;
+}
+
+function renderCandidateLineageSection(summary) {
+  if (!summary) {
+    return `## Candidate Lineage
+
+- Not available.
+`;
+  }
+
+  return `## Candidate Lineage
+
+| Field | Value |
+| --- | --- |
+| Lineage depth | ${formatDashboardValue(summary.lineageDepth)} |
+| Total candidates | ${formatDashboardValue(summary.totalCandidates)} |
+| Current leaf | ${formatDashboardValue(summary.currentLeaf)} |
+`;
+}
+
+function renderMutationCoverageSection(summary) {
+  if (!summary) {
+    return `## Mutation Coverage
+
+- Not available.
+`;
+  }
+
+  return `## Mutation Coverage
+
+| Field | Value |
+| --- | --- |
+| Coverage ratio | ${formatDashboardValue(summary.coverageRatio)} |
+| Uncovered mutations | ${formatDashboardValue(summary.uncoveredMutations)} |
+`;
+}
+
 function renderDashboard(registry, sampleQuality) {
   const sections = Object.values(registry.profiles)
     .sort((left, right) => left.profileId.localeCompare(right.profileId))
@@ -772,6 +919,12 @@ function renderDashboard(registry, sampleQuality) {
   } else if (registry.globalMetrics.benchmarkFailCount > 0) {
     recommendation = 'Fix repeated benchmark failures before broadening scope or promoting any target.';
   }
+
+  const replayConsumerSections = [
+    renderJournalSummarySection(registry.journalSummary),
+    renderCandidateLineageSection(registry.candidateLineage),
+    renderMutationCoverageSection(registry.mutationCoverage),
+  ].join('\n');
 
   return `# Agent Improvement Dashboard
 
@@ -792,6 +945,8 @@ function renderDashboard(registry, sampleQuality) {
 | Infra failures | ${registry.globalMetrics.infraFailureCount} |
 
 ${renderSampleQualitySection(sampleQuality)}
+
+${replayConsumerSections}
 
 ## Guardrails
 

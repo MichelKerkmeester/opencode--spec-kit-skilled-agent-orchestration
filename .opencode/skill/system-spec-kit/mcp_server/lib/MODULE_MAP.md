@@ -87,13 +87,12 @@ Notes:
 
 ### `cognitive/`
 
-- Purpose: Owns the memory-science side of the system: decay, retrievability, working memory, co-activation, pressure monitoring, archival movement, and adaptive ranking inputs. It is the main "how memory behaves over time" module family.
+- Purpose: Owns the memory-science side of the system: decay, retrievability, working memory, co-activation, pressure monitoring, and adaptive ranking inputs. It is the main "how memory behaves over time" module family.
 - Key files:
   - `working-memory.ts` — working-memory writes, cleanup, and short-horizon memory behavior.
   - `fsrs-scheduler.ts` — FSRS-based spaced-repetition scheduling and retrievability math.
   - `attention-decay.ts` — time/usage decay utilities used to age memory salience.
   - `tier-classifier.ts` — classification logic that maps memories into behavioral tiers.
-  - `archival-manager.ts` — lifecycle transitions between active and archived memory states.
 - Primary consumers:
   - `lib/search/*`
   - `handlers/save/*`

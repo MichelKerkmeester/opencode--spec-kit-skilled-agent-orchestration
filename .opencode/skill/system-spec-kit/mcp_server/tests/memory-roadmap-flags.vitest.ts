@@ -12,14 +12,6 @@ const FLAG_NAMES = [
   'SPECKIT_MEMORY_LINEAGE_STATE',
   'SPECKIT_MEMORY_GRAPH_UNIFIED',
   'SPECKIT_MEMORY_ADAPTIVE_RANKING',
-  'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
-  'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-  'SPECKIT_HYDRA_PHASE',
-  'SPECKIT_HYDRA_LINEAGE_STATE',
-  'SPECKIT_HYDRA_GRAPH_UNIFIED',
-  'SPECKIT_HYDRA_ADAPTIVE_RANKING',
-  'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
-  'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
   'SPEC_KIT_DB_DIR',
   'SPECKIT_DB_DIR',
   'SPECKIT_GRAPH_UNIFIED',
@@ -58,8 +50,6 @@ describe('Memory roadmap flags', () => {
       lineageState: true,
       graphUnified: true,
       adaptiveRanking: false,
-      scopeEnforcement: true,
-      governanceGuardrails: true,
     });
   });
 
@@ -92,22 +82,6 @@ describe('Memory roadmap flags', () => {
     process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'false';
     const disabled = getMemoryRoadmapDefaults('roadmap-session-1');
     expect(disabled.capabilities.adaptiveRanking).toBe(false);
-  });
-
-  it('accepts legacy Hydra env vars for compatibility during the rename window', () => {
-    process.env.SPECKIT_HYDRA_PHASE = 'graph';
-    process.env.SPECKIT_HYDRA_GRAPH_UNIFIED = 'true';
-    process.env.SPECKIT_ROLLOUT_PERCENT = '100';
-
-    const defaults = getMemoryRoadmapDefaults('legacy-roadmap-session');
-    expect(defaults.phase).toBe('graph');
-    expect(defaults.capabilities.graphUnified).toBe(true);
-  });
-
-  it('honors legacy Hydra adaptive-ranking enables even when the canonical flag is unset', () => {
-    process.env.SPECKIT_HYDRA_ADAPTIVE_RANKING = 'true';
-
-    expect(getMemoryRoadmapCapabilityFlags('legacy-adaptive-session').adaptiveRanking).toBe(true);
   });
 
   it('tracks the four active scope dimensions in roadmap defaults', () => {

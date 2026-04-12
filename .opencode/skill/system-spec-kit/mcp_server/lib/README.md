@@ -42,7 +42,7 @@ Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the oper
 | Category | Count | Details |
 |----------|-------|---------|
 | Module Categories | 28 | architecture, cache, chunking, code-graph, cognitive, config, contracts, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, spec, storage, telemetry, utils, validation |
-| Cognitive Features | 10+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, archival manager, causal graph, corrections |
+| Cognitive Features | 9+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
@@ -170,7 +170,7 @@ lib/                            # TypeScript source files
 │   ├── confidence-tracker.ts   # Confidence tracking
 │   └── README.md               # Module documentation
 │
-├── cognitive/                  # Cognitive memory features (10 modules)
+├── cognitive/                  # Cognitive memory features (9 modules)
 │   ├── attention-decay.ts      # Multi-factor decay with type-specific half-lives
 │   ├── fsrs-scheduler.ts       # FSRS algorithm
 │   ├── prediction-error-gate.ts # PE gating for duplicates
@@ -178,7 +178,6 @@ lib/                            # TypeScript source files
 │   ├── tier-classifier.ts      # 5-state memory classification
 │   ├── co-activation.ts        # Related memory activation
 │   ├── temporal-contiguity.ts  # Temporal memory linking
-│   ├── archival-manager.ts     # 5-state archival model
 │   ├── pressure-monitor.ts     # Cognitive pressure monitoring
 │   ├── rollout-policy.ts       # Feature rollout policy engine
 │   └── README.md               # Module documentation
@@ -325,7 +324,6 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `cognitive/attention-decay.ts` | Multi-factor decay with type-specific half-lives |
 | `cognitive/fsrs-scheduler.ts` | FSRS power-law forgetting curve algorithm |
 | `cognitive/prediction-error-gate.ts` | Four-tier similarity gating to prevent duplicates |
-| `cognitive/archival-manager.ts` | 5-state archival model |
 | `cognitive/temporal-contiguity.ts` | Temporal memory linking |
 | `session/session-manager.ts` | Session deduplication (~1050 lines) |
 | `errors/recovery-hints.ts` | 49 error codes with recovery hints |

@@ -1085,7 +1085,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. Those roadmap flags are resolved live each time the helper runs, canonical `SPECKIT_MEMORY_*` keys override the older `SPECKIT_HYDRA_*` aliases, and adaptive ranking stays off in roadmap snapshots until explicitly enabled so telemetry does not claim dormant behavior is live before runtime access allows it.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains the live memory roadmap snapshot settings used by internal metadata helpers. Those roadmap flags are resolved live each time the helper runs, remain separate from live runtime retrieval flags, and keep adaptive ranking off in roadmap snapshots until explicitly enabled so telemetry does not claim dormant behavior is live before runtime access allows it.
 
 ### 7. CI and Build (informational)
 

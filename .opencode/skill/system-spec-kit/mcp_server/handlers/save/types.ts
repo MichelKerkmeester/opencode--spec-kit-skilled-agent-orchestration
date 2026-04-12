@@ -169,7 +169,7 @@ export interface SaveArgs {
   provenanceSource?: string;
   provenanceActor?: string;
   governedAt?: string;
-  retentionPolicy?: 'keep' | 'ephemeral' | 'shared';
+  retentionPolicy?: 'keep' | 'ephemeral';
   deleteAfter?: string;
 }
 

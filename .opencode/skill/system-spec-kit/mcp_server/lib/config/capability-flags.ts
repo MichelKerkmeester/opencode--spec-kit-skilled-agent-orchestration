@@ -18,8 +18,6 @@ interface MemoryRoadmapCapabilityFlags {
   lineageState: boolean;
   graphUnified: boolean;
   adaptiveRanking: boolean;
-  scopeEnforcement: boolean;
-  governanceGuardrails: boolean;
 }
 
 /** Rollout defaults snapshot for telemetry and migration checkpoints. */
@@ -30,8 +28,6 @@ interface MemoryRoadmapDefaults {
 }
 
 const PHASE_ENV = 'SPECKIT_MEMORY_ROADMAP_PHASE';
-const LEGACY_PHASE_ENV = 'SPECKIT_HYDRA_PHASE';
-
 /**
  * SPECKIT_PARSER — Structural parser backend selector.
  *
@@ -55,16 +51,6 @@ const CAPABILITY_ENV = {
   lineageState: 'SPECKIT_MEMORY_LINEAGE_STATE',
   graphUnified: 'SPECKIT_MEMORY_GRAPH_UNIFIED',
   adaptiveRanking: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
-  scopeEnforcement: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
-  governanceGuardrails: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-} as const;
-
-const LEGACY_CAPABILITY_ENV = {
-  lineageState: 'SPECKIT_HYDRA_LINEAGE_STATE',
-  graphUnified: 'SPECKIT_HYDRA_GRAPH_UNIFIED',
-  adaptiveRanking: 'SPECKIT_HYDRA_ADAPTIVE_RANKING',
-  scopeEnforcement: 'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
-  governanceGuardrails: 'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
 } as const;
 
 const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set(SUPPORTED_PHASES_ARRAY);
@@ -115,14 +101,9 @@ function isMemoryRoadmapCapabilityEnabled(
 
 /** Resolves the active memory roadmap phase from env, defaulting to scope-governance. */
 function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
-  // B4: Check canonical env first, then legacy, before falling back to default.
   const canonicalPhase = process.env[PHASE_ENV]?.trim().toLowerCase();
   if (canonicalPhase && SUPPORTED_PHASES.has(canonicalPhase as MemoryRoadmapPhase)) {
     return canonicalPhase as MemoryRoadmapPhase;
-  }
-  const legacyPhase = process.env[LEGACY_PHASE_ENV]?.trim().toLowerCase();
-  if (legacyPhase && SUPPORTED_PHASES.has(legacyPhase as MemoryRoadmapPhase)) {
-    return legacyPhase as MemoryRoadmapPhase;
   }
   return 'scope-governance';
 }
@@ -131,25 +112,17 @@ function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
 function getMemoryRoadmapCapabilityFlags(identity?: string): MemoryRoadmapCapabilityFlags {
   return {
     lineageState: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.lineageState, LEGACY_CAPABILITY_ENV.lineageState],
+      CAPABILITY_ENV.lineageState,
       identity,
     ),
     graphUnified: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.graphUnified, LEGACY_CAPABILITY_ENV.graphUnified],
+      CAPABILITY_ENV.graphUnified,
       identity,
     ),
     adaptiveRanking: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.adaptiveRanking, LEGACY_CAPABILITY_ENV.adaptiveRanking],
+      CAPABILITY_ENV.adaptiveRanking,
       identity,
       false,
-    ),
-    scopeEnforcement: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.scopeEnforcement, LEGACY_CAPABILITY_ENV.scopeEnforcement],
-      identity,
-    ),
-    governanceGuardrails: isMemoryRoadmapCapabilityEnabled(
-      [CAPABILITY_ENV.governanceGuardrails, LEGACY_CAPABILITY_ENV.governanceGuardrails],
-      identity,
     ),
   };
 }

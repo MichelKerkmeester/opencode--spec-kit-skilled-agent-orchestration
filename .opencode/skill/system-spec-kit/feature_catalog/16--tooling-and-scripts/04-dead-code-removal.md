@@ -19,7 +19,7 @@ The codebase is clean across four dead-code categories:
 
 **Feature flag functions:** `isShadowScoringEnabled()` and `isRsfEnabled()` do not exist in the codebase. `isInShadowPeriod()` in `learned-feedback.ts` is active as the R11 shadow-period safeguard.
 
-**Module-level state:** The following variables do not exist: `stmtCache` (archival-manager.ts), `lastComputedAt` (community-detection.ts), `activeProvider` (cross-encoder.ts), `flushCount` (access-tracker.ts), and the config fields `decayInterval`, `attentionDecayRate`, `minAttentionScore` (working-memory.ts).
+**Module-level state:** The following variables do not exist: `lastComputedAt` (community-detection.ts), `activeProvider` (cross-encoder.ts), `flushCount` (access-tracker.ts), and the config fields `decayInterval`, `attentionDecayRate`, `minAttentionScore` (working-memory.ts).
 
 **Functions and exports:** `computeCausalDepthScores` is the live batch API in `graph-signals.ts`; no single-node `computeCausalDepth` variant exists. `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, the `'related'` weight entry, `logCoActivationEvent`, and `CoActivationEvent` do not exist in the codebase.
 
@@ -67,14 +67,12 @@ The codebase is clean across four dead-code categories:
 ### 3) Dead module-level state
 
 - **Files where unused state was removed**
-  - `mcp_server/lib/cognitive/archival-manager.ts` (`stmtCache`)
   - `mcp_server/lib/graph/community-detection.ts` (`lastComputedAt`)
   - `mcp_server/lib/search/cross-encoder.ts` (`activeProvider`)
   - `mcp_server/lib/storage/access-tracker.ts` (`flushCount`)
   - `mcp_server/lib/cognitive/working-memory.ts` (`decayInterval`, `attentionDecayRate`, `minAttentionScore`)
 - **Audit evidence**
   - `git show b4f85e327` includes removals:
-    - `-const stmtCache ...`
     - `-let lastComputedAt ...`
     - `-let activeProvider ...`
     - `-flushCount ...`
@@ -120,7 +118,6 @@ Cross-cutting evidence is distributed across:
 - `mcp_server/lib/search/rsf-fusion.ts` (module fully deleted in v3 remediation)
 - `mcp_server/lib/search/learned-feedback.ts`
 - `mcp_server/lib/eval/shadow-scoring.ts`
-- `mcp_server/lib/cognitive/archival-manager.ts`
 - `mcp_server/lib/graph/community-detection.ts`
 - `mcp_server/lib/search/cross-encoder.ts`
 - `mcp_server/lib/storage/access-tracker.ts`

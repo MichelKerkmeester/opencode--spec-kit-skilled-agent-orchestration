@@ -220,7 +220,6 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_COGNITIVE_COACTIVATION_PATTERN` | (built-in) | string | Custom regex pattern for co-activation matching. Validated for safety. | `configs/cognitive.ts` |
 | `SPECKIT_COGNITIVE_COACTIVATION_FLAGS` | (built-in) | string | Regex flags for the co-activation pattern (e.g., `gi`). Validated. | `configs/cognitive.ts` |
 | `SPECKIT_WORKING_MEMORY` | `true` | boolean | Working memory system (Miller's Law: 7 +/- 2 capacity, 30-min timeout). Graduated ON. | `lib/cognitive/working-memory.ts` |
-| `SPECKIT_ARCHIVAL` | `true` | boolean | Legacy archival-ballast manager. Keeps backward-compatibility fields inert while current continuity and recovery flows stay on the canonical spec-doc ladder. | `lib/cognitive/archival-manager.ts` |
 | `SPECKIT_HYBRID_DECAY_POLICY` | `true` | boolean | Type-aware no-decay for permanent artifacts (decision/constitutional types get Infinity stability). Graduated ON. | `lib/cognitive/fsrs-scheduler.ts` |
 | `SPECKIT_RECONSOLIDATION` | `true` | boolean | Reconsolidation-on-save for memory deduplication (TM-06). Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | Assistive reconsolidation for near-duplicate detection (REQ-D4-005). Graduated ON. | `lib/search/search-flags.ts` |
@@ -266,8 +265,6 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | Lineage state tracking capability. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | Graph unified capability for roadmap tracking. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking capability. **Default OFF**: opt-in. | `lib/config/capability-flags.ts` |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | boolean | Scope enforcement for tenant/user/agent isolation. Graduated ON. Legacy: `SPECKIT_HYDRA_SCOPE_ENFORCEMENT`. | `lib/governance/scope-governance.ts` |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | boolean | Governance guardrails for validated operations. Graduated ON. Legacy: `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS`. | `lib/governance/scope-governance.ts` |
 <!-- /ANCHOR:governance-scope -->
 
 ---
@@ -357,16 +354,14 @@ Embedding provider selection stays auto-detected unless you force it. In `EMBEDD
 <!-- ANCHOR:roadmap-phase-control -->
 ## 16. ROADMAP PHASE CONTROL
 
-These variables control memory roadmap capabilities. Each has a **legacy `SPECKIT_HYDRA_*` alias** that the server checks as a fallback. Prefer the `SPECKIT_MEMORY_*` canonical names.
+These variables control the live memory roadmap snapshot.
 
-| Variable | Legacy Alias | Default | Type | Description |
-|----------|-------------|---------|------|-------------|
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `SPECKIT_HYDRA_PHASE` | `scope-governance` | string | Active roadmap phase. |
-| `SPECKIT_MEMORY_LINEAGE_STATE` | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | Lineage tracking. |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | Graph unified mode. |
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking (opt-in). |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | Scope enforcement. |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | Governance guardrails. |
+| Variable | Default | Type | Description |
+|----------|---------|------|-------------|
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | string | Active roadmap phase. |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | Lineage tracking. |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | Graph unified mode. |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking (opt-in). |
 <!-- /ANCHOR:roadmap-phase-control -->
 
 ---
@@ -382,12 +377,6 @@ These variables are no longer active but may still appear in compatibility code.
 | `SPECKIT_LAZY_LOADING` | **Deprecated** | (removed) | Lazy loading is always enabled. Compatibility flag. |
 | `SPECKIT_SHADOW_SCORING` | **Deprecated** | `SPECKIT_SHADOW_FEEDBACK` | Shadow scoring flag removed. Shadow evaluation uses SHADOW_FEEDBACK. |
 | `SPECKIT_RSF_FUSION` | **Deprecated** | `SPECKIT_RRF` | Referenced in tests only. Legacy alias. |
-| `SPECKIT_HYDRA_PHASE` | **Legacy** | `SPECKIT_MEMORY_ROADMAP_PHASE` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | **Legacy** | `SPECKIT_MEMORY_LINEAGE_STATE` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | **Legacy** | `SPECKIT_MEMORY_GRAPH_UNIFIED` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | **Legacy** | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | **Legacy** | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | Use the MEMORY_ prefix. Still works as fallback. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | **Legacy** | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | Use the MEMORY_ prefix. Still works as fallback. |
 <!-- /ANCHOR:deprecated -->
 
 ---

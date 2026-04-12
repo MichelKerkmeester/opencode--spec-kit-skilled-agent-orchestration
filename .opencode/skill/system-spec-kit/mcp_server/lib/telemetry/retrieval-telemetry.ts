@@ -674,8 +674,6 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
         lineageState: t.architecture.capabilities.lineageState,
         graphUnified: t.architecture.capabilities.graphUnified,
         adaptiveRanking: t.architecture.capabilities.adaptiveRanking,
-        scopeEnforcement: t.architecture.capabilities.scopeEnforcement,
-        governanceGuardrails: t.architecture.capabilities.governanceGuardrails,
       },
       scopeDimensionsTracked: t.architecture.scopeDimensionsTracked,
     },

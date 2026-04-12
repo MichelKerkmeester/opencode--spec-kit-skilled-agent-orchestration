@@ -3,12 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import type { FsrsParams } from '../lib/cognitive/fsrs-scheduler';
 import * as fsrs from '../lib/cognitive/fsrs-scheduler';
-import * as archival from '../lib/cognitive/archival-manager';
 import * as wm from '../lib/cognitive/working-memory';
-
-interface TableInfoRow {
-  name: string;
-}
 
 interface WorkingMemoryRow {
   session_id: string;
@@ -18,35 +13,6 @@ interface WorkingMemoryRow {
 /* ─────────────────────────────────────────────────────────────
    DB HELPERS
 ──────────────────────────────────────────────────────────────── */
-
-/** Create in-memory DB with memory_index schema for archival-manager */
-function createArchivalDb() {
-  const db = new Database(':memory:');
-  db.exec(`
-    CREATE TABLE memory_index (
-      id INTEGER PRIMARY KEY,
-      spec_folder TEXT NOT NULL,
-      file_path TEXT NOT NULL,
-      title TEXT,
-      importance_tier TEXT DEFAULT 'normal',
-      importance_weight REAL DEFAULT 0.5,
-      created_at TEXT NOT NULL,
-      updated_at TEXT DEFAULT (datetime('now')),
-      last_accessed INTEGER DEFAULT 0,
-      access_count INTEGER DEFAULT 0,
-      confidence REAL DEFAULT 0.5,
-      is_archived INTEGER DEFAULT 0,
-      archived_at TEXT,
-      is_pinned INTEGER DEFAULT 0,
-      embedding_status TEXT DEFAULT 'pending',
-      related_memories TEXT,
-      stability REAL DEFAULT 1.0,
-      half_life_days REAL,
-      last_review TEXT
-    )
-  `);
-  return db;
-}
 
 /** Create in-memory DB with working_memory + memory_index schema */
 function createWorkingMemoryDb() {
@@ -269,104 +235,7 @@ describe('D. processReview', () => {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   E. ARCHIVAL MANAGER — ensureArchivedColumn
-═══════════════════════════════════════════════════════════════ */
-
-describe('E. ensureArchivedColumn', () => {
-  it('E-01: ensureArchivedColumn is idempotent', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.ensureArchivedColumn();
-    archival.ensureArchivedColumn();
-    const columns = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
-    expect(columns).toContain('is_archived');
-    archival.cleanup();
-    db.close();
-  });
-
-  it('E-02: adds is_archived column when missing', () => {
-    const db = new Database(':memory:');
-    db.exec(`
-      CREATE TABLE memory_index (
-        id INTEGER PRIMARY KEY,
-        title TEXT
-      )
-    `);
-    const colsBefore = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
-    expect(colsBefore).not.toContain('is_archived');
-
-    archival.init(db);
-    const colsAfter = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
-    expect(colsAfter).toContain('is_archived');
-    archival.cleanup();
-    db.close();
-  });
-
-  it('E-03: no crash when db is null', () => {
-    archival.cleanup();
-    expect(() => archival.ensureArchivedColumn()).not.toThrow();
-  });
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   F. ARCHIVAL MANAGER — getRecentErrors
-═══════════════════════════════════════════════════════════════ */
-
-describe('F. getRecentErrors', () => {
-  it('F-01: returns empty array when no errors', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.resetStats();
-    const errors = archival.getRecentErrors();
-    expect(Array.isArray(errors)).toBe(true);
-    expect(errors.length).toBe(0);
-    archival.cleanup();
-    db.close();
-  });
-
-  it('F-02: getRecentErrors returns array type', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.resetStats();
-    const errors = archival.getRecentErrors();
-    expect(Array.isArray(errors)).toBe(true);
-    archival.cleanup();
-    db.close();
-  });
-
-  it('F-03: default limit respects max of 10', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.resetStats();
-    const errors = archival.getRecentErrors();
-    expect(errors.length).toBeLessThanOrEqual(10);
-    archival.cleanup();
-    db.close();
-  });
-
-  it('F-04: custom limit parameter works', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.resetStats();
-    const errors = archival.getRecentErrors(5);
-    expect(errors.length).toBeLessThanOrEqual(5);
-    archival.cleanup();
-    db.close();
-  });
-
-  it('F-05: errors array contains strings', () => {
-    const db = createArchivalDb();
-    archival.init(db);
-    archival.resetStats();
-    const errors = archival.getRecentErrors();
-    expect(errors.every((errorMessage) => typeof errorMessage === 'string')).toBe(true);
-    archival.cleanup();
-    db.close();
-  });
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   G. WORKING MEMORY — cleanupOldSessions
+   E. WORKING MEMORY — cleanupOldSessions
 ═══════════════════════════════════════════════════════════════ */
 
 describe('G. cleanupOldSessions', () => {

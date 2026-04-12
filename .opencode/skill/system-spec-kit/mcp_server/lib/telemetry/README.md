@@ -98,8 +98,6 @@ telemetry/
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata; distinct from live `SPECKIT_GRAPH_UNIFIED` |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Default-off roadmap capability flag surfaced in telemetry metadata |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
 | `SPECKIT_NOVELTY_BOOST` | - | Gates N4 cold-start boost in scoring observability |
 | `SPECKIT_INTERFERENCE_SCORE` | - | Gates TM-01 interference penalty in scoring observability |
 | `SPECKIT_CONSUMPTION_LOG` | inert | Deprecated. Consumption logging is hardcoded to disabled after Sprint 7 audit |

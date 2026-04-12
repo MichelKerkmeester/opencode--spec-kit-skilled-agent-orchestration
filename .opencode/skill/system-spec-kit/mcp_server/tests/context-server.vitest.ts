@@ -404,7 +404,6 @@ describe('Context Server', () => {
       '../lib/cognitive/working-memory',
       '../lib/cognitive/attention-decay',
       '../lib/cognitive/co-activation',
-      '../lib/cognitive/archival-manager',
       '../lib/providers/retry-manager',
       '../lib/session/session-manager',
       '../lib/session/context-metrics',
@@ -921,18 +920,6 @@ describe('Context Server', () => {
       vi.doMock('../lib/cognitive/attention-decay.js', () => ({ init: vi.fn() }))
       vi.doMock('../lib/cognitive/co-activation', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
       vi.doMock('../lib/cognitive/co-activation.js', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
-      vi.doMock('../lib/cognitive/archival-manager', () => ({
-        init: vi.fn(),
-        startBackgroundJob: vi.fn(),
-        isBackgroundJobRunning: vi.fn(() => false),
-        cleanup: vi.fn(),
-      }))
-      vi.doMock('../lib/cognitive/archival-manager.js', () => ({
-        init: vi.fn(),
-        startBackgroundJob: vi.fn(),
-        isBackgroundJobRunning: vi.fn(() => false),
-        cleanup: vi.fn(),
-      }))
       vi.doMock('../lib/providers/retry-manager', () => ({
         startBackgroundJob: vi.fn(() => false),
         stopBackgroundJob: retryManagerStopBackgroundJobMock,
@@ -2487,9 +2474,9 @@ describe('Context Server', () => {
       expect(sourceCode).toMatch(/fatalShutdown[\s\S]*?vectorIndex\.closeDb\(\)/)
     })
 
-    // T44: Shutdown stops archival manager
-    it('T44: Shutdown stops archival manager', () => {
-      expect(sourceCode).toMatch(/archivalManager\.cleanup\(\)/)
+    // T44: Shutdown no longer references the removed archival manager
+    it('T44: Shutdown no longer references the removed archival manager', () => {
+      expect(sourceCode).not.toMatch(/archivalManager/)
     })
 
     // T45: Shutdown stops retry manager
@@ -2781,7 +2768,6 @@ describe('Context Server', () => {
       { module: './lib/cognitive/working-memory.js', name: 'Working memory' },
       { module: './lib/cognitive/attention-decay.js', name: 'Attention decay' },
       { module: './lib/cognitive/co-activation.js', name: 'Co-activation' },
-      { module: './lib/cognitive/archival-manager.js', name: 'Archival manager' },
       { module: './lib/providers/retry-manager.js', name: 'Retry manager' },
       { module: './lib/errors.js', name: 'Error utilities' },
       { module: './lib/session/session-manager.js', name: 'Session manager' },

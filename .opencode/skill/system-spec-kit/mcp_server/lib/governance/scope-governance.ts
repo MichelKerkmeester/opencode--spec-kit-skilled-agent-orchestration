@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Scope Governance
 // ───────────────────────────────────────────────────────────────
-// Hierarchical scope enforcement, governed ingest validation,
+// Hierarchical scope filtering, governed ingest validation,
 // provenance normalization, and governance audit persistence.
 import type Database from 'better-sqlite3';
 
@@ -13,7 +13,7 @@ import { ensureGovernanceTables } from '../search/vector-index-schema.js';
 /**
  * Retention modes applied during governed ingest.
  */
-export type RetentionPolicy = 'keep' | 'ephemeral' | 'shared';
+export type RetentionPolicy = 'keep' | 'ephemeral';
 
 /**
  * Request scope used to enforce tenancy, actor, and session boundaries.
@@ -162,33 +162,6 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
 }
 
 /**
- * Resolve whether scope filtering is active for the current process.
- * Default: OFF — scope enforcement is opt-in via SPECKIT_MEMORY_SCOPE_ENFORCEMENT=true.
- * When enabled without scope constraints in the query, all results are rejected
- * (empty scope + enforcement = no access). Only enable when multi-tenant governance
- * is configured with tenantId/userId/agentId in queries.
- *
- * @returns `true` when scope enforcement is enabled.
- */
-export function isScopeEnforcementEnabled(): boolean {
-  const flagValue = process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT?.trim().toLowerCase()
-    ?? process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT?.trim().toLowerCase();
-  return flagValue === 'true' || flagValue === '1';
-}
-
-/**
- * Resolve whether governance guardrails are active for the current process.
- * Default: OFF — governance guardrails are opt-in via SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS=true.
- *
- * @returns `true` when governance guardrails are enabled.
- */
-export function isGovernanceGuardrailsEnabled(): boolean {
-  const flagValue = process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS?.trim().toLowerCase()
-    ?? process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS?.trim().toLowerCase();
-  return flagValue === 'true' || flagValue === '1';
-}
-
-/**
  * Determine whether an ingest request must pass governed-ingest validation.
  *
  * @param input - Candidate ingest metadata.
@@ -201,7 +174,6 @@ export function requiresGovernedIngest(input: GovernedIngestInput): boolean {
     || typeof input.provenanceActor === 'string'
     || typeof input.governedAt === 'string'
     || input.retentionPolicy === 'ephemeral'
-    || input.retentionPolicy === 'shared'
     || typeof input.deleteAfter === 'string';
 }
 
@@ -216,7 +188,7 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
   const issues: string[] = [];
   const governedAt = normalizeIsoTimestamp(input.governedAt) ?? new Date().toISOString();
   const deleteAfter = normalizeIsoTimestamp(input.deleteAfter) ?? null;
-  const retentionPolicy: RetentionPolicy = input.retentionPolicy === 'ephemeral' || input.retentionPolicy === 'shared'
+  const retentionPolicy: RetentionPolicy = input.retentionPolicy === 'ephemeral'
     ? input.retentionPolicy
     : 'keep';
   const provenanceSource = normalizeId(input.provenanceSource) ?? '';
@@ -439,11 +411,7 @@ export function createScopeFilterPredicate<T extends Record<string, unknown>>(
   scope: ScopeContext,
 ): (row: T) => boolean {
   const normalized = normalizeScopeContext(scope);
-  if (!isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
-    return () => true;
-  }
-  if (isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
-    // BUG-001 fix: Empty scope under enforcement means no access, not universal access.
+  if (!hasScopeConstraints(normalized)) {
     return () => false;
   }
 

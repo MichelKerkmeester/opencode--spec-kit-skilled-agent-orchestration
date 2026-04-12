@@ -45,7 +45,7 @@ import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expan
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers.js';
-import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance.js';
+import { filterRowsByScope } from '../../governance/scope-governance.js';
 import { withTimeout } from '../../errors/core.js';
 import { computeBackfillQualityScore } from '../../validation/save-quality-gate.js';
 import {
@@ -1017,7 +1017,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     || userId
     || agentId
   );
-  const shouldApplyScopeFiltering = hasGovernanceScope || isScopeEnforcementEnabled();
+  const shouldApplyScopeFiltering = hasGovernanceScope;
   const scopeFilter = {
     tenantId,
     userId,
@@ -1078,8 +1078,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         const contextFilteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
-        // H12 FIX: Use shouldApplyScopeFiltering (not just hasGovernanceScope)
-        // to ensure constitutional injection respects global scope enforcement
+        // Re-apply any explicit governance scope after the injection query.
         const filteredConstitutional = shouldApplyScopeFiltering
           ? filterRowsByScope(contextFilteredConstitutional, scopeFilter)
           : contextFilteredConstitutional;

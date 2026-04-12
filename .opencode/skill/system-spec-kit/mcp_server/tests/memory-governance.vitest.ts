@@ -15,15 +15,10 @@ import { ALLOWED_POST_INSERT_COLUMNS } from '../lib/storage/post-insert-metadata
 
 describe('Phase 5 memory governance', () => {
   afterEach(() => {
-    delete process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT;
-    delete process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS;
     vi.restoreAllMocks();
   });
 
   it('rejects governed ingest when provenance or scope markers are missing', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
-    process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS = 'true';
-
     const decision = validateGovernedIngest({
       tenantId: 'tenant-a',
       sessionId: 'session-1',
@@ -35,7 +30,6 @@ describe('Phase 5 memory governance', () => {
   });
 
   it('filters rows to the requested tenant and actor scope', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
     const filtered = filterRowsByScope([
       { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1' },
       { id: 2, tenant_id: 'tenant-a', user_id: 'user-2', session_id: 'session-1' },
@@ -49,8 +43,7 @@ describe('Phase 5 memory governance', () => {
     expect(filtered.map((row) => row.id)).toEqual([1]);
   });
 
-  it('denies all rows when enforcement is on and scope is empty', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+  it('denies all rows when scope is empty', () => {
     const rows = [
       { tenant_id: 'a', user_id: 'u1', agent_id: null, session_id: null },
       { tenant_id: 'b', user_id: 'u2', agent_id: null, session_id: null },
@@ -227,7 +220,6 @@ describe('Phase 5 memory governance', () => {
   });
 
   it('reuses cached scope predicates and benchmarks scoped filtering', () => {
-    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
     const rows = [
       { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1' },
       { id: 2, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-2' },

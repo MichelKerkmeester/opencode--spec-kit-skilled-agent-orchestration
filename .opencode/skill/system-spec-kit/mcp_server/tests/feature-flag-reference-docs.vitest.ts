@@ -42,7 +42,7 @@ const mappingChecks = [
   {
     doc: '04-4-memory-and-storage.md',
     env: 'MEMORY_DB_DIR',
-    source: 'lib/search/vector-index-store.ts',
+    source: 'lib/eval/eval-db.ts',
   },
   {
     doc: '04-4-memory-and-storage.md',
@@ -61,36 +61,30 @@ const mappingChecks = [
   },
 ];
 
-const hydraDefaultDocs = [
+const roadmapDefaultDocs = [
+  '01-1-search-pipeline-features-speckit.md',
+  '11-memory-roadmap-capability-flags.md',
+] as const;
+
+const roadmapFlagDefaults = [
+  ['SPECKIT_MEMORY_LINEAGE_STATE', 'true'],
+  ['SPECKIT_MEMORY_GRAPH_UNIFIED', 'true'],
+  ['SPECKIT_MEMORY_ADAPTIVE_RANKING', 'false'],
+] as const;
+
+const roadmapDocsWithoutRemovedFlags = [
   '01-1-search-pipeline-features-speckit.md',
   '06-6-debug-and-telemetry.md',
+  '11-memory-roadmap-capability-flags.md',
 ] as const;
 
-const hydraFlagDefaults = [
-  ['SPECKIT_HYDRA_LINEAGE_STATE', 'true'],
-  ['SPECKIT_HYDRA_GRAPH_UNIFIED', 'true'],
-  ['SPECKIT_HYDRA_ADAPTIVE_RANKING', 'false'],
-  ['SPECKIT_HYDRA_SCOPE_ENFORCEMENT', 'true'],
-  ['SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS', 'true'],
-] as const;
-
-const canonicalHydraAliases = {
-  SPECKIT_HYDRA_PHASE: 'SPECKIT_MEMORY_ROADMAP_PHASE',
-  SPECKIT_HYDRA_LINEAGE_STATE: 'SPECKIT_MEMORY_LINEAGE_STATE',
-  SPECKIT_HYDRA_GRAPH_UNIFIED: 'SPECKIT_MEMORY_GRAPH_UNIFIED',
-  SPECKIT_HYDRA_ADAPTIVE_RANKING: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
-  SPECKIT_HYDRA_SCOPE_ENFORCEMENT: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
-  SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
-} as const;
-
-function expectHydraFlagRow(
+function expectRoadmapFlagRow(
   docContent: string,
-  legacyEnv: keyof typeof canonicalHydraAliases,
+  env: string,
   defaultValue: string,
 ): void {
-  const canonicalEnv = canonicalHydraAliases[legacyEnv];
   const rowPattern = new RegExp(
-    `\\|\\s+\`(?:${escapeRegExp(canonicalEnv)}\`\\s+\\/\\s+\`)?${escapeRegExp(legacyEnv)}\`\\s+\\|\\s+\`${escapeRegExp(defaultValue)}\`\\s+\\|`,
+    `\\|\\s+\`${escapeRegExp(env)}\`\\s+\\|\\s+\`${escapeRegExp(defaultValue)}\`\\s+\\|`,
   );
 
   expect(docContent).toMatch(rowPattern);
@@ -116,36 +110,48 @@ describe('Feature flag reference catalog mappings', () => {
   }
 });
 
-describe('Hydra roadmap flag documentation', () => {
-  for (const doc of hydraDefaultDocs) {
-    it(`${doc} reflects the shipped Hydra roadmap behavior with dormant adaptive ranking default-off`, () => {
+describe('Memory roadmap flag documentation', () => {
+  for (const doc of roadmapDefaultDocs) {
+    it(`${doc} reflects the shipped memory roadmap behavior with adaptive ranking default-off`, () => {
       const docPath = path.join(FEATURE_FLAG_DOCS, doc);
       const docContent = fs.readFileSync(docPath, 'utf8');
 
-      expectHydraFlagRow(docContent, 'SPECKIT_HYDRA_PHASE', 'scope-governance');
+      expectRoadmapFlagRow(docContent, 'SPECKIT_MEMORY_ROADMAP_PHASE', 'scope-governance');
       expect(docContent).toMatch(/(?:unknown|unsupported) values fall back to `scope-governance`/i);
 
-      for (const [env, defaultValue] of hydraFlagDefaults) {
-        expectHydraFlagRow(docContent, env, defaultValue);
+      for (const [env, defaultValue] of roadmapFlagDefaults) {
+        expectRoadmapFlagRow(docContent, env, defaultValue);
       }
     });
   }
 
-  it('manual playbook 125 matches the dormant adaptive plus canonical-over-legacy contract', () => {
+  for (const doc of roadmapDocsWithoutRemovedFlags) {
+    it(`${doc} no longer references removed Hydra or governance compatibility flags`, () => {
+      const docPath = path.join(FEATURE_FLAG_DOCS, doc);
+      const docContent = fs.readFileSync(docPath, 'utf8');
+
+      expect(docContent).not.toContain('SPECKIT_HYDRA');
+      expect(docContent).not.toContain('SPECKIT_MEMORY_SCOPE_ENFORCEMENT');
+      expect(docContent).not.toContain('SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS');
+    });
+  }
+
+  it('manual playbook 125 matches the canonical roadmap contract', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
     const featureFilePath = path.join(
       SKILL_ROOT,
       'manual_testing_playbook',
       '19--feature-flag-reference',
-      '125-hydra-roadmap-capability-flags.md',
+      '125-memory-roadmap-capability-flags.md',
     );
     const playbookContent = fs.readFileSync(playbookPath, 'utf8');
     const featureFileContent = fs.readFileSync(featureFilePath, 'utf8');
 
-    expect(playbookContent).toContain('### 125 | Hydra roadmap capability flags');
-    expect(playbookContent).toContain('dormant adaptive ranking default-off');
+    expect(playbookContent).toContain('### 125 | Memory roadmap capability flags');
+    expect(playbookContent).toContain('adaptive ranking default-off');
     expect(playbookContent).toContain('capabilities.graphUnified:true');
     expect(playbookContent).toContain('capabilities.adaptiveRanking:false');
+    expect(playbookContent).not.toContain('SPECKIT_HYDRA');
 
     expect(featureFileContent).toContain('phase:\\"scope-governance\\"');
     expect(featureFileContent).toContain('capabilities.graphUnified:true');
@@ -154,6 +160,7 @@ describe('Hydra roadmap flag documentation', () => {
     expect(featureFileContent).toContain('capabilities.graphUnified:false');
     expect(featureFileContent).toContain('SPECKIT_MEMORY_ADAPTIVE_RANKING=true');
     expect(featureFileContent).toContain('capabilities.adaptiveRanking:true');
+    expect(featureFileContent).not.toContain('SPECKIT_HYDRA');
   });
 });
 

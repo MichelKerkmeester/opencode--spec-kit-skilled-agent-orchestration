@@ -77,7 +77,7 @@
       "complexityTier": "moderate",
       "category": "cross_document",
       "source": "seed",
-      "expectedResultDescription": "Should surface memories about SPECKIT_WORKING_MEMORY, SPECKIT_EVENT_DECAY, working-memory.ts, and archival-manager.ts. The relationship is that event decay reduces attention scores over time.",
+      "expectedResultDescription": "Should surface memories about SPECKIT_WORKING_MEMORY, SPECKIT_EVENT_DECAY, working-memory.ts, and attention-decay.ts. The relationship is that event decay reduces attention scores over time.",
       "notes": "Cross-document query spanning multiple cognitive subsystems. Tests ability to retrieve conceptually related content without exact term matching."
     },
     {
@@ -627,7 +627,7 @@
       "complexityTier": "moderate",
       "category": "factual",
       "source": "trigger_derived",
-      "expectedResultDescription": "Should surface importance-tiers.ts, tier-classifier.ts, archival-manager.ts, and any spec memories about the 5-tier state machine.",
+      "expectedResultDescription": "Should surface importance-tiers.ts, tier-classifier.ts, attention-decay.ts, and any spec memories about the 5-tier state machine.",
       "notes": "Trigger derived from tier names — tests whether explicit state name enumeration retrieves the right docs."
     },
     {
@@ -707,7 +707,7 @@
       "complexityTier": "moderate",
       "category": "cross_document",
       "source": "manual",
-      "expectedResultDescription": "Should surface archival-manager.ts, tier-classifier.ts, and any spec about the archival lifecycle conditions.",
+      "expectedResultDescription": "Should surface tier-classifier.ts, attention-decay.ts, and any spec about the evidence-state lifecycle conditions.",
       "notes": "Manual conversational phrasing — \"I want to understand how\" mimics natural user language."
     },
     {
