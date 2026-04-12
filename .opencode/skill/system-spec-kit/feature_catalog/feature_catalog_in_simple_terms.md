@@ -130,7 +130,7 @@ This is the speed-first search option. Instead of doing a deep analysis of your 
 
 ### Hybrid search pipeline
 
-When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results. That widening no longer ignores your explicit routing choices: if you turned graph signals off, the fallback path keeps them off instead of quietly turning them back on. The last-resort SQL fallback also keeps archived memories out unless you explicitly ask for them, and score boosts from co-activation and session memory stay in sync so later ranking code sees the same boosted values.
+When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results. That widening no longer ignores your explicit routing choices: if you turned graph signals off, the fallback path keeps them off instead of quietly turning them back on. The last-resort SQL fallback now uses the same allowed-channel rules without reviving the old archived-tier branch, and score boosts from co-activation and session memory stay in sync so later ranking code sees the same boosted values.
 
 ### 4-stage pipeline architecture
 
@@ -734,7 +734,7 @@ Once a week, the system reviews all the quiet usage signals it has collected and
 
 ### Assistive reconsolidation
 
-When two memories look very similar, the system automatically classifies them into one of three categories: near-identical (shadow-archived: the older record is marked archived while the new one saves normally — no content merging occurs), borderline similar (flagged for your review with a recommendation) or clearly different (kept separate). This helps prevent duplicate clutter while making sure genuinely distinct memories are not accidentally combined. No content is deleted without clear justification.
+When two memories look very similar, the system automatically classifies them into one of three categories: near-identical (logged as an auto-merge compatibility note), borderline similar (flagged for your review with a recommendation) or clearly different (kept separate). This helps prevent duplicate clutter while making sure genuinely distinct memories are not accidentally combined. The assistive layer stays advisory-only, so it does not archive or merge memories by itself.
 
 ---
 
