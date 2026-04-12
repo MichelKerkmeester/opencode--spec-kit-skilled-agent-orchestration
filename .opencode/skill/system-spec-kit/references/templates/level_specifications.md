@@ -387,7 +387,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 - `spec.md` (from Level 3) - With Complexity Assessment section
 - `plan.md` (from Level 3) - With AI Execution Framework, dependency graphs
 - `tasks.md` (from Level 3) - With 3-Tier Task Format, AI Execution Protocol
-- `checklist.md` (from Level 3) - Extended (100-150 items) with sign-off section
+- `checklist.md` (from Level 3) - Extended (100-150 items) with approval tracking
 - `decision-record.md` (from Level 3) - Architecture Decision Records
 - `implementation-summary.md` (from Level 3) - Required completion artifact for all levels
 
@@ -399,7 +399,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 | Dependency Graph | Full DAG visualization of task dependencies | plan.md |
 | Effort Estimation | Story points/hours per phase with totals | plan.md |
 | Extended Checklist | 100-150 items with P0/P1/P2 prioritization | checklist.md |
-| Sign-Off Section | Technical Lead, Product Owner, QA Lead sign-offs | checklist.md |
+| Approval Tracking | Reviewer checkpoint table for key approvers | checklist.md |
 | Workstream Organization | Parallel workstream tracking and coordination | tasks.md |
 
 ### AI Execution Protocol Components
@@ -503,7 +503,7 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 4. Build dependency graph showing all task relationships
 5. Add effort estimates per phase
 6. Expand checklist to 100+ items covering all validation areas
-7. Add sign-off section with appropriate approvers
+7. Add approval tracking section with appropriate reviewers
 8. Organize workstreams if parallel work streams exist
 9. Remove all sample content and placeholders
 
@@ -531,7 +531,7 @@ bash upgrade-level.sh specs/042-feature/ --to 2
 # Upgrade to Level 3 (chains through intermediate levels automatically)
 bash upgrade-level.sh specs/042-feature/ --to 3
 
-# Upgrade to Level 3+ (enterprise governance)
+# Upgrade to Level 3+ (approval workflow + compliance)
 bash upgrade-level.sh specs/042-feature/ --to 3+
 
 # Preview changes without modifying files
@@ -842,8 +842,8 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - [research template](../../templates/research.md) - Optional research template copied into `research/research.md`
 
 **Composed Level 3+ (All addendums ~1075 LOC):**
-- All Level 3 templates + enterprise governance
-- Extended checklist with sign-off, AI protocols
+- All Level 3 templates + approval workflow, compliance, stakeholders
+- Extended checklist with approval tracking
 
 **Session Management Templates (Any Level):**
 - [handover.md](../../templates/handover.md) - Session context transfer
