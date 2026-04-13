@@ -247,6 +247,8 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 > **Note:** `implementation-summary.md` is REQUIRED for all levels but created **after implementation completes**, not at spec folder creation time. See SKILL.md §4 Rule 13.
 
+> **Mandatory metadata:** Every spec folder (Level 1+) MUST contain `description.json` and `graph-metadata.json`. Both are auto-generated/refreshed by `generate-context.js` during canonical saves. If creating a spec folder manually or via template, run `generate-description.js` and the graph-metadata backfill to ensure both files exist. Spec folders without these files are invisible to memory search and graph traversal.
+
 **Rules:** When in doubt → higher level. LOC is soft guidance (risk/complexity can override). Single typo/whitespace fixes (<5 characters in one file) are exempt.
 
 **Spec folder path:** `specs/[###-short-name]/` | **Templates:** `.opencode/skill/system-spec-kit/templates/`
