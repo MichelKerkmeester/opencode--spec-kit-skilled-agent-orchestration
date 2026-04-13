@@ -59,8 +59,8 @@
       "scratch/post-path-symlinks.txt",
       "scratch/final-remnant-counts.txt",
       "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
-      "cat .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
-      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt"
+      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
+      "spec.md"
     ],
     "entities": [
       {
@@ -130,6 +130,12 @@
         "source": "derived"
       },
       {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -152,17 +158,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Problem Statement The Public",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core | v2.2\"",
     "created_at": "2026-04-12T09:02:50.205Z",
-    "last_save_at": "2026-04-13T08:18:53.969Z",
+    "last_save_at": "2026-04-13T10:56:00.295Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

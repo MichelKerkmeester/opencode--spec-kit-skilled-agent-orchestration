@@ -1,6 +1,6 @@
 ---
 title: "Deduplicate Graph Metadata Entities - Execution Plan"
-status: planned
+status: complete
 parent_spec: 003-deduplicate-entities/spec.md
 ---
 # Execution Plan

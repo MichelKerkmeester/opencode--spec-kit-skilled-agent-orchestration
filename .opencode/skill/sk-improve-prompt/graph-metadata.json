@@ -5,7 +5,12 @@
   "category": "utility",
   "edges": {
     "depends_on": [],
-    "enhances": [],
+    "enhances": [
+      { "target": "cli-claude-code", "weight": 0.4, "context": "prompt quality card" },
+      { "target": "cli-codex", "weight": 0.4, "context": "prompt quality card" },
+      { "target": "cli-copilot", "weight": 0.4, "context": "prompt quality card" },
+      { "target": "cli-gemini", "weight": 0.4, "context": "prompt quality card" }
+    ],
     "siblings": [
       { "target": "sk-improve-agent", "weight": 0.4, "context": "improvement utility peer" }
     ],

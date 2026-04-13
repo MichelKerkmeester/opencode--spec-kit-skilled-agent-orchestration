@@ -1,6 +1,6 @@
 ---
 title: "Fix Graph Metadata Status Derivation - Decision Record"
-status: planned
+status: complete
 ---
 # Decision Record
 ## ADR-001: Use the Safer Checklist-Aware Completion Fallback

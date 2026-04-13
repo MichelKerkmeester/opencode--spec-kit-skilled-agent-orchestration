@@ -47,7 +47,6 @@
       "external/src/generators/ai-config.ts",
       "external/src/detectors/blast-radius.ts",
       "external/src/eval.ts",
-      "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
       "research/deep-research-config.json",
       "research/deep-research-state.jsonl",
       "research/deep-research-strategy.md",
@@ -60,7 +59,8 @@
       "external/src/ast/extract-routes.ts",
       "external/src/types.ts",
       "external/src/detectors/graph.ts",
-      "external/src/detectors/contracts.ts"
+      "external/src/detectors/contracts.ts",
+      "external/src/ast/extract-python.ts"
     ],
     "entities": [
       {
@@ -97,12 +97,6 @@
         "name": "eval.ts",
         "kind": "code",
         "path": "external/src/eval.ts",
-        "source": "derived"
-      },
-      {
-        "name": "codex-iter-NNN-output.md",
-        "kind": "doc",
-        "path": "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
         "source": "derived"
       },
       {
@@ -158,11 +152,17 @@
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
         "source": "derived"
+      },
+      {
+        "name": "extract-routes.ts",
+        "kind": "code",
+        "path": "external/src/ast/extract-routes.ts",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-13T08:18:57.028Z",
+    "last_save_at": "2026-04-13T10:56:03.664Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

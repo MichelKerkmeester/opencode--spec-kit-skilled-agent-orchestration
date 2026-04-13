@@ -1,6 +1,6 @@
 ---
 title: "Remove Cross-Encoder Length Penalty"
-status: planned
+status: complete
 level: 2
 type: implementation
 parent: 017-research-search-fusion-tuning

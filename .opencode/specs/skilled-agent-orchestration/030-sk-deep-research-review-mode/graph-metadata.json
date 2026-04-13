@@ -72,13 +72,13 @@
       {
         "name": "handover.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md",
+        "path": "handover.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -108,13 +108,13 @@
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Currently, reviewing spec folders, code changes, skills, and their cross-references for release readiness is a manual, single-pass process. There is no iterative, convergence-driven review flow that systematically checks all dimensions such as correctness, security, patterns, spec alignment, completeness, and cross-reference integrity across a review target.",
     "created_at": "2026-04-12T09:02:50.177Z",
-    "last_save_at": "2026-04-13T08:18:53.936Z",
+    "last_save_at": "2026-04-13T10:56:00.237Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

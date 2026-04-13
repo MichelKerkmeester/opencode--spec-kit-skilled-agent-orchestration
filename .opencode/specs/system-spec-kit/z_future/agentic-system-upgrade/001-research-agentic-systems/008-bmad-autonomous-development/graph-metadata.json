@@ -153,7 +153,7 @@
     ],
     "causal_summary": "This phase already contained Phase 1 BAD research artifacts, but it did not have the required Level 1 packet docs and its phase prompt still referenced stale extracted-repo paths. Phase 2 needed to extend the research through iterations `011`-`020`, merge the findings into the packet synthesis, and leave the folder in a validator-clean state instead of as an orphaned research dump.",
     "created_at": "2026-04-12T09:02:53.489Z",
-    "last_save_at": "2026-04-13T08:18:57.157Z",
+    "last_save_at": "2026-04-13T10:56:03.925Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -84,7 +84,7 @@
       {
         "name": "decision-record.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/level_3/decision-record.md",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "This specification consolidates findings from four prior research specs (060-063) into a single implementation plan for upgrading the system-spec-kit skill. The research analyzed Smart-Ralph (state management, recovery), Empirica (epistemic vectors, uncertainty tracking), OpenCode Hooks (design patterns), and Superego (evaluation frameworks, decision journaling) to identify transferable patterns that would enhance context preservation, decision quality, and workflow reliability.",
     "created_at": "2026-04-12T09:02:53.548Z",
-    "last_save_at": "2026-04-13T08:18:57.125Z",
+    "last_save_at": "2026-04-13T10:56:03.861Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

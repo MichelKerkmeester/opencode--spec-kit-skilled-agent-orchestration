@@ -137,7 +137,7 @@
     ],
     "causal_summary": "This sub-phase scopes pre-compaction preservation so the most fragile continuity moment uses existing transport and JSON-primary save authority. It covers compaction action-card placement, dedupe behavior, and fail-open posture. It does not introduce a blocking hook or a second preservation store.",
     "created_at": "2026-04-13T04:56:07.088Z",
-    "last_save_at": "2026-04-13T08:18:57.171Z",
+    "last_save_at": "2026-04-13T10:56:03.953Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -161,7 +161,7 @@
     ],
     "causal_summary": "The `024-codex-memory-mcp-fix` packet documented six follow-on recommendations (T020-T025) for runtime hardening, but none were implemented. Key gaps: no integration tests for custom-path DB + embedding-dimension mismatch; no lifecycle tests for shutdown sequencing or tool-cache invalidation; `buildErrorResponse()` passes unsanitized provider error messages to callers; and launcher docs lack consolidated MEMORY_DB_PATH and clean-transport guidance.",
     "created_at": "2026-04-12T09:02:50.314Z",
-    "last_save_at": "2026-04-13T08:18:54.071Z",
+    "last_save_at": "2026-04-13T10:56:00.491Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

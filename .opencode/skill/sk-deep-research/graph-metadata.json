@@ -6,9 +6,7 @@
   "edges": {
     "depends_on": [],
     "enhances": [],
-    "siblings": [
-      { "target": "sk-deep-review", "weight": 0.5, "context": "autonomous loop peer" }
-    ],
+    "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []
   },

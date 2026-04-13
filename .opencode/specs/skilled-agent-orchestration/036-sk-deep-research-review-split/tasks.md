@@ -1,17 +1,37 @@
 ---
 title: "Tasks: Split sk-deep-research review mode [03--commands-and-skills/036-sk-deep-research-review-split/tasks]"
 description: "Task Format: T### [P?] Description (file path)"
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 trigger_phrases:
   - "036 tasks"
   - "deep-review split tasks"
   - "review mode split task list"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/036-sk-deep-research-review-split"
+    last_updated_at: "2026-04-13T10:38:46Z"
+    last_updated_by: "copilot"
+    recent_action: "Applied follow-up advisor evidence calibration and sibling-edge cleanup"
+    next_safe_action: "Keep packet docs synced with any future deep-review or advisor adjustments"
+    blockers: []
+    key_files:
+      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/sk-deep-review/graph-metadata.json"
+      - ".opencode/skill/sk-deep-research/graph-metadata.json"
+    session_dedup:
+      fingerprint: "sha256:036-sk-deep-research-review-split"
+      session_id: "036-sk-deep-research-review-split"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
 ---
 # Tasks: Split sk-deep-research Review Mode into sk-deep-review
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 

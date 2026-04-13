@@ -1,6 +1,6 @@
 ---
-title: "Normalize Legacy Graph Metadata Files"
-status: planned
+title: "Retired: Normalize Legacy Graph Metadata Files"
+status: complete
 level: 2
 type: implementation
 parent: 019-research-graph-metadata-validation
@@ -12,6 +12,10 @@ created: 2026-04-12
 ## Scope
 
 Convert the 35 remaining text-format `graph-metadata` files to canonical JSON format. These files still load via the parser's plaintext fallback path but produce weaker timestamps and incomplete entity coverage compared to JSON-format files.
+
+## Retirement Note
+
+This phase is now retired as active implementation work. The final post-remediation corpus scan in this packet returned `legacyGraphMetadataFiles = 0`, so no legacy plaintext graph-metadata files remain to migrate.
 
 ## Key Files
 

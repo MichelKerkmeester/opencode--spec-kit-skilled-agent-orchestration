@@ -1,6 +1,6 @@
 ---
 title: "Research: Graph Metadata Quality & Relationship Validation - Checklist"
-status: planned
+status: complete
 ---
 
 # Verification Checklist: Graph Metadata Quality & Relationship Validation
@@ -10,11 +10,11 @@ status: planned
 
 ## P1 (Should Fix)
 
-- [ ] Command-shaped `key_files` entries = 0 after tightened filter
-- [ ] Backfill test passes 3/3
-- [ ] Root 019 + sub-phases 001-004 all pass `validate.sh --strict`
+- [x] Command-shaped `key_files` entries = 0 after tightened filter. [EVIDENCE: post-backfill corpus scan across `.opencode/specs/**/*.json` returned `0` command-shaped `derived.key_files` values]
+- [x] Backfill test passes 3/3. [EVIDENCE: `NODE_PATH=./mcp_server/node_modules ./mcp_server/node_modules/.bin/vitest run scripts/tests/graph-metadata-backfill.vitest.ts`]
+- [x] Root 019 + sub-phases 001-004 status and closeout docs refreshed to match the repaired parser/runtime state. [EVIDENCE: root 019 closeout docs plus refreshed 001-004 packet statuses, completed checklist items, and new 004 retirement docs]
 
 ## P2 (Advisory)
 
-- [ ] Entity path matching scoped to prevent cross-packet attribution
-- [ ] Status normalization catches all known variants (done, completed, active, in-progress)
+- [x] Entity path matching scoped to prevent cross-packet attribution. [EVIDENCE: `deriveEntities()` now limits canonical packet-doc preference to the current spec folder chain and focused Vitest coverage keeps sibling packet paths from winning]
+- [x] Status normalization catches all known variants (done, completed, active, in-progress). [EVIDENCE: post-backfill corpus scan returned `0` non-canonical derived statuses]

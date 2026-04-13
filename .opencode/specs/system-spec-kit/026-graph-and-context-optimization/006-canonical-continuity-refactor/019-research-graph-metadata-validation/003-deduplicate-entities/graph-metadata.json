@@ -29,7 +29,7 @@
       "canonical-path"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts",
@@ -37,9 +37,7 @@
       "implementation-summary.md",
       "spec.md",
       "plan.md",
-      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts tests/graph-metadata-schema.vitest.ts",
       "mcp_server/lib/graph/graph-metadata-parser.ts",
-      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts",
       "mcp_server/tests/graph-metadata-schema.vitest.ts",
       "checklist.md",
       "decision-record.md"
@@ -79,12 +77,6 @@
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "graph-metadata-integration.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts",
         "source": "derived"
       },
       {
@@ -140,11 +132,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "a",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Add a basename-match check against existing canonical-path entries before inserting new entities into graph metadata. Currently 2,020 basename-only duplicates exist across 270 spec folders, inflating entity counts and degrading graph query precision.",
     "created_at": "2026-04-13T05:11:45.014Z",
-    "last_save_at": "2026-04-13T08:18:57.067Z",
+    "last_save_at": "2026-04-13T10:56:03.741Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

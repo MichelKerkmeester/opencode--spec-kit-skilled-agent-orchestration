@@ -5,7 +5,9 @@
   "category": "utility",
   "edges": {
     "depends_on": [],
-    "enhances": [],
+    "enhances": [
+      { "target": "system-spec-kit", "weight": 0.5, "context": "doc creation for specs" }
+    ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []

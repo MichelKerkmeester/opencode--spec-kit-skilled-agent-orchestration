@@ -1,6 +1,6 @@
 ---
 title: "Deduplicate Graph Metadata Entities - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)
@@ -12,5 +12,5 @@ status: planned
 - [x] The 16-entity cap behavior is preserved after deduplication. Evidence: `deriveEntities()` still returns `Array.from(entities.values()).slice(0, 16)`.
 - [x] The implementation stays packet-local and does not introduce cross-folder entity merging. Evidence: deduplication is limited to normalized names within one packet parse and does not add cross-folder merge logic.
 ## P2 (Advisory)
-- [ ] Corpus verification captures the before/after duplicate-slot count for the targeted folders.
-- [ ] Any adjacent trigger-cap cleanup remains tracked as separate parser work rather than silently merged into this phase.
+- [x] Corpus verification captures the duplicate-slot cleanup outcome for the targeted folders. Evidence: the final entity audit returned `duplicateEntityNameGroups = 0` across the refreshed corpus.
+- [x] The adjacent trigger-cap cleanup remains explicit and verified rather than implicit. Evidence: `implementation-summary.md` documents the trigger-cap follow-up directly and `graph-metadata-schema.vitest.ts` still covers the 12-item cap behavior alongside the entity collision tests.

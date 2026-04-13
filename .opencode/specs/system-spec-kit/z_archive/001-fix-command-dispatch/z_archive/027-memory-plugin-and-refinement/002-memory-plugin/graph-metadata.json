@@ -66,7 +66,7 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "002-memory-plugin/spec.md",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin/spec.md",
         "source": "derived"
       },
       {
@@ -150,7 +150,7 @@
     ],
     "causal_summary": "Optimize the semantic memory plugin to inject a compact \"memory dashboard\" instead of full content, reducing token consumption while maintaining context visibility.",
     "created_at": "2026-04-12T09:02:53.519Z",
-    "last_save_at": "2026-04-13T08:18:57.093Z",
+    "last_save_at": "2026-04-13T10:56:03.794Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

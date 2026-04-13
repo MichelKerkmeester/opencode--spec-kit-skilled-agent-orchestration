@@ -51,7 +51,6 @@
       ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
       ".codex/agents/context-prime.toml",
       ".github/hooks/superset-notify.json",
-      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
       "jq empty .github/hooks/superset-notify.json",
       "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
       "printf '{\\\"session_id\\\":\\\"demo\\\",\\\"source\\\":\\\"startup\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js",
@@ -60,7 +59,8 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "spec.md"
     ],
     "entities": [
       {
@@ -106,12 +106,6 @@
         "source": "derived"
       },
       {
-        "name": "hook-session-start.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "session-prime.js",
         "kind": "code",
         "path": "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
@@ -148,6 +142,12 @@
         "source": "derived"
       },
       {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Phase 4 extended the shipped startup experience beyond OpenCode. The Level 3 repair keeps that runtime/config parity claim intact and turns the phase into a durable packet artifact with explicit runtime boundaries and evidence.",
     "created_at": "2026-04-12T09:02:53.438Z",
-    "last_save_at": "2026-04-13T08:18:57.019Z",
+    "last_save_at": "2026-04-13T10:56:03.647Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

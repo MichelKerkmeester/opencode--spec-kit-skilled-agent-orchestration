@@ -1,6 +1,6 @@
 ---
 title: "Remove Cross-Encoder Length Penalty - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)
@@ -12,5 +12,5 @@ status: planned
 - [x] The phase leaves schema, tool metadata, handler defaults, and shadow replay intact for one compatibility cycle. Evidence: `search-limits-scoring.vitest.ts` still verifies handler and Stage 3 `applyLengthPenalty` plumbing without removing the public option.
 - [x] The temporary cache-key duplication risk from the inert `lp` flag is documented for the later cleanup phase. Evidence: superseded by a stronger runtime fix: `generateCacheKey()` now ignores retired `lp` bits and `rerankResults()` caches without flag variance.
 ## P2 (Advisory)
-- [ ] Follow-on cleanup scope for removing the public `applyLengthPenalty` contract is noted explicitly.
-- [ ] Shadow or replay verification confirms there is no hidden dependency on the removed helper names.
+- [x] Follow-on cleanup scope for removing the public `applyLengthPenalty` contract is noted explicitly. Evidence: `implementation-summary.md` sets the next safe action to retire the flag in a dedicated cleanup phase, and `decision-record.md` records the later follow-on removal.
+- [x] Shadow or replay verification confirms there is no hidden dependency on the removed helper names. Evidence: `tasks.md` T-05 kept schema, handler defaults, and shadow replay support intact, while the targeted cross-encoder/search verification runs stayed green.

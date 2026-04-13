@@ -149,7 +149,7 @@
     ],
     "causal_summary": "The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 4-command memory surface. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand and the nested `/memory:manage shared` shared-memory lifecycle route. The retrieval row still points at the retired analyze command name instead of `/memory:search`. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.",
     "created_at": "2026-04-12T09:02:50.287Z",
-    "last_save_at": "2026-04-13T08:18:54.046Z",
+    "last_save_at": "2026-04-13T10:56:00.445Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

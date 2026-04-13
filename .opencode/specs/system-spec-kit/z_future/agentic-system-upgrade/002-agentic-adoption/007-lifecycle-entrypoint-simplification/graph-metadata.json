@@ -58,7 +58,7 @@
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": ".opencode/command/spec_kit/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -148,7 +148,7 @@
     ],
     "causal_summary": "Public already has the core authority needed for 007 lifecycle entrypoint simplification, but the change still needs one implementation-ready contract. This child phase narrows the converged research into a current-authority-safe design.",
     "created_at": "2026-04-12T09:02:53.494Z",
-    "last_save_at": "2026-04-13T08:18:57.162Z",
+    "last_save_at": "2026-04-13T10:56:03.935Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -66,7 +66,7 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -84,7 +84,7 @@
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/checklist.md",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
@@ -96,7 +96,7 @@
       {
         "name": "decision-record.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/decision-record.md",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities.",
     "created_at": "2026-04-12T09:02:53.518Z",
-    "last_save_at": "2026-04-13T08:18:57.092Z",
+    "last_save_at": "2026-04-13T10:56:03.792Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

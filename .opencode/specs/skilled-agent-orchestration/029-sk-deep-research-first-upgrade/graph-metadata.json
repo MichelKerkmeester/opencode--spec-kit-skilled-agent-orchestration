@@ -63,31 +63,31 @@
       {
         "name": "research.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/research/research.md",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
@@ -159,7 +159,7 @@
     ],
     "causal_summary": "The first sk-deep-research upgrade needed grounded input from comparable autonomous research systems. Without a documented comparison against ResearcherSkill and autoresearch, upgrade choices would lean on intuition instead of evidence.",
     "created_at": "2026-04-12T09:02:50.176Z",
-    "last_save_at": "2026-04-13T08:18:53.935Z",
+    "last_save_at": "2026-04-13T10:56:00.236Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

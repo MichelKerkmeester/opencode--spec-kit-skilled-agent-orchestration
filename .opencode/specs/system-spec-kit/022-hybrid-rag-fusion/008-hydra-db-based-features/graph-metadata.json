@@ -48,10 +48,6 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/tool-input-schema.vitest.ts tests/handler-memory-context.vitest.ts tests/memory-tools.vitest.ts tests/shared-memory-handlers.vitest.ts tests/graph-search-fn.vitest.ts",
-      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts",
-      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts",
-      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/claude-code-capture.vitest.ts tests/opencode-capture.vitest.ts",
       "decision-record.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts",
@@ -67,33 +63,13 @@
       "001-baseline-and-safety-rails/spec.md",
       "002-versioned-memory-state/spec.md",
       "003-unified-graph-retrieval/spec.md",
-      "004-adaptive-retrieval-loops/spec.md"
+      "004-adaptive-retrieval-loops/spec.md",
+      "005-hierarchical-scope-governance/spec.md",
+      "006-shared-memory-rollout/spec.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
     ],
     "entities": [
-      {
-        "name": "graph-search-fn.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/tool-input-schema.vitest.ts tests/handler-memory-context.vitest.ts tests/memory-tools.vitest.ts tests/shared-memory-handlers.vitest.ts tests/graph-search-fn.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-governance.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "graph-roadmap-finalization.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "opencode-capture.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/claude-code-capture.vitest.ts tests/opencode-capture.vitest.ts",
-        "source": "derived"
-      },
       {
         "name": "decision-record.md",
         "kind": "doc",
@@ -139,7 +115,7 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "001-baseline-and-safety-rails/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -165,11 +141,35 @@
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.",
     "created_at": "2026-04-12T09:02:50.258Z",
-    "last_save_at": "2026-04-13T08:18:54.013Z",
+    "last_save_at": "2026-04-13T10:56:00.378Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

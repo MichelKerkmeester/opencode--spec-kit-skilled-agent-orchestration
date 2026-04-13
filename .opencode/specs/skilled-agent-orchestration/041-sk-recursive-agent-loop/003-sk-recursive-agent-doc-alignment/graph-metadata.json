@@ -151,7 +151,7 @@
     ],
     "causal_summary": "Packet `041-sk-improve-agent-loop` already completed the functional agent-improver work, but the package still had structural drift against `sk-doc` rules. The skill entrypoint at `.opencode/skill/sk-improve-agent/SKILL.md`, the skill README, the bundled references, markdown assets, the canonical loop agent, and the slash command all had section-shape or packaging issues that prevented clean `sk-doc` validation and kept packet `041` short of a true 100 percent closeout.",
     "created_at": "2026-04-12T09:02:50.186Z",
-    "last_save_at": "2026-04-13T08:18:53.947Z",
+    "last_save_at": "2026-04-13T10:56:00.257Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -146,7 +146,7 @@
     ],
     "causal_summary": "Gate E is the canonical cutover for phase 018. The runtime no longer uses a staged rollout ladder, shadow mode, observation windows, or archived-tier continuity semantics. This phase flips the new path to the only live continuity path immediately, removes rollout-era framing from the active surfaces, and updates the mapped command, agent, skill, and README files so the repo describes the shipped contract honestly.",
     "created_at": "2026-04-12T09:02:53.480Z",
-    "last_save_at": "2026-04-13T08:18:57.051Z",
+    "last_save_at": "2026-04-13T10:56:03.709Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

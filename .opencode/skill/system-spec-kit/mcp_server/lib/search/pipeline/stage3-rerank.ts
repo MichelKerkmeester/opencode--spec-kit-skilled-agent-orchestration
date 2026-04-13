@@ -206,7 +206,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
         if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
           const originalPositionMap = new Map<number | string, number>();
           results.forEach((row, index) => originalPositionMap.set(row.id, index));
-          const intent = config.detectedIntent ?? '';
+          const intent = config.adaptiveFusionIntent ?? config.detectedIntent ?? '';
           const mmrLambda = (INTENT_LAMBDA_MAP as Record<string, number>)[intent] ?? MMR_DEFAULT_LAMBDA;
           const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit: config.limit });
 

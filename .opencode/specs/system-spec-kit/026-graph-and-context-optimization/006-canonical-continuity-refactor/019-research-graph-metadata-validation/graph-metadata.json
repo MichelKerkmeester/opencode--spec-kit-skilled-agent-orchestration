@@ -32,11 +32,17 @@
       "derived"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp_server/lib/graph/graph-metadata-schema.ts",
       "mcp_server/lib/graph/graph-metadata-parser.ts",
       "scripts/graph/backfill-graph-metadata.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts",
+      "NODE_PATH=./mcp_server/node_modules ./mcp_server/node_modules/.bin/vitest run scripts/tests/graph-metadata-backfill.vitest.ts",
+      "019/spec.md",
+      "019/plan.md",
+      "019/implementation-summary.md",
       "implementation-summary.md",
       "spec.md",
       "00--ai-systems/001-global-shared/spec.md",
@@ -69,27 +75,33 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
+        "name": "graph-metadata-backfill.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "00--ai-systems/001-global-shared/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
@@ -139,20 +151,18 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Background Every",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.",
     "created_at": "2026-04-13T04:56:06.987Z",
-    "last_save_at": "2026-04-13T08:18:57.066Z",
+    "last_save_at": "2026-04-13T10:56:03.738Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
       "research/research.md"
     ]
   }

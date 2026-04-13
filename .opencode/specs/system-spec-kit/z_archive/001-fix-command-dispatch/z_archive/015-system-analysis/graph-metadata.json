@@ -150,7 +150,7 @@
     ],
     "causal_summary": "To deconstruct and analyze the SpecKit system's architecture, identifying strengths, weaknesses, and structural risks (specifically the synchronization between Skills and Commands).",
     "created_at": "2026-04-12T09:02:53.512Z",
-    "last_save_at": "2026-04-13T08:18:57.086Z",
+    "last_save_at": "2026-04-13T10:56:03.779Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

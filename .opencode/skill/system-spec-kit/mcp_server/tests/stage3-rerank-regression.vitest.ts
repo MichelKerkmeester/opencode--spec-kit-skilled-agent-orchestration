@@ -38,6 +38,7 @@ vi.mock('../utils', () => ({
 
 import { __testables } from '../lib/search/pipeline/stage3-rerank';
 import { executeStage3 } from '../lib/search/pipeline/stage3-rerank';
+import { INTENT_LAMBDA_MAP } from '../lib/search/intent-classifier';
 
 const RERANK_OPTIONS = {
   rerank: true,
@@ -238,5 +239,56 @@ describe('stage3-rerank regression (F-16)', () => {
 
     expect(applyMMRMock).toHaveBeenCalledOnce();
     expect(result.reranked.map((row) => row.id)).toEqual([30, 20, 10]);
+  });
+
+  it('prefers adaptiveFusionIntent over detectedIntent when choosing the Stage 3 MMR lambda', async () => {
+    flagState.crossEncoder = false;
+    flagState.mmr = true;
+    applyMMRMock.mockImplementation((candidates: unknown, options: unknown) => {
+      expect(Array.isArray(candidates)).toBe(true);
+      expect(options).toMatchObject({
+        lambda: INTENT_LAMBDA_MAP.continuity,
+        limit: 5,
+      });
+      return candidates;
+    });
+    requireDbMock.mockReturnValue({
+      prepare: () => ({
+        all: (...ids: number[]) => ids.map((id) => ({
+          rowid: id,
+          embedding: Buffer.from(new Float32Array([id / 100, id / 100]).buffer),
+        })),
+      }),
+    });
+
+    await executeStage3({
+      scored: [
+        { id: 10, score: 0.93, content: 'embedded-alpha' },
+        { id: 20, score: 0.91, content: 'embedded-beta' },
+      ],
+      config: {
+        query: 'resume the packet from the last safe action',
+        searchType: 'hybrid',
+        limit: 5,
+        includeArchived: false,
+        includeConstitutional: false,
+        includeContent: false,
+        minState: 'WARM',
+        applyStateLimits: false,
+        useDecay: true,
+        rerank: false,
+        applyLengthPenalty: false,
+        enableDedup: false,
+        enableSessionBoost: false,
+        enableCausalBoost: false,
+        trackAccess: false,
+        detectedIntent: 'understand',
+        adaptiveFusionIntent: 'continuity',
+        intentConfidence: 0,
+        intentWeights: null,
+      },
+    });
+
+    expect(applyMMRMock).toHaveBeenCalledOnce();
   });
 });

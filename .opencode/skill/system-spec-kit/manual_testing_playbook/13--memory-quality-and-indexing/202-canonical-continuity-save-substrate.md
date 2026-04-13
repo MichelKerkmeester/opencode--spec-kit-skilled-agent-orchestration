@@ -12,7 +12,7 @@ This scenario validates canonical continuity save substrate for `202`. It focuse
 
 ## 2. CURRENT REALITY
 
-Operators drive a canonical save through the phase-018 writer substrate and confirm the routed content lands in the correct spec-doc anchor with a compact continuity block. The same run should also refresh `graph-metadata.json` with checklist-aware lowercase status, sanitized `key_files`, deduplicated entities, and no more than 12 derived trigger phrases. This scenario now covers the live 8-category router, the env-gated Tier 3 classifier path, delivery-versus-progress cues, and the hard-drop versus soft-handover boundary.
+Operators drive a canonical save through the phase-018 writer substrate and confirm the routed content lands in the correct spec-doc anchor with a compact continuity block. The same run should also refresh `graph-metadata.json` with checklist-aware lowercase status, sanitized `key_files`, deduplicated entities, and no more than 12 derived trigger phrases. This scenario now covers the live 8-category router, the always-active Tier 3 classifier path, delivery-versus-progress cues, and the hard-drop versus soft-handover boundary.
 
 - Objective: Verify 8-category canonical routing, route overrides, anchor-aware merge, atomic promotion, continuity persistence, and graph-metadata refresh
 - Prompt: `As a memory-quality validation operator, validate Canonical continuity save substrate against contentRouter. Verify the live 8-category router chooses the correct category and target; Tier 3 participates by default; routeAs preserves the natural decision for audit; delivery versus progress and handover versus drop stay on the intended side of the boundary; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; _memory.continuity stays thin and readable; and graph-metadata.json shows lowercase checklist-aware status, sanitized key_files, deduplicated entities, and no more than 12 trigger phrases. Return a concise pass/fail verdict with the main reason and cited evidence.`
@@ -31,7 +31,7 @@ As a memory-quality validation operator, verify 8-category routed canonical save
 
 1. Save a progress, delivery, handover, metadata, and drop-like chunk through the canonical writer
 2. Confirm `contentRouter` picks the intended category and destination for the merged cases
-3. Re-run an ambiguous chunk with `SPECKIT_TIER3_ROUTING=true` to confirm the live Tier 3 path participates when configured
+3. Re-run an ambiguous chunk and confirm the live Tier 3 path participates automatically when the LLM endpoint is available
 4. Force a `routeAs` override and confirm the returned decision preserves the natural route for audit
 5. Confirm `anchorMergeOperation` uses the correct merge mode and preserves the target anchor
 6. Confirm `atomicIndexMemory` writes the canonical output or safely refuses the drop case

@@ -139,7 +139,7 @@
     ],
     "causal_summary": "This sub-phase investigates whether Public should change any FSRS-related decay defaults or multipliers after the current `memory_review` work settles. It focuses on measurement, not immediate tuning: the packet must compare today's classification-based decay against any Modus-inspired adjustments and define what evidence is required before changing defaults. It does not ship a due-state model or review queue.",
     "created_at": "2026-04-13T04:56:07.092Z",
-    "last_save_at": "2026-04-13T08:18:57.175Z",
+    "last_save_at": "2026-04-13T10:56:03.962Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

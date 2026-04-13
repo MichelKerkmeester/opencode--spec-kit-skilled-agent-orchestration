@@ -318,7 +318,7 @@ Routing contract highlights:
 
 - Tier 1 handles structured routes and strong heuristics.
 - Tier 2 uses routing-prototype similarity.
-- Tier 3 is now live in the save handler by default and `LLM_REFORMULATION_ENDPOINT` is configured. If Tier 3 is disabled or unavailable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses to route.
+- Tier 3 is part of the live save handler by default. When `LLM_REFORMULATION_ENDPOINT` is reachable and returns a usable decision, it participates automatically; if that endpoint is unavailable or unusable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses to route.
 - Delivery cues are intentionally stronger when the chunk mentions sequencing, gating, rollout, or verification.
 - Handover and drop now split hard transcript/tool telemetry wrappers from softer operational phrases like `git diff`, `list memories`, or `force re-index`.
 - `routeAs` can force a category and keeps the natural decision for audit if the override crosses a natural `drop`.

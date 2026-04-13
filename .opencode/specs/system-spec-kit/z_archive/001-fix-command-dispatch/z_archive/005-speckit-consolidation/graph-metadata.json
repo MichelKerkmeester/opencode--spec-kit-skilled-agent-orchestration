@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Consolidate the standalone `.opencode/speckit/` folder into the `.opencode/skills/workflows-spec-kit/` skill folder, following the self-contained architecture pattern established by `workflows-memory`.",
     "created_at": "2026-04-12T09:02:53.508Z",
-    "last_save_at": "2026-04-13T08:18:57.082Z",
+    "last_save_at": "2026-04-13T10:56:03.772Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

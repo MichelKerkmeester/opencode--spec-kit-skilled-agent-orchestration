@@ -159,7 +159,7 @@
     ],
     "causal_summary": "Remove all system reliance on the `.spec-active` marker file, enforcing a strictly stateless architecture. This aligns with `AGENTS.md` Gate 5: \"NEVER create/write to .spec-active file (Stateless only)\".",
     "created_at": "2026-04-12T09:02:53.513Z",
-    "last_save_at": "2026-04-13T08:18:57.086Z",
+    "last_save_at": "2026-04-13T10:56:03.781Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

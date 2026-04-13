@@ -257,7 +257,7 @@ describe('graph metadata schema and parser', () => {
     const specFolder = createSpecFolder({
       specStatus: null,
       planStatus: 'Planned',
-      implementationSummaryStatus: 'Completed',
+      implementationSummaryStatus: 'Done',
       includeChecklist: false,
     });
 
@@ -269,7 +269,7 @@ describe('graph metadata schema and parser', () => {
   it('normalizes in-progress frontmatter statuses to in_progress', () => {
     const specFolder = createSpecFolder({
       specStatus: null,
-      planStatus: 'In Progress',
+      planStatus: 'active',
       implementationSummaryStatus: null,
       includeChecklist: false,
     });
@@ -286,6 +286,13 @@ describe('graph metadata schema and parser', () => {
     expect(graphMetadataParserTestables.keepKeyFile('application/json')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('_memory.continuity')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('Summary: not a file path')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('`node scripts/build.js --watch`')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('src/a.ts | src/b.ts')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('cd .opencode/skill/system-spec-kit')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('node tool.js --flag-a --flag-b --flag-c')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('spec.md && plan.md')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('spec.md || plan.md')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('spec.md >> out.txt')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('../spec.md')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('workflow.ts')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('spec.md')).toBe(true);
@@ -310,6 +317,20 @@ describe('graph metadata schema and parser', () => {
     expect(planEntity?.path).toBe('specs/system-spec-kit/900-graph-metadata/plan.md');
     expect(metadata.derived.entities.filter((entity) => entity.name === 'spec.md')).toHaveLength(1);
     expect(metadata.derived.entities.filter((entity) => entity.name === 'plan.md')).toHaveLength(1);
+  });
+
+  it('does not treat sibling packet paths as canonical entity matches', () => {
+    const specFolder = createSpecFolder({
+      implementationSummaryReferences: [
+        'specs/system-spec-kit/901-sibling/spec.md',
+        'spec.md',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+    const specEntity = metadata.derived.entities.find((entity) => entity.name === 'spec.md');
+
+    expect(specEntity?.path).toBe('spec.md');
   });
 
   it('caps derived trigger_phrases at 12 entries', () => {

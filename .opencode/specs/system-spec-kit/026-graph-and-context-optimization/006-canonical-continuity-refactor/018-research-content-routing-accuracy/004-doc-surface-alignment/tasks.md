@@ -65,7 +65,7 @@ _memory:
 
 - [x] T004 Update the primary routing docs in `.opencode/command/memory/save.md`, `.opencode/command/memory/manage.md`, `.opencode/skill/system-spec-kit/ARCHITECTURE.md`, `.opencode/skill/system-spec-kit/SKILL.md`, and `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`. Evidence: file patches completed in this turn
 - [x] T005 Update routing-aware feature-catalog and playbook surfaces under `.opencode/skill/system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/manual_testing_playbook/`. Evidence: file patches completed in this turn
-- [x] T006 Add the `SPECKIT_TIER3_ROUTING` operator note to `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `.gemini/settings.json`, and `opencode.json`. Evidence: config-note updates completed in this turn
+- [x] T006 Verify `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `.gemini/settings.json`, and `opencode.json` do not reintroduce `SPECKIT_TIER3_ROUTING`, and confirm the feature-flag reference marks it removed. Evidence: targeted `rg -n "SPECKIT_TIER3_ROUTING" ...` returned only the removed-flag reference entry.
 - [x] T007 Create and normalize packet-local `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` for Level 2 strict validation. Evidence: phase folder now contains those files
 <!-- /ANCHOR:phase-2 -->
 
@@ -75,7 +75,7 @@ _memory:
 ## Phase 3: Verification
 
 - [x] T008 Run `jq empty .mcp.json .claude/mcp.json .vscode/mcp.json .gemini/settings.json opencode.json`. Evidence: command exited `0` on 2026-04-13.
-- [x] T009 Run the targeted routing sweep across the edited command, skill, feature-catalog, and playbook surfaces. Evidence: `rg -n "SPECKIT_TIER3_ROUTING|routeAs|8-category|8 categories|handover versus drop|delivery versus progress|metadata-first|packet_kind" ...` returned the aligned save, skill, feature-catalog, and playbook hits.
+- [x] T009 Run the targeted routing sweep across the edited command, skill, feature-catalog, and playbook surfaces, including the removed-flag check. Evidence: `rg -n "SPECKIT_TIER3_ROUTING|always on by default|routeAs|8-category|8 categories|handover versus drop|delivery versus progress|metadata-first|packet_kind" ...` returned only the removed-flag reference plus the aligned always-on save, skill, feature-catalog, and playbook hits.
 - [x] T010 Run strict packet validation for `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment`. Evidence: `validate.sh --strict` exited `0` with `RESULT: PASSED`.
 - [x] T011 Update `checklist.md` and `implementation-summary.md` with the final command evidence and completion state. Evidence: this closeout patch records the final verification results and completion status.
 <!-- /ANCHOR:phase-3 -->

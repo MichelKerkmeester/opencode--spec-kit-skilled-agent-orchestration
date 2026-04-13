@@ -58,9 +58,9 @@
       ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
       ".opencode/skill/system-spec-kit/scripts/extractors/quality-scorer.ts",
       ".opencode/skill/system-spec-kit/templates/context_template.md",
-      "cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/title-builder-no-filename-suffix.vitest.ts tests/canonical-sources-auto-discovery.vitest.ts tests/file-capture-structured-mode.vitest.ts tests/trigger-phrase-no-prose-bigrams.vitest.ts tests/distinguishing-evidence-dedup.vitest.ts tests/phase-status-from-payload.vitest.ts tests/causal-links-auto-populate.vitest.ts tests/parent-spec-resolver.vitest.ts tests/quality-scorer-disambiguation.vitest.ts tests/post-save-render-round-trip.vitest.ts tests/memory-quality-phase1.vitest.ts tests/memory-pipeline-regressions.vitest.ts tests/memory-save-pipeline-enforcement.vitest.ts",
       "scripts/memory/generate-context.ts",
-      "plan.md"
+      "plan.md",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -124,12 +124,6 @@
         "source": "derived"
       },
       {
-        "name": "memory-save-pipeline-enforcement.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && TMPDIR=./.tmp/vitest-tmp npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/title-builder-no-filename-suffix.vitest.ts tests/canonical-sources-auto-discovery.vitest.ts tests/file-capture-structured-mode.vitest.ts tests/trigger-phrase-no-prose-bigrams.vitest.ts tests/distinguishing-evidence-dedup.vitest.ts tests/phase-status-from-payload.vitest.ts tests/causal-links-auto-populate.vitest.ts tests/parent-spec-resolver.vitest.ts tests/quality-scorer-disambiguation.vitest.ts tests/post-save-render-round-trip.vitest.ts tests/memory-quality-phase1.vitest.ts tests/memory-pipeline-regressions.vitest.ts tests/memory-save-pipeline-enforcement.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "generate-context.ts",
         "kind": "code",
         "path": "scripts/memory/generate-context.ts",
@@ -139,6 +133,12 @@
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Packet `009-post-save-render-fixes` repairs the nine systematic render-layer defects still visible in the 2026-04-09 `005-code-graph-upgrades` memory saves: filename-garbage titles, empty canonical sources, zeroed file counts, prose-bigram trigger noise, duplicated distinguishing evidence, stale phase and status capture, missing causal link auto-population, self-referential `parent_spec`, and the unresolved two-scorer naming conflict. The goal is to make fresh memory saves honestly satisfy the compact-wrapper contract defined by the sibling `001/.../006-research-memory-redundancy` packet without reopening the wrapper-template body or the Phase 6 sanitizer and duplication-review work that shipped in commit `7f0c0572a`. [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md:2-35] [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:2-39] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/spec.md:44-58] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]",
     "created_at": "2026-04-12T09:02:53.463Z",
-    "last_save_at": "2026-04-13T08:18:57.044Z",
+    "last_save_at": "2026-04-13T10:56:03.694Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

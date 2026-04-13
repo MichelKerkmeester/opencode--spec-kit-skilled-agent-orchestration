@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP server code, skill files, agent definitions, command files, constitutional memories, scripts, and AGENTS.md integration. Found and fixed 3 critical bugs (SQL constraint violation, ghost tool references, stale file references), 15+ moderate misalignments (gate numbering, threshold inconsistencies, missing commands), and performed ecosystem-wide AGENTS.md-to-AGENTS.md migration across 30+ files.",
     "created_at": "2026-04-12T09:02:53.558Z",
-    "last_save_at": "2026-04-13T08:18:57.136Z",
+    "last_save_at": "2026-04-13T10:56:03.883Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

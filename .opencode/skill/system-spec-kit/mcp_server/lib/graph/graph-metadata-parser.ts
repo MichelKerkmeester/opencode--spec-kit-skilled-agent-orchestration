@@ -46,6 +46,7 @@ const KEY_FILE_NOISE_RE =
   /^(node |npx |pnpm |npm |yarn |bun |python([0-9]+(\.[0-9]+)*)? |bash |sh |vitest |jest |mocha |tsx |ts-node |TMPDIR)|^v[0-9]+\.[0-9]+(\.[0-9]+)?$|^[a-z]+\/[a-z0-9+-]+$|^_memory\.continuity$|^[A-Za-z][A-Za-z0-9_-]*:\s.+$|^console\.warn(\(|$)/;
 const BARE_FILE_RE = /^[^/]+\.[A-Za-z0-9._-]+$/;
 const TITLE_LIKE_KEY_FILE_RE = /^([A-Z][a-z]+)( [A-Z][A-Za-z0-9._-]*)+$/;
+const KEY_FILE_COMMAND_START_RE = /^(cd|echo|cat|grep|find|rm|mkdir)\s+/;
 
 interface ParsedSpecDoc {
   relativePath: string;
@@ -109,11 +110,13 @@ function normalizeDerivedStatus(status: string | null | undefined): string | nul
     return null;
   }
 
-  const normalized = trimmed.toLowerCase().replace(/\s+/g, '_');
+  const normalized = trimmed.toLowerCase().replace(/[\s-]+/g, '_');
   switch (normalized) {
     case 'complete':
+    case 'done':
     case 'completed':
       return 'complete';
+    case 'active':
     case 'in_progress':
       return 'in_progress';
     case 'planned':
@@ -369,10 +372,22 @@ function keepKeyFile(candidate: string): boolean {
   if (!normalized) {
     return false;
   }
+  if (normalized.startsWith('`') && normalized.endsWith('`')) {
+    return false;
+  }
   if (normalized.startsWith('../')) {
     return false;
   }
+  if (KEY_FILE_COMMAND_START_RE.test(normalized)) {
+    return false;
+  }
   if (KEY_FILE_NOISE_RE.test(normalized)) {
+    return false;
+  }
+  if (normalized.includes(' | ') || normalized.includes('&&') || normalized.includes('||') || normalized.includes('>>')) {
+    return false;
+  }
+  if ((normalized.match(/(?:^|\s)(?:--|-)[A-Za-z0-9]/g) ?? []).length >= 3) {
     return false;
   }
   if (TITLE_LIKE_KEY_FILE_RE.test(normalized)) {
@@ -471,15 +486,55 @@ function classifyEntityKind(filePath: string): string {
   return 'file';
 }
 
-function deriveEntities(docs: ParsedSpecDoc[], keyFiles: string[]): GraphEntityReference[] {
+function stripSpecsRootPrefix(filePath: string): string {
+  const normalized = filePath.replace(/\\/g, '/').replace(/^\.\//, '');
+  for (const marker of ['/.opencode/specs/', '/specs/', '.opencode/specs/', 'specs/']) {
+    const markerIndex = normalized.indexOf(marker);
+    if (markerIndex >= 0) {
+      return normalized.slice(markerIndex + marker.length);
+    }
+  }
+  return normalized;
+}
+
+function buildEntityScopeFolders(specFolder: string): Set<string> {
+  const folders = new Set<string>();
+  let current = specFolder.replace(/\\/g, '/');
+  while (current) {
+    folders.add(current);
+    const segments = current.split('/').filter(Boolean);
+    if (segments.length <= 1) {
+      break;
+    }
+    const parent = segments.slice(0, -1).join('/');
+    const parentLeaf = parent.split('/').pop() ?? '';
+    if (!isSpecLeafSegment(parentLeaf)) {
+      break;
+    }
+    current = parent;
+  }
+  return folders;
+}
+
+function deriveEntities(
+  specFolder: string,
+  docs: ParsedSpecDoc[],
+  keyFiles: string[],
+): GraphEntityReference[] {
   const entities = new Map<string, GraphEntityReference>();
   const canonicalDocSuffixes = new Set(docs.map((doc) => doc.relativePath.replace(/\\/g, '/')));
+  const scopedFolders = buildEntityScopeFolders(specFolder);
 
   const isCanonicalEntityPath = (filePath: string): boolean => {
-    const normalized = filePath.replace(/\\/g, '/');
+    const normalized = stripSpecsRootPrefix(filePath);
+    if (canonicalDocSuffixes.has(normalized)) {
+      return true;
+    }
     for (const docPath of canonicalDocSuffixes) {
-      if (normalized === docPath || normalized.endsWith(`/${docPath}`)) {
-        return true;
+      for (const folder of scopedFolders) {
+        if (normalized === `${folder}/${docPath}`) {
+          return true;
+        }
       }
     }
     return false;
@@ -661,7 +716,7 @@ export function deriveGraphMetadata(
   const keyFiles = deriveKeyFiles(docs);
   const keyTopics = deriveKeyTopics(docs, triggerPhrases, causalSummary);
   const sourceDocs = docs.map((doc) => doc.relativePath);
-  const entities = deriveEntities(docs, keyFiles);
+  const entities = deriveEntities(specFolder, docs, keyFiles);
 
   const derived: GraphMetadataDerived = {
     trigger_phrases: triggerPhrases,

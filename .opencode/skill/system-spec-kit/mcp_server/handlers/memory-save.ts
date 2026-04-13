@@ -1051,12 +1051,7 @@ function resolveSpecFolderAbsoluteFromFilePath(filePath: string, specFolder: str
   return path.resolve(path.dirname(filePath), '..');
 }
 
-function resolveMetadataHostDocPath(specFolderAbsolute: string, currentFilePath: string): string {
-  const currentDocumentType = memoryParser.extractDocumentType(currentFilePath);
-  if (currentDocumentType !== 'memory' && fs.existsSync(currentFilePath)) {
-    return currentFilePath;
-  }
-
+function resolveMetadataHostDocPath(specFolderAbsolute: string): string {
   const implementationSummaryPath = path.join(specFolderAbsolute, 'implementation-summary.md');
   if (fs.existsSync(implementationSummaryPath)) {
     return implementationSummaryPath;
@@ -1067,11 +1062,10 @@ function resolveMetadataHostDocPath(specFolderAbsolute: string, currentFilePath:
 
 function resolveCanonicalTargetDocPath(
   specFolderAbsolute: string,
-  currentFilePath: string,
   routedDocPath: string,
 ): string {
   if (routedDocPath === 'spec-frontmatter') {
-    return resolveMetadataHostDocPath(specFolderAbsolute, currentFilePath);
+    return resolveMetadataHostDocPath(specFolderAbsolute);
   }
   return path.join(specFolderAbsolute, routedDocPath);
 }
@@ -1266,7 +1260,7 @@ async function buildCanonicalAtomicPreparedSave(
     };
   }
 
-  const targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, params.file_path, decision.target.docPath);
+  const targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, decision.target.docPath);
   if (!fs.existsSync(targetDocPath)) {
     return {
       status: 'abort',

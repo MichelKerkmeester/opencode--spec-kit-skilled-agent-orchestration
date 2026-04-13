@@ -43,9 +43,7 @@
     "key_files": [
       "create/skill.md",
       "create/agent.md",
-      "grep \"<skill-name>\" .opencode/command/create/skill.md",
       "implementation-summary.md",
-      "grep \"MANDATORY FIRST\" memory/search.md",
       "spec.md",
       "checklist.md",
       "decision-record.md"
@@ -67,12 +65,6 @@
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "search.md",
-        "kind": "doc",
-        "path": "grep \"MANDATORY FIRST\" memory/search.md",
         "source": "derived"
       },
       {
@@ -146,11 +138,17 @@
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "Mandatory Gates",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Comprehensive alignment of 19 OpenCode commands with command_template.md standards following SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture upgrade.",
     "created_at": "2026-04-12T09:02:53.547Z",
-    "last_save_at": "2026-04-13T08:18:57.124Z",
+    "last_save_at": "2026-04-13T10:56:03.860Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

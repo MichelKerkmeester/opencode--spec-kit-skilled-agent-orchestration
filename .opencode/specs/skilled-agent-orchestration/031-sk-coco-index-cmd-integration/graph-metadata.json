@@ -52,25 +52,25 @@
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/031-sk-coco-index-cmd-integration/tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
@@ -148,7 +148,7 @@
     ],
     "causal_summary": "This folder existed without the required planning docs, so the intended command integration work for sk-coco-index was not traceable through spec-kit validation. The repair needs to establish a truthful planning baseline without inventing implementation results.",
     "created_at": "2026-04-12T09:02:50.177Z",
-    "last_save_at": "2026-04-13T08:18:53.937Z",
+    "last_save_at": "2026-04-13T10:56:00.239Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

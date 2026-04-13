@@ -47,9 +47,6 @@
       "scripts/extractors/session-extractor.ts",
       "scripts/lib/semantic-summarizer.ts",
       "scripts/tests/semantic-signal-golden.vitest.ts",
-      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
-      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
-      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
       "scripts/tests/test-scripts-modules.js",
       "shared/trigger-extractor.ts",
       "core/topic-extractor.ts",
@@ -99,21 +96,9 @@
         "source": "derived"
       },
       {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
-        "name": "test-extractors-loaders.js",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
-        "source": "derived"
-      },
-      {
         "name": "test-scripts-modules.js",
         "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js",
+        "path": "scripts/tests/test-scripts-modules.js",
         "source": "derived"
       },
       {
@@ -157,11 +142,23 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Signal Extraction This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.271Z",
-    "last_save_at": "2026-04-13T08:18:54.028Z",
+    "last_save_at": "2026-04-13T10:56:00.407Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

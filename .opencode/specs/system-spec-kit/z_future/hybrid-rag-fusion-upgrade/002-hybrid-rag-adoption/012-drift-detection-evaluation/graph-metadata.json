@@ -138,7 +138,7 @@
     ],
     "causal_summary": "This sub-phase investigates which Mex-style drift checker families should eventually apply to Public's spec and memory surfaces beyond the already-selected advisory checker trio. It focuses on checker scope, issue schema, false-positive control, and advisory-versus-blocking promotion rules. It does not ship new checker implementations in this packet.",
     "created_at": "2026-04-13T04:56:07.091Z",
-    "last_save_at": "2026-04-13T08:18:57.174Z",
+    "last_save_at": "2026-04-13T10:56:03.961Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

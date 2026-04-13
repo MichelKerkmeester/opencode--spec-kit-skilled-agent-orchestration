@@ -1,6 +1,6 @@
 ---
 title: "Add Reranker Cache Telemetry - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)
@@ -12,5 +12,5 @@ status: planned
 - [x] `CACHE_TTL` and `MAX_CACHE_ENTRIES` remain unchanged in this observability-only phase. Evidence: `cross-encoder.ts` still uses `CACHE_TTL = 300000` and `MAX_CACHE_ENTRIES = 200`.
 - [x] Status tests cover both the populated cache block and the reset boundary. Evidence: `cross-encoder.vitest.ts` and `cross-encoder-extended.vitest.ts` assert the populated cache fields and the reset-to-zero boundary.
 ## P2 (Advisory)
-- [ ] A follow-on note captures retrieval telemetry as an optional mirror surface rather than a competing source of truth.
-- [ ] Future provider-specific telemetry remains possible without invalidating the process-wide counters shipped here.
+- [x] A follow-on note captures retrieval telemetry as an optional mirror surface rather than a competing source of truth. Evidence: `research/research.md` records retrieval telemetry as the optional mirror surface while `implementation-summary.md` keeps `getRerankerStatus()` as the canonical status surface.
+- [x] Future provider-specific telemetry remains possible without invalidating the process-wide counters shipped here. Evidence: `decision-record.md` and `implementation-summary.md` both note that the shipped counters are process-scoped and that any provider breakout is additive follow-on work.

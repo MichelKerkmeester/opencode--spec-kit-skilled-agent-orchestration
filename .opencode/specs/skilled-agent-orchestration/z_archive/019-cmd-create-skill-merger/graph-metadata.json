@@ -162,7 +162,7 @@
     ],
     "causal_summary": "The create command surface for skills was fragmented across separate command files and YAML workflows (`/create:skill`, `/create:skill_reference`, `/create:skill_asset`). That duplication increased maintenance cost and made routing behavior harder to keep consistent across operation and mode variants. After canonical merger, active runtime and onboarding documentation still needed explicit synchronization to canonical `/create:sk-skill` references.",
     "created_at": "2026-04-12T09:02:50.220Z",
-    "last_save_at": "2026-04-13T08:18:53.975Z",
+    "last_save_at": "2026-04-13T10:56:00.307Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

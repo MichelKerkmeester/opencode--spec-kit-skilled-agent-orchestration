@@ -43,8 +43,8 @@
     "key_files": [
       ".opencode/command/spec_kit/deep-review.md",
       ".agents/commands/spec_kit/deep-review.toml",
-      ".opencode/changelog/00--opencode-environment/v3.0.1.1.md",
-      ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md",
+      ".opencode/changelog/13--sk-deep-review/v1.0.0.0.md",
+      ".opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/handover.md",
       ".opencode/skill/scripts/skill_advisor.py",
       "spec.md",
       "plan.md",
@@ -66,15 +66,15 @@
         "source": "derived"
       },
       {
-        "name": "v3.0.1.1.md",
+        "name": "v1.0.0.0.md",
         "kind": "doc",
-        "path": ".opencode/changelog/00--opencode-environment/v3.0.1.1.md",
+        "path": ".opencode/changelog/13--sk-deep-review/v1.0.0.0.md",
         "source": "derived"
       },
       {
         "name": "handover.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md",
+        "path": ".opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/handover.md",
         "source": "derived"
       },
       {
@@ -152,7 +152,7 @@
     ],
     "causal_summary": "That coupling also made it harder to route users correctly. Review requests and research requests shared one command family even though the workflows, artifacts, and success criteria were different.",
     "created_at": "2026-04-12T09:02:50.180Z",
-    "last_save_at": "2026-04-13T08:18:53.940Z",
+    "last_save_at": "2026-04-13T10:56:00.245Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

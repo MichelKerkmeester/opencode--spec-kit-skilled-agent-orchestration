@@ -97,6 +97,8 @@ def _apply_graph_boosts(
 
         for target, weight in edges.get("enhances", {}).items():
             transitive = current_boost * weight * 0.3
+            if snapshot.get(target, 0) <= 0:
+                continue
             if transitive >= 0.1:
                 skill_boosts[target] = skill_boosts.get(target, 0) + transitive
                 boost_reasons.setdefault(target, []).append(
@@ -105,6 +107,8 @@ def _apply_graph_boosts(
 
         for target, weight in edges.get("siblings", {}).items():
             transitive = current_boost * weight * 0.15
+            if snapshot.get(target, 0) <= 0:
+                continue
             if transitive >= 0.1:
                 skill_boosts[target] = skill_boosts.get(target, 0) + transitive
                 boost_reasons.setdefault(target, []).append(
@@ -113,6 +117,8 @@ def _apply_graph_boosts(
 
         for target, weight in edges.get("depends_on", {}).items():
             transitive = current_boost * weight * 0.2
+            if snapshot.get(target, 0) <= 0:
+                continue
             if transitive >= 0.1:
                 skill_boosts[target] = skill_boosts.get(target, 0) + transitive
                 boost_reasons.setdefault(target, []).append(
@@ -136,7 +142,7 @@ def _apply_family_affinity(
             continue
         max_boost = max(b for _, b in boosted)
         for member in members:
-            if skill_boosts.get(member, 0) <= 0 and max_boost > 1.5:
+            if 0 < skill_boosts.get(member, 0) < 1.0 and max_boost > 1.5:
                 affinity = max_boost * 0.08
                 if affinity >= 0.1:
                     skill_boosts[member] = skill_boosts.get(member, 0) + affinity
@@ -1559,6 +1565,7 @@ def analyze_request(
 
         num_matches = len(matches)
         num_ambiguous = sum(1 for m in matches if '(multi)' in m)
+        graph_boost_count = len([m for m in matches if m.startswith('!graph:')])
         uncertainty = calculate_uncertainty(
             num_matches=num_matches,
             has_intent_boost=has_boost,
@@ -1582,9 +1589,15 @@ def analyze_request(
             "_kind_priority": kind_priority,
             "_num_matches": num_matches,
             "_num_ambiguous": num_ambiguous,
+            "_graph_boost_count": graph_boost_count,
         })
 
     apply_confidence_calibration(recommendations)
+    for recommendation in recommendations:
+        graph_boost_count = recommendation.get("_graph_boost_count", 0)
+        total_matches = recommendation.get("_num_matches", 1)
+        if total_matches > 0 and graph_boost_count / total_matches > 0.5:
+            recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
     _apply_graph_conflict_penalty(recommendations)
 
     for recommendation in recommendations:

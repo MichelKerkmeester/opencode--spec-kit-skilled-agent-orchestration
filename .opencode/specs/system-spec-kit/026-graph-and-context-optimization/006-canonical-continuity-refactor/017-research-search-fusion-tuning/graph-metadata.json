@@ -41,6 +41,13 @@
       "mcp_server/configs/search-weights.json",
       "mcp_server/lib/search/stage1-candidate-gen.ts",
       "spec.md",
+      ".opencode/command/memory/search.md",
+      "mcp_server/configs/README.md",
+      "checklist.md",
+      ".codex/agents/deep-review.toml",
+      ".codex/agents/context.toml",
+      "configs/README.md",
+      "tasks.md",
       "research/research.md"
     ],
     "entities": [
@@ -81,6 +88,42 @@
         "source": "derived"
       },
       {
+        "name": "search.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/search.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "mcp_server/configs/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-review.toml",
+        "source": "derived"
+      },
+      {
+        "name": "context.toml",
+        "kind": "file",
+        "path": ".codex/agents/context.toml",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
         "name": "research.md",
         "kind": "doc",
         "path": "research/research.md",
@@ -103,50 +146,16 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Background The",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Research Questions",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Key Files",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Research Synthesis",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Search Fusion Weight Optimization",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "Safe Continuity",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-13T04:56:06.986Z",
-    "last_save_at": "2026-04-13T08:18:57.060Z",
+    "last_save_at": "2026-04-13T10:56:03.726Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
+      "tasks.md",
+      "checklist.md",
       "research/research.md"
     ]
   }

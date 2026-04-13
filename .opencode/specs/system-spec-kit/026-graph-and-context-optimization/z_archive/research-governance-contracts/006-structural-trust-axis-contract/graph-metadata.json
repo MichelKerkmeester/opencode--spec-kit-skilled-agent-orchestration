@@ -41,7 +41,6 @@
     "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md",
-      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/structural-trust-axis.vitest.ts tests/shared-payload-certainty.vitest.ts tests/hook-session-start.vitest.ts",
       "decision-record.md",
       "implementation-summary.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
@@ -57,12 +56,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/contracts/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "hook-session-start.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=./.tmp/vitest-tmp npx vitest run tests/structural-trust-axis.vitest.ts tests/shared-payload-certainty.vitest.ts tests/hook-session-start.vitest.ts",
         "source": "derived"
       },
       {
@@ -148,11 +141,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Define the structural trust contract that the research moved ahead of graph packaging and confidence cleanup by separating provenance, evidence, and freshness or authority into explicit axes.",
     "created_at": "2026-04-12T09:02:53.467Z",
-    "last_save_at": "2026-04-13T08:18:57.074Z",
+    "last_save_at": "2026-04-13T10:56:03.756Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

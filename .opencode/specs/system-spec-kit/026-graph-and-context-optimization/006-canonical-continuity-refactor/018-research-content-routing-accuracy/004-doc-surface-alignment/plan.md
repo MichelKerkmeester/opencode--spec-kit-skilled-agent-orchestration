@@ -175,7 +175,7 @@ Phase 1 (Review runtime) ──► Phase 2 (Align docs) ──► Phase 3 (Verif
 
 ### Pre-deployment Checklist
 - [x] No runtime code changes are included
-- [x] Feature-flag note preserves default OFF
+- [x] No stale `SPECKIT_TIER3_ROUTING` operator note is reintroduced on config surfaces
 - [x] Verification commands are defined before closeout
 
 ### Rollback Procedure

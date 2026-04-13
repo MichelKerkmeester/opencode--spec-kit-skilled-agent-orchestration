@@ -1,17 +1,37 @@
 ---
 title: "Verification Checklist: Split sk-deep-research [03--commands-and-skills/036-sk-deep-research-review-split/checklist]"
 description: "Verification checklist for the deep-research/deep-review split."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 trigger_phrases:
   - "036 checklist"
   - "deep-review split verification"
   - "review mode split checklist"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/036-sk-deep-research-review-split"
+    last_updated_at: "2026-04-13T10:38:46Z"
+    last_updated_by: "copilot"
+    recent_action: "Applied follow-up advisor evidence calibration and sibling-edge cleanup"
+    next_safe_action: "Keep packet docs synced with any future deep-review or advisor adjustments"
+    blockers: []
+    key_files:
+      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/sk-deep-review/graph-metadata.json"
+      - ".opencode/skill/sk-deep-research/graph-metadata.json"
+    session_dedup:
+      fingerprint: "sha256:036-sk-deep-research-review-split"
+      session_id: "036-sk-deep-research-review-split"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
 ---
 # Verification Checklist: Split sk-deep-research Review Mode into sk-deep-review
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

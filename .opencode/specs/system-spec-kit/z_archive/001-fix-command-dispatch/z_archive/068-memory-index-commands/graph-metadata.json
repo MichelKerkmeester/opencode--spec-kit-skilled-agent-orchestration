@@ -49,8 +49,7 @@
       "tasks.md",
       "decision-record.md",
       "plan.md",
-      "checklist.md",
-      "rm .opencode/command/memory/database.md"
+      "checklist.md"
     ],
     "entities": [
       {
@@ -152,7 +151,7 @@
     ],
     "causal_summary": "Separate the unified `/memory:search` command into two focused commands: a read-only search command and a database management command.",
     "created_at": "2026-04-12T09:02:53.541Z",
-    "last_save_at": "2026-04-13T08:18:57.117Z",
+    "last_save_at": "2026-04-13T10:56:03.846Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

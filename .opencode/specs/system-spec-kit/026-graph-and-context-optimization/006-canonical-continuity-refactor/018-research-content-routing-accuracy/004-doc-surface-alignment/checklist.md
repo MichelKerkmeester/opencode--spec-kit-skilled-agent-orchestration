@@ -77,9 +77,9 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met. [EVIDENCE: the aligned docs now cover the 8-category router, env-gated Tier 3, delivery and handover boundaries, `routeAs`, and metadata-first `packet_kind` across the requested surfaces.]
+- [x] CHK-020 [P0] All acceptance criteria met. [EVIDENCE: the aligned docs now cover the 8-category router, the always-on Tier 3 contract, delivery and handover boundaries, `routeAs`, and metadata-first `packet_kind` across the requested surfaces.]
 - [x] CHK-021 [P0] Manual verification complete. [EVIDENCE: `jq`, targeted `rg`, and strict packet validation all passed on 2026-04-13.]
-- [x] CHK-022 [P1] Edge cases tested in the docs. [EVIDENCE: the updated docs explicitly cover metadata-only routing, hard-drop wrappers versus soft operational language, Tier 3 disabled-state behavior, and `routeAs` overrides.]
+- [x] CHK-022 [P1] Edge cases tested in the docs. [EVIDENCE: the updated docs explicitly cover metadata-only routing, hard-drop wrappers versus soft operational language, endpoint-failure fallback behavior, and `routeAs` overrides.]
 - [x] CHK-023 [P1] Packet strict validation succeeds. [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment --strict` -> `RESULT: PASSED`, exit `0`.]
 <!-- /ANCHOR:testing -->
 
@@ -88,10 +88,10 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets were added. [EVIDENCE: the config edits only add documentation notes for `SPECKIT_TIER3_ROUTING` and do not introduce secret values.]
-  Evidence: the config changes add documentation-only env-var notes and no secret values.
-- [x] CHK-031 [P0] Feature-flag guidance preserves safe defaults. [EVIDENCE: all five MCP config notes describe `SPECKIT_TIER3_ROUTING` as opt-in with default OFF.]
-  Evidence: all five MCP config notes describe `SPECKIT_TIER3_ROUTING` as opt-in with default OFF.
+- [x] CHK-030 [P0] No hardcoded secrets were added. [EVIDENCE: this wording-only realignment does not introduce secret values or endpoint defaults.]
+  Evidence: the updated docs only remove stale flag language and do not add secrets.
+- [x] CHK-031 [P0] Feature-flag guidance preserves current runtime reality. [EVIDENCE: the active docs now describe Tier 3 as always on by default, and the feature-flag reference marks `SPECKIT_TIER3_ROUTING` as removed.]
+  Evidence: the active docs no longer present `SPECKIT_TIER3_ROUTING` as an opt-in path.
 - [x] CHK-032 [P1] No auth/authz behavior was altered. [EVIDENCE: this phase is documentation-only.]
   Evidence: this phase is documentation-only.
 <!-- /ANCHOR:security -->

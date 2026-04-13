@@ -69,7 +69,7 @@
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -153,7 +153,7 @@
     ],
     "causal_summary": "Gate B cleanup was supposed to delete legacy `**/memory/*.md` artifacts and retire archived-tier runtime branches, but the Gate F packet still described a dead observation-and-decision model. Until this packet is rewritten and the cleanup is re-verified against the live SQLite database plus on-disk spec tree, the phase does not provide an auditable answer to the real question: did Gate B actually finish the cleanup without leaving stale rows, orphan causal edges, or misleading packet guidance behind?",
     "created_at": "2026-04-12T09:02:53.481Z",
-    "last_save_at": "2026-04-13T08:18:57.052Z",
+    "last_save_at": "2026-04-13T10:56:03.711Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,6 +1,6 @@
 ---
 title: "Add Continuity Search Intent Profile - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)
@@ -10,7 +10,7 @@ status: planned
 ## P1 (Should Fix)
 - [x] Adaptive-fusion and adaptive-ranking tests cover the new profile explicitly. Evidence: `adaptive-fusion.vitest.ts` and `adaptive-ranking.vitest.ts` both include continuity-specific assertions.
 - [x] `mcp_server/tests/k-value-optimization.vitest.ts` includes continuity-specific prompts while the typed judged sweep remains unchanged. Evidence: `k-value-optimization.vitest.ts` now includes continuity queries, and `intent-classifier.vitest.ts` covers the added continuity lambda.
-- [ ] The implementation order note in `../research/research.md:273-289` is respected so this phase lands after telemetry, length-penalty removal, and the rerank minimum change.
+- [x] The implementation order note in `../research/research.md:273-289` is respected so this phase lands after telemetry, length-penalty removal, and the rerank minimum change. Evidence: the parent packet shipped `002`, `001`, and `004` as complete child phases before this continuity-profile closeout and Stage 3 remediation.
 ## P2 (Advisory)
-- [ ] A follow-on note captures the separate public-intent expansion work if operator-facing APIs later need an explicit continuity intent.
-- [ ] Retrieval tuning notes record that the string-typed K harness is the approved validation path for the narrow rollout.
+- [x] A follow-on note captures the separate public-intent expansion work if operator-facing APIs later need an explicit continuity intent. Evidence: `implementation-summary.md` and `research/research.md` both keep public intent expansion as separate follow-on scope.
+- [x] Retrieval tuning notes record that the string-typed K harness is the approved validation path for the narrow rollout. Evidence: `tasks.md` T-05 added the continuity prompts to `k-value-optimization.vitest.ts`, and `research/research.md` names that harness as the approved narrow validation path.

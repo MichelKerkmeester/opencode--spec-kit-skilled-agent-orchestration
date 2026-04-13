@@ -1,17 +1,38 @@
 ---
 title: "Implementation Summary [03--commands-and-skills/036-sk-deep-research-review-split/implementation-summary]"
 description: "Repository artifacts show that review mode was split out of sk-deep-research into a dedicated sk-deep-review skill and command."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 trigger_phrases:
   - "036 implementation summary"
   - "deep-review split summary"
   - "review mode split shipped"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/036-sk-deep-research-review-split"
+    last_updated_at: "2026-04-13T10:38:46Z"
+    last_updated_by: "copilot"
+    recent_action: "Synced implementation evidence links and packet continuity metadata"
+    next_safe_action: "Sync evidence if docs change"
+    blockers: []
+    key_files:
+      - ".opencode/specs/skilled-agent-orchestration/036-sk-deep-research-review-split/implementation-summary.md"
+      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/sk-deep-review/graph-metadata.json"
+      - ".opencode/skill/sk-deep-research/graph-metadata.json"
+    session_dedup:
+      fingerprint: "sha256:036-sk-deep-research-review-split"
+      session_id: "036-sk-deep-research-review-split"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
@@ -79,8 +100,8 @@ The implementation was delivered as coordinated documentation, wrapper, and rout
 
 | Check | Result |
 |-------|--------|
-| Repository changelog entry | PASS - `.opencode/changelog/00--opencode-environment/v3.0.1.1.md` documents the split, created files, and breaking rename |
-| Session handover evidence | PASS - `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/handover.md` records the phased implementation and follow-up verification work |
+| Repository changelog entry | PASS - `.opencode/changelog/13--sk-deep-review/v1.0.0.0.md` documents the split, created files, and breaking rename |
+| Session handover evidence | PASS - `.opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/handover.md` records the phased implementation and follow-up verification work |
 | Compliance repair accuracy | PASS - This repair reconstructed the missing spec docs from existing repository artifacts without inventing new implementation claims |
 <!-- /ANCHOR:verification -->
 

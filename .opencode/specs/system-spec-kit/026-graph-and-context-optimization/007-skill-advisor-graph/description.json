@@ -1,15 +1,14 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph",
-  "description": "Feature Specification: Skill Advisor Graph - structured graph metadata for 20 skills with compiled graph and advisor integration",
+  "description": "Feature Specification: Skill Advisor Graph",
   "keywords": [
+    "feature",
+    "specification",
     "skill",
     "advisor",
-    "graph",
-    "metadata",
-    "routing",
-    "skill-graph"
+    "graph"
   ],
-  "lastUpdated": "2026-04-13T12:00:00.000Z",
+  "lastUpdated": "2026-04-13T10:39:18.791Z",
   "specId": "007",
   "folderSlug": "skill-advisor-graph",
   "parentChain": [

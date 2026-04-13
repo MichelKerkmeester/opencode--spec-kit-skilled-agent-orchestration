@@ -39,7 +39,7 @@
       "title"
     ],
     "importance_tier": "important",
-    "status": "active",
+    "status": "in_progress",
     "key_files": [
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "title: \\\"Spec 089: system-spec-kit Reimagined Refinement\\\"",
     "created_at": "2026-04-12T09:02:53.559Z",
-    "last_save_at": "2026-04-13T08:18:57.137Z",
+    "last_save_at": "2026-04-13T10:56:03.886Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

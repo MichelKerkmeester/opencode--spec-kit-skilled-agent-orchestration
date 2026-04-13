@@ -162,7 +162,7 @@
     ],
     "causal_summary": "This completed Level 3 spec captures the architecture audit of `.opencode/skill/system-spec-kit/` with focus on the ownership boundary between root `scripts/` and `mcp_server/`. The work established a boundary contract, reduced cross-area drift, hardened enforcement, merged the former `030-architecture-boundary-remediation` follow-up, and closed later verification-driven issues around naming, README coverage, symlinked runtime paths, and source-dist alignment.",
     "created_at": "2026-04-12T09:02:50.240Z",
-    "last_save_at": "2026-04-13T08:18:53.995Z",
+    "last_save_at": "2026-04-13T10:56:00.342Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

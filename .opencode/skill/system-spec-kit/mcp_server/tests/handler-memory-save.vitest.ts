@@ -268,6 +268,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     function createCanonicalRoutingFixture(): {
       sourcePath: string;
       targetPath: string;
+      specPath: string;
       tasksPath: string;
       specFolderKey: string;
     };
@@ -359,6 +360,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       return {
         sourcePath,
         targetPath: path.join(specFolder, 'implementation-summary.md'),
+        specPath: path.join(specFolder, 'spec.md'),
         tasksPath: path.join(specFolder, 'tasks.md'),
         specFolderKey: specFolderSegments.join('/'),
       };
@@ -1146,6 +1148,93 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         getCanonicalPathKey(fixture.targetPath),
         fixture.targetPath,
         'what-built',
+        true,
+        expect.anything(),
+        expect.anything(),
+      );
+    });
+
+    it('routes metadata-only saves into implementation-summary.md even when the current file is a spec doc', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const tasksBefore = fs.readFileSync(fixture.tasksPath, 'utf8');
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 4441,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.tasksPath,
+          content: 'preflight: routed metadata should stay on the canonical implementation summary continuity block',
+          routeAs: 'metadata_only',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.filePath).toBe(fixture.targetPath);
+      expect(result.targetDocPath).toBe(fixture.targetPath);
+      expect(result.routeCategory).toBe('metadata_only');
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toBe(tasksBefore);
+      expect(checkExistingRowMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        getCanonicalPathKey(fixture.targetPath),
+        fixture.targetPath,
+        '_memory.continuity',
+        true,
+        expect.anything(),
+        expect.anything(),
+      );
+    });
+
+    it('falls back to spec.md for metadata-only saves when implementation-summary.md is missing', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      fs.unlinkSync(fixture.targetPath);
+      const specBefore = fs.readFileSync(fixture.specPath, 'utf8');
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 4442,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.tasksPath,
+          content: 'postflight: routed metadata should still persist when implementation summary is absent',
+          routeAs: 'metadata_only',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.filePath).toBe(fixture.specPath);
+      expect(result.targetDocPath).toBe(fixture.specPath);
+      expect(result.routeCategory).toBe('metadata_only');
+      expect(fs.readFileSync(fixture.specPath, 'utf8')).not.toBe(specBefore);
+      expect(checkExistingRowMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        getCanonicalPathKey(fixture.specPath),
+        fixture.specPath,
+        '_memory.continuity',
         true,
         expect.anything(),
         expect.anything(),

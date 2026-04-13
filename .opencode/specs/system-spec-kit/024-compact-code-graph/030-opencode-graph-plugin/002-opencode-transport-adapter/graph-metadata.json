@@ -51,7 +51,6 @@
       ".opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugin.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/session-resume.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap.vitest.ts",
-      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -115,12 +114,6 @@
         "source": "derived"
       },
       {
-        "name": "hook-session-start.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
@@ -155,11 +148,17 @@
         "kind": "doc",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 turned the transport concept into a real shipped OpenCode plugin. The Level 3 repair keeps that runtime claim intact while adding the architecture and verification scaffolding needed for trustworthy packet recovery.",
     "created_at": "2026-04-12T09:02:53.436Z",
-    "last_save_at": "2026-04-13T08:18:57.018Z",
+    "last_save_at": "2026-04-13T10:56:03.644Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

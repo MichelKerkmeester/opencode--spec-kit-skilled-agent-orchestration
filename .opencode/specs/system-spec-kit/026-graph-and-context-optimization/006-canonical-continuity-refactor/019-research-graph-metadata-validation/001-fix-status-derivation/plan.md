@@ -1,6 +1,6 @@
 ---
 title: "Fix Graph Metadata Status Derivation - Execution Plan"
-status: planned
+status: complete
 parent_spec: 001-fix-status-derivation/spec.md
 ---
 # Execution Plan

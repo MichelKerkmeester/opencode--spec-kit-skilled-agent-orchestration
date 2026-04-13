@@ -48,7 +48,6 @@
       "spec.md",
       "tasks.md",
       "checklist.md",
-      "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/query-flow-tracker.vitest.ts tests/context-server.vitest.ts tests/feedback-ledger.vitest.ts",
       "tests/query-flow-tracker.vitest.ts",
       "mcp_server/tests/context-server.vitest.ts",
       "mcp_server/tests/query-flow-tracker.vitest.ts",
@@ -100,12 +99,6 @@
         "source": "derived"
       },
       {
-        "name": "feedback-ledger.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/mcp_server && TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/query-flow-tracker.vitest.ts tests/context-server.vitest.ts tests/feedback-ledger.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "query-flow-tracker.vitest.ts",
         "kind": "test",
         "path": "tests/query-flow-tracker.vitest.ts",
@@ -152,11 +145,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Purpose Synchronize",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The feedback signal pipeline is implemented in the current repo, but this packet no longer matched the shipped code or the available verification evidence. The markdown still described a planned `memory-context.ts` hook and a `0.6` reformulation threshold, while the live implementation uses a dispatcher-level sticky-session fallback in `context-server.ts` and Jaccard thresholds of `0.3 <= similarity < 0.8` for `query_reformulated` and `>= 0.8` for `same_topic_requery`.",
     "created_at": "2026-04-12T09:02:50.340Z",
-    "last_save_at": "2026-04-13T08:18:54.090Z",
+    "last_save_at": "2026-04-13T10:56:00.526Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

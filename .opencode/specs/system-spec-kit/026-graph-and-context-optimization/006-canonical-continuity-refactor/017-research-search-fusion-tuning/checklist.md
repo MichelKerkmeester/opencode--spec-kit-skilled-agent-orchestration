@@ -10,12 +10,12 @@ status: planned
 
 ## P1 (Should Fix)
 
-- [ ] Stage 3 MMR reads the same intent variable as stages 1-2
-- [ ] Docs accurately describe what Stage 3 actually does (not what it should do)
-- [ ] All sub-phase statuses updated to complete with checked items
-- [ ] Codex `deep-review.toml` matches the canonical deep-review schema
-- [ ] Codex `context.toml` matches the canonical context continuity ladder
+- [x] Stage 3 MMR reads the same intent variable as stages 1-2. Evidence: `stage3-rerank.ts` now prefers `adaptiveFusionIntent`, and the Stage 3 regression suite asserts the continuity lambda is selected from that handoff.
+- [x] Docs accurately describe what Stage 3 actually does (not what it should do). Evidence: the verified architecture/search/config/root README surfaces already matched the shipped runtime once the Stage 3 handoff was fixed.
+- [x] All sub-phase statuses updated to complete with checked items. Evidence: `001-004` now carry `status: complete` in `spec.md` and `checklist.md`, with the remaining checklist lines closed using packet-local evidence.
+- [ ] Codex `deep-review.toml` matches the canonical deep-review schema. Blocked: `.codex/agents` is read-only in this sandbox, so the prepared sync could not be written.
+- [ ] Codex `context.toml` matches the canonical context continuity ladder. Blocked: `.codex/agents` is read-only in this sandbox, so the prepared sync could not be written.
 
 ## P2 (Advisory)
 
-- [ ] `/spec_kit:resume` design decision documented (search pipeline vs file-based)
+- [x] `/spec_kit:resume` design decision documented (search pipeline vs file-based). Evidence: `spec.md` now records that `/spec_kit:resume` intentionally bypasses `handleMemorySearch()` and uses the canonical file ladder.

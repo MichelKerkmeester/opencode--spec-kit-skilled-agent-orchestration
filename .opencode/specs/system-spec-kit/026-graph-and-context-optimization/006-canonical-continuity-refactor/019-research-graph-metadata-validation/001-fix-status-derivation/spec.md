@@ -1,6 +1,6 @@
 ---
 title: "Fix Graph Metadata Status Derivation"
-status: planned
+status: complete
 level: 2
 type: implementation
 parent: 019-research-graph-metadata-validation

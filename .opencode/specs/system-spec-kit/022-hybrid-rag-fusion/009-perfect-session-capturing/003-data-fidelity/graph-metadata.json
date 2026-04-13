@@ -49,8 +49,6 @@
       "scripts/extractors/collect-session-data.ts",
       "scripts/tests/runtime-memory-inputs.vitest.ts",
       "scripts/tests/test-extractors-loaders.js",
-      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
-      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
       "tests/runtime-memory-inputs.vitest.ts",
       "spec.md",
       "plan.md",
@@ -108,12 +106,6 @@
         "source": "derived"
       },
       {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -154,11 +146,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.269Z",
-    "last_save_at": "2026-04-13T08:18:54.024Z",
+    "last_save_at": "2026-04-13T10:56:00.400Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -66,13 +66,13 @@
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Gate A exists because phase 018 cannot safely begin merge-time continuity writes or archive-state migration while known template debt is still live. `../resource-map.md` flags orphan `metadata` anchor closes in `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`, plus anchorless `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md`; iteration 022 makes those defects hard blockers because `ANCHORS_VALID` and `MERGE_LEGALITY` fail on orphan or missing targets.",
     "created_at": "2026-04-12T09:02:53.477Z",
-    "last_save_at": "2026-04-13T08:18:57.048Z",
+    "last_save_at": "2026-04-13T10:56:03.702Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

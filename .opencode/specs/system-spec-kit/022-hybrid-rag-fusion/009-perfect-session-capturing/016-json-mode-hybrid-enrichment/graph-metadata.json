@@ -63,7 +63,7 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "001-initial-enrichment/spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -81,7 +81,7 @@
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "001-initial-enrichment/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -159,7 +159,7 @@
     ],
     "causal_summary": "This packet had drifted into a historical phase container that no longer matched active system-spec-kit template rules. The top-level docs lacked template markers, anchors, and required section structure, which prevented recursive strict validation even though the child phases capture real implementation work.",
     "created_at": "2026-04-12T09:02:50.276Z",
-    "last_save_at": "2026-04-13T08:18:54.034Z",
+    "last_save_at": "2026-04-13T10:56:00.417Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

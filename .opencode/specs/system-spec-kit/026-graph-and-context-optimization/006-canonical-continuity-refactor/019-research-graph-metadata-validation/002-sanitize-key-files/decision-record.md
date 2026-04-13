@@ -1,6 +1,6 @@
 ---
 title: "Sanitize Key Files in Graph Metadata - Decision Record"
-status: planned
+status: complete
 ---
 # Decision Record
 ## ADR-001: Use an Explicit Allowlist-and-Reject Predicate Before Merge

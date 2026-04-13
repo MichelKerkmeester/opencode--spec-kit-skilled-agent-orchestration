@@ -6,7 +6,11 @@
   "children_ids": [],
   "manual": {
     "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph"
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph",
+        "reason": "Legacy manual depends_on entry normalized for schema-valid backfill.",
+        "source": "manual"
+      }
     ],
     "supersedes": [],
     "related_to": []
@@ -15,29 +19,152 @@
     "trigger_phrases": [
       "001-research-findings-fixes",
       "skill graph fixes",
-      "graph findings"
+      "graph findings fixes",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist"
     ],
     "key_topics": [
-      "ghost-candidates",
-      "edge-gaps",
-      "compiler",
-      "validation",
-      "evidence-separation"
+      "001-research-findings-fixes",
+      "skill",
+      "graph",
+      "fixes",
+      "findings",
+      "implementation",
+      "plan",
+      "tasks",
+      "verification",
+      "checklist",
+      "fix",
+      "issues"
     ],
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
+      "sk-deep-review/graph-metadata.json",
+      "sk-deep-research/graph-metadata.json",
+      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/scripts/skill_graph_compiler.py",
+      ".opencode/skill/system-spec-kit/graph-metadata.json",
+      ".opencode/skill/mcp-coco-index/graph-metadata.json",
+      ".opencode/skill/sk-doc/graph-metadata.json",
+      ".opencode/skill/sk-improve-prompt/graph-metadata.json",
+      ".opencode/skill/sk-deep-review/graph-metadata.json",
+      ".opencode/skill/sk-deep-research/graph-metadata.json",
+      ".opencode/skill/scripts/skill-graph.json",
+      ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "system-spec-kit/graph-metadata.json",
+      "sk-doc/graph-metadata.json",
+      "mcp-coco-index/graph-metadata.json",
+      "sk-improve-prompt/graph-metadata.json",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md",
-      ".opencode/skill/scripts/skill_advisor.py",
-      ".opencode/skill/scripts/skill_graph_compiler.py"
+      "checklist.md"
     ],
-    "entities": [],
-    "causal_summary": "Fix 5 P0 blocking issues and 5 P1 issues found by deep research audit to make the skill graph production-ready.",
+    "entities": [
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "sk-deep-review/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.json",
+        "kind": "config",
+        "path": ".opencode/skill/scripts/skill-graph.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Graph Research Findings Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Blocking Issues",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fix the issues found by a 10-iteration GPT-5.4 deep research audit of the skill graph system. The audit concluded the system is safe as an assist layer but not production-ready. This phase addresses 5 blocking (P0) issues and 5 important (P1) issues to bring the graph to production quality.",
     "created_at": "2026-04-13T16:00:00.000Z",
-    "last_save_at": "2026-04-13T16:00:00.000Z",
+    "last_save_at": "2026-04-13T10:56:03.745Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

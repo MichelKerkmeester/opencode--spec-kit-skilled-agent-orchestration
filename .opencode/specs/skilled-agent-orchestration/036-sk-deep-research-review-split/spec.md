@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Split sk-deep-research review [03--commands-and-skills/036-sk-deep-research-review-split/spec]"
 description: "The original sk-deep-research skill mixed iterative investigation and iterative code review in one command and one skill package. That overlap made routing, documentation, and runtime wrappers harder to maintain."
+template_source_header: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 trigger_phrases:
   - "deep research review split"
   - "sk-deep-review split"
@@ -8,11 +9,30 @@ trigger_phrases:
   - "split review mode from deep research"
 importance_tier: "normal"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "skilled-agent-orchestration/036-sk-deep-research-review-split"
+    last_updated_at: "2026-04-13T10:38:46Z"
+    last_updated_by: "copilot"
+    recent_action: "Applied follow-up advisor evidence calibration and sibling-edge cleanup"
+    next_safe_action: "Keep packet docs synced with any future deep-review or advisor adjustments"
+    blockers: []
+    key_files:
+      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/sk-deep-review/graph-metadata.json"
+      - ".opencode/skill/sk-deep-research/graph-metadata.json"
+    session_dedup:
+      fingerprint: "sha256:036-sk-deep-research-review-split"
+      session_id: "036-sk-deep-research-review-split"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Advisor evidence calibration now separates graph-heavy matches and deep sibling edges were removed."
 ---
 # Feature Specification: Split sk-deep-research Review Mode into sk-deep-review
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 

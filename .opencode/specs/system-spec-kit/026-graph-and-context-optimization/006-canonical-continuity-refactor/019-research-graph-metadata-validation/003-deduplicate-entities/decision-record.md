@@ -1,6 +1,6 @@
 ---
 title: "Deduplicate Graph Metadata Entities - Decision Record"
-status: planned
+status: complete
 ---
 # Decision Record
 ## ADR-001: Prefer Canonical Packet Paths on Entity Name Collisions

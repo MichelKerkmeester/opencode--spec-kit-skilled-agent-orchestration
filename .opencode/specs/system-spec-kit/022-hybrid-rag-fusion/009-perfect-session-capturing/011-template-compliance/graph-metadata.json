@@ -35,7 +35,6 @@
       ".opencode/agent/speckit.md",
       ".claude/agents/speckit.md",
       ".gemini/agents/speckit.md",
-      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts",
       "/Users/michelkerkmeester/.codex",
       ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
       "scripts/tests/template-structure.vitest.ts",
@@ -54,12 +53,6 @@
         "source": "derived"
       },
       {
-        "name": "template-structure.vitest.ts",
-        "kind": "test",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": ".codex",
         "kind": "file",
         "path": "/Users/michelkerkmeester/.codex",
@@ -69,6 +62,12 @@
         "name": "template-structure.js",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
+        "source": "derived"
+      },
+      {
+        "name": "template-structure.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/template-structure.vitest.ts",
         "source": "derived"
       },
       {
@@ -146,7 +145,7 @@
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.273Z",
-    "last_save_at": "2026-04-13T08:18:54.030Z",
+    "last_save_at": "2026-04-13T10:56:00.410Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

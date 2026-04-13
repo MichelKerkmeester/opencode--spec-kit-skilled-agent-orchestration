@@ -52,7 +52,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase pulled the save-path docs back onto the shipped routing contract. The command docs, architecture/reference docs, playbook scenarios, feature catalog, and MCP config notes now all describe the same 8-category canonical router, the live Tier 3 save-handler gate behind `SPECKIT_TIER3_ROUTING=true`, and the corrected delivery-versus-handover boundaries.
+This phase pulled the save-path docs back onto the shipped routing contract. The command docs, architecture/reference docs, playbook scenarios, feature catalog, and config mirrors now all describe the same 8-category canonical router, the always-on Tier 3 save path, and the corrected delivery-versus-handover boundaries.
 
 ### Save surfaces now describe the live router
 
@@ -60,11 +60,11 @@ The primary save docs now explain the 8 routing categories, the Tier 1 to Tier 3
 
 ### Catalog and playbook parity
 
-The routing-aware feature catalog entries and manual testing scenarios now mirror the same runtime story instead of describing an older packet-first save surface without the new boundaries. The save substrate scenario now covers safe refusal, override audit fields, and the Tier 3 opt-in path, while the mutation scenario and root playbook index describe correct-route-or-safe-refusal behavior.
+The routing-aware feature catalog entries and manual testing scenarios now mirror the same runtime story instead of describing an older packet-first save surface without the new boundaries. The save substrate scenario now covers safe refusal, override audit fields, and the always-on Tier 3 path, while the mutation scenario and root playbook index describe correct-route-or-safe-refusal behavior.
 
 ### MCP config operator notes
 
-All five MCP config surfaces now document `SPECKIT_TIER3_ROUTING=true` as the opt-in flag for the live Tier 3 LLM save router, with default OFF called out explicitly. That keeps operator-facing config notes in sync with the save-handler wiring from phase 003.
+The config mirrors now stay silent on `SPECKIT_TIER3_ROUTING`, and the feature-flag reference marks that flag as removed. That keeps operator-facing guidance aligned with the save-handler wiring from phase 003 without reintroducing an opt-in story.
 
 ### Files Changed
 
@@ -76,12 +76,12 @@ All five MCP config surfaces now document `SPECKIT_TIER3_ROUTING=true` as the op
 | `.opencode/skill/system-spec-kit/SKILL.md` | Modified | Added the current save-routing contract to the spec-kit skill surface |
 | `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Modified | Added the canonical save-router reference section |
 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md` | Modified | Updated the split memory-save catalog entry |
-| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modified | Added `SPECKIT_TIER3_ROUTING` to the feature-flag reference |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Verified | Confirms `SPECKIT_TIER3_ROUTING` is removed and Tier 3 is always on by default |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Kept the aggregated catalog in sync with the split entries |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/02--mutation/006-memory-indexing-memory-save.md` | Modified | Updated the mutation scenario to verify correct route or safe refusal |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md` | Modified | Expanded the canonical save scenario to cover the new routing contract |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modified | Updated the root playbook index wording for the save scenario |
-| `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `.gemini/settings.json`, `opencode.json` | Modified | Added the opt-in Tier 3 save-routing flag note |
+| `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `.gemini/settings.json`, `opencode.json` | Verified | Confirmed the stale `SPECKIT_TIER3_ROUTING` operator note is no longer present |
 | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` | Modified/Created | Brought the packet-local docs into Level 2 validator-compliant shape and recorded the final closeout evidence |
 <!-- /ANCHOR:what-built -->
 
@@ -113,7 +113,7 @@ The pass stayed doc-only and evidence-first. I read the live router and save-han
 | Check | Result |
 |-------|--------|
 | `jq empty .mcp.json .claude/mcp.json .vscode/mcp.json .gemini/settings.json opencode.json` | PASS |
-| `rg -n "SPECKIT_TIER3_ROUTING|routeAs|8-category|8 categories|handover versus drop|delivery versus progress|metadata-first|packet_kind" ...` | PASS |
+| `rg -n "SPECKIT_TIER3_ROUTING|always on by default|routeAs|8-category|8 categories|handover versus drop|delivery versus progress|metadata-first|packet_kind" ...` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment --strict` | PASS |
 <!-- /ANCHOR:verification -->
 

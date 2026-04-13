@@ -5,7 +5,11 @@
   "category": "system",
   "edges": {
     "depends_on": [],
-    "enhances": [],
+    "enhances": [
+      { "target": "sk-doc", "weight": 0.4, "context": "spec folder documentation" },
+      { "target": "sk-git", "weight": 0.3, "context": "git workflow integration" },
+      { "target": "sk-code-opencode", "weight": 0.3, "context": "opencode standards" }
+    ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []

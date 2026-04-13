@@ -45,6 +45,10 @@ The search pipeline combines vector search, BM25, and FTS5 results through a fus
 
 Generate synthetic queries from current spec docs (titles, summaries, entity names). Profile each pipeline stage. Measure precision/recall at different threshold values. No historical memory data needed - everything is analyzable from the current codebase and schema.
 
+## Design Note
+
+`/spec_kit:resume` intentionally stays on the canonical file-based recovery ladder instead of routing through `handleMemorySearch()`. The live resume path calls `memory_context(mode='resume', profile='resume')`, which reads `handover.md -> _memory.continuity -> spec docs` directly, and the resume regression suite fails if `handleMemorySearch()` is invoked. The continuity-aware Stage 3 MMR behavior fixed in this packet therefore applies to search-style resume-profile retrieval, not to the operator-facing `/spec_kit:resume` ladder itself.
+
 ## Exit Criteria
 
 - All 5 research questions answered with evidence

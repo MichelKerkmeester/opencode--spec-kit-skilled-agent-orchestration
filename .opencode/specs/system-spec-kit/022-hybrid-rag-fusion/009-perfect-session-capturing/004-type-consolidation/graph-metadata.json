@@ -50,17 +50,15 @@
       "scripts/spec-folder/folder-detector.ts",
       "scripts/utils/spec-affinity.ts",
       "spec.md",
-      "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
-      "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/spec-affinity.vitest.ts --config ../mcp_server/vitest.config.ts",
       "types/session-types.ts",
       "scripts/extractors/session-extractor.ts",
       "scripts/extractors/collect-session-data.ts",
       "scripts/core/workflow.ts",
       "tests/spec-affinity.vitest.ts",
       "plan.md",
-      "tsc --noEmit --composite false -p scripts/tsconfig.json",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -118,18 +116,6 @@
         "source": "derived"
       },
       {
-        "name": "test-extractors-loaders.js",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
-        "source": "derived"
-      },
-      {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/spec-affinity.vitest.ts --config ../mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
         "name": "session-extractor.ts",
         "kind": "code",
         "path": "scripts/extractors/session-extractor.ts",
@@ -158,11 +144,23 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.269Z",
-    "last_save_at": "2026-04-13T08:18:54.025Z",
+    "last_save_at": "2026-04-13T10:56:00.401Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

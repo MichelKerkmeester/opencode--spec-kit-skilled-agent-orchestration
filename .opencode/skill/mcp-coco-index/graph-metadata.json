@@ -5,7 +5,9 @@
   "category": "mcp-tool",
   "edges": {
     "depends_on": [],
-    "enhances": [],
+    "enhances": [
+      { "target": "system-spec-kit", "weight": 0.3, "context": "semantic search for spec context" }
+    ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []

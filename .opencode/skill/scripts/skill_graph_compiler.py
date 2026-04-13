@@ -130,6 +130,8 @@ def validate_skill_metadata(
                     errors.append(f"edges.{edge_type}[{i}] missing 'target'")
                 elif target not in all_skill_ids:
                     errors.append(f"edges.{edge_type}[{i}] target '{target}' is not a known skill")
+                elif target == skill_id:
+                    errors.append(f"edges.{edge_type}[{i}] is a self-referencing edge")
 
                 weight = edge.get("weight")
                 if not isinstance(weight, (int, float)):
@@ -204,6 +206,68 @@ def validate_edge_symmetry(
     return warnings
 
 
+def validate_zero_edge_skills(
+    all_metadata: List[Tuple[str, str, dict]],
+) -> List[str]:
+    """Warn when a skill has no graph edges across any supported edge type."""
+    warnings = []
+
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        edges = data.get("edges", {})
+        if not isinstance(edges, dict):
+            continue
+
+        total_edges = 0
+        for edge_type in EDGE_TYPES:
+            edge_list = edges.get(edge_type, [])
+            if isinstance(edge_list, list):
+                total_edges += len(edge_list)
+
+        if total_edges == 0:
+            warnings.append(f"{skill_id}: skill has zero edges (orphan)")
+
+    return warnings
+
+
+def validate_dependency_cycles(
+    all_metadata: List[Tuple[str, str, dict]],
+) -> List[str]:
+    """Detect simple two-node depends_on cycles (A -> B -> A)."""
+    errors = []
+    depends_on_lookup: Dict[str, Set[str]] = {}
+    seen_cycles: Set[Tuple[str, str]] = set()
+
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        edges = data.get("edges", {})
+        targets: Set[str] = set()
+
+        if isinstance(edges, dict):
+            for edge in edges.get("depends_on", []):
+                if not isinstance(edge, dict):
+                    continue
+                target = edge.get("target")
+                if target:
+                    targets.add(target)
+
+        depends_on_lookup[skill_id] = targets
+
+    for skill_id, targets in depends_on_lookup.items():
+        for target in targets:
+            if skill_id not in depends_on_lookup.get(target, set()):
+                continue
+
+            cycle = tuple(sorted((skill_id, target)))
+            if cycle in seen_cycles:
+                continue
+
+            seen_cycles.add(cycle)
+            errors.append(f"depends_on cycle detected: {skill_id} -> {target} -> {skill_id}")
+
+    return errors
+
+
 # ───────────────────────────────────────────────────────────────
 # 4. COMPILATION
 # ───────────────────────────────────────────────────────────────
@@ -250,8 +314,8 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
         edges = data.get("edges", {})
         skill_adj: Dict[str, dict] = {}
 
-        # Exclude prerequisite_for from compiled output (derivable from depends_on)
-        for edge_type in ("depends_on", "enhances", "siblings"):
+        # Keep core sparse edge groups in compiled output.
+        for edge_type in ("depends_on", "enhances", "siblings", "prerequisite_for"):
             edge_list = edges.get(edge_type, [])
             if edge_list:
                 targets = {}
@@ -275,6 +339,13 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
                     seen_conflicts.add(pair)
                     conflicts.append(list(pair))
 
+    signals = {}
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        sigs = data.get("intent_signals", [])
+        if sigs:
+            signals[skill_id] = sigs
+
     # Sort family members
     for family in families:
         families[family] = sorted(families[family])
@@ -287,6 +358,7 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
         "skill_count": len(all_metadata),
         "families": dict(sorted(families.items())),
         "adjacency": dict(sorted(adjacency.items())),
+        "signals": dict(sorted(signals.items())),
         "conflicts": sorted(conflicts),
         "hub_skills": hub_skills,
     }
@@ -338,11 +410,24 @@ def main() -> int:
                 print(f"  - {err}")
             total_errors += len(errors)
 
+    dependency_cycle_errors = validate_dependency_cycles(all_metadata)
+    if dependency_cycle_errors:
+        print(f"\nDEPENDENCY CYCLE ERRORS ({len(dependency_cycle_errors)}):")
+        for err in dependency_cycle_errors:
+            print(f"  - {err}")
+        total_errors += len(dependency_cycle_errors)
+
     # Symmetry warnings
     symmetry_warnings = validate_edge_symmetry(all_metadata)
     if symmetry_warnings:
         print(f"\nSYMMETRY WARNINGS ({len(symmetry_warnings)}):")
         for warn in symmetry_warnings:
+            print(f"  - {warn}")
+
+    zero_edge_warnings = validate_zero_edge_skills(all_metadata)
+    if zero_edge_warnings:
+        print(f"\nZERO-EDGE WARNINGS ({len(zero_edge_warnings)}):")
+        for warn in zero_edge_warnings:
             print(f"  - {warn}")
 
     if total_errors > 0:
@@ -372,8 +457,8 @@ def main() -> int:
     print(f"  Hub skills: {graph['hub_skills']}")
     print(f"  Output: {args.output}")
 
-    if size_bytes > 2048:
-        print(f"WARNING: Output exceeds 2KB target ({size_bytes} bytes)", file=sys.stderr)
+    if size_bytes > 4096:
+        print(f"WARNING: Output exceeds 4KB target ({size_bytes} bytes)", file=sys.stderr)
 
     return 0
 
