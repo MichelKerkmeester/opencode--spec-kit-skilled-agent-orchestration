@@ -208,7 +208,7 @@ EOF
 
 ### Release Notes
 
-Release notes for each version are stored as individual files in `.opencode/changelog/00--opencode-environment/vX.X.X.X.md`, formatted per the template in Section 7. For GitHub publishing, use an extracted body that excludes the local changelog wrapper (`# v...`, `> Part of ...`, `## [**x.x.x.x**] - date`).
+Release notes for each version are stored as individual files in `.opencode/changelog/00--opencode-environment/vX.X.X.X.md`, formatted per the template in Section 7. Changelog files start directly with the summary paragraph - no version header or boilerplate to strip for GitHub publishing.
 
 **Latest**: See `.opencode/changelog/01--system-spec-kit/v3.1.2.0.md`
 
@@ -300,11 +300,8 @@ No action required. / Steps if needed.
 
 **GitHub release body hygiene:**
 
-- Never include local changelog wrapper lines in GitHub release notes:
-  - `# vX.X.X.X`
-  - `> Part of ...`
-  - `## [**X.X.X.X**] - YYYY-MM-DD`
-- GitHub release notes must start with the summary paragraph
+- Changelog files start directly with the summary paragraph - no wrapper lines to strip
+- Use the changelog file content as-is for the GitHub release body
 
 **Category vocabulary for H3 headers (use plain names):**
 
@@ -324,7 +321,7 @@ No action required. / Steps if needed.
 Before publishing:
 
 - [ ] Opens with 1-2 plain-English sentences explaining why this release matters
-- [ ] GitHub notes body excludes local changelog wrapper header block
+- [ ] Changelog file starts with summary paragraph (no header boilerplate)
 - [ ] `## What Changed` H2 section present
 - [ ] Category headers use plain names (see vocabulary above)
 - [ ] Each bullet explains: what was broken, what we did, why it matters

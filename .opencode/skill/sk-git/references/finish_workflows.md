@@ -386,8 +386,7 @@ echo "No worktree cleanup needed."
 - Every fix explained as: what was broken, what we did, why it matters
 - No jargon without explanation; no metrics soup
 - Technical details (file paths, line numbers) go in the Files Changed table, not in descriptions
-- GitHub release body must NOT include local changelog wrapper lines (`# vX.X.X.X`, `> Part of ...`, `## [**X.X.X.X**] - date`)
-- If a changelog file exists, extract the body (skip the wrapper) for the release notes
+- Changelog files start directly with the summary paragraph (no version header or boilerplate) - use as-is for the release body
 - Always include a link back to the full changelog file in the repo
 
 **Validation**: `release_created`

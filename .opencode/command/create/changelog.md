@@ -428,13 +428,7 @@ git push origin v{VERSION}
 
 ### R2: Compose GitHub Release Notes
 
-Read the changelog file. Strip the local-only wrapper lines that must NOT appear in GitHub release notes:
-
-- Remove: `# v{VERSION}` (first H1 line)
-- Remove: `> Part of [OpenCode Dev Environment](...)`
-- Remove: `## [**{VERSION}**] - {YYYY-MM-DD}`
-
-The GitHub release body starts directly with the summary paragraph.
+Read the changelog file. Changelog files start directly with the summary paragraph (no version header or boilerplate). Use the file content as-is for the GitHub release body.
 
 Follow `PUBLIC_RELEASE.md` Section 7 writing style:
 

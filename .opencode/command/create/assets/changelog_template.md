@@ -8,19 +8,11 @@ This file defines the two formats used for global component changelogs and GitHu
 
 ## 1. CHANGELOG FILE FORMAT
 
-Global component changelog files live at `.opencode/changelog/{NN--component}/v{VERSION}.md`. This is the local file format -- it includes wrapper lines that are stripped for GitHub releases.
+Global component changelog files live at `.opencode/changelog/{NN--component}/v{VERSION}.md`. Files start directly with the summary paragraph - no version header or boilerplate.
 
 ### Compact Format (for releases with fewer than 10 changes)
 
 ```markdown
-# v{VERSION}
-
-> Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
-
----
-
-## [**{VERSION}**] - {YYYY-MM-DD}
-
 {One-paragraph summary explaining what this release does and why it matters.}
 
 > Spec folder: `{path}` (Level {N})
@@ -49,14 +41,6 @@ No migration required.
 Use this format when individual fixes need full explanation -- typically for audit results, major refactors, or releases where understanding the "why" behind each change matters.
 
 ```markdown
-# v{VERSION}
-
-> Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration)
-
----
-
-## [**{VERSION}**] - {YYYY-MM-DD}
-
 {One-paragraph summary explaining what this release does and why it matters. Include the scope (how many fixes), the test impact, and one sentence about the approach.}
 
 > Spec folder: `{path}` (Level {N})
@@ -141,13 +125,7 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 ## 2. GITHUB RELEASE NOTES FORMAT
 
-GitHub release notes are derived from the changelog file by stripping the local wrapper lines. The `gh release create` body must NOT include:
-
-- `# v{VERSION}` (the first H1 line)
-- `> Part of [OpenCode Dev Environment](...)`
-- `## [**{VERSION}**] - {YYYY-MM-DD}`
-
-The release body starts directly with the summary paragraph.
+Changelog files start directly with the summary paragraph - no version header or boilerplate. Use the file content as-is for the `gh release create` body.
 
 At the end, append:
 
