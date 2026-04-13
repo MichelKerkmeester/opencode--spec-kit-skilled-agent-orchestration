@@ -1,72 +1,156 @@
-# Deep Research Dashboard
+---
+title: Deep Research Dashboard
+description: Auto-generated reducer view over the research packet.
+---
 
-## Status
+# Deep Research Dashboard - Session Overview
 
-| Field | Value |
-|---|---|
-| Topic | Search fusion weight optimization and reranking threshold calibration |
-| Session ID | `75c06db9-0994-48a7-916d-bd008514d63a` |
-| Status | COMPLETE |
-| Iterations | 10 / 10 |
-| Started | 2026-04-13T04:50:40Z |
-| Last update | 2026-04-13T05:50:00Z |
-| Progressive synthesis | true |
+Auto-generated from JSONL state log, iteration files, findings registry, and strategy state. Never manually edited.
 
-## Question Coverage
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-| Question | Status | Outcome |
-|---|---|---|
-| `RQ-1` | Answered | `search-weights.json` is secondary; continuity tuning should target adaptive fusion plus RRF K |
-| `RQ-2` | Answered | `0.2346` is canonical FSRS v4 and should not be packet-locally retuned |
-| `RQ-3` | Answered with bounded evidence | Quality uplift is visible in fixtures; live latency telemetry is missing |
-| `RQ-4` | Answered | Long-doc penalty is mismatched to actual spec-doc corpus shape |
-| `RQ-5` | Answered as bounded unknown | Current code cannot measure cache hit rate |
+Reducer-generated observability surface for the active research packet.
 
-## Iteration Metrics
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:status -->
+## 2. STATUS
+- Topic: Search fusion weight optimization and reranking threshold calibration
+- Started: 2026-04-13T04:50:40Z
+- Status: INITIALIZED
+- Iteration: 25 of 25
+- Session ID: 75c06db9-0994-48a7-916d-bd008514d63a
+- Parent Session: none
+- Lifecycle Mode: new
+- Generation: 1
+- continuedFromRun: none
 
-| Run | Focus | Findings | New info ratio | Questions answered |
-|---|---|---:|---:|---|
-| 1 | Cross-encoder constants | 3 | 0.85 | - |
-| 2 | Stage 1/2 plus search-weights inventory | 3 | 0.78 | - |
-| 3 | Canonical decay and source-of-truth paths | 3 | 0.72 | `RQ-2` |
-| 4 | Adaptive fusion profiles | 3 | 0.62 | - |
-| 5 | RRF K-sensitivity | 3 | 0.55 | - |
-| 6 | Continuity query mapping | 3 | 0.46 | `RQ-1` |
-| 7 | Provider behavior and fixtures | 3 | 0.38 | `RQ-3` |
-| 8 | Length penalty fit and cache observability | 3 | 0.30 | `RQ-4` |
-| 9 | Recommendation framing | 3 | 0.22 | `RQ-5` |
-| 10 | Final synthesis | 4 | 0.12 | `RQ-1`-`RQ-5` consolidated |
+<!-- /ANCHOR:status -->
+<!-- ANCHOR:progress -->
+## 3. PROGRESS
 
-## Aggregate Metrics
+| # | Focus | Track | Ratio | Findings | Status |
+|---|-------|-------|-------|----------|--------|
+| 1 | Inventory cross-encoder constants, provider ladder, cache TTL, and rerank thresholds | constants | 0.85 | 3 | complete |
+| 2 | Document Stage 1, Stage 2, and search-weights hardcoded values | constants | 0.78 | 3 | complete |
+| 3 | Trace canonical decay math and real source-of-truth file layout | architecture | 0.72 | 3 | complete |
+| 4 | Analyze adaptive fusion assembly and normalized intent-weight profiles | fusion | 0.62 | 3 | complete |
+| 5 | Review RRF K-sensitivity analysis and intent-specific optimization hooks | fusion | 0.55 | 3 | complete |
+| 6 | Map fusion findings onto continuity-query priorities and config ownership | fusion | 0.46 | 3 | complete |
+| 7 | Profile provider contracts, fallback score bands, and fixture quality differences | rerank | 0.38 | 3 | complete |
+| 8 | Compare length-penalty thresholds against real spec-doc corpus shape and cache observability | rerank | 0.30 | 3 | complete |
+| 9 | Synthesize threshold recommendations for continuity-first reranking | recommendations | 0.22 | 3 | complete |
+| 10 | Finalize cross-question recommendations and packet-local synthesis | synthesis | 0.12 | 4 | complete |
+| 11 | Map length-penalty call graph, compatibility surface, and phase-001 blast radius | length-penalty | 0.74 | 4 | complete |
+| 12 | Audit penalty-specific tests and convert the removal decision into safe phase-001 implementation guidance | length-penalty | 0.67 | 4 | complete |
+| 13 | Design reranker cache counters and identify the smallest canonical status surface for phase 002 | telemetry | 0.71 | 4 | complete |
+| 14 | Differentiate core reranker status changes from optional operator-visible telemetry exposure | telemetry | 0.59 | 4 | complete |
+| 15 | Locate the minimum adaptive-fusion seam for a dedicated continuity profile | continuity-profile | 0.64 | 4 | complete |
+| 16 | Trace the wider public-intent blast radius for continuity beyond adaptive-fusion.ts | continuity-profile | 0.69 | 4 | complete |
+| 17 | Map Stage 3 rerank-minimum behavior and determine the safest first threshold | rerank-threshold | 0.62 | 4 | complete |
+| 18 | Audit Stage 3 regression fixtures for MIN_RESULTS_FOR_RERANK = 4 fallout | rerank-threshold | 0.58 | 4 | complete |
+| 19 | Choose the lowest-blast-radius harness for continuity-specific RRF K sweeps | k-sweep | 0.66 | 4 | complete |
+| 20 | Synthesize the safe implementation map for phases 001-004 plus the continuity-specific K-sweep follow-up | synthesis-implementation | 0.34 | 5 | complete |
+| 21 | Cross-validate the phase recommendations against each other and the current repo state | convergence | 0.24 | 4 | complete |
+| 22 | Prioritize phases 001-004 by combined impact, risk, and sequencing value | prioritization | 0.19 | 4 | complete |
+| 23 | Identify edge cases and rollout risks inside the recommended changes | risk-register | 0.15 | 4 | complete |
+| 24 | Validate how to extend the K-sweep harness without destabilizing existing tests | k-sweep-validation | 0.11 | 4 | complete |
+| 25 | Finalize convergence, resolve the remaining phase-003 scope question, and produce implementation-ready synthesis | final-synthesis | 0.07 | 5 | complete |
 
-| Metric | Value |
-|---|---:|
-| Total findings logged | 31 |
-| Average new info ratio | 0.50 |
-| Distinct code/doc sources cited | 15 |
-| Corpus probes executed | 3 |
-| Blocked measurement areas | 2 |
+- iterationsCompleted: 25
+- keyFindings: 119
+- openQuestions: 0
+- resolvedQuestions: 1
 
-## High-Signal Findings
+<!-- /ANCHOR:progress -->
+<!-- ANCHOR:questions -->
+## 4. QUESTIONS
+- Answered: 1/1
+- [x] Decide whether phase `003-continuity-search-profile` should stay adaptive-fusion-only or widen into a public continuity intent across classifier/routing/tool surfaces.
 
-1. `search-weights.json` is not the hybrid fusion control plane; it only affects vector smart-ranking.
-2. FSRS `0.2346` is canonical across scheduler and search-time decay usage.
-3. The long-document penalty threshold (`>2000`) hits `78.6%` of system-spec-kit markdown docs.
-4. Cache hit rate is currently unmeasurable because the reranker exports latency but not hit/miss counters.
-5. Repo-native K-sweep tooling already supports intent-specific RRF calibration.
+<!-- /ANCHOR:questions -->
+<!-- ANCHOR:trend -->
+## 5. TREND
+- Last 3 ratios: 0.15 -> 0.11 -> 0.07
+- Stuck count: 0
+- Guard violations: none recorded by the reducer pass
+- convergenceScore: 0.07
+- coverageBySources: {"code":90,"other":71}
 
-## Recommendation Snapshot
+<!-- /ANCHOR:trend -->
+<!-- ANCHOR:dead-ends -->
+## 6. DEAD ENDS
+- None this iteration. (iteration 1)
+- None this iteration. (iteration 1)
+- None this iteration. (iteration 2)
+- None this iteration. (iteration 2)
+- None this iteration. (iteration 3)
+- Treating the packet's shorter Stage 1 and Stage 2 file paths as authoritative. (iteration 3)
+- None this iteration. (iteration 4)
+- None this iteration. (iteration 4)
+- None this iteration. (iteration 5)
+- None this iteration. (iteration 5)
+- None this iteration. (iteration 6)
+- Using `search-weights.json` as the primary continuity tuning surface. (iteration 6)
+- Claiming real provider latency distributions from the fixture-only test corpus. (iteration 7)
+- Live benchmark runs against configured providers were not available within packet constraints. (iteration 7)
+- Changing the TTL based on a derived hit rate from current exports. (iteration 8)
+- None beyond the cache observability gap. (iteration 8)
+- None beyond previously ruled-out config assumptions. (iteration 9)
+- None this iteration. (iteration 9)
+- None this iteration. (iteration 10)
+- None this iteration. (iteration 10)
+- None this iteration. (iteration 11)
+- Treating phase `001` as a one-line constant deletion with no compatibility work. (iteration 11)
+- Keeping the constants in code "just for tests". That would preserve dead behavior rather than removing it. (iteration 12)
+- Replacing the deleted penalty with a higher threshold in phase `001`; that contradicts the user’s explicit removal decision. (iteration 12)
+- Adding counters directly to per-result payload rows; cache behavior is module-level, not document-level. (iteration 13)
+- None this iteration. (iteration 13)
+- Coupling phase `002` to TTL retuning or dashboard work; the packet sub-phase spec is right to keep that out of scope. (iteration 14)
+- Treating `getRerankerStatus()` as already operator-visible; the repo evidence does not support that. (iteration 14)
+- None this iteration. (iteration 15)
+- Treating the new profile as a change to `DEFAULT_WEIGHTS`; continuity needs to be explicit, not a silent default drift. (iteration 15)
+- None this iteration. (iteration 16)
+- Sneaking `continuity` into `INTENT_WEIGHT_PROFILES` and pretending the MCP/tool surface automatically supports it; the handler currently validates explicit intents against `IntentType`. (iteration 16)
+- Changing the threshold inside `cross-encoder.ts`; that would be the wrong layer and would break direct reranker tests unnecessarily. (iteration 17)
+- None this iteration. (iteration 17)
+- Mass-editing every reranker test file after raising the Stage 3 minimum; the threshold blast radius is narrower than that. (iteration 18)
+- Treating the evaluation-comparison suite as evidence for Stage 3 threshold behavior; it tests the reranker module directly. (iteration 18)
+- None this iteration. (iteration 19)
+- Starting with `runJudgedKSweep()` for continuity before the profile/intent question is settled. (iteration 19)
+- None this iteration. (iteration 20)
+- Treating all four implementation sub-phases as symmetric. Their safe scopes are meaningfully different. (iteration 20)
+- None this iteration. (iteration 21)
+- Reopening FSRS or `search-weights.json` as unresolved convergence topics. (iteration 21)
+- None this iteration. (iteration 22)
+- Ranking the follow-on phases by algorithmic novelty instead of combined impact and implementation risk. (iteration 22)
+- Treating local reranker behavior as independent from the Stage 3 minimum-results gate. (iteration 23)
+- Trying to keep a broad public continuity intent "optional" while leaving the current validator and test enums untouched. (iteration 23)
+- None this iteration. (iteration 24)
+- Using ground-truth or typed judged-sweep expansion as the first continuity benchmark step. (iteration 24)
+- Continuing to treat broad public continuity intent as the default scope for phase `003`. (iteration 25)
+- None this iteration. (iteration 25)
 
-| Area | Recommendation |
-|---|---|
-| Fusion weights | Add a dedicated continuity config surface instead of reusing `search-weights.json` |
-| RRF K | Test `K=60-80` for continuity-style discovery and `K=10-20` for literal navigation |
-| Rerank threshold | Raise the minimum rerank candidate threshold above `2` |
-| Length penalty | Raise or remove the `>2000` long-doc penalty for spec-doc continuity paths |
-| Cache TTL | Keep `5m` until hit/miss telemetry exists |
+<!-- /ANCHOR:dead-ends -->
+<!-- ANCHOR:next-focus -->
+## 7. NEXT FOCUS
+Hand off to implementation with this order: `002` telemetry source of truth, `001` length-penalty behavior removal, `004` rerank minimum = `4`, then `003` narrow continuity profile, with the continuity-specific K-sweep running as supporting validation rather than as a prerequisite.
 
-## Follow-On Blockers
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:active-risks -->
+## 8. ACTIVE RISKS
+- None active beyond normal research uncertainty.
 
-- Add provider-tagged latency metrics
-- Add reranker cache hit/miss counters
-- Add a continuity-specific judged query set for K and weight evaluation
+<!-- /ANCHOR:active-risks -->
+<!-- ANCHOR:blocked-stops -->
+## 9. BLOCKED STOPS
+No blocked-stop events recorded.
+
+<!-- /ANCHOR:blocked-stops -->
+<!-- ANCHOR:graph-convergence -->
+## 10. GRAPH CONVERGENCE
+- graphConvergenceScore: 0.00
+- graphDecision: [Not recorded]
+- graphBlockers: none recorded
+
+<!-- /ANCHOR:graph-convergence -->

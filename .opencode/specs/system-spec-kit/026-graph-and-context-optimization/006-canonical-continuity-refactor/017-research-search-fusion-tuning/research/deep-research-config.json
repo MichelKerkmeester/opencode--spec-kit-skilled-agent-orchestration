@@ -1,6 +1,6 @@
 {
   "topic": "Search fusion weight optimization and reranking threshold calibration",
-  "maxIterations": 10,
+  "maxIterations": 25,
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,

@@ -2,17 +2,18 @@
 
 ## Scope
 
-This packet investigated fusion-weight optimization and rerank-threshold calibration for continuity-oriented system-spec-kit MCP searches, then resumed for a second 10-iteration pass to answer how the recommended changes can be implemented safely. The work stayed read-only against runtime code and wrote only packet-local research artifacts.
+This packet investigated fusion-weight optimization and rerank-threshold calibration for continuity-oriented system-spec-kit MCP searches, then resumed for a second 10-iteration pass to answer how the recommended changes can be implemented safely, and finally ran a 5-iteration convergence wave to cross-check contradictions, rank sub-phases by impact versus risk, capture edge cases, and finalize an implementation-ready handoff. The work stayed read-only against runtime code and wrote only packet-local research artifacts.
 
 ## Method
 
-The full 20-iteration loop covered five layers:
+The full 25-iteration loop covered six layers:
 
 1. Inventory hardcoded constants across Stage 1, Stage 2, Stage 3, cross-encoder, and `search-weights.json`.
 2. Trace the real hybrid fusion control path through `hybrid-search.ts`, shared adaptive fusion, and shared RRF.
 3. Reuse existing K-sensitivity and reranker comparison fixtures already shipped in the repo.
 4. Run packet-local corpus probes where the code alone was insufficient, especially for length-penalty fit.
 5. In the resumed loop, trace request contracts, routing surfaces, and test suites to turn the earlier "what to change" conclusions into safe implementation guidance.
+6. In the final convergence loop, cross-validate the recommendations against each other, rank the sub-phases by combined impact and risk, capture rollout edge cases, and turn the K-sweep follow-up into a low-risk supporting validation plan.
 
 <!-- ANCHOR:core-findings-1-10 -->
 ## Core Findings from Iterations 1-10
@@ -213,19 +214,79 @@ Safe K-sweep guidance:
 
 <!-- /ANCHOR:resumed-findings-11-20 -->
 
+## Convergence Findings from Iterations 21-25
+
+### 11. The late-stage recommendations are internally consistent; the only contradiction found was packet-local artifact drift
+
+- Re-reading the current code and test surfaces against the packet’s own conclusions did not uncover a runtime contradiction. The guidance around telemetry, length-penalty removal, rerank minimum, continuity scope, and K sweeps still fits together. [SOURCE: research/iterations/iteration-021.md:7]
+- The only drift found during convergence was in the research packet itself: `deep-research-config.json` still capped the loop at `10` and the dashboard still reflected `10/10` even though the state log already contained `20` completed iterations. [SOURCE: research/iterations/iteration-021.md:9]
+
+Practical result:
+
+- Treat the current recommendations as a coherent sequence, not as competing options.
+- Keep reducer-owned packet artifacts synchronized whenever a deep-research lineage is manually extended.
+
+### 12. The best implementation order is driven by impact-to-risk ratio, not by novelty
+
+Combined ranking:
+
+1. `002-add-reranker-telemetry`
+2. `001-remove-length-penalty`
+3. `004-raise-rerank-minimum`
+4. `003-continuity-search-profile`
+
+Why this order:
+
+- Phase `002` is the best first move because it adds observability with the lowest behavior risk and establishes data for later tuning. [SOURCE: research/iterations/iteration-022.md:7]
+- Phase `001` is second because it removes the clearest continuity regression, but it still carries compatibility and test fallout. [SOURCE: research/iterations/iteration-022.md:8]
+- Phase `004` is third because its Stage 3 blast radius is localized, but its user-facing effect is smaller than phase `001`. [SOURCE: research/iterations/iteration-022.md:9]
+- Phase `003` is last because it has the widest potential upside and the widest potential blast radius, depending on whether it stays narrow or becomes a public intent. [SOURCE: research/iterations/iteration-022.md:10]
+
+### 13. The main edge cases are no longer theoretical
+
+- Raising `MIN_RESULTS_FOR_RERANK` to `4` changes local GGUF reranking too, because the Stage 3 minimum-results guard runs before the local reranker branch. This is a Stage 3 policy shift, not just a cloud-reranker optimization. [SOURCE: research/iterations/iteration-023.md:7]
+- Keeping `applyLengthPenalty` as a no-op preserves compatibility, but the cache key still carries the `lp` option bit. That means identical results may temporarily occupy separate cache buckets until the flag is fully removed. [SOURCE: research/iterations/iteration-023.md:8]
+- Cache counters need explicit semantics during implementation: `resetSession()` must clear them, and the packet should decide whether they represent process-wide activity or per-provider activity. [SOURCE: research/iterations/iteration-023.md:9]
+- Broad public continuity intent remains the riskiest partial rollout because classifier enums, query routing, artifact routing, tool schemas, and test datasets all move together. [SOURCE: research/iterations/iteration-023.md:10]
+
+### 14. The K-sweep follow-up can proceed now without destabilizing the typed evaluation path
+
+- The lowest-risk extension point remains `optimizeKValuesByIntent()` and `k-value-optimization.vitest.ts`. That path already groups by arbitrary string keys, so a new `continuity` bucket can be added without changing `IntentClass`. [SOURCE: research/iterations/iteration-024.md:7] [SOURCE: research/iterations/iteration-024.md:8]
+- The typed judged sweep should stay deferred because both `JudgedQuery.intent` and its test helper are union-locked to the current intent set. [SOURCE: research/iterations/iteration-024.md:9]
+
+Practical result:
+
+- Add continuity-specific judged queries first to `k-value-optimization.vitest.ts`.
+- Keep the typed judged sweep and ground-truth dataset unchanged unless continuity later becomes a real public intent.
+
+### 15. The remaining phase-003 scope question is now resolved: go narrow first
+
+- The final convergence pass resolves the last open strategy question in favor of the narrow internal scope: add `continuity` only at the adaptive-fusion/internal-caller seam, then validate it through the string-typed K harness. [SOURCE: research/iterations/iteration-025.md:8]
+- Public continuity intent should be treated as a separate follow-on only if operator-facing APIs truly need an explicit new intent value. [SOURCE: research/iterations/iteration-025.md:8]
+
+Practical result:
+
+- Phase `003` should not silently expand into classifier, router, schema, and test-union work.
+- The supporting K-sweep belongs with the narrow profile first and is not a blocker for phases `001`, `002`, or `004`.
+
 <!-- ANCHOR:recommended-implementation-order -->
 ## Recommended Implementation Order
 
 1. Phase `002-add-reranker-telemetry`
    - Establish cache counters and status source of truth first.
+   - Define whether counters are process-wide or provider-scoped, and reset them in `resetSession()`.
 2. Phase `001-remove-length-penalty`
    - Remove the behavior, keep temporary request-contract compatibility.
+   - Accept the short-lived cache-key duplication (`lp` vs non-`lp`) until the flag is formally retired.
 3. Phase `004-raise-rerank-minimum`
    - Move to `4`, not `5`, and patch the threshold-sensitive Stage 3 tests.
+   - Document that this also changes local GGUF reranking behavior for 2-3 result sets.
 4. Phase `003-continuity-search-profile`
    - Implement only at the explicitly chosen scope.
+   - Chosen scope from this research pass: narrow adaptive-fusion/internal-caller seam first.
 5. Continuity-specific K-sweep extension
    - Run as supporting validation through `k-value-optimization.vitest.ts`.
+   - Defer the typed judged sweep until and unless continuity becomes a public intent.
 
 <!-- /ANCHOR:recommended-implementation-order -->
 
@@ -240,10 +301,12 @@ High-confidence conclusions:
 - Cache TTL should not be changed before counters exist
 - `MIN_RESULTS_FOR_RERANK = 4` is a safer first step than `5`
 - The continuity profile can be added narrowly in adaptive fusion without forcing an immediate public-intent refactor
+- The packet’s recommendations do not contradict one another; they form a stable execution order of `002 -> 001 -> 004 -> 003`
 
 Bounded-confidence conclusions:
 
 - Cohere is slightly ahead of Voyage on the current fixture RR@5, but this is fixture evidence, not live traffic telemetry
 - Retrieval telemetry is the best mirror surface for cache counters, but that should remain a follow-on to the core status patch
-- Whether continuity should become a first-class public search intent is now a scoping decision, not an unanswered technical mystery
+- Whether continuity should become a first-class public search intent is now a product/surface decision, not an unanswered technical mystery
+- Cache-counter provider semantics still need an explicit implementation choice because the current cache map is process-wide while the status surface reports a single active provider
 <!-- /ANCHOR:confidence-and-limits -->

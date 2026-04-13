@@ -94,6 +94,11 @@ Content routing classification accuracy and remediation design
 - Reading router and handler tests side by side exposed the gap between contract coverage and save-path coverage. (iteration 18)
 - Mapping each phase spec directly onto the exact lines and fixtures kept the guidance concrete. (iteration 19)
 - The second wave stayed tightly scoped to fix design, so every iteration produced directly actionable implementation guidance. (iteration 20)
+- Reading the live floors and the delivery prototypes side by side was enough to turn cue asymmetry into exact regex candidates and a minimal guard condition. (iteration 21)
+- Separating hard drop heuristics from softer prototype overlap made the handover problem materially more precise. (iteration 22)
+- Treating the fetch helper and the router dependency interface as templates made the Tier3 wiring effort easy to size without touching runtime code. (iteration 23)
+- A direct category-floor audit answered the zero-coverage question quickly and kept the final testing guidance honest. (iteration 24)
+- The convergence wave stayed focused on exact patch shapes, so the final synthesis tightened implementation guidance instead of reopening settled questions. (iteration 25)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -118,6 +123,11 @@ Content routing classification accuracy and remediation design
 - Category happy-path tests created a false sense of completeness because the fragile boundary cases live outside those samples. (iteration 18)
 - The original phase specs were accurate at the theme level but too compressed to drive implementation without this extra pass. (iteration 19)
 - The research packet did not start with explicit remediation questions, which forced the second wave to retrofit them after the first synthesis. (iteration 20)
+- Prototype overlap counting alone still understated the delivery bug until the live progress floor was modeled explicitly. (iteration 21)
+- Looking only at the hard drop regex would have missed the resume-command overlap that lives in the prototype corpus. (iteration 22)
+- Sizing phase `003` from the constructor callsite alone still underestimates the missing cache and env-contract work. (iteration 23)
+- Category presence in tests is not the same thing as meaningful boundary coverage. (iteration 24)
+- The earlier synthesis was still slightly too high-level for direct patch authoring, which is why this explicit convergence pass was needed. (iteration 25)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -322,6 +332,31 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Using prototype count balance as a proxy for semantic separation.
 
+### Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring. -- BLOCKED (iteration 23, 1 attempts)
+- What was tried: Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring.
+- Why blocked: Repo inspection found the interface and test doubles, but no non-test implementation.
+- Do NOT retry: Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring.
+
+### Looking for a routing category with zero presence in `content-router.vitest.ts`. -- BLOCKED (iteration 24, 1 attempts)
+- What was tried: Looking for a routing category with zero presence in `content-router.vitest.ts`.
+- Why blocked: Every routing category already has at least one positive-path assertion; the real gap is adversarial boundary coverage.
+- Do NOT retry: Looking for a routing category with zero presence in `content-router.vitest.ts`.
+
+### Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional. -- BLOCKED (iteration 21, 1 attempts)
+- What was tried: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
+- Why blocked: The dominant collision comes from sequencing and verification-order language plus the unconditional progress floor, not from one missing rollout noun.
+- Do NOT retry: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
+
+### Treating category presence as equivalent to meaningful regression coverage. -- BLOCKED (iteration 24, 1 attempts)
+- What was tried: Treating category presence as equivalent to meaningful regression coverage.
+- Why blocked: The remaining failures are boundary-shaped and live outside the current happy-path assertions.
+- Do NOT retry: Treating category presence as equivalent to meaningful regression coverage.
+
+### Treating resume-command overlap as a hard-drop problem only. -- BLOCKED (iteration 22, 1 attempts)
+- What was tried: Treating resume-command overlap as a hard-drop problem only.
+- Why blocked: Part of the overlap lives in Tier 2 prototypes, not just the Tier 1 drop regex.
+- Do NOT retry: Treating resume-command overlap as a hard-drop problem only.
+
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:ruled-out-directions -->
 ## 10. RULED OUT DIRECTIONS
@@ -365,11 +400,17 @@ Content routing classification accuracy and remediation design
 - Treating the implementation phases as independent. The code and test changes need to move together. (iteration 19)
 - Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land. (iteration 20)
 - Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself. (iteration 20)
+- Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional. (iteration 21)
+- Treating resume-command overlap as a hard-drop problem only. (iteration 22)
+- Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring. (iteration 23)
+- Looking for a routing category with zero presence in `content-router.vitest.ts`. (iteration 24)
+- Treating category presence as equivalent to meaningful regression coverage. (iteration 24)
+- Continuing the research loop instead of handing the packet back to implementation. (iteration 25)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Implement phases `001`, `002`, and `003` in that order, then rerun the same synthetic corpus and regression suite as an explicit before/after benchmark.
+Research is converged after the user-authorized extension through iteration 25. Implement phases `001`, `002`, and `003` in that order, then rerun the same synthetic corpus and the expanded router plus handler regression suite as an explicit before/after benchmark.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->
@@ -386,6 +427,7 @@ Implement phases `001`, `002`, and `003` in that order, then rerun the same synt
 ## 13. RESEARCH BOUNDARIES
 - Read-only, no historical saves, synthetic payloads from spec-doc content
 - Max iterations: 20
+- User-authorized convergence extension: iterations `21-25` completed without modifying the immutable config
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true
 - research/research.md ownership: workflow-owned canonical synthesis output

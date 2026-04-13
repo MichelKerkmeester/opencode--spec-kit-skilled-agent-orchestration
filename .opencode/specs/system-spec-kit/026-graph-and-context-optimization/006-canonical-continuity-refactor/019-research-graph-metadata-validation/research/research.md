@@ -235,3 +235,146 @@ This is a direct omission, not a disputed contract. `key_topics` already slices 
 3. Add basename-aware de-duplication inside `deriveEntities()` before both `entities.set(...)` callsites.
 4. Re-scope or close phase `004-normalize-legacy-files` unless legacy text files reappear on another branch.
 5. Add the missing `trigger_phrases.slice(0, 12)` guard as a low-risk cleanup while the parser is already under test.
+
+## Wave 3: Convergence and Implementation-Ready Patch Map (Iterations 21-25)
+
+### CQ-1: Exact `key_files` Predicate
+Wave 3 turned the earlier “combined structural-plus-regex filter” into one explicit implementation predicate:
+
+```ts
+const CANONICAL_PACKET_DOC_RE =
+  /^(spec\.md|plan\.md|tasks\.md|checklist\.md|decision-record\.md|implementation-summary\.md|research\.md|research\/research\.md|handover\.md)$/;
+const KEY_FILE_NOISE_RE =
+  /^(node |npx |pnpm |npm |yarn |bun |python([0-9]+(\.[0-9]+)*)? |bash |sh |vitest |jest |mocha |tsx |ts-node )|^v[0-9]+\.[0-9]+(\.[0-9]+)?$|^[a-z]+\/[a-z0-9+-]+$|^_memory\.continuity$|^[A-Za-z][A-Za-z0-9_-]*:\s.+$|^console\.warn(\(|$)/;
+const BARE_FILE_RE = /^[^/]+\.[A-Za-z0-9._-]+$/;
+
+function keepKeyFile(candidate: string): boolean {
+  if (KEY_FILE_NOISE_RE.test(candidate)) return false;
+  if (BARE_FILE_RE.test(candidate) && !CANONICAL_PACKET_DOC_RE.test(candidate)) return false;
+  return true;
+}
+```
+
+Live bash + jq rerun over the current 360-file corpus:
+- Unresolved `key_files`: 2,207
+- Regex-only junk-token removals: 108
+- Structural bare-filename removals: 1,412
+- Combined removals: 1,498 (67.9%)
+
+Important nuance:
+This explicit rerun is slightly higher than the earlier `1,489 / 2,195` headline. The implementation should preserve the predicate itself, not the older aggregate count. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:318-334] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:463-471] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+Placement:
+- Filter `referenced` and `fallbackRefs`
+- Append `docs.map((doc) => doc.relativePath)` after filtering
+- Keep `normalizeUnique(...).slice(0, 20)` as the existing final shape
+
+### CQ-2: Exact `deriveEntities()` Code Path
+Wave 2 correctly identified the two write sites, but Wave 3 found one more subtlety: canonical packet-doc paths must beat non-canonical collisions.
+
+Current write sites:
+- `entities.set(filePath, ...)` in the key-files loop. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:421-428]
+- `entities.set(normalizedName, ...)` in the extracted-entity loop. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:430-442]
+
+Representative live collision:
+- `system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json` stores `name: "spec.md"` with `path: "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md"` even though plain `spec.md` is also present in `derived.key_files`. [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json]
+
+Implementation-ready shape:
+- Create `canonicalDocPaths = new Set(docs.map((doc) => doc.relativePath))`
+- Normalize a `nameKey` once per candidate
+- Replace both direct `entities.set(...)` calls with `upsertEntityByName(candidate)`
+- When a collision happens, replace the existing row only if the incoming `path` is canonical and the existing `path` is not
+
+Interpretation:
+The de-duplication helper belongs inside `deriveEntities()`, but it must do more than “keep first” if the goal is to keep canonical packet docs. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:418-446] [SOURCE: .opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json]
+
+### CQ-3: Safer `deriveStatus()` Pseudo-Code
+The safer patch is now precise enough to implement directly:
+
+```ts
+function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
+  if (override?.trim()) return override.trim();
+
+  const frontmatterStatus = selectFirstValue([
+    docs.find((doc) => doc.relativePath === 'implementation-summary.md')?.status,
+    docs.find((doc) => doc.relativePath === 'checklist.md')?.status,
+    docs.find((doc) => doc.relativePath === 'tasks.md')?.status,
+    docs.find((doc) => doc.relativePath === 'plan.md')?.status,
+    docs.find((doc) => doc.relativePath === 'spec.md')?.status,
+  ], '');
+  if (frontmatterStatus) return frontmatterStatus;
+
+  const hasImplementationSummary = docs.some((doc) => doc.relativePath === 'implementation-summary.md');
+  const checklistDoc = docs.find((doc) => doc.relativePath === 'checklist.md');
+  const checklistState = checklistDoc ? evaluateChecklistCompletion(checklistDoc.content) : null;
+
+  if (checklistState === 'COMPLETE') return 'complete';
+  if (!checklistDoc && hasImplementationSummary) return 'complete';
+  return 'planned';
+}
+```
+
+Why this shape matters:
+- `340` folders are currently `planned`
+- `282` of those already have `implementation-summary.md`
+- `180` also have a `COMPLETE` checklist
+- `39` have no checklist
+- `63` have a checklist that is not complete and should not be promoted automatically
+
+The safer patch therefore protects the `63` checklist-backed false positives while still fixing the high-confidence `180 + 39` subset. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:498-510] [SOURCE: .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh:204-235] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+### CQ-4: Trigger-Cap Ownership
+Wave 3 closed the open ownership question:
+- Parser: no cap; `triggerPhrases` is written unsliced. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:523-545]
+- Schema: no cap; `trigger_phrases` is just `z.array(z.string().min(1))`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-schema.ts:32-44]
+- Backfill: no cap; it only delegates to `deriveGraphMetadata()` or `refreshGraphMetadataForSpecFolder()`. [SOURCE: .opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts:139-177]
+
+Implementation owner:
+
+```ts
+const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, 12);
+```
+
+Live impact remains:
+- 185 folders over cap
+- 949 excess trigger phrases
+- maximum stored trigger count 33
+
+Interpretation:
+The minimal fix belongs in the parser. A schema `.max(12)` can follow later as a validation guard after regenerated metadata proves clean. [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+### CQ-5: Child-Phase Line Map
+Phase-by-phase implementation handoff:
+
+`001-fix-status-derivation`
+- Keep the override path at `deriveStatus()` lines 498-500.
+- Preserve ranked frontmatter selection at lines 503-509.
+- Add a checklist-evaluation helper adjacent to `deriveStatus()`.
+- Only use `implementation-summary.md` as a completion signal when `checklist.md` is absent or complete.
+
+`002-sanitize-key-files`
+- Add the exact `KEY_FILE_NOISE_RE`, `BARE_FILE_RE`, and canonical-doc allowlist near `extractReferencedFilePaths()`.
+- Filter `referenced` and `fallbackRefs` before line 470.
+- Append `docs.map((doc) => doc.relativePath)` after filtering so canonical packet docs always survive.
+
+`003-deduplicate-entities`
+- Replace direct `entities.set(filePath, ...)` writes with a local `upsertEntityByName(...)` helper.
+- Call the same helper before the extracted-entity `entities.set(normalizedName, ...)` site.
+- Prefer canonical packet-doc paths over non-canonical collision paths.
+
+`004-normalize-legacy-files`
+- Active-branch runtime work is currently stale because there are zero legacy text files in the live tree.
+- If the phase remains open, rewrite it as a guarded helper in `backfill-graph-metadata.ts`:
+  inspect raw file contents before line 158, rewrite only when raw content fails JSON parsing but still loads through legacy compatibility, otherwise emit a no-op summary.
+
+Adjacent cleanup not yet phase-owned:
+- Patch `deriveGraphMetadata()` lines 532-540 to slice `triggerPhrases` to 12.
+- Decide whether that should live in a tiny new child phase or ride with the existing parser-touch phases.
+
+## Final Recommendation
+No further discovery pass is needed before implementation. The remaining work is execution:
+1. Implement phase `001` with the safer checklist-aware fallback.
+2. Implement phase `002` with the exact predicate frozen above.
+3. Implement phase `003` with canonical-preference entity upserts.
+4. Retire or rewrite phase `004` instead of shipping a no-op “legacy normalization” patch against a zero-legacy corpus.
+5. Land the trigger-cap slice as an adjacent parser cleanup and then re-run corpus/backfill verification.

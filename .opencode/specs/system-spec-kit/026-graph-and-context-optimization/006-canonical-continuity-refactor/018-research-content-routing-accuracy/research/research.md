@@ -29,6 +29,10 @@ The practical fix for phase `001-fix-delivery-progress-confusion` is:
 - Gate or soften the progress override in [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853) when strong delivery cues are present in the same chunk, so delivery can outrank raw implementation verbs.
 - Refresh the most ambiguous delivery/progress prototypes in [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37), especially `ND-03`, `ND-04`, and `NP-05`, so the Tier2 corpus reinforces the new boundary instead of repeating the old overlap. [INFERENCE: iteration-12 nearest-neighbor analysis]
 
+The exact delivery cue bundle is now concrete enough to implement directly:
+- `strongDeliveryMechanics = /\b(only then|updated together|same-?pass|same runtime truth|delivered in (?:two|three|four|\d+|\w+) passes|kept (?:the work )?pending until|closure only happened after|awaiting runtime verification|verification stayed)\b/`
+- Use that boolean to suppress the current `narrative_progress` floors at lines `853-857` when delivery mechanics are stronger than simple build verbs. [INFERENCE: iteration-21 convergence pass grounded in `ND-01` through `ND-04`]
+
 ## 2. Handover Versus Drop: Why Good Handover Notes Get Refused
 
 The handover problem is caused by one heuristic decision: the router currently treats command-like operational language almost as harshly as transcript wrappers.
@@ -43,6 +47,11 @@ The practical fix for phase `002-fix-handover-drop-confusion` is:
 - Keep `extractHardNegativeFlags()` focused on true wrappers and boilerplate, not ordinary command mentions, so mixed-signal escalation remains meaningful. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:904]
 - Refresh 1-2 handover prototypes in [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83) to be more state-first and less command-first, rather than weakening correctly categorized drop examples. [INFERENCE: iteration-14 prototype-boundary analysis]
 
+The strongest exact split from the convergence pass is:
+- hard drop wrappers: keep transcript and boilerplate signals such as `assistant:`, `user:`, `tool:`, `conversation transcript`, `table of contents`, `recovery scenarios`, and `diagnostic commands`
+- soft operational commands: demote `git diff`, `list memories`, and `force re-index`
+- handover boost phrases: add `active files`, `current blockers`, `remaining effort`, `immediate next session work`, `fresh session`, and restart language to the handover floor [INFERENCE: iteration-22 heuristic-plus-prototype map]
+
 ## 3. Tier3 Wiring: What Is Missing And What It Will Cost
 
 The Tier3 contract is real, but the runtime implementation is not.
@@ -55,6 +64,11 @@ The practical fix for phase `003-wire-tier3-llm-classifier` is:
 - Add a small classifier adapter that builds the Tier3 prompt via [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128), sends it to an OpenAI-compatible endpoint, and returns `Tier3RawResponse | null`.
 - Inject that adapter into the router constructor at [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008), along with a cache implementation so repeated ambiguous chunks can reuse the existing session/spec-folder cache logic.
 - Keep the integration fail-open. If the endpoint is missing, slow, or invalid, the current Tier2 fallback path should remain the runtime behavior.
+
+The convergence pass tightened the effort estimate:
+- production code: about `90-130` LOC for the fetch helper, response plumbing, cache adapter, and constructor injection
+- tests: about `70-100` LOC across router and handler suites
+- extra implementation choice: decide whether to reuse the existing OpenAI-compatible env pattern from `llm-reformulation.ts` or introduce routing-specific env names [INFERENCE: iteration-23 wiring estimate]
 
 Expected latency and cost impact:
 - The contract is intentionally bounded: `gpt-5.4`, `reasoningEffort: low`, `temperature: 0`, `maxOutputTokens: 200`, `timeoutMs: 2000`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:12]
@@ -77,6 +91,8 @@ That means the right prototype fix is targeted:
 ## 5. Test Coverage: Happy Paths Exist, Regression Coverage Does Not
 
 The current tests prove the router API shape, but they do not defend the failure modes the research found.
+
+No routing category has zero coverage in [content-router.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48). The gap is boundary coverage, not category presence. [INFERENCE: iteration-24 audit]
 
 - `content-router.vitest.ts` has one positive-path test per category, several Tier3 contract/cache tests, and one override-against-drop test. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48]
 - It does not have regression cases for:
@@ -102,6 +118,7 @@ Primary code targets:
 
 Change description:
 - Expand delivery cues with sequencing, gating, same-pass, and verification-order language.
+- Use a shared `strongDeliveryMechanics` regex bundle so the current progress floors no longer win by default when delivery mechanics are explicit.
 - Add a delivery-biased floor when those phrases are present.
 - Prevent the progress floor from automatically winning when strong delivery cues coexist.
 - Refresh 2-3 ambiguous delivery/progress prototypes.
@@ -118,6 +135,7 @@ Primary code targets:
 Change description:
 - Split hard drop wrappers from soft operational commands.
 - Let strong stop-state and resume language outrank soft command mentions.
+- Treat `git diff`, `list memories`, and `force re-index` as soft operational cues instead of hard drop evidence when stop-state language is also present.
 - Keep true transcript and boilerplate wrappers as hard drops.
 - Refresh 1-2 handover prototypes so they lead with state, blockers, and next safe action rather than commands.
 - Add regression tests where handover coexists with `git diff`, restart instructions, or file-review lists.
@@ -132,7 +150,7 @@ Primary code targets:
 
 Change description:
 - Implement a real Tier3 classifier adapter using the existing prompt contract.
-- Inject it into the canonical save-path router.
+- Add a concrete `RouterCache` implementation and inject both dependencies into the canonical save-path router.
 - Reuse timeout, abort, and env-based configuration patterns from the existing OpenAI-compatible helper.
 - Preserve fail-open fallback behavior and expose audit visibility for latency/cache hits.
 - Add natural-routing handler tests plus router tests for timeouts, null responses, and cache reuse.
