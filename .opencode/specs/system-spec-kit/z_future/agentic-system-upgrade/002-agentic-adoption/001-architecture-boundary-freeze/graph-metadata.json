@@ -148,7 +148,7 @@
     ],
     "causal_summary": "Public already has the core authority needed for 001 architecture boundary freeze, but the change still needs one implementation-ready contract. This child phase narrows the converged research into a current-authority-safe design.",
     "created_at": "2026-04-12T09:02:53.491Z",
-    "last_save_at": "2026-04-13T07:03:00.316Z",
+    "last_save_at": "2026-04-13T08:18:57.159Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

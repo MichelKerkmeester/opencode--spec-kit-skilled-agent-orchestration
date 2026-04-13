@@ -7,7 +7,8 @@
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/001-remove-length-penalty",
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/002-add-reranker-telemetry",
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/003-continuity-search-profile",
-    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/004-raise-rerank-minimum"
+    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/004-raise-rerank-minimum",
+    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment"
   ],
   "manual": {
     "depends_on": [],
@@ -142,7 +143,7 @@
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-13T04:56:06.986Z",
-    "last_save_at": "2026-04-13T07:03:00.219Z",
+    "last_save_at": "2026-04-13T08:18:57.060Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

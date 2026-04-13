@@ -142,7 +142,7 @@
     ],
     "causal_summary": "Increase `MIN_RESULTS_FOR_RERANK` from 2 to 4-5. Reranking only 2 documents wastes an API call with minimal ordering gain. The exact value should be validated against typical candidate-set sizes in production queries.",
     "created_at": "2026-04-13T05:11:45.011Z",
-    "last_save_at": "2026-04-13T07:03:00.221Z",
+    "last_save_at": "2026-04-13T08:18:57.062Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

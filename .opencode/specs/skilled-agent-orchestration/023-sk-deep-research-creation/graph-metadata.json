@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Create a 3-layer autonomous deep research system: `@deep-research` agent (single iteration executor), `/spec_kit:deep-research` command (loop lifecycle manager via YAML workflows), and `sk-deep-research` skill (protocol documentation and templates). The system uses externalized JSONL + strategy file state with fresh agent context per iteration, solving context degradation in long research sessions.",
     "created_at": "2026-04-12T09:02:50.172Z",
-    "last_save_at": "2026-04-13T07:02:57.068Z",
+    "last_save_at": "2026-04-13T08:18:53.930Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

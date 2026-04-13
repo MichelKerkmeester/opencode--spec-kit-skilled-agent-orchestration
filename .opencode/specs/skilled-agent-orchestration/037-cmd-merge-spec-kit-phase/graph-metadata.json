@@ -162,7 +162,7 @@
     ],
     "causal_summary": "The `/spec_kit:phase` command is a standalone 7-step workflow that only creates folder structure (parent + N children) without doing any planning or implementation. Users must then separately invoke `/spec_kit:plan` per child phase. This three-command chain (phase -> plan per child -> implement per child) adds friction. The phase decomposition capability should be an integrated option within the existing plan and complete workflows, following the same pattern as the existing `:with-research` flag.",
     "created_at": "2026-04-12T09:02:50.181Z",
-    "last_save_at": "2026-04-13T07:02:57.079Z",
+    "last_save_at": "2026-04-13T08:18:53.941Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

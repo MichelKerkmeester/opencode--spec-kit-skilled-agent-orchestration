@@ -148,7 +148,7 @@
     ],
     "causal_summary": "Connect the existing Tier3 LLM classifier to the memory-save handler. The classifier already exists in `content-router.ts` but is never called from the save path, leaving all routing decisions to Tier1/Tier2 heuristics.",
     "created_at": "2026-04-13T05:11:45.013Z",
-    "last_save_at": "2026-04-13T07:03:00.223Z",
+    "last_save_at": "2026-04-13T08:18:57.065Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

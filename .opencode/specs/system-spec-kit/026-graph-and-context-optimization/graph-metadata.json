@@ -155,7 +155,7 @@
     ],
     "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `005-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-13T07:03:00.184Z",
+    "last_save_at": "2026-04-13T08:18:57.025Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -137,7 +137,7 @@
     ],
     "causal_summary": "This sub-phase scopes human-friendly save ergonomics that still compile into `generate-context.js` and the existing `memory_save` path. It covers wrapper input shapes, explicit target precedence, and operator-facing guidance. It does not create a markdown-first save path or a second save backend.",
     "created_at": "2026-04-13T04:56:07.088Z",
-    "last_save_at": "2026-04-13T07:03:00.326Z",
+    "last_save_at": "2026-04-13T08:18:57.170Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

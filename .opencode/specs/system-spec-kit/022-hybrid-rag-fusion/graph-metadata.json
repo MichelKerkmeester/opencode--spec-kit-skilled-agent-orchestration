@@ -175,7 +175,7 @@
     ],
     "causal_summary": "The root `022-hybrid-rag-fusion` folder had child packets but no parent `spec.md`, `plan.md`, or `tasks.md`. That broke parent back-references from multiple child packets and caused recursive validation to fail even when many child documents were otherwise close to compliant.",
     "created_at": "2026-04-12T09:02:50.223Z",
-    "last_save_at": "2026-04-13T07:02:57.117Z",
+    "last_save_at": "2026-04-13T08:18:53.979Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

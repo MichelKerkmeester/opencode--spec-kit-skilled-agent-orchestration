@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Packet `041-sk-improve-agent-loop` shipped the evaluator-first MVP and proved that the loop can safely operate on one canonical target with explicit promotion and rollback boundaries. Phase `002-sk-improve-agent-full-skill` defines the next step: stronger benchmark-backed evaluation, reusable runtime structure, target-specific scoring profiles, controlled expansion to a second structured target, and packaging rules for mirror sync without weakening the trust boundary.",
     "created_at": "2026-04-12T09:02:50.186Z",
-    "last_save_at": "2026-04-13T07:02:57.084Z",
+    "last_save_at": "2026-04-13T08:18:53.947Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

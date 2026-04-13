@@ -149,7 +149,7 @@
     ],
     "causal_summary": "This packet originally described an older 5-command memory surface that included deleted legacy retrieval and continuation docs. The live memory command surface is now `/memory:search`, `/memory:save`, `/memory:manage`, and `/memory:learn`, with shared-memory lifecycle routed through `/memory:manage shared`. If this packet keeps describing removed surfaces, it stops being a truthful reference for the current memory dashboard conventions.",
     "created_at": "2026-04-12T09:02:50.216Z",
-    "last_save_at": "2026-04-13T07:02:57.110Z",
+    "last_save_at": "2026-04-13T08:18:53.972Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

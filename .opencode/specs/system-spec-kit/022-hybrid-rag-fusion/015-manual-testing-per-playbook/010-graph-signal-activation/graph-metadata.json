@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Manual test scenarios for graph-signal-activation need structured per-phase documentation instead of relying on scattered playbook rows. Phase 010 covers 15 graph-focused scenarios spanning typed degree scoring, co-activation boost, causal depth signals, community detection, graph rollback and explainability, and feature-flag-driven graph lifecycle features, so reviewers need one packet that preserves the mapped feature links, acceptance criteria, and evidence expectations for each test.",
     "created_at": "2026-04-12T09:02:50.296Z",
-    "last_save_at": "2026-04-13T07:02:57.191Z",
+    "last_save_at": "2026-04-13T08:18:54.054Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

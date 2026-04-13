@@ -155,7 +155,7 @@
     ],
     "causal_summary": "Implement the first `manual_testing_playbook/` package for `.opencode/skill/sk-deep-research/` as a greenfield documentation package derived from the live deep-research command, skill, README, references, assets, and `.codex/agents/deep-research.toml`. The approved plan is fixed: 19 scenarios using IDs `DR-001` through `DR-019`, organized into 6 numbered categories, with explicit disclosure that no `feature_catalog/` exists yet for `sk-deep-research`.",
     "created_at": "2026-04-12T09:02:50.175Z",
-    "last_save_at": "2026-04-13T07:02:57.072Z",
+    "last_save_at": "2026-04-13T08:18:53.934Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
