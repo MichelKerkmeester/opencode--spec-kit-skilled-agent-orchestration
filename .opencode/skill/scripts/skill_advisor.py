@@ -1493,6 +1493,10 @@ def analyze_request(
                     boost_reasons[skill] = []
                 boost_reasons[skill].append(f"!{phrase}(phrase)")
 
+    # Graph-derived boosts: transitive relationships and family affinity
+    _apply_graph_boosts(skill_boosts, boost_reasons)
+    _apply_family_affinity(skill_boosts, boost_reasons)
+
     # Strongly prefer the explicitly named skill when users mention it directly.
     # This protects routing in mixed prompts that also contain broad terms like "opencode".
     for skill_name, config in skills.items():
@@ -1581,6 +1585,7 @@ def analyze_request(
         })
 
     apply_confidence_calibration(recommendations)
+    _apply_graph_conflict_penalty(recommendations)
 
     for recommendation in recommendations:
         recommendation["passes_threshold"] = passes_dual_threshold(
@@ -1634,6 +1639,7 @@ def health_check() -> Dict[str, Any]:
     skills = load_all_skills()
     real_skills = [s for s in skills if s.get("kind") == "skill"]
     command_bridges = [s for s in skills if s.get("kind") == "command"]
+    graph = _load_skill_graph()
     return {
         "status": "ok" if real_skills else "error",
         "skills_found": len(real_skills),
@@ -1643,6 +1649,9 @@ def health_check() -> Dict[str, Any]:
         "skills_dir": SKILLS_DIR,
         "skills_dir_exists": os.path.exists(SKILLS_DIR),
         "cache": get_cache_status(),
+        "skill_graph_loaded": graph is not None,
+        "skill_graph_skill_count": graph.get("skill_count", 0) if graph else 0,
+        "skill_graph_path": SKILL_GRAPH_PATH,
     }
 
 

@@ -90,7 +90,7 @@ Routing tiers:
 
 - Tier 1 handles structured routes and strong heuristics.
 - Tier 2 uses prototype similarity against the frozen routing library.
-- Tier 3 is now wired into the live save handler when `SPECKIT_TIER3_ROUTING=true` and `LLM_REFORMULATION_ENDPOINT` is configured. If Tier 3 is disabled or unavailable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses the merge.
+- Tier 3 is now wired into the live save handler by default and `LLM_REFORMULATION_ENDPOINT` is configured. If Tier 3 is disabled or unavailable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses the merge.
 
 Boundary rules:
 

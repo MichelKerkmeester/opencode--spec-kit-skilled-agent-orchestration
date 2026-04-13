@@ -903,7 +903,7 @@ spec_kit_memory_memory_ingest_status({ jobId: "<jobId>" })
 spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 ```
 
-> **Feature Flag Behavior:** `SPECKIT_ADAPTIVE_FUSION` affects scan and search behavior: when enabled, index scans apply adaptive weight profiles during embedding and artifact-class routing during re-indexing. `SPECKIT_TIER3_ROUTING=true` opt-ins the live Tier 3 LLM classifier for ambiguous canonical save routing inside `memory_save` and save-backed re-index flows; default remains OFF. `SPECKIT_EXTENDED_TELEMETRY` enables detailed per-operation metrics for scan, search, and health calls. **Mutation Ledger:** cleanup and delete operations are recorded in the append-only mutation ledger, providing a full audit trail that can be reviewed when investigating unexpected state changes.
+> **Feature Flag Behavior:** `SPECKIT_ADAPTIVE_FUSION` affects scan and search behavior: when enabled, index scans apply adaptive weight profiles during embedding and artifact-class routing during re-indexing. `SPECKIT_EXTENDED_TELEMETRY` enables detailed per-operation metrics for scan, search, and health calls. **Mutation Ledger:** cleanup and delete operations are recorded in the append-only mutation ledger, providing a full audit trail that can be reviewed when investigating unexpected state changes.
 
 ### memory_index_scan Parameters
 

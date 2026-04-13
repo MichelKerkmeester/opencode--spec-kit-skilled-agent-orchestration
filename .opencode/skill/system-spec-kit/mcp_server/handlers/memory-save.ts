@@ -709,7 +709,7 @@ function buildRoutedSaveOptions(
 }
 
 function shouldUseCanonicalRouting(params: Pick<AtomicSaveParams, 'routeAs' | 'mergeModeHint' | 'targetAnchorId'>): boolean {
-  return Boolean(params.routeAs || params.mergeModeHint || params.targetAnchorId || isTier3RoutingEnabled());
+  return true; // Canonical routing is always enabled (Tier 3 LLM routing on by default)
 }
 
 function pickRoutedIdentityValue(value: unknown): string | null {
@@ -896,10 +896,6 @@ function deriveCanonicalPacketKind(
   return hasNumericParentPacket ? 'phase' : 'feature';
 }
 
-function isTier3RoutingEnabled(): boolean {
-  return (process.env.SPECKIT_TIER3_ROUTING?.trim().toLowerCase() ?? '') === 'true';
-}
-
 function getTier3RoutingEndpoint(): string | null {
   const endpoint = process.env.LLM_REFORMULATION_ENDPOINT?.trim();
   return endpoint ? endpoint.replace(/\/+$/u, '') : null;
@@ -953,10 +949,6 @@ function parseTier3ClassifierResponse(rawText: string): Tier3RawResponse | null 
 }
 
 async function classifyWithTier3Llm(input: Tier3ClassifierInput): Promise<Tier3RawResponse | null> {
-  if (!isTier3RoutingEnabled()) {
-    return null;
-  }
-
   const endpoint = getTier3RoutingEndpoint();
   if (!endpoint) {
     return null;
@@ -1011,9 +1003,6 @@ async function classifyWithTier3Llm(input: Tier3ClassifierInput): Promise<Tier3R
 }
 
 function buildCanonicalRouter() {
-  if (!isTier3RoutingEnabled()) {
-    return createContentRouter();
-  }
   return createContentRouter({
     classifyWithTier3: classifyWithTier3Llm,
     cache: tier3RoutingCache,

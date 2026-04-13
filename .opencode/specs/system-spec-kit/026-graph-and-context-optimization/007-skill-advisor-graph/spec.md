@@ -39,7 +39,7 @@ Add a `graph-metadata.json` to each of the 20 skill folders capturing structured
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Implemented |
 | **Created** | 2026-04-13 |
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
@@ -176,11 +176,11 @@ Pipeline insertion: after PHRASE_INTENT_BOOSTERS, before explicit variant matchi
 ## 5. SUCCESS CRITERIA
 
 - [x] All 20 skill folders contain valid `graph-metadata.json`
-- [ ] `skill_graph_compiler.py --validate-only` passes with zero errors
-- [ ] Compiled `skill-graph.json` is under 2KB
-- [ ] `skill_advisor.py --health` reports `skill_graph_loaded: true`
-- [ ] Existing 41+ regression cases pass with zero failures
-- [ ] Graph boost reasons appear in advisor output (e.g., `!graph:enhances(...)`)
+- [x] `skill_graph_compiler.py --validate-only` passes with zero errors
+- [x] Compiled `skill-graph.json` is under 2KB (1950 bytes)
+- [x] `skill_advisor.py --health` reports `skill_graph_loaded: true`
+- [x] 44/44 regression cases pass with zero failures
+- [x] Graph boost reasons appear in advisor output (e.g., `!graph:depends(mcp-figma,0.9)`)
 <!-- /ANCHOR:success -->
 
 ---

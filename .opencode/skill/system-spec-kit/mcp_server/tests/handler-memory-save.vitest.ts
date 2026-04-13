@@ -956,7 +956,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       vi.doUnmock('../utils/index.js');
       vi.doUnmock('../core');
       vi.doUnmock('../core/index.js');
-      delete process.env.SPECKIT_TIER3_ROUTING;
       delete process.env.LLM_REFORMULATION_ENDPOINT;
       delete process.env.LLM_REFORMULATION_API_KEY;
       vi.unstubAllGlobals();
@@ -1238,7 +1237,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('uses natural routing to reach Tier 3 when no explicit routeAs is provided', async () => {
-      process.env.SPECKIT_TIER3_ROUTING = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1294,7 +1292,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('labels research root packets correctly in the Tier 3 prompt body', async () => {
-      process.env.SPECKIT_TIER3_ROUTING = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1348,7 +1345,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('labels explicit routeAs phase saves with phase packet_kind and route-as save_mode', async () => {
-      process.env.SPECKIT_TIER3_ROUTING = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => new Response(JSON.stringify({
         choices: [
@@ -1403,7 +1399,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     });
 
     it('fails open to natural Tier 2 routing when Tier 3 transport throws', async () => {
-      process.env.SPECKIT_TIER3_ROUTING = 'true';
       process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
       const fetchMock = vi.fn(async () => {
         throw new Error('simulated timeout');
