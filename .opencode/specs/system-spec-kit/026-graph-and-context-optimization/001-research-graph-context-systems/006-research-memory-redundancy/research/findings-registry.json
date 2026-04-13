@@ -1,8 +1,6 @@
 {
   "schema_version": "1.0",
-  "openQuestions": [
-    
-  ],
+  "openQuestions": [],
   "resolvedQuestions": [
     {
       "id": "Q1",
@@ -153,10 +151,10 @@
       "workflow.ts": 1,
       "memory-template-contract.ts": 1,
       "context_template.md": 1,
-      "memory-parser.ts": 2,
-      "memory-triggers.ts": 2,
+      "memory-parser.ts": 3,
+      "memory-triggers.ts": 3,
       "memory-search.ts": 2,
-      "memory-sufficiency.ts": 1,
+      "memory-sufficiency.ts": 2,
       "memory-metadata.ts": 1,
       "002-memory-save": 3,
       "002-decision-record": 1,
@@ -167,9 +165,6 @@
       "003-001-implementation-summary": 1,
       "level_3 decision-record template": 1,
       "level_3 implementation-summary template": 1,
-      "memory-sufficiency.ts": 2,
-      "memory-triggers.ts": 3,
-      "memory-parser.ts": 3,
       "memory-save.ts": 1,
       "implementation-guide-extractor.ts": 2
     }

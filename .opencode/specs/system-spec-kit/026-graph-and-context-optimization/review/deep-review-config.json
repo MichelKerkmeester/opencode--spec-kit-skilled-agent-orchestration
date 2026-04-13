@@ -10,8 +10,8 @@
     "scope": "root-phases-001-005",
     "phases": [
       "001-research-graph-context-systems",
-      "002-implement-cache-warning-hooks",
-      "003-memory-quality-issues",
+      "002-cache-warning-hooks",
+      "003-memory-quality-remediation",
       "004-agent-execution-guardrails",
       "005-code-graph-upgrades"
     ]

@@ -1,0 +1,639 @@
+[
+  {
+    "scenarioId": "023",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/023-score-normalization.md",
+    "prompt": "Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Normalized scores in [0,1] range",
+      "min-max normalization correct",
+      "equal-score and single-result edge cases handled"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Normalized scores in [0,1] range",
+      "min-max normalization correct",
+      "equal-score and single-result edge cases handled"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Run varied-score query 2) Inspect normalized range 3) Check equal/single cases"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "025",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/025-interference-scoring-tm-01.md",
+    "prompt": "Validate interference scoring (TM-01). Capture the evidence needed to prove an active near-duplicate cluster receives a penalty, that penalty reduces effective score, non-duplicates remain unaffected, and archived or deprecated siblings do not count toward the active interference score. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Active near-duplicate cluster receives penalty",
+      "penalty reduces effective score",
+      "non-duplicates unaffected",
+      "archived or deprecated siblings do not increase the active interference count"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Active near-duplicate cluster receives penalty",
+      "penalty reduces effective score",
+      "non-duplicates unaffected",
+      "archived or deprecated siblings do not increase the active interference count"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Save two or more active near-duplicate memories in the same spec folder plus one archived or deprecated near-duplicate sibling 2) Query the cluster topic 3) Verify the active duplicates receive the penalty while the archived or deprecated sibling does not inflate the active interference count 4) Compare against a non-duplicate control memory in the same folder"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "026",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/026-classification-based-decay-tm-03.md",
+    "prompt": "Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration; validateHalfLifeConfig rejects halfLifeDays:0 with the \"positive number or null\" contract. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Decay multipliers differ by classification and tier",
+      "matrix values match documented configuration",
+      "zero half-life config is rejected with the positive-number-or-null error"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Decay multipliers differ by classification and tier",
+      "matrix values match documented configuration",
+      "zero half-life config is rejected with the positive-number-or-null error"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Load the documented class/tier decay matrix 2) Validate representative class+tier outputs against the matrix 3) Submit a config with `halfLifeDays: 0` 4) Confirm validation rejects it with the positive-number-or-null error"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "027",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/027-folder-level-relevance-scoring-pi-a1.md",
+    "prompt": "Validate folder-level relevance scoring (PI-A1). Capture the evidence needed to prove Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Folder pre-ranking scores computed",
+      "folder-level results appear before individual memory results in ranking"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Folder pre-ranking scores computed",
+      "folder-level results appear before individual memory results in ranking"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Create varied folders 2) Run global query 3) Verify folder pre-ranking"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "028",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/028-embedding-cache-r18.md",
+    "prompt": "Verify embedding cache (R18). Capture the evidence needed to prove Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Cache hit returns instantly without embedding API call",
+      "cache miss triggers embedding",
+      "metadata timestamps updated on hit"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Cache hit returns instantly without embedding API call",
+      "cache miss triggers embedding",
+      "metadata timestamps updated on hit"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Embed content/model pair 2) Repeat 3) Confirm hit and metadata update"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "029",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/029-double-intent-weighting-investigation-g2.md",
+    "prompt": "Validate G2 guard in active pipeline. Capture the evidence needed to prove Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Stage-2 intent weighting skipped for hybrid queries",
+      "no double-weight detected in trace",
+      "non-hybrid queries apply intent normally"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Stage-2 intent weighting skipped for hybrid queries",
+      "no double-weight detected in trace",
+      "non-hybrid queries apply intent normally"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Run hybrid query 2) Inspect stage trace 3) Confirm stage-2 intent skip"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "030",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/030-rrf-k-value-sensitivity-analysis-fut-5.md",
+    "prompt": "Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "K-value grid produces per-K metric comparisons",
+      "optimal K identified with rationale",
+      "sensitivity curve shows diminishing returns"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "K-value grid produces per-K metric comparisons",
+      "optimal K identified with rationale",
+      "sensitivity curve shows diminishing returns"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Run K grid 2) Compare metrics 3) Select best K rationale"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "031",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/031-negative-feedback-confidence-signal-a4.md",
+    "prompt": "Verify negative feedback confidence (A4). Capture the evidence needed to prove Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Negative feedback reduces confidence multiplier",
+      "floor enforced (never reaches 0)",
+      "half-life recovery observed over time"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Negative feedback reduces confidence multiplier",
+      "floor enforced (never reaches 0)",
+      "half-life recovery observed over time"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Submit negatives 2) Query multiplier 3) Verify floor/half-life recovery"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "032",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/032-auto-promotion-on-validation-t002a.md",
+    "prompt": "Validate auto-promotion on validation (T002a). Capture the evidence needed to prove Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Positive validations promote tier at configured threshold",
+      "throttle prevents rapid re-promotion",
+      "audit trail logged"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Positive validations promote tier at configured threshold",
+      "throttle prevents rapid re-promotion",
+      "audit trail logged"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Submit positive validations 2) Check tier changes 3) Verify throttle/audit"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "066",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/066-scoring-and-ranking-corrections.md",
+    "prompt": "Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Score values fall within expected ranges",
+      "ranking order matches relevance",
+      "no score inversions or NaN values"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Score values fall within expected ranges",
+      "ranking order matches relevance",
+      "no score inversions or NaN values"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "074",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/074-stage-3-effectivescore-fallback-chain.md",
+    "prompt": "Validate Stage 3 effectiveScore fallback chain. Capture the evidence needed to prove Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Fallback chain follows defined priority order",
+      "missing score fields trigger next fallback",
+      "final fallback produces valid score"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Fallback chain follows defined priority order",
+      "missing score fields trigger next fallback",
+      "final fallback produces valid score"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) craft rows missing score fields 2) run stage 3 3) verify fallback order"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "079",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/079-scoring-and-fusion-corrections.md",
+    "prompt": "Validate the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement. Confirm the implementing symbols exist in the expected source files, rerun the targeted regression tests, and return a concise pass/fail verdict with the first failing symbol or test if anything breaks.",
+    "expectedSignals": [
+      "normalizeCompositeScores"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "normalizeCompositeScores"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `rg -n \"calculateFiveFactorScore"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "098",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md",
+    "prompt": "Validate RERANKER_LOCAL strict check and memory thresholds. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Reranker not activated for truthy-but-not-'true' values",
+      "silent fallback when model file missing",
+      "custom model path lowers the total-memory threshold to 2GB from the default 8GB",
+      "scoring runs sequentially in logs"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Reranker not activated for truthy-but-not-'true' values",
+      "silent fallback when model file missing",
+      "custom model path lowers the total-memory threshold to 2GB from the default 8GB",
+      "scoring runs sequentially in logs"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) set `RERANKER_LOCAL=1` (truthy but not `'true'`) \u2192 verify reranker is NOT activated (strict string equality) 2) set `RERANKER_LOCAL=true` without model file \u2192 verify silent fallback 3) set `SPECKIT_RERANKER_MODEL=/custom/path` \u2192 verify the custom-model threshold applies at 2GB instead of the default 8GB 4) with valid model, verify sequential scoring (not parallel) in logs"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "102",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/102-node-llama-cpp-optionaldependencies.md",
+    "prompt": "Validate node-llama-cpp as optionalDependency. Capture the evidence needed to prove node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "node-llama-cpp listed in optionalDependencies (not dependencies)",
+      "npm install completes without error on clean env",
+      "dynamic import with graceful fallback when module absent"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "node-llama-cpp listed in optionalDependencies (not dependencies)",
+      "npm install completes without error on clean env",
+      "dynamic import with graceful fallback when module absent"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: mcp_server/package.json"
+    ],
+    "steps": [
+      {
+        "step": "mcp_server/package.json",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "118",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/118-stage-2-score-field-synchronization-p0-8.md",
+    "prompt": "Run a non-hybrid search with intent weighting and verify score fields stay synchronized. Capture the evidence needed to prove intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "intentAdjustedScore set at Step 4 in trace",
+      "downstream signals modify score field",
+      "final intentAdjustedScore >= score (Math.max sync)",
+      "resolveEffectiveScore returns synchronized value"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "intentAdjustedScore set at Step 4 in trace",
+      "downstream signals modify score field",
+      "final intentAdjustedScore >= score (Math.max sync)",
+      "resolveEffectiveScore returns synchronized value"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "non hybrid intent weighting sync check",
+          "includeTrace": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: intentAdjustedScore"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({ query:\"non hybrid intent weighting sync check\", includeTrace:true })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "non hybrid intent weighting sync check",
+            "includeTrace": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":2,\"activeChannels\":2,\"candidateCount\":11,\"constitutionalInjected\":0,\"durationMs\":20},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":2,\"coActivationBoosted\":1,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":2,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":9,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":20,\"stage2\":2,\"stage3\":0,\"stage4\":0,\"total\":22}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0"
+        ]
+      },
+      {
+        "step": "intentAdjustedScore",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "121",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/121-adaptive-shadow-proposal-and-rollback-phase-4.md",
+    "prompt": "Validate Phase 4 adaptive shadow proposal flow. Capture the evidence needed to prove Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_MEMORY_ADAPTIVE_RANKING=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_MEMORY_ADAPTIVE_RANKING=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "159",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/159-learned-stage2-combiner-speckit-learned-stage2-combiner.md",
+    "prompt": "Test SPECKIT_LEARNED_STAGE2_COMBINER=true. Train a model, run shadowScore(), and verify ShadowResult shape with learnedScore, manualScore, and delta. Capture the evidence needed to prove learned combiner produces [0,1] scores without affecting live ranking. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual)",
+      "null when flag OFF"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, delta = abs(learned - manual)",
+      "null when flag OFF"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `SPECKIT_LEARNED_STAGE2_COMBINER=true` 2) Train model via `trainRegularizedLinearRanker(examples)` 3) Call `shadowScore(model, features, manualScore, true)` 4) Verify ShadowResult shape 5) `npx vitest run tests/learned-combiner.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "160",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/160-shadow-feedback-speckit-shadow-feedback.md",
+    "prompt": "Test SPECKIT_SHADOW_FEEDBACK=true. Run a shadow evaluation with holdout queries, verify shadow_scoring_log entries with rank deltas, and check the promotion gate recommendation. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "shadow_scoring_log rows with rank deltas",
+      "compareRanks() produces Kendall tau and NDCG delta",
+      "evaluatePromotionGate() returns recommendation",
+      "no live ranking mutation"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "shadow_scoring_log rows with rank deltas",
+      "compareRanks() produces Kendall tau and NDCG delta",
+      "evaluatePromotionGate() returns recommendation",
+      "no live ranking mutation"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `SPECKIT_SHADOW_FEEDBACK=true` 2) Call `runShadowEvaluation(db, queryIds, liveRanksFn, shadowRanksFn)` 3) Query `SELECT * FROM shadow_scoring_log` 4) Check `evaluatePromotionGate(db)` 5) `npx vitest run tests/shadow-scoring-holdout.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "171",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md",
+    "prompt": "Test the default-on SPECKIT_CALIBRATED_OVERLAP_BONUS behavior. Run a multi-channel search producing overlapping results and verify calibrated bonus with beta=0.15 and cap=0.06 replaces the flat 0.10 bonus. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "isCalibratedOverlapBonusEnabled() returns true",
+      "bonus uses beta=0.15 scaling with mean normalized top score",
+      "bonus clamped to CALIBRATED_OVERLAP_MAX=0.06",
+      "falls back to CONVERGENCE_BONUS=0.10 when OFF"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isCalibratedOverlapBonusEnabled() returns true",
+      "bonus uses beta=0.15 scaling with mean normalized top score",
+      "bonus clamped to CALIBRATED_OVERLAP_MAX=0.06",
+      "falls back to CONVERGENCE_BONUS=0.10 when OFF"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_CALIBRATED_OVERLAP_BONUS"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_CALIBRATED_OVERLAP_BONUS",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "172",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md",
+    "prompt": "Test the default-on SPECKIT_RRF_K_EXPERIMENTAL behavior. Run per-intent K sweep over {10,20,40,60,80,100,120} and verify NDCG@10-based selection. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "isKExperimentalEnabled() returns true",
+      "sweep grid = {10,20,40,60,80,100,120}",
+      "NDCG@10 and MRR@5 computed per K",
+      "ties broken by lower K",
+      "falls back to K=60 when OFF"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isKExperimentalEnabled() returns true",
+      "sweep grid = {10,20,40,60,80,100,120}",
+      "NDCG@10 and MRR@5 computed per K",
+      "ties broken by lower K",
+      "falls back to K=60 when OFF"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Confirm `SPECKIT_RRF_K_EXPERIMENTAL` is unset or `true` 2) Run perIntentKSweep() with judged query set 3) Verify sweep evaluates all K values in {10,20,40,60,80,100,120} 4) Confirm argmaxNdcg10() selects best K per intent 5) Set flag to `false`, verify DEFAULT_K=60 used"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "196",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/196-tool-level-ttl-cache.md",
+    "prompt": "Verify the tool-level TTL cache on a repeated expensive request. Run the same request twice within the active TTL window and confirm the second run is served from the per-tool cache using the same SHA-256 cache key. Then invalidate the relevant search path with a mutation or wait for TTL expiry and verify the next run recomputes instead of serving stale data. Capture hit, miss, eviction or invalidation evidence and return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "First run is a miss",
+      "second identical run is a hit",
+      "cache key is stable for identical tool+input",
+      "stats show hit/miss/invalidation activity",
+      "post-mutation or post-expiry run recomputes instead of returning stale data"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "First run is a miss",
+      "second identical run is a hit",
+      "cache key is stable for identical tool+input",
+      "stats show hit/miss/invalidation activity",
+      "post-mutation or post-expiry run recomputes instead of returning stale data"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Confirm current cache settings, including active TTL window 2) Run a repeatable expensive request such as the same `memory_search` twice with identical inputs 3) Inspect cache stats or trace output to confirm miss then hit on the same tool/input key 4) Perform a relevant mutation such as `memory_save`, `memory_update`, or `memory_delete`, or wait past TTL expiry 5) Re-run the same request and confirm recomputation plus invalidation or expiry accounting"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "197",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/197-access-driven-popularity-scoring.md",
+    "prompt": "Verify access-driven popularity scoring with two comparable memories. Repeatedly retrieve one target memory enough times to push the in-memory access accumulator past the flush threshold, then confirm the persisted access count and last_accessed fields update while a comparable control memory does not. Re-run a ranking query and confirm the more frequently accessed memory receives a stronger popularity contribution. Capture accumulator, flush, ranking, and dormancy evidence and return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Accumulator rises in 0.1 steps",
+      "flush occurs after the threshold is crossed",
+      "persisted fields update for the target memory",
+      "composite scoring or ranking reflects a popularity boost",
+      "colder control memory remains relatively less active for dormancy purposes"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Accumulator rises in 0.1 steps",
+      "flush occurs after the threshold is crossed",
+      "persisted fields update for the target memory",
+      "composite scoring or ranking reflects a popularity boost",
+      "colder control memory remains relatively less active for dormancy purposes"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Prepare or identify two comparable memories that match the same retrieval query 2) Run the shared query once to establish a baseline ranking 3) Retrieve the target memory repeatedly until the accumulator crosses the flush threshold 4) Inspect accumulator state and persisted `access_count` plus `last_accessed` for target vs control 5) Re-run the ranking query and compare popularity-sensitive ordering and dormancy signals"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "198",
+    "category": "11--scoring-and-calibration",
+    "status": "UNAUTOMATABLE",
+    "filePath": "11--scoring-and-calibration/198-temporal-structural-coherence-scoring.md",
+    "prompt": "Verify temporal-structural coherence scoring in the quality loop using one well-formed control memory and flawed variants. Submit variants that are too short or missing headings, include a future-dated completion claim, and include self-referential or unresolved causal links. Confirm the coherence breakdown applies the expected structural checks and bounded penalties, and verify that low-coherence content is rejected or downgraded while the quality loop retry cycle stays immediate and bounded. Capture the score breakdown and return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Structural checks evaluate content presence, minimum length, and headings",
+      "future-dated completion claims reduce coherence",
+      "self-referential or unresolved causal links reduce coherence",
+      "low-coherence variants are rejected or downgraded",
+      "retry attempts are immediate and bounded"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Structural checks evaluate content presence, minimum length, and headings",
+      "future-dated completion claims reduce coherence",
+      "self-referential or unresolved causal links reduce coherence",
+      "low-coherence variants are rejected or downgraded",
+      "retry attempts are immediate and bounded"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Prepare a well-formed control memory plus flawed variants covering short or heading-less content, future-dated completion claims, and broken causal-link metadata 2) Run the quality loop or ingest path for each case 3) Inspect the coherence score breakdown and quality-loop decision for control vs flawed variants 4) Confirm penalties apply to temporal and causal-link issues without inventing broader chronology logic 5) For an auto-fixable case, capture the retry cycle and confirm retries occur immediately with no backoff and stop within the configured limit"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

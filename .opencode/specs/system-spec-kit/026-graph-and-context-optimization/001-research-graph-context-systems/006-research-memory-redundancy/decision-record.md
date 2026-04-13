@@ -54,7 +54,7 @@ The redundancy research is already complete. What remained was to apply its cons
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: keep this packet documentation-only and assign future runtime work to `../../003-memory-quality-issues/`.
+**We chose**: keep this packet documentation-only and assign future runtime work to `../../003-memory-quality-remediation/`.
 
 **How it works**: This folder records the parent-sync surfaces, the downstream classifications, and the packet-owner handoff. It does not absorb generator or template implementation work.
 <!-- /ANCHOR:adr-001-decision -->
@@ -66,7 +66,7 @@ The redundancy research is already complete. What remained was to apply its cons
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Keep implementation in `../../003-memory-quality-issues/`** | Preserves the existing runtime-owner lane | Requires this packet to stay coordination-only | 9/10 |
+| **Keep implementation in `../../003-memory-quality-remediation/`** | Preserves the existing runtime-owner lane | Requires this packet to stay coordination-only | 9/10 |
 | Reopen runtime work in this folder | Puts research and runtime next to each other | Breaks the follow-on boundary and widens packet scope | 3/10 |
 
 **Why this one**: The research already answered the contract question. What remains is runtime remediation, and that work already has an owner packet.

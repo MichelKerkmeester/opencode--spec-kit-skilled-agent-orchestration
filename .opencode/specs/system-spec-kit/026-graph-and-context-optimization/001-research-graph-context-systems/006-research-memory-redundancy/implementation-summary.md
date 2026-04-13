@@ -48,7 +48,7 @@ The existing packet docs were normalized to the active template shape, and the m
 
 ### Ownership Clarification
 
-The packet now states one clear follow-on rule: runtime implementation belongs in `../../003-memory-quality-issues/`. This folder records the consequences of the research, not the runtime implementation itself.
+The packet now states one clear follow-on rule: runtime implementation belongs in `../../003-memory-quality-remediation/`. This folder records the consequences of the research, not the runtime implementation itself.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -67,7 +67,7 @@ The pass began with the strict-validator baseline for this folder. After the pac
 | Decision | Why |
 |----------|-----|
 | Keep `research/research.md` as the local authority | The research is already complete there |
-| Keep runtime ownership in `../../003-memory-quality-issues/` | The runtime debt already lives in the memory-quality packet train |
+| Keep runtime ownership in `../../003-memory-quality-remediation/` | The runtime debt already lives in the memory-quality packet train |
 | Record explicit no-change outcomes for orthogonal packets | Reviewers need to see that those packets were considered intentionally |
 <!-- /ANCHOR:decisions -->
 
@@ -79,7 +79,7 @@ The pass began with the strict-validator baseline for this folder. After the pac
 | Check | Result |
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy --strict` | PASS after doc normalization and closeout-doc creation |
-| Downstream impact map review | PASS, packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are all classified |
+| Downstream impact map review | PASS, packets `../../002-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are all classified |
 <!-- /ANCHOR:verification -->
 
 ---

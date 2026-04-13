@@ -172,7 +172,7 @@
     },
     {
       "id": "finding-1-9-what-it-does-package-json-defines-only-devdependencies-and-no-runtime-dependenci",
-      "text": "What it does: `package.json` defines only `devDependencies` and no runtime `dependencies`, while `loadTypeScript(projectRoot)` tries three strategies to borrow the target repo’s compiler: `createRequire(projectRoot/package.json)`, direct `node_modules/typescript`, then pnpm `.pnpm/typescript@*`. If all three fail, it caches `null` and route detectors like Hono and NestJS drop to regex parsing instead of AST extraction.",
+      "text": "What it does: `package.json` defines only `devDependencies` and no runtime `dependencies`, while `loadTypeScript(projectRoot)` tries three strategies to borrow the target repo\u2019s compiler: `createRequire(projectRoot/package.json)`, direct `node_modules/typescript`, then pnpm `.pnpm/typescript@*`. If all three fail, it caches `null` and route detectors like Hono and NestJS drop to regex parsing instead of AST extraction.",
       "addedAtIteration": 1,
       "sources": []
     },
@@ -190,7 +190,7 @@
     },
     {
       "id": "finding-1-24-why-it-matters-code-environment-public-should-likely-borrow-the-split-between-a-",
-      "text": "Why it matters: Code_Environment/Public should likely borrow the split between a canonical summary generator and per-tool overlays, but not the direct “write root instruction files” behavior; the better fit is to emit into existing `.codex`, spec-packet, or prompt-wrapper surfaces.",
+      "text": "Why it matters: Code_Environment/Public should likely borrow the split between a canonical summary generator and per-tool overlays, but not the direct \u201cwrite root instruction files\u201d behavior; the better fit is to emit into existing `.codex`, spec-packet, or prompt-wrapper surfaces.",
       "addedAtIteration": 1,
       "sources": []
     },
@@ -592,13 +592,13 @@
     },
     {
       "id": "finding-3-16-what-it-does-the-detector-builds-importedby-and-imports-maps-from-the-graph-then",
-      "text": "What it does: The detector builds `importedBy` and `imports` maps from the graph, then runs BFS over `importedBy` so a changed file fans out to files that import it directly or transitively. Cycles are contained by the `affected` set, but dependents are added to `affected` before the queued node’s depth is checked, so nodes one hop beyond `maxDepth` can still appear in the final result.",
+      "text": "What it does: The detector builds `importedBy` and `imports` maps from the graph, then runs BFS over `importedBy` so a changed file fans out to files that import it directly or transitively. Cycles are contained by the `affected` set, but dependents are added to `affected` before the queued node\u2019s depth is checked, so nodes one hop beyond `maxDepth` can still appear in the final result.",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-10-why-it-matters-the-implementation-is-closer-to-most-depended-on-files-than-graph",
-      "text": "Why it matters: The implementation is closer to “most depended-on files” than “graph centrality.” If we reuse this idea in `Code_Environment/Public`, we should name it accordingly and avoid implying richer graph math than the code actually performs.",
+      "text": "Why it matters: The implementation is closer to \u201cmost depended-on files\u201d than \u201cgraph centrality.\u201d If we reuse this idea in `Code_Environment/Public`, we should name it accordingly and avoid implying richer graph math than the code actually performs.",
       "addedAtIteration": 3,
       "sources": []
     },
@@ -634,25 +634,25 @@
     },
     {
       "id": "finding-4-10-claude-code-claude-md-instructs-the-assistant-to-read-codesight-codesight-md-fir",
-      "text": "`claude-code` → `CLAUDE.md`: instructs the assistant to read `.codesight/CODESIGHT.md` first and lists 4 specific MCP tool calls (`codesight_get_summary`, `codesight_get_routes --prefix /api/users`, `codesight_get_blast_radius --file src/lib/db.ts`, `codesight_get_schema --model users`), and reports `tokenStats.saved` to motivate the workflow. It also has a regex-based replace path that overwrites a prior `# AI Context...` block in-place.",
+      "text": "`claude-code` \u2192 `CLAUDE.md`: instructs the assistant to read `.codesight/CODESIGHT.md` first and lists 4 specific MCP tool calls (`codesight_get_summary`, `codesight_get_routes --prefix /api/users`, `codesight_get_blast_radius --file src/lib/db.ts`, `codesight_get_schema --model users`), and reports `tokenStats.saved` to motivate the workflow. It also has a regex-based replace path that overwrites a prior `# AI Context...` block in-place.",
       "addedAtIteration": 4,
       "sources": []
     },
     {
       "id": "finding-4-12-codex-codex-md-minimal-single-line-pointer-to-codesight-codesight-md-plus-a-rout",
-      "text": "`codex` → `codex.md`: minimal single-line pointer to `.codesight/CODESIGHT.md` plus a \"Routes/Schema/Dependencies\" file map, written as a self-contained file (no append).",
+      "text": "`codex` \u2192 `codex.md`: minimal single-line pointer to `.codesight/CODESIGHT.md` plus a \"Routes/Schema/Dependencies\" file map, written as a self-contained file (no append).",
       "addedAtIteration": 4,
       "sources": []
     },
     {
       "id": "finding-4-13-copilot-github-copilot-instructions-md-similar-minimal-pointer-creates-github-if",
-      "text": "`copilot` → `.github/copilot-instructions.md`: similar minimal pointer; creates `.github/` if missing.",
+      "text": "`copilot` \u2192 `.github/copilot-instructions.md`: similar minimal pointer; creates `.github/` if missing.",
       "addedAtIteration": 4,
       "sources": []
     },
     {
       "id": "finding-4-11-cursor-cursorrules-gives-a-4-step-file-reading-order-codesight-md-routes-md-sche",
-      "text": "`cursor` → `.cursorrules`: gives a 4-step file-reading order (`CODESIGHT.md`, `routes.md`, `schema.md`, `graph.md`) and an explicit \"Do not crawl the file tree\" directive.",
+      "text": "`cursor` \u2192 `.cursorrules`: gives a 4-step file-reading order (`CODESIGHT.md`, `routes.md`, `schema.md`, `graph.md`) and an explicit \"Do not crawl the file tree\" directive.",
       "addedAtIteration": 4,
       "sources": []
     },
@@ -664,7 +664,7 @@
     },
     {
       "id": "finding-4-14-windsurf-windsurfrules-same-minimal-pointer-using-windsurf-s-expected-filename",
-      "text": "`windsurf` → `.windsurfrules`: same minimal pointer using Windsurf's expected filename.",
+      "text": "`windsurf` \u2192 `.windsurfrules`: same minimal pointer using Windsurf's expected filename.",
       "addedAtIteration": 4,
       "sources": []
     },
@@ -862,7 +862,7 @@
     },
     {
       "id": "finding-4-22-what-it-does-runeval-reads-each-fixture-s-repo-json-file-content-map-materialize",
-      "text": "What it does: `runEval()` reads each fixture's `repo.json` (file content map), materializes a temp directory, runs `detectProject` + `collectFiles` + the 5 detectors (`detectRoutes`, `detectSchemas`, `detectComponents`, `detectConfig`, `detectMiddleware`) in parallel, then compares detected sets to the fixture's `ground-truth.json` for routes (`method:path`), models (lowercased name), env vars, and optionally components and middleware. `calcMetrics()` computes precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = harmonic mean with the same `(empty,empty) → 1.0` convention as scikit-learn. Output is per-fixture metric tables plus an unweighted average across all fixture/category pairs. There is no token-savings measurement, no statistical test, no confidence interval, no run-to-run variance, and `runtime` is wall-clock for one detector pass per fixture.",
+      "text": "What it does: `runEval()` reads each fixture's `repo.json` (file content map), materializes a temp directory, runs `detectProject` + `collectFiles` + the 5 detectors (`detectRoutes`, `detectSchemas`, `detectComponents`, `detectConfig`, `detectMiddleware`) in parallel, then compares detected sets to the fixture's `ground-truth.json` for routes (`method:path`), models (lowercased name), env vars, and optionally components and middleware. `calcMetrics()` computes precision = TP/(TP+FP), recall = TP/(TP+FN), F1 = harmonic mean with the same `(empty,empty) \u2192 1.0` convention as scikit-learn. Output is per-fixture metric tables plus an unweighted average across all fixture/category pairs. There is no token-savings measurement, no statistical test, no confidence interval, no run-to-run variance, and `runtime` is wall-clock for one detector pass per fixture.",
       "addedAtIteration": 4,
       "sources": []
     },
@@ -1072,7 +1072,7 @@
     },
     {
       "id": "finding-5-16-what-it-does-parsefieldchain-walks-chained-call-expressions-and-only-switches-on",
-      "text": "What it does: `parseFieldChain()` walks chained call expressions and only switches on these methods: `primaryKey` → `pk` flag, `notNull` → `required` flag, `unique` → `unique` flag, `default`/`defaultNow`/`$default`/`$defaultFn` → `default` flag, `references` → `fk` flag plus a `refTarget` extracted from arrow-function bodies. `extractDrizzleRelations()` walks `relations(table, () => ({ ... }))` for `one(...)` and `many(...)` only. Neither file mentions `index()`, `uniqueIndex()`, composite indexes, or any second-positional-argument table constructor metadata where Drizzle stores indexes.",
+      "text": "What it does: `parseFieldChain()` walks chained call expressions and only switches on these methods: `primaryKey` \u2192 `pk` flag, `notNull` \u2192 `required` flag, `unique` \u2192 `unique` flag, `default`/`defaultNow`/`$default`/`$defaultFn` \u2192 `default` flag, `references` \u2192 `fk` flag plus a `refTarget` extracted from arrow-function bodies. `extractDrizzleRelations()` walks `relations(table, () => ({ ... }))` for `one(...)` and `many(...)` only. Neither file mentions `index()`, `uniqueIndex()`, composite indexes, or any second-positional-argument table constructor metadata where Drizzle stores indexes.",
       "addedAtIteration": 5,
       "sources": []
     },
@@ -1222,31 +1222,31 @@
     },
     {
       "id": "finding-6-35-risk-cost-high-failure-modes-degrade-silently-into-missing-metadata-which-is-eas",
-      "text": "Risk/cost: high — failure modes degrade silently into missing metadata, which is easy to misread as \"no contract found.\"",
+      "text": "Risk/cost: high \u2014 failure modes degrade silently into missing metadata, which is easy to misread as \"no contract found.\"",
       "addedAtIteration": 6,
       "sources": []
     },
     {
       "id": "finding-6-28-risk-cost-high-the-framework-with-the-richest-inline-contract-vocabulary-gets-no",
-      "text": "Risk/cost: high — the framework with the richest inline contract vocabulary gets no enrichment at all.",
+      "text": "Risk/cost: high \u2014 the framework with the richest inline contract vocabulary gets no enrichment at all.",
       "addedAtIteration": 6,
       "sources": []
     },
     {
       "id": "finding-6-21-risk-cost-low-the-heuristics-are-simple-but-their-output-is-necessarily-shallow",
-      "text": "Risk/cost: low — the heuristics are simple, but their output is necessarily shallow.",
+      "text": "Risk/cost: low \u2014 the heuristics are simple, but their output is necessarily shallow.",
       "addedAtIteration": 6,
       "sources": []
     },
     {
       "id": "finding-6-14-risk-cost-medium-broad-framework-labels-suggest-richer-support-than-the-regexes-",
-      "text": "Risk/cost: medium — broad framework labels suggest richer support than the regexes actually provide.",
+      "text": "Risk/cost: medium \u2014 broad framework labels suggest richer support than the regexes actually provide.",
       "addedAtIteration": 6,
       "sources": []
     },
     {
       "id": "finding-6-7-risk-cost-medium-cheap-to-run-but-easy-to-over-trust-because-it-mutates-already-",
-      "text": "Risk/cost: medium — cheap to run, but easy to over-trust because it mutates already-detected routes without marking enrichment quality separately.",
+      "text": "Risk/cost: medium \u2014 cheap to run, but easy to over-trust because it mutates already-detected routes without marking enrichment quality separately.",
       "addedAtIteration": 6,
       "sources": []
     },
@@ -1468,13 +1468,13 @@
     },
     {
       "id": "finding-7-14-risk-cost-low-discipline-only",
-      "text": "Risk/cost: low — discipline-only",
+      "text": "Risk/cost: low \u2014 discipline-only",
       "addedAtIteration": 7,
       "sources": []
     },
     {
       "id": "finding-7-7-risk-cost-low-labeling-is-free-real-go-ast-is-medium-effort",
-      "text": "Risk/cost: low — labeling is free, real Go AST is medium effort",
+      "text": "Risk/cost: low \u2014 labeling is free, real Go AST is medium effort",
       "addedAtIteration": 7,
       "sources": []
     },
@@ -1522,7 +1522,7 @@
     },
     {
       "id": "finding-7-9-what-it-does-fastapi-flask-parsing-only-reads-the-first-positional-path-argument",
-      "text": "What it does: FastAPI/Flask parsing only reads the first positional path argument and, for `route`/`api_route`, the `methods` keyword. There is no handling for `status_code`, `response_model`, `dependencies`, `tags`, or other decorator kwargs; returned route objects only contain method, path, params, file, tags, framework, and confidence. Django support is even thinner: it looks for `urlpatterns` assignments that are either a list or list-plus-list, recognizes `path` / `re_path` / `url`, and assigns every match `method: \"ALL\"`. The biggest FastAPI gap is **prefix composition**: `detectFastAPIRoutes()` extracts decorators file-by-file and never combines them with `app.include_router(..., prefix=\"/api/...\")` from the application entrypoint. The fixture proves this mismatch: `repo.json` mounts routers under `/api/users`, `/api/items`, and `/api/auth`, but `ground-truth.json` expects unprefixed `/`, `/{user_id}`, `/login`, and `/register` paths instead — the fixture has been normalized to the extractor's current limitation.",
+      "text": "What it does: FastAPI/Flask parsing only reads the first positional path argument and, for `route`/`api_route`, the `methods` keyword. There is no handling for `status_code`, `response_model`, `dependencies`, `tags`, or other decorator kwargs; returned route objects only contain method, path, params, file, tags, framework, and confidence. Django support is even thinner: it looks for `urlpatterns` assignments that are either a list or list-plus-list, recognizes `path` / `re_path` / `url`, and assigns every match `method: \"ALL\"`. The biggest FastAPI gap is **prefix composition**: `detectFastAPIRoutes()` extracts decorators file-by-file and never combines them with `app.include_router(..., prefix=\"/api/...\")` from the application entrypoint. The fixture proves this mismatch: `repo.json` mounts routers under `/api/users`, `/api/items`, and `/api/auth`, but `ground-truth.json` expects unprefixed `/`, `/{user_id}`, `/login`, and `/register` paths instead \u2014 the fixture has been normalized to the extractor's current limitation.",
       "addedAtIteration": 7,
       "sources": []
     },
@@ -1546,7 +1546,7 @@
     },
     {
       "id": "finding-7-16-what-it-does-the-go-extractor-does-more-path-composition-than-python-routes-do-i",
-      "text": "What it does: The Go extractor does more path composition than Python routes do. It resolves chained `Group(\"/prefix\")` calls for Gin/Echo/Fiber, handles `chi.Route(\"/prefix\", func(...) { ... })`, and then rewrites group-local route hits into full paths. It also supports uppercase Gin/Echo methods, PascalCase Fiber/Chi methods, `chi.Method(...)`, and `net/http` `HandleFunc`/`Handle` patterns including Go 1.22 `\"GET /path\"` strings. What it does **not** do is capture middleware or handler semantics. The route objects built in `extractRoutesFromBlock()` never set `middleware`, and group parsing only tracks `prefix`, `body`, and `varName`. The `gin-gorm` fixture includes `api.Use(middleware.Auth())` and even advertises `\"middleware\": [\"auth\"]` in ground truth, but this extractor alone cannot produce that field — meaning the middleware comes from a different detector path or the ground truth is unmet.",
+      "text": "What it does: The Go extractor does more path composition than Python routes do. It resolves chained `Group(\"/prefix\")` calls for Gin/Echo/Fiber, handles `chi.Route(\"/prefix\", func(...) { ... })`, and then rewrites group-local route hits into full paths. It also supports uppercase Gin/Echo methods, PascalCase Fiber/Chi methods, `chi.Method(...)`, and `net/http` `HandleFunc`/`Handle` patterns including Go 1.22 `\"GET /path\"` strings. What it does **not** do is capture middleware or handler semantics. The route objects built in `extractRoutesFromBlock()` never set `middleware`, and group parsing only tracks `prefix`, `body`, and `varName`. The `gin-gorm` fixture includes `api.Use(middleware.Auth())` and even advertises `\"middleware\": [\"auth\"]` in ground truth, but this extractor alone cannot produce that field \u2014 meaning the middleware comes from a different detector path or the ground truth is unmet.",
       "addedAtIteration": 7,
       "sources": []
     },
@@ -1564,19 +1564,19 @@
     },
     {
       "id": "finding-7-38-why-it-matters-for-code-environment-public-iteration-4-finding-5-already-establi",
-      "text": "Why it matters for Code_Environment/Public: Iteration 4 finding 5 already established that ~14 frameworks have live route tests but only Drizzle/Prisma have schema tests. This iteration adds: even where fixtures *exist*, they can be authored to match the parser's current behavior rather than runtime truth. The fix is to require that every fixture includes at least one assertion that fails against a regex-only fallback — making the test sensitive to AST regression.",
+      "text": "Why it matters for Code_Environment/Public: Iteration 4 finding 5 already established that ~14 frameworks have live route tests but only Drizzle/Prisma have schema tests. This iteration adds: even where fixtures *exist*, they can be authored to match the parser's current behavior rather than runtime truth. The fix is to require that every fixture includes at least one assertion that fails against a regex-only fallback \u2014 making the test sensitive to AST regression.",
       "addedAtIteration": 7,
       "sources": []
     },
     {
       "id": "finding-7-24-why-it-matters-for-code-environment-public-note-the-asymmetry-the-python-orm-get",
-      "text": "Why it matters for Code_Environment/Public: Note the asymmetry — the Python ORM gets `index` extraction (something Drizzle does NOT get per iter 5 finding 3), while the Go ORM gets a wide net that produces false positives. If we lift schema extraction logic, prefer the SQLAlchemy pattern, and explicitly label GORM-style heuristic extraction with low confidence.",
+      "text": "Why it matters for Code_Environment/Public: Note the asymmetry \u2014 the Python ORM gets `index` extraction (something Drizzle does NOT get per iter 5 finding 3), while the Go ORM gets a wide net that produces false positives. If we lift schema extraction logic, prefer the SQLAlchemy pattern, and explicitly label GORM-style heuristic extraction with low confidence.",
       "addedAtIteration": 7,
       "sources": []
     },
     {
       "id": "finding-7-3-why-it-matters-for-code-environment-public-the-python-pattern-is-genuinely-trans",
-      "text": "Why it matters for Code_Environment/Public: The Python pattern is genuinely transferable: real AST when the host has Python, regex fallback when it doesn't. The Go pattern is the wrong lesson — its \"AST\" label is dishonest. If we ever add Go support, either (a) actually shell out to `go run` with a `golang.org/x/tools/go/parser` helper, or (b) label it `\"heuristic\"` and never `\"ast\"`.",
+      "text": "Why it matters for Code_Environment/Public: The Python pattern is genuinely transferable: real AST when the host has Python, regex fallback when it doesn't. The Go pattern is the wrong lesson \u2014 its \"AST\" label is dishonest. If we ever add Go support, either (a) actually shell out to `go run` with a `golang.org/x/tools/go/parser` helper, or (b) label it `\"heuristic\"` and never `\"ast\"`.",
       "addedAtIteration": 7,
       "sources": []
     },
@@ -1690,13 +1690,13 @@
     },
     {
       "id": "finding-8-28-risk-cost-low-small-format-change",
-      "text": "Risk/cost: low — small format change",
+      "text": "Risk/cost: low \u2014 small format change",
       "addedAtIteration": 8,
       "sources": []
     },
     {
       "id": "finding-8-7-risk-cost-low-the-approximation-is-harmless-if-disclosed-harmful-if-quoted-as-a-",
-      "text": "Risk/cost: low — the approximation is harmless if disclosed; harmful if quoted as a real tokenizer",
+      "text": "Risk/cost: low \u2014 the approximation is harmless if disclosed; harmful if quoted as a real tokenizer",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1708,7 +1708,7 @@
     },
     {
       "id": "finding-8-14-risk-cost-medium-adopting-the-formula-naively-would-import-its-credibility-risk-",
-      "text": "Risk/cost: medium — adopting the formula naively would import its credibility risk; replacing it requires designing an honest baseline",
+      "text": "Risk/cost: medium \u2014 adopting the formula naively would import its credibility risk; replacing it requires designing an honest baseline",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1732,7 +1732,7 @@
     },
     {
       "id": "finding-8-29-source-external-src-index-ts-159-placeholder-tokenstats-outputtokens-0-estimated",
-      "text": "Source: `external/src/index.ts:159` (placeholder `tokenStats: { outputTokens: 0, estimatedExplorationTokens: 0, saved: 0, fileCount: files.length }`), `external/src/index.ts:165` (`const tokenStats = calculateTokenStats(tempResult, outputContent, files.length)` — the `outputContent` is the markdown string just written), `external/src/index.ts:166` (result reconstructed with the populated stats), then a second `writeOutput()` call later in the function rewrites `.codesight/` with the accurate token block",
+      "text": "Source: `external/src/index.ts:159` (placeholder `tokenStats: { outputTokens: 0, estimatedExplorationTokens: 0, saved: 0, fileCount: files.length }`), `external/src/index.ts:165` (`const tokenStats = calculateTokenStats(tempResult, outputContent, files.length)` \u2014 the `outputContent` is the markdown string just written), `external/src/index.ts:166` (result reconstructed with the populated stats), then a second `writeOutput()` call later in the function rewrites `.codesight/` with the accurate token block",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1744,7 +1744,7 @@
     },
     {
       "id": "finding-8-23-what-it-does-formatter-ts-290-writes-this-file-is-x-tokens-without-it-ai-explora",
-      "text": "What it does: `formatter.ts:290` writes \"this file is ~X tokens. Without it, AI exploration would cost ~Y tokens. **Saves ~Z tokens per conversation.**\" in `CODESIGHT.md`, with all three values passed through `roundTo100()` so the displayed numbers always end in `00` to signal estimation. But `ai-config.ts:213` writes \"This saves ~${result.tokenStats.saved.toLocaleString()} tokens per conversation.\" into the Claude profile file using the raw, unrounded number — which can show values like `12,847` and read like a real measurement.",
+      "text": "What it does: `formatter.ts:290` writes \"this file is ~X tokens. Without it, AI exploration would cost ~Y tokens. **Saves ~Z tokens per conversation.**\" in `CODESIGHT.md`, with all three values passed through `roundTo100()` so the displayed numbers always end in `00` to signal estimation. But `ai-config.ts:213` writes \"This saves ~${result.tokenStats.saved.toLocaleString()} tokens per conversation.\" into the Claude profile file using the raw, unrounded number \u2014 which can show values like `12,847` and read like a real measurement.",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1774,7 +1774,7 @@
     },
     {
       "id": "finding-8-17-why-it-matters-for-code-environment-public-iteration-4-already-showed-the-f1-fix",
-      "text": "Why it matters for Code_Environment/Public: Iteration 4 already showed the F1 fixture harness is the strongest piece of \"evidence\" Codesight ships. This iteration adds a corollary: token math is the *weakest* surface — it has no test, no fixture, no harness. If we lift any savings-style metric, the first thing to add is a test that pins the formula to a known input. Otherwise the constants will silently drift across versions.",
+      "text": "Why it matters for Code_Environment/Public: Iteration 4 already showed the F1 fixture harness is the strongest piece of \"evidence\" Codesight ships. This iteration adds a corollary: token math is the *weakest* surface \u2014 it has no test, no fixture, no harness. If we lift any savings-style metric, the first thing to add is a test that pins the formula to a known input. Otherwise the constants will silently drift across versions.",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1792,7 +1792,7 @@
     },
     {
       "id": "finding-8-24-why-it-matters-for-code-environment-public-this-is-a-small-but-meaningful-ux-inc",
-      "text": "Why it matters for Code_Environment/Public: This is a small but meaningful UX inconsistency: the same upstream value is rounded for presentation in one surface and quoted unrounded in another, despite both being downstream consumers of the same heuristic formula. If we adopt the per-tool profile pattern (iter 4 finding 2), we should normalize the rounding rule across all surfaces — either always round-to-100 (signaling estimate) or always show raw (only honest if the formula is honest, which it is not). Pick rounding.",
+      "text": "Why it matters for Code_Environment/Public: This is a small but meaningful UX inconsistency: the same upstream value is rounded for presentation in one surface and quoted unrounded in another, despite both being downstream consumers of the same heuristic formula. If we adopt the per-tool profile pattern (iter 4 finding 2), we should normalize the rounding rule across all surfaces \u2014 either always round-to-100 (signaling estimate) or always show raw (only honest if the formula is honest, which it is not). Pick rounding.",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -1930,19 +1930,19 @@
     },
     {
       "id": "finding-9-28-risk-cost-low-the-rejection-is-conceptual-not-code-cost",
-      "text": "Risk/cost: low — the rejection is conceptual, not code-cost",
+      "text": "Risk/cost: low \u2014 the rejection is conceptual, not code-cost",
       "addedAtIteration": 9,
       "sources": []
     },
     {
       "id": "finding-9-21-risk-cost-medium-adding-turbo-nx-rush-discovery-is-straightforward-but-requires-",
-      "text": "Risk/cost: medium — adding turbo/nx/rush discovery is straightforward but requires authoring fixtures",
+      "text": "Risk/cost: medium \u2014 adding turbo/nx/rush discovery is straightforward but requires authoring fixtures",
       "addedAtIteration": 9,
       "sources": []
     },
     {
       "id": "finding-9-42-risk-cost-medium-the-typed-contract-is-small-but-the-fixture-authoring-disciplin",
-      "text": "Risk/cost: medium — the typed contract is small but the fixture authoring discipline is the real cost",
+      "text": "Risk/cost: medium \u2014 the typed contract is small but the fixture authoring discipline is the real cost",
       "addedAtIteration": 9,
       "sources": []
     },
@@ -2020,13 +2020,13 @@
     },
     {
       "id": "finding-9-17-why-it-matters-for-code-environment-public-codesight-aggregates-classic-pnpm-yar",
-      "text": "Why it matters for Code_Environment/Public: Codesight aggregates classic pnpm/yarn/npm workspaces, but not tool-specific monorepo graphs. If we ever need first-class monorepo introspection (which Public's specs structure increasingly resembles), the Codesight pattern is a starting point but is missing turbo/nx/rush awareness — a real gap to fix on adoption.",
+      "text": "Why it matters for Code_Environment/Public: Codesight aggregates classic pnpm/yarn/npm workspaces, but not tool-specific monorepo graphs. If we ever need first-class monorepo introspection (which Public's specs structure increasingly resembles), the Codesight pattern is a starting point but is missing turbo/nx/rush awareness \u2014 a real gap to fix on adoption.",
       "addedAtIteration": 9,
       "sources": []
     },
     {
       "id": "finding-9-24-why-it-matters-for-code-environment-public-the-monorepo-model-is-aggregation-ori",
-      "text": "Why it matters for Code_Environment/Public: The monorepo model is **aggregation-oriented, not graph-oriented**: workspace packages enrich one top-level `ProjectInfo` rather than remaining isolated sub-project analyses. This is a deliberate simplification — easier to consume, but loses per-workspace fidelity. For Public, the right move is probably the inverse: per-workspace `ProjectInfo` records joined by a parent index, since Public's workflows are spec-folder-scoped.",
+      "text": "Why it matters for Code_Environment/Public: The monorepo model is **aggregation-oriented, not graph-oriented**: workspace packages enrich one top-level `ProjectInfo` rather than remaining isolated sub-project analyses. This is a deliberate simplification \u2014 easier to consume, but loses per-workspace fidelity. For Public, the right move is probably the inverse: per-workspace `ProjectInfo` records joined by a parent index, since Public's workflows are spec-folder-scoped.",
       "addedAtIteration": 9,
       "sources": []
     },
@@ -2140,7 +2140,7 @@
     },
     {
       "id": "finding-10-7-risk-cost-medium-cheap-to-port-easy-to-oversell",
-      "text": "Risk/cost: medium — cheap to port, easy to oversell",
+      "text": "Risk/cost: medium \u2014 cheap to port, easy to oversell",
       "addedAtIteration": 10,
       "sources": []
     },

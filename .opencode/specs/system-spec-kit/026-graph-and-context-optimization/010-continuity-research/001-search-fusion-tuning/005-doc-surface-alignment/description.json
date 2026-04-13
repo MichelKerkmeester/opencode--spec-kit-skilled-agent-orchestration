@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment",
+  "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
+  "keywords": [
+    "feature",
+    "specification",
+    "doc",
+    "surface",
+    "alignment",
+    "search",
+    "fusion",
+    "changes"
+  ],
+  "lastUpdated": "2026-04-13T10:39:18.776Z",
+  "specId": "005",
+  "folderSlug": "doc-surface-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

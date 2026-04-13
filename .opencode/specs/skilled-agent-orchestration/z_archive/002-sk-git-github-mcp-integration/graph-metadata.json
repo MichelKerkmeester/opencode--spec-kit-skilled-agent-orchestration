@@ -199,7 +199,7 @@
     ],
     "causal_summary": "The sk-git skill documented GitHub MCP usage with incorrect call syntax, incomplete tool coverage, and weak guidance on when to use GitHub MCP instead of local git or `gh`. That made remote GitHub workflows harder to execute correctly from the skill documentation.",
     "created_at": "2026-04-12T09:02:50.200Z",
-    "last_save_at": "2026-04-13T14:20:38.842Z",
+    "last_save_at": "2026-04-13T16:22:48.635Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

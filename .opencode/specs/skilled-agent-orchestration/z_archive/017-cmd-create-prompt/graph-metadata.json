@@ -195,7 +195,7 @@
     ],
     "causal_summary": "The sk-improve-prompt skill provides powerful prompt engineering capabilities (7 frameworks, DEPTH processing, CLEAR scoring), but users must manually load the SKILL.md and follow its multi-step pipeline. There is no dedicated command to invoke this skill directly, creating friction and inconsistency in prompt creation workflows.",
     "created_at": "2026-04-12T09:02:50.218Z",
-    "last_save_at": "2026-04-13T14:20:38.858Z",
+    "last_save_at": "2026-04-13T16:22:48.682Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

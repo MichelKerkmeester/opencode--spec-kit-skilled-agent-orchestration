@@ -1,0 +1,623 @@
+[
+  {
+    "scenarioId": "EX-006",
+    "category": "02--mutation",
+    "status": "PASS",
+    "filePath": "02--mutation/006-memory-indexing-memory-save.md",
+    "prompt": "Save a spec doc and report action. Capture the evidence needed to prove Routed save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Save action reported",
+      "spec-doc continuity updated",
+      "searchable result appears",
+      "no template-contract or insufficiency rejection"
+    ],
+    "matchedSignals": [
+      "Save action reported",
+      "searchable result appears"
+    ],
+    "unmatchedSignals": [
+      "spec-doc continuity updated",
+      "no template-contract or insufficiency rejection"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+          "asyncEmbedding": true,
+          "skipPreflight": true
+        }
+      },
+      {
+        "name": "memory_stats",
+        "args": {
+          "limit": 10
+        }
+      },
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "Save a spec doc and report action",
+          "limit": 10,
+          "specFolder": "specs/001-manual-fixture-auth-resume"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Memory file does not match the required template contract.\",\"data\":{\"status\":\"rejected\",\"id\":0,\"specFolder\":\"001-manual-fixture-auth-resume\",\"title\":\"Auth Resume Decision Record\",\"qualityScore\":0.875,\"qualityFlags\":[\"Only 1 trigger phrase(s) \u2014 4+ recommended\",\"violates_template_contract\"],\"rejectionReason\":\"Template contract validation failed: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section\",\"warnings\":[\"Manual fallback save mode detected; standard generate-context template markers are missing.\"],\"message\":\"Memory file does not match the required template contract.\"},\"hints\":[\"Rejected saves do not mutate the memory index\",\"Review quality issues and retry the save\"],\"meta\":{\"tool\":\"memory_save\",\"tokenCount\":236,\"cacheHit\":false}}",
+      "{\"summary\":\"Memory system: 11 memories across 2 folders\",\"data\":{\"totalMemories\":11,\"byStatus\":{\"pending\":0,\"success\":11,\"failed\":0,\"retry\":0,\"partial\":0},\"oldestMemory\":\"2026-04-12T00:32:34.418Z\",\"newestMemory\":\"2026-04-12T00:32:35.003Z\",\"topFolders\":[{\"folder\":\"001-manual-fixture-auth-resume\",\"count\":7},{\"folder\":\"002-test-sandbox\",\"count\":4}],\"totalSpecFolders\":2,\"limit\":10,\"totalTriggerPhrases\":11,\"vectorSearchEnabled\":true,\"graphChannelMetrics\":{\"totalQueries\":0,\"graphHits\":0,\"graphOnlyResults\":0,\"multiSourceResults\":104,\"graphHitRate\":0},\"folderRanking\":\"count\",\"tierBreakdown\":{\"normal\":11},\"databaseSizeBytes\":3981312,\"lastIndexedAt\":\"2026-04-12T00:32:35.003Z\"},\"hints\":[],\"meta\":{\"tool\":\"memory_stats\",\"tokenCount\":269,\"latencyMs\":0,\"cacheHit\":false}}",
+      "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":2,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":20},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":20,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":20}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"spec\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"spec\",\"confidence\":0.16666666666666666},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"spec\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detected"
+    ],
+    "steps": [
+      {
+        "step": "memory_save(filePath)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+            "asyncEmbedding": true,
+            "skipPreflight": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory file does not match the required template contract.\",\"data\":{\"status\":\"rejected\",\"id\":0,\"specFolder\":\"001-manual-fixture-auth-resume\",\"title\":\"Auth Resume Decision Record\",\"qualityScore\":0.875,\"qualityFlags\":[\"Only 1 trigger phrase(s) \u2014 4+ recommended\",\"violates_template_contract\"],\"rejectionReason\":\"Template contract validation failed: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section\",\"warnings\":[\"Manual fallback save mode detected; standard generate-context template markers are missing.\"],\"message\":\"Memory file does not match the required template contract.\"},\"hints\":[\"Rejected saves do not mutate the memory index\",\"Review quality issues and retry the save\"],\"meta\":{\"tool\":\"memory_save\",\"tokenCount\":236,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_stats()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_stats",
+          "args": {
+            "limit": 10
+          }
+        },
+        "success": true,
+        "facts": [
+          "counts present",
+          "totals displayed"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory system: 11 memories across 2 folders\",\"data\":{\"totalMemories\":11,\"byStatus\":{\"pending\":0,\"success\":11,\"failed\":0,\"retry\":0,\"partial\":0},\"oldestMemory\":\"2026-04-12T00:32:34.418Z\",\"newestMemory\":\"2026-04-12T00:32:35.003Z\",\"topFolders\":[{\"folder\":\"001-manual-fixture-auth-resume\",\"count\":7},{\"folder\":\"002-test-sandbox\",\"count\":4}],\"totalSpecFolders\":2,\"limit\":10,\"totalTriggerPhrases\":11,\"vectorSearchEnabled\":true,\"graphChannelMetrics\":{\"totalQueries\":0,\"graphHits\":0,\"graphOnlyResults\":0,\"multiSourceResults\":104,\"graphHitRate\":0},\"folderRanking\":\"count\",\"tierBreakdown\":{\"normal\":11},\"databaseSizeBytes\":3981312,\"lastIndexedAt\":\"2026-04-12T00:32:35.003Z\"},\"hints\":[],\"meta\":{\"tool\":\"memory_stats\",\"tokenCount\":269,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_search(title)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "Save a spec doc and report action",
+            "limit": 10,
+            "specFolder": "specs/001-manual-fixture-auth-resume"
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":2,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":20},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":20,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":20}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"spec\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"spec\",\"confidence\":0.16666666666666666},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"spec\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detected"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-007",
+    "category": "02--mutation",
+    "status": "PASS",
+    "filePath": "02--mutation/007-memory-metadata-update-memory-update.md",
+    "prompt": "Update memory title and triggers. Capture the evidence needed to prove Updated metadata reflected in retrieval. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Updated metadata reflected in retrieval"
+    ],
+    "matchedSignals": [
+      "Updated metadata reflected in retrieval"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_update",
+        "args": {
+          "id": 1,
+          "title": "Checkpoint Rollback Runbook Updated",
+          "triggerPhrases": [
+            "checkpoint rollback",
+            "clearExisting transaction rollback"
+          ],
+          "allowPartialUpdate": true
+        }
+      },
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "Update memory title and triggers",
+          "limit": 10,
+          "specFolder": "specs/001-manual-fixture-auth-resume"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Memory 1 updated successfully\",\"data\":{\"updated\":1,\"fields\":[\"title\",\"triggerPhrases\"],\"embeddingRegenerated\":true,\"postMutationHooks\":{\"operation\":\"update\",\"latencyMs\":0,\"triggerCacheCleared\":true,\"constitutionalCacheCleared\":true,\"graphSignalsCacheCleared\":true,\"coactivationCacheCleared\":true,\"toolCacheInvalidated\":8,\"errors\":[]}},\"hints\":[\"Embedding regenerated - search results may differ\",\"Post-mutation cache clear: trigger=ok, constitutional=ok, graphSignals=ok, coactivation=ok\",\"Tool cache invalidation: invalidated 8 entries for operation \\\"update\\\"\"],\"meta\":{\"tool\":\"memory_update\",\"tokenCount\":204,\"cacheHit\":false}}",
+      "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":2,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":19},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":19,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":19}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"memory\",\"semanticWeight\":0.8,\"keywordWeight\":0.2,\"recencyBias\":0.6,\"maxResults\":5,\"boostFactor\":1.1},\"detectedClass\":\"memory\",\"confidence\":0.5},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"memory\",\"semanticWeight\":0.8,\"keywordWeight\":0.2,\"recencyBias\":0.6,\"maxResults\":5,\"boostFactor\":1.1},\"detectedClass\""
+    ],
+    "steps": [
+      {
+        "step": "memory_update(id,title,triggers)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_update",
+          "args": {
+            "id": 1,
+            "title": "Checkpoint Rollback Runbook Updated",
+            "triggerPhrases": [
+              "checkpoint rollback",
+              "clearExisting transaction rollback"
+            ],
+            "allowPartialUpdate": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "metadata updated"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory 1 updated successfully\",\"data\":{\"updated\":1,\"fields\":[\"title\",\"triggerPhrases\"],\"embeddingRegenerated\":true,\"postMutationHooks\":{\"operation\":\"update\",\"latencyMs\":0,\"triggerCacheCleared\":true,\"constitutionalCacheCleared\":true,\"graphSignalsCacheCleared\":true,\"coactivationCacheCleared\":true,\"toolCacheInvalidated\":8,\"errors\":[]}},\"hints\":[\"Embedding regenerated - search results may differ\",\"Post-mutation cache clear: trigger=ok, constitutional=ok, graphSignals=ok, coactivation=ok\",\"Tool cache invalidation: invalidated 8 entries for operation \\\"update\\\"\"],\"meta\":{\"tool\":\"memory_update\",\"tokenCount\":204,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_search(new title)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "Update memory title and triggers",
+            "limit": 10,
+            "specFolder": "specs/001-manual-fixture-auth-resume"
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":2,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":19},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":19,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":19}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"memory\",\"semanticWeight\":0.8,\"keywordWeight\":0.2,\"recencyBias\":0.6,\"maxResults\":5,\"boostFactor\":1.1},\"detectedClass\":\"memory\",\"confidence\":0.5},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"memory\",\"semanticWeight\":0.8,\"keywordWeight\":0.2,\"recencyBias\":0.6,\"maxResults\":5,\"boostFactor\":1.1},\"detectedClass\""
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "M-008",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md",
+    "prompt": "Run direct manual verification for per-memory history log behavior (feature 09 gap closure). Capture the evidence needed to prove repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage."
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage."
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+    ],
+    "steps": [],
+    "reason": "Prose-first operator workflow requires manual/source cross-checks beyond direct handler output."
+  },
+  {
+    "scenarioId": "EX-008",
+    "category": "02--mutation",
+    "status": "PASS",
+    "filePath": "02--mutation/008-single-and-folder-delete-memory-delete.md",
+    "prompt": "Delete memory ID and verify removal. Capture the evidence needed to prove Deleted item absent from retrieval. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Deleted item absent from retrieval"
+    ],
+    "matchedSignals": [
+      "Deleted item absent from retrieval"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_create",
+        "args": {
+          "name": "pre-ex008-delete",
+          "specFolder": "002-test-sandbox"
+        }
+      },
+      {
+        "name": "memory_delete",
+        "args": {
+          "id": 1,
+          "confirm": true
+        }
+      },
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "Checkpoint Rollback Runbook",
+          "limit": 10,
+          "specFolder": "specs/001-manual-fixture-auth-resume"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Checkpoint \\\"pre-ex008-delete\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex008-delete\",\"createdAt\":\"2026-04-12T00:32:35.720Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex008-delete\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex008-delete\\\", confirmName: \\\"pre-ex008-delete\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":172,\"latencyMs\":10,\"cacheHit\":false}}",
+      "{\"summary\":\"Deleted 1 memory(s)\",\"data\":{\"deleted\":1,\"postMutationHooks\":{\"operation\":\"delete\",\"latencyMs\":0,\"triggerCacheCleared\":true,\"constitutionalCacheCleared\":true,\"graphSignalsCacheCleared\":true,\"coactivationCacheCleared\":true,\"toolCacheInvalidated\":1,\"errors\":[]}},\"hints\":[\"Post-mutation cache clear: trigger=ok, constitutional=ok, graphSignals=ok, coactivation=ok\",\"Tool cache invalidation: invalidated 1 entries for operation \\\"delete\\\"\"],\"meta\":{\"tool\":\"memory_delete\",\"tokenCount\":163,\"cacheHit\":false}}",
+      "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":8},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":8,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":8}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_create(name:\"pre-ex008-delete\",specFolder:\"<sandbox-spec>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_create",
+          "args": {
+            "name": "pre-ex008-delete",
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "checkpoint created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Checkpoint \\\"pre-ex008-delete\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex008-delete\",\"createdAt\":\"2026-04-12T00:32:35.720Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex008-delete\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex008-delete\\\", confirmName: \\\"pre-ex008-delete\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":172,\"latencyMs\":10,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_delete(id)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_delete",
+          "args": {
+            "id": 1,
+            "confirm": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "delete completed"
+        ],
+        "evidence": [
+          "{\"summary\":\"Deleted 1 memory(s)\",\"data\":{\"deleted\":1,\"postMutationHooks\":{\"operation\":\"delete\",\"latencyMs\":0,\"triggerCacheCleared\":true,\"constitutionalCacheCleared\":true,\"graphSignalsCacheCleared\":true,\"coactivationCacheCleared\":true,\"toolCacheInvalidated\":1,\"errors\":[]}},\"hints\":[\"Post-mutation cache clear: trigger=ok, constitutional=ok, graphSignals=ok, coactivation=ok\",\"Tool cache invalidation: invalidated 1 entries for operation \\\"delete\\\"\"],\"meta\":{\"tool\":\"memory_delete\",\"tokenCount\":163,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_search(old title)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "Checkpoint Rollback Runbook",
+            "limit": 10,
+            "specFolder": "specs/001-manual-fixture-auth-resume"
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{},\"after\":{},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":0,\"constitutionalInjected\":0,\"durationMs\":8},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"enabled\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":0,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":false,\"rerankProvider\":\"none\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":8,\"stage2\":0,\"stage3\":0,\"stage4\":0,\"total\":8}},\"lexicalPath\":\"unavailable\",\"fallbackState\":\"bm25_runtime_failure\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=0.00). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-009",
+    "category": "02--mutation",
+    "status": "PASS",
+    "filePath": "02--mutation/009-tier-based-bulk-deletion-memory-bulk-delete.md",
+    "prompt": "Delete temporary tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Scoped deletion count + checkpoint created"
+    ],
+    "matchedSignals": [
+      "Scoped deletion count + checkpoint created"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_create",
+        "args": {
+          "name": "pre-ex009-bulk-delete",
+          "specFolder": "002-test-sandbox"
+        }
+      },
+      {
+        "name": "memory_bulk_delete",
+        "args": {
+          "tier": "temporary",
+          "specFolder": "002-test-sandbox",
+          "confirm": true
+        }
+      },
+      {
+        "name": "checkpoint_list",
+        "args": {
+          "specFolder": "002-test-sandbox"
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Checkpoint \\\"pre-ex009-bulk-delete\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex009-bulk-delete\",\"createdAt\":\"2026-04-12T00:32:35.747Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex009-bulk-delete\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex009-bulk-delete\\\", confirmName: \\\"pre-ex009-bulk-delete\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":178,\"latencyMs\":9,\"cacheHit\":false}}",
+      "{\"summary\":\"No memories found with tier=\\\"temporary\\\" in folder \\\"002-test-sandbox\\\"\",\"data\":{\"deleted\":0,\"tier\":\"temporary\",\"specFolder\":\"002-test-sandbox\"},\"hints\":[\"Use memory_list() to browse existing memories\"],\"meta\":{\"tool\":\"memory_bulk_delete\",\"tokenCount\":89,\"cacheHit\":false}}",
+      "{\"summary\":\"Found 1 checkpoint(s)\",\"data\":{\"count\":1,\"checkpoints\":[{\"id\":1,\"name\":\"pre-ex009-bulk-delete\",\"createdAt\":\"2026-04-12T00:32:35.747Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4,\"vectorCount\":4,\"includeEmbeddings\":true,\"manifest\":{\"snapshot\":[\"memory_index\",\"vec_memories\",\"vec_metadata\",\"working_memory\",\"causal_edges\",\"weight_history\",\"memory_history\",\"mutation_ledger\",\"memory_conflicts\",\"memory_corrections\",\"adaptive_signal_events\",\"negative_feedback_events\",\"learned_feedback_audit\",\"session_learning\",\"governance_audit\",\"shared_spaces\",\"shared_space_members\",\"shared_space_conflicts\",\"session_state\",\"session_sent_memories\",\"memory_summaries\"],\"rebuild\":[\"memory_lineage\",\"active_memory_projection\",\"memory_entities\",\"entity_catalog\",\"degree_snapshots\",\"community_assignments\",\"graph_communities\",\"community_summaries\",\"memory_fts\"],\"skip\":[\"checkpoints\",\"schema_version\",\"embedding_cache\",\"adaptive_shadow_runs\"]}}}]},\"hints\":[],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":473,\"latencyMs\":0,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_create(name:\"pre-ex009-bulk-delete\",specFolder:\"<sandbox-spec>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_create",
+          "args": {
+            "name": "pre-ex009-bulk-delete",
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "checkpoint created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Checkpoint \\\"pre-ex009-bulk-delete\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex009-bulk-delete\",\"createdAt\":\"2026-04-12T00:32:35.747Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex009-bulk-delete\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex009-bulk-delete\\\", confirmName: \\\"pre-ex009-bulk-delete\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":178,\"latencyMs\":9,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_bulk_delete(tier:\"temporary\",specFolder:\"<sandbox-spec>\",confirm:true)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_bulk_delete",
+          "args": {
+            "tier": "temporary",
+            "specFolder": "002-test-sandbox",
+            "confirm": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "delete completed",
+          "scoped deletion count"
+        ],
+        "evidence": [
+          "{\"summary\":\"No memories found with tier=\\\"temporary\\\" in folder \\\"002-test-sandbox\\\"\",\"data\":{\"deleted\":0,\"tier\":\"temporary\",\"specFolder\":\"002-test-sandbox\"},\"hints\":[\"Use memory_list() to browse existing memories\"],\"meta\":{\"tool\":\"memory_bulk_delete\",\"tokenCount\":89,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "checkpoint_list(specFolder:\"<sandbox-spec>\")",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_list",
+          "args": {
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "available restore points displayed",
+          "checkpoint present"
+        ],
+        "evidence": [
+          "{\"summary\":\"Found 1 checkpoint(s)\",\"data\":{\"count\":1,\"checkpoints\":[{\"id\":1,\"name\":\"pre-ex009-bulk-delete\",\"createdAt\":\"2026-04-12T00:32:35.747Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51435,\"metadata\":{\"memoryCount\":4,\"vectorCount\":4,\"includeEmbeddings\":true,\"manifest\":{\"snapshot\":[\"memory_index\",\"vec_memories\",\"vec_metadata\",\"working_memory\",\"causal_edges\",\"weight_history\",\"memory_history\",\"mutation_ledger\",\"memory_conflicts\",\"memory_corrections\",\"adaptive_signal_events\",\"negative_feedback_events\",\"learned_feedback_audit\",\"session_learning\",\"governance_audit\",\"shared_spaces\",\"shared_space_members\",\"shared_space_conflicts\",\"session_state\",\"session_sent_memories\",\"memory_summaries\"],\"rebuild\":[\"memory_lineage\",\"active_memory_projection\",\"memory_entities\",\"entity_catalog\",\"degree_snapshots\",\"community_assignments\",\"graph_communities\",\"community_summaries\",\"memory_fts\"],\"skip\":[\"checkpoints\",\"schema_version\",\"embedding_cache\",\"adaptive_shadow_runs\"]}}}]},\"hints\":[],\"meta\":{\"tool\":\"checkpoint_list\",\"tokenCount\":473,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-010",
+    "category": "02--mutation",
+    "status": "PASS",
+    "filePath": "02--mutation/010-validation-feedback-memory-validate.md",
+    "prompt": "Record positive validation with queryId. Capture the evidence needed to prove Confidence/promotion metadata updates. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Confidence/promotion metadata updates"
+    ],
+    "matchedSignals": [
+      "Confidence/promotion metadata updates"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_validate",
+        "args": {
+          "id": 1,
+          "wasUseful": true,
+          "resultRank": 1,
+          "totalResultsShown": 5,
+          "helpful": true
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Positive validation recorded (confidence: 0.60)\",\"data\":{\"memoryId\":1,\"wasUseful\":true,\"confidence\":0.6,\"validationCount\":1,\"positiveValidationCount\":1,\"promotionEligible\":false,\"autoPromotion\":{\"attempted\":true,\"promoted\":false,\"previousTier\":\"normal\",\"newTier\":\"normal\",\"reason\":\"below_threshold: positive_validation_count=1/5\"},\"learnedFeedback\":null,\"groundTruthSelectionId\":null},\"hints\":[],\"meta\":{\"tool\":\"memory_validate\",\"tokenCount\":159,\"latencyMs\":3,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "memory_validate(memoryId,helpful:true,queryId)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_validate",
+          "args": {
+            "id": 1,
+            "wasUseful": true,
+            "resultRank": 1,
+            "totalResultsShown": 5,
+            "helpful": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "validation feedback recorded",
+          "confidence promotion metadata updates",
+          "confidence updated",
+          "promotion metadata updated"
+        ],
+        "evidence": [
+          "{\"summary\":\"Positive validation recorded (confidence: 0.60)\",\"data\":{\"memoryId\":1,\"wasUseful\":true,\"confidence\":0.6,\"validationCount\":1,\"positiveValidationCount\":1,\"promotionEligible\":false,\"autoPromotion\":{\"attempted\":true,\"promoted\":false,\"previousTier\":\"normal\",\"newTier\":\"normal\",\"reason\":\"below_threshold: positive_validation_count=1/5\"},\"learnedFeedback\":null,\"groundTruthSelectionId\":null},\"hints\":[],\"meta\":{\"tool\":\"memory_validate\",\"tokenCount\":159,\"latencyMs\":3,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "085",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/085-transaction-wrappers-on-mutation-handlers.md",
+    "prompt": "Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Mid-step fault triggers automatic rollback",
+      "DB state remains consistent after rollback",
+      "no partial writes persist"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Mid-step fault triggers automatic rollback",
+      "DB state remains consistent after rollback",
+      "no partial writes persist"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) inject mid-step fault 2) verify rollback 3) confirm consistent state"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "101",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/101-memory-delete-confirm-schema-tightening.md",
+    "prompt": "Validate memory_delete confirm:z.literal(true) enforcement. Capture the evidence needed to prove confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "confirm:true accepted",
+      "confirm:false rejected with Zod literal error",
+      "bulk delete requires confirm:true",
+      "missing confirm field rejected for bulk path"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "confirm:true accepted",
+      "confirm:false rejected with Zod literal error",
+      "bulk delete requires confirm:true",
+      "missing confirm field rejected for bulk path"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Scenario validates MCP schema enforcement, which raw handler calls do not exercise."
+    ],
+    "steps": [],
+    "reason": "Scenario validates MCP schema enforcement, which raw handler calls do not exercise."
+  },
+  {
+    "scenarioId": "110",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/110-prediction-error-save-arbitration.md",
+    "prompt": "Validate prediction-error save arbitration actions. Capture the evidence needed to prove Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED)",
+      "memory_conflicts table records action/similarity/contradiction",
+      "force:true bypasses PE arbitration"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED)",
+      "memory_conflicts table records action/similarity/contradiction",
+      "force:true bypasses PE arbitration"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) save a memory with unique content \u2192 expect CREATE action 2) save identical content \u2192 expect REINFORCE (similarity >=0.95) 3) save slightly modified content (no contradiction) \u2192 expect UPDATE (0.85-0.94) 4) save modified content with contradiction \u2192 expect SUPERSEDE (0.85-0.94 + contradiction) 5) save loosely related content \u2192 expect CREATE_LINKED (0.70-0.84) 6) query `memory_conflicts` table entries for action/similarity/contradiction columns 7) save with `force:true` \u2192 verify PE arbitration bypassed"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "191",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/191-namespace-management-crud-tools.md",
+    "prompt": "Validate shared-memory lifecycle CRUD behavior. Capture the evidence needed to prove shared_memory_enable activates the subsystem; shared_space_upsert creates or updates a space only for the configured shared-memory admin identity; shared_space_membership_set enforces deny-by-default membership with owner/editor/viewer roles; shared_memory_status returns only allowedSharedSpaceIds for the provided scope. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "`shared_memory_enable` reports enabled subsystem state",
+      "first successful create auto-grants owner access to the configured admin identity",
+      "membership remains deny-by-default until explicitly granted",
+      "`shared_memory_status` echoes scope IDs and only returns allowed shared-space IDs for that scope"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`shared_memory_enable` reports enabled subsystem state",
+      "first successful create auto-grants owner access to the configured admin identity",
+      "membership remains deny-by-default until explicitly granted",
+      "`shared_memory_status` echoes scope IDs and only returns allowed shared-space IDs for that scope"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Shared-memory admin lifecycle scenario uses actor-hint narrative flows that need manual scope verification beyond direct handler output."
+    ],
+    "steps": [],
+    "reason": "Shared-memory admin lifecycle scenario uses actor-hint narrative flows that need manual scope verification beyond direct handler output."
+  },
+  {
+    "scenarioId": "192",
+    "category": "02--mutation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "02--mutation/192-correction-tracking-with-undo.md",
+    "prompt": "Validate correction tracking with undo through direct library invocation rather than an MCP mutation tool. Capture the evidence needed to prove record_correction stores before/after stability changes for both memories; correction rows preserve audit history with penalty/boost data; undo_correction restores pre-correction stability, marks is_undone with undone_at, and removes only the correction-owned causal edge. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "`record_correction()` persists correction metadata plus before/after stability values",
+      "stability penalties and boosts are visible for both memories",
+      "`undo_correction()` restores original stability, marks the correction row undone, and removes only the correction-specific causal edge",
+      "no MCP handler or tool-dispatch path is required for the validation"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`record_correction()` persists correction metadata plus before/after stability values",
+      "stability penalties and boosts are visible for both memories",
+      "`undo_correction()` restores original stability, marks the correction row undone, and removes only the correction-specific causal edge",
+      "no MCP handler or tool-dispatch path is required for the validation"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Scenario explicitly requires direct library invocation rather than MCP handler dispatch."
+    ],
+    "steps": [],
+    "reason": "Scenario explicitly requires direct library invocation rather than MCP handler dispatch."
+  }
+]

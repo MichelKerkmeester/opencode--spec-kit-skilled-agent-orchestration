@@ -52,7 +52,7 @@ _memory:
 - [x] CHK-010 [P0] The full Level 3 doc set exists in this folder. [EVIDENCE: spec.md; plan.md; tasks.md; checklist.md; decision-record.md; implementation-summary.md]
 - [x] CHK-011 [P0] Parent sync surfaces are named explicitly. [EVIDENCE: spec.md; plan.md]
 - [x] CHK-012 [P1] Downstream packet outcomes are explicit. [EVIDENCE: spec.md]
-- [x] CHK-013 [P1] Runtime ownership stays with `../../003-memory-quality-issues/`. [EVIDENCE: decision-record.md]
+- [x] CHK-013 [P1] Runtime ownership stays with `../../003-memory-quality-remediation/`. [EVIDENCE: decision-record.md]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -62,7 +62,7 @@ _memory:
 
 - [x] CHK-020 [P0] Strict validation passes on this folder. [EVIDENCE: implementation-summary.md]
 - [x] CHK-021 [P0] Parent matrix boundary stays intact. [EVIDENCE: spec.md; plan.md]
-- [x] CHK-022 [P1] Packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are classified explicitly. [EVIDENCE: spec.md]
+- [x] CHK-022 [P1] Packets `../../002-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/` are classified explicitly. [EVIDENCE: spec.md]
 - [x] CHK-023 [P1] Orthogonal packets are recorded as no-change outcomes where appropriate. [EVIDENCE: spec.md]
 <!-- /ANCHOR:testing -->
 

@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/001-remove-length-penalty",
+  "description": "Remove Cross-Encoder Length Penalty",
+  "keywords": [
+    "remove",
+    "cross-encoder",
+    "length",
+    "penalty"
+  ],
+  "lastUpdated": "2026-04-13T05:11:32.108Z",
+  "specId": "001",
+  "folderSlug": "remove-length-penalty",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

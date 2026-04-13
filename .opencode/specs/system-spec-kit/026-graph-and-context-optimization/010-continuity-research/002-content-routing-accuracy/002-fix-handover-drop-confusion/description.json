@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/002-fix-handover-drop-confusion",
+  "description": "Fix Handover vs Drop Routing Confusion",
+  "keywords": [
+    "fix",
+    "handover",
+    "drop",
+    "routing",
+    "confusion"
+  ],
+  "lastUpdated": "2026-04-13T05:11:32.610Z",
+  "specId": "002",
+  "folderSlug": "fix-handover-drop-confusion",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "002-content-routing-accuracy"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

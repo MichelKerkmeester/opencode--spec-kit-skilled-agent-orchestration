@@ -1,0 +1,23 @@
+{
+  "title": "Feature Specification: Phase 5 \u2014 Operations & Tail PRs",
+  "description": "Phase 5 packages the operational tail work after the core nine-PR train: telemetry folded into PR-9, optional historical safe-subset migration, optional D9 save-lock hardening, release communication, and phase-local closeout while parent closeout is tracked separately.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "operations",
+    "tail",
+    "prs"
+  ],
+  "lastUpdated": "2026-04-13T10:39:18.737Z",
+  "specId": "005",
+  "folderSlug": "operations-tail-prs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

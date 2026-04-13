@@ -227,7 +227,7 @@
     },
     {
       "id": "finding-1-8-incremental-runtime-sidecars-are-code-first-watch-py-reruns-extract-build-cluste",
-      "text": "Incremental/runtime sidecars are code-first: `watch.py` reruns extract → build → cluster → report → JSON automatically for code-only changes, while non-code changes only write `graphify-out/needs_update` and defer semantic refresh to `/graphify --update`; git hooks reuse the same `_rebuild_code()` path on commit and branch switch. [SOURCE: external/graphify/watch.py:21-24; external/graphify/watch.py:48-80; external/graphify/watch.py:87-112; external/graphify/hooks.py:8-44; external/graphify/hooks.py:48-77]",
+      "text": "Incremental/runtime sidecars are code-first: `watch.py` reruns extract \u2192 build \u2192 cluster \u2192 report \u2192 JSON automatically for code-only changes, while non-code changes only write `graphify-out/needs_update` and defer semantic refresh to `/graphify --update`; git hooks reuse the same `_rebuild_code()` path on commit and branch switch. [SOURCE: external/graphify/watch.py:21-24; external/graphify/watch.py:48-80; external/graphify/watch.py:87-112; external/graphify/hooks.py:8-44; external/graphify/hooks.py:48-77]",
       "addedAtIteration": 1,
       "sources": [
         "external/ARCHITECTURE.md",
@@ -287,7 +287,7 @@
     },
     {
       "id": "finding-1-1-the-documented-canonical-pipeline-is-a-seven-stage-chain-detect-extract-build-gr",
-      "text": "The documented canonical pipeline is a seven-stage chain, `detect() → extract() → build_graph() → cluster() → analyze() → report() → export()`, with plain Python dicts and NetworkX graphs as the handoff format and `graphify-out/` as the only declared side-effect boundary. [SOURCE: external/ARCHITECTURE.md:5-11]",
+      "text": "The documented canonical pipeline is a seven-stage chain, `detect() \u2192 extract() \u2192 build_graph() \u2192 cluster() \u2192 analyze() \u2192 report() \u2192 export()`, with plain Python dicts and NetworkX graphs as the handoff format and `graphify-out/` as the only declared side-effect boundary. [SOURCE: external/ARCHITECTURE.md:5-11]",
       "addedAtIteration": 1,
       "sources": [
         "external/ARCHITECTURE.md",
@@ -384,23 +384,23 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
       "id": "finding-2-7-cross-file-uses-inference-is-python-only-and-runs-as-a-second-pass-after-all-per",
-      "text": "Cross-file `uses` inference is Python-only and runs as a second pass after all per-file extractions complete. It builds a global `stem → {label: node_id}` map across all parsed Python files, then re-parses each file with tree-sitter Python, walks `import_from_statement` nodes, resolves `from .X import Name` patterns against that global map, and emits an `INFERRED` `uses` edge from EVERY local class in the importing file to the imported entity. The edge carries `weight=0.8`, the import line as `source_location`, and the importing file path. [SOURCE: external/graphify/extract.py:2209-2339; external/graphify/extract.py:2486-2489]",
+      "text": "Cross-file `uses` inference is Python-only and runs as a second pass after all per-file extractions complete. It builds a global `stem \u2192 {label: node_id}` map across all parsed Python files, then re-parses each file with tree-sitter Python, walks `import_from_statement` nodes, resolves `from .X import Name` patterns against that global map, and emits an `INFERRED` `uses` edge from EVERY local class in the importing file to the imported entity. The edge carries `weight=0.8`, the import line as `source_location`, and the importing file path. [SOURCE: external/graphify/extract.py:2209-2339; external/graphify/extract.py:2486-2489]",
       "addedAtIteration": 2,
       "sources": [
         "`external/graphify/detect.py:1-274` (full read)",
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -412,9 +412,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -426,9 +426,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -440,9 +440,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -454,9 +454,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -468,9 +468,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -482,9 +482,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -496,9 +496,9 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
@@ -510,14 +510,14 @@
         "`external/graphify/extract.py:1-300` (Python extractor + helpers)",
         "`external/graphify/extract.py:2200-2340` (cross-file `uses` inference)",
         "`external/graphify/extract.py:2342-2516` (extract() dispatch + collect_files)",
-        "`external/graphify/extract.py:301-487` (JS/TS extractor — sampled via grep + targeted reads)",
-        "`external/graphify/extract.py:488-672` (Go extractor — sampled via grep)",
-        "`external/graphify/extract.py:674-840` (Rust extractor — sampled via grep)"
+        "`external/graphify/extract.py:301-487` (JS/TS extractor \u2014 sampled via grep + targeted reads)",
+        "`external/graphify/extract.py:488-672` (Go extractor \u2014 sampled via grep)",
+        "`external/graphify/extract.py:674-840` (Rust extractor \u2014 sampled via grep)"
       ]
     },
     {
       "id": "finding-3-11-to-json-is-the-final-promotion-step-that-produces-graphify-out-graph-json-and-do",
-      "text": "**`to_json` is the final promotion step that produces `graphify-out/graph.json`** and does three things in order (export.py:264-275): (a) build a `node → community` map from the Leiden output and write it onto every node as `node[\"community\"]`; (b) walk every edge and backfill `confidence_score` from `_CONFIDENCE_SCORE_DEFAULTS` only if the field is missing; (c) attach the graph-level `hyperedges` list under `data[\"hyperedges\"]`. The output uses NetworkX's `node_link_data` JSON-graph format with `edges=\"links\"`, so downstream consumers see `{nodes:[...], links:[...], hyperedges:[...]}`. Community membership is the first thing every consumer sees on a node — it's not metadata, it's primary. [SOURCE: external/graphify/export.py:264-275]",
+      "text": "**`to_json` is the final promotion step that produces `graphify-out/graph.json`** and does three things in order (export.py:264-275): (a) build a `node \u2192 community` map from the Leiden output and write it onto every node as `node[\"community\"]`; (b) walk every edge and backfill `confidence_score` from `_CONFIDENCE_SCORE_DEFAULTS` only if the field is missing; (c) attach the graph-level `hyperedges` list under `data[\"hyperedges\"]`. The output uses NetworkX's `node_link_data` JSON-graph format with `edges=\"links\"`, so downstream consumers see `{nodes:[...], links:[...], hyperedges:[...]}`. Community membership is the first thing every consumer sees on a node \u2014 it's not metadata, it's primary. [SOURCE: external/graphify/export.py:264-275]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -530,7 +530,7 @@
     },
     {
       "id": "finding-3-6-caching-is-content-addressed-via-sha256-not-path-addressed-cache-py-9-11-defines",
-      "text": "**Caching is content-addressed via SHA256, not path-addressed.** `cache.py:9-11` defines `file_hash(path)` as `hashlib.sha256(Path(path).read_bytes()).hexdigest()` and `cache_dir()` writes to `graphify-out/cache/{hash}.json`. `load_cached(path, root)` returns the cached extraction iff the current hash still matches; any byte-level change (including whitespace edits) invalidates the cache. A file rename without content change keeps the cache hit, which is the *intended* behavior for refactor renames. There is no TTL — the cache lives until `clear_cache()` is called or the directory is deleted. [SOURCE: external/graphify/cache.py:9-49]",
+      "text": "**Caching is content-addressed via SHA256, not path-addressed.** `cache.py:9-11` defines `file_hash(path)` as `hashlib.sha256(Path(path).read_bytes()).hexdigest()` and `cache_dir()` writes to `graphify-out/cache/{hash}.json`. `load_cached(path, root)` returns the cached extraction iff the current hash still matches; any byte-level change (including whitespace edits) invalidates the cache. A file rename without content change keeps the cache hit, which is the *intended* behavior for refactor renames. There is no TTL \u2014 the cache lives until `clear_cache()` is called or the directory is deleted. [SOURCE: external/graphify/cache.py:9-49]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -556,7 +556,7 @@
     },
     {
       "id": "finding-3-10-networkx-edges-preserve-original-direction-via-src-tgt-attribute-backfill-becaus",
-      "text": "**NetworkX edges preserve original direction via `_src`/`_tgt` attribute backfill.** Because `build_from_json` constructs an undirected `nx.Graph()` (build.py:14), it would normally lose edge direction. The fix at build.py:24-26 explicitly stores `attrs[\"_src\"] = src` and `attrs[\"_tgt\"] = tgt` before adding the edge. Hyperedges are stored on `G.graph[\"hyperedges\"]` as a graph-level metadata dict, not as multi-endpoint edges (build.py:28-30) — meaning every NetworkX algorithm operating on `G` ignores them entirely. They are only surfaced in export, MCP queries, and reports. [SOURCE: external/graphify/build.py:14-31]",
+      "text": "**NetworkX edges preserve original direction via `_src`/`_tgt` attribute backfill.** Because `build_from_json` constructs an undirected `nx.Graph()` (build.py:14), it would normally lose edge direction. The fix at build.py:24-26 explicitly stores `attrs[\"_src\"] = src` and `attrs[\"_tgt\"] = tgt` before adding the edge. Hyperedges are stored on `G.graph[\"hyperedges\"]` as a graph-level metadata dict, not as multi-endpoint edges (build.py:28-30) \u2014 meaning every NetworkX algorithm operating on `G` ignores them entirely. They are only surfaced in export, MCP queries, and reports. [SOURCE: external/graphify/build.py:14-31]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -569,7 +569,7 @@
     },
     {
       "id": "finding-3-12-subagent-dispatch-is-hard-asserted-as-parallel-the-skill-md-instructions-are-exp",
-      "text": "**Subagent dispatch is hard-asserted as parallel.** The skill.md instructions are explicit and unusually emphatic: \"MANDATORY: You MUST use the Agent tool here. Reading files yourself one-by-one is forbidden — it is 5-10x slower. If you do not use the Agent tool you are doing this wrong\" (skill.md:134), and \"Call the Agent tool multiple times IN THE SAME RESPONSE - one call per chunk. This is the only way they run in parallel\" (skill.md:172). Half-failed chunks are tolerated; if more than half fail, the skill aborts (skill.md:240-242). This means the merge/cache architecture is designed for partial failures from the start. [SOURCE: external/skills/graphify/skill.md:134; external/skills/graphify/skill.md:170-181; external/skills/graphify/skill.md:236-242]",
+      "text": "**Subagent dispatch is hard-asserted as parallel.** The skill.md instructions are explicit and unusually emphatic: \"MANDATORY: You MUST use the Agent tool here. Reading files yourself one-by-one is forbidden \u2014 it is 5-10x slower. If you do not use the Agent tool you are doing this wrong\" (skill.md:134), and \"Call the Agent tool multiple times IN THE SAME RESPONSE - one call per chunk. This is the only way they run in parallel\" (skill.md:172). Half-failed chunks are tolerated; if more than half fail, the skill aborts (skill.md:240-242). This means the merge/cache architecture is designed for partial failures from the start. [SOURCE: external/skills/graphify/skill.md:134; external/skills/graphify/skill.md:170-181; external/skills/graphify/skill.md:236-242]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -582,7 +582,7 @@
     },
     {
       "id": "finding-3-7-the-cache-layer-treats-ast-and-semantic-results-identically-via-two-helpers-chec",
-      "text": "**The cache layer treats AST and semantic results identically** via two helpers: `check_semantic_cache(files)` returns `(cached_nodes, cached_edges, cached_hyperedges, uncached_files)`, and `save_semantic_cache(nodes, edges, hyperedges)` re-groups results by `source_file` and writes one cache entry per file (cache.py:65-124). The same `{hash}.json` cache entry stores either an AST extraction or a semantic extraction or both depending on which extractor wrote it last — there's no separate AST cache vs semantic cache. The dispatch in `extract.py:2370-2477` calls `load_cached` / `save_cached` per file before per-language extraction. [SOURCE: external/graphify/cache.py:65-124; external/graphify/extract.py:2371-2378]",
+      "text": "**The cache layer treats AST and semantic results identically** via two helpers: `check_semantic_cache(files)` returns `(cached_nodes, cached_edges, cached_hyperedges, uncached_files)`, and `save_semantic_cache(nodes, edges, hyperedges)` re-groups results by `source_file` and writes one cache entry per file (cache.py:65-124). The same `{hash}.json` cache entry stores either an AST extraction or a semantic extraction or both depending on which extractor wrote it last \u2014 there's no separate AST cache vs semantic cache. The dispatch in `extract.py:2370-2477` calls `load_cached` / `save_cached` per file before per-language extraction. [SOURCE: external/graphify/cache.py:65-124; external/graphify/extract.py:2371-2378]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -595,7 +595,7 @@
     },
     {
       "id": "finding-3-8-the-two-stage-merge-that-builds-graphify-extract-json-runs-entirely-in-shell-inv",
-      "text": "**The two-stage merge that builds `.graphify_extract.json`** runs entirely in shell-invoked Python inline scripts inside `skill.md`, NOT in any graphify Python module. Stage 1 (skill.md:259-285): merge cached + new semantic results into `.graphify_semantic.json` with dedup by `node['id']` and edge concatenation (no edge dedup). Stage 2 (skill.md:287-317): merge `.graphify_ast.json` + `.graphify_semantic.json` into `.graphify_extract.json` — AST nodes go into the `seen` set FIRST, then semantic nodes are added only if their `id` is not already present, edges are concatenated. This is the source of the \"AST wins on collision\" behavior iter 1 flagged: it's not implemented inside graphify, it's implemented in the orchestration prompt. [SOURCE: external/skills/graphify/skill.md:259-317]",
+      "text": "**The two-stage merge that builds `.graphify_extract.json`** runs entirely in shell-invoked Python inline scripts inside `skill.md`, NOT in any graphify Python module. Stage 1 (skill.md:259-285): merge cached + new semantic results into `.graphify_semantic.json` with dedup by `node['id']` and edge concatenation (no edge dedup). Stage 2 (skill.md:287-317): merge `.graphify_ast.json` + `.graphify_semantic.json` into `.graphify_extract.json` \u2014 AST nodes go into the `seen` set FIRST, then semantic nodes are added only if their `id` is not already present, edges are concatenated. This is the source of the \"AST wins on collision\" behavior iter 1 flagged: it's not implemented inside graphify, it's implemented in the orchestration prompt. [SOURCE: external/skills/graphify/skill.md:259-317]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -608,7 +608,7 @@
     },
     {
       "id": "finding-3-9-validation-is-enforced-before-networkx-assembly-but-with-a-permissive-escape-hat",
-      "text": "**Validation is enforced before NetworkX assembly, but with a permissive escape hatch.** `validate.py` defines required fields (`{id, label, file_type, source_file}` for nodes; `{source, target, relation, confidence, source_file}` for edges), valid file types `{code, document, paper, image}`, and valid confidence values `{EXTRACTED, INFERRED, AMBIGUOUS}`. It also checks that every edge `source` and `target` resolves to an existing node id. But `build.py:8-13` runs `validate_extraction` and then **filters out any error string containing \"does not match any node id\"** before deciding whether to warn — dangling edges (imports pointing at stdlib/external libs) are silently accepted. Schema-level errors (missing fields, invalid enums) only print to stderr, they don't halt assembly. [SOURCE: external/graphify/validate.py:1-71; external/graphify/build.py:8-13]",
+      "text": "**Validation is enforced before NetworkX assembly, but with a permissive escape hatch.** `validate.py` defines required fields (`{id, label, file_type, source_file}` for nodes; `{source, target, relation, confidence, source_file}` for edges), valid file types `{code, document, paper, image}`, and valid confidence values `{EXTRACTED, INFERRED, AMBIGUOUS}`. It also checks that every edge `source` and `target` resolves to an existing node id. But `build.py:8-13` runs `validate_extraction` and then **filters out any error string containing \"does not match any node id\"** before deciding whether to warn \u2014 dangling edges (imports pointing at stdlib/external libs) are silently accepted. Schema-level errors (missing fields, invalid enums) only print to stderr, they don't halt assembly. [SOURCE: external/graphify/validate.py:1-71; external/graphify/build.py:8-13]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -621,7 +621,7 @@
     },
     {
       "id": "finding-3-1-the-semantic-subagent-prompt-is-embedded-verbatim-in-skill-md-not-in-any-python-",
-      "text": "The semantic subagent prompt is embedded **verbatim in `skill.md`**, not in any Python module — it lives at `external/skills/graphify/skill.md:184-234`. This makes it hot-editable by anyone running the skill (no graphify package update needed) but also means the prompt is NOT shared with or surfaced by `graphify.serve` (the MCP server) or `extract.py`. The prompt is dispatched verbatim to N parallel subagents, each receiving a chunk of 20-25 files (or 1 file per chunk for images, since vision needs separate context). [SOURCE: external/skills/graphify/skill.md:166-234; external/skills/graphify/skill.md:170-181]",
+      "text": "The semantic subagent prompt is embedded **verbatim in `skill.md`**, not in any Python module \u2014 it lives at `external/skills/graphify/skill.md:184-234`. This makes it hot-editable by anyone running the skill (no graphify package update needed) but also means the prompt is NOT shared with or surfaced by `graphify.serve` (the MCP server) or `extract.py`. The prompt is dispatched verbatim to N parallel subagents, each receiving a chunk of 20-25 files (or 1 file per chunk for images, since vision needs separate context). [SOURCE: external/skills/graphify/skill.md:166-234; external/skills/graphify/skill.md:170-181]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -634,7 +634,7 @@
     },
     {
       "id": "finding-3-4-the-semantic-subagent-prompt-teaches-per-file-type-extraction-strategies-skill-m",
-      "text": "The semantic subagent prompt teaches **per-file-type extraction strategies** (skill.md:196-205): code files = extract semantic edges AST CANNOT find (call relationships, shared data, arch patterns), explicit instruction NOT to re-extract imports because AST already has them; doc/paper files = named concepts, entities, citations; image files = use vision to \"understand what the image IS — do not just OCR.\" The image instructions are then specialized by sub-type: UI screenshots → layout patterns + design decisions + key elements + purpose; charts → metric + trend + data source; tweets/posts → claim as node + author + concepts; diagrams → components and connections; research figures → what it demonstrates + method + result; handwritten/whiteboard → ideas and arrows with uncertain readings marked AMBIGUOUS. This is the multimodal payload, and it's explicitly NOT OCR. [SOURCE: external/skills/graphify/skill.md:196-209]",
+      "text": "The semantic subagent prompt teaches **per-file-type extraction strategies** (skill.md:196-205): code files = extract semantic edges AST CANNOT find (call relationships, shared data, arch patterns), explicit instruction NOT to re-extract imports because AST already has them; doc/paper files = named concepts, entities, citations; image files = use vision to \"understand what the image IS \u2014 do not just OCR.\" The image instructions are then specialized by sub-type: UI screenshots \u2192 layout patterns + design decisions + key elements + purpose; charts \u2192 metric + trend + data source; tweets/posts \u2192 claim as node + author + concepts; diagrams \u2192 components and connections; research figures \u2192 what it demonstrates + method + result; handwritten/whiteboard \u2192 ideas and arrows with uncertain readings marked AMBIGUOUS. This is the multimodal payload, and it's explicitly NOT OCR. [SOURCE: external/skills/graphify/skill.md:196-209]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -647,7 +647,7 @@
     },
     {
       "id": "finding-3-2-the-subagent-prompt-enforces-a-three-tier-confidence-vocabulary-with-explicit-se",
-      "text": "The subagent prompt enforces a **three-tier confidence vocabulary** with explicit semantics: `EXTRACTED` = \"relationship explicit in source (import, call, citation, 'see §3.2')\", `INFERRED` = \"reasonable inference (shared data structure, implied dependency)\", and `AMBIGUOUS` = \"uncertain - flag for review, do not omit\". The \"do not omit\" rule for AMBIGUOUS makes graphify treat negative/uncertain knowledge as a first-class graph output — most extractors discard low-confidence findings, graphify preserves them. [SOURCE: external/skills/graphify/skill.md:191-194]",
+      "text": "The subagent prompt enforces a **three-tier confidence vocabulary** with explicit semantics: `EXTRACTED` = \"relationship explicit in source (import, call, citation, 'see \u00a73.2')\", `INFERRED` = \"reasonable inference (shared data structure, implied dependency)\", and `AMBIGUOUS` = \"uncertain - flag for review, do not omit\". The \"do not omit\" rule for AMBIGUOUS makes graphify treat negative/uncertain knowledge as a first-class graph output \u2014 most extractors discard low-confidence findings, graphify preserves them. [SOURCE: external/skills/graphify/skill.md:191-194]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -660,7 +660,7 @@
     },
     {
       "id": "finding-3-5-the-subagent-prompt-introduces-a-fourth-knowledge-primitive-semantically-similar",
-      "text": "The subagent prompt introduces **a fourth knowledge primitive — `semantically_similar_to` edges and hyperedges — that the deterministic AST pass cannot produce.** `semantically_similar_to` is for cross-cutting non-obvious links between concepts that have NO structural relationship (no import, no call, no citation), with a 0.6-0.95 confidence range and a \"only when genuinely non-obvious\" guard. Hyperedges are 3+ nodes participating in a shared concept/flow/pattern (e.g., all functions in an authentication flow), capped at 3 per chunk, written to a top-level `hyperedges` array. These two primitives are graphify's main differentiation from any pairwise-only graph extractor. [SOURCE: external/skills/graphify/skill.md:210-220]",
+      "text": "The subagent prompt introduces **a fourth knowledge primitive \u2014 `semantically_similar_to` edges and hyperedges \u2014 that the deterministic AST pass cannot produce.** `semantically_similar_to` is for cross-cutting non-obvious links between concepts that have NO structural relationship (no import, no call, no citation), with a 0.6-0.95 confidence range and a \"only when genuinely non-obvious\" guard. Hyperedges are 3+ nodes participating in a shared concept/flow/pattern (e.g., all functions in an authentication flow), capped at 3 per chunk, written to a top-level `hyperedges` array. These two primitives are graphify's main differentiation from any pairwise-only graph extractor. [SOURCE: external/skills/graphify/skill.md:210-220]",
       "addedAtIteration": 3,
       "sources": [
         "`external/skills/graphify/skill.md:1-650` (full read in two passes)",
@@ -673,7 +673,7 @@
     },
     {
       "id": "finding-4-10-ambiguous-edge-for-every-ambiguous-edge-asks-what-is-the-exact-relationship-betw",
-      "text": "**`ambiguous_edge`** — for every AMBIGUOUS edge, asks \"What is the exact relationship between X and Y?\" (no top-N cap; one question per AMBIGUOUS edge)",
+      "text": "**`ambiguous_edge`** \u2014 for every AMBIGUOUS edge, asks \"What is the exact relationship between X and Y?\" (no top-N cap; one question per AMBIGUOUS edge)",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -683,7 +683,7 @@
     },
     {
       "id": "finding-4-11-bridge-node-for-top-3-high-betweenness-non-file-non-concept-nodes-asks-why-does-",
-      "text": "**`bridge_node`** — for top 3 high-betweenness non-file/non-concept nodes, asks \"Why does X connect community A to B, C?\" using community labels",
+      "text": "**`bridge_node`** \u2014 for top 3 high-betweenness non-file/non-concept nodes, asks \"Why does X connect community A to B, C?\" using community labels",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -693,7 +693,7 @@
     },
     {
       "id": "finding-4-18-graph-diff-exists-for-incremental-updates-analyze-py-443-522-compares-two-networ",
-      "text": "**`graph_diff()` exists for incremental updates** (analyze.py:443-522). Compares two NetworkX snapshots and returns `{new_nodes, removed_nodes, new_edges, removed_edges, summary}` where `summary` is a human-readable string like \"3 new nodes, 5 new edges, 1 node removed\". Edge identity is `(source, target, relation)` tuple — so changing only confidence is NOT counted as a diff. This is the data layer underneath `watch.py` and the `/graphify --update` flow that iter 1 mapped. Public's incremental graph update path should consider the same identity-by-relation rule. [SOURCE: external/graphify/analyze.py:443-522]",
+      "text": "**`graph_diff()` exists for incremental updates** (analyze.py:443-522). Compares two NetworkX snapshots and returns `{new_nodes, removed_nodes, new_edges, removed_edges, summary}` where `summary` is a human-readable string like \"3 new nodes, 5 new edges, 1 node removed\". Edge identity is `(source, target, relation)` tuple \u2014 so changing only confidence is NOT counted as a diff. This is the data layer underneath `watch.py` and the `/graphify --update` flow that iter 1 mapped. Public's incremental graph update path should consider the same identity-by-relation rule. [SOURCE: external/graphify/analyze.py:443-522]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -703,7 +703,7 @@
     },
     {
       "id": "finding-4-15-graph-report-md-has-9-sections-each-fully-derived-from-in-process-state-no-llm-c",
-      "text": "**`GRAPH_REPORT.md` has 9 sections, each fully derived from in-process state — no LLM calls during reporting.** The sections in order: Corpus Check (with detection warning passthrough), Summary (node/edge/community counts + EXTRACTED/INFERRED/AMBIGUOUS percentages + INFERRED-edge average confidence score), God Nodes, Surprising Connections, Hyperedges (only if any exist), Communities (with cohesion score and label, member nodes filtered through `_is_file_node` to remove method stubs), Ambiguous Edges (every AMBIGUOUS edge listed for human review), Knowledge Gaps (isolated nodes + thin communities < 3 nodes + high-ambiguity flag if > 20% AMBIGUOUS), Suggested Questions. Each section is computed deterministically from the graph + analysis state. [SOURCE: external/graphify/report.py:1-155]",
+      "text": "**`GRAPH_REPORT.md` has 9 sections, each fully derived from in-process state \u2014 no LLM calls during reporting.** The sections in order: Corpus Check (with detection warning passthrough), Summary (node/edge/community counts + EXTRACTED/INFERRED/AMBIGUOUS percentages + INFERRED-edge average confidence score), God Nodes, Surprising Connections, Hyperedges (only if any exist), Communities (with cohesion score and label, member nodes filtered through `_is_file_node` to remove method stubs), Ambiguous Edges (every AMBIGUOUS edge listed for human review), Knowledge Gaps (isolated nodes + thin communities < 3 nodes + high-ambiguity flag if > 20% AMBIGUOUS), Suggested Questions. Each section is computed deterministically from the graph + analysis state. [SOURCE: external/graphify/report.py:1-155]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -713,7 +713,7 @@
     },
     {
       "id": "finding-4-13-isolated-nodes-if-any-non-file-non-concept-node-has-degree-1-asks-what-connects-",
-      "text": "**`isolated_nodes`** — if any non-file/non-concept node has degree ≤ 1, asks \"What connects [first 3 isolated nodes] to the rest of the system?\"",
+      "text": "**`isolated_nodes`** \u2014 if any non-file/non-concept node has degree \u2264 1, asks \"What connects [first 3 isolated nodes] to the rest of the system?\"",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -723,7 +723,7 @@
     },
     {
       "id": "finding-4-14-low-cohesion-for-any-community-with-cohesion-0-15-and-5-nodes-asks-should-commun",
-      "text": "**`low_cohesion`** — for any community with cohesion < 0.15 AND ≥ 5 nodes, asks \"Should [community label] be split into smaller modules?\"",
+      "text": "**`low_cohesion`** \u2014 for any community with cohesion < 0.15 AND \u2265 5 nodes, asks \"Should [community label] be split into smaller modules?\"",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -743,7 +743,7 @@
     },
     {
       "id": "finding-4-12-verify-inferred-for-top-5-god-nodes-excluding-file-nodes-if-a-node-has-2-inferre",
-      "text": "**`verify_inferred`** — for top 5 god nodes (excluding file nodes), if a node has ≥ 2 INFERRED edges, asks \"Are the N inferred relationships involving X actually correct?\"",
+      "text": "**`verify_inferred`** \u2014 for top 5 god nodes (excluding file nodes), if a node has \u2265 2 INFERRED edges, asks \"Are the N inferred relationships involving X actually correct?\"",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -753,7 +753,7 @@
     },
     {
       "id": "finding-4-5-cohesion-score-is-undirected-edge-density-computed-as-actual-edges-max-possible-",
-      "text": "**Cohesion score is undirected edge density**, computed as `actual_edges / max_possible_edges` where max possible = `n*(n-1)/2` for a community of `n` nodes. Singletons score 1.0 (definitionally cohesive). The score is a single float per community, used by `analyze.suggest_questions` (threshold < 0.15 with ≥ 5 nodes flags a \"low cohesion → should be split?\" question) and by `report.py` to display community quality next to each cluster label. [SOURCE: external/graphify/cluster.py:92-100; external/graphify/analyze.py:416-426]",
+      "text": "**Cohesion score is undirected edge density**, computed as `actual_edges / max_possible_edges` where max possible = `n*(n-1)/2` for a community of `n` nodes. Singletons score 1.0 (definitionally cohesive). The score is a single float per community, used by `analyze.suggest_questions` (threshold < 0.15 with \u2265 5 nodes flags a \"low cohesion \u2192 should be split?\" question) and by `report.py` to display community quality next to each cluster label. [SOURCE: external/graphify/cluster.py:92-100; external/graphify/analyze.py:416-426]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -763,7 +763,7 @@
     },
     {
       "id": "finding-4-6-god-node-detection-is-degree-ranked-but-explicitly-filters-synthetic-nodes-via-i",
-      "text": "**God-node detection is degree-ranked but explicitly filters synthetic nodes** via `_is_file_node()`. The filter excludes: (a) labels matching code-extension filename patterns like `client.py`; (b) labels starting with `.` and ending with `()` (AST method stubs); (c) labels ending with `()` and degree ≤ 1 (orphan function nodes). This is graphify's way of saying \"the most-connected NODE in the graph is meaningless because it's just a hub for `contains` edges — show me the most-connected real CLASS instead.\" Top N is configurable, default 10. [SOURCE: external/graphify/analyze.py:11-32; external/graphify/analyze.py:35-54]",
+      "text": "**God-node detection is degree-ranked but explicitly filters synthetic nodes** via `_is_file_node()`. The filter excludes: (a) labels matching code-extension filename patterns like `client.py`; (b) labels starting with `.` and ending with `()` (AST method stubs); (c) labels ending with `()` and degree \u2264 1 (orphan function nodes). This is graphify's way of saying \"the most-connected NODE in the graph is meaningless because it's just a hub for `contains` edges \u2014 show me the most-connected real CLASS instead.\" Top N is configurable, default 10. [SOURCE: external/graphify/analyze.py:11-32; external/graphify/analyze.py:35-54]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -783,7 +783,7 @@
     },
     {
       "id": "finding-4-3-oversized-community-splitting-is-a-single-pass-second-leiden-run-on-the-subgraph",
-      "text": "**Oversized-community splitting is a single-pass second Leiden run on the subgraph, not recursive.** `_split_community(G, nodes)` extracts the subgraph induced by the oversized community and runs Leiden again. Three escape hatches: (a) if the subgraph has zero edges, split into single-node communities; (b) if the second Leiden returns ≤ 1 community (couldn't split), return the original community as-is; (c) if Leiden raises any exception, return the original. There is no third pass — a giant subcommunity that survives one re-split stays giant. [SOURCE: external/graphify/cluster.py:72-89]",
+      "text": "**Oversized-community splitting is a single-pass second Leiden run on the subgraph, not recursive.** `_split_community(G, nodes)` extracts the subgraph induced by the oversized community and runs Leiden again. Three escape hatches: (a) if the subgraph has zero edges, split into single-node communities; (b) if the second Leiden returns \u2264 1 community (couldn't split), return the original community as-is; (c) if Leiden raises any exception, return the original. There is no third pass \u2014 a giant subcommunity that survives one re-split stays giant. [SOURCE: external/graphify/cluster.py:72-89]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -803,7 +803,7 @@
     },
     {
       "id": "finding-4-7-surprising-connections-use-a-6-factor-composite-score-not-a-single-signal-surpri",
-      "text": "**Surprising connections use a 6-factor composite score, not a single signal.** `_surprise_score()` adds together: confidence weight (AMBIGUOUS=3, INFERRED=2, EXTRACTED=1), cross-file-type bonus (+2 for code↔paper or code↔image), cross-repo bonus (+2 for different top-level directory), cross-community bonus (+1 for Leiden-distant), peripheral→hub bonus (+1 when min-degree ≤ 2 and max-degree ≥ 5), and a `semantically_similar_to` multiplier (×1.5 on the running total). Every contributing factor is recorded in a `reasons` array that becomes the `why` field in the output, so users can see exactly why an edge was flagged. [SOURCE: external/graphify/analyze.py:130-183]",
+      "text": "**Surprising connections use a 6-factor composite score, not a single signal.** `_surprise_score()` adds together: confidence weight (AMBIGUOUS=3, INFERRED=2, EXTRACTED=1), cross-file-type bonus (+2 for code\u2194paper or code\u2194image), cross-repo bonus (+2 for different top-level directory), cross-community bonus (+1 for Leiden-distant), peripheral\u2192hub bonus (+1 when min-degree \u2264 2 and max-degree \u2265 5), and a `semantically_similar_to` multiplier (\u00d71.5 on the running total). Every contributing factor is recorded in a `reasons` array that becomes the `why` field in the output, so users can see exactly why an edge was flagged. [SOURCE: external/graphify/analyze.py:130-183]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -813,7 +813,7 @@
     },
     {
       "id": "finding-4-2-the-25-min-10-community-split-rule-is-two-hard-coded-module-constants-at-cluster",
-      "text": "**The 25% / min-10 community split rule is two hard-coded module constants** at `cluster.py:23-24`: `_MAX_COMMUNITY_FRACTION = 0.25` and `_MIN_SPLIT_SIZE = 10`. The actual threshold is `max(_MIN_SPLIT_SIZE, int(G.number_of_nodes() * _MAX_COMMUNITY_FRACTION))` — so a 30-node graph uses min 10 (the floor), a 100-node graph uses 25, a 1000-node graph uses 250. There is **no docstring rationale** for these specific values; they're just constants. The empirical motivation is implicit: Leiden modularity tends to produce one giant community on graphs with heavy hubs (god nodes), and 25% is the inflection point where a \"community\" becomes too coarse to be useful as a navigation primitive. [SOURCE: external/graphify/cluster.py:23-24; external/graphify/cluster.py:58-65]",
+      "text": "**The 25% / min-10 community split rule is two hard-coded module constants** at `cluster.py:23-24`: `_MAX_COMMUNITY_FRACTION = 0.25` and `_MIN_SPLIT_SIZE = 10`. The actual threshold is `max(_MIN_SPLIT_SIZE, int(G.number_of_nodes() * _MAX_COMMUNITY_FRACTION))` \u2014 so a 30-node graph uses min 10 (the floor), a 100-node graph uses 25, a 1000-node graph uses 250. There is **no docstring rationale** for these specific values; they're just constants. The empirical motivation is implicit: Leiden modularity tends to produce one giant community on graphs with heavy hubs (god nodes), and 25% is the inflection point where a \"community\" becomes too coarse to be useful as a navigation primitive. [SOURCE: external/graphify/cluster.py:23-24; external/graphify/cluster.py:58-65]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -843,7 +843,7 @@
     },
     {
       "id": "finding-4-16-the-report-explicitly-distinguishes-the-answer-from-review-tasks-sections-1-6-co",
-      "text": "**The report explicitly distinguishes \"the answer\" from \"review tasks\".** Sections 1-6 (Corpus, Summary, God Nodes, Surprising Connections, Hyperedges, Communities) describe the graph; sections 7-9 (Ambiguous Edges, Knowledge Gaps, Suggested Questions) tell the human what to DO next. This is rare in graph reporting tools — most stop at \"here's the graph\". Graphify treats the report as a workflow primer, not a static export. The Knowledge Gaps section even fires a high-ambiguity warning at > 20% AMBIGUOUS, prompting users back to the Ambiguous Edges section. [SOURCE: external/graphify/report.py:103-141]",
+      "text": "**The report explicitly distinguishes \"the answer\" from \"review tasks\".** Sections 1-6 (Corpus, Summary, God Nodes, Surprising Connections, Hyperedges, Communities) describe the graph; sections 7-9 (Ambiguous Edges, Knowledge Gaps, Suggested Questions) tell the human what to DO next. This is rare in graph reporting tools \u2014 most stop at \"here's the graph\". Graphify treats the report as a workflow primer, not a static export. The Knowledge Gaps section even fires a high-ambiguity warning at > 20% AMBIGUOUS, prompting users back to the Ambiguous Edges section. [SOURCE: external/graphify/report.py:103-141]",
       "addedAtIteration": 4,
       "sources": [
         "`external/graphify/cluster.py:1-104` (full read)",
@@ -853,7 +853,7 @@
     },
     {
       "id": "finding-5-3-graphify-claude-install-writes-a-project-claude-md-section-in-addition-to-the-ho",
-      "text": "**`graphify claude install` writes a project CLAUDE.md section in addition to the hook** at `__main__.py:70-79`. The section instructs Claude to: (a) read `graphify-out/GRAPH_REPORT.md` before architecture/codebase questions; (b) navigate `graphify-out/wiki/index.md` if it exists instead of raw files; (c) run `python3 -c \"from graphify.watch import _rebuild_code; from pathlib import Path; _rebuild_code(Path('.'))\"` after modifying code in a session. This is a behavioral contract injected into the model's instructions, NOT a hook — it relies on Claude actually reading CLAUDE.md. The pair (CLAUDE.md instructions + PreToolUse hook) is graphify's two-pronged \"make Claude graph-aware\" pattern: declarative guidance for high-level reasoning, and procedural guards on the low-level tool calls. [SOURCE: external/graphify/__main__.py:70-79; external/graphify/__main__.py:84-106]",
+      "text": "**`graphify claude install` writes a project CLAUDE.md section in addition to the hook** at `__main__.py:70-79`. The section instructs Claude to: (a) read `graphify-out/GRAPH_REPORT.md` before architecture/codebase questions; (b) navigate `graphify-out/wiki/index.md` if it exists instead of raw files; (c) run `python3 -c \"from graphify.watch import _rebuild_code; from pathlib import Path; _rebuild_code(Path('.'))\"` after modifying code in a session. This is a behavioral contract injected into the model's instructions, NOT a hook \u2014 it relies on Claude actually reading CLAUDE.md. The pair (CLAUDE.md instructions + PreToolUse hook) is graphify's two-pronged \"make Claude graph-aware\" pattern: declarative guidance for high-level reasoning, and procedural guards on the low-level tool calls. [SOURCE: external/graphify/__main__.py:70-79; external/graphify/__main__.py:84-106]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -875,7 +875,7 @@
     },
     {
       "id": "finding-5-8-git-hooks-are-bash-wrappers-around-python-that-delegate-back-into-rebuild-code-a",
-      "text": "**Git hooks are bash wrappers around Python that delegate back into `_rebuild_code`** at `hooks.py:8-77`. The post-commit hook computes `git diff --name-only HEAD~1 HEAD`, filters to a hard-coded `CODE_EXTS` set, exits silently if no code changed, and otherwise calls `from graphify.watch import _rebuild_code; _rebuild_code(Path('.'))`. The post-checkout hook only fires on branch switches (`$3 == 1`) AND only if `graphify-out/` already exists, preventing it from firing in fresh clones. Both hooks use marker comments (`# graphify-hook`, `# graphify-checkout-hook`) for idempotent install/uninstall via append-or-skip semantics — they will COEXIST with other tooling's hooks rather than overwriting them. [SOURCE: external/graphify/hooks.py:8-77; external/graphify/hooks.py:89-117]",
+      "text": "**Git hooks are bash wrappers around Python that delegate back into `_rebuild_code`** at `hooks.py:8-77`. The post-commit hook computes `git diff --name-only HEAD~1 HEAD`, filters to a hard-coded `CODE_EXTS` set, exits silently if no code changed, and otherwise calls `from graphify.watch import _rebuild_code; _rebuild_code(Path('.'))`. The post-checkout hook only fires on branch switches (`$3 == 1`) AND only if `graphify-out/` already exists, preventing it from firing in fresh clones. Both hooks use marker comments (`# graphify-hook`, `# graphify-checkout-hook`) for idempotent install/uninstall via append-or-skip semantics \u2014 they will COEXIST with other tooling's hooks rather than overwriting them. [SOURCE: external/graphify/hooks.py:8-77; external/graphify/hooks.py:89-117]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -897,7 +897,7 @@
     },
     {
       "id": "finding-5-5-the-rebuild-code-function-at-watch-py-21-84-is-graphify-s-claude-free-rebuild-pr",
-      "text": "**The `_rebuild_code()` function at `watch.py:21-84` IS graphify's \"Claude-free rebuild\" primitive** — it's invoked by both the file watcher and both git hooks (post-commit, post-checkout). It re-runs the full pipeline (`extract → build → cluster → analyze → report → export`) for code files only, skipping `.`-prefixed paths, `graphify-out/`, and `__pycache__`. Critical property: it generates `Community {cid}` placeholder labels (watch.py:61), NOT semantic labels — those require Claude via skill.md Step 5. So watch-driven rebuilds preserve community structure but lose human-readable names until the next manual `/graphify` run. This is a deliberate trade-off: keep the graph fresh and queryable without spending tokens, even if community names go stale. [SOURCE: external/graphify/watch.py:21-84]",
+      "text": "**The `_rebuild_code()` function at `watch.py:21-84` IS graphify's \"Claude-free rebuild\" primitive** \u2014 it's invoked by both the file watcher and both git hooks (post-commit, post-checkout). It re-runs the full pipeline (`extract \u2192 build \u2192 cluster \u2192 analyze \u2192 report \u2192 export`) for code files only, skipping `.`-prefixed paths, `graphify-out/`, and `__pycache__`. Critical property: it generates `Community {cid}` placeholder labels (watch.py:61), NOT semantic labels \u2014 those require Claude via skill.md Step 5. So watch-driven rebuilds preserve community structure but lose human-readable names until the next manual `/graphify` run. This is a deliberate trade-off: keep the graph fresh and queryable without spending tokens, even if community names go stale. [SOURCE: external/graphify/watch.py:21-84]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -908,7 +908,7 @@
     },
     {
       "id": "finding-5-12-the-full-set-of-what-runs-claude-free-is-broader-than-just-ast-extraction-per-th",
-      "text": "**The full set of \"what runs Claude-free\" is broader than just AST extraction.** Per the watch + hooks architecture: full pipeline (`detect → extract (with cache) → build → cluster → analyze → report → export`) is free for code-only changes. The cached semantic extraction layer is also Claude-free — `check_semantic_cache` returns previously-extracted nodes/edges/hyperedges from prior runs without invoking Claude. Only files that are BOTH non-code AND not previously extracted require LLM. So a corpus that has been graphified once and then re-saves doc files in place (without content changes) costs zero tokens to re-rebuild. The cost-incurring scenarios are exactly: first-run semantic extraction, doc-content-changes, image-content-changes, and `--mode deep` re-runs. [SOURCE: external/graphify/watch.py:21-84; external/graphify/cache.py:65-124]",
+      "text": "**The full set of \"what runs Claude-free\" is broader than just AST extraction.** Per the watch + hooks architecture: full pipeline (`detect \u2192 extract (with cache) \u2192 build \u2192 cluster \u2192 analyze \u2192 report \u2192 export`) is free for code-only changes. The cached semantic extraction layer is also Claude-free \u2014 `check_semantic_cache` returns previously-extracted nodes/edges/hyperedges from prior runs without invoking Claude. Only files that are BOTH non-code AND not previously extracted require LLM. So a corpus that has been graphified once and then re-saves doc files in place (without content changes) costs zero tokens to re-rebuild. The cost-incurring scenarios are exactly: first-run semantic extraction, doc-content-changes, image-content-changes, and `--mode deep` re-runs. [SOURCE: external/graphify/watch.py:21-84; external/graphify/cache.py:65-124]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -930,7 +930,7 @@
     },
     {
       "id": "finding-5-10-the-hook-payload-is-intentionally-a-nudge-not-a-block-true-ensures-the-hook-neve",
-      "text": "**The hook payload is intentionally a NUDGE not a BLOCK** — `|| true` ensures the hook never fails, the `echo` injects a one-line message (not a structured tool result), and Claude is free to ignore the message and continue with the original Glob/Grep call. This is the difference between \"guidance hook\" and \"veto hook.\" Public should evaluate which category fits its goals: a veto hook (fail with stderr to actually block the call) is more aggressive but breaks user trust if the alternative is wrong; a nudge hook (graphify's choice) preserves Claude's autonomy but relies on Claude's instruction-following discipline. The graphify approach is tractable because the message references a file the model can actually open — it's not just abstract guidance. [SOURCE: external/graphify/__main__.py:14-18]",
+      "text": "**The hook payload is intentionally a NUDGE not a BLOCK** \u2014 `|| true` ensures the hook never fails, the `echo` injects a one-line message (not a structured tool result), and Claude is free to ignore the message and continue with the original Glob/Grep call. This is the difference between \"guidance hook\" and \"veto hook.\" Public should evaluate which category fits its goals: a veto hook (fail with stderr to actually block the call) is more aggressive but breaks user trust if the alternative is wrong; a nudge hook (graphify's choice) preserves Claude's autonomy but relies on Claude's instruction-following discipline. The graphify approach is tractable because the message references a file the model can actually open \u2014 it's not just abstract guidance. [SOURCE: external/graphify/__main__.py:14-18]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -941,7 +941,7 @@
     },
     {
       "id": "finding-5-1-the-pretooluse-hook-payload-is-a-single-shell-command-stored-verbatim-in-setting",
-      "text": "**The PreToolUse hook payload is a single shell command stored verbatim in `_SETTINGS_HOOK`** at `__main__.py:9-21`. The hook entry registers under matcher `\"Glob|Grep\"` (Claude Code regex matches both `Glob` and `Grep` tool names), uses type `command`, and the command body is exactly: `[ -f graphify-out/graph.json ] && echo 'graphify: Knowledge graph exists. Read graphify-out/GRAPH_REPORT.md for god nodes and community structure before searching raw files.' || true`. Three properties make this surgically minimal: (a) it's conditional — only fires if `graphify-out/graph.json` exists, (b) it ALWAYS exits 0 via the `|| true` tail so the hook is never blocking, (c) the message is one line, not a structured payload. The matcher is the same set of tools Public uses for raw-file search, so this is an extremely tight insertion point. [SOURCE: external/graphify/__main__.py:9-21]",
+      "text": "**The PreToolUse hook payload is a single shell command stored verbatim in `_SETTINGS_HOOK`** at `__main__.py:9-21`. The hook entry registers under matcher `\"Glob|Grep\"` (Claude Code regex matches both `Glob` and `Grep` tool names), uses type `command`, and the command body is exactly: `[ -f graphify-out/graph.json ] && echo 'graphify: Knowledge graph exists. Read graphify-out/GRAPH_REPORT.md for god nodes and community structure before searching raw files.' || true`. Three properties make this surgically minimal: (a) it's conditional \u2014 only fires if `graphify-out/graph.json` exists, (b) it ALWAYS exits 0 via the `|| true` tail so the hook is never blocking, (c) the message is one line, not a structured payload. The matcher is the same set of tools Public uses for raw-file search, so this is an extremely tight insertion point. [SOURCE: external/graphify/__main__.py:9-21]",
       "addedAtIteration": 5,
       "sources": [
         "`external/graphify/__main__.py:1-243` (full read)",
@@ -985,50 +985,50 @@
     },
     {
       "id": "finding-6-9-save-query-result-is-a-feedback-loop-primitive-ingest-py-229-276-when-a-user-run",
-      "text": "**`save_query_result` is a feedback-loop primitive** (ingest.py:229-276). When a user runs `/graphify query \"...\"`, the resulting Q&A is saved as a markdown file in `graphify-out/memory/` with YAML frontmatter (`type: query`, `question`, `date`, `source_nodes`, `contributor: graphify`). On the next `/graphify --update` run, this file is detected as a `DOCUMENT` (per detect.py classification), routed to the semantic subagent, and extracted into the graph. Critical implication: the system grows smarter from BOTH what users add AND what they ask. The graph self-augments with reasoning artifacts. Public should evaluate whether to adopt this pattern — it changes the cost calculus by amortizing query cost into long-term graph value. [SOURCE: external/graphify/ingest.py:229-276]",
+      "text": "**`save_query_result` is a feedback-loop primitive** (ingest.py:229-276). When a user runs `/graphify query \"...\"`, the resulting Q&A is saved as a markdown file in `graphify-out/memory/` with YAML frontmatter (`type: query`, `question`, `date`, `source_nodes`, `contributor: graphify`). On the next `/graphify --update` run, this file is detected as a `DOCUMENT` (per detect.py classification), routed to the semantic subagent, and extracted into the graph. Critical implication: the system grows smarter from BOTH what users add AND what they ask. The graph self-augments with reasoning artifacts. Public should evaluate whether to adopt this pattern \u2014 it changes the cost calculus by amortizing query cost into long-term graph value. [SOURCE: external/graphify/ingest.py:229-276]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-6-html-markdown-conversion-has-a-graceful-fallback-html-to-markdown-html-url-at-in",
-      "text": "**HTML→markdown conversion has a graceful fallback.** `_html_to_markdown(html, url)` at `ingest.py:46-61` first tries `import html2text` (an optional dependency). If unavailable, it falls back to a regex strip: removes `<script>` and `<style>` blocks, strips remaining tags, collapses whitespace, and truncates to 8000 chars. This means graphify ingests HTML even when `html2text` isn't installed, but with degraded quality. The output is also capped: webpages get 12,000 markdown chars (`ingest.py:122`), HTML fallback gets 8,000 chars. These are hard token-cost protections, not configurable. [SOURCE: external/graphify/ingest.py:46-62; external/graphify/ingest.py:122]",
+      "text": "**HTML\u2192markdown conversion has a graceful fallback.** `_html_to_markdown(html, url)` at `ingest.py:46-61` first tries `import html2text` (an optional dependency). If unavailable, it falls back to a regex strip: removes `<script>` and `<style>` blocks, strips remaining tags, collapses whitespace, and truncates to 8000 chars. This means graphify ingests HTML even when `html2text` isn't installed, but with degraded quality. The output is also capped: webpages get 12,000 markdown chars (`ingest.py:122`), HTML fallback gets 8,000 chars. These are hard token-cost protections, not configurable. [SOURCE: external/graphify/ingest.py:46-62; external/graphify/ingest.py:122]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-3-image-semantic-extraction-is-a-vision-call-dispatched-via-the-agent-tool-not-ocr",
-      "text": "**Image semantic extraction is a vision call dispatched via the Agent tool, NOT OCR.** The skill.md subagent prompt explicitly instructs at lines 199-209: \"Image files: use vision to understand what the image IS - do not just OCR.\" It then provides 6 per-type strategies that would be impossible with text-only OCR: UI screenshots → \"layout patterns, design decisions, key elements, purpose\"; charts → \"metric, trend/insight, data source\"; tweets/posts → \"claim as node, author, concepts mentioned\"; diagrams → \"components and connections\"; research figures → \"what it demonstrates, method, result\"; handwritten/whiteboard → \"ideas and arrows, mark uncertain readings AMBIGUOUS\". The Claude subagent receives the file directly and uses its built-in vision capability — graphify Python never invokes any OCR or vision API itself. [SOURCE: external/skills/graphify/skill.md:199-209]",
+      "text": "**Image semantic extraction is a vision call dispatched via the Agent tool, NOT OCR.** The skill.md subagent prompt explicitly instructs at lines 199-209: \"Image files: use vision to understand what the image IS - do not just OCR.\" It then provides 6 per-type strategies that would be impossible with text-only OCR: UI screenshots \u2192 \"layout patterns, design decisions, key elements, purpose\"; charts \u2192 \"metric, trend/insight, data source\"; tweets/posts \u2192 \"claim as node, author, concepts mentioned\"; diagrams \u2192 \"components and connections\"; research figures \u2192 \"what it demonstrates, method, result\"; handwritten/whiteboard \u2192 \"ideas and arrows, mark uncertain readings AMBIGUOUS\". The Claude subagent receives the file directly and uses its built-in vision capability \u2014 graphify Python never invokes any OCR or vision API itself. [SOURCE: external/skills/graphify/skill.md:199-209]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-1-multimodal-extraction-is-split-across-three-layers-not-one-acquisition-lives-in-",
-      "text": "**Multimodal extraction is split across THREE layers, not one.** Acquisition lives in `ingest.py` (URL fetch → on-disk file with YAML frontmatter), classification lives in `detect.py` (`FileType.{IMAGE,PAPER,DOCUMENT}` via extension + paper-signal heuristics), and content extraction is split: deterministic PDF text via `pypdf` lives in `detect.py:91-103` (`extract_pdf_text`), while semantic image and PDF interpretation lives in the `skill.md` subagent prompt at lines 196-209 (which dispatches Claude vision via the Agent tool). This three-layer separation means graphify can ingest URLs without the LLM (cheap) but requires the LLM for any actual semantic understanding of images. [SOURCE: external/graphify/ingest.py:181-226; external/graphify/detect.py:91-103; external/skills/graphify/skill.md:196-209]",
+      "text": "**Multimodal extraction is split across THREE layers, not one.** Acquisition lives in `ingest.py` (URL fetch \u2192 on-disk file with YAML frontmatter), classification lives in `detect.py` (`FileType.{IMAGE,PAPER,DOCUMENT}` via extension + paper-signal heuristics), and content extraction is split: deterministic PDF text via `pypdf` lives in `detect.py:91-103` (`extract_pdf_text`), while semantic image and PDF interpretation lives in the `skill.md` subagent prompt at lines 196-209 (which dispatches Claude vision via the Agent tool). This three-layer separation means graphify can ingest URLs without the LLM (cheap) but requires the LLM for any actual semantic understanding of images. [SOURCE: external/graphify/ingest.py:181-226; external/graphify/detect.py:91-103; external/skills/graphify/skill.md:196-209]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
@@ -1038,45 +1038,45 @@
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-10-pdf-and-image-classification-has-a-subtle-paper-detection-heuristic-that-runs-ev",
-      "text": "**PDF and image classification has a subtle paper-detection heuristic** that runs even on `.md`/`.txt` files. `detect.py:39-54, 64-72` defines `_PAPER_SIGNALS` (13 regex patterns: arXiv, DOI, abstract, proceedings, journal, preprint, LaTeX `\\cite{}`, numbered citations, equation references, arXiv ID like `1706.03762`, \"we propose\", \"literature\") with a threshold of 3 matches. Any markdown file matching ≥ 3 of these patterns is reclassified from `DOCUMENT` to `PAPER`. This means a converted academic PDF that round-tripped through markdown still gets routed to paper-handling extraction. The same heuristic does NOT apply to PDFs themselves — `.pdf` always classifies as `PAPER`. Public translation: a single file-classifier with content-aware re-routing is a useful pattern when extension alone is insufficient. [SOURCE: external/graphify/detect.py:39-88]",
+      "text": "**PDF and image classification has a subtle paper-detection heuristic** that runs even on `.md`/`.txt` files. `detect.py:39-54, 64-72` defines `_PAPER_SIGNALS` (13 regex patterns: arXiv, DOI, abstract, proceedings, journal, preprint, LaTeX `\\cite{}`, numbered citations, equation references, arXiv ID like `1706.03762`, \"we propose\", \"literature\") with a threshold of 3 matches. Any markdown file matching \u2265 3 of these patterns is reclassified from `DOCUMENT` to `PAPER`. This means a converted academic PDF that round-tripped through markdown still gets routed to paper-handling extraction. The same heuristic does NOT apply to PDFs themselves \u2014 `.pdf` always classifies as `PAPER`. Public translation: a single file-classifier with content-aware re-routing is a useful pattern when extension alone is insufficient. [SOURCE: external/graphify/detect.py:39-88]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-2-pdf-text-extraction-uses-pypdf-only-and-runs-at-detect-time-not-extract-time-ext",
-      "text": "**PDF text extraction uses `pypdf` only and runs at detect time, not extract time.** `extract_pdf_text(path)` lives in `detect.py:91-103` (NOT in `extract.py`). It loads `pypdf.PdfReader`, walks every page, calls `page.extract_text()`, joins with `\"\\n\"`, and returns plain text. There is NO OCR fallback for image-only PDFs — if `pypdf` returns empty text (e.g., a scanned PDF with no embedded text layer), graphify silently returns `\"\"`. The text is then word-counted via `count_words()` for corpus sizing. The actual semantic interpretation of the PDF content happens later via the semantic subagent in skill.md, which receives the file path and reads it itself. [SOURCE: external/graphify/detect.py:91-112]",
+      "text": "**PDF text extraction uses `pypdf` only and runs at detect time, not extract time.** `extract_pdf_text(path)` lives in `detect.py:91-103` (NOT in `extract.py`). It loads `pypdf.PdfReader`, walks every page, calls `page.extract_text()`, joins with `\"\\n\"`, and returns plain text. There is NO OCR fallback for image-only PDFs \u2014 if `pypdf` returns empty text (e.g., a scanned PDF with no embedded text layer), graphify silently returns `\"\"`. The text is then word-counted via `count_words()` for corpus sizing. The actual semantic interpretation of the PDF content happens later via the semantic subagent in skill.md, which receives the file path and reads it itself. [SOURCE: external/graphify/detect.py:91-112]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-7-security-is-a-first-class-layer-with-five-distinct-guards-in-security-py-166-lin",
-      "text": "**Security is a first-class layer with five distinct guards** in `security.py` (166 lines, full read). (a) **URL scheme allowlist**: only `http` and `https` permitted; `file://`, `ftp://`, `data:` and others raise `ValueError` (security.py:11, 20-32). (b) **Open-redirect SSRF protection**: a custom `_NoFileRedirectHandler` re-validates every redirect target before following it, preventing `http→file://` redirect attacks (security.py:35-44). (c) **Response size caps**: 50 MB hard limit on binary fetches, 10 MB on text fetches, enforced via streaming reads with running totals (security.py:12-13, 82-94). (d) **Graph path containment**: `validate_graph_path` resolves a path and verifies it stays inside `graphify-out/` (security.py:112-145), preventing path traversal in MCP tool calls. (e) **Label sanitization**: control char strip + 256-char cap + HTML escape applied to every label rendered in HTML or returned via MCP, preventing XSS (security.py:152-166). [SOURCE: external/graphify/security.py:1-166]",
+      "text": "**Security is a first-class layer with five distinct guards** in `security.py` (166 lines, full read). (a) **URL scheme allowlist**: only `http` and `https` permitted; `file://`, `ftp://`, `data:` and others raise `ValueError` (security.py:11, 20-32). (b) **Open-redirect SSRF protection**: a custom `_NoFileRedirectHandler` re-validates every redirect target before following it, preventing `http\u2192file://` redirect attacks (security.py:35-44). (c) **Response size caps**: 50 MB hard limit on binary fetches, 10 MB on text fetches, enforced via streaming reads with running totals (security.py:12-13, 82-94). (d) **Graph path containment**: `validate_graph_path` resolves a path and verifies it stays inside `graphify-out/` (security.py:112-145), preventing path traversal in MCP tool calls. (e) **Label sanitization**: control char strip + 256-char cap + HTML escape applied to every label rendered in HTML or returned via MCP, preventing XSS (security.py:152-166). [SOURCE: external/graphify/security.py:1-166]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
@@ -1086,21 +1086,21 @@
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-6-11-the-multimodal-pipeline-is-structurally-simple-but-operationally-rich-total-pyth",
-      "text": "**The multimodal pipeline is structurally simple but operationally rich.** Total Python lines for the multimodal pipeline: `ingest.py:288 + security.py:166 + detect.py:91-112 (~22 lines for PDF) ≈ 480 lines`. Compare to `extract.py:2526` for the AST pipeline. The semantic richness comes from the SUBAGENT PROMPT (skill.md:184-234), which is ~50 lines of natural language that drives Claude vision, not from any Python multimodal library. graphify's \"multimodal extraction\" is therefore: a small Python ingestion + classification layer + a 50-line LLM prompt + Claude's native vision. Public could replicate this with comparable code volume — the LLM does the heavy lifting. [SOURCE: external/graphify/ingest.py:1-288; external/graphify/security.py:1-166; external/skills/graphify/skill.md:184-234]",
+      "text": "**The multimodal pipeline is structurally simple but operationally rich.** Total Python lines for the multimodal pipeline: `ingest.py:288 + security.py:166 + detect.py:91-112 (~22 lines for PDF) \u2248 480 lines`. Compare to `extract.py:2526` for the AST pipeline. The semantic richness comes from the SUBAGENT PROMPT (skill.md:184-234), which is ~50 lines of natural language that drives Claude vision, not from any Python multimodal library. graphify's \"multimodal extraction\" is therefore: a small Python ingestion + classification layer + a 50-line LLM prompt + Claude's native vision. Public could replicate this with comparable code volume \u2014 the LLM does the heavy lifting. [SOURCE: external/graphify/ingest.py:1-288; external/graphify/security.py:1-166; external/skills/graphify/skill.md:184-234]",
       "addedAtIteration": 6,
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
@@ -1110,31 +1110,31 @@
       "sources": [
         "`external/graphify/ingest.py:1-288` (full read)",
         "`external/graphify/security.py:1-166` (full read)",
-        "`external/graphify/detect.py:91-112` (PDF extraction — re-cited from iter 2's full read)",
-        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules — re-cited from iter 3)",
-        "`external/graphify/extract.py:2367-2477` (extension dispatch — confirms multimodal NOT routed to AST extractors)"
+        "`external/graphify/detect.py:91-112` (PDF extraction \u2014 re-cited from iter 2's full read)",
+        "`external/skills/graphify/skill.md:166-234` (image instructions, dispatch rules \u2014 re-cited from iter 3)",
+        "`external/graphify/extract.py:2367-2477` (extension dispatch \u2014 confirms multimodal NOT routed to AST extractors)"
       ]
     },
     {
       "id": "finding-7-12-even-graphify-s-own-review-acknowledges-weaknesses-53-communities-when-17-are-re",
-      "text": "**Even graphify's own review acknowledges weaknesses**: \"53 communities when 17 are real and 36 are isolates... visualization is noisy\"; \"Stdlib imports create 94 validation warnings\"; \"Papers not deep-linked to implementation\" without `--mode deep`; config-only files become single-node communities. This honesty is itself a credibility signal — graphify documents its failure modes in the same file as its headline numbers. Public should treat this as the baseline standard for any benchmark claim it makes about its own retrieval systems: publish the failures in the same document as the reductions. [SOURCE: external/worked/karpathy-repos/review.md:95-101, 116]",
+      "text": "**Even graphify's own review acknowledges weaknesses**: \"53 communities when 17 are real and 36 are isolates... visualization is noisy\"; \"Stdlib imports create 94 validation warnings\"; \"Papers not deep-linked to implementation\" without `--mode deep`; config-only files become single-node communities. This honesty is itself a credibility signal \u2014 graphify documents its failure modes in the same file as its headline numbers. Public should treat this as the baseline standard for any benchmark claim it makes about its own retrieval systems: publish the failures in the same document as the reductions. [SOURCE: external/worked/karpathy-repos/review.md:95-101, 116]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-5-the-reduction-grows-as-corpus-grows-property-is-real-and-structurally-important-",
-      "text": "**The \"reduction grows as corpus grows\" property is real and structurally important.** Per `review.md:29` and the verdict at `review.md:112`: \"the BFS subgraph stays roughly constant (~1,700 tokens) while naive stuffing scales linearly with corpus size.\" This is a true structural property of graph-bounded queries: BFS at depth 3 from a few seed nodes returns O(N) nodes where N is bounded by graph density, NOT by corpus size. So a 500k-word corpus would yield ~71.5x × (500k/92k) ≈ ~388x against the naive baseline. **This is the genuinely valuable insight** — the 71.5x specific number is corpus-specific, but the constant-vs-linear property is a generalizable claim that Public should evaluate against its own use cases. [SOURCE: external/worked/karpathy-repos/review.md:29, 112]",
+      "text": "**The \"reduction grows as corpus grows\" property is real and structurally important.** Per `review.md:29` and the verdict at `review.md:112`: \"the BFS subgraph stays roughly constant (~1,700 tokens) while naive stuffing scales linearly with corpus size.\" This is a true structural property of graph-bounded queries: BFS at depth 3 from a few seed nodes returns O(N) nodes where N is bounded by graph density, NOT by corpus size. So a 500k-word corpus would yield ~71.5x \u00d7 (500k/92k) \u2248 ~388x against the naive baseline. **This is the genuinely valuable insight** \u2014 the 71.5x specific number is corpus-specific, but the constant-vs-linear property is a generalizable claim that Public should evaluate against its own use cases. [SOURCE: external/worked/karpathy-repos/review.md:29, 112]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
@@ -1145,7 +1145,7 @@
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
@@ -1156,40 +1156,40 @@
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-9-the-8-8x-code-only-number-is-more-relevant-to-public-because-public-is-primarily",
-      "text": "**The 8.8x code-only number is more relevant to Public** because Public is primarily a code-and-spec environment, not a multimodal research corpus. At 8.8x (review.md:19), graphify's AST-only mode reduces tokens by an order of magnitude vs naive code stuffing — but Public's Code Graph MCP achieves a similar order-of-magnitude reduction via structural queries today. The marginal value of graphify's AST pass over Code Graph MCP on a code-only corpus is therefore ~zero. The marginal value comes from (a) the multimodal extension for non-code content and (b) the evidence-tagging system for provenance — both of which are orthogonal to token reduction. [SOURCE: external/worked/karpathy-repos/review.md:13-19; INFERENCE]",
+      "text": "**The 8.8x code-only number is more relevant to Public** because Public is primarily a code-and-spec environment, not a multimodal research corpus. At 8.8x (review.md:19), graphify's AST-only mode reduces tokens by an order of magnitude vs naive code stuffing \u2014 but Public's Code Graph MCP achieves a similar order-of-magnitude reduction via structural queries today. The marginal value of graphify's AST pass over Code Graph MCP on a code-only corpus is therefore ~zero. The marginal value comes from (a) the multimodal extension for non-code content and (b) the evidence-tagging system for provenance \u2014 both of which are orthogonal to token reduction. [SOURCE: external/worked/karpathy-repos/review.md:13-19; INFERENCE]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-10-the-benchmark-code-itself-is-honest-about-edge-cases-it-returns-error-no-matchin",
-      "text": "**The benchmark code itself is honest about edge cases** — it returns `{\"error\": \"No matching nodes found for sample questions. Build the graph first.\"}` at `benchmark.py:94-95` if none of the sample questions match any node labels. This means on a corpus with no \"auth\", \"entry\", \"error\", \"data\", \"api\", or \"abstraction\" terms in any node label, the benchmark refuses to produce a number rather than reporting 0x or infinity. This is graphify-internal hygiene that Public should preserve when adapting any benchmarking pattern: refuse to report a metric you can't trust. [SOURCE: external/graphify/benchmark.py:94-95]",
+      "text": "**The benchmark code itself is honest about edge cases** \u2014 it returns `{\"error\": \"No matching nodes found for sample questions. Build the graph first.\"}` at `benchmark.py:94-95` if none of the sample questions match any node labels. This means on a corpus with no \"auth\", \"entry\", \"error\", \"data\", \"api\", or \"abstraction\" terms in any node label, the benchmark refuses to produce a number rather than reporting 0x or infinity. This is graphify-internal hygiene that Public should preserve when adapting any benchmarking pattern: refuse to report a metric you can't trust. [SOURCE: external/graphify/benchmark.py:94-95]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-7-the-benchmark-cost-vs-value-calculus-is-conservative-for-graphify-itself-only-9-",
-      "text": "**The benchmark cost-vs-value calculus is conservative for graphify itself**: only 9,500 tokens were spent BUILDING the graph (6,000 input + 3,500 output, per `GRAPH_REPORT.md:10`). At an average query cost of 1,726 tokens, the build pays for itself after roughly **5.5 queries**. After ~6 queries, the graph saves more tokens than it cost to build — and unlike a naive RAG approach, the savings compound across all future queries. This is the actual headline efficiency claim graphify could make if it weren't optimizing for the dramatic 71.5x number: amortized cost-per-query approaches the BFS subgraph cost asymptotically as query count grows. Public should evaluate this amortization model when sizing graph build costs. [SOURCE: external/worked/karpathy-repos/GRAPH_REPORT.md:10; external/worked/karpathy-repos/review.md:18, 25]",
+      "text": "**The benchmark cost-vs-value calculus is conservative for graphify itself**: only 9,500 tokens were spent BUILDING the graph (6,000 input + 3,500 output, per `GRAPH_REPORT.md:10`). At an average query cost of 1,726 tokens, the build pays for itself after roughly **5.5 queries**. After ~6 queries, the graph saves more tokens than it cost to build \u2014 and unlike a naive RAG approach, the savings compound across all future queries. This is the actual headline efficiency claim graphify could make if it weren't optimizing for the dramatic 71.5x number: amortized cost-per-query approaches the BFS subgraph cost asymptotically as query count grows. Public should evaluate this amortization model when sizing graph build costs. [SOURCE: external/worked/karpathy-repos/GRAPH_REPORT.md:10; external/worked/karpathy-repos/review.md:18, 25]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
@@ -1200,51 +1200,51 @@
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-3-the-benchmark-math-has-three-load-bearing-assumptions-that-make-the-71-5x-ratio-",
-      "text": "**The benchmark math has THREE load-bearing assumptions** that make the 71.5x ratio fragile when generalized: (a) **token estimation is a 4-chars-per-token heuristic** at `benchmark.py:9, 12-13` — real Claude tokenization varies by language and can be 2-6x different per token; (b) **the naive baseline is \"stuff the whole corpus into context\"** which is the worst possible RAG strategy and not what production systems do — a fair baseline would be embedding search or tree-sitter symbol search, both of which would shrink the gap dramatically; (c) **the BFS subgraph approximates \"what Claude actually reads\"** but a real graph query workflow typically also opens the underlying source files for verified context, which would push effective query cost well above 1,700 tokens. [SOURCE: external/graphify/benchmark.py:9-15, 16-52, 64-99]",
+      "text": "**The benchmark math has THREE load-bearing assumptions** that make the 71.5x ratio fragile when generalized: (a) **token estimation is a 4-chars-per-token heuristic** at `benchmark.py:9, 12-13` \u2014 real Claude tokenization varies by language and can be 2-6x different per token; (b) **the naive baseline is \"stuff the whole corpus into context\"** which is the worst possible RAG strategy and not what production systems do \u2014 a fair baseline would be embedding search or tree-sitter symbol search, both of which would shrink the gap dramatically; (c) **the BFS subgraph approximates \"what Claude actually reads\"** but a real graph query workflow typically also opens the underlying source files for verified context, which would push effective query cost well above 1,700 tokens. [SOURCE: external/graphify/benchmark.py:9-15, 16-52, 64-99]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-4-the-benchmark-question-set-is-corpus-aware-which-inflates-per-question-reduction",
-      "text": "**The benchmark question set is corpus-aware, which inflates per-question reductions.** `_SAMPLE_QUESTIONS` at `benchmark.py:55-61` is a fixed list of 5 questions: \"how does authentication work\", \"what is the main entry point\", \"how are errors handled\", \"what connects the data layer to the api\", \"what are the core abstractions\". `_query_subgraph_tokens` at `benchmark.py:16-52` does keyword matching on node labels (any 3+ char query term that appears in any node label scores +1, top 3 nodes by score become BFS start points). On the karpathy corpus, the actual per-question reductions in `review.md:31-41` are 126.7x (\"what connects micrograd to nanoGPT\"), 100.8x (\"how does FlashAttention improve memory efficiency\"), 68.6x, 68.6x, 43.5x — but those are graphify's own RUN-TIME questions, NOT the canned `_SAMPLE_QUESTIONS`. The benchmark.py default questions are generic and would NOT all return matches on most corpora. [SOURCE: external/graphify/benchmark.py:55-61, 16-52; external/worked/karpathy-repos/review.md:31-41]",
+      "text": "**The benchmark question set is corpus-aware, which inflates per-question reductions.** `_SAMPLE_QUESTIONS` at `benchmark.py:55-61` is a fixed list of 5 questions: \"how does authentication work\", \"what is the main entry point\", \"how are errors handled\", \"what connects the data layer to the api\", \"what are the core abstractions\". `_query_subgraph_tokens` at `benchmark.py:16-52` does keyword matching on node labels (any 3+ char query term that appears in any node label scores +1, top 3 nodes by score become BFS start points). On the karpathy corpus, the actual per-question reductions in `review.md:31-41` are 126.7x (\"what connects micrograd to nanoGPT\"), 100.8x (\"how does FlashAttention improve memory efficiency\"), 68.6x, 68.6x, 43.5x \u2014 but those are graphify's own RUN-TIME questions, NOT the canned `_SAMPLE_QUESTIONS`. The benchmark.py default questions are generic and would NOT all return matches on most corpora. [SOURCE: external/graphify/benchmark.py:55-61, 16-52; external/worked/karpathy-repos/review.md:31-41]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-11-the-graph-quality-evaluation-in-review-md-84-107-is-more-credible-than-the-token",
-      "text": "**The graph-quality evaluation in `review.md:84-107` is more credible than the token reduction claim.** Specific verifiable findings: (a) micrograd correctly split into engine + nn communities matching the repo structure (review.md:88), (b) nanoGPT model vs training correctly separated into different communities (review.md:89), (c) BPETokenizer correctly isolated as standalone (review.md:90), (d) cross-repo `Block` similarity surfaced between nanoGPT and minGPT (review.md:91), (e) FlashAttention paper bridged into `CausalSelfAttention` in both repos (review.md:92), (f) image extraction worked: `gpt2_124M_loss.png` extracted as \"val_loss=2.905 at step 399\", `gout.svg` recognized as micrograd computation graph (review.md:93). These are concrete, verifiable claims that can be checked against the actual graph.json. They are graphify's strongest evidence — and they don't depend on the 71.5x number at all. [SOURCE: external/worked/karpathy-repos/review.md:84-107]",
+      "text": "**The graph-quality evaluation in `review.md:84-107` is more credible than the token reduction claim.** Specific verifiable findings: (a) micrograd correctly split into engine + nn communities matching the repo structure (review.md:88), (b) nanoGPT model vs training correctly separated into different communities (review.md:89), (c) BPETokenizer correctly isolated as standalone (review.md:90), (d) cross-repo `Block` similarity surfaced between nanoGPT and minGPT (review.md:91), (e) FlashAttention paper bridged into `CausalSelfAttention` in both repos (review.md:92), (f) image extraction worked: `gpt2_124M_loss.png` extracted as \"val_loss=2.905 at step 399\", `gout.svg` recognized as micrograd computation graph (review.md:93). These are concrete, verifiable claims that can be checked against the actual graph.json. They are graphify's strongest evidence \u2014 and they don't depend on the 71.5x number at all. [SOURCE: external/worked/karpathy-repos/review.md:84-107]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
       "id": "finding-7-6-the-published-worked-numbers-have-small-but-real-discrepancies-that-bear-on-cred",
-      "text": "**The published worked numbers have small but real discrepancies** that bear on credibility. `karpathy-repos/README.md:5` says \"52 files\"; `karpathy-repos/review.md:4` confirms 52 files (29 Py + 14 docs + 5 PDFs + 4 images); BUT `karpathy-repos/GRAPH_REPORT.md:4` reports the actual run as **49 files · ~92,616 words**, a 3-file discrepancy. Most likely 3 of the 4 images failed to download or weren't picked up by detect.py's image classification (the README mentions \"Any screenshot or diagram from the Attention Is All You Need paper\" as a vague 4th image). Similarly `README.md:58` says \"~17 meaningful communities\" but `GRAPH_REPORT.md:8` reports 53 communities total — `review.md:51, 99` resolves this as 17 major + 36 isolates (single-node communities). Public should treat README claims with the same scrutiny graphify itself encourages: cite the worked output, not the marketing copy. [SOURCE: external/worked/karpathy-repos/README.md:5, 58; external/worked/karpathy-repos/GRAPH_REPORT.md:4, 8; external/worked/karpathy-repos/review.md:4, 51, 99]",
+      "text": "**The published worked numbers have small but real discrepancies** that bear on credibility. `karpathy-repos/README.md:5` says \"52 files\"; `karpathy-repos/review.md:4` confirms 52 files (29 Py + 14 docs + 5 PDFs + 4 images); BUT `karpathy-repos/GRAPH_REPORT.md:4` reports the actual run as **49 files \u00b7 ~92,616 words**, a 3-file discrepancy. Most likely 3 of the 4 images failed to download or weren't picked up by detect.py's image classification (the README mentions \"Any screenshot or diagram from the Attention Is All You Need paper\" as a vague 4th image). Similarly `README.md:58` says \"~17 meaningful communities\" but `GRAPH_REPORT.md:8` reports 53 communities total \u2014 `review.md:51, 99` resolves this as 17 major + 36 isolates (single-node communities). Public should treat README claims with the same scrutiny graphify itself encourages: cite the worked output, not the marketing copy. [SOURCE: external/worked/karpathy-repos/README.md:5, 58; external/worked/karpathy-repos/GRAPH_REPORT.md:4, 8; external/worked/karpathy-repos/review.md:4, 51, 99]",
       "addedAtIteration": 7,
       "sources": [
         "`external/graphify/benchmark.py:1-126` (full read)",
         "`external/worked/karpathy-repos/README.md:1-63` (full read)",
         "`external/worked/karpathy-repos/GRAPH_REPORT.md:1-120` (head section for Summary, Communities, God Nodes)",
-        "`external/worked/karpathy-repos/review.md:1-116` (full read — the verbatim benchmark output + graph quality evaluation)"
+        "`external/worked/karpathy-repos/review.md:1-116` (full read \u2014 the verbatim benchmark output + graph quality evaluation)"
       ]
     },
     {
@@ -1411,7 +1411,7 @@
     },
     {
       "id": "ruled-out-4-4-looking-for-llm-calls-during-report-generation-there-are-zero-report-py-is-fully",
-      "text": "**Looking for LLM calls during report generation**: there are zero. `report.py` is fully deterministic and only depends on the graph + community + cohesion + analysis state. This makes graphify's report cheap to regenerate and trivially testable — a property Public should preserve in any analogous output layer.",
+      "text": "**Looking for LLM calls during report generation**: there are zero. `report.py` is fully deterministic and only depends on the graph + community + cohesion + analysis state. This makes graphify's report cheap to regenerate and trivially testable \u2014 a property Public should preserve in any analogous output layer.",
       "addedAtIteration": 4
     },
     {
@@ -1431,17 +1431,17 @@
     },
     {
       "id": "ruled-out-5-3-hoping-the-hook-payload-includes-the-actual-report-content-it-doesn-t-the-hook-i",
-      "text": "**Hoping the hook payload includes the actual report content**: it doesn't. The hook injects a one-line nudge that tells Claude to READ the report file. The report file is stored on disk and Claude must explicitly open it. This is a deliberate choice — injecting the full report would be a token explosion on every Glob/Grep call. Public should not try to inline structural answers into the hook message.",
+      "text": "**Hoping the hook payload includes the actual report content**: it doesn't. The hook injects a one-line nudge that tells Claude to READ the report file. The report file is stored on disk and Claude must explicitly open it. This is a deliberate choice \u2014 injecting the full report would be a token explosion on every Glob/Grep call. Public should not try to inline structural answers into the hook message.",
       "addedAtIteration": 5
     },
     {
       "id": "ruled-out-5-1-hoping-watch-py-can-rebuild-semantic-content-automatically-it-cannot-notify-only",
-      "text": "**Hoping watch.py can rebuild semantic content automatically**: it cannot. `_notify_only` is the explicit dead end for non-code changes — the watcher writes a flag and stops. Public should not assume \"watcher = full freshness.\" Doc/image freshness still requires a human invocation of `/graphify --update`.",
+      "text": "**Hoping watch.py can rebuild semantic content automatically**: it cannot. `_notify_only` is the explicit dead end for non-code changes \u2014 the watcher writes a flag and stops. Public should not assume \"watcher = full freshness.\" Doc/image freshness still requires a human invocation of `/graphify --update`.",
       "addedAtIteration": 5
     },
     {
       "id": "ruled-out-5-4-looking-for-a-hook-that-blocks-tool-use-graphify-s-hook-is-a-guidance-nudge-not-",
-      "text": "**Looking for a hook that blocks tool use**: graphify's hook is a guidance nudge, not a veto. There is no path in `__main__.py` or `hooks.py` that returns a non-zero exit code from the hook. Public should treat \"block raw file search\" as a separate design question — graphify's design intentionally avoids it.",
+      "text": "**Looking for a hook that blocks tool use**: graphify's hook is a guidance nudge, not a veto. There is no path in `__main__.py` or `hooks.py` that returns a non-zero exit code from the hook. Public should treat \"block raw file search\" as a separate design question \u2014 graphify's design intentionally avoids it.",
       "addedAtIteration": 5
     },
     {
@@ -1486,7 +1486,7 @@
     },
     {
       "id": "ruled-out-7-4-hoping-the-benchmark-uses-real-claude-tokenization-it-doesn-t-pure-character-cou",
-      "text": "**Hoping the benchmark uses real Claude tokenization**: it doesn't. Pure character-count heuristic. Real tokenization could shift numbers by ±50%.",
+      "text": "**Hoping the benchmark uses real Claude tokenization**: it doesn't. Pure character-count heuristic. Real tokenization could shift numbers by \u00b150%.",
       "addedAtIteration": 7
     },
     {

@@ -39,11 +39,31 @@
     ]
   },
   "phases_under_consolidation": [
-    {"id": 1, "folder": "001-claude-optimization-settings", "system": "Claude Optimization Settings"},
-    {"id": 2, "folder": "002-codesight", "system": "CodeSight"},
-    {"id": 3, "folder": "003-contextador", "system": "Contextador"},
-    {"id": 4, "folder": "004-graphify", "system": "Graphify"},
-    {"id": 5, "folder": "005-claudest", "system": "Claudest"}
+    {
+      "id": 1,
+      "folder": "001-claude-optimization-settings",
+      "system": "Claude Optimization Settings"
+    },
+    {
+      "id": 2,
+      "folder": "002-codesight",
+      "system": "CodeSight"
+    },
+    {
+      "id": 3,
+      "folder": "003-contextador",
+      "system": "Contextador"
+    },
+    {
+      "id": 4,
+      "folder": "004-graphify",
+      "system": "Graphify"
+    },
+    {
+      "id": 5,
+      "folder": "005-claudest",
+      "system": "Claudest"
+    }
   ],
   "started_at": "2026-04-07T08:56:00Z"
 }

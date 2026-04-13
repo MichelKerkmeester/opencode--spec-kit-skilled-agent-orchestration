@@ -1,0 +1,1709 @@
+{
+  "sessionId": "75c06db9-0994-48a7-916d-bd008514d63a",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {
+      "id": "question-1-decide-whether-phase-003-continuity-search-profile-should-stay-adaptive-fusion-o",
+      "text": "Decide whether phase `003-continuity-search-profile` should stay adaptive-fusion-only or widen into a public continuity intent across classifier/routing/tool surfaces.",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 25
+    }
+  ],
+  "keyFindings": [
+    {
+      "id": "finding-1-2-cross-encoder-length-penalties-are-hardcoded-at-50-0-9-and-2000-0-95-while-the-s",
+      "text": "Cross-encoder length penalties are hardcoded at `<50 => 0.9` and `>2000 => 0.95`, while the Stage 3 pipeline invokes reranking as soon as at least 2 results survive fusion. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`"
+      ]
+    },
+    {
+      "id": "finding-1-3-the-reranker-keeps-a-5-minute-in-memory-cache-with-a-200-entry-bound-and-distinc",
+      "text": "The reranker keeps a 5-minute in-memory cache with a 200-entry bound and distinct fallback score band `0.0-0.5`, but it does not yet expose hit-rate telemetry. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:399]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`"
+      ]
+    },
+    {
+      "id": "finding-1-1-the-reranker-provider-ladder-is-hardcoded-as-voyage-then-cohere-then-local-with-",
+      "text": "The reranker provider ladder is hardcoded as Voyage then Cohere then Local, with per-provider limits of `100/100/50` documents and timeouts of `15s/15s/30s` respectively. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`"
+      ]
+    },
+    {
+      "id": "finding-2-3-search-weights-json-only-carries-smartranking-values-relevance-0-5-recency-0-3-a",
+      "text": "`search-weights.json` only carries `smartRanking` values `relevance=0.5`, `recency=0.3`, and `access=0.2`; it no longer carries live RRF or cross-encoder config. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:21] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/README.md:40]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:69`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:21`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:40`"
+      ]
+    },
+    {
+      "id": "finding-2-1-stage-1-hardcodes-several-retrieval-thresholds-and-caps-deep-mode-variants-3-dee",
+      "text": "Stage 1 hardcodes several retrieval thresholds and caps: deep-mode variants `3`, deep-expansion timeout `5000ms`, multi-concept minimum similarity `0.5`, constitutional inject limit `5`, and expansion candidate limit `5`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:69]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:69`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:21`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:40`"
+      ]
+    },
+    {
+      "id": "finding-2-2-stage-2-adds-its-own-bounded-freshness-layer-with-speckit-recency-fusion-weight-",
+      "text": "Stage 2 adds its own bounded freshness layer with `SPECKIT_RECENCY_FUSION_WEIGHT=0.07` and `SPECKIT_RECENCY_FUSION_CAP=0.10`, plus validation multipliers clamped to `0.8-1.2`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:69`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:21`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:40`"
+      ]
+    },
+    {
+      "id": "finding-3-3-search-weights-json-explicitly-records-that-rrffusion-and-crossencoder-sections-",
+      "text": "`search-weights.json` explicitly records that `rrfFusion` and `crossEncoder` sections were removed as dead config, reinforcing that fusion and rerank tuning now live in TypeScript code rather than JSON. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:28] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/README.md:44]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts:10`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/README.md:121`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:7`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:28`"
+      ]
+    },
+    {
+      "id": "finding-3-2-the-0-2346-factor-is-not-an-arbitrary-search-constant-it-is-the-canonical-fsrs-v",
+      "text": "The `0.2346` factor is not an arbitrary search constant. It is the canonical FSRS v4 `19/81` factor established in the scheduler and repeated in cognitive documentation and search-time decay comments. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts:10] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/README.md:121] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:7]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts:10`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/README.md:121`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:7`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:28`"
+      ]
+    },
+    {
+      "id": "finding-3-1-the-packet-spec-lists-stale-stage-1-and-stage-2-paths-the-real-runtime-files-liv",
+      "text": "The packet spec lists stale Stage 1 and Stage 2 paths; the real runtime files live under `lib/search/pipeline/`, while hybrid fusion list assembly also happens in `lib/search/hybrid-search.ts`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts:10`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/README.md:121`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:7`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:28`"
+      ]
+    },
+    {
+      "id": "finding-4-3-hybrid-search-ts-applies-those-adaptive-weights-directly-when-building-fusion-li",
+      "text": "`hybrid-search.ts` applies those adaptive weights directly when building fusion lists, setting vector and keyword weights explicitly and optionally overriding graph weight. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:82`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-4-1-adaptive-fusion-ships-with-intent-specific-profiles-not-a-single-global-weight-s",
+      "text": "Adaptive fusion ships with intent-specific profiles, not a single global weight set. Examples: `understand` starts at `0.7/0.2/0.1/0.15` (semantic/keyword/recency/graph), while `find_decision` starts at `0.3/0.2/0.1/0.5`. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:82`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-4-2-the-profiles-are-normalized-whenever-active-weights-sum-above-1-0-so-the-effecti",
+      "text": "The profiles are normalized whenever active weights sum above `1.0`, so the effective `understand` blend is approximately `semantic 0.6087 / keyword 0.1739 / recency 0.0870 / graph 0.1304`, and `find_spec` normalizes to `semantic 0.5385 / keyword 0.1538 / recency 0.0769 / graph 0.2308`. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:82] [INFERENCE: packet-local normalization calculation from the declared profile sums]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:82`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-5-1-shared-rrf-fusion-defaults-to-k-40-includes-a-flat-0-10-convergence-bonus-and-ap",
+      "text": "Shared RRF fusion defaults to `k=40`, includes a flat `0.10` convergence bonus, and applies a default graph boost of `1.5` when graph has no explicit weight. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts:22]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts:22`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:127`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98`"
+      ]
+    },
+    {
+      "id": "finding-5-2-the-k-sensitivity-analysis-utility-sweeps-10-20-40-60-80-100-120-but-uses-k-60-a",
+      "text": "The K-sensitivity analysis utility sweeps `{10,20,40,60,80,100,120}` but uses `K=60` as its analysis baseline, which is notable because production default is `40`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:127]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts:22`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:127`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98`"
+      ]
+    },
+    {
+      "id": "finding-5-3-the-optimization-test-fixture-expects-literal-lookup-k-10-and-understand-k-80-wh",
+      "text": "The optimization test fixture expects `literal_lookup -> K=10` and `understand -> K=80`, which means the codebase already encodes the idea that different intents benefit from different top-heaviness. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts:22`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:127`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98`"
+      ]
+    },
+    {
+      "id": "finding-6-3-search-weights-json-can-still-matter-for-vector-only-smart-ranking-but-it-is-a-s",
+      "text": "`search-weights.json` can still matter for vector-only smart ranking, but it is a secondary lever for this packet because hybrid fusion bypasses it. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts:964] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/README.md:43]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts:964`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:43`"
+      ]
+    },
+    {
+      "id": "finding-6-1-continuity-style-queries-align-more-closely-with-find-spec-and-find-decision-tha",
+      "text": "Continuity-style queries align more closely with `find_spec` and `find_decision` than with the default profile, because those profiles keep recency low while materially increasing graph or source-of-truth bias. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60] [INFERENCE: continuity asks for canonical packets, decision lineage, and spec docs rather than freshness]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts:964`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:43`"
+      ]
+    },
+    {
+      "id": "finding-6-2-the-stage-2-recency-contribution-is-already-low-0-07-cap-0-10-so-raising-recency",
+      "text": "The Stage 2 recency contribution is already low (`0.07`, cap `0.10`), so raising recency would move continuity search in the wrong direction; the stronger tuning lever is graph/spec weighting plus intent-specific K. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:139]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:125`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts:964`",
+        "`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:43`"
+      ]
+    },
+    {
+      "id": "finding-7-2-on-the-project-fixture-corpus-baseline-ordering-and-reranked-ordering-have-the-s",
+      "text": "On the project fixture corpus, baseline ordering and reranked ordering have the same average `P@5=0.48`, but RR@5 rises from `0.5167` baseline to `0.8667` for Voyage and `0.9000` for Cohere. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:21] [INFERENCE: packet-local computation over the fixture rank orders]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:195`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:21`"
+      ]
+    },
+    {
+      "id": "finding-7-1-provider-selection-is-ordered-voyage-cohere-local-and-the-cross-encoder-returns-",
+      "text": "Provider selection is ordered `Voyage -> Cohere -> Local`, and the cross-encoder returns fallback-sort results when no provider is available or the circuit breaker opens. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:195] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:411]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:195`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:21`"
+      ]
+    },
+    {
+      "id": "finding-7-3-the-local-provider-path-is-structurally-different-from-the-remote-providers-it-c",
+      "text": "The local provider path is structurally different from the remote providers: it caps at 50 documents and allows a 30-second timeout, but the repo does not include comparable local-quality fixtures, so Local quality remains unmeasured here. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:52]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:195`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:21`"
+      ]
+    },
+    {
+      "id": "finding-8-1-a-packet-local-probe-over-opencode-specs-system-spec-kit-md-found-5966-markdown-",
+      "text": "A packet-local probe over `.opencode/specs/system-spec-kit/**/*.md` found `5966` markdown files, `0` under 50 characters, and `4690` over 2000 characters (`78.6%`), with median length `5666`. [INFERENCE: packet-local corpus probe] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`"
+      ]
+    },
+    {
+      "id": "finding-8-2-because-the-short-threshold-catches-none-of-the-actual-corpus-and-the-long-thres",
+      "text": "Because the short threshold catches none of the actual corpus and the long threshold catches most of it, the current length penalty behaves like a blanket long-doc demotion rather than a targeted relevance correction for spec-doc continuity search. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62] [INFERENCE: derived from the packet-local corpus probe]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`"
+      ]
+    },
+    {
+      "id": "finding-8-3-the-reranker-cache-exposes-ttl-checks-insertions-and-latency-sample-counts-but-t",
+      "text": "The reranker cache exposes TTL checks, insertions, and latency sample counts, but there are no hit/miss counters in the exported status object, so current code cannot answer \"what is the hit rate at 5 minutes?\" [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`"
+      ]
+    },
+    {
+      "id": "finding-9-2-the-5-minute-ttl-should-remain-the-default-until-hit-miss-instrumentation-exists",
+      "text": "The 5-minute TTL should remain the default until hit/miss instrumentation exists; changing it now would be policy without measurement. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-9-3-the-best-implementation-path-is-to-expose-continuity-tuning-controls-in-a-dedica",
+      "text": "The best implementation path is to expose continuity-tuning controls in a dedicated fusion config surface, because `search-weights.json` does not own the dominant ranking behavior for this packet. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:28] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-9-1-the-stage-3-minimum-rerank-threshold-of-2-is-very-permissive-for-continuity-quer",
+      "text": "The Stage 3 minimum rerank threshold of `2` is very permissive. For continuity queries, reranking only 2 results is unlikely to justify a network or local-model call, so a higher threshold such as `4-5` is the most plausible next experiment. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49] [INFERENCE: 2-item reranks have almost no ranking depth and no corpus evidence supports the current cutoff]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221`"
+      ]
+    },
+    {
+      "id": "finding-10-1-rq-1-is-best-answered-by-reframing-the-tuning-target-leave-search-weights-json-f",
+      "text": "`RQ-1` is best answered by reframing the tuning target: leave `search-weights.json` for vector smart-ranking, but tune continuity precision through adaptive intent weights, graph bias, and intent-specific RRF K. [SOURCE: research/iterations/iteration-004.md] [SOURCE: research/iterations/iteration-006.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-006.md`",
+        "`research/iterations/iteration-007.md`",
+        "`research/iterations/iteration-008.md`",
+        "`research/iterations/iteration-009.md`"
+      ]
+    },
+    {
+      "id": "finding-10-2-rq-2-is-a-do-not-retune-here-result-fsrs-0-2346-is-a-canonical-scheduler-invaria",
+      "text": "`RQ-2` is a \"do not retune here\" result: FSRS `0.2346` is a canonical scheduler invariant rather than a continuity-search heuristic. [SOURCE: research/iterations/iteration-003.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-006.md`",
+        "`research/iterations/iteration-007.md`",
+        "`research/iterations/iteration-008.md`",
+        "`research/iterations/iteration-009.md`"
+      ]
+    },
+    {
+      "id": "finding-10-3-rq-3-and-rq-5-are-bounded-by-instrumentation-gaps-fixture-comparisons-support-pr",
+      "text": "`RQ-3` and `RQ-5` are bounded by instrumentation gaps: fixture comparisons support provider-quality ordering, but live latency distribution and cache hit rate both require telemetry that the current code does not expose. [SOURCE: research/iterations/iteration-007.md] [SOURCE: research/iterations/iteration-008.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-006.md`",
+        "`research/iterations/iteration-007.md`",
+        "`research/iterations/iteration-008.md`",
+        "`research/iterations/iteration-009.md`"
+      ]
+    },
+    {
+      "id": "finding-10-4-rq-4-produces-the-clearest-actionable-threshold-change-the-long-document-penalty",
+      "text": "`RQ-4` produces the clearest actionable threshold change: the long-document penalty should be raised or removed for spec-doc continuity retrieval because the threshold currently matches the dominant corpus shape. [SOURCE: research/iterations/iteration-008.md] [SOURCE: research/iterations/iteration-009.md]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-006.md`",
+        "`research/iterations/iteration-007.md`",
+        "`research/iterations/iteration-008.md`",
+        "`research/iterations/iteration-009.md`"
+      ]
+    },
+    {
+      "id": "finding-11-3-a-safe-first-implementation-for-phase-001-is-therefore-remove-scoring-effect-kee",
+      "text": "A safe first implementation for phase `001` is therefore \"remove scoring effect, keep compatibility flag as a no-op\" rather than \"delete the flag everywhere in the same pass\". That keeps the MCP/tool surface stable while honoring the user decision to remove the penalty entirely. [INFERENCE: production scoring is localized, but request-contract plumbing is broad]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tools/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-1-the-actual-penalty-logic-is-fully-localized-inside-cross-encoder-ts-length-penal",
+      "text": "The actual penalty logic is fully localized inside `cross-encoder.ts`: `LENGTH_PENALTY`, `calculateLengthPenalty()`, `applyLengthPenalty()`, and the conditional branch inside `rerankResults()` are the only production scoring sites. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:212] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:218] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:389]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tools/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-2-the-blast-radius-is-wider-than-one-file-because-applylengthpenalty-is-a-public-s",
+      "text": "The blast radius is wider than one file because `applyLengthPenalty` is a public search argument: it is accepted by the tool schemas, typed in tool args, defaulted in `memory-search.ts`, included in the cache key, and forwarded into the pipeline config. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:160] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:137] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tools/types.ts:69] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:643] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts:50] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts:144]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tools/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts`"
+      ]
+    },
+    {
+      "id": "finding-11-4-the-shadow-replay-path-hardcodes-applylengthpenalty-true-so-removing-the-scoring",
+      "text": "The shadow replay path hardcodes `applyLengthPenalty: true`, so removing the scoring code without cleaning up the replay config is safe, but deleting the flag entirely would create avoidable churn in unrelated evaluation code. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts:223]",
+      "addedAtIteration": 11,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tools/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-2-search-limits-scoring-vitest-ts-also-performs-source-analysis-checks-that-explic",
+      "text": "`search-limits-scoring.vitest.ts` also performs source-analysis checks that explicitly search for `calculateLengthPenalty` and `applyLengthPenalty` strings in handler and Stage 3 source, so deleting those symbols without rewriting the tests will fail even if runtime behavior is correct. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:231] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:248] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:267]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-7-because-the-user-explicitly-decided-to-remove-the-penalty-entirely-there-is-no-v",
+      "text": "Because the user explicitly decided to remove the penalty entirely, there is no value in preserving threshold constants in hidden form. Any remaining flag should be documented as compatibility-only and scheduled for follow-up cleanup after callers/tests stop referencing it. [INFERENCE: user decision removes the need for shadow threshold tuning]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-4-delete-length-penalty-calculatelengthpenalty-and-applylengthpenalty-from-cross-e",
+      "text": "delete `LENGTH_PENALTY`, `calculateLengthPenalty()`, and `applyLengthPenalty()` from `cross-encoder.ts`",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-5-keep-the-applylengthpenalty-option-accepted-and-forwarded-for-one-compatibility-",
+      "text": "keep the `applyLengthPenalty` option accepted and forwarded for one compatibility cycle, but make it a no-op",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-6-rewrite-tests-from-penalty-math-exists-to-flag-is-inert-reranker-output-no-longe",
+      "text": "rewrite tests from \"penalty math exists\" to \"flag is inert / reranker output no longer changes by content length\". [INFERENCE: aligns runtime removal with the existing public request contract]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-1-the-length-penalty-behavior-is-asserted-directly-in-at-least-four-suites-cross-e",
+      "text": "The length-penalty behavior is asserted directly in at least four suites: `cross-encoder.vitest.ts`, `cross-encoder-extended.vitest.ts`, `search-extended.vitest.ts`, and `search-limits-scoring.vitest.ts`. Those tests currently pin the exact thresholds (`50`, `2000`) and penalties (`0.9`, `0.95`) rather than merely verifying reranker behavior. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:8] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:74] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts:199] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:178]",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-12-3-the-safest-phase-001-patch-is",
+      "text": "The safest phase-001 patch is:",
+      "addedAtIteration": 12,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-3-getrerankerstatus-is-currently-only-consumed-by-tests-not-by-production-handlers",
+      "text": "`getRerankerStatus()` is currently only consumed by tests, not by production handlers, so phase `002` can safely extend the status shape without immediately changing user-facing MCP responses. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:150] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:500]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-4-if-operator-visible-telemetry-is-needed-after-phase-002-the-best-follow-on-surfa",
+      "text": "If operator-visible telemetry is needed after phase `002`, the best follow-on surface is the existing retrieval-telemetry payload, not a bespoke reranker endpoint: retrieval telemetry already owns rerank latency and per-request observability. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts:57] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts:162]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-1-the-cache-currently-has-exactly-the-state-needed-to-support-four-counters-valid-",
+      "text": "The cache currently has exactly the state needed to support four counters: valid-hit, miss, stale-hit, and eviction. The cache lookup already distinguishes \"found and fresh\" from \"found but expired\", and `enforceCacheBound()` is the single eviction point. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:125] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:467]",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-13-2-the-cleanest-counter-shape-is-a-nested-cache-block-on-rerankerstatus-for-example",
+      "text": "The cleanest counter shape is a nested `cache` block on `RerankerStatus`, for example:",
+      "addedAtIteration": 13,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-14-3-add-counters-to-cross-encoder-ts-module-state-and-getrerankerstatus",
+      "text": "add counters to `cross-encoder.ts` module state and `getRerankerStatus()`",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-14-5-if-the-team-wants-the-counters-visible-during-normal-search-runs-the-lowest-fric",
+      "text": "If the team wants the counters visible during normal search runs, the lowest-friction follow-on is to inject a snapshot of `getRerankerStatus()` into retrieval telemetry at request end when extended telemetry is enabled. That reuses an existing observability contract rather than proliferating new endpoints. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts:98] [INFERENCE: retrieval telemetry is already the place where rerank timing is serialized]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-14-2-phase-002-can-stay-within-its-current-packet-scope-if-it-does-only-two-things",
+      "text": "Phase `002` can stay within its current packet scope if it does only two things:",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-14-6-reset-semantics-matter-resetsession-already-clears-cache-latency-and-circuit-bre",
+      "text": "Reset semantics matter: `resetSession()` already clears cache, latency, and circuit breakers, so phase `002` should fold the new counters into the same reset path or the existing tests will become misleading. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:525]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-14-1-the-current-retrieval-telemetry-contract-already-models-rerank-latency-reranklat",
+      "text": "The current retrieval-telemetry contract already models rerank latency (`rerankLatencyMs`) and fallback state, but it does not yet have a dedicated reranker-status or cache snapshot field. That makes it a good mirror surface, not the canonical source of cache counters. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts:57] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts:236] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts:264]",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-14-4-update-the-existing-cross-encoder-test-suites-to-assert-the-new-cache-block-and-",
+      "text": "update the existing `cross-encoder` test suites to assert the new `cache` block and reset behavior.",
+      "addedAtIteration": 14,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`",
+        "`001-search-fusion-tuning/002-add-reranker-telemetry/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-15-1-adaptive-fusion-ts-is-already-the-canonical-home-for-intent-weight-profiles-and-",
+      "text": "`adaptive-fusion.ts` is already the canonical home for intent-weight profiles, and `getAdaptiveWeights(intent: string)` accepts arbitrary strings. That means a new `continuity` profile can be added without changing the function signature or the core fusion algorithm. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60] [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:137]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`001-search-fusion-tuning/003-continuity-search-profile/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-15-2-hybrid-search-ts-also-treats-the-active-intent-as-a-string-before-passing-it-int",
+      "text": "`hybrid-search.ts` also treats the active intent as a string before passing it into `getAdaptiveWeights()`, so lower-level callers that can already set `options.intent = 'continuity'` will pick up the new profile immediately. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1223]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`001-search-fusion-tuning/003-continuity-search-profile/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-15-4-the-required-test-updates-at-this-minimal-scope-are-centered-in-adaptive-fusion-",
+      "text": "The required test updates at this minimal scope are centered in `adaptive-fusion.vitest.ts` and `integration-138-pipeline.vitest.ts`, where the repo currently assumes exactly 7 intent profiles. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts:67] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts:321]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`001-search-fusion-tuning/003-continuity-search-profile/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-15-3-this-means-phase-003-can-stay-narrowly-scoped-if-its-goal-is-add-a-continuity-we",
+      "text": "This means phase `003` can stay narrowly scoped if its goal is \"add a continuity weight profile and wire it from internal callers.\" It does not inherently require classifier, schema, or query-router changes. [INFERENCE: adaptive fusion itself is string-keyed rather than hard-unioned]",
+      "addedAtIteration": 15,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`001-search-fusion-tuning/003-continuity-search-profile/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-16-2-downstream-routing-also-assumes-only-find-spec-and-find-decision-need-special-pr",
+      "text": "Downstream routing also assumes only `find_spec` and `find_decision` need special preservation behavior or artifact fallbacks. Adding public continuity intent would therefore require updates in `query-router.ts` and `artifact-routing.ts`, not just the classifier. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts:115] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts:209]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-16-6-expanded-public-intent-scope-update-classifier-unions-maps-artifact-routing-bm25",
+      "text": "Expanded public-intent scope: update classifier unions/maps, artifact routing, BM25 preservation rules, auto-profile mapping, lambda mapping, and the intent test suites together. [INFERENCE: the broader intent stack is tightly coupled]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-16-5-minimal-scope-add-continuity-only-to-intent-weight-profiles-and-wire-it-from-exp",
+      "text": "Minimal scope: add `continuity` only to `INTENT_WEIGHT_PROFILES` and wire it from explicit internal callers.",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-16-4-safe-phase-003-guidance-is-therefore-split",
+      "text": "Safe phase-003 guidance is therefore split:",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-16-3-the-test-blast-radius-is-substantial-intent-classifier-vitest-ts-explicitly-asse",
+      "text": "The test blast radius is substantial: `intent-classifier.vitest.ts` explicitly asserts there are 7 intent types, `integration-138-pipeline.vitest.ts` asserts \"all 7 intent profiles\", and `intent-weighting.vitest.ts` assumes parity between the two intent-weight systems. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts:53] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts:224] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts:321] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts:78]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-16-1-the-typed-intent-universe-is-hard-coded-in-intent-classifier-ts-intenttype-inten",
+      "text": "The typed intent universe is hard-coded in `intent-classifier.ts`: `IntentType`, `INTENT_TYPES`, keyword/pattern/centroid maps, `INTENT_WEIGHT_ADJUSTMENTS`, score initialization, descriptions, `INTENT_TO_PROFILE`, and `INTENT_LAMBDA_MAP` all assume the current 7-intent set. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:7] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:32] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:197] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:613] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:641]",
+      "addedAtIteration": 16,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/intent-weighting.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-17-4-results-length-3-stage-2-order-becomes-final",
+      "text": "`results.length <= 3`: Stage 2 order becomes final",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-5-results-length-4-reranking-still-runs-which-is-the-new-proving-ground",
+      "text": "`results.length = 4`: reranking still runs, which is the new proving ground",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-6-local-gguf-path-shares-the-same-stage-3-guard-so-the-threshold-change-applies-eq",
+      "text": "local-gguf path shares the same Stage 3 guard, so the threshold change applies equally to remote and local rerankers. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:321] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:334]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-7-phase-004-therefore-needs-new-threshold-specific-tests-not-just-a-constant-edit-",
+      "text": "Phase `004` therefore needs new threshold-specific tests, not just a constant edit: at minimum, add explicit \"3 results => not applied\" and \"4 results => applied\" assertions around `applyCrossEncoderReranking()`. [INFERENCE: current test coverage exercises rerank behavior, but not the boundary itself]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-3-the-important-runtime-edge-cases-at-4-are",
+      "text": "The important runtime edge cases at `4` are:",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-1-the-rerank-minimum-is-enforced-only-in-stage-3-not-in-cross-encoder-rerankresult",
+      "text": "The rerank minimum is enforced only in Stage 3, not in `cross-encoder.rerankResults()` itself. `applyCrossEncoderReranking()` exits early when `results.length < MIN_RESULTS_FOR_RERANK`, so the threshold change affects pipeline behavior but not direct cross-encoder unit tests. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:50] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:306] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:321]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-17-2-the-safest-first-move-is-min-results-for-rerank-4-not-5-at-4-two-document-and-th",
+      "text": "The safest first move is `MIN_RESULTS_FOR_RERANK = 4`, not `5`. At `4`, two-document and three-document result sets skip reranking, but common `top-4`/`top-5` candidate windows still get neural ordering. At `5`, every 4-result continuity query would also skip reranking, which is a steeper unmeasured behavior change. [INFERENCE: conservative change while telemetry is still absent]",
+      "addedAtIteration": 17,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`001-search-fusion-tuning/004-raise-rerank-minimum/spec.md`"
+      ]
+    },
+    {
+      "id": "finding-18-1-stage3-rerank-regression-vitest-ts-is-the-main-direct-casualty-the-first-three-r",
+      "text": "`stage3-rerank-regression.vitest.ts` is the main direct casualty: the first three regression tests call `applyCrossEncoderReranking()` with only 2 input rows and currently expect `result.applied === true`. Those fixtures must be expanded to at least 4 rows if phase `004` raises the threshold to 4. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:42] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:70] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:93] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:116]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-7-add-one-new-negative-boundary-test-for-3-rows",
+      "text": "add one new negative-boundary test for 3 rows",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-5-change-the-constant-to-4",
+      "text": "change the constant to `4`",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-3-direct-crossencoder-rerankresults-suites-in-cross-encoder-vitest-ts-cross-encode",
+      "text": "Direct `crossEncoder.rerankResults()` suites in `cross-encoder.vitest.ts`, `cross-encoder-extended.vitest.ts`, and `reranker-eval-comparison.vitest.ts` do not need threshold updates, because they bypass the Stage 3 minimum guard entirely. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts:177] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts:349] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:325]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-6-expand-the-three-direct-stage-3-regression-fixtures-from-2-rows-to-4-rows",
+      "text": "expand the three direct Stage 3 regression fixtures from 2 rows to 4 rows",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-8-leave-direct-cross-encoder-tests-untouched-unless-they-accidentally-imported-the",
+      "text": "leave direct cross-encoder tests untouched unless they accidentally imported the Stage 3 helper later. [INFERENCE: keeps the change localized to the policy layer that owns the threshold]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-4-safe-phase-004-guidance",
+      "text": "Safe phase-004 guidance:",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-18-2-the-executestage3-regression-at-line-142-is-unaffected-because-it-disables-cross",
+      "text": "The `executeStage3()` regression at line 142 is unaffected because it disables cross-encoder reranking (`rerank: false`) and only exercises MMR/non-embedded row preservation. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:142]",
+      "addedAtIteration": 18,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-7-continue-the-canonical-continuity-refactor-source-opencode-skill-system-spec-kit",
+      "text": "\"continue the canonical continuity refactor\". [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:19] [INFERENCE: continuity prompts should target spec-doc recovery and decision resumption]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-4-resume-the-packet-from-the-last-safe-action",
+      "text": "\"resume the packet from the last safe action\"",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-5-what-changed-in-this-spec-folder-since-the-last-session",
+      "text": "\"what changed in this spec folder since the last session\"",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-6-where-was-this-implementation-decision-recorded",
+      "text": "\"where was this implementation decision recorded\"",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-9-phase-1-add-continuity-rows-to-optimizekvaluesbyintent-fixtures-and-judge-their-",
+      "text": "phase 1: add `continuity` rows to `optimizeKValuesByIntent()` fixtures and judge their best K",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-10-phase-2-only-if-public-continuity-intent-ships-extend-intentclass-and-runjudgedk",
+      "text": "phase 2: only if public continuity intent ships, extend `IntentClass` and `runJudgedKSweep()` so continuity participates in the typed judged harness too. [INFERENCE: separates evaluation work from public intent-system expansion]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-8-safe-k-sweep-guidance-is-therefore-staged",
+      "text": "Safe K-sweep guidance is therefore staged:",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-2-the-higher-blast-radius-path-is-the-judged-sweep-judgedquery-runjudgedksweep-bec",
+      "text": "The higher-blast-radius path is the judged sweep (`JudgedQuery`, `runJudgedKSweep()`), because `JudgedQuery.intent` is typed as `IntentClass`, which currently excludes `continuity`. Extending that harness would require a union change plus broader judged-sweep test updates. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:339] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:670] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts:12]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-1-the-lowest-blast-radius-extension-point-is-optimizekvaluesbyintent-via-intentkop",
+      "text": "The lowest-blast-radius extension point is `optimizeKValuesByIntent()` via `IntentKOptimizationQuery`. That path already accepts `intent: string`, so continuity-specific query labels can be added immediately without changing the `IntentClass` union. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:402] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:494]",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-19-3-the-repo-already-has-a-template-for-precomputed-per-k-rankings-in-k-value-optimi",
+      "text": "The repo already has a template for precomputed per-K rankings in `k-value-optimization.vitest.ts`, so continuity-specific judged queries can be added there first using realistic continuity prompts such as:",
+      "addedAtIteration": 19,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-20-5-broad-scope-add-a-public-continuity-intent-across-classifier-routing-artifact-ma",
+      "text": "broad scope: add a public continuity intent across classifier, routing, artifact mapping, auto-profile, lambda map, and tests",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-4-narrow-scope-add-continuity-only-to-intent-weight-profiles-and-internal-callers",
+      "text": "narrow scope: add `continuity` only to `INTENT_WEIGHT_PROFILES` and internal callers",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-1-phase-001-remove-length-penalty-should-be-implemented-as-behavior-removal-plus-c",
+      "text": "Phase `001-remove-length-penalty` should be implemented as \"behavior removal plus compatibility no-op\", not \"contract deletion\". Production scoring can be deleted from `cross-encoder.ts` immediately, but `applyLengthPenalty` should remain accepted for one compatibility cycle because it still flows through schemas, handler defaults, cache keys, and shadow replay configs. [SOURCE: research/iterations/iteration-011.md] [SOURCE: research/iterations/iteration-012.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-2-phase-002-add-reranker-telemetry-has-a-clean-bounded-scope-if-it-extends-reranke",
+      "text": "Phase `002-add-reranker-telemetry` has a clean bounded scope if it extends `RerankerStatus` with a nested `cache` block and resets those counters in `resetSession()`. Operator-visible exposure can be a separate follow-on that mirrors the status snapshot into retrieval telemetry. [SOURCE: research/iterations/iteration-013.md] [SOURCE: research/iterations/iteration-014.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-3-phase-003-continuity-search-profile-has-two-valid-scopes-and-choosing-between-th",
+      "text": "Phase `003-continuity-search-profile` has two valid scopes, and choosing between them matters:",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-6-phase-004-raise-rerank-minimum-should-start-at-min-results-for-rerank-4-not-5-an",
+      "text": "Phase `004-raise-rerank-minimum` should start at `MIN_RESULTS_FOR_RERANK = 4`, not `5`, and its required test work is tightly localized to `stage3-rerank-regression.vitest.ts` plus new boundary assertions. [SOURCE: research/iterations/iteration-017.md] [SOURCE: research/iterations/iteration-018.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-20-7-the-continuity-specific-k-sweep-can-proceed-now-without-waiting-for-public-conti",
+      "text": "The continuity-specific K-sweep can proceed now without waiting for public continuity intent if it uses the string-typed `IntentKOptimizationQuery` harness first. That makes it a good supporting benchmark task rather than a blocker for phases `001`-`004`. [SOURCE: research/iterations/iteration-019.md]",
+      "addedAtIteration": 20,
+      "sources": [
+        "`research/iterations/iteration-011.md`",
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-013.md`",
+        "`research/iterations/iteration-014.md`",
+        "`research/iterations/iteration-015.md`",
+        "`research/iterations/iteration-016.md`",
+        "`research/iterations/iteration-017.md`",
+        "`research/iterations/iteration-018.md`",
+        "`research/iterations/iteration-019.md`"
+      ]
+    },
+    {
+      "id": "finding-21-3-the-only-meaningful-inconsistency-found-in-this-convergence-pass-is-packet-local",
+      "text": "The only meaningful inconsistency found in this convergence pass is packet-local, not runtime-local: the research config still capped the loop at 10 and the dashboard still reported 10/10 even though 20 iterations already existed. The runtime conclusions remained coherent; the packet artifacts did not. [SOURCE: research/deep-research-config.json:3] [SOURCE: research/deep-research-dashboard.md:10]",
+      "addedAtIteration": 21,
+      "sources": [
+        "`research/deep-research-config.json`",
+        "`research/deep-research-dashboard.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-21-4-the-prior-conclusions-therefore-reinforce-one-another-into-a-single-sequencing-s",
+      "text": "The prior conclusions therefore reinforce one another into a single sequencing story rather than competing directions: telemetry first, length-penalty behavior removal second, Stage 3 minimum rerank threshold third, and continuity-profile work last once scope is explicit.",
+      "addedAtIteration": 21,
+      "sources": [
+        "`research/deep-research-config.json`",
+        "`research/deep-research-dashboard.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-21-2-there-is-no-contradiction-between-keep-continuity-narrow-first-and-extend-contin",
+      "text": "There is no contradiction between \"keep continuity narrow first\" and \"extend continuity-specific K sweeps now\". `adaptive-fusion.ts` and `optimizeKValuesByIntent()` both accept plain strings today, while public intent surfaces remain locked to the current 7-intent universe. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60] [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:137] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:402] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:494] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:7]",
+      "addedAtIteration": 21,
+      "sources": [
+        "`research/deep-research-config.json`",
+        "`research/deep-research-dashboard.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-21-1-there-is-no-contradiction-between-remove-the-length-penalty-and-keep-applylength",
+      "text": "There is no contradiction between \"remove the length penalty\" and \"keep `applyLengthPenalty` as a compatibility no-op\". The scoring behavior is localized inside `cross-encoder.ts`, while the flag still appears in schemas, handler defaults, and cache-key construction. That means behavior can be removed without deleting the public contract in the same phase. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:212] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:389] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:160] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:642]",
+      "addedAtIteration": 21,
+      "sources": [
+        "`research/deep-research-config.json`",
+        "`research/deep-research-dashboard.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-22-2-phase-001-remove-length-penalty-is-the-second-priority-because-it-delivers-the-c",
+      "text": "Phase `001-remove-length-penalty` is the second priority because it delivers the clearest direct continuity win: the current long-doc penalty demotes many of the exact canonical spec documents continuity search wants. The risk is moderate, not low, because the flag still spans request-contract and test surfaces. [SOURCE: research/iterations/iteration-021.md] [SOURCE: research/iterations/iteration-012.md]",
+      "addedAtIteration": 22,
+      "sources": [
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-020.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-22-1-phase-002-add-reranker-telemetry-is-the-highest-priority-execution-step-because-",
+      "text": "Phase `002-add-reranker-telemetry` is the highest-priority execution step because it has bounded scope, low behavior risk, and creates the measurement surface needed to judge later changes responsibly. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:525]",
+      "addedAtIteration": 22,
+      "sources": [
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-020.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-22-4-phase-003-continuity-search-profile-is-fourth-in-sequence-even-though-it-may-eve",
+      "text": "Phase `003-continuity-search-profile` is fourth in sequence even though it may eventually produce the largest upside, because its implementation risk depends entirely on scope selection. Narrow adaptive-fusion-only work is cheap; broad public-intent work is not. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:613] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:641]",
+      "addedAtIteration": 22,
+      "sources": [
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-020.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-22-3-phase-004-raise-rerank-minimum-is-third-its-expected-impact-is-narrower-than-pha",
+      "text": "Phase `004-raise-rerank-minimum` is third. Its expected impact is narrower than phase `001`, but its code and test blast radius is smaller and well-localized to Stage 3 threshold behavior plus a single regression suite. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:50] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:42]",
+      "addedAtIteration": 22,
+      "sources": [
+        "`research/iterations/iteration-012.md`",
+        "`research/iterations/iteration-020.md`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`"
+      ]
+    },
+    {
+      "id": "finding-23-4-broad-public-continuity-intent-remains-the-riskiest-partial-rollout-candidate-be",
+      "text": "Broad public continuity intent remains the riskiest partial-rollout candidate because it has to move classifier enums, auto-profile routing, MMR lambda mapping, BM25-preserving query routing, artifact fallback logic, tool schemas, and ground-truth/test datasets together. A half-implemented public intent would drift immediately. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:7] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:613] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:641] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts:113] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts:208] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:43] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts:45]",
+      "addedAtIteration": 23,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-23-3-cache-counter-telemetry-needs-explicit-reset-and-scope-semantics-resetsession-al",
+      "text": "Cache-counter telemetry needs explicit reset and scope semantics. `resetSession()` already clears cache, latency, and circuit breakers, so new counters must clear there too. Also note that the cache map is process-wide while status reports a single active provider, so the packet should define whether counters are global or provider-specific. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:195] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:525]",
+      "addedAtIteration": 23,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-23-2-keeping-applylengthpenalty-as-a-no-op-preserves-compatibility-but-it-also-means-",
+      "text": "Keeping `applyLengthPenalty` as a no-op preserves compatibility, but it also means the cache can still split identical result sets across `lp` and non-`lp` keys until the compatibility flag is removed. That is acceptable for one release cycle, but it is a real short-term inefficiency. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:241] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:425] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:468]",
+      "addedAtIteration": 23,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-23-1-raising-min-results-for-rerank-to-4-affects-the-local-gguf-reranker-path-as-well",
+      "text": "Raising `MIN_RESULTS_FOR_RERANK` to `4` affects the local GGUF reranker path as well as the cross-encoder path, because the minimum-results guard runs before the local reranker branch. Any change here should be described as a Stage 3 policy change, not as a cloud-reranker-only change. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:321] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:334]",
+      "addedAtIteration": 23,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-24-2-optimizekvaluesbyintent-is-already-the-right-seam-because-it-groups-queries-by-a",
+      "text": "`optimizeKValuesByIntent()` is already the right seam because it groups queries by arbitrary string keys and returns per-intent metrics keyed the same way. No `IntentClass` expansion is required for the narrow continuity benchmark. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:402] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:494] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:509]",
+      "addedAtIteration": 24,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-24-4-the-implementation-ready-recommendation-is-therefore-keep-continuity-k-validatio",
+      "text": "The implementation-ready recommendation is therefore: keep continuity K validation in `k-value-optimization.vitest.ts` first, use continuity-resume and decision-recovery prompts, and only widen into the judged sweep if a real public continuity intent is later approved. [INFERENCE: keeps evaluation additive and decoupled from public-intent scope]",
+      "addedAtIteration": 24,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-24-1-the-safest-first-extension-is-additive-continuity-fixtures-in-k-value-optimizati",
+      "text": "The safest first extension is additive continuity fixtures in `k-value-optimization.vitest.ts`. The current suite only asserts best-K results for `literal_lookup` and `understand`, so a new `continuity` bucket can be added without disturbing those expectations as long as its assertions are scoped to the new bucket or to metric presence. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98]",
+      "addedAtIteration": 24,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-24-3-the-typed-judged-sweep-should-stay-deferred-judgedquery-intent-and-the-fixture-h",
+      "text": "The typed judged sweep should stay deferred. `JudgedQuery.intent` and the fixture helper `makeJudgedQuery(intent: IntentClass, ...)` are both union-locked, so continuity would force a broader type/test migration for little immediate benefit. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:325] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:339] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:670] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts:57]",
+      "addedAtIteration": 24,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/k-value-judged-sweep.vitest.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-5-001-remove-length-penalty-highest-direct-continuity-improvement-moderate-contrac",
+      "text": "`001-remove-length-penalty`: highest direct continuity improvement, moderate contract/test risk",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-4-002-add-reranker-telemetry-highest-priority-low-behavior-risk-enabling-data",
+      "text": "`002-add-reranker-telemetry`: highest priority, low behavior risk, enabling data",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-7-003-continuity-search-profile-highest-upside-but-highest-ambiguity-risk-keep-nar",
+      "text": "`003-continuity-search-profile`: highest upside but highest ambiguity/risk; keep narrow-first",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-6-004-raise-rerank-minimum-medium-impact-localized-code-test-risk",
+      "text": "`004-raise-rerank-minimum`: medium impact, localized code/test risk",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-9-final-packet-hygiene-matters-config-state-dashboard-and-findings-registry-must-s",
+      "text": "Final packet hygiene matters: config, state, dashboard, and findings registry must stay synchronized so the research lineage reflects the real 25-iteration convergence record rather than the stale 10-iteration baseline.",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-2-phase-003-continuity-search-profile-should-default-to-the-narrow-internal-scope-",
+      "text": "Phase `003-continuity-search-profile` should default to the narrow internal scope first: add `continuity` only at the adaptive-fusion/internal-caller seam and validate it through the string-typed K harness. Treat broad public continuity intent as a separate follow-on only if operator-facing APIs genuinely need it. [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60] [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:137] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:7] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:43] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:402]",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-3-the-final-combined-priority-ranking-is",
+      "text": "The final combined priority ranking is:",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-8-the-k-sweep-follow-up-is-supporting-validation-not-a-blocker-it-should-travel-wi",
+      "text": "The K-sweep follow-up is supporting validation, not a blocker. It should travel with the narrow continuity profile and stay additive to `k-value-optimization.vitest.ts` unless broad public continuity intent is later approved.",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    },
+    {
+      "id": "finding-25-1-the-prior-conclusions-do-not-contradict-one-another-they-form-a-stable-implement",
+      "text": "The prior conclusions do not contradict one another. They form a stable implementation sequence: telemetry establishes observability, length-penalty removal fixes the clearest continuity regression, rerank minimum `4` trims low-signal reranks with bounded fallout, and continuity-profile work comes last because it changes semantics more broadly. [SOURCE: research/iterations/iteration-021.md] [SOURCE: research/iterations/iteration-022.md] [SOURCE: research/iterations/iteration-023.md] [SOURCE: research/iterations/iteration-024.md]",
+      "addedAtIteration": 25,
+      "sources": [
+        "`research/iterations/iteration-021.md`",
+        "`research/iterations/iteration-022.md`",
+        "`research/iterations/iteration-023.md`",
+        "`research/iterations/iteration-024.md`",
+        "`.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts`"
+      ]
+    }
+  ],
+  "ruledOutDirections": [
+    {
+      "id": "ruled-out-1-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-2-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-2-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-2-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-3-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-2-treating-the-packet-s-shorter-stage-1-and-stage-2-file-paths-as-authoritative",
+      "text": "Treating the packet's shorter Stage 1 and Stage 2 file paths as authoritative.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-4-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-2-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-5-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-2-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-6-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-2-using-search-weights-json-as-the-primary-continuity-tuning-surface",
+      "text": "Using `search-weights.json` as the primary continuity tuning surface.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-7-2-claiming-real-provider-latency-distributions-from-the-fixture-only-test-corpus",
+      "text": "Claiming real provider latency distributions from the fixture-only test corpus.",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-1-live-benchmark-runs-against-configured-providers-were-not-available-within-packe",
+      "text": "Live benchmark runs against configured providers were not available within packet constraints.",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-8-2-changing-the-ttl-based-on-a-derived-hit-rate-from-current-exports",
+      "text": "Changing the TTL based on a derived hit rate from current exports.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-8-1-none-beyond-the-cache-observability-gap",
+      "text": "None beyond the cache observability gap.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-9-2-none-beyond-previously-ruled-out-config-assumptions",
+      "text": "None beyond previously ruled-out config assumptions.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-10-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-2-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-11-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-11-2-treating-phase-001-as-a-one-line-constant-deletion-with-no-compatibility-work",
+      "text": "Treating phase `001` as a one-line constant deletion with no compatibility work.",
+      "addedAtIteration": 11
+    },
+    {
+      "id": "ruled-out-12-1-keeping-the-constants-in-code-just-for-tests-that-would-preserve-dead-behavior-r",
+      "text": "Keeping the constants in code \"just for tests\". That would preserve dead behavior rather than removing it.",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-12-2-replacing-the-deleted-penalty-with-a-higher-threshold-in-phase-001-that-contradi",
+      "text": "Replacing the deleted penalty with a higher threshold in phase `001`; that contradicts the user\u2019s explicit removal decision.",
+      "addedAtIteration": 12
+    },
+    {
+      "id": "ruled-out-13-2-adding-counters-directly-to-per-result-payload-rows-cache-behavior-is-module-lev",
+      "text": "Adding counters directly to per-result payload rows; cache behavior is module-level, not document-level.",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-13-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 13
+    },
+    {
+      "id": "ruled-out-14-2-coupling-phase-002-to-ttl-retuning-or-dashboard-work-the-packet-sub-phase-spec-i",
+      "text": "Coupling phase `002` to TTL retuning or dashboard work; the packet sub-phase spec is right to keep that out of scope.",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-14-1-treating-getrerankerstatus-as-already-operator-visible-the-repo-evidence-does-no",
+      "text": "Treating `getRerankerStatus()` as already operator-visible; the repo evidence does not support that.",
+      "addedAtIteration": 14
+    },
+    {
+      "id": "ruled-out-15-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-15-2-treating-the-new-profile-as-a-change-to-default-weights-continuity-needs-to-be-e",
+      "text": "Treating the new profile as a change to `DEFAULT_WEIGHTS`; continuity needs to be explicit, not a silent default drift.",
+      "addedAtIteration": 15
+    },
+    {
+      "id": "ruled-out-16-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-16-2-sneaking-continuity-into-intent-weight-profiles-and-pretending-the-mcp-tool-surf",
+      "text": "Sneaking `continuity` into `INTENT_WEIGHT_PROFILES` and pretending the MCP/tool surface automatically supports it; the handler currently validates explicit intents against `IntentType`.",
+      "addedAtIteration": 16
+    },
+    {
+      "id": "ruled-out-17-2-changing-the-threshold-inside-cross-encoder-ts-that-would-be-the-wrong-layer-and",
+      "text": "Changing the threshold inside `cross-encoder.ts`; that would be the wrong layer and would break direct reranker tests unnecessarily.",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-17-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 17
+    },
+    {
+      "id": "ruled-out-18-2-mass-editing-every-reranker-test-file-after-raising-the-stage-3-minimum-the-thre",
+      "text": "Mass-editing every reranker test file after raising the Stage 3 minimum; the threshold blast radius is narrower than that.",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-18-1-treating-the-evaluation-comparison-suite-as-evidence-for-stage-3-threshold-behav",
+      "text": "Treating the evaluation-comparison suite as evidence for Stage 3 threshold behavior; it tests the reranker module directly.",
+      "addedAtIteration": 18
+    },
+    {
+      "id": "ruled-out-19-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-19-2-starting-with-runjudgedksweep-for-continuity-before-the-profile-intent-question-",
+      "text": "Starting with `runJudgedKSweep()` for continuity before the profile/intent question is settled.",
+      "addedAtIteration": 19
+    },
+    {
+      "id": "ruled-out-20-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 20
+    },
+    {
+      "id": "ruled-out-20-2-treating-all-four-implementation-sub-phases-as-symmetric-their-safe-scopes-are-m",
+      "text": "Treating all four implementation sub-phases as symmetric. Their safe scopes are meaningfully different.",
+      "addedAtIteration": 20
+    },
+    {
+      "id": "ruled-out-21-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 21
+    },
+    {
+      "id": "ruled-out-21-2-reopening-fsrs-or-search-weights-json-as-unresolved-convergence-topics",
+      "text": "Reopening FSRS or `search-weights.json` as unresolved convergence topics.",
+      "addedAtIteration": 21
+    },
+    {
+      "id": "ruled-out-22-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 22
+    },
+    {
+      "id": "ruled-out-22-2-ranking-the-follow-on-phases-by-algorithmic-novelty-instead-of-combined-impact-a",
+      "text": "Ranking the follow-on phases by algorithmic novelty instead of combined impact and implementation risk.",
+      "addedAtIteration": 22
+    },
+    {
+      "id": "ruled-out-23-2-treating-local-reranker-behavior-as-independent-from-the-stage-3-minimum-results",
+      "text": "Treating local reranker behavior as independent from the Stage 3 minimum-results gate.",
+      "addedAtIteration": 23
+    },
+    {
+      "id": "ruled-out-23-1-trying-to-keep-a-broad-public-continuity-intent-optional-while-leaving-the-curre",
+      "text": "Trying to keep a broad public continuity intent \"optional\" while leaving the current validator and test enums untouched.",
+      "addedAtIteration": 23
+    },
+    {
+      "id": "ruled-out-24-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 24
+    },
+    {
+      "id": "ruled-out-24-2-using-ground-truth-or-typed-judged-sweep-expansion-as-the-first-continuity-bench",
+      "text": "Using ground-truth or typed judged-sweep expansion as the first continuity benchmark step.",
+      "addedAtIteration": 24
+    },
+    {
+      "id": "ruled-out-25-2-continuing-to-treat-broad-public-continuity-intent-as-the-default-scope-for-phas",
+      "text": "Continuing to treat broad public continuity intent as the default scope for phase `003`.",
+      "addedAtIteration": 25
+    },
+    {
+      "id": "ruled-out-25-1-none-this-iteration",
+      "text": "None this iteration.",
+      "addedAtIteration": 25
+    }
+  ],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 25,
+    "openQuestions": 0,
+    "resolvedQuestions": 1,
+    "keyFindings": 119,
+    "convergenceScore": 0.07,
+    "coverageBySources": {
+      "code": 90,
+      "other": 71
+    }
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

@@ -12,7 +12,8 @@
   "specId": "026",
   "folderSlug": "graph-and-context-optimization",
   "parentChain": [
-    "system-spec-kit"
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
   ],
   "memorySequence": 4,
   "memoryNameHistory": [

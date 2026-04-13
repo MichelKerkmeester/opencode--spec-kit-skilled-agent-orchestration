@@ -1,0 +1,98 @@
+{
+  "topic": "Deep Review Batch 1/5 - Gate C writer ready",
+  "mode": "review",
+  "reviewTargetType": "files",
+  "reviewTarget": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/003-gate-c-writer-ready",
+    ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
+    ".opencode/skill/system-spec-kit/templates/level_3+/spec.md",
+    ".opencode/skill/system-spec-kit/templates/handover.md",
+    ".opencode/skill/system-spec-kit/templates/research.md",
+    ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
+    ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+    ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts"
+  ],
+  "reviewFocusPhase": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/003-gate-c-writer-ready",
+  "assignedIterationRange": [
+    6,
+    10
+  ],
+  "dimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "sessionId": "B1329442-BD14-42DA-AE7A-1F1C41134956",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": 0,
+  "releaseReadinessState": "unknown",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.15,
+  "stuckThreshold": 2,
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "qualityGateThreshold": true,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/003-gate-c-writer-ready",
+  "createdAt": "2026-04-12T17:01:22Z",
+  "status": "initialized",
+  "executionMode": "AUTONOMOUS",
+  "fileProtection": {
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    ".deep-review-pause": "operator-controlled",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  },
+  "reducer": {
+    "enabled": true,
+    "inputs": [
+      "latestJSONLDelta",
+      "newIterationFile",
+      "priorReducedState"
+    ],
+    "outputs": [
+      "findingsRegistry",
+      "dashboardMetrics",
+      "strategyUpdates"
+    ],
+    "metrics": [
+      "dimensionsCovered",
+      "findingsBySeverity",
+      "openFindings",
+      "resolvedFindings",
+      "convergenceScore"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "sessionId": "7214182F-97B4-4458-A660-83EC44E92F0A",
+  "generation": 2,
+  "lineageMode": "restart",
+  "phase": "002-gate-b-foundation",
+  "findings": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "status": "active",
+      "title": "Gate B spec still requires removed archive-ranking and archived-hit telemetry work",
+      "firstSeenInIteration": 3,
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/spec.md:63",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/spec.md:65",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/spec.md:118",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/spec.md:119",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/tasks.md:76",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/tasks.md:78",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/implementation-summary.md:149",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/002-gate-b-foundation/implementation-summary.md:150",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:17",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts:177"
+      ],
+      "recommendation": "Bring Gate B `spec.md` into line with the cleaned-up runtime and packet deliverables by removing the obsolete archive-ranking and `archived_hit_rate` requirements."
+    }
+  ],
+  "metrics": {
+    "dimensionsCovered": [
+      "correctness",
+      "traceability"
+    ],
+    "findingsBySeverity": {
+      "P0": 0,
+      "P1": 1,
+      "P2": 0
+    },
+    "openFindings": 1,
+    "resolvedFindings": 0,
+    "convergenceScore": 0.58
+  },
+  "lastUpdated": "2026-04-12T21:40:00Z"
+}

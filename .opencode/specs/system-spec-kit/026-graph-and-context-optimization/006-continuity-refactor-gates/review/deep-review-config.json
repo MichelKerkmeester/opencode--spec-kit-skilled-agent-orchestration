@@ -1,0 +1,21 @@
+{
+  "sessionId": "dr-006-review-001",
+  "parentSessionId": null,
+  "lineageMode": "fresh",
+  "generation": 1,
+  "continuedFromRun": null,
+  "releaseReadinessState": "in-review",
+  "reviewTarget": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/004-dead-code-and-architecture-audit",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/002-full-playbook-execution"
+  ],
+  "dimensions": [
+    "correctness",
+    "traceability",
+    "maintainability"
+  ],
+  "maxIterations": 10,
+  "createdAt": "2026-04-12T18:30:00Z"
+}

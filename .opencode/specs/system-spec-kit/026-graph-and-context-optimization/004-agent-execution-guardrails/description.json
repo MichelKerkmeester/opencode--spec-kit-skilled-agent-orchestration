@@ -1,6 +1,9 @@
 {
+  "title": "Feature Specification: Phase 4 — Agent Execution Guardrails",
+  "type": "phase-packet",
+  "path": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-agent-execution-guardrails",
-  "description": "Feature Specification: Phase 4 — Agent Execution Guardrails",
+  "description": "Phase 4 defines the execution-guardrail update for three AGENTS files so the moved request-analysis block under Critical Rules is leaner, later sections remain renumbered cleanly, and agents keep the same operational execution behavior without duplicate scaffolding.",
   "keywords": [
     "feature",
     "specification",
@@ -9,7 +12,7 @@
     "execution",
     "guardrails"
   ],
-  "lastUpdated": "2026-04-13T10:39:18.758Z",
+  "lastUpdated": "2026-04-13T16:13:03Z",
   "specId": "004",
   "folderSlug": "agent-execution-guardrails",
   "parentChain": [

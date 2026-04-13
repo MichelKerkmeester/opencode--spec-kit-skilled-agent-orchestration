@@ -193,7 +193,7 @@
     ],
     "causal_summary": "This archived folder captures work that remediated audit findings across the wider system-spec-kit surface. The older archive shape no longer matched the active template contract, which caused strict validation errors.",
     "created_at": "2026-04-12T09:02:53.564Z",
-    "last_save_at": "2026-04-13T14:20:42.455Z",
+    "last_save_at": "2026-04-13T16:22:53.656Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,0 +1,82 @@
+{
+  "topic": "Post-remediation validation - Gate A pre-work",
+  "mode": "review",
+  "reviewTargetType": "files",
+  "reviewTarget": [
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework/spec.md",
+    ".opencode/skill/system-spec-kit/templates/handover.md",
+    ".opencode/skill/system-spec-kit/templates/debug-delegation.md"
+  ],
+  "reviewFocusPhase": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework",
+  "assignedIterationRange": [
+    1,
+    1
+  ],
+  "dimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "sessionId": "5889D5FE-C3F3-4792-A585-B14D4BC9C0AE",
+  "parentSessionId": "D4F04873-E9C1-48FB-A6F8-5A421F002B5A",
+  "lineageMode": "restart",
+  "generation": 2,
+  "continuedFromRun": 2,
+  "releaseReadinessState": "in-progress",
+  "maxIterations": 30,
+  "convergenceThreshold": 0.1,
+  "stuckThreshold": 2,
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "qualityGateThreshold": true,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/001-gate-a-prework",
+  "createdAt": "2026-04-12T19:11:09Z",
+  "status": "initialized",
+  "executionMode": "AUTONOMOUS",
+  "fileProtection": {
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    ".deep-review-pause": "operator-controlled",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  },
+  "reducer": {
+    "enabled": true,
+    "inputs": [
+      "latestJSONLDelta",
+      "newIterationFile",
+      "priorReducedState"
+    ],
+    "outputs": [
+      "findingsRegistry",
+      "dashboardMetrics",
+      "strategyUpdates"
+    ],
+    "metrics": [
+      "dimensionsCovered",
+      "findingsBySeverity",
+      "openFindings",
+      "resolvedFindings",
+      "convergenceScore"
+    ]
+  }
+}

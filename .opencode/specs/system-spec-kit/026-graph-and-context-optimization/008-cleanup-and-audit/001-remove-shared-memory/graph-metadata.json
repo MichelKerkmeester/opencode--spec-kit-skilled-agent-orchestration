@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "018 010 spec",
+      "remove shared memory",
+      "hard delete shared memory",
+      "018 010 plan",
+      "shared memory removal plan",
+      "hard delete shared memory plan",
+      "018 010 tasks",
+      "shared memory removal tasks",
+      "hard delete shared memory tasks",
+      "018 010 checklist",
+      "shared memory removal checklist",
+      "hard delete shared memory verification"
+    ],
+    "key_topics": [
+      "018",
+      "010",
+      "spec",
+      "remove",
+      "shared",
+      "memory",
+      "hard",
+      "delete",
+      "plan",
+      "removal",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "critical",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/tool-schemas.ts",
+      ".opencode/command/memory/manage.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tools/types.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      "tools/types.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "tools/lifecycle-tools.ts",
+      "schemas/tool-input-schemas.ts",
+      "handlers/index.ts",
+      "handlers/memory-save.ts",
+      "handlers/memory-search.ts",
+      "handlers/memory-context.ts",
+      "handlers/memory-triggers.ts",
+      "mcp_server/tools/lifecycle-tools.ts"
+    ],
+    "entities": [
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "manage.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/manage.md",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tools/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-triggers.ts",
+        "kind": "code",
+        "path": "handlers/memory-triggers.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Metadata",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Description",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Delete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 018 still exposes a full shared-memory collaboration surface through MCP lifecycle tools, shared-space runtime helpers, governed retrieval filters, save-path enforcement, feature-flag docs, feature-catalog entries, playbook scenarios, and tests. The user explicitly wants that feature removed as if it never shipped, with only the SQLite schema columns left in place because those columns cannot be safely dropped in-place.",
+    "created_at": "2026-04-12T09:02:53.483Z",
+    "last_save_at": "2026-04-13T16:22:53.351Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

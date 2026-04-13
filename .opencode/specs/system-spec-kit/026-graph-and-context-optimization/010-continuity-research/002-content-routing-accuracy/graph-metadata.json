@@ -1,0 +1,10 @@
+Packet: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy
+Spec Folder: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy
+Status: complete
+Importance Tier: important
+Summary: Investigate whether the 3-tier content router (Tier1 keyword heuristic, Tier2 prototype similarity, Tier3 LLM classification) correctly classifies saves into the 8 routing categories. No historical save data needed - uses synthetic payloads against the current router code.
+Parent: system-spec-kit/026-graph-and-context-optimization/010-continuity-research
+Children: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/001-fix-delivery-progress-confusion, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/002-fix-handover-drop-confusion, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/003-wire-tier3-llm-classifier, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/004-doc-surface-alignment, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/006-tier3-prompt-enrichment
+Key Topics: investigate, whether, 3-tier, content, router, tier1, keyword, heuristic, tier2, prototype, similarity, tier3
+Key Files: mcp_server/lib/routing/content-router.ts, mcp_server/lib/routing/routing-prototypes.json, mcp_server/lib/merge/anchor-merge-operation.ts, mcp_server/handlers/memory-save.ts, mcp_server/lib/validation/spec-doc-structure.ts, mcp_server/tests/content-router.vitest.ts, spec.md, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, tasks.md, checklist.md, research/research.md
+Source Docs: spec.md, tasks.md, checklist.md, research/research.md

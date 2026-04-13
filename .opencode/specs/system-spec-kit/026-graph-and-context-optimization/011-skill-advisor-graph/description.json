@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+  "description": "Feature Specification: Skill Advisor Graph",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "advisor",
+    "graph"
+  ],
+  "lastUpdated": "2026-04-13T10:39:18.791Z",
+  "specId": "011",
+  "folderSlug": "skill-advisor-graph",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

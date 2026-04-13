@@ -791,13 +791,13 @@
     },
     {
       "id": "finding-3-42-risk-ambiguity-the-helper-comments-label-cleanup-as-stage-4-and-dependency-scan-",
-      "text": "Risk / ambiguity: The helper comments label cleanup as “Stage 4” and dependency scan as “Stage 5,” while `runJanitor()` executes dependency scan before hit-log cleanup; the orchestrator order is the authoritative one (`external/src/lib/core/janitor.ts:275-379`, `external/src/lib/core/janitor.ts:399-435`).",
+      "text": "Risk / ambiguity: The helper comments label cleanup as \u201cStage 4\u201d and dependency scan as \u201cStage 5,\u201d while `runJanitor()` executes dependency scan before hit-log cleanup; the orchestrator order is the authoritative one (`external/src/lib/core/janitor.ts:275-379`, `external/src/lib/core/janitor.ts:399-435`).",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-28-risk-ambiguity-the-inserted-key-files-entry-uses-the-basename-rather-than-the-or",
-      "text": "Risk / ambiguity: The inserted `Key Files` entry uses the basename rather than the original relative path, so same-named files from different folders could collide in one scope’s list (`external/src/mcp.ts:143-149`).",
+      "text": "Risk / ambiguity: The inserted `Key Files` entry uses the basename rather than the original relative path, so same-named files from different folders could collide in one scope\u2019s list (`external/src/mcp.ts:143-149`).",
       "addedAtIteration": 3,
       "sources": []
     },
@@ -905,13 +905,13 @@
     },
     {
       "id": "finding-3-10-what-it-shows-there-are-two-different-sweep-paths-query-time-missing-scope-handl",
-      "text": "What it shows: There are two different sweep paths. Query-time missing-scope handling uses `triggerBackgroundSweep()`, which runs only `processRepairQueue(ROOT)` plus `freshnessSweep(ROOT)` behind the `sweepInProgress` guard. The explicit `context_feedback` path does not call `triggerBackgroundSweep()`. Instead, when `missingFiles` exist or the type is not `missing_context`, it synchronously runs only `processRepairQueue(ROOT)` before calling `enrichFromFeedback()`. The returned string says “Context enriched and background sweep queued,” but this code path does not actually queue or launch the background freshness sweep shown at lines 104-115.",
+      "text": "What it shows: There are two different sweep paths. Query-time missing-scope handling uses `triggerBackgroundSweep()`, which runs only `processRepairQueue(ROOT)` plus `freshnessSweep(ROOT)` behind the `sweepInProgress` guard. The explicit `context_feedback` path does not call `triggerBackgroundSweep()`. Instead, when `missingFiles` exist or the type is not `missing_context`, it synchronously runs only `processRepairQueue(ROOT)` before calling `enrichFromFeedback()`. The returned string says \u201cContext enriched and background sweep queued,\u201d but this code path does not actually queue or launch the background freshness sweep shown at lines 104-115.",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-46-why-it-matters-for-code-environment-public-the-self-healing-loop-is-hybrid-file-",
-      "text": "Why it matters for Code_Environment/Public: The “self-healing” loop is hybrid. File discovery, preview bounds, frontmatter, and fallback output are deterministic; the body regeneration path is prompt-driven and model-dependent. There is no on-disk prompt cache, template registry, or patch-based merge engine in this file.",
+      "text": "Why it matters for Code_Environment/Public: The \u201cself-healing\u201d loop is hybrid. File discovery, preview bounds, frontmatter, and fallback output are deterministic; the body regeneration path is prompt-driven and model-dependent. There is no on-disk prompt cache, template registry, or patch-based merge engine in this file.",
       "addedAtIteration": 3,
       "sources": []
     },
@@ -935,25 +935,25 @@
     },
     {
       "id": "finding-3-4-why-it-matters-for-code-environment-public-the-self-healing-claim-is-narrower-th",
-      "text": "Why it matters for Code_Environment/Public: The self-healing claim is narrower than “feedback rewrites everything automatically.” The source proves three concrete write targets on feedback: the scope `CONTEXT.md`, `.contextador/repair-queue.json`, and `.contextador/stats.json`, with the stats write owned by `mcp.ts` rather than the repair library.",
+      "text": "Why it matters for Code_Environment/Public: The self-healing claim is narrower than \u201cfeedback rewrites everything automatically.\u201d The source proves three concrete write targets on feedback: the scope `CONTEXT.md`, `.contextador/repair-queue.json`, and `.contextador/stats.json`, with the stats write owned by `mcp.ts` rather than the repair library.",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-53-why-it-matters-for-code-environment-public-the-source-supports-calling-this-loop",
-      "text": "Why it matters for Code_Environment/Public: The source supports calling this loop “guarded” or “heuristic-bounded per pass,” but not “fully bounded” or “self-stabilizing” in a strict systems sense.",
+      "text": "Why it matters for Code_Environment/Public: The source supports calling this loop \u201cguarded\u201d or \u201cheuristic-bounded per pass,\u201d but not \u201cfully bounded\u201d or \u201cself-stabilizing\u201d in a strict systems sense.",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-11-why-it-matters-for-code-environment-public-the-source-backed-behavior-is-repair-",
-      "text": "Why it matters for Code_Environment/Public: The source-backed behavior is “repair queue processing now, full sweep later only through other entry points,” not “full asynchronous janitor pass on every feedback report.” That distinction matters if we evaluate whether contextador is truly self-healing in-band or just partially self-repairing.",
+      "text": "Why it matters for Code_Environment/Public: The source-backed behavior is \u201crepair queue processing now, full sweep later only through other entry points,\u201d not \u201cfull asynchronous janitor pass on every feedback report.\u201d That distinction matters if we evaluate whether contextador is truly self-healing in-band or just partially self-repairing.",
       "addedAtIteration": 3,
       "sources": []
     },
     {
       "id": "finding-3-25-why-it-matters-for-code-environment-public-this-is-the-strongest-source-proven-s",
-      "text": "Why it matters for Code_Environment/Public: This is the strongest source-proven “self-improving” behavior in the loop, but it is rule-based enrichment, not learned summarization. The system is turning concrete agent discoveries into durable context patches using regex extraction and file IO.",
+      "text": "Why it matters for Code_Environment/Public: This is the strongest source-proven \u201cself-improving\u201d behavior in the loop, but it is rule-based enrichment, not learned summarization. The system is turning concrete agent discoveries into durable context patches using regex extraction and file IO.",
       "addedAtIteration": 3,
       "sources": []
     },
@@ -1883,7 +1883,7 @@
     },
     {
       "id": "finding-8-7-keyfiles-only-accepts-bullet-lines-that-match-filename-description-or-backticked",
-      "text": "`keyFiles` only accepts bullet lines that match `- filename — description` or backticked filename plus em/en dash; non-matching prose is dropped (`external/src/lib/core/pointers.ts:88-98`).",
+      "text": "`keyFiles` only accepts bullet lines that match `- filename \u2014 description` or backticked filename plus em/en dash; non-matching prose is dropped (`external/src/lib/core/pointers.ts:88-98`).",
       "addedAtIteration": 8,
       "sources": []
     },
@@ -2459,7 +2459,7 @@
     },
     {
       "id": "finding-12-8-source-proven-the-cli-help-text-describes-webhook-as-github-push-webhook-auto-up",
-      "text": "Source-proven: the CLI help text describes `webhook` as \"GitHub push webhook — auto-update context on push,\" which positions it as a user-facing command surface rather than an internal MCP-only feature (`external/src/cli.ts:587-603`).",
+      "text": "Source-proven: the CLI help text describes `webhook` as \"GitHub push webhook \u2014 auto-update context on push,\" which positions it as a user-facing command surface rather than an internal MCP-only feature (`external/src/cli.ts:587-603`).",
       "addedAtIteration": 12,
       "sources": []
     },

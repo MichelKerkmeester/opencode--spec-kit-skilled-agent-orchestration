@@ -1,0 +1,25 @@
+{
+  "title": "Feature Specification: Phase 3 \u2014 Sanitization & Decision Precedence",
+  "description": "Phase 3 of the memory-quality remediation train scopes PR-5 and PR-6 only: trigger-phrase sanitization plus a precedence-only gate for decision extraction.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/003-sanitization-precedence",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "sanitization",
+    "decision",
+    "precedence"
+  ],
+  "lastUpdated": "2026-04-13T10:39:18.727Z",
+  "specId": "003",
+  "folderSlug": "sanitization-precedence",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-memory-quality-remediation"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "08-04-26_08-24__we-reject-across-4-prioritization-tiers-and-the.md"
+  ]
+}

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Code Graph Upgrades [template:level_3/spec.md]"
+title: "Feature Specification: Code Graph Upgrades"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet that adds detector provenance, graph payload richness, and code-graph-local query ergonomics without overlapping packet 008."
 trigger_phrases:
   - "005-code-graph-upgrades"
@@ -48,7 +48,7 @@ Ship the bounded code-graph upgrade lane that improves detector fidelity, graph 
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | `004-agent-execution-guardrails` |
-| **Successor** | `006-canonical-continuity-refactor` |
+| **Successor** | `006-continuity-refactor-gates` |
 | **Research Citation** | `002-codesight/research/research.md:924-1033` |
 <!-- /ANCHOR:metadata -->
 

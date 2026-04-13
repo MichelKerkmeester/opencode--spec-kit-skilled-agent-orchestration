@@ -1,0 +1,44 @@
+{
+  "sessionId": "DR-026-006-012-2026-04-12",
+  "phase": "012-mcp-config-and-feature-flag-cleanup",
+  "findings": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "dimension": "security",
+      "status": "active",
+      "title": "Gemini MCP config still hardcodes a local absolute workspace path",
+      "firstSeenInIteration": 2,
+      "evidenceRefs": [
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/spec.md:47",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/spec.md:59",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/spec.md:116",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/checklist.md:53",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/003-mcp-config-and-feature-flag-cleanup/implementation-summary.md:41",
+        ".gemini/settings.json:31",
+        ".mcp.json:16",
+        ".claude/mcp.json:15",
+        ".vscode/mcp.json:16",
+        "opencode.json:25"
+      ],
+      "recommendation": "Replace the absolute Gemini `cwd` with the same repo-relative convention used by the other checked-in MCP surfaces, then rerun the five-file parity sweep."
+    }
+  ],
+  "metrics": {
+    "dimensionsCovered": [
+      "correctness",
+      "security",
+      "traceability",
+      "maintainability"
+    ],
+    "findingsBySeverity": {
+      "P0": 0,
+      "P1": 1,
+      "P2": 0
+    },
+    "openFindings": 1,
+    "resolvedFindings": 0,
+    "convergenceScore": 0.56
+  },
+  "lastUpdated": "2026-04-12T19:38:00Z"
+}

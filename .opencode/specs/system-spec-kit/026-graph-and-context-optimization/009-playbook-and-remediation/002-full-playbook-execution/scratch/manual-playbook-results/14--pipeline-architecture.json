@@ -1,0 +1,662 @@
+[
+  {
+    "scenarioId": "049",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/049-4-stage-pipeline-refactor-r6.md",
+    "prompt": "As a pipeline validation operator, confirm stage flow and invariant against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate 4-stage pipeline refactor (R6) against the documented validation surface. Verify query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Query traverses all 4 stages in order",
+      "stage transitions visible in verbose metadata",
+      "stage-4 scores immutable after final stage"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Query traverses all 4 stages in order",
+      "stage transitions visible in verbose metadata",
+      "stage-4 scores immutable after final stage"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Run verbose stage metadata\n2. inspect stage transitions\n3. confirm stage-4 immutability"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "050",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/050-mpab-chunk-to-memory-aggregation-r1.md",
+    "prompt": "As a pipeline validation operator, confirm MPAB formula against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate MPAB chunk-to-memory aggregation (R1) against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "MPAB aggregation formula produces correct parent score from child chunks",
+      "manual formula matches computed value"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "MPAB aggregation formula produces correct parent score from child chunks",
+      "manual formula matches computed value"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Create parent+chunks\n2. run stage-3 aggregation\n3. compare manual formula"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "051",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/051-chunk-ordering-preservation-b2.md",
+    "prompt": "As a pipeline validation operator, confirm ordered reassembly against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Chunk ordering preservation (B2) against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Collapsed chunks reassembled in original document order",
+      "marker sequence preserved",
+      "no reordering artifacts"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Collapsed chunks reassembled in original document order",
+      "marker sequence preserved",
+      "no reordering artifacts"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Save ordered marker chunks\n2. collapse\n3. verify original order preserved"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "052",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/052-template-anchor-optimization-s2.md",
+    "prompt": "As a pipeline validation operator, confirm anchor metadata enrichment against the documented validation surface. Verify anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Template anchor optimization (S2) against the documented validation surface. Verify anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Anchor metadata enriched in pipeline",
+      "anchor tags visible in query metadata",
+      "no score mutation from anchor presence"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Anchor metadata enriched in pipeline",
+      "anchor tags visible in query metadata",
+      "no score mutation from anchor presence"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Save anchored memory\n2. query pipeline metadata\n3. verify no score mutation"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "053",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/053-validation-signals-as-retrieval-metadata-s3.md",
+    "prompt": "As a pipeline validation operator, confirm bounded multiplier against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Validation signals as retrieval metadata (S3) against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Validation signal multiplier bounded to [0.8, 1.2]",
+      "highly validated docs score higher",
+      "zero-validation docs use 1.0 multiplier"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Validation signal multiplier bounded to [0.8, 1.2]",
+      "highly validated docs score higher",
+      "zero-validation docs use 1.0 multiplier"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Prepare docs with varied validations\n2. run stage-2\n3. verify 0.8-1.2 bounds"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "054",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/054-learned-relevance-feedback-r11.md",
+    "prompt": "As a pipeline validation operator, confirm learned trigger safeguards against the documented validation surface. Verify learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Learned relevance feedback (R11) against the documented validation surface. Verify learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Learned triggers added from helpful validations",
+      "safeguards prevent trigger flooding",
+      "queryId required for trigger learning"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Learned triggers added from helpful validations",
+      "safeguards prevent trigger flooding",
+      "queryId required for trigger learning"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. submit helpful validation/queryId\n2. inspect learned triggers\n3. verify safeguards"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "067",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/067-search-pipeline-safety.md",
+    "prompt": "As a pipeline validation operator, confirm Sprint 8 pipeline safety fixes against the documented validation surface. Verify pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Search pipeline safety against the documented validation surface. Verify pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Pipeline handles heavy queries without crash",
+      "filters apply correctly",
+      "tokenization produces valid tokens",
+      "no unguarded exceptions"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Pipeline handles heavy queries without crash",
+      "filters apply correctly",
+      "tokenization produces valid tokens",
+      "no unguarded exceptions"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. run summary/lexical heavy queries\n2. inspect filters/tokenization\n3. verify safety outcomes"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "071",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/071-performance-improvements.md",
+    "prompt": "As a pipeline validation operator, confirm key perf remediations active against hybrid-search.ts. Verify optimized code paths are active; fallback enrichment is single-pass; token estimation is cached per result; BM25 stays disabled by default unless explicitly enabled; batched syncChangedRows() warmup replaces blocking rebuilds; heavy queries complete within acceptable time; no regressions. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Performance improvements against hybrid-search.ts. Verify optimized code paths are active (not bypassed); fallback enrichment is single-pass; token estimation is cached per result; BM25 is opt-in with FTS5 default; BM25 warmup uses incremental maintenance; heavy queries complete within acceptable time; no performance regressions. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Optimized code paths are active",
+      "fallback enrichment is single-pass",
+      "token estimation is cached per result",
+      "BM25 stays disabled by default unless explicitly enabled",
+      "batched `syncChangedRows()` warmup replaces blocking rebuilds",
+      "heavy queries complete within acceptable time",
+      "no regressions"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Optimized code paths are active",
+      "fallback enrichment is single-pass",
+      "token estimation is cached per result",
+      "BM25 stays disabled by default unless explicitly enabled",
+      "batched `syncChangedRows()` warmup replaces blocking rebuilds",
+      "heavy queries complete within acceptable time",
+      "no regressions"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Inspect `hybrid-search.ts` and confirm `executeFallbackPlan()` collects fused tier outputs before `searchWithFallbackTiered()` calls `enrichFusedResults()` once on the final merged set\n2. Inspect `truncateToBudget()` and confirm it caches token estimates in a `Map` keyed by canonical result id and uses field-aware `estimateResultTokens()` instead of whole-object serialization\n3. Inspect `bm25-index.ts` and confirm `isBm25Enabled()` returns false unless `ENABLE_BM25` is explicitly set to an allowed truthy value\n4. Confirm `rebuildFromDatabase()` schedules batched warmup through `syncChangedRows()` instead of performing a synchronous full rebuild\n5. Run or review a representative heavy retrieval path and capture timing notes for the post-change code path"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "078",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/078-legacy-v1-pipeline-removal.md",
+    "prompt": "As a pipeline validation operator, confirm V2-only runtime against the documented validation surface. Verify v1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Legacy V1 pipeline removal against the documented validation surface. Verify v1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "V1 pipeline symbols absent from codebase",
+      "all queries route through V2 pipeline",
+      "no V1 fallback paths remain"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "V1 pipeline symbols absent from codebase",
+      "all queries route through V2 pipeline",
+      "no V1 fallback paths remain"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. search removed symbols\n2. run queries\n3. confirm V2-only execution"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "080",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/080-pipeline-and-mutation-hardening.md",
+    "prompt": "As a pipeline validation operator, confirm mutation hardening bundle against the documented validation surface. Verify cRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; chunked-save finalize failures remove staged chunk trees; safe-swap rollback keeps old children linked; parent BM25 is preserved on all-chunks-failed rollback. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Pipeline and mutation hardening against the documented validation surface. Verify mutation hardening bundle including chunked-save finalization rollback safety. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "CRUD mutations are atomic (all-or-nothing)",
+      "error handling cleans up partial state",
+      "no orphaned records on failure",
+      "chunked-save finalize failures remove staged chunk trees",
+      "safe-swap rollback keeps old children linked",
+      "parent BM25 is preserved on all-chunks-failed rollback"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "CRUD mutations are atomic (all-or-nothing)",
+      "error handling cleans up partial state",
+      "no orphaned records on failure",
+      "chunked-save finalize failures remove staged chunk trees",
+      "safe-swap rollback keeps old children linked",
+      "parent BM25 is preserved on all-chunks-failed rollback"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Execute CRUD/mutation paths\n2. Force a chunked PE finalize failure and verify compensating cleanup removes the staged chunk tree\n3. Force safe-swap finalize failure and verify old children keep their original parent link\n4. Force all chunk inserts to fail and verify the parent BM25 document remains unchanged\n5. Inspect DB/error traces for orphaned rows or partial supersede state"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "087",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/087-db-path-extraction-and-import-standardization.md",
+    "prompt": "As a pipeline validation operator, confirm shared DB path resolution against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate DB_PATH extraction and import standardization against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "All scripts/tools resolve to the same DB path for identical env vars",
+      "precedence chain is respected",
+      "no hardcoded fallbacks diverge"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "All scripts/tools resolve to the same DB path for identical env vars",
+      "precedence chain is respected",
+      "no hardcoded fallbacks diverge"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. vary DB env vars\n2. run scripts/tools\n3. confirm shared resolver output"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "095",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/095-strict-zod-schema-validation-p0-1.md",
+    "prompt": "As a pipeline validation operator, confirm schema enforcement rejects hallucinated params against memory_search({query:\"test\", bogus:1}). Verify zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Strict Zod schema validation (P0-1) against memory_search({query:\"test\", bogus:1}). Verify zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Zod strict error returned for unknown params in strict mode",
+      "extra params pass through in permissive mode",
+      "validation occurs per-tool in handler layer"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Zod strict error returned for unknown params in strict mode",
+      "extra params pass through in permissive mode",
+      "validation occurs per-tool in handler layer"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "test",
+          "bogus": 1
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_STRICT_SCHEMAS=false"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({query:\"test\", bogus:1})",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "test",
+            "bogus": 1
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":10,\"constitutionalInjected\":0,\"durationMs\":6},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":1,\"coActivationBoosted\":1,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":2,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":9,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":6,\"stage2\":2,\"stage3\":0,\"stage4\":0,\"total\":8}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,"
+        ]
+      },
+      {
+        "step": "SPECKIT_STRICT_SCHEMAS=false",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "112",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/112-cross-process-db-hot-rebinding.md",
+    "prompt": "As a pipeline validation operator, confirm marker-file triggers DB reinitialization against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Cross-process DB hot rebinding against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Server detects DB_UPDATED_FILE marker",
+      "DB reinitializes without restart",
+      "stats reflect post-mutation state (no stale data)",
+      "health reports healthy after rebind"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Server detects DB_UPDATED_FILE marker",
+      "DB reinitializes without restart",
+      "stats reflect post-mutation state (no stale data)",
+      "health reports healthy after rebind"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/decision-record.md",
+          "asyncEmbedding": true,
+          "skipPreflight": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: node cli.js bulk-delete --tier scratch --folder specs/test-sandbox"
+    ],
+    "steps": [
+      {
+        "step": "memory_save(filePath)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/decision-record.md",
+            "asyncEmbedding": true,
+            "skipPreflight": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory file does not match the required template contract.\",\"data\":{\"status\":\"rejected\",\"id\":0,\"specFolder\":\"001-manual-fixture-auth-resume\",\"title\":\"Auth Resume Decision Record\",\"qualityScore\":0.875,\"qualityFlags\":[\"Only 1 trigger phrase(s) \u2014 4+ recommended\",\"violates_template_contract\"],\"rejectionReason\":\"Template contract validation failed: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section\",\"warnings\":[\"Manual fallback save mode detected; standard generate-context template markers are missing.\"],\"message\":\"Memory file does not match the required template contract.\"},\"hints\":[\"Rejected saves do not mutate the memory index\",\"Review quality issues and retry the save\"],\"meta\":{\"tool\":\"memory_save\",\"tokenCount\":236,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "node cli.js bulk-delete --tier scratch --folder specs/test-sandbox",
+        "kind": "shell",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "115",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/115-transaction-atomicity-on-rename-failure-p0-5.md",
+    "prompt": "As a pipeline validation operator, verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup against executeAtomicSave(). Verify rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Transaction atomicity on rename failure (P0-5) against executeAtomicSave(). Verify pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Rename failure returns {success:false, dbCommitted:true}",
+      "pending file preserved on disk after failure",
+      "recoverAllPendingFiles discovers and recovers the pending file"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Rename failure returns {success:false, dbCommitted:true}",
+      "pending file preserved on disk after failure",
+      "recoverAllPendingFiles discovers and recovers the pending file"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. **Precondition:** Read transaction-manager.ts to understand pendingPath logic.\n2. Trigger `executeAtomicSave()` with a path that will cause rename to fail (e.g., read-only target directory)\n3. Verify the function returns `{ success: false, dbCommitted: true }`\n4. Verify the pending file still exists on disk (not deleted)\n5. Verify `recoverAllPendingFiles()` can find and recover the pending file"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "129",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/129-lineage-state-active-projection-and-asof-resolution.md",
+    "prompt": "As a pipeline validation operator, verify append-first lineage projection, deterministic asOf resolution, and timestamp ordering across non-ISO or timezone variants against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Lineage state active projection and asOf resolution against cd .opencode/skill/system-spec-kit/mcp_server. Verify append-first lineage projection, deterministic asOf resolution, and timestamp ordering across non-ISO or timezone variants. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Targeted suite passes",
+      "transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Targeted suite passes",
+      "transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npm test -- --run tests/memory-lineage-state.vitest.ts`\n3. Inspect the output for active projection, `asOf`, integrity failure coverage, and timestamp-order coverage for variant date formats"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "130",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/130-lineage-backfill-rollback-drill.md",
+    "prompt": "As a pipeline validation operator, verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Lineage backfill rollback drill against cd .opencode/skill/system-spec-kit/mcp_server. Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Targeted suite passes",
+      "transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Targeted suite passes",
+      "transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `cd .opencode/skill/system-spec-kit/mcp_server`\n2. `npm test -- --run tests/memory-lineage-backfill.vitest.ts`\n3. Inspect the output for dry-run counts, successful execution, zero-change rerun, and post-restore empty lineage tables"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "146",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/146-dynamic-server-instructions-p1-6.md",
+    "prompt": "As a pipeline validation operator, verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning against setInstructions(). Verify startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Dynamic server instructions (P1-6) against setInstructions(). Verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Startup instructions include memory system overview with counts and channels",
+      "stale warning appears only above threshold",
+      "disabled flag yields empty instructions"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Startup instructions include memory system overview with counts and channels",
+      "stale warning appears only above threshold",
+      "disabled flag yields empty instructions"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Start the MCP server and capture startup logs\n2. Verify `setInstructions()` was called with a non-empty instructions string\n3. Verify instructions include: memory count, spec folder count, available channels, and active feature flags\n4. If 11+ stale memories exist, verify a stale warning is included\n5. Restart with `SPECKIT_DYNAMIC_INIT=false` and verify `setInstructions()` receives an empty string"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "202",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/202-backend-storage-adapter-abstraction.md",
+    "prompt": "As a pipeline validation operator, verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides against the documented validation surface. Verify iVectorStore defines the vector-storage contract; SQLite-backed vector store implements that contract; vector index/facade consumes the seam; broader graph/document storage paths still use direct SQLite integrations; current abstraction scope is intentionally limited to vector storage. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Backend storage adapter abstraction against the documented validation surface. Verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "`IVectorStore` defines the vector-storage contract",
+      "SQLite-backed vector store implements that contract",
+      "vector index/facade consumes the seam",
+      "broader graph/document storage paths still use direct SQLite integrations",
+      "current abstraction scope is intentionally limited to vector storage"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`IVectorStore` defines the vector-storage contract",
+      "SQLite-backed vector store implements that contract",
+      "vector index/facade consumes the seam",
+      "broader graph/document storage paths still use direct SQLite integrations",
+      "current abstraction scope is intentionally limited to vector storage"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Review the vector-store contract and identify the abstraction boundary\n2. Trace the current production implementation and confirm SQLite satisfies the contract\n3. Follow a representative vector read/write path through the vector-index facade and confirm it consumes the seam\n4. Inspect graph/document persistence paths and confirm they still bind directly to SQLite-backed code\n5. Record whether the implementation scope matches the documented claim of a vector-only adapter seam"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "203",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/203-atomic-write-then-index-api.md",
+    "prompt": "As a pipeline validation operator, verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure against the documented validation surface. Verify unique pending path is created before promotion; indexing runs before final rename; transient indexing failure gets one retry; successful flow ends with pending-file rename into place; validation/index failure cleans up the pending file and leaves the original target untouched. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Atomic write-then-index API against the documented validation surface. Verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Unique pending path is created before promotion",
+      "indexing runs before final rename",
+      "transient indexing failure gets one retry",
+      "successful flow ends with pending-file rename into place",
+      "validation/index failure cleans up the pending file and leaves the original target untouched"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Unique pending path is created before promotion",
+      "indexing runs before final rename",
+      "transient indexing failure gets one retry",
+      "successful flow ends with pending-file rename into place",
+      "validation/index failure cleans up the pending file and leaves the original target untouched"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Trigger a normal save and capture the pending-file path creation before the final file exists\n2. Observe that indexing is attempted against the target path before promotion\n3. Induce one transient indexing failure and confirm a single retry occurs before success\n4. Verify the file is renamed into place only after the successful indexing attempt\n5. Run a failing validation or permanent indexing failure case and confirm the pending file is cleaned up with no promoted final artifact"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "204",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/204-embedding-retry-orchestrator.md",
+    "prompt": "As a pipeline validation operator, verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking against memory_save. Verify provider outage yields saved memory with pending embedding status and lexical-only fallback; retry manager scans and processes pending items; embedding cache participates in deduplication; retry count/progressive backoff state changes across failures; successful retry updates memory index and vector storage. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Embedding retry orchestrator against memory_save. Verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Provider outage yields saved memory with pending embedding status and lexical-only fallback",
+      "retry manager scans and processes pending items",
+      "embedding cache participates in deduplication",
+      "retry count/progressive backoff state changes across failures",
+      "successful retry updates memory index and vector storage"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Provider outage yields saved memory with pending embedding status and lexical-only fallback",
+      "retry manager scans and processes pending items",
+      "embedding cache participates in deduplication",
+      "retry count/progressive backoff state changes across failures",
+      "successful retry updates memory index and vector storage"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Simulate embedding-provider unavailability during `memory_save` or `memory_index_scan`\n2. Confirm the memory is still saved and marked pending without vectors, with lexical-only fallback intact\n3. Restore provider availability and run or wait for the retry manager batch job\n4. Confirm pending items are retried, retry counters/backoff metadata update appropriately, and cache reuse is visible when content was embedded before\n5. Verify successful retry clears the pending state and refreshes vector/index rows for the affected memory"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "205",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/205-7-layer-tool-architecture-metadata.md",
+    "prompt": "As a pipeline validation operator, verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules against the documented validation surface. Verify l1-L7 metadata includes budgets/priorities/guidance/tool membership; task-type mappings remain available for recommendations; runtime dispatch is still name-based and fans into the existing dispatcher modules; recommended-layer metadata is advisory rather than a routing prerequisite. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate 7-layer tool architecture metadata against the documented validation surface. Verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "L1-L7 metadata includes budgets/priorities/guidance/tool membership",
+      "task-type mappings remain available for recommendations",
+      "runtime dispatch is still name-based and fans into the existing dispatcher modules",
+      "recommended-layer metadata is advisory rather than a routing prerequisite"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "L1-L7 metadata includes budgets/priorities/guidance/tool membership",
+      "task-type mappings remain available for recommendations",
+      "runtime dispatch is still name-based and fans into the existing dispatcher modules",
+      "recommended-layer metadata is advisory rather than a routing prerequisite"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Review the layer-definitions module and confirm all seven layers expose token budgets, priorities, guidance, and tool membership metadata\n2. Verify layer IDs still map to task-type recommendation hints\n3. Trace a representative tool invocation through the runtime entrypoint and confirm dispatch occurs by tool name into the existing dispatcher modules\n4. Exercise or inspect one response path that surfaces recommended-layer metadata\n5. Confirm that changing or reading layer metadata does not alter the fundamental name-based dispatch hop"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "218",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/218-mcp-server-public-api-barrel.md",
+    "prompt": "As a pipeline validation operator, verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary against mcp_server/api/index.ts. Verify mcp_server/api/index.ts re-exports the documented evaluation, indexing, search, provider, storage, helper, and metadata symbols; mcp_server/api/README.md names api/ as the approved public surface; consumers can rely on one stable top-level barrel. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate MCP Server Public API Barrel against mcp_server/api/index.ts. Verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "`mcp_server/api/index.ts` re-exports the documented evaluation, indexing, search, provider, storage, helper, and metadata symbols",
+      "`mcp_server/api/README.md` names `api/` as the approved public surface",
+      "consumers can rely on one stable top-level barrel"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`mcp_server/api/index.ts` re-exports the documented evaluation, indexing, search, provider, storage, helper, and metadata symbols",
+      "`mcp_server/api/README.md` names `api/` as the approved public surface",
+      "consumers can rely on one stable top-level barrel"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Inspect `mcp_server/api/index.ts` and capture the top-level export groups and promoted helper surfaces\n2. Cross-check those exports against `api/eval.ts`, `api/indexing.ts`, `api/search.ts`, `api/providers.ts`, and `api/storage.ts` plus the curated internal helper modules named in the catalog\n3. Inspect `mcp_server/api/README.md` and confirm consumer guidance points to `api/` as the supported boundary\n4. Run a barrel import smoke test or equivalent script check that accesses representative symbols from each export family through `mcp_server/api` only"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "219",
+    "category": "14--pipeline-architecture",
+    "status": "UNAUTOMATABLE",
+    "filePath": "14--pipeline-architecture/219-embeddings-and-retry-api.md",
+    "prompt": "As a pipeline validation operator, verify the public provider API stays stable while embedding generation, caching, batching, retry backoff, and recovery behavior remain wired through the documented layers against mcp_server/api/providers.ts. Verify mcp_server/api/providers.ts is a pure public re-export surface; shared/embeddings.ts contains the documented weighted text, cache, batching, and profile helpers; retry-manager.ts encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a pipeline validation operator, validate Embeddings and Retry API against mcp_server/api/providers.ts. Verify the public provider API stays stable while embedding generation, caching, batching, retry backoff, and recovery behavior remain wired through the documented layers. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "`mcp_server/api/providers.ts` is a pure public re-export surface",
+      "`shared/embeddings.ts` contains the documented weighted text, cache, batching, and profile helpers",
+      "`retry-manager.ts` encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`mcp_server/api/providers.ts` is a pure public re-export surface",
+      "`shared/embeddings.ts` contains the documented weighted text, cache, batching, and profile helpers",
+      "`retry-manager.ts` encodes pending/retry/failed/success recovery, retry delays, circuit breaker behavior, and successful refresh of vector/index state"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Inspect `mcp_server/api/providers.ts` and capture the exported public symbols\n2. Inspect `shared/embeddings.ts` and confirm the documented weighted text construction, cache policy, lazy provider setup, batch behavior, and profile helpers are present\n3. Inspect `mcp_server/lib/providers/retry-manager.ts` and confirm queue states, retry delays, circuit breaker rules, sanitized provider errors, and success-path refresh logic\n4. Run an import smoke test or equivalent script check that consumes the public symbols from `mcp_server/api/providers` only\n5. Correlate the public API with the shared and retry layers to confirm the documented responsibilities line up end to end"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

@@ -12,7 +12,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify +
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization"
-    last_updated_at: "2026-04-12T16:16:10Z"
+    last_updated_at: "2026-04-13T15:56:37Z"
     last_updated_by: "copilot-gpt-5-4"
     recent_action: "Reviewed packet docs"
     next_safe_action: "Run strict validation"
@@ -28,11 +28,11 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It keeps the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later `005-code-graph-upgrades` branch aligned to one dependency-aware execution map instead of relying on numeric slug order alone.
+Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It now coordinates an 11-phase child train after the former `006-canonical-continuity-refactor` lane was split into five focused phases, keeping the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later graph and continuity branches aligned to one dependency-aware execution map instead of relying on numeric slug order alone.
 
-**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-issues` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a phase map plus packet-local strict validation.
+**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through an 11-phase map plus packet-local strict validation.
 
-**Critical Dependencies**: The six active child packets `001` through `006` remain the implementation and research authorities for their own scopes. Former phases `007` through `017` were archived to `z_archive/` during the April 2026 normalization pass and remain historical evidence only. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The eleven active child packets `001` through `011` remain the implementation and research authorities for their own scopes. The former `006-canonical-continuity-refactor` scope now lands across `006` through `010`, and the former top-level `007` scope now lives at `011-skill-advisor-graph`. This root packet owns coordination, sequencing, and completion truth only.
 
 ---
 
@@ -70,7 +70,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 ### In Scope
 
-- Record the dependency-aware execution order for the six active child packets `001` through `006`.
+- Record the dependency-aware execution order for the eleven active child packets `001` through `011`.
 - Track the parent packet's coordination contract, success criteria, and packet-level risks.
 - Maintain the phase documentation map and child handoff rules for strict validation.
 - Keep the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the shipped child packet set.
@@ -99,22 +99,27 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 ## PHASE DOCUMENTATION MAP
 
 > This spec uses phased decomposition. Each phase is an independently executable child spec folder.
-> Active children are `001` through `006`. Former phases `007` through `017` were archived to `z_archive/` during the April 2026 normalization pass and are not part of the live child graph.
+> Active children are `001` through `011`. The former `006-canonical-continuity-refactor` line was reorganized into `006` through `010`, and the former top-level `007` scope now lives at `011-skill-advisor-graph`.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
 | 1 | `001-research-graph-context-systems/` | External-systems research root and recommendation synthesis | Complete |
-| 2 | `002-implement-cache-warning-hooks/` | Stop-hook producer hardening and replay validation | Complete |
-| 3 | `003-memory-quality-issues/` | Memory-quality remediation train and follow-on packet closeout | Complete |
+| 2 | `002-cache-warning-hooks/` | Cache warning hooks implementation lane | Complete |
+| 3 | `003-memory-quality-remediation/` | Memory pipeline fixes and quality remediation train | Complete |
 | 4 | `004-agent-execution-guardrails/` | AGENTS execution-policy alignment | Complete |
 | 5 | `005-code-graph-upgrades/` | Code graph upgrade runtime and validation lane | Complete |
-| 6 | `006-canonical-continuity-refactor/` | Canonical continuity refactor and post-006 cleanup train | Complete |
+| 6 | `006-continuity-refactor-gates/` | Core continuity refactor gates A-F | Complete |
+| 7 | `007-release-alignment-revisits/` | Release-alignment revisit passes | Complete |
+| 8 | `008-cleanup-and-audit/` | Removal, config alignment, and dead-code audit lane | Complete |
+| 9 | `009-playbook-and-remediation/` | Verification playbook and deep-review remediation lane | Complete |
+| 10 | `010-continuity-research/` | Post-refactor continuity investigations | Complete |
+| 11 | `011-skill-advisor-graph/` | Skill advisor graph implementation lane | Complete |
 
 ### Phase Transition Rules
 
 - Each active child packet MUST pass `validate.sh --strict` independently before the parent packet can claim integrated completion.
 - The live child graph follows research-aligned prerequisites rather than simple numeric slug order.
-- `003-memory-quality-issues` and `004-agent-execution-guardrails` are orthogonal support lanes and do not block unrelated runtime or documentation closeout unless a child packet explicitly depends on them.
+- `003-memory-quality-remediation` and `004-agent-execution-guardrails` are orthogonal support lanes and do not block unrelated runtime or documentation closeout unless a child packet explicitly depends on them.
 - Archived packets under `z_archive/` remain historical references only and do not count as live children.
 - Local-only empty directories do not become packet phases unless they contain a valid `spec.md` root.
 
@@ -122,10 +127,15 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
-| `001-research-graph-context-systems` | `002-implement-cache-warning-hooks` | Research outputs clarified the continuity producer boundary and sequencing assumptions for the first runtime hardening lane | Child packets `001` and `002` validate cleanly |
+| `001-research-graph-context-systems` | `002-cache-warning-hooks` | Research outputs clarified the continuity producer boundary and sequencing assumptions for the first runtime hardening lane | Child packets `001` and `002` validate cleanly |
 | `001-research-graph-context-systems` | `005-code-graph-upgrades` | Research outputs established the graph-first and detector-provenance direction that Phase 005 implements | Child packets `001` and `005` validate cleanly |
-| `003-memory-quality-issues` + `004-agent-execution-guardrails` | `006-canonical-continuity-refactor` | Memory-save quality fixes and guardrail alignment are documented before the final continuity cleanup train closes packet-local drift | Child packets `003`, `004`, and `006` validate cleanly |
-| `002-implement-cache-warning-hooks` + `005-code-graph-upgrades` | `006-canonical-continuity-refactor` | Producer-boundary and graph/documentation foundations are stable enough for the canonical continuity cleanup lane | Child packets `002`, `005`, and `006` validate cleanly |
+| `003-memory-quality-remediation` + `004-agent-execution-guardrails` | `006-continuity-refactor-gates` | Memory-save quality fixes and guardrail alignment are documented before the refactor-gates lane closes the first continuity split | Child packets `003`, `004`, and `006` validate cleanly |
+| `002-cache-warning-hooks` + `005-code-graph-upgrades` | `006-continuity-refactor-gates` | Producer-boundary and graph/documentation foundations are stable enough for the continuity-gates lane | Child packets `002`, `005`, and `006` validate cleanly |
+| `006-continuity-refactor-gates` | `007-release-alignment-revisits` | Gate delivery outputs are revisited for release alignment before cleanup and remediation work fans out | Child packets `006` and `007` validate cleanly |
+| `007-release-alignment-revisits` | `008-cleanup-and-audit` | Revisit findings define the cleanup, config, and dead-code audit backlog | Child packets `007` and `008` validate cleanly |
+| `008-cleanup-and-audit` | `009-playbook-and-remediation` | Cleanup outputs establish the stable surface for the playbook pass and deep-review remediation follow-up | Child packets `008` and `009` validate cleanly |
+| `006-continuity-refactor-gates` | `010-continuity-research` | Post-refactor investigations begin once the gate split lands and the continuity surface is stable enough to study | Child packets `006` and `010` validate cleanly |
+| `005-code-graph-upgrades` + `010-continuity-research` | `011-skill-advisor-graph` | The skill-advisor graph lane depends on graph upgrades plus the post-refactor continuity findings | Child packets `005`, `010`, and `011` validate cleanly |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -162,7 +172,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 **Given** the runtime train depends on research sequencing rather than numeric order, **when** someone reads the parent packet, **then** they can see the true dependency graph described explicitly.
 
-**Given** an orthogonal support lane such as `003-memory-quality-issues` is reviewed, **when** the phase map is read, **then** it is visible without being mistaken for a runtime prerequisite.
+**Given** an orthogonal support lane such as `003-memory-quality-remediation` is reviewed, **when** the phase map is read, **then** it is visible without being mistaken for a runtime prerequisite.
 
 **Given** local stale directories appear under the parent folder, **when** strict validation runs, **then** only real packet phases are included in the active phase surface.
 
@@ -230,7 +240,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Six active child packets plus parent coordination docs |
+| Scope | 20/25 | Eleven active child packets plus parent coordination docs |
 | Risk | 14/25 | Mis-sequencing or coordination drift can mislead later runtime work |
 | Research | 14/20 | Requires aligning research-derived order with shipped child packets |
 | Multi-Agent | 4/15 | Coordination-only packet with no runtime implementation |

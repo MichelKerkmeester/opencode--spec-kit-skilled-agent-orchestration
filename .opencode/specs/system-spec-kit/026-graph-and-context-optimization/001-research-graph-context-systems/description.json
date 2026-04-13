@@ -1,6 +1,8 @@
 {
+  "title": "Feature Specification: Graph and Context Systems Master Research Packet",
+  "description": "Level 3 coordination packet for the v2 cross-phase synthesis, adoption decisions, and downstream sequencing for graph and context optimization in Public.",
+  "type": "coordination-parent",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems",
-  "description": "Feature Specification: Graph and Context Systems Master Research Packet",
   "keywords": [
     "feature",
     "specification",

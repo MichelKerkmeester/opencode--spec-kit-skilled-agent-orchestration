@@ -1,0 +1,51 @@
+{
+  "topic": "Post-remediation validation - Gate D reader-ready correctness and traceability",
+  "mode": "review",
+  "sessionId": "711C7530-39B3-4F35-85ED-4B9EDD278780",
+  "parentSessionId": "dr-026-006-004-20260412",
+  "lineageMode": "restart",
+  "generation": 2,
+  "continuedFromRun": 4,
+  "archivedPath": "review_archive/20260412T191109Z-post-remediation",
+  "releaseReadinessState": "in-progress",
+  "reviewTargetType": "files",
+  "reviewTarget": {
+    "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready",
+    "scope": "Gate D post-remediation validation for the canonical reader ladder and packet/runtime traceability",
+    "files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-continuity-refactor-gates/004-gate-d-reader-ready/implementation-summary.md"
+    ]
+  },
+  "assignedIterationRange": [
+    6,
+    7
+  ],
+  "allocatedIterations": 2,
+  "maxIterations": 30,
+  "dimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "severityThreshold": "P1",
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 20,
+  "startedAt": "2026-04-12T19:11:09Z"
+}

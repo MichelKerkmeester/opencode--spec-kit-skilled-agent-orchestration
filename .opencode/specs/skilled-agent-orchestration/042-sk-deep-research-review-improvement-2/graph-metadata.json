@@ -213,7 +213,7 @@
     ],
     "causal_summary": "This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.",
     "created_at": "2026-04-12T09:02:50.190Z",
-    "last_save_at": "2026-04-13T14:20:38.824Z",
+    "last_save_at": "2026-04-13T16:22:48.594Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

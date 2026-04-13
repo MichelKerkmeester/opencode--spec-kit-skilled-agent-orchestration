@@ -1,0 +1,257 @@
+[
+  {
+    "scenarioId": "063",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/063-feature-flag-governance.md",
+    "prompt": "Audit feature flag governance conformance. Capture the evidence needed to prove All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "All flags enumerated with age and review cadence",
+      "compliance gaps identified",
+      "no undocumented flags found"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "All flags enumerated with age and review cadence",
+      "compliance gaps identified",
+      "no undocumented flags found"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "122",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/122-governed-ingest-and-scope-isolation-phase-5.md",
+    "prompt": "Validate Phase 5 governed ingest and retrieval isolation. Capture the evidence needed to prove agentId,sessionId,provenanceSource,provenanceActor} metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review governance_audit rows. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_save",
+        "args": {
+          "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+          "asyncEmbedding": true,
+          "skipPreflight": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: tenantId/sessionId"
+    ],
+    "steps": [
+      {
+        "step": "memory_save()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_save",
+          "args": {
+            "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/gate-i-manual-playbook-PospIR/specs/001-manual-fixture-auth-resume/decision-record.md",
+            "asyncEmbedding": true,
+            "skipPreflight": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "save action reported",
+          "indexed successfully"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory file does not match the required template contract.\",\"data\":{\"status\":\"rejected\",\"id\":0,\"specFolder\":\"001-manual-fixture-auth-resume\",\"title\":\"Auth Resume Decision Record\",\"qualityScore\":0.875,\"qualityFlags\":[\"Only 1 trigger phrase(s) \u2014 4+ recommended\",\"violates_template_contract\"],\"rejectionReason\":\"Template contract validation failed: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section\",\"warnings\":[\"Manual fallback save mode detected; standard generate-context template markers are missing.\"],\"message\":\"Memory file does not match the required template contract.\"},\"hints\":[\"Rejected saves do not mutate the memory index\",\"Review quality issues and retry the save\"],\"meta\":{\"tool\":\"memory_save\",\"tokenCount\":236,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "tenantId/sessionId",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "123",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/123-shared-space-deny-by-default-rollout-phase-6.md",
+    "prompt": "Validate Phase 6 shared-memory rollout controls. Capture the evidence needed to prove Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Non-members are denied by default",
+      "explicit membership grants access",
+      "kill switch blocks access immediately even for existing members"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Non-members are denied by default",
+      "explicit membership grants access",
+      "kill switch blocks access immediately even for existing members"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Governance rollout scenario requires actor-scoped state transitions and race checks beyond direct handler automation."
+    ],
+    "steps": [],
+    "reason": "Governance rollout scenario requires actor-scoped state transitions and race checks beyond direct handler automation."
+  },
+  {
+    "scenarioId": "148",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md",
+    "prompt": "Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; partial shared_space_upsert updates preserve existing rollout cohort and metadata; and /memory:manage shared command shows setup prompt when disabled. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Default-off: status returns disabled without env var or DB config",
+      "enable persists to DB config table",
+      "enable is idempotent",
+      "README created in shared-spaces/",
+      "DB persistence survives restart",
+      "env var override takes priority over DB state",
+      "partial shared-space updates preserve existing rollout cohort and metadata",
+      "/memory:manage shared command shows setup prompt when disabled"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Default-off: status returns disabled without env var or DB config",
+      "enable persists to DB config table",
+      "enable is idempotent",
+      "README created in shared-spaces/",
+      "DB persistence survives restart",
+      "env var override takes priority over DB state",
+      "partial shared-space updates preserve existing rollout cohort and metadata",
+      "/memory:manage shared command shows setup prompt when disabled"
+    ],
+    "handlerCalls": [
+      {
+        "name": "shared_memory_status",
+        "args": {
+          "tenantId": "tenant-a",
+          "actorUserId": "gate-i-admin-user"
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: enabled: false"
+    ],
+    "steps": [
+      {
+        "step": "shared_memory_status()",
+        "kind": "tool",
+        "handler": {
+          "name": "shared_memory_status",
+          "args": {
+            "tenantId": "tenant-a",
+            "actorUserId": "gate-i-admin-user"
+          }
+        },
+        "success": true,
+        "facts": [
+          "shared memory status returned"
+        ],
+        "evidence": [
+          "{\"summary\":\"Shared memory disabled \u2014 run /memory:manage shared enable to set up\",\"data\":{\"enabled\":false,\"allowedSharedSpaceIds\":[],\"spaces\":[],\"rolloutSummary\":{\"totalSpaces\":0,\"currentlyAccessibleSpaces\":0,\"rolloutEnabledSpaces\":0,\"rolloutDisabledSpaces\":0,\"killSwitchedSpaces\":0},\"tenantId\":\"tenant-a\",\"userId\":\"gate-i-admin-user\",\"agentId\":null,\"actorSubjectType\":\"user\",\"actorSubjectId\":\"gate-i-admin-user\"},\"hints\":[],\"meta\":{\"tool\":\"shared_memory_status\",\"tokenCount\":160,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "enabled: false",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "220",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/220-constitutional-gate-enforcement-rule-pack.md",
+    "prompt": "Validate the constitutional gate-enforcement rule pack. Capture the evidence needed to prove the constitutional memory encodes file-modification, continuation, compaction, completion, and memory-save trigger phrases; cross-references the governing gates; includes continuation-validation and compaction-recovery overlays; and that the constitutional tier documentation guarantees top-of-results, non-decaying visibility for this rule pack. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "`gate-enforcement.md` declares constitutional importance and decision-style trigger metadata",
+      "the body includes gate cross-reference, continuation validation, compaction recovery, and quick-reference guidance",
+      "`constitutional/README.md` documents top-ranked, non-decaying constitutional surfacing semantics"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`gate-enforcement.md` declares constitutional importance and decision-style trigger metadata",
+      "the body includes gate cross-reference, continuation validation, compaction recovery, and quick-reference guidance",
+      "`constitutional/README.md` documents top-ranked, non-decaying constitutional surfacing semantics"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Inspect `.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md` frontmatter and capture the constitutional importance tier, content type, and trigger-phrase coverage 2) Inspect the body of `gate-enforcement.md` and confirm the gate cross-reference table, continuation-validation workflow, compaction-recovery guidance, and quick-reference behavior are present 3) Inspect `.opencode/skill/system-spec-kit/constitutional/README.md` and confirm it documents constitutional ranking, fixed similarity, no decay, permanence, and budget/verification rules 4) Cross-check the rule-pack references against `AGENTS.md` Section 2 to confirm the constitutional pack points back to the authoritative gate contract"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "221",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/221-shared-memory-admin-identity-governance.md",
+    "prompt": "Validate shared-memory admin identity governance for shared-space mutations. Prove that matching configured-admin hints succeed, ambiguous actor hints are rejected, mismatched hints fail authorization, and missing or dual admin env configuration fails closed with the documented reason codes.",
+    "expectedSignals": [
+      "matching `actorUserId` with a single configured admin succeeds and returns the resolved subject",
+      "dual actor hints are rejected as ambiguous",
+      "mismatched hints fail with `shared_memory_admin_identity_mismatch`",
+      "dual admin env vars fail with `shared_memory_admin_ambiguous`",
+      "no configured admin fails with `shared_memory_admin_unconfigured`"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "matching `actorUserId` with a single configured admin succeeds and returns the resolved subject",
+      "dual actor hints are rejected as ambiguous",
+      "mismatched hints fail with `shared_memory_admin_identity_mismatch`",
+      "dual admin env vars fail with `shared_memory_admin_ambiguous`",
+      "no configured admin fails with `shared_memory_admin_unconfigured`"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Start the MCP server with only `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID=user-admin-1` configured, then call `shared_space_upsert` with `actorUserId: \"user-admin-1\"` and capture the resolved actor in the success payload. 2) Call `shared_space_membership_set` for the same space while sending both `actorUserId` and `actorAgentId`, and verify the request is rejected as ambiguous instead of being silently resolved. 3) Call `shared_space_upsert` or `shared_space_membership_set` with a mismatched caller hint such as `actorUserId: \"user-other\"` or an `actorAgentId` while the configured admin is a user, and verify `shared_memory_admin_identity_mismatch`. 4) Restart the server with both `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID` and `SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID` set, rerun `shared_space_upsert`, and verify the request fails with `shared_memory_admin_ambiguous`. 5) Restart the server with neither admin env var set, rerun `shared_space_upsert`, and verify the request fails with `shared_memory_admin_unconfigured`."
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "222",
+    "category": "17--governance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "17--governance/222-governance-audit-review-and-rollout-metrics.md",
+    "prompt": "Validate governance audit review and rollout metrics without broad enumeration. Prove that unscoped audit review is blocked unless explicitly allowed, filtered audit review returns matching rows plus aggregate summaries, and shared-space rollout, cohort, and conflict helpers report the expected coverage totals for the seeded tenant and space.",
+    "expectedSignals": [
+      "unscoped audit review returns an empty result set unless `allowUnscoped: true`",
+      "filtered review returns rows plus `totalMatching`, `returnedRows`, `byAction`, `byDecision`, and `latestCreatedAt`",
+      "rollout metrics report total spaces, enabled or disabled rollout, kill-switch coverage, memberships, conflicts, and cohort counts",
+      "cohort summary groups spaces by cohort including uncohorted entries",
+      "conflict summary groups by strategy with counts and latest timestamps"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "unscoped audit review returns an empty result set unless `allowUnscoped: true`",
+      "filtered review returns rows plus `totalMatching`, `returnedRows`, `byAction`, `byDecision`, and `latestCreatedAt`",
+      "rollout metrics report total spaces, enabled or disabled rollout, kill-switch coverage, memberships, conflicts, and cohort counts",
+      "cohort summary groups spaces by cohort including uncohorted entries",
+      "conflict summary groups by strategy with counts and latest timestamps"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) Seed a disposable governance database with audit rows, shared spaces, memberships, rollout cohorts, and conflict rows for at least one tenant and one target space. 2) Call `reviewGovernanceAudit(db, {})` and verify it returns no rows or summaries unless `allowUnscoped: true` is explicitly supplied. 3) Call `reviewGovernanceAudit(db, { tenantId: \"tenant-a\", sharedSpaceId: \"space-9\", limit: 10 })` and capture the returned rows plus the `totalMatching`, `returnedRows`, `byAction`, `byDecision`, and `latestCreatedAt` summary fields. 4) Call `getSharedRolloutMetrics(db, \"tenant-a\")` and `getSharedRolloutCohortSummary(db, \"tenant-a\")` and confirm the totals, rollout-enabled counts, kill-switch counts, membership totals, cohort counts, and uncohorted bucket all match the seeded state. 5) Call `getSharedConflictStrategySummary(db, \"space-9\")` and verify the strategy-level counts, distinct logical-key totals, and latest timestamps match the same fixture window."
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

@@ -1,6 +1,7 @@
 {
+  "title": "Feature Specification: Research Memory Redundancy Follow-On",
+  "description": "Level 3 coordination packet that turns the completed memory-redundancy research into parent-sync and downstream packet-alignment work without reopening runtime implementation inside the research lane.",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/006-research-memory-redundancy",
-  "description": "Feature Specification: Research Memory Redundancy Follow-On",
   "keywords": [
     "feature",
     "specification",

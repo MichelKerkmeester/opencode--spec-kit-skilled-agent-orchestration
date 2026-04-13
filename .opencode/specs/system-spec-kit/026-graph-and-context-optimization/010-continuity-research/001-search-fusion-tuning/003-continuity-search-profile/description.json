@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/003-continuity-search-profile",
+  "description": "Add Continuity Search Intent Profile",
+  "keywords": [
+    "add",
+    "continuity",
+    "search",
+    "intent",
+    "profile"
+  ],
+  "lastUpdated": "2026-04-13T05:11:32.313Z",
+  "specId": "003",
+  "folderSlug": "continuity-search-profile",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -195,7 +195,7 @@
     ],
     "causal_summary": "The memory quality and indexing feature category is the largest single phase in the hybrid-RAG-fusion manual testing playbook, spanning 27 scenario files that expand to 34 exact IDs through sub-scenario decomposition (M-005 expands to M-005a/b/c, M-006 expands to M-006a/b/c, 155 expands to 155-F). These scenarios cover the verify-fix-verify loop, signal vocabulary, quality gates, reconsolidation, entity extraction, outsourced agent capture, session enrichment, post-save review, and deferred indexing among other features. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.",
     "created_at": "2026-04-12T09:02:50.300Z",
-    "last_save_at": "2026-04-13T14:20:39.011Z",
+    "last_save_at": "2026-04-13T16:22:48.923Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

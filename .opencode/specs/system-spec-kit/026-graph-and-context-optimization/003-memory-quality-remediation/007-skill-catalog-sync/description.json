@@ -1,0 +1,23 @@
+{
+  "title": "Feature Specification: Phase 7 \u2014 Skill Catalog Sync",
+  "description": "Phase 7 defines the downstream audit and update pass that checks whether Phase 1-6 changes require parity updates across docs, commands, templates, MCP surfaces, and agent definitions.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/007-skill-catalog-sync",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "skill",
+    "catalog",
+    "sync"
+  ],
+  "lastUpdated": "2026-04-13T10:39:18.747Z",
+  "specId": "007",
+  "folderSlug": "skill-catalog-sync",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

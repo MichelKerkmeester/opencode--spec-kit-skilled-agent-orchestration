@@ -205,7 +205,7 @@
     ],
     "causal_summary": "After repository path changes, indexing subsystems were inconsistent: CocoIndex environment paths were stale, code-graph initialization could fail lazily, and adaptive fusion defaults were not explicitly represented across MCP config surfaces. Lexical score visibility through fusion traces was also incomplete.",
     "created_at": "2026-04-12T09:02:50.324Z",
-    "last_save_at": "2026-04-13T14:20:39.056Z",
+    "last_save_at": "2026-04-13T16:22:48.975Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

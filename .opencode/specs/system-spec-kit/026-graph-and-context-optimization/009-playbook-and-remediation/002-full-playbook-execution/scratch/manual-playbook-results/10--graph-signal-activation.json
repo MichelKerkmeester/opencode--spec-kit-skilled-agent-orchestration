@@ -1,0 +1,509 @@
+[
+  {
+    "scenarioId": "016",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/016-typed-weighted-degree-channel-r4.md",
+    "prompt": "As a graph-signal validation operator, confirm bounded typed-degree boost against the documented validation surface. Verify typed-degree boost bounded within configured cap; cold-cache scoring batches uncached nodes in one SQL pass; cached global max prevents repeated normalization-base queries; fallback activates when edge types missing; varied types produce different scores. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Typed-weighted degree channel (R4) against the documented validation surface. Verify typed-degree boost bounded within configured cap; cold-cache scoring batches uncached nodes in one SQL pass; cached global max prevents repeated normalization-base queries; fallback activates when edge types missing; varied types produce different scores. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Typed-degree boost bounded within configured cap",
+      "cold-cache scoring batches uncached nodes in one SQL pass",
+      "cached global max prevents repeated normalization-base queries",
+      "fallback activates when edge types missing",
+      "varied types produce different scores"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Typed-degree boost bounded within configured cap",
+      "cold-cache scoring batches uncached nodes in one SQL pass",
+      "cached global max prevents repeated normalization-base queries",
+      "fallback activates when edge types missing",
+      "varied types produce different scores"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Create varied edge types across multiple candidate memories\n2. Clear the degree cache\n3. Run the degree-scoring path once and capture SQL/query evidence for the cold-cache pass\n4. Repeat without invalidation\n5. Verify caps, cached-max reuse, and fallback behavior"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "017",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/017-co-activation-boost-strength-increase-a7.md",
+    "prompt": "As a graph-signal validation operator, confirm multiplier impact against the documented validation surface. Verify increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched WHERE id IN (...) fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Co-activation boost strength increase (A7) against the documented validation surface. Verify increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched WHERE id IN (...) fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Increased co-activation strength produces measurably higher contribution delta vs baseline",
+      "related-memory hydration uses one batched `WHERE id IN (...)` fetch",
+      "causal-neighbor lookup uses one CTE + join query",
+      "Stage 2 calls the neighbor-count precompute once per boosted batch"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Increased co-activation strength produces measurably higher contribution delta vs baseline",
+      "related-memory hydration uses one batched `WHERE id IN (...)` fetch",
+      "causal-neighbor lookup uses one CTE + join query",
+      "Stage 2 calls the neighbor-count precompute once per boosted batch"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Baseline run\n2. Increase strength\n3. Compare contribution\n4. Capture batching evidence for similarity-neighbor, causal-neighbor, and Stage 2 count lookup paths"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "018",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/018-edge-density-measurement.md",
+    "prompt": "As a graph-signal validation operator, confirm edges-per-node thresholding against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Edge density measurement against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Edge density ratio computed correctly (edges/nodes)",
+      "threshold gate activates/deactivates at boundary"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Edge density ratio computed correctly (edges/nodes)",
+      "threshold gate activates/deactivates at boundary"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Query edge+node counts\n2. Compute ratio\n3. Check threshold handling"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "019",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/019-weight-history-audit-tracking.md",
+    "prompt": "As a graph-signal validation operator, confirm edge change logging + rollback against the documented validation surface. Verify audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Weight history audit tracking against the documented validation surface. Verify audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Audit rows logged for each edge strength mutation",
+      "rollback restores previous weights",
+      "audit history is append-only"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Audit rows logged for each edge strength mutation",
+      "rollback restores previous weights",
+      "audit history is append-only"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Mutate edge strengths\n2. Inspect audit rows\n3. Run rollback"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "020",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/020-graph-momentum-scoring-n2a.md",
+    "prompt": "As a graph-signal validation operator, confirm 7-day delta bonus against the documented validation surface. Verify 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Graph momentum scoring (N2a) against the documented validation surface. Verify 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "7-day momentum delta bonus applied and capped",
+      "nodes with no history get zero bonus",
+      "cap enforced"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "7-day momentum delta bonus applied and capped",
+      "nodes with no history get zero bonus",
+      "cap enforced"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Seed snapshots now/7d\n2. Query\n3. Verify capped bonus"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "021",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/021-causal-depth-signal-n2b.md",
+    "prompt": "As a graph-signal validation operator, confirm normalized depth scoring against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Causal depth signal (N2b) against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Depth score normalized to [0,1]",
+      "deeper chains produce higher normalized values",
+      "shortcut edges do not reduce longest-path depth",
+      "cycle members share one bounded depth layer"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Depth score normalized to [0,1]",
+      "deeper chains produce higher normalized values",
+      "shortcut edges do not reduce longest-path depth",
+      "cycle members share one bounded depth layer"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Build multi-level graph with a shortcut edge or rooted cycle\n2. Score depth\n3. Verify normalized output"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "022",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/022-community-detection-n2c.md",
+    "prompt": "As a graph-signal validation operator, confirm community boost injection against the documented validation surface. Verify community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Community detection (N2c) against the documented validation surface. Verify community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Community detection assigns cluster IDs",
+      "co-member boost injected",
+      "boost capped at configured maximum"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Community detection assigns cluster IDs",
+      "co-member boost injected",
+      "boost capped at configured maximum"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Create communities\n2. Recompute\n3. Verify co-member injection/caps"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "081",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/081-graph-and-cognitive-memory-fixes.md",
+    "prompt": "As a graph-signal validation operator, confirm graph/cognitive fix bundle against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Graph and cognitive memory fixes against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Self-loops prevented",
+      "depth clamps enforced",
+      "cache invalidation triggers on mutation",
+      "no stale cognitive data returned"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Self-loops prevented",
+      "depth clamps enforced",
+      "cache invalidation triggers on mutation",
+      "no stale cognitive data returned"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. trigger self-loop/depth/cache scenarios\n2. verify clamps/invalidations\n3. capture results"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "091",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/091-implemented-graph-centrality-and-community-detection-n2.md",
+    "prompt": "As a graph-signal validation operator, confirm deferred->implemented status against the documented validation surface. Verify n2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Implemented: graph centrality and community detection (N2) against the documented validation surface. Verify n2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "N2 tables exist with data",
+      "feature flags show active status",
+      "graph queries include centrality/community contributions in scores"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "N2 tables exist with data",
+      "feature flags show active status",
+      "graph queries include centrality/community contributions in scores"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. inspect tables/flags\n2. run graph queries\n3. verify N2 contributions"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "120",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/120-unified-graph-rollback-and-explainability-phase-3.md",
+    "prompt": "As a graph-signal validation operator, confirm graph kill switch removes graph-side effects while traces still explain enabled runs against memory_search({ query:\"graph rollout check\", includeTrace:true }). Verify when enabled, trace includes graph contribution summary and repeated identical inputs return identical order; graph FTS path uses a CTE with SQL-side dedup and cached FTS-table availability; when disabled, graph-side effects are absent and baseline ordering remains deterministic. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Unified graph rollback and explainability (Phase 3) against memory_search({ query:\"graph rollout check\", includeTrace:true }). Verify graph kill switch removes graph-side effects while traces still explain enabled runs. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "When enabled, trace includes graph contribution summary and repeated identical inputs return identical order",
+      "graph FTS path uses a CTE with SQL-side dedup and cached FTS-table availability",
+      "when disabled, graph-side effects are absent and baseline ordering remains deterministic"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "When enabled, trace includes graph contribution summary and repeated identical inputs return identical order",
+      "graph FTS path uses a CTE with SQL-side dedup and cached FTS-table availability",
+      "when disabled, graph-side effects are absent and baseline ordering remains deterministic"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "graph rollout check",
+          "includeTrace": true
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: UNION ALL"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({ query:\"graph rollout check\", includeTrace:true })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "graph rollout check",
+            "includeTrace": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":10,\"constitutionalInjected\":0,\"durationMs\":7},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":2,\"coActivationBoosted\":2,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":2,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":9,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":7,\"stage2\":2,\"stage3\":0,\"stage4\":0,\"total\":9}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,"
+        ]
+      },
+      {
+        "step": "UNION ALL",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "156",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md",
+    "prompt": "As a graph-signal validation operator, verify dirty-node tracking fires in write_local mode against SPECKIT_GRAPH_REFRESH_MODE=write_local. Verify markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) against SPECKIT_GRAPH_REFRESH_MODE=write_local. Verify markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "markDirty() populates dirty-node set",
+      "onWrite() returns localRecomputed=true and skipped=false",
+      "component size estimation runs",
+      "dirty nodes cleared after local recompute"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "markDirty() populates dirty-node set",
+      "onWrite() returns localRecomputed=true and skipped=false",
+      "component size estimation runs",
+      "dirty nodes cleared after local recompute"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_REFRESH_MODE=write_local"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_REFRESH_MODE=write_local",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "157",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md",
+    "prompt": "As a graph-signal validation operator, verify backfill hook registration and scheduling against SPECKIT_LLM_GRAPH_BACKFILL=true. Verify onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold; backfill callback is invoked via setImmediate; low-value docs do not trigger backfill. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) against SPECKIT_LLM_GRAPH_BACKFILL=true. Verify backfill hook registration and scheduling for high-value documents. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold",
+      "backfill callback is invoked via setImmediate",
+      "low-value docs do not trigger backfill"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold",
+      "backfill callback is invoked via setImmediate",
+      "low-value docs do not trigger backfill"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. `SPECKIT_LLM_GRAPH_BACKFILL=true`\n2. Register callback via `registerLlmBackfillFn()`\n3. Call `onIndex(db, memoryId, content, { qualityScore: 0.8 })`\n4. Verify OnIndexResult.llmBackfillScheduled\n5. `npx vitest run tests/graph-lifecycle.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "158",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md",
+    "prompt": "As a graph-signal validation operator, verify graph weight cap and community score capping against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify applyGraphWeightCap() clamps to [0, 0.05]; applyCommunityScoring() caps at 0.03; shouldActivateLouvain() respects thresholds; calibrateGraphWeight() enforces N2a/N2b caps. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify graph weight cap enforcement and community score capping. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "applyGraphWeightCap() clamps to [0, 0.05]",
+      "applyCommunityScoring() caps at 0.03",
+      "shouldActivateLouvain() respects thresholds",
+      "calibrateGraphWeight() enforces N2a/N2b caps"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "applyGraphWeightCap() clamps to [0, 0.05]",
+      "applyCommunityScoring() caps at 0.03",
+      "shouldActivateLouvain() respects thresholds",
+      "calibrateGraphWeight() enforces N2a/N2b caps"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_CALIBRATION_PROFILE=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_CALIBRATION_PROFILE=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "174",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md",
+    "prompt": "As a graph-signal validation operator, verify query-time alias matching activates graph channel for matched concepts against SPECKIT_GRAPH_CONCEPT_ROUTING. Verify isGraphConceptRoutingEnabled() returns true; noun phrases extracted from query; alias table consulted in SQLite; canonical concept names returned; graph channel activated for matched concepts. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) against SPECKIT_GRAPH_CONCEPT_ROUTING. Verify query-time alias matching activates graph channel for matched concepts. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "isGraphConceptRoutingEnabled() returns true",
+      "noun phrases extracted from query",
+      "alias table consulted in SQLite",
+      "canonical concept names returned",
+      "graph channel activated for matched concepts"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isGraphConceptRoutingEnabled() returns true",
+      "noun phrases extracted from query",
+      "alias table consulted in SQLite",
+      "canonical concept names returned",
+      "graph channel activated for matched concepts"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_GRAPH_CONCEPT_ROUTING"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_GRAPH_CONCEPT_ROUTING",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "175",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/175-typed-traversal-speckit-typed-traversal.md",
+    "prompt": "As a graph-signal validation operator, verify sparse-first policy + intent-aware edge traversal scoring against SPECKIT_TYPED_TRAVERSAL. Verify isTypedTraversalEnabled() returns true; sparse-first: density < 0.5 \u2192 1-hop; INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit; edge prior tiers: 1.0/0.75/0.5; MAX_BOOST_PER_HOP=0.05; MAX_COMBINED_BOOST=0.20. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Typed traversal (SPECKIT_TYPED_TRAVERSAL) against SPECKIT_TYPED_TRAVERSAL. Verify sparse-first policy + intent-aware edge traversal scoring. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "isTypedTraversalEnabled() returns true",
+      "sparse-first: density < 0.5 \u2192 1-hop",
+      "INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit",
+      "edge prior tiers: 1.0/0.75/0.5",
+      "MAX_BOOST_PER_HOP=0.05",
+      "MAX_COMBINED_BOOST=0.20"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "isTypedTraversalEnabled() returns true",
+      "sparse-first: density < 0.5 \u2192 1-hop",
+      "INTENT_EDGE_PRIORITY maps fix_bug/add_feature/find_decision/understand/find_spec/refactor/security_audit",
+      "edge prior tiers: 1.0/0.75/0.5",
+      "MAX_BOOST_PER_HOP=0.05",
+      "MAX_COMBINED_BOOST=0.20"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Confirm `SPECKIT_TYPED_TRAVERSAL` is unset or `true`\n2. Run search against a sparse graph (density < 0.5)\n3. Verify traversal constrained to SPARSE_MAX_HOPS=1\n4. Run search with classified intent (e.g., fix_bug)\n5. Verify INTENT_EDGE_PRIORITY mapping applied\n6. Confirm score = seedScore * edgePrior * hopDecay * freshness"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "194",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/194-causal-neighbor-boost-and-injection.md",
+    "prompt": "As a graph-signal validation operator, confirm 2-hop causal amplification with shared ceiling enforcement against SPECKIT_CAUSAL_BOOST. Verify stage 2 fusion seeds causal traversal from top-ranked results; traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior; combined causal plus session boost stays within the 0.20 ceiling; disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Causal neighbor boost and injection against SPECKIT_CAUSAL_BOOST. Verify 2-hop causal amplification with shared ceiling enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Stage 2 fusion seeds causal traversal from top-ranked results",
+      "traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior",
+      "combined causal plus session boost stays within the 0.20 ceiling",
+      "disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Stage 2 fusion seeds causal traversal from top-ranked results",
+      "traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior",
+      "combined causal plus session boost stays within the 0.20 ceiling",
+      "disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Seed a ranked result set with causal_edges across relation types and hop depths\n2. Run Stage 2 fusion with causal boost enabled\n3. Inspect boosted neighbors, hop counts, relation weights, and the combined ceiling\n4. Disable `SPECKIT_CAUSAL_BOOST` and rerun for comparison"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "195",
+    "category": "10--graph-signal-activation",
+    "status": "UNAUTOMATABLE",
+    "filePath": "10--graph-signal-activation/195-temporal-contiguity-layer.md",
+    "prompt": "As a graph-signal validation operator, confirm Stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior against spec_folder. Verify vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window; closer-in-time memories receive stronger reinforcement than distant ones; cumulative boost per result stays within the 0.50 cap; disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer; getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a graph-signal validation operator, validate Temporal contiguity layer against spec_folder. Verify stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window",
+      "closer-in-time memories receive stronger reinforcement than distant ones",
+      "cumulative boost per result stays within the 0.50 cap",
+      "disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer",
+      "getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window",
+      "closer-in-time memories receive stronger reinforcement than distant ones",
+      "cumulative boost per result stays within the 0.50 cap",
+      "disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer",
+      "getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1. Seed vector-search candidates with near and far timestamps\n2. Run Stage 1 vector search with temporal contiguity enabled\n3. Inspect pairwise boost contributions, clamped-window behavior, and the cumulative cap\n4. Seed an anchor memory plus in-range and out-of-range neighbors inside the same `spec_folder`, then call `getTemporalNeighbors()`\n5. Capture query-plan or diagnostic evidence that the lookup uses `spec_folder` plus bounded `created_at >= ? AND created_at <= ?` filtering, backed by `idx_spec_folder_created_at`, before time deltas are computed\n6. Confirm returned neighbors are sorted by computed `time_delta_seconds ASC` and exclude out-of-window rows\n7. Disable `SPECKIT_TEMPORAL_CONTIGUITY` and rerun Stage 1 search for comparison"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

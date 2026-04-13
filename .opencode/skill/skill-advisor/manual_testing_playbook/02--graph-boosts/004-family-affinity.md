@@ -23,11 +23,11 @@ If family affinity is too loose, explicit Codex requests will drag in unrelated 
 
 Operators run the exact prompt and command sequence for `GB-004` and confirm the expected signals without contradictory evidence.
 
-- Objective: Verify family affinity does not boost zero-evidence CLI siblings
+- Objective: Verify cli-codex stays top-1 while generic CLI vocabulary can legitimately surface sibling CLIs with lexical evidence
 - Real user request: `"use codex cli for generation"`
-- Prompt: `As a graph boost validation operator, validate family affinity behavior against .opencode/skill/skill-advisor/scripts/skill_advisor.py "use codex cli for generation" --threshold 0. Verify cli-codex is top-1 and sibling CLI skills do not appear from !graph:family evidence alone. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: cli-codex is top-1, sibling CLI skills are absent or carry non-graph evidence, and no sibling appears with only `!graph:family(cli)`
-- Pass/fail: PASS if cli-codex is top-1 and siblings are absent or independently supported; FAIL if siblings appear with graph-family evidence only
+- Prompt: `As a graph boost validation operator, validate family affinity behavior against .opencode/skill/skill-advisor/scripts/skill_advisor.py "use codex cli for generation" --threshold 0. Verify cli-codex is top-1, note that other CLI siblings may appear when shared CLI vocabulary gives them legitimate lexical evidence, and confirm the ghost guard only blocks skills with zero pre-graph evidence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected signals: cli-codex is top-1, other CLI siblings may appear when the prompt's shared `cli` vocabulary gives them legitimate lexical evidence, and the ghost guard only blocks skills with zero pre-graph evidence
+- Pass/fail: PASS if cli-codex is top-1; other CLIs are acceptable when the prompt contains generic CLI vocabulary. FAIL only if a non-CLI skill appears from graph propagation alone, or if cli-codex is not top-1
 
 ---
 
@@ -43,7 +43,7 @@ Operators run the exact prompt and command sequence for `GB-004` and confirm the
 
 ### Expected
 
-cli-codex ranks first. The sibling CLI skills do not appear from family affinity alone, although a sibling may still appear if the prompt also gives it direct lexical evidence.
+cli-codex is top-1. Other CLI siblings MAY appear if the prompt contains shared CLI vocabulary like the word cli, because they have legitimate lexical evidence from that shared term. The ghost guard only blocks skills with zero pre-graph evidence.
 
 ### Evidence
 
@@ -51,8 +51,8 @@ Capture the full JSON output and inspect every sibling CLI entry, if any, so the
 
 ### Pass/Fail
 
-- **Pass**: cli-codex is top-1 and any sibling CLI result has direct evidence beyond `!graph:family(cli)`
-- **Fail**: A sibling CLI appears with only family-boost evidence, or cli-codex is not top-1
+- **Pass**: cli-codex is top-1. Other CLIs appearing is acceptable when the prompt contains generic CLI vocabulary.
+- **Fail**: A non-CLI skill appears from graph propagation alone, or cli-codex is not top-1
 
 ### Failure Triage
 

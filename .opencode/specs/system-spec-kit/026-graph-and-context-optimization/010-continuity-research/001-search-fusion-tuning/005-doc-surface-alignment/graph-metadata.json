@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "search fusion doc alignment",
+      "continuity search profile docs",
+      "reranker telemetry docs",
+      "doc-only parity pass",
+      "search fusion plan",
+      "doc alignment plan",
+      "continuity profile plan",
+      "level 2 plan",
+      "search fusion tasks",
+      "doc alignment tasks",
+      "continuity profile tasks",
+      "search fusion checklist"
+    ],
+    "key_topics": [
+      "search",
+      "fusion",
+      "doc",
+      "alignment",
+      "continuity",
+      "profile",
+      "docs",
+      "reranker",
+      "telemetry",
+      "doc-only",
+      "parity",
+      "pass"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".opencode/command/memory/manage.md",
+      ".opencode/agent/context.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/command/memory/search.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/mcp_server/configs/README.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md"
+    ],
+    "entities": [
+      {
+        "name": "manage.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/manage.md",
+        "source": "derived"
+      },
+      {
+        "name": "context.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/search.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/configs/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-semantic-and-lexical-search-memorysearch.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md",
+        "source": "derived"
+      },
+      {
+        "name": "05-4-stage-pipeline-architecture.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md",
+        "source": "derived"
+      },
+      {
+        "name": "14-local-gguf-reranker-via-node-llama-cpp.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-1-search-pipeline-features-speckit.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "098-local-gguf-reranker-via-node-llama-cpp-p1-5.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Doc Surface Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Search Fusion Changes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Several",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Bring",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Several operator-facing search docs still described the pre-017 tuning state. The runtime now treats reranker length scaling as a neutral `1.0` multiplier, exposes reranker cache telemetry through `getRerankerStatus()`, applies a continuity-specific adaptive fusion profile, waits for at least four results before Stage 3 reranking, and includes continuity in the Stage 3 MMR lambda map, but not every requested surface reflected those changes.",
+    "created_at": "2026-04-13T08:18:57.063Z",
+    "last_save_at": "2026-04-13T16:22:53.369Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

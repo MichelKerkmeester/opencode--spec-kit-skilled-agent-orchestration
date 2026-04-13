@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Code Graph Upgrades [template:level_3/plan.md]"
+title: "Implementation Plan: Code Graph Upgrades"
 description: "Plan the bounded post-R5/R6 code-graph upgrade packet using the §20 roadmap as the direct source of truth."
 trigger_phrases:
   - "005-code-graph-upgrades"

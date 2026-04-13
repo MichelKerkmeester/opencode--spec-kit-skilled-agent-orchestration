@@ -21,7 +21,7 @@
       "completedAt": "2026-04-12T14:42:00Z"
     },
     {
-      "phaseSlug": "002-implement-cache-warning-hooks",
+      "phaseSlug": "002-cache-warning-hooks",
       "iterationsCompleted": 2,
       "stopReason": "max_iterations",
       "findings": {
@@ -36,7 +36,7 @@
       "completedAt": "2026-04-12T14:53:00Z"
     },
     {
-      "phaseSlug": "003-memory-quality-issues",
+      "phaseSlug": "003-memory-quality-remediation",
       "iterationsCompleted": 3,
       "stopReason": "max_iterations",
       "findings": {

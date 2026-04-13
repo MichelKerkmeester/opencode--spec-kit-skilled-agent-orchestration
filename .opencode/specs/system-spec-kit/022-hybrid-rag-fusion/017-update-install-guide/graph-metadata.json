@@ -196,7 +196,7 @@
     ],
     "causal_summary": "The install guide (mcp_server/INSTALL_GUIDE.md, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.",
     "created_at": "2026-04-12T09:02:50.308Z",
-    "last_save_at": "2026-04-13T14:20:39.022Z",
+    "last_save_at": "2026-04-13T16:22:48.940Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

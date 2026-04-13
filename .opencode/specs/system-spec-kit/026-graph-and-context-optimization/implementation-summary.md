@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary"
-description: "The 026 root packet now validates as a real Level 3 parent packet, with a child phase map that matches the shipped graph-and-context train."
+description: "The 026 root packet now reflects the reorganized 11-phase child map for the shipped graph-and-context train."
 trigger_phrases:
   - "026 root implementation summary"
   - "graph context optimization summary"
@@ -31,7 +31,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 026-graph-and-context-optimization |
-| **Completed** | 2026-04-09 |
+| **Completed** | 2026-04-13 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -40,7 +40,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The 026 root packet now works like a real parent packet again. You can open the root folder and immediately see the active child packet map, the dependency-aware handoffs, the coordination boundary, and the validation surface that ties the train together.
+The 026 root packet now works like a real parent packet again. You can open the root folder and immediately see the active 11-phase child packet map, the dependency-aware handoffs, the coordination boundary, and the validation surface that ties the train together.
 
 ### Root Packet Restoration
 
@@ -57,6 +57,10 @@ You now have the missing `plan.md`, `tasks.md`, `checklist.md`, `decision-record
 ## How It Was Delivered
 
 This pass started from the strict-validator baseline for the root `026` folder, then rebuilt the parent packet to the active Level 3 structure. After the docs were restored, the parent packet was revalidated so the root could prove its own shape and the child-packet map in one pass.
+
+### Phase Reorganization
+
+The root docs now reflect the April 2026 reorganization that split `006-canonical-continuity-refactor` into five focused top-level phases: `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-continuity-research`. The former top-level `007` scope is now represented by `011-skill-advisor-graph`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -67,7 +71,7 @@ This pass started from the strict-validator baseline for the root `026` folder, 
 | Decision | Why |
 |----------|-----|
 | Keep the root packet coordination-only | The child packets already own runtime and research truth, so the parent only needs sequencing and verification |
-| Add a phase documentation map for `001` through `014` | The child train no longer matches simple numeric execution order |
+| Add a phase documentation map for `001` through `011` | The child train no longer matches simple numeric execution order after the 006 split |
 | Treat directories without a root `spec.md` as residue, not phases | The parent validator should reflect real packet phases only |
 <!-- /ANCHOR:decisions -->
 
@@ -79,7 +83,7 @@ This pass started from the strict-validator baseline for the root `026` folder, 
 | Check | Result |
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization --strict` | PASS after the root packet rebuild and residue cleanup |
-| Parent-doc sync review | PASS, parent docs all reflect the same coordination-only scope and child packet map |
+| Parent-doc sync review | PASS, parent docs all reflect the same coordination-only scope and reorganized 11-phase child packet map |
 <!-- /ANCHOR:verification -->
 
 ---

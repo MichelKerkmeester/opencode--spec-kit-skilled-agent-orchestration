@@ -1,0 +1,10 @@
+Packet: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning
+Spec Folder: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning
+Status: planned
+Importance Tier: important
+Summary: Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.
+Parent: system-spec-kit/026-graph-and-context-optimization/010-continuity-research
+Children: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/001-remove-length-penalty, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/002-add-reranker-telemetry, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/003-continuity-search-profile, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/004-raise-rerank-minimum, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/006-continuity-profile-validation
+Key Topics: investigate, whether, hardcoded, thresholds, weights, decay, constants, search, pipeline, optimal, historical, save
+Key Files: configs/search-weights.json, mcp_server/lib/search/cross-encoder.ts, mcp_server/lib/search/vector-index-store.ts, mcp_server/configs/search-weights.json, spec.md, .opencode/command/memory/search.md, mcp_server/configs/README.md, checklist.md, .codex/agents/deep-review.toml, .codex/agents/context.toml, configs/README.md, tasks.md, research/research.md
+Source Docs: spec.md, tasks.md, checklist.md, research/research.md

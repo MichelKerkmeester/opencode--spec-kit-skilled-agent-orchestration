@@ -1,0 +1,562 @@
+[
+  {
+    "scenarioId": "103",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/103-ux-hook-module-coverage-mutation-feedback-response-hints.md",
+    "prompt": "Validate 103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass (6 tests), including latency/cache-clear booleans, errors field verification, error propagation hints, and finalized hint payload assertions. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `npx vitest run tests/hooks-ux-feedback.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "104",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/104-mutation-save-path-ux-parity-and-no-op-hardening.md",
+    "prompt": "Run save-path UX scenarios and verify duplicate-save and unchanged-save no-op behavior, FSRS corruption guard, plus atomic-save parity. Capture the evidence needed to prove Suite passes and assertions show no false postMutationHooks on duplicate or unchanged saves, cache-left-unchanged messaging, FSRS fields not reset on no-op saves, and parity between standard and atomic save responses. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Suite passes and assertions show no false `postMutationHooks` on `duplicate` or `unchanged` saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Suite passes and assertions show no false `postMutationHooks` on `duplicate` or `unchanged` saves, cache-left-unchanged messaging, FSRS spaced-repetition fields not corrupted on no-op saves, and parity between standard and atomic save responses"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `npx vitest run tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering duplicate-content and unchanged-content save no-op responses 3) inspect assertions verifying FSRS fields (`review_count`, `last_review`) are not reset on no-op saves 4) inspect assertions covering atomic-save `postMutationHooks`, hints, and partial-indexing guidance parity"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "105",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/105-context-server-success-envelope-finalization.md",
+    "prompt": "Validate the finalized context-server success-envelope path, including token metadata recomputation. Capture the evidence needed to prove Context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `npx vitest run tests/context-server.vitest.ts` 2) inspect assertions covering appended success hints 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final token metadata after hint append and before budget enforcement"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "106",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/106-hooks-barrel-readme-synchronization.md",
+    "prompt": "Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "response-hints\\"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "response-hints\\"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `rg \"mutation-feedback\" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg \"response-hints\" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 3) `rg \"mutation-feedback\\"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "107",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/107-checkpoint-confirmname-and-schema-enforcement.md",
+    "prompt": "Validate checkpoint delete confirmName enforcement across handler and schema layers. Capture the evidence needed to prove Validation and handler suites pass with missing-confirmName rejection plus successful delete confirmation reporting, and context-server Group 13b structural tests pass. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting. `context-server.vitest.ts` Group 13b structural tests (T103\u2013T106) verify source-code patterns for checkpoint confirmName enforcement"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting. `context-server.vitest.ts` Group 13b structural tests (T103\u2013T106) verify source-code patterns for checkpoint confirmName enforcement"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts` 2) `npx vitest run tests/context-server.vitest.ts` (Group 13b: T103\u2013T106 structural source-code pattern verification) 3) inspect rejection assertions for missing `confirmName` 4) inspect success assertions for `safetyConfirmationUsed=true`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "166",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/166-result-explain-v1-speckit-result-explain-v1.md",
+    "prompt": "Test SPECKIT_RESULT_EXPLAIN_V1=true. Run a search, verify why.summary and topSignals on each result. Test debug mode for channelContribution. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "why.summary non-empty",
+      "topSignals array with valid SignalLabel entries",
+      "channelContribution (vector/fts/graph) in debug only",
+      "no why when flag OFF"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "why.summary non-empty",
+      "topSignals array with valid SignalLabel entries",
+      "channelContribution (vector/fts/graph) in debug only",
+      "no why when flag OFF"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_RESULT_EXPLAIN_V1=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_RESULT_EXPLAIN_V1=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "167",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md",
+    "prompt": "Test SPECKIT_RESPONSE_PROFILE_V1=true with profile=quick. Verify topResult, oneLineWhy, omittedCount, and tokenReduction shape. Test other profiles for expected shapes. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "quick: topResult + oneLineWhy + omittedCount + tokenReduction",
+      "research: results + evidenceDigest + followUps",
+      "resume: state + nextSteps + blockers",
+      "full response when flag OFF"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "quick: topResult + oneLineWhy + omittedCount + tokenReduction",
+      "research: results + evidenceDigest + followUps",
+      "resume: state + nextSteps + blockers",
+      "full response when flag OFF"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_RESPONSE_PROFILE_V1=true"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_RESPONSE_PROFILE_V1=true",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "168",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/168-progressive-disclosure-v1-speckit-progressive-disclosure-v1.md",
+    "prompt": "Search with > 5 results, verify full results remain present plus data.progressiveDisclosure, then use cursor for next page. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "full `data.results`",
+      "summaryLayer with count + digest",
+      "Snippet[] with snippet <= 100 chars, detailAvailable, resultId",
+      "continuation cursor",
+      "page size = 5",
+      "cursor TTL = 5 min"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "full `data.results`",
+      "summaryLayer with count + digest",
+      "Snippet[] with snippet <= 100 chars, detailAvailable, resultId",
+      "continuation cursor",
+      "page size = 5",
+      "cursor TTL = 5 min"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "broad query",
+          "limit": 20
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: data.results"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({ query: \"broad query\", limit: 20 })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "broad query",
+            "limit": 20
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":14,\"constitutionalInjected\":0,\"durationMs\":5},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":2,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":10,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":0},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":5,\"stage2\":2,\"stage3\":0,\"stage4\":0,\"total\":7}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.4},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7"
+        ]
+      },
+      {
+        "step": "data.results",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "169",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/169-session-retrieval-state-v1-speckit-session-retrieval-state-v1.md",
+    "prompt": "Run 2 searches in the same session, verify data.sessionState and data.goalRefinement are returned, and check follow-up behavior. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "`data.sessionState` with activeGoal/seenResultIds/preferredAnchors",
+      "`data.goalRefinement` with activeGoal/applied",
+      "follow-up search can deprioritize seen results",
+      "session TTL 30 min",
+      "LRU at 100 sessions"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "`data.sessionState` with activeGoal/seenResultIds/preferredAnchors",
+      "`data.goalRefinement` with activeGoal/applied",
+      "follow-up search can deprioritize seen results",
+      "session TTL 30 min",
+      "LRU at 100 sessions"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_search",
+        "args": {
+          "query": "first search",
+          "anchors": [
+            "state",
+            "next-steps"
+          ]
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: data.sessionState"
+    ],
+    "steps": [
+      {
+        "step": "memory_search({ query: \"first search\", sessionId: \"test-session\", anchors: [\"state\", \"next-steps\"] })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_search",
+          "args": {
+            "query": "first search",
+            "anchors": [
+              "state",
+              "next-steps"
+            ]
+          }
+        },
+        "success": true,
+        "facts": [
+          "searchable result appears",
+          "results returned",
+          "relevant context returned",
+          "no matching memories found",
+          "absent from retrieval",
+          "deleted item absent from retrieval",
+          "stable final scoring",
+          "no invariant errors",
+          "stage metadata present",
+          "lexical path reported"
+        ],
+        "evidence": [
+          "{\"summary\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\\n\\nNo matching memories found\",\"data\":{\"count\":0,\"searchType\":\"hybrid\",\"constitutionalCount\":0,\"requestQuality\":{\"label\":\"gap\"},\"stateStats\":{\"minState\":\"\",\"before\":{\"UNKNOWN\":5},\"after\":{\"UNKNOWN\":5},\"removed\":0},\"featureFlags\":{\"trmEnabled\":true,\"multiQueryEnabled\":true,\"stateLimitsApplied\":false},\"pipelineMetadata\":{\"stage1\":{\"searchType\":\"hybrid\",\"channelCount\":1,\"activeChannels\":2,\"candidateCount\":10,\"constitutionalInjected\":0,\"durationMs\":5},\"stage2\":{\"sessionBoostApplied\":\"off\",\"causalBoostApplied\":\"applied\",\"intentWeightsApplied\":\"off\",\"artifactRoutingApplied\":\"applied\",\"feedbackSignalsApplied\":\"off\",\"graphContribution\":{\"killSwitchActive\":false,\"causalBoosted\":0,\"coActivationBoosted\":0,\"communityInjected\":0,\"graphSignalsBoosted\":0,\"totalGraphInjected\":0,\"rolloutState\":\"bounded_runtime\"},\"qualityFiltered\":0,\"durationMs\":1,\"recencyFusionApplied\":true,\"recencyFusionBoosted\":9,\"coActivationApplied\":true,\"graphSignalsApplied\":true},\"stage3\":{\"rerankApplied\":true,\"rerankProvider\":\"fallback-sort\",\"chunkReassemblyStats\":{\"collapsedChunkHits\":0,\"chunkParents\":0,\"reassembled\":0,\"fallback\":0},\"durationMs\":1},\"stage4\":{\"stateFiltered\":0,\"constitutionalInjected\":0,\"evidenceGapDetected\":true,\"durationMs\":0},\"timing\":{\"stage1\":5,\"stage2\":1,\"stage3\":1,\"stage4\":0,\"total\":7}},\"lexicalPath\":\"fts5\",\"fallbackState\":\"ok\",\"evidenceGapWarning\":\"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=1.41). Consider first principles.**\",\"intent\":{\"type\":\"understand\",\"confidence\":1,\"description\":\"Understanding or exploring the codebase\",\"weightsApplied\":\"off\"},\"artifactRouting\":{\"strategy\":{\"artifactClass\":\"research\",\"semanticWeight\":0.7,\"keywordWeight\":0.3,\"recencyBias\":0.2,\"maxResults\":5,\"boostFactor\":1},\"detectedClass\":\"research\",\"confidence\":0.16666666666666666},\"artifact_routing\":{\"strategy\":{\"artifactClass\":\"research\",\"sema"
+        ]
+      },
+      {
+        "step": "data.sessionState",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "179",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md",
+    "prompt": "Test the default-on SPECKIT_EMPTY_RESULT_RECOVERY_V1 behavior. Trigger all 3 recovery statuses and verify structured payloads. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Recovery payload contains status (no_results/low_confidence/partial)",
+      "root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap)",
+      "suggested actions (retry_broader/switch_mode/save_memory/ask_user)",
+      "alternative query suggestions",
+      "thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Recovery payload contains status (no_results/low_confidence/partial)",
+      "root cause reason (spec_filter_too_narrow/low_signal_query/knowledge_gap)",
+      "suggested actions (retry_broader/switch_mode/save_memory/ask_user)",
+      "alternative query suggestions",
+      "thresholds: LOW_CONFIDENCE=0.4, PARTIAL_MIN=3"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_EMPTY_RESULT_RECOVERY_V1"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_EMPTY_RESULT_RECOVERY_V1",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "180",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md",
+    "prompt": "Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search and verify 4-factor weighted confidence scoring with high/medium/low labels. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Per-result confidence score computed",
+      "4 factors weighted correctly",
+      "HIGH_THRESHOLD=0.7, LOW_THRESHOLD=0.4",
+      "labels assigned: high/medium/low",
+      "drivers list per result",
+      "requestQuality computed across all results",
+      "heuristic only, no LLM"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Per-result confidence score computed",
+      "4 factors weighted correctly",
+      "HIGH_THRESHOLD=0.7, LOW_THRESHOLD=0.4",
+      "labels assigned: high/medium/low",
+      "drivers list per result",
+      "requestQuality computed across all results",
+      "heuristic only, no LLM"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: SPECKIT_RESULT_CONFIDENCE_V1"
+    ],
+    "steps": [
+      {
+        "step": "SPECKIT_RESULT_CONFIDENCE_V1",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "209",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/209-shared-post-mutation-hook-wiring.md",
+    "prompt": "Validate shared post-mutation hook wiring across save, update, delete, bulk-delete, and atomic-save flows. Capture the evidence needed to prove the hook suites pass, every operation returns the same MutationHookResult fields, and thrown hook failures are collected into the errors array instead of being silently swallowed. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Hook suites pass, all five mutation operations return `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors: string[]`, and thrown hook failures are surfaced in `errors`"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Hook suites pass, all five mutation operations return `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors: string[]`, and thrown hook failures are surfaced in `errors`"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hooks-mutation-wiring.vitest.ts tests/mutation-hooks.vitest.ts` 2) inspect assertions covering `save`, `update`, `delete`, `bulk-delete`, and `atomic-save` 3) inspect assertions proving thrown hook failures populate `errors` and emit warning telemetry"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "210",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/210-memory-health-autorepair-metadata.md",
+    "prompt": "Validate memory_health autoRepair metadata in full report mode. Capture the evidence needed to prove unconfirmed autoRepair requests return a confirmation-only payload, confirmed repairs return structured repair actions, and mixed outcomes set repaired and partialSuccess exactly as documented. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "The health suites pass, unconfirmed `autoRepair:true` requests return confirmation-only guidance, confirmed repairs emit structured `repair.actions`, and mixed outcomes report `repair.repaired: false` with `repair.partialSuccess: true` when only part of the repair succeeds"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "The health suites pass, unconfirmed `autoRepair:true` requests return confirmation-only guidance, confirmed repairs emit structured `repair.actions`, and mixed outcomes report `repair.repaired: false` with `repair.partialSuccess: true` when only part of the repair succeeds"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-memory-health-edge.vitest.ts tests/memory-crud-extended.vitest.ts` 2) inspect assertions covering confirmation-only responses for `autoRepair:true` without `confirmed:true` 3) inspect assertions covering FTS rebuild, orphan cleanup, and partial-success repair metadata"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "211",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/211-schema-and-type-contract-synchronization.md",
+    "prompt": "Validate schema and type contract synchronization for checkpoint deletion and mutation-hook responses. Capture the evidence needed to prove confirmName remains required across schema, handler, and tool-boundary validation, and that shared post-mutation hook result fields stay synchronized with save-path response payloads. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering missing, mismatched, and matching `confirmName` payloads 3) inspect assertions covering shared mutation-hook result fields in hook wiring and save responses"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "212",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/212-mutation-hook-result-contract-expansion.md",
+    "prompt": "Validate the expanded post-mutation hook result contract. Capture the evidence needed to prove hook results include latencyMs, cache-clear booleans, toolCacheInvalidated counts, and surfaced error strings, and that the UX feedback layer reflects those fields in user-facing hints. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts` 2) inspect assertions covering `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors` 3) inspect assertions proving UX feedback/hint builders surface the contract fields without dropping error context"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "213",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/213-mutation-response-ux-payload-exposure.md",
+    "prompt": "Validate mutation response UX payload exposure on successful save paths. Capture the evidence needed to prove standard and atomic save success responses expose typed postMutationHooks fields, while duplicate or unchanged no-op paths omit false hook metadata and report caches-left-unchanged guidance instead. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Save-path regression suite passes, successful save responses include typed `postMutationHooks` fields, and duplicate/no-op saves omit false `postMutationHooks` while surfacing cache-left-unchanged guidance"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Save-path regression suite passes, successful save responses include typed `postMutationHooks` fields, and duplicate/no-op saves omit false `postMutationHooks` while surfacing cache-left-unchanged guidance"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering successful `memory_save` and `atomicSaveMemory` responses with typed `postMutationHooks` fields 3) inspect assertions covering duplicate-content and unchanged/no-op suppression of false UX payloads"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "214",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/214-atomic-save-parity-and-partial-indexing-hints.md",
+    "prompt": "Validate atomic-save UX parity against the primary save path. Capture the evidence needed to prove atomic saves return the same postMutationHooks contract and hint shape as standard saves, preserve partial-indexing guidance when async embedding is pending, suppress false hook metadata on duplicate or unchanged paths, and protect after-tool callbacks with a structuredClone snapshot. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts` 2) inspect assertions covering successful atomic-save `postMutationHooks` contract parity 3) inspect assertions covering partial-indexing hints and duplicate or unchanged hook suppression 4) inspect assertions covering `structuredClone` snapshot isolation for after-tool callbacks"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "215",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/215-final-token-metadata-recomputation.md",
+    "prompt": "Validate final token metadata recomputation after UX hint mutation. Capture the evidence needed to prove appendAutoSurfaceHints recomputes meta.tokenCount from the finalized serialized envelope, and that context-server success responses enforce token budgets only after the final token count and payload have been synchronized. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Hook and context-server suites pass, `appendAutoSurfaceHints` recomputes `meta.tokenCount` from the finalized envelope, and end-to-end success-path assertions prove token-budget enforcement runs on the final serialized payload"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Hook and context-server suites pass, `appendAutoSurfaceHints` recomputes `meta.tokenCount` from the finalized envelope, and end-to-end success-path assertions prove token-budget enforcement runs on the final serialized payload"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts` 2) inspect assertions covering final serialized-envelope token-count recomputation in `appendAutoSurfaceHints` 3) inspect assertions covering final token-count correctness after success-path hint append and token-budget injection"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  },
+  {
+    "scenarioId": "216",
+    "category": "18--ux-hooks",
+    "status": "UNAUTOMATABLE",
+    "filePath": "18--ux-hooks/216-end-to-end-success-envelope-verification.md",
+    "prompt": "Validate end-to-end success-envelope behavior for the context server. Capture the evidence needed to prove successful responses append auto-surface hints, preserve autoSurfacedContext, and return a final tokenCount that matches the fully serialized envelope after all hint and budget mutations. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: 1) `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts` 2) inspect assertions covering success-path hint append 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final serialized-envelope token-count alignment"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

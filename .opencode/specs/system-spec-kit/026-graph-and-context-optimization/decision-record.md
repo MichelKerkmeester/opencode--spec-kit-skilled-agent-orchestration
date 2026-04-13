@@ -119,3 +119,61 @@ The 026 folder contains many child packets with their own research and runtime o
 **How to roll back**: Revert the root packet docs, restore the previous parent state, and re-apply only the missing template sections and phase-map entries.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
+
+---
+
+### ADR-002: Split `006-canonical-continuity-refactor` into five focused phases
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-13 |
+| **Deciders** | 026 packet reorganization pass |
+
+---
+
+### Context
+
+The former `006-canonical-continuity-refactor` packet had grown to 19 sub-phases spanning gates, revisit work, cleanup, playbook remediation, and research follow-up. That concentration made the packet hard to navigate and blurred the thematic boundaries between execution, verification, and investigation work.
+
+### Constraints
+
+- The root packet docs must preserve the existing frontmatter and companion-doc structure.
+- Reorganization should clarify navigation without rewriting child-owned narrative content.
+
+---
+
+### Decision
+
+**We chose**: split `006-canonical-continuity-refactor` into five focused phases.
+
+**How it works**: The former 006 scope is now distributed across `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-continuity-research`. The former top-level `007` scope is now tracked as `011-skill-advisor-graph`.
+
+---
+
+### Consequences
+
+**What improves**:
+- Navigation is clearer because gates, revisits, cleanup, remediation, and research now have separate top-level homes.
+- Thematic boundaries are explicit in the root phase map and companion docs.
+
+**What it costs**:
+- Root docs and cross-references need a one-time update to keep phase counts and names aligned.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Legacy references to old 006 structure remain in parent docs | M | Sweep root packet docs for old phase names and counts during the reorganization pass |
+
+---
+
+### Implementation
+
+**What changes**:
+- Root packet docs now list 11 active phases instead of the older 6-phase root map.
+- Cross-references move the former 006 sub-groups into phases `006` through `010`, and the former top-level `007` references now point to `011-skill-advisor-graph`.
+
+**How to roll back**: Revert the root-doc reorganization references and restore the previous parent phase map if the split is reversed.

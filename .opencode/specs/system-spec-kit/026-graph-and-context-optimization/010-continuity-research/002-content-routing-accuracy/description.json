@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy",
+  "description": "Research: Content Routing Classification Accuracy",
+  "keywords": [
+    "research",
+    "content",
+    "routing",
+    "classification",
+    "accuracy"
+  ],
+  "lastUpdated": "2026-04-13T04:56:29.781Z",
+  "specId": "002",
+  "folderSlug": "content-routing-accuracy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

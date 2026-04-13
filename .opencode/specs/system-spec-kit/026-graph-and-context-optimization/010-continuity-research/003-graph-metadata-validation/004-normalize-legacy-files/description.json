@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/004-normalize-legacy-files",
+  "description": "Normalize Legacy Graph Metadata Files",
+  "keywords": [
+    "normalize",
+    "legacy",
+    "graph",
+    "metadata",
+    "files"
+  ],
+  "lastUpdated": "2026-04-13T05:11:33.098Z",
+  "specId": "004",
+  "folderSlug": "normalize-legacy-files",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "003-graph-metadata-validation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

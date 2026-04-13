@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/004-raise-rerank-minimum",
+  "description": "Raise Minimum Rerank Candidate Threshold",
+  "keywords": [
+    "raise",
+    "minimum",
+    "rerank",
+    "candidate",
+    "threshold"
+  ],
+  "lastUpdated": "2026-04-13T05:11:32.416Z",
+  "specId": "004",
+  "folderSlug": "raise-rerank-minimum",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-continuity-research",
+    "001-search-fusion-tuning"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

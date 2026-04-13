@@ -208,7 +208,7 @@
     ],
     "causal_summary": "Stateless mode (`node generate-context.js \"014-stateless-quality-gates\"`) is blocked by quality gates designed for curated JSON payloads. Two root causes produce systematic false-positive aborts: V10 always fires because it compares inherently different file-count measurements, and the tool-title-with-path contamination pattern caps scores at 0.60 for content that is factually correct in Claude Code sessions. This spec fixes the gate architecture across three targeted changes: tiering Gate A into hard-block vs. soft-warning rules, adding `--stdin` / `--json` support that reuses the file-mode workflow without temp files, and making the contamination filter source-aware.",
     "created_at": "2026-04-12T09:02:50.275Z",
-    "last_save_at": "2026-04-13T14:20:38.972Z",
+    "last_save_at": "2026-04-13T16:22:48.860Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,6 +1,7 @@
 {
+  "title": "Feature Specification: 004-graphify Research Phase",
+  "description": "Read-only research investigation of the graphify external Python skill to identify two-pass AST+LLM extraction, Leiden clustering, evidence-tagging, multimodal, and PreToolUse hook patterns Public should adopt, adapt, or reject.",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/004-graphify",
-  "description": "Feature Specification: 004-graphify Research Phase",
   "keywords": [
     "feature",
     "specification",

@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation",
+  "description": "Deep Review Remediation",
+  "keywords": [
+    "deep",
+    "review",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:30.157Z",
+  "specId": "003",
+  "folderSlug": "deep-review-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "009-playbook-and-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

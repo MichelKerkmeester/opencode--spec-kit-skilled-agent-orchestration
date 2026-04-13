@@ -620,6 +620,11 @@ MULTI_SKILL_BOOSTERS = {
 # Format: phrase -> list of (skill_name, boost_amount)
 PHRASE_INTENT_BOOSTERS = {
     "create documentation": [("sk-doc", 1.0)],
+    "save context": [("system-spec-kit", 1.0)],
+    "save memory": [("system-spec-kit", 1.0)],
+    "save this context": [("system-spec-kit", 1.0)],
+    "save conversation": [("system-spec-kit", 1.0)],
+    "save this conversation context": [("system-spec-kit", 1.0)],
     "code review": [("sk-code-review", 2.4)],
     "pr review": [("sk-code-review", 2.3), ("sk-git", 0.4)],
     "security review": [("sk-code-review", 2.2)],

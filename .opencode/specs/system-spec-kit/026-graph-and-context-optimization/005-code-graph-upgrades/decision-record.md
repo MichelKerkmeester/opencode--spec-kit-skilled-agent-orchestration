@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Code Graph Upgrades [template:level_3/decision-record.md]"
+title: "Decision Record: Code Graph Upgrades"
 description: "Decision record for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"

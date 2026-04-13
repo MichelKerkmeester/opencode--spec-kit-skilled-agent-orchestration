@@ -1,0 +1,430 @@
+[
+  {
+    "scenarioId": "EX-019",
+    "category": "06--analysis",
+    "status": "UNAUTOMATABLE",
+    "filePath": "06--analysis/019-causal-edge-creation-memory-causal-link.md",
+    "prompt": "As an analysis validation operator, validate Causal provenance linking plus exact-first batch reference resolution against memory_causal_link({ sourceId:\"<memory-id-a>\", targetId:\"<memory-id-b>\", relation:\"supports\", strength:0.8 }). Verify direct edge appears in chain trace; batched causal-link reference resolution succeeds for exact path matches first; fuzzy fallback is only used for unresolved references. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Causal edge creation (memory_causal_link) against memory_causal_link({ sourceId:\"<memory-id-a>\", targetId:\"<memory-id-b>\", relation:\"supports\", strength:0.8 }). Verify causal provenance linking plus exact-first batch reference resolution. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Direct edge appears in chain trace",
+      "batched causal-link reference resolution succeeds for exact path matches first",
+      "fuzzy fallback is only used for unresolved references"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Direct edge appears in chain trace",
+      "batched causal-link reference resolution succeeds for exact path matches first",
+      "fuzzy fallback is only used for unresolved references"
+    ],
+    "handlerCalls": [
+      {
+        "name": "memory_causal_link",
+        "args": {
+          "sourceId": "1",
+          "targetId": "2",
+          "relation": "supports",
+          "strength": 0.8
+        }
+      },
+      {
+        "name": "memory_drift_why",
+        "args": {
+          "memoryId": "2",
+          "direction": "both",
+          "maxDepth": 4
+        }
+      }
+    ],
+    "evidence": [
+      "Stopped at non-handler step: processCausalLinks()"
+    ],
+    "steps": [
+      {
+        "step": "memory_causal_link({ sourceId:\"<memory-id-a>\", targetId:\"<memory-id-b>\", relation:\"supports\", strength:0.8 })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_causal_link",
+          "args": {
+            "sourceId": "1",
+            "targetId": "2",
+            "relation": "supports",
+            "strength": 0.8
+          }
+        },
+        "success": true,
+        "facts": [
+          "causal edge created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Created causal link: 1 --[supports]--> 2\",\"data\":{\"success\":true,\"edge\":11},\"hints\":[\"Use memory_drift_why({ memoryId: \\\"2\\\" }) to trace this relationship\",\"Use memory_causal_stats() to check overall graph coverage\"],\"meta\":{\"tool\":\"memory_causal_link\",\"tokenCount\":97,\"latencyMs\":1,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_drift_why({ memoryId:\"<memory-id-b>\", direction:\"both\", maxDepth:4 })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_drift_why",
+          "args": {
+            "memoryId": "2",
+            "direction": "both",
+            "maxDepth": 4
+          }
+        },
+        "success": true,
+        "facts": [
+          "chain includes expected relations"
+        ],
+        "evidence": [
+          "{\"summary\":\"Found 8 causal relationships (incoming: 10 supports)\",\"data\":{\"memoryId\":\"2\",\"memory\":{\"id\":2,\"title\":\"Graph Rollout Diagnostics\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"importance_weight\":0.5,\"context_type\":\"implementation\",\"created_at\":\"2026-04-12T13:49:32.835Z\",\"updated_at\":\"2026-04-12T13:49:32.835Z\",\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/memory/graph-rollout-diagnostics.md\"},\"incoming\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[{\"id\":11,\"from\":\"1\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.8,\"depth\":1,\"direction\":\"incoming\"},{\"id\":1,\"from\":\"6\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.5599999999999999,\"depth\":2,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.39199999999999996,\"depth\":3,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.39199999999999996,\"depth\":3,\"direction\":\"incoming\"},{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.5599999999999999,\"depth\":2,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.5599999999999999,\"depth\":2,\"direction\":\"incoming\"},{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":7,\"from\":\"7\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"allEdges\":[{\"id\":11,\"from\":\"1\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.8,\"depth\":1,\"direction\":\"incoming\"},{\"id\":1,\"from\":\"6\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.559999999"
+        ]
+      },
+      {
+        "step": "processCausalLinks()",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  },
+  {
+    "scenarioId": "EX-020",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/020-causal-graph-statistics-memory-causal-stats.md",
+    "prompt": "As an analysis validation operator, validate Graph coverage review against memory_causal_stats(). Verify coverage and edge metrics present. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Causal graph statistics (memory_causal_stats) against memory_causal_stats(). Verify coverage and edge metrics present. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Coverage and edge metrics present"
+    ],
+    "matchedSignals": [
+      "Coverage and edge metrics present"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_causal_stats",
+        "args": {}
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Causal graph: 10 edges, 90.91% coverage (healthy)\",\"data\":{\"total_edges\":10,\"by_relation\":{\"supports\":10},\"avg_strength\":0.7,\"unique_sources\":5,\"unique_targets\":6,\"link_coverage_percent\":\"90.91%\",\"orphanedEdges\":0,\"health\":\"healthy\",\"targetCoverage\":\"60%\",\"currentCoverage\":\"90.91%\",\"meetsTarget\":true},\"hints\":[],\"meta\":{\"tool\":\"memory_causal_stats\",\"tokenCount\":135,\"latencyMs\":1,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "memory_causal_stats()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_causal_stats",
+          "args": {}
+        },
+        "success": true,
+        "facts": [
+          "coverage and edge metrics present"
+        ],
+        "evidence": [
+          "{\"summary\":\"Causal graph: 10 edges, 90.91% coverage (healthy)\",\"data\":{\"total_edges\":10,\"by_relation\":{\"supports\":10},\"avg_strength\":0.7,\"unique_sources\":5,\"unique_targets\":6,\"link_coverage_percent\":\"90.91%\",\"orphanedEdges\":0,\"health\":\"healthy\",\"targetCoverage\":\"60%\",\"currentCoverage\":\"90.91%\",\"meetsTarget\":true},\"hints\":[],\"meta\":{\"tool\":\"memory_causal_stats\",\"tokenCount\":135,\"latencyMs\":1,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-021",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/021-causal-edge-deletion-memory-causal-unlink.md",
+    "prompt": "As an analysis validation operator, validate Edge correction against checkpoint_create({ name:\"pre-ex021-causal-unlink\", specFolder:\"<sandbox-spec>\" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Causal edge deletion (memory_causal_unlink) against checkpoint_create({ name:\"pre-ex021-causal-unlink\", specFolder:\"<sandbox-spec>\" }). Verify removed edge absent in trace. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Removed edge absent in trace"
+    ],
+    "matchedSignals": [
+      "Removed edge absent in trace"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "checkpoint_create",
+        "args": {
+          "name": "pre-ex021-causal-unlink",
+          "specFolder": "002-test-sandbox"
+        }
+      },
+      {
+        "name": "memory_causal_unlink",
+        "args": {
+          "edgeId": "1"
+        }
+      },
+      {
+        "name": "memory_drift_why",
+        "args": {
+          "memoryId": "1",
+          "direction": "both",
+          "maxDepth": 4
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Checkpoint \\\"pre-ex021-causal-unlink\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex021-causal-unlink\",\"createdAt\":\"2026-04-12T13:49:34.369Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51326,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex021-causal-unlink\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex021-causal-unlink\\\", confirmName: \\\"pre-ex021-causal-unlink\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":181,\"latencyMs\":10,\"cacheHit\":false}}",
+      "{\"summary\":\"Deleted causal edge 1\",\"data\":{\"deleted\":true},\"hints\":[],\"meta\":{\"tool\":\"memory_causal_unlink\",\"tokenCount\":53,\"latencyMs\":1,\"cacheHit\":false}}",
+      "{\"summary\":\"Found 2 causal relationships (incoming: 2 supports)\",\"data\":{\"memoryId\":\"1\",\"memory\":{\"id\":1,\"title\":\"Checkpoint Rollback Runbook\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"importance_weight\":0.5,\"context_type\":\"implementation\",\"created_at\":\"2026-04-12T13:49:32.756Z\",\"updated_at\":\"2026-04-12T13:49:32.756Z\",\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/memory/checkpoint-rollback.md\"},\"incoming\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"allEdges\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":2,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"outgoing\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[],\"allEdges\":[],\"totalEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"allEdges\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":2,\"totalIncomingEdges\":2,\"totalOutgoingEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null,\"relatedMemories\":{\"1\":{\"id\":1,\"title\":\"Checkpoint Rollback Runbook\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"created_at\":\"2026-04-12T13:49:32.756Z\"},\"7\":{\"id\":7,\"title\":\"Sandbox Temporary Memory B\",\"spec_folder\":\"002-test-sandb"
+    ],
+    "steps": [
+      {
+        "step": "checkpoint_create({ name:\"pre-ex021-causal-unlink\", specFolder:\"<sandbox-spec>\" })",
+        "kind": "tool",
+        "handler": {
+          "name": "checkpoint_create",
+          "args": {
+            "name": "pre-ex021-causal-unlink",
+            "specFolder": "002-test-sandbox"
+          }
+        },
+        "success": true,
+        "facts": [
+          "checkpoint created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Checkpoint \\\"pre-ex021-causal-unlink\\\" created successfully\",\"data\":{\"success\":true,\"checkpoint\":{\"id\":1,\"name\":\"pre-ex021-causal-unlink\",\"createdAt\":\"2026-04-12T13:49:34.369Z\",\"specFolder\":\"002-test-sandbox\",\"gitBranch\":null,\"snapshotSize\":51326,\"metadata\":{\"memoryCount\":4}}},\"hints\":[\"Restore with: checkpoint_restore({ name: \\\"pre-ex021-causal-unlink\\\" })\",\"Delete with: checkpoint_delete({ name: \\\"pre-ex021-causal-unlink\\\", confirmName: \\\"pre-ex021-causal-unlink\\\" })\"],\"meta\":{\"tool\":\"checkpoint_create\",\"tokenCount\":181,\"latencyMs\":10,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_causal_unlink({ edgeId:\"<edge-id>\" })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_causal_unlink",
+          "args": {
+            "edgeId": "1"
+          }
+        },
+        "success": true,
+        "facts": [
+          "causal edge removed"
+        ],
+        "evidence": [
+          "{\"summary\":\"Deleted causal edge 1\",\"data\":{\"deleted\":true},\"hints\":[],\"meta\":{\"tool\":\"memory_causal_unlink\",\"tokenCount\":53,\"latencyMs\":1,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_drift_why({ memoryId:\"<memory-id>\", direction:\"both\", maxDepth:4 })",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_drift_why",
+          "args": {
+            "memoryId": "1",
+            "direction": "both",
+            "maxDepth": 4
+          }
+        },
+        "success": true,
+        "facts": [
+          "chain includes expected relations"
+        ],
+        "evidence": [
+          "{\"summary\":\"Found 2 causal relationships (incoming: 2 supports)\",\"data\":{\"memoryId\":\"1\",\"memory\":{\"id\":1,\"title\":\"Checkpoint Rollback Runbook\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"importance_weight\":0.5,\"context_type\":\"implementation\",\"created_at\":\"2026-04-12T13:49:32.756Z\",\"updated_at\":\"2026-04-12T13:49:32.756Z\",\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/memory/checkpoint-rollback.md\"},\"incoming\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"allEdges\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":2,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"outgoing\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[],\"allEdges\":[],\"totalEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"allEdges\":[{\"id\":6,\"from\":\"7\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":10,\"from\":\"10\",\"to\":\"1\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":2,\"totalIncomingEdges\":2,\"totalOutgoingEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null,\"relatedMemories\":{\"1\":{\"id\":1,\"title\":\"Checkpoint Rollback Runbook\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"created_at\":\"2026-04-12T13:49:32.756Z\"},\"7\":{\"id\":7,\"title\":\"Sandbox Temporary Memory B\",\"spec_folder\":\"002-test-sandb"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-022",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/022-causal-chain-tracing-memory-drift-why.md",
+    "prompt": "As an analysis validation operator, validate Decision why-trace against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Causal chain tracing (memory_drift_why) against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Chain includes expected relations"
+    ],
+    "matchedSignals": [
+      "Chain includes expected relations"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_drift_why",
+        "args": {
+          "memoryId": "2",
+          "direction": "both",
+          "maxDepth": 4
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Found 4 causal relationships (incoming: 4 supports)\",\"data\":{\"memoryId\":\"2\",\"memory\":{\"id\":2,\"title\":\"Graph Rollout Diagnostics\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"importance_weight\":0.5,\"context_type\":\"implementation\",\"created_at\":\"2026-04-12T13:49:32.835Z\",\"updated_at\":\"2026-04-12T13:49:32.835Z\",\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/memory/graph-rollout-diagnostics.md\"},\"incoming\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":7,\"from\":\"7\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"allEdges\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":7,\"from\":\"7\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":4,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"outgoing\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[],\"allEdges\":[],\"totalEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"allEdges\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"r"
+    ],
+    "steps": [
+      {
+        "step": "memory_drift_why(memoryId,direction:both,maxDepth:4)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_drift_why",
+          "args": {
+            "memoryId": "2",
+            "direction": "both",
+            "maxDepth": 4
+          }
+        },
+        "success": true,
+        "facts": [
+          "chain includes expected relations"
+        ],
+        "evidence": [
+          "{\"summary\":\"Found 4 causal relationships (incoming: 4 supports)\",\"data\":{\"memoryId\":\"2\",\"memory\":{\"id\":2,\"title\":\"Graph Rollout Diagnostics\",\"spec_folder\":\"001-manual-fixture-auth-resume\",\"importance_tier\":\"normal\",\"importance_weight\":0.5,\"context_type\":\"implementation\",\"created_at\":\"2026-04-12T13:49:32.835Z\",\"updated_at\":\"2026-04-12T13:49:32.835Z\",\"file_path\":\"/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/.tmp/manual-playbook-runner-dist/scripts/.tmp/gate-i-manual-playbook-CzrgEE/specs/001-manual-fixture-auth-resume/memory/graph-rollout-diagnostics.md\"},\"incoming\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":7,\"from\":\"7\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"allEdges\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":9,\"from\":\"9\",\"to\":\"6\",\"relation\":\"supports\",\"strength\":0.48999999999999994,\"depth\":2,\"direction\":\"incoming\"},{\"id\":7,\"from\":\"7\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"}],\"totalEdges\":4,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"outgoing\":{\"caused\":[],\"enabled\":[],\"supersedes\":[],\"contradicts\":[],\"derivedFrom\":[],\"supports\":[],\"allEdges\":[],\"totalEdges\":0,\"maxDepthReached\":false,\"truncated\":false,\"truncationLimit\":null},\"allEdges\":[{\"id\":2,\"from\":\"6\",\"to\":\"2\",\"relation\":\"supports\",\"strength\":0.7,\"depth\":1,\"direction\":\"incoming\"},{\"id\":8,\"from\":\"8\",\"to\":\"6\",\"r"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-023",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/023-epistemic-baseline-capture-task-preflight.md",
+    "prompt": "As an analysis validation operator, validate Pre-task baseline logging against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Epistemic baseline capture (task_preflight) against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Baseline record created"
+    ],
+    "matchedSignals": [
+      "Baseline record created"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "task_preflight",
+        "args": {
+          "specFolder": "specs/001-manual-fixture-auth-resume",
+          "taskId": "T1",
+          "knowledgeScore": 70,
+          "contextScore": 72,
+          "uncertaintyScore": 28
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Preflight baseline captured for T1\",\"data\":{\"success\":true,\"record\":{\"id\":1,\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"taskId\":\"T1\",\"sessionId\":null,\"phase\":\"preflight\",\"baseline\":{\"knowledge\":70,\"uncertainty\":28,\"context\":72},\"knowledgeGaps\":[],\"timestamp\":\"2026-04-12T13:49:34.385Z\"}},\"hints\":[\"Call task_postflight with taskId: \\\"T1\\\" after completing the task\",\"Knowledge gaps can guide your exploration focus\"],\"meta\":{\"tool\":\"task_preflight\",\"tokenCount\":170,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)",
+        "kind": "tool",
+        "handler": {
+          "name": "task_preflight",
+          "args": {
+            "specFolder": "specs/001-manual-fixture-auth-resume",
+            "taskId": "T1",
+            "knowledgeScore": 70,
+            "contextScore": 72,
+            "uncertaintyScore": 28
+          }
+        },
+        "success": true,
+        "facts": [
+          "baseline record created"
+        ],
+        "evidence": [
+          "{\"summary\":\"Preflight baseline captured for T1\",\"data\":{\"success\":true,\"record\":{\"id\":1,\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"taskId\":\"T1\",\"sessionId\":null,\"phase\":\"preflight\",\"baseline\":{\"knowledge\":70,\"uncertainty\":28,\"context\":72},\"knowledgeGaps\":[],\"timestamp\":\"2026-04-12T13:49:34.385Z\"}},\"hints\":[\"Call task_postflight with taskId: \\\"T1\\\" after completing the task\",\"Knowledge gaps can guide your exploration focus\"],\"meta\":{\"tool\":\"task_preflight\",\"tokenCount\":170,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-024",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/024-post-task-learning-measurement-task-postflight.md",
+    "prompt": "As an analysis validation operator, validate Learning closeout against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Post-task learning measurement (task_postflight) against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Delta/learning record saved"
+    ],
+    "matchedSignals": [
+      "Delta/learning record saved"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "task_postflight",
+        "args": {
+          "specFolder": "specs/001-manual-fixture-auth-resume",
+          "taskId": "T1",
+          "knowledgeScore": 85,
+          "contextScore": 84,
+          "uncertaintyScore": 18
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Learning measured: LI=12.5 (Incremental learning)\",\"data\":{\"success\":true,\"record\":{\"id\":1,\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"taskId\":\"T1\",\"sessionId\":null,\"baseline\":{\"knowledge\":70,\"uncertainty\":28,\"context\":72},\"final\":{\"knowledge\":85,\"uncertainty\":18,\"context\":84},\"deltas\":{\"knowledge\":15,\"uncertainty\":10,\"context\":12},\"learningIndex\":12.5,\"interpretation\":\"Incremental learning - some progress made\",\"formula\":\"LI = (KnowledgeDelta x 0.4) + (UncertaintyReduction x 0.35) + (ContextImprovement x 0.25)\",\"gaps\":{\"original\":[],\"closed\":[],\"newDiscovered\":[]},\"timestamp\":\"2026-04-12T13:49:34.392Z\"}},\"hints\":[\"Incremental learning - some progress made\"],\"meta\":{\"tool\":\"task_postflight\",\"tokenCount\":267,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)",
+        "kind": "tool",
+        "handler": {
+          "name": "task_postflight",
+          "args": {
+            "specFolder": "specs/001-manual-fixture-auth-resume",
+            "taskId": "T1",
+            "knowledgeScore": 85,
+            "contextScore": 84,
+            "uncertaintyScore": 18
+          }
+        },
+        "success": true,
+        "facts": [
+          "delta learning record saved"
+        ],
+        "evidence": [
+          "{\"summary\":\"Learning measured: LI=12.5 (Incremental learning)\",\"data\":{\"success\":true,\"record\":{\"id\":1,\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"taskId\":\"T1\",\"sessionId\":null,\"baseline\":{\"knowledge\":70,\"uncertainty\":28,\"context\":72},\"final\":{\"knowledge\":85,\"uncertainty\":18,\"context\":84},\"deltas\":{\"knowledge\":15,\"uncertainty\":10,\"context\":12},\"learningIndex\":12.5,\"interpretation\":\"Incremental learning - some progress made\",\"formula\":\"LI = (KnowledgeDelta x 0.4) + (UncertaintyReduction x 0.35) + (ContextImprovement x 0.25)\",\"gaps\":{\"original\":[],\"closed\":[],\"newDiscovered\":[]},\"timestamp\":\"2026-04-12T13:49:34.392Z\"}},\"hints\":[\"Incremental learning - some progress made\"],\"meta\":{\"tool\":\"task_postflight\",\"tokenCount\":267,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-025",
+    "category": "06--analysis",
+    "status": "PASS",
+    "filePath": "06--analysis/025-learning-history-memory-get-learning-history.md",
+    "prompt": "As an analysis validation operator, validate Trend review against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs an analysis validation operator, validate Learning history (memory_get_learning_history) against memory_get_learning_history(specFolder,onlyComplete:true). Verify historical entries returned. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "Historical entries returned"
+    ],
+    "matchedSignals": [
+      "Historical entries returned"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_get_learning_history",
+        "args": {
+          "specFolder": "specs/001-manual-fixture-auth-resume",
+          "includeSummary": true,
+          "onlyComplete": true
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"Learning history: 0 preflight records\",\"data\":{\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"count\":0,\"learningHistory\":[],\"summary\":{\"totalTasks\":0,\"completedTasks\":0,\"averageLearningIndex\":null,\"maxLearningIndex\":null,\"minLearningIndex\":null,\"averageKnowledgeGain\":null,\"averageUncertaintyReduction\":null,\"averageContextImprovement\":null}},\"hints\":[],\"meta\":{\"tool\":\"memory_get_learning_history\",\"tokenCount\":147,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "memory_get_learning_history(specFolder,onlyComplete:true)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_get_learning_history",
+          "args": {
+            "specFolder": "specs/001-manual-fixture-auth-resume",
+            "includeSummary": true,
+            "onlyComplete": true
+          }
+        },
+        "success": true,
+        "facts": [
+          "historical entries returned"
+        ],
+        "evidence": [
+          "{\"summary\":\"Learning history: 0 preflight records\",\"data\":{\"specFolder\":\"specs/001-manual-fixture-auth-resume\",\"count\":0,\"learningHistory\":[],\"summary\":{\"totalTasks\":0,\"completedTasks\":0,\"averageLearningIndex\":null,\"maxLearningIndex\":null,\"minLearningIndex\":null,\"averageKnowledgeGain\":null,\"averageUncertaintyReduction\":null,\"averageContextImprovement\":null}},\"hints\":[],\"meta\":{\"tool\":\"memory_get_learning_history\",\"tokenCount\":147,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  }
+]

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Code Graph Upgrades [template:level_3/implementation-summary.md]"
+title: "Implementation Summary: Code Graph Upgrades"
 description: "Implementation closeout for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"

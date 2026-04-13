@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: Code Graph Upgrades [template:level_3/checklist.md]"
+title: "Verification Checklist: Code Graph Upgrades"
 description: "Verification checklist for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"

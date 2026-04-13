@@ -1,6 +1,7 @@
 {
+  "title": "Feature Specification: 005-claudest Research Phase",
+  "description": "Read-only 20-iteration research investigation of the Claudest external Claude Code plugin marketplace and the claude-memory plugin (FTS5/BM25 conversation recall, SessionStart context injection, extract-learnings consolidation, get-token-insights observability) to identify adopt/prototype/reject patterns and execution-ready follow-on packet contracts for Code_Environment/Public's Spec Kit Memory and Code Graph stack.",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
-  "description": "Feature Specification: 005-claudest Research Phase",
   "keywords": [
     "feature",
     "specification",

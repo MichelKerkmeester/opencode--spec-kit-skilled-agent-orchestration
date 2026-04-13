@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Code Graph Upgrades [template:level_3/tasks.md]"
+title: "Tasks: Code Graph Upgrades"
 description: "Task breakdown for 005-code-graph-upgrades."
 trigger_phrases:
   - "005-code-graph-upgrades"

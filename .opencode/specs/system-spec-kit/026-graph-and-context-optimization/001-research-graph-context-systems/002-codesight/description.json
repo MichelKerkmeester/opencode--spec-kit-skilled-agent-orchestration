@@ -1,6 +1,7 @@
 {
+  "title": "Feature Specification: 002-codesight Research Phase",
+  "description": "Read-only 20-iteration research investigation of the codesight external Node.js/TypeScript skill covering detector discipline, MCP/cache semantics, profile generation safety, scanner heuristics, and adoption patterns Public should adopt, adapt, or reject.",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
-  "description": "Feature Specification: 002-codesight Research Phase",
   "keywords": [
     "feature",
     "specification",

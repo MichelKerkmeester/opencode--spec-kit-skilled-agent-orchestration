@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/003-readme-alignment-revisit",
+  "description": "Feature Specification: 018 / 009 \u2014 README release-alignment revisit",
+  "keywords": [
+    "feature",
+    "specification",
+    "018",
+    "009",
+    "readme",
+    "release-alignment",
+    "revisit"
+  ],
+  "lastUpdated": "2026-04-13T04:56:29.596Z",
+  "specId": "003",
+  "folderSlug": "readme-alignment-revisit",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-release-alignment-revisits"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

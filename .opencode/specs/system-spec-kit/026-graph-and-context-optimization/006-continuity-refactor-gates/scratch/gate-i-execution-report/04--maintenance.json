@@ -1,0 +1,97 @@
+[
+  {
+    "scenarioId": "EX-014",
+    "category": "04--maintenance",
+    "status": "PASS",
+    "filePath": "04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md",
+    "prompt": "Run index scan for changed docs. Capture the evidence needed to prove Scan summary and updated index state, and that spec documents remain indexed in warn-only quality mode rather than being silently skipped. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Scan summary, updated index state, and spec-doc warn-only indexing behavior"
+    ],
+    "matchedSignals": [
+      "Scan summary, updated index state, and spec-doc warn-only indexing behavior"
+    ],
+    "unmatchedSignals": [],
+    "handlerCalls": [
+      {
+        "name": "memory_index_scan",
+        "args": {
+          "specFolder": "specs/001-manual-fixture-auth-resume",
+          "includeSpecDocs": true,
+          "force": false
+        }
+      },
+      {
+        "name": "memory_stats",
+        "args": {
+          "limit": 10
+        }
+      }
+    ],
+    "evidence": [
+      "{\"summary\":\"No memory files found\",\"data\":{\"status\":\"complete\",\"scanned\":0,\"indexed\":0,\"updated\":0,\"unchanged\":0,\"failed\":0,\"staleDeleted\":0,\"staleDeleteFailed\":0},\"hints\":[\"Memory files should be in specs/**/memory/ directories\",\"Constitutional files go in .opencode/skill/*/constitutional/\"],\"meta\":{\"tool\":\"memory_index_scan\",\"tokenCount\":117,\"cacheHit\":false}}",
+      "{\"summary\":\"Memory system: 11 memories across 2 folders\",\"data\":{\"totalMemories\":11,\"byStatus\":{\"pending\":0,\"success\":11,\"failed\":0,\"retry\":0,\"partial\":0},\"oldestMemory\":\"2026-04-12T00:32:34.418Z\",\"newestMemory\":\"2026-04-12T00:32:35.003Z\",\"topFolders\":[{\"folder\":\"001-manual-fixture-auth-resume\",\"count\":7},{\"folder\":\"002-test-sandbox\",\"count\":4}],\"totalSpecFolders\":2,\"limit\":10,\"totalTriggerPhrases\":11,\"vectorSearchEnabled\":true,\"graphChannelMetrics\":{\"totalQueries\":0,\"graphHits\":0,\"graphOnlyResults\":0,\"multiSourceResults\":104,\"graphHitRate\":0},\"folderRanking\":\"count\",\"tierBreakdown\":{\"normal\":11},\"databaseSizeBytes\":3981312,\"lastIndexedAt\":\"2026-04-12T00:32:35.003Z\"},\"hints\":[],\"meta\":{\"tool\":\"memory_stats\",\"tokenCount\":269,\"latencyMs\":0,\"cacheHit\":false}}"
+    ],
+    "steps": [
+      {
+        "step": "memory_index_scan(force:false, includeSpecDocs:true)",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_index_scan",
+          "args": {
+            "specFolder": "specs/001-manual-fixture-auth-resume",
+            "includeSpecDocs": true,
+            "force": false
+          }
+        },
+        "success": true,
+        "facts": [
+          "workspace indexing completed"
+        ],
+        "evidence": [
+          "{\"summary\":\"No memory files found\",\"data\":{\"status\":\"complete\",\"scanned\":0,\"indexed\":0,\"updated\":0,\"unchanged\":0,\"failed\":0,\"staleDeleted\":0,\"staleDeleteFailed\":0},\"hints\":[\"Memory files should be in specs/**/memory/ directories\",\"Constitutional files go in .opencode/skill/*/constitutional/\"],\"meta\":{\"tool\":\"memory_index_scan\",\"tokenCount\":117,\"cacheHit\":false}}"
+        ]
+      },
+      {
+        "step": "memory_stats()",
+        "kind": "tool",
+        "handler": {
+          "name": "memory_stats",
+          "args": {
+            "limit": 10
+          }
+        },
+        "success": true,
+        "facts": [
+          "counts present",
+          "totals displayed"
+        ],
+        "evidence": [
+          "{\"summary\":\"Memory system: 11 memories across 2 folders\",\"data\":{\"totalMemories\":11,\"byStatus\":{\"pending\":0,\"success\":11,\"failed\":0,\"retry\":0,\"partial\":0},\"oldestMemory\":\"2026-04-12T00:32:34.418Z\",\"newestMemory\":\"2026-04-12T00:32:35.003Z\",\"topFolders\":[{\"folder\":\"001-manual-fixture-auth-resume\",\"count\":7},{\"folder\":\"002-test-sandbox\",\"count\":4}],\"totalSpecFolders\":2,\"limit\":10,\"totalTriggerPhrases\":11,\"vectorSearchEnabled\":true,\"graphChannelMetrics\":{\"totalQueries\":0,\"graphHits\":0,\"graphOnlyResults\":0,\"multiSourceResults\":104,\"graphHitRate\":0},\"folderRanking\":\"count\",\"tierBreakdown\":{\"normal\":11},\"databaseSizeBytes\":3981312,\"lastIndexedAt\":\"2026-04-12T00:32:35.003Z\"},\"hints\":[],\"meta\":{\"tool\":\"memory_stats\",\"tokenCount\":269,\"latencyMs\":0,\"cacheHit\":false}}"
+        ]
+      }
+    ]
+  },
+  {
+    "scenarioId": "EX-035",
+    "category": "04--maintenance",
+    "status": "UNAUTOMATABLE",
+    "filePath": "04--maintenance/035-startup-runtime-compatibility-guards.md",
+    "prompt": "Run the dedicated startup guard validation suite. Capture the evidence needed to prove Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise user-facing pass/fail verdict with the main reason.",
+    "expectedSignals": [
+      "Targeted suite passes",
+      "runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript"
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "Targeted suite passes",
+      "runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript"
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Command sequence is not expressible as direct handler calls: `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts`"
+    ],
+    "steps": [],
+    "reason": "Scenario depends on shell commands, source inspection, or narrative-only validation."
+  }
+]

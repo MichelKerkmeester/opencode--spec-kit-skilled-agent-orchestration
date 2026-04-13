@@ -208,7 +208,7 @@
     ],
     "causal_summary": "This packet defines the refinement pass for `.opencode/command/create/assets/*.yaml` so the create-command suite more closely matches the richer `spec_kit` command YAML style. The work must strengthen the newer feature-catalog and testing-playbook assets, then add a shared structural contract across the broader create suite without rewriting command behavior or changing command names.",
     "created_at": "2026-04-12T09:02:50.175Z",
-    "last_save_at": "2026-04-13T14:20:38.788Z",
+    "last_save_at": "2026-04-13T16:22:48.535Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

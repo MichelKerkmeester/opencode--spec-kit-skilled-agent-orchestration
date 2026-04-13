@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Graph and Context Optimization"
-description: "Task breakdown for restoring the 026 parent packet and its phase map."
+description: "Task breakdown for updating the 026 parent packet to the reorganized 11-phase map."
 trigger_phrases:
   - "026 parent tasks"
   - "graph context optimization tasks"
@@ -43,7 +43,7 @@ _memory:
 ## Phase 1: Setup
 
 - [x] T001 Read the root `spec.md` and capture the strict-validator baseline. [SOURCE: spec.md:1-26]
-- [x] T002 Enumerate the active child packet folders and separate them from local-only residue directories. [SOURCE: spec.md:61-93]
+- [x] T002 Enumerate the 11 active child packet folders and separate them from local-only residue directories. [SOURCE: spec.md:61-93]
 - [x] T003 Confirm the parent packet needs the full Level 3 companion documents. [SOURCE: spec.md:51-59; plan.md:21-30]
 <!-- /ANCHOR:phase-1 -->
 
@@ -52,9 +52,9 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Rebuild the parent `spec.md` to the active Level 3 template and add the phase documentation map. [SOURCE: spec.md:1-214]
+- [x] T010 Update the parent `spec.md` to the reorganized 11-phase documentation map. [SOURCE: spec.md:1-214]
 - [x] T011 Create `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` for the root packet. [SOURCE: plan.md:1-198; checklist.md:1-121; decision-record.md:1-83; implementation-summary.md:1-68]
-- [x] T012 Record the research-aligned handoff rules for child packets `001` through `014`. [SOURCE: spec.md:70-113]
+- [x] T012 Record the research-aligned handoff rules for child packets `001` through `011`, including the split `006` follow-on phases. [SOURCE: spec.md:70-113]
 <!-- /ANCHOR:phase-2 -->
 
 ---

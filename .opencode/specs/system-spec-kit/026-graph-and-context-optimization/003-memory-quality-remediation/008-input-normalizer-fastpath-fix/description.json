@@ -1,0 +1,23 @@
+{
+  "title": "Feature Specification: Input Normalizer Fast-Path Fix [system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/008-input-normalizer-fastpath-fix/spec]",
+  "description": "Fix the fast-path normalizer so JSON-mode memory saves accept string arrays for user prompts, observations, and recent context without aborting sufficiency checks.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/008-input-normalizer-fastpath-fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "input",
+    "normalizer",
+    "fast-path",
+    "fix"
+  ],
+  "lastUpdated": "2026-04-12T18:30:00Z",
+  "specId": "008",
+  "folderSlug": "input-normalizer-fastpath-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-memory-quality-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

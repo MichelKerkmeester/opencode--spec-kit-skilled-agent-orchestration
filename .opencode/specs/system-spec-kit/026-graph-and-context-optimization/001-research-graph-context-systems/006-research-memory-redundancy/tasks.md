@@ -55,9 +55,9 @@ _memory:
 - [x] T010 Normalize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` to the active Level 3 template. [SOURCE: spec.md; plan.md; tasks.md; checklist.md]
 - [x] T011 Add `decision-record.md` and `implementation-summary.md`. [SOURCE: decision-record.md; implementation-summary.md]
 - [x] T012 Sync the parent research surfaces at `../research/research.md`, `../research/recommendations.md`, and `../research/deep-research-dashboard.md`. [SOURCE: spec.md:51-57]
-- [x] T013 Record the downstream impact classes for packets `../../002-implement-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/`. [SOURCE: spec.md:66-79]
+- [x] T013 Record the downstream impact classes for packets `../../002-cache-warning-hooks/` through `../../z_archive/research-governance-contracts/013-warm-start-bundle-conditional-validation/`. [SOURCE: spec.md:66-79]
 - [x] T014 Keep `../research/cross-phase-matrix.md` untouched with explicit rationale. [SOURCE: spec.md:22-24; plan.md:48-66]
-- [x] T015 Record `../../003-memory-quality-issues/` as the future runtime implementation owner. [SOURCE: decision-record.md; spec.md:86-95]
+- [x] T015 Record `../../003-memory-quality-remediation/` as the future runtime implementation owner. [SOURCE: decision-record.md; spec.md:86-95]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -67,7 +67,7 @@ _memory:
 
 - [x] T020 Run `validate.sh --strict` on this folder. [SOURCE: implementation-summary.md:39-43]
 - [x] T021 Verify downstream packet outcomes are explicit and bounded. [SOURCE: checklist.md:42-62]
-- [x] T022 Verify the packet still points runtime work to `../../003-memory-quality-issues/`. [SOURCE: decision-record.md; checklist.md:42-62]
+- [x] T022 Verify the packet still points runtime work to `../../003-memory-quality-remediation/`. [SOURCE: decision-record.md; checklist.md:42-62]
 <!-- /ANCHOR:phase-3 -->
 
 ---

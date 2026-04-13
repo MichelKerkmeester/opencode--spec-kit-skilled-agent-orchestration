@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Graph and Context Optimization"
-description: "Coordination plan for restoring the 026 parent packet to the active Level 3 template and keeping the child packet map auditable."
+description: "Coordination plan for updating the 026 parent packet to the reorganized 11-phase child map."
 trigger_phrases:
   - "026 parent plan"
   - "graph context optimization plan"
@@ -39,7 +39,7 @@ _memory:
 
 ### Overview
 
-This plan restores the `026-graph-and-context-optimization` root to the active Level 3 template and documents the child packet dependency graph. The work is coordination-only: build the parent packet docs, sync them to the shipped child folders, and verify strict validation for the parent packet surface.
+This plan updates the `026-graph-and-context-optimization` root to reflect the reorganized 11-phase child packet dependency graph. The work is coordination-only: sync the root packet docs to the shipped child folders, update the split-006 references, and verify strict validation for the parent packet surface.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -103,7 +103,7 @@ Coordination-only parent packet over independently owned child packets
 ### Key Components
 
 - **Parent coordination layer**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Child packet map**: folders `001` through `014`
+- **Child packet map**: folders `001` through `011`
 - **Verification layer**: strict packet validation on the parent folder
 
 ### Data Flow
@@ -140,8 +140,8 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Structural validation | Parent packet docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization --strict` |
-| Phase-map review | Child folders `001` through `014` | Manual review plus `find` and `rg` sweeps |
-| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec|Phase Documentation Map|005-code-graph-upgrades|003-memory-quality-issues"` |
+| Phase-map review | Child folders `001` through `011` | Manual review plus `find` and `rg` sweeps |
+| Drift check | Parent-doc references and handoff rules | `rg -n "Parent Spec|Phase Documentation Map|002-cache-warning-hooks|003-memory-quality-remediation|006-continuity-refactor-gates|011-skill-advisor-graph"` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -151,7 +151,7 @@ Child packet docs define packet-local truth. The parent packet aggregates only t
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Child packet folders `001` through `014` | Internal | Green | Parent map cannot be reconciled honestly |
+| Child packet folders `001` through `011` | Internal | Green | Parent map cannot be reconciled honestly |
 | Spec validator | Internal | Green | Parent packet cannot prove compliance |
 | Existing child packet docs | Internal | Green | Parent packet would have to guess sequencing or status |
 <!-- /ANCHOR:dependencies -->

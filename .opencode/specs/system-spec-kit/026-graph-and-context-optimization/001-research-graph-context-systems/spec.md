@@ -50,7 +50,7 @@ This packet turns the v2 master synthesis into a Level 3 coordination root for `
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | None |
-| **Successor** | `002-implement-cache-warning-hooks` |
+| **Successor** | `002-cache-warning-hooks` |
 | **Research Scope** | 5 external systems, 18 master-consolidation iterations, 88 findings, 10 ranked recommendations, plus 1 derivative internal follow-on packet |
 | **Packet Type** | Research-only coordination root with downstream adoption decisions |
 <!-- /ANCHOR:metadata -->
