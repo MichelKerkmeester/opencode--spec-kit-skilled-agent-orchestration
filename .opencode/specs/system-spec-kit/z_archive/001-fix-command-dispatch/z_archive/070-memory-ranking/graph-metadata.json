@@ -161,7 +161,7 @@
     ],
     "causal_summary": "The memory dashboard displays \"top folders\" ranked purely by **memory file count**. This creates several issues:",
     "created_at": "2026-04-12T09:02:53.543Z",
-    "last_save_at": "2026-04-13T06:08:12.050Z",
+    "last_save_at": "2026-04-13T07:03:00.276Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

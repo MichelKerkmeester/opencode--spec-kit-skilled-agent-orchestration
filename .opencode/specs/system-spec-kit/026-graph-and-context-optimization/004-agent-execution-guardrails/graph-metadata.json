@@ -156,7 +156,7 @@
     ],
     "causal_summary": "Phase 4 is the narrow execution-guidance packet for `026-graph-and-context-optimization`. It updates three AGENTS surfaces so future agents stop ownership-dodging, plan before acting, use research-first evidence, remember runtime conventions from `CLAUDE.md`, and keep pushing toward a complete fix instead of stopping early.",
     "created_at": "2026-04-12T09:02:53.465Z",
-    "last_save_at": "2026-04-13T06:08:11.978Z",
+    "last_save_at": "2026-04-13T07:03:00.203Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

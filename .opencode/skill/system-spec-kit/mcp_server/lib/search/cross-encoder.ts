@@ -254,7 +254,7 @@ function generateCacheKey(
   const sortedDocIds = [...docIds]
     .map(id => String(id))
     .sort();
-  const key = `${provider || 'default'}:${optionBits || ''}:${query}:${sortedDocIds.join(',')}`;
+  const key = `${provider || 'default'}:${query}:${sortedDocIds.join(',')}`;
   // Simple hash
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
@@ -428,10 +428,10 @@ async function rerankResults(
     }));
   }
 
-  // Check cache — H19 FIX: include provider and options in cache key
-  const optionBits = shouldApplyLengthPenalty ? 'lp' : '';
+  // Check cache — length penalty is now a no-op, so cache keys only vary by
+  // provider + query + canonicalized document ids.
   if (useCache) {
-    const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
+    const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider);
     const cached = cache.get(cacheKey);
     if (cached) {
       if (Date.now() - cached.timestamp < CACHE_TTL) {
@@ -479,10 +479,10 @@ async function rerankResults(
       latencyTracker.durations.shift();
     }
 
-    // Cache results — H19 FIX: use provider+options-aware cache key
+    // Cache results — length penalty is retired, so cache keys ignore that flag.
     // Phase C: enforceCacheBound() ensures MAX_CACHE_ENTRIES limit.
     if (useCache) {
-      const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
+      const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider);
       cache.set(cacheKey, { results, timestamp: Date.now() });
       enforceCacheBound();
     }

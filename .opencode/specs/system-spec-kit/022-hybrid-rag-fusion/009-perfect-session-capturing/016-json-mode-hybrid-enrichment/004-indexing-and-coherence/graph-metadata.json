@@ -154,7 +154,7 @@
     ],
     "causal_summary": "Four structural gaps in the generate-context.js memory pipeline degrade indexing quality and cross-session coherence without surfacing any observable errors. Embedding retry failures are silently tracked by a background job but never exposed through MCP tooling, leaving operators blind to vector-search degradation. Trigger phrase extraction produces 15-30 noisy phrases per memory dominated by path fragments and n-gram shingles, causing binary trigger matching to return low-quality results. The Mustache template renderer silently discards 15+ AI-composed fields (toolCalls, exchanges, pipeline flags), while 8 phantom V2.2 placeholders are always empty and 9 valid data-source bindings are suppressed. Cross-session dedup is purely AI-assisted: referenced memory IDs are never validated, causal links receive no graph verification, and observation arrays are deduped only within a single render pass.",
     "created_at": "2026-04-12T09:02:50.279Z",
-    "last_save_at": "2026-04-13T06:08:08.950Z",
+    "last_save_at": "2026-04-13T07:02:57.175Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

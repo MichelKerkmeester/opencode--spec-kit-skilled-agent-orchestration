@@ -146,7 +146,7 @@
     ],
     "causal_summary": "The `memory_index_scan` MCP tool fails with SQLite error:",
     "created_at": "2026-04-12T09:02:53.536Z",
-    "last_save_at": "2026-04-13T06:08:12.043Z",
+    "last_save_at": "2026-04-13T07:03:00.269Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -162,7 +162,7 @@
     ],
     "causal_summary": "Make Phase 1 the durable contract for research lineage, reducer-owned state, and runtime parity so later deep-review work inherits a stable packet model instead of ambiguous conventions.",
     "created_at": "2026-04-12T09:02:50.183Z",
-    "last_save_at": "2026-04-13T06:08:08.853Z",
+    "last_save_at": "2026-04-13T07:02:57.081Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

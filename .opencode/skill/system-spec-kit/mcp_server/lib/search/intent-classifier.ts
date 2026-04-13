@@ -640,6 +640,7 @@ function getProfileForIntent(intent: IntentType): 'quick' | 'research' | 'debug'
  */
 const INTENT_LAMBDA_MAP: Readonly<Record<string, number>> = {
   understand: 0.5,
+  continuity: 0.65,
   fix_bug: 0.85,
   find_spec: 0.5,
   find_decision: 0.5,

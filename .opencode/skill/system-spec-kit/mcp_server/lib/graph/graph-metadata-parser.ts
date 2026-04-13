@@ -99,6 +99,30 @@ function parseDelimitedValues(raw: string | null | undefined): string[] {
     .filter(Boolean);
 }
 
+function normalizeDerivedStatus(status: string | null | undefined): string | null {
+  if (typeof status !== 'string') {
+    return null;
+  }
+
+  const trimmed = status.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const normalized = trimmed.toLowerCase().replace(/\s+/g, '_');
+  switch (normalized) {
+    case 'complete':
+    case 'completed':
+      return 'complete';
+    case 'in_progress':
+      return 'in_progress';
+    case 'planned':
+      return 'planned';
+    default:
+      return normalized;
+  }
+}
+
 function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null {
   const lines = content
     .split(/\r?\n/)
@@ -156,7 +180,7 @@ function parseLegacyGraphMetadataContent(content: string): GraphMetadata | null 
       trigger_phrases: triggerPhrases.length > 0 ? triggerPhrases : [packetId, specFolder],
       key_topics: keyTopics,
       importance_tier: values.get('importance tier') ?? 'normal',
-      status: values.get('status') ?? 'planned',
+      status: normalizeDerivedStatus(values.get('status')) ?? 'planned',
       key_files: parseDelimitedValues(values.get('key files')),
       entities: [],
       causal_summary: summary,
@@ -382,7 +406,7 @@ function collectPacketDocs(specFolderPath: string): ParsedSpecDoc[] {
       description: extractFrontmatterScalar(content, 'description'),
       triggerPhrases: extractFrontmatterArray(content, 'trigger_phrases'),
       importanceTier: extractFrontmatterScalar(content, 'importance_tier'),
-      status: extractFrontmatterScalar(content, 'status'),
+      status: normalizeDerivedStatus(extractFrontmatterScalar(content, 'status')),
     });
   }
 
@@ -573,8 +597,9 @@ function deriveCausalSummary(docs: ParsedSpecDoc[]): string {
 }
 
 function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
-  if (override && override.trim().length > 0) {
-    return override.trim();
+  const normalizedOverride = normalizeDerivedStatus(override);
+  if (normalizedOverride) {
+    return normalizedOverride;
   }
 
   const ranked = [
@@ -584,7 +609,7 @@ function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
     docs.find((doc) => doc.relativePath === 'plan.md')?.status,
     docs.find((doc) => doc.relativePath === 'spec.md')?.status,
   ];
-  const frontmatterStatus = selectFirstValue(ranked, '');
+  const frontmatterStatus = normalizeDerivedStatus(selectFirstValue(ranked, ''));
   if (frontmatterStatus) {
     return frontmatterStatus;
   }

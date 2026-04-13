@@ -253,6 +253,32 @@ describe('graph metadata schema and parser', () => {
     expect(metadata.derived.status).toBe('planned');
   });
 
+  it('normalizes completed-style frontmatter statuses to complete', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: 'Planned',
+      implementationSummaryStatus: 'Completed',
+      includeChecklist: false,
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('complete');
+  });
+
+  it('normalizes in-progress frontmatter statuses to in_progress', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: 'In Progress',
+      implementationSummaryStatus: null,
+      includeChecklist: false,
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('in_progress');
+  });
+
   it('filters command, version, mime, pseudo-field, relative, and bare-noise key file candidates', () => {
     expect(graphMetadataParserTestables.keepKeyFile('node scripts/build.js')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('TMPDIR=.tmp/vitest-tmp')).toBe(false);

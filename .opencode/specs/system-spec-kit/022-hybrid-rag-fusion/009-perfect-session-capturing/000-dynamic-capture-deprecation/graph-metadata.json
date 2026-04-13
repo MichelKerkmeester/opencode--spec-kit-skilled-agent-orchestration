@@ -149,7 +149,7 @@
     ],
     "causal_summary": "Five authoritative child phases were moved under `000-dynamic-capture-deprecation/`, but the branch itself had no parent `spec.md`, `plan.md`, or `tasks.md`. That left the moved child phases with broken parent back-references under recursive validation and made the archived branch harder to navigate from the parent pack.",
     "created_at": "2026-04-12T09:02:50.264Z",
-    "last_save_at": "2026-04-13T06:08:08.933Z",
+    "last_save_at": "2026-04-13T07:02:57.157Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

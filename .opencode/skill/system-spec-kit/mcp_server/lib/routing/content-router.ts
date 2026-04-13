@@ -51,7 +51,7 @@ const SPEC_FOLDER_CACHE_PREFIX = 'spec-folder' as const;
 
 type PacketLevel = 'L1' | 'L2' | 'L3' | 'L3+';
 type PacketKind = 'feature' | 'phase' | 'remediation' | 'research' | 'unknown';
-type SaveMode = 'auto' | 'interactive' | 'dry-run' | 'route-as';
+type SaveMode = 'auto' | 'interactive' | 'dry-run' | 'natural' | 'route-as';
 type SourceField =
   | 'observations'
   | 'decisions'

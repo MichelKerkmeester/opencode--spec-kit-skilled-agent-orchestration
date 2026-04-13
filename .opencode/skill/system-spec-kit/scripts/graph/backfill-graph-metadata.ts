@@ -14,6 +14,7 @@ import {
 
 const SPEC_FOLDER_RE = /^\d{3}(?:[-_].+)?$/;
 const EXCLUDED_DIRS = new Set(['memory', 'scratch', 'node_modules', '.git']);
+const ARCHIVE_SEGMENT_RE = /(^|\/)(z_archive|z_future)(\/|$)/;
 
 interface BackfillSummary {
   dryRun: boolean;
@@ -28,6 +29,7 @@ interface BackfillSummary {
 export interface BackfillOptions {
   dryRun: boolean;
   root: string;
+  activeOnly?: boolean;
 }
 
 function resolveRepoRoot(): string {
@@ -54,14 +56,23 @@ function resolveRepoRoot(): string {
   return path.resolve(__dirname, '..', '..', '..', '..', '..');
 }
 
-function parseArgs(argv: string[]): { dryRun: boolean; root: string } {
+function parseArgs(argv: string[]): { dryRun: boolean; root: string; activeOnly: boolean } {
   let dryRun = false;
   let root = path.join(resolveRepoRoot(), '.opencode', 'specs');
+  let activeOnly = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--dry-run') {
       dryRun = true;
+      continue;
+    }
+    if (arg === '--active-only') {
+      activeOnly = true;
+      continue;
+    }
+    if (arg === '--include-archive') {
+      activeOnly = false;
       continue;
     }
     if (arg === '--root') {
@@ -70,7 +81,7 @@ function parseArgs(argv: string[]): { dryRun: boolean; root: string } {
     }
   }
 
-  return { dryRun, root };
+  return { dryRun, root, activeOnly };
 }
 
 function isSpecFolder(dirPath: string): boolean {
@@ -78,10 +89,22 @@ function isSpecFolder(dirPath: string): boolean {
   return SPEC_FOLDER_RE.test(base) && fs.existsSync(path.join(dirPath, 'spec.md'));
 }
 
-export function collectSpecFolders(root: string): string[] {
+function isArchivedTraversalPath(dirPath: string): boolean {
+  return ARCHIVE_SEGMENT_RE.test(dirPath.replace(/\\/g, '/'));
+}
+
+export function collectSpecFolders(
+  root: string,
+  options: Pick<BackfillOptions, 'activeOnly'> = {},
+): string[] {
   const folders: string[] = [];
+  const activeOnly = options.activeOnly ?? false;
 
   function walk(currentPath: string): void {
+    if (activeOnly && isArchivedTraversalPath(currentPath)) {
+      return;
+    }
+
     let entries: fs.Dirent[];
     try {
       entries = fs.readdirSync(currentPath, { withFileTypes: true });
@@ -136,8 +159,8 @@ export function collectReviewFlags(specFolderPath: string, metadata: GraphMetada
   return flags;
 }
 
-export function runBackfill({ dryRun, root }: BackfillOptions): BackfillSummary {
-  const specFolders = collectSpecFolders(root);
+export function runBackfill({ dryRun, root, activeOnly = false }: BackfillOptions): BackfillSummary {
+  const specFolders = collectSpecFolders(root, { activeOnly });
   const summary: BackfillSummary = {
     dryRun,
     root,

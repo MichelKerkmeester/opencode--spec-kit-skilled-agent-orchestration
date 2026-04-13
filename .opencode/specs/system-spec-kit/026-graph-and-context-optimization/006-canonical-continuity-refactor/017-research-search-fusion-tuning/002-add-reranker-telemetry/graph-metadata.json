@@ -10,23 +10,27 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "reranker cache telemetry",
+      "cross-encoder cache status",
+      "getRerankerStatus cache counters"
+    ],
     "key_topics": [
+      "reranker",
+      "cache",
+      "telemetry",
+      "cross-encoder",
+      "status",
+      "getrerankerstatus",
+      "counters",
       "add",
       "hit",
       "miss",
       "stale-hit",
-      "eviction",
-      "counters",
-      "cross-encoder",
-      "cache",
-      "expose",
-      "existing",
-      "status",
-      "surface"
+      "eviction"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp_server/lib/search/cross-encoder.ts",
       "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/cross-encoder.vitest.ts tests/cross-encoder-extended.vitest.ts",
@@ -34,7 +38,8 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -77,6 +82,12 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -126,24 +137,19 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "process-wide",
-        "kind": "key_phrase",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Add hit, miss, stale-hit, and eviction counters to the cross-encoder cache. Expose the counters through the existing status surface so cache TTL can be tuned with real usage data instead of guesswork.",
     "created_at": "2026-04-13T05:11:45.011Z",
-    "last_save_at": "2026-04-13T06:08:11.994Z",
+    "last_save_at": "2026-04-13T07:03:00.220Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   }
 }

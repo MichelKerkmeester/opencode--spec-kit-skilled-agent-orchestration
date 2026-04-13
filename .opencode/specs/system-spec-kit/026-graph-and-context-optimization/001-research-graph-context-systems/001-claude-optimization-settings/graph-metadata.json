@@ -159,7 +159,7 @@
     ],
     "causal_summary": "This phase audited a Reddit primary-source field report covering 858-926 Claude Code sessions against `Code_Environment/Public`'s actual `.claude/settings.local.json` and `CLAUDE.md`. The headline configuration recommendation from the post -- `ENABLE_TOOL_SEARCH=true` -- is already present in this repo, making the central deliverable a ranked recommendation set rather than a new config flip. Twenty-four findings (F1-F24) were produced across four prioritization tiers, with 11 adopt-now, 11 prototype-later, and 2 reject labels. The original 8-iteration synthesis-ready loop was extended to 13 iterations by user request via `cli-codex` `gpt-5.4` high reasoning to bring an independent skeptical perspective before closeout. This is a research-only phase; no settings were changed, no hooks were implemented, and no auditor was built.",
     "created_at": "2026-04-12T09:02:53.445Z",
-    "last_save_at": "2026-04-13T06:08:11.960Z",
+    "last_save_at": "2026-04-13T07:03:00.186Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

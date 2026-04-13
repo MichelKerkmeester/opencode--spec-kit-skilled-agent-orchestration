@@ -55,6 +55,10 @@ This phase replaced the old frontmatter-only fallback with safer status derivati
 
 You now get three explicit fallback outcomes after the ranked frontmatter scan: `complete` for finished checklist-backed packets, `in_progress` for packets that still carry unchecked checklist items, and `planned` only when there is no implementation summary to prove delivery started. That keeps the researched false-positive boundary intact instead of promoting unfinished packets just because the packet exists.
 
+### Post-review status normalization
+
+The post-review follow-up also normalizes status strings before the ranked scan runs. Frontmatter or legacy graph metadata values like `Complete`, `Completed`, and `In Progress` are now folded into the canonical `complete` and `in_progress` states so backfills do not leak mixed-case variants into derived metadata.
+
 ### Files Changed
 
 | File | Action | Purpose |

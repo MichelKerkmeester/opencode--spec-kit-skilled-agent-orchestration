@@ -678,9 +678,11 @@ describe('C138: Centroid-Based Classification & Lambda Mapping', () => {
     // Per spec: understand→0.5 (diversity), fix_bug→0.85 (relevance)
     expect(INTENT_LAMBDA_MAP).toBeDefined();
     expect(INTENT_LAMBDA_MAP.understand).toBeLessThan(INTENT_LAMBDA_MAP.fix_bug);
+    expect(INTENT_LAMBDA_MAP.continuity).toBeGreaterThan(INTENT_LAMBDA_MAP.understand);
     expect(INTENT_LAMBDA_MAP.fix_bug).toBeGreaterThan(0.8);
     expect(INTENT_LAMBDA_MAP.understand).toBeLessThanOrEqual(0.5);
     expect(typeof INTENT_LAMBDA_MAP.add_feature).toBe('number');
+    expect(typeof INTENT_LAMBDA_MAP.continuity).toBe('number');
     expect(typeof INTENT_LAMBDA_MAP.refactor).toBe('number');
     expect(typeof INTENT_LAMBDA_MAP.find_spec).toBe('number');
   });

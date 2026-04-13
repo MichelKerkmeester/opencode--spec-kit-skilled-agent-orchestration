@@ -75,15 +75,15 @@ afterEach(() => {
 });
 
 describe('graph metadata backfill', () => {
-  it('discovers nested spec folders and dry-runs without writing files', () => {
+  it('skips archived and future folders by default during dry-run traversal', () => {
     const specsRoot = createSpecTree();
 
     const folders = collectSpecFolders(specsRoot);
-    expect(folders).toHaveLength(3);
+    expect(folders).toHaveLength(2);
 
     const summary = runBackfill({ dryRun: true, root: specsRoot });
-    expect(summary.totalSpecFolders).toBe(3);
-    expect(summary.created).toBe(3);
+    expect(summary.totalSpecFolders).toBe(2);
+    expect(summary.created).toBe(2);
     expect(summary.refreshed).toBe(0);
     expect(summary.reviewFlags).toEqual(expect.any(Array));
 
@@ -92,12 +92,12 @@ describe('graph metadata backfill', () => {
     }
   });
 
-  it('writes graph-metadata.json for every discovered packet with empty manual arrays', () => {
+  it('writes graph-metadata.json for every active packet with empty manual arrays', () => {
     const specsRoot = createSpecTree();
     const summary = runBackfill({ dryRun: false, root: specsRoot });
 
-    expect(summary.totalSpecFolders).toBe(3);
-    expect(summary.created).toBe(3);
+    expect(summary.totalSpecFolders).toBe(2);
+    expect(summary.created).toBe(2);
 
     for (const specFolder of collectSpecFolders(specsRoot)) {
       const graphPath = path.join(specFolder, 'graph-metadata.json');
@@ -112,5 +112,16 @@ describe('graph metadata backfill', () => {
       expect(metadata?.derived.source_docs).toContain('spec.md');
       expect(metadata?.derived.key_files.length).toBeGreaterThan(0);
     }
+  });
+
+  it('includes archived packets only when include-archive behavior is requested explicitly', () => {
+    const specsRoot = createSpecTree();
+
+    const folders = collectSpecFolders(specsRoot, { activeOnly: false });
+    expect(folders).toHaveLength(3);
+
+    const summary = runBackfill({ dryRun: true, root: specsRoot, activeOnly: false });
+    expect(summary.totalSpecFolders).toBe(3);
+    expect(summary.created).toBe(3);
   });
 });

@@ -138,7 +138,7 @@
     ],
     "causal_summary": "This sub-phase defines measurable gates for the adoption work: latency budgets, token caps, storage ceilings, compaction-survival checks, and named CI ownership. It covers the evidence pack required before public-surface rollout. It does not implement the runtime features themselves.",
     "created_at": "2026-04-13T04:56:07.090Z",
-    "last_save_at": "2026-04-13T06:08:12.104Z",
+    "last_save_at": "2026-04-13T07:03:00.328Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

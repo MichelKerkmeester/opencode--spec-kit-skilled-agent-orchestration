@@ -167,6 +167,7 @@ interface RoutedRecordIdentity {
 }
 
 type CanonicalPacketLevel = 'L1' | 'L2' | 'L3' | 'L3+';
+type CanonicalPacketKind = 'feature' | 'phase' | 'remediation' | 'research' | 'unknown';
 
 interface CanonicalAtomicValidatorPlan {
   folder: string;
@@ -823,6 +824,78 @@ function normalizeRoutingChunkText(markdown: string): string {
     .trim();
 }
 
+function extractFrontmatterScalar(markdown: string, key: string): string | null {
+  const frontmatterMatch = markdown.match(/^(?:\uFEFF)?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)?/u);
+  if (!frontmatterMatch?.[1]) {
+    return null;
+  }
+
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const scalarMatch = frontmatterMatch[1].match(
+    new RegExp(`^\\s*${escapedKey}:\\s*["']?([^"'\r\n]+)["']?\\s*$`, 'imu'),
+  );
+  return scalarMatch?.[1]?.trim() ?? null;
+}
+
+function hasNumericSpecFolderName(folderPath: string): boolean {
+  return /^\d{3}(?:[-_].+)?$/u.test(path.basename(folderPath));
+}
+
+function hasChildSpecFolders(specFolderAbsolute: string): boolean {
+  try {
+    const entries = fs.readdirSync(specFolderAbsolute, { withFileTypes: true });
+    return entries.some((entry) => {
+      if (!entry.isDirectory() || !hasNumericSpecFolderName(entry.name)) {
+        return false;
+      }
+      return fs.existsSync(path.join(specFolderAbsolute, entry.name, 'spec.md'));
+    });
+  } catch {
+    return false;
+  }
+}
+
+function deriveCanonicalPacketKind(
+  specFolderAbsolute: string,
+  specFolderKey: string,
+): CanonicalPacketKind {
+  const specMdPath = path.join(specFolderAbsolute, 'spec.md');
+  let specContent = '';
+  try {
+    specContent = fs.readFileSync(specMdPath, 'utf8');
+  } catch {
+    specContent = '';
+  }
+
+  const packetType = extractFrontmatterScalar(specContent, 'type')?.toLowerCase() ?? '';
+  const title = extractFrontmatterScalar(specContent, 'title')?.toLowerCase() ?? '';
+  const description = extractFrontmatterScalar(specContent, 'description')?.toLowerCase() ?? '';
+  const folderName = path.basename(specFolderAbsolute).toLowerCase();
+  const semanticHint = `${folderName} ${title} ${description}`;
+
+  if (packetType === 'research') {
+    return 'research';
+  }
+  if (/\bremediation\b/u.test(semanticHint)) {
+    return 'remediation';
+  }
+
+  const parentFolder = path.dirname(specFolderAbsolute);
+  const hasNumericParentPacket = hasNumericSpecFolderName(parentFolder)
+    && fs.existsSync(path.join(parentFolder, 'spec.md'));
+  if (!hasChildSpecFolders(specFolderAbsolute) && hasNumericParentPacket) {
+    return 'phase';
+  }
+
+  const normalizedSpecFolder = specFolderKey.replace(/^specs\//u, '');
+  const depth = normalizedSpecFolder.split('/').filter(Boolean).length;
+  if (depth <= 2) {
+    return 'feature';
+  }
+
+  return hasNumericParentPacket ? 'phase' : 'feature';
+}
+
 function isTier3RoutingEnabled(): boolean {
   return (process.env.SPECKIT_TIER3_ROUTING?.trim().toLowerCase() ?? '') === 'true';
 }
@@ -1141,6 +1214,8 @@ async function buildCanonicalAtomicPreparedSave(
 
   const specFolderAbsolute = resolveSpecFolderAbsoluteFromFilePath(params.file_path, preparedMemory.parsed.specFolder);
   const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
+  const packetKind = deriveCanonicalPacketKind(specFolderAbsolute, preparedMemory.parsed.specFolder);
+  const saveMode = params.routeAs ? 'route-as' : 'natural';
   const router = buildCanonicalRouter();
   const routingChunkText = normalizeRoutingChunkText(params.content);
   const likelyPhaseAnchor = deriveLikelyPhaseAnchorForCanonicalRouting({
@@ -1162,8 +1237,8 @@ async function buildCanonicalAtomicPreparedSave(
       sessionMeta: {
         spec_folder: preparedMemory.parsed.specFolder,
         packet_level: packetLevel,
-        packet_kind: preparedMemory.parsed.specFolder.includes('/') ? 'phase' : 'feature',
-        save_mode: 'route-as',
+        packet_kind: packetKind,
+        save_mode: saveMode,
         recent_docs_touched: [],
         recent_anchors_touched: [],
         likely_phase_anchor: likelyPhaseAnchor,

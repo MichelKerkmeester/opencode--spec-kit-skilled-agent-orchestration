@@ -60,6 +60,10 @@ The save handler now builds a Tier 3 request with the contract values already fr
 
 The canonical save gate now respects the Tier 3 rollout flag even when the caller does not pass an explicit `routeAs`, so natural saves can actually reach the router. Classifier errors, timeout-like throws, null responses, and invalid payloads all fail open back to Tier 2 instead of rejecting the save operation.
 
+### Post-review prompt-context remediation
+
+The post-review follow-up tightened the prompt metadata that accompanies Tier 3 requests. `memory-save.ts` now derives `packet_kind` from the actual spec packet metadata and structure instead of a slash heuristic, while the prompt body distinguishes natural saves from explicit overrides with `save_mode="natural"` versus `save_mode="route-as"`. Handler tests now assert those prompt-body fields directly for root feature, root research, and nested phase packets.
+
 ### Files Changed
 
 | File | Action | Purpose |

@@ -49,5 +49,5 @@ The compatibility contract stayed intact on purpose. Tool schemas, handler defau
 
 ## Notes
 
-- The `lp` cache-key bit is still present for temporary compatibility, so duplicate cache buckets remain possible until the flag is formally retired.
+- Post-review remediation removed the retired `lp` cache-key discriminator, so compatibility-mode callers now reuse the same reranker cache entry instead of splitting hit-rate across duplicate buckets.
 - The helper exports remain available for downstream callers and tests.

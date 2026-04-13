@@ -8,6 +8,7 @@ status: complete
 - [x] T-03: Add parser coverage for `implementation-summary + COMPLETE checklist`, `implementation-summary + incomplete checklist`, `implementation-summary + no checklist`, and explicit frontmatter precedence in `mcp_server/tests/graph-metadata-schema.vitest.ts`.
 - [x] T-04: Re-run graph-metadata verification with focused typecheck and Vitest coverage before the repo-wide backfill verification pass.
 - [x] T-05: Keep the status fallback localized to `deriveStatus()` and its checklist helper while leaving schema behavior unchanged.
+- [x] T-06: Normalize frontmatter and legacy status values in `mcp_server/lib/graph/graph-metadata-parser.ts` so `Complete`, `Completed`, and `In Progress` collapse to canonical lowercase derived statuses before fallback logic runs.
 ## Verification
 - [x] T-V1: `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit`
 - [x] T-V2: `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts tests/graph-metadata-schema.vitest.ts`

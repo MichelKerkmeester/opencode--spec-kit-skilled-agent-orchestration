@@ -162,7 +162,7 @@
     ],
     "causal_summary": "The system-spec-kit has shared JavaScript modules duplicated or re-exported across two separate lib folders, creating several issues:",
     "created_at": "2026-04-12T09:02:53.533Z",
-    "last_save_at": "2026-04-13T06:08:12.039Z",
+    "last_save_at": "2026-04-13T07:03:00.265Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

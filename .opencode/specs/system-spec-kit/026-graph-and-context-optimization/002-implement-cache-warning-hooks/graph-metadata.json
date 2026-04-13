@@ -162,7 +162,7 @@
     ],
     "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
     "created_at": "2026-04-12T09:02:53.453Z",
-    "last_save_at": "2026-04-13T06:08:11.967Z",
+    "last_save_at": "2026-04-13T07:03:00.193Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

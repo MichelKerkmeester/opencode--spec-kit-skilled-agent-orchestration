@@ -155,7 +155,7 @@
     ],
     "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core + level2-verify + level3-arch + level3plus-govern | v2.2\"",
     "created_at": "2026-04-12T09:02:50.262Z",
-    "last_save_at": "2026-04-13T06:08:08.931Z",
+    "last_save_at": "2026-04-13T07:02:57.156Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

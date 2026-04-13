@@ -50,4 +50,5 @@ The internal search path now threads a separate `adaptiveFusionIntent` value so 
 ## Notes
 
 - The public intent API still exposes the existing 7-intent surface.
-- `intent-classifier.ts`, `query-router.ts`, `artifact-routing.ts`, and their union-sensitive tests were intentionally left unchanged.
+- Post-review remediation added a dedicated continuity MMR lambda so Stage 3 reranking keeps the new continuity profile’s ordering behavior instead of falling back to the generic default.
+- `intent-classifier.ts`, `query-router.ts`, `artifact-routing.ts`, and their union-sensitive tests were intentionally left unchanged apart from the new continuity lambda regression assertion.

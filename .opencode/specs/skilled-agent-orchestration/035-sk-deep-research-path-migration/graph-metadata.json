@@ -162,7 +162,7 @@
     ],
     "causal_summary": "The deep-research contract is now split across a former root research document, `research/iterations/iteration-*`, and a newer review packet that still has to normalize legacy `review/iterations/iteration-*` layouts. The migration defined here makes `research/` the canonical research packet, keeps `review/` as the canonical review packet, and standardizes iteration artifacts into dedicated `iterations/` folders with no `output/` folder. [SOURCE: .opencode/command/spec_kit/deep-research.md:211-242] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:187-201]",
     "created_at": "2026-04-12T09:02:50.179Z",
-    "last_save_at": "2026-04-13T06:08:08.848Z",
+    "last_save_at": "2026-04-13T07:02:57.077Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

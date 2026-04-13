@@ -153,7 +153,7 @@
     ],
     "causal_summary": "Phase 014 already rewrote prompt fields across the manual testing playbook, but this spec packet drifted away from the active Level 2 template. The packet was missing required anchors, the `_memory` continuity block, `tasks.md`, `checklist.md`, and a valid reference to the playbook index.",
     "created_at": "2026-04-12T00:00:00Z",
-    "last_save_at": "2026-04-13T06:08:11.991Z",
+    "last_save_at": "2026-04-13T07:03:00.217Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

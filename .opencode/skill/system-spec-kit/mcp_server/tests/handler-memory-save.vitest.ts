@@ -214,6 +214,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         heading: string;
         body: string;
         levelMarker?: string;
+        extraFrontmatter?: string[];
         extraAnchors?: Array<{ id: string; heading: string; body: string }>;
       },
     ): void {
@@ -252,6 +253,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         '  - "atomic save fi"',
         'importance_tier: "normal"',
         'contextType: "implementation"',
+        ...(options.extraFrontmatter ?? []),
         continuityBlock,
         '---',
         '',
@@ -267,10 +269,30 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       sourcePath: string;
       targetPath: string;
       tasksPath: string;
-    } {
+      specFolderKey: string;
+    };
+    function createCanonicalRoutingFixture(options: {
+      specFolderSegments?: string[];
+      specExtraFrontmatter?: string[];
+      parentPacketSegments?: string[];
+      parentSpecExtraFrontmatter?: string[];
+    } = {}) {
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atomic-canonical-fi-'));
       tempDirs.push(root);
-      const specFolder = path.join(root, 'specs', 'system-spec-kit', '999-atomic-save-fi');
+      const specFolderSegments = options.specFolderSegments ?? ['system-spec-kit', '999-atomic-save-fi'];
+      const specFolder = path.join(root, 'specs', ...specFolderSegments);
+
+      if (options.parentPacketSegments) {
+        const parentSpecFolder = path.join(root, 'specs', ...options.parentPacketSegments);
+        writeCanonicalFixtureDoc(path.join(parentSpecFolder, 'spec.md'), {
+          title: 'Parent Spec',
+          anchorId: 'problem',
+          heading: '## Problem',
+          body: 'Parent packet fixture that owns the child routed save packet.',
+          levelMarker: '<!-- SPECKIT_LEVEL: 3 -->',
+          extraFrontmatter: options.parentSpecExtraFrontmatter,
+        });
+      }
 
       writeCanonicalFixtureDoc(path.join(specFolder, 'spec.md'), {
         title: 'Spec',
@@ -278,6 +300,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         heading: '## Problem',
         body: 'Route canonical writer updates into spec documents without rewriting unrelated files.',
         levelMarker: '<!-- SPECKIT_LEVEL: 3 -->',
+        extraFrontmatter: options.specExtraFrontmatter,
       });
       writeCanonicalFixtureDoc(path.join(specFolder, 'plan.md'), {
         title: 'Plan',
@@ -337,7 +360,17 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         sourcePath,
         targetPath: path.join(specFolder, 'implementation-summary.md'),
         tasksPath: path.join(specFolder, 'tasks.md'),
+        specFolderKey: specFolderSegments.join('/'),
       };
+    }
+
+    function extractTier3PromptBody(fetchMock: ReturnType<typeof vi.fn>): string {
+      const requestInit = fetchMock.mock.calls[0]?.[1] as { body?: string } | undefined;
+      expect(requestInit?.body).toEqual(expect.any(String));
+      const payload = JSON.parse(requestInit?.body ?? '{}') as {
+        messages?: Array<{ role?: string; content?: string }>;
+      };
+      return payload.messages?.find((message) => message.role === 'user')?.content ?? '';
     }
 
     async function loadBehavioralIndexHarness(options: {
@@ -1236,7 +1269,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       }));
       const parseMemoryContentMock = vi.fn((targetPath: string) => ({
         ...buildParsedMemory(targetPath),
-        specFolder: 'system-spec-kit/999-atomic-save-fi',
+        specFolder: fixture.specFolderKey,
       }));
       const harness = await loadAtomicSaveHarness({
         parseMemoryContentMock,
@@ -1254,7 +1287,119 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(true);
       expect(result.targetDocPath).toBe(fixture.targetPath);
       expect(fetchMock).toHaveBeenCalledTimes(1);
+      const promptBody = extractTier3PromptBody(fetchMock);
+      expect(promptBody).toContain('PACKET_KIND: feature');
+      expect(promptBody).toContain('SAVE_MODE: natural');
       expect(fs.readFileSync(fixture.targetPath, 'utf8')).toContain('This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.');
+    });
+
+    it('labels research root packets correctly in the Tier 3 prompt body', async () => {
+      process.env.SPECKIT_TIER3_ROUTING = 'true';
+      process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
+      const fetchMock = vi.fn(async () => new Response(JSON.stringify({
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                category: 'narrative_progress',
+                confidence: 0.82,
+                target_doc: 'implementation-summary.md',
+                target_anchor: 'what-built',
+                merge_mode: 'append-as-paragraph',
+                reasoning: 'Ambiguous save text is best treated as progress.',
+              }),
+            },
+          },
+        ],
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fixture = createCanonicalRoutingFixture({
+        specFolderSegments: ['system-spec-kit', '999-research-root'],
+        specExtraFrontmatter: ['type: "research"'],
+      });
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock: vi.fn((targetPath: string) => ({
+          ...buildParsedMemory(targetPath),
+          specFolder: fixture.specFolderKey,
+        })),
+        checkExistingRowMock: vi.fn(() => buildIndexResult({
+          id: 448,
+          specFolder: '999-research-root',
+        })),
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const promptBody = extractTier3PromptBody(fetchMock);
+      expect(promptBody).toContain('PACKET_KIND: research');
+      expect(promptBody).toContain('SAVE_MODE: natural');
+    });
+
+    it('labels explicit routeAs phase saves with phase packet_kind and route-as save_mode', async () => {
+      process.env.SPECKIT_TIER3_ROUTING = 'true';
+      process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
+      const fetchMock = vi.fn(async () => new Response(JSON.stringify({
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                category: 'narrative_delivery',
+                confidence: 0.79,
+                target_doc: 'implementation-summary.md',
+                target_anchor: 'how-delivered',
+                merge_mode: 'append-as-paragraph',
+                reasoning: 'Ambiguous save text leans toward delivery.',
+              }),
+            },
+          },
+        ],
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fixture = createCanonicalRoutingFixture({
+        specFolderSegments: ['system-spec-kit', '999-parent-packet', '001-child-phase'],
+        parentPacketSegments: ['system-spec-kit', '999-parent-packet'],
+      });
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock: vi.fn((targetPath: string) => ({
+          ...buildParsedMemory(targetPath),
+          specFolder: fixture.specFolderKey,
+        })),
+        checkExistingRowMock: vi.fn(() => buildIndexResult({
+          id: 449,
+          specFolder: '999-parent-packet/001-child-phase',
+        })),
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          routeAs: 'narrative_progress',
+          content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const promptBody = extractTier3PromptBody(fetchMock);
+      expect(promptBody).toContain('PACKET_KIND: phase');
+      expect(promptBody).toContain('SAVE_MODE: route-as');
     });
 
     it('fails open to natural Tier 2 routing when Tier 3 transport throws', async () => {
@@ -1267,12 +1412,12 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const fixture = createCanonicalRoutingFixture();
       const checkExistingRowMock = vi.fn(() => buildIndexResult({
-        id: 448,
+        id: 450,
         specFolder: '999-atomic-save-fi',
       }));
       const parseMemoryContentMock = vi.fn((targetPath: string) => ({
         ...buildParsedMemory(targetPath),
-        specFolder: 'system-spec-kit/999-atomic-save-fi',
+        specFolder: fixture.specFolderKey,
       }));
       const harness = await loadAtomicSaveHarness({
         parseMemoryContentMock,

@@ -139,7 +139,7 @@
     ],
     "causal_summary": "This sub-phase investigates whether Modus-style connected-doc hints should exist in Public only as a low-authority appendix to search results. It focuses on hint labeling, trigger thresholds, merge rules, and benchmark design so that any future hint layer stays subordinate to current graph and causal authorities. It does not ship a new result channel.",
     "created_at": "2026-04-13T04:56:07.093Z",
-    "last_save_at": "2026-04-13T06:08:12.107Z",
+    "last_save_at": "2026-04-13T07:03:00.332Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

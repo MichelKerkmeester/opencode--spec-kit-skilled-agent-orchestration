@@ -156,7 +156,7 @@
     ],
     "causal_summary": "Phase 003 discovery scenarios must be executed from scratch. All prior results are invalidated. The eight discovery scenarios (EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, EX-040) require fresh manual execution to verify that memory_list, memory_stats, memory_health, and targeted discovery operations behave as specified by the canonical playbook. The five new scenarios (EX-036 through EX-040) expand coverage to folder name filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal.",
     "created_at": "2026-04-12T09:02:50.290Z",
-    "last_save_at": "2026-04-13T06:08:08.962Z",
+    "last_save_at": "2026-04-13T07:02:57.186Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

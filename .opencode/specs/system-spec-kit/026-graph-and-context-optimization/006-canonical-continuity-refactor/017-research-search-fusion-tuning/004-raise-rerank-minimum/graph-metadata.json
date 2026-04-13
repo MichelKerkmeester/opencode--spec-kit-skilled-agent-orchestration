@@ -10,45 +10,49 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "raise rerank minimum",
+      "MIN_RESULTS_FOR_RERANK",
+      "stage3 rerank threshold"
+    ],
     "key_topics": [
+      "raise",
+      "rerank",
+      "minimum",
+      "stage3",
+      "threshold",
       "increase",
       "4-5",
       "reranking",
       "only",
       "documents",
       "wastes",
-      "api",
-      "call",
-      "minimal",
-      "ordering",
-      "gain",
-      "exact"
+      "api"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "mcp_server/lib/search/pipeline/stage3-rerank.ts",
       "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/stage3-rerank-regression.vitest.ts tests/local-reranker.vitest.ts",
+      "mcp_server/lib/search/pipeline/stage3-rerank.ts",
       "mcp_server/tests/stage3-rerank-regression.vitest.ts",
-      "mcp_server/tests/local-reranker.vitest.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "stage3-rerank.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/search/pipeline/stage3-rerank.ts",
-        "source": "derived"
-      },
       {
         "name": "local-reranker.vitest.ts",
         "kind": "test",
         "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/stage3-rerank-regression.vitest.ts tests/local-reranker.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage3-rerank.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/stage3-rerank.ts",
         "source": "derived"
       },
       {
@@ -85,6 +89,12 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -128,24 +138,19 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "Approach This",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Increase `MIN_RESULTS_FOR_RERANK` from 2 to 4-5. Reranking only 2 documents wastes an API call with minimal ordering gain. The exact value should be validated against typical candidate-set sizes in production queries.",
     "created_at": "2026-04-13T05:11:45.011Z",
-    "last_save_at": "2026-04-13T06:08:11.995Z",
+    "last_save_at": "2026-04-13T07:03:00.221Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   }
 }

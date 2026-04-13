@@ -137,7 +137,7 @@
     ],
     "causal_summary": "This sub-phase records prototype-only candidates that survived the research but were not approved for immediate implementation. It covers weak-result lexical fallback, connected-doc hints, bounded wake-up/read formatting, quote-carrying evidence snippets, and temporal-fact follow-up discussion. It does not promote any of them to default runtime behavior.",
     "created_at": "2026-04-13T04:56:07.090Z",
-    "last_save_at": "2026-04-13T06:08:12.104Z",
+    "last_save_at": "2026-04-13T07:03:00.329Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

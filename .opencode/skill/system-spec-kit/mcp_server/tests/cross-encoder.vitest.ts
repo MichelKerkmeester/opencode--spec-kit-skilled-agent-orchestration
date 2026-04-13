@@ -128,6 +128,12 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
       const key = crossEncoder.generateCacheKey('query', ['doc1']);
       expect(key.startsWith('rerank-')).toBe(true);
     });
+
+    it('T044: generateCacheKey ignores retired length-penalty option bits', () => {
+      const baseKey = crossEncoder.generateCacheKey('query', ['doc1'], 'local');
+      const legacyOptionKey = crossEncoder.generateCacheKey('query', ['doc1'], 'local', 'lp');
+      expect(legacyOptionKey).toBe(baseKey);
+    });
   });
 
   // SUITE: Provider Availability Tests
