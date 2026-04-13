@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+        "reason": "Phase 007 builds on the SQLite-backed skill graph and watcher infrastructure documented in Phase 006.",
+        "source": "manual"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+        "reason": "Phase 007 is a child packet of the parent skill-advisor-graph coordination packet.",
+        "source": "manual"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "007-skill-graph-auto-setup",
+      "skill graph auto setup",
+      "init skill graph",
+      "lazy auto init",
+      "startup logging",
+      "watcher logging",
+      "skill advisor setup guide",
+      "regression verification"
+    ],
+    "key_topics": [
+      "skill graph",
+      "auto setup",
+      "init script",
+      "advisor fallback",
+      "context-server logging",
+      "setup guide",
+      "regression verification"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/skill-advisor/scripts/init-skill-graph.sh",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/skill-advisor/SET-UP_GUIDE.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "init-skill-graph.sh",
+        "kind": "script",
+        "path": ".opencode/skill/skill-advisor/scripts/init-skill-graph.sh",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "script",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "module",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/SET-UP_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 007 documents the completed skill-graph auto-setup surface: the init script validates metadata, exports JSON, and runs advisor health; the advisor prefers SQLite but can fall back to JSON or auto-compile JSON; the context server logs fresh creation, existing loads, reindexing, and new-skill detection; and the canonical setup guide plus regression workflow live under the shipped skill-advisor package."
+  }
+}

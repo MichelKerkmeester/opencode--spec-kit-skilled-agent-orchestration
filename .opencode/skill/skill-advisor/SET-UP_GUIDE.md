@@ -12,6 +12,7 @@ This guide reflects the current runtime:
 - explicit confidence-only override (`--confidence-only`)
 - command-bridge separation (`kind: command`)
 - cached skill discovery with mtime invalidation
+- SQLite-first skill graph loading with JSON fallback
 - compiled graph metadata in `scripts/skill-graph.json`
 - permanent regression and benchmark tooling
 
@@ -232,26 +233,35 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
 - `.opencode/skill/skill-advisor/graph-metadata.json` defines the advisor skill's own graph edges and derived topics.
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` validates every discovered metadata file and builds the compiled graph.
 - `.opencode/skill/skill-advisor/scripts/skill-graph.json` is the generated runtime snapshot loaded by the advisor.
+- `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite` is the SQLite graph that the MCP server keeps current.
 
-### Adding A New Skill Or New Edges
+### Skill Graph Setup
 
-1. Add or update the target skill folder's `graph-metadata.json`.
-2. Set a valid `skill_id` that matches the folder name.
-3. Add edge entries under the typed groups that the compiler accepts today: `depends_on`, `enhances`, `siblings`, `conflicts_with`, and `prerequisite_for`.
-4. Point every `target` at an existing skill `skill_id`.
-5. Run the compiler in validation mode:
+After cloning the repo, the skill graph initializes automatically when the MCP server starts. For manual setup:
+
+```bash
+bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
+```
+
+Use the manual setup when the JSON fallback is missing, when the health check reports `skill_graph_loaded: false`, or when the MCP server is not running yet.
+
+### Adding a New Skill
+
+1. Create `graph-metadata.json` in the new skill folder by copying an existing skill as the starting point.
+2. Set `skill_id` so it matches the `name` field in the target `SKILL.md`.
+3. Define the graph edges that matter for routing, starting with `depends_on`, `enhances`, and `siblings`.
+4. The skill graph watcher auto-indexes the new file within 3 seconds when the MCP server is running.
+5. Verify the new skill is visible:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
+```
+
+6. Re-run validation if the watcher is not active or if edge warnings need review:
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 ```
-
-6. Regenerate the compiled graph when validation passes:
-
-```bash
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
-```
-
-7. Re-run health and regression checks so the new edges are visible in the live advisor output.
 
 ### What To Expect From The Compiler
 
@@ -262,6 +272,13 @@ python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 ---
 
 ## 6. QUALITY VERIFICATION
+
+### Verification
+
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health`  
+  Expected: `skill_graph_loaded: true`, `skill_graph_source: sqlite`, `skill_graph_skill_count: 21`
+- `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only`  
+  Expected: `VALIDATION PASSED`
 
 ### Compiler Validation
 
@@ -346,6 +363,12 @@ When a new capability is added:
 
 ## 8. TROUBLESHOOTING
 
+### Troubleshooting
+
+- `skill_graph_loaded: false` -> Run `bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh` or restart the MCP server.
+- `skill_graph_source: json` -> SQLite is unavailable, so the MCP server may not be running yet.
+- Stale graph -> Modify any `graph-metadata.json` file to trigger the watcher re-index, or run `skill_graph_scan`.
+
 ### No Results Returned
 
 Possible causes:
@@ -375,8 +398,9 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prom
 Force refresh cached discovery, then rebuild the graph if needed:
 
 ```bash
+bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
-python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 ```
 
 ---
@@ -398,6 +422,9 @@ python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 ## 10. REFERENCE COMMANDS
 
 ```bash
+# Manual skill graph setup
+bash .opencode/skill/skill-advisor/scripts/init-skill-graph.sh
+
 # Health
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
 

@@ -65,6 +65,7 @@ if _runtime_module is None:
 
 # Compiled skill graph for relationship-aware routing
 SKILL_GRAPH_PATH = os.path.join(SCRIPT_DIR, "skill-graph.json")
+SKILL_GRAPH_COMPILER_PATH = os.path.join(SCRIPT_DIR, "skill_graph_compiler.py")
 SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
     os.path.dirname(__file__),
     '..',
@@ -77,6 +78,11 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
 _SKILL_GRAPH: Optional[Dict[str, Any]] = None
 _SKILL_GRAPH_SOURCE: Optional[str] = None
+
+
+def _log_skill_graph_warning(message: str) -> None:
+    """Emit skill graph status messages to stderr for CLI visibility."""
+    print(message, file=sys.stderr)
 
 
 def _compute_hub_skills(adjacency: Dict[str, Dict[str, Dict[str, float]]]) -> List[str]:
@@ -200,17 +206,42 @@ def _load_skill_graph() -> Optional[Dict[str, Any]]:
     if _SKILL_GRAPH is not None:
         return _SKILL_GRAPH
 
+    sqlite_exists = os.path.exists(SKILL_GRAPH_SQLITE_PATH)
+    json_exists = os.path.exists(SKILL_GRAPH_PATH)
+
     sqlite_graph = _load_skill_graph_sqlite()
     if sqlite_graph is not None:
         _SKILL_GRAPH = sqlite_graph
         _SKILL_GRAPH_SOURCE = "sqlite"
+        _log_skill_graph_warning("Skill graph: loaded from SQLite")
         return _SKILL_GRAPH
 
     json_graph = _load_skill_graph_json()
     if json_graph is not None:
         _SKILL_GRAPH = json_graph
         _SKILL_GRAPH_SOURCE = "json"
+        _log_skill_graph_warning("Skill graph: SQLite unavailable, using JSON fallback")
         return _SKILL_GRAPH
+
+    if not sqlite_exists and not json_exists:
+        compile_result = subprocess.run(
+            [sys.executable, SKILL_GRAPH_COMPILER_PATH, '--export-json'],
+            capture_output=True,
+            text=True,
+        )
+        if compile_result.returncode == 0:
+            json_graph = _load_skill_graph_json()
+            if json_graph is not None:
+                _SKILL_GRAPH = json_graph
+                _SKILL_GRAPH_SOURCE = "json"
+                _log_skill_graph_warning(
+                    "Skill graph: auto-compiled JSON (run init-skill-graph.sh for full setup)"
+                )
+                return _SKILL_GRAPH
+        else:
+            compiler_error = (compile_result.stderr or compile_result.stdout).strip()
+            if compiler_error:
+                _log_skill_graph_warning(f"Skill graph: auto-compile failed ({compiler_error})")
 
     _SKILL_GRAPH_SOURCE = None
     return None
@@ -1823,9 +1854,15 @@ def health_check() -> Dict[str, Any]:
         "skills_dir_exists": os.path.exists(SKILLS_DIR),
         "cache": get_cache_status(),
         "skill_graph_loaded": graph_loaded,
-        "skill_graph_source": _SKILL_GRAPH_SOURCE if _SKILL_GRAPH_SOURCE in {"sqlite", "json"} else "json",
+        "skill_graph_source": _SKILL_GRAPH_SOURCE,
         "skill_graph_skill_count": graph.get("skill_count", 0) if graph else 0,
-        "skill_graph_path": SKILL_GRAPH_SQLITE_PATH if _SKILL_GRAPH_SOURCE == "sqlite" else SKILL_GRAPH_PATH,
+        "skill_graph_path": (
+            SKILL_GRAPH_SQLITE_PATH
+            if _SKILL_GRAPH_SOURCE == "sqlite"
+            else SKILL_GRAPH_PATH
+            if _SKILL_GRAPH_SOURCE == "json"
+            else None
+        ),
         "skill_graph_sqlite_path": SKILL_GRAPH_SQLITE_PATH,
         "skill_graph_json_path": SKILL_GRAPH_PATH,
     }

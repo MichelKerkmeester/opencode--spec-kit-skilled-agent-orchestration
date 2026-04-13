@@ -220,6 +220,7 @@ const GRAPH_ENRICHMENT_NEIGHBOR_LIMIT = 6;
 const GRAPH_ENRICHMENT_SYMBOL_LIMIT = 4;
 const SKILL_GRAPH_WATCH_DEBOUNCE_MS = 2000;
 const SKILL_GRAPH_METADATA_FILENAME = 'graph-metadata.json';
+const SKILL_GRAPH_DATABASE_PATH = path.join(DATABASE_DIR, 'skill-graph.sqlite');
 const GRAPH_CONTEXT_EXCLUDED_TOOLS = new Set<string>([
   ...MEMORY_AWARE_TOOLS,
   'code_graph_query',
@@ -1366,6 +1367,41 @@ async function loadSkillGraphWatchFactory(): Promise<(paths: string | string[], 
 }
 
 function logSkillGraphIndexResult(trigger: string, result: ReturnType<typeof indexSkillMetadata>): void {
+  if (trigger === 'startup-scan') {
+    const staleCount = result.indexedFiles + result.deletedNodes;
+    if (!skillGraphDatabaseExistedAtStartup) {
+      console.error(`[context-server] Skill graph: created fresh (${result.scannedFiles} skills indexed)`);
+      return;
+    }
+
+    if (staleCount === 0) {
+      console.error(`[context-server] Skill graph: loaded existing (${result.scannedFiles} skills, 0 stale)`);
+      return;
+    }
+
+    console.error(`[context-server] Skill graph: reindexed (${result.indexedFiles} skills updated)`);
+    return;
+  }
+
+  const watcherMatch = /^watcher-(add|change|unlink):(.+)$/.exec(trigger);
+  if (watcherMatch) {
+    const action = watcherMatch[1];
+    const skillName = watcherMatch[2];
+
+    if (action === 'add') {
+      console.error(`[context-server] Skill graph: new skill detected - ${skillName} (${result.scannedFiles} total)`);
+      return;
+    }
+
+    if (action === 'unlink') {
+      console.error(`[context-server] Skill graph: skill removed - ${skillName} (${result.scannedFiles} total)`);
+      return;
+    }
+
+    console.error(`[context-server] Skill graph: reindexed ${skillName}`);
+    return;
+  }
+
   console.error(
     '[context-server] Skill graph %s: scanned=%d indexed=%d skipped=%d edges=%d rejected=%d deleted=%d',
     trigger,
@@ -1474,6 +1510,7 @@ let skillGraphWatcher: FSWatcher | null = null;
 let skillGraphWatchDebounceTimer: NodeJS.Timeout | null = null;
 let skillGraphScanInProgress = false;
 let skillGraphScanQueued = false;
+let skillGraphDatabaseExistedAtStartup = false;
 
 /** Maximum time (ms) to wait for async cleanup before force-exiting. */
 const SHUTDOWN_DEADLINE_MS = 5000;
@@ -1695,6 +1732,7 @@ async function main(): Promise<void> {
   console.error('[context-server] Initializing database...');
   vectorIndex.initializeDb();
   try {
+    skillGraphDatabaseExistedAtStartup = fs.existsSync(SKILL_GRAPH_DATABASE_PATH);
     initSkillGraphDb(DATABASE_DIR);
     console.error('[context-server] Skill graph database initialized');
   } catch (skillGraphInitErr: unknown) {
