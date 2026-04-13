@@ -5,13 +5,13 @@
 
 ### Purpose
 
-Investigate whether the three-tier content router classifies canonical continuity saves correctly, which confusion pairs dominate the residual errors, and what specific code and prototype changes should fix those errors without broadening scope.
+Investigate whether the content-routing remediation still solves the packet's original confusion seams after implementation landed, whether the always-on Tier 3 save path fail-opens correctly, whether the updated docs match shipped behavior, and what small follow-on changes would make the abbreviated-fragment story defensibly exceed 95%.
 
 ### Usage
 
 - Init: seed the topic, packet-local research questions, and read-only boundaries from the packet spec.
 - Per iteration: read the current focus, inspect code and runtime evidence, write one iteration artifact, append one JSONL record, then let the reducer refresh the machine-owned sections.
-- Synthesis target: produce implementation-ready guidance for delivery/progress cue tuning, handover/drop relaxation, Tier3 wiring, prototype refreshes, and regression coverage.
+- Synthesis target: produce a post-implementation verification verdict covering benchmark deltas, Tier 3 runtime wiring, doc parity, prototype separation, and any remaining path to 95%+ short-fragment robustness.
 
 ---
 
@@ -36,6 +36,11 @@ Content routing classification accuracy and remediation design
 - [x] RQ-9: What exact code is missing to wire Tier3 into `memory-save.ts`, and what latency or cost envelope does that imply?
 - [x] RQ-10: Are the Tier2 prototype vectors well distributed across categories, especially at the delivery/progress and handover/drop boundaries?
 - [x] RQ-11: Which routing categories and edge cases lack meaningful regression coverage today?
+- [x] RQ-12: How did the post-implementation benchmark change, and what confusion pairs remain after the cue and prototype fixes?
+- [x] RQ-13: Does the always-on Tier3 save path now route end to end with correct fail-open behavior?
+- [x] RQ-14: Do `save.md`, `SKILL.md`, and `save_workflow.md` match the shipped router behavior line by line?
+- [x] RQ-15: Are the refreshed prototypes actually well separated in embedding space after the targeted edits?
+- [x] RQ-16: What is the smallest follow-on work that would make the abbreviated-fragment story credibly exceed 95%?
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -49,10 +54,11 @@ Content routing classification accuracy and remediation design
 <!-- /ANCHOR:non-goals -->
 <!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
-- The baseline accuracy and threshold questions stay answered with code-backed evidence.
-- The delivery/progress and handover/drop confusion seams each have concrete code-level remediation guidance.
-- Tier3 wiring guidance names the exact missing constructor seam and the missing classifier adapter.
-- Prototype and test coverage recommendations are specific enough to hand directly to phases `001`, `002`, and `003`.
+- The pre-implementation accuracy and remediation questions stay answered with code-backed evidence.
+- The post-implementation benchmark produces a defensible accuracy verdict, including an explicit caveat about what part of the old corpus is exactly reproducible.
+- The always-on Tier3 path is traced through the live save handler and verified with targeted tests, including fail-open behavior.
+- The canonical save docs either match shipped router behavior or any drift is called out precisely.
+- The remaining path to 95%+ is concrete enough to hand directly to a small follow-on routing pass.
 
 ---
 
@@ -70,6 +76,11 @@ Content routing classification accuracy and remediation design
 - RQ-9: What exact code is missing to wire Tier3 into `memory-save.ts`, and what latency or cost envelope does that imply?
 - RQ-10: Are the Tier2 prototype vectors well distributed across categories, especially at the delivery/progress and handover/drop boundaries?
 - RQ-11: Which routing categories and edge cases lack meaningful regression coverage today?
+- RQ-12: How did the post-implementation benchmark change, and what confusion pairs remain after the cue and prototype fixes?
+- RQ-13: Does the always-on Tier3 save path now route end to end with correct fail-open behavior?
+- RQ-14: Do `save.md`, `SKILL.md`, and `save_workflow.md` match the shipped router behavior line by line?
+- RQ-15: Are the refreshed prototypes actually well separated in embedding space after the targeted edits?
+- RQ-16: What is the smallest follow-on work that would make the abbreviated-fragment story credibly exceed 95%?
 
 <!-- /ANCHOR:answered-questions -->
 <!-- ANCHOR:what-worked -->
@@ -99,6 +110,16 @@ Content routing classification accuracy and remediation design
 - Treating the fetch helper and the router dependency interface as templates made the Tier3 wiring effort easy to size without touching runtime code. (iteration 23)
 - A direct category-floor audit answered the zero-coverage question quickly and kept the final testing guidance honest. (iteration 24)
 - The convergence wave stayed focused on exact patch shapes, so the final synthesis tightened implementation guidance instead of reopening settled questions. (iteration 25)
+- Splitting the replay into an exact preserved subset and a best-effort compact reconstruction kept the post-implementation benchmark claims honest. (iteration 26)
+- Treating compact-fragment reconstruction as diagnostic rather than baseline-equivalent prevented false precision in the before-after story. (iteration 27)
+- Reading the live handler seam and the router fallback logic together made the always-on Tier3 contract obvious without touching code. (iteration 28)
+- Narrowing verification to the routing-only tests answered the Tier3 question without dragging in unrelated handler failures. (iteration 29)
+- The canonical docs are concise enough that a line-by-line parity pass against the live code surfaces drift quickly. (iteration 30)
+- Comparing wording claims to the exact env-guard in code separated a real availability nuance from functional documentation drift. (iteration 31)
+- A simple centroid-distance pass quantified that the refreshed prototype library is improved but still not globally well separated. (iteration 32)
+- Pairing nearest-neighbor prototype scans with the new boundary tests showed that behavior improved faster than the corpus geometry itself. (iteration 33)
+- Synthesizing benchmark, runtime, docs, and prototype signals together made the residual scope much smaller and more honest. (iteration 34)
+- Holding the follow-on recommendation to the smallest believable next moves avoided reopening the already-fixed seams. (iteration 35)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -128,6 +149,16 @@ Content routing classification accuracy and remediation design
 - Sizing phase `003` from the constructor callsite alone still underestimates the missing cache and env-contract work. (iteration 23)
 - Category presence in tests is not the same thing as meaningful boundary coverage. (iteration 24)
 - The earlier synthesis was still slightly too high-level for direct patch authoring, which is why this explicit convergence pass was needed. (iteration 25)
+- The earlier compact-variant generator was not preserved in packet artifacts, so a full 132-sample replay cannot be made strictly apples-to-apples after implementation. (iteration 26)
+- Reconstructed compact fragments are too sensitive to generation choices to serve as the sole post-implementation headline metric. (iteration 27)
+- Reading only the router would have hidden the now-unconditional handler entrypoint for Tier3. (iteration 28)
+- The full handler suite is noisy for this question because unrelated rollback and concurrency failures obscure the routing verdict. (iteration 29)
+- Save-doc parity still leaves low-level threshold details in code, so documentation can be accurate without being exhaustive. (iteration 30)
+- Environment-dependent wording is easy to overread as a hard runtime guarantee when the code intentionally fail-opens instead. (iteration 31)
+- Balanced prototype counts still overstate how cleanly separated the narrative categories really are. (iteration 32)
+- Prototype distance alone still cannot tell whether the live router now compensates correctly for the remaining overlap. (iteration 33)
+- It is tempting to treat any remaining error as proof that the old seams are still broken, even after the residual categories have clearly shifted. (iteration 34)
+- The missing exact compact-generator replay leaves one piece of the final story less tidy than the rest of the verification wave. (iteration 35)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -406,11 +437,21 @@ Content routing classification accuracy and remediation design
 - Looking for a routing category with zero presence in `content-router.vitest.ts`. (iteration 24)
 - Treating category presence as equivalent to meaningful regression coverage. (iteration 24)
 - Continuing the research loop instead of handing the packet back to implementation. (iteration 25)
+- Treating the absence of the original compact-variant generator as a reason to skip post-implementation benchmarking. (iteration 26)
+- Treating the reconstructed compact replay as a strict substitute for the earlier 132-sample benchmark. (iteration 27)
+- Assuming that always-on Tier3 makes every canonical save network-dependent. (iteration 28)
+- Treating the routing-only Tier3 tests as redundant now that the handler wiring exists in code. (iteration 29)
+- Treating the packet as still documentation-drifted just because the earlier research was written before implementation landed. (iteration 30)
+- Treating the endpoint-availability wording nuance as a substantive documentation mismatch. (iteration 31)
+- Using balanced prototype counts as proof that the refreshed corpus is now semantically well separated. (iteration 32)
+- Treating the refreshed hotspot prototypes as still behaviorally broken just because their embeddings remain close. (iteration 33)
+- Reopening the delivery/progress or handover/drop remediation plan as the primary next step after the implemented fixes removed those seams from the preserved replay. (iteration 34)
+- Continuing the research loop again before deciding whether short-fragment robustness is worth another targeted code pass. (iteration 35)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Research is converged after the user-authorized extension through iteration 25. Implement phases `001`, `002`, and `003` in that order, then rerun the same synthetic corpus and the expanded router plus handler regression suite as an explicit before/after benchmark.
+Research is reconverged after the user-authorized extension through iteration 35. The core packet question is closed: the delivered phases fixed the original delivery/progress and handover/drop seams, the always-on Tier3 path fail-opens correctly, and the docs are functionally aligned. The only meaningful follow-on work would be a small short-fragment refinement pass for progress-versus-research, research-versus-metadata, and terse drop telemetry cues.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->
@@ -419,6 +460,9 @@ Research is converged after the user-authorized extension through iteration 25. 
 - The runtime save path is `memory-save.ts` -> `createContentRouter()` -> `anchorMergeOperation()` or thin continuity frontmatter upsert, depending on the routed category.
 - Research stayed read-only and used synthetic payloads derived from current spec-doc-style content, not historical save records.
 - The second research wave focused on remediation design for delivery/progress cues, handover/drop relaxation, Tier3 wiring, prototype quality, and test coverage.
+- Phases `001`, `002`, `003`, and `004` are now implemented, reviewed, and documentation-aligned, so the active question is post-implementation verification rather than design guidance.
+- The exact preserved replay improved materially, but the old compact-fragment generator was not preserved as an artifact, so compact-only comparisons must be treated as diagnostic.
+- The remaining residual errors have shifted into research/metadata overlap and ultra-short telemetry fragments rather than the original delivery or handover seams.
 
 ---
 
@@ -427,7 +471,7 @@ Research is converged after the user-authorized extension through iteration 25. 
 ## 13. RESEARCH BOUNDARIES
 - Read-only, no historical saves, synthetic payloads from spec-doc content
 - Max iterations: 20
-- User-authorized convergence extension: iterations `21-25` completed without modifying the immutable config
+- User-authorized convergence extension: iterations `21-35` completed without modifying the immutable config
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true
 - research/research.md ownership: workflow-owned canonical synthesis output

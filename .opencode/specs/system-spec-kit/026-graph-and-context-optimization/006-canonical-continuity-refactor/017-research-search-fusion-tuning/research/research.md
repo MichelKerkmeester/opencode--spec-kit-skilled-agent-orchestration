@@ -2,7 +2,7 @@
 
 ## Scope
 
-This packet investigated fusion-weight optimization and rerank-threshold calibration for continuity-oriented system-spec-kit MCP searches, then resumed for a second 10-iteration pass to answer how the recommended changes can be implemented safely, and finally ran a 5-iteration convergence wave to cross-check contradictions, rank sub-phases by impact versus risk, capture edge cases, and finalize an implementation-ready handoff. The work stayed read-only against runtime code and wrote only packet-local research artifacts.
+This packet investigated fusion-weight optimization and rerank-threshold calibration for continuity-oriented system-spec-kit MCP searches, then resumed for a second 10-iteration pass to answer how the recommended changes can be implemented safely, then ran a 5-iteration convergence wave to finalize an implementation-ready handoff, and finally extended through a 10-iteration post-implementation audit after the four follow-on sub-phases and doc-alignment work shipped. The work stayed read-only against runtime code and wrote only packet-local research artifacts.
 
 ## Method
 
@@ -14,6 +14,7 @@ The full 25-iteration loop covered six layers:
 4. Run packet-local corpus probes where the code alone was insufficient, especially for length-penalty fit.
 5. In the resumed loop, trace request contracts, routing surfaces, and test suites to turn the earlier "what to change" conclusions into safe implementation guidance.
 6. In the final convergence loop, cross-validate the recommendations against each other, rank the sub-phases by combined impact and risk, capture rollout edge cases, and turn the K-sweep follow-up into a low-risk supporting validation plan.
+7. In the post-implementation loop, trace the shipped runtime end to end, inspect the reranker telemetry semantics, verify doc alignment against the live code, and define the next research phase based on the remaining contract gaps rather than on more weight tuning.
 
 <!-- ANCHOR:core-findings-1-10 -->
 ## Core Findings from Iterations 1-10
@@ -309,4 +310,75 @@ Bounded-confidence conclusions:
 - Retrieval telemetry is the best mirror surface for cache counters, but that should remain a follow-on to the core status patch
 - Whether continuity should become a first-class public search intent is now a product/surface decision, not an unanswered technical mystery
 - Cache-counter provider semantics still need an explicit implementation choice because the current cache map is process-wide while the status surface reports a single active provider
+
+## Post-Implementation Findings from Iterations 26-35
+
+### 16. Continuity fusion is live for search-style calls, but continuity-specific Stage 3 MMR is not
+
+- `handleMemorySearch()` now carries two intent values: `detectedIntent` remains the public classifier result, while `adaptiveFusionIntent` is rewritten to `continuity` when `profile === 'resume'`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:816] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:830] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:900]
+- Stage 1 uses `adaptiveFusionIntent` when it hands intent into hybrid search, and hybrid fusion reads that string to load the continuity weights from `adaptive-fusion.ts`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:534] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221] [SOURCE: .opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:53]
+- Stage 3 still reads `config.detectedIntent` for the MMR lambda, and the orchestrator forwards the unchanged config object. So a `profile: 'resume'` search can fuse as `continuity` and still diversify as `understand` (or whatever public intent was detected). [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts:153] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/orchestrator.ts:113] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:206]
+
+Practical result:
+
+- The continuity profile is only partially wired end to end in the search pipeline today.
+- If the intended design is "continuity affects both fusion and Stage 3 diversity", a follow-on phase still needs to unify the Stage 3 intent source.
+
+### 17. Canonical `/spec_kit:resume` does not use the search pipeline at all
+
+- `memory_context` treats `resume` as a dedicated ladder strategy and returns `handover.md -> _memory.continuity -> spec docs` directly. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:776] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:900] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1097]
+- The resume-mode regression test makes that contract explicit by failing if `handleMemorySearch()` is called. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/memory-context.resume-gate-d.vitest.ts:6]
+- `session_resume` documents its first sub-call as `memory_context(mode=resume, profile=resume)`, so the operator-facing recovery surface inherits the direct-doc ladder rather than the 4-stage retrieval path. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md:14]
+
+Practical result:
+
+- The continuity profile is not part of the canonical packet-recovery path today.
+- Documentation should distinguish canonical resume from search-style `profile='resume'` retrieval instead of treating them as one surface.
+
+### 18. The new reranker telemetry is inspection-grade, not dashboard-grade
+
+- `getRerankerStatus()` now exposes latency `avg`, `p95`, `count` and cache `hits`, `misses`, `staleHits`, `evictions`, `entries`, `maxEntries`, and `ttlMs`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:100] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:516]
+- The stale-cache path increments `misses`, `staleHits`, and `evictions` together before deleting the entry. Capacity-pressure eviction increments the same `evictions` counter. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:140] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:442]
+- `resetSession()` clears cache counters, latency samples, and circuit-breaker state, but the status payload does not expose reset time, provider-scoped counters, failure counts, or circuit-open status. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:171] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:551]
+
+Practical result:
+
+- The status surface is now good for local inspection and basic validation.
+- A real monitoring dashboard still needs semantic refinements: separate expiry vs capacity eviction, explicit scope semantics, reset markers, and failure/circuit context.
+
+### 19. Documentation alignment is mixed rather than broadly stale
+
+- `SKILL.md` is accurate at the summary level: it correctly describes the 4-stage pipeline, the rerank minimum of `4`, the compatibility-only `applyLengthPenalty`, and the presence of cache telemetry. [SOURCE: .opencode/skill/system-spec-kit/SKILL.md:592]
+- `ARCHITECTURE.md` and `configs/README.md` get the constants right but overstate the continuity-lambda story by implying that continuity-oriented reranking is live end to end. [SOURCE: .opencode/skill/system-spec-kit/ARCHITECTURE.md:150] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/configs/README.md:50]
+- The feature-catalog page for the 4-stage pipeline repeats the same stronger claim. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md:25]
+
+Practical result:
+
+- Search-document wording should shift from "resume-style searches use the continuity lambda" to a more precise split:
+  - continuity weights are live in adaptive fusion for search-style calls
+  - Stage 3 still keys MMR off `detectedIntent`
+  - canonical `/spec_kit:resume` bypasses the search pipeline entirely
+
+### 20. The shipped changes are stable, but the subtle Stage 3 contract still matters
+
+- The length penalty is fully retired as a ranking behavior: `calculateLengthPenalty()` always returns `1.0`, `applyLengthPenalty()` returns a cloned result set unchanged, and the targeted no-op tests remain green. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:230] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:235] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/search-limits-scoring.vitest.ts:176]
+- Cache reuse now ignores the old length-penalty flag, so identical rerank calls no longer split across `applyLengthPenalty=true/false` buckets. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:431] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:482]
+- `MIN_RESULTS_FOR_RERANK = 4` is correctly test-covered for both cloud and local rerankers, but 2-3 result sets can still be reordered when MMR is enabled because `MMR_MIN_CANDIDATES` remains `2`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:206] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:136] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:164]
+
+Practical result:
+
+- No urgent re-tuning is needed after shipping.
+- The main residual runtime issue is the Stage 3 intent-source split, especially for small result sets where reranking is skipped but MMR still applies.
+
+## Recommended Next Research Phase
+
+1. Decide how Stage 3 should choose its intent signal.
+   - Candidates: reuse `adaptiveFusionIntent`, introduce a dedicated `stage3Intent`, or explicitly keep Stage 3 tied to public intents only.
+2. Decide whether any operator-facing surface truly needs search-pipeline continuity behavior.
+   - The canonical answer may be "no" because `/spec_kit:resume` already bypasses the search pipeline.
+3. Define dashboard-grade reranker telemetry semantics.
+   - Separate stale expiry from capacity eviction, expose scope/reset/failure context, and decide provider-vs-process aggregation.
+4. Tighten doc wording once the intended contract is explicit.
+   - `SKILL.md` can stay mostly as-is.
+   - `ARCHITECTURE.md`, `configs/README.md`, and repeated feature-catalog wording should stop implying that the continuity lambda is already live end to end.
 <!-- /ANCHOR:confidence-and-limits -->

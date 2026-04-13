@@ -378,3 +378,145 @@ No further discovery pass is needed before implementation. The remaining work is
 3. Implement phase `003` with canonical-preference entity upserts.
 4. Retire or rewrite phase `004` instead of shipping a no-op “legacy normalization” patch against a zero-legacy corpus.
 5. Land the trigger-cap slice as an adjacent parser cleanup and then re-run corpus/backfill verification.
+
+## Wave 4: Post-Implementation Corpus Validation (Iterations 26-35)
+
+### Scope Update
+This wave rescanned the active `.opencode/specs/` corpus after phases `001-fix-status-derivation`, `002-sanitize-key-files`, `003-deduplicate-entities`, and the phase-local doc-alignment packet `005-doc-surface-alignment` landed. To keep the comparison stable, the primary corpus boundary stayed the same as Wave 1: exclude `z_archive`, keep the rest of `.opencode/specs/`. That active corpus is now 364 packets; the full tree has 540 `graph-metadata.json` files including archive. [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+### PVQ-1: Original Eight Questions, Before vs After
+
+| Metric | Wave 1 Baseline | Wave 4 Post-Implementation | Change |
+| --- | --- | --- | --- |
+| Active corpus size | 344 | 364 | +20 packets |
+| `depends_on` broken-edge rate | 0 / 4 broken | 0 / 4 broken | unchanged |
+| Cycle count | 0 | 0 | unchanged |
+| Ghost-child rate | 0 / 290 broken | 0 / 309 broken | unchanged, +19 links |
+| `key_files` resolution | 3,172 / 5,298 (59.87%) | 3,818 / 4,699 (81.25%) | +21.38 pts, 599 fewer stored entries |
+| Duplicate entity rows | 2,020 across 270 folders | 0 across 0 folders | fixed |
+| `planned` folders | 302 | 56 | -246 |
+| `planned` with `implementation-summary.md` | 259 | 10 | -249 |
+| Trigger phrases over 12 | 216 | 0 | fixed |
+| Maximum trigger count | 33 | 12 | fixed |
+| Trigger phrases above cap | 949 | 0 | fixed |
+| `key_files` at cap 20 | 159 | 93 | -66 |
+| `entities` at cap 16 | 291 | 360 | +69 |
+| Stale `last_save_at` | 130 | 3 | -127 |
+
+Interpretation:
+The implementation wave materially improved status accuracy, trigger hygiene, timestamp freshness, and `key_files` resolution while keeping graph integrity stable. The major win is that duplicate entity rows fell from `2,020` to `0`. The new tradeoff is density: even with duplicate names removed, `entities` still saturate the 16-item cap in `360` of `364` active folders, which makes ranking and extraction precision the next bottleneck rather than de-duplication. [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:562-667]
+
+### PVQ-2: Are the Remaining `planned` Folders Genuine?
+Active-corpus status distribution is now:
+- `complete`: 218
+- `in_progress`: 89
+- `planned`: 56
+- other: 1 (`in-progress`)
+
+Breakdown of the `56` remaining `planned` folders:
+- `48` have an incomplete checklist and still look genuinely unfinished.
+- `3` are parent coordination packets with no checklist and no implementation summary, so `planned` is still expected.
+- `5` already have a complete checklist.
+
+Manual sample of 10 `planned` folders:
+- `8` were genuinely planned or future-scoped: no implementation summary and fully unchecked checklist templates.
+- `1` was contract-bound rather than parser-broken: `skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes` has a fully checked checklist but no `implementation-summary.md`, so the current parser still leaves it `planned`.
+- `1` was clearly stale: `system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment` now has `status: complete` across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`, but its stored metadata still says `planned`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/graph-metadata.json:29-37] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/graph-metadata.json:123-125] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/spec.md:12] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/plan.md:12] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/tasks.md:11] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/checklist.md:11] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/implementation-summary.md:11]
+
+Full-corpus check on the five `planned` folders with complete checklists:
+- Two are the `skilled-agent-orchestration/041-sk-recursive-agent-loop/010` and `011` packets, both missing `implementation-summary.md`.
+- Three are stale doc-alignment packets whose metadata still only lists `spec.md` in `source_docs` and predates the completion docs: `017/.../005-doc-surface-alignment`, `018/.../004-doc-surface-alignment`, and `019/.../005-doc-surface-alignment`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment/graph-metadata.json:29-35] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment/graph-metadata.json:109-111] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/019-research-graph-metadata-validation/005-doc-surface-alignment/graph-metadata.json:29-37] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/019-research-graph-metadata-validation/005-doc-surface-alignment/graph-metadata.json:117-119]
+
+Interpretation:
+The remaining `planned` set is mostly real. The post-implementation risk is no longer widespread under-derivation; it is a small stale-backfill pocket plus a separate policy question about whether “complete checklist but missing implementation summary” should remain blocked.
+
+### PVQ-3: Key-File Quality After Sanitization
+Global result:
+- Total `key_files`: `4,699`
+- Resolved under the same three-base heuristic (`repo root`, `spec-relative`, `system-spec-kit skill-relative`): `3,818` (`81.25%`)
+- Missing: `881` (`18.75%`)
+- Resolution bases: `repo` 1,277, `spec` 1,862, `skill` 679
+
+Manual sample of 50 `key_files` entries across 10 random folders:
+- `47` resolved cleanly
+- `3` were still missing
+
+The three sampled misses were:
+- `memory/metadata.json` in `026/.../001-research-graph-context-systems/002-codesight`
+- Two old cross-track `.opencode/specs/00--ai-systems-non-dev/...` doc paths in `00--ai-systems/001-global-shared/002-brand-knowledge`
+
+Remaining global miss families are narrower than in Wave 1, but they are not zero:
+- `757` path-like misses
+- `99` phrase-like misses
+- `48` shell-command-style entries still embedded in `key_files` (for example `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js`)
+- `11` rooted or dot-relative paths
+- `8` bare filenames
+- `6` field-like fragments
+
+Top residual miss examples:
+- `hooks/memory-surface.ts`
+- `memory/metadata.json`
+- `.opencode/agent/agent-improver.md`
+- `handlers/memory-search.ts`
+- `handlers/memory-context.ts`
+
+Interpretation:
+The sanitization pass removed the old version/MIME/title noise and improved the resolve rate by more than twenty points, but the next residual class is different: stale repo-relative module paths, obsolete memory-era file references, and shell-command snippets that the current `keepKeyFile()` predicate still treats as path-like instead of command-like. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:562-568] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+### PVQ-4: Entity Quality After De-Duplication
+Global result:
+- Total entity rows: `5,796`
+- Folders with at least one entity: `363`
+- Average entity count per folder: `15.97`
+- Duplicate-name rows: `0`
+- Folders with duplicate-name rows: `0`
+- Suspicious names found in the full active corpus: `3`
+  - `python` once
+  - `README.md / ARCHITECTURE.md` twice
+
+Manual sample of 50 entity rows across 10 random folders:
+- `50/50` looked structurally reasonable
+- `0` duplicate names
+- `0` newline, command, version, or slash-joined names in the sample
+
+The remaining three anomalies are narrow:
+- `python` comes from code-fence language capture inside `skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync`. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync/graph-metadata.json:133] [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync/spec.md:52-53]
+- `README.md / ARCHITECTURE.md` appears as a combined heading-derived entity in the `017/.../005-doc-surface-alignment` and `018/.../004-doc-surface-alignment` packets. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/graph-metadata.json:101-110] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/004-doc-surface-alignment/graph-metadata.json:93-102]
+
+Interpretation:
+The de-duplication phase succeeded on its intended target: duplicate-name noise is gone. The new quality problem is prioritization, not de-duplication. With `360` of `364` active folders still pinned at the 16-entity cap, extraction is now saturating almost every packet with unique-but-not-equally-useful entities. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:474-559] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+### PVQ-5: Health Score and Next Improvement Phase
+Heuristic health score (not a runtime metric, just a synthesis aid for this packet):
+- Structural integrity: `100/100`
+  - 0 broken dependencies, 0 cycles, 0 ghost children
+- Status fidelity and freshness: `93/100`
+  - major improvement, but 3 stale completed packets still report `planned`, and one non-canonical `in-progress` value remains
+- `key_files` quality: `81/100`
+  - good improvement, but 881 misses still remain
+- Entity quality: `79/100`
+  - duplicate names fixed, but cap saturation is still extreme and three anomalies remain
+
+Weighted overall score:
+- `89/100`
+
+Immediate maintenance actions:
+1. Re-run targeted backfill for the three stale doc-alignment packets:
+   - `017/.../005-doc-surface-alignment`
+   - `018/.../004-doc-surface-alignment`
+   - `019/.../005-doc-surface-alignment`
+2. Normalize the single `in-progress` status that still survives in `system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/graph-metadata.json:27-40] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:102-120]
+
+Recommended next improvement phase:
+Build one residual-hygiene phase focused on `key_files` plus entity extraction precision rather than opening another broad discovery wave. Success criteria should be:
+1. Raise active-corpus `key_files` resolution above `90%`
+2. Remove shell-command snippets and obsolete `memory/metadata.json` references from stored `key_files`
+3. Canonicalize cross-track repo-relative paths where the current predicate still treats them as path-like misses
+4. Suppress code-fence language tokens and slash-joined heading composites from `entities`
+5. Reduce entity-cap saturation from `360/364` to a materially lower steady state
+
+## Updated Final Recommendation
+The implementation wave materially improved graph metadata quality, and no further broad discovery loop is needed. The remaining work is now sharply scoped:
+1. Refresh the three stale doc-alignment packets so their stored metadata catches up with the docs that are already complete.
+2. Fix the one remaining `in-progress` normalization edge.
+3. Open a single residual-hygiene phase for `key_files` and entity precision, with explicit success metrics tied to path resolution and cap saturation.

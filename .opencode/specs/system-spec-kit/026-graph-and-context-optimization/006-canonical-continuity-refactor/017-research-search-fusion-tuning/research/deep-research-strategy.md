@@ -12,13 +12,14 @@ Runtime packet for `.opencode/specs/system-spec-kit/026-graph-and-context-optimi
 
 ### Purpose
 
-Track the 25-iteration investigation into fusion weights, RRF calibration, reranker thresholds, FSRS decay assumptions, cache observability, and the safest implementation seams for the packet’s four follow-on implementation phases, including the final convergence pass that resolved phase `003` scope and ranked the implementation order.
+Track the 35-iteration investigation into fusion weights, RRF calibration, reranker thresholds, FSRS decay assumptions, cache observability, and the safest implementation seams for the packet’s four follow-on implementation phases, followed by a 10-iteration post-implementation verification wave that checked the shipped runtime, telemetry semantics, and doc alignment.
 
 ### Usage
 
 - Iterations 1-10 established the "what should change" recommendations.
 - Iterations 11-20 answered "how do we change it safely" without modifying source files.
 - Iterations 21-25 cross-validated those findings, ranked phases `001`-`004` by impact versus risk, documented edge cases, resolved the remaining phase `003` scope question, and finalized the implementation-ready handoff.
+- Iterations 26-35 verified the shipped post-implementation state, including continuity-intent propagation, cache telemetry semantics, doc alignment, second-order effects, and the next research-phase agenda.
 
 ---
 
@@ -32,7 +33,7 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:key-questions -->
 ## 3. KEY QUESTIONS (remaining)
-- [x] Decide whether phase `003-continuity-search-profile` should stay adaptive-fusion-only or widen into a public continuity intent across classifier/routing/tool surfaces.
+- None. Iterations 26-35 completed the post-implementation verification wave.
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -49,9 +50,9 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 <!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
 
-- Complete 25 packet-local iterations
-- Address RQ-1 through RQ-10 plus the remaining phase `003` scope question with either evidence-backed answers or explicit bounded unknowns
-- Produce implementation-facing recommendations for phases `001`-`004` and the continuity-specific K-sweep follow-up without changing runtime code
+- Complete 35 packet-local iterations
+- Address RQ-1 through RQ-15 plus the remaining phase `003` scope question with either evidence-backed answers or explicit bounded unknowns
+- Produce implementation-facing recommendations for phases `001`-`004`, then verify the shipped post-implementation state without changing runtime code
 
 ---
 
@@ -59,6 +60,11 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 <!-- ANCHOR:answered-questions -->
 ## 6. ANSWERED QUESTIONS
 - Decide whether phase `003-continuity-search-profile` should stay adaptive-fusion-only or widen into a public continuity intent across classifier/routing/tool surfaces.
+- Verify whether the continuity profile actually reaches Stage 3 MMR on the shipped runtime.
+- Determine whether the current reranker cache telemetry contract is sufficient for monitoring.
+- Verify whether `ARCHITECTURE.md`, `SKILL.md`, and `configs/README.md` describe the shipped runtime accurately.
+- Identify second-order effects from removing the length penalty and raising `MIN_RESULTS_FOR_RERANK` to `4`.
+- Define what the next research phase should investigate now that the implementation shipped.
 
 <!-- /ANCHOR:answered-questions -->
 <!-- MACHINE-OWNED: START -->
@@ -89,6 +95,16 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 - Looking for "what breaks if we only partially ship this?" uncovered sharper risks than replaying the recommended end state. (iteration 23)
 - Reading both the untyped and typed evaluation harnesses made the low-risk additive path obvious. (iteration 24)
 - Forcing a last-pass contradiction audit before synthesis kept the final recommendations honest and surfaced the one remaining scope choice clearly. (iteration 25)
+- Following the split between `detectedIntent` and `adaptiveFusionIntent` exposed the remaining Stage 3 wiring gap much faster than reading doc summaries first. (iteration 26)
+- Cross-checking resume-mode code and tests prevented conflating `/spec_kit:resume` with search-pipeline behavior. (iteration 27)
+- Auditing counter write sites before designing a dashboard cleanly separated "status exists" from "status is interpretable". (iteration 28)
+- Reading cache mutation paths, not just the returned status object, surfaced the eviction and occupancy ambiguities quickly. (iteration 29)
+- Comparing doc wording directly against the exact runtime control flow made the alignment issues concrete instead of rhetorical. (iteration 30)
+- Treating `SKILL.md` as a summary surface and the tests as executable claims made the doc audit much sharper. (iteration 31)
+- Re-running targeted reranker suites after the code trace confirmed that the no-op length-penalty change is stable in practice. (iteration 32)
+- Looking at `MMR_MIN_CANDIDATES` separately from `MIN_RESULTS_FOR_RERANK` surfaced the subtle small-result-set behavior change. (iteration 33)
+- Grouping the residual issues into signal wiring, observability semantics, and wording precision made the post-implementation state easier to synthesize. (iteration 34)
+- Turning the remaining gaps into an explicit next-phase agenda kept the packet useful after implementation instead of ending with a vague drift note. (iteration 35)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -118,6 +134,16 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 - The current status surface does not tell us whether cache counters should be per-provider or process-wide, so the packet must define that explicitly during implementation. (iteration 23)
 - The packet’s early wording made "the K sweep" sound singular when the repo actually maintains two evaluation paths with different coupling. (iteration 24)
 - The packet’s stale reducer outputs hid how close the research actually was to convergence. (iteration 25)
+- The docs made the continuity lambda sound fully live even though the search path and canonical resume path still diverge. (iteration 26)
+- "Resume-style retrieval" wording obscured that resume mode bypasses `handleMemorySearch()` entirely. (iteration 27)
+- The counter interface looks more complete at the type level than it is semantically for monitoring. (iteration 28)
+- Cache `evictions` is too overloaded to interpret confidently without reading the code. (iteration 29)
+- `ARCHITECTURE.md` and `configs/README.md` describe the continuity lambda more strongly than the runtime currently supports. (iteration 30)
+- Existing tests prove the pieces independently but not the end-to-end continuity-to-Stage3 handoff. (iteration 31)
+- The retired length-penalty path still leaves behind compatibility plumbing and stale cache-key commentary that can mislead future readers. (iteration 32)
+- The Stage 3 threshold change sounds like a pure cost optimization, but small-result-set MMR means it also changes relevance behavior. (iteration 33)
+- Post-implementation audit work can look "done" once tests pass, even when signal contracts and docs are still misaligned. (iteration 34)
+- The next research phase is now about semantics and operator intent, not about better weights, so repeating the old tuning loop would waste time. (iteration 35)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -247,6 +273,31 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Trying to keep a broad public continuity intent "optional" while leaving the current validator and test enums untouched.
 
+### Assuming `INTENT_LAMBDA_MAP.continuity` is enough to make continuity live end to end in Stage 3. -- BLOCKED (iteration 26, 1 attempts)
+- What was tried: Assuming `INTENT_LAMBDA_MAP.continuity` is enough to make continuity live end to end in Stage 3.
+- Why blocked: The live Stage 3 code still reads `config.detectedIntent`, not `config.adaptiveFusionIntent`.
+- Do NOT retry: Assuming `INTENT_LAMBDA_MAP.continuity` is enough to make continuity live end to end in Stage 3.
+
+### Treating `/spec_kit:resume` as a hybrid-search path. -- BLOCKED (iteration 27, 1 attempts)
+- What was tried: Treating `/spec_kit:resume` as a hybrid-search path.
+- Why blocked: Resume mode explicitly bypasses `handleMemorySearch()` and reads the canonical document ladder directly.
+- Do NOT retry: Treating `/spec_kit:resume` as a hybrid-search path.
+
+### Treating `getRerankerStatus()` as dashboard-ready just because the status object looks complete. -- BLOCKED (iteration 29, 1 attempts)
+- What was tried: Treating `getRerankerStatus()` as dashboard-ready just because the status object looks complete.
+- Why blocked: Counter semantics are still too ambiguous for operator monitoring without extra context.
+- Do NOT retry: Treating `getRerankerStatus()` as dashboard-ready just because the status object looks complete.
+
+### Treating `MIN_RESULTS_FOR_RERANK = 4` as "no reordering below 4". -- BLOCKED (iteration 33, 1 attempts)
+- What was tried: Treating `MIN_RESULTS_FOR_RERANK = 4` as "no reordering below 4".
+- Why blocked: MMR still activates at 2+ candidates and can move small result sets even when reranking is skipped.
+- Do NOT retry: Treating `MIN_RESULTS_FOR_RERANK = 4` as "no reordering below 4".
+
+### Reopening weight tuning before the Stage 3 intent contract and telemetry semantics are resolved. -- BLOCKED (iteration 35, 1 attempts)
+- What was tried: Reopening weight tuning before the Stage 3 intent contract and telemetry semantics are resolved.
+- Why blocked: The residual gaps are now contract-level and observability-level, not weight-level.
+- Do NOT retry: Reopening weight tuning before the Stage 3 intent contract and telemetry semantics are resolved.
+
 ### Using `search-weights.json` as the primary continuity tuning surface. -- BLOCKED (iteration 6, 1 attempts)
 - What was tried: Using `search-weights.json` as the primary continuity tuning surface.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -310,11 +361,31 @@ Search fusion weight optimization, reranking threshold calibration, and safe imp
 - Using ground-truth or typed judged-sweep expansion as the first continuity benchmark step. (iteration 24)
 - Continuing to treat broad public continuity intent as the default scope for phase `003`. (iteration 25)
 - None this iteration. (iteration 25)
+- Assuming `INTENT_LAMBDA_MAP.continuity` is enough to make continuity live end to end in Stage 3. (iteration 26)
+- None this iteration. (iteration 26)
+- Treating `/spec_kit:resume` as a hybrid-search path. (iteration 27)
+- None this iteration. (iteration 27)
+- None this iteration. (iteration 28)
+- None this iteration. (iteration 28)
+- Building a meaningful monitoring dashboard from hits and misses alone. (iteration 29)
+- None this iteration. (iteration 29)
+- Treating `ARCHITECTURE.md` and `configs/README.md` as fully aligned because the constant values match. (iteration 30)
+- None this iteration. (iteration 30)
+- Assuming the existing test surface already proves Stage 3 continuity-lambda behavior. (iteration 31)
+- None this iteration. (iteration 31)
+- Expecting the retired length penalty to still create meaningful ranking drift. (iteration 32)
+- None this iteration. (iteration 32)
+- Treating `MIN_RESULTS_FOR_RERANK = 4` as only a reranker-cost optimization. (iteration 33)
+- None this iteration. (iteration 33)
+- Reopening broad fusion-weight tuning as the next research target. (iteration 34)
+- None this iteration. (iteration 34)
+- Repeating the old weight-tuning loop before the Stage 3 intent contract and telemetry semantics are resolved. (iteration 35)
+- None this iteration. (iteration 35)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Hand off to implementation with this order: `002` telemetry source of truth, `001` length-penalty behavior removal, `004` rerank minimum = `4`, then `003` narrow continuity profile, with the continuity-specific K-sweep running as supporting validation rather than as a prerequisite.
+Open a follow-on research phase for Stage 3 intent unification and reranker observability semantics, then patch the overstated continuity wording across `ARCHITECTURE.md`, `configs/README.md`, and repeated catalog surfaces once the intended contract is explicit.
 
 <!-- /ANCHOR:next-focus -->
 <!-- MACHINE-OWNED: END -->
@@ -324,6 +395,9 @@ Hand off to implementation with this order: `002` telemetry source of truth, `00
 - Hybrid fusion is assembled in `hybrid-search.ts` by converting FTS and BM25 into a single keyword list, then applying adaptive intent weights before calling shared RRF fusion.
 - Stage 2 adds bounded recency fusion (`0.07`, cap `0.10`) and multiple post-fusion amplifiers.
 - Stage 3 reranks whenever at least `MIN_RESULTS_FOR_RERANK` candidates survive and a reranker is enabled.
+- Search-style `profile='resume'` calls rewrite `adaptiveFusionIntent` to `continuity`, but Stage 3 MMR still reads `detectedIntent`.
+- Canonical resume mode reads `handover.md -> _memory.continuity -> spec docs` directly and does not call `handleMemorySearch()`.
+- `getRerankerStatus()` is process-local inspection telemetry today; `resetSession()` clears its counters, latency samples, and circuit state.
 - The search packet is continuity-sensitive, so canonical spec-doc retrieval should prefer stable source-of-truth documents over freshness-heavy heuristics.
 - User decisions now locked for follow-on implementation: remove the length penalty entirely, keep FSRS `0.2346` unchanged, favor a continuity profile near `semantic 0.52 / keyword 0.18 / recency 0.07 / graph 0.23`, raise the rerank minimum into the `4-5` range with `4` as the safest first step, and treat phase `003` as a narrow internal continuity profile first rather than a broad public-intent expansion.
 
@@ -333,7 +407,7 @@ Hand off to implementation with this order: `002` telemetry source of truth, `00
 <!-- ANCHOR:research-boundaries -->
 ## 13. RESEARCH BOUNDARIES
 
-- Max iterations executed: 25
+- Max iterations executed: 35
 - Convergence threshold: 0.05
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true
@@ -345,5 +419,6 @@ Hand off to implementation with this order: `002` telemetry source of truth, `00
 - Started: 2026-04-13T04:50:40Z
 - Iterations 11-20 focus: safe implementation guidance only; still read-only against runtime code
 - Iterations 21-25 focus: convergence, contradiction checks, impact-versus-risk prioritization, edge-case capture, safe K-sweep extension, and final synthesis
+- Iterations 26-35 focus: post-implementation runtime verification, telemetry semantics, doc alignment, second-order-effects analysis, and next-phase definition
 - Additional packet constraints: no source edits, no git commit or push
 <!-- /ANCHOR:research-boundaries -->
