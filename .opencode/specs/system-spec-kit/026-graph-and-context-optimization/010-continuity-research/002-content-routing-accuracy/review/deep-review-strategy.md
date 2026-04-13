@@ -1,12 +1,12 @@
-# Deep Review Strategy - Root 018
+# Deep Review Strategy - Root 002
 
 ## 1. OVERVIEW
 
-This root review covers the post-implementation, post-doc-alignment, post-flag-removal state of `018-research-content-routing-accuracy` plus child phases `001` through `004`. The loop stayed read-only on the review target and focused on the live router, the save handler, merge behavior, tests, doc mirrors, MCP config mirrors, agent mirrors, and the child-phase packet closeout state.
+This root review covers the post-implementation, post-doc-alignment, post-flag-removal state of `002-content-routing-accuracy` plus child phases `001` through `004`. The loop stayed read-only on the review target and focused on the live router, the save handler, merge behavior, tests, doc mirrors, MCP config mirrors, agent mirrors, and the child-phase packet closeout state.
 
 ## 2. TOPIC
 
-Root review: 018-research-content-routing-accuracy
+Root review: 002-content-routing-accuracy
 
 ## 3. REVIEW DIMENSIONS (remaining)
 
@@ -25,7 +25,7 @@ Root review: 018-research-content-routing-accuracy
 
 - Stop after 10 iterations unless a new P0 appears in the live router/save path.
 - Escalate immediately if the current runtime still routes Tier 3 through a removed opt-in flag or if the save path can silently lose continuity state.
-- Keep target writes out of scope; only `018.../review/` artifacts may change.
+- Keep target writes out of scope; only `002.../review/` artifacts may change.
 
 ## 6. COMPLETED DIMENSIONS
 
@@ -68,7 +68,7 @@ Completed. No additional high-value review branches remained after the final sta
 
 - The parent packet is a research root (`type: research`) and the child phases split along delivery/progress, handover/drop, Tier-3 wiring, and doc-surface alignment.
 - The user asked for a full 10-iteration root review with allocation across correctness, Tier-3 end-to-end, docs, tests, and traceability.
-- The review target files were read-only for this run; only `018.../review/` artifacts were allowed to change.
+- The review target files were read-only for this run; only `002.../review/` artifacts were allowed to change.
 
 ## 13. CROSS-REFERENCE STATUS
 
@@ -96,10 +96,10 @@ Completed. No additional high-value review branches remained after the final sta
 | `.opencode/skill/system-spec-kit/SKILL.md` | D3, D4 | 5 | 1 P1 | complete |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md` | D3, D4 | 6 | 1 P1, 1 P2 | complete |
 | `.mcp.json`, `.claude/mcp.json`, `.vscode/mcp.json`, `.gemini/settings.json`, `opencode.json` | D3 | 4 | 0 P0, 0 P1, 0 P2 | complete |
-| `018/.../001-fix-delivery-progress-confusion` | D3 | 8 | 1 P1 | complete |
-| `018/.../002-fix-handover-drop-confusion` | D3 | 8 | 1 P1 | complete |
-| `018/.../003-wire-tier3-llm-classifier` | D1, D3 | 8 | 1 P1 | complete |
-| `018/.../004-doc-surface-alignment` | D3, D4 | 6 | 1 P1, 1 P2 | complete |
+| `002/.../001-fix-delivery-progress-confusion` | D3 | 8 | 1 P1 | complete |
+| `002/.../002-fix-handover-drop-confusion` | D3 | 8 | 1 P1 | complete |
+| `002/.../003-wire-tier3-llm-classifier` | D1, D3 | 8 | 1 P1 | complete |
+| `002/.../004-doc-surface-alignment` | D3, D4 | 6 | 1 P1, 1 P2 | complete |
 
 ## 15. REVIEW BOUNDARIES
 
@@ -107,7 +107,7 @@ Completed. No additional high-value review branches remained after the final sta
 - Convergence threshold: 0.05
 - Severity threshold: P2
 - Review target type: spec-folder
-- Session lineage: sessionId=`2026-04-13T12:45:00Z-018-research-content-routing-accuracy-deep-review`, parentSessionId=`none`, generation=`1`, lineageMode=`new`
+- Session lineage: sessionId=`2026-04-13T12:45:00Z-002-content-routing-accuracy-deep-review`, parentSessionId=`none`, generation=`1`, lineageMode=`new`
 - Cross-reference checks: core=`spec_code`, `checklist_evidence`; overlay=`skill_agent`, `agent_cross_runtime`, `feature_catalog_code`, `playbook_capability`
 
 <!-- ANCHOR:review-dimensions -->

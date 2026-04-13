@@ -15,13 +15,13 @@ Reducer-generated observability surface for the active review packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/ (spec-folder)
+- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/ (spec-folder)
 - Started: 2026-04-13T11:05:00Z
 - Status: COMPLETE
 - Iteration: 10 of 10
 - Provisional Verdict: CONDITIONAL
 - hasAdvisories: false
-- Session ID: 2026-04-13T11:05:00Z-017-search-fusion-tuning-review
+- Session ID: 2026-04-13T11:05:00Z-001-search-fusion-tuning-review
 - Parent Session: none
 - Lifecycle Mode: new
 - Generation: 1
@@ -54,7 +54,7 @@ Reducer-generated observability surface for the active review packet.
 | 7 | mirror consistency review of deep-review across Claude, Codex, Gemini, and the live reducer | maintainability/traceability | 0.34 | 0/5/0 | complete |
 | 8 | mirror consistency review of the canonical continuity recovery ladder across context agents | traceability/maintainability | 0.32 | 0/6/0 | complete |
 | 9 | stabilization pass across live configs, non-Codex mirrors, and inspected playbook surfaces | traceability/maintainability | 0.00 | 0/6/0 | complete |
-| 10 | final validation and release-readiness synthesis across the full 017 tree | correctness/security/traceability/maintainability | 0.00 | 0/6/0 | complete |
+| 10 | final validation and release-readiness synthesis across the full 001 tree | correctness/security/traceability/maintainability | 0.00 | 0/6/0 | complete |
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:dimension-coverage -->
@@ -97,7 +97,7 @@ No corrupt JSONL lines detected.
 <!-- /ANCHOR:corruption-warnings -->
 <!-- ANCHOR:next-focus -->
 ## 10. NEXT FOCUS
-Stop iteration. Open remediation planning for the six active P1 findings before treating packet `017` as fully closed.
+Stop iteration. Open remediation planning for the six active P1 findings before treating packet `001` as fully closed.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->

@@ -1,5 +1,5 @@
 {
-  "sessionId": "2026-04-13T11:30:00Z-019-root-review",
+  "sessionId": "2026-04-13T11:30:00Z-003-root-review",
   "parentSessionId": null,
   "generation": 1,
   "lineageMode": "new",
@@ -54,10 +54,10 @@
     {
       "findingId": "F003",
       "severity": "P1",
-      "title": "The 019 packet lineage is not actually closed out or validator-clean",
+      "title": "The 003 packet lineage is not actually closed out or validator-clean",
       "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/spec.md",
       "line": 4,
-      "description": "Root 019 still declares Level 3 while missing required docs and failing strict validation, phases 001-003 keep open checklist items, and phase 004 is missing `plan.md` and `checklist.md`, so the packet tree does not satisfy the requested \u201ctasks complete, checklists verified\u201d state.",
+      "description": "Root 003 still declares Level 3 while missing required docs and failing strict validation, phases 001-003 keep open checklist items, and phase 004 is missing `plan.md` and `checklist.md`, so the packet tree does not satisfy the requested \u201ctasks complete, checklists verified\u201d state.",
       "dimension": "traceability",
       "firstSeen": 8,
       "lastSeen": 9,
@@ -77,7 +77,7 @@
       "title": "Canonical packet-doc preference can point entities at an unrelated packet",
       "file": ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
       "line": 478,
-      "description": "The canonical-doc heuristic treats any path that ends with `/spec.md` or similar as canonical, so the root 019 metadata now maps its `spec.md` entity to `00--ai-systems/001-global-shared/spec.md` instead of the local packet doc.",
+      "description": "The canonical-doc heuristic treats any path that ends with `/spec.md` or similar as canonical, so the root 003 metadata now maps its `spec.md` entity to `00--ai-systems/001-global-shared/spec.md` instead of the local packet doc.",
       "dimension": "correctness",
       "firstSeen": 2,
       "lastSeen": 2,

@@ -47,7 +47,7 @@ The shipped `skill-advisor` package now uses a clean root layout with `../../../
 | **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | `../spec.md` |
 | **Related Packet** | `../002-manual-testing-playbook/spec.md` |
-| **Review Source** | `review/deep-review-findings.md` |
+| **Review Source** | `review/deep-review-findings.md` (historical pre-remediation snapshot; not the current validation state) |
 <!-- /ANCHOR:metadata -->
 
 ---

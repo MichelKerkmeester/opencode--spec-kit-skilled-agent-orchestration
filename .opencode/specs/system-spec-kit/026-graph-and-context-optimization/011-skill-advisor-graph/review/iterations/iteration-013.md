@@ -1,0 +1,26 @@
+# Iteration 013: D1 Correctness family-affinity edge cases
+
+## Focus
+D1 Correctness - inspect `_apply_family_affinity()` edge cases: all-family-above-threshold behavior, whether the 8% sibling nudge can cascade, and whether the "strong signal" gates match the documented contract.
+
+## Verified claims
+- `_apply_family_affinity()` computes the list of seed family members (`> 1.0`) and the `max_boost` once before it starts mutating recipients. The 8% affinity therefore adds once per eligible sibling from a stable seed and does not recursively amplify later siblings inside the same family. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:141] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:145] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:148]
+- If every member of a family already scores above `1.0`, the pass becomes a no-op because no recipient satisfies `0 < score < 1.0`. That matches the current feature-catalog contract: family affinity only nudges partially evidenced siblings that are still below `1.0`, not already-strong candidates. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:146] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:147] [SOURCE: .opencode/skill/skill-advisor/feature_catalog/02--graph-system/05-family-affinity.md:18] [SOURCE: .opencode/skill/skill-advisor/feature_catalog/02--graph-system/05-family-affinity.md:20]
+- The "strong signal" detection logic is intentionally strict at both boundaries: seed members must exceed `1.0`, and the strongest family member must rise above `1.5` before any sibling boost is emitted. Exact `1.0` and exact `1.5` scores do not qualify, which matches both the feature catalog wording and the 011 packet's integration description. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:142] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:147] [SOURCE: .opencode/skill/skill-advisor/feature_catalog/02--graph-system/05-family-affinity.md:18] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:146] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:149]
+- Family affinity still runs before explicit variant matching, so explicit named-skill hits do not fan out into sibling boosts. That ordering remains consistent with the 011 packet and with the GB-004 guard whose purpose is to prevent ghost siblings from surfacing on explicit CLI requests. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:149] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1512] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1518] [SOURCE: .opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md:14] [SOURCE: .opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md:28]
+
+## Findings
+
+### None
+- No new D1 defect surfaced in `_apply_family_affinity()`. The helper's all-members-above-threshold behavior, one-pass 8% additive math, and strict `> 1.0` / `> 1.5` gates are all aligned with the documented design and the ghost-sibling guard.
+
+## Ruled Out
+- An all-strong family does not receive an accidental second amplification pass; once every member is already above `1.0`, family affinity intentionally has nothing left to do. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:147] [SOURCE: .opencode/skill/skill-advisor/feature_catalog/02--graph-system/05-family-affinity.md:18]
+- The 8% boost does not stack transitively inside a family. Newly nudged siblings are not added back into the precomputed `boosted` seed set during the same pass. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:142] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:145]
+- The "strong signal" gate is not accidentally widened by explicit-variant matching. Family affinity executes earlier in the pipeline, which is the same behavior the manual testing contract relies on to prevent ghost siblings. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:149] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1512] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1518] [SOURCE: .opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md:18]
+
+## Dead Ends
+- Trying to turn the pre-explicit call order into a correctness defect ran into the packet's own design contract. If family affinity were moved later so explicit matches could drive sibling boosts, that would be a routing-policy change, not a mismatch between implementation and specification. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:149] [SOURCE: .opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md:18]
+
+## Recommended Next Focus
+Convergence / final synthesis - the targeted family-affinity helper now looks stable, so the remaining work is deciding whether the active registry (especially F060, F061, F080, F081, and F110) is mature enough for the final report.

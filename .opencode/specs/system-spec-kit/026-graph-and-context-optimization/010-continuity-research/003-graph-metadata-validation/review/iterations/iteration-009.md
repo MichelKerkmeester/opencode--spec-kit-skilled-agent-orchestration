@@ -1,7 +1,7 @@
 # Iteration 009: Cross-Lane Synthesis
 
 ## Focus
-Re-read the parser, the backfill test, the root 019 metadata, and the validation results together to check whether the tracked findings overlap or collapse.
+Re-read the parser, the backfill test, the root 003 metadata, and the validation results together to check whether the tracked findings overlap or collapse.
 
 ## Findings
 

@@ -17,7 +17,7 @@
     "prerequisite_for": [
       {
         "target": "skill-advisor",
-        "weight": 0.4,
+        "weight": 0.7,
         "context": "semantic search boosts advisor discovery routing"
       }
     ]

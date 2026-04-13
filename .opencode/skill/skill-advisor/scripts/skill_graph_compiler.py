@@ -209,7 +209,10 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
         if os.path.isabs(rel_path):
             errors.append(f"derived.source_docs[{index}] must be skill-relative, got absolute path")
             continue
-        candidate = os.path.join(skill_dir, rel_path)
+        candidate = os.path.normpath(os.path.join(skill_dir, rel_path))
+        if not candidate.startswith(os.path.normpath(skill_dir) + os.sep) and candidate != os.path.normpath(skill_dir):
+            errors.append(f"derived.source_docs[{index}] path traversal detected: {rel_path}")
+            continue
         if not os.path.isfile(candidate):
             errors.append(f"derived.source_docs[{index}] path does not exist: {rel_path}")
 
@@ -217,7 +220,10 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
         if not isinstance(file_path, str) or not file_path.strip():
             errors.append(f"derived.key_files[{index}] must be a non-empty string")
             continue
-        resolved_path = os.path.join(repo_root, file_path)
+        resolved_path = os.path.normpath(os.path.join(repo_root, file_path))
+        if not resolved_path.startswith(os.path.normpath(repo_root) + os.sep) and resolved_path != os.path.normpath(repo_root):
+            errors.append(f"derived.key_files[{index}] path traversal detected: {file_path}")
+            continue
         if not os.path.isfile(resolved_path):
             errors.append(f"derived.key_files[{index}] path does not exist: {file_path}")
 
@@ -240,8 +246,10 @@ def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
 
         entity_path = entity.get("path")
         if isinstance(entity_path, str) and entity_path.strip():
-            resolved_path = os.path.join(repo_root, entity_path)
-            if not os.path.isfile(resolved_path):
+            resolved_path = os.path.normpath(os.path.join(repo_root, entity_path))
+            if not resolved_path.startswith(os.path.normpath(repo_root) + os.sep) and resolved_path != os.path.normpath(repo_root):
+                errors.append(f"derived.entities[{index}].path traversal detected: {entity_path}")
+            elif not os.path.isfile(resolved_path):
                 errors.append(f"derived.entities[{index}].path does not exist: {entity_path}")
 
     return errors
@@ -293,6 +301,97 @@ def validate_edge_symmetry(
                     f"SYMMETRY: {skill_id} has sibling {target}, "
                     f"but {target} missing sibling {skill_id}"
                 )
+
+    return warnings
+
+
+# Per-edge-type recommended weight bands (spec-defined)
+WEIGHT_BANDS: Dict[str, Tuple[float, float]] = {
+    "depends_on": (0.7, 1.0),
+    "prerequisite_for": (0.7, 1.0),
+    "enhances": (0.3, 0.7),
+    "siblings": (0.4, 0.6),
+    "conflicts_with": (0.5, 1.0),
+}
+
+
+def validate_weight_bands(
+    all_metadata: List[Tuple[str, str, dict]],
+) -> List[str]:
+    """Warn when edge weights fall outside their per-type recommended bands.
+
+    Returns list of warnings (soft validation - does not block compilation).
+    """
+    warnings = []
+
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        edges = data.get("edges", {})
+        for edge_type, (lo, hi) in WEIGHT_BANDS.items():
+            for i, edge in enumerate(edges.get(edge_type, [])):
+                weight = edge.get("weight")
+                if isinstance(weight, (int, float)) and not (lo <= weight <= hi):
+                    warnings.append(
+                        f"WEIGHT-BAND: {skill_id} edges.{edge_type}[{i}] "
+                        f"weight {weight} outside recommended band [{lo}, {hi}]"
+                    )
+
+    return warnings
+
+
+def validate_weight_parity(
+    all_metadata: List[Tuple[str, str, dict]],
+) -> List[str]:
+    """Warn when reciprocal edge weights differ by more than 0.1.
+
+    Checks depends_on/prerequisite_for and siblings pairs.
+    Returns list of warnings (soft validation).
+    """
+    warnings = []
+
+    # Build lookup: skill_id -> edges dict
+    skill_edges: Dict[str, dict] = {}
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        skill_edges[skill_id] = data.get("edges", {})
+
+    # Check depends_on <-> prerequisite_for weight parity
+    for skill_id, edges in skill_edges.items():
+        for edge in edges.get("depends_on", []):
+            target = edge.get("target")
+            weight = edge.get("weight")
+            if not target or target not in skill_edges or not isinstance(weight, (int, float)):
+                continue
+            for recip in skill_edges[target].get("prerequisite_for", []):
+                if recip.get("target") == skill_id:
+                    recip_weight = recip.get("weight")
+                    if isinstance(recip_weight, (int, float)) and abs(weight - recip_weight) > 0.1:
+                        warnings.append(
+                            f"WEIGHT-PARITY: {skill_id} depends_on {target} "
+                            f"weight={weight} vs {target} prerequisite_for "
+                            f"{skill_id} weight={recip_weight} (diff > 0.1)"
+                        )
+                    break
+
+    # Check siblings weight parity
+    for skill_id, edges in skill_edges.items():
+        for edge in edges.get("siblings", []):
+            target = edge.get("target")
+            weight = edge.get("weight")
+            if not target or target not in skill_edges or not isinstance(weight, (int, float)):
+                continue
+            if target <= skill_id:
+                continue  # Check each pair only once
+            for recip in skill_edges[target].get("siblings", []):
+                if recip.get("target") == skill_id:
+                    recip_weight = recip.get("weight")
+                    if isinstance(recip_weight, (int, float)) and abs(weight - recip_weight) > 0.1:
+                        warnings.append(
+                            f"WEIGHT-PARITY: {skill_id} siblings {target} "
+                            f"weight={weight} vs {target} siblings "
+                            f"{skill_id} weight={recip_weight} (diff > 0.1)"
+                        )
+                    break
 
     return warnings
 
@@ -514,6 +613,18 @@ def main() -> int:
     if symmetry_warnings:
         print(f"\nSYMMETRY WARNINGS ({len(symmetry_warnings)}):")
         for warn in symmetry_warnings:
+            print(f"  - {warn}")
+
+    weight_band_warnings = validate_weight_bands(all_metadata)
+    if weight_band_warnings:
+        print(f"\nWEIGHT-BAND WARNINGS ({len(weight_band_warnings)}):")
+        for warn in weight_band_warnings:
+            print(f"  - {warn}")
+
+    weight_parity_warnings = validate_weight_parity(all_metadata)
+    if weight_parity_warnings:
+        print(f"\nWEIGHT-PARITY WARNINGS ({len(weight_parity_warnings)}):")
+        for warn in weight_parity_warnings:
             print(f"  - {warn}")
 
     zero_edge_warnings = validate_zero_edge_skills(all_metadata)

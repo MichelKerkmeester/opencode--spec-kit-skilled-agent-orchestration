@@ -1,11 +1,11 @@
 ---
-title: "252 -- Tool-based recovery on hook-limited runtimes"
-description: "This scenario validates Cross-runtime fallback for 252. It focuses on Runtime detection and tool-based fallback for Codex and dynamically configured Copilot/Gemini."
+title: "252 -- Runtime-aware recovery across Claude, Codex, Copilot, and Gemini"
+description: "This scenario validates Cross-runtime fallback for 252. It focuses on runtime detection plus native-hook, hookless, and config-driven recovery behavior."
 audited_post_018: true
 phase_018_change: "Reframed recovery so hook-limited runtimes fall back through /spec_kit:resume and the canonical packet continuity ladder."
 ---
 
-# 252 -- Tool-based recovery on non-hook runtimes
+# 252 -- Runtime-aware recovery across supported runtimes
 
 ## 1. OVERVIEW
 
@@ -15,25 +15,55 @@ This scenario validates Cross-runtime fallback.
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that runtimes without active hook wiring fall back to tools correctly. Codex CLI remains hookless, while Copilot CLI and Gemini CLI are now dynamic: they report hooks when the current repo/config exposes `sessionStart` wiring and otherwise fall back to the canonical tool path through `/spec_kit:resume`. CLAUDE.md and agent definitions must still preserve tool-based recovery whenever hook context is unavailable.
+- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must remain hookless, and Copilot CLI / Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
 - **Prerequisites**:
   - Node.js installed and `npx vitest` available
   - Working directory is the project root
   - Environment variables can be simulated in test fixtures (e.g., `CODEX_CLI=1`, `COPILOT_CLI=1`, `GEMINI_CLI=1`)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Tool-based recovery on hook-limited runtimes against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify runtimes without active hook wiring fall back to tools correctly. Codex CLI remains hookless, while Copilot CLI and Gemini CLI are now dynamic: they report hooks when the current repo/config exposes sessionStart wiring and otherwise fall back to the canonical tool path through /spec_kit:resume. CLAUDE.md and agent definitions must still preserve tool-based recovery whenever hook context is unavailable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI remains hookless, and Copilot CLI plus Gemini CLI derive hookPolicy from repo/config wiring before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
   - All vitest tests in `runtime-detection.vitest.ts` pass
+  - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`
   - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'unavailable' }`
   - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` contains `sessionStart`; otherwise `disabled_by_scope`
   - Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`
   - `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
 - **Pass/fail criteria**:
-  - PASS: Each runtime is correctly detected from env vars, dynamic hookPolicy matches the current repo/config state, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
+  - PASS: Each runtime is correctly detected from env vars, hookPolicy matches the current runtime/config reality, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
   - FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for non-Claude runtime
 
 ---
 
 ## 3. TEST EXECUTION
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate Claude Code native hook detection against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() with CLAUDE_CODE=1 returns { runtime: 'claude-code', hookPolicy: 'enabled' }. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts
+
+### Expected
+
+detectRuntime()` with `CLAUDE_CODE=1` returns `{ runtime: 'claude-code', hookPolicy: 'enabled' }`
+
+### Evidence
+
+Test output showing detection result
+
+### Pass / Fail
+
+- **Pass**: claude-code detected with enabled hookPolicy
+- **Fail**: Any contradicting evidence appears or the pass condition is not met.
+
+### Failure Triage
+
+Check env var detection order in `runtime-detection.ts` for `CLAUDE_CODE`, `CLAUDE_SESSION_ID`, or MCP server identity.
+
+---
 
 ### Prompt
 

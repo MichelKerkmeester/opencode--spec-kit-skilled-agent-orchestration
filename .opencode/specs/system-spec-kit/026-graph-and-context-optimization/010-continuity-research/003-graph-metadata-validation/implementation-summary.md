@@ -7,7 +7,7 @@ status: complete
 
 ## Outcome
 
-This packet is closed with all five review findings addressed. The parser now rejects the remaining command-shaped `key_files` patterns, limits canonical entity preference to the current spec-folder chain, and normalizes `done`, `completed`, `active`, and `in-progress` into the canonical derived status set. The backfill regression suite now matches the inclusive-default traversal contract, and phase `004` is retired because the corpus no longer contains any legacy plaintext `graph-metadata` files.
+This packet is closed with all five review findings addressed. The parser now rejects the remaining command-shaped `key_files` patterns, limits canonical entity preference to the current spec-folder chain, and normalizes `done`, `completed`, `active`, and `in-progress` into the canonical derived status set. The backfill regression suite now matches the inclusive-default traversal contract, and phase `004` is retired because the original research corpus no longer contains any legacy plaintext `graph-metadata` files even though promoted root packets may still carry pre-migration metadata that was preserved during promotion.
 
 ## Verification
 
@@ -18,7 +18,7 @@ This packet is closed with all five review findings addressed. The parser now re
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-schema.vitest.ts` | PASS (`14/14`) |
 | `cd .opencode/skill/system-spec-kit && NODE_PATH=./mcp_server/node_modules ./mcp_server/node_modules/.bin/vitest run scripts/tests/graph-metadata-backfill.vitest.ts` | PASS (`3/3`) |
 | `cd .opencode/skill/system-spec-kit && node scripts/dist/graph/backfill-graph-metadata.js` | PASS (`541` refreshed packets) |
-| Post-backfill corpus scan | PASS: `command-shaped key_files = 0`, `status outliers = 0`, `duplicateEntityNameGroups = 0`, `legacyGraphMetadataFiles = 0` |
+| Post-backfill corpus scan | PASS: `command-shaped key_files = 0`, `status outliers = 0`, `duplicateEntityNameGroups = 0`, `legacyGraphMetadataFiles = 0` inside the original research corpus; promoted root packets may still retain pre-migration metadata carried forward during promotion. |
 
 ## Notes
 

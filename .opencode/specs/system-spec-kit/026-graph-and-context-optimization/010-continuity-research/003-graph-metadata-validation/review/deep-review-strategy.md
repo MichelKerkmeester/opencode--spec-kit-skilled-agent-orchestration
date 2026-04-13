@@ -1,12 +1,12 @@
-# Deep Review Strategy - 019 Research Graph Metadata Validation
+# Deep Review Strategy - 003 Research Graph Metadata Validation
 
 ## 1. OVERVIEW
 
-Review the post-implementation packet as a root-level audit over the shipped parser, schema, backfill script, focused tests, aligned doc surfaces, and the 019 sub-phase closeout artifacts.
+Review the post-implementation packet as a root-level audit over the shipped parser, schema, backfill script, focused tests, aligned doc surfaces, and the 003 sub-phase closeout artifacts.
 
 ## 2. TOPIC
 
-Root review of `019-research-graph-metadata-validation`
+Root review of `003-graph-metadata-validation`
 
 ## 3. REVIEW DIMENSIONS (remaining)
 
@@ -19,7 +19,7 @@ Root review of `019-research-graph-metadata-validation`
 
 - Editing the parser, docs, or spec packet under review.
 - Re-running a repo-wide backfill as part of the audit.
-- Reopening archived review packets outside the requested 019 lineage.
+- Reopening archived review packets outside the requested 003 lineage.
 
 ## 5. STOP CONDITIONS
 
@@ -53,7 +53,7 @@ Root review of `019-research-graph-metadata-validation`
 
 - The original “key file noise = 0” probe was too narrow and missed `cd ... && ...` command strings that still satisfy the current path heuristic.
 - Phase `004-normalize-legacy-files` was not fully brought forward after the inclusive-default backfill change, so its tests and packet docs still narrate the old behavior.
-- Root 019 and phases 001-004 are not template-clean or validator-clean, so packet status claims cannot be trusted at face value.
+- Root 003 and phases 001-004 are not template-clean or validator-clean, so packet status claims cannot be trusted at face value.
 
 ## 10. RULED OUT DIRECTIONS
 
@@ -68,7 +68,7 @@ Completed. The highest-value next step is remediation planning for F001-F003; F0
 
 ## 12. KNOWN CONTEXT
 
-- User-requested write scope is limited to `019-research-graph-metadata-validation/review/`.
+- User-requested write scope is limited to `003-graph-metadata-validation/review/`.
 - The shipped parser and schema live under `.opencode/skill/system-spec-kit/...`, not a repo-root `mcp_server/`.
 - Full corpus scan found `540` `graph-metadata.json` files; excluding `z_archive` yields `364`, with status counts of `218 complete`, `89 in_progress` when the single `in-progress` outlier is folded in, and `56 planned`.
 - Full-corpus scans also found `59` command-shaped `derived.key_files`, `42` command-shaped `entities.path` values, `0` duplicate groups, and `0` trigger-cap overflows.
@@ -78,7 +78,7 @@ Completed. The highest-value next step is remediation planning for F001-F003; F0
 | Protocol | Level | Status | Iteration | Notes |
 |----------|-------|--------|-----------|-------|
 | `spec_code` | core | fail | 6 | Runtime, tests, and emitted metadata disagree on command sanitization and backfill-default behavior. |
-| `checklist_evidence` | core | fail | 8 | Root 019 and phases 001-004 are not closed out cleanly; only phase 005 passes strict validation. |
+| `checklist_evidence` | core | fail | 8 | Root 003 and phases 001-004 are not closed out cleanly; only phase 005 passes strict validation. |
 | `feature_catalog_code` | overlay | pass | 5 | The phase-005 doc surfaces align with the runtime contract. |
 | `playbook_capability` | overlay | pass | 5 | The playbook/template/operator docs reflect the inclusive default and lowercase checklist-aware status language. |
 
@@ -92,8 +92,8 @@ Completed. The highest-value next step is remediation planning for F001-F003; F0
 | `.opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts` | D1, D3 | 10 | 0 P0, 1 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts` | D1, D3 | 3 | 0 P0, 0 P1, 0 P2 | complete |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-integration.vitest.ts` | D1, D3 | 3 | 0 P0, 0 P1, 0 P2 | complete |
-| `019/spec.md` | D3 | 10 | 0 P0, 1 P1, 1 P2 | complete |
-| `019/001-005 phase docs` | D3, D4 | 8 | 0 P0, 2 P1, 0 P2 | complete |
+| `003/spec.md` | D3 | 10 | 0 P0, 1 P1, 1 P2 | complete |
+| `003/001-005 phase docs` | D3, D4 | 8 | 0 P0, 2 P1, 0 P2 | complete |
 
 ## 15. REVIEW BOUNDARIES
 
@@ -101,7 +101,7 @@ Completed. The highest-value next step is remediation planning for F001-F003; F0
 - Convergence threshold: 0.10
 - Severity threshold: P2
 - Review target type: spec-folder
-- Session lineage: sessionId=`2026-04-13T11:30:00Z-019-root-review`, parentSessionId=`none`, generation=`1`, lineageMode=`new`
+- Session lineage: sessionId=`2026-04-13T11:30:00Z-003-root-review`, parentSessionId=`none`, generation=`1`, lineageMode=`new`
 
 <!-- ANCHOR:review-dimensions -->
 ## 3. REVIEW DIMENSIONS (remaining)

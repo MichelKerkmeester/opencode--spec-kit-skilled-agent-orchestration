@@ -42,8 +42,8 @@ description: "Handover for 011-skill-advisor-graph — graph system built, resea
 
 **Created (this session):**
 - `.opencode/skill/*/graph-metadata.json` — 20 per-skill graph metadata files
-- `.opencode/skill/skill-advisor/skill_graph_compiler.py` — graph compiler
-- `.opencode/skill/skill-advisor/skill-graph.json` — compiled graph (3957 bytes)
+- `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` — graph compiler
+- `.opencode/skill/skill-advisor/scripts/skill-graph.json` — compiled graph (4667 bytes)
 - `011-skill-advisor-graph/` — spec folder with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, graph-metadata.json
 - `011-skill-advisor-graph/001-research-findings-fixes/` — phase spec for P0/P1 fixes
 - `011-skill-advisor-graph/002-manual-testing-playbook/` — phase spec (placeholder)
@@ -52,7 +52,7 @@ description: "Handover for 011-skill-advisor-graph — graph system built, resea
 
 **Modified (this session):**
 - `.opencode/skill/skill-advisor/scripts/skill_advisor.py` — added `_load_skill_graph()`, `_apply_graph_boosts()`, `_apply_family_affinity()`, `_apply_graph_conflict_penalty()`, ghost guard, evidence separation, health check extension (~120 lines added)
-- `.opencode/skill/skill-advisor/fixtures/skill_advisor_regression_cases.jsonl` — fixed 3 expectations, added 3 graph cases (44 total)
+- `.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` — fixed 3 expectations, added 3 graph cases (44 total)
 - 4 graph-metadata.json files with new edges (system-spec-kit, sk-doc, mcp-coco-index, sk-improve-prompt)
 - 2 graph-metadata.json files with removed siblings (sk-deep-review, sk-deep-research)
 

@@ -112,7 +112,7 @@ Semantic search subprocess failures return empty `[]` with no diagnostic trace.
 
 ### In Scope
 - Fix all 5 P0 issues
-- Fix all 5 P1 issues
+- Fix P0 issues and selected P1 issues (P1-1, P1-3); remaining P1 items deferred
 - Update regression test cases as needed
 - Re-run compiler to regenerate skill-graph.json
 

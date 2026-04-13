@@ -15,7 +15,7 @@ The runtime graph is only as trustworthy as the metadata that feeds it. This fea
 
 ## 2. CURRENT REALITY
 
-`validate_skill_metadata()` enforces a strict schema. Each metadata file must declare `schema_version: 1`, a `skill_id` that exactly matches the folder name, a `family` from the allowed set (`cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system`), and a `category` from the allowed category list. `domains` and `intent_signals` must both be arrays, which means the schema validates capability identity as well as graph edges.
+`validate_skill_metadata()` enforces a strict schema. Each metadata file must declare a `schema_version` of 1 or 2, a `skill_id` that exactly matches the folder name, a `family` from the allowed set (`cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system`), and a `category` from the allowed category list. `domains` and `intent_signals` must both be arrays, which means the schema validates capability identity as well as graph edges. Schema version 2 additionally requires a `derived` metadata block containing compiler-generated fields (trigger phrases, key topics, importance tier, status, key files, entities, and causal summary).
 
 The `edges` object is validated field by field. Supported edge groups are `depends_on`, `enhances`, `siblings`, `conflicts_with`, and `prerequisite_for`. Every edge must be an object with a known target, a numeric weight inside `[0.0, 1.0]`, and a `context` field. Self-references, unknown targets, invalid edge types, or malformed arrays all become hard validation errors.
 

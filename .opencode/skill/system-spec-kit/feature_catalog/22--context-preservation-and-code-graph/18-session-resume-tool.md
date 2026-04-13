@@ -11,7 +11,7 @@ phase_018_change: "Clarified that session_resume is the detailed merged recovery
 
 Composite MCP tool (session_resume) that merges memory resume context, code graph status, CocoIndex availability, and structural bootstrap hints into a single recovery payload.
 
-The `session_resume` handler performs three sub-calls: (1) `memory_context` with `mode=resume` and `profile=resume` to recover session state, (2) code graph database query for node/edge/file counts and last scan timestamp, and (3) CocoIndex binary availability check via filesystem probe. It also appends the shared structural ready/stale/missing contract from `session-snapshot.ts`, so callers can tell when a deeper refresh is needed. Results are merged into a `SessionResumeResult` with `memory`, `codeGraph`, `cocoIndex`, optional `structuralContext`, and `hints` fields. Failures in any sub-call are captured as error entries with recovery hints rather than failing the entire call. For the canonical first-call recovery step, use `session_bootstrap`; for packet recovery, start from `handover.md -> _memory.continuity -> spec docs`; `session_resume` remains the detailed merged surface.
+The `session_resume` handler performs three recovery steps: (1) a filesystem-first resume ladder via `buildResumeLadder()` that reconstructs session state from `handover.md -> _memory.continuity -> spec docs`, (2) code graph status lookup returning freshness-aware `fresh | stale | empty | error` values plus counts and last scan timestamp, and (3) CocoIndex binary availability probing. It also appends the shared structural `ready | stale | missing` contract from `session-snapshot.ts`, so callers can tell when a deeper refresh is needed. Results are merged into a `SessionResumeResult` with `memory`, `codeGraph`, `cocoIndex`, optional `structuralContext`, and `hints` fields. For the canonical first-call recovery step, use `session_bootstrap`; for operator-facing packet recovery, start from `handover.md -> _memory.continuity -> spec docs`; `session_resume` remains the detailed merged surface.
 
 ---
 
@@ -28,7 +28,7 @@ mcp_server/handlers/session-resume.ts
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/handlers/session-resume.ts` | Handler | Composite resume merging 3 subsystems |
-| `mcp_server/handlers/memory-context.ts` | Handler | Sub-call target for memory resume |
+| `mcp_server/lib/resume/resume-ladder.ts` | Lib | Filesystem-first packet recovery ladder (`handover.md -> _memory.continuity -> spec docs`) |
 | `mcp_server/lib/code-graph/code-graph-db.ts` | Lib | Code graph status query |
 | `mcp_server/lib/session/session-snapshot.ts` | Lib | Shared structural context contract used for recovery hints |
 | `mcp_server/tools/lifecycle-tools.ts` | Dispatch | Tool dispatch registration for session_resume |

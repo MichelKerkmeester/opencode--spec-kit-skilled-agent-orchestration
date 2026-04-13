@@ -224,7 +224,7 @@ Per-session state at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<sessio
 | Claude Code | 25 events, 4 handler types | Full hooks | Ship now |
 | Codex CLI | None confirmed | Tool fallback | Monitor |
 | Copilot CLI | Has hooks (guardrails focus) | Tool fallback by policy | Hook adapter candidate |
-| Gemini CLI | Has hooks (v0.33.1+) | Tool fallback by policy | Hook adapter candidate |
+| Gemini CLI | Native hook entrypoints shipped via `.gemini/settings.json` wiring and `mcp_server/hooks/gemini/session-prime.ts` | Config-driven hooks with tool fallback when disabled by scope | Maintain parity with Claude/Copilot recovery guidance |
 
 ### Phases
 

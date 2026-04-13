@@ -119,6 +119,6 @@ describe('session-bootstrap handler', () => {
     expect(parsed.data.payloadContract.provenance.trustState).toBe('stale');
     expect(parsed.data.graphOps.readiness.canonical).toBe('stale');
     expect(parsed.data.hints.some((hint: string) => hint.includes('Run code_graph_scan'))).toBe(true);
-    expect(parsed.data.nextActions).toContain('Call session_bootstrap to refresh structural context, or run code_graph_scan for a full rescan.');
+    expect(parsed.data.nextActions).toContain('Run `code_graph_scan` if the graph needs a broader refresh, then re-run `session_bootstrap`.');
   });
 });

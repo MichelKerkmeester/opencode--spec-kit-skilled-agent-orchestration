@@ -254,7 +254,9 @@ export function buildStructuralBootstrapContract(
   } else if (status === 'stale') {
     recommendedAction = 'Use a structural read to trigger bounded inline refresh when safe, or run code_graph_scan for broader stale states.';
   } else {
-    recommendedAction = 'Call session_bootstrap first. Then run code_graph_scan if structural context is needed.';
+    recommendedAction = sourceSurface === 'session_bootstrap'
+      ? 'Run code_graph_scan to populate structural context, then re-run session_bootstrap.'
+      : 'Call session_bootstrap first. Then run code_graph_scan if structural context is needed.';
   }
 
   const fittedContract = fitStructuralContractBudget(summary, highlights, recommendedAction);

@@ -441,6 +441,7 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   session_health: getSchema({}) as unknown as ToolInputSchema,
   session_resume: getSchema({
     specFolder: optionalPathString(),
+    sessionId: z.string().optional().describe('Optional session ID for targeted recovery (advanced)'),
     minimal: z.boolean().optional(),
   }) as unknown as ToolInputSchema,
 };
@@ -477,7 +478,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_cancel: ['jobId'],
   session_bootstrap: ['specFolder'],
   session_health: [],
-  session_resume: ['specFolder', 'minimal'],
+  session_resume: ['specFolder', 'sessionId', 'minimal'],
 };
 
 /* ───────────────────────────────────────────────────────────────

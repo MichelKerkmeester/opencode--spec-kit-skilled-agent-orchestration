@@ -10,18 +10,18 @@ Auto-generated from the root review state log, iteration files, findings registr
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Root 10-iteration deep review for `018-research-content-routing-accuracy` after implementation, doc alignment, and flag removal.
+Root 10-iteration deep review for `002-content-routing-accuracy` after implementation, doc alignment, and flag removal.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/` (spec-folder)
+- Review Target: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/` (spec-folder)
 - Started: `2026-04-13T12:45:00Z`
 - Status: `CONVERGED`
 - Iteration: `10 of 10`
 - Provisional Verdict: `CONDITIONAL`
 - hasAdvisories: `true`
-- Session ID: `2026-04-13T12:45:00Z-018-research-content-routing-accuracy-deep-review`
+- Session ID: `2026-04-13T12:45:00Z-002-content-routing-accuracy-deep-review`
 - Parent Session: `none`
 - Lifecycle Mode: `new`
 - Generation: `1`

@@ -71,7 +71,7 @@ Template compliance shim anchor for summary.
 
 ### P0 — Must Pass
 
-- [x] PreCompact hook precomputes context and caches to temp file [EVIDENCE: verified in implementation-summary.md]
+- [x] PreCompact hook precomputes context and caches to temp file [EVIDENCE: `mcp_server/hooks/claude/compact-inject.ts` writes `pendingCompactPrime`; `mcp_server/tests/hook-precompact.vitest.ts` verifies payload persistence]
 - [x] SessionStart(source=compact) hook injects cached context via stdout [EVIDENCE: verified in implementation-summary.md]
 - [x] SessionStart(source=startup|resume) hook primes sessions with relevant context [EVIDENCE: verified in implementation-summary.md]
 - [x] `profile: "resume"` passed in all resume paths (fixes iter 012 gap) [EVIDENCE: root `/spec_kit:resume` surfaces and assets now document `profile: "resume"` on direct `memory_context` recovery calls]
@@ -84,7 +84,7 @@ Template compliance shim anchor for summary.
 
 #### P1 — Should Pass
 
-- [x] Stop hook (async) saves session context automatically [EVIDENCE: verified in implementation-summary.md]
+- [x] Stop hook (async) saves session context automatically [EVIDENCE: `mcp_server/hooks/claude/session-stop.ts` runs transcript parsing + autosave flow; verified against shipped code via `implementation-summary.md` §What Was Built]
 - [x] Token usage parsed from transcript and stored in hook state metrics [EVIDENCE: verified in implementation-summary.md]
 - [x] CLAUDE.md compaction recovery section enhanced with explicit `memory_context({ mode: "resume", profile: "resume" })` call [EVIDENCE: verified in implementation-summary.md]
 - [x] `.claude/CLAUDE.md` created with Claude-specific recovery (closes Gap B) [EVIDENCE: verified in implementation-summary.md]
@@ -122,7 +122,7 @@ Template compliance shim anchor for summary.
 
 ### v2 Remediation — P0 (Must Fix)
 
-- [x] endLine bug fixed: structural-indexer.ts parsers set correct end line for multi-line bodies (Phase 013, item 1) [F005] [EVIDENCE: verified in implementation-summary.md]
+- [x] endLine bug fixed: structural-indexer.ts parsers set correct end line for multi-line bodies (Phase 013, item 1) [F005] [EVIDENCE: `mcp_server/lib/code-graph/structural-indexer.ts` uses `findBraceBlockEndLine()`; `mcp_server/tests/code-graph-indexer.vitest.ts` covers structural parsing]
 - [x] Resume profile:"resume" passed in all resume paths (Phase 013, item 2) [EVIDENCE: verified in implementation-summary.md]
 
 ### v2 Remediation — P1 (Should Fix)

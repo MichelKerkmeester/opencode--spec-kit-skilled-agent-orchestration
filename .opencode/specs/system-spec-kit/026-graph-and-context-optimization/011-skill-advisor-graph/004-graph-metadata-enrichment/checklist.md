@@ -54,7 +54,7 @@ _memory:
 - [x] CHK-011 [P0] The packet no longer describes the enrichment as future work [Evidence: `spec.md` and `plan.md` both mark status Complete and describe the enrichment as already delivered]
 - [x] CHK-012 [P0] The packet count is corrected from 20 to 21 throughout the packet [Evidence: `spec.md`, `tasks.md`, and `checklist.md` all refer to 21 live skill metadata files]
 - [x] CHK-013 [P1] The schema example matches the live `sk-deep-review` metadata shape [Evidence: the example uses `last_updated_at`, the live `source_docs`, and live `key_files` taken from `../../../../../skill/sk-deep-review/graph-metadata.json`]
-- [x] CHK-014 [P1] Packet `graph-metadata.json` uses concrete file paths, not a glob [Evidence: the packet metadata now lists specific packet docs and live repo files such as `../../../../../skill/sk-deep-review/graph-metadata.json` and `../../../../../skill/skill-advisor/scripts/skill_graph_compiler.py`]
+- [x] CHK-014 [P1] Packet `graph-metadata.json` uses concrete file paths, not a glob [Evidence: `derived.key_files` lists 6 packet docs (`review/deep-review-findings.md`, `spec.md`, `decision-record.md`, `plan.md`, `tasks.md`, `checklist.md`) and 14 live skill `graph-metadata.json` paths (e.g., `.opencode/skill/cli-claude-code/graph-metadata.json` through `.opencode/skill/sk-deep-research/graph-metadata.json`)]
 <!-- /ANCHOR:code-quality -->
 
 ---

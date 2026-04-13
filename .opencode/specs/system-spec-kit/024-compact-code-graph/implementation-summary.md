@@ -91,7 +91,7 @@ All runtimes that read CLAUDE.md/CODEX.md/GEMINI.md get context injection via th
 
 ### Layer 3: Structural Code Graph (Phases 008-011)
 
-The structural indexer extracts symbols from JS/TS/Python/Shell files and stores nodes and edges (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF) in `code-graph.sqlite`. Three MCP tools expose the graph: `code_graph_scan` (build/refresh), `code_graph_query` (outline, calls_from, calls_to, imports), `code_graph_status` (freshness, coverage). `code_graph_context` accepts CocoIndex file-range seeds and resolves them to graph neighborhoods with budget enforcement. The root packet now avoids overstating parser internals when those details are child-phase specific.
+The structural indexer extracts symbols from JS/TS/Python/Shell files and stores nodes and edges (CONTAINS, CALLS, IMPORTS, EXPORTS, EXTENDS, IMPLEMENTS, DECORATES, OVERRIDES, TYPE_OF) in `code-graph.sqlite`. Four MCP tools expose the graph: `code_graph_scan` (build/refresh), `code_graph_query` (outline, calls_from, calls_to, imports), `code_graph_status` (freshness, coverage), and `code_graph_context` (seeded neighborhood expansion). `code_graph_context` accepts CocoIndex file-range seeds and resolves them to graph neighborhoods with budget enforcement. The root packet now avoids overstating parser internals when those details are child-phase specific.
 
 ### Layer 4: CocoIndex Integration (Phase 012)
 
@@ -117,7 +117,7 @@ A 95-iteration deep research and 30-iteration deep review (Codex CLI + Copilot C
 - **Phase 019**: `ensureCodeGraphReady()` auto-trigger on branch switch, session start, and stale detection.
 - **Phase 020**: Query-intent auto-routing in `memory_context`. `session_resume` composite tool for one-call resume.
 - **Phase 021**: "No Hook Transport" sections in CODEX.md, AGENTS.md, GEMINI.md. `@context-prime` agent for OpenCode.
-- **Phase 022**: Gemini CLI hook porting -- PreCompress/BeforeAgent lifecycle mapping.
+- **Phase 022**: Gemini CLI native hook support shipped, including SessionStart priming via `mcp_server/hooks/gemini/session-prime.ts` plus the mapped Gemini lifecycle entrypoints.
 - **Phase 023**: Session metrics collector, bootstrap quality scoring, dashboard via eval_reporting_dashboard.
 - **Phase 024**: `session_bootstrap` composite tool, `getSessionSnapshot()`, bootstrap telemetry, urgency-aware skip logic.
 - **Phase 025**: Tool-routing enforcement hints, constitutional gate-routing memory alignment, and cross-runtime instruction sync.

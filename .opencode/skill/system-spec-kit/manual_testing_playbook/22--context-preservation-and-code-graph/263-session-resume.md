@@ -14,21 +14,22 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that session_resume performs its recovery sub-calls (memory_context resume, code graph status, CocoIndex availability), appends the shared structural ready/stale/missing contract, and merges everything into a single SessionResumeResult. Each sub-call failure must be captured as an error entry with recovery hints rather than failing the entire call. The response must include memory (resume context), codeGraph (status/ok/empty/error with counts), cocoIndex (available boolean with binary path), structuralContext (`status`, `summary`, `recommendedAction`, `sourceSurface`, plus freshness guidance), and hints array.
+- **Objective**: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, and merges everything into a single `SessionResumeResult`. Failures must degrade into hints and status fields instead of crashing the tool. The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
 - **Prerequisites**:
   - MCP server running and accessible
-  - At least one memory saved (for resume context)
-  - Code graph database present (even if empty)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume performs its recovery sub-calls (memory_context resume, code graph status, CocoIndex availability), appends the shared structural ready/stale/missing contract, and merges everything into a single SessionResumeResult. Each sub-call failure must be captured as an error entry with recovery hints rather than failing the entire call. The response must include memory (resume context), codeGraph (status/ok/empty/error with counts), cocoIndex (available boolean with binary path), structuralContext (status, summary, recommendedAction, sourceSurface, plus freshness guidance), and hints array. Return a concise pass/fail verdict with the main reason and cited evidence.`
+  - A packet with at least one canonical recovery document (`handover.md`, `implementation-summary.md`, or sibling spec docs)
+  - Code graph database present or intentionally empty
+- **Prompt**: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume rebuilds memory from the resume ladder (handover.md -> _memory.continuity -> spec docs), reports freshness-aware code graph status (fresh, stale, empty, or error), checks CocoIndex availability, appends the shared structural ready/stale/missing contract, and merges everything into a single SessionResumeResult. The response must include memory, codeGraph, cocoIndex, structuralContext, and hints. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
-  - memory field is non-empty object (or error with recovery hint)
-  - codeGraph.status is 'ok' or 'empty', counts are non-negative integers
+  - `memory.source` is one of `handover`, `continuity`, `spec-docs`, or `none`
+  - `memory.summary` and `memory.documents` reflect the winning ladder source when packet docs exist
+  - `codeGraph.status` is `fresh`, `stale`, `empty`, or `error`, and counts are non-negative integers
   - cocoIndex.available is boolean, binaryPath is string
   - structuralContext.status is one of `ready`, `stale`, `missing`
   - structuralContext.summary is a string, `recommendedAction` is a string, and `sourceSurface === "session_resume"`
-  - hints array present (may be empty if all subsystems healthy; should point to `session_bootstrap` when structure is degraded)
+  - hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`)
 - **Pass/fail criteria**:
-  - PASS: All subsystem results and structuralContext fields are present in response, failures are captured as error entries not exceptions, and degraded structural states emit the expected bootstrap guidance
+  - PASS: All subsystem results and structuralContext fields are present in response, the memory payload follows the resume ladder contract, and degraded structural states emit the expected bootstrap guidance without throwing
   - FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, or missing type fields
 
 ---
@@ -38,7 +39,7 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Memory resume sub-call returns context against session_resume({}). Verify memory field is non-empty object with resume data or error + hint. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate the resume ladder payload against session_resume({}). Verify memory.source reflects the canonical ladder (handover.md -> _memory.continuity -> spec docs), and memory.summary/documents are populated when packet docs exist. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -47,7 +48,7 @@ As a context-and-code-graph validation operator, validate Memory resume sub-call
 
 ### Expected
 
-memory field is non-empty object with resume data or error + hint
+memory field includes ladder-backed recovery data with source, summary, and documents
 
 ### Evidence
 
@@ -55,19 +56,19 @@ session_resume response JSON memory field
 
 ### Pass / Fail
 
-- **Pass**: memory field present with data or graceful error
+- **Pass**: memory field present with ladder-backed data and valid source
 - **Fail**: Any contradicting evidence appears or the pass condition is not met.
 
 ### Failure Triage
 
-Check handleMemoryContext() with mode=resume in session-resume.ts
+Check `buildResumeLadder()` and `session-resume.ts`
 
 ---
 
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Code graph status sub-call returns counts against session_resume({}). Verify codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Code graph status against session_resume({}). Verify codeGraph.status in [fresh, stale, empty, error], and nodeCount/edgeCount/fileCount are integers >= 0. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -76,7 +77,7 @@ As a context-and-code-graph validation operator, validate Code graph status sub-
 
 ### Expected
 
-codeGraph.status in [ok, empty, error], nodeCount/edgeCount/fileCount are integers >= 0
+codeGraph.status in [fresh, stale, empty, error], nodeCount/edgeCount/fileCount are integers >= 0
 
 ### Evidence
 
@@ -125,7 +126,7 @@ Check `cocoindex-path.ts` plus the availability probe used by session-resume.ts
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate Structural readiness and recovery hinting against session_resume({}). Verify structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate Structural readiness and recovery hinting against session_resume({}). Verify structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap and/or code_graph_scan in hints. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -134,7 +135,7 @@ As a context-and-code-graph validation operator, validate Structural readiness a
 
 ### Expected
 
-structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap in hints
+structuralContext.status in [ready, stale, missing]; structuralContext.summary/recommendedAction/sourceSurface present; degraded states mention session_bootstrap and/or code_graph_scan in hints
 
 ### Evidence
 
@@ -142,7 +143,7 @@ session_resume response JSON structuralContext + hints
 
 ### Pass / Fail
 
-- **Pass**: structural contract fields are surfaced and degraded states recommend session_bootstrap
+- **Pass**: structural contract fields are surfaced and degraded states recommend `session_bootstrap` and/or `code_graph_scan`
 - **Fail**: required contract fields are missing or recovery hint is wrong
 
 ### Failure Triage

@@ -1,184 +1,122 @@
-# Deep Review Strategy - Session Tracking
+# Deep Review Strategy - 024 Compact Code Graph
 
-## 1. OVERVIEW
+## 1. Overview
 
-### Purpose
+Fresh canonical deep-review session for `.opencode/specs/system-spec-kit/024-compact-code-graph`.
 
-Fresh canonical review session for `.opencode/specs/system-spec-kit/024-compact-code-graph`, covering the root packet, all 28 child phases, relevant runtime implementation files, and related skill and agent surfaces.
+- Session ID: `rvw-2026-04-13T16-50-40Z`
+- Mode: `review`
+- Target type: `spec-folder`
+- Max iterations: `20`
+- Lifecycle classification: `new`
+- Prior invalid deep-review artifacts archived under `review_archive/2026-04-13T16-50-40Z-invalid-root-deep-review/`
+- Operator-requested extension resumed the completed run from iteration 006 so the untouched runtime and code-graph packet surfaces could be reviewed before closing.
 
-### Usage
+## 2. Topic
 
-- Init: created from the deep-review workflow with the target bound to the existing spec folder.
-- Iteration discipline: each leaf review pass must read this file and `review/deep-research-state.jsonl` first, then review one primary lane while keeping evidence inside scope.
-- Prior context: a complete prior rerun exists under `review-prior-code-rerun-2026-04-03/`; it is reference-only and must be revalidated against the live tree.
+Audit the root packet, representative child phases, and the runtime implementation/doc surfaces the packet claims to ship for compact code graph, query routing, structural context, startup priming, and cross-runtime recovery behavior.
 
-## 2. TOPIC
+## 3. Review Dimensions
 
-Review all work documented under `.opencode/specs/system-spec-kit/024-compact-code-graph`, including spec artifacts, phase closeouts, runtime implementation files, skill contracts, and runtime agent surfaces.
+- [x] Correctness
+- [x] Security
+- [x] Traceability
+- [x] Maintainability
 
-## 3. REVIEW DIMENSIONS (remaining)
+## 4. Non-Goals
 
-All configured review dimensions now have at least one live-tree review pass. Iteration 005's stabilization challenge did not invalidate any active findings, and iteration 006 closed the two remaining pending overlay protocols. The packet is now synthesis-ready with the existing active P1/P2 registry unchanged.
+- Modifying code or docs under review.
+- Reusing archived findings without live-tree verification.
+- Auditing unrelated packet families except where root or child packet references require a validity check.
 
-## 4. NON-GOALS
+## 5. Stop Conditions
 
-- Modifying files under review.
-- Reusing archived findings without live verification.
-- Auditing unrelated packets outside spec 024 except where explicitly referenced by in-scope docs or runtime surfaces.
+- Maximum `20` iterations reached.
+- Earlier stop allowed only when all four dimensions are covered, traceability protocols are covered, no new P0/P1 findings appear in stabilization passes, and the evidence/scope guards remain satisfied.
 
-## 5. STOP CONDITIONS
+## 6. Known Context
 
-- Max iterations: 20.
-- Earlier stop allowed only if convergence gates pass, all configured dimensions are covered, coverage has stabilized, and no active P0 or unresolved P1 remain.
+- Existing root `review/` deep-review artifacts were invalid for resume because the canonical config, state log, and findings registry were missing.
+- Prior repo memory indicates a historical `024-compact-code-graph` deep review existed; any prior claims must be revalidated against the current tree before reuse.
+- Deep-research artifacts remain in `review/` and are out of scope for mutation during this review.
+- CocoIndex semantic discovery may be unavailable in this environment, so direct file reads and exact search may be required.
+- The first synthesis stopped at iteration 005 with advisory-only bootstrap/resume findings; the resumed extension targets the runtime/code-graph surfaces that first pass barely touched.
 
-## 6. COMPLETED DIMENSIONS
+## 7. Cross-Reference Status
 
-Covered in iterations 001-002.
+| Protocol | Level | Status | Notes |
+|----------|-------|--------|-------|
+| `spec_code` | core | advisory | Bootstrap/resume contract still works, but the root packet lags current Gemini-hook and structural-tool-count reality. |
+| `checklist_evidence` | core | advisory | Checked completion claims still lean too heavily on summary-only evidence. |
+| `feature_catalog_code` | overlay | advisory | `session_resume` and cross-runtime fallback mirrors both drift from current runtime behavior. |
+| `playbook_capability` | overlay | advisory | Session-resume playbook remains stale even though the runtime-detection playbooks are current. |
 
-| Dimension | Verdict | Iteration | Summary |
-|-----------|---------|-----------|---------|
-| D1 Correctness | Conditional | 001 | Root checklist evidence no longer matches the canonical implementation summary for several shipped Phase 015/016 items. |
-| D2 Security | Conditional | 002 | Gemini SessionStart compact recovery still injects recovered transcript text without the provenance fence that the packet claims as shipped injection-safety hardening. |
-| D3 Traceability | Conditional | 001 | `session_bootstrap` and root packet docs contain two live traceability mismatches against the current handler/output contract and sibling packet truth. |
-| D4 Maintainability | Conditional | 003 | Phase 021 still publishes the superseded `session_resume()`-first recovery table even though the canonical root/runtime guidance now requires `session_bootstrap()` first. |
-| D5 Performance | Conditional | 004 | Phase 027 promises a 250-400 token structural bootstrap contract with a 500-token hard ceiling, but the shared builder/handlers never enforce that bound. |
-| D6 Reliability | Conditional | 002 | Claude stop-hook autosave still infers the destination spec folder from transcript-tail path frequency, so summaries can be persisted into the wrong packet after cross-spec discussion. |
-| D7 Completeness | Conditional | 003 | Runtime `context-prime` copies no longer share the same structural Prime Package shape, so cross-runtime startup guidance is only partially mirrored. |
+## 8. Files Under Review
 
-## 7. RUNNING FINDINGS
+| File or Group | Purpose |
+|---------------|---------|
+| `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md` | Root packet contract and completion evidence. |
+| Child phases `001-034` | Validate cross-reference integrity, status carry-forward, and per-phase evidence where root claims depend on them. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | Validate root recovery and structural bootstrap claims. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | Validate resume surface referenced by packet docs. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` | Validate structural context and compact graph context claims. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | Validate graph query traversal and filters. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts` | Validate structural bootstrap budget and payload claims. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` | Validate autosave and packet-targeting claims. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts` | Validate compact recovery and cross-runtime safety parity. |
+| `.opencode/skill/system-spec-kit/mcp_server/README.md`, feature catalog, manual playbook | Validate overlay protocol truth-sync. |
 
-- **P0 (Critical):** 0 active
-- **P1 (Major):** 6 active
-- **P2 (Minor):** 1 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
-- **Stabilization result (Iteration 005):** challenged all 7 active findings; 0 downgraded, 0 ruled out, 0 new.
-- **Overlay closeout result (Iteration 006):** `feature_catalog_code` and `playbook_capability` both pass on current-tree evidence; 0 new findings.
+## 9. Running Findings
 
-## 8. WHAT WORKED
+- P0: `0`
+- P1: `0`
+- P2: `7`
+- Last delta: `Iteration 006 extension traceability pass found three additional advisory packet/doc parity issues; iterations 007-010 found no new P0/P1 issues`
 
-- Prior rerun artifacts provide candidate hypotheses to verify against the current tree.
-- Root-packet-first review should expose release-readiness drift faster than broad unfocused file sweeps.
-- Iteration 001: cross-checking root checklist evidence against live handlers and later child-phase specs surfaced contract drift quickly.
-- Iteration 002: side-by-side Claude/Gemini compact-recovery reads surfaced a concrete cross-runtime prompt-safety mismatch quickly.
-- Iteration 002: reading the stop-hook autosave path end-to-end (detection → state update → autosave) exposed a real continuity risk without needing archived rerun evidence.
-- Iteration 003: comparing Phase 021 child-packet “What Was Built” language against root recovery docs exposed stale bootstrap guidance quickly.
-- Iteration 003: diffing the OpenCode `context-prime` contract against Claude/Codex runtime copies isolated the remaining runtime-surface drift with minimal file reads.
-- Iteration 004: tracing Phase 027 token-budget claims from spec/plan into `session-snapshot.ts` and the consuming handlers quickly exposed the difference between a documented hard ceiling and the current unenforced implementation.
-- Iteration 005: targeted falsification against only the files backing active findings was enough to confirm which contradictions still survive without reopening the whole packet.
-- Iteration 006: root index + representative leaf-doc pairing was enough to close `feature_catalog_code` and `playbook_capability` without depending on archived rerun artifacts.
+## 10. What Worked
 
-## 9. WHAT FAILED
+- Root packet docs, handler code, and tool-schema registrations were enough to validate the bootstrap/resume happy-path contract without touching unrelated child packets.
+- The resume ladder and structural bootstrap helpers expose enough local evidence to assess canonical recovery behavior directly from the runtime surfaces.
+- Cached-summary reuse, structural trust validation, and hook-state persistence all fail closed in the reviewed security paths.
+- The README already reflects the current canonical recovery ladder and bootstrap/resume split, which helped isolate drift to narrower mirrors.
+- Bootstrap messaging and routing-nudge ownership are covered by focused maintainability tests instead of only broad integration suites.
+- Stabilization re-check confirmed the advisory findings stay bounded and do not hide a release-blocking runtime defect.
+- The untouched code-graph handlers and their targeted regression suites remained aligned during the extension pass.
+- Runtime-detection playbooks already describe Codex/Copilot/Gemini hook policy more accurately than the stale feature summary.
 
-- CocoIndex semantic search is unavailable in this session because the daemon socket is missing, so semantic discovery must fall back to direct reads, grep, and scope evidence.
-- Iteration 001: relying on `implementation-summary.md` alone was not sufficient because sibling packet docs already supersede some statuses it still marks as deferred.
-- Iteration 002: re-testing the temp-permissions hypothesis was unproductive because the live hook-state code already enforces 0700/0600 permissions.
-- Iteration 003: the suspected broader bookkeeping drift in Phase 028 was not productive; the child packet stays narrowly scoped and internally aligned.
-- Iteration 004: chasing the old “read paths still auto-reindex inline” performance hypothesis was unproductive; current `code_graph_context` / `code_graph_query` explicitly disable inline indexing on the read path.
-- Iteration 005: a broad challenge sweep over the existing registry produced no weakening evidence, so repeating the same stabilization pass is likely low-yield.
-- Iteration 006: broad keyword grep across the whole packet was noisy because scratch and archived rerun artifacts overwhelm the live overlay surfaces needed for closeout.
+## 11. What Failed
 
-## 10. EXHAUSTED APPROACHES (do not retry)
+- Public schema coverage does not fully match the recovery handler signature (`sessionId` remains implementation-only).
+- Missing-graph recovery guidance is not surface-aware, so bootstrap can emit a self-referential next step.
+- No additional security weakness was reproduced after tracing transcript identity, scope, and trust-axis validation.
+- Feature-catalog/playbook mirrors for `session_resume` still describe the older `memory_context` sub-call model and stale graph-status expectations.
+- Root checklist evidence is too summary-heavy to act as a strong standalone audit artifact.
+- No additional maintainability defect was confirmed beyond the already-logged source-surface action drift.
+- Stabilization found no new P0/P1 issues after all four dimensions were covered.
+- The root spec still documents Gemini as a future hook adapter even though phase 022 and the Gemini hook surfaces are now shipped.
+- The cross-runtime fallback feature card still collapses Codex/Copilot/Gemini into one `session-prime.ts` hook story even though runtime detection and playbooks are config-driven.
+- The root implementation summary undercounts the public structural MCP tool surface.
 
-- Ruled out in iteration 001: `code_graph_query.edgeType` is not a dead parameter in the live handler.
-- Ruled out in iteration 002: missing hook-state temp-permission hardening is not a live issue in the current tree.
-- Ruled out in iteration 003: Phase 028 does not over-claim broader startup/bootstrap remediation beyond `queryStartupHighlights()` quality fixes.
-- Ruled out in iteration 004: structural read paths do not currently perform synchronous inline reindex work; the handlers pass `allowInlineIndex: false`.
-- Prefer current root indexes plus live leaf docs for overlay closeout; broad packet-wide keyword sweeps are now effectively exhausted for synthesis-prep work because they mostly surface archived/scratch noise.
+## 12. Exhausted Approaches
 
-## 11. RULED OUT DIRECTIONS
+- Correctness pass across root packet contract, bootstrap/resume handlers, public tool schemas, and structural bootstrap helper.
+- Security pass across cached-summary acceptance, structural trust validation, hook-state persistence, and bootstrap trust tests.
+- Traceability pass across root checklist evidence, public README, session-resume feature catalog, and manual testing playbook mirrors.
+- Maintainability pass across bootstrap message assembly, structural contract reuse, and focused bootstrap/routing regression tests.
+- Extension traceability pass across Gemini runtime support wording, cross-runtime fallback docs, and root structural tool-surface summaries.
+- Extension correctness, security, and maintainability passes across the untouched code-graph handlers, runtime-detection logic, stop-hook replay path, and Gemini SessionStart hook.
 
-- Iteration 001: the prior hypothesis that `code_graph_query` ignores `edgeType` was ruled out by the live handler.
-- Iteration 001: the prior hypothesis that `session_resume` and `session_bootstrap` disagree on canonical ordering was ruled out by current docs and handlers.
-- Iteration 002: the prior hypothesis that Claude hook-state temp files still lack 0700/0600 hardening was ruled out by the live implementation.
-- Iteration 002: the prior hypothesis that the live Claude compact path still clears cached payload before stdout write was ruled out by the current `session-prime.ts` + `hook-state.ts` flow.
-- Iteration 003: the prior hypothesis that Phase 028 still overstates startup-highlight remediation scope was ruled out by the live phase spec and implementation summary.
-- Iteration 004: the prior hypothesis that `code_graph_context` / `code_graph_query` still trigger synchronous inline reindex work was ruled out by the current handlers plus `ensure-ready.ts` skip branch.
-- Iteration 005: the hypothesis that `session_bootstrap`'s generic `hints` array already satisfies the documented recommended-next-actions contract was ruled out by the live handler/schema mismatch.
-- Iteration 005: the hypothesis that Gemini compact recovery gains provenance fencing after sanitization was ruled out by the live `session-prime.ts` compact path.
-- Iteration 005: the hypothesis that Phase 027's 500-token hard ceiling is enforced elsewhere in the shared structural contract was ruled out by the live `session-snapshot.ts` implementation.
-- Iteration 006: the older feature-catalog root/index mismatch is ruled out in the current tree because section 22 is present in the root catalog and links the context-preservation/code-graph feature set.
-- Iteration 006: the earlier playbook concern about invalid scenario `261d` input is ruled out in the current tree because the scenario now uses valid `memory_context(..., sessionId)` calls.
+## 13. Ruled Out Directions
 
-## 12. NEXT FOCUS
+- Treating root packet wording drift as a correctness failure when handler behavior still matches the canonical recovery contract.
 
-Synthesis/report generation. All configured dimensions and required overlay protocols are now covered on current-tree evidence; keep the existing active P1 set available for final write-up and verdict justification, but no further discovery pass is currently required.
+## 14. Next Focus
 
-## 13. KNOWN CONTEXT
+Synthesis complete: `PASS` with advisories after the extension converged at iteration 010.
 
-- Triggered memory surfaced previous work for spec 024, including a completed deep-review remediation memory and the phase 009 spec packet.
-- A prior current-tree rerun exists at `review-prior-code-rerun-2026-04-03/` with 20 iterations and verdict `CONDITIONAL`.
-- Prior rerun active findings to verify against the live tree:
-  - Root packet still references stale or missing hook/build/API paths.
-  - Resume wrapper docs may still advertise stale `memory_context({ mode: "resume" })` call shapes.
-  - Deferred-item tracking may be internally inconsistent.
-  - `session_bootstrap` may still suppress non-minimal resume payload.
-  - `code_graph_query` may expose an `edgeType` option that the handler ignores.
-  - Structural read paths may still trigger synchronous reindex work.
-  - Recovery guidance may still be split across `session_resume` and `session_bootstrap` surfaces.
-  - Root packet may overstate shipped three-source compaction behavior.
-  - Dispatch-time enrichment may reflect arbitrary local paths.
-  - Compaction sanitizer may still allow too much instruction-like transcript text.
+## 15. Review Boundaries
 
-## 14. CROSS-REFERENCE STATUS
-
-| Protocol | Level | Status | Iteration | Notes |
-|----------|-------|--------|-----------|-------|
-| `spec_code` | core | fail | 1 | Root packet docs still over-promise `session_bootstrap` output and carry stale shipped-status claims in the canonical implementation summary. |
-| `checklist_evidence` | core | fail | 1 | Root checklist cites `implementation-summary.md` as evidence for items that the same summary still marks as deferred. |
-| `skill_agent` | overlay | fail | 3 | Phase 021 still carries a stale `session_resume()`-first contract and runtime `context-prime` copies no longer share the same structural output shape. |
-| `agent_cross_runtime` | overlay | fail | 2 | Claude and Gemini compact-recovery paths still diverge: Claude fences recovered payload provenance, Gemini SessionStart does not. |
-| `feature_catalog_code` | overlay | pass | 6 | Root catalog section 22 and current leaf feature docs cover the packet's context-preservation/code-graph capabilities with live implementation references. |
-| `playbook_capability` | overlay | pass | 6 | Root playbook section 22 and current scenario files 261/263 cover the relevant operator-facing capability checks with valid live tool surfaces. |
-
-## 15. FILES UNDER REVIEW
-
-| File | Dimensions Reviewed | Last Iteration | Findings | Status |
-|------|---------------------|----------------|----------|--------|
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/spec.md` | correctness, traceability, performance | 4 | none | reviewed |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/plan.md` | correctness, traceability, performance | 4 | none | reviewed |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/tasks.md` | maintainability, completeness | 3 | none | reviewed |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md` | correctness, traceability | 1 | P1-002 | reviewed |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/decision-record.md` | correctness, traceability | 1 | none | reviewed |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md` | correctness, traceability, performance | 4 | P1-002 | reviewed |
-| `all 28 child phase spec packets` | none | 0 | none | pending |
-| `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | correctness, traceability | 1 | P1-001 | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts` | correctness, traceability, performance | 4 | P1-001 | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts` | correctness, traceability, performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts` | performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/context.ts` | performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts` | correctness, traceability, performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/ensure-ready.ts` | performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts` | performance | 4 | P1-006 | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/startup-brief.ts` | performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | security, reliability, performance | 4 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts` | security, reliability | 2 | P1-004 | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts` | security, reliability | 2 | P1-003 | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/compact-inject.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/shared.ts` | security, reliability | 2 | none | reviewed |
-| `.opencode/skill/system-spec-kit/SKILL.md` | maintainability, completeness | 3 | none | reviewed |
-| `.opencode/skill/system-spec-kit/references/config/hook_system.md` | maintainability, completeness | 3 | none | reviewed |
-| `AGENTS.md` | maintainability, completeness | 3 | P1-005 | reviewed |
-| `.opencode/agent/context-prime.md` | maintainability, completeness | 3 | none | reviewed |
-| `.claude/agents/context-prime.md` | maintainability, completeness | 3 | P2-001 | reviewed |
-| `.codex/agents/context-prime.md` | maintainability, completeness | 3 | P2-001 | reviewed |
-| `.opencode/skill/sk-deep-review/SKILL.md` | traceability, maintainability | 6 | none | reviewed |
-| `.opencode/agent/deep-review.md` | traceability, maintainability | 6 | none | reviewed |
-| `.claude/agents/deep-review.md` | traceability, maintainability | 6 | none | reviewed |
-
-## 16. REVIEW BOUNDARIES
-
-- Max iterations: 20
-- Convergence threshold: 0.10
-- Rolling STOP threshold: 0.08
-- No-progress threshold: 0.05
-- Coverage stabilization passes required: 1
-- Per-iteration budget: 12 tool calls, 10 minutes
-- Severity threshold: P2
-- Review target type: spec-folder
-- Cross-reference checks: core=`spec_code`, `checklist_evidence`; overlay=`skill_agent`, `agent_cross_runtime`, `feature_catalog_code`, `playbook_capability`
-- Started: 2026-04-03T07:14:00Z
+- Per-iteration tool budget target: `8-11`, hard max `12`
+- Evidence format: `[SOURCE: file:line]`
+- Target files are read-only
+- Review writes limited to `review/deep-review-*`, `review/iterations/iteration-NNN.md`, and final `review-report.md`

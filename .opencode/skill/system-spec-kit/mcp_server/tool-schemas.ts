@@ -671,6 +671,7 @@ const sessionResume: ToolDefinition = {
     additionalProperties: false,
     properties: {
       specFolder: { type: 'string', description: 'Optional spec folder to scope the resume context' },
+      sessionId: { type: 'string', description: 'Optional session ID for targeted recovery (advanced)' },
       minimal: { type: 'boolean', description: 'When true, skip the heavy memory context call and return code-graph, CocoIndex, structural-context, hints, and session-quality fields without the full memory payload' },
     },
     required: [],

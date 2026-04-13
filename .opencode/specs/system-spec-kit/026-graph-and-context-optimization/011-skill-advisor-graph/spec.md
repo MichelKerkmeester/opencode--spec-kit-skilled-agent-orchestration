@@ -28,7 +28,7 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Add a `graph-metadata.json` to each of the 20 skill folders capturing structured relationships (dependencies, overlays, siblings, conflicts), compile them into a single lightweight `skill-graph.json` (~1-2KB), and integrate graph-derived boosts into the `skill_advisor.py` routing pipeline. This replaces implicit relationship knowledge hardcoded across 170+ intent boosters with an explicit, maintainable graph.
+Add a `graph-metadata.json` to each of the 21 skill folders (20 routable + skill-advisor itself) capturing structured relationships (dependencies, overlays, siblings, conflicts), compile them into a single lightweight `skill-graph.json` (~1-2KB), and integrate graph-derived boosts into the `skill_advisor.py` routing pipeline. This replaces implicit relationship knowledge hardcoded across 170+ intent boosters with an explicit, maintainable graph.
 
 ---
 
@@ -102,7 +102,7 @@ Each skill folder gets a `graph-metadata.json` (distinct from the spec-packet `g
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `schema_version` | integer | Always 1. Enables future migration |
+| `schema_version` | integer | 1 or 2. Version 2 adds required `derived` metadata block |
 | `skill_id` | string | Must match `name` in SKILL.md frontmatter |
 | `family` | enum | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
 | `category` | enum | `cli-orchestrator`, `mcp-tool`, `code-quality`, `autonomous-loop`, `utility`, `system` |
@@ -136,7 +136,7 @@ Single file at `.opencode/skill/skill-advisor/scripts/skill-graph.json`:
 }
 ```
 
-Sparse adjacency list. Target size: <2KB minified.
+Sparse adjacency list with intent signals. Target size: <5KB minified (current: 4667 bytes).
 
 ### 3.3 Skill Advisor Integration
 
@@ -155,7 +155,7 @@ Pipeline insertion: after PHRASE_INTENT_BOOSTERS, before explicit variant matchi
 ## 4. SCOPE
 
 ### In Scope
-- 20 per-skill `graph-metadata.json` files
+- 21 per-skill `graph-metadata.json` files (20 routable skills + skill-advisor)
 - `skill_graph_compiler.py` generator script
 - Compiled `skill-graph.json` output
 - 4 new functions in `skill_advisor.py`
@@ -175,9 +175,9 @@ Pipeline insertion: after PHRASE_INTENT_BOOSTERS, before explicit variant matchi
 <!-- ANCHOR:success -->
 ## 5. SUCCESS CRITERIA
 
-- [x] All 20 skill folders contain valid `graph-metadata.json`
+- [x] All 21 skill folders contain valid `graph-metadata.json` (20 routable + skill-advisor)
 - [x] `skill_graph_compiler.py --validate-only` passes with zero errors
-- [x] Compiled `skill-graph.json` is under 2KB (1950 bytes)
+- [x] Compiled `skill-graph.json` is under 5KB (4667 bytes)
 - [x] `skill_advisor.py --health` reports `skill_graph_loaded: true`
 - [x] 44/44 regression cases pass with zero failures
 - [x] Graph boost reasons appear in advisor output (e.g., `!graph:depends(mcp-figma,0.9)`)

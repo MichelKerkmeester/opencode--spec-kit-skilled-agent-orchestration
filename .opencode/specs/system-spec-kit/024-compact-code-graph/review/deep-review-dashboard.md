@@ -1,61 +1,39 @@
-# Deep Review Dashboard - Session Overview
-
-Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation.
+# Deep Review Dashboard - 024 Compact Code Graph
 
 ## Status
 - Review Target: `.opencode/specs/system-spec-kit/024-compact-code-graph` (`spec-folder`)
-- Status: `COMPLETE`
-- Iteration: `6` of `20`
-- Provisional Verdict: `CONDITIONAL`
+- Status: `CONVERGED`
+- Iteration: `10` of `20`
+- Provisional Verdict: `PASS`
 - hasAdvisories: `true`
 
 ## Findings Summary
 | Severity | Count | Trend |
 |----------|------:|-------|
-| P0 (Blockers) | 0 | stable |
-| P1 (Required) | 6 | increasing then stable |
-| P2 (Suggestions) | 1 | stable |
+| P0 (Blockers) | 0 | none |
+| P1 (Required) | 0 | none |
+| P2 (Suggestions) | 7 | +3 in extension traceability pass, then flat |
 
 ## Dimension Coverage
 | Dimension | Status | Iteration | Findings |
 |-----------|--------|-----------|----------|
-| correctness | covered | 1 | 1 P1 |
-| security | covered | 2 | 1 P1 |
-| traceability | covered | 1 | 1 P1 |
-| maintainability | covered | 3 | 1 P1 |
-| performance | covered | 4 | 1 P1 |
-| reliability | covered | 2 | 1 P1 |
-| completeness | covered | 3 | 1 P2 |
+| correctness | covered | 001, 007 | P2-001, P2-002 |
+| security | covered | 002, 008 | none |
+| traceability | covered | 003, 006 | P2-003, P2-004, P2-005, P2-006, P2-007 |
+| maintainability | covered | 004, 009 | none |
 
 ## Traceability Coverage
 | Protocol | Level | Status | Findings |
 |----------|-------|--------|----------|
-| spec_code | core | fail | P1-001, P1-003, P1-004, P1-005, P1-006 |
-| checklist_evidence | core | fail | P1-002 |
-| skill_agent | overlay | fail | P1-005, P2-001 |
-| agent_cross_runtime | overlay | fail | P1-003, P2-001 |
-| feature_catalog_code | overlay | pass | none |
-| playbook_capability | overlay | pass | none |
+| spec_code | core | advisory | P2-005, P2-007 |
+| checklist_evidence | core | advisory | P2-004 |
+| feature_catalog_code | overlay | advisory | P2-003, P2-006 |
+| playbook_capability | overlay | advisory | P2-003 |
 
 ## Progress
-| # | Dimension | Ratio | P0/P1/P2 | Status |
-|---|-----------|-------|----------|--------|
-| 1 | correctness, traceability | 1.00 | 0 / 2 / 0 | complete |
-| 2 | security, reliability | 1.00 | 0 / 2 / 0 | complete |
-| 3 | maintainability, completeness | 1.00 | 0 / 1 / 1 | complete |
-| 4 | performance | 1.00 | 0 / 1 / 0 | complete |
-| 5 | stabilization challenge | 0.00 | 0 / 0 / 0 | thought |
-| 6 | overlay closeout | 0.00 | 0 / 0 / 0 | complete |
-
-## Trend
-- Last 3 ratios: `[1.00 -> 0.00 -> 0.00]` (`decreasing`)
-- Stuck count: `0`
-- Gate violations: `spec_code`, `checklist_evidence`, `skill_agent`, `agent_cross_runtime`
+- Iterations 001-005 covered the bootstrap/resume-centered packet contract and converged provisionally.
+- Iteration 006 resumed the completed run at the user's request and added three advisory packet/doc parity findings on untouched runtime/code-graph surfaces.
+- Iterations 007-010 rechecked correctness, security, maintainability, and stabilization on the untouched surfaces without producing new P0/P1 issues.
 
 ## Next Focus
-Synthesis complete. Use `/spec_kit:plan` to turn the active P1/P2 registry into remediation work.
-
-## Active Risks
-- Six active P1 findings keep the verdict at `CONDITIONAL`.
-- Root/runtime truth-sync still fails across bootstrap contracts, hook safety, autosave routing, and structural budget guarantees.
-- Overlay protocol coverage is closed, but `skill_agent` and `agent_cross_runtime` still fail on active findings.
+- Synthesis complete: extension run reconverged at iteration 010 with `PASS` plus advisories.

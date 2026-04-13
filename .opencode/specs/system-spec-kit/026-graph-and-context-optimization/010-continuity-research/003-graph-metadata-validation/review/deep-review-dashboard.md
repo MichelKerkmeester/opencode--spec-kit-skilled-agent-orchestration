@@ -15,13 +15,13 @@ Reducer-generated observability surface for the active review packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/019-research-graph-metadata-validation/ (spec-folder)
+- Review Target: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/ (spec-folder)
 - Started: 2026-04-13T11:30:00Z
 - Status: COMPLETE
 - Iteration: 10 of 10
 - Provisional Verdict: FAIL
 - hasAdvisories: true
-- Session ID: 2026-04-13T11:30:00Z-019-root-review
+- Session ID: 2026-04-13T11:30:00Z-003-root-review
 - Parent Session: none
 - Lifecycle Mode: new
 - Generation: 1
@@ -52,9 +52,9 @@ Reducer-generated observability surface for the active review packet.
 | 5 | doc accuracy - operator-facing graph metadata contract surfaces | traceability/maintainability | 0.00 | 0/1/2 | complete |
 | 6 | backfill behavior - script contract vs packet 004 docs and regression suite | correctness/traceability | 1.00 | 0/2/2 | complete |
 | 7 | security - metadata drift does not cross a privilege boundary | security | 0.00 | 0/2/2 | complete |
-| 8 | traceability - 019 root packet validation and phase closeout completeness | traceability | 1.00 | 0/3/2 | complete |
+| 8 | traceability - 003 root packet validation and phase closeout completeness | traceability | 1.00 | 0/3/2 | complete |
 | 9 | maintainability - synthesis across parser, tests, corpus, and packet docs | maintainability/traceability | 0.00 | 0/3/2 | complete |
-| 10 | cross-phase synthesis - final 019 verdict | correctness/security/traceability/maintainability | 0.00 | 0/3/2 | complete |
+| 10 | cross-phase synthesis - final 003 verdict | correctness/security/traceability/maintainability | 0.00 | 0/3/2 | complete |
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:dimension-coverage -->

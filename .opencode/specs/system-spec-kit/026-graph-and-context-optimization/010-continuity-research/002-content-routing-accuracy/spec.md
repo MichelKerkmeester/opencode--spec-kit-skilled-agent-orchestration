@@ -1,6 +1,6 @@
 ---
 title: "Research: Content Routing Classification Accuracy"
-status: planned
+status: complete
 level: 3
 type: research
 parent: 010-continuity-research

@@ -1608,7 +1608,6 @@ def analyze_request(
         total_matches = recommendation.get("_num_matches", 1)
         if total_matches > 0 and graph_boost_count / total_matches > 0.5:
             recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
-    _apply_graph_conflict_penalty(recommendations)
 
     for recommendation in recommendations:
         recommendation["passes_threshold"] = passes_dual_threshold(
@@ -1617,6 +1616,8 @@ def analyze_request(
             conf_threshold=DEFAULT_CONFIDENCE_THRESHOLD,
             uncert_threshold=DEFAULT_UNCERTAINTY_THRESHOLD,
         )
+
+    _apply_graph_conflict_penalty(recommendations)
 
     ranked = sorted(
         recommendations,
@@ -1663,8 +1664,18 @@ def health_check() -> Dict[str, Any]:
     real_skills = [s for s in skills if s.get("kind") == "skill"]
     command_bridges = [s for s in skills if s.get("kind") == "command"]
     graph = _load_skill_graph()
-    return {
-        "status": "ok" if real_skills else "error",
+    graph_loaded = graph is not None
+
+    # Determine status: error if no skills, degraded if graph unavailable
+    if not real_skills:
+        status = "error"
+    elif not graph_loaded:
+        status = "degraded"
+    else:
+        status = "ok"
+
+    result = {
+        "status": status,
         "skills_found": len(real_skills),
         "command_bridges_found": len(command_bridges),
         "skill_names": [s.get('name', 'unknown') for s in real_skills],
@@ -1672,10 +1683,16 @@ def health_check() -> Dict[str, Any]:
         "skills_dir": SKILLS_DIR,
         "skills_dir_exists": os.path.exists(SKILLS_DIR),
         "cache": get_cache_status(),
-        "skill_graph_loaded": graph is not None,
+        "skill_graph_loaded": graph_loaded,
         "skill_graph_skill_count": graph.get("skill_count", 0) if graph else 0,
         "skill_graph_path": SKILL_GRAPH_PATH,
     }
+
+    if not graph_loaded:
+        graph_path_exists = os.path.exists(SKILL_GRAPH_PATH)
+        result["skill_graph_error"] = "corrupt" if graph_path_exists else "missing"
+
+    return result
 
 
 def analyze_prompt(

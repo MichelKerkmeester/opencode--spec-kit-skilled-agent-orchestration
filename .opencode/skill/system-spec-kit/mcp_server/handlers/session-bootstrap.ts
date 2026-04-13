@@ -94,6 +94,29 @@ function extractCachedSummary(
   return null;
 }
 
+function normalizeStructuralRecommendedAction(
+  structuralContext: StructuralBootstrapContract,
+): string | null {
+  const action = structuralContext.recommendedAction?.trim();
+  if (!action) {
+    return null;
+  }
+
+  if (structuralContext.sourceSurface !== 'session_bootstrap' || !action.includes('session_bootstrap')) {
+    return action;
+  }
+
+  if (structuralContext.status === 'missing') {
+    return 'Run `code_graph_scan` to populate structural context, then re-run `session_bootstrap`.';
+  }
+
+  if (structuralContext.status === 'stale') {
+    return 'Run `code_graph_scan` if the graph needs a broader refresh, then re-run `session_bootstrap`.';
+  }
+
+  return action;
+}
+
 function buildNextActions(
   resumeData: Record<string, unknown>,
   healthData: Record<string, unknown>,
@@ -109,8 +132,9 @@ function buildNextActions(
     nextActions.add('Call `session_health()` directly to inspect the current health-check failure.');
   }
 
-  if (structuralContext.recommendedAction) {
-    nextActions.add(structuralContext.recommendedAction);
+  const normalizedStructuralAction = normalizeStructuralRecommendedAction(structuralContext);
+  if (normalizedStructuralAction) {
+    nextActions.add(normalizedStructuralAction);
   }
 
   nextActions.add('Use `session_resume({ specFolder })` when you need the fuller merged recovery payload.');

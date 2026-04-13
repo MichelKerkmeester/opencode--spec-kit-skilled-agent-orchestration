@@ -408,6 +408,8 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
 
   const cachedSummaryDecision = getCachedSessionSummaryDecision({
     specFolder: args.specFolder,
+    // Advanced targeted recovery selector: expose sessionId publicly for
+    // operators, but keep default guidance focused on specFolder/bootstrap.
     claudeSessionId: typeof args.sessionId === 'string' ? args.sessionId : undefined,
   });
   const scopeFallback = !args.specFolder && cachedSummaryDecision.status === 'accepted'

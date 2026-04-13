@@ -1,0 +1,17 @@
+{
+  "openFindings": [],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": { "covered": false, "iterations": [] },
+    "security": { "covered": false, "iterations": [] },
+    "traceability": { "covered": false, "iterations": [] },
+    "maintainability": { "covered": false, "iterations": [] }
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "convergenceScore": 0.0
+}

@@ -1,4 +1,4 @@
-# Deep Review Report: 017-research-search-fusion-tuning
+# Deep Review Report: 001-search-fusion-tuning
 
 ## 1. Executive Summary
 
@@ -22,8 +22,8 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 - **F001 [P1 | correctness]** Stage 3 MMR ignores the internal continuity handoff. Evidence: [`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:830`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:538`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:641`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:69`].
 - **F002 [P1 | traceability]** Repo-level search docs now describe a continuity-aware Stage 3 lambda that the runtime does not execute. Evidence: [`.opencode/command/memory/search.md:102`], [`.opencode/skill/system-spec-kit/ARCHITECTURE.md:150`], [`.opencode/skill/system-spec-kit/mcp_server/configs/README.md:49`], [`README.md:393`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209`].
-- **F003 [P1 | traceability]** The `005-doc-surface-alignment` packet records the continuity Stage 3 lambda behavior as verified shipped reality even though the runtime path still ignores `adaptiveFusionIntent` in Stage 3. Evidence: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/spec.md:62`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/tasks.md:58`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/checklist.md:65`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment/implementation-summary.md:61`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209`].
-- **F004 [P1 | traceability]** Child packets `001-004` are not fully verification-closed: each checklist still carries `status: planned` with unchecked items, so the `017` tree is not actually fully checklist-verified. Evidence: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/001-remove-length-penalty/checklist.md:3`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/001-remove-length-penalty/checklist.md:15`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/002-add-reranker-telemetry/checklist.md:3`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/003-continuity-search-profile/checklist.md:13`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/004-raise-rerank-minimum/checklist.md:13`].
+- **F003 [P1 | traceability]** The `005-doc-surface-alignment` packet records the continuity Stage 3 lambda behavior as verified shipped reality even though the runtime path still ignores `adaptiveFusionIntent` in Stage 3. Evidence: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment/spec.md:62`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment/tasks.md:58`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment/checklist.md:65`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment/implementation-summary.md:61`], [`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209`].
+- **F004 [P1 | traceability]** Child packets `001-004` are not fully verification-closed: each checklist still carries `status: planned` with unchecked items, so the `001` tree is not actually fully checklist-verified. Evidence: [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/001-remove-length-penalty/checklist.md:3`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/001-remove-length-penalty/checklist.md:15`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/002-add-reranker-telemetry/checklist.md:3`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/003-continuity-search-profile/checklist.md:13`], [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/004-raise-rerank-minimum/checklist.md:13`].
 - **F005 [P1 | maintainability]** `.codex/agents/deep-review.toml` still instructs a non-canonical iteration schema that the active reducer does not parse. Evidence: [`.claude/agents/deep-review.md:148`], [`.codex/agents/deep-review.toml:140`], [`.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:202`].
 - **F006 [P1 | traceability]** `.codex/agents/context.toml` omits the canonical continuity recovery ladder and graph-health probe that Claude/Gemini now require for context recovery. Evidence: [`.claude/agents/context.md:29`], [`.claude/agents/context.md:48`], [`.codex/agents/context.toml:30`], [`.codex/agents/context.toml:31`].
 
@@ -40,7 +40,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 ## 5. Spec Seed
 
-- Open a follow-on child packet under `017-research-search-fusion-tuning/` for Stage 3 continuity handoff remediation plus doc-reality sync.
+- Open a follow-on child packet under `001-search-fusion-tuning/` for Stage 3 continuity handoff remediation plus doc-reality sync.
 - Open a sibling child packet for Codex mirror parity on `deep-review` and `context`.
 - If checklist closure work is kept separate, add a packet focused on `001-004` verification-state cleanup and strict validation closure.
 
@@ -50,7 +50,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 2. Correct the repo docs and `005-doc-surface-alignment` packet evidence so they no longer present the continuity Stage 3 lambda as shipped reality until the runtime fix lands.
 3. Normalize `.codex/agents/deep-review.toml` to the canonical reducer-compatible iteration template.
 4. Normalize `.codex/agents/context.toml` to the canonical `handover.md -> _memory.continuity -> spec docs` recovery ladder plus `code_graph_status()` preflight.
-5. Close or explicitly defer the unchecked checklist items in `001-004`, then re-run strict validation on the full `017` tree.
+5. Close or explicitly defer the unchecked checklist items in `001-004`, then re-run strict validation on the full `001` tree.
 
 ## 7. Traceability Status
 
@@ -65,7 +65,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 ## 8. Deferred Items
 
-- Historical packet docs outside `017` still contain `SPECKIT_TIER3_ROUTING` mentions, but the five live configs are clean and the active save handler is always-on Tier 3 with fail-open Tier 2 fallback.
+- Historical packet docs outside `001` still contain `SPECKIT_TIER3_ROUTING` mentions, but the five live configs are clean and the active save handler is always-on Tier 3 with fail-open Tier 2 fallback.
 - `SKILL.md` is not part of the active drift set: it correctly mentions continuity profile, rerank gate, and telemetry without explicitly promising the Stage 3 continuity lambda is already live.
 - No new security-sensitive regressions were found in `memory-save.ts`, the live MCP configs, or the reranker telemetry path during this review.
 
@@ -85,7 +85,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 | Target | Strict Validation Result |
 |--------|--------------------------|
-| `017-research-search-fusion-tuning/` | FAIL (`exit 2`, `Errors: 21`, `Warnings: 31`) |
+| `001-search-fusion-tuning/` | FAIL (`exit 2`, `Errors: 21`, `Warnings: 31`) |
 | `001-remove-length-penalty/` | FAIL (`exit 2`, `Errors: 4`, `Warnings: 6`) |
 | `002-add-reranker-telemetry/` | FAIL (`exit 2`, `Errors: 3`, `Warnings: 7`) |
 | `003-continuity-search-profile/` | FAIL (`exit 2`, `Errors: 4`, `Warnings: 6`) |
@@ -94,7 +94,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 ### Key Commands
 
-- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Run 10 sk-deep-review iterations across 017-research-search-fusion-tuning and ALL its sub-phases (001-005)..." --threshold 0.8`
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Run 10 sk-deep-review iterations across 001-search-fusion-tuning and ALL its sub-phases (001-005)..." --threshold 0.8`
 - `rg -n "SPECKIT_TIER3_ROUTING" . -g '!**/node_modules/**' -g '!**/dist/**'`
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict <target>`
 - `rg -n "continuity|Stage 3|lambda|getRerankerStatus|applyLengthPenalty" <runtime/docs>`

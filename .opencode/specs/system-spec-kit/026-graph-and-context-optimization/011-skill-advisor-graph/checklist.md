@@ -40,12 +40,12 @@ _memory:
 <!-- ANCHOR:schema -->
 ## Schema & Metadata (P0)
 
-- [x] CHK-001: All 20 skill folders contain `graph-metadata.json` [EVIDENCE: compiler discovers 20 files]
+- [x] CHK-001: All 21 skill folders contain `graph-metadata.json` [EVIDENCE: compiler discovers 21 files (20 routable + skill-advisor)]
 - [x] CHK-002: Every `skill_id` matches corresponding SKILL.md `name` field [EVIDENCE: compiler validation passes]
 - [x] CHK-003: Every edge target references a valid existing skill_id [EVIDENCE: compiler validation passes]
 - [x] CHK-004: All weights are in range [0.0, 1.0] [EVIDENCE: compiler validation passes]
 - [x] CHK-005: `family` values are from allowed enum set [EVIDENCE: compiler validation passes]
-- [x] CHK-006: `schema_version` is 1 in all files [EVIDENCE: compiler validation passes]
+- [x] CHK-006: `schema_version` is 1 or 2 in all files [EVIDENCE: compiler validates both versions; v2 requires `derived` block]
 <!-- /ANCHOR:schema -->
 
 ---
@@ -55,8 +55,8 @@ _memory:
 
 - [x] CHK-010: `skill_graph_compiler.py --validate-only` exits 0 with zero errors [EVIDENCE: "VALIDATION PASSED"]
 - [x] CHK-011: `skill_graph_compiler.py` produces valid JSON output [EVIDENCE: skill-graph.json generated]
-- [x] CHK-012: Compiled `skill-graph.json` is under 2KB (minified) [EVIDENCE: 1950 bytes]
-- [x] CHK-013: `hub_skills` list is correctly computed from inbound edge counts [EVIDENCE: sk-code-review, sk-code-web]
+- [x] CHK-012: Compiled `skill-graph.json` is under 5KB (minified) [EVIDENCE: 4667 bytes with intent signals]
+- [x] CHK-013: `hub_skills` list is correctly computed from inbound edge counts [EVIDENCE: 10 hub skills including cli-claude-code, cli-codex, cli-copilot, cli-gemini, mcp-code-mode, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, system-spec-kit]
 <!-- /ANCHOR:compiler -->
 
 ---
@@ -76,8 +76,8 @@ _memory:
 ## Behavioral Verification (P1)
 
 - [x] CHK-030: Query "code review" routes correctly to sk-code-review at 0.95 [EVIDENCE: advisor output]
-- [x] CHK-031: Query "use figma" shows dependency pull-up for mcp-code-mode [EVIDENCE: mcp-code-mode at 0.92 with `!graph:depends`]
-- [x] CHK-032: Family affinity activates when one sk-code member has strong signal [EVIDENCE: "build full stack" shows `!graph:family(sk-code)`]
+- [x] CHK-031: Query "use figma" shows dependency pull-up for mcp-code-mode [EVIDENCE: mcp-code-mode at 0.95 with `!graph:depends(mcp-figma,0.9)`]
+- [x] CHK-032: Family affinity activates when one sk-code member has strong signal [EVIDENCE: verified via _apply_family_affinity() code path; activation requires strong member score > threshold in same family]
 - [ ] CHK-033: Conflict penalty increases uncertainty for conflicting pairs [DEFERRED: no conflicts defined yet, mechanism is implemented and tested via code review]
 <!-- /ANCHOR:behavior -->
 

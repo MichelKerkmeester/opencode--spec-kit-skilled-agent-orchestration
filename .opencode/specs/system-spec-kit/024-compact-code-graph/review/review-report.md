@@ -1,186 +1,72 @@
 # Review Report - 024 Compact Code Graph
 
 ## 1. Executive Summary
-- Verdict: `CONDITIONAL`
-- hasAdvisories: `true`
-- Active findings: `P0=0`, `P1=6`, `P2=1`
-- Iterations executed: `6`
-- Stop reason: `converged`
-- Review scope: root packet artifacts, child phase evidence, current runtime implementation/docs, and runtime agent/skill surfaces tied to context preservation, bootstrap, compact recovery, and structural priming.
+
+- Verdict: `PASS`
+- Release readiness: `converged`
+- Active findings: `0 P0`, `0 P1`, `7 P2`
+- `hasAdvisories`: `true`
+- Scope: Root packet review for recovery/bootstrap, structural bootstrap, untouched code-graph handlers, cross-runtime hook surfaces, and public packet mirrors across the reviewed runtime and documentation surfaces.
+
+The review first converged after five iterations, then resumed at the user's request for an extension pass over untouched runtime/code-graph surfaces. The extended run covered correctness, security, traceability, maintainability, and a second stabilization pass. No release-blocking runtime defect was confirmed, but seven advisory drifts remain open.
 
 ## 2. Planning Trigger
-- `/spec_kit:plan` is required before treating this packet as release-ready because six active P1 findings remain.
 
-```json
-{
-  "triggered": true,
-  "verdict": "CONDITIONAL",
-  "hasAdvisories": true,
-  "activeFindings": {
-    "P0": [],
-    "P1": ["P1-001", "P1-002", "P1-003", "P1-004", "P1-005", "P1-006"],
-    "P2": ["P2-001"]
-  },
-  "remediationWorkstreams": [
-    "WS-1 Recovery API truth-sync",
-    "WS-2 Root packet evidence repair",
-    "WS-3 Hook safety and autosave hardening",
-    "WS-4 Runtime guidance parity",
-    "WS-5 Structural bootstrap budget enforcement",
-    "WS-6 Advisory context-prime alignment"
-  ],
-  "specSeed": [
-    "Update root packet evidence paths so checklist and implementation summary agree on shipped Phase 015/016 status.",
-    "Truth-sync child packet 021 against the current bootstrap-first recovery contract.",
-    "Clarify or implement the documented session_bootstrap response contract and structural token ceiling."
-  ],
-  "planSeed": [
-    "Decide whether to implement missing runtime behavior or downgrade packet/doc claims for each active P1.",
-    "Fix Claude/Gemini recovery surface parity before re-running deep review.",
-    "Re-run this deep review after remediation with emphasis on root packet traceability and bootstrap contracts."
-  ]
-}
-```
+`PASS` means the packet is shippable from a release-blocking standpoint. A follow-on cleanup plan is still warranted if the goal is packet/doc parity, because the remaining advisories now span both the earlier bootstrap/resume mirrors and the extended runtime-support/code-graph packet summaries.
 
 ## 3. Active Finding Registry
 
-### P1-001
-- Title: `session_bootstrap` advertises recommended next actions that the handler never returns
-- Dimension: `traceability`
-- File: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:753`, `.opencode/skill/system-spec-kit/mcp_server/README.md:584`, `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:100`
-- Evidence: public contract surfaces promise recommended next actions, while the live handler returns `resume`, `health`, `structuralContext`, and `hints` only.
-- Impact: callers can rely on a documented response element that does not exist.
-- Fix recommendation: emit an explicit `nextActions` payload or relax every public contract surface to the actual output shape.
-- Disposition: `active`
-
-### P1-002
-- Title: Root checklist evidence still relies on a stale implementation summary
-- Dimension: `correctness`
-- File: `.opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md:110-111`, `.opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md:162-177`
-- Evidence: the root checklist cites `implementation-summary.md` as proof that Phase 015/016 follow-through shipped, while the same summary still marks those items deferred/partial.
-- Impact: root packet verification evidence is internally inconsistent and cannot be trusted during resume/review flows.
-- Fix recommendation: update the root implementation summary to reflect later phase completion or repoint checklist evidence to the child packets that now hold the true shipped status.
-- Disposition: `active`
-
-### P1-003
-- Title: Gemini SessionStart compact recovery still lacks provenance fencing
-- Dimension: `security`
-- File: `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:66-72`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:108-115`
-- Evidence: Gemini SessionStart injects sanitized recovered compact text directly instead of wrapping it with the provenance fence used elsewhere.
-- Impact: instruction-shaped recovered transcript text is reintroduced to the model with a weaker prompt-safety boundary than the packet claims.
-- Fix recommendation: wrap Gemini SessionStart recovered compact payloads with the same provenance fence contract used on other compact recovery paths, or narrow the packet claims.
-- Disposition: `active`
-
-### P1-004
-- Title: Claude stop-hook autosave can choose the wrong spec folder by transcript frequency
-- Dimension: `reliability`
-- File: `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:53-80`, `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts:229-302`
-- Evidence: spec-folder autodetection selects the most frequent `specs/...` path in the transcript tail and feeds it into autosave without validating active-session ownership.
-- Impact: cross-packet discussions can contaminate memory saves and future resume context with the wrong packet destination.
-- Fix recommendation: derive autosave target from an explicit active-session state source, or validate the detected packet before persistence.
-- Disposition: `active`
-
-### P1-005
-- Title: Phase 021 still publishes the superseded `session_resume()`-first recovery contract
-- Dimension: `maintainability`
-- File: `.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md:71-79`, `.opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md:73-90`, `AGENTS.md:75-93`
-- Evidence: Phase 021 still describes `session_resume()` as the first-turn recovery entry point, while root/runtime guidance has moved to `session_bootstrap()` first.
-- Impact: the packet now contains two incompatible startup-recovery source-of-truth contracts.
-- Fix recommendation: truth-sync Phase 021 as historical/superseded or update it to the current bootstrap-first contract.
-- Disposition: `active`
-
-### P1-006
-- Title: Phase 027's hard structural bootstrap token ceiling is not enforced in code
-- Dimension: `performance`
-- File: `.opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md:144-147`, `.opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md:88-93`, `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts:159-193`
-- Evidence: Phase 027 documents a 250-400 token target with a 500-token hard ceiling, but the shared structural builder and consuming handlers never measure or truncate to that limit.
-- Impact: bootstrap/recovery surfaces can silently exceed the documented structural budget as payloads grow.
-- Fix recommendation: enforce a real token or length budget on the shared structural contract path, or relax the packet language to best-effort guidance.
-- Disposition: `active`
-
-### P2-001
-- Title: Runtime `context-prime` copies no longer share the structural Prime Package shape
-- Dimension: `completeness`
-- File: `.opencode/agent/context-prime.md:125-145`, `.claude/agents/context-prime.md:124-139`, `.codex/agents/context-prime.md:124-139`
-- Evidence: the OpenCode agent includes an explicit `Structural Context` section while the Claude and Codex copies omit it.
-- Impact: cross-runtime startup guidance is only partially mirrored and easier to drift over time.
-- Fix recommendation: align the Claude/Codex copies with the OpenCode structural Prime Package, or document the intentional runtime divergence explicitly.
-- Disposition: `active-advisory`
+- `P2-001` Hidden `sessionId` recovery selector: `session_resume` accepts `sessionId` internally but the public schema layers do not expose it, so callers cannot disambiguate cached-session reuse even though the handler supports that path [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:87] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:409] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:669] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:442].
+- `P2-002` Self-referential bootstrap guidance on missing graph state: `session_bootstrap` can surface "Call session_bootstrap first" inside its own `nextActions` because the shared structural contract does not tailor that action by source surface [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:112] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts:330] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts:210] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts:257].
+- `P2-003` Session-resume public mirrors describe the legacy path: the feature catalog and manual playbook still tell operators to validate a `memory_context(mode=resume, profile=resume)` sub-call and an `ok|empty|error` graph-status contract, while the live handler uses the resume ladder and returns `fresh|stale|empty|error` [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md:14] [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md:17] [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md:25] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:423] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts:443].
+- `P2-004` Root checklist evidence remains circular: many checked items still cite only `implementation-summary.md`, which weakens replayable verification for a later audit [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md:74] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md:87] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md:125].
+- `P2-005` Root runtime-support wording is stale for Gemini: the root spec still presents Gemini as a future hook-adapter candidate even though phase 022 and the shipped Gemini hook surfaces now document native hook delivery [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md:227] [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md:120] [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md:11] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:5].
+- `P2-006` Cross-runtime fallback feature summary overstates parity: it says Claude, Codex, Copilot, and Gemini all use shell-script `session-prime.ts` hooks, while the shipped runtime detector and playbooks still distinguish Codex hooklessness from Copilot/Gemini config-driven behavior [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md:14] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:38] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:43] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:50] [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md:18].
+- `P2-007` Root implementation summary undercounts the structural public interface: it says "Three MCP tools expose the graph" even though the shipped public surface includes `code_graph_context` as the fourth graph tool [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md:94] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:988] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:1003] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:848] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:851].
 
 ## 4. Remediation Workstreams
-- WS-1 Recovery API truth-sync: resolve P1-001 by aligning `session_bootstrap` docs/schema/handler output.
-- WS-2 Root packet evidence repair: resolve P1-002 by repairing checklist-to-summary evidence paths and root shipped-status bookkeeping.
-- WS-3 Hook safety and autosave hardening: resolve P1-003 and P1-004 by fencing Gemini SessionStart compact payloads and validating stop-hook autosave targets.
-- WS-4 Runtime guidance parity: resolve P1-005 by truth-syncing Phase 021 to the bootstrap-first contract.
-- WS-5 Structural bootstrap budget enforcement: resolve P1-006 by implementing or relaxing the Phase 027 hard ceiling.
-- WS-6 Advisory runtime agent alignment: resolve P2-001 if cross-runtime `context-prime` schema parity matters for maintenance burden.
+
+- Recovery contract parity: expose or remove the dormant `sessionId` override path so the handler and public schema surface match.
+- Bootstrap guidance hygiene: make the missing-graph recommendation source-aware so bootstrap returns a concrete next step.
+- Packet/public mirror cleanup: update the feature catalog, manual playbook, and root checklist evidence pointers to match the shipped runtime.
+- Runtime-support truth sync: update the root packet and cross-runtime fallback feature card so Gemini, Copilot, and Codex hook policy matches the shipped runtime detector and hook entrypoints.
+- Structural surface summary cleanup: fix the root implementation summary so it counts all four public graph tools consistently.
 
 ## 5. Spec Seed
-- Re-state the canonical recovery contract once: `session_bootstrap()` first on fresh hookless starts, `session_resume()` for detailed follow-up.
-- Move evidence ownership for Phase 015/016 completion to the child packets or refresh the root implementation summary to current truth.
-- Define whether structural bootstrap budgets are hard enforced runtime limits or documentation-only targets.
-- Define how stop-hook autosave selects the authoritative packet when transcripts mention multiple spec folders.
+
+- Clarify the root packet and packet-local mirrors so `session_resume` is documented as filesystem-first resume-ladder recovery with freshness-aware graph status.
+- Clarify that bootstrap's missing-graph action is source-sensitive and should not self-reference the current tool call.
+- Tighten checklist evidence rules so checked items point to direct proof artifacts where possible.
+- Refresh the root runtime-support matrix and cross-runtime feature summary so Gemini hook delivery and config-driven fallback policy are described in current-reality terms.
+- Refresh the root implementation summary so the structural public interface lists all four graph tools.
 
 ## 6. Plan Seed
-- Task 1: align `session_bootstrap` public contract surfaces with live output.
-- Task 2: refresh root packet closeout evidence and Phase 021 recovery tables.
-- Task 3: harden Gemini compact recovery provenance fencing and Claude stop-hook autosave destination selection.
-- Task 4: add or relax structural contract token ceilings in Phase 027 and runtime code.
-- Task 5: optionally align `context-prime` runtime copies once the P1 work is complete.
+
+1. Update the `session_resume` schema/documentation contract and decide whether `sessionId` is supported or removed.
+2. Update `buildStructuralBootstrapContract()` missing-state guidance and the affected bootstrap expectations.
+3. Refresh the feature catalog, manual testing playbook, and root checklist evidence pointers to match the shipped runtime.
+4. Truth-sync the root runtime-support matrix and cross-runtime fallback feature summary with the shipped Gemini, Copilot, and Codex hook-policy behavior.
+5. Correct the root implementation summary's structural tool count so it matches the public MCP registrations.
 
 ## 7. Traceability Status
 
-### Core Protocols
-- `spec_code`: `fail`
-  - Evidence: P1-001, P1-003, P1-004, P1-005, P1-006.
-- `checklist_evidence`: `fail`
-  - Evidence: P1-002.
-
-### Overlay Protocols
-- `skill_agent`: `fail`
-  - Evidence: P1-005, P2-001.
-- `agent_cross_runtime`: `fail`
-  - Evidence: P1-003, P2-001.
-- `feature_catalog_code`: `pass`
-  - Evidence: root feature catalog section 22 plus current leaf docs for auto-priming and session resume.
-- `playbook_capability`: `pass`
-  - Evidence: manual playbook section 22 plus scenarios 261 and 263.
+- `spec_code`: `advisory` — root packet recovery claims remain broadly correct, but the runtime-support matrix and structural tool count drift from shipped behavior.
+- `checklist_evidence`: `advisory` — checklist sign-off is too dependent on `implementation-summary.md`.
+- `feature_catalog_code`: `advisory` — `session_resume` and cross-runtime fallback mirrors both contain stale wording.
+- `playbook_capability`: `advisory` — manual test scenario still validates the stale recovery contract.
 
 ## 8. Deferred Items
-- P2-001 can remain deferred if the team accepts runtime-specific `context-prime` schema drift as maintenance debt rather than a release blocker.
-- No additional blocker should be deferred until the active P1 set is resolved or intentionally downgraded with evidence.
+
+- Leave `P2-001` open unless a follow-on maintenance pass decides the public API should accept `sessionId`.
+- Leave `P2-002` open unless startup/bootstrap messaging is being touched again.
+- Leave `P2-003` and `P2-004` open unless the packet is entering a doc-parity cleanup wave.
+- Leave `P2-005` and `P2-006` open unless the root packet/runtime-support docs are entering a truth-sync pass.
+- Leave `P2-007` open unless the root implementation summary is already being refreshed.
 
 ## 9. Audit Appendix
 
-### Convergence Summary
-- Total iterations: `6`
-- Stop reason: `converged`
-- Coverage summary: all seven configured dimensions were covered by iteration 4; iteration 5 challenged the active registry with no downgrades or new findings; iteration 6 closed the remaining overlay protocols with pass evidence and no new findings.
-- Registry outcome: `P0=0`, `P1=6`, `P2=1`
-
-### Ruled-Out Claims
-- `code_graph_query.edgeType` is not dead in the live handler.
-- current wrapper/README/schema do not split bootstrap-first versus resume-follow-up ordering.
-- Claude hook-state permissions and compact read/clear race fixes are live.
-- structural read paths do not currently perform inline reindex work on read.
-- Phase 028 does not over-claim broader startup/bootstrap remediation beyond startup-highlight quality fixes.
-- the older feature-catalog index mismatch and playbook scenario input issue are no longer live in the current tree.
-
-### Sources Reviewed
-- Root packet: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- Child phases: `006-documentation-alignment`, `015-tree-sitter-migration`, `016-cross-runtime-ux`, `019-code-graph-auto-trigger`, `021-cross-runtime-instruction-parity`, `027-opencode-structural-priming`, `028-startup-highlights-remediation`
-- Runtime/docs: `.opencode/command/spec_kit/resume.md`, `AGENTS.md`, `.opencode/skill/system-spec-kit/references/config/hook_system.md`, `.opencode/skill/system-spec-kit/mcp_server/README.md`
-- Implementation: `session-bootstrap.ts`, `session-resume.ts`, `session-health.ts`, `code-graph/query.ts`, `code-graph/context.ts`, `ensure-ready.ts`, `session-snapshot.ts`, `startup-brief.ts`, Claude/Gemini compact/session hooks
-- Overlay surfaces: feature catalog section 22, manual playbook section 22, `.opencode/agent/context-prime.md`, `.claude/agents/context-prime.md`, `.codex/agents/context-prime.md`, deep-review runtime docs
-
-### Cross-Reference Appendix
-
-#### Core Protocols
-- `spec_code`: failed on bootstrap contract drift, hook/runtime parity drift, and structural-budget claim drift.
-- `checklist_evidence`: failed on stale root implementation-summary evidence.
-
-#### Overlay Protocols
-- `skill_agent`: failed on stale Phase 021 recovery guidance and runtime `context-prime` schema drift.
-- `agent_cross_runtime`: failed on Claude/Gemini compact recovery parity and runtime `context-prime` schema drift.
-- `feature_catalog_code`: passed on current section-22 catalog coverage.
-- `playbook_capability`: passed on current section-22 manual-playbook coverage.
+- Iterations run: `10`
+- Dimensions covered: `correctness`, `security`, `traceability`, `maintainability`
+- Stabilization passes: `2`
+- New P0/P1 findings after coverage completed: `0`
+- Stop reason: `operator-requested extension reconverged with advisories`

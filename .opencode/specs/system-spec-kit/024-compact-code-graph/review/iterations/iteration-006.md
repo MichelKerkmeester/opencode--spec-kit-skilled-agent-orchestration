@@ -1,71 +1,38 @@
-# Review Iteration 6: Traceability - Overlay coverage closeout / synthesis prep
-
-## Focus
-Close the remaining overlay protocols (`feature_catalog_code`, `playbook_capability`) using current-tree feature-catalog and manual-playbook evidence, then do a narrow synthesis-readiness check against the untouched deep-review docs.
+# Iteration 006 - Traceability Extension
 
 ## Scope
-- Review target: `.opencode/specs/system-spec-kit/024-compact-code-graph`
-- Spec refs: `.opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md`, `.opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md`
-- Dimension: traceability
 
-## Scorecard
-| File | Corr | Sec | Trace | Maint |
-|------|------|-----|-------|-------|
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md` | 3 | 3 | 4 | 4 |
-| `.opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md` | 3 | 3 | 4 | 3 |
-| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/16-mcp-auto-priming.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md` | 3 | 3 | 4 | 4 |
-| `.opencode/skill/sk-deep-review/SKILL.md` | 3 | 3 | 4 | 4 |
-| `.opencode/agent/deep-review.md` | 3 | 3 | 4 | 4 |
-| `.claude/agents/deep-review.md` | 3 | 3 | 4 | 4 |
+- Dimension: `traceability`
+- Reviewed surfaces:
+  - `.opencode/specs/system-spec-kit/024-compact-code-graph/spec.md`
+  - `.opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md`
+  - `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md`
+  - `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md`
+  - `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md`
+  - `.opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/253-runtime-detection.md`
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/tests/runtime-detection.vitest.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/README.md`
+  - `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
 
 ## Findings
-No new findings added this iteration.
 
-## Cross-Reference Results
-### Core Protocols
-- Confirmed: Phase 006 explicitly made feature-catalog and manual-playbook coverage part of this packet's documentation contract, so checking those surfaces is in-scope for closeout.[SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md:67-156]
-- Contradictions: None new this iteration.
-- Unknowns: None needed for protocol closure.
+### P0
 
-### Overlay Protocols
-- Confirmed: `feature_catalog_code` is applicable and now passes. The root catalog indexes section 22 and the current leaf entries for `MCP auto-priming` and `Session resume tool` exist, are wired to live implementation files, and describe the current shipped surfaces rather than an archived contract.[SOURCE: .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:12-36][SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/16-mcp-auto-priming.md:6-38][SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md:6-40]
-- Confirmed: `playbook_capability` is applicable and now passes. The root playbook indexes section 22 and the current scenario files for IDs 261 and 263 exercise valid live tool surfaces (`memory_stats`/`session_health` one-shot priming checks and `session_resume` structural payload checks) with feature-catalog cross-links intact.[SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:14-37][SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:145-180][SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md:16-39][SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md:16-42]
-- Confirmed: The untouched deep-review docs are not a new blocker for synthesis readiness; they stay runtime-scoped by design (`.opencode` vs `.claude`) and do not create a new cross-runtime contradiction for this packet's remaining overlay coverage check.[SOURCE: .opencode/skill/sk-deep-review/SKILL.md:17-20][SOURCE: .opencode/skill/sk-deep-review/SKILL.md:345-351][SOURCE: .opencode/agent/deep-review.md:25-31][SOURCE: .claude/agents/deep-review.md:20-26]
-- Contradictions: None new this iteration.
-- Unknowns: Manual scenario execution itself was not rerun in this iteration because the protocol question was applicability/coverage closeout, not runtime revalidation.
+- None.
 
-## Ruled Out
-- The older feature-catalog root/index mismatch is no longer live; the root catalog now includes section 22 and therefore does not leave the context-preservation feature set orphaned.[SOURCE: .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:12-36]
-- The earlier playbook issue where scenario `261d` used an invalid `memory_stats` call shape is no longer live; the current scenario now uses explicit `memory_context(..., sessionId)` calls for session-scoped priming isolation.[SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md:34-39]
-- The untouched deep-review docs do not reopen the prior runtime-copy drift finding because their path conventions intentionally differ by runtime and still point to the matching runtime directories.[SOURCE: .opencode/skill/sk-deep-review/SKILL.md:17-20][SOURCE: .opencode/agent/deep-review.md:25-31][SOURCE: .claude/agents/deep-review.md:20-26]
+### P1
 
-## Sources Reviewed
-- [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/006-documentation-alignment/spec.md:67-156]
-- [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md:85-120]
-- [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:12-36]
-- [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/16-mcp-auto-priming.md:6-38]
-- [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md:6-40]
-- [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:14-37]
-- [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:145-180]
-- [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/261-mcp-auto-priming.md:16-39]
-- [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/263-session-resume.md:16-42]
-- [SOURCE: .opencode/skill/sk-deep-review/SKILL.md:17-20]
-- [SOURCE: .opencode/skill/sk-deep-review/SKILL.md:345-351]
-- [SOURCE: .opencode/agent/deep-review.md:25-31]
-- [SOURCE: .claude/agents/deep-review.md:20-26]
+- None.
 
-## Assessment
-- Confirmed findings: 0
-- New findings ratio: 0.00
-- noveltyJustification: This pass only closed two pending overlay protocols with pass evidence and ruled out stale prior-rerun concerns, so weightedNew, weightedRefinement, and weightedTotal are all 0.
-- Dimensions addressed: [traceability]
+### P2
 
-## Reflection
-- What worked: Reviewing the root catalog/playbook indexes alongside one representative current leaf pair per overlay protocol was enough to close coverage without reopening broad packet scans.
-- What did not work: Broad keyword grep across the whole spec folder produced too much archived and scratch noise for a narrow synthesis-prep pass.
-- Next adjustment: Move to synthesis/report generation with the active P1 registry unchanged and overlay protocol coverage treated as closed.
+- P2-005: The root packet still frames Gemini CLI as a future hook-adapter candidate even though the shipped packet history and runtime surfaces now document Gemini-native hook delivery. The root spec still says Gemini remains `tool fallback by policy` and a `Hook adapter candidate` [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/spec.md:227], while the implementation summary records Phase 022 as shipped Gemini hook porting [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md:120], the Gemini feature card describes live lifecycle hooks [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md:11] [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md:13], and the runtime hook entrypoint exists as a real SessionStart injector [SOURCE: .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:5]. This leaves the root packet behind current reality on one of its advertised runtime-support surfaces.
+- P2-006: The cross-runtime fallback feature summary overstates hook parity by claiming Claude Code, Codex CLI, Copilot CLI, and Gemini CLI all use shell-script `session-prime.ts` hooks [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md:14]. The runtime detector still reports Codex as hook-unavailable [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:38] and treats Copilot and Gemini as config-driven rather than always-on [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:43] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/code-graph/runtime-detection.ts:50]. The packet playbooks already describe the correct dynamic fallback model for Codex, Copilot, and Gemini [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md:18] [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/253-runtime-detection.md:26], so the feature summary is now the stale mirror.
+- P2-007: The root implementation summary undercounts the shipped structural tool surface by saying "Three MCP tools expose the graph" while the same sentence and canonical tool registrations include `code_graph_context` as a fourth public tool [SOURCE: .opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md:94] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:988] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/README.md:1003] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:848] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:851]. The packet still points readers to the right feature family, but its root summary no longer gives a replayable count of the public structural interface.
+
+## Notes
+
+- The packet-local playbooks for cross-runtime fallback and runtime detection already reflect the current dynamic hook-policy model for Codex, Copilot, and Gemini [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md:18] [SOURCE: .opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/253-runtime-detection.md:17].
+- The extension pass added documentation-parity findings only; it did not uncover a runtime bug in the Gemini hook entrypoint or the runtime-detection logic.

@@ -9,15 +9,13 @@ phase_018_replaces: "Legacy placeholder recovery wording that pointed at .claude
 
 ## 1. OVERVIEW
 
-Cross-runtime fallback ensures context injection remains available when runtime hooks are missing, disabled by scope, or intentionally unavailable.
-
-All runtimes now have hook or bootstrap-based startup injection. Claude Code, Codex CLI, Copilot CLI, and Gemini CLI use shell-script `session-prime.ts` hooks. OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). When hooks fail or are unavailable in any runtime, recover through the canonical tool-based path starting with `/spec_kit:resume`, which resolves `handover.md -> _memory.continuity -> spec docs`; `session_bootstrap()` and `session_resume()` remain the lower-level recovery surfaces for structural bootstrap and detailed merged state. Runtime detection identifies the active runtime and its current hook policy.
+Claude Code uses native hooks. Codex CLI is hookless and always falls back to the tool path. Copilot CLI uses repo-scoped `.github/hooks/*.json` wiring, and Gemini CLI uses `.gemini/settings.json` hook configuration plus the shipped Gemini hook entrypoints (including `mcp_server/hooks/gemini/session-prime.ts`). OpenCode uses plugin-based hooks (`@opencode-ai/plugin` at `.opencode/plugins/spec-kit-compact-code-graph.js`). When hooks fail or are unavailable in any runtime, recover through the canonical tool-based path starting with `/spec_kit:resume`, which resolves `handover.md -> _memory.continuity -> spec docs`; `session_bootstrap()` and `session_resume()` remain the lower-level recovery surfaces for structural bootstrap and detailed merged state. Runtime detection identifies the active runtime and its current hook policy.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Runtime detection is the source of truth for hook-aware fallback. It identifies the active runtime, classifies the current hook policy as enabled, disabled_by_scope, unavailable, or unknown, and then lets packet recovery fall back through `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain when runtime hooks are missing.
+Runtime detection is the source of truth for hook-aware fallback. It identifies the active runtime, classifies the current hook policy as `enabled`, `disabled_by_scope`, `unavailable`, or `unknown`, and then lets packet recovery fall back through `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain when runtime hooks are missing. The contract is intentionally runtime-specific rather than "all shells behave the same."
 
 ---
 

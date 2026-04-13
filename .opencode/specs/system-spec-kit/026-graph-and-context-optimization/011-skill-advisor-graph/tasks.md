@@ -69,3 +69,7 @@ _memory:
 - [x] T011 Add new regression cases for graph boost behavior [EVIDENCE: 3 new P1-GRAPH cases added]
 - [x] T012 Write implementation-summary.md, finalize checklist
 <!-- /ANCHOR:phase-3 -->
+
+---
+
+**Note:** Follow-up work is tracked in child phase ledgers: `001-research-findings-fixes/tasks.md` (5 deferred P1 items) and `005-repo-wide-path-migration/tasks.md` (closeout remediation pass). This parent ledger covers the original implementation scope only.

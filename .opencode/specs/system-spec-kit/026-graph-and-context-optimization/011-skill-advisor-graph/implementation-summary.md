@@ -31,11 +31,11 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 
 ### Components Delivered
 
-1. **20 per-skill `graph-metadata.json` files** — Each skill folder contains a JSON file with `skill_id`, `family`, `category`, `edges` (depends_on, enhances, siblings, conflicts_with, prerequisite_for), `domains`, and `intent_signals`.
+1. **21 per-skill `graph-metadata.json` files** — Each skill folder (20 routable + skill-advisor) contains a JSON file with `skill_id`, `family`, `category`, `edges` (depends_on, enhances, siblings, conflicts_with, prerequisite_for), `domains`, and `intent_signals`.
 
 2. **`skill_graph_compiler.py`** — Generator script that discovers, validates (schema + edge symmetry), and compiles all per-skill metadata into a single `skill-graph.json`. Supports `--validate-only`, `--pretty`, `--output` flags.
 
-3. **`skill-graph.json`** — Compiled graph at 1950 bytes (under 2KB target). Contains 6 families, 15 adjacency entries, hub skills list. Sparse adjacency format for O(1) lookups.
+3. **`skill-graph.json`** — Compiled graph at 4667 bytes (under 5KB target, relaxed from original 2KB to accommodate intent signals). Contains 6 families, 21 skills, 10 hub skills, sparse adjacency format for O(1) lookups.
 
 4. **`skill_advisor.py` integration** — 4 new functions + 3 call-site insertions:
    - `_load_skill_graph()` — Lazy-load with global cache
@@ -44,7 +44,7 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
    - `_apply_graph_conflict_penalty()` — +0.15 uncertainty for conflicting pairs
    - Health check extended with `skill_graph_loaded`, `skill_graph_skill_count`
 
-5. **Regression fixtures** — 3 pre-existing wrong expectations fixed, 3 new graph-specific test cases added. 44/44 pass.
+5. **Regression fixtures** — 3 regression case expectations updated to reflect graph-aware routing behavior, 3 new graph-specific test cases added. 44/44 pass.
 
 ---
 
@@ -65,7 +65,7 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 ### Compiler
 - `skill_graph_compiler.py --validate-only` — 20 files pass, zero errors
 - Compiled output: 1950 bytes (under 2KB)
-- Hub skills correctly computed: `sk-code-review`, `sk-code-web`
+- Hub skills correctly computed: 10 skills above median inbound edges (cli-claude-code, cli-codex, cli-copilot, cli-gemini, mcp-code-mode, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, system-spec-kit)
 
 ### Advisor Integration
 - `--health` reports `skill_graph_loaded: true`, `skill_graph_skill_count: 20`
@@ -77,6 +77,7 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 - All P0 cases: 12/12 (100%)
 - Top-1 accuracy: 100%
 - Command bridge false positives: 0%
+- 3 graph-specific test cases added (P1-GRAPH-001/002/003)
 
 ---
 

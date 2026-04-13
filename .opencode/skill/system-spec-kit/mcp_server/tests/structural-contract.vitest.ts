@@ -110,6 +110,26 @@ describe('buildStructuralBootstrapContract', () => {
     expect(contract.provenance?.trustState).toBe('stale');
   });
 
+  it('avoids self-referential guidance when session_bootstrap is already the current surface', async () => {
+    vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
+      getStats: vi.fn(() => freshGraphMock({
+        totalFiles: 0, totalNodes: 0, totalEdges: 0,
+        lastScanTimestamp: null,
+      })),
+    }));
+    vi.doMock('../lib/code-graph/ensure-ready.js', () => ({
+      getGraphFreshness: vi.fn(() => 'empty'),
+    }));
+    setupSharedMocks();
+
+    const { buildStructuralBootstrapContract } = await import('../lib/session/session-snapshot.js');
+    const contract = buildStructuralBootstrapContract('session_bootstrap');
+
+    expect(contract.status).toBe('missing');
+    expect(contract.recommendedAction).toContain('code_graph_scan');
+    expect(contract.recommendedAction).not.toContain('Call session_bootstrap first');
+  });
+
   it('returns missing status when graph DB throws', async () => {
     vi.doMock('../lib/code-graph/code-graph-db.js', () => ({
       getStats: vi.fn(() => { throw new Error('DB not initialized'); }),
