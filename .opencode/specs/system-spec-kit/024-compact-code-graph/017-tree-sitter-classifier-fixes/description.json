@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/017-tree-sitter-classifier-fixes",
+  "description": "Phase 017: Tree-Sitter & Query-Intent Classifier Fixes",
+  "keywords": [
+    "phase",
+    "017",
+    "tree-sitter",
+    "query-intent",
+    "classifier",
+    "fixes"
+  ],
+  "lastUpdated": "2026-04-13T04:56:36.594Z",
+  "specId": "017",
+  "folderSlug": "tree-sitter-classifier-fixes",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

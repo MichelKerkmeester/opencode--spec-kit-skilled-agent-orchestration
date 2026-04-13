@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze",
+  "description": "001-architecture-boundary-freeze: Freeze Authority Boundaries",
+  "keywords": [
+    "001-architecture-boundary-freeze",
+    "freeze",
+    "authority",
+    "boundaries"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.422Z",
+  "specId": "001",
+  "folderSlug": "architecture-boundary-freeze",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

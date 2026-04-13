@@ -1,0 +1,669 @@
+{
+  "sessionId": "73f56143-edd1-45c2-9893-149fa736250f",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": {
+    "stopReason": "Completed 10 planned iterations with all 6 research questions answered and synthesis generated.",
+    "totalIterations": 10,
+    "answeredCount": 6,
+    "totalQuestions": 6,
+    "timestamp": "2026-04-13T06:05:00Z"
+  },
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {
+      "id": "question-1-rq-1-what-is-the-classification-accuracy-of-tier1-hard-rules-which-of-the-7-rule",
+      "text": "RQ-1: What is the classification accuracy of Tier1 hard rules? Which of the 7 rules fire most often, and do any produce false positives?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 5
+    },
+    {
+      "id": "question-2-rq-2-what-is-the-tier1-tier2-escalation-rate-what-types-of-content-trigger-escal",
+      "text": "RQ-2: What is the Tier1->Tier2 escalation rate? What types of content trigger escalation (top1 below threshold, narrow margin, mixed signals)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 4
+    },
+    {
+      "id": "question-3-rq-3-what-are-the-confusion-pairs-between-categories-for-example-does-narrative-",
+      "text": "RQ-3: What are the confusion pairs between categories? (for example, does `narrative_progress` get confused with `task_update`?)",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 6
+    },
+    {
+      "id": "question-4-rq-4-are-the-0-70-0-70-0-50-thresholds-optimal-or-would-different-values-reduce-",
+      "text": "RQ-4: Are the 0.70/0.70/0.50 thresholds optimal, or would different values reduce escalation without losing accuracy?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 9
+    },
+    {
+      "id": "question-5-rq-5-what-merge-modes-succeed-vs-fail-for-each-category-are-there-categories-whe",
+      "text": "RQ-5: What merge modes succeed vs fail for each category? Are there categories where the default merge mode is wrong?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 8
+    },
+    {
+      "id": "question-6-rq-6-how-does-the-routeas-override-interact-with-natural-classification-does-ove",
+      "text": "RQ-6: How does the `routeAs` override interact with natural classification? Does override produce better or worse outcomes?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": 9
+    }
+  ],
+  "keyFindings": [
+    {
+      "id": "finding-1-2-the-code-currently-contains-eight-hard-tier1-rules-not-seven-four-structured-rou",
+      "text": "The code currently contains eight hard Tier1 rules, not seven: four structured routes (`decision`, `handover`, `research`, `task_update`), one structured metadata route, and three hard drops (`toolCalls`, transcript wrapper, placeholder boilerplate). [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:12`"
+      ]
+    },
+    {
+      "id": "finding-1-3-the-hard-rule-library-is-ordered-so-the-first-matching-rule-wins-before-any-heur",
+      "text": "The hard-rule library is ordered, so the first matching rule wins before any heuristic scoring or prototype similarity runs. That makes structured fields and transcript-like wrappers dominant over lexical cues. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:167]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:12`"
+      ]
+    },
+    {
+      "id": "finding-1-1-the-live-router-defines-eight-routing-categories-and-four-confidence-related-con",
+      "text": "The live router defines eight routing categories and four confidence-related constants: `0.70` for Tier1, `0.70` for Tier2, `0.50` for Tier3, and a `0.15` Tier2 fallback penalty. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:12]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:12`"
+      ]
+    },
+    {
+      "id": "finding-1-4-the-spec-packet-s-rq-wording-says-7-tier1-rules-which-is-already-stale-against-t",
+      "text": "The spec packet's RQ wording says \"7 Tier1 rules,\" which is already stale against the current source and should be treated as a documentation mismatch, not an implementation bug. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:28] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:5`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:12`"
+      ]
+    },
+    {
+      "id": "finding-2-4-several-prototype-texts-intentionally-contain-overlapping-language-such-as-verif",
+      "text": "Several prototype texts intentionally contain overlapping language such as \"verification,\" \"same-pass alignment,\" \"research,\" or \"current state,\" which means the library is designed to expose confusion pressure rather than remove it. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:47] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:173]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`"
+      ]
+    },
+    {
+      "id": "finding-2-2-target-selection-is-deterministic-by-category-progress-and-delivery-append-parag",
+      "text": "Target selection is deterministic by category: progress and delivery append paragraphs to `implementation-summary.md`, research and handover append sections, tasks update a phase anchor, metadata writes `_memory.continuity`, and `decision` switches between ADR insertion on `L3/L3+` and in-place summary updates on `L1/L2`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:92]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`"
+      ]
+    },
+    {
+      "id": "finding-2-3-the-tier2-library-is-balanced-structurally-five-prototypes-per-category-across-a",
+      "text": "The Tier2 library is balanced structurally: five prototypes per category across all eight categories, with labels, tags, and negative hints. That makes prototype coverage broad enough for a synthetic corpus without inventing a separate labeling scheme. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:415]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`"
+      ]
+    },
+    {
+      "id": "finding-2-1-tier1-heuristic-scoring-is-cue-driven-and-asymmetric-each-cue-regex-adds-0-18-bu",
+      "text": "Tier1 heuristic scoring is cue-driven and asymmetric: each cue regex adds `0.18`, but some categories also receive floor boosts, such as `narrative_progress` at `0.72`, `narrative_delivery` at `0.74`, `decision` at `0.76`, `task_update` at `0.90`, `handover_state` at `0.84`, `research_finding` at `0.80`, `metadata_only` at `0.93`, and `drop` at `0.92`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842]",
+      "addedAtIteration": 2,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:842`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`"
+      ]
+    },
+    {
+      "id": "finding-3-3-the-canonical-save-handler-currently-constructs-createcontentrouter-with-no-depe",
+      "text": "The canonical save handler currently constructs `createContentRouter()` with no dependency injection, so `classifyWithTier3` defaults to `null` in the actual writer path. Tier3 exists in tests and the router contract, but not in the live save wiring studied here. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212`"
+      ]
+    },
+    {
+      "id": "finding-3-2-the-prompt-contract-is-strict-about-the-eight-categories-a-refusal-path-via-refu",
+      "text": "The prompt contract is strict about the eight categories, a refusal path via `refuse-to-route`, and merge-mode constraints, so Tier3 is designed as a bounded classifier, not a free-form router. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:421]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212`"
+      ]
+    },
+    {
+      "id": "finding-3-1-the-router-exports-a-fully-frozen-tier3-contract-prompt-version-tier3-router-v1-",
+      "text": "The router exports a fully frozen Tier3 contract: prompt version `tier3-router-v1`, model `gpt-5.4`, reasoning effort `low`, temperature `0`, `200` max output tokens, and `2000ms` timeout. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:472]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212`"
+      ]
+    },
+    {
+      "id": "finding-3-4-the-test-suite-proves-tier3-behavior-only-under-injected-classifiers-or-caches-t",
+      "text": "The test suite proves Tier3 behavior only under injected classifiers or caches. That is valuable for contract safety, but it also means Tier3 threshold tuning alone cannot improve the current save path until the handler injects a real classifier. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:246]",
+      "addedAtIteration": 3,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212`"
+      ]
+    },
+    {
+      "id": "finding-4-3-because-tier3-is-unwired-in-the-save-handler-ambiguous-content-in-the-live-path-",
+      "text": "Because Tier3 is unwired in the save handler, ambiguous content in the live path either routes via Tier2 or lands in the penalized Tier2 fallback band before refusal. A direct runtime check showed an ambiguous sample refusing at `0.4965` with `tier3: null`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008] [INFERENCE: live execution of dist/lib/routing/content-router.js against an ambiguous sample derived from the Tier3 refusal test]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:310`"
+      ]
+    },
+    {
+      "id": "finding-4-1-natural-routing-follows-a-strict-ladder-accept-tier1-only-if-confidence-clears-t",
+      "text": "Natural routing follows a strict ladder: accept Tier1 only if confidence clears the floor and the trigger reason is neither `mixed_signals` nor `margin_too_narrow`; otherwise try Tier2; if Tier2 misses its floor, attempt Tier3; if Tier3 is absent or weak, try penalized Tier2 fallback; then refuse. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:310`"
+      ]
+    },
+    {
+      "id": "finding-4-4-tests-confirm-the-intended-behaviors-at-the-edges-injected-tier3-can-win-with-0-",
+      "text": "Tests confirm the intended behaviors at the edges: injected Tier3 can win with `0.83`, cache hits can bypass recomputation, and a weak Tier3 result below `0.50` forces refusal. Those cases are contract-valid but not currently production-wired. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:310]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:310`"
+      ]
+    },
+    {
+      "id": "finding-4-2-there-are-exactly-four-escalation-reasons-top1-below-0-70-margin-too-narrow-mixe",
+      "text": "There are exactly four escalation reasons: `top1_below_0_70`, `margin_too_narrow`, `mixed_signals`, and `manual_retry`. `manual_retry` is also the default \"no blocker\" state after a confident Tier1 result, so it is not itself evidence of escalation. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:904]",
+      "addedAtIteration": 4,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:310`"
+      ]
+    },
+    {
+      "id": "finding-5-5-category-performance-is-uneven-decision-task-update-and-metadata-only-were-perfe",
+      "text": "Category performance is uneven: `decision`, `task_update`, and `metadata_only` were perfect on the corpus, while `handover_state` (`62.5%`) and `narrative_delivery` (`68.75%`) were the weakest categories. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:76] [INFERENCE: live execution of dist/lib/routing/content-router.js on the synthetic corpus]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
+      ]
+    },
+    {
+      "id": "finding-5-3-hard-tier1-rules-fired-on-only-14-of-the-132-samples-but-they-were-perfect-on-th",
+      "text": "Hard Tier1 rules fired on only 14 of the 132 samples, but they were perfect on this corpus: 9 placeholder boilerplate drops, 2 transcript-wrapper drops, and one each for structured `decision`, structured `metadata_only`, and structured `task_update`, with no observed false positives. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286] [INFERENCE: live execution of dist/lib/routing/content-router.js on the synthetic corpus]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
+      ]
+    },
+    {
+      "id": "finding-5-4-the-dominant-escalation-bucket-was-top1-below-0-70-at-43-cases-followed-by-margi",
+      "text": "The dominant escalation bucket was `top1_below_0_70` at 43 cases, followed by `margin_too_narrow` at 15 and `mixed_signals` at 6. That distribution means most escalation is simple low-confidence fallback, not hard contradiction handling. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:888] [INFERENCE: live execution of dist/lib/routing/content-router.js on the synthetic corpus]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
+      ]
+    },
+    {
+      "id": "finding-5-1-the-measured-corpus-contained-132-labeled-samples-40-full-prototype-chunks-40-fi",
+      "text": "The measured corpus contained 132 labeled samples: 40 full prototype chunks, 40 first-sentence variants, 40 compact sentence variants, and 12 targeted test-like samples. That corpus produced `87.88%` overall labeled accuracy, `64/132` Tier2 routes, and `8/132` refusals under the current `0.70/0.70/0.50` thresholds. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48] [INFERENCE: live execution of dist/lib/routing/content-router.js on the synthetic corpus]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
+      ]
+    },
+    {
+      "id": "finding-5-2-tier1-only-accuracy-on-the-same-corpus-was-materially-lower-at-72-73-which-shows",
+      "text": "Tier1-only accuracy on the same corpus was materially lower at `72.73%`, which shows the prototype layer is already doing real corrective work even without Tier3. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809] [INFERENCE: live execution of dist/lib/routing/content-router.js on the synthetic corpus]",
+      "addedAtIteration": 5,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:809`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48`"
+      ]
+    },
+    {
+      "id": "finding-6-4-one-research-finding-sample-was-classified-as-metadata-only-because-it-discussed",
+      "text": "One `research_finding` sample was classified as `metadata_only` because it discussed overlap in metadata and continuity terms, showing that `_memory.continuity` vocabulary can overpower research intent when the chunk is framed as findings about metadata. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:365] [INFERENCE: live corpus example `RF-03` from dist/lib/routing/content-router.js]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011`"
+      ]
+    },
+    {
+      "id": "finding-6-5-short-handover-fragments-such-as-continuation-attempt-one-do-not-fail-because-of",
+      "text": "Short handover fragments such as \"Continuation attempt one\" do not fail because of phase-anchor logic; they fail because the abbreviated text loses resume-state detail and becomes semantically close to sparse task or generic wrapper language. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011] [INFERENCE: live corpus examples `HS-01-s1` and `HS-01-compact` from dist/lib/routing/content-router.js]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011`"
+      ]
+    },
+    {
+      "id": "finding-6-2-the-second-worst-confusion-is-handover-state-drop-also-with-four-cases-the-hando",
+      "text": "The second worst confusion is `handover_state -> drop`, also with four cases. The handover prototypes that mention `git diff`, verification commands, or command-style restart recipes are vulnerable because the `drop` cue table explicitly includes `git diff`, raw tool language, and recovery scaffolding. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369] [INFERENCE: live corpus examples `HS-01` and `HS-03` from dist/lib/routing/content-router.js]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011`"
+      ]
+    },
+    {
+      "id": "finding-6-1-the-worst-confusion-pair-is-narrative-delivery-narrative-progress-with-four-case",
+      "text": "The worst confusion pair is `narrative_delivery -> narrative_progress` with four cases. In each example, implementation-change language such as \"updated together\" or \"landed in three passes\" outweighs sequencing cues, so Tier1 accepts progress before Tier2 can correct it. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340] [INFERENCE: live corpus examples `ND-01` and `ND-04` from dist/lib/routing/content-router.js]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011`"
+      ]
+    },
+    {
+      "id": "finding-6-3-two-narrative-progress-prototype-samples-were-misread-as-research-finding-becaus",
+      "text": "Two `narrative_progress` prototype samples were misread as `research_finding` because they mention packet docs, sources, or one-source-of-truth work in language that overlaps the research cue set. Tier2 would have corrected both, but Tier1 accepted them early at `0.80`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357] [INFERENCE: live corpus examples `NP-02` and `NP-04` from dist/lib/routing/content-router.js]",
+      "addedAtIteration": 6,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:357`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1011`"
+      ]
+    },
+    {
+      "id": "finding-7-3-metadata-only-is-the-least-fragile-category-at-write-time-because-it-bypasses-an",
+      "text": "`metadata_only` is the least fragile category at write time because it bypasses `anchorMergeOperation()` and writes `_memory.continuity` through thin-continuity helpers. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1107] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:167]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1107`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440`"
+      ]
+    },
+    {
+      "id": "finding-7-4-task-update-is-the-most-brittle-category-because-buildcanonicalmergepayload-must",
+      "text": "`task_update` is the most brittle category because `buildCanonicalMergePayload()` must discover a concrete `T###` or `CHK-###` ID, and the later merge requires exactly one matching checklist line. Classification accuracy alone is not enough to make task routing safe. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:952] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1107`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440`"
+      ]
+    },
+    {
+      "id": "finding-7-1-category-to-merge-mapping-is-fixed-narrative-progress-and-narrative-delivery-use",
+      "text": "Category-to-merge mapping is fixed: `narrative_progress` and `narrative_delivery` use `append-as-paragraph`, `handover_state` and `research_finding` use `append-section`, `decision` uses `insert-new-adr` on `L3/L3+` and `update-in-place` on lower packet levels, `task_update` uses `update-in-place`, and `metadata_only` updates frontmatter continuity rather than anchor-merging. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1107`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440`"
+      ]
+    },
+    {
+      "id": "finding-7-2-the-canonical-writer-derives-merge-payloads-from-routed-content-not-the-original",
+      "text": "The canonical writer derives merge payloads from routed content, not the original memory artifact type. That means the same text classification directly controls whether the writer looks for paragraphs, structured checklist IDs, or ADR fields. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1144]",
+      "addedAtIteration": 7,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1107`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440`"
+      ]
+    },
+    {
+      "id": "finding-8-2-anchormergeoperation-adds-further-failure-conditions-beyond-the-legality-pre-che",
+      "text": "`anchorMergeOperation()` adds further failure conditions beyond the legality pre-checks: missing anchors, duplicated target lines, missing checklist markers for checked updates, row-width mismatches for tables, nested anchors in non-ADR merges, unresolved conflict markers, and anchor-graph corruption. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:569]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`"
+      ]
+    },
+    {
+      "id": "finding-8-3-append-as-paragraph-and-append-section-are-relatively-forgiving-because-they-ded",
+      "text": "`append-as-paragraph` and `append-section` are relatively forgiving because they dedupe by fingerprint or normalized content and can no-op safely when the paragraph or section already exists. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:292] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:522]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`"
+      ]
+    },
+    {
+      "id": "finding-8-4-insert-new-adr-is-safe-only-when-the-anchor-body-is-already-a-valid-adr-containe",
+      "text": "`insert-new-adr` is safe only when the anchor body is already a valid ADR container; otherwise the merge validator or anchor-graph validation will reject it. This makes `decision` robust on healthy `L3/L3+` packets but brittle on malformed packets. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:319] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:665]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`"
+      ]
+    },
+    {
+      "id": "finding-8-1-spec-doc-structure-ts-enforces-a-shape-contract-append-as-paragraph-only-on-pros",
+      "text": "`spec-doc-structure.ts` enforces a shape contract: `append-as-paragraph` only on prose or section anchors, `insert-new-adr` only on ADR anchors, `append-table-row` only on table anchors, `update-in-place` only on checklist anchors, and `append-section` only on section-like anchors or research docs. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`"
+      ]
+    },
+    {
+      "id": "finding-8-5-a-correct-classification-can-still-be-rejected-in-memory-save-ts-if-the-routed-m",
+      "text": "A correct classification can still be rejected in `memory-save.ts` if the routed merge mode conflicts with an explicit `mergeModeHint` or if the target document is missing. Those rejections are routing-surface failures, not merge-operation bugs. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1069]",
+      "addedAtIteration": 8,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:688`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:265`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053`"
+      ]
+    },
+    {
+      "id": "finding-9-1-routeas-is-applied-after-the-natural-decision-is-computed-it-forces-the-category",
+      "text": "`routeAs` is applied after the natural decision is computed: it forces the category and target, raises the reported confidence to at least `0.50`, preserves the natural decision in `naturalDecision`, and emits a warning when the natural class was `drop`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395`"
+      ]
+    },
+    {
+      "id": "finding-9-4-across-the-tested-grid-tier1-was-the-dominant-lever-0-65-and-0-70-behaved-identi",
+      "text": "Across the tested grid, Tier1 was the dominant lever: `0.65` and `0.70` behaved identically on this corpus, while `0.75` or `0.80` improved mean accuracy but also increased mean refusals. Tier2 and Tier3 floor changes mainly changed refusal counts, not classification accuracy. [INFERENCE: threshold sweep over live router Tier1/Tier2 outputs from dist/lib/routing/content-router.js] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:475]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395`"
+      ]
+    },
+    {
+      "id": "finding-9-5-because-tier3-is-currently-unwired-in-production-the-practical-role-of-the-0-50-",
+      "text": "Because Tier3 is currently unwired in production, the practical role of the `0.50` Tier3 threshold today is mostly the penalized Tier2 fallback/refusal cutoff, not an LLM acceptance threshold. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395`"
+      ]
+    },
+    {
+      "id": "finding-9-3-on-the-132-sample-corpus-the-current-0-70-0-70-0-50-thresholds-produced-87-88-ac",
+      "text": "On the 132-sample corpus, the current `0.70/0.70/0.50` thresholds produced `87.88%` accuracy with 8 refusals. The best grid point tested (`0.75/0.65/0.45`) improved accuracy to `90.15%` but increased refusals to 9 and shifted one `narrative_progress` case into refusal while strongly improving `narrative_delivery`. [INFERENCE: threshold sweep over live router Tier1/Tier2 outputs from dist/lib/routing/content-router.js] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395`"
+      ]
+    },
+    {
+      "id": "finding-9-2-the-save-handler-accepts-the-routed-override-category-but-it-still-rejects-the-w",
+      "text": "The save handler accepts the routed override category, but it still rejects the write if the caller supplies a conflicting `mergeModeHint`. In other words, override bypasses natural classification, not the downstream merge contract. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1206]",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`",
+        "`.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395`"
+      ]
+    },
+    {
+      "id": "finding-10-4-routeas-is-powerful-enough-to-rescue-natural-misclassifications-but-it-also-weak",
+      "text": "`routeAs` is powerful enough to rescue natural misclassifications, but it also weakens the semantic guardrail because it can force a merge against a natural `drop` decision. Operationally, overrides should stay explicit, audited, and paired with target/merge-mode validation. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`"
+      ]
+    },
+    {
+      "id": "finding-10-3-if-the-team-wants-a-threshold-only-experiment-before-changing-cues-tier1-0-75-ti",
+      "text": "If the team wants a threshold-only experiment before changing cues, `Tier1 = 0.75`, `Tier2 = 0.65`, and keeping the fallback floor at `0.45-0.50` is the best measured accuracy point on this corpus, but it should be treated as a shadow-mode experiment because it trades one extra refusal for the gain and makes `narrative_progress` slightly worse. [INFERENCE: live threshold sweep summarized in iteration 9] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`"
+      ]
+    },
+    {
+      "id": "finding-10-1-the-current-router-is-already-strong-on-structured-categories-decision-task-upda",
+      "text": "The current router is already strong on structured categories (`decision`, `task_update`, `metadata_only`) because those categories either have hard Tier1 rules or highly distinctive lexical floors. The weak spots are cue-rich narrative categories, especially delivery-versus-progress and handover-versus-drop. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286] [INFERENCE: live corpus results summarized across iterations 5 and 6]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`"
+      ]
+    },
+    {
+      "id": "finding-10-2-the-most-valuable-short-term-improvement-is-not-a-global-threshold-change-but-cu",
+      "text": "The most valuable short-term improvement is not a global threshold change but cue/prototype tuning: delivery text needs stronger sequencing/gating cues relative to \"what changed\" verbs, and handover text needs protection from `drop` cues like `git diff` when resume-state language is also present. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340] [INFERENCE: live corpus misclassification clusters summarized across iterations 5 and 6]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`"
+      ]
+    },
+    {
+      "id": "finding-10-5-the-tier3-prompt-and-tests-are-worth-keeping-but-threshold-optimization-should-b",
+      "text": "The Tier3 prompt and tests are worth keeping, but threshold optimization should be revisited only after the canonical save path actually injects a real Tier3 classifier. Until then, the `0.50` floor is mostly a fallback/refusal parameter, not a live model-quality control. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:212]",
+      "addedAtIteration": 10,
+      "sources": [
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340`",
+        "`.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428`",
+        "`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008`"
+      ]
+    }
+  ],
+  "ruledOutDirections": [
+    {
+      "id": "ruled-out-1-2-historical-save-log-mining-the-packet-scope-and-current-memory-model-explicitly-",
+      "text": "Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-1-treating-the-spec-s-7-rules-text-as-authoritative-the-code-clearly-ships-eight-h",
+      "text": "Treating the spec's \"7 rules\" text as authoritative. The code clearly ships eight hard rules today.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-2-2-assuming-the-prototype-library-is-sparse-or-skewed-toward-one-category-it-is-bal",
+      "text": "Assuming the prototype library is sparse or skewed toward one category. It is balanced by count.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-1-treating-tier2-as-independent-from-target-selection-the-prototype-scorer-still-i",
+      "text": "Treating Tier2 as independent from target selection. The prototype scorer still inherits the same `buildTarget()` mapping as Tier1 and Tier3.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-3-1-looking-for-a-hidden-classifywithtier3-injection-elsewhere-in-the-non-test-serve",
+      "text": "Looking for a hidden `classifyWithTier3` injection elsewhere in the non-test server code. The only production callsite creates the router without one.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-2-treating-the-tier3-prompt-as-active-production-behavior-in-the-current-canonical",
+      "text": "Treating the Tier3 prompt as active production behavior in the current canonical save path.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-4-1-assuming-manual-retry-means-a-forced-escalation-in-code-it-is-the-neutral-defaul",
+      "text": "Assuming `manual_retry` means a forced escalation. In code it is the neutral/default reason after a non-blocked Tier1 result.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-2-searching-for-a-fifth-hidden-escalation-reason",
+      "text": "Searching for a fifth hidden escalation reason.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-5-1-assuming-hard-rules-are-the-dominant-driver-of-routing-quality-on-this-corpus-th",
+      "text": "Assuming hard rules are the dominant driver of routing quality. On this corpus they are precise but relatively rare.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-2-making-accuracy-claims-from-prototype-count-balance-alone",
+      "text": "Making accuracy claims from prototype count balance alone.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-6-2-blaming-delivery-and-handover-failures-on-tier2-in-the-key-examples-tier2-prefer",
+      "text": "Blaming delivery and handover failures on Tier2. In the key examples, Tier2 preferred the expected class but never got a chance because Tier1 accepted early or `drop` cues dominated.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-1-treating-phase-anchor-inference-as-the-main-handover-failure-driver",
+      "text": "Treating phase-anchor inference as the main handover failure driver.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-7-1-assuming-metadata-only-and-task-updates-share-the-same-failure-profile-because-b",
+      "text": "Assuming metadata-only and task updates share the same failure profile because both report `update-in-place`.",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-7-2-treating-all-categories-as-equally-safe-once-the-router-selects-a-target-doc",
+      "text": "Treating all categories as equally safe once the router selects a target doc.",
+      "addedAtIteration": 7
+    },
+    {
+      "id": "ruled-out-8-2-assuming-merge-safety-is-fully-captured-by-the-router-s-category-to-target-map",
+      "text": "Assuming merge safety is fully captured by the router's category-to-target map.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-8-1-treating-append-section-and-update-in-place-as-equally-tolerant-operations",
+      "text": "Treating `append-section` and `update-in-place` as equally tolerant operations.",
+      "addedAtIteration": 8
+    },
+    {
+      "id": "ruled-out-9-1-assuming-routeas-makes-any-classified-chunk-merge-safe-regardless-of-target-and-",
+      "text": "Assuming `routeAs` makes any classified chunk merge-safe regardless of target and merge-mode validity.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-9-2-recommending-a-blanket-threshold-increase-as-an-unqualified-improvement",
+      "text": "Recommending a blanket threshold increase as an unqualified improvement.",
+      "addedAtIteration": 9
+    },
+    {
+      "id": "ruled-out-10-2-shipping-a-threshold-only-fix-as-the-sole-remediation",
+      "text": "Shipping a threshold-only fix as the sole remediation.",
+      "addedAtIteration": 10
+    },
+    {
+      "id": "ruled-out-10-1-treating-the-currently-unwired-tier3-contract-as-the-main-source-of-routing-inac",
+      "text": "Treating the currently unwired Tier3 contract as the main source of routing inaccuracy.",
+      "addedAtIteration": 10
+    }
+  ],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 10,
+    "openQuestions": 0,
+    "resolvedQuestions": 6,
+    "keyFindings": 45,
+    "convergenceScore": 0.58,
+    "coverageBySources": {
+      "code": 55,
+      "other": 2
+    }
+  },
+  "corruptionWarnings": [],
+  "status": "COMPLETE"
+}

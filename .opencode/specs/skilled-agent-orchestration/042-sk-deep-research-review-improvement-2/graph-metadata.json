@@ -11,7 +11,8 @@
     "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/005-agent-improver-deep-loop-alignment",
     "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/006-graph-testing-and-playbook-alignment",
     "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/007-skill-rename-improve-agent-prompt",
-    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements"
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements",
+    "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/009-round3-review-remediation"
   ],
   "manual": {
     "depends_on": [],
@@ -56,31 +57,37 @@
     "status": "planned",
     "key_files": [
       "deep-loop-graph.sqlite",
+      "review/archive-rvw-2026-04-11/review-report.md",
       ".opencode/skill/sk-deep-review/references/state_format.md",
       ".opencode/skill/sk-deep-review/references/loop_protocol.md",
       "session-isolation.vitest.ts",
       ".opencode/agent/deep-review.md",
       ".opencode/skill/sk-deep-review/references/convergence.md",
       "008-further-deep-loop-improvements/implementation-summary.md",
-      "review/review-report.md",
       "spec.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "validate.sh",
-      "changelog-<packet>-root.md",
-      "changelog-<packet>-<phase-folder>.md",
       "board.json",
       "decision-record.md",
       "mutation-coverage.cjs",
       "deep-research-state.jsonl",
-      "research/research-ideas.md"
+      "research/research-ideas.md",
+      "SKILL.md",
+      "plan.md",
+      "research/research.md"
     ],
     "entities": [
       {
         "name": "deep-loop-graph.sqlite",
         "kind": "file",
         "path": "deep-loop-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/archive-rvw-2026-04-11/review-report.md",
         "source": "derived"
       },
       {
@@ -120,12 +127,6 @@
         "source": "derived"
       },
       {
-        "name": "review-report.md",
-        "kind": "doc",
-        "path": "review/review-report.md",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -150,33 +151,33 @@
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "changelog-<packet>-root.md",
-        "kind": "doc",
-        "path": "changelog-<packet>-root.md",
-        "source": "derived"
-      },
-      {
-        "name": "changelog-<packet>-<phase-folder>.md",
-        "kind": "doc",
-        "path": "changelog-<packet>-<phase-folder>.md",
-        "source": "derived"
-      },
-      {
         "name": "board.json",
         "kind": "config",
         "path": "board.json",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "mutation-coverage.cjs",
+        "kind": "file",
+        "path": "mutation-coverage.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "deep-research-state.jsonl",
         "source": "derived"
       }
     ],
     "causal_summary": "This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.",
     "created_at": "2026-04-12T09:02:50.190Z",
-    "last_save_at": "2026-04-12T09:06:00.325Z",
+    "last_save_at": "2026-04-13T04:56:03.846Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

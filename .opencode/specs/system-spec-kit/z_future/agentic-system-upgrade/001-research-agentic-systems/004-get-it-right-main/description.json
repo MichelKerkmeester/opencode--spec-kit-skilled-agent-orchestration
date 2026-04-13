@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main",
+  "description": "Feature Specification: 004-get-it-right-main Research Phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "004-get-it-right-main",
+    "research",
+    "phase"
+  ],
+  "lastUpdated": "2026-04-13T04:56:33.285Z",
+  "specId": "004",
+  "folderSlug": "get-it-right-main",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "001-research-agentic-systems"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

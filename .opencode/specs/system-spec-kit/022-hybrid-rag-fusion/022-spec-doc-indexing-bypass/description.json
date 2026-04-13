@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass",
+  "description": "Feature Specification: Spec Doc Indexing Bypass",
+  "keywords": [
+    "feature",
+    "specification",
+    "spec",
+    "doc",
+    "indexing",
+    "bypass"
+  ],
+  "lastUpdated": "2026-04-13T04:56:36.079Z",
+  "specId": "022",
+  "folderSlug": "spec-doc-indexing-bypass",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

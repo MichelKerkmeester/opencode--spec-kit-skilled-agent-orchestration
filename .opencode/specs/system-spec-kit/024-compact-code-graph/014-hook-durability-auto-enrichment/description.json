@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
+  "description": "Spec: Phase 014 — Hook Durability & Auto-Enrichment",
+  "keywords": [
+    "spec",
+    "phase",
+    "014",
+    "hook",
+    "durability",
+    "auto-enrichment"
+  ],
+  "lastUpdated": "2026-04-13T04:56:36.881Z",
+  "specId": "014",
+  "folderSlug": "hook-durability-auto-enrichment",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

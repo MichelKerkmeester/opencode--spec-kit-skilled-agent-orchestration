@@ -1,0 +1,19 @@
+{
+  "specFolder": "skilled-agent-orchestration/035-sk-deep-research-path-migration",
+  "description": "Feature Specification: sk-deep-research Path Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-deep-research",
+    "path",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.433Z",
+  "specId": "035",
+  "folderSlug": "sk-deep-research-path-migration",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,19 @@
+{
+  "specFolder": "skilled-agent-orchestration/031-sk-coco-index-cmd-integration",
+  "description": "Feature Specification: sk-coco-index Command Integration",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-coco-index",
+    "command",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.337Z",
+  "specId": "031",
+  "folderSlug": "sk-coco-index-cmd-integration",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,9 +1,155 @@
-Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze
-Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze
-Status: planned
-Importance Tier: important
-Summary: This sub-phase defines the immutable architecture rule for the adoption work: new UX may add facades, profiles, wrappers, and guidance, but it may not replace or duplicate Public's existing memory, bootstrap, save, graph, or governance authorities. It does not ship any new operator-facing tool by itself.
-Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Key Topics: sub-phase, defines, immutable, architecture, rule, adoption, work, new, add, facades, profiles, wrappers
-Key Files: generate-context.js, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, tool-schemas.ts, memory-search.ts, memory-context.ts, session-bootstrap.ts, spec.md, plan.md, tasks.md, checklist.md
-Source Docs: spec.md, plan.md, tasks.md, checklist.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze",
+  "spec_folder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze",
+  "parent_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "defines",
+      "immutable",
+      "architecture",
+      "rule",
+      "adoption",
+      "work",
+      "new",
+      "add",
+      "facades",
+      "profiles",
+      "wrappers"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      "tool-schemas.ts",
+      "memory-search.ts",
+      "memory-context.ts",
+      "session-bootstrap.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Freeze Authority Boundaries",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase defines the immutable architecture rule for the adoption work: new UX may add facades, profiles, wrappers, and guidance, but it may not replace or duplicate Public's existing memory, bootstrap, save, graph, or governance authorities. It does not ship any new operator-facing tool by itself.",
+    "created_at": "2026-04-13T04:56:07.087Z",
+    "last_save_at": "2026-04-13T04:56:07.087Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

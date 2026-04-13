@@ -33,8 +33,8 @@
       "graph metadata architecture decisions",
       "graph metadata merge adr",
       "018 011 implementation summary",
-      "graph metadata rollout shell",
-      "graph metadata planned summary",
+      "graph metadata rollout implementation",
+      "graph metadata closeout",
       "018 011 research",
       "graph metadata research",
       "per spec folder graph metadata iterations"
@@ -57,11 +57,14 @@
     "status": "complete",
     "key_files": [
       "graph-metadata.json",
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "decision-record.md",
+      "graph-metadata-schema.ts",
+      "graph-metadata-parser.ts",
+      "manual.depends_on",
+      "manual.supersedes",
+      "manual.related_to",
+      "scripts/graph/backfill-graph-metadata.ts",
+      "shared/embeddings/factory.ts",
+      "node mcp_server/node_modules/vitest/vitest.mjs run mcp_server/tests/graph-metadata-schema.vitest.ts mcp_server/tests/graph-metadata-integration.vitest.ts scripts/tests/graph-metadata-refresh.vitest.ts scripts/tests/graph-metadata-backfill.vitest.ts --config mcp_server/vitest.config.ts",
       "description.json",
       "_memory.continuity",
       ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
@@ -72,10 +75,7 @@
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
       "causal-links-processor.ts",
       "reconsolidation.ts",
-      "stage1-candidate-gen.ts",
-      "validate.sh",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts"
+      "stage1-candidate-gen.ts"
     ],
     "entities": [
       {
@@ -85,33 +85,51 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
+        "name": "graph-metadata-schema.ts",
+        "kind": "code",
+        "path": "graph-metadata-schema.ts",
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
+        "name": "graph-metadata-parser.ts",
+        "kind": "code",
+        "path": "graph-metadata-parser.ts",
         "source": "derived"
       },
       {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
+        "name": "manual.depends_on",
+        "kind": "file",
+        "path": "manual.depends_on",
         "source": "derived"
       },
       {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
+        "name": "manual.supersedes",
+        "kind": "file",
+        "path": "manual.supersedes",
         "source": "derived"
       },
       {
-        "name": "decision-record.md",
-        "kind": "doc",
-        "path": "decision-record.md",
+        "name": "manual.related_to",
+        "kind": "file",
+        "path": "manual.related_to",
+        "source": "derived"
+      },
+      {
+        "name": "backfill-graph-metadata.ts",
+        "kind": "code",
+        "path": "scripts/graph/backfill-graph-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "factory.ts",
+        "kind": "code",
+        "path": "shared/embeddings/factory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "node mcp_server/node_modules/vitest/vitest.mjs run mcp_server/tests/graph-metadata-schema.vitest.ts mcp_server/tests/graph-metadata-integration.vitest.ts scripts/tests/graph-metadata-refresh.vitest.ts scripts/tests/graph-metadata-backfill.vitest.ts --config mcp_server/vitest.config.ts",
         "source": "derived"
       },
       {
@@ -155,29 +173,11 @@
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
         "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "causal-links-processor.ts",
-        "kind": "code",
-        "path": "causal-links-processor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "reconsolidation.ts",
-        "kind": "code",
-        "path": "reconsolidation.ts",
-        "source": "derived"
       }
     ],
     "causal_summary": "Phase 018 removed legacy packet `memory/` saves as the main continuity surface, but the graph and retrieval stack still depends on packet-level metadata for relationships, ranking, and key-file recovery. This packet formalizes the replacement contract from [research.md](./research.md): one `graph-metadata.json` per spec-folder root, split into merge-safe `manual` fields and fully regenerated `derived` fields, refreshed on canonical save, and indexed as `document_type='graph_metadata'`.",
     "created_at": "2026-04-12T09:02:53.484Z",
-    "last_save_at": "2026-04-12T09:06:03.528Z",
+    "last_save_at": "2026-04-13T04:56:06.981Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

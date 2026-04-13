@@ -167,7 +167,7 @@
     ],
     "causal_summary": "This packet records the final shipped documentation contract for the feature-catalog and manual-testing-playbook work. It replaces the earlier playbook-only framing with the broader reality: both document families, their templates, their references, and their downstream creation workflows were aligned together.",
     "created_at": "2026-04-12T09:02:50.221Z",
-    "last_save_at": "2026-04-12T09:06:00.350Z",
+    "last_save_at": "2026-04-13T04:56:03.870Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

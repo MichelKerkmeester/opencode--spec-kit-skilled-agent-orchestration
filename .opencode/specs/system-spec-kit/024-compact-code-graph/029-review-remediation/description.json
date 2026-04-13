@@ -1,0 +1,18 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/029-review-remediation",
+  "description": "Spec: Review Remediation",
+  "keywords": [
+    "spec",
+    "review",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:36.405Z",
+  "specId": "029",
+  "folderSlug": "review-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

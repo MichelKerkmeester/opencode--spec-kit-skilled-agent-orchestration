@@ -45,14 +45,14 @@
     "status": "complete",
     "key_files": [
       "vector-index-schema.ts",
+      "context-server.ts",
+      "lib/cognitive/archival-manager.ts",
+      "capability-flags.ts",
       "mcp_server/handlers/shared-memory.ts",
       "mcp_server/lib/collab/shared-spaces.ts",
       "mcp_server/tool-schemas.ts",
       ".opencode/command/memory/manage.md",
-      "npm run test:core -- scripts/tests/deep-research-contract-parity.vitest.ts",
-      "npm run test:core -- scripts/tests/progressive-validation.vitest.ts",
-      "./node_modules/.bin/vitest run tests/retrieval-telemetry.vitest.ts tests/review-fixes.vitest.ts",
-      "./node_modules/.bin/vitest run tests/vector-index-impl.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/mcp_server && ./node_modules/.bin/vitest run tests/stage1-expansion.vitest.ts tests/memory-governance.vitest.ts tests/governance-e2e.vitest.ts tests/context-server.vitest.ts tests/cognitive-gaps.vitest.ts tests/memory-roadmap-flags.vitest.ts tests/feature-flag-reference-docs.vitest.ts",
       "memory_index.shared_space_id",
       ".opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tools/types.ts",
@@ -70,6 +70,24 @@
         "name": "vector-index-schema.ts",
         "kind": "code",
         "path": "vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "archival-manager.ts",
+        "kind": "code",
+        "path": "lib/cognitive/archival-manager.ts",
+        "source": "derived"
+      },
+      {
+        "name": "capability-flags.ts",
+        "kind": "code",
+        "path": "capability-flags.ts",
         "source": "derived"
       },
       {
@@ -97,27 +115,9 @@
         "source": "derived"
       },
       {
-        "name": "deep-research-contract-parity.vitest.ts",
+        "name": "feature-flag-reference-docs.vitest.ts",
         "kind": "test",
-        "path": "npm run test:core -- scripts/tests/deep-research-contract-parity.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "progressive-validation.vitest.ts",
-        "kind": "test",
-        "path": "npm run test:core -- scripts/tests/progressive-validation.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "review-fixes.vitest.ts",
-        "kind": "test",
-        "path": "./node_modules/.bin/vitest run tests/retrieval-telemetry.vitest.ts tests/review-fixes.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-impl.vitest.ts",
-        "kind": "test",
-        "path": "./node_modules/.bin/vitest run tests/vector-index-impl.vitest.ts",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && ./node_modules/.bin/vitest run tests/stage1-expansion.vitest.ts tests/memory-governance.vitest.ts tests/governance-e2e.vitest.ts tests/context-server.vitest.ts tests/cognitive-gaps.vitest.ts tests/memory-roadmap-flags.vitest.ts tests/feature-flag-reference-docs.vitest.ts",
         "source": "derived"
       },
       {
@@ -165,7 +165,7 @@
     ],
     "causal_summary": "Phase 018 still exposes a full shared-memory collaboration surface through MCP lifecycle tools, shared-space runtime helpers, governed retrieval filters, save-path enforcement, feature-flag docs, feature-catalog entries, playbook scenarios, and tests. The user explicitly wants that feature removed as if it never shipped, with only the SQLite schema columns left in place because those columns cannot be safely dropped in-place.",
     "created_at": "2026-04-12T09:02:53.483Z",
-    "last_save_at": "2026-04-12T09:06:03.528Z",
+    "last_save_at": "2026-04-13T04:56:06.981Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/001-fusion-scoring-intelligence",
+  "description": "Feature Specification: Fusion & Scoring Intelligence",
+  "keywords": [
+    "feature",
+    "specification",
+    "fusion",
+    "scoring",
+    "intelligence"
+  ],
+  "lastUpdated": "2026-04-13T04:56:35.505Z",
+  "specId": "001",
+  "folderSlug": "fusion-scoring-intelligence",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic",
+    "011-research-based-refinement"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

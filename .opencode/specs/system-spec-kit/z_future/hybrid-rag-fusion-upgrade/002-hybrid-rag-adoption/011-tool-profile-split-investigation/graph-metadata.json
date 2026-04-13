@@ -1,9 +1,150 @@
-Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation
-Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation
-Status: planned
-Importance Tier: important
-Summary: This sub-phase investigates whether Public should experiment with Engram-style tool-profile packaging similar to `ProfileAgent` and `ProfileAdmin`, but only as a delivery-layer teaching aid. It studies token savings, operator clarity, and failure modes without changing tool registration or ownership. It does not reduce the current tool surface or ship a new authority lane.
-Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Key Topics: sub-phase, investigates, whether, public, experiment, engram-style, tool-profile, packaging, similar, profileagent, profileadmin, only
-Key Files: tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/references/workflows/quick_reference.md, spec.md, plan.md, tasks.md, checklist.md
-Source Docs: spec.md, plan.md, tasks.md, checklist.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation",
+  "spec_folder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation",
+  "parent_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "investigates",
+      "whether",
+      "public",
+      "experiment",
+      "engram-style",
+      "tool-profile",
+      "packaging",
+      "similar",
+      "profileagent",
+      "profileadmin",
+      "only"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigate Tool Profile Splits",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Constraints",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Affected Files",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase investigates whether Public should experiment with Engram-style tool-profile packaging similar to `ProfileAgent` and `ProfileAdmin`, but only as a delivery-layer teaching aid. It studies token savings, operator clarity, and failure modes without changing tool registration or ownership. It does not reduce the current tool surface or ship a new authority lane.",
+    "created_at": "2026-04-13T04:56:07.091Z",
+    "last_save_at": "2026-04-13T04:56:07.091Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

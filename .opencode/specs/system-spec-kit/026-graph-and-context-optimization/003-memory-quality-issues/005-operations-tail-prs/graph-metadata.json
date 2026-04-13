@@ -46,7 +46,7 @@
       "save"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "migrate-historical-json-mode-memories.js",
       ".opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts",
@@ -169,7 +169,7 @@
     ],
     "causal_summary": "Phase 5 is the packet closeout phase for `003-memory-quality-issues/`. It does not reopen the core nine-PR train. Instead, it packages the operational work that Gen-3 added after the main remediation plan was already frozen: telemetry folded into PR-9, optional safe-subset migration for 82 historical JSON-mode files, optional D9 save-lock hardening, release-note parity framing, and final parent closure. [SOURCE: ../research/research.md:1418-1447] [SOURCE: ../research/research.md:1520-1537]",
     "created_at": "2026-04-12T09:02:53.460Z",
-    "last_save_at": "2026-04-12T09:06:03.504Z",
+    "last_save_at": "2026-04-13T04:56:06.967Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

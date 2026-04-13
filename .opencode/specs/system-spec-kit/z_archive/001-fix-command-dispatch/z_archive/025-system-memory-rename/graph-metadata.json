@@ -159,7 +159,7 @@
     ],
     "causal_summary": "The `workflows-memory` skill needs to be renamed to `system-memory` to align with the naming convention established by the recent `workflows-spec-kit` → `system-spec-kit` rename. The \"system-\" prefix better reflects that this is a core infrastructure skill rather than a domain workflow.",
     "created_at": "2026-04-12T09:02:53.517Z",
-    "last_save_at": "2026-04-12T09:06:03.568Z",
+    "last_save_at": "2026-04-13T04:56:07.009Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

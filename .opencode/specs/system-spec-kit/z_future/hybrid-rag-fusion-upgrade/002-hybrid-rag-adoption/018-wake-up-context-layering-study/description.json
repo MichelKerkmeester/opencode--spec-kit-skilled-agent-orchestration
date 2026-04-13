@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study",
+  "description": "018-wake-up-context-layering-study: Study Wake-Up Context Layering",
+  "keywords": [
+    "018-wake-up-context-layering-study",
+    "study",
+    "wake-up",
+    "context",
+    "layering"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.670Z",
+  "specId": "018",
+  "folderSlug": "wake-up-context-layering-study",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

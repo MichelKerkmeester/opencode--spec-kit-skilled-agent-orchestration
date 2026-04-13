@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/016-cross-runtime-ux",
+  "description": "Spec: Phase 016 — Cross-Runtime UX & Documentation",
+  "keywords": [
+    "spec",
+    "phase",
+    "016",
+    "cross-runtime",
+    "documentation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:36.312Z",
+  "specId": "016",
+  "folderSlug": "cross-runtime-ux",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

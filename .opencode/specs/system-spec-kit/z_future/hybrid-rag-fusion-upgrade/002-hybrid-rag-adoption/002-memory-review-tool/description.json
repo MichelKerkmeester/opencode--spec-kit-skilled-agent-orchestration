@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool",
+  "description": "002-memory-review-tool: Ship Memory Review First",
+  "keywords": [
+    "002-memory-review-tool",
+    "ship",
+    "memory",
+    "review",
+    "first"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.516Z",
+  "specId": "002",
+  "folderSlug": "memory-review-tool",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

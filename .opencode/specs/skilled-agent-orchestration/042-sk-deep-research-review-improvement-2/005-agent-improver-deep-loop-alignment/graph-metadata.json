@@ -46,7 +46,9 @@
     "status": "planned",
     "key_files": [
       ".opencode/changelog/15--sk-improve-agent/v1.1.0.0.md",
+      ".opencode/changelog/15--sk-improve-agent/v1.2.0.0.md",
       ".opencode/changelog/15--sk-improve-agent/v1.2.1.0.md",
+      "v1.2.0.0",
       ".opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs",
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/command/improve/agent.md",
@@ -62,9 +64,7 @@
       "trade-off-detector.vitest.ts",
       "candidate-lineage.vitest.ts",
       "benchmark-stability.vitest.ts",
-      "improvement-journal.cjs",
-      "mutation-coverage.cjs",
-      "trade-off-detector.cjs"
+      "improvement-journal.cjs"
     ],
     "entities": [
       {
@@ -74,9 +74,21 @@
         "source": "derived"
       },
       {
+        "name": "v1.2.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/15--sk-improve-agent/v1.2.0.0.md",
+        "source": "derived"
+      },
+      {
         "name": "v1.2.1.0.md",
         "kind": "doc",
         "path": ".opencode/changelog/15--sk-improve-agent/v1.2.1.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "v1.2.0.0",
+        "kind": "file",
+        "path": "v1.2.0.0",
         "source": "derived"
       },
       {
@@ -150,23 +162,11 @@
         "kind": "test",
         "path": "mutation-coverage.vitest.ts",
         "source": "derived"
-      },
-      {
-        "name": "trade-off-detector.vitest.ts",
-        "kind": "test",
-        "path": "trade-off-detector.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "candidate-lineage.vitest.ts",
-        "kind": "test",
-        "path": "candidate-lineage.vitest.ts",
-        "source": "derived"
       }
     ],
     "causal_summary": "Phase 005 completed the runtime-truth alignment for the improve-agent skill family. The delivered work added an append-only audit journal, an improvement-scoped mutation coverage graph, dimension trade-off detection, candidate lineage tracking for optional parallel waves, and benchmark stability scoring so the improver loop could behave like the deeper research and review loops instead of remaining an isolated evaluator.",
     "created_at": "2026-04-12T09:02:50.195Z",
-    "last_save_at": "2026-04-12T09:06:00.331Z",
+    "last_save_at": "2026-04-13T04:56:03.851Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

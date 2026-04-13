@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/012-runtime-manifest-and-hook-extensibility",
+  "description": "Feature Specification: 012 Runtime Manifest and Hook Extensibility",
+  "keywords": [
+    "feature",
+    "specification",
+    "012",
+    "runtime",
+    "manifest",
+    "hook",
+    "extensibility"
+  ],
+  "lastUpdated": "2026-04-13T04:56:34.617Z",
+  "specId": "012",
+  "folderSlug": "runtime-manifest-and-hook-extensibility",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

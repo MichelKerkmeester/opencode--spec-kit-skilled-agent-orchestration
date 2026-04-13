@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "investigate",
+      "whether",
+      "hardcoded",
+      "thresholds",
+      "weights",
+      "decay",
+      "constants",
+      "search",
+      "pipeline",
+      "optimal",
+      "historical",
+      "save"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "configs/search-weights.json",
+      "mcp_server/lib/search/cross-encoder.ts",
+      "mcp_server/lib/search/stage2-fusion.ts",
+      "mcp_server/lib/search/vector-index-store.ts",
+      "mcp_server/configs/search-weights.json",
+      "mcp_server/lib/search/stage1-candidate-gen.ts",
+      "search-weights.json",
+      "hybrid-search.ts",
+      "relevance=0.5",
+      "recency=0.3",
+      "access=0.2",
+      "0.2346",
+      "vector-index-store.ts",
+      "0.9",
+      "0.95",
+      "0.52",
+      "0.18",
+      "0.07",
+      "0.23",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "search-weights.json",
+        "kind": "config",
+        "path": "configs/search-weights.json",
+        "source": "derived"
+      },
+      {
+        "name": "cross-encoder.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/cross-encoder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage2-fusion.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/stage2-fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-weights.json",
+        "kind": "config",
+        "path": "mcp_server/configs/search-weights.json",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-weights.json",
+        "kind": "config",
+        "path": "search-weights.json",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search.ts",
+        "kind": "code",
+        "path": "hybrid-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "relevance=0.5",
+        "kind": "file",
+        "path": "relevance=0.5",
+        "source": "derived"
+      },
+      {
+        "name": "recency=0.3",
+        "kind": "file",
+        "path": "recency=0.3",
+        "source": "derived"
+      },
+      {
+        "name": "access=0.2",
+        "kind": "file",
+        "path": "access=0.2",
+        "source": "derived"
+      },
+      {
+        "name": "0.2346",
+        "kind": "file",
+        "path": "0.2346",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "0.9",
+        "kind": "file",
+        "path": "0.9",
+        "source": "derived"
+      },
+      {
+        "name": "0.95",
+        "kind": "file",
+        "path": "0.95",
+        "source": "derived"
+      },
+      {
+        "name": "0.52",
+        "kind": "file",
+        "path": "0.52",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
+    "created_at": "2026-04-13T04:56:06.986Z",
+    "last_save_at": "2026-04-13T04:56:06.986Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "research/research.md"
+    ]
+  }
+}

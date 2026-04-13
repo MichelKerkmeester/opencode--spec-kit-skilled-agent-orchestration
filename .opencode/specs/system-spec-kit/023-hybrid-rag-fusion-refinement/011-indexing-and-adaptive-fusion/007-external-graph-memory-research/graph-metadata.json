@@ -59,19 +59,7 @@
       "tasks.md",
       "checklist.md",
       "generate-context.js",
-      "implementation-summary.md",
-      "mem0/graphs/utils.py",
-      "main.py",
-      "graph_memory.py",
-      "graphs/utils.py",
-      "QueryParam.mode",
-      "README.md",
-      "0.76",
-      "lightrag/base.py",
-      "lightrag/prompt.py",
-      "lightrag/operate.py",
-      "lightrag/lightrag.py",
-      "lightrag/api/README.md"
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -123,57 +111,57 @@
         "source": "derived"
       },
       {
-        "name": "utils.py",
-        "kind": "file",
-        "path": "mem0/graphs/utils.py",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "main.py",
-        "kind": "file",
-        "path": "main.py",
+        "name": "External Graph Memory Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "graph_memory.py",
-        "kind": "file",
-        "path": "graph_memory.py",
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "utils.py",
-        "kind": "file",
-        "path": "graphs/utils.py",
+        "name": "The Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "QueryParam.mode",
-        "kind": "file",
-        "path": "QueryParam.mode",
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "README.md",
-        "kind": "doc",
-        "path": "README.md",
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "0.76",
-        "kind": "file",
-        "path": "0.76",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "base.py",
-        "kind": "file",
-        "path": "lightrag/base.py",
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The Spec Kit Memory causal graph currently has 3,854 edges at 79.92% coverage, dominated by `supports` (2,578) and `caused` (1,265) relations. While structurally healthy, the graph is used reactively — retrieved only when causal boost or co-activation fires — rather than as a proactive, first-class retrieval channel. This research phase investigates how leading external graph memory systems (Zep, Mem0, GraphRAG, Memoripy, LightRAG, Cognee) handle graph construction, traversal, UX surface, and automatic utilization, and produces a ranked shortlist of improvements applicable to our system.",
     "created_at": "2026-04-12T09:02:50.335Z",
-    "last_save_at": "2026-04-12T09:06:00.463Z",
+    "last_save_at": "2026-04-13T04:56:03.982Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

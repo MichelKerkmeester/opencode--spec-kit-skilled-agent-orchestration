@@ -47,7 +47,7 @@
       "deep-research"
     ],
     "importance_tier": "critical",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "research/research.md",
       "external/.claude-plugin/marketplace.json",
@@ -64,11 +64,11 @@
       "research/deep-research-dashboard.md",
       "research/findings-registry.json",
       "research/archive/research-v1-iter012-snapshot.md",
-      "memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
-      "memory/08-04-26_08-18__extended-the-005-claudest-deep-research-packet.md",
+      "implementation-summary.md",
       "memory/metadata.json",
       "hookSpecificOutput.additionalContext",
-      "codex-cli 0.118.0"
+      "codex-cli 0.118.0",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs"
     ],
     "entities": [
       {
@@ -162,15 +162,15 @@
         "source": "derived"
       },
       {
-        "name": "06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "memory/06-04-26_19-56__completed-a-12-iteration-deep-research-audit-of.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 20 deep-research iterations, plus packet-ready briefs and an execution-ready follow-on packet roadmap for Public's FTS, analytics, SessionStart, and consolidation seams.",
     "created_at": "2026-04-12T09:02:53.450Z",
-    "last_save_at": "2026-04-12T09:06:03.494Z",
+    "last_save_at": "2026-04-13T04:56:06.959Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

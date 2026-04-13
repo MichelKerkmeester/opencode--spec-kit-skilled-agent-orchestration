@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync",
+  "description": "Spec: Skill Advisor Routing + README Sync",
+  "keywords": [
+    "spec",
+    "skill",
+    "advisor",
+    "routing",
+    "readme",
+    "sync"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.076Z",
+  "specId": "011",
+  "folderSlug": "sk-agent-improver-advisor-readme-sync",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

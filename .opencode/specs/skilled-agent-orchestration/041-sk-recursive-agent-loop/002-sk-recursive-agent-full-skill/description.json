@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/002-sk-recursive-agent-full-skill",
+  "description": "Feature Specification: Agent Improvement Full Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "agent",
+    "improvement",
+    "full",
+    "skill"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.268Z",
+  "specId": "002",
+  "folderSlug": "sk-recursive-agent-full-skill",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

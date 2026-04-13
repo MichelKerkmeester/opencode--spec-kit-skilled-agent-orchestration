@@ -36,7 +36,7 @@
       "fix"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "memory-template-contract.ts",
       "mcp_server/lib/parsing/memory-parser.ts",
@@ -159,7 +159,7 @@
     ],
     "causal_summary": "This child folder implements the same phase identity the parent packet already published in its phase map: foundation work lands first because later phases either depend directly on the new helper or assume the anchor/template baseline is already stable. [SOURCE: ../spec.md:179-183]",
     "created_at": "2026-04-12T09:02:53.456Z",
-    "last_save_at": "2026-04-12T09:06:03.500Z",
+    "last_save_at": "2026-04-13T04:56:06.963Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

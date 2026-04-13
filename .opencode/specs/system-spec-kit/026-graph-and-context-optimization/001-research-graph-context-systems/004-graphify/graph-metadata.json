@@ -54,7 +54,7 @@
       "execution"
     ],
     "importance_tier": "critical",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "research/research.md",
       "extract.py",
@@ -69,7 +69,7 @@
       "validate.py",
       "reduce-state.cjs",
       "gpt-5.4",
-      "memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+      "implementation-summary.md",
       "external/worked/mixed-corpus/GRAPH_REPORT.md",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
@@ -157,9 +157,9 @@
         "source": "derived"
       },
       {
-        "name": "08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "memory/08-04-26_08-42__extended-the-004-graphify-deep-research-packet.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -177,7 +177,7 @@
     ],
     "causal_summary": "Phase 4 of `001-research-graph-context-systems` is a read-only audit of the graphify external Python skill to translate its two-pass codebase knowledge graph patterns into concrete improvements for Code_Environment/Public's existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/graphify/` file:line citations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.448Z",
-    "last_save_at": "2026-04-12T09:06:03.492Z",
+    "last_save_at": "2026-04-13T04:56:06.957Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

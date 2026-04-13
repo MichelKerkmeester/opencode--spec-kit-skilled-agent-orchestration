@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation",
+  "description": "016-connected-doc-hints-investigation: Investigate Connected-Doc Hints",
+  "keywords": [
+    "016-connected-doc-hints-investigation",
+    "investigate",
+    "connected-doc",
+    "hints"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.907Z",
+  "specId": "016",
+  "folderSlug": "connected-doc-hints-investigation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

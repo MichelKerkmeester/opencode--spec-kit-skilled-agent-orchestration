@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/011-compaction-working-set",
+  "description": "Phase 011: Compaction Working-Set Integration",
+  "keywords": [
+    "phase",
+    "011",
+    "compaction",
+    "working-set",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-13T04:56:37.936Z",
+  "specId": "011",
+  "folderSlug": "compaction-working-set",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

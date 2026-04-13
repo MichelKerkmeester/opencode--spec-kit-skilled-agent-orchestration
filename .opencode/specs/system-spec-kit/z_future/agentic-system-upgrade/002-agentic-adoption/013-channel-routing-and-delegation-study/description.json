@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/013-channel-routing-and-delegation-study",
+  "description": "Feature Specification: 013 Channel Routing and Delegation Study",
+  "keywords": [
+    "feature",
+    "specification",
+    "013",
+    "channel",
+    "routing",
+    "delegation",
+    "study"
+  ],
+  "lastUpdated": "2026-04-13T04:56:34.712Z",
+  "specId": "013",
+  "folderSlug": "channel-routing-and-delegation-study",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

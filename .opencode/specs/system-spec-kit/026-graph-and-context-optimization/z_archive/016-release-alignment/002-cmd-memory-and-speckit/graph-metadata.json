@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/002-cmd-memory-and-speckit",
-  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment/002-cmd-memory-and-speckit",
-  "parent_id": "system-spec-kit/026-graph-and-context-optimization/016-release-alignment",
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/002-cmd-memory-and-speckit",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/002-cmd-memory-and-speckit",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -172,7 +172,7 @@
     ],
     "causal_summary": "This child phase now needs Level 3 packet structure because the later command-alignment pass spans authoritative command docs, repo guidance, agent surfaces, and wrappers. The packet remains planning-only, but it now carries the architecture, risk, and verification framing needed to keep that broader command review bounded and auditable.",
     "created_at": "2026-04-12T09:02:53.474Z",
-    "last_save_at": "2026-04-12T09:06:03.517Z",
+    "last_save_at": "2026-04-13T04:56:06.988Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/012-cocoindex-ux-utilization",
+  "description": "Feature Specification: Phase 012 — CocoIndex UX, Utilization & Usefulness",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "012",
+    "cocoindex",
+    "utilization",
+    "usefulness"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.506Z",
+  "specId": "012",
+  "folderSlug": "cocoindex-ux-utilization",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

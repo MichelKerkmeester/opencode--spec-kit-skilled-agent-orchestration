@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics",
+  "description": "003-save-ergonomics: Wrap JSON-Primary Save Authority",
+  "keywords": [
+    "003-save-ergonomics",
+    "wrap",
+    "json-primary",
+    "save",
+    "authority"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.857Z",
+  "specId": "003",
+  "folderSlug": "save-ergonomics",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

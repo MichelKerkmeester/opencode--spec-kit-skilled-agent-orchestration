@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates",
+  "description": "008-rollout-evidence-gates: Define Measurable Adoption Gates",
+  "keywords": [
+    "008-rollout-evidence-gates",
+    "define",
+    "measurable",
+    "adoption",
+    "gates"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.578Z",
+  "specId": "008",
+  "folderSlug": "rollout-evidence-gates",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

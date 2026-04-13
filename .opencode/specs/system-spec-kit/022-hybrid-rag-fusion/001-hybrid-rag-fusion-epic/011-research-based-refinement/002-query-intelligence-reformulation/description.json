@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
+  "description": "Feature Specification: Query Intelligence & Reformulation",
+  "keywords": [
+    "feature",
+    "specification",
+    "query",
+    "intelligence",
+    "reformulation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:35.407Z",
+  "specId": "002",
+  "folderSlug": "query-intelligence-reformulation",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic",
+    "011-research-based-refinement"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

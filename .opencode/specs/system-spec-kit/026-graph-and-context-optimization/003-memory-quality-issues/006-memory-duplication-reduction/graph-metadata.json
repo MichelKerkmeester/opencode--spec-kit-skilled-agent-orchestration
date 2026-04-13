@@ -44,7 +44,7 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
       ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
@@ -64,7 +64,8 @@
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
       "F001.1",
       "F001.3",
-      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts"
+      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase6-template.test.ts tests/memory-quality-phase6-extractors.test.ts tests/memory-quality-phase6-trigger.test.ts tests/memory-quality-phase6-migration.test.ts"
     ],
     "entities": [
       {
@@ -166,7 +167,7 @@
     ],
     "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-issues`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.461Z",
-    "last_save_at": "2026-04-12T09:06:03.505Z",
+    "last_save_at": "2026-04-13T04:56:06.968Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

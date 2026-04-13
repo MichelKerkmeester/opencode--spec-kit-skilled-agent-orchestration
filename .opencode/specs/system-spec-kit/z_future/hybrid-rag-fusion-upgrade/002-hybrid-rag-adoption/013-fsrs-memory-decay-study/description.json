@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study",
+  "description": "013-fsrs-memory-decay-study: Study FSRS Decay Defaults",
+  "keywords": [
+    "013-fsrs-memory-decay-study",
+    "study",
+    "fsrs",
+    "decay",
+    "defaults"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.711Z",
+  "specId": "013",
+  "folderSlug": "fsrs-memory-decay-study",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

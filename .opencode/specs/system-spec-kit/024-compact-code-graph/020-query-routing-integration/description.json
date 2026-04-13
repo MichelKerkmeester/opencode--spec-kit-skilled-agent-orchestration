@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/020-query-routing-integration",
+  "description": "Feature Specification: Query-Routing Integration [024/020]",
+  "keywords": [
+    "feature",
+    "specification",
+    "query-routing",
+    "integration",
+    "024",
+    "020"
+  ],
+  "lastUpdated": "2026-04-13T04:56:37.555Z",
+  "specId": "020",
+  "folderSlug": "query-routing-integration",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

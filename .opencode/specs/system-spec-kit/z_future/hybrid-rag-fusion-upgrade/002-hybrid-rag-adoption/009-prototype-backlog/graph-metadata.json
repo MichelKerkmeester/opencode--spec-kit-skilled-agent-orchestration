@@ -1,9 +1,152 @@
-Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog
-Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog
-Status: planned
-Importance Tier: important
-Summary: This sub-phase records prototype-only candidates that survived the research but were not approved for immediate implementation. It covers weak-result lexical fallback, connected-doc hints, bounded wake-up/read formatting, quote-carrying evidence snippets, and temporal-fact follow-up discussion. It does not promote any of them to default runtime behavior.
-Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Key Topics: sub-phase, records, prototype-only, candidates, survived, research, approved, immediate, implementation, covers, weak-result, lexical
-Key Files: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts, .opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/decision-record.md, memory-search.ts, session-bootstrap.ts, fsrs-scheduler.ts, spec.md, plan.md, tasks.md, checklist.md
-Source Docs: spec.md, plan.md, tasks.md, checklist.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog",
+  "spec_folder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog",
+  "parent_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "records",
+      "prototype-only",
+      "candidates",
+      "survived",
+      "research",
+      "approved",
+      "immediate",
+      "implementation",
+      "covers",
+      "weak-result",
+      "lexical"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
+      ".opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/decision-record.md",
+      "memory-search.ts",
+      "session-bootstrap.ts",
+      "fsrs-scheduler.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": "session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.ts",
+        "kind": "code",
+        "path": "fsrs-scheduler.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Record Flagged Prototype Candidates",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Constraints\nEvery",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase records prototype-only candidates that survived the research but were not approved for immediate implementation. It covers weak-result lexical fallback, connected-doc hints, bounded wake-up/read formatting, quote-carrying evidence snippets, and temporal-fact follow-up discussion. It does not promote any of them to default runtime behavior.",
+    "created_at": "2026-04-13T04:56:07.090Z",
+    "last_save_at": "2026-04-13T04:56:07.090Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

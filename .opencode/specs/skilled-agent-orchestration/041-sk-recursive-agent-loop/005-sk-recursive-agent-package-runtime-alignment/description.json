@@ -1,0 +1,22 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/005-sk-recursive-agent-package-runtime-alignment",
+  "description": "Feature Specification: Recursive Agent Package and Runtime Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "recursive",
+    "agent",
+    "package",
+    "runtime",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-13T04:56:39.887Z",
+  "specId": "005",
+  "folderSlug": "sk-recursive-agent-package-runtime-alignment",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

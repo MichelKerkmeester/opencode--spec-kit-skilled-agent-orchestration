@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation",
+  "description": "010-passive-capture-investigation: Investigate Passive Capture",
+  "keywords": [
+    "010-passive-capture-investigation",
+    "investigate",
+    "passive",
+    "capture"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.763Z",
+  "specId": "010",
+  "folderSlug": "passive-capture-investigation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

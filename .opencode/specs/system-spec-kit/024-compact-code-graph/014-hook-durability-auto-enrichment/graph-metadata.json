@@ -1,9 +1,163 @@
-Packet: system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment
-Spec Folder: system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment
-Status: planned
-Importance Tier: important
-Summary: Template compliance shim section. Legacy phase content continues below.
-Parent: system-spec-kit/024-compact-code-graph
-Key Topics: template, compliance, shim, section, legacy, phase, content, continues, spec, hook, durability, auto-enrichment
-Key Files: memory-surface.ts, meta.sessionPriming, meta.graphContext, Promise.race, hooks/claude/hook-state.ts, hooks/claude/session-prime.ts, hooks/claude/session-stop.ts, hooks/claude/compact-inject.ts, hooks/claude/shared.ts, hooks/memory-surface.ts, hooks/response-hints.ts, lib/response/envelope.ts, lib/code-graph/code-graph-db.ts, context-server.ts, tests/hook-state.vitest.ts, tests/hook-session-start.vitest.ts, tests/hook-precompact.vitest.ts, tests/dual-scope-hooks.vitest.ts, tests/edge-cases.vitest.ts, tests/envelope.vitest.ts
-Source Docs: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/014-hook-durability-auto-enrichment",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy",
+      "phase",
+      "content",
+      "continues",
+      "spec",
+      "hook",
+      "durability",
+      "auto-enrichment"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "memory-surface.ts",
+      "meta.sessionPriming",
+      "meta.graphContext",
+      "Promise.race",
+      "hooks/claude/hook-state.ts",
+      "hooks/claude/session-prime.ts",
+      "hooks/claude/session-stop.ts",
+      "hooks/claude/compact-inject.ts",
+      "hooks/claude/shared.ts",
+      "hooks/memory-surface.ts",
+      "hooks/response-hints.ts",
+      "lib/response/envelope.ts",
+      "lib/code-graph/code-graph-db.ts",
+      "context-server.ts",
+      "tests/hook-state.vitest.ts",
+      "tests/hook-session-start.vitest.ts",
+      "tests/hook-precompact.vitest.ts",
+      "tests/dual-scope-hooks.vitest.ts",
+      "tests/edge-cases.vitest.ts",
+      "tests/envelope.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "meta.sessionPriming",
+        "kind": "file",
+        "path": "meta.sessionPriming",
+        "source": "derived"
+      },
+      {
+        "name": "meta.graphContext",
+        "kind": "file",
+        "path": "meta.graphContext",
+        "source": "derived"
+      },
+      {
+        "name": "Promise.race",
+        "kind": "file",
+        "path": "Promise.race",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-stop.ts",
+        "kind": "code",
+        "path": "hooks/claude/session-stop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "compact-inject.ts",
+        "kind": "code",
+        "path": "hooks/claude/compact-inject.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared.ts",
+        "kind": "code",
+        "path": "hooks/claude/shared.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "response-hints.ts",
+        "kind": "code",
+        "path": "hooks/response-hints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "envelope.ts",
+        "kind": "code",
+        "path": "lib/response/envelope.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "lib/code-graph/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.vitest.ts",
+        "kind": "test",
+        "path": "tests/hook-state.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": "tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-13T04:55:08.077Z",
+    "last_save_at": "2026-04-13T04:56:03.998Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

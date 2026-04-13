@@ -51,6 +51,8 @@
       "create-record.ts",
       "anchor-merge-operation.ts",
       "decision-record.md",
+      "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
+      "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
       "memory-save.ts",
       "spec-doc-structure.ts",
       "validate.sh",
@@ -117,6 +119,18 @@
         "source": "derived"
       },
       {
+        "name": "create-record-identity.vitest.ts --config vitest.config.ts",
+        "kind": "code",
+        "path": "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
         "name": "memory-save.ts",
         "kind": "code",
         "path": "memory-save.ts",
@@ -149,7 +163,7 @@
     ],
     "causal_summary": "Gate C is the code-critical path of phase 018. It replaces standalone memory-file writes with canonical spec-doc writes by delivering the five-rule validator bridge, the 3-tier `contentRouter`, the five-mode `anchorMergeOperation`, the `atomicIndexMemory` drop-in for `atomicSaveMemory`, and the XL `memory-save.ts` rewrite that keeps `withSpecFolderLock` unchanged. Grounding: `../implementation-design.md`; resource-map F-4/F-5/F-6/F-7; rows B1, C1, C10, C11, D1-D30; iterations 001-005, 021-024, 029, 031-034, 038.",
     "created_at": "2026-04-12T09:02:53.479Z",
-    "last_save_at": "2026-04-12T09:06:03.522Z",
+    "last_save_at": "2026-04-13T04:56:06.976Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/008-sk-recursive-agent-holistic-evaluation",
+  "description": "Spec: Holistic Agent Evaluation & Integration-Aware Improvement",
+  "keywords": [
+    "spec",
+    "holistic",
+    "agent",
+    "evaluation",
+    "integration-aware",
+    "improvement"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.458Z",
+  "specId": "008",
+  "folderSlug": "sk-recursive-agent-holistic-evaluation",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/013-correctness-boundary-repair",
+  "description": "Spec: Phase 013 — Correctness & Boundary Repair",
+  "keywords": [
+    "spec",
+    "phase",
+    "013",
+    "correctness",
+    "boundary",
+    "repair"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.795Z",
+  "specId": "013",
+  "folderSlug": "correctness-boundary-repair",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

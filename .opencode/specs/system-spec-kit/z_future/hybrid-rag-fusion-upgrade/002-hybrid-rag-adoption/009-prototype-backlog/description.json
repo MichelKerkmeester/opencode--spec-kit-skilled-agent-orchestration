@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog",
+  "description": "009-prototype-backlog: Record Flagged Prototype Candidates",
+  "keywords": [
+    "009-prototype-backlog",
+    "record",
+    "flagged",
+    "prototype",
+    "candidates"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.814Z",
+  "specId": "009",
+  "folderSlug": "prototype-backlog",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

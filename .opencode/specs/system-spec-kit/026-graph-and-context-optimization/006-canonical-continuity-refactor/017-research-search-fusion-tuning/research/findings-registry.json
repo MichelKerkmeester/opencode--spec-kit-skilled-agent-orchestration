@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-04-13T05:50:00Z",
+  "topic": "Search fusion weight optimization and reranking threshold calibration",
+  "sessionId": "75c06db9-0994-48a7-916d-bd008514d63a",
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "search-weights.json is secondary, not the main fusion tuning surface",
+      "status": "confirmed",
+      "questions": ["RQ-1"],
+      "summary": "The JSON file only feeds vector smart-ranking and no longer contains active RRF or cross-encoder configuration.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:21",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts:967",
+        ".opencode/skill/system-spec-kit/mcp_server/configs/README.md:44"
+      ]
+    },
+    {
+      "id": "F-002",
+      "title": "Hybrid continuity precision is primarily controlled by adaptive weights plus RRF K",
+      "status": "confirmed",
+      "questions": ["RQ-1"],
+      "summary": "Hybrid fusion assembles weighted lists in hybrid-search using shared adaptive profiles, then applies shared RRF fusion.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:1221",
+        ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60",
+        ".opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts:22"
+      ]
+    },
+    {
+      "id": "F-003",
+      "title": "FSRS 0.2346 is a canonical invariant, not a packet-local tuning knob",
+      "status": "confirmed",
+      "questions": ["RQ-2"],
+      "summary": "The scheduler, cognitive docs, and search-time decay comments all encode the same FSRS v4 constant and formula.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts:10",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/README.md:121",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts:7"
+      ]
+    },
+    {
+      "id": "F-004",
+      "title": "The repo already contains intent-specific RRF K optimization scaffolding",
+      "status": "confirmed",
+      "questions": ["RQ-1"],
+      "summary": "The analysis and tests sweep K across 10-120, with example expectations that literal lookup prefers low K while understand prefers high K.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts:127",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:98"
+      ]
+    },
+    {
+      "id": "F-005",
+      "title": "Cohere and Voyage improve first-hit quality over baseline in the project fixture corpus",
+      "status": "bounded",
+      "questions": ["RQ-3"],
+      "summary": "Fixture evaluation indicates equivalent P@5 but higher RR@5 than baseline, with Cohere slightly ahead of Voyage on the fifth query.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/reranker-eval-comparison.vitest.ts:21",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35"
+      ]
+    },
+    {
+      "id": "F-006",
+      "title": "The long-document penalty mismatches the actual spec-doc corpus",
+      "status": "confirmed",
+      "questions": ["RQ-4"],
+      "summary": "The `>2000` threshold applies to the majority of markdown docs under `.opencode/specs/system-spec-kit`, while the short threshold applies to none of them.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62",
+        "packet-local markdown length probe"
+      ]
+    },
+    {
+      "id": "F-007",
+      "title": "Reranker cache hit rate is currently unobservable",
+      "status": "confirmed",
+      "questions": ["RQ-5"],
+      "summary": "The cache stores entries and exports latency samples but no hit/miss counters or TTL outcome metrics.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:115",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:424",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:499"
+      ]
+    },
+    {
+      "id": "F-008",
+      "title": "Continuity queries should bias toward find_spec and find_decision profiles, not default weights",
+      "status": "recommended",
+      "questions": ["RQ-1"],
+      "summary": "Normalized profiles show continuity-friendly graph weight between 0.23 and 0.45 with low recency, which aligns better with canonical source-of-truth retrieval than the default profile.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:60",
+        "packet-local normalized profile calculation"
+      ]
+    }
+  ]
+}

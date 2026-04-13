@@ -1,0 +1,23 @@
+{
+  "specFolder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
+  "description": "Feature Specification: CLI Skill Prompt-Quality Integration via Mirror Cards",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli",
+    "skill",
+    "prompt-quality",
+    "integration",
+    "via",
+    "mirror",
+    "cards"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.904Z",
+  "specId": "043",
+  "folderSlug": "cli-skill-improved-prompting",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/036-sk-deep-research-review-split",
+  "description": "Feature Specification: Split sk-deep-research Review Mode into sk-deep-review",
+  "keywords": [
+    "feature",
+    "specification",
+    "split",
+    "sk-deep-research",
+    "review",
+    "mode",
+    "sk-deep-review"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.807Z",
+  "specId": "036",
+  "folderSlug": "sk-deep-research-review-split",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

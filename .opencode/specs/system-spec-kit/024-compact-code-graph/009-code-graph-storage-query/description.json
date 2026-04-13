@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/009-code-graph-storage-query",
+  "description": "Phase 009: Code Graph Storage + Query",
+  "keywords": [
+    "phase",
+    "009",
+    "code",
+    "graph",
+    "storage",
+    "query"
+  ],
+  "lastUpdated": "2026-04-13T04:56:37.842Z",
+  "specId": "009",
+  "folderSlug": "code-graph-storage-query",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/016-deep-review-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/016-deep-review-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "fix",
+      "findings",
+      "surfaced",
+      "50-iteration",
+      "deep",
+      "review",
+      "across",
+      "phases",
+      "026-graph-and-context-optimization",
+      "remediation",
+      "execution",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "_memory.continuity",
+      "command/memory/save.md",
+      "graph-metadata-parser.ts",
+      "graph-metadata-schema.ts",
+      "lib/graph/README.md",
+      "lib/config/README.md",
+      "001-research/research/archive/research-v1-iter-8.md",
+      "015/scratch/manual-playbook-results.json",
+      "content-router.vitest.ts",
+      "handler-memory-save.vitest.ts",
+      "005/scratch/test-prompts-all-clis.md",
+      "system-spec-kit/SKILL.md",
+      "templates/handover.md",
+      "templates/debug-delegation.md",
+      "generate-context.js",
+      "002-gate-b-foundation/spec.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "002-implement-cache-warning-hooks/spec.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "_memory.continuity",
+        "kind": "file",
+        "path": "_memory.continuity",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": "command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-parser.ts",
+        "kind": "code",
+        "path": "graph-metadata-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-schema.ts",
+        "kind": "code",
+        "path": "graph-metadata-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "lib/graph/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "lib/config/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "research-v1-iter-8.md",
+        "kind": "doc",
+        "path": "001-research/research/archive/research-v1-iter-8.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual-playbook-results.json",
+        "kind": "config",
+        "path": "015/scratch/manual-playbook-results.json",
+        "source": "derived"
+      },
+      {
+        "name": "content-router.vitest.ts",
+        "kind": "test",
+        "path": "content-router.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-save.vitest.ts",
+        "kind": "test",
+        "path": "handler-memory-save.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test-prompts-all-clis.md",
+        "kind": "doc",
+        "path": "005/scratch/test-prompts-all-clis.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "templates/handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "debug-delegation.md",
+        "kind": "doc",
+        "path": "templates/debug-delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "002-gate-b-foundation/spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fix all 22 findings (18 P1, 4 P2) surfaced by the 50-iteration deep review across all phases of 026-graph-and-context-optimization.",
+    "created_at": "2026-04-13T04:56:06.985Z",
+    "last_save_at": "2026-04-13T04:56:06.985Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

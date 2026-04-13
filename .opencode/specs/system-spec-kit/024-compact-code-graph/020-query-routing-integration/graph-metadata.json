@@ -1,9 +1,159 @@
-Packet: system-spec-kit/024-compact-code-graph/020-query-routing-integration
-Spec Folder: system-spec-kit/024-compact-code-graph/020-query-routing-integration
-Status: planned
-Importance Tier: important
-Summary: Template compliance shim section. Legacy phase content continues below.
-Parent: system-spec-kit/024-compact-code-graph
-Key Topics: template, compliance, shim, section, legacy, phase, content, continues, feature, specification, query-routing, integration
-Key Files: handlers/memory-context.ts, handlers/session-resume.ts, context-server.ts, ./lib/enrichment/passive-enrichment.js, lib/enrichment/passive-enrichment.ts, code-graph-enricher.ts, tool-schemas.ts, schemas/tool-input-schemas.ts, tools/lifecycle-tools.ts, tools/types.ts, passive-enrichment.ts, spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, queryIntentRouting.matchedKeywords
-Source Docs: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/020-query-routing-integration",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/020-query-routing-integration",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy",
+      "phase",
+      "content",
+      "continues",
+      "feature",
+      "specification",
+      "query-routing",
+      "integration"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "handlers/memory-context.ts",
+      "handlers/session-resume.ts",
+      "context-server.ts",
+      "./lib/enrichment/passive-enrichment.js",
+      "lib/enrichment/passive-enrichment.ts",
+      "code-graph-enricher.ts",
+      "tool-schemas.ts",
+      "schemas/tool-input-schemas.ts",
+      "tools/lifecycle-tools.ts",
+      "tools/types.ts",
+      "passive-enrichment.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "queryIntentRouting.matchedKeywords"
+    ],
+    "entities": [
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "passive-enrichment.js",
+        "kind": "code",
+        "path": "./lib/enrichment/passive-enrichment.js",
+        "source": "derived"
+      },
+      {
+        "name": "passive-enrichment.ts",
+        "kind": "code",
+        "path": "lib/enrichment/passive-enrichment.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-enricher.ts",
+        "kind": "code",
+        "path": "code-graph-enricher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": "schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": "tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "tools/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "passive-enrichment.ts",
+        "kind": "code",
+        "path": "passive-enrichment.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-13T04:55:09.651Z",
+    "last_save_at": "2026-04-13T04:56:05.596Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

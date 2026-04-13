@@ -52,7 +52,7 @@
       "legalStop.gateResults",
       "legalStop.replayInputs",
       "scratch/codex-gpt54-deep-research.md",
-      ".opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md",
+      ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md",
       ".opencode/skill/sk-deep-research/SKILL.md",
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
       ".opencode/skill/sk-deep-research/references/convergence.md",
@@ -97,7 +97,7 @@
       {
         "name": "consolidated-research-report.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/999-agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md",
+        "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md",
         "source": "derived"
       },
       {
@@ -169,7 +169,7 @@
     ],
     "causal_summary": "This packet converts the consolidated agentic-systems research into one implementation plan for the two autonomous deep-loop products: `sk-deep-research` and `sk-deep-review`. The work is centered on runtime truth, not feature sprawl: real stop reasons, legal completion gates, resume-from-run semantics, auditability, claim verification, behavior-first tests, and richer dashboards that make loop state easier to trust and resume.",
     "created_at": "2026-04-12T09:02:50.192Z",
-    "last_save_at": "2026-04-12T09:06:00.327Z",
+    "last_save_at": "2026-04-13T04:56:03.847Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

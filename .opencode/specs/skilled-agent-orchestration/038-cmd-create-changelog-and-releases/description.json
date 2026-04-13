@@ -1,0 +1,22 @@
+{
+  "specFolder": "skilled-agent-orchestration/038-cmd-create-changelog-and-releases",
+  "description": "Feature Specification: Upgrade create:changelog with GitHub Release Creation",
+  "keywords": [
+    "feature",
+    "specification",
+    "upgrade",
+    "create",
+    "changelog",
+    "github",
+    "release",
+    "creation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.226Z",
+  "specId": "038",
+  "folderSlug": "cmd-create-changelog-and-releases",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

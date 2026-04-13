@@ -165,7 +165,7 @@
     ],
     "causal_summary": "The current `validate-spec.sh` script is a monolithic ~600 line file. Adding all planned features (PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, .speckit.yaml config, glob patterns) would bloat it to ~1400 lines, making it:",
     "created_at": "2026-04-12T09:02:53.516Z",
-    "last_save_at": "2026-04-12T09:06:03.567Z",
+    "last_save_at": "2026-04-13T04:56:07.007Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

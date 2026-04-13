@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation",
+  "description": "015-rrf-hybrid-retrieval-evaluation: Evaluate RRF Hybrid Retrieval",
+  "keywords": [
+    "015-rrf-hybrid-retrieval-evaluation",
+    "evaluate",
+    "rrf",
+    "hybrid",
+    "retrieval"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.392Z",
+  "specId": "015",
+  "folderSlug": "rrf-hybrid-retrieval-evaluation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

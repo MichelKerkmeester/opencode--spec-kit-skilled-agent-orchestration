@@ -1,0 +1,19 @@
+{
+  "specFolder": "skilled-agent-orchestration/029-sk-deep-research-first-upgrade",
+  "description": "Feature Specification: sk-deep-research First Upgrade",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-deep-research",
+    "first",
+    "upgrade"
+  ],
+  "lastUpdated": "2026-04-13T04:56:42.002Z",
+  "specId": "029",
+  "folderSlug": "sk-deep-research-first-upgrade",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

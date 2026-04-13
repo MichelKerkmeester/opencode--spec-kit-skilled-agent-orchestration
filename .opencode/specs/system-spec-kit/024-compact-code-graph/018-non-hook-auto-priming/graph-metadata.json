@@ -1,9 +1,162 @@
-Packet: system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming
-Spec Folder: system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming
-Status: planned
-Importance Tier: important
-Summary: Template compliance shim section. Legacy phase content continues below.
-Parent: system-spec-kit/024-compact-code-graph
-Key Topics: template, compliance, shim, section, legacy, phase, content, continues, 018, non-hook, cli, auto-priming
-Key Files: context-server.ts, handlers/session-health.ts, memory-surface.ts, context-metrics.ts, hooks/memory-surface.ts, hooks/index.ts, tool-schemas.ts, schemas/tool-input-schemas.ts, tools/lifecycle-tools.ts, CLAUDE.md, GEMINI.md, mcp_server/context-server.ts, mcp_server/hooks/memory-surface.ts, mcp_server/lib/session/session-manager.ts, mcp_server/handlers/session-health.ts, mcp_server/tool-schemas.ts, CODEX.md, AGENTS.md, spec.md, plan.md
-Source Docs: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming",
+  "spec_folder": "system-spec-kit/024-compact-code-graph/018-non-hook-auto-priming",
+  "parent_id": "system-spec-kit/024-compact-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "template",
+      "compliance",
+      "shim",
+      "section",
+      "legacy",
+      "phase",
+      "content",
+      "continues",
+      "018",
+      "non-hook",
+      "cli",
+      "auto-priming"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "context-server.ts",
+      "handlers/session-health.ts",
+      "memory-surface.ts",
+      "context-metrics.ts",
+      "hooks/memory-surface.ts",
+      "hooks/index.ts",
+      "tool-schemas.ts",
+      "schemas/tool-input-schemas.ts",
+      "tools/lifecycle-tools.ts",
+      "CLAUDE.md",
+      "GEMINI.md",
+      "mcp_server/context-server.ts",
+      "mcp_server/hooks/memory-surface.ts",
+      "mcp_server/lib/session/session-manager.ts",
+      "mcp_server/handlers/session-health.ts",
+      "mcp_server/tool-schemas.ts",
+      "CODEX.md",
+      "AGENTS.md",
+      "spec.md",
+      "plan.md"
+    ],
+    "entities": [
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-health.ts",
+        "kind": "code",
+        "path": "handlers/session-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "context-metrics.ts",
+        "kind": "code",
+        "path": "context-metrics.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "hooks/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": "schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lifecycle-tools.ts",
+        "kind": "code",
+        "path": "tools/lifecycle-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": "CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "GEMINI.md",
+        "kind": "doc",
+        "path": "GEMINI.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": "mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-manager.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/session/session-manager.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-health.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/session-health.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
+    "created_at": "2026-04-13T04:55:08.652Z",
+    "last_save_at": "2026-04-13T04:56:04.581Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

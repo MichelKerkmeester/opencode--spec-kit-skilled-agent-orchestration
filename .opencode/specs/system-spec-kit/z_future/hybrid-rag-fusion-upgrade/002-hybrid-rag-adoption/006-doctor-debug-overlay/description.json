@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay",
+  "description": "006-doctor-debug-overlay: Add Compact Diagnostics",
+  "keywords": [
+    "006-doctor-debug-overlay",
+    "add",
+    "compact",
+    "diagnostics"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.236Z",
+  "specId": "006",
+  "folderSlug": "doctor-debug-overlay",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

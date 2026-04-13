@@ -43,7 +43,7 @@
       "tasks",
       "implementation"
     ],
-    "importance_tier": "important",
+    "importance_tier": "high",
     "status": "planned",
     "key_files": [
       ".opencode/skill/sk-deep-review/SKILL.md",
@@ -167,7 +167,7 @@
     ],
     "causal_summary": "Make Phase 2 the durable review-mode contract by aligning docs, assets, workflow YAML, runtime mirrors, manual testing playbook surfaces, and packet closeout evidence around one canonical deep-review packet model.",
     "created_at": "2026-04-12T09:02:50.184Z",
-    "last_save_at": "2026-04-12T09:06:00.316Z",
+    "last_save_at": "2026-04-13T04:56:03.838Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

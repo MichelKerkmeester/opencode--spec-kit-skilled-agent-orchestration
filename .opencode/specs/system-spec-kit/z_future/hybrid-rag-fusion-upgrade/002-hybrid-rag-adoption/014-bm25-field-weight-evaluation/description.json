@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation",
+  "description": "014-bm25-field-weight-evaluation: Evaluate BM25 Field Weights",
+  "keywords": [
+    "014-bm25-field-weight-evaluation",
+    "evaluate",
+    "bm25",
+    "field",
+    "weights"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.137Z",
+  "specId": "014",
+  "folderSlug": "bm25-field-weight-evaluation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

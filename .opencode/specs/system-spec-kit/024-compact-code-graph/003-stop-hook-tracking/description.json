@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/003-stop-hook-tracking",
+  "description": "Phase 3: Stop Hook + Token Tracking",
+  "keywords": [
+    "phase",
+    "stop",
+    "hook",
+    "token",
+    "tracking"
+  ],
+  "lastUpdated": "2026-04-13T04:56:37.068Z",
+  "specId": "003",
+  "folderSlug": "stop-hook-tracking",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

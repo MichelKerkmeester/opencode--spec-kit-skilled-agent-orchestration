@@ -1,0 +1,22 @@
+{
+  "specFolder": "skilled-agent-orchestration/040-sk-deep-research-review-improvement-1",
+  "description": "Feature Specification: 040 Auto Deep Research / Review Improvement",
+  "keywords": [
+    "feature",
+    "specification",
+    "040",
+    "auto",
+    "deep",
+    "research",
+    "review",
+    "improvement"
+  ],
+  "lastUpdated": "2026-04-13T04:56:41.712Z",
+  "specId": "040",
+  "folderSlug": "sk-deep-research-review-improvement-1",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

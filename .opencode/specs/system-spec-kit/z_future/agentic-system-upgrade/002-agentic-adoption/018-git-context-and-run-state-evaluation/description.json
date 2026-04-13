@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/018-git-context-and-run-state-evaluation",
+  "description": "Feature Specification: 018 Git Context and Run State Evaluation",
+  "keywords": [
+    "feature",
+    "specification",
+    "018",
+    "git",
+    "context",
+    "run",
+    "state",
+    "evaluation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:34.902Z",
+  "specId": "018",
+  "folderSlug": "git-context-and-run-state-evaluation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

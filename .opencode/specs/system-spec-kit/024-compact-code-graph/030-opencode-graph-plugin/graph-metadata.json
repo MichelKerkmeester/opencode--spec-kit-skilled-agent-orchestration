@@ -180,7 +180,7 @@
     ],
     "causal_summary": "Packet `030-opencode-graph-plugin` is no longer just a research packet. It now records a completed six-phase delivery: shared payload/provenance contracts, a real OpenCode hook plugin, graph-operations hardening, cross-runtime startup surfacing parity, bounded code graph auto-reindex parity with CocoIndex-style first-use refresh behavior, and a Copilot repo-local startup-hook wiring repair. This Level 3 packet lets future sessions recover the shipped runtime work without rereading the full research trail.",
     "created_at": "2026-04-12T09:02:53.435Z",
-    "last_save_at": "2026-04-12T09:06:03.479Z",
+    "last_save_at": "2026-04-13T04:56:06.944Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

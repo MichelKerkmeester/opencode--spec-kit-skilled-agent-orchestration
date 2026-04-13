@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing",
+  "description": "004-compaction-checkpointing: Preserve Context Before Compaction",
+  "keywords": [
+    "004-compaction-checkpointing",
+    "preserve",
+    "context",
+    "compaction"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.042Z",
+  "specId": "004",
+  "folderSlug": "compaction-checkpointing",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

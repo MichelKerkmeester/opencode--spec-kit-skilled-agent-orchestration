@@ -46,7 +46,7 @@
       "tasks",
       "verification"
     ],
-    "importance_tier": "important",
+    "importance_tier": "high",
     "status": "planned",
     "key_files": [
       "reduce-state.cjs",
@@ -170,7 +170,7 @@
     ],
     "causal_summary": "Make both skills operate under explicit, testable packet contracts — canonical naming, lifecycle branches, reducer semantics, release-readiness states, and runtime parity — all backed by executable Vitest guards.",
     "created_at": "2026-04-12T09:02:50.183Z",
-    "last_save_at": "2026-04-12T09:06:00.315Z",
+    "last_save_at": "2026-04-13T04:56:03.837Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

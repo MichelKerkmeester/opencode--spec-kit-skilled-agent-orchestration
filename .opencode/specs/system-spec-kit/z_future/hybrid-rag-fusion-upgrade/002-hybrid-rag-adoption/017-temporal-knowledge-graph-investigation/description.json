@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation",
+  "description": "017-temporal-knowledge-graph-investigation: Investigate Temporal Knowledge Graphs",
+  "keywords": [
+    "017-temporal-knowledge-graph-investigation",
+    "investigate",
+    "temporal",
+    "knowledge",
+    "graphs"
+  ],
+  "lastUpdated": "2026-04-13T04:56:31.949Z",
+  "specId": "017",
+  "folderSlug": "temporal-knowledge-graph-investigation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

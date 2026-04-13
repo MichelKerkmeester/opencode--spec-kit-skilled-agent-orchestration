@@ -1,0 +1,20 @@
+{
+  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/023-ablation-benchmark-integrity",
+  "description": "Feature Specification: Ablation Benchmark Integrity",
+  "keywords": [
+    "feature",
+    "specification",
+    "ablation",
+    "benchmark",
+    "integrity"
+  ],
+  "lastUpdated": "2026-04-13T04:56:35.898Z",
+  "specId": "023",
+  "folderSlug": "ablation-benchmark-integrity",
+  "parentChain": [
+    "system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

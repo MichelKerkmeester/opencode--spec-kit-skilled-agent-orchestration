@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/005-budget-stagnation-enforcement",
+  "description": "Feature Specification: 005 Budget and Stagnation Enforcement",
+  "keywords": [
+    "feature",
+    "specification",
+    "005",
+    "budget",
+    "stagnation",
+    "enforcement"
+  ],
+  "lastUpdated": "2026-04-13T04:56:35.089Z",
+  "specId": "005",
+  "folderSlug": "budget-stagnation-enforcement",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/008-continuity-and-memory-ux-integration",
+  "description": "Feature Specification: 008 Continuity and Memory UX Integration",
+  "keywords": [
+    "feature",
+    "specification",
+    "008",
+    "continuity",
+    "memory",
+    "integration"
+  ],
+  "lastUpdated": "2026-04-13T04:56:33.962Z",
+  "specId": "008",
+  "folderSlug": "continuity-and-memory-ux-integration",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

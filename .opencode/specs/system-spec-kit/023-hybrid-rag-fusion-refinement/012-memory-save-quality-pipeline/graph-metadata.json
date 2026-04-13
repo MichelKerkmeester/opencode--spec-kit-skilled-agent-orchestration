@@ -58,10 +58,6 @@
       "implementation-summary.md",
       "generate-context.js",
       "source-capabilities.ts",
-      "core/quality-scorer.ts",
-      "extractors/quality-scorer.ts",
-      "input-normalizer.ts",
-      "session-types.ts",
       "research/research.md"
     ],
     "entities": [
@@ -156,15 +152,15 @@
         "source": "derived"
       },
       {
-        "name": "quality-scorer.ts",
-        "kind": "code",
-        "path": "core/quality-scorer.ts",
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This phase addresses structured-input (`--json`/`--stdin`) quality regressions in memory save generation where normalization and extraction assumptions caused thin, low-value output. The work standardizes normalization, synthesis, quality scoring, and contamination handling for structured flows while preserving transcript-mode behavior.",
     "created_at": "2026-04-12T09:02:50.338Z",
-    "last_save_at": "2026-04-12T09:06:00.467Z",
+    "last_save_at": "2026-04-13T04:56:03.985Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

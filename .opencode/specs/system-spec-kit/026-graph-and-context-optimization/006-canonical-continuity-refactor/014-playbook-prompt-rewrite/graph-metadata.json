@@ -13,26 +13,55 @@
     "trigger_phrases": [
       "playbook prompt rewrite",
       "manual testing prompt cleanup",
+      "phase 014 spec repair",
+      "implementation plan",
+      "phase 014 plan",
+      "manual testing playbook",
+      "tasks",
       "phase 014",
-      "manual testing playbook"
+      "packet repair",
+      "verification",
+      "checklist",
+      "implementation",
+      "summary"
     ],
     "key_topics": [
-      "manual testing playbook",
-      "prompt rewrite",
-      "level 2 packet repair",
-      "validator cleanup"
+      "playbook",
+      "prompt",
+      "rewrite",
+      "manual",
+      "testing",
+      "cleanup",
+      "phase",
+      "014",
+      "spec",
+      "repair",
+      "implementation",
+      "plan"
     ],
     "importance_tier": "important",
-    "status": "review",
+    "status": "complete",
     "key_files": [
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md"
+      "graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/checklist.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh"
     ],
     "entities": [
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -64,15 +93,69 @@
         "source": "derived"
       },
       {
-        "name": "manual_testing_playbook.md",
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/014-playbook-prompt-rewrite/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Manual Testing Playbook Prompt Rewrite",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Phase 014 already rewrote manual testing playbook prompt fields. This packet repair restores the required Level 2 documentation scaffold, points references at the real playbook index, and keeps the repair limited to the target spec folder.",
+    "causal_summary": "Phase 014 already rewrote prompt fields across the manual testing playbook, but this spec packet drifted away from the active Level 2 template. The packet was missing required anchors, the `_memory` continuity block, `tasks.md`, `checklist.md`, and a valid reference to the playbook index.",
     "created_at": "2026-04-12T00:00:00Z",
-    "last_save_at": "2026-04-12T00:00:00Z",
+    "last_save_at": "2026-04-13T04:56:06.984Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

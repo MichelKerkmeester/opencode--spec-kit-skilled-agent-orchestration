@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/014-multi-model-council-evaluation",
+  "description": "Feature Specification: 014 Multi-Model Council Evaluation",
+  "keywords": [
+    "feature",
+    "specification",
+    "014",
+    "multi-model",
+    "council",
+    "evaluation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:35.182Z",
+  "specId": "014",
+  "folderSlug": "multi-model-council-evaluation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

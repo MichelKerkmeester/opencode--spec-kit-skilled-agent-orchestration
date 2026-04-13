@@ -1,9 +1,152 @@
-Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation
-Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation
-Status: planned
-Importance Tier: important
-Summary: This sub-phase investigates whether Engram-style passive capture or close-session helpers belong in Public at all, and if so, whether they can exist only as thin wrappers over the current JSON-primary save workflow. It defines the research question, baseline measurements, and authority checks needed before any adopt/prototype/reject decision. It does not ship a new save surface.
-Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Key Topics: sub-phase, investigates, whether, engram-style, passive, capture, close-session, helpers, belong, public, exist, only
-Key Files: generate-context.js, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, .opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts, .opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, spec.md, plan.md, tasks.md, checklist.md
-Source Docs: spec.md, plan.md, tasks.md, checklist.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation",
+  "spec_folder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation",
+  "parent_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "sub-phase",
+      "investigates",
+      "whether",
+      "engram-style",
+      "passive",
+      "capture",
+      "close-session",
+      "helpers",
+      "belong",
+      "public",
+      "exist",
+      "only"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "scope-governance.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
+        "source": "derived"
+      },
+      {
+        "name": "passive-enrichment.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigate Passive Capture",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\nThis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Constraints",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This sub-phase investigates whether Engram-style passive capture or close-session helpers belong in Public at all, and if so, whether they can exist only as thin wrappers over the current JSON-primary save workflow. It defines the research question, baseline measurements, and authority checks needed before any adopt/prototype/reject decision. It does not ship a new save surface.",
+    "created_at": "2026-04-13T04:56:07.090Z",
+    "last_save_at": "2026-04-13T04:56:07.090Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

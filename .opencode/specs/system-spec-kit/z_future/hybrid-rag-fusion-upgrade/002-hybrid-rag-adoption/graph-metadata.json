@@ -1,10 +1,182 @@
-Packet: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Spec Folder: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption
-Status: planned
-Importance Tier: important
-Summary: This packet converts the completed `001-research-hybrid-rag-fusion-systems` work into two coordinated tracks: nine implementation-ready adopt-now sub-phases and nine investigation sub-phases that answer the remaining prototype-later, measurement, and new-feature questions without widening current scope. It preserves Public's current authorities and only imports proven patterns as thin facades. The adopt-now track covers authority freezing, `memory_review`, JSON-primary save ergonomics, compaction preservation, bootstrap guidance, doctor/debug overlays, workflow routing guidance, rollout evidence gates, and a bounded prototype backlog. The investigation track covers passive capture, tool-profile bundling, drift-checker applicability, FSRS decay defaults, BM25 field weighting, RRF/hybrid evaluation, connected-doc hints, temporal facts, and wake-up layering.
-Parent: system-spec-kit/999-hybrid-rag-fusion-upgrade
-Children: system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation, system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study
-Key Topics: packet, converts, completed, 001-research-hybrid-rag-fusion-systems, work, two, coordinated, tracks, nine, implementation-ready, adopt-now, sub-phases
-Key Files: generate-context.js, implementation-summary.md, spec.md, plan.md, tasks.md, checklist.md, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts, .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js, .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts, .opencode/plugins/spec-kit-compact-code-graph.js, .opencode/skill/system-spec-kit/mcp_server/context-server.ts, .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts, .opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts, .opencode/skill/system-spec-kit/scripts/spec/validate.sh, experimental.session.compacting, context-server.ts
-Source Docs: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "spec_folder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+  "parent_id": null,
+  "children_ids": [
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/001-architecture-boundary-freeze",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/002-memory-review-tool",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/003-save-ergonomics",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/004-compaction-checkpointing",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/006-doctor-debug-overlay",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/007-workflow-guidance-map",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/008-rollout-evidence-gates",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/009-prototype-backlog",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/010-passive-capture-investigation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/012-drift-detection-evaluation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/013-fsrs-memory-decay-study",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/014-bm25-field-weight-evaluation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/015-rrf-hybrid-retrieval-evaluation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/016-connected-doc-hints-investigation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation",
+    "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/018-wake-up-context-layering-study"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "packet",
+      "converts",
+      "completed",
+      "001-research-hybrid-rag-fusion-systems",
+      "work",
+      "two",
+      "coordinated",
+      "tracks",
+      "nine",
+      "implementation-ready",
+      "adopt-now",
+      "sub-phases"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "generate-context.js",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      ".opencode/plugins/spec-kit-compact-code-graph.js",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "experimental.session.compacting",
+      "context-server.ts"
+    ],
+    "entities": [
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": "generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-compact-code-graph.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-compact-code-graph.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fsrs-scheduler.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet converts the completed `001-research-hybrid-rag-fusion-systems` work into two coordinated tracks: nine implementation-ready adopt-now sub-phases and nine investigation sub-phases that answer the remaining prototype-later, measurement, and new-feature questions without widening current scope. It preserves Public's current authorities and only imports proven patterns as thin facades. The adopt-now track covers authority freezing, `memory_review`, JSON-primary save ergonomics, compaction preservation, bootstrap guidance, doctor/debug overlays, workflow routing guidance, rollout evidence gates, and a bounded prototype backlog. The investigation track covers passive capture, tool-profile bundling, drift-checker applicability, FSRS decay defaults, BM25 field weighting, RRF/hybrid evaluation, connected-doc hints, temporal facts, and wake-up layering.",
+    "created_at": "2026-04-13T04:56:07.086Z",
+    "last_save_at": "2026-04-13T04:56:07.086Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

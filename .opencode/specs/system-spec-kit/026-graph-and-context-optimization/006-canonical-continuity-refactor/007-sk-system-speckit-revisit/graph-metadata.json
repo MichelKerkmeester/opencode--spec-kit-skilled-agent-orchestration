@@ -103,6 +103,18 @@
         "source": "derived"
       },
       {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Parent Packet",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -116,18 +128,6 @@
       },
       {
         "name": "Problem Statement\n\nPhase",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Purpose\n\nReview",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "In Scope",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -153,7 +153,7 @@
     ],
     "causal_summary": "Phase 016 aligned the main `system-spec-kit` skill guide and internal documentation surfaces before Phase 018 removed the legacy standalone continuity model, retired deprecated archive-active-state guidance from the active contract, and made `/spec_kit:resume` a three-step ladder rooted in `handover`, `_memory.continuity`, and canonical packet docs. The 016 surfaces therefore needed a second pass so they would stop describing pre-018 save/recovery behavior.",
     "created_at": "2026-04-12T09:02:53.481Z",
-    "last_save_at": "2026-04-12T09:06:03.526Z",
+    "last_save_at": "2026-04-13T04:56:06.979Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

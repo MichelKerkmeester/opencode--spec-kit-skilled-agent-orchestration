@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/005-bootstrap-guidance",
+  "description": "005-bootstrap-guidance: Teach At Existing Bootstrap Surfaces",
+  "keywords": [
+    "005-bootstrap-guidance",
+    "teach",
+    "existing",
+    "bootstrap",
+    "surfaces"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.609Z",
+  "specId": "005",
+  "folderSlug": "bootstrap-guidance",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

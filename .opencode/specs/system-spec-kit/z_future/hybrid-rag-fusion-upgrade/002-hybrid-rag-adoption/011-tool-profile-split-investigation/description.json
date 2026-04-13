@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/011-tool-profile-split-investigation",
+  "description": "011-tool-profile-split-investigation: Investigate Tool Profile Splits",
+  "keywords": [
+    "011-tool-profile-split-investigation",
+    "investigate",
+    "tool",
+    "profile",
+    "splits"
+  ],
+  "lastUpdated": "2026-04-13T04:56:32.328Z",
+  "specId": "011",
+  "folderSlug": "tool-profile-split-investigation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "hybrid-rag-fusion-upgrade",
+    "002-hybrid-rag-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main",
+  "description": "Feature Specification: 006-ralph-main Research Phase Closeout",
+  "keywords": [
+    "feature",
+    "specification",
+    "006-ralph-main",
+    "research",
+    "phase",
+    "closeout"
+  ],
+  "lastUpdated": "2026-04-13T04:56:33.582Z",
+  "specId": "006",
+  "folderSlug": "ralph-main",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "001-research-agentic-systems"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

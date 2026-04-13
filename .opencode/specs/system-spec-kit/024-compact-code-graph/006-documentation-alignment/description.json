@@ -1,0 +1,18 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/006-documentation-alignment",
+  "description": "Phase 6: Documentation Alignment",
+  "keywords": [
+    "phase",
+    "documentation",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.219Z",
+  "specId": "006",
+  "folderSlug": "documentation-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

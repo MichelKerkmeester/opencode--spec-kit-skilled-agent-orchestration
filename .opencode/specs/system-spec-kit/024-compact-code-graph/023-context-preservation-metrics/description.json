@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/023-context-preservation-metrics",
+  "description": "Feature Specification: Phase 023 — Context Preservation Metrics",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "023",
+    "context",
+    "preservation",
+    "metrics"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.412Z",
+  "specId": "023",
+  "folderSlug": "context-preservation-metrics",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

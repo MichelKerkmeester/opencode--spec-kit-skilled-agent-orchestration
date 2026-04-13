@@ -168,7 +168,7 @@
     ],
     "causal_summary": "Batch reindex discovered substantially more files on disk than were inserted into the memory index. Two validation rules were producing false positives in bulk mode, which blocked valid memory and spec documentation content from indexing.",
     "created_at": "2026-04-12T09:02:50.322Z",
-    "last_save_at": "2026-04-12T09:06:00.457Z",
+    "last_save_at": "2026-04-13T04:56:03.975Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

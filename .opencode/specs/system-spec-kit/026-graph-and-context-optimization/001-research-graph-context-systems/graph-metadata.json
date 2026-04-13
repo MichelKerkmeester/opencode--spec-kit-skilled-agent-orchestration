@@ -55,7 +55,7 @@
       "trust-axis"
     ],
     "importance_tier": "critical",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "research/research.md",
       "research/recommendations.md",
@@ -70,6 +70,7 @@
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md",
+      "memory/metadata.json",
       "002-codesight/description.json",
       "scratch/spec-doc-phase-2-summary.md",
       "003-contextador/CONTEXT.md",
@@ -157,6 +158,12 @@
         "source": "derived"
       },
       {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "memory/metadata.json",
+        "source": "derived"
+      },
+      {
         "name": "description.json",
         "kind": "config",
         "path": "002-codesight/description.json",
@@ -171,7 +178,7 @@
     ],
     "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-12T09:06:03.488Z",
+    "last_save_at": "2026-04-13T04:56:06.952Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

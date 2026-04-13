@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/009-round3-review-remediation",
+  "spec_folder": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/009-round3-review-remediation",
+  "parent_id": "skilled-agent-orchestration/042-sk-deep-research-review-improvement-2",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042.009",
+      "round 3 remediation",
+      "copilot review fixes",
+      "042.009 plan",
+      "round 3 fix plan",
+      "042.009 tasks",
+      "042.009 checklist",
+      "round 3 remediation summary"
+    ],
+    "key_topics": [
+      "042",
+      "009",
+      "round",
+      "remediation",
+      "copilot",
+      "review",
+      "fixes",
+      "plan",
+      "fix",
+      "tasks",
+      "checklist",
+      "summary"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "scan-integration.cjs",
+      "generate-profile.cjs",
+      "replay-corpus.cjs",
+      "promote.cjs",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "scan-integration.cjs",
+        "kind": "file",
+        "path": "scan-integration.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "generate-profile.cjs",
+        "kind": "file",
+        "path": "generate-profile.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "replay-corpus.cjs",
+        "kind": "file",
+        "path": "replay-corpus.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "promote.cjs",
+        "kind": "file",
+        "path": "promote.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Review Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope\n\nFix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Out of Scope",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "A 20-iteration Copilot GPT-5.4 deep review (iterations 31-50, session `rvw-2026-04-12T16-00-00Z`) found 54 unique findings (0 P0, 37 P1, 17 P2) across the 042 bundle after two prior fix rounds. The final iteration rendered a FAIL verdict due to 5 unresolved P1 maintainability issues and broader traceability drift.",
+    "created_at": "2026-04-13T04:55:07.915Z",
+    "last_save_at": "2026-04-13T04:56:03.854Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -158,7 +158,7 @@
     ],
     "causal_summary": "Rename the unified memory dashboard command from `/memory` to `/memory:check` and update all references across the codebase.",
     "created_at": "2026-04-12T09:02:53.510Z",
-    "last_save_at": "2026-04-12T09:06:03.559Z",
+    "last_save_at": "2026-04-13T04:56:07.000Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

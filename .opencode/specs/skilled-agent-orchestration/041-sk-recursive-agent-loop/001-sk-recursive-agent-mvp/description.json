@@ -1,0 +1,20 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/001-sk-recursive-agent-mvp",
+  "description": "Feature Specification: Agent Improvement Loop",
+  "keywords": [
+    "feature",
+    "specification",
+    "agent",
+    "improvement",
+    "loop"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.169Z",
+  "specId": "001",
+  "folderSlug": "sk-recursive-agent-mvp",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

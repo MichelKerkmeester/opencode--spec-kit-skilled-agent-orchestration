@@ -154,7 +154,7 @@
     ],
     "causal_summary": "The current retrieval pipeline treats every user query as a single opaque string — one embedding lookup, one keyword expansion, one graph probe. This works for simple, well-phrased queries but fails when the user's question is multi-faceted (\"what decisions were made about scoring AND graph pruning?\"), uses vocabulary that diverges from stored terminology, or targets concepts that sit across multiple memory clusters. The result is missed recall on complex queries while simple-query latency must remain untouched.",
     "created_at": "2026-04-12T09:02:50.234Z",
-    "last_save_at": "2026-04-12T09:06:00.363Z",
+    "last_save_at": "2026-04-13T04:56:03.883Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

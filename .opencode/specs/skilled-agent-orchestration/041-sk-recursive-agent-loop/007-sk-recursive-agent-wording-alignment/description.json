@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/007-sk-recursive-agent-wording-alignment",
+  "description": "Feature Specification: Recursive Agent Wording Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "recursive",
+    "agent",
+    "wording",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.740Z",
+  "specId": "007",
+  "folderSlug": "sk-recursive-agent-wording-alignment",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

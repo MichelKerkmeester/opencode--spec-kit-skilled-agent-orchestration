@@ -49,7 +49,7 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "session-extractor.ts",
       "frontmatter-migration.ts",
@@ -62,6 +62,9 @@
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr4.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
+      "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
+      "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
+      "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
       "checklist.md",
       "implementation-summary.md",
       "workflow.ts",
@@ -137,6 +140,24 @@
         "source": "derived"
       },
       {
+        "name": "memory-quality-phase2-pr3.test.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase2-pr4.test.ts",
+        "kind": "test",
+        "path": "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
@@ -151,7 +172,7 @@
     ],
     "causal_summary": "Phase 2 is the P1 child packet for the two metadata defects that the parent research grouped into the same rollout band: D4 importance-tier mismatch and D7 empty git provenance. The phase exists to land PR-3 and PR-4 without pulling in the broader heuristic or refactor work reserved for later phases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1157]",
     "created_at": "2026-04-12T09:02:53.457Z",
-    "last_save_at": "2026-04-12T09:06:03.501Z",
+    "last_save_at": "2026-04-13T04:56:06.963Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

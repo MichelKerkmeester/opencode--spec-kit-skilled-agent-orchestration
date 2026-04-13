@@ -47,7 +47,7 @@
       "execution"
     ],
     "importance_tier": "critical",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
       "research/research.md",
       "external/src/ast/loader.ts",
@@ -66,9 +66,9 @@
       "research/deep-research-strategy.md",
       "research/deep-research-dashboard.md",
       "research/findings-registry.json",
-      "memory/06-04-26_16-34__5-iteration-deep-research-session-investigating.md",
-      "memory/06-04-26_17-58__continuation-deep-research-run-for-002-codesight.md",
-      "memory/08-04-26_08-10__extended-the-002-codesight-deep-research-packet.md"
+      "implementation-summary.md",
+      "memory/metadata.json",
+      "CLAUDE.md"
     ],
     "entities": [
       {
@@ -170,7 +170,7 @@
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-12T09:06:03.490Z",
+    "last_save_at": "2026-04-13T04:56:06.955Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

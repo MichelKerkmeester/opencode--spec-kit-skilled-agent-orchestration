@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/041-sk-recursive-agent-loop/003-sk-recursive-agent-doc-alignment",
+  "description": "Feature Specification: Recursive Agent sk-doc Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "recursive",
+    "agent",
+    "sk-doc",
+    "alignment"
+  ],
+  "lastUpdated": "2026-04-13T04:56:40.364Z",
+  "specId": "003",
+  "folderSlug": "sk-recursive-agent-doc-alignment",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "041-sk-recursive-agent-loop"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

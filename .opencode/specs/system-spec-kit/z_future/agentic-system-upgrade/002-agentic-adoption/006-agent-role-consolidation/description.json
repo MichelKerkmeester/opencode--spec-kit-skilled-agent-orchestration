@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption/006-agent-role-consolidation",
+  "description": "Feature Specification: 006 Agent Role Consolidation",
+  "keywords": [
+    "feature",
+    "specification",
+    "006",
+    "agent",
+    "role",
+    "consolidation"
+  ],
+  "lastUpdated": "2026-04-13T04:56:33.775Z",
+  "specId": "006",
+  "folderSlug": "agent-role-consolidation",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade",
+    "002-agentic-adoption"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

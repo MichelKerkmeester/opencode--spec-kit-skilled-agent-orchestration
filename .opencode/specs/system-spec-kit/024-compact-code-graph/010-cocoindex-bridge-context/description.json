@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/010-cocoindex-bridge-context",
+  "description": "Phase 010: CocoIndex Bridge + code_graph_context",
+  "keywords": [
+    "phase",
+    "010",
+    "cocoindex",
+    "bridge"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.124Z",
+  "specId": "010",
+  "folderSlug": "cocoindex-bridge-context",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

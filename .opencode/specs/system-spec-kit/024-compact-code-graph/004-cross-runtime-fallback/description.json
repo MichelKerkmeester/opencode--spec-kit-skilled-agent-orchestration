@@ -1,0 +1,18 @@
+{
+  "specFolder": "system-spec-kit/024-compact-code-graph/004-cross-runtime-fallback",
+  "description": "Phase 4: Cross-Runtime Fallback",
+  "keywords": [
+    "phase",
+    "cross-runtime",
+    "fallback"
+  ],
+  "lastUpdated": "2026-04-13T04:56:38.600Z",
+  "specId": "004",
+  "folderSlug": "cross-runtime-fallback",
+  "parentChain": [
+    "system-spec-kit",
+    "024-compact-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
