@@ -1,33 +1,73 @@
+---
+title: "Skill Advisor Setup Guide"
+description: "Setup, graph metadata, validation, and maintenance guide for the skill-advisor routing package."
+---
+
 # Skill Advisor Setup Guide
 
-Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/skill-advisor/scripts/`.
+Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/skill-advisor/`.
 
 This guide reflects the current runtime:
 - default dual-threshold routing (`confidence >= 0.8` and `uncertainty <= 0.35`)
 - explicit confidence-only override (`--confidence-only`)
 - command-bridge separation (`kind: command`)
 - cached skill discovery with mtime invalidation
-- permanent regression + benchmark harnesses
+- compiled graph metadata in `scripts/skill-graph.json`
+- permanent regression and benchmark tooling
 
 ---
 
-## 1. Overview
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. PREREQUISITES](#2--prerequisites)
+- [3. INSTALLATION VALIDATION](#3--installation-validation)
+- [4. CLI MODES AND FLAGS](#4--cli-modes-and-flags)
+- [5. GRAPH METADATA SYSTEM](#5--graph-metadata-system)
+- [6. QUALITY VERIFICATION](#6--quality-verification)
+- [7. FEATURE CATALOG AND MANUAL TESTING PLAYBOOK](#7--feature-catalog-and-manual-testing-playbook)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. OPERATIONAL CHECKLIST](#9--operational-checklist)
+- [10. REFERENCE COMMANDS](#10--reference-commands)
+
+---
+
+## 1. OVERVIEW
 
 ### What You Are Setting Up
 
-The Skill Advisor stack now includes:
+The Skill Advisor package now includes the routing scripts, the per-skill graph metadata surface, the compiled graph artifact, the feature catalog, and the manual testing playbook.
 
 ```text
-.opencode/skill/skill-advisor/scripts/
-├── skill_advisor.py
-├── skill_advisor_runtime.py
-├── skill_advisor_regression.py
-├── skill_advisor_bench.py
-├── fixtures/
-│   └── skill_advisor_regression_cases.jsonl
-└── out/
-    ├── regression-report.json
-    └── benchmark-report.json
+.opencode/skill/skill-advisor/
+├── README.md
+├── SET-UP_GUIDE.md
+├── graph-metadata.json
+├── feature_catalog/
+│   ├── feature_catalog.md
+│   ├── 01--routing-pipeline/
+│   ├── 02--graph-system/
+│   ├── 03--semantic-search/
+│   └── 04--testing/
+├── manual_testing_playbook/
+│   ├── manual_testing_playbook.md
+│   ├── 01--routing-accuracy/
+│   ├── 02--graph-boosts/
+│   ├── 03--compiler/
+│   └── 04--regression-safety/
+└── scripts/
+    ├── check-prompt-quality-card-sync.sh
+    ├── skill_advisor.py
+    ├── skill_advisor_runtime.py
+    ├── skill_advisor_regression.py
+    ├── skill_advisor_bench.py
+    ├── skill_graph_compiler.py
+    ├── skill-graph.json
+    ├── fixtures/
+    │   └── skill_advisor_regression_cases.jsonl
+    └── out/
+        ├── regression-report.json
+        └── benchmark-report.json
 ```
 
 ### Core Routing Model
@@ -35,7 +75,8 @@ The Skill Advisor stack now includes:
 - `default mode`: dual-threshold filter (`--threshold` + `--uncertainty`)
 - `override mode`: confidence-only filter (`--confidence-only`)
 - `skill kinds`: `kind: "skill"` and `kind: "command"`
-- `command bridge behavior`: command bridges are deprioritized unless explicit slash intent is present (for example `/spec_kit:` or `/memory:save`)
+- `graph overlay`: compiled edge data can reinforce related skills without inventing brand-new winners
+- `command bridge behavior`: command bridges are deprioritized unless explicit slash intent is present
 
 ### Gate 2 Integration
 
@@ -51,18 +92,20 @@ Interpretation:
 
 ---
 
-## 2. Prerequisites
+## 2. PREREQUISITES
 
 ### Required Software
 
 - Python `3.6+`
 - Workspace with `.opencode/skill/*/SKILL.md` entries
+- Skill folders with valid `graph-metadata.json` files when graph boosts are expected
 
 ### Quick Checks
 
 ```bash
 python3 --version
 ls -la .opencode/skill/skill-advisor/scripts/skill_advisor.py
+ls -la .opencode/skill/skill-advisor/graph-metadata.json
 ```
 
 Optional executable bit:
@@ -73,7 +116,7 @@ chmod +x .opencode/skill/skill-advisor/scripts/skill_advisor.py
 
 ---
 
-## 3. Installation Validation
+## 3. INSTALLATION VALIDATION
 
 ### Step 1: Health Check
 
@@ -83,8 +126,10 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
 
 Expected characteristics:
 - valid JSON
+- `status: "ok"`
 - `skills_found` > 0
 - `command_bridges_found` present
+- `skill_graph_loaded: true`
 - `cache` field present
 
 ### Step 2: Smoke Routing
@@ -105,9 +150,9 @@ Expected behavior:
 
 ---
 
-## 4. CLI Modes and Flags
+## 4. CLI MODES AND FLAGS
 
-### One-Shot (Default)
+### One-Shot Default Mode
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt"
@@ -134,9 +179,9 @@ Both flag pairs are aliases. Use either spelling consistently in local workflows
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
 ```
 
-Use this only when you intentionally want high-confidence suggestions even when uncertainty is above default limits.
+Use this only when high-confidence suggestions are needed even when uncertainty stays above the default ceiling.
 
-### Batch Structural Mode
+### Batch Mode
 
 File mode:
 
@@ -150,9 +195,9 @@ Stdin mode:
 cat prompts.txt | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-stdin
 ```
 
-Batch mode reduces repeated process overhead for multi-prompt evaluations.
+Batch mode reduces repeated process startup for multi-prompt evaluations.
 
-### Optional Debug/Control Flags
+### Optional Debug And Control Flags
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "prompt" --show-rejections
@@ -161,9 +206,74 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh -
 
 ---
 
-## 5. Quality Verification
+## 5. GRAPH METADATA SYSTEM
 
-### Regression Harness
+### What The Graph Metadata Does
+
+`graph-metadata.json` is the per-skill source of truth for relationship-aware routing. Each skill folder can declare its own routing identity and typed edges. The compiler scans those files across `.opencode/skill/`, validates the metadata contract, and writes the compact runtime artifact used by the advisor.
+
+### Runtime Flow
+
+```text
+.opencode/skill/*/graph-metadata.json
+        |
+        v
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
+        |
+        v
+.opencode/skill/skill-advisor/scripts/skill-graph.json
+        |
+        v
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
+```
+
+### Key Files
+
+- `.opencode/skill/skill-advisor/graph-metadata.json` defines the advisor skill's own graph edges and derived topics.
+- `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` validates every discovered metadata file and builds the compiled graph.
+- `.opencode/skill/skill-advisor/scripts/skill-graph.json` is the generated runtime snapshot loaded by the advisor.
+
+### Adding A New Skill Or New Edges
+
+1. Add or update the target skill folder's `graph-metadata.json`.
+2. Set a valid `skill_id` that matches the folder name.
+3. Add edge entries under the typed groups that the compiler accepts today: `depends_on`, `enhances`, `siblings`, `conflicts_with`, and `prerequisite_for`.
+4. Point every `target` at an existing skill `skill_id`.
+5. Run the compiler in validation mode:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+```
+
+6. Regenerate the compiled graph when validation passes:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
+```
+
+7. Re-run health and regression checks so the new edges are visible in the live advisor output.
+
+### What To Expect From The Compiler
+
+- hard failures for schema or target problems
+- soft warnings for symmetry gaps and zero-edge skills
+- a refreshed `scripts/skill-graph.json` snapshot when validation passes
+
+---
+
+## 6. QUALITY VERIFICATION
+
+### Compiler Validation
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+```
+
+Expected result:
+- all metadata files discovered
+- validation passes with exit code `0`
+
+### Regression Suite
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
@@ -175,8 +285,9 @@ Validates:
 - top-1 routing quality gates
 - P0 gate pass rate
 - command-bridge false-positive rate on non-slash prompts
+- full dataset pass rate
 
-### Benchmark Harness
+### Benchmark Suite
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
@@ -200,19 +311,54 @@ Expected: zero `ERROR` findings before claiming completion.
 
 ---
 
-## 6. Troubleshooting
+## 7. FEATURE CATALOG AND MANUAL TESTING PLAYBOOK
+
+### Feature Catalog
+
+`feature_catalog/feature_catalog.md` is the current-state inventory for the package. It summarizes the routing pipeline, graph system, semantic search, and testing surfaces, then points to the per-feature files in:
+
+- `feature_catalog/01--routing-pipeline/`
+- `feature_catalog/02--graph-system/`
+- `feature_catalog/03--semantic-search/`
+- `feature_catalog/04--testing/`
+
+Use the feature catalog when a new routing surface, graph rule, or validation capability needs to be documented as part of the live package behavior.
+
+### Manual Testing Playbook
+
+`manual_testing_playbook/manual_testing_playbook.md` is the operator-facing validation directory for the package. It owns the scenario matrix, review rules, and release-readiness expectations, with execution details grouped under:
+
+- `manual_testing_playbook/01--routing-accuracy/`
+- `manual_testing_playbook/02--graph-boosts/`
+- `manual_testing_playbook/03--compiler/`
+- `manual_testing_playbook/04--regression-safety/`
+
+Use the playbook when a change affects routing outcomes, graph boosts, compiler behavior, or regression-safety expectations.
+
+### Keeping The Catalog And Playbook In Sync
+
+When a new capability is added:
+1. update the relevant feature catalog entry
+2. add or update the matching manual testing scenario
+3. keep the commands and paths aligned with `.opencode/skill/skill-advisor/scripts/`
+
+---
+
+## 8. TROUBLESHOOTING
 
 ### No Results Returned
 
 Possible causes:
-- prompt does not cross confidence threshold
-- prompt crosses confidence but fails uncertainty gate
+- prompt does not cross the confidence threshold
+- prompt crosses confidence but fails the uncertainty gate
+- graph metadata was changed but `scripts/skill-graph.json` was not rebuilt
 
 Check:
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --show-rejections
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --threshold 0.8 --confidence-only
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 ```
 
 ### Batch Mode Input Errors
@@ -224,28 +370,32 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file /tmp
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt --batch-stdin
 ```
 
-### Skills Not Refreshing
+### Skills Or Graph Data Not Refreshing
 
-Force refresh cached discovery:
+Force refresh cached discovery, then rebuild the graph if needed:
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 ```
 
 ---
 
-## 7. Operational Checklist
+## 9. OPERATIONAL CHECKLIST
 
 - [ ] `--health` returns valid JSON and non-zero `skills_found`
+- [ ] `skill_graph_loaded` is `true`
 - [ ] default one-shot mode returns expected `kind: "skill"` for natural-language prompts
 - [ ] explicit slash prompts can route to `kind: "command"`
-- [ ] regression harness passes
-- [ ] benchmark harness passes
+- [ ] compiler validation passes
+- [ ] regression suite passes
+- [ ] benchmark suite passes
 - [ ] alignment verifier reports no errors for `.opencode/skill/skill-advisor/scripts`
+- [ ] feature catalog and manual testing playbook paths still match the live folder layout
 
 ---
 
-## 8. Reference Commands
+## 10. REFERENCE COMMANDS
 
 ```bash
 # Health
@@ -263,6 +413,12 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" -
 
 # Batch file mode
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
+
+# Graph validation
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+
+# Graph compile
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
 
 # Regression report
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \

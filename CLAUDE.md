@@ -74,7 +74,7 @@ These recovery steps are universal across Claude Code, OpenCode, Codex CLI, Copi
 
 ### After Context Compaction Or `/clear`
 
-1. **FIRST ACTION** — use `/spec_kit:resume` as the canonical recovery surface
+1. **FIRST ACTION** - use `/spec_kit:resume` as the canonical recovery surface
 2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
 3. Use `memory_context()` or `memory_search()` only when those packet-local continuity sources do not answer the question
 4. Re-read the active runtime-specific instructions if they exist (`CODEX.md`, `GEMINI.md`, `.claude/CLAUDE.md`, runtime agent docs)
@@ -117,7 +117,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 3. Parse request → Check confidence AND uncertainty (see §4)
 4. **Dual-threshold:** confidence ≥ 0.70 AND uncertainty ≤ 0.35 → PROCEED. Either fails → INVESTIGATE (max 3 iterations) → ESCALATE. Simple: <40% ASK | 40-69% CAUTION | ≥70% PASS
 
-> Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
+> Gate 1 is SOFT - if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
@@ -126,17 +126,17 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
 - Skip: trivial queries only (greetings, single-line questions)
 
-#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK — PRIORITY GATE
+#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK - PRIORITY GATE
 - **Overrides Gates 1-2:** If file modification detected → ask Gate 3 BEFORE any analysis/tool calls
-- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase — or any task resulting in file changes
+- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase - or any task resulting in file changes
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
 - **DO NOT** use Read/Edit/Write/Bash (except Gate Actions) before asking. ASK FIRST, wait for response, THEN proceed
 - **Phase boundary:** Gate 3 answers apply ONLY within current workflow phase. Plan→implement transition MUST re-evaluate. Exception: carry-over IS valid for Memory Save Rule
 
 #### CONSOLIDATED QUESTION PROTOCOL
-When multiple inputs are needed, consolidate into a SINGLE prompt — never split across messages. Include only applicable questions; omit when pre-determined.
-- **Round-trip optimization** — Only 1 user interaction needed for setup
-- **First Message Protocol** — ALL questions asked BEFORE any analysis or tool calls
+When multiple inputs are needed, consolidate into a SINGLE prompt - never split across messages. Include only applicable questions; omit when pre-determined.
+- **Round-trip optimization** - Only 1 user interaction needed for setup
+- **First Message Protocol** - ALL questions asked BEFORE any analysis or tool calls
 - **Violation:** Multiple separate prompts → STOP, apologize, re-present as single prompt
 - **Bypass phrases:** "skip context" / "fresh start" / "skip memory" / [skip] for memory loading; Level 1 tasks skip completion verification
 
@@ -198,7 +198,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 **Spec folder path:** `specs/[###-short-name]/` | **Templates:** `.opencode/skill/system-spec-kit/templates/`
 
-**For details on:** folder structure, `scratch/` vs `memory/` usage, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow — see system-spec-kit SKILL.md §3.
+**For details on:** folder structure, `scratch/` usage, canonical continuity surfaces, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow - see system-spec-kit SKILL.md §3.
 
 ---
 
@@ -264,17 +264,17 @@ Use the agent directory that matches the active runtime/provider profile:
 
 ### Agent Definitions
 
-- **`@general`** — Implementation, complex tasks
-- **`@context`** — LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading
-- **`@orchestrate`** — Multi-agent coordination, complex workflows
-- **`@write`** — Creating READMEs, Skills, Guides
-- **`@review`** — Code review, PRs, quality gates (READ-ONLY)
-- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `debug-delegation.md` (@debug)
-- **`@debug`** — Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
-- **`@handover`** — Session continuation, context preservation. May write `handover.md` inside spec folders
-- **`@deep-research`** — Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
-- **`@deep-review`** — Autonomous code review iterations. LEAF agent executing single review cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-review` command
-- **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
+- **`@general`** - Implementation, complex tasks
+- **`@context`** - LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading
+- **`@orchestrate`** - Multi-agent coordination, complex workflows
+- **`@write`** - Creating READMEs, Skills, Guides
+- **`@review`** - Code review, PRs, quality gates (READ-ONLY)
+- **`@speckit`** - Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: canonical continuity updates via `generate-context.js`, `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `debug-delegation.md` (@debug)
+- **`@debug`** - Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
+- **`@handover`** - Session continuation, context preservation. May write `handover.md` inside spec folders
+- **`@deep-research`** - Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
+- **`@deep-review`** - Autonomous code review iterations. LEAF agent executing single review cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-review` command
+- **`@ultra-think`** - Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
 
 ---
 

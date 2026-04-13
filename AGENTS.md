@@ -23,7 +23,7 @@
 
 **OPERATIONAL MANDATES:**
 - **All file modifications require a spec folder** (Gate 3).
-- **Never lie or fabricate** — use "UNKNOWN" when uncertain.
+- **Never lie or fabricate** - use "UNKNOWN" when uncertain.
 - **Clarify** if confidence < 80% (see §4 Confidence Framework).
 - **Use explicit uncertainty:** Prefix claims with "I'M UNCERTAIN ABOUT THIS:".
 
@@ -49,11 +49,11 @@
 ### Tools & Search
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** — research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
+- **Spec Kit Memory MCP** - research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
   - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
   - Quick continuity: directly edit `_memory.continuity` YAML in `implementation-summary.md` frontmatter (no script round-trip needed).
-- **CocoIndex Code MCP** — semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
-- **Git (sk-git)** — worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
+- **CocoIndex Code MCP** - semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
+- **Git (sk-git)** - worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
 **CODE SEARCH DECISION TREE:**
 
@@ -88,8 +88,8 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-**Hook-capable runtimes** auto-inject startup context — no manual action needed. 
-**Fallback** — when hooks fail or are unavailable in any runtime:
+**Hook-capable runtimes** auto-inject startup context - no manual action needed.
+**Fallback** - when hooks fail or are unavailable in any runtime:
 
 1. Use `/spec_kit:resume` as the canonical recovery surface
 2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
@@ -105,7 +105,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 - **Prefer simplicity**, reuse existing patterns, and cite evidence with sources
 - Solve only the stated problem; **avoid over-engineering** and premature optimization
 - **Verify with checks** (simplicity, performance, maintainability, scope) before making changes
-- **Truth over agreement** — correct user misconceptions with evidence; do not agree for conversational flow
+- **Truth over agreement** - correct user misconceptions with evidence; do not agree for conversational flow
 
 **ANTI-PATTERNS (Detect Silently):**
 
@@ -170,7 +170,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 3. Parse request → Check confidence AND uncertainty (see §4)
 4. **Dual-threshold:** confidence ≥ 0.70 AND uncertainty ≤ 0.35 → PROCEED. Either fails → INVESTIGATE (max 3 iterations) → ESCALATE. Simple: <40% ASK | 40-69% CAUTION | ≥70% PASS
 
-> Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
+> Gate 1 is SOFT - if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
@@ -179,18 +179,18 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
 - Skip: trivial queries only (greetings, single-line questions)
 
-#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK — PRIORITY GATE
+#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK - PRIORITY GATE
 - **Overrides Gates 1-2:** If file modification detected → ask Gate 3 BEFORE any analysis/tool calls
-- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase — or any task resulting in file changes
+- **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase - or any task resulting in file changes
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
 - **DO NOT** use Read/Edit/Write/Bash (except Gate Actions) before asking. ASK FIRST, wait for response, THEN proceed
 - **Session persistence:** Once the user answers Gate 3 in a conversation, that answer applies for the ENTIRE session. Do NOT re-ask on subsequent messages unless the user explicitly starts a completely different task/feature. Follow-up messages, implementation steps, and phase transitions within the same task reuse the original answer.
 - **Re-ask ONLY when:** the user says "new task" / "different feature" / explicitly names a different spec folder, OR the user asks you to re-ask.
 
 #### CONSOLIDATED QUESTION PROTOCOL
-When multiple inputs are needed, consolidate into a SINGLE prompt — never split across messages. Include only applicable questions; omit when pre-determined.
-- **Round-trip optimization** — Only 1 user interaction needed for setup
-- **First Message Protocol** — ALL questions asked BEFORE any analysis or tool calls
+When multiple inputs are needed, consolidate into a SINGLE prompt - never split across messages. Include only applicable questions; omit when pre-determined.
+- **Round-trip optimization** - Only 1 user interaction needed for setup
+- **First Message Protocol** - ALL questions asked BEFORE any analysis or tool calls
 - **Violation:** Multiple separate prompts → STOP, apologize, re-present as single prompt
 - **Bypass phrases:** "skip context" / "fresh start" / "skip memory" / [skip] for memory loading; Level 1 tasks skip completion verification
 
@@ -253,7 +253,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 **Spec folder path:** `specs/[###-short-name]/` | **Templates:** `.opencode/skill/system-spec-kit/templates/`
 
-**For details on:** folder structure, `scratch/` usage, `graph-metadata.json`, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow — see system-spec-kit SKILL.md §3.
+**For details on:** folder structure, `scratch/` usage, `graph-metadata.json`, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow - see system-spec-kit SKILL.md §3.
 
 ---
 
@@ -293,17 +293,17 @@ Use the agent directory that matches the active runtime/provider profile:
 
 ### Agent Definitions
 
-- **`@general`** — Implementation, complex tasks
-- **`@context`** — Retrieval-first exploration agent for codebase search, pattern discovery, and context loading using memory triggers/context, memory search, CocoIndex, and direct code evidence as needed
-- **`@orchestrate`** — Multi-agent coordination, complex workflows
-- **`@write`** — Creating READMEs, Skills, Guides
-- **`@review`** — Code review, PRs, quality gates (READ-ONLY)
-- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `review-report.md` (@deep-review), `debug-delegation.md` (@debug)
-- **`@debug`** — Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
-- **`@handover`** — Session continuation, context preservation. May write `handover.md` inside spec folders
-- **`@deep-research`** — Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
-- **`@deep-review`** — Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 4 review dimensions. Dispatched by `/spec_kit:deep-review` command
-- **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
+- **`@general`** - Implementation, complex tasks
+- **`@context`** - Retrieval-first exploration agent for codebase search, pattern discovery, and context loading using memory triggers/context, memory search, CocoIndex, and direct code evidence as needed
+- **`@orchestrate`** - Multi-agent coordination, complex workflows
+- **`@write`** - Creating READMEs, Skills, Guides
+- **`@review`** - Code review, PRs, quality gates (READ-ONLY)
+- **`@speckit`** - Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: canonical continuity updates via `generate-context.js`, `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `review-report.md` (@deep-review), `debug-delegation.md` (@debug)
+- **`@debug`** - Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
+- **`@handover`** - Session continuation, context preservation. May write `handover.md` inside spec folders
+- **`@deep-research`** - Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
+- **`@deep-review`** - Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 4 review dimensions. Dispatched by `/spec_kit:deep-review` command
+- **`@ultra-think`** - Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
 
 ---
 

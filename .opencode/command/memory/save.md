@@ -17,12 +17,12 @@ IF $ARGUMENTS contains a spec folder path:
 IF $ARGUMENTS is empty, undefined, or contains only whitespace:
     → Run AUTO-DETECTION (Tier 1 → Tier 2 → Tier 3):
 
-    TIER 1: Gate 3 Carry-Over (highest confidence — no confirmation needed)
+    TIER 1: Gate 3 Carry-Over (highest confidence - no confirmation needed)
     - Check if a spec folder was established via Gate 3 earlier in this conversation
     - If yes → use it directly as target_folder (per CLAUDE.md Memory Save Rule)
     - Announce: "Using active spec folder from this session: [folder]"
 
-    TIER 2: Conversation Signal Analysis (high confidence — confirm)
+    TIER 2: Conversation Signal Analysis (high confidence - confirm)
     - Scan files modified/read during this conversation
     - Map file paths to spec folders:
       * Files under specs/NNN-name/ or its children
@@ -33,7 +33,7 @@ IF $ARGUMENTS is empty, undefined, or contains only whitespace:
       → If user confirms or does not object → store as target_folder
     - If modified files span multiple unrelated spec folders → proceed to Tier 3
 
-    TIER 3: Guided Selection (fallback — must ask)
+    TIER 3: Guided Selection (fallback - must ask)
     - List the spec folders touched in this conversation, ranked by file-edit count
     - ASK: "Multiple spec folders were touched. Which one should this context be saved to?"
     - If no spec folders detected at all → list recent/related spec folders and ask
@@ -44,13 +44,19 @@ IF $ARGUMENTS is empty, undefined, or contains only whitespace:
 - Tier 1 (Gate 3 carry-over) proceeds without confirmation per CLAUDE.md Memory Save Rule
 - Tier 2 proposals MUST show the detected folder and ask for brief confirmation
 - Tier 3 MUST wait for explicit user response before proceeding
-- When ambiguous (files in multiple unrelated spec folders), ALWAYS ask — do not guess
+- When ambiguous (files in multiple unrelated spec folders), ALWAYS ask - do not guess
 
 ---
 
 # /memory:save
 
 > Save current conversation context into the packet's canonical continuity surfaces with semantic indexing.
+
+---
+
+## 0. INSTRUCTIONS
+
+Resolve the target spec folder first, build structured JSON from the session evidence, then run the save workflow below. Prefer canonical packet docs and `_memory.continuity` over any legacy supporting artifacts.
 
 ---
 
@@ -136,7 +142,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 #### Check 1: Anchor Format Validation
 
 - Scan conversation for existing continuity support artifact references
-- If support artifacts under `memory/` were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
+- If legacy support artifacts under `memory/` were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
 - Pattern: `<!-- ANCHOR:id --> ... <!-- /ANCHOR:id -->`
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)

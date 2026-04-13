@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Resume Ladder
+// ───────────────────────────────────────────────────────────────
+
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -573,6 +577,16 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
   };
 }
 
+/**
+ * Resolve the canonical three-step resume ladder for a spec folder.
+ *
+ * Preference order is `handover.md` first, then `_memory.continuity` inside
+ * `implementation-summary.md`, then canonical spec documents as the final
+ * fallback when fresher packet-local recovery data is unavailable.
+ *
+ * @param options - Optional spec-folder and workspace overrides for resolution
+ * @returns Resume payload describing the best recovery source and hints
+ */
 export function buildResumeLadder(options: ResumeLadderOptions = {}): ResumeLadderResult {
   const workspacePath = options.workspacePath ?? process.cwd();
   const hints: string[] = [];

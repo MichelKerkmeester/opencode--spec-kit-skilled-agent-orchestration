@@ -1,5 +1,5 @@
 ---
-description: Unified continuity retrieval and analysis — canonical spec-doc context search, epistemic baselines, causal graph, ablation studies, and dashboards
+description: Unified continuity retrieval and analysis - canonical spec-doc context search, epistemic baselines, causal graph, ablation studies, and dashboards
 argument-hint: "<query> [--intent:<type>] | preflight <specFolder> <taskId> | postflight <specFolder> <taskId> | history <specFolder> | causal <memoryId> | link <sourceId> <targetId> <relation> | unlink <edgeId> | causal-stats | ablation | dashboard"
 allowed-tools: Read, spec_kit_memory_memory_context, spec_kit_memory_memory_quick_search, spec_kit_memory_memory_search, spec_kit_memory_memory_match_triggers, spec_kit_memory_task_preflight, spec_kit_memory_task_postflight, spec_kit_memory_memory_drift_why, spec_kit_memory_memory_causal_link, spec_kit_memory_memory_causal_stats, spec_kit_memory_memory_causal_unlink, spec_kit_memory_eval_run_ablation, spec_kit_memory_eval_reporting_dashboard, spec_kit_memory_memory_get_learning_history
 ---
@@ -53,6 +53,12 @@ IF $ARGUMENTS contains a query (any other text):
 # Memory Search Command
 
 Unified entry point for knowledge retrieval and analysis. Combines intent-aware context search (retrieval mode) with epistemic measurement, causal graph tools, and evaluation dashboards (analysis mode).
+
+---
+
+## 0. INSTRUCTIONS
+
+Start by classifying `$ARGUMENTS` into retrieval mode or analysis mode. Follow the routing contract below, prefer canonical packet sources in retrieval mode, and only invoke the analysis subcommands that match the user's explicit request.
 
 ---
 
@@ -804,7 +810,7 @@ STATUS=OK ACTION=dashboard
 ```javascript
 // ─── Retrieval tools ───────────────────────────────────────────
 
-// Option 1: Dedicated context tool (preferred — single call)
+// Option 1: Dedicated context tool (preferred - single call)
 spec_kit_memory_memory_context({
   input: "<query>",
   intent: "<add_feature|fix_bug|refactor|security_audit|understand|find_spec|find_decision>",  // Optional, auto-detected if omitted
@@ -826,7 +832,7 @@ spec_kit_memory_memory_quick_search({
   agentId: "<agent-id>",    // Optional governed retrieval boundary
 })
 
-// Option 3: Manual search with anchors (advanced — fine-grained control)
+// Option 3: Manual search with anchors (advanced - fine-grained control)
 spec_kit_memory_memory_search({
   query: "<query>",
   anchors: ["<anchor1>", "<anchor2>", ...],  // Intent-specific
@@ -883,14 +889,14 @@ spec_kit_memory_memory_get_learning_history({ specFolder, sessionId, limit, only
 | `input` | string | *required* | Query, prompt, or context description |
 | `mode` | string | `auto` | `auto`, `quick`, `deep`, `focused`, `resume` |
 | `intent` | string | auto-detect | `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision` |
-| `specFolder` | string | — | Limit context to specific spec folder |
+| `specFolder` | string | - | Limit context to specific spec folder |
 | `limit` | number | mode-specific | Maximum results (1-100) |
 | `sessionId` | string | ephemeral | Caller-supplied session identifier |
 | `enableDedup` | boolean | true | Enable session deduplication |
 | `includeContent` | boolean | false | Include full file content in results |
 | `includeTrace` | boolean | false | Include provenance-rich trace data (scores, source, trace) in results when underlying `memory_search` is called |
-| `tokenUsage` | number | — | Caller token usage ratio (0.0-1.0). Helps the server budget-aware pruning when the caller is near context limits |
-| `anchors` | string[] | — | Filter content to specific anchors (e.g., `["state", "next-steps"]` for resume mode) |
+| `tokenUsage` | number | - | Caller token usage ratio (0.0-1.0). Helps the server budget-aware pruning when the caller is near context limits |
+| `anchors` | string[] | - | Filter content to specific anchors (e.g., `["state", "next-steps"]` for resume mode) |
 
 ### memory_search: Advanced Parameters
 
@@ -898,18 +904,18 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `query` | string | — | Natural language search query (required unless `concepts` provided) |
-| `concepts` | string[] | — | 2-5 concept strings for multi-concept AND search (required unless `query` provided) |
-| `specFolder` | string | — | Limit search to specific spec folder |
-| `tier` | string | — | Filter by importance tier |
-| `contextType` | string | — | Filter by context type |
+| `query` | string | - | Natural language search query (required unless `concepts` provided) |
+| `concepts` | string[] | - | 2-5 concept strings for multi-concept AND search (required unless `query` provided) |
+| `specFolder` | string | - | Limit search to specific spec folder |
+| `tier` | string | - | Filter by importance tier |
+| `contextType` | string | - | Filter by context type |
 | `useDecay` | boolean | true | Apply temporal decay scoring |
 | `includeContiguity` | boolean | false | Include adjacent/contiguous memories |
 | `includeConstitutional` | boolean | true | Include constitutional tier memories at top |
 | `enableSessionBoost` | boolean | env flag | Enable session-based score boost from working_memory attention signals |
 | `enableCausalBoost` | boolean | env flag | Enable causal-neighbor boost (2-hop traversal on causal_edges) |
-| `min_quality_score` | number | — | Minimum quality score threshold (0.0-1.0) |
-| `minQualityScore` | number | — | **Deprecated alias** for `min_quality_score`. Prefer the snake_case parameter name |
+| `min_quality_score` | number | - | Minimum quality score threshold (0.0-1.0) |
+| `minQualityScore` | number | - | **Deprecated alias** for `min_quality_score`. Prefer the snake_case parameter name |
 | `bypassCache` | boolean | false | Skip tool cache and force fresh search |
 | `rerank` | boolean | true | Enable cross-encoder reranking |
 | `applyLengthPenalty` | boolean | true | Compatibility-only reranker option. Current runtime keeps it on the surface, but the length multiplier is always `1.0` so no documents are penalized for size |
@@ -928,8 +934,8 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 |-----------|------|---------|-------------|
 | `prompt` | string | *required* | User prompt or text to match against trigger phrases |
 | `limit` | number | 3 | Maximum matching memories to return |
-| `session_id` | string | — | Session identifier for cognitive features. Enables attention decay and tiered content injection |
-| `turnNumber` | number | — | Current conversation turn number. Used with `session_id` for decay calculations |
+| `session_id` | string | - | Session identifier for cognitive features. Enables attention decay and tiered content injection |
+| `turnNumber` | number | - | Current conversation turn number. Used with `session_id` for decay calculations |
 | `include_cognitive` | boolean | true | Enable cognitive features (decay, tiers, co-activation). Requires `session_id` |
 
 When cognitive features are enabled (`session_id` + `include_cognitive`), trigger matching uses attention-based decay and tiered content injection: HOT memories return full content, WARM memories return summaries, with co-activation of related memories.
@@ -941,7 +947,7 @@ When cognitive features are enabled (`session_id` + `include_cognitive`), trigge
 When the user selects "Analysis tools" from the empty-arguments prompt, or when context warrants showing available analysis capabilities:
 
 ```text
-MEMORY:SEARCH — ANALYSIS TOOLS
+MEMORY:SEARCH - ANALYSIS TOOLS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Available Subcommands ──────────────────────────

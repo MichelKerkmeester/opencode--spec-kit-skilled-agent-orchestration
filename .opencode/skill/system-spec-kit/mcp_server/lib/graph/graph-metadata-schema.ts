@@ -59,6 +59,11 @@ export type GraphMetadataManual = z.infer<typeof graphMetadataManualSchema>;
 export type GraphMetadataDerived = z.infer<typeof graphMetadataDerivedSchema>;
 export type GraphMetadata = z.infer<typeof graphMetadataSchema>;
 
+/**
+ * Create an empty manual-relationship section for new graph metadata files.
+ *
+ * @returns Initialized manual relationship payload with empty lists
+ */
 export function createEmptyGraphMetadataManual(): GraphMetadataManual {
   return {
     depends_on: [],

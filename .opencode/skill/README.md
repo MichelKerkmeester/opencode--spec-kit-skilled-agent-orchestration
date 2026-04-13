@@ -41,9 +41,9 @@ Across this skill tree, `/spec_kit:resume` is the canonical recovery surface for
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`.opencode/skill/` holds 20 skill folders plus the `skill-advisor/` support package. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, and scripts so all domain knowledge stays close to the code that uses it.
+`.opencode/skill/` holds 21 folders: 20 skills plus the `skill-advisor/` support package. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, scripts, and graph metadata so domain knowledge stays close to the code that uses it.
 
-Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `skill-advisor/scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations.
+Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `skill-advisor/scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations. The graph metadata compiler at `skill-advisor/scripts/skill_graph_compiler.py` validates each folder's `graph-metadata.json` and builds `skill-advisor/scripts/skill-graph.json` for relationship-aware routing.
 
 Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffolding workflow, gets a SKILL.md with proper frontmatter, and is immediately discoverable by `skill_advisor.py` without any manual registration.
 
@@ -51,20 +51,23 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 
 | Metric | Value | Notes |
 | --- | --- | --- |
-| Total skill folders | 20 | Each has a SKILL.md entry point |
+| Total skill folders | 21 | 20 skills plus the `skill-advisor/` support package |
+| Folders with graph metadata | 21 | Every folder under `.opencode/skill/` currently ships with `graph-metadata.json` |
+| Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
 | CLI orchestrator skills | 4 | cli-claude-code, cli-codex, cli-copilot, cli-gemini |
 | MCP integration skills | 5 | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma |
 | Code quality overlays | 4 | sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web |
 | Documentation, research, review, and improvement skills | 5 | sk-improve-agent, sk-deep-research, sk-deep-review, sk-doc, sk-improve-prompt |
 | Git and system skills | 2 | sk-git, system-spec-kit |
-| Skills with local scripts/ | 6 | mcp-code-mode, sk-improve-agent, sk-code-, sk-doc, system-spec-kit |
-| Shared routing scripts | 4 | skill_advisor.py plus bench, regression, runtime helpers |
+| Skills with local scripts/ | 12 | See Section 4 for the current script-bearing folders |
+| Shared routing scripts | 5 | `skill_advisor.py`, runtime, bench, regression, and graph compiler |
 
 ### Key Features
 
 | Feature | Description |
 | --- | --- |
 | Gate 2 routing | `skill_advisor.py` scores requests and returns ranked skill recommendations with confidence |
+| Graph metadata system | Per-folder `graph-metadata.json` is compiled into `skill-advisor/scripts/skill-graph.json` for graph-aware routing |
 | On-demand loading | Skills load only when needed so context stays focused |
 | Self-contained skills | References, assets, and scripts live inside each skill folder |
 | Auto-discovery | New skills are found immediately by the advisor after adding a SKILL.md |
@@ -198,9 +201,10 @@ The skill system covers four distinct workflow domains.
 ├── skill-advisor/          # Shared routing package
 │   ├── README.md
 │   ├── SET-UP_GUIDE.md
+│   ├── graph-metadata.json
 │   ├── feature_catalog/
 │   ├── manual_testing_playbook/
-│   └── scripts/            # skill_advisor.py, compiler, regression, fixtures, out
+│   └── scripts/            # skill_advisor.py, skill_graph_compiler.py, skill-graph.json, regression, fixtures, out
 ├── sk-improve-agent/       # Evaluator-first agent improvement loop
 ├── sk-code-full-stack/     # Stack-agnostic implementation orchestrator
 ├── sk-code-opencode/       # OpenCode system code standards
@@ -222,6 +226,7 @@ Each skill folder follows this internal structure:
 | Path | Purpose |
 | --- | --- |
 | `SKILL.md` | Required entry point with YAML frontmatter, routing logic, and instructions |
+| `graph-metadata.json` | Relationship metadata compiled by `skill-advisor/scripts/skill_graph_compiler.py` |
 | `references/` | Focused domain guidance loaded as needed |
 | `assets/` | Templates and static support files |
 | `scripts/` | Optional automation for checks and generation |
@@ -293,6 +298,16 @@ trigger_phrases:
 ```
 
 The `name` and `description` fields are required. `trigger_phrases` strengthen routing accuracy.
+
+### Graph metadata compilation
+
+Every folder under `.opencode/skill/` contributes a `graph-metadata.json` file to the shared routing graph. Validate the graph metadata layer or rebuild the compiled snapshot with:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
+# Writes .opencode/skill/skill-advisor/scripts/skill-graph.json
+```
 
 ### Threshold Defaults
 
@@ -450,7 +465,7 @@ Yes. The advisor returns a ranked list. A task may load a primary skill (for exa
 
 **Q: What is the difference between skill-local scripts and the shared scripts/ folder?**
 
-The shared routing package lives in `.opencode/skill/skill-advisor/scripts/` and handles cross-skill concerns: routing, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation (document validation, spec creation, memory generation) that only that skill uses.
+The shared routing package lives in `.opencode/skill/skill-advisor/scripts/` and handles cross-skill concerns: routing, graph compilation, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation (document validation, spec creation, memory generation) that only that skill uses.
 
 **Q: Why does the advisor cap confidence at 0.95?**
 

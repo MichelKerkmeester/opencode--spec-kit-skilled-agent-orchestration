@@ -207,7 +207,7 @@ codex exec "..." --full-auto -o /tmp/result.txt
 
 **Correct pattern for parallel codex from an orchestrating AI:**
 1. Launch each `codex exec` as a separate `Bash` call (no `&` suffix)
-2. Set `run_in_background: true` on each Bash tool call — this backgrounds the *tool call*, not the shell process
+2. Set `run_in_background: true` on each Bash tool call - this backgrounds the *tool call*, not the shell process
 3. The orchestrator gets notified when each codex process genuinely finishes
 4. Verify output files exist and have content before reading results
 
@@ -276,7 +276,7 @@ codex exec "Fix the N+1 patterns identified: $(cat /tmp/analysis.txt)" \
 - The model can also be set in `.codex/config.toml` as a project-level default
 
 ```toml
-# .codex/config.toml — sets default for all invocations
+# .codex/config.toml - sets default for all invocations
 model = "gpt-5.3-codex"
 model_reasoning_effort = "xhigh"
 ```
@@ -580,7 +580,7 @@ codex exec --session-id <id> \
 ### Multi-Turn Scripted Workflow
 
 ```bash
-# Turn 1: Analysis — capture session ID from output if available
+# Turn 1: Analysis - capture session ID from output if available
 codex exec "Analyze src/auth/ architecture. List 5 improvements." \
   --sandbox read-only --model gpt-5.3-codex > /tmp/analysis.txt
 # Note the session ID displayed in TUI or output
@@ -705,12 +705,12 @@ codex exec "Fix the authentication bug" --model gpt-5.3-codex
 ### 7. Backgrounding codex exec Inside Shell Scripts Called by Another AI
 
 ```bash
-# BAD: & inside the shell command — orchestrator sees instant exit 0
+# BAD: & inside the shell command - orchestrator sees instant exit 0
 codex exec "Deep review all phases" --full-auto -o /tmp/result.txt 2>&1 &
 echo "PID: $!"
 # The Bash tool reports "completed" in <2 seconds. Codex is still running.
 
-# GOOD: No & — use the orchestrator's own background mechanism instead
+# GOOD: No & - use the orchestrator's own background mechanism instead
 # In Claude Code: Bash(command="codex exec ...", run_in_background=true)
 # In Copilot: background delegation
 # The orchestrator waits for the actual codex process to finish.

@@ -214,6 +214,12 @@ function formatZodError(error: ZodError): string[] {
   });
 }
 
+/**
+ * Validate raw graph metadata content against the current schema.
+ *
+ * @param content - Raw JSON or legacy metadata file contents
+ * @returns Validation outcome with parsed metadata when successful
+ */
 export function validateGraphMetadataContent(content: string): GraphMetadataValidationResult {
   try {
     const parsed = parseJsonObject(content);
@@ -248,6 +254,13 @@ export function validateGraphMetadataContent(content: string): GraphMetadataVali
   }
 }
 
+/**
+ * Load and validate a graph-metadata file from disk.
+ *
+ * @param filePath - Absolute path to the graph-metadata file
+ * @returns Parsed metadata, or `null` when the file does not exist
+ * @throws Error when the file exists but fails schema validation
+ */
 export function loadGraphMetadata(filePath: string): GraphMetadata | null {
   if (!fs.existsSync(filePath)) {
     return null;
@@ -846,6 +859,14 @@ function deriveImportanceTier(docs: ParsedSpecDoc[]): string {
   return selectFirstValue(ranked, 'important');
 }
 
+/**
+ * Derive graph metadata from the canonical documents in a spec folder.
+ *
+ * @param specFolderPath - Absolute path to the packet/spec folder
+ * @param existing - Existing graph metadata used to preserve durable fields
+ * @param options - Refresh controls such as timestamp and status override
+ * @returns Freshly derived graph metadata validated by the schema
+ */
 export function deriveGraphMetadata(
   specFolderPath: string,
   existing: GraphMetadata | null = null,
@@ -887,6 +908,13 @@ export function deriveGraphMetadata(
   });
 }
 
+/**
+ * Merge refreshed derived metadata with persisted manual relationships.
+ *
+ * @param existing - Previously saved graph metadata, if present
+ * @param refreshed - Newly derived graph metadata snapshot
+ * @returns Schema-validated merged metadata payload
+ */
 export function mergeGraphMetadata(
   existing: GraphMetadata | null,
   refreshed: GraphMetadata,
@@ -902,10 +930,22 @@ export function mergeGraphMetadata(
   });
 }
 
+/**
+ * Serialize graph metadata as stable pretty-printed JSON.
+ *
+ * @param metadata - Graph metadata payload to serialize
+ * @returns JSON document terminated with a trailing newline
+ */
 export function serializeGraphMetadata(metadata: GraphMetadata): string {
   return `${JSON.stringify(metadata, null, 2)}\n`;
 }
 
+/**
+ * Write graph metadata to disk using an atomic temp-file swap.
+ *
+ * @param filePath - Destination graph-metadata path
+ * @param metadata - Metadata payload to persist
+ */
 export function writeGraphMetadataFile(filePath: string, metadata: GraphMetadata): void {
   const content = serializeGraphMetadata(metadata);
   const tempPath = `${filePath}.tmp-${process.pid}-${Date.now()}`;
@@ -915,6 +955,13 @@ export function writeGraphMetadataFile(filePath: string, metadata: GraphMetadata
   fs.renameSync(tempPath, filePath);
 }
 
+/**
+ * Refresh the graph-metadata file for a single spec folder.
+ *
+ * @param specFolderPath - Absolute path to the target spec folder
+ * @param options - Refresh controls such as timestamp and status override
+ * @returns Saved metadata plus the final output path and creation status
+ */
 export function refreshGraphMetadataForSpecFolder(
   specFolderPath: string,
   options: GraphMetadataRefreshOptions = {},
@@ -936,6 +983,12 @@ export function refreshGraphMetadataForSpecFolder(
   };
 }
 
+/**
+ * Convert graph metadata into a searchable text block for indexing.
+ *
+ * @param metadata - Metadata payload to flatten into indexable text
+ * @returns Plain-text summary containing packet relationships and derived fields
+ */
 export function graphMetadataToIndexableText(metadata: GraphMetadata): string {
   const lines = [
     `Packet: ${metadata.packet_id}`,
@@ -976,6 +1029,12 @@ export function graphMetadataToIndexableText(metadata: GraphMetadata): string {
   return `${lines.join('\n')}\n`;
 }
 
+/**
+ * Convert packet references into causal-link buckets used by indexing.
+ *
+ * @param manual - Manual relationship section from graph metadata
+ * @returns Packet IDs grouped by causal-link relation
+ */
 export function packetReferencesToCausalLinks(manual: GraphMetadataManual): Record<string, string[]> {
   return {
     blocks: manual.depends_on.map((ref) => ref.packet_id),

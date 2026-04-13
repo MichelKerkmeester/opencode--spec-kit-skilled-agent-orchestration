@@ -145,7 +145,7 @@ The memory system supports **2 independent execution paths**. Any method can be 
 
 1. Slash command expands to full prompt
 2. AI agent analyzes conversation history
-3. AI agent creates structured JSON summary (any agent can invoke generate-context.js for memory — this is an exception to the @speckit exclusivity rule)
+3. AI agent creates structured JSON summary (any agent can invoke generate-context.js for memory - this is an exception to the @speckit exclusivity rule)
 4. AI agent calls `generate-context.js` with JSON data
 5. Canonical continuity updated inside the active root-spec or phase packet
 

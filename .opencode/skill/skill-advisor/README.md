@@ -39,7 +39,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`.opencode/skill/skill-advisor/` is the support package for the shared routing scripts used by the OpenCode framework. The primary entry point lives at `scripts/skill_advisor.py`, the routing engine that powers Gate 2 in AGENTS.md. It analyzes a user's request using token normalization, synonym expansion, intent boosting, and confidence calibration, then returns a ranked list of skill recommendations in JSON.
+`.opencode/skill/skill-advisor/` is the support package for the shared routing and graph-compilation scripts used by the OpenCode framework. The primary runtime entry point lives at `scripts/skill_advisor.py`, the routing engine that powers Gate 2 in AGENTS.md. It analyzes a user's request using token normalization, synonym expansion, intent boosting, graph-derived overlays, and confidence calibration, then returns a ranked list of skill recommendations in JSON.
+
+The package's graph metadata system lives alongside the runtime. Every folder under `.opencode/skill/` now ships with `graph-metadata.json`. `skill_graph_compiler.py` validates those packet-local graph files and compiles them into `scripts/skill-graph.json`, which the advisor loads for relationship-aware boosts, family affinity, and conflict handling.
 
 Three supporting scripts extend the core engine. `skill_advisor_runtime.py` provides cached skill discovery and fast frontmatter parsing so the advisor avoids re-reading SKILL.md files on every call. `skill_advisor_regression.py` runs a versioned fixture set to catch routing quality regressions before they ship. `skill_advisor_bench.py` measures latency and throughput in one-shot, warm, and batch modes.
 
@@ -57,6 +59,9 @@ These routing scripts can surface the right packet helpers, but canonical packet
 | Multi-skill boosters | 32 | Ambiguous keywords that boost multiple skills |
 | Phrase intent boosters | 159 | Multi-token phrases with high-signal routing boosts |
 | Command bridges | 10 | Slash commands exposed as pseudo-skills |
+| Skill folders with graph metadata | 21 | One `graph-metadata.json` file per folder under `.opencode/skill/` |
+| Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
+| Compiled graph edges | 67 | Sparse `enhances`, `depends_on`, `siblings`, and `prerequisite_for` links |
 | Regression fixtures | 1 file | `skill_advisor_regression_cases.jsonl` |
 
 ### Scripts Inventory
@@ -67,6 +72,7 @@ These routing scripts can surface the right packet helpers, but canonical packet
 | `skill_advisor_runtime.py` | Python 3.6+ | Cached skill discovery, mtime invalidation, fast frontmatter parsing |
 | `skill_advisor_regression.py` | Python 3.6+ | Permanent regression harness for routing quality and safety gates |
 | `skill_advisor_bench.py` | Python 3.6+ | Latency and throughput benchmarking for one-shot, warm, and batch modes |
+| `skill_graph_compiler.py` | Python 3.6+ | Validates per-skill `graph-metadata.json` and compiles `scripts/skill-graph.json` |
 
 ### Requirements
 
@@ -127,6 +133,14 @@ fi
 **Cached discovery.** `skill_advisor_runtime.py` caches skill metadata in memory and invalidates the cache only when a SKILL.md file's mtime changes. The advisor reads only the frontmatter block rather than the full file, keeping first-run latency low and subsequent calls near-instant.
 
 **Command bridge separation.** Slash commands (for example `/spec_kit:plan` and `/memory:save`) are exposed as command bridges tagged `kind: command`. Natural language prompts deprioritize command bridges so they do not crowd out real skill results. Explicit slash syntax allows command bridges to rank first.
+
+**Graph-derived boosts.** `skill_graph_compiler.py` turns the per-folder `graph-metadata.json` files into `scripts/skill-graph.json`. At runtime, `skill_advisor.py` uses `enhances`, `depends_on`, and `siblings` edges to reinforce candidates that already have direct prompt evidence, and it tags each overlay as a `!graph:*` reason.
+
+**Family affinity.** The compiled graph groups the current 21 folders into 6 families. When one family member has strong evidence, nearby family members can receive a small follow-on boost, but only if they already have a weaker positive score of their own.
+
+**Ghost candidate guard.** Graph overlays never create a brand-new candidate. The advisor freezes the pre-graph score snapshot and skips any target that lacks positive evidence before graph processing starts.
+
+**Evidence separation.** Graph reasons stay separate from lexical and intent evidence. The advisor counts `!graph:*` matches independently, then applies a confidence haircut when a recommendation is driven too heavily by graph overlays instead of direct prompt evidence.
 
 **Regression and benchmark tooling.** The regression harness runs against a versioned JSONL fixture set and writes a report to `out/regression-report.json`. The benchmark harness measures p50/p95 latency across one-shot, warm, and batch run modes.
 
@@ -208,8 +222,13 @@ fi
 .opencode/skill/skill-advisor/
 ├── README.md                                # This file
 ├── SET-UP_GUIDE.md                          # Customization guide for new projects
+├── graph-metadata.json                      # Source graph metadata for this package
 ├── feature_catalog/                         # Capability inventory and per-feature docs
+│   ├── feature_catalog.md                   # Root catalog for routing, graph, search, and tests
+│   └── 02--graph-system/                    # Graph metadata, compiler, and guardrail docs
 ├── manual_testing_playbook/                 # Operator validation package
+│   ├── manual_testing_playbook.md           # Root playbook and scenario index
+│   └── 02--graph-boosts/                    # Graph-system validation scenarios
 └── scripts/
     ├── skill_advisor.py                     # Skill routing engine (Gate 2)
     ├── skill_advisor_runtime.py             # Cache and metadata runtime helpers
@@ -276,6 +295,31 @@ trigger_phrases:
 ```
 
 `name` and `description` are required. `trigger_phrases` improve matching accuracy for phrases the advisor's synonym system might not cover.
+
+### Adding graph edges for a new skill
+
+Each folder under `.opencode/skill/` can contribute graph metadata. Add the family and any sparse edge groups to that folder's `graph-metadata.json`, then rebuild the compiled graph:
+
+```json
+{
+  "family": "sk-util",
+  "edges": {
+    "enhances": [
+      { "target": "sk-doc", "weight": 0.5, "context": "documentation tasks often chain into doc validation" }
+    ],
+    "siblings": [
+      { "target": "sk-git", "weight": 0.4, "context": "release workflows often stay inside the utility family" }
+    ]
+  }
+}
+```
+
+Supported compiled edge groups are `depends_on`, `enhances`, `siblings`, and `prerequisite_for`. After editing any graph metadata file, validate and rebuild `scripts/skill-graph.json`:
+
+```bash
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py
+```
 
 ### Adding Synonyms
 
@@ -414,6 +458,16 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
   --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 ```
 
+### Validate or rebuild the graph snapshot
+
+```bash
+# Validate every graph-metadata.json file without writing output
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
+
+# Rebuild the compiled graph used at runtime
+python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --pretty
+```
+
 ### Common request patterns
 
 | User Intent | Expected Skill | Key Terms |
@@ -535,9 +589,10 @@ Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project tha
 | --- | --- |
 | [SET-UP_GUIDE.md](./SET-UP_GUIDE.md) | Step-by-step customization guide for adapting the advisor to a new project |
 | [scripts/skill_advisor.py](./scripts/skill_advisor.py) | Source implementation for routing, scoring, and confidence calibration |
-| [feature_catalog/](./feature_catalog/) | Capability inventory for the routing and graph package |
-| [manual_testing_playbook/](./manual_testing_playbook/) | Manual validation package for routing, graph, compiler, and regression checks |
-| [Skills Library README](../README.md) | Full catalog of all 19 skills and routing policy |
+| [scripts/skill_graph_compiler.py](./scripts/skill_graph_compiler.py) | Graph metadata compiler and validator that emits `scripts/skill-graph.json` |
+| [feature_catalog/feature_catalog.md](./feature_catalog/feature_catalog.md) | Canonical feature inventory for routing, graph system, semantic search, and tests |
+| [manual_testing_playbook/manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) | Root manual validation playbook for routing, graph, compiler, and regression checks |
+| [Skills Library README](../README.md) | Full catalog of all 21 skill folders, graph metadata coverage, and routing policy |
 | [system-spec-kit SKILL.md](../system-spec-kit/SKILL.md) | Spec folder and memory foundation |
 | [sk-doc SKILL.md](../sk-doc/SKILL.md) | Documentation standards and component templates |
 

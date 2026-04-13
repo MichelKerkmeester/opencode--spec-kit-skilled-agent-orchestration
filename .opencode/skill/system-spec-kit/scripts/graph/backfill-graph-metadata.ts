@@ -100,6 +100,13 @@ function isArchivedTraversalPath(dirPath: string): boolean {
   return ARCHIVE_SEGMENT_RE.test(dirPath.replace(/\\/g, '/'));
 }
 
+/**
+ * Collect spec folders eligible for graph-metadata refresh.
+ *
+ * @param root - Specs root to traverse
+ * @param options - Traversal controls such as `activeOnly`
+ * @returns Sorted list of discovered spec-folder paths
+ */
 export function collectSpecFolders(
   root: string,
   options: Pick<BackfillOptions, 'activeOnly'> = {},
@@ -138,6 +145,13 @@ export function collectSpecFolders(
   return folders.sort();
 }
 
+/**
+ * Derive human-review flags for a refreshed graph-metadata payload.
+ *
+ * @param specFolderPath - Absolute path to the packet folder being inspected
+ * @param metadata - Derived or refreshed graph metadata for the packet
+ * @returns List of review flags describing low-confidence derivations
+ */
 export function collectReviewFlags(specFolderPath: string, metadata: GraphMetadata): string[] {
   const flags: string[] = [];
   const specDoc = fs.existsSync(path.join(specFolderPath, 'spec.md'))
@@ -166,6 +180,12 @@ export function collectReviewFlags(specFolderPath: string, metadata: GraphMetada
   return flags;
 }
 
+/**
+ * Backfill graph-metadata files across the selected specs tree.
+ *
+ * @param options - Backfill execution options
+ * @returns Aggregate summary of created, refreshed, and flagged packets
+ */
 export function runBackfill({ dryRun, root, activeOnly = false }: BackfillOptions): BackfillSummary {
   const specFolders = collectSpecFolders(root, { activeOnly });
   const summary: BackfillSummary = {

@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Content Router
+// ───────────────────────────────────────────────────────────────
+
 import { createHash } from 'node:crypto';
 
 import routingPrototypeLibrary from './routing-prototypes.json' with { type: 'json' };
@@ -249,6 +253,24 @@ export interface RouterDependencies {
   prototypes?: PrototypeLibrary;
 }
 
+export interface ContentRouter {
+  classifyContent(chunk: ContentChunk, context: RouterContext): Promise<RoutingDecision>;
+}
+
+export interface Tier3Prompt {
+  system: string;
+  user: string;
+}
+
+export interface Tier3Contract {
+  promptVersion: typeof ROUTING_PROMPT_VERSION;
+  model: typeof TIER3_MODEL;
+  reasoningEffort: typeof TIER3_REASONING_EFFORT;
+  temperature: typeof TIER3_TEMPERATURE;
+  maxOutputTokens: typeof TIER3_MAX_OUTPUT_TOKENS;
+  timeoutMs: typeof TIER3_TIMEOUT_MS;
+}
+
 export interface RoutingAuditEntry {
   ts: string;
   component: 'content-router';
@@ -283,6 +305,7 @@ interface InMemoryRouterCacheRecord {
   expiresAt: number | null;
 }
 
+/** Simple in-process cache used to avoid repeated Tier 3 routing calls. */
 export class InMemoryRouterCache implements RouterCache {
   private readonly entries = new Map<string, InMemoryRouterCacheRecord>();
 
@@ -434,7 +457,13 @@ const CATEGORY_ORDER: RoutingCategory[] = [
   'drop',
 ];
 
-export function createContentRouter(dependencies: RouterDependencies = {}) {
+/**
+ * Create the three-tier content router used by canonical continuity saves.
+ *
+ * @param dependencies - Optional embedding, Tier 3 classification, and cache overrides
+ * @returns Router instance that classifies save chunks into canonical destinations
+ */
+export function createContentRouter(dependencies: RouterDependencies = {}): ContentRouter {
   const deps = {
     prototypes: dependencies.prototypes ?? DEFAULT_PROTOTYPES,
     now: dependencies.now ?? Date.now,
@@ -1193,7 +1222,13 @@ function isMergeMode(value: string): value is MergeMode {
   ].includes(value);
 }
 
-export function buildTier3Prompt(input: Tier3ClassifierInput): { system: string; user: string } {
+/**
+ * Build the Tier 3 classifier prompt for ambiguous routing decisions.
+ *
+ * @param input - Tier 3 routing context and candidate evidence
+ * @returns System and user prompt strings for the Tier 3 model call
+ */
+export function buildTier3Prompt(input: Tier3ClassifierInput): Tier3Prompt {
   const system = [
     'You are Tier 3 of the contentRouter for canonical continuity saves.',
     '',
@@ -1242,6 +1277,15 @@ export function buildTier3Prompt(input: Tier3ClassifierInput): { system: string;
   return { system, user };
 }
 
+/**
+ * Create a normalized audit record for a finalized routing decision.
+ *
+ * @param decision - Final routing decision emitted by the router
+ * @param chunk - Source content chunk that was classified
+ * @param context - Router context used for classification
+ * @param decisionLatencyMs - End-to-end latency of the routing decision
+ * @returns Serializable audit entry for downstream persistence
+ */
 export function createRoutingAuditEntry(
   decision: RoutingDecision,
   chunk: ContentChunk,
@@ -1272,11 +1316,21 @@ export function createRoutingAuditEntry(
   };
 }
 
+/**
+ * Return the validated built-in routing prototype library.
+ *
+ * @returns Default routing prototype library bundled with the router
+ */
 export function getDefaultPrototypeLibrary(): PrototypeLibrary {
   return DEFAULT_PROTOTYPES;
 }
 
-export function getTier3Contract() {
+/**
+ * Return the contract used for Tier 3 routing calls.
+ *
+ * @returns Stable Tier 3 model, prompt, and timeout configuration
+ */
+export function getTier3Contract(): Tier3Contract {
   return {
     promptVersion: ROUTING_PROMPT_VERSION,
     model: TIER3_MODEL,

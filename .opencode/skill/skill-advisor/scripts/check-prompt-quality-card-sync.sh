@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# COMPONENT: PROMPT QUALITY CARD SYNC CHECK
-# ───────────────────────────────────────────────────────────────
+# ====================================================================
+# check-prompt-quality-card-sync.sh — Verify prompt quality card sync
+# ====================================================================
 # Verifies that prompt quality framework tables stay in sync across CLI skills.
 #
 # Usage: check-prompt-quality-card-sync.sh [repo-root]

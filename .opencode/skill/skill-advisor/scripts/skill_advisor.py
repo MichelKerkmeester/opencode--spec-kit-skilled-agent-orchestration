@@ -15,6 +15,7 @@ Options:
     --threshold   Confidence threshold used by default dual-threshold filtering (default: 0.8)
     --confidence-only  Explicitly bypass uncertainty filtering
 """
+
 import argparse
 import importlib.util
 import json
@@ -944,7 +945,7 @@ def parse_frontmatter(file_path: str) -> Optional[Dict[str, str]]:
     """Extract frontmatter using fast parser (frontmatter-only reads)."""
     try:
         return parse_frontmatter_fast(file_path)
-    except Exception as exc:  # pragma: no cover - safety fallback
+    except (ValueError, AttributeError, TypeError, KeyError) as exc:  # pragma: no cover - safety fallback
         print(
             f"Warning: Failed to parse frontmatter from {file_path} "
             f"({type(exc).__name__}: {exc})",
@@ -1730,7 +1731,8 @@ def analyze_batch(
 # 6. CLI ENTRY POINT
 # ───────────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
+def main() -> int:
+    """Parse CLI arguments and run the requested advisor mode."""
     parser = argparse.ArgumentParser(
         description='Analyze user requests and recommend appropriate skills.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1771,9 +1773,9 @@ Examples:
     parser.add_argument('--force-refresh', action='store_true',
                         help='Force refresh of skill discovery cache before analysis.')
     parser.add_argument('--semantic', '--cocoindex', dest='semantic', action='store_true',
-                        help='Run CocoIndex semantic search (via ccc CLI) to supplement keyword matching.')
+                         help='Run CocoIndex semantic search (via ccc CLI) to supplement keyword matching.')
     parser.add_argument('--semantic-hits', '--cocoindex-hits', dest='semantic_hits', type=str, default='',
-                        help='Pre-computed CocoIndex results as JSON array of {"path": str, "score": float} objects.')
+                         help='Pre-computed CocoIndex results as JSON array of {"path": str, "score": float} objects.')
 
     args = parser.parse_args()
 
@@ -1786,11 +1788,11 @@ Examples:
         health["cocoindex_available"] = cocoindex_binary is not None
         health["cocoindex_binary"] = cocoindex_binary or ""
         print(json.dumps(health, indent=2))
-        sys.exit(0)
+        return 0
 
     if args.batch_file and args.batch_stdin:
         print(json.dumps({"error": "Use either --batch-file or --batch-stdin, not both."}, indent=2))
-        sys.exit(2)
+        return 2
 
     # Parse pre-computed semantic hits (JSON array from MCP search results)
     pre_computed_hits = None
@@ -1809,7 +1811,7 @@ Examples:
                 batch_prompts = [line.rstrip('\n') for line in handle]
         except OSError as exc:
             print(json.dumps({"error": f"Failed to read --batch-file: {exc}"}, indent=2))
-            sys.exit(2)
+            return 2
 
         print(json.dumps(analyze_batch(
             prompts=batch_prompts,
@@ -1819,7 +1821,7 @@ Examples:
             show_rejections=args.show_rejections,
             semantic_mode=args.semantic,
         ), indent=2))
-        sys.exit(0)
+        return 0
 
     if args.batch_stdin:
         batch_prompts = [line.rstrip('\n') for line in sys.stdin]
@@ -1831,11 +1833,11 @@ Examples:
             show_rejections=args.show_rejections,
             semantic_mode=args.semantic,
         ), indent=2))
-        sys.exit(0)
+        return 0
 
     if not args.prompt:
         print(json.dumps([]))
-        sys.exit(0)
+        return 0
 
     # Resolve semantic hits: pre-computed > built-in search > none
     semantic_hits = pre_computed_hits
@@ -1854,3 +1856,8 @@ Examples:
     )
 
     print(json.dumps(results, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

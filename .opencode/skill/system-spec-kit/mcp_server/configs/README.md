@@ -29,8 +29,8 @@ This section provides an overview of the MCP Server Configuration Files director
 
 `configs/` currently contains:
 
-- `search-weights.json` — scoring weights and document-type multipliers for memory search ranking. Partly active, partly reference. Inline notes are the source of truth for what is currently loaded at runtime.
-- `cognitive.ts` — cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` plus `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv`; callers that need fresh environment values should prefer the loader functions over the import-time snapshot.
+- `search-weights.json` - scoring weights and document-type multipliers for memory search ranking. Partly active, partly reference. Inline notes are the source of truth for what is currently loaded at runtime.
+- `cognitive.ts` - cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` plus `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv`; callers that need fresh environment values should prefer the loader functions over the import-time snapshot.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
@@ -55,8 +55,8 @@ Active search tuning that does **not** live in `search-weights.json`:
 Exports from `cognitive.ts`:
 
 - `CognitiveConfig` interface and `COGNITIVE_CONFIG` singleton.
-- `loadCognitiveConfigFromEnv()` — throws on invalid env config.
-- `safeParseCognitiveConfigFromEnv()` — returns result object with success/errors.
+- `loadCognitiveConfigFromEnv()` - throws on invalid env config.
+- `safeParseCognitiveConfigFromEnv()` - returns result object with success/errors.
 
 Important: canonical scoring behavior lives in TypeScript modules (not this README), primarily `lib/scoring/composite-scoring.ts`, `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`, and the Stage 3 rerank helpers.
 Important: feature-flag checks are resolved at runtime in the various `is*Enabled()` lookups under `lib/` and `handlers/`; do not treat this folder as a frozen startup snapshot of MCP behavior.

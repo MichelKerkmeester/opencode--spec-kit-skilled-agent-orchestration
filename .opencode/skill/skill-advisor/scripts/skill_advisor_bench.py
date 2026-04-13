@@ -61,7 +61,7 @@ def load_prompts_from_dataset(path: str) -> List[str]:
                 continue
             try:
                 row = json.loads(stripped)
-            except json.JSONDecodeError as exc:
+            except (ValueError, json.JSONDecodeError) as exc:
                 raise ValueError(f"Invalid JSONL at line {line_number}: {exc}") from exc
             prompt = row.get("prompt", "").strip()
             if prompt:

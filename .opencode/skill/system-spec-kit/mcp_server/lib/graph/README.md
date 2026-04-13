@@ -96,7 +96,7 @@ graph/
 - `trigger_phrases` are deduplicated and capped at 12 derived values.
 | `graph-signals.ts` | Degree snapshots, momentum scoring (recent degree delta), causal depth via SCC condensation | `SPECKIT_GRAPH_SIGNALS` |
 | `temporal-edges.ts` | Adds `valid_at`/`invalid_at` columns to `causal_edges`, provides `invalidateEdge()` and `getValidEdges()` | `SPECKIT_TEMPORAL_EDGES` |
-| `usage-ranking-signal.ts` | `computeUsageBoost()` — log-scale normalization producing 0.0-0.10 boost | `SPECKIT_USAGE_RANKING` |
+| `usage-ranking-signal.ts` | `computeUsageBoost()` - log-scale normalization producing 0.0-0.10 boost | `SPECKIT_USAGE_RANKING` |
 | `usage-tracking.ts` | Adds `access_count` column to `memory_index`, provides `incrementAccessCount()` and `getAccessCount()` | `SPECKIT_USAGE_RANKING` |
 
 ### Exported Functions

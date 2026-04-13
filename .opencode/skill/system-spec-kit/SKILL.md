@@ -23,7 +23,7 @@ Spec folders may also be nested as coordination-root packets with direct-child p
 
 - **Purpose**: Track specifications, plans, tasks, and decisions for one unit of work
 - **Location**: Under `specs/` using either `###-short-name/` at the root or nested packet paths for phased coordination
-- **Contents**: Markdown files (spec.md, plan.md, tasks.md) plus optional memory/ and scratch/ subdirectories
+- **Contents**: Markdown files (spec.md, plan.md, tasks.md, and implementation-summary.md when work is complete) plus optional support folders such as `scratch/`, `research/`, or `review/`
 
 Think of it as a "project folder" for AI-assisted development - it keeps context organized and enables session continuity.
 
@@ -482,7 +482,7 @@ ls -d specs/[0-9]*/ | sed 's/.*\/\([0-9]*\)-.*/\1/' | sort -n | tail -1
 When reusing spec folders with existing content:
 - Trigger: Option A selected + root-level content exists
 - Pattern: `001-original/`, `002-new-work/`, `003-another/`
-- Memory: Each sub-folder has independent `memory/` directory
+- Continuity: Each sub-folder carries its own packet docs and `_memory.continuity` state in `implementation-summary.md`
 - Tracking: Saves pass the target spec folder alongside structured JSON via the generate-context script
 
 **Example structure:**
@@ -491,14 +491,14 @@ specs/007-auth-system/
 ├── 001-initial-implementation/
 │   ├── spec.md
 │   ├── plan.md
-│   └── memory/
+│   └── implementation-summary.md
 ├── 002-oauth-addition/
 │   ├── spec.md
 │   ├── plan.md
-│   └── memory/
+│   └── implementation-summary.md
 └── 003-security-audit/
     ├── spec.md
-    └── memory/
+    └── implementation-summary.md
 ```
 
 **Full documentation:** See [sub_folder_versioning.md](./references/structure/sub_folder_versioning.md)
@@ -517,10 +517,10 @@ specs/007-auth-system/
 - AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` for session continuity updates.
 - **JSON mode (PREFERRED):** AI composes structured JSON → pass via `--json`, `--stdin`, or temp file. The AI has strictly better information about its own session than any DB query.
 - **Structured JSON fields:** The JSON payload supports optional structured summary fields that improve memory quality:
-  - `toolCalls[]` — AI-composed tool call records (`tool`, `inputSummary`, `outputSummary`, `status`)
-  - `exchanges[]` — Key conversation turns (`userInput`, `assistantResponse`, `timestamp`)
-  - `preflight` / `postflight` — Epistemic baseline snapshots (`knowledgeScore`, `uncertaintyScore`, `contextScore`, `gaps[]`, `confidence`)
-  - `sessionSummary` — Free-text session narrative (used for conversation synthesis when conversation prompts are sparse)
+  - `toolCalls[]` - AI-composed tool call records (`tool`, `inputSummary`, `outputSummary`, `status`)
+  - `exchanges[]` - Key conversation turns (`userInput`, `assistantResponse`, `timestamp`)
+  - `preflight` / `postflight` - Epistemic baseline snapshots (`knowledgeScore`, `uncertaintyScore`, `contextScore`, `gaps[]`, `confidence`)
+  - `sessionSummary` - Free-text session narrative (used for conversation synthesis when conversation prompts are sparse)
   - The AI has strictly better information about its own session than any DB extraction; these fields provide richer context at source.
 - Location: target packet canonical continuity surfaces
 - Primary continuity block: `_memory.continuity` in `implementation-summary.md`
@@ -566,15 +566,15 @@ _memory:
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` and `.opencode/command/spec_kit/resume.md` for command documentation.
 
-**MCP Tools (18 most-used of 47 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (18 most-used of 47 total - see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
-| `memory_context()`              | L1    | Unified entry point — modes: auto, quick, deep, focused, resume |
+| `memory_context()`              | L1    | Unified entry point - modes: auto, quick, deep, focused, resume |
 | `memory_search()`               | L2    | 5-channel hybrid retrieval with intent-aware routing, channel normalization, graph/degree signals, reranking, and filtered output |
 | `memory_quick_search()`         | L2    | Simplified search (query + optional spec folder)  |
 | `memory_match_triggers()`       | L2    | Trigger matching + cognitive (decay, tiers, co-activation) |
@@ -591,22 +591,22 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 > **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. Adaptive fusion includes an internal continuity profile (`semantic 0.52`, `keyword 0.18`, `recency 0.07`, `graph 0.23`), Stage 3 uses a minimum rerank gate of 4 candidates, the retained `applyLengthPenalty` input is a compatibility no-op, and `getRerankerStatus()` exposes reranker cache hits, misses, stale hits, and evictions. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
-**memory_context() — Mode Routing:**
+**memory_context() - Mode Routing:**
 
 | Mode | Token Budget | When `mode=auto`: Intent Routing |
 | --- | --- | --- |
-| `quick` | 800 | — |
+| `quick` | 800 | - |
 | `deep` | 3500 | `add_feature`, `refactor`, `security_audit` |
 | `focused` | 3000 | `fix_bug`, `understand` |
-| `resume` | 1200 | — |
+| `resume` | 1200 | - |
 
-**memory_search() — Key Rules:**
+**memory_search() - Key Rules:**
 - **REQUIRED:** `query` (string) OR `concepts` (2-5 strings). `specFolder` alone causes E040 error.
 - Use `anchors` with `includeContent: true` for token-efficient section retrieval (~90% savings).
 - Intent weights auto-adjust scoring: `fix_bug` boosts recency, `security_audit` boosts importance, `refactor`/`understand` boost similarity.
 - **Full parameter reference:** See [memory_system.md](./references/memory/memory_system.md)
 
-**memory_save() — Save-Time Processing:**
+**memory_save() - Save-Time Processing:**
 - Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
 - An exception path allows short decision-type memories to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
 - Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
@@ -619,32 +619,32 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
 
 **Key Concepts:**
-- **Constitutional tier** — 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
-- **Document-type scoring** — 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
-- **Decay scoring** — FSRS v4 power-law model; recent memories rank higher
-- **Import-path hardening** — MCP import paths are validated for memory runtime modules (context server and attention decay wiring)
-- **Metadata preservation** — `memory_save` update/reinforce paths preserve `document_type` and `spec_level` with synchronized vector-index metadata
-- **Descriptive memory titles** — `MEMORY_TITLE` is derived from the content slug via `generateContentSlug()` and `slugToTitle()`, producing unique and deterministic H1 headings. The parser falls back to feature/overview content when the top heading is generic
-- **Causal edge stability** — conflict-update semantics maintain stable causal edge IDs during re-link and graph maintenance
-- **Real-time sync** — Use `memory_save` or `memory_index_scan` after creating files
-- **Checkpoints** — Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
-- **Indexing persistence** — After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
-- **Artifact routing** — 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
-- **Adaptive fusion** — Intent-aware weighted RRF with the 7 public task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision) plus the internal continuity profile used for resume-oriented retrieval, along with corrected channel fallback and normalization behavior in the live hybrid pipeline
-- **Adaptive ranking** — Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per memory. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
-- **Causal graph diagnostics** — `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
-- **Eval guardrails** — Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
-- **Runtime-resolved flags** — Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
-- **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
-- **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
-- **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
-- **Feature catalog** — 291 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
-- **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
-- **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
-- **Tree-thinning threshold** — 150 tokens with merge group cap of 3 for improved file visibility in memory context
-- **JSON-mode conversation synthesis** — When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
-- **Decision deduplication** — String-form decisions produce deduplicated CONTEXT/RATIONALE/CHOSEN values in memory output
-- **Structural blocker detection** — Structural pattern detection identifies blockers (avoiding false positives from broad keyword matching)
+- **Constitutional tier** - 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
+- **Document-type scoring** - 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
+- **Decay scoring** - FSRS v4 power-law model; recent memories rank higher
+- **Import-path hardening** - MCP import paths are validated for memory runtime modules (context server and attention decay wiring)
+- **Metadata preservation** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level` with synchronized vector-index metadata
+- **Descriptive memory titles** - `MEMORY_TITLE` is derived from the content slug via `generateContentSlug()` and `slugToTitle()`, producing unique and deterministic H1 headings. The parser falls back to feature/overview content when the top heading is generic
+- **Causal edge stability** - conflict-update semantics maintain stable causal edge IDs during re-link and graph maintenance
+- **Real-time sync** - Use `memory_save` or `memory_index_scan` after creating files
+- **Checkpoints** - Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
+- **Indexing persistence** - After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
+- **Artifact routing** - 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
+- **Adaptive fusion** - Intent-aware weighted RRF with the 7 public task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision) plus the internal continuity profile used for resume-oriented retrieval, along with corrected channel fallback and normalization behavior in the live hybrid pipeline
+- **Adaptive ranking** - Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per memory. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
+- **Causal graph diagnostics** - `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
+- **Eval guardrails** - Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
+- **Runtime-resolved flags** - Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
+- **Retrieval trace** - Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
+- **Mutation ledger** - Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
+- **Retrieval telemetry** - 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
+- **Feature catalog** - 291 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Manual testing playbook** - Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
+- **Validation scoring** - `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
+- **Tree-thinning threshold** - 150 tokens with merge group cap of 3 for improved file visibility in memory context
+- **JSON-mode conversation synthesis** - When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
+- **Decision deduplication** - String-form decisions produce deduplicated CONTEXT/RATIONALE/CHOSEN values in memory output
+- **Structural blocker detection** - Structural pattern detection identifies blockers (avoiding false positives from broad keyword matching)
 
 **Feature Flags:**
 
@@ -837,7 +837,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 1. **Scope grows during implementation** - Run `upgrade-level.sh` to add higher-level templates (recommended), then auto-populate all placeholder content:
    - Read all existing spec files (spec.md, plan.md, tasks.md, implementation-summary.md) for context
    - Replace every placeholder marker pattern in newly injected sections with content derived from that context
-   - For sections without sufficient source context, write "N/A — insufficient source context" instead of fabricating content
+   - For sections without sufficient source context, write "N/A - insufficient source context" instead of fabricating content
    - Run `check-placeholders.sh <spec-folder>` to verify zero placeholders remain (see [level_specifications.md](./references/templates/level_specifications.md) for the full procedure)
    - Document the level change in changelog
 2. **Uncertainty about level <80%** - Present level options to user, default to higher

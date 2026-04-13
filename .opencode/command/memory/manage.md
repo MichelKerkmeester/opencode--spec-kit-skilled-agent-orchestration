@@ -45,6 +45,12 @@ operating_mode:
 
 ---
 
+## 0. INSTRUCTIONS
+
+Parse the requested mode first, then execute only the matching management workflow. Treat canonical spec docs as the active continuity source and describe `memory/` inputs as legacy compatibility material when they appear in scan output.
+
+---
+
 ## 1. PURPOSE
 
 Provide a unified interface for memory database **management** operations:
@@ -259,9 +265,9 @@ The scan discovers memory-eligible files from four sources:
 
 | #   | Source         | Key                 | Location                              |
 | --- | -------------- | ------------------- | ------------------------------------- |
-| 1   | Spec Memories  | specFiles           | specs/*/memory/*.{md,txt}             |
+| 1   | Legacy Spec Memory Artifacts | specFiles | specs/*/memory/*.{md,txt} |
 | 2   | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
-| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md including `description.json` and `_memory.continuity` extraction from canonical docs |
+| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md with `_memory.continuity` extraction from canonical docs |
 | 4   | Graph Metadata | graphMetadataFiles  | .opencode/specs/**/graph-metadata.json |
 
 Graph metadata rows are generated from canonical packet docs. Derived `status` falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent, then stores the normalized lowercase value.
@@ -703,7 +709,7 @@ MEMORY:CHECKPOINT
   FAIL  Restore failed
   Target      <checkpoint_name>
   Error       <reason>
-  Rollback    FAIL — manual intervention required
+  Rollback    FAIL - manual intervention required
   Recovery    pre-restore-<timestamp>
 
   Run: /memory:manage checkpoint restore "pre-restore-<timestamp>"
@@ -924,7 +930,7 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `folderRanking` | string | `count` | Rank folders by: `count`, `recency`, `importance`, `composite` (weighted multi-factor score) |
-| `excludePatterns` | string[] | — | Regex patterns to exclude folders (e.g., `["z_archive", "scratch"]`) |
+| `excludePatterns` | string[] | - | Regex patterns to exclude folders (e.g., `["z_archive", "scratch"]`) |
 | `includeScores` | boolean | false | Include score breakdown for each folder |
 | `includeArchived` | boolean | false | Include archived/test/scratch folders for historical-compatibility reporting only |
 | `limit` | number | 10 | Maximum folders to return (max 100) |
@@ -935,7 +941,7 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 |-----------|------|---------|-------------|
 | `reportMode` | string | `full` | `full` (system diagnostics) or `divergent_aliases` (compact alias triage) |
 | `limit` | number | 20 | Max divergent alias groups when `reportMode=divergent_aliases` (max 200) |
-| `specFolder` | string | — | Spec folder filter for divergent alias triage mode |
+| `specFolder` | string | - | Spec folder filter for divergent alias triage mode |
 | `autoRepair` | boolean | false | Attempt best-effort repair actions (e.g., FTS rebuild) |
 | `confirmed` | boolean | false | Required with `autoRepair:true` to execute repairs. Without it, returns confirmation-only response |
 

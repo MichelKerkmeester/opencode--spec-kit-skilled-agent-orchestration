@@ -14,21 +14,21 @@
 
 ---
 
-## Table of Contents
+## TABLE OF CONTENTS
 
-- [Overview](#-overview)
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-  - [Spec Kit Documentation](#-spec-kit-documentation)
-  - [Memory Engine](#-memory-engine)
-  - [CocoIndex + Compact Code Graph](#-cocoindex--compact-code-graph)
-  - [Agent Network](#-agent-network)
-  - [Command Architecture](#-command-architecture)
-  - [Skills Library](#-skills-library)
-  - [Code Mode MCP](#-code-mode-mcp)
-- [Configuration](#%EF%B8%8F-configuration)
-- [FAQ](#-faq)
-- [Related Documents](#-related-documents)
+- [OVERVIEW](#1--overview)
+- [QUICK START](#2--quick-start)
+- [FEATURES](#3--features)
+  - [SPEC KIT DOCUMENTATION](#spec-kit-documentation)
+  - [MEMORY ENGINE](#memory-engine)
+  - [COCOINDEX + COMPACT CODE GRAPH](#cocoindex--compact-code-graph)
+  - [AGENT NETWORK](#agent-network)
+  - [COMMAND ARCHITECTURE](#command-architecture)
+  - [SKILLS LIBRARY](#skills-library)
+  - [CODE MODE MCP](#code-mode-mcp)
+- [CONFIGURATION](#4--configuration)
+- [FAQ](#5--faq)
+- [RELATED DOCUMENTS](#6--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -37,7 +37,7 @@
 
 ---
 
-## 🔍 Overview
+## 1. OVERVIEW
 
 ### What This Framework Does
 
@@ -49,7 +49,7 @@ The framework adds three layers on top of the base platform:
 
 1. **Structured documentation** (Spec Kit) - every file change gets a spec folder recording what changed, why and how. Like a lab notebook for software.
 2. **Cognitive memory** (MCP server) - a local-first memory engine storing decisions, context and project history in a searchable database. Like a personal librarian who remembers every conversation.
-3. **Coordinated agents** -12 specialized agents routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist.
+3. **Coordinated agents** - 12 specialized agents routed by a gate system that loads the right skills at the right time. Like a team where the project manager delegates to the right specialist.
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
@@ -62,11 +62,11 @@ The framework adds three layers on top of the base platform:
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 23 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility |
 | **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
-| **🔍 CocoIndex Code** | Semantic code search via vector embeddings — natural-language discovery across 28+ languages |
-| **🏗️ Code Graph** | Structural indexer + SQLite — call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
+| **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
+| **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
-| **📄 81 Templates** | CORE + ADDENDUM v2.2 |
+| **📄 Template Set** | CORE + ADDENDUM v2.2 |
 | **📦 291 Features** | Across 22 categories |
 
 
@@ -91,7 +91,7 @@ The framework adds three layers on top of the base platform:
                  ▼                             ▼
          ┌───────────────┐          ┌──────────────────┐
          │ AGENT NETWORK │          │  SKILLS LIBRARY  │
-         │ 12 specialized│          │ 20 domain skills │
+         │ 12 specialized│          │ 21 domain skills │
          │ agents with   │◄────────►│ auto-loaded by   │
          │ routing logic │          │ task keywords    │
          └───────┬───────┘          └────────┬─────────┘
@@ -110,8 +110,8 @@ The framework adds three layers on top of the base platform:
                                 ▼
          ┌──────────────────────────────────────────┐
          │     SPEC KIT (documentation framework)   │
-         │  specs/###-feature/ ─ scratch/             │
-         │  4 levels ─ 81 templates ─ 20 rules      │
+         │  specs/###-feature/ - scratch/            │
+         │  4 levels - template set - 20 rules     │
          └──────────────────────────────────────────┘
 ```
 
@@ -122,7 +122,7 @@ The framework adds three layers on top of the base platform:
 
 ---
 
-## 🚀 Quick Start
+## 2. QUICK START
 
 ### Installation
 
@@ -184,7 +184,7 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 ---
 
-## 🧩 Features
+## 3. FEATURES
 
 ### 📋 Spec Kit Documentation
 
@@ -264,7 +264,7 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 
 #### Scripts and Validation
 
-**Spec Management Scripts** (12 in `scripts/spec/`):
+**Spec Management Scripts** (in `scripts/spec/`):
 
 - **`create.sh`** - Create spec folders with level-appropriate templates. Use `--phase` for parent + child
 - **`validate.sh`** - Run 20 validation rules. Use `--recursive` for phase folders
@@ -274,7 +274,7 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 - **`check-completion.sh`** - Verify all completion criteria are met
 - **`check-placeholders.sh`** - Find remaining `[PLACEHOLDER]` values after level upgrade
 
-**Memory Scripts** (10 in `scripts/memory/`):
+**Memory Scripts** (in `scripts/memory/`):
 
 - **`generate-context.ts`** - Primary workflow for updating packet continuity and supporting generated context artifacts
 - **`backfill-frontmatter.ts`** - Add missing frontmatter to existing generated context artifacts and indexed spec docs
@@ -335,7 +335,7 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 - **VALUE** - Does this change behavior or just refactor?
 - **SCOPE** - Does solution complexity match problem size?
 
-For the full spec folder workflow, template architecture (81 templates), gate definitions and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
+For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2), gate definitions, and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
 
 
 ---
@@ -505,14 +505,14 @@ The intended routing order is graph-first: the code graph resolves structural qu
 
 #### How the Code Graph Works
 
-The Compact Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** — Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot — because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
+The Compact Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
 
-**Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. Runtimes with SessionStart hooks (Claude Code, Gemini CLI) inject a startup brief into the conversation's first turn with a one-line health summary (e.g., "Code Graph: healthy — 42 files, 8.3K nodes, 15.2K edges"). Codex CLI achieves equivalent startup via `session_bootstrap()` MCP tool. Copilot hook behavior varies by environment.
+**Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. Runtimes with SessionStart hooks (Claude Code, Gemini CLI) inject a startup brief into the conversation's first turn with a one-line health summary (e.g., "Code Graph: healthy - 42 files, 8.3K nodes, 15.2K edges"). Codex CLI achieves equivalent startup via `session_bootstrap()` MCP tool. Copilot hook behavior varies by environment.
 
 **Auto-indexing.** The graph stays current through three mechanisms:
-1. **Startup scan** — indexes on server boot (async, non-blocking)
-2. **File watcher** — Chokidar monitors spec and source folders with a 2-second debounce, reindexing changed files in real time
-3. **Lazy refresh** — `code_graph_query` calls `ensureCodeGraphReady()` which detects staleness and triggers a bounded inline refresh before returning results
+1. **Startup scan** - indexes on server boot (async, non-blocking)
+2. **File watcher** - Chokidar monitors spec and source folders with a 2-second debounce, reindexing changed files in real time
+3. **Lazy refresh** - `code_graph_query` calls `ensureCodeGraphReady()` which detects staleness and triggers a bounded inline refresh before returning results
 
 The indexer uses tree-sitter to parse source files and extract functions, classes, imports, and call relationships. It tracks per-file content hashes to skip unchanged files, making incremental scans fast.
 
@@ -806,7 +806,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
 - Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
 - Integrates the 47-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
-- Manages 81 templates, 20 validation rules, 22 scripts, and the feature-catalog / testing-playbook documentation surfaces
+- Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
 
 **sk-doc**
 - Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
@@ -983,7 +983,7 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 
 ---
 
-## ⚙️ Configuration
+## 4. CONFIGURATION
 
 ### Core Configuration Files
 
@@ -1069,7 +1069,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 ---
 
-## ❓ FAQ
+## 5. FAQ
 
 **Q: Do I need all 21 skills installed to use the framework?**
 
@@ -1136,12 +1136,12 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 
 ---
 
-## 📚 Related Documents
+## 6. RELATED DOCUMENTS
 
 **Internal Documentation:**
 
 - **[→ AGENTS.md](AGENTS.md)** - Agent routing, gate definitions, behavior rules
-- **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, 81 templates, validation rules
+- **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
 - **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (47 tools, 7 layers)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
 - **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** - Spaces, roles, membership, kill switch
