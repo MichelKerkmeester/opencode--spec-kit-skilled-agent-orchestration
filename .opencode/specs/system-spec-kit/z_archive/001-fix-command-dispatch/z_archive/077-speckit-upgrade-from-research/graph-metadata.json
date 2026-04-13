@@ -41,34 +41,28 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      ".opencode/scripts/skill_advisor.py",
       ".opencode/command/spec_kit/resume.md",
       ".opencode/skill/system-spec-kit/templates/context_template.md",
       ".opencode/skill/system-spec-kit/templates/level_3/decision-record.md",
       ".opencode/skill/system-spec-kit/templates/level_3+/decision-record.md",
-      "epistemic/epistemic-vectors.md",
-      "handlers/session-learning.js",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "scripts/spec/state.js",
-      "templates/decision-record.md",
       "research/smart-ralph-synthesis.md",
       "research/empirica-synthesis.md",
       "research/hooks-synthesis.md",
       "research/superego-synthesis.md",
-      "mcp_server/context-server.js",
-      "references/epistemic-vectors.md"
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/command/spec_kit/implement.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/smart-ralph-synthesis.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/empirica-synthesis.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/hooks-synthesis.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research/research/superego-synthesis.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/scripts/skill_advisor.py",
-        "source": "derived"
-      },
       {
         "name": "resume.md",
         "kind": "doc",
@@ -79,24 +73,6 @@
         "name": "context_template.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
-        "source": "derived"
-      },
-      {
-        "name": "decision-record.md",
-        "kind": "doc",
-        "path": "decision-record.md",
-        "source": "derived"
-      },
-      {
-        "name": "epistemic-vectors.md",
-        "kind": "doc",
-        "path": "epistemic/epistemic-vectors.md",
-        "source": "derived"
-      },
-      {
-        "name": "session-learning.js",
-        "kind": "code",
-        "path": "handlers/session-learning.js",
         "source": "derived"
       },
       {
@@ -124,9 +100,9 @@
         "source": "derived"
       },
       {
-        "name": "state.js",
-        "kind": "code",
-        "path": "scripts/spec/state.js",
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -154,15 +130,87 @@
         "source": "derived"
       },
       {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "implement.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/implement.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Kit Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Synthesis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Complexity Score",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Consolidation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Plan Version",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Target Release",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This specification consolidates findings from four prior research specs (060-063) into a single implementation plan for upgrading the system-spec-kit skill. The research analyzed Smart-Ralph (state management, recovery), Empirica (epistemic vectors, uncertainty tracking), OpenCode Hooks (design patterns), and Superego (evaluation frameworks, decision journaling) to identify transferable patterns that would enhance context preservation, decision quality, and workflow reliability.",
     "created_at": "2026-04-12T09:02:53.548Z",
-    "last_save_at": "2026-04-13T10:56:03.861Z",
+    "last_save_at": "2026-04-13T14:20:42.429Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

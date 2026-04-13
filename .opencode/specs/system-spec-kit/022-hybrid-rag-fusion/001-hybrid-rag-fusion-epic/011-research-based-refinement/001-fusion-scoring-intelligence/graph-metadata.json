@@ -42,19 +42,7 @@
     "status": "planned",
     "key_files": [
       "shared/algorithms/rrf-fusion.ts",
-      "shared/algorithms/fusion-lab.ts",
-      "shared/algorithms/k-value-analysis.ts",
-      "shared/search/hybrid-search.ts",
-      "shared/search/adaptive-fusion.ts",
-      "shared/search/stage1-candidate-gen.ts",
-      "shared/ranking/stage2-fusion.ts",
       "shared/ranking/learned-combiner.ts",
-      "shared/algorithms/__tests__/rrf-fusion.test.ts",
-      "shared/algorithms/__tests__/k-value-analysis.test.ts",
-      "shared/algorithms/__tests__/fusion-lab.test.ts",
-      "shared/search/__tests__/hybrid-search.test.ts",
-      "shared/search/__tests__/adaptive-fusion.test.ts",
-      "shared/ranking/__tests__/learned-combiner.test.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -68,81 +56,9 @@
         "source": "derived"
       },
       {
-        "name": "fusion-lab.ts",
-        "kind": "code",
-        "path": "shared/algorithms/fusion-lab.ts",
-        "source": "derived"
-      },
-      {
-        "name": "k-value-analysis.ts",
-        "kind": "code",
-        "path": "shared/algorithms/k-value-analysis.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hybrid-search.ts",
-        "kind": "code",
-        "path": "shared/search/hybrid-search.ts",
-        "source": "derived"
-      },
-      {
-        "name": "adaptive-fusion.ts",
-        "kind": "code",
-        "path": "shared/search/adaptive-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "stage1-candidate-gen.ts",
-        "kind": "code",
-        "path": "shared/search/stage1-candidate-gen.ts",
-        "source": "derived"
-      },
-      {
-        "name": "stage2-fusion.ts",
-        "kind": "code",
-        "path": "shared/ranking/stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
         "name": "learned-combiner.ts",
         "kind": "code",
         "path": "shared/ranking/learned-combiner.ts",
-        "source": "derived"
-      },
-      {
-        "name": "rrf-fusion.test.ts",
-        "kind": "test",
-        "path": "shared/algorithms/__tests__/rrf-fusion.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "k-value-analysis.test.ts",
-        "kind": "test",
-        "path": "shared/algorithms/__tests__/k-value-analysis.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "fusion-lab.test.ts",
-        "kind": "test",
-        "path": "shared/algorithms/__tests__/fusion-lab.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hybrid-search.test.ts",
-        "kind": "test",
-        "path": "shared/search/__tests__/hybrid-search.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "adaptive-fusion.test.ts",
-        "kind": "test",
-        "path": "shared/search/__tests__/adaptive-fusion.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "learned-combiner.test.ts",
-        "kind": "test",
-        "path": "shared/ranking/__tests__/learned-combiner.test.ts",
         "source": "derived"
       },
       {
@@ -156,11 +72,131 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scoring Intelligence",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Flags",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Dependency Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Calibration Foundations",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Calibrated Overlap Bonus",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 1** of the Research-Based Refinement specification.",
     "created_at": "2026-04-12T09:02:50.234Z",
-    "last_save_at": "2026-04-13T10:56:00.331Z",
+    "last_save_at": "2026-04-13T14:20:38.882Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

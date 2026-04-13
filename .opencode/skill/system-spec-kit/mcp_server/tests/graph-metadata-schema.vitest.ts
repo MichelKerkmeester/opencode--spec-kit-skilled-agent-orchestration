@@ -17,19 +17,25 @@ import { __testables as graphMetadataParserTestables } from '../lib/graph/graph-
 const createdRoots = new Set<string>();
 
 interface GraphMetadataFixtureOptions {
+  track?: string;
+  packetId?: string;
   specStatus?: string | null;
   planStatus?: string | null;
   implementationSummaryStatus?: string | null;
   includeChecklist?: boolean;
   checklistItems?: string[];
   implementationSummaryReferences?: string[];
+  materializeImplementationSummaryReferences?: boolean;
   specTriggerPhrases?: string[];
+  extraFiles?: string[];
 }
 
 function createSpecFolder(options: GraphMetadataFixtureOptions = {}): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'graph-metadata-schema-'));
   createdRoots.add(root);
-  const specFolder = path.join(root, '.opencode', 'specs', 'system-spec-kit', '900-graph-metadata');
+  const track = options.track ?? 'system-spec-kit';
+  const packetId = options.packetId ?? '900-graph-metadata';
+  const specFolder = path.join(root, '.opencode', 'specs', track, packetId);
   fs.mkdirSync(specFolder, { recursive: true });
   const specFrontmatter = [
     '---',
@@ -100,6 +106,52 @@ function createSpecFolder(options: GraphMetadataFixtureOptions = {}): string {
       ...checklistItems,
     ].join('\n'), 'utf-8');
   }
+
+  const implementationSummaryPaths = options.materializeImplementationSummaryReferences === false
+    ? []
+    : (options.implementationSummaryReferences ?? [
+      'scripts/core/workflow.ts',
+      'mcp_server/handlers/memory-index.ts',
+    ]);
+  const extraPaths = options.extraFiles ?? [];
+
+  const ensureFile = (reference: string): void => {
+    const normalized = reference.replace(/\\/g, '/').replace(/^\.\//, '');
+    let absolutePath: string;
+
+    if (path.isAbsolute(reference)) {
+      absolutePath = reference;
+    } else if (normalized.startsWith('.opencode/')) {
+      absolutePath = path.join(root, normalized);
+    } else if (normalized.startsWith('specs/')) {
+      absolutePath = path.join(root, '.opencode', normalized);
+    } else if (
+      normalized.startsWith('system-spec-kit/')
+      || normalized.startsWith('skilled-agent-orchestration/')
+    ) {
+      absolutePath = path.join(root, '.opencode', 'specs', normalized);
+    } else if (normalized === 'spec.md' || normalized === 'plan.md' || normalized === 'tasks.md'
+      || normalized === 'checklist.md' || normalized === 'decision-record.md'
+      || normalized === 'implementation-summary.md' || normalized === 'research.md'
+      || normalized === 'handover.md' || normalized.startsWith('research/')) {
+      absolutePath = path.join(specFolder, normalized);
+    } else {
+      absolutePath = path.join(root, '.opencode', 'skill', 'system-spec-kit', normalized);
+    }
+
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    if (!fs.existsSync(absolutePath)) {
+      fs.writeFileSync(absolutePath, '// fixture\n', 'utf-8');
+    }
+  };
+
+  for (const reference of implementationSummaryPaths) {
+    ensureFile(reference);
+  }
+  for (const reference of extraPaths) {
+    ensureFile(reference);
+  }
+
   return specFolder;
 }
 
@@ -295,8 +347,47 @@ describe('graph metadata schema and parser', () => {
     expect(graphMetadataParserTestables.keepKeyFile('spec.md >> out.txt')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('../spec.md')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('workflow.ts')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('memory/metadata.json')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('.opencode/specs/system-spec-kit/900-graph-metadata/memory/metadata.json')).toBe(false);
     expect(graphMetadataParserTestables.keepKeyFile('spec.md')).toBe(true);
     expect(graphMetadataParserTestables.keepKeyFile('research/research.md')).toBe(true);
+  });
+
+  it('resolves cross-track spec references when the current-track path does not exist', () => {
+    const specFolder = createSpecFolder({
+      materializeImplementationSummaryReferences: false,
+      implementationSummaryReferences: [
+        'system-spec-kit/901-cross-track/spec.md',
+      ],
+      extraFiles: [
+        'skilled-agent-orchestration/901-cross-track/spec.md',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.key_files).toContain('skilled-agent-orchestration/901-cross-track/spec.md');
+    expect(metadata.derived.key_files).not.toContain('system-spec-kit/901-cross-track/spec.md');
+  });
+
+  it('drops obsolete memory metadata references and nonexistent key-file candidates', () => {
+    const specFolder = createSpecFolder({
+      materializeImplementationSummaryReferences: false,
+      implementationSummaryReferences: [
+        'scripts/core/workflow.ts',
+        'memory/metadata.json',
+        'scripts/missing-does-not-exist.ts',
+      ],
+      extraFiles: [
+        'scripts/core/workflow.ts',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.key_files).toContain('scripts/core/workflow.ts');
+    expect(metadata.derived.key_files).not.toContain('memory/metadata.json');
+    expect(metadata.derived.key_files).not.toContain('scripts/missing-does-not-exist.ts');
   });
 
   it('prefers canonical path-like key file entities over basename duplicates', () => {
@@ -331,6 +422,55 @@ describe('graph metadata schema and parser', () => {
     const specEntity = metadata.derived.entities.find((entity) => entity.name === 'spec.md');
 
     expect(specEntity?.path).toBe('spec.md');
+  });
+
+  it('limits canonical entity preference to the current spec-folder path prefix', () => {
+    const specFolder = createSpecFolder({
+      implementationSummaryReferences: [
+        'specs/system-spec-kit/900-graph-metadata/spec.md',
+        'specs/system-spec-kit/900-other-packet/spec.md',
+        'spec.md',
+      ],
+      extraFiles: [
+        'specs/system-spec-kit/900-other-packet/spec.md',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+    const specEntity = metadata.derived.entities.find((entity) => entity.name === 'spec.md');
+
+    expect(specEntity?.path).toBe('specs/system-spec-kit/900-graph-metadata/spec.md');
+    expect(metadata.derived.entities.filter((entity) => entity.path === 'specs/system-spec-kit/900-other-packet/spec.md')).toHaveLength(0);
+  });
+
+  it('drops external canonical packet docs instead of surfacing them as entity leaks', () => {
+    const specFolder = createSpecFolder({
+      implementationSummaryReferences: [
+        'specs/system-spec-kit/900-other-packet/handover.md',
+      ],
+      extraFiles: [
+        'specs/system-spec-kit/900-other-packet/handover.md',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.entities.some((entity) => entity.path === 'specs/system-spec-kit/900-other-packet/handover.md')).toBe(false);
+    expect(metadata.derived.entities.some((entity) => entity.name === 'handover.md')).toBe(false);
+  });
+
+  it('raises the entity cap to 24 and rejects bare runtime names', () => {
+    const specFolder = createSpecFolder({
+      implementationSummaryReferences: Array.from({ length: 30 }, (_, index) => `scripts/entities/entity-${index + 1}.ts`),
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.entities).toHaveLength(24);
+    expect(graphMetadataParserTestables.shouldKeepEntityName('python')).toBe(false);
+    expect(graphMetadataParserTestables.shouldKeepEntityName('node')).toBe(false);
+    expect(graphMetadataParserTestables.shouldKeepEntityName('tsc')).toBe(false);
+    expect(graphMetadataParserTestables.shouldKeepEntityName('GraphMetadataParser')).toBe(true);
   });
 
   it('caps derived trigger_phrases at 12 entries', () => {

@@ -43,7 +43,6 @@
       "handlers/code-graph/status.ts",
       "handlers/code-graph/index.ts",
       "mcp_server/lib/code-graph/code-graph-db.ts",
-      "mcp_server/lib/code-graph/code-graph-tools.ts",
       "mcp_server/tool-schemas.ts",
       "mcp_server/context-server.ts",
       "spec.md",
@@ -81,12 +80,6 @@
         "name": "index.ts",
         "kind": "code",
         "path": "handlers/code-graph/index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-tools.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/code-graph/code-graph-tools.ts",
         "source": "derived"
       },
       {
@@ -148,11 +141,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "What Exists",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Design Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Acceptance Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Call Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Risk Mitigation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "schema",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "batch",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.348Z",
-    "last_save_at": "2026-04-13T10:56:00.540Z",
+    "last_save_at": "2026-04-13T14:20:39.082Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

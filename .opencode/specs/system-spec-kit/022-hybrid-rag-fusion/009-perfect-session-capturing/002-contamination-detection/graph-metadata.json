@@ -46,7 +46,6 @@
       "scripts/extractors/contamination-filter.ts",
       "scripts/core/workflow.ts",
       "scripts/tests/task-enrichment.vitest.ts",
-      "memory/metadata.json",
       "spec.md",
       "plan.md",
       "implementation-summary.md",
@@ -82,12 +81,6 @@
         "name": "task-enrichment.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/task-enrichment.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "memory/metadata.json",
         "source": "derived"
       },
       {
@@ -149,11 +142,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Contamination Detection",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Guard",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stage Audit Logging",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "no",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.268Z",
-    "last_save_at": "2026-04-13T10:56:00.399Z",
+    "last_save_at": "2026-04-13T14:20:38.952Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

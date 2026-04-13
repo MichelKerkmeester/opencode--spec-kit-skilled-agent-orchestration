@@ -29,6 +29,260 @@ function makeQuery(
   };
 }
 
+function makeContinuityQuery(
+  judgments: IntentKOptimizationQuery['judgments'],
+  rankingsByK: IntentKOptimizationQuery['rankingsByK'],
+): IntentKOptimizationQuery {
+  return {
+    intent: 'continuity',
+    judgments,
+    rankingsByK,
+  };
+}
+
+const CONTINUITY_FIXTURES = [
+  {
+    query: 'Resume from the latest stop-state for this packet',
+    expectedPrimaryAt60: 'handover.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'handover.md', relevance: 3 },
+        { id: '_memory.continuity', relevance: 2 },
+        { id: 'spec-docs', relevance: 1 },
+      ],
+      {
+        10: ['_memory.continuity', 'handover.md', 'spec-docs'],
+        20: ['handover.md', 'spec-docs', '_memory.continuity'],
+        40: ['handover.md', 'spec-docs', '_memory.continuity'],
+        60: ['handover.md', '_memory.continuity', 'spec-docs'],
+        80: ['_memory.continuity', 'handover.md', 'spec-docs'],
+        100: ['spec-docs', 'handover.md', '_memory.continuity'],
+        120: ['spec-docs', '_memory.continuity', 'handover.md'],
+      },
+    ),
+  },
+  {
+    query: 'What is the next safe action if I continue this phase later',
+    expectedPrimaryAt60: 'handover.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'handover.md', relevance: 3 },
+        { id: '_memory.continuity', relevance: 2 },
+        { id: 'tasks.md', relevance: 1 },
+      ],
+      {
+        10: ['_memory.continuity', 'handover.md', 'tasks.md'],
+        20: ['handover.md', 'tasks.md', '_memory.continuity'],
+        40: ['handover.md', 'tasks.md', '_memory.continuity'],
+        60: ['handover.md', '_memory.continuity', 'tasks.md'],
+        80: ['handover.md', 'tasks.md', '_memory.continuity'],
+        100: ['tasks.md', '_memory.continuity', 'handover.md'],
+        120: ['tasks.md', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Which blocker was most recently recorded for this packet',
+    expectedPrimaryAt60: 'handover.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'handover.md', relevance: 3 },
+        { id: '_memory.continuity', relevance: 2 },
+        { id: 'implementation-summary.md', relevance: 1 },
+      ],
+      {
+        10: ['implementation-summary.md', 'handover.md', '_memory.continuity'],
+        20: ['handover.md', 'implementation-summary.md', '_memory.continuity'],
+        40: ['handover.md', 'implementation-summary.md', '_memory.continuity'],
+        60: ['handover.md', '_memory.continuity', 'implementation-summary.md'],
+        80: ['_memory.continuity', 'handover.md', 'implementation-summary.md'],
+        100: ['implementation-summary.md', '_memory.continuity', 'handover.md'],
+        120: ['implementation-summary.md', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Show me the latest resume note before I restart work',
+    expectedPrimaryAt60: 'handover.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'handover.md', relevance: 3 },
+        { id: '_memory.continuity', relevance: 2 },
+        { id: 'plan.md', relevance: 1 },
+      ],
+      {
+        10: ['_memory.continuity', 'handover.md', 'plan.md'],
+        20: ['handover.md', 'plan.md', '_memory.continuity'],
+        40: ['handover.md', 'plan.md', '_memory.continuity'],
+        60: ['handover.md', '_memory.continuity', 'plan.md'],
+        80: ['handover.md', 'plan.md', '_memory.continuity'],
+        100: ['plan.md', '_memory.continuity', 'handover.md'],
+        120: ['plan.md', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'What continuity fingerprint and packet pointer should I reuse',
+    expectedPrimaryAt60: '_memory.continuity',
+    evaluation: makeContinuityQuery(
+      [
+        { id: '_memory.continuity', relevance: 3 },
+        { id: 'handover.md', relevance: 2 },
+        { id: 'spec-docs', relevance: 1 },
+      ],
+      {
+        10: ['handover.md', '_memory.continuity', 'spec-docs'],
+        20: ['_memory.continuity', 'spec-docs', 'handover.md'],
+        40: ['_memory.continuity', 'spec-docs', 'handover.md'],
+        60: ['_memory.continuity', 'handover.md', 'spec-docs'],
+        80: ['handover.md', '_memory.continuity', 'spec-docs'],
+        100: ['spec-docs', '_memory.continuity', 'handover.md'],
+        120: ['spec-docs', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Find the compact continuity fields for this implementation summary',
+    expectedPrimaryAt60: '_memory.continuity',
+    evaluation: makeContinuityQuery(
+      [
+        { id: '_memory.continuity', relevance: 3 },
+        { id: 'implementation-summary.md', relevance: 2 },
+        { id: 'handover.md', relevance: 1 },
+      ],
+      {
+        10: ['implementation-summary.md', '_memory.continuity', 'handover.md'],
+        20: ['_memory.continuity', 'implementation-summary.md', 'handover.md'],
+        40: ['_memory.continuity', 'handover.md', 'implementation-summary.md'],
+        60: ['_memory.continuity', 'implementation-summary.md', 'handover.md'],
+        80: ['implementation-summary.md', '_memory.continuity', 'handover.md'],
+        100: ['handover.md', '_memory.continuity', 'implementation-summary.md'],
+        120: ['handover.md', 'implementation-summary.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Which preflight and postflight continuity fields were last saved',
+    expectedPrimaryAt60: '_memory.continuity',
+    evaluation: makeContinuityQuery(
+      [
+        { id: '_memory.continuity', relevance: 3 },
+        { id: 'handover.md', relevance: 2 },
+        { id: 'implementation-summary.md', relevance: 1 },
+      ],
+      {
+        10: ['handover.md', '_memory.continuity', 'implementation-summary.md'],
+        20: ['_memory.continuity', 'handover.md', 'implementation-summary.md'],
+        40: ['_memory.continuity', 'implementation-summary.md', 'handover.md'],
+        60: ['_memory.continuity', 'handover.md', 'implementation-summary.md'],
+        80: ['handover.md', '_memory.continuity', 'implementation-summary.md'],
+        100: ['implementation-summary.md', '_memory.continuity', 'handover.md'],
+        120: ['implementation-summary.md', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Where is the machine-owned continuity state for this packet',
+    expectedPrimaryAt60: '_memory.continuity',
+    evaluation: makeContinuityQuery(
+      [
+        { id: '_memory.continuity', relevance: 3 },
+        { id: 'handover.md', relevance: 2 },
+        { id: 'tasks.md', relevance: 1 },
+      ],
+      {
+        10: ['tasks.md', '_memory.continuity', 'handover.md'],
+        20: ['_memory.continuity', 'tasks.md', 'handover.md'],
+        40: ['_memory.continuity', 'handover.md', 'tasks.md'],
+        60: ['_memory.continuity', 'handover.md', 'tasks.md'],
+        80: ['handover.md', '_memory.continuity', 'tasks.md'],
+        100: ['tasks.md', '_memory.continuity', 'handover.md'],
+        120: ['tasks.md', 'handover.md', '_memory.continuity'],
+      },
+    ),
+  },
+  {
+    query: 'Summarize the canonical documents after handover and continuity are exhausted',
+    expectedPrimaryAt60: 'spec.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'spec.md', relevance: 3 },
+        { id: 'plan.md', relevance: 2 },
+        { id: 'tasks.md', relevance: 1 },
+      ],
+      {
+        10: ['tasks.md', 'spec.md', 'plan.md'],
+        20: ['spec.md', 'tasks.md', 'plan.md'],
+        40: ['spec.md', 'tasks.md', 'plan.md'],
+        60: ['spec.md', 'plan.md', 'tasks.md'],
+        80: ['plan.md', 'spec.md', 'tasks.md'],
+        100: ['tasks.md', 'plan.md', 'spec.md'],
+        120: ['tasks.md', 'spec.md', 'plan.md'],
+      },
+    ),
+  },
+  {
+    query: 'Which canonical spec doc best explains the phase goal after the resume ladder',
+    expectedPrimaryAt60: 'spec.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'spec.md', relevance: 3 },
+        { id: 'plan.md', relevance: 2 },
+        { id: 'tasks.md', relevance: 1 },
+      ],
+      {
+        10: ['plan.md', 'spec.md', 'tasks.md'],
+        20: ['spec.md', 'tasks.md', 'plan.md'],
+        40: ['spec.md', 'tasks.md', 'plan.md'],
+        60: ['spec.md', 'plan.md', 'tasks.md'],
+        80: ['plan.md', 'spec.md', 'tasks.md'],
+        100: ['tasks.md', 'plan.md', 'spec.md'],
+        120: ['tasks.md', 'spec.md', 'plan.md'],
+      },
+    ),
+  },
+  {
+    query: 'Which document should I read for the step-by-step execution plan once resume notes are consumed',
+    expectedPrimaryAt60: 'plan.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'plan.md', relevance: 3 },
+        { id: 'tasks.md', relevance: 2 },
+        { id: 'spec.md', relevance: 1 },
+      ],
+      {
+        10: ['tasks.md', 'plan.md', 'spec.md'],
+        20: ['plan.md', 'spec.md', 'tasks.md'],
+        40: ['plan.md', 'spec.md', 'tasks.md'],
+        60: ['plan.md', 'tasks.md', 'spec.md'],
+        80: ['tasks.md', 'plan.md', 'spec.md'],
+        100: ['spec.md', 'plan.md', 'tasks.md'],
+        120: ['spec.md', 'tasks.md', 'plan.md'],
+      },
+    ),
+  },
+  {
+    query: 'Which canonical doc should I use to update completion state after resume context',
+    expectedPrimaryAt60: 'tasks.md',
+    evaluation: makeContinuityQuery(
+      [
+        { id: 'tasks.md', relevance: 3 },
+        { id: 'plan.md', relevance: 2 },
+        { id: 'spec.md', relevance: 1 },
+      ],
+      {
+        10: ['plan.md', 'tasks.md', 'spec.md'],
+        20: ['tasks.md', 'spec.md', 'plan.md'],
+        40: ['tasks.md', 'spec.md', 'plan.md'],
+        60: ['tasks.md', 'plan.md', 'spec.md'],
+        80: ['plan.md', 'tasks.md', 'spec.md'],
+        100: ['spec.md', 'tasks.md', 'plan.md'],
+        120: ['spec.md', 'plan.md', 'tasks.md'],
+      },
+    ),
+  },
+] as const;
+
 describe('D1 Phase A: K-value optimization', () => {
   const originalFlag = process.env.SPECKIT_RRF_K_EXPERIMENTAL;
 
@@ -158,5 +412,22 @@ describe('D1 Phase A: K-value optimization', () => {
     });
 
     expect(resolved).toBe(10);
+  });
+
+  it('keeps the continuity recommendation on baseline K=60 across the 12-query resume-ladder fixture', () => {
+    const result = optimizeKValuesByIntent(CONTINUITY_FIXTURES.map((fixture) => fixture.evaluation));
+
+    expect(CONTINUITY_FIXTURES).toHaveLength(12);
+    for (const fixture of CONTINUITY_FIXTURES) {
+      expect(
+        fixture.evaluation.rankingsByK[60]?.[0],
+        `K=60 should surface ${fixture.expectedPrimaryAt60} first for "${fixture.query}"`,
+      ).toBe(fixture.expectedPrimaryAt60);
+    }
+
+    expect(result.bestKByIntent.continuity).toBe(BASELINE_K);
+    expect(result.metricsByIntent.continuity[60].ndcg10).toBeGreaterThan(result.metricsByIntent.continuity[40].ndcg10);
+    expect(result.metricsByIntent.continuity[60].ndcg10).toBeGreaterThan(result.metricsByIntent.continuity[80].ndcg10);
+    expect(result.bestKByIntent.continuity === BASELINE_K ? 'keep' : 'change').toBe('keep');
   });
 });

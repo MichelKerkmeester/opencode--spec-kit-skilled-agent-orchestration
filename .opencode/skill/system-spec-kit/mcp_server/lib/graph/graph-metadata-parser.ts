@@ -47,6 +47,18 @@ const KEY_FILE_NOISE_RE =
 const BARE_FILE_RE = /^[^/]+\.[A-Za-z0-9._-]+$/;
 const TITLE_LIKE_KEY_FILE_RE = /^([A-Z][a-z]+)( [A-Z][A-Za-z0-9._-]*)+$/;
 const KEY_FILE_COMMAND_START_RE = /^(cd|echo|cat|grep|find|rm|mkdir)\s+/;
+const CROSS_TRACK_SPEC_FOLDERS = ['system-spec-kit', 'skilled-agent-orchestration'] as const;
+const BARE_RUNTIME_ENTITY_NAMES = new Set([
+  'python',
+  'node',
+  'bash',
+  'sh',
+  'npm',
+  'npx',
+  'vitest',
+  'jest',
+  'tsc',
+]);
 
 interface ParsedSpecDoc {
   relativePath: string;
@@ -372,6 +384,7 @@ function keepKeyFile(candidate: string): boolean {
   if (!normalized) {
     return false;
   }
+  const normalizedLower = normalized.toLowerCase();
   if (normalized.startsWith('`') && normalized.endsWith('`')) {
     return false;
   }
@@ -382,6 +395,12 @@ function keepKeyFile(candidate: string): boolean {
     return false;
   }
   if (KEY_FILE_NOISE_RE.test(normalized)) {
+    return false;
+  }
+  if (
+    normalizedLower === 'memory/metadata.json'
+    || normalizedLower.endsWith('/memory/metadata.json')
+  ) {
     return false;
   }
   if (normalized.includes(' | ') || normalized.includes('&&') || normalized.includes('||') || normalized.includes('>>')) {
@@ -476,6 +495,129 @@ function selectFirstValue(values: Array<string | null | undefined>, fallback: st
   return fallback;
 }
 
+function findSpecsRoot(specFolderPath: string): string | null {
+  let current = path.resolve(specFolderPath);
+  while (true) {
+    if (path.basename(current) === 'specs' && path.basename(path.dirname(current)) === '.opencode') {
+      return current;
+    }
+    const parent = path.dirname(current);
+    if (parent === current) {
+      return null;
+    }
+    current = parent;
+  }
+}
+
+function isExistingFile(filePath: string): boolean {
+  if (!fs.existsSync(filePath)) {
+    return false;
+  }
+  try {
+    return fs.statSync(filePath).isFile();
+  } catch {
+    return false;
+  }
+}
+
+function swapCrossTrackPath(candidate: string, currentTrack: string | null): string | null {
+  if (!currentTrack || !CROSS_TRACK_SPEC_FOLDERS.includes(currentTrack as typeof CROSS_TRACK_SPEC_FOLDERS[number])) {
+    return null;
+  }
+
+  const otherTrack = CROSS_TRACK_SPEC_FOLDERS.find((track) => track !== currentTrack);
+  if (!otherTrack) {
+    return null;
+  }
+
+  const normalized = candidate.replace(/\\/g, '/').replace(/^\.\//, '');
+  const replacements: Array<[string, string]> = [
+    [`${currentTrack}/`, `${otherTrack}/`],
+    [`specs/${currentTrack}/`, `specs/${otherTrack}/`],
+    [`.opencode/specs/${currentTrack}/`, `.opencode/specs/${otherTrack}/`],
+  ];
+
+  for (const [fromPrefix, toPrefix] of replacements) {
+    if (normalized.startsWith(fromPrefix)) {
+      return `${toPrefix}${normalized.slice(fromPrefix.length)}`;
+    }
+  }
+
+  return null;
+}
+
+function buildKeyFileLookupPaths(
+  candidate: string,
+  specFolderPath: string,
+  specsRoot: string | null,
+  repoRoot: string | null,
+): string[] {
+  const normalized = candidate.replace(/\\/g, '/').replace(/^\.\//, '');
+  const lookups = new Set<string>();
+
+  if (path.isAbsolute(candidate)) {
+    lookups.add(path.resolve(candidate));
+  } else {
+    lookups.add(path.resolve(specFolderPath, normalized));
+    if (repoRoot) {
+      lookups.add(path.resolve(repoRoot, normalized));
+      if (normalized.startsWith('.opencode/')) {
+        lookups.add(path.resolve(repoRoot, normalized));
+      }
+      if (normalized.startsWith('specs/')) {
+        lookups.add(path.resolve(repoRoot, '.opencode', normalized));
+      }
+
+      const systemSpecKitRoot = path.join(repoRoot, '.opencode', 'skill', 'system-spec-kit');
+      const workspaceRoots = [
+        systemSpecKitRoot,
+        path.join(systemSpecKitRoot, 'mcp_server'),
+        path.join(systemSpecKitRoot, 'scripts'),
+      ];
+      for (const root of workspaceRoots) {
+        lookups.add(path.resolve(root, normalized));
+      }
+    }
+    if (
+      specsRoot
+      && CROSS_TRACK_SPEC_FOLDERS.some((track) => normalized === track || normalized.startsWith(`${track}/`))
+    ) {
+      lookups.add(path.resolve(specsRoot, normalized));
+    }
+  }
+
+  return Array.from(lookups);
+}
+
+function resolveKeyFileCandidate(
+  specFolderPath: string,
+  specFolder: string,
+  candidate: string,
+): string | null {
+  const normalized = candidate.trim().replace(/\\/g, '/').replace(/^\.\//, '');
+  if (!normalized) {
+    return null;
+  }
+
+  const specsRoot = findSpecsRoot(specFolderPath);
+  const repoRoot = specsRoot ? path.dirname(path.dirname(specsRoot)) : null;
+  const currentTrack = specFolder.split('/').filter(Boolean)[0] ?? null;
+  const candidates = [normalized];
+  const swapped = swapCrossTrackPath(normalized, currentTrack);
+  if (swapped && swapped !== normalized) {
+    candidates.push(swapped);
+  }
+
+  for (const displayPath of candidates) {
+    const lookupPaths = buildKeyFileLookupPaths(displayPath, specFolderPath, specsRoot, repoRoot);
+    if (lookupPaths.some(isExistingFile)) {
+      return displayPath;
+    }
+  }
+
+  return null;
+}
+
 function classifyEntityKind(filePath: string): string {
   const normalized = filePath.toLowerCase();
   if (normalized.endsWith('.sh')) return 'script';
@@ -497,23 +639,11 @@ function stripSpecsRootPrefix(filePath: string): string {
   return normalized;
 }
 
-function buildEntityScopeFolders(specFolder: string): Set<string> {
-  const folders = new Set<string>();
-  let current = specFolder.replace(/\\/g, '/');
-  while (current) {
-    folders.add(current);
-    const segments = current.split('/').filter(Boolean);
-    if (segments.length <= 1) {
-      break;
-    }
-    const parent = segments.slice(0, -1).join('/');
-    const parentLeaf = parent.split('/').pop() ?? '';
-    if (!isSpecLeafSegment(parentLeaf)) {
-      break;
-    }
-    current = parent;
-  }
-  return folders;
+function shouldKeepEntityName(name: string): boolean {
+  const normalized = name.trim().toLowerCase();
+  return normalized.length > 0
+    && normalized.length <= 80
+    && !BARE_RUNTIME_ENTITY_NAMES.has(normalized);
 }
 
 function deriveEntities(
@@ -522,22 +652,30 @@ function deriveEntities(
   keyFiles: string[],
 ): GraphEntityReference[] {
   const entities = new Map<string, GraphEntityReference>();
-  const canonicalDocSuffixes = new Set(docs.map((doc) => doc.relativePath.replace(/\\/g, '/')));
-  const scopedFolders = buildEntityScopeFolders(specFolder);
+  const canonicalDocSuffixes = new Set(
+    CANONICAL_PACKET_DOCS.map((docPath) => docPath.replace(/\\/g, '/')),
+  );
+  const specFolderPrefix = `${specFolder.replace(/\\/g, '/')}/`;
 
   const isCanonicalEntityPath = (filePath: string): boolean => {
     const normalized = stripSpecsRootPrefix(filePath);
     if (canonicalDocSuffixes.has(normalized)) {
       return true;
     }
-    for (const docPath of canonicalDocSuffixes) {
-      for (const folder of scopedFolders) {
-        if (normalized === `${folder}/${docPath}`) {
-          return true;
-        }
-      }
+
+    if (!normalized.startsWith(specFolderPrefix)) {
+      return false;
     }
-    return false;
+
+    const localDocPath = normalized.slice(specFolderPrefix.length);
+    return canonicalDocSuffixes.has(localDocPath);
+  };
+
+  const isExternalCanonicalDocPath = (filePath: string): boolean => {
+    const normalized = stripSpecsRootPrefix(filePath);
+    const matchesCanonicalDoc = canonicalDocSuffixes.has(normalized)
+      || Array.from(canonicalDocSuffixes).some((docPath) => normalized.endsWith(`/${docPath}`));
+    return matchesCanonicalDoc && !isCanonicalEntityPath(filePath);
   };
 
   const prefersCandidate = (
@@ -562,7 +700,7 @@ function deriveEntities(
 
   const upsertEntityByName = (candidate: GraphEntityReference): void => {
     const nameKey = candidate.name.trim().toLowerCase();
-    if (!nameKey || candidate.name.length > 80) {
+    if (!shouldKeepEntityName(candidate.name)) {
       return;
     }
 
@@ -573,6 +711,9 @@ function deriveEntities(
   };
 
   for (const filePath of keyFiles) {
+    if (isExternalCanonicalDocPath(filePath)) {
+      continue;
+    }
     upsertEntityByName({
       name: path.basename(filePath),
       kind: classifyEntityKind(filePath),
@@ -597,7 +738,7 @@ function deriveEntities(
     }
   }
 
-  return Array.from(entities.values()).slice(0, 16);
+  return Array.from(entities.values()).slice(0, 24);
 }
 
 function normalizeUnique(values: string[]): string[] {
@@ -614,7 +755,7 @@ function normalizeUnique(values: string[]): string[] {
   return normalized;
 }
 
-function deriveKeyFiles(docs: ParsedSpecDoc[]): string[] {
+function deriveKeyFiles(specFolderPath: string, specFolder: string, docs: ParsedSpecDoc[]): string[] {
   const preferredDoc = docs.find((doc) => doc.relativePath === 'implementation-summary.md');
   const referenced = preferredDoc
     ? extractReferencedFilePaths(preferredDoc.content).filter(keepKeyFile)
@@ -624,7 +765,10 @@ function deriveKeyFiles(docs: ParsedSpecDoc[]): string[] {
     .flatMap((doc) => extractReferencedFilePaths(doc.content))
     .filter(keepKeyFile);
   const merged = normalizeUnique([...referenced, ...fallbackRefs, ...docs.map((doc) => doc.relativePath)]);
-  return merged.slice(0, 20);
+  const resolved = merged
+    .map((candidate) => resolveKeyFileCandidate(specFolderPath, specFolder, candidate))
+    .filter((candidate): candidate is string => Boolean(candidate));
+  return normalizeUnique(resolved).slice(0, 20);
 }
 
 function deriveKeyTopics(docs: ParsedSpecDoc[], triggerPhrases: string[], causalSummary: string): string[] {
@@ -713,7 +857,7 @@ export function deriveGraphMetadata(
   const packetId = specFolder;
   const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, 12);
   const causalSummary = deriveCausalSummary(docs);
-  const keyFiles = deriveKeyFiles(docs);
+  const keyFiles = deriveKeyFiles(specFolderPath, specFolder, docs);
   const keyTopics = deriveKeyTopics(docs, triggerPhrases, causalSummary);
   const sourceDocs = docs.map((doc) => doc.relativePath);
   const entities = deriveEntities(specFolder, docs, keyFiles);
@@ -843,4 +987,6 @@ export function packetReferencesToCausalLinks(manual: GraphMetadataManual): Reco
 export const __testables = {
   keepKeyFile,
   evaluateChecklistCompletion,
+  resolveKeyFileCandidate,
+  shouldKeepEntityName,
 };

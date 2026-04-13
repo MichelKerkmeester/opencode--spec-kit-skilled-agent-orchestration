@@ -41,70 +41,24 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "scorers/scope.js",
-      "scorers/risk.js",
-      "scorers/research.js",
-      "scorers/multi-agent.js",
-      "scorers/coordination.js",
-      "config/complexity-config.jsonc",
-      "references/templates/complexity_guide.md",
       "references/templates/level_specifications.md",
       "assets/complexity_decision_matrix.md",
-      "scripts/create-spec-folder.sh",
-      ".opencode/skill/system-spec-kit/scripts/create-spec-folder.sh",
-      ".opencode/skill/system-spec-kit/scripts/detect-complexity.js",
-      ".opencode/skill/system-spec-kit/scripts/expand-template.js",
-      ".opencode/skill/system-spec-kit/config/complexity-config.jsonc",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/spec.md",
       "spec.md",
       "tasks.md",
       "checklist.md",
       "plan.md",
-      "fixtures/sample-request.txt"
+      "tests/test-classifier.js",
+      "tests/test-detector.js",
+      "tests/test-marker-parser.js",
+      "tests/test-cli.sh",
+      "tests/fixtures/sample-request.txt",
+      "tests/run-tests.sh",
+      "implementation-summary.md",
+      "decision-record.md",
+      "handover.md"
     ],
     "entities": [
-      {
-        "name": "scope.js",
-        "kind": "code",
-        "path": "scorers/scope.js",
-        "source": "derived"
-      },
-      {
-        "name": "risk.js",
-        "kind": "code",
-        "path": "scorers/risk.js",
-        "source": "derived"
-      },
-      {
-        "name": "research.js",
-        "kind": "code",
-        "path": "scorers/research.js",
-        "source": "derived"
-      },
-      {
-        "name": "multi-agent.js",
-        "kind": "code",
-        "path": "scorers/multi-agent.js",
-        "source": "derived"
-      },
-      {
-        "name": "coordination.js",
-        "kind": "code",
-        "path": "scorers/coordination.js",
-        "source": "derived"
-      },
-      {
-        "name": "complexity-config.jsonc",
-        "kind": "file",
-        "path": "config/complexity-config.jsonc",
-        "source": "derived"
-      },
-      {
-        "name": "complexity_guide.md",
-        "kind": "doc",
-        "path": "references/templates/complexity_guide.md",
-        "source": "derived"
-      },
       {
         "name": "level_specifications.md",
         "kind": "doc",
@@ -115,24 +69,6 @@
         "name": "complexity_decision_matrix.md",
         "kind": "doc",
         "path": "assets/complexity_decision_matrix.md",
-        "source": "derived"
-      },
-      {
-        "name": "create-spec-folder.sh",
-        "kind": "script",
-        "path": "scripts/create-spec-folder.sh",
-        "source": "derived"
-      },
-      {
-        "name": "detect-complexity.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/detect-complexity.js",
-        "source": "derived"
-      },
-      {
-        "name": "expand-template.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/expand-template.js",
         "source": "derived"
       },
       {
@@ -158,11 +94,119 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "test-classifier.js",
+        "kind": "code",
+        "path": "tests/test-classifier.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-detector.js",
+        "kind": "code",
+        "path": "tests/test-detector.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-marker-parser.js",
+        "kind": "code",
+        "path": "tests/test-marker-parser.js",
+        "source": "derived"
+      },
+      {
+        "name": "test-cli.sh",
+        "kind": "script",
+        "path": "tests/test-cli.sh",
+        "source": "derived"
+      },
+      {
+        "name": "sample-request.txt",
+        "kind": "file",
+        "path": "tests/fixtures/sample-request.txt",
+        "source": "derived"
+      },
+      {
+        "name": "run-tests.sh",
+        "kind": "script",
+        "path": "tests/run-tests.sh",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specific",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Based Template Architecture Transform",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Current",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Provide",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Based Template Architecture Technical",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Feature",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level.",
     "created_at": "2026-04-12T09:02:53.542Z",
-    "last_save_at": "2026-04-13T10:56:03.847Z",
+    "last_save_at": "2026-04-13T14:20:42.418Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

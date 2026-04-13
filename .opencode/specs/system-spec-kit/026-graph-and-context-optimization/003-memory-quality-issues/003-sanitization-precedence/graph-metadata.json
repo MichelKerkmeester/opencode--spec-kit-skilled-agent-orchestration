@@ -57,7 +57,6 @@
       "tests/trigger-phrase-sanitizer.vitest.ts",
       "tests/memory-quality-phase3-pr5.vitest.ts",
       "tests/memory-quality-phase3-pr6.vitest.ts",
-      "rg -n \"PR-5|PR-6|F-AC2|F-AC3|003→004|003 -> 004\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/spec.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/plan.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/tasks.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/checklist.md",
       "scripts/lib/trigger-phrase-sanitizer.ts",
       "scripts/core/workflow.ts",
       "scripts/lib/semantic-signal-extractor.ts"
@@ -158,11 +157,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Tasks",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Approach",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Summary The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Runtime Surface",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 3 is the packet's P2 child spec. It isolates the two behavior-sensitive fixes that the parent packet intentionally deferred until the low-risk foundation and metadata phases landed first: PR-5 for D3 trigger-phrase sanitization and PR-6 for the D2 precedence-only decision gate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:216-223] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159]",
     "created_at": "2026-04-12T09:02:53.458Z",
-    "last_save_at": "2026-04-13T10:56:03.684Z",
+    "last_save_at": "2026-04-13T14:20:42.289Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

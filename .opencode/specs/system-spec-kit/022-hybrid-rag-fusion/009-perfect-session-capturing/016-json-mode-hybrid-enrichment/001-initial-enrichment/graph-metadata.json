@@ -153,11 +153,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "JSON-mode saves became the safe path for multi-spec sessions, but the implementation that actually shipped in this tree is narrower than the original phase design. The code now accepts richer structured JSON summaries such as `toolCalls` and `exchanges`, but it does not ship the full file-backed hybrid enrichment path originally described here.",
     "created_at": "2026-04-12T09:02:50.277Z",
-    "last_save_at": "2026-04-13T10:56:00.419Z",
+    "last_save_at": "2026-04-13T14:20:38.976Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

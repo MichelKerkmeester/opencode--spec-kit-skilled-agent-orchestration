@@ -37,46 +37,11 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "mcp_server/context-server.js",
-      "mcp_server/lib/vector-index.js",
-      "mcp_server/lib/trigger-matcher.js",
-      "mcp_server/lib/hybrid-search.js",
-      "scripts/generate-context.js",
       "spec.md",
       "plan.md",
       "research/research.md"
     ],
     "entities": [
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "trigger-matcher.js",
-        "kind": "code",
-        "path": "mcp_server/lib/trigger-matcher.js",
-        "source": "derived"
-      },
-      {
-        "name": "hybrid-search.js",
-        "kind": "code",
-        "path": "mcp_server/lib/hybrid-search.js",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "scripts/generate-context.js",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -142,11 +107,53 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "External Research",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gap Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cognitive Memory Upgrade",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Agents",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Report",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Research upgrading Spec Kit Memory system with ideas and principles from the claude-cognitive repository, adapted for OpenCode's hook-less architecture.",
     "created_at": "2026-04-12T09:02:53.535Z",
-    "last_save_at": "2026-04-13T10:56:03.831Z",
+    "last_save_at": "2026-04-13T14:20:42.405Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

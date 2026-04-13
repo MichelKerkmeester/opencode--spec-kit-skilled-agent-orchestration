@@ -44,23 +44,16 @@
       ".opencode/command/create/sk-skill.md",
       ".opencode/command/create/assets/create_sk_skill_auto.yaml",
       ".opencode/command/create/assets/create_sk_skill_confirm.yaml",
-      ".opencode/command/create/prompt.md",
-      ".agents/agents/write.md",
       ".opencode/agent/write.md",
       ".codex/agents/write.toml",
       ".opencode/README.md",
       ".opencode/install_guides/README.md",
       ".opencode/install_guides/SET-UP - AGENTS.md",
-      ".opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json",
-      ".opencode/command/create/assets/create_skill_auto.yaml",
-      ".opencode/command/create/assets/create_skill_confirm.yaml",
-      ".opencode/command/create/assets/create_skill_reference_auto.yaml",
-      ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
-      ".opencode/command/create/assets/create_skill_asset_auto.yaml",
-      ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
-      "memory/metadata.json",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -82,15 +75,9 @@
         "source": "derived"
       },
       {
-        "name": "prompt.md",
-        "kind": "doc",
-        "path": ".opencode/command/create/prompt.md",
-        "source": "derived"
-      },
-      {
         "name": "write.md",
         "kind": "doc",
-        "path": ".agents/agents/write.md",
+        "path": ".opencode/agent/write.md",
         "source": "derived"
       },
       {
@@ -112,57 +99,111 @@
         "source": "derived"
       },
       {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": ".opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_reference_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_asset_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Create Skill Merger",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Establish",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Command",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The create command surface for skills was fragmented across separate command files and YAML workflows (`/create:skill`, `/create:skill_reference`, `/create:skill_asset`). That duplication increased maintenance cost and made routing behavior harder to keep consistent across operation and mode variants. After canonical merger, active runtime and onboarding documentation still needed explicit synchronization to canonical `/create:sk-skill` references.",
     "created_at": "2026-04-12T09:02:50.220Z",
-    "last_save_at": "2026-04-13T10:56:00.307Z",
+    "last_save_at": "2026-04-13T14:20:38.861Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

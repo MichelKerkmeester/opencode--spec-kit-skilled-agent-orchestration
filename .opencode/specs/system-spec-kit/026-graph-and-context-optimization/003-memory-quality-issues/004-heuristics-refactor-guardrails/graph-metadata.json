@@ -52,7 +52,6 @@
       "checklist.md",
       "core/find-predecessor-memory.ts",
       "implementation-summary.md",
-      "NEW .opencode/skill/system-spec-kit/scripts/core/find-predecessor-memory.ts",
       ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
       "spec.md",
       "plan.md",
@@ -60,7 +59,8 @@
       "core/memory-metadata.ts",
       "tests/memory-quality-phase4-pr7.test.ts",
       "scripts/types/save-mode.ts",
-      "extractors/collect-session-data.ts"
+      "extractors/collect-session-data.ts",
+      "core/post-save-review.ts"
     ],
     "entities": [
       {
@@ -158,11 +158,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Priority Band",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Phase Map Status",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Runtime",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Core Files",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Inputs",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 4 is the largest child packet in the remediation train because it combines one behavior change, one cross-pipeline refactor, and one guardrail upgrade into a deliberately ordered three-PR slice. The behavior change is D5 lineage repair: JSON-mode saves must auto-populate `causal_links.supersedes` only when the current artifact presents strong continuation evidence and exactly one immediate predecessor can be selected without ambiguity. The refactor replaces `_source === 'file'` overloading with an explicit `SaveMode` contract so future JSON, capture, and manual save behavior stops branching on provenance metadata. The guardrail upgrade turns the post-save reviewer into a structural regression net with CHECK-D1 through CHECK-D8, plus clean-fixture proof that the new checks do not create noisy false positives. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:182-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:50-56] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:84-87] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1160-1162]",
     "created_at": "2026-04-12T09:02:53.459Z",
-    "last_save_at": "2026-04-13T10:56:03.686Z",
+    "last_save_at": "2026-04-13T14:20:42.290Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

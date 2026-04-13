@@ -43,16 +43,6 @@
       "spec.md",
       "plan.md",
       "tasks.md",
-      "backend/src/dotmd/mcp_server.py",
-      "backend/src/dotmd/ingestion/chunker.py",
-      "backend/src/dotmd/search/fusion.py",
-      "src/mcp/tools.ts",
-      "src/mcp/handler.ts",
-      "src/core/usecases/TaskManager.ts",
-      "packages/cortex/src/retrieval/compression.ts",
-      "packages/cortex/src/decay/calculator.ts",
-      "packages/cortex/src/retrieval/engine.ts",
-      "wiki/Cortex-V2-Overview.md",
       "implementation-summary.md"
     ],
     "entities": [
@@ -81,66 +71,6 @@
         "source": "derived"
       },
       {
-        "name": "mcp_server.py",
-        "kind": "file",
-        "path": "backend/src/dotmd/mcp_server.py",
-        "source": "derived"
-      },
-      {
-        "name": "chunker.py",
-        "kind": "file",
-        "path": "backend/src/dotmd/ingestion/chunker.py",
-        "source": "derived"
-      },
-      {
-        "name": "fusion.py",
-        "kind": "file",
-        "path": "backend/src/dotmd/search/fusion.py",
-        "source": "derived"
-      },
-      {
-        "name": "tools.ts",
-        "kind": "code",
-        "path": "src/mcp/tools.ts",
-        "source": "derived"
-      },
-      {
-        "name": "handler.ts",
-        "kind": "code",
-        "path": "src/mcp/handler.ts",
-        "source": "derived"
-      },
-      {
-        "name": "TaskManager.ts",
-        "kind": "code",
-        "path": "src/core/usecases/TaskManager.ts",
-        "source": "derived"
-      },
-      {
-        "name": "compression.ts",
-        "kind": "code",
-        "path": "packages/cortex/src/retrieval/compression.ts",
-        "source": "derived"
-      },
-      {
-        "name": "calculator.ts",
-        "kind": "code",
-        "path": "packages/cortex/src/decay/calculator.ts",
-        "source": "derived"
-      },
-      {
-        "name": "engine.ts",
-        "kind": "code",
-        "path": "packages/cortex/src/retrieval/engine.ts",
-        "source": "derived"
-      },
-      {
-        "name": "Cortex-V2-Overview.md",
-        "kind": "doc",
-        "path": "wiki/Cortex-V2-Overview.md",
-        "source": "derived"
-      },
-      {
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
@@ -151,11 +81,119 @@
         "kind": "proper_noun",
         "path": "research/research.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview Cross",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Repositories Analyzed",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Deliverables",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Integration Patterns",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Objective Extract",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Phases",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Repository Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Extraction",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completed Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Future Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "If Implementing Recommendations",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Zod",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Future Tasks (If Implementing Recommendations)",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Cross-repository analysis of AI assistant integration patterns from three open-source projects to inform improvements to the system-spec-kit MCP.",
     "created_at": "2026-04-12T09:02:53.551Z",
-    "last_save_at": "2026-04-13T10:56:03.867Z",
+    "last_save_at": "2026-04-13T14:20:42.434Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

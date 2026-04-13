@@ -42,12 +42,8 @@
     "status": "in_progress",
     "key_files": [
       "shared/embeddings/providers/voyage.js",
-      ".opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.js",
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
       ".opencode/skill/system-spec-kit/README.md",
-      ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
-      ".opencode/skill/mcp-narsil/INSTALL_GUIDE.md",
-      ".opencode/skill/mcp-narsil/SKILL.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -71,18 +67,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "factory.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skill/mcp-narsil/SKILL.md",
         "source": "derived"
       },
       {
@@ -150,11 +134,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Upgrade Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Updates",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Voyage Provider",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Add Voyage",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Factory Default",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Spec Kit",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update System Spec Kit",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "new",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tasks [067-voyage-4-upgrade/tasks]",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks document for 067-voyage-4-upgrade.",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Objective: Evaluate and plan the upgrade from current Voyage models to the newly released Voyage 4 model family for both Spec Kit Memory MCP and Narsil MCP systems.",
     "created_at": "2026-04-12T09:02:53.541Z",
-    "last_save_at": "2026-04-13T10:56:03.844Z",
+    "last_save_at": "2026-04-13T14:20:42.416Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

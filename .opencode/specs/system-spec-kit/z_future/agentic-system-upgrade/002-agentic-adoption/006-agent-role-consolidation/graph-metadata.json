@@ -61,12 +61,6 @@
         "source": "derived"
       },
       {
-        "name": "handover.md",
-        "kind": "doc",
-        "path": ".opencode/agent/handover.md",
-        "source": "derived"
-      },
-      {
         "name": "speckit.md",
         "kind": "doc",
         "path": ".opencode/agent/speckit.md",
@@ -143,11 +137,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview Reduce",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Thin",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Date",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Public already has the core authority needed for 006 agent role consolidation, but the change still needs one implementation-ready contract. This child phase narrows the converged research into a current-authority-safe design.",
     "created_at": "2026-04-12T09:02:53.493Z",
-    "last_save_at": "2026-04-13T10:56:03.934Z",
+    "last_save_at": "2026-04-13T14:20:42.480Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

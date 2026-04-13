@@ -40,9 +40,6 @@
     "status": "planned",
     "key_files": [
       ".opencode/command/memory/save.md",
-      ".opencode/skills/system-memory/scripts/generate-context.js",
-      ".opencode/specs/03--commands-and-skills/skills/007-skill-system-improvements/memory/22-12-25_12-08__skill-system-improvements.md",
-      ".opencode/specs/03--commands-and-skills/skills/006-mcp-code-context-provider/memory/22-12-25_12-08__mcp-code-context.md",
       "spec.md",
       "plan.md",
       "checklist.md"
@@ -52,24 +49,6 @@
         "name": "save.md",
         "kind": "doc",
         "path": ".opencode/command/memory/save.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": ".opencode/skills/system-memory/scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "22-12-25_12-08__skill-system-improvements.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/skills/007-skill-system-improvements/memory/22-12-25_12-08__skill-system-improvements.md",
-        "source": "derived"
-      },
-      {
-        "name": "22-12-25_12-08__mcp-code-context.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/skills/006-mcp-code-context-provider/memory/22-12-25_12-08__mcp-code-context.md",
         "source": "derived"
       },
       {
@@ -143,11 +122,41 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Memory Relocation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Move Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Script Alignment",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Content Suggestion",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Must Complete",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Implement a comprehensive 3-layer defense system to prevent memory saves to incorrect spec folders.",
     "created_at": "2026-04-12T09:02:53.520Z",
-    "last_save_at": "2026-04-13T10:56:03.797Z",
+    "last_save_at": "2026-04-13T14:20:42.377Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

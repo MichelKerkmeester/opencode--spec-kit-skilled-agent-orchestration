@@ -28,34 +28,22 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "command/memory/save.md",
       "lib/graph/README.md",
       "lib/config/README.md",
-      "001-research/research/archive/research-v1-iter-8.md",
-      "015/scratch/manual-playbook-results.json",
-      "005/scratch/test-prompts-all-clis.md",
-      "system-spec-kit/SKILL.md",
       "templates/handover.md",
       "templates/debug-delegation.md",
-      "002-gate-b-foundation/spec.md",
-      "002-implement-cache-warning-hooks/spec.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "003-memory-quality-issues/spec.md",
-      "command/memory/manage.md",
       "mcp_server/lib/graph/README.md",
       "mcp_server/lib/config/README.md",
-      "015/scratch/manual-playbook-results/manual-playbook-results.json",
-      "015/spec.md"
+      "tests/content-router.vitest.ts",
+      "tests/handler-memory-save.vitest.ts",
+      "tests/memory-context.resume-gate-d.vitest.ts",
+      "spec.md",
+      ".gemini/settings.json",
+      "plan.md"
     ],
     "entities": [
-      {
-        "name": "save.md",
-        "kind": "doc",
-        "path": "command/memory/save.md",
-        "source": "derived"
-      },
       {
         "name": "README.md",
         "kind": "doc",
@@ -63,45 +51,9 @@
         "source": "derived"
       },
       {
-        "name": "research-v1-iter-8.md",
-        "kind": "doc",
-        "path": "001-research/research/archive/research-v1-iter-8.md",
-        "source": "derived"
-      },
-      {
-        "name": "manual-playbook-results.json",
-        "kind": "config",
-        "path": "015/scratch/manual-playbook-results.json",
-        "source": "derived"
-      },
-      {
-        "name": "test-prompts-all-clis.md",
-        "kind": "doc",
-        "path": "005/scratch/test-prompts-all-clis.md",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": "system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "handover.md",
-        "kind": "doc",
-        "path": "templates/handover.md",
-        "source": "derived"
-      },
-      {
         "name": "debug-delegation.md",
         "kind": "doc",
         "path": "templates/debug-delegation.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "002-gate-b-foundation/spec.md",
         "source": "derived"
       },
       {
@@ -117,15 +69,39 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
+        "name": "content-router.vitest.ts",
+        "kind": "test",
+        "path": "tests/content-router.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "manage.md",
+        "name": "handler-memory-save.vitest.ts",
+        "kind": "test",
+        "path": "tests/handler-memory-save.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.resume-gate-d.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-context.resume-gate-d.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
         "kind": "doc",
-        "path": "command/memory/manage.md",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.json",
+        "kind": "config",
+        "path": ".gemini/settings.json",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -145,11 +121,77 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Deep Review Remediation Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope Every",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Contract Drift",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quick Doc Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Packet Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Fixes",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Expand Gate",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Fix all 22 findings (18 P1, 4 P2) surfaced by the 50-iteration deep review across all phases of 026-graph-and-context-optimization.",
     "created_at": "2026-04-13T04:56:06.985Z",
-    "last_save_at": "2026-04-13T10:56:03.725Z",
+    "last_save_at": "2026-04-13T14:20:42.319Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,19 +1,210 @@
 {
-  "packet_id": "007-skill-advisor-graph/002-manual-testing-playbook",
-  "parent_id": "007-skill-advisor-graph",
-  "title": "Playbook Template Alignment",
-  "status": "complete",
-  "level": 3,
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
   "derived": {
-    "key_files": [
-      ".opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/",
-      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/",
-      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/",
-      ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/",
-      ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md"
+    "trigger_phrases": [
+      "002-manual-testing-playbook",
+      "playbook alignment",
+      "playbook template",
+      "RCAF prompts",
+      "plan",
+      "playbook plan",
+      "playbook tasks",
+      "playbook checklist",
+      "playbook decisions"
     ],
-    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
-    "related_packets": ["007-skill-advisor-graph/003-skill-advisor-packaging"],
-    "supersedes": null
+    "key_topics": [
+      "002-manual-testing-playbook",
+      "playbook",
+      "alignment",
+      "template",
+      "rcaf",
+      "prompts",
+      "plan",
+      "tasks",
+      "checklist",
+      "decisions",
+      "align",
+      "full"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+      ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md",
+      ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.json",
+        "kind": "config",
+        "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_snippet_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "001-git-routing.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Playbook Template Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Advisor",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current State",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template Aligned",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Prompt Pattern",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Reconcile",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph Boosts Category",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Compiler Category",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Align the full manual testing playbook package with current reality: all 24 scenario snippets follow the sk-doc 5-section/RCAF snippet contract, the root `manual_testing_playbook.md` remains a multi-section operator guide, and every Skill Advisor runtime path reference uses `.opencode/skill/skill-advisor/scripts/...` rather than bare `skill-advisor/...` or the retired `.opencode/skill/scripts/...` location.",
+    "created_at": "2026-04-13T14:17:29.252Z",
+    "last_save_at": "2026-04-13T14:20:42.338Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
   }
 }

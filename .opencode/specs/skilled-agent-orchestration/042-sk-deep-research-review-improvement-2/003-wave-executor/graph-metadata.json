@@ -156,11 +156,59 @@
         "kind": "config",
         "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
         "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Wave Executor",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 003 adds orchestrator-managed parallel wave execution so deep research and deep review can handle very large targets without abandoning the LEAF-worker model. It formalizes deterministic segmentation, packet-local coordination, segment-level convergence, and auditable merge behavior on top of the coverage-graph foundation from Phase 002.",
     "created_at": "2026-04-12T09:02:50.193Z",
-    "last_save_at": "2026-04-13T10:56:00.273Z",
+    "last_save_at": "2026-04-13T14:20:38.830Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

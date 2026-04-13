@@ -154,11 +154,59 @@
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The seven maintenance scenarios (EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, EX-045) require fresh manual execution to verify that memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair behave as specified by the canonical playbook. The five new scenarios (EX-041 through EX-045) expand coverage to state-mutating maintenance operations and diagnostic repair workflows.",
     "created_at": "2026-04-12T09:02:50.291Z",
-    "last_save_at": "2026-04-13T10:56:00.452Z",
+    "last_save_at": "2026-04-13T14:20:39.000Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

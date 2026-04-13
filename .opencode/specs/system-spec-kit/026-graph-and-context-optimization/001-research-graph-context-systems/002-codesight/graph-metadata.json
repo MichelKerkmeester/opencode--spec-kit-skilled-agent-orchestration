@@ -53,14 +53,14 @@
       "research/deep-research-dashboard.md",
       "research/findings-registry.json",
       "implementation-summary.md",
-      "memory/metadata.json",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
       "external/src/ast/extract-routes.ts",
       "external/src/types.ts",
       "external/src/detectors/graph.ts",
       "external/src/detectors/contracts.ts",
-      "external/src/ast/extract-python.ts"
+      "external/src/ast/extract-python.ts",
+      "external/src/ast/extract-go.ts"
     ],
     "entities": [
       {
@@ -136,12 +136,6 @@
         "source": "derived"
       },
       {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "memory/metadata.json",
-        "source": "derived"
-      },
-      {
         "name": "reduce-state.cjs",
         "kind": "file",
         "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
@@ -158,11 +152,65 @@
         "kind": "code",
         "path": "external/src/ast/extract-routes.ts",
         "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "external/src/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph.ts",
+        "kind": "code",
+        "path": "external/src/detectors/graph.ts",
+        "source": "derived"
+      },
+      {
+        "name": "contracts.ts",
+        "kind": "code",
+        "path": "external/src/detectors/contracts.ts",
+        "source": "derived"
+      },
+      {
+        "name": "extract-python.ts",
+        "kind": "code",
+        "path": "external/src/ast/extract-python.ts",
+        "source": "derived"
+      },
+      {
+        "name": "extract-go.ts",
+        "kind": "code",
+        "path": "external/src/ast/extract-go.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Adopt Adapt Reject",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-13T10:56:03.664Z",
+    "last_save_at": "2026-04-13T14:20:42.272Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

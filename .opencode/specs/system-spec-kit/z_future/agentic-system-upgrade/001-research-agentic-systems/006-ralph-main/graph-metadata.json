@@ -157,11 +157,59 @@
         "kind": "file",
         "path": "external/prd.json.example",
         "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": "external/skills/ralph/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": ".gitignore",
+        "kind": "file",
+        "path": "external/.gitignore",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Phase Closeout",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Complete Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Extend",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The `006-ralph-main` phase already contained two completed research waves and a packet-local external snapshot, but it was missing its root spec docs and still referenced stale `external/ralph-main/...` markdown paths in `phase-research-prompt.md`. Phase 3 also needed ten new UX and agentic-system iterations plus an updated merged synthesis.",
     "created_at": "2026-04-12T09:02:53.487Z",
-    "last_save_at": "2026-04-13T10:56:03.922Z",
+    "last_save_at": "2026-04-13T14:20:42.472Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

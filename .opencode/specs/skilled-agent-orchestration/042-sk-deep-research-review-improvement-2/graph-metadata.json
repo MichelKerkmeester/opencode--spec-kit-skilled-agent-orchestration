@@ -62,7 +62,6 @@
       "checklist.md",
       "implementation-summary.md",
       "decision-record.md",
-      "research/research-ideas.md",
       "plan.md",
       "research/research.md"
     ],
@@ -98,12 +97,6 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -122,15 +115,15 @@
         "source": "derived"
       },
       {
-        "name": "decision-record.md",
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "decision-record.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "research-ideas.md",
+        "name": "decision-record.md",
         "kind": "doc",
-        "path": "research/research-ideas.md",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -162,11 +155,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "How It Was Delivered",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Define",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.",
     "created_at": "2026-04-12T09:02:50.190Z",
-    "last_save_at": "2026-04-13T10:56:00.267Z",
+    "last_save_at": "2026-04-13T14:20:38.824Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

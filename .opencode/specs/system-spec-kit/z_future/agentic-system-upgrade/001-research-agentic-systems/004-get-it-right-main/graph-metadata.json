@@ -47,8 +47,6 @@
       "research/deep-research-state.jsonl",
       "research/research.md",
       "research/deep-research-dashboard.md",
-      "ls research/iterations/iteration-0{21,22,23,24,25,26,27,28,29,30}.md",
-      "tail -n 10 research/deep-research-state.jsonl",
       "external/workflow.yaml",
       ".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml"
     ],
@@ -108,12 +106,6 @@
         "source": "derived"
       },
       {
-        "name": "iteration-0{21,22,23,24,25,26,27,28,29,30}.md",
-        "kind": "doc",
-        "path": "ls research/iterations/iteration-0{21,22,23,24,25,26,27,28,29,30}.md",
-        "source": "derived"
-      },
-      {
         "name": "workflow.yaml",
         "kind": "config",
         "path": "external/workflow.yaml",
@@ -148,11 +140,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Continue",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Get It Right Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 1 and Phase 2 already established how Get It Right's retry controller works and which retry-loop mechanics are portable. What remained unclear was whether `system-spec-kit`'s operator-facing surface around commands, templates, agents, skills, gates, and hooks is now too fragmented compared with the external repo's much smaller public workflow.",
     "created_at": "2026-04-12T09:02:53.486Z",
-    "last_save_at": "2026-04-13T10:56:03.920Z",
+    "last_save_at": "2026-04-13T14:20:42.470Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

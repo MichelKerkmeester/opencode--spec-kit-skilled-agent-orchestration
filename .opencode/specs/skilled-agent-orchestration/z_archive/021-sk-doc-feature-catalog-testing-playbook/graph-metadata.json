@@ -41,7 +41,6 @@
     "importance_tier": "normal",
     "status": "in_progress",
     "key_files": [
-      ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
       ".opencode/agent/write.md",
       ".opencode/skill/system-spec-kit/mcp_server/tests/feature-flag-reference-docs.vitest.ts",
       "spec.md",
@@ -63,12 +62,6 @@
       ".opencode/skill/sk-doc/references/specific/feature_catalog_creation.md"
     ],
     "entities": [
-      {
-        "name": "FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
-        "source": "derived"
-      },
       {
         "name": "write.md",
         "kind": "doc",
@@ -158,11 +151,65 @@
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
         "source": "derived"
+      },
+      {
+        "name": "feature_catalog_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog_snippet_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_snippet_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/feature_catalog_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Catalog",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Testing Playbook Alignment This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Document",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet records the final shipped documentation contract for the feature-catalog and manual-testing-playbook work. It replaces the earlier playbook-only framing with the broader reality: both document families, their templates, their references, and their downstream creation workflows were aligned together.",
     "created_at": "2026-04-12T09:02:50.221Z",
-    "last_save_at": "2026-04-13T10:56:00.309Z",
+    "last_save_at": "2026-04-13T14:20:38.864Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -40,56 +40,17 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "scripts/generate-context.js",
-      "mcp_server/context-server.js",
-      "mcp_server/lib/vector-index.js",
-      "mcp_server/lib/retry-manager.js",
-      "install_guides/MCP/MCP - Spec Kit Memory.md",
       "mcp_server/README.md",
       "scripts/rules/README.md",
-      ".opencode/skill/system-spec-kit/scripts/generate-context.js",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
       ".opencode/skill/system-spec-kit/README.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
-      ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
-      "/tmp/save-context-data.json",
       "spec.md",
       "plan.md",
       "checklist.md",
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "retry-manager.js",
-        "kind": "code",
-        "path": "mcp_server/lib/retry-manager.js",
-        "source": "derived"
-      },
-      {
-        "name": "MCP - Spec Kit Memory.md",
-        "kind": "doc",
-        "path": "install_guides/MCP/MCP - Spec Kit Memory.md",
-        "source": "derived"
-      },
       {
         "name": "README.md",
         "kind": "doc",
@@ -100,12 +61,6 @@
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "save-context-data.json",
-        "kind": "config",
-        "path": "/tmp/save-context-data.json",
         "source": "derived"
       },
       {
@@ -155,11 +110,95 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Documentation Updates",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Files Affected",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Path Validation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Attack Vector",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Allowed Paths",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Last Updated",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Security",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "High Priority Security",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary Completed",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Security Fixes Implemented",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Security audit of system-spec-kit identified 4 medium-severity and 5 low-severity issues. Additionally, documentation gaps exist from changes made in 048-system-analysis and 049-system-analysis-bugs that need to be addressed.",
     "created_at": "2026-04-12T09:02:53.532Z",
-    "last_save_at": "2026-04-13T10:56:03.825Z",
+    "last_save_at": "2026-04-13T14:20:42.399Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

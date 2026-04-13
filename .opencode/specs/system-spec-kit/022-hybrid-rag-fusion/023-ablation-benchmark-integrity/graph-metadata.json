@@ -50,13 +50,13 @@
       ".claude/mcp.json",
       ".vscode/mcp.json",
       ".codex/config.toml",
-      ".agents/settings.json",
       ".gemini/settings.json",
-      "SPECKIT_ABLATION=true npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts",
       "mcp_server/database/context-index.sqlite",
       "mcp_server/lib/eval/ablation-framework.ts",
       "mcp_server/lib/search/hybrid-search.ts",
-      "scripts/evals/run-ablation.ts"
+      "scripts/evals/run-ablation.ts",
+      "handlers/eval-reporting.ts",
+      "scripts/evals/map-ground-truth-ids.ts"
     ],
     "entities": [
       {
@@ -134,7 +134,7 @@
       {
         "name": "settings.json",
         "kind": "config",
-        "path": ".agents/settings.json",
+        "path": ".gemini/settings.json",
         "source": "derived"
       },
       {
@@ -154,11 +154,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Restore",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Targeted",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The current ablation path can report invalid Recall@20 values because the benchmark still allows chunk-ID scoring on the CLI path, live token-budget and confidence truncation can cut results below `K=20`, and the active database may not match the parent-memory ID universe encoded in `ground-truth.json`. Those failures produced the misleading `0.0101` baseline collapse and made the FTS5 0.3 retune impossible to judge fairly.",
     "created_at": "2026-04-12T09:02:50.312Z",
-    "last_save_at": "2026-04-13T10:56:00.489Z",
+    "last_save_at": "2026-04-13T14:20:39.030Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -28,9 +28,6 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "skill/README.md",
-      "skill/skill-advisor/scripts/skill_advisor.py",
-      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/README.md",
       ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "spec.md",
@@ -42,13 +39,13 @@
       {
         "name": "README.md",
         "kind": "doc",
-        "path": "skill/README.md",
+        "path": ".opencode/skill/README.md",
         "source": "derived"
       },
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": "skill/skill-advisor/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -130,15 +127,63 @@
         "source": "derived"
       },
       {
-        "name": "python",
-        "kind": "technology",
-        "path": "plan.md",
+        "name": "Skill Advisor",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill README (D1)",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Advisor — Public (D2)",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Advisor — Barter (D3)",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hard Blockers",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "threshold",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0 — Hard Blockers",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1 — Required",
+        "kind": "heading",
+        "path": "checklist.md",
         "source": "derived"
       }
     ],
     "causal_summary": "After Phase 008-010, the skill advisor and skill README are outdated:",
     "created_at": "2026-04-13T04:55:07.907Z",
-    "last_save_at": "2026-04-13T10:56:00.266Z",
+    "last_save_at": "2026-04-13T14:20:38.823Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

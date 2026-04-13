@@ -41,7 +41,6 @@
       "mcp_server/lib/code-graph/tree-sitter-parser.ts",
       "mcp_server/lib/code-graph/indexer-types.ts",
       "mcp_server/package.json",
-      "src/auth/middleware.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -71,12 +70,6 @@
         "name": "package.json",
         "kind": "config",
         "path": "mcp_server/package.json",
-        "source": "derived"
-      },
-      {
-        "name": "middleware.ts",
-        "kind": "code",
-        "path": "src/auth/middleware.ts",
         "source": "derived"
       },
       {
@@ -144,11 +137,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Risk Mitigation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "TS-specific",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "in-memory",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. SUMMARY",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Setup Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.348Z",
-    "last_save_at": "2026-04-13T10:56:00.539Z",
+    "last_save_at": "2026-04-13T14:20:39.081Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

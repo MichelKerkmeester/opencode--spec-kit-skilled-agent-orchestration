@@ -41,15 +41,11 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml",
-      ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml",
-      ".opencode/skill/sk-deep-research/assets/review_mode_contract.yaml",
       ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
       ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
       ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
       ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
       ".opencode/command/spec_kit/deep-research.md",
-      ".agents/commands/spec_kit/deep-research.toml",
       ".opencode/agent/deep-review.md",
       ".claude/agents/deep-review.md",
       ".codex/agents/deep-review.toml",
@@ -60,27 +56,13 @@
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
       ".opencode/skill/sk-deep-research/references/state_format.md",
       ".opencode/skill/sk-deep-research/references/convergence.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md"
     ],
     "entities": [
-      {
-        "name": "spec_kit_deep-research_review_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_deep-research_review_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "review_mode_contract.yaml",
-        "kind": "config",
-        "path": ".opencode/skill/sk-deep-research/assets/review_mode_contract.yaml",
-        "source": "derived"
-      },
       {
         "name": "deep_review_strategy.md",
         "kind": "doc",
@@ -109,12 +91,6 @@
         "name": "deep-research.md",
         "kind": "doc",
         "path": ".opencode/command/spec_kit/deep-research.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research.toml",
-        "kind": "file",
-        "path": ".agents/commands/spec_kit/deep-research.toml",
         "source": "derived"
       },
       {
@@ -158,11 +134,83 @@
         "kind": "doc",
         "path": ".opencode/skill/sk-deep-research/references/state_format.md",
         "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Review Folder Contract",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Define",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet plans a dedicated `review/` subfolder inside the target spec so all review-mode outputs live together: config, JSONL state, strategy, dashboard, iteration artifacts, pause sentinel, and final report. The implementation also needs a legacy migration path because existing review sessions already persist their state under `scratch/`.",
     "created_at": "2026-04-12T09:02:50.178Z",
-    "last_save_at": "2026-04-13T10:56:00.242Z",
+    "last_save_at": "2026-04-13T14:20:38.796Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

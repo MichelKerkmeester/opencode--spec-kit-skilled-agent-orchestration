@@ -47,13 +47,11 @@
       ".codex/agents/speckit.toml",
       ".gemini/agents/speckit.md",
       "research/research.md",
-      "git checkout -- .claude/agents/speckit.md .opencode/agent/speckit.md .opencode/agent/chatgpt/speckit.md .codex/agents/speckit.toml",
       "spec.md",
       "plan.md",
       "research/iterations/iteration-009.md",
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
       ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
-      ".opencode/skill/system-spec-kit/scripts/spec/pre-commit-spec-validate.sh",
       ".claude/settings.local.json",
       "scripts/utils/template-structure.js",
       "tasks.md",
@@ -116,12 +114,6 @@
         "source": "derived"
       },
       {
-        "name": "pre-commit-spec-validate.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/spec/pre-commit-spec-validate.sh",
-        "source": "derived"
-      },
-      {
         "name": "settings.local.json",
         "kind": "config",
         "path": ".claude/settings.local.json",
@@ -156,11 +148,65 @@
         "kind": "proper_noun",
         "path": "research/research.md",
         "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Agents",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Fresh Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Layer Defense",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Agents across all 4 CLI surfaces (Claude Code, Copilot, ChatGPT, Codex) produce structurally non-compliant spec folder documents. A clean-slate rewrite of 20 spec folders (commit b88c07f82) revealed 637 header/anchor structural changes across 54 errors, requiring approximately 270 fix edits. The three dominant failure modes are TEMPLATE_HEADERS (wrong section names, numbering, or order), ANCHORS_VALID (missing, misspelled, or unclosed anchor tags), and SPEC_DOC_INTEGRITY (broken cross-file references). The current validation system runs only after files are written.",
     "created_at": "2026-04-12T09:02:50.283Z",
-    "last_save_at": "2026-04-13T10:56:00.432Z",
+    "last_save_at": "2026-04-13T14:20:38.987Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -41,38 +41,19 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/spec.md",
-      ".opencode/plugin/memory-context.js",
       "spec.md",
       "tasks.md",
       "checklist.md",
-      ".opencode/skills/system-memory/SKILL.md",
       "decision-record.md",
-      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/plan.md",
-      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/research/research/research.md",
-      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/decision-record.md",
-      ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
-      ".opencode/skills/system-memory/database/memory-index.sqlite",
-      ".opencode/skills/system-memory/scripts/generate-context.js",
-      "roampal/backend/modules/memory/scoring_service.py",
-      "roampal/backend/modules/memory/outcome_service.py",
-      "roampal/backend/modules/memory/promotion_service.py",
-      "roampal/hooks/user_prompt_submit_hook.py",
-      "roampal/hooks/stop_hook.py",
-      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/checklist.md",
-      "memory/17-12-25_14-10__roampal-analysis.md"
+      "plan.md",
+      "research/research.md",
+      "handover.md"
     ],
     "entities": [
       {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "memory-context.js",
-        "kind": "code",
-        "path": ".opencode/plugin/memory-context.js",
         "source": "derived"
       },
       {
@@ -88,12 +69,6 @@
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-memory/SKILL.md",
-        "source": "derived"
-      },
-      {
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
@@ -102,67 +77,127 @@
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "research.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/research/research/research.md",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "semantic-memory.js",
-        "kind": "code",
-        "path": ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
         "source": "derived"
       },
       {
-        "name": "memory-index.sqlite",
-        "kind": "file",
-        "path": ".opencode/skills/system-memory/database/memory-index.sqlite",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": ".opencode/skills/system-memory/scripts/generate-context.js",
+        "name": "Memory System Analysis",
+        "kind": "proper_noun",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "scoring_service.py",
-        "kind": "file",
-        "path": "roampal/backend/modules/memory/scoring_service.py",
+        "name": "Roampal Comparison",
+        "kind": "proper_noun",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "outcome_service.py",
-        "kind": "file",
-        "path": "roampal/backend/modules/memory/outcome_service.py",
+        "name": "User Stories Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "promotion_service.py",
-        "kind": "file",
-        "path": "roampal/backend/modules/memory/promotion_service.py",
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "user_prompt_submit_hook.py",
-        "kind": "file",
-        "path": "roampal/hooks/user_prompt_submit_hook.py",
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "stop_hook.py",
-        "kind": "file",
-        "path": "roampal/hooks/stop_hook.py",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Roampal Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Approach",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Research",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Feature",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hybrid Context Injection Implementation Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Plugin Development",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implement Layer",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Session Start Injection",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities.",
     "created_at": "2026-04-12T09:02:53.518Z",
-    "last_save_at": "2026-04-13T10:56:03.792Z",
+    "last_save_at": "2026-04-13T14:20:42.374Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

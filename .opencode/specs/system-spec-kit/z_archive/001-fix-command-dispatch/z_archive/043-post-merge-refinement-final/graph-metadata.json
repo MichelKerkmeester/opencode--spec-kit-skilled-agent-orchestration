@@ -41,64 +41,18 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "mcp_server/lib/vector-index.js",
-      "mcp_server/src/context-server.js",
-      "mcp_server/lib/checkpoints.js",
-      "scripts/validate-spec.sh",
-      "scripts/recommend-level.sh",
-      "scripts/generate-context.js",
       "scripts/rules/check-files.sh",
       "scripts/rules/check-evidence.sh",
       ".opencode/command/spec_kit/complete.md",
-      ".opencode/command/spec_kit/help.md",
-      ".opencode/command/memory/help.md",
-      "assets/create_folder_readme.yaml",
-      "assets/create_skill_asset.yaml",
-      "assets/create_skill_reference.yaml",
       "decision-record.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/mcp-server/src/context-server.js",
-      ".opencode/skill/system-spec-kit/mcp-server/src/vector-index.js",
-      ".opencode/skill/system-spec-kit/scripts/validate-spec.sh",
-      ".opencode/skill/system-spec-kit/scripts/recommend-level.sh"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/src/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "checkpoints.js",
-        "kind": "code",
-        "path": "mcp_server/lib/checkpoints.js",
-        "source": "derived"
-      },
-      {
-        "name": "validate-spec.sh",
-        "kind": "script",
-        "path": "scripts/validate-spec.sh",
-        "source": "derived"
-      },
-      {
-        "name": "recommend-level.sh",
-        "kind": "script",
-        "path": "scripts/recommend-level.sh",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "scripts/generate-context.js",
-        "source": "derived"
-      },
       {
         "name": "check-files.sh",
         "kind": "script",
@@ -118,30 +72,6 @@
         "source": "derived"
       },
       {
-        "name": "help.md",
-        "kind": "doc",
-        "path": ".opencode/command/spec_kit/help.md",
-        "source": "derived"
-      },
-      {
-        "name": "create_folder_readme.yaml",
-        "kind": "config",
-        "path": "assets/create_folder_readme.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset.yaml",
-        "kind": "config",
-        "path": "assets/create_skill_asset.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference.yaml",
-        "kind": "config",
-        "path": "assets/create_skill_reference.yaml",
-        "source": "derived"
-      },
-      {
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
@@ -154,15 +84,123 @@
         "source": "derived"
       },
       {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "Spec Kit",
         "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Merge Refinement Final",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement After",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Why This Spec Exists",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Issues",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Estimated Effort",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Gate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Alignment",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Remove Duplicate",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "After the major Spec Kit + Memory system merger (spec 035), eight refinement attempts (036-042) identified ~300+ issues. However, many were:",
     "created_at": "2026-04-12T09:02:53.527Z",
-    "last_save_at": "2026-04-13T10:56:03.813Z",
+    "last_save_at": "2026-04-13T14:20:42.389Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -49,46 +49,40 @@
       "scratch/archive-pass2/review-report.md",
       "scratch/archive-pass2/iteration-001.md",
       "scratch/archive-pass2/iteration-004.md",
-      "memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md",
       ".gemini/workflows/delegate_agent.md",
       ".claude/agents/write.md",
       ".codex/agents/write.toml",
-      ".gemini/agents/write.md",
-      "./spec.md",
-      "./plan.md",
-      "./tasks.md",
-      "./checklist.md",
-      "./implementation-summary.md"
+      ".gemini/agents/write.md"
     ],
     "entities": [
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "./spec.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "./plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "./tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "./checklist.md",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "./implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -107,12 +101,6 @@
         "name": "iteration-004.md",
         "kind": "doc",
         "path": "scratch/archive-pass2/iteration-004.md",
-        "source": "derived"
-      },
-      {
-        "name": "25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md",
-        "kind": "doc",
-        "path": "memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md",
         "source": "derived"
       },
       {
@@ -156,11 +144,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Navigation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Families",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Targets",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Path Guidance Document",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Audit Live Lineage",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Audit Current Runtime Reality",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The original `013-agents-alignment` packet described a simpler runtime model than the repository now uses. It treated `.opencode/agent/*.md` as a single canonical source copied directly to every runtime, but the live repo has split lineage:",
     "created_at": "2026-04-12T09:02:50.287Z",
-    "last_save_at": "2026-04-13T10:56:00.444Z",
+    "last_save_at": "2026-04-13T14:20:38.992Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -52,7 +52,6 @@
       "mcp_server/handlers/memory-bulk-delete.ts",
       "mcp_server/handlers/checkpoints.ts",
       "mcp_server/handlers/pe-gating.ts",
-      "save/pe-orchestration.ts",
       "mcp_server/lib/cognitive/prediction-error-gate.ts",
       "mcp_server/lib/storage/transaction-manager.ts",
       "mcp_server/lib/storage/history.ts",
@@ -128,12 +127,6 @@
         "source": "derived"
       },
       {
-        "name": "pe-orchestration.ts",
-        "kind": "code",
-        "path": "save/pe-orchestration.ts",
-        "source": "derived"
-      },
-      {
         "name": "prediction-error-gate.ts",
         "kind": "code",
         "path": "mcp_server/lib/cognitive/prediction-error-gate.ts",
@@ -156,11 +149,65 @@
         "kind": "doc",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The mutation feature category of the hybrid-RAG-fusion system requires structured manual verification against the official playbook. Each of the 9 mutation scenarios must be executed, verdicted, and evidenced independently. Two scenarios (EX-008 and EX-009) are destructive and require sandbox isolation — without a bounded phase packet, sandbox preconditions risk being overlooked.",
     "created_at": "2026-04-12T09:02:50.290Z",
-    "last_save_at": "2026-04-13T10:56:00.449Z",
+    "last_save_at": "2026-04-13T14:20:38.997Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

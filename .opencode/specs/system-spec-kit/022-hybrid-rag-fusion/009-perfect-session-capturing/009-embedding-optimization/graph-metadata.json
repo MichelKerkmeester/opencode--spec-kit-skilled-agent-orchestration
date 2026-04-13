@@ -49,7 +49,6 @@
       "scripts/tests/memory-indexer-weighting.vitest.ts",
       "mcp_server/tests/embedding-weighting.vitest.ts",
       "mcp_server/tests/embedding-pipeline-weighting.vitest.ts",
-      "memory/16-03-26_20-38__implemented-weighted-document-embedding-input-for.md",
       "scripts/tests/test-embeddings-behavioral.js",
       "mcp_server/lib/providers/embeddings.ts",
       "shared/index.ts",
@@ -59,8 +58,8 @@
       "spec.md",
       "plan.md",
       "implementation-summary.md",
-      "memory/metadata.json",
-      "tasks.md"
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -112,12 +111,6 @@
         "source": "derived"
       },
       {
-        "name": "16-03-26_20-38__implemented-weighted-document-embedding-input-for.md",
-        "kind": "doc",
-        "path": "memory/16-03-26_20-38__implemented-weighted-document-embedding-input-for.md",
-        "source": "derived"
-      },
-      {
         "name": "test-embeddings-behavioral.js",
         "kind": "code",
         "path": "scripts/tests/test-embeddings-behavioral.js",
@@ -158,11 +151,65 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Embedding Optimization This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.272Z",
-    "last_save_at": "2026-04-13T10:56:00.408Z",
+    "last_save_at": "2026-04-13T14:20:38.967Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

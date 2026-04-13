@@ -43,7 +43,6 @@
     "key_files": [
       ".opencode/skill/sk-improve-prompt/SKILL.md",
       ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
-      ".opencode/skill/scripts/skill_advisor.py",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -62,12 +61,6 @@
         "name": "depth_framework.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -147,11 +140,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Initial Creation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Architecture",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Convert",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Prompt",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Interactive Mode",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Convert the standalone Prompt Improver AI system (v0.200) into an OpenCode-native skill (`sk-improve-prompt`) that provides integrated prompt engineering capabilities directly within the coding environment. The skill packages 10 proven prompt frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT, VIBE, FRAME, MOTION), the DEPTH thinking methodology, and triple scoring systems (CLEAR/EVOKE/VISUAL) into the OpenCode skill architecture for seamless on-demand invocation.",
     "created_at": "2026-04-12T09:02:50.200Z",
-    "last_save_at": "2026-04-13T10:56:00.287Z",
+    "last_save_at": "2026-04-13T14:20:38.843Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

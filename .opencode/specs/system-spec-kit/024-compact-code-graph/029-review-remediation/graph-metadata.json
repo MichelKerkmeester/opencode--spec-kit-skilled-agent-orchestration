@@ -54,13 +54,13 @@
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
-      ".opencode/agent/context-prime.md",
-      ".claude/agents/context-prime.md",
-      ".codex/agents/context-prime.toml",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "hooks/gemini/session-prime.ts",
+      "hooks/claude/session-stop.ts",
+      "tests/session-bootstrap.vitest.ts"
     ],
     "entities": [
       {
@@ -82,18 +82,6 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/checklist.md",
-        "source": "derived"
-      },
-      {
         "name": "session-prime.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
@@ -112,6 +100,12 @@
         "source": "derived"
       },
       {
+        "name": "session-snapshot.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+        "source": "derived"
+      },
+      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -124,27 +118,21 @@
         "source": "derived"
       },
       {
-        "name": "session-snapshot.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-prime.md",
-        "kind": "doc",
-        "path": ".opencode/agent/context-prime.md",
-        "source": "derived"
-      },
-      {
-        "name": "context-prime.toml",
-        "kind": "file",
-        "path": ".codex/agents/context-prime.toml",
-        "source": "derived"
-      },
-      {
         "name": "tasks.md",
         "kind": "doc",
         "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-bootstrap.vitest.ts",
+        "kind": "test",
+        "path": "tests/session-bootstrap.vitest.ts",
         "source": "derived"
       },
       {
@@ -158,11 +146,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Scoped",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The completed deep review for `024-compact-code-graph` found seven active issues that leave the packet internally inconsistent across runtime contracts, hook safety, evidence traceability, and cross-runtime guidance. The current tree still advertises behavior that either is not implemented, is documented inconsistently, or is proven with stale evidence. Until these findings are remediated or explicitly downgraded with truthful packet updates, the parent packet cannot be treated as release-ready.",
     "created_at": "2026-04-12T09:02:53.434Z",
-    "last_save_at": "2026-04-13T10:56:03.639Z",
+    "last_save_at": "2026-04-13T14:20:42.255Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

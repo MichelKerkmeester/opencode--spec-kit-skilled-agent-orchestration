@@ -50,17 +50,17 @@
       ".opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md",
       ".opencode/skill/system-spec-kit/assets/template_mapping.md",
       ".opencode/agent/write.md",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.js",
       ".opencode/agent/orchestrate.md",
       "implementation-summary.md",
       "checklist.md",
       "tasks.md",
-      "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode",
-      "mcp_server/tools/memory-save.js",
       "references/templates/level_specifications.md",
       "references/templates/level_selection_guide.md",
       "references/memory/embedding_resilience.md",
-      "references/config/environment_variables.md"
+      "references/config/environment_variables.md",
+      "scripts/spec/validate.sh",
+      "scripts/spec/create.sh",
+      "spec/validate.sh"
     ],
     "entities": [
       {
@@ -118,12 +118,6 @@
         "source": "derived"
       },
       {
-        "name": "memory-search.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.js",
-        "source": "derived"
-      },
-      {
         "name": "orchestrate.md",
         "kind": "doc",
         "path": ".opencode/agent/orchestrate.md",
@@ -148,21 +142,75 @@
         "source": "derived"
       },
       {
-        "name": ".opencode",
-        "kind": "file",
-        "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode",
+        "name": "embedding_resilience.md",
+        "kind": "doc",
+        "path": "references/memory/embedding_resilience.md",
         "source": "derived"
       },
       {
-        "name": "memory-save.js",
-        "kind": "code",
-        "path": "mcp_server/tools/memory-save.js",
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "Reimagined Refinement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Opencode Env",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Functional Requirements",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Audit Sources",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Issues Identified",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Bug Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Path Resolution",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "title: \\\"Spec 089: system-spec-kit Reimagined Refinement\\\"",
     "created_at": "2026-04-12T09:02:53.559Z",
-    "last_save_at": "2026-04-13T10:56:03.886Z",
+    "last_save_at": "2026-04-13T14:20:42.448Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

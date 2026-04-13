@@ -161,11 +161,59 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Pattern Surgical",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phases 010-012 changed the canonical continuity runtime quickly enough that the active `system-spec-kit` code accumulated dead imports, stale helper paths, outdated architecture descriptions, and missing per-directory README coverage. This phase removes that ballast, rewrites the package architecture narrative around the current runtime, refreshes the parent resource map, and closes with compiler, typecheck, test, grep, cycle, and strict packet validation evidence.",
     "created_at": "2026-04-12T00:00:00.000Z",
-    "last_save_at": "2026-04-13T10:56:03.721Z",
+    "last_save_at": "2026-04-13T14:20:42.317Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

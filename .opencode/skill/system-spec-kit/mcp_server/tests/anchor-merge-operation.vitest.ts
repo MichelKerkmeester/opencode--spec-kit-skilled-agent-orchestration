@@ -401,6 +401,62 @@ describe('anchorMergeOperation', () => {
         'SPECDOC_MERGE_002'
       );
     });
+
+    it('fails with an explicit message when no checklist task line matches the identifier', () => {
+      const documentContent = buildDocument({
+        'phase-1': [
+          '- [ ] T001 Build validator',
+          'Narrative note mentioning T999 without a checklist line.',
+        ].join('\n'),
+      });
+
+      let thrown: unknown;
+      try {
+        anchorMergeOperation({
+          documentContent,
+          docPath: 'tasks.md',
+          anchorId: 'phase-1',
+          mergeMode: 'update-in-place',
+          payload: { targetId: 'T999', checked: true },
+          dedupeFingerprint: 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
+        });
+      } catch (error) {
+        thrown = error;
+      }
+
+      expect(thrown).toBeInstanceOf(AnchorMergeOperationError);
+      expect(thrown).toMatchObject({
+        code: 'SPECDOC_MERGE_002',
+        message: 'No matching task line found for T999',
+      });
+    });
+
+    it('fails with an explicit message when multiple checklist task lines match the identifier', () => {
+      const documentContent = buildDocument({
+        'phase-1': '- [ ] T003 Build anchor merge',
+        'phase-2': '- [ ] T003 Duplicate task anchor merge',
+      });
+
+      let thrown: unknown;
+      try {
+        anchorMergeOperation({
+          documentContent,
+          docPath: 'tasks.md',
+          anchorId: 'phase-1',
+          mergeMode: 'update-in-place',
+          payload: { targetId: 'T003', checked: true },
+          dedupeFingerprint: 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+        });
+      } catch (error) {
+        thrown = error;
+      }
+
+      expect(thrown).toBeInstanceOf(AnchorMergeOperationError);
+      expect(thrown).toMatchObject({
+        code: 'SPECDOC_MERGE_003',
+        message: 'Ambiguous: 2 matching task lines for T003',
+      });
+    });
   });
 
   describe('append-section', () => {

@@ -42,16 +42,6 @@
     "key_files": [
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/skill/sk-improve-agent/README.md",
-      ".opencode/command/spec_kit/agent-improver.md",
-      ".opencode/agent/agent-improver.md",
-      ".claude/agents/agent-improver.md",
-      ".gemini/agents/agent-improver.md",
-      ".agents/agents/agent-improver.md",
-      ".codex/agents/agent-improver.toml",
-      ".opencode/command/spec_kit/assets/improve_agent-improver_auto.yaml",
-      ".opencode/command/spec_kit/assets/improve_agent-improver_confirm.yaml",
-      ".agents/commands/spec_kit/agent-improver.toml",
-      ".gemini/commands/spec_kit/agent-improver.toml",
       ".opencode/specs/descriptions.json",
       "spec.md",
       "plan.md",
@@ -70,30 +60,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-improve-agent/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".opencode/command/spec_kit/agent-improver.md",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.toml",
-        "kind": "file",
-        "path": ".codex/agents/agent-improver.toml",
-        "source": "derived"
-      },
-      {
-        "name": "improve_agent-improver_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/spec_kit/assets/improve_agent-improver_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "improve_agent-improver_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/spec_kit/assets/improve_agent-improver_confirm.yaml",
         "source": "derived"
       },
       {
@@ -155,11 +121,83 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement After",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Create",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Source",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Date",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "After phase `004`, the agent-improver workflow was functionally strong, but the package still had a stricter alignment gap against the `sk-doc` templates. The source package docs were valid but not template-faithful enough, the mutator agent still used the old `agent-improvement-loop` name across runtimes, the command body and wrappers still reflected an older command shape, and the `.agents/skills/sk-improve-agent` mirror had not been resynchronized to the corrected source package.",
     "created_at": "2026-04-12T09:02:50.187Z",
-    "last_save_at": "2026-04-13T10:56:00.259Z",
+    "last_save_at": "2026-04-13T14:20:38.816Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

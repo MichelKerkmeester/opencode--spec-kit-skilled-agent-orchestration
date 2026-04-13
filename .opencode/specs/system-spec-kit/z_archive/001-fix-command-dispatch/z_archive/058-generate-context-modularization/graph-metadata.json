@@ -41,128 +41,164 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "core/index.js",
-      "lib/content-filter.js",
-      "lib/semantic-summarizer.js",
-      "lib/anchor-generator.js",
-      "lib/embeddings.js",
-      "lib/retry-manager.js",
-      "lib/simulation-factory.js",
-      "lib/ascii-boxes.js",
-      "lib/flowchart-generator.js",
-      "lib/opencode-capture.js",
-      "lib/trigger-extractor.js",
-      "scripts/test-snapshot.sh",
-      "scripts/utils/logger.js",
-      "scripts/utils/path-utils.js",
-      "scripts/utils/data-validator.js",
-      "scripts/utils/index.js",
-      "scripts/utils/input-normalizer.js",
-      "scripts/utils/prompt-utils.js",
-      "scripts/extractors/conversation-extractor.js",
-      "scripts/extractors/decision-extractor.js"
+      "checklist.md",
+      "plan.md",
+      "spec.md",
+      "tasks.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md",
+      "handover.md"
     ],
     "entities": [
       {
-        "name": "index.js",
-        "kind": "code",
-        "path": "core/index.js",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "content-filter.js",
-        "kind": "code",
-        "path": "lib/content-filter.js",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "semantic-summarizer.js",
-        "kind": "code",
-        "path": "lib/semantic-summarizer.js",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "anchor-generator.js",
-        "kind": "code",
-        "path": "lib/anchor-generator.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "embeddings.js",
-        "kind": "code",
-        "path": "lib/embeddings.js",
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "retry-manager.js",
-        "kind": "code",
-        "path": "lib/retry-manager.js",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "simulation-factory.js",
-        "kind": "code",
-        "path": "lib/simulation-factory.js",
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "ascii-boxes.js",
-        "kind": "code",
-        "path": "lib/ascii-boxes.js",
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
         "source": "derived"
       },
       {
-        "name": "flowchart-generator.js",
-        "kind": "code",
-        "path": "lib/flowchart-generator.js",
+        "name": "Documentation Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "opencode-capture.js",
-        "kind": "code",
-        "path": "lib/opencode-capture.js",
+        "name": "Complex Architecture Change",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "trigger-extractor.js",
-        "kind": "code",
-        "path": "lib/trigger-extractor.js",
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "test-snapshot.sh",
-        "kind": "script",
-        "path": "scripts/test-snapshot.sh",
+        "name": "Current Pain Points",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "logger.js",
-        "kind": "code",
-        "path": "scripts/utils/logger.js",
+        "name": "Cognitive Load",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "path-utils.js",
-        "kind": "code",
-        "path": "scripts/utils/path-utils.js",
+        "name": "Merge Conflicts",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "data-validator.js",
-        "kind": "code",
-        "path": "scripts/utils/data-validator.js",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "input-normalizer.js",
-        "kind": "code",
-        "path": "scripts/utils/input-normalizer.js",
+        "name": "Approach Summary",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Principle",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Estimated Effort",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Overview",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Create Snapshot Test Fixtures",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Overview",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Utility Extraction",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Core Orchestration",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The `generate-context.js` script is a **4,837-line monolithic file** containing 84 functions across 18 sections. This creates several problems:",
     "created_at": "2026-04-12T09:02:53.536Z",
-    "last_save_at": "2026-04-13T10:56:03.834Z",
+    "last_save_at": "2026-04-13T14:20:42.408Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

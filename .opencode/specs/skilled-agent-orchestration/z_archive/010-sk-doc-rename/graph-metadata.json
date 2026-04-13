@@ -41,74 +41,27 @@
     "importance_tier": "normal",
     "status": "complete",
     "key_files": [
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/preflight-counts.txt",
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv",
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
-      ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/final-remnant-counts.txt",
-      "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
       "checklist.md",
       "scratch/preflight-counts.txt",
       "scratch/preflight-paths.txt",
       "scratch/preflight-symlinks.txt",
-      "scratch/path-rename-map.tsv",
-      "scratch/path-rename-map-ordered.tsv",
-      "scratch/path-rename-log.txt",
-      "scratch/content-replacement-files.txt",
-      "scratch/post-path-symlinks.txt",
       "scratch/final-remnant-counts.txt",
-      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
-      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "preflight-counts.txt",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/preflight-counts.txt",
-        "source": "derived"
-      },
-      {
-        "name": "path-rename-map.tsv",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv",
-        "source": "derived"
-      },
-      {
-        "name": "path-rename-log.txt",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
-        "source": "derived"
-      },
-      {
-        "name": "content-replacement-files.txt",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
-        "source": "derived"
-      },
-      {
-        "name": "post-path-symlinks.txt",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
-        "source": "derived"
-      },
-      {
-        "name": "final-remnant-counts.txt",
-        "kind": "file",
-        "path": ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/final-remnant-counts.txt",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
-        "source": "derived"
-      },
       {
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "preflight-counts.txt",
+        "kind": "file",
+        "path": "scratch/preflight-counts.txt",
         "source": "derived"
       },
       {
@@ -124,15 +77,33 @@
         "source": "derived"
       },
       {
-        "name": "path-rename-map-ordered.tsv",
+        "name": "final-remnant-counts.txt",
         "kind": "file",
-        "path": "scratch/path-rename-map-ordered.tsv",
+        "path": "scratch/final-remnant-counts.txt",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -158,11 +129,77 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement The Public",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Phased",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Opencode Env",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core | v2.2\"",
     "created_at": "2026-04-12T09:02:50.205Z",
-    "last_save_at": "2026-04-13T10:56:00.295Z",
+    "last_save_at": "2026-04-13T14:20:38.850Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

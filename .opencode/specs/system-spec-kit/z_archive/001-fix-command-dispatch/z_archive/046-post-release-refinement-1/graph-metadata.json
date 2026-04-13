@@ -41,86 +41,22 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "system-spec-kit/SKILL.md",
-      "mcp-chrome-devtools/SKILL.md",
-      "sk-git/SKILL.md",
-      "scratch/backups/pre-refinement.sqlite",
-      "workflows-code/SKILL.md",
-      "search/index.md",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/checkpoints.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
-      ".opencode/skill/system-memory/SKILL.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/confidence-tracker.js",
-      ".opencode/skill/system-spec-kit/scripts/validate-spec-folder.js",
-      ".opencode/skill/system-spec-kit/scripts/validate-memory-file.js",
-      ".opencode/skill/workflows-code/SKILL.md",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-      "src/2_javascript/form/form_submission.js",
       ".opencode/command/spec_kit/implement.md",
       ".opencode/skill/mcp-chrome-devtools/SKILL.md",
       ".opencode/skill/sk-git/SKILL.md",
-      ".opencode/scripts/skill_advisor.py"
+      ".opencode/skill/system-spec-kit/scripts/rules/check-priority-tags.sh",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
     ],
     "entities": [
       {
         "name": "SKILL.md",
         "kind": "doc",
-        "path": "system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "pre-refinement.sqlite",
-        "kind": "file",
-        "path": "scratch/backups/pre-refinement.sqlite",
-        "source": "derived"
-      },
-      {
-        "name": "index.md",
-        "kind": "doc",
-        "path": "search/index.md",
-        "source": "derived"
-      },
-      {
-        "name": "checkpoints.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/checkpoints.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "confidence-tracker.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/confidence-tracker.js",
-        "source": "derived"
-      },
-      {
-        "name": "validate-spec-folder.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/validate-spec-folder.js",
-        "source": "derived"
-      },
-      {
-        "name": "validate-memory-file.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/validate-memory-file.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "form_submission.js",
-        "kind": "code",
-        "path": "src/2_javascript/form/form_submission.js",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
         "source": "derived"
       },
       {
@@ -130,9 +66,39 @@
         "source": "derived"
       },
       {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/scripts/skill_advisor.py",
+        "name": "check-priority-tags.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/rules/check-priority-tags.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -158,11 +124,83 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Bugs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "High Severity",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Estimated Duration",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Before Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Bug Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory System Critical Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Fix Duplicate Entries",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Checkpoint Restore",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Acceptance Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Systematically address all bugs, misalignments, and technical debt identified during the comprehensive 20-agent deep dive analysis of the OpenCode infrastructure. This includes fixes for the Memory MCP Server, Spec-Kit scripts, Skills system, Commands, and cross-system integration issues.",
     "created_at": "2026-04-12T09:02:53.529Z",
-    "last_save_at": "2026-04-13T10:56:03.818Z",
+    "last_save_at": "2026-04-13T14:20:42.392Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

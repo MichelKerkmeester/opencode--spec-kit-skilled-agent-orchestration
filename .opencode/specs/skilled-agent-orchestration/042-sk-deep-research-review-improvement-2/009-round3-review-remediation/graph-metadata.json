@@ -139,11 +139,59 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reference Docs",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Add Lane",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root Docs",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Sync Claude",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Must Complete",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root Phase",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "A 20-iteration Copilot GPT-5.4 deep review (iterations 31-50, session `rvw-2026-04-12T16-00-00Z`) found 54 unique findings (0 P0, 37 P1, 17 P2) across the 042 bundle after two prior fix rounds. The final iteration rendered a FAIL verdict due to 5 unresolved P1 maintainability issues and broader traceability drift.",
     "created_at": "2026-04-13T04:55:07.915Z",
-    "last_save_at": "2026-04-13T10:56:00.281Z",
+    "last_save_at": "2026-04-13T14:20:38.838Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -161,11 +161,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Skill Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Record",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **4 commands**, with retrieval documented under `/memory:search` and shared-memory lifecycle routed through `/memory:manage shared`.",
     "created_at": "2026-04-12T09:02:50.284Z",
-    "last_save_at": "2026-04-13T10:56:00.433Z",
+    "last_save_at": "2026-04-13T14:20:38.988Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

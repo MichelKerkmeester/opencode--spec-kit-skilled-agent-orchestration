@@ -39,10 +39,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "Opencode Env/Public/AGENTS.md",
-      "Opencode Env/Public/AGENTS_example_fs_enterprises.md",
-      "Opencode Env/Barter/coder/AGENTS.md",
-      "Opencode Env/Public/CLAUDE.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -50,24 +46,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "Opencode Env/Public/AGENTS.md",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS_example_fs_enterprises.md",
-        "kind": "doc",
-        "path": "Opencode Env/Public/AGENTS_example_fs_enterprises.md",
-        "source": "derived"
-      },
-      {
-        "name": "CLAUDE.md",
-        "kind": "doc",
-        "path": "Opencode Env/Public/CLAUDE.md",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -145,11 +123,77 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Gap Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Files Affected",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Universal",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Barter",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Refinement Pass",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Impact",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 4-command memory surface. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand and the nested `/memory:manage shared` shared-memory lifecycle route. The retrieval row still points at the retired analyze command name instead of `/memory:search`. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.",
     "created_at": "2026-04-12T09:02:50.287Z",
-    "last_save_at": "2026-04-13T10:56:00.445Z",
+    "last_save_at": "2026-04-13T14:20:38.993Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

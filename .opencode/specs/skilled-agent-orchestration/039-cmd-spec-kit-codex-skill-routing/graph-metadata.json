@@ -42,11 +42,6 @@
     "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/spec.md",
-      ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/plan.md",
-      ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/tasks.md",
-      ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/implementation-summary.md",
-      ".opencode/specs/03--commands-and-skills/039-cmd-spec-kit-codex-skill-routing/research/research.md",
       "research/research.md",
       "spec.md",
       "plan.md",
@@ -61,6 +56,12 @@
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -85,12 +86,6 @@
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -152,11 +147,59 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Packet",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The research packet in `research/` already answered the core question: Codex does not mainly lack command docs. The higher-value fix is better placement in the first-touch surface that `system-spec-kit` already loads, especially when runtime UI command surfaces are weak or absent.",
     "created_at": "2026-04-12T09:02:50.182Z",
-    "last_save_at": "2026-04-13T10:56:00.248Z",
+    "last_save_at": "2026-04-13T14:20:38.801Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -42,7 +42,6 @@
     "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
       "spec.md",
       "plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/package.json",
@@ -54,12 +53,6 @@
         "name": "INSTALL_GUIDE.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-        "source": "derived"
-      },
-      {
-        "name": "INSTALL_GUIDE.md.bak",
-        "kind": "file",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
         "source": "derived"
       },
       {
@@ -145,11 +138,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "What Was Built Install",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The install guide (mcp_server/INSTALL_GUIDE.md, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.",
     "created_at": "2026-04-12T09:02:50.308Z",
-    "last_save_at": "2026-04-13T10:56:00.481Z",
+    "last_save_at": "2026-04-13T14:20:39.022Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

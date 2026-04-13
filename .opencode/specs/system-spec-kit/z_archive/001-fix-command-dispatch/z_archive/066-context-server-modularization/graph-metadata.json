@@ -41,128 +41,164 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "mcp_server/context-server.js",
-      "mcp_server/core/index.js",
-      "mcp_server/core/config.js",
-      "mcp_server/core/server-setup.js",
-      "mcp_server/core/db-state.js",
-      "mcp_server/handlers/index.js",
-      "mcp_server/handlers/memory-search.js",
-      "mcp_server/handlers/memory-triggers.js",
-      "mcp_server/handlers/memory-crud.js",
-      "mcp_server/handlers/memory-save.js",
-      "mcp_server/handlers/memory-index.js",
-      "mcp_server/handlers/checkpoints.js",
-      "mcp_server/formatters/index.js",
-      "mcp_server/formatters/search-results.js",
-      "mcp_server/formatters/token-metrics.js",
-      "mcp_server/utils/index.js",
-      "mcp_server/utils/validators.js",
-      "mcp_server/utils/json-helpers.js",
-      "mcp_server/utils/batch-processor.js",
-      "mcp_server/hooks/index.js"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/spec.md",
+      "spec.md",
+      "implementation-summary.md",
+      "handover.md"
     ],
     "entities": [
       {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "index.js",
-        "kind": "code",
-        "path": "mcp_server/core/index.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "config.js",
-        "kind": "code",
-        "path": "mcp_server/core/config.js",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "server-setup.js",
-        "kind": "code",
-        "path": "mcp_server/core/server-setup.js",
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "db-state.js",
-        "kind": "code",
-        "path": "mcp_server/core/db-state.js",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization/spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-search.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-search.js",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "memory-triggers.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-triggers.js",
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
         "source": "derived"
       },
       {
-        "name": "memory-crud.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-crud.js",
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-save.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-save.js",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-index.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-index.js",
+        "name": "Server Modularization",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "checkpoints.js",
-        "kind": "code",
-        "path": "mcp_server/handlers/checkpoints.js",
+        "name": "User Stories Decompose",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "search-results.js",
-        "kind": "code",
-        "path": "mcp_server/formatters/search-results.js",
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "token-metrics.js",
-        "kind": "code",
-        "path": "mcp_server/formatters/token-metrics.js",
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "validators.js",
-        "kind": "code",
-        "path": "mcp_server/utils/validators.js",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "json-helpers.js",
-        "kind": "code",
-        "path": "mcp_server/utils/json-helpers.js",
+        "name": "Technical Approach",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "batch-processor.js",
-        "kind": "code",
-        "path": "mcp_server/utils/batch-processor.js",
+        "name": "Architecture Implementation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Feature",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary Decompose",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Breakdown Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Design",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Utils Extraction",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Lowest Risk",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validation Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Decompose the monolithic context-server.js (2,703 LOC) into focused modules following the Spec 058 pattern.",
     "created_at": "2026-04-12T09:02:53.540Z",
-    "last_save_at": "2026-04-13T10:56:03.842Z",
+    "last_save_at": "2026-04-13T14:20:42.415Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

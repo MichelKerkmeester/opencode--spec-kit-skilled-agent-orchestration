@@ -42,49 +42,26 @@
     "status": "complete",
     "key_files": [
       ".opencode/command/create/folder_readme.md",
-      ".agents/commands/create/folder_readme.toml",
-      ".agents/commands/create/doc.toml",
-      ".agents/commands/create/install_guide.toml",
       ".opencode/command/create/README.txt",
       ".opencode/README.md",
       ".opencode/install_guides/README.md",
       ".opencode/install_guides/SET-UP - AGENTS.md",
       ".opencode/agent/write.md",
       ".claude/agents/write.md",
-      ".agents/agents/write.md",
       ".codex/agents/write.toml",
-      ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/spec.md",
-      ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/plan.md",
-      ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/tasks.md",
-      ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/checklist.md",
-      ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/implementation-summary.md",
-      ".agents/commands/create/{doc,folder_readme,install_guide}.toml",
-      "memory/metadata.json",
-      "plan.md"
+      "plan.md",
+      "spec.md",
+      ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+      ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+      "implementation-summary.md",
+      "checklist.md",
+      "tasks.md"
     ],
     "entities": [
       {
         "name": "folder_readme.md",
         "kind": "doc",
         "path": ".opencode/command/create/folder_readme.md",
-        "source": "derived"
-      },
-      {
-        "name": "folder_readme.toml",
-        "kind": "file",
-        "path": ".agents/commands/create/folder_readme.toml",
-        "source": "derived"
-      },
-      {
-        "name": "doc.toml",
-        "kind": "file",
-        "path": ".agents/commands/create/doc.toml",
-        "source": "derived"
-      },
-      {
-        "name": "install_guide.toml",
-        "kind": "file",
-        "path": ".agents/commands/create/install_guide.toml",
         "source": "derived"
       },
       {
@@ -118,51 +95,117 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/spec.md",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "tasks.md",
+        "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/tasks.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/checklist.md",
+        "name": "create_folder_readme_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/implementation-summary.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "{doc,folder_readme,install_guide}.toml",
-        "kind": "file",
-        "path": ".agents/commands/create/{doc,folder_readme,install_guide}.toml",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "memory/metadata.json",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Define",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Change Type",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Modular",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2",
     "created_at": "2026-04-12T09:02:50.220Z",
-    "last_save_at": "2026-04-13T10:56:00.308Z",
+    "last_save_at": "2026-04-13T14:20:38.862Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

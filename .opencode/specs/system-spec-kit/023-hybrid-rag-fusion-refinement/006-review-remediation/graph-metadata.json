@@ -42,7 +42,6 @@
     "status": "complete",
     "key_files": [
       "shared/package.json",
-      "dist/index.js",
       "shared/paths.ts",
       "api/index.ts",
       "mcp_server/scripts/map-ground-truth-ids.ts",
@@ -50,7 +49,6 @@
       "mcp_server/context-server.ts",
       "mcp_server/package.json",
       "scripts/package.json",
-      "mcp_server/handlers/shared-memory.ts",
       "mcp_server/handlers/v-rule-bridge.ts",
       "mcp_server/handlers/memory-save.ts",
       "mcp_server/lib/validation/preflight.ts",
@@ -60,19 +58,15 @@
       "mcp_server/lib/search/vector-index-store.ts",
       "mcp_server/cli.ts",
       "mcp_server/tests/preflight.vitest.ts",
-      "mcp_server/tests/shared-memory-handlers.vitest.ts"
+      "mcp_server/tests/handler-memory-save.vitest.ts",
+      "scripts/dist/memory/validate-memory-quality.js",
+      "implementation-summary.md"
     ],
     "entities": [
       {
         "name": "package.json",
         "kind": "config",
         "path": "shared/package.json",
-        "source": "derived"
-      },
-      {
-        "name": "index.js",
-        "kind": "code",
-        "path": "dist/index.js",
         "source": "derived"
       },
       {
@@ -103,12 +97,6 @@
         "name": "context-server.ts",
         "kind": "code",
         "path": "mcp_server/context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-memory.ts",
-        "kind": "code",
-        "path": "mcp_server/handlers/shared-memory.ts",
         "source": "derived"
       },
       {
@@ -158,11 +146,71 @@
         "kind": "test",
         "path": "mcp_server/tests/preflight.vitest.ts",
         "source": "derived"
+      },
+      {
+        "name": "handler-memory-save.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/handler-memory-save.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate-memory-quality.js",
+        "kind": "code",
+        "path": "scripts/dist/memory/validate-memory-quality.js",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Review Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Module Compliance",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 6** of the ESM Module Compliance specification.",
     "created_at": "2026-04-12T09:02:50.320Z",
-    "last_save_at": "2026-04-13T10:56:00.502Z",
+    "last_save_at": "2026-04-13T14:20:39.049Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

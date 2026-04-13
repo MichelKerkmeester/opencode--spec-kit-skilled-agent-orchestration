@@ -47,7 +47,6 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md",
       "mcp_server/lib/search/pipeline/stage2-fusion.ts",
       "mcp_server/handlers/memory-crud-stats.ts",
       "mcp_server/lib/search/vector-index-schema.ts",
@@ -149,11 +148,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Cleanup Verification Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Gate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Evidence",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cleanup Verification Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Gate B cleanup was supposed to delete legacy `**/memory/*.md` artifacts and retire archived-tier runtime branches, but the Gate F packet still described a dead observation-and-decision model. Until this packet is rewritten and the cleanup is re-verified against the live SQLite database plus on-disk spec tree, the phase does not provide an auditable answer to the real question: did Gate B actually finish the cleanup without leaving stale rows, orphan causal edges, or misleading packet guidance behind?",
     "created_at": "2026-04-12T09:02:53.481Z",
-    "last_save_at": "2026-04-13T10:56:03.711Z",
+    "last_save_at": "2026-04-13T14:20:42.309Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

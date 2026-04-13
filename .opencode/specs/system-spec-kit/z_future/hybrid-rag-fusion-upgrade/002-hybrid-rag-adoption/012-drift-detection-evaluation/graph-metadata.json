@@ -134,11 +134,59 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Investigation Order",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Decision Criteria",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Condition Decide",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Experiments",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Condition",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "a",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates which Mex-style drift checker families should eventually apply to Public's spec and memory surfaces beyond the already-selected advisory checker trio. It focuses on checker scope, issue schema, false-positive control, and advisory-versus-blocking promotion rules. It does not ship new checker implementations in this packet.",
     "created_at": "2026-04-13T04:56:07.091Z",
-    "last_save_at": "2026-04-13T10:56:03.961Z",
+    "last_save_at": "2026-04-13T14:20:42.496Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -313,17 +313,17 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         title: 'Tasks',
         anchorId: 'phase-1',
         heading: '## Phase 1',
-        body: '- [x] T001 Prepare the canonical writer fixture.\n- [ ] T002 Verify routed save behavior.',
+        body: '- [x] T001 Prepare the canonical writer fixture.\n- [ ] T006 Capture the implementation summary handoff.',
         extraAnchors: [
           {
             id: 'phase-2',
             heading: '## Phase 2',
-            body: '- [ ] T002 Verify routed save behavior.\n- [ ] T003 Prepare the phase-aware regression coverage.',
+            body: '- [ ] T002 Verify routed save behavior.\n- [ ] T004 Prepare the phase-aware regression coverage notes.',
           },
           {
             id: 'phase-3',
             heading: '## Phase 3',
-            body: '- [ ] T003 Prepare the phase-aware regression coverage.\n- [ ] T004 Publish the final verification summary.',
+            body: '- [ ] T003 Prepare the phase-aware regression coverage.\n- [ ] T005 Publish the final verification summary.',
           },
         ],
       });
@@ -1323,6 +1323,78 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         expect.anything(),
         expect.anything(),
       );
+    });
+
+    it('rejects task updates when no checklist task line matches the routed identifier', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 447,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const tasksBefore = fs.readFileSync(fixture.tasksPath, 'utf8');
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Phase 2 - [x] T999 Missing routed save behavior.',
+          routeAs: 'task_update',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(result.summary).toBe('Canonical anchor merge failed');
+      expect(result.message).toBe('No matching task line found for T999');
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toBe(tasksBefore);
+    });
+
+    it('rejects task updates when multiple checklist task lines match the routed identifier', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const duplicatedTasks = fs.readFileSync(fixture.tasksPath, 'utf8').replace(
+        '<!-- /ANCHOR:phase-3 -->',
+        '- [ ] T002 Duplicate routed save behavior.\n<!-- /ANCHOR:phase-3 -->',
+      );
+      fs.writeFileSync(fixture.tasksPath, duplicatedTasks, 'utf8');
+
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 448,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const tasksBefore = fs.readFileSync(fixture.tasksPath, 'utf8');
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Phase 2 - [x] T002 Verify routed save behavior.',
+          routeAs: 'task_update',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(result.summary).toBe('Canonical anchor merge failed');
+      expect(result.message).toBe('Ambiguous: 2 matching task lines for T002');
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toBe(tasksBefore);
     });
 
     it('uses natural routing to reach Tier 3 when no explicit routeAs is provided', async () => {

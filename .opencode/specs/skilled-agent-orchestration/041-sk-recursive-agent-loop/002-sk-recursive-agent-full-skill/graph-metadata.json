@@ -60,7 +60,7 @@
       ".opencode/agent/handover.md",
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/skill/sk-improve-agent/README.md",
-      ".opencode/command/spec_kit/agent-improver.md"
+      "plan.md"
     ],
     "entities": [
       {
@@ -154,15 +154,63 @@
         "source": "derived"
       },
       {
-        "name": "handover.md",
+        "name": "SKILL.md",
         "kind": "doc",
-        "path": ".opencode/agent/handover.md",
+        "path": ".opencode/skill/sk-improve-agent/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Improvement Full Skill",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Packet `041-sk-improve-agent-loop` shipped the evaluator-first MVP and proved that the loop can safely operate on one canonical target with explicit promotion and rollback boundaries. Phase `002-sk-improve-agent-full-skill` defines the next step: stronger benchmark-backed evaluation, reusable runtime structure, target-specific scoring profiles, controlled expansion to a second structured target, and packaging rules for mirror sync without weakening the trust boundary.",
     "created_at": "2026-04-12T09:02:50.186Z",
-    "last_save_at": "2026-04-13T10:56:00.255Z",
+    "last_save_at": "2026-04-13T14:20:38.811Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

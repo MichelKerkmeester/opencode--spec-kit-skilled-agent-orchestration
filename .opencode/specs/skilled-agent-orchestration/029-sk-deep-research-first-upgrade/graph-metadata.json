@@ -41,15 +41,10 @@
     "importance_tier": "normal",
     "status": "complete",
     "key_files": [
-      ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/research/research.md",
-      ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/implementation-summary.md",
-      ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/spec.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "research/research.md",
-      ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/plan.md",
-      ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/tasks.md",
       ".opencode/skill/sk-deep-research/SKILL.md",
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
       ".opencode/skill/sk-deep-research/references/convergence.md",
@@ -60,18 +55,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -88,6 +71,12 @@
         "name": "tasks.md",
         "kind": "doc",
         "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -133,6 +122,12 @@
         "source": "derived"
       },
       {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -155,11 +150,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Research",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The first sk-deep-research upgrade needed grounded input from comparable autonomous research systems. Without a documented comparison against ResearcherSkill and autoresearch, upgrade choices would lean on intuition instead of evidence.",
     "created_at": "2026-04-12T09:02:50.176Z",
-    "last_save_at": "2026-04-13T10:56:00.236Z",
+    "last_save_at": "2026-04-13T14:20:38.791Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

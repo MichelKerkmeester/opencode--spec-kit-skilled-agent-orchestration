@@ -49,7 +49,6 @@
       "mcp_server/dist/handlers/memory-context.js",
       "shared/algorithms/rrf-fusion.ts",
       "handlers/memory-search.ts",
-      "architecture/layer-definitions.ts",
       "mcp_server/dist/lib/search/hybrid-search.js",
       "mcp_server/dist/core/db-state.js",
       "mcp_server/lib/search/hybrid-search.ts",
@@ -59,8 +58,9 @@
       "mcp_server/lib/search/sqlite-fts.ts",
       "mcp_server/lib/search/bm25-index.ts",
       "mcp_server/lib/search/embedding-expansion.ts",
-      "mcp_server/lib/search/embedding-cache.ts",
-      "mcp_server/lib/search/co-activation.ts"
+      "mcp_server/lib/architecture/layer-definitions.ts",
+      "mcp_server/dist/lib/search/sqlite-fts.js",
+      "mcp_server/dist/lib/search/pipeline/stage1-candidate-gen.js"
     ],
     "entities": [
       {
@@ -103,12 +103,6 @@
         "name": "rrf-fusion.ts",
         "kind": "code",
         "path": "shared/algorithms/rrf-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "layer-definitions.ts",
-        "kind": "code",
-        "path": "architecture/layer-definitions.ts",
         "source": "derived"
       },
       {
@@ -158,11 +152,65 @@
         "kind": "code",
         "path": "mcp_server/lib/search/bm25-index.ts",
         "source": "derived"
+      },
+      {
+        "name": "embedding-expansion.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/embedding-expansion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "layer-definitions.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/architecture/layer-definitions.ts",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-fts.js",
+        "kind": "code",
+        "path": "mcp_server/dist/lib/search/sqlite-fts.js",
+        "source": "derived"
+      },
+      {
+        "name": "stage1-candidate-gen.js",
+        "kind": "code",
+        "path": "mcp_server/dist/lib/search/pipeline/stage1-candidate-gen.js",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hybrid Search Pipeline Null",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 7** of the ESM Module Compliance specification. It restores hybrid search correctness first, then records the follow-on search quality improvements applied after the initial fix.",
     "created_at": "2026-04-12T09:02:50.320Z",
-    "last_save_at": "2026-04-13T10:56:00.503Z",
+    "last_save_at": "2026-04-13T14:20:39.050Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

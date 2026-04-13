@@ -49,12 +49,7 @@
       ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
-      ".codex/agents/context-prime.toml",
       ".github/hooks/superset-notify.json",
-      "jq empty .github/hooks/superset-notify.json",
-      "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
-      "printf '{\\\"session_id\\\":\\\"demo\\\",\\\"source\\\":\\\"startup\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/claude/session-prime.js",
-      "printf '{\\\"session_id\\\":\\\"demo\\\",\\\"source\\\":\\\"startup\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-prime.js",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -94,21 +89,9 @@
         "source": "derived"
       },
       {
-        "name": "context-prime.toml",
-        "kind": "file",
-        "path": ".codex/agents/context-prime.toml",
-        "source": "derived"
-      },
-      {
         "name": "superset-notify.json",
         "kind": "config",
         "path": ".github/hooks/superset-notify.json",
-        "source": "derived"
-      },
-      {
-        "name": "session-prime.js",
-        "kind": "code",
-        "path": "printf '{\\\"sessionId\\\":\\\"demo\\\"}\\\\n' \\| node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/session-prime.js",
         "source": "derived"
       },
       {
@@ -158,11 +141,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "The Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Reference",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 4 extended the shipped startup experience beyond OpenCode. The Level 3 repair keeps that runtime/config parity claim intact and turns the phase into a durable packet artifact with explicit runtime boundaries and evidence.",
     "created_at": "2026-04-12T09:02:53.438Z",
-    "last_save_at": "2026-04-13T10:56:03.647Z",
+    "last_save_at": "2026-04-13T14:20:42.259Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

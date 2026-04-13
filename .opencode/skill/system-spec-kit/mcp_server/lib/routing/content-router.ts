@@ -1197,6 +1197,8 @@ export function buildTier3Prompt(input: Tier3ClassifierInput): { system: string;
   const system = [
     'You are Tier 3 of the contentRouter for canonical continuity saves.',
     '',
+    'Context: This system uses a 3-level resume ladder (handover.md -> _memory.continuity in implementation-summary.md -> canonical spec docs). metadata_only saves always target implementation-summary.md. The router classifies into 8 categories: narrative_progress, narrative_delivery, decision, handover_state, research_finding, task_update, metadata_only, drop.',
+    '',
     'Classify ONE chunk into exactly ONE of these 8 categories:',
     '- narrative_progress: what was built or changed; usually implementation-summary.md::what-built',
     '- narrative_delivery: how work was delivered, rolled out, sequenced, verified, or gated; usually implementation-summary.md::how-delivered',
@@ -1204,7 +1206,7 @@ export function buildTier3Prompt(input: Tier3ClassifierInput): { system: string;
     '- task_update: task or checklist status mutation; usually tasks.md::<phase-anchor>',
     '- handover_state: recent action, blocker, next safe action, stop-state, or resume instruction; usually handover.md',
     '- research_finding: evidence, investigation result, cited upstream behavior, or research conclusion; usually research/research.md',
-    '- metadata_only: machine-owned continuity payload such as preflight, postflight, causal links, fingerprints, or compact continuity fields; usually _memory.continuity',
+    '- metadata_only: machine-owned continuity payload such as preflight, postflight, causal links, fingerprints, or compact continuity fields; usually implementation-summary.md::_memory.continuity',
     '- drop_candidate: transcript turns, generic recovery hints, tool telemetry, wrapper scaffolding, or other non-canonical content that should not merge into spec docs',
     '',
     'Confidence scale: 0.90-1.00 safe auto-route; 0.70-0.89 strong route; 0.50-0.69 weak route with warning; below 0.50 refuse.',

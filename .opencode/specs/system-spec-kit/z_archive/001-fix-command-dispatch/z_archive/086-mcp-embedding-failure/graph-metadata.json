@@ -40,20 +40,10 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "mcp_server/context-server.js",
-      "mcp_server/lib/search/vector-index.js",
       "shared/embeddings/factory.js",
-      "mcp_server/lib/providers/retry-manager.js",
       "shared/embeddings/providers/hf-local.js",
-      "nomic-ai/nomic-embed-text-v1.5",
-      ".opencode/skill/system-spec-kit/shared/embeddings.js",
-      ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
-      ".opencode/skill/system-spec-kit/shared/embeddings/providers/hf-local.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
       ".opencode/skill/system-spec-kit/mcp_server/package.json",
       ".opencode/skill/system-spec-kit/references/debugging/troubleshooting.md",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/errors/core.js",
       ".opencode/skill/system-spec-kit/references/config/environment_variables.md",
       "spec.md",
       "plan.md",
@@ -62,45 +52,15 @@
     ],
     "entities": [
       {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/search/vector-index.js",
-        "source": "derived"
-      },
-      {
         "name": "factory.js",
         "kind": "code",
         "path": "shared/embeddings/factory.js",
         "source": "derived"
       },
       {
-        "name": "retry-manager.js",
-        "kind": "code",
-        "path": "mcp_server/lib/providers/retry-manager.js",
-        "source": "derived"
-      },
-      {
         "name": "hf-local.js",
         "kind": "code",
         "path": "shared/embeddings/providers/hf-local.js",
-        "source": "derived"
-      },
-      {
-        "name": "nomic-embed-text-v1.5",
-        "kind": "file",
-        "path": "nomic-ai/nomic-embed-text-v1.5",
-        "source": "derived"
-      },
-      {
-        "name": "embeddings.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/shared/embeddings.js",
         "source": "derived"
       },
       {
@@ -113,18 +73,6 @@
         "name": "troubleshooting.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/references/debugging/troubleshooting.md",
-        "source": "derived"
-      },
-      {
-        "name": "recovery-hints.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.js",
-        "source": "derived"
-      },
-      {
-        "name": "core.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/errors/core.js",
         "source": "derived"
       },
       {
@@ -156,11 +104,101 @@
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "Embedding Failure Investigation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Users",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root Cause Hypothesis The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Areas",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Cache Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Package Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Embedding Failure",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary After",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root Cause Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Evidence Summary",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "The Error Chain",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Overview",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Document Protobuf",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Add Protobuf",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Users report that the `spec_kit_memory` MCP server fails to generate semantic embeddings due to a corrupted local HuggingFace embedding model cache. The ONNX model fails protobuf parsing.",
     "created_at": "2026-04-12T09:02:53.558Z",
-    "last_save_at": "2026-04-13T10:56:03.881Z",
+    "last_save_at": "2026-04-13T14:20:42.445Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

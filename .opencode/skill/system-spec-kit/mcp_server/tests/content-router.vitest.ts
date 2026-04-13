@@ -549,6 +549,9 @@ describe('content-router helper contracts', () => {
 
     expect(system).toContain('drop_candidate');
     expect(system).toContain('refuse-to-route');
+    expect(system).toContain('Context: This system uses a 3-level resume ladder (handover.md -> _memory.continuity in implementation-summary.md -> canonical spec docs). metadata_only saves always target implementation-summary.md. The router classifies into 8 categories: narrative_progress, narrative_delivery, decision, handover_state, research_finding, task_update, metadata_only, drop.');
+    expect(system).toContain('implementation-summary.md::_memory.continuity');
+    expect(system).not.toContain('usually _memory.continuity');
     expect(user).toContain('PROMPT_VERSION: tier3-router-v1');
   });
 

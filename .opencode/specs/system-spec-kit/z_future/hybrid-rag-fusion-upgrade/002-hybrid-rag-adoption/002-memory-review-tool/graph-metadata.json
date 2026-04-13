@@ -134,11 +134,47 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Integration Points",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rollback Plan If",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rollback Plan",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the Modus",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase designs and scopes `memory_review` as the first new helper tool in the adoption track. It covers graded review semantics, integration with the existing FSRS scheduler, and its relationship to current validation and confidence flows. It does not ship `memory_due` or default write-on-read reinforcement.",
     "created_at": "2026-04-13T04:56:07.087Z",
-    "last_save_at": "2026-04-13T10:56:03.950Z",
+    "last_save_at": "2026-04-13T14:20:42.490Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

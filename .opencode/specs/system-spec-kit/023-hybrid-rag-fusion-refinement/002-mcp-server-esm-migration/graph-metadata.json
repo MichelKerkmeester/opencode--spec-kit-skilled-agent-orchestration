@@ -42,7 +42,6 @@
       "mcp_server/tsconfig.json",
       "dist/context-server.js",
       "mcp_server/context-server.ts",
-      "lib/cognitive/archival-manager.ts",
       "lib/cognitive/tier-classifier.ts",
       "lib/errors/core.ts",
       "lib/scoring/composite-scoring.ts",
@@ -77,12 +76,6 @@
         "name": "context-server.ts",
         "kind": "code",
         "path": "mcp_server/context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": "archival-manager.ts",
-        "kind": "code",
-        "path": "lib/cognitive/archival-manager.ts",
         "source": "derived"
       },
       {
@@ -150,11 +143,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Module Compliance",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Migrate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Package",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 2** of the ESM Module Compliance specification.",
     "created_at": "2026-04-12T09:02:50.317Z",
-    "last_save_at": "2026-04-13T10:56:00.497Z",
+    "last_save_at": "2026-04-13T14:20:39.043Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

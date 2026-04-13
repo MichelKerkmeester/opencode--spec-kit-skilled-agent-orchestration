@@ -53,7 +53,6 @@
       "tasks.md",
       "research.md",
       "checklist.md",
-      "git diff --name-only -- .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .claude/settings.local.json",
       "mcp_server/test/hooks/replay-harness.ts",
       "tests/fixtures/hooks/session-stop-replay.jsonl",
       "tests/hook-session-stop-replay.vitest.ts",
@@ -158,11 +157,59 @@
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Warning Hook System",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
     "created_at": "2026-04-12T09:02:53.453Z",
-    "last_save_at": "2026-04-13T10:56:03.677Z",
+    "last_save_at": "2026-04-13T14:20:42.283Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

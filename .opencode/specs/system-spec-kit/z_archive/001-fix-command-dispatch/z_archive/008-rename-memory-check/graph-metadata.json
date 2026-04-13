@@ -37,34 +37,13 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/command/memory/memory.md",
-      ".opencode/command/memory/check.md",
       ".opencode/command/memory/save.md",
-      ".opencode/command/memory/checkpoint.md",
-      ".opencode/skills/workflows-memory/SKILL.md",
-      ".opencode/memory/mcp_server/README.md",
-      ".opencode/memory/mcp_server/INSTALL_GUIDE.md",
-      ".opencode/command/cli/codex.md",
-      ".opencode/command/cli/gemini.md",
       ".opencode/command/memory/search.md",
-      ".opencode/skills/workflows-memory/references/execution_methods.md",
       "spec.md",
       "plan.md",
       "tasks.md"
     ],
     "entities": [
-      {
-        "name": "memory.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/memory.md",
-        "source": "derived"
-      },
-      {
-        "name": "check.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/check.md",
-        "source": "derived"
-      },
       {
         "name": "save.md",
         "kind": "doc",
@@ -72,51 +51,9 @@
         "source": "derived"
       },
       {
-        "name": "checkpoint.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/checkpoint.md",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skills/workflows-memory/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/memory/mcp_server/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "INSTALL_GUIDE.md",
-        "kind": "doc",
-        "path": ".opencode/memory/mcp_server/INSTALL_GUIDE.md",
-        "source": "derived"
-      },
-      {
-        "name": "codex.md",
-        "kind": "doc",
-        "path": ".opencode/command/cli/codex.md",
-        "source": "derived"
-      },
-      {
-        "name": "gemini.md",
-        "kind": "doc",
-        "path": ".opencode/command/cli/gemini.md",
-        "source": "derived"
-      },
-      {
         "name": "search.md",
         "kind": "doc",
         "path": ".opencode/command/memory/search.md",
-        "source": "derived"
-      },
-      {
-        "name": "execution_methods.md",
-        "kind": "doc",
-        "path": ".opencode/skills/workflows-memory/references/execution_methods.md",
         "source": "derived"
       },
       {
@@ -148,11 +85,95 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Primary Changes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Rename",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reference Updates",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Change Type",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Parallel",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Strategy",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Assignments",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Command Files",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Related Commands",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Server Docs",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rename Memory",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rename Memory Command",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Rename",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Rename the unified memory dashboard command from `/memory` to `/memory:check` and update all references across the codebase.",
     "created_at": "2026-04-12T09:02:53.510Z",
-    "last_save_at": "2026-04-13T10:56:03.775Z",
+    "last_save_at": "2026-04-13T14:20:42.361Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

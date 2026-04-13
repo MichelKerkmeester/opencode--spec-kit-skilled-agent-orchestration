@@ -158,11 +158,59 @@
         "kind": "doc",
         "path": "research/iterations/iteration-001.md",
         "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Relay",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase `007-relay-main` is a read-only research packet that studies the bundled Agent Relay repository as a source of transport, workflow, continuity, and UX patterns that could improve `system-spec-kit`. Phase 1 focused on transport-oriented adoption opportunities. Phase 2 expanded the scope to ask harder refactor, pivot, simplification, architecture, and user-experience questions about Public's own design choices.",
     "created_at": "2026-04-12T09:02:53.488Z",
-    "last_save_at": "2026-04-13T10:56:03.924Z",
+    "last_save_at": "2026-04-13T14:20:42.473Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

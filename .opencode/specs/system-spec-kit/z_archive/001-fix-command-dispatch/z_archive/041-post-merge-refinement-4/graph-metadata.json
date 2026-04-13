@@ -43,24 +43,16 @@
     "key_files": [
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4/analysis-report.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
       "spec.md",
       "tasks.md",
       "checklist.md",
-      ".opencode/agents/AGENT_TEMPLATE.md",
-      ".opencode/agents/documentation-writer/AGENT.md",
-      "memory/context.md",
-      ".opencode/skill/system-spec-kit/scripts/validate-spec.sh",
-      ".opencode/skill/system-spec-kit/scripts/recommend-level.sh",
       "templates/context_template.md",
-      "templates/memory/context.md",
-      ".opencode/skill/system-spec-kit/scripts/generate-context.js",
       ".opencode/command/memory/search.md",
-      ".opencode/skill/system-spec-kit/references/quick_reference.md",
-      ".opencode/skill/system-spec-kit/references/troubleshooting.md",
       ".opencode/skill/system-spec-kit/README.md",
       ".opencode/command/memory/save.md",
-      "templates/quick-fix.md"
+      "templates/.hashes",
+      "plan.md",
+      "decision-record.md"
     ],
     "entities": [
       {
@@ -73,12 +65,6 @@
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
         "source": "derived"
       },
       {
@@ -100,45 +86,9 @@
         "source": "derived"
       },
       {
-        "name": "AGENT_TEMPLATE.md",
-        "kind": "doc",
-        "path": ".opencode/agents/AGENT_TEMPLATE.md",
-        "source": "derived"
-      },
-      {
-        "name": "AGENT.md",
-        "kind": "doc",
-        "path": ".opencode/agents/documentation-writer/AGENT.md",
-        "source": "derived"
-      },
-      {
-        "name": "context.md",
-        "kind": "doc",
-        "path": "memory/context.md",
-        "source": "derived"
-      },
-      {
-        "name": "validate-spec.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/validate-spec.sh",
-        "source": "derived"
-      },
-      {
-        "name": "recommend-level.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/recommend-level.sh",
-        "source": "derived"
-      },
-      {
         "name": "context_template.md",
         "kind": "doc",
         "path": "templates/context_template.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/generate-context.js",
         "source": "derived"
       },
       {
@@ -148,21 +98,111 @@
         "source": "derived"
       },
       {
-        "name": "quick_reference.md",
+        "name": "README.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/references/quick_reference.md",
+        "path": ".opencode/skill/system-spec-kit/README.md",
         "source": "derived"
       },
       {
-        "name": "troubleshooting.md",
+        "name": "save.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/references/troubleshooting.md",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": ".hashes",
+        "kind": "file",
+        "path": "templates/.hashes",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specificatio",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Merge Refinement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Comprehensive System Alignment Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Agent Analysis Report",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Systematic Issue Remediation Implementation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary Systematic",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Primary Dependencies",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Breakdown Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Complete specification for addressing 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration.",
     "created_at": "2026-04-12T09:02:53.526Z",
-    "last_save_at": "2026-04-13T10:56:03.809Z",
+    "last_save_at": "2026-04-13T14:20:42.386Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

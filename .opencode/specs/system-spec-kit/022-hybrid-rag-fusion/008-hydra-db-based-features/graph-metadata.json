@@ -52,9 +52,6 @@
       ".opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -67,7 +64,10 @@
       "005-hierarchical-scope-governance/spec.md",
       "006-shared-memory-rollout/spec.md",
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "mcp_server/lib/governance/scope-governance.ts",
+      "mcp_server/lib/search/vector-index-mutations.ts",
+      "mcp_server/tests/memory-governance.vitest.ts"
     ],
     "entities": [
       {
@@ -92,24 +92,6 @@
         "name": "scope-governance.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-spaces.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-memory.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hydra-spec-pack-consistency.vitest.ts",
-        "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
         "source": "derived"
       },
       {
@@ -155,6 +137,18 @@
         "source": "derived"
       },
       {
+        "name": "vector-index-mutations.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-mutations.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-governance.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory-governance.vitest.ts",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -165,11 +159,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Recorded March",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.",
     "created_at": "2026-04-12T09:02:50.258Z",
-    "last_save_at": "2026-04-13T10:56:00.378Z",
+    "last_save_at": "2026-04-13T14:20:38.931Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

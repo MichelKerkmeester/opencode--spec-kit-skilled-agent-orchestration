@@ -41,7 +41,6 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "pipeline/types.ts",
       "mcp_server/lib/search/session-boost.ts",
       "mcp_server/lib/search/causal-boost.ts",
       "mcp_server/lib/search/pipeline/stage2-fusion.ts",
@@ -53,7 +52,6 @@
       "mcp_server/lib/feedback/shadow-evaluation-runtime.ts",
       ".claude/mcp.json",
       ".codex/config.toml",
-      "Barter/coder/opencode.json",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -61,12 +59,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "types.ts",
-        "kind": "code",
-        "path": "pipeline/types.ts",
-        "source": "derived"
-      },
       {
         "name": "session-boost.ts",
         "kind": "code",
@@ -89,6 +81,12 @@
         "name": "stage1-candidate-gen.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/pipeline/types.ts",
         "source": "derived"
       },
       {
@@ -128,12 +126,6 @@
         "source": "derived"
       },
       {
-        "name": "opencode.json",
-        "kind": "config",
-        "path": "Barter/coder/opencode.json",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -156,11 +148,65 @@
         "kind": "doc",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Boost Rollout",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Expansion",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Epic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Three",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Three retrieval quality features — session boost, causal boost, and deep query expansion — are each gated behind explicit opt-in environment variables (`SPECKIT_SESSION_BOOST`, `SPECKIT_CAUSAL_BOOST`). Because `isFeatureEnabled()` in `rollout-policy.ts` treats an *undefined* env var as ON, but `session-boost.ts` and `causal-boost.ts` call `isFeatureEnabled` with their specific flag names that users typically do not set, the net effect is that the features are effectively OFF for all default installations. A test search for \"semantic search\" confirmed: `sessionBoostApplied: \"off\"`, `causalBoostApplied: \"off\"`, and `deepExpansion: false` even in `deep` mode.",
     "created_at": "2026-04-12T09:02:50.334Z",
-    "last_save_at": "2026-04-13T10:56:00.517Z",
+    "last_save_at": "2026-04-13T14:20:39.061Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

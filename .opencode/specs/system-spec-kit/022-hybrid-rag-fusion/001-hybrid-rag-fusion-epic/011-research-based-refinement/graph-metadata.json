@@ -155,11 +155,59 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview Implements",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Core Improvements",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "After Wave",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Advanced Features",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Final Items",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Based Refinement",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The deep research (spec `019-deep-research-rag-improvement`) produced 29 prioritized recommendations from 5 GPT 5.4 agents (1.35M tokens, ~52 web searches). The key finding: the system is more mature than expected — the gap is **calibration and wiring**, not missing code. Flat heuristic constants (k=60, convergence +0.10, graph boost 1.5x, FSRS decay, Stage 2 signal weights) need data-driven calibration. Graph value lies in typed traversal, not community detection. Feedback needs an event ledger before any learned ranking.",
     "created_at": "2026-04-12T09:02:50.233Z",
-    "last_save_at": "2026-04-13T10:56:00.330Z",
+    "last_save_at": "2026-04-13T14:20:38.881Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -158,11 +158,59 @@
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/deep-review-reducer-schema.vitest.ts",
         "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Make Phase 2 the durable review-mode contract by aligning docs, assets, workflow YAML, runtime mirrors, manual testing playbook surfaces, and packet closeout evidence around one canonical deep-review packet model.",
     "created_at": "2026-04-12T09:02:50.184Z",
-    "last_save_at": "2026-04-13T10:56:00.251Z",
+    "last_save_at": "2026-04-13T14:20:38.805Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

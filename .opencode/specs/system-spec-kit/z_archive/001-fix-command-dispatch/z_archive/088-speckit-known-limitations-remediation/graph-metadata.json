@@ -41,9 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.js",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.js",
       ".opencode/agent/orchestrate.md",
       ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
       ".opencode/skill/system-spec-kit/scripts/README.md",
@@ -51,36 +48,15 @@
       ".opencode/install_guides/SET-UP - AGENTS.md",
       ".opencode/agent/speckit.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js",
-      "087-speckit-deep-analysis/known-limitations.md",
-      "087-speckit-deep-analysis/implementation-summary.md",
       "scripts/README.md",
       "scripts/spec/check-completion.sh",
       "spec.md",
       "plan.md",
       "checklist.md",
-      "tasks.md"
+      "tasks.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "prediction-error-gate.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-save.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.js",
-        "source": "derived"
-      },
       {
         "name": "orchestrate.md",
         "kind": "doc",
@@ -124,30 +100,6 @@
         "source": "derived"
       },
       {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "access-tracker.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js",
-        "source": "derived"
-      },
-      {
-        "name": "known-limitations.md",
-        "kind": "doc",
-        "path": "087-speckit-deep-analysis/known-limitations.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "087-speckit-deep-analysis/implementation-summary.md",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -158,11 +110,101 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Kit Known Limitations Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose All",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Direct",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs and 15+ moderate misalignments, but deferred 4 known limitations that require separate implementation work: (1) existing SQLite databases have a drifted schema with three conflicting DDL definitions causing silent INSERT failures, (2) stale Gate 4/6 references remain in 7 active files plus the legacy install guide, (3) three spec management scripts are undocumented in capability tables, and (4) minor signal handler gaps exist in the MCP server.",
     "created_at": "2026-04-12T09:02:53.559Z",
-    "last_save_at": "2026-04-13T10:56:03.884Z",
+    "last_save_at": "2026-04-13T14:20:42.447Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

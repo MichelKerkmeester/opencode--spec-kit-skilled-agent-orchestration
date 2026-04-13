@@ -8,7 +8,8 @@
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/002-add-reranker-telemetry",
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/003-continuity-search-profile",
     "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/004-raise-rerank-minimum",
-    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment"
+    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/005-doc-surface-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/017-research-search-fusion-tuning/006-continuity-profile-validation"
   ],
   "manual": {
     "depends_on": [],
@@ -36,10 +37,8 @@
     "key_files": [
       "configs/search-weights.json",
       "mcp_server/lib/search/cross-encoder.ts",
-      "mcp_server/lib/search/stage2-fusion.ts",
       "mcp_server/lib/search/vector-index-store.ts",
       "mcp_server/configs/search-weights.json",
-      "mcp_server/lib/search/stage1-candidate-gen.ts",
       "spec.md",
       ".opencode/command/memory/search.md",
       "mcp_server/configs/README.md",
@@ -64,21 +63,9 @@
         "source": "derived"
       },
       {
-        "name": "stage2-fusion.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/search/stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
         "name": "vector-index-store.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/vector-index-store.ts",
-        "source": "derived"
-      },
-      {
-        "name": "stage1-candidate-gen.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/search/stage1-candidate-gen.ts",
         "source": "derived"
       },
       {
@@ -146,11 +133,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Background The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Files",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Fix",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "checked",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Synthesis",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Search Fusion Weight Optimization",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Safe Continuity",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-13T04:56:06.986Z",
-    "last_save_at": "2026-04-13T10:56:03.726Z",
+    "last_save_at": "2026-04-13T14:20:42.320Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

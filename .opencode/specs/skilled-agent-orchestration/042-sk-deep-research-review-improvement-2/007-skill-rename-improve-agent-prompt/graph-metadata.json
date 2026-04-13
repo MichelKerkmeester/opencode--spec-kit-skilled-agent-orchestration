@@ -49,8 +49,7 @@
       ".opencode/agent/improve-agent.md",
       ".claude/agents/improve-agent.md",
       ".gemini/agents/improve-agent.md",
-      ".codex/agents/improve-agent.toml",
-      "memory/.gitkeep"
+      ".codex/agents/improve-agent.toml"
     ],
     "entities": [
       {
@@ -102,12 +101,6 @@
         "source": "derived"
       },
       {
-        "name": ".gitkeep",
-        "kind": "file",
-        "path": "memory/.gitkeep",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -148,11 +141,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Skill Rename Closeout",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist Before",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This phase closes the documentation gap around a skill-folder rename that had already shipped in the repo. The two improver skills are now canonically named `sk-improve-agent` and `sk-improve-prompt`, their changelog directories were moved to `14--sk-improve-prompt/` and `15--sk-improve-agent/`, and the live runtime-agent files already use the `improve-agent` naming convention. The packet records that truth so future maintainers can trust the renamed paths without reconstructing the rename from git history.",
     "created_at": "2026-04-12T09:02:50.196Z",
-    "last_save_at": "2026-04-13T10:56:00.278Z",
+    "last_save_at": "2026-04-13T14:20:38.835Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

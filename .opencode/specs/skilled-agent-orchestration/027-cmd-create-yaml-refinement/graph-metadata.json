@@ -41,8 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "validate_document.py .opencode/command/create/README.txt",
-      "validate_document.py .opencode/command/README.txt",
       "spec.md",
       ".opencode/command/create/assets/create_feature_catalog_auto.yaml",
       ".opencode/command/create/assets/create_feature_catalog_confirm.yaml",
@@ -63,12 +61,6 @@
       ".opencode/command/README.txt"
     ],
     "entities": [
-      {
-        "name": "README.txt",
-        "kind": "file",
-        "path": "validate_document.py .opencode/command/create/README.txt",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -158,11 +150,65 @@
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.txt",
+        "kind": "file",
+        "path": ".opencode/command/create/README.txt",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Create Command",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Refine",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet defines the refinement pass for `.opencode/command/create/assets/*.yaml` so the create-command suite more closely matches the richer `spec_kit` command YAML style. The work must strengthen the newer feature-catalog and testing-playbook assets, then add a shared structural contract across the broader create suite without rewriting command behavior or changing command names.",
     "created_at": "2026-04-12T09:02:50.175Z",
-    "last_save_at": "2026-04-13T10:56:00.233Z",
+    "last_save_at": "2026-04-13T14:20:38.788Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

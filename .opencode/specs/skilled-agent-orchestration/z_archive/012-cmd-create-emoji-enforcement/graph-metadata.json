@@ -44,15 +44,8 @@
       ".opencode/command/create/folder_readme.md",
       ".opencode/command/create/assets/create_folder_readme_auto.yaml",
       ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
-      ".opencode/command/create/assets/create_install_guide_auto.yaml",
-      ".opencode/command/create/assets/create_install_guide_confirm.yaml",
-      ".opencode/command/create/assets/create_skill_asset_auto.yaml",
-      ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
-      ".opencode/command/create/assets/create_skill_reference_auto.yaml",
-      ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
       ".opencode/command/create/assets/create_agent_auto.yaml",
       ".opencode/command/create/assets/create_agent_confirm.yaml",
-      ".opencode/command/create/assets/create_skill_confirm.yaml",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -80,42 +73,6 @@
         "source": "derived"
       },
       {
-        "name": "create_install_guide_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_install_guide_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_install_guide_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_install_guide_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_asset_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_reference_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
-        "source": "derived"
-      },
-      {
         "name": "create_agent_auto.yaml",
         "kind": "config",
         "path": ".opencode/command/create/assets/create_agent_auto.yaml",
@@ -125,12 +82,6 @@
         "name": "create_agent_confirm.yaml",
         "kind": "config",
         "path": ".opencode/command/create/assets/create_agent_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/create/assets/create_skill_confirm.yaml",
         "source": "derived"
       },
       {
@@ -156,11 +107,101 @@
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Remove Emoji Enforcement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Remove",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Execution Rules",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The `/create` command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the removal of all emoji enforcement logic from the command infrastructure while preserving the command's core functionality.",
     "created_at": "2026-04-12T09:02:50.211Z",
-    "last_save_at": "2026-04-13T10:56:00.297Z",
+    "last_save_at": "2026-04-13T14:20:38.852Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

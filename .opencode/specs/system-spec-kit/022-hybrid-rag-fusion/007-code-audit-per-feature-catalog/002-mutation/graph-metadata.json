@@ -39,8 +39,6 @@
       "shared/parsing/memory-sufficiency.ts",
       "shared/parsing/spec-doc-health.ts",
       "handlers/checkpoints.ts",
-      "handlers/shared-memory.ts",
-      "lib/collab/shared-spaces.ts",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -64,18 +62,6 @@
         "name": "checkpoints.ts",
         "kind": "code",
         "path": "handlers/checkpoints.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-memory.ts",
-        "kind": "code",
-        "path": "handlers/shared-memory.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-spaces.ts",
-        "kind": "code",
-        "path": "lib/collab/shared-spaces.ts",
         "source": "derived"
       },
       {
@@ -143,11 +129,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Read",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "undo",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 10 Mutation features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/02--mutation/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.245Z",
-    "last_save_at": "2026-04-13T10:56:00.351Z",
+    "last_save_at": "2026-04-13T14:20:38.901Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

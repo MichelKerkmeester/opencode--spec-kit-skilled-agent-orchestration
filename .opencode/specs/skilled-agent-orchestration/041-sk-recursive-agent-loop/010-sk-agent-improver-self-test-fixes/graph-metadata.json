@@ -28,17 +28,10 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/command/spec_kit/agent-improver.md",
       ".opencode/command/improve/agent.md",
-      ".opencode/agent/agent-improver.md",
-      ".claude/agents/agent-improver.md",
-      ".agents/agents/agent-improver.md",
-      ".codex/agents/agent-improver.toml",
       ".opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
       ".opencode/skill/sk-improve-agent/assets/improvement_config.json",
       ".opencode/skill/sk-improve-agent/assets/improvement_config_reference.md",
-      ".opencode/skill/sk-improve-agent/references/improvement_config_reference.md",
-      "improve/agent.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -46,21 +39,9 @@
     ],
     "entities": [
       {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".opencode/command/spec_kit/agent-improver.md",
-        "source": "derived"
-      },
-      {
         "name": "agent.md",
         "kind": "doc",
         "path": ".opencode/command/improve/agent.md",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.toml",
-        "kind": "file",
-        "path": ".codex/agents/agent-improver.toml",
         "source": "derived"
       },
       {
@@ -140,11 +121,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Fix Stale Command Path",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Bug Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Promote Candidate Improvements Cherry",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reorder Required Inputs",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stale Command Path",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Candidate Promotion",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hard Blockers",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reducer Scripts",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 009 (self-test) found 5 issues:",
     "created_at": "2026-04-13T04:55:07.906Z",
-    "last_save_at": "2026-04-13T10:56:00.265Z",
+    "last_save_at": "2026-04-13T14:20:38.822Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

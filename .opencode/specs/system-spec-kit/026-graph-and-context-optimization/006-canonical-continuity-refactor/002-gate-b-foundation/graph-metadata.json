@@ -52,7 +52,6 @@
       ".opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/storage/schema-downgrade.ts",
-      ".opencode/skill/system-spec-kit/scripts/memory/archive-flip-018.sh",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts",
       "plan.md",
       "tasks.md",
@@ -60,7 +59,8 @@
       "decision-record.md",
       "spec.md",
       "tests/stage2-fusion.vitest.ts",
-      "tests/search-archival.vitest.ts"
+      "tests/search-archival.vitest.ts",
+      "mcp_server/lib/search/pipeline/stage2-fusion.ts"
     ],
     "entities": [
       {
@@ -97,12 +97,6 @@
         "name": "stage2-fusion.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "archive-flip-018.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/memory/archive-flip-018.sh",
         "source": "derived"
       },
       {
@@ -158,11 +152,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Gate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Gate B is the one-way-door foundation step for phase 018. It is where phase 018 proves the migration on a copy, updates `causal_edges` for anchor-aware continuity, and executes the rebaselined archive flip for the `183` legacy memory-path rows while preserving the `1` pre-existing archived non-memory baseline row.",
     "created_at": "2026-04-12T09:02:53.478Z",
-    "last_save_at": "2026-04-13T10:56:03.704Z",
+    "last_save_at": "2026-04-13T14:20:42.304Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

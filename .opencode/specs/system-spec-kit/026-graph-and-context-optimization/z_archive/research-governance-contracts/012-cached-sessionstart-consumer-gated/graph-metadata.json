@@ -92,12 +92,6 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
@@ -119,6 +113,12 @@
         "name": "recommendations.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/research/recommendations.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -150,11 +150,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Research Citation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Persisted Stop",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Implement",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Checklist",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Create the guarded consumer packet described by recommendation `R3`: cached SessionStart summaries may be consumed only when fidelity and freshness checks pass, and only as additive continuity for `resume`, `compact`, and optional startup hints. This packet rides on top of `R2` and packet `002`, which produce the persisted Stop-summary metadata the consumer reads. The upstream artifact is treated as a compact continuity wrapper, not as a second packet narrative owner.",
     "created_at": "2026-04-12T09:02:53.470Z",
-    "last_save_at": "2026-04-13T10:56:03.765Z",
+    "last_save_at": "2026-04-13T14:20:42.354Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

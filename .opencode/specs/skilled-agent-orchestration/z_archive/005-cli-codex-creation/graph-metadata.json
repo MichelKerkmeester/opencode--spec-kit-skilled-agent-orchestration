@@ -43,7 +43,6 @@
     "key_files": [
       ".opencode/skill/cli-codex/SKILL.md",
       ".opencode/skill/cli-codex/assets/prompt_templates.md",
-      ".opencode/skill/scripts/skill_advisor.py",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -61,12 +60,6 @@
         "name": "prompt_templates.md",
         "kind": "doc",
         "path": ".opencode/skill/cli-codex/assets/prompt_templates.md",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -146,11 +139,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: Implementation",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The existing `cli-gemini` skill referenced multiple Gemini model variants, which created avoidable decision overhead. At the same time, there was no companion `cli-codex` skill even though Codex CLI support already existed elsewhere in the repository.",
     "created_at": "2026-04-12T09:02:50.202Z",
-    "last_save_at": "2026-04-13T10:56:00.290Z",
+    "last_save_at": "2026-04-13T14:20:38.845Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

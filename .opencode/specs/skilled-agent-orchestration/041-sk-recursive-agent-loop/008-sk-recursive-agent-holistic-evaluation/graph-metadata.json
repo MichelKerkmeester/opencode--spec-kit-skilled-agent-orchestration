@@ -28,31 +28,14 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/agent/agent-improver.md",
       ".opencode/command/improve/agent.md",
       "spec.md",
-      "scripts/scan-integration.cjs",
-      "scripts/generate-profile.cjs",
-      "scripts/score-candidate.cjs",
-      "scripts/run-benchmark.cjs",
-      "scripts/reduce-state.cjs",
-      ".claude/agents/agent-improver.md",
-      ".codex/agents/agent-improver.toml",
-      ".agents/agents/agent-improver.md",
-      ".agents/commands/improve/agent-improver.toml",
-      ".gemini/agents/agent-improver.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".opencode/agent/agent-improver.md",
-        "source": "derived"
-      },
       {
         "name": "agent.md",
         "kind": "doc",
@@ -63,42 +46,6 @@
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "scan-integration.cjs",
-        "kind": "file",
-        "path": "scripts/scan-integration.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "generate-profile.cjs",
-        "kind": "file",
-        "path": "scripts/generate-profile.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "score-candidate.cjs",
-        "kind": "file",
-        "path": "scripts/score-candidate.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "run-benchmark.cjs",
-        "kind": "file",
-        "path": "scripts/run-benchmark.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "reduce-state.cjs",
-        "kind": "file",
-        "path": "scripts/reduce-state.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.toml",
-        "kind": "file",
-        "path": ".codex/agents/agent-improver.toml",
         "source": "derived"
       },
       {
@@ -142,11 +89,101 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Solution Transform",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "What It Measures",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Structural Integrity",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Build",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Order",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Integration Scanner",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Dynamic Profile Generator",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Refactored Scorer",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Foundation Scripts",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Script Refactoring",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Updates",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Asset Updates",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Manual Testing Playbook",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hard Blockers",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Quality",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The sk-improve-agent skill evaluates agents by checking **keyword presence in markdown** (~15-20% of what a true agent improvement system needs). The scorer tests \"does the file mention `spec.md`?\" rather than \"does the agent understand spec folders?\". The benchmark tests \"does output have required headings?\" rather than \"is the output correct and useful?\".",
     "created_at": "2026-04-13T04:55:07.905Z",
-    "last_save_at": "2026-04-13T10:56:00.262Z",
+    "last_save_at": "2026-04-13T14:20:38.820Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

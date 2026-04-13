@@ -41,11 +41,6 @@
     "importance_tier": "normal",
     "status": "in_progress",
     "key_files": [
-      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/spec.md",
-      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/plan.md",
-      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/tasks.md",
-      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/checklist.md",
-      ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary.md",
       ".opencode/command/README.txt",
       ".opencode/command/create/README.txt",
       ".opencode/command/memory/README.txt",
@@ -60,39 +55,14 @@
       ".opencode/skill/cli-copilot/README.md",
       ".opencode/skill/cli-gemini/README.md",
       ".opencode/skill/mcp-chrome-devtools/README.md",
-      ".opencode/skill/mcp-clickup/README.md"
+      ".opencode/skill/mcp-clickup/README.md",
+      ".opencode/skill/mcp-coco-index/README.md",
+      ".opencode/skill/mcp-code-mode/README.md",
+      ".opencode/skill/mcp-figma/README.md",
+      ".opencode/skill/skill-advisor/README.md",
+      ".opencode/skill/sk-code-full-stack/README.md"
     ],
     "entities": [
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": ".opencode/specs/03--commands-and-skills/033-skill-command-readme-rewrite/implementation-summary.md",
-        "source": "derived"
-      },
       {
         "name": "README.txt",
         "kind": "file",
@@ -158,11 +128,89 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Batch",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Up Work",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Skill READMEs and command READMEs vary in quality, structure and voice. Most lack two-tier voice, comparison tables, numbered Feature subsections and HVR compliance. The recently upgraded `.opencode/skill/sk-doc/references/specific/readme_creation.md` and `.opencode/skill/sk-doc/references/global/hvr_rules.md` from spec 032 define production-quality standards that no existing skill README meets except the system-spec-kit exemplars.",
     "created_at": "2026-04-12T09:02:50.178Z",
-    "last_save_at": "2026-04-13T10:56:00.241Z",
+    "last_save_at": "2026-04-13T14:20:38.794Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

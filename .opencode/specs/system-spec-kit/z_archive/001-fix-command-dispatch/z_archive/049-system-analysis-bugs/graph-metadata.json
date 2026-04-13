@@ -41,40 +41,25 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "mcp_server/lib/vector-index.js",
-      "mcp_server/context-server.js",
       "scripts/rules/check-folder-naming.sh",
       "scripts/rules/check-files.sh",
-      "scripts/validate-spec.sh",
       "scripts/rules/check-frontmatter.sh",
-      "references/folder_routing.md",
       "templates/handover.md",
-      "templates/implementation-summary.md",
-      "references/template_style_guide.md",
-      "scripts/generate-context.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
       ".opencode/skill/system-spec-kit/scripts/rules/check-folder-naming.sh",
       ".opencode/skill/system-spec-kit/scripts/rules/check-files.sh",
-      "./spec_kit_memory.md",
-      "./memory_system.md",
       "handover.md",
       "implementation-summary.md",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-      ".opencode/skill/system-spec-kit/scripts/validate-spec.sh"
+      ".opencode/skill/system-spec-kit/scripts/rules/check-frontmatter.sh",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "scripts/package.json",
+      "checklist.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "decision-record.md",
+      "research/research.md"
     ],
     "entities": [
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
-        "source": "derived"
-      },
       {
         "name": "check-folder-naming.sh",
         "kind": "script",
@@ -88,21 +73,9 @@
         "source": "derived"
       },
       {
-        "name": "validate-spec.sh",
-        "kind": "script",
-        "path": "scripts/validate-spec.sh",
-        "source": "derived"
-      },
-      {
         "name": "check-frontmatter.sh",
         "kind": "script",
         "path": "scripts/rules/check-frontmatter.sh",
-        "source": "derived"
-      },
-      {
-        "name": "folder_routing.md",
-        "kind": "doc",
-        "path": "references/folder_routing.md",
         "source": "derived"
       },
       {
@@ -118,27 +91,51 @@
         "source": "derived"
       },
       {
-        "name": "template_style_guide.md",
+        "name": "SKILL.md",
         "kind": "doc",
-        "path": "references/template_style_guide.md",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
         "source": "derived"
       },
       {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "scripts/generate-context.js",
+        "name": "package.json",
+        "kind": "config",
+        "path": "scripts/package.json",
         "source": "derived"
       },
       {
-        "name": "spec_kit_memory.md",
+        "name": "checklist.md",
         "kind": "doc",
-        "path": "./spec_kit_memory.md",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "memory_system.md",
+        "name": "spec.md",
         "kind": "doc",
-        "path": "./memory_system.md",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -158,11 +155,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Issue",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Embedding Dimension Mismatch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "High Severity Issues",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Kit Bug Remediation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Estimated Effort",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Embedding Dimension Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Existing Infrastructure",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill revealed **1 CRITICAL bug**, **2 HIGH severity issues**, and **6 MEDIUM issues** that impact the memory indexing system, validation logic, and documentation consistency.",
     "created_at": "2026-04-12T09:02:53.531Z",
-    "last_save_at": "2026-04-13T10:56:03.823Z",
+    "last_save_at": "2026-04-13T14:20:42.397Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

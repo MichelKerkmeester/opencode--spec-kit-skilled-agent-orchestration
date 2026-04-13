@@ -41,14 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".agents/commands/spec_kit/plan.toml",
-      ".agents/commands/spec_kit/implement.toml",
-      ".agents/commands/spec_kit/complete.toml",
-      ".agents/commands/spec_kit/resume.toml",
-      ".agents/commands/memory/save.toml",
-      ".agents/commands/memory/manage.toml",
-      ".agents/commands/memory/learn.toml",
-      "touch .agents/commands/.codex-write-test",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -56,54 +48,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "plan.toml",
-        "kind": "file",
-        "path": ".agents/commands/spec_kit/plan.toml",
-        "source": "derived"
-      },
-      {
-        "name": "implement.toml",
-        "kind": "file",
-        "path": ".agents/commands/spec_kit/implement.toml",
-        "source": "derived"
-      },
-      {
-        "name": "complete.toml",
-        "kind": "file",
-        "path": ".agents/commands/spec_kit/complete.toml",
-        "source": "derived"
-      },
-      {
-        "name": "resume.toml",
-        "kind": "file",
-        "path": ".agents/commands/spec_kit/resume.toml",
-        "source": "derived"
-      },
-      {
-        "name": "save.toml",
-        "kind": "file",
-        "path": ".agents/commands/memory/save.toml",
-        "source": "derived"
-      },
-      {
-        "name": "manage.toml",
-        "kind": "file",
-        "path": ".agents/commands/memory/manage.toml",
-        "source": "derived"
-      },
-      {
-        "name": "learn.toml",
-        "kind": "file",
-        "path": ".agents/commands/memory/learn.toml",
-        "source": "derived"
-      },
-      {
-        "name": ".codex-write-test",
-        "kind": "file",
-        "path": "touch .agents/commands/.codex-write-test",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -151,11 +95,107 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Map",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Record Blocked Mirrors",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "strict",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. SUMMARY",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scope Reconstruction",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Drift Review",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Writable Updates",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Only Mirror Audit",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 016 aligned the live `spec_kit` and `memory` command surfaces before Phase 018 replaced memory-file-first continuity with canonical spec-doc continuity, reduced the resume flow to `handover -> _memory.continuity -> spec docs`, and made `generate-context.js` the only canonical save path for session continuity. The Phase 016 command targets therefore needed a second pass to remove pre-018 continuity wording from the authoritative `.opencode/command/**` surfaces and from the repo-wide command references that point at them.",
     "created_at": "2026-04-12T09:02:53.482Z",
-    "last_save_at": "2026-04-13T10:56:03.713Z",
+    "last_save_at": "2026-04-13T14:20:42.311Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

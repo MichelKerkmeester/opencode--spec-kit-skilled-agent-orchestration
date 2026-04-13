@@ -39,8 +39,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "site-packages/yaml/scanner.py",
-      "special/tests/test_legendre.py",
       ".opencode/skill/system-spec-kit/mcp_server/lib/code-graph/code-graph-db.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/startup-brief.vitest.ts",
       "spec.md",
@@ -50,18 +48,6 @@
       "checklist.md"
     ],
     "entities": [
-      {
-        "name": "scanner.py",
-        "kind": "file",
-        "path": "site-packages/yaml/scanner.py",
-        "source": "derived"
-      },
-      {
-        "name": "test_legendre.py",
-        "kind": "file",
-        "path": "special/tests/test_legendre.py",
-        "source": "derived"
-      },
       {
         "name": "code-graph-db.ts",
         "kind": "code",
@@ -145,11 +131,71 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Chain Design",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Change",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Edge Direction",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "existing",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Fix 3 P1 correctness findings from the deep review (2026-04-02) in `queryStartupHighlights()`. The function currently produces low-signal output due to duplicate entries, vendored/test code domination, and a wrong ranking heuristic. See DR-017.",
     "created_at": "2026-04-12T09:02:53.434Z",
-    "last_save_at": "2026-04-13T10:56:03.638Z",
+    "last_save_at": "2026-04-13T14:20:42.254Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

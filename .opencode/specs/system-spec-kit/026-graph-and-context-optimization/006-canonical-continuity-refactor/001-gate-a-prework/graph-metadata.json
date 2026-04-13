@@ -70,24 +70,6 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "handover.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/handover.md",
-        "source": "derived"
-      },
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/research.md",
-        "source": "derived"
-      },
-      {
         "name": "debug-delegation.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/templates/debug-delegation.md",
@@ -136,6 +118,12 @@
         "source": "derived"
       },
       {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
@@ -158,11 +146,71 @@
         "kind": "test",
         "path": "scripts/tests/generate-context-cli-authority.vitest.ts",
         "source": "derived"
+      },
+      {
+        "name": "Validated Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Keep Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Use Gate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Gate A exists because phase 018 cannot safely begin merge-time continuity writes or archive-state migration while known template debt is still live. `../resource-map.md` flags orphan `metadata` anchor closes in `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`, plus anchorless `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md`; iteration 022 makes those defects hard blockers because `ANCHORS_VALID` and `MERGE_LEGALITY` fail on orphan or missing targets.",
     "created_at": "2026-04-12T09:02:53.477Z",
-    "last_save_at": "2026-04-13T10:56:03.702Z",
+    "last_save_at": "2026-04-13T14:20:42.303Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

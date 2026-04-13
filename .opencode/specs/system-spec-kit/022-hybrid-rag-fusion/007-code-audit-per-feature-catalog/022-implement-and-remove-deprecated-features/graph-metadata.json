@@ -55,9 +55,6 @@
       "mcp_server/lib/search/graph-calibration.ts",
       "mcp_server/lib/cognitive/temporal-contiguity.ts",
       "mcp_server/lib/telemetry/consumption-logger.ts",
-      "mcp_server/lib/eval/channel-attribution.ts",
-      "mcp_server/lib/eval/eval-ceiling.ts",
-      "mcp_server/shared/algorithms/fusion-lab.ts",
       "implementation-summary.md"
     ],
     "entities": [
@@ -140,27 +137,75 @@
         "source": "derived"
       },
       {
-        "name": "channel-attribution.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/eval/channel-attribution.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "eval-ceiling.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/eval/eval-ceiling.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "fusion-lab.ts",
-        "kind": "code",
-        "path": "mcp_server/shared/algorithms/fusion-lab.ts",
+        "name": "Remove Deprecated Features",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Partially Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Why It Matters",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This packet preserves the six remediation targets that closed the `007-code-audit-per-feature-catalog` phase chain: three previously deprecated capabilities that needed release-level verification and three obsolete evaluation/shadow artifacts targeted for retirement. During the 2026-03-25 release-alignment pass, the packet was normalized to reflect its actual role as a release-control tracker, while execution status remains coordinated with the parent release packet at ../../001-hybrid-rag-fusion-epic/012-pre-release-remediation/spec.md.",
     "created_at": "2026-04-12T09:02:50.257Z",
-    "last_save_at": "2026-04-13T10:56:00.377Z",
+    "last_save_at": "2026-04-13T14:20:38.930Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

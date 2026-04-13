@@ -41,11 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
-      ".opencode/skill/system-spec-kit/scripts/renderers/template-renderer.js",
-      "mcp_server/lib/search/vector-index.js",
-      "scripts/renderers/template-renderer.js",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.js",
       ".opencode/skill/system-spec-kit/templates/context_template.md",
       "spec.md",
       "plan.md",
@@ -53,24 +48,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "template-renderer.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/renderers/template-renderer.js",
-        "source": "derived"
-      },
-      {
-        "name": "retry-manager.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.js",
-        "source": "derived"
-      },
       {
         "name": "context_template.md",
         "kind": "doc",
@@ -148,11 +125,77 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Risk Assessment",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "javascript",
+        "kind": "technology",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "any",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "camelCase",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Needed",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completed",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "description:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "trigger_phrases:   -",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "-",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "importance_tier:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "When running `generate-context.js`, two issues occur:",
     "created_at": "2026-04-12T09:02:53.557Z",
-    "last_save_at": "2026-04-13T10:56:03.880Z",
+    "last_save_at": "2026-04-13T14:20:42.444Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

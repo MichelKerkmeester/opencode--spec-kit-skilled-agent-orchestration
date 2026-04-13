@@ -43,7 +43,6 @@
       ".opencode/skill/cli-claude-code/references/claude_tools.md",
       ".opencode/skill/cli-claude-code/references/integration_patterns.md",
       ".opencode/skill/cli-claude-code/assets/prompt_templates.md",
-      ".opencode/skill/scripts/skill_advisor.py",
       ".opencode/skill/README.md",
       ".opencode/README.md",
       "spec.md",
@@ -96,12 +95,6 @@
         "source": "derived"
       },
       {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -148,11 +141,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Purpose External",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill System",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Create",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "No skill exists for external AI assistants (Gemini CLI, Codex CLI, Copilot, etc.) to delegate tasks to Claude Code CLI. The existing `cli-gemini` and `cli-codex` skills enable Claude Code to invoke *other* AIs, but the reverse direction — other AIs invoking Claude Code — has no structured skill. This leaves Claude Code's unique capabilities (extended thinking, `--json-schema`, `--permission-mode plan`, `--max-budget-usd`) inaccessible to external orchestrators.",
     "created_at": "2026-04-12T09:02:50.203Z",
-    "last_save_at": "2026-04-13T10:56:00.292Z",
+    "last_save_at": "2026-04-13T14:20:38.847Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

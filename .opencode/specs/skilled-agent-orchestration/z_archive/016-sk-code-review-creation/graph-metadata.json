@@ -48,7 +48,6 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      ".codex/agents/{review,orchestrate}.toml",
       ".opencode/skill/sk-code-review/SKILL.md",
       ".opencode/skill/sk-code-review/README.md",
       ".opencode/agent/review.md",
@@ -57,8 +56,7 @@
       ".gemini/agents/orchestrate.md",
       ".claude/agents/review.md",
       ".claude/agents/orchestrate.md",
-      ".opencode/skill/scripts/skill_advisor.py",
-      ".opencode/specs/03--commands-and-skills/016-sk-code-review-creation/spec.md"
+      ".opencode/skill/sk-code-review/references/quick_reference.md"
     ],
     "entities": [
       {
@@ -110,12 +108,6 @@
         "source": "derived"
       },
       {
-        "name": "{review,orchestrate}.toml",
-        "kind": "file",
-        "path": ".codex/agents/{review,orchestrate}.toml",
-        "source": "derived"
-      },
-      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-code-review/SKILL.md",
@@ -134,9 +126,9 @@
         "source": "derived"
       },
       {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-review/references/quick_reference.md",
         "source": "derived"
       },
       {
@@ -156,11 +148,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Purpose Promote",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Finalize Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Implementation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Execution",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Review",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Level 2 specification for converting the draft `legacy-single-hyphen-review` package into `sk-code-review`, aligning router behavior to `sk-doc` standards, and wiring `@review` workflows to a baseline+overlay model. ---",
     "created_at": "2026-04-12T09:02:50.217Z",
-    "last_save_at": "2026-04-13T10:56:00.302Z",
+    "last_save_at": "2026-04-13T14:20:38.857Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

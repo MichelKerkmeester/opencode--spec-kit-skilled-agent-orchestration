@@ -56,11 +56,9 @@
       "spec.md",
       ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/spec.md",
       ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md",
-      "ls .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md",
-      "ls .opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
-      "ls .opencode/skill/cli-claude-code/assets/prompt_quality_card.md .opencode/skill/cli-codex/assets/prompt_quality_card.md .opencode/skill/cli-copilot/assets/prompt_quality_card.md .opencode/skill/cli-gemini/assets/prompt_quality_card.md",
-      "rg -n \"FRAMEWORK:|CLEAR_SCORE:|ENHANCED_PROMPT:|ESCALATION_NOTES:\" .opencode/skill/sk-improve-prompt/SKILL.md",
-      "ls .opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md .opencode/skill/cli-claude-code/assets/prompt_quality_card.md .opencode/skill/cli-codex/assets/prompt_quality_card.md .opencode/skill/cli-copilot/assets/prompt_quality_card.md .opencode/skill/cli-gemini/assets/prompt_quality_card.md .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md"
+      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/implementation-summary.md",
+      "implementation-summary.md",
+      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record.md"
     ],
     "entities": [
       {
@@ -114,7 +112,7 @@
       {
         "name": "decision-record.md",
         "kind": "doc",
-        "path": "decision-record.md",
+        "path": ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record.md",
         "source": "derived"
       },
       {
@@ -124,9 +122,9 @@
         "source": "derived"
       },
       {
-        "name": "improve-prompt.md",
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "ls .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md",
+        "path": ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/implementation-summary.md",
         "source": "derived"
       },
       {
@@ -158,11 +156,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execution Protocol",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The four CLI orchestration skills currently build dispatch prompts ad hoc from their local prompt-template assets. That keeps dispatches lightweight, but it leaves framework choice, prompt-quality checks, and escalation behavior implicit. This packet adds a two-tier prompt-quality layer: a tiny guard-safe mirror card that every CLI skill can load by default, and a fresh-context `@improve-prompt` agent that handles only the hard cases.",
     "created_at": "2026-04-12T09:02:50.198Z",
-    "last_save_at": "2026-04-13T10:56:00.282Z",
+    "last_save_at": "2026-04-13T14:20:38.839Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

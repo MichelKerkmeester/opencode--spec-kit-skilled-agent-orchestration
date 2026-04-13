@@ -46,7 +46,6 @@
       "checklist.md",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec.md",
       "spec.md",
-      ".opencode/skills/system-spec-kit/SKILL.md",
       "templates/handover.md",
       "templates/debug-delegation.md"
     ],
@@ -73,18 +72,6 @@
         "name": "spec.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "handover.md",
-        "kind": "doc",
-        "path": "templates/handover.md",
         "source": "derived"
       },
       {
@@ -146,11 +133,71 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Input Feature",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary Add",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Utility Template",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Breakdown Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Design",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Organization Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validation Items Validation",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Verify",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and debug delegation intent.",
     "created_at": "2026-04-12T09:02:53.511Z",
-    "last_save_at": "2026-04-13T10:56:03.778Z",
+    "last_save_at": "2026-04-13T14:20:42.363Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

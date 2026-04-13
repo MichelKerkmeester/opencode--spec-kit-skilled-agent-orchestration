@@ -38,37 +38,16 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
-      ".opencode/skill/system-spec-kit/scripts/test-bug-fixes.js",
       "mcp_server/INSTALL_GUIDE.md",
-      ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
       "spec.md",
       "plan.md",
       "checklist.md"
     ],
     "entities": [
       {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "test-bug-fixes.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/test-bug-fixes.js",
-        "source": "derived"
-      },
-      {
         "name": "INSTALL_GUIDE.md",
         "kind": "doc",
         "path": "mcp_server/INSTALL_GUIDE.md",
-        "source": "derived"
-      },
-      {
-        "name": "MCP - Spec Kit Memory.md",
-        "kind": "doc",
-        "path": ".opencode/install_guides/MCP/MCP - Spec Kit Memory.md",
         "source": "derived"
       },
       {
@@ -142,11 +121,53 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Changes Required",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Testing Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Transaction Nesting Fix",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Voyage",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pre-Implementation",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The `memory_index_scan` MCP tool fails with SQLite error:",
     "created_at": "2026-04-12T09:02:53.536Z",
-    "last_save_at": "2026-04-13T10:56:03.834Z",
+    "last_save_at": "2026-04-13T14:20:42.408Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

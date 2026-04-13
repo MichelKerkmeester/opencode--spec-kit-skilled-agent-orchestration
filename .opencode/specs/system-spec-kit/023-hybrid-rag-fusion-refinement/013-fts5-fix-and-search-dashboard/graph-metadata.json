@@ -42,7 +42,6 @@
     "status": "in_progress",
     "key_files": [
       ".opencode/command/memory/search.md",
-      ".agents/commands/memory/search.toml",
       "mcp_server/lib/search/sqlite-fts.ts",
       "mcp_server/lib/search/vector-index-store.ts",
       "mcp_server/core/db-state.ts",
@@ -60,19 +59,14 @@
       "handlers/memory-context.ts",
       "lib/search/pipeline/stage1-candidate-gen.ts",
       "lib/search/pipeline/types.ts",
-      "lib/search/pipeline/stage2-fusion.ts"
+      "lib/search/pipeline/stage2-fusion.ts",
+      "checklist.md"
     ],
     "entities": [
       {
         "name": "search.md",
         "kind": "doc",
         "path": ".opencode/command/memory/search.md",
-        "source": "derived"
-      },
-      {
-        "name": "search.toml",
-        "kind": "file",
-        "path": ".agents/commands/memory/search.toml",
         "source": "derived"
       },
       {
@@ -158,11 +152,65 @@
         "kind": "doc",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Search Dashboard",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Path Drift Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 13** of the ESM Module Compliance specification and captures the FTS5/search dashboard closure workstream.",
     "created_at": "2026-04-12T09:02:50.339Z",
-    "last_save_at": "2026-04-13T10:56:00.525Z",
+    "last_save_at": "2026-04-13T14:20:39.069Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

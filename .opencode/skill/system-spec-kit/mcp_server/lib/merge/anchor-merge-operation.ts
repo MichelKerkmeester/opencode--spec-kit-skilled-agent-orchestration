@@ -121,6 +121,10 @@ interface MergeTransformOutcome {
   metadata?: AnchorMergeResult['metadata'];
 }
 
+interface UpdateInPlaceOptions {
+  checklistOnly?: boolean;
+}
+
 const ADR_ANCHOR_RE = /<!--\s*ANCHOR:\s*adr-(\d{3})\s*-->/gi;
 const ADR_TITLE_RE = /^##\s+ADR-\d{3}:\s+(.+)$/gim;
 const CONFLICT_MARKER_RE = /^(<<<<<<<|=======|>>>>>>>)(?: .*)?$/m;
@@ -136,6 +140,9 @@ export function anchorMergeOperation(request: AnchorMergeRequest): AnchorMergeRe
   }
 
   const split = splitDocument(request.documentContent);
+  if (request.mergeMode === 'update-in-place') {
+    prevalidateTaskUpdateMerge(request, split.body);
+  }
   if (request.mergeMode === 'insert-new-adr' && request.anchorId === 'adr-NNN') {
     failOnCorruptedAnchorBody(split.body, request);
     const transform = mergeInsertNewAdr(
@@ -268,6 +275,8 @@ function dispatchMergeMode(
   newline: string
 ): MergeTransformOutcome {
   failOnCorruptedAnchorBody(anchorBody, request);
+  const updateInPlacePayload = request.payload as UpdateInPlacePayload;
+  const checklistOnly = isTaskUpdatePrevalidationCandidate(request.docPath, updateInPlacePayload.targetId);
 
   switch (request.mergeMode) {
     case 'append-as-paragraph':
@@ -277,7 +286,7 @@ function dispatchMergeMode(
     case 'append-table-row':
       return mergeAppendTableRow(request.payload as AppendTableRowPayload, anchorBody, request.dedupeFingerprint, newline);
     case 'update-in-place':
-      return mergeUpdateInPlace(request.payload as UpdateInPlacePayload, anchorBody);
+      return mergeUpdateInPlace(updateInPlacePayload, anchorBody, { checklistOnly });
     case 'append-section':
       return mergeAppendSection(request.payload as AppendSectionPayload, anchorBody, request.dedupeFingerprint, newline);
     default:
@@ -437,7 +446,11 @@ function mergeAppendTableRow(
   };
 }
 
-function mergeUpdateInPlace(payload: UpdateInPlacePayload, anchorBody: string): MergeTransformOutcome {
+function mergeUpdateInPlace(
+  payload: UpdateInPlacePayload,
+  anchorBody: string,
+  options: UpdateInPlaceOptions = {},
+): MergeTransformOutcome {
   const targetId = normalizeInlineText(payload.targetId);
   if (!targetId) {
     throw new AnchorMergeOperationError(
@@ -450,7 +463,7 @@ function mergeUpdateInPlace(payload: UpdateInPlacePayload, anchorBody: string): 
   const lines = anchorBody.split(/\r?\n/);
   const targetMatches = lines
     .map((line, index) => ({ line, index }))
-    .filter(({ line }) => new RegExp(`\\b${escapeRegex(targetId)}\\b`).test(line));
+    .filter(({ line }) => matchUpdateInPlaceLine(line, targetId, options.checklistOnly ?? false));
 
   if (targetMatches.length === 0) {
     throw new AnchorMergeOperationError(
@@ -517,6 +530,52 @@ function mergeUpdateInPlace(payload: UpdateInPlacePayload, anchorBody: string): 
       updatedLineIndex: target.index,
     },
   };
+}
+
+function prevalidateTaskUpdateMerge(request: AnchorMergeRequest, documentBody: string): void {
+  const payload = request.payload as UpdateInPlacePayload;
+  const targetId = normalizeInlineText(payload.targetId);
+  if (!isTaskUpdatePrevalidationCandidate(request.docPath, targetId)) {
+    return;
+  }
+
+  const matches = resolveChecklistTaskMatches(documentBody, targetId);
+  if (matches.length === 1) {
+    return;
+  }
+
+  if (matches.length === 0) {
+    throw new AnchorMergeOperationError(
+      'SPECDOC_MERGE_002',
+      `No matching task line found for ${targetId}`,
+      { targetId, occurrences: 0 }
+    );
+  }
+
+  throw new AnchorMergeOperationError(
+    'SPECDOC_MERGE_003',
+    `Ambiguous: ${matches.length} matching task lines for ${targetId}`,
+    { targetId, occurrences: matches.length }
+  );
+}
+
+function isTaskUpdatePrevalidationCandidate(docPath: string, targetId: string): boolean {
+  return /(?:^|\/)(?:tasks|checklist)\.md$/iu.test(docPath) && /^(?:T\d{3}|CHK-\d{3})$/u.test(targetId);
+}
+
+function resolveChecklistTaskMatches(documentBody: string, targetId: string): Array<{ line: string; index: number }> {
+  return documentBody
+    .split(/\r?\n/)
+    .map((line, index) => ({ line, index }))
+    .filter(({ line }) => matchUpdateInPlaceLine(line, targetId, true));
+}
+
+function matchUpdateInPlaceLine(line: string, targetId: string, checklistOnly: boolean): boolean {
+  const targetPattern = new RegExp(`\\b${escapeRegex(targetId)}\\b`);
+  if (checklistOnly) {
+    return /^\s*(?:[-*]|\d+\.)\s+\[[ xX]\]\s+/.test(line) && targetPattern.test(line);
+  }
+  return targetPattern.test(line);
 }
 
 function mergeAppendSection(

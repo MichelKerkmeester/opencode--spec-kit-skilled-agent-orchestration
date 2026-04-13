@@ -151,11 +151,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Structured",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Pipeline",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This phase addresses structured-input (`--json`/`--stdin`) quality regressions in memory save generation where normalization and extraction assumptions caused thin, low-value output. The work standardizes normalization, synthesis, quality scoring, and contamination handling for structured flows while preserving transcript-mode behavior.",
     "created_at": "2026-04-12T09:02:50.338Z",
-    "last_save_at": "2026-04-13T10:56:00.523Z",
+    "last_save_at": "2026-04-13T14:20:39.067Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

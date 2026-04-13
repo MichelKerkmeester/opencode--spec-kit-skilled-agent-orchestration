@@ -31,7 +31,6 @@
       ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
       ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
-      ".opencode/specs/system-spec-kit/999-hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/spec.md",
       "references/workflows/quick_reference.md",
       "spec.md",
       "plan.md",
@@ -134,11 +133,41 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Rollback Plan If",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rollback Plan",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Existing Public",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase defines a task-to-tool routing map for the adoption packet. It explains which existing Public surfaces solve which operator problems and where thin facades fit. It does not create new runtime authority or rewrite the search and bootstrap engines.",
     "created_at": "2026-04-13T04:56:07.089Z",
-    "last_save_at": "2026-04-13T10:56:03.956Z",
+    "last_save_at": "2026-04-13T14:20:42.493Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

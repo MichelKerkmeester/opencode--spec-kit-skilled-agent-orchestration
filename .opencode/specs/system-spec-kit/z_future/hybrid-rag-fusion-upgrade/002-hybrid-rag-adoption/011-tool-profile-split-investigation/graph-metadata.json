@@ -133,11 +133,53 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Decision Criteria",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Condition Decide",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Experiments",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Condition",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "a",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates whether Public should experiment with Engram-style tool-profile packaging similar to `ProfileAgent` and `ProfileAdmin`, but only as a delivery-layer teaching aid. It studies token savings, operator clarity, and failure modes without changing tool registration or ownership. It does not reduce the current tool surface or ship a new authority lane.",
     "created_at": "2026-04-13T04:56:07.091Z",
-    "last_save_at": "2026-04-13T10:56:03.960Z",
+    "last_save_at": "2026-04-13T14:20:42.496Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

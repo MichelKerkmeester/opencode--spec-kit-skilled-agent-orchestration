@@ -41,106 +41,17 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "lib/cognitive/fsrs-scheduler.js",
-      "lib/cognitive/prediction-error-gate.js",
-      "lib/cognitive/tier-classifier.js",
-      "lib/cognitive/attention-decay.js",
-      "lib/cognitive/index.js",
-      "lib/scoring/composite-scoring.js",
-      "lib/search/vector-index.js",
-      "handlers/memory-save.js",
-      "handlers/memory-search.js",
-      "tests/fsrs-scheduler.test.js",
-      "tests/verify-cognitive-upgrade.js",
-      ".opencode/command/memory/checkpoint.md",
-      ".opencode/command/memory/database.md",
       ".opencode/command/memory/save.md",
       ".opencode/command/memory/search.md",
       "decision-record.md",
-      "mcp_server/lib/cognitive/fsrs-scheduler.js",
-      "mcp_server/lib/cognitive/prediction-error-gate.js",
-      "mcp_server/lib/cognitive/attention-decay.js",
-      "mcp_server/lib/cognitive/tier-classifier.js"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md",
+      "research/research.md"
     ],
     "entities": [
-      {
-        "name": "fsrs-scheduler.js",
-        "kind": "code",
-        "path": "lib/cognitive/fsrs-scheduler.js",
-        "source": "derived"
-      },
-      {
-        "name": "prediction-error-gate.js",
-        "kind": "code",
-        "path": "lib/cognitive/prediction-error-gate.js",
-        "source": "derived"
-      },
-      {
-        "name": "tier-classifier.js",
-        "kind": "code",
-        "path": "lib/cognitive/tier-classifier.js",
-        "source": "derived"
-      },
-      {
-        "name": "attention-decay.js",
-        "kind": "code",
-        "path": "lib/cognitive/attention-decay.js",
-        "source": "derived"
-      },
-      {
-        "name": "index.js",
-        "kind": "code",
-        "path": "lib/cognitive/index.js",
-        "source": "derived"
-      },
-      {
-        "name": "composite-scoring.js",
-        "kind": "code",
-        "path": "lib/scoring/composite-scoring.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "lib/search/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-save.js",
-        "kind": "code",
-        "path": "handlers/memory-save.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-search.js",
-        "kind": "code",
-        "path": "handlers/memory-search.js",
-        "source": "derived"
-      },
-      {
-        "name": "fsrs-scheduler.test.js",
-        "kind": "code",
-        "path": "tests/fsrs-scheduler.test.js",
-        "source": "derived"
-      },
-      {
-        "name": "verify-cognitive-upgrade.js",
-        "kind": "code",
-        "path": "tests/verify-cognitive-upgrade.js",
-        "source": "derived"
-      },
-      {
-        "name": "checkpoint.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/checkpoint.md",
-        "source": "derived"
-      },
-      {
-        "name": "database.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/database.md",
-        "source": "derived"
-      },
       {
         "name": "save.md",
         "kind": "doc",
@@ -158,11 +69,137 @@
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specificati",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Cognitive Memory Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Setup Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Schema Migration",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Core Implementation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory patterns: FSRS power-law decay, prediction error gating for conflict detection, and dual-strength tracking. This transforms the system from \"store everything forever\" to intelligent memory that naturally retains what matters and forgets what doesn't.",
     "created_at": "2026-04-12T09:02:53.550Z",
-    "last_save_at": "2026-04-13T10:56:03.865Z",
+    "last_save_at": "2026-04-13T14:20:42.432Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

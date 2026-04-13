@@ -138,11 +138,59 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hypothetical Document Embeddings",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Impact",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Quality",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 11 Query Intelligence features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/12--query-intelligence/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.251Z",
-    "last_save_at": "2026-04-13T10:56:00.364Z",
+    "last_save_at": "2026-04-13T14:20:38.912Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

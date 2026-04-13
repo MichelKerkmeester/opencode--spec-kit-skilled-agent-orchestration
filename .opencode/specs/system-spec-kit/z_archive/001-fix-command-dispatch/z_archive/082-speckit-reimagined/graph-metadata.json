@@ -41,128 +41,172 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "lib/storage/causal-edges.js",
-      "handlers/causal-graph.js",
-      "tests/causal-edges.test.js",
-      "lib/search/vector-index.js",
-      "lib/storage/index.js",
-      "handlers/index.js",
-      "lib/session/session-manager.js",
-      "lib/errors/recovery-hints.js",
-      "lib/search/bm25-index.js",
-      "lib/search/cross-encoder.js",
-      "lib/learning/corrections.js",
-      "lib/cognitive/archival-manager.js",
-      "lib/architecture/layer-definitions.js",
-      "lib/embeddings/provider-chain.js",
-      "lib/response/envelope.js",
-      "handlers/memory-context.js",
-      ".opencode/command/memory/continue.md",
-      ".opencode/command/memory/context.md",
-      ".opencode/command/memory/why.md",
-      ".opencode/command/memory/correct.md"
+      ".opencode/command/memory/learn.md",
+      "tests/test-coverage-matrix.md",
+      "tests/test-implementation-guide.md",
+      "tests/existing-tests-audit.md",
+      ".opencode/skill/system-spec-kit/templates/context_template.md",
+      "shared/embeddings.js",
+      ".opencode/command/memory/save.md",
+      "tests/README.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "shared/embeddings/factory.js",
+      "spec.md",
+      "shared/embeddings/providers/voyage.js",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "causal-edges.js",
-        "kind": "code",
-        "path": "lib/storage/causal-edges.js",
-        "source": "derived"
-      },
-      {
-        "name": "causal-graph.js",
-        "kind": "code",
-        "path": "handlers/causal-graph.js",
-        "source": "derived"
-      },
-      {
-        "name": "causal-edges.test.js",
-        "kind": "code",
-        "path": "tests/causal-edges.test.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "lib/search/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "index.js",
-        "kind": "code",
-        "path": "lib/storage/index.js",
-        "source": "derived"
-      },
-      {
-        "name": "session-manager.js",
-        "kind": "code",
-        "path": "lib/session/session-manager.js",
-        "source": "derived"
-      },
-      {
-        "name": "recovery-hints.js",
-        "kind": "code",
-        "path": "lib/errors/recovery-hints.js",
-        "source": "derived"
-      },
-      {
-        "name": "bm25-index.js",
-        "kind": "code",
-        "path": "lib/search/bm25-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "cross-encoder.js",
-        "kind": "code",
-        "path": "lib/search/cross-encoder.js",
-        "source": "derived"
-      },
-      {
-        "name": "corrections.js",
-        "kind": "code",
-        "path": "lib/learning/corrections.js",
-        "source": "derived"
-      },
-      {
-        "name": "archival-manager.js",
-        "kind": "code",
-        "path": "lib/cognitive/archival-manager.js",
-        "source": "derived"
-      },
-      {
-        "name": "layer-definitions.js",
-        "kind": "code",
-        "path": "lib/architecture/layer-definitions.js",
-        "source": "derived"
-      },
-      {
-        "name": "provider-chain.js",
-        "kind": "code",
-        "path": "lib/embeddings/provider-chain.js",
-        "source": "derived"
-      },
-      {
-        "name": "envelope.js",
-        "kind": "code",
-        "path": "lib/response/envelope.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-context.js",
-        "kind": "code",
-        "path": "handlers/memory-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "continue.md",
+        "name": "learn.md",
         "kind": "doc",
-        "path": ".opencode/command/memory/continue.md",
+        "path": ".opencode/command/memory/learn.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-coverage-matrix.md",
+        "kind": "doc",
+        "path": "tests/test-coverage-matrix.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-implementation-guide.md",
+        "kind": "doc",
+        "path": "tests/test-implementation-guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "existing-tests-audit.md",
+        "kind": "doc",
+        "path": "tests/existing-tests-audit.md",
+        "source": "derived"
+      },
+      {
+        "name": "context_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "embeddings.js",
+        "kind": "code",
+        "path": "shared/embeddings.js",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "tests/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "factory.js",
+        "kind": "code",
+        "path": "shared/embeddings/factory.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "voyage.js",
+        "kind": "code",
+        "path": "shared/embeddings/providers/voyage.js",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current State",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Transform",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre-analysis documents examining dotmd, seu-claude, drift, and system-speckit architectures. This specification defines 15 P0 blockers (10 original + 5 embedding resilience), 18 P1 requirements, and establishes a unified 6-7 week implementation roadmap to transform SpecKit into a best-in-class memory system with hybrid search, causal graphs, embedding resilience, and self-improvement capabilities.",
     "created_at": "2026-04-12T09:02:53.552Z",
-    "last_save_at": "2026-04-13T10:56:03.870Z",
+    "last_save_at": "2026-04-13T14:20:42.436Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

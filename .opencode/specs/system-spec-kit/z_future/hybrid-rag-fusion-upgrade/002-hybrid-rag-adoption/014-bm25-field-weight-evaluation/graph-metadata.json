@@ -135,11 +135,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Affected Files",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Investigation Order",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Map Modus",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Decision Criteria",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Condition Decide",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "no",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "a",
+        "kind": "key_phrase",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P0",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates whether Modus-style BM25 field weighting is worth exposing or tuning inside Public's constrained lexical retrieval path. It studies field-mapping, benchmark design, and operator visibility while preserving Public's current hybrid architecture. It does not approve BM25 as a replacement for hybrid retrieval.",
     "created_at": "2026-04-13T04:56:07.092Z",
-    "last_save_at": "2026-04-13T10:56:03.963Z",
+    "last_save_at": "2026-04-13T14:20:42.498Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

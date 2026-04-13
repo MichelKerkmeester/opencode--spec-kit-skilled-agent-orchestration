@@ -142,11 +142,59 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Document Git Bash",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "High Priority",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Add Gate",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Analysis Phase",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Synthesis Phase",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Phase",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Fix Phase",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-time experience.",
     "created_at": "2026-04-12T09:02:53.523Z",
-    "last_save_at": "2026-04-13T10:56:03.802Z",
+    "last_save_at": "2026-04-13T14:20:42.381Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

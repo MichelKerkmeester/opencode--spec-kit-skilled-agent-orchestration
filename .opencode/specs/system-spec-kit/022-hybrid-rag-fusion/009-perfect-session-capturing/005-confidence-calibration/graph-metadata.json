@@ -45,7 +45,6 @@
       "scripts/tests/decision-confidence.vitest.ts",
       "scripts/tests/memory-render-fixture.vitest.ts",
       "scripts/tests/test-extractors-loaders.js",
-      "memory/metadata.json",
       "scripts/types/session-types.ts",
       "scripts/extractors/decision-extractor.ts",
       "scripts/lib/decision-tree-generator.ts",
@@ -83,12 +82,6 @@
         "name": "test-extractors-loaders.js",
         "kind": "code",
         "path": "scripts/tests/test-extractors-loaders.js",
-        "source": "derived"
-      },
-      {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "memory/metadata.json",
         "source": "derived"
       },
       {
@@ -156,11 +149,65 @@
         "kind": "doc",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Confidence Calibration This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Confidence Calibration",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.270Z",
-    "last_save_at": "2026-04-13T10:56:00.403Z",
+    "last_save_at": "2026-04-13T14:20:38.959Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

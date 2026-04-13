@@ -156,11 +156,59 @@
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Shared Payload",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Provenance Layer",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "The Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 1 turned a research recommendation into runtime code by introducing one shared payload/provenance contract across startup, recovery, and compaction. The Level 3 repair keeps that same shipped scope intact and adds the architecture context needed for future recovery and review.",
     "created_at": "2026-04-12T09:02:53.436Z",
-    "last_save_at": "2026-04-13T10:56:03.642Z",
+    "last_save_at": "2026-04-13T14:20:42.257Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

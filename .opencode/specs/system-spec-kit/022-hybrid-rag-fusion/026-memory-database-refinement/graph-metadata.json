@@ -47,7 +47,6 @@
       "lib/search/vector-index-store.ts",
       "lib/storage/checkpoints.ts",
       "handlers/checkpoints.ts",
-      "handlers/shared-memory.ts",
       "lib/storage/reconsolidation.ts",
       "lib/errors.ts",
       "core/db-state.ts",
@@ -60,7 +59,8 @@
       "handlers/causal-graph.ts",
       "lib/search/vector-index-schema.ts",
       "lib/cache/embedding-cache.ts",
-      "handlers/chunking-orchestrator.ts"
+      "handlers/chunking-orchestrator.ts",
+      "lib/chunking/anchor-chunker.ts"
     ],
     "entities": [
       {
@@ -91,12 +91,6 @@
         "name": "checkpoints.ts",
         "kind": "code",
         "path": "lib/storage/checkpoints.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-memory.ts",
-        "kind": "code",
-        "path": "handlers/shared-memory.ts",
         "source": "derived"
       },
       {
@@ -158,11 +152,65 @@
         "kind": "code",
         "path": "handlers/causal-graph.ts",
         "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "embedding-cache.ts",
+        "kind": "code",
+        "path": "lib/cache/embedding-cache.ts",
+        "source": "derived"
+      },
+      {
+        "name": "chunking-orchestrator.ts",
+        "kind": "code",
+        "path": "handlers/chunking-orchestrator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "anchor-chunker.ts",
+        "kind": "code",
+        "path": "lib/chunking/anchor-chunker.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Database",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "The Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Database Refinement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The Spec Kit Memory MCP server is a 70K+ LOC system with 31 MCP tools, a 57-column `memory_index` table, 5-channel hybrid search, causal graph traversal, FSRS-based scheduling, PE-gating, reconsolidation, lineage versioning, and a 2,500-LOC monolithic save pipeline. Prior spec work (023-ablation-benchmark-integrity) already exposed silent cross-DB scoring, evaluation-time truncation leaking into Recall@20, and stale ground-truth IDs. The system has 26 documented BUG-fix comments, a flagged modularization TODO on the save handler, and multiple gated feature flags whose interaction paths are untested in combination.",
     "created_at": "2026-04-12T09:02:50.315Z",
-    "last_save_at": "2026-04-13T10:56:00.493Z",
+    "last_save_at": "2026-04-13T14:20:39.036Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

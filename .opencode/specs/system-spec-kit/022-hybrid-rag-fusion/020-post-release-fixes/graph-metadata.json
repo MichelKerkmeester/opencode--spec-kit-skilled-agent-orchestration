@@ -44,14 +44,12 @@
       "review/review-report.md",
       ".opencode/skill/system-spec-kit/mcp_server/scripts/map-ground-truth-ids.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts",
-      "formatters/search-results.js",
       "plan.md",
       "mcp_server/scripts/map-ground-truth-ids.ts",
       "mcp_server/tests/modularization.vitest.ts",
       "tasks.md",
       "checklist.md",
-      "./review/review-report.md",
-      "./review-report.md",
+      "review-report.md",
       "spec.md",
       "implementation-summary.md",
       "decision-record.md"
@@ -73,12 +71,6 @@
         "name": "modularization.vitest.ts",
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "search-results.js",
-        "kind": "code",
-        "path": "formatters/search-results.js",
         "source": "derived"
       },
       {
@@ -152,11 +144,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Coverage Summary",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active Count",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Representation In This File",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet is now the live remediation contract for the canonical review recorded under [`review/review-report.md`](./review/review-report.md).",
     "created_at": "2026-04-12T09:02:50.310Z",
-    "last_save_at": "2026-04-13T10:56:00.484Z",
+    "last_save_at": "2026-04-13T14:20:39.026Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

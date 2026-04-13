@@ -42,11 +42,7 @@
     "key_files": [
       "spec.md",
       "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "/specs/[###-feature-name]/spec.md",
-      ".opencode/skills/system-spec-kit/templates/checklist.md",
-      "research/research.md"
+      "tasks.md"
     ],
     "entities": [
       {
@@ -65,18 +61,6 @@
         "name": "tasks.md",
         "kind": "doc",
         "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -144,11 +128,53 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Primary Dependencies",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Breakdown Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Design",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Organization Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tests The",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Basic Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Complete feature specification defining requirements, user stories, and success criteria.",
     "created_at": "2026-04-12T09:02:53.510Z",
-    "last_save_at": "2026-04-13T10:56:03.777Z",
+    "last_save_at": "2026-04-13T14:20:42.362Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -41,86 +41,146 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "references/environment_variables.md",
       "references/config/environment_variables.md",
-      "references/troubleshooting.md",
       "references/debugging/troubleshooting.md",
-      "references/universal_debugging_methodology.md",
       "references/debugging/universal_debugging_methodology.md",
-      "references/memory_system.md",
       "references/memory/memory_system.md",
-      "references/save_workflow.md",
       "references/memory/save_workflow.md",
-      "references/trigger_config.md",
       "references/memory/trigger_config.md",
-      "references/folder_routing.md",
       "references/structure/folder_routing.md",
-      "references/folder_structure.md",
       "references/structure/folder_structure.md",
-      "references/sub_folder_versioning.md",
       "references/structure/sub_folder_versioning.md",
-      "references/level_specifications.md",
-      "references/templates/level_specifications.md"
+      "references/templates/level_specifications.md",
+      "references/templates/template_guide.md",
+      "references/templates/template_style_guide.md",
+      "references/validation/path_scoped_rules.md",
+      "references/validation/phase_checklists.md",
+      "references/validation/validation_rules.md",
+      "references/workflows/execution_methods.md",
+      "references/workflows/quick_reference.md",
+      "references/workflows/worked_examples.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "spec.md"
     ],
     "entities": [
       {
         "name": "environment_variables.md",
         "kind": "doc",
-        "path": "references/environment_variables.md",
+        "path": "references/config/environment_variables.md",
         "source": "derived"
       },
       {
         "name": "troubleshooting.md",
         "kind": "doc",
-        "path": "references/troubleshooting.md",
+        "path": "references/debugging/troubleshooting.md",
         "source": "derived"
       },
       {
         "name": "universal_debugging_methodology.md",
         "kind": "doc",
-        "path": "references/universal_debugging_methodology.md",
+        "path": "references/debugging/universal_debugging_methodology.md",
         "source": "derived"
       },
       {
         "name": "memory_system.md",
         "kind": "doc",
-        "path": "references/memory_system.md",
+        "path": "references/memory/memory_system.md",
         "source": "derived"
       },
       {
         "name": "save_workflow.md",
         "kind": "doc",
-        "path": "references/save_workflow.md",
+        "path": "references/memory/save_workflow.md",
         "source": "derived"
       },
       {
         "name": "trigger_config.md",
         "kind": "doc",
-        "path": "references/trigger_config.md",
+        "path": "references/memory/trigger_config.md",
         "source": "derived"
       },
       {
         "name": "folder_routing.md",
         "kind": "doc",
-        "path": "references/folder_routing.md",
+        "path": "references/structure/folder_routing.md",
         "source": "derived"
       },
       {
         "name": "folder_structure.md",
         "kind": "doc",
-        "path": "references/folder_structure.md",
+        "path": "references/structure/folder_structure.md",
         "source": "derived"
       },
       {
         "name": "sub_folder_versioning.md",
         "kind": "doc",
-        "path": "references/sub_folder_versioning.md",
+        "path": "references/structure/sub_folder_versioning.md",
         "source": "derived"
       },
       {
         "name": "level_specifications.md",
         "kind": "doc",
-        "path": "references/level_specifications.md",
+        "path": "references/templates/level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_guide.md",
+        "kind": "doc",
+        "path": "references/templates/template_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_style_guide.md",
+        "kind": "doc",
+        "path": "references/templates/template_style_guide.md",
+        "source": "derived"
+      },
+      {
+        "name": "path_scoped_rules.md",
+        "kind": "doc",
+        "path": "references/validation/path_scoped_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase_checklists.md",
+        "kind": "doc",
+        "path": "references/validation/phase_checklists.md",
+        "source": "derived"
+      },
+      {
+        "name": "validation_rules.md",
+        "kind": "doc",
+        "path": "references/validation/validation_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "execution_methods.md",
+        "kind": "doc",
+        "path": "references/workflows/execution_methods.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": "references/workflows/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "worked_examples.md",
+        "kind": "doc",
+        "path": "references/workflows/worked_examples.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -146,23 +206,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Technical Context",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Target Skill",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "The `system-spec-kit` skill's `references/` folder currently has a flat structure with all reference files at the root level. This makes navigation difficult, slows down discovery of relevant documentation, and creates inconsistency with other skills like `workflows-code` that use organized sub-folder structures.",
     "created_at": "2026-04-12T09:02:53.535Z",
-    "last_save_at": "2026-04-13T10:56:03.832Z",
+    "last_save_at": "2026-04-13T14:20:42.406Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

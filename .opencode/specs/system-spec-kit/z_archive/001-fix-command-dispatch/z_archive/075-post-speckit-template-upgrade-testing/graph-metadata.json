@@ -47,9 +47,6 @@
       "checklist.md",
       "decision-record.md",
       "database/context-index.sqlite",
-      "cp database/context-index.sqlite.bak database/context-index.sqlite",
-      "scripts/compose.sh",
-      "scripts/test-validation.sh",
       "implementation-summary.md"
     ],
     "entities": [
@@ -87,18 +84,6 @@
         "name": "context-index.sqlite",
         "kind": "file",
         "path": "database/context-index.sqlite",
-        "source": "derived"
-      },
-      {
-        "name": "compose.sh",
-        "kind": "script",
-        "path": "scripts/compose.sh",
-        "source": "derived"
-      },
-      {
-        "name": "test-validation.sh",
-        "kind": "script",
-        "path": "scripts/test-validation.sh",
         "source": "derived"
       },
       {
@@ -148,11 +133,71 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Test Harness Architecture",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Isolated Test Suites",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template System Tests",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verify Level",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validation Rule Tests",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Items",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This specification defines a comprehensive test suite to validate the system-spec-kit v1.9.0 after the CORE+ADDENDUM template architecture upgrade. The test suite covers 44 JavaScript modules, 14 MCP tools, 17 shell scripts, and the complete template system to ensure all components function correctly post-upgrade.",
     "created_at": "2026-04-12T09:02:53.547Z",
-    "last_save_at": "2026-04-13T10:56:03.858Z",
+    "last_save_at": "2026-04-13T14:20:42.427Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

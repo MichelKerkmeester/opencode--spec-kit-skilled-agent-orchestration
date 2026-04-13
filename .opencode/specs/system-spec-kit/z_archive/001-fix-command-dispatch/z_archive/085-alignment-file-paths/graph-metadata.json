@@ -41,26 +41,12 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.js",
-      ".opencode/command/memory/continue.md",
       "spec.md",
       "plan.md",
       "checklist.md",
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "alignment-validator.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.js",
-        "source": "derived"
-      },
-      {
-        "name": "continue.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory/continue.md",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -144,11 +130,71 @@
         "kind": "key_phrase",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "mismatch",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: alignment-validator.js Updates",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Alignment File Paths Fix",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Alignment File Paths",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Must Complete",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Complete",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Results Summary",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Integration Test Results",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Changes Made",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Memory files are being saved to incorrect spec folders because the alignment scoring ignores file paths. When work is done on shared infrastructure (`.opencode/skill/system-spec-kit/`), the memory is saved to a project-specific folder (e.g., `005-anobel.com`) based on text matching alone.",
     "created_at": "2026-04-12T09:02:53.557Z",
-    "last_save_at": "2026-04-13T10:56:03.881Z",
+    "last_save_at": "2026-04-13T14:20:42.444Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

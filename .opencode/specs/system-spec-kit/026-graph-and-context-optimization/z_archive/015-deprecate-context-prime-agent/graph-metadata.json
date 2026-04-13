@@ -38,23 +38,14 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".codex/agents/context-prime.toml",
       ".opencode/agent/orchestrate.md",
       ".codex/agents/orchestrate.toml",
-      "rg -n \"context-prime\" .opencode/agent/ .claude/agents/ .codex/agents/ .gemini/agents/ CLAUDE.md",
-      "git diff --check -- .opencode/agent/orchestrate.md .codex/agents/orchestrate.toml CLAUDE.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent .opencode/agent/context-prime.md .claude/agents/context-prime.md .codex/agents/context-prime.toml .gemini/agents/context-prime.md",
       "spec.md",
       "tasks.md",
       "implementation-summary.md",
       "plan.md"
     ],
     "entities": [
-      {
-        "name": "context-prime.toml",
-        "kind": "file",
-        "path": ".codex/agents/context-prime.toml",
-        "source": "derived"
-      },
       {
         "name": "orchestrate.md",
         "kind": "doc",
@@ -65,18 +56,6 @@
         "name": "orchestrate.toml",
         "kind": "file",
         "path": ".codex/agents/orchestrate.toml",
-        "source": "derived"
-      },
-      {
-        "name": " CLAUDE.md",
-        "kind": "doc",
-        "path": "rg -n \"context-prime\" .opencode/agent/ .claude/agents/ .codex/agents/ .gemini/agents/ CLAUDE.md",
-        "source": "derived"
-      },
-      {
-        "name": "context-prime.md",
-        "kind": "doc",
-        "path": "git diff --check -- .opencode/agent/orchestrate.md .codex/agents/orchestrate.toml CLAUDE.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-deprecate-context-prime-agent .opencode/agent/context-prime.md .claude/agents/context-prime.md .codex/agents/context-prime.toml .gemini/agents/context-prime.md",
         "source": "derived"
       },
       {
@@ -144,11 +123,77 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: Implementation",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 3: Verification",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The runtime agent surfaces still exposed `@context-prime` even though session startup priming is now handled by the SessionStart hook. That left a redundant bootstrap profile in the visible taxonomy and stale dispatch guidance in orchestrator documentation.",
     "created_at": "2026-04-12T09:02:53.472Z",
-    "last_save_at": "2026-04-13T10:56:03.746Z",
+    "last_save_at": "2026-04-13T14:20:42.343Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

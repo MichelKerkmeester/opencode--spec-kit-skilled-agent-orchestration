@@ -41,7 +41,6 @@
     "importance_tier": "normal",
     "status": "complete",
     "key_files": [
-      ".gemini/agents/context-prime.md",
       "mcp_server/context-server.ts",
       "mcp_server/hooks/memory-surface.ts",
       "mcp_server/tool-schemas.ts",
@@ -49,26 +48,21 @@
       ".opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md",
       "hooks/memory-surface.ts",
       "lib/session/session-snapshot.ts",
-      ".opencode/agent/context-prime.md",
-      ".claude/agents/context-prime.md",
-      ".codex/agents/context-prime.toml",
-      ".agents/agents/context-prime.md",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md",
-      ".claude/CLAUDE.md",
       "lib/code-graph/query-intent-classifier.ts",
       "constitutional/gate-tool-routing.md",
       "tests/context-server.vitest.ts",
-      "tests/memory-surface-routing.vitest.ts",
       "hooks/claude/session-prime.ts",
-      "hooks/gemini/session-prime.ts"
+      "hooks/gemini/session-prime.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
     ],
     "entities": [
-      {
-        "name": "context-prime.md",
-        "kind": "doc",
-        "path": ".gemini/agents/context-prime.md",
-        "source": "derived"
-      },
       {
         "name": "context-server.ts",
         "kind": "code",
@@ -100,21 +94,9 @@
         "source": "derived"
       },
       {
-        "name": "context-prime.toml",
-        "kind": "file",
-        "path": ".codex/agents/context-prime.toml",
-        "source": "derived"
-      },
-      {
         "name": "267-tool-routing-enforcement.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md",
-        "source": "derived"
-      },
-      {
-        "name": "CLAUDE.md",
-        "kind": "doc",
-        "path": ".claude/CLAUDE.md",
         "source": "derived"
       },
       {
@@ -130,15 +112,51 @@
         "source": "derived"
       },
       {
-        "name": "memory-surface-routing.vitest.ts",
-        "kind": "test",
-        "path": "tests/memory-surface-routing.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "session-prime.ts",
         "kind": "code",
         "path": "hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -158,11 +176,41 @@
         "kind": "proper_noun",
         "path": "research/research.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Order",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Server Instructions",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 025** of the compact-code-graph specification.",
     "created_at": "2026-04-12T09:02:53.431Z",
-    "last_save_at": "2026-04-13T10:56:03.633Z",
+    "last_save_at": "2026-04-13T14:20:42.251Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

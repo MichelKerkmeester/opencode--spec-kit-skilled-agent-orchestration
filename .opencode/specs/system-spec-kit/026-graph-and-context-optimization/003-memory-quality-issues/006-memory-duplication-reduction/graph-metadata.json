@@ -158,11 +158,59 @@
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
         "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Duplication Reduction",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-issues`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.461Z",
-    "last_save_at": "2026-04-13T10:56:03.690Z",
+    "last_save_at": "2026-04-13T14:20:42.293Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

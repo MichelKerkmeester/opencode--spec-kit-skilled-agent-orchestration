@@ -41,19 +41,12 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/folder-scoring.js",
-      ".opencode/skill/system-spec-kit/scripts/rank-memories.js",
-      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud.js",
-      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
       ".opencode/command/memory/search.md",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/spec.md",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/plan.md",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/decision-record.md",
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking/test/test-folder-scoring.js",
-      ".opencode/command/memory-search.md",
       "research/research.md",
-      ".opencode/command/memory-database.md",
-      ".opencode/config/memory-preferences.yaml",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -62,30 +55,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "folder-scoring.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/folder-scoring.js",
-        "source": "derived"
-      },
-      {
-        "name": "rank-memories.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/rank-memories.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-crud.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
-        "source": "derived"
-      },
       {
         "name": "search.md",
         "kind": "doc",
@@ -117,27 +86,9 @@
         "source": "derived"
       },
       {
-        "name": "memory-search.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory-search.md",
-        "source": "derived"
-      },
-      {
         "name": "research.md",
         "kind": "doc",
         "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "memory-database.md",
-        "kind": "doc",
-        "path": ".opencode/command/memory-database.md",
-        "source": "derived"
-      },
-      {
-        "name": "memory-preferences.yaml",
-        "kind": "config",
-        "path": ".opencode/config/memory-preferences.yaml",
         "source": "derived"
       },
       {
@@ -157,11 +108,101 @@
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "Folder Ranking Improvements",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current Behavior The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current Implementation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "User Needs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quick Wins",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Folder Ranking Implementation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Strategy",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Overview",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Advanced Ranking",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Archive Folder Filtering",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implement Archive Detection Function",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Decision Ref",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The memory dashboard displays \"top folders\" ranked purely by **memory file count**. This creates several issues:",
     "created_at": "2026-04-12T09:02:53.543Z",
-    "last_save_at": "2026-04-13T10:56:03.849Z",
+    "last_save_at": "2026-04-13T14:20:42.420Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

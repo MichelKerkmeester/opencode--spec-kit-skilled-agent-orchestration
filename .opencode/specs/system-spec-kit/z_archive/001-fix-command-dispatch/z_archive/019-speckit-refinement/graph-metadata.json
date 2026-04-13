@@ -44,92 +44,28 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "templates/quick-continue.md",
-      "command/spec_kit/handover.md",
-      "command/spec_kit/assets/spec_kit_handover_full.yaml",
-      "command/spec_kit/resume.md",
-      "command/spec_kit/assets/spec_kit_resume_auto.yaml",
-      "command/spec_kit/assets/spec_kit_resume_confirm.yaml",
-      "skill/system-spec-kit/SKILL.md",
-      "skill/system-memory/scripts/generate-context.js",
-      "skill/system-memory/templates/context_template.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/templates/handover.md",
       ".opencode/command/spec_kit/resume.md",
-      ".opencode/skill/system-spec-kit/templates/quick-continue.md",
-      ".opencode/command/handover/handover.md",
-      ".opencode/skill/system-spec-kit/templates/state.md",
-      ".opencode/skill/system-memory/scripts/generate-context.js",
-      ".opencode/command/handover/assets/handover_agent.yaml",
       "plan.md",
       "spec.md",
-      ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml"
+      ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+      "checklist.md",
+      "tasks.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "quick-continue.md",
+        "name": "SKILL.md",
         "kind": "doc",
-        "path": "templates/quick-continue.md",
-        "source": "derived"
-      },
-      {
-        "name": "handover.md",
-        "kind": "doc",
-        "path": "command/spec_kit/handover.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_handover_full.yaml",
-        "kind": "config",
-        "path": "command/spec_kit/assets/spec_kit_handover_full.yaml",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
         "source": "derived"
       },
       {
         "name": "resume.md",
         "kind": "doc",
-        "path": "command/spec_kit/resume.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_resume_auto.yaml",
-        "kind": "config",
-        "path": "command/spec_kit/assets/spec_kit_resume_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_resume_confirm.yaml",
-        "kind": "config",
-        "path": "command/spec_kit/assets/spec_kit_resume_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": "skill/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "skill/system-memory/scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": "skill/system-memory/templates/context_template.md",
-        "source": "derived"
-      },
-      {
-        "name": "state.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/state.md",
-        "source": "derived"
-      },
-      {
-        "name": "handover_agent.yaml",
-        "kind": "config",
-        "path": ".opencode/command/handover/assets/handover_agent.yaml",
+        "path": ".opencode/command/spec_kit/resume.md",
         "source": "derived"
       },
       {
@@ -142,6 +78,36 @@
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -161,11 +127,83 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "System Improvement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Complete",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Sequential Thinking",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handover System",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Risk Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Breakdown Task",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Input Design",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Organization Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This captures 80% of ECP's benefit because:",
     "created_at": "2026-04-12T09:02:53.513Z",
-    "last_save_at": "2026-04-13T10:56:03.782Z",
+    "last_save_at": "2026-04-13T14:20:42.366Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

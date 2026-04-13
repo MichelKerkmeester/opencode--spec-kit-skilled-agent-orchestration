@@ -41,10 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "mcp_server/lib/vector-index.js",
-      "mcp_server/context-server.js",
-      "scripts/generate-context.js",
-      "mcp_server/lib/memory-parser.js",
       "mcp_server/configs/search-weights.json",
       "decision-record.md",
       "spec.md",
@@ -54,30 +50,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "mcp_server/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-parser.js",
-        "kind": "code",
-        "path": "mcp_server/lib/memory-parser.js",
-        "source": "derived"
-      },
       {
         "name": "search-weights.json",
         "kind": "config",
@@ -149,11 +121,83 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Critical Bugs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Estimated Duration",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Risk Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Strategy",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phased Approach The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Total Tasks",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Last Updated",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Status Legend",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Fixes",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Implementation",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Following comprehensive analysis of spec folders 052-codebase-fixes and 053-script-analysis-testing, along with a deep bug hunt of the Spec Kit Memory system, **13 bugs** were identified that require remediation:",
     "created_at": "2026-04-12T09:02:53.534Z",
-    "last_save_at": "2026-04-13T10:56:03.829Z",
+    "last_save_at": "2026-04-13T14:20:42.404Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

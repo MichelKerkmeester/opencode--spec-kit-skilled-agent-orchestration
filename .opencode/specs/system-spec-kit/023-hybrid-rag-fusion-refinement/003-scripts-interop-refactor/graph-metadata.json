@@ -40,7 +40,6 @@
     "key_files": [
       "scripts/core/workflow.ts",
       "scripts/package.json",
-      "scripts/lib/esm-interop.ts",
       "scripts/lib/validate-memory-quality.ts",
       "shared/parsing/memory-sufficiency.ts",
       "mcp_server/handlers/save/markdown-evidence-builder.ts",
@@ -64,12 +63,6 @@
         "name": "package.json",
         "kind": "config",
         "path": "scripts/package.json",
-        "source": "derived"
-      },
-      {
-        "name": "esm-interop.ts",
-        "kind": "code",
-        "path": "scripts/lib/esm-interop.ts",
         "source": "derived"
       },
       {
@@ -149,11 +142,65 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Phase Context This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Module Compliance",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scripts Interop",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Refactor",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 3** of the ESM Module Compliance specification.",
     "created_at": "2026-04-12T09:02:50.318Z",
-    "last_save_at": "2026-04-13T10:56:00.499Z",
+    "last_save_at": "2026-04-13T14:20:39.044Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

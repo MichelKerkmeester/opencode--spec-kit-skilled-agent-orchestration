@@ -41,104 +41,128 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "spec_kit/debug.md",
-      "spec_kit/research/research/research.md",
-      "spec_kit/complete.md",
-      "spec_kit/implement.md",
-      "spec_kit/plan.md",
-      "spec_kit/resume.md",
-      "spec_kit/handover.md",
-      "memory/learn.md",
-      "memory/continue.md",
-      "memory/context.md",
-      "memory/save.md",
-      "memory/manage.md",
-      "handover.md",
       ".opencode/skill/system-spec-kit/README.md",
       ".claude/commands/spec_kit/debug.md",
-      ".claude/commands/spec_kit/research/research/research.md",
       ".claude/commands/spec_kit/complete.md",
       ".claude/commands/spec_kit/implement.md",
       ".claude/commands/spec_kit/plan.md",
-      ".claude/commands/spec_kit/resume.md"
+      ".claude/commands/spec_kit/resume.md",
+      ".claude/commands/spec_kit/handover.md",
+      ".claude/commands/spec_kit/assets/spec_kit_complete_auto.yaml",
+      ".claude/commands/spec_kit/assets/spec_kit_complete_confirm.yaml",
+      ".claude/commands/spec_kit/assets/spec_kit_implement_auto.yaml",
+      ".claude/commands/spec_kit/assets/spec_kit_implement_confirm.yaml",
+      ".opencode/agent/handover.md",
+      ".claude/commands/spec_kit/assets/spec_kit_resume_auto.yaml",
+      ".claude/commands/spec_kit/assets/spec_kit_handover_full.yaml",
+      ".opencode/agent/speckit.md",
+      ".claude/commands/memory/learn.md",
+      ".claude/commands/memory/save.md",
+      ".claude/commands/memory/manage.md",
+      "spec.md",
+      "plan.md"
     ],
     "entities": [
       {
-        "name": "debug.md",
+        "name": "README.md",
         "kind": "doc",
-        "path": "spec_kit/debug.md",
+        "path": ".opencode/skill/system-spec-kit/README.md",
         "source": "derived"
       },
       {
-        "name": "research.md",
+        "name": "debug.md",
         "kind": "doc",
-        "path": "spec_kit/research/research/research.md",
+        "path": ".claude/commands/spec_kit/debug.md",
         "source": "derived"
       },
       {
         "name": "complete.md",
         "kind": "doc",
-        "path": "spec_kit/complete.md",
+        "path": ".claude/commands/spec_kit/complete.md",
         "source": "derived"
       },
       {
         "name": "implement.md",
         "kind": "doc",
-        "path": "spec_kit/implement.md",
-        "source": "derived"
-      },
-      {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "spec_kit/plan.md",
+        "path": ".claude/commands/spec_kit/implement.md",
         "source": "derived"
       },
       {
         "name": "resume.md",
         "kind": "doc",
-        "path": "spec_kit/resume.md",
+        "path": ".claude/commands/spec_kit/resume.md",
         "source": "derived"
       },
       {
-        "name": "handover.md",
+        "name": "spec_kit_complete_auto.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_complete_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_complete_confirm.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_complete_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_implement_auto.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_implement_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_implement_confirm.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_implement_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_auto.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_resume_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_handover_full.yaml",
+        "kind": "config",
+        "path": ".claude/commands/spec_kit/assets/spec_kit_handover_full.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "speckit.md",
         "kind": "doc",
-        "path": "spec_kit/handover.md",
+        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
         "name": "learn.md",
         "kind": "doc",
-        "path": "memory/learn.md",
-        "source": "derived"
-      },
-      {
-        "name": "continue.md",
-        "kind": "doc",
-        "path": "memory/continue.md",
-        "source": "derived"
-      },
-      {
-        "name": "context.md",
-        "kind": "doc",
-        "path": "memory/context.md",
+        "path": ".claude/commands/memory/learn.md",
         "source": "derived"
       },
       {
         "name": "save.md",
         "kind": "doc",
-        "path": "memory/save.md",
+        "path": ".claude/commands/memory/save.md",
         "source": "derived"
       },
       {
         "name": "manage.md",
         "kind": "doc",
-        "path": "memory/manage.md",
+        "path": ".claude/commands/memory/manage.md",
         "source": "derived"
       },
       {
-        "name": "README.md",
+        "name": "spec.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/README.md",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -158,11 +182,35 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Spec Kit Reimagined Bug Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Document Information",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "After the successful release of Spec Kit v1.2.1.0 (SpecKit Reimagined + Memory Command Consolidation), comprehensive parallel audits revealed **70+ issues** across the command files, YAML workflow assets, MCP server code, and documentation. This specification consolidates findings from:",
     "created_at": "2026-04-12T09:02:53.554Z",
-    "last_save_at": "2026-04-13T10:56:03.875Z",
+    "last_save_at": "2026-04-13T14:20:42.440Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

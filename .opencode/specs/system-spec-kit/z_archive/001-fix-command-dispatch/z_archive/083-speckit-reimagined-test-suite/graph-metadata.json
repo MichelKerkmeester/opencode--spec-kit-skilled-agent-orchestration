@@ -41,128 +41,163 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "lib/session/session-manager.js",
-      "lib/errors/recovery-hints.js",
-      "lib/search/bm25-index.js",
-      "lib/response/envelope.js",
-      "lib/architecture/layer-definitions.js",
-      "handlers/memory-context.js",
-      "handlers/causal-graph.js",
-      "lib/storage/access-tracker.js",
-      "lib/storage/checkpoints.js",
-      "lib/storage/history.js",
-      "lib/parsing/memory-parser.js",
-      "lib/parsing/trigger-matcher.js",
-      "lib/parsing/entity-scope.js",
-      "lib/search/rrf-fusion.js",
-      "lib/search/vector-index.js",
-      "lib/search/hybrid-search.js",
       ".opencode/skill/system-spec-kit/mcp_server/package.json",
-      "tests/session-manager.test.js",
-      "tests/rrf-fusion.test.js",
-      "tests/bm25-index.test.js"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "session-manager.js",
-        "kind": "code",
-        "path": "lib/session/session-manager.js",
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/package.json",
         "source": "derived"
       },
       {
-        "name": "recovery-hints.js",
-        "kind": "code",
-        "path": "lib/errors/recovery-hints.js",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "bm25-index.js",
-        "kind": "code",
-        "path": "lib/search/bm25-index.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "envelope.js",
-        "kind": "code",
-        "path": "lib/response/envelope.js",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "layer-definitions.js",
-        "kind": "code",
-        "path": "lib/architecture/layer-definitions.js",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-context.js",
-        "kind": "code",
-        "path": "handlers/memory-context.js",
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "causal-graph.js",
-        "kind": "code",
-        "path": "handlers/causal-graph.js",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "access-tracker.js",
-        "kind": "code",
-        "path": "lib/storage/access-tracker.js",
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "checkpoints.js",
-        "kind": "code",
-        "path": "lib/storage/checkpoints.js",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "history.js",
-        "kind": "code",
-        "path": "lib/storage/history.js",
+        "name": "Reimagined Test Suite",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-parser.js",
-        "kind": "code",
-        "path": "lib/parsing/memory-parser.js",
+        "name": "Specialized Tools",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "trigger-matcher.js",
-        "kind": "code",
-        "path": "lib/parsing/trigger-matcher.js",
+        "name": "Key Objectives",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "entity-scope.js",
-        "kind": "code",
-        "path": "lib/parsing/entity-scope.js",
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "rrf-fusion.js",
-        "kind": "code",
-        "path": "lib/search/rrf-fusion.js",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "lib/search/vector-index.js",
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "hybrid-search.js",
-        "kind": "code",
-        "path": "lib/search/hybrid-search.js",
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Unit Tests",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Workstream Prefixes",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Suite",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Session Management",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Session Deduplication Tests",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This specification defines comprehensive test coverage for the SpecKit Reimagined implementation (082-speckit-reimagined). The test suite covers 33 features across 8 categories (Search, Decay, Session, Graph, Performance, UX, Architecture, Specialized Tools), extending existing test files and adding new test coverage for 107 implementation tasks across 5 workstreams (W-S, W-R, W-D, W-G, W-I).",
     "created_at": "2026-04-12T09:02:53.555Z",
-    "last_save_at": "2026-04-13T10:56:03.877Z",
+    "last_save_at": "2026-04-13T14:20:42.441Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

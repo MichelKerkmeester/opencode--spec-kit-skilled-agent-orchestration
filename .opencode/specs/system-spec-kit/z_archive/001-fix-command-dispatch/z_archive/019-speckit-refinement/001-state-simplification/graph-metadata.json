@@ -38,40 +38,12 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/skill/system-memory/scripts/generate-context.js",
-      ".opencode/skill/system-spec-kit/references/resume.md",
-      ".opencode/skill/system-spec-kit/commands/spec_kit_resume_auto.yaml",
-      ".opencode/skill/system-spec-kit/commands/spec_kit_resume_confirm.yaml",
       ".opencode/skill/system-spec-kit/SKILL.md",
       "spec.md",
       "plan.md",
       "tasks.md"
     ],
     "entities": [
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-memory/scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "resume.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/references/resume.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_resume_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/skill/system-spec-kit/commands/spec_kit_resume_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_resume_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/skill/system-spec-kit/commands/spec_kit_resume_confirm.yaml",
-        "source": "derived"
-      },
       {
         "name": "SKILL.md",
         "kind": "doc",
@@ -143,11 +115,47 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Changes Required",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "State Section Format",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active File",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Next Action",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Progress",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tasks",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Current implementation has 3 context mechanisms:",
     "created_at": "2026-04-12T09:02:53.514Z",
-    "last_save_at": "2026-04-13T10:56:03.784Z",
+    "last_save_at": "2026-04-13T14:20:42.367Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -52,15 +52,15 @@
       "research/deep-research-state.jsonl",
       "research/deep-research-dashboard.md",
       "implementation-summary.md",
-      "ls research/iterations/iteration-0{11,12,13,14,15,16,17,18,19,20}.md",
-      "tail -n 12 research/deep-research-state.jsonl",
       "external/README.md",
       "external/XETHRYON_CONTEXT.md",
       "external/XETHRYON_MODS.md",
       "research/iterations/iteration-001.md",
       "research/iterations/iteration-010.md",
-      "ls research/iterations/iteration-0{11..20}.md",
-      ".opencode/agent/deep-research.md"
+      ".opencode/agent/deep-research.md",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts"
     ],
     "entities": [
       {
@@ -130,12 +130,6 @@
         "source": "derived"
       },
       {
-        "name": "iteration-0{11,12,13,14,15,16,17,18,19,20}.md",
-        "kind": "doc",
-        "path": "ls research/iterations/iteration-0{11,12,13,14,15,16,17,18,19,20}.md",
-        "source": "derived"
-      },
-      {
         "name": "README.md",
         "kind": "doc",
         "path": "external/README.md",
@@ -158,11 +152,65 @@
         "kind": "doc",
         "path": "research/iterations/iteration-001.md",
         "source": "derived"
+      },
+      {
+        "name": "iteration-010.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-010.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation-bridge.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Keep Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 finishes the Xethryon research packet as a continuation, not a restart. It preserves the original 10 Phase 1 iterations, adds 10 new iterations focused on refactor, simplification, architecture, and UX questions, then rewrites the synthesis surfaces so later planning work can distinguish what to adopt from what to explicitly reject.",
     "created_at": "2026-04-12T09:02:53.490Z",
-    "last_save_at": "2026-04-13T10:56:03.926Z",
+    "last_save_at": "2026-04-13T14:20:42.475Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

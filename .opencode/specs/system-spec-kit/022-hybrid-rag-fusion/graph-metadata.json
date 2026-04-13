@@ -101,12 +101,6 @@
         "source": "derived"
       },
       {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/level_2/checklist.md",
-        "source": "derived"
-      },
-      {
         "name": "validate.sh",
         "kind": "script",
         "path": "scripts/spec/validate.sh",
@@ -171,11 +165,65 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow Root",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: Implementation",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 3: Verification",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The root `022-hybrid-rag-fusion` folder had child packets but no parent `spec.md`, `plan.md`, or `tasks.md`. That broke parent back-references from multiple child packets and caused recursive validation to fail even when many child documents were otherwise close to compliant.",
     "created_at": "2026-04-12T09:02:50.223Z",
-    "last_save_at": "2026-04-13T10:56:00.312Z",
+    "last_save_at": "2026-04-13T14:20:38.867Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

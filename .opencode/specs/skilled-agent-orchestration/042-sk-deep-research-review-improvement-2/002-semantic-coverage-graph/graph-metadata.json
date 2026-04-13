@@ -158,11 +158,59 @@
         "kind": "doc",
         "path": ".opencode/agent/deep-research.md",
         "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "coverage-graph-core.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/coverage-graph-core.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Semantic Coverage Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 002 turns semantic convergence from an abstract idea into a concrete implementation plan. The coverage graph is the fourth graph system in the existing Spec Kit Memory stack, following the causal graph, the code structural graph, and the graph-signal layer already present under `.opencode/skill/system-spec-kit/mcp_server/`.",
     "created_at": "2026-04-12T09:02:50.193Z",
-    "last_save_at": "2026-04-13T10:56:00.271Z",
+    "last_save_at": "2026-04-13T14:20:38.828Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

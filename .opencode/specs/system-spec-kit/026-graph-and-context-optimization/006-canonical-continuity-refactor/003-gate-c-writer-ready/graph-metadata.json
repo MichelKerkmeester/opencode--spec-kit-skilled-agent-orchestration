@@ -55,12 +55,12 @@
       ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts",
       ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-      "scratch/pending-route-<ts>.json",
       "tests/content-router.vitest.ts",
       "tests/thin-continuity-record.vitest.ts",
       "tests/spec-doc-structure.vitest.ts",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "spec.md"
     ],
     "entities": [
       {
@@ -124,12 +124,6 @@
         "source": "derived"
       },
       {
-        "name": "pending-route-<ts>.json",
-        "kind": "config",
-        "path": "scratch/pending-route-<ts>.json",
-        "source": "derived"
-      },
-      {
         "name": "content-router.vitest.ts",
         "kind": "test",
         "path": "tests/content-router.vitest.ts",
@@ -158,11 +152,65 @@
         "kind": "doc",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Writer Ready",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Closed Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Include Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Keep Gate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Gate C is the code-critical path of phase 018. It replaces standalone memory-file writes with canonical spec-doc writes by delivering the five-rule validator bridge, the 3-tier `contentRouter`, the five-mode `anchorMergeOperation`, the `atomicIndexMemory` drop-in for `atomicSaveMemory`, and the XL `memory-save.ts` rewrite that keeps `withSpecFolderLock` unchanged. Grounding: `../implementation-design.md`; resource-map F-4/F-5/F-6/F-7; rows B1, C1, C10, C11, D1-D30; iterations 001-005, 021-024, 029, 031-034, 038.",
     "created_at": "2026-04-12T09:02:53.479Z",
-    "last_save_at": "2026-04-13T10:56:03.706Z",
+    "last_save_at": "2026-04-13T14:20:42.305Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

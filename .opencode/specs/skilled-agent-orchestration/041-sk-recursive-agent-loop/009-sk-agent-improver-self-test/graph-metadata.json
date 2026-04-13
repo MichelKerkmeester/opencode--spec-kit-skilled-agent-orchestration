@@ -28,19 +28,10 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/agent/agent-improver.md",
-      ".claude/agents/agent-improver.md",
-      ".codex/agents/agent-improver.toml",
-      ".agents/agents/agent-improver.md",
       ".opencode/command/improve/agent.md",
-      ".opencode/command/improve/assets/improve_agent-improver_auto.yaml",
-      ".opencode/command/improve/assets/improve_agent-improver_confirm.yaml",
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
-      "sk-improve-agent/SKILL.md",
-      "generate-profile.cjs --agent=.opencode/agent/agent-improver.md",
       "implementation-summary.md",
-      "improve/agent.md",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -48,33 +39,9 @@
     ],
     "entities": [
       {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".opencode/agent/agent-improver.md",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.toml",
-        "kind": "file",
-        "path": ".codex/agents/agent-improver.toml",
-        "source": "derived"
-      },
-      {
         "name": "agent.md",
         "kind": "doc",
         "path": ".opencode/command/improve/agent.md",
-        "source": "derived"
-      },
-      {
-        "name": "improve_agent-improver_auto.yaml",
-        "kind": "config",
-        "path": ".opencode/command/improve/assets/improve_agent-improver_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "improve_agent-improver_confirm.yaml",
-        "kind": "config",
-        "path": ".opencode/command/improve/assets/improve_agent-improver_confirm.yaml",
         "source": "derived"
       },
       {
@@ -142,11 +109,83 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Acceptance Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Flight Verification Verify",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execute Self",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Improvement Loop Run",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Record Observations Document",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Update Parent Packet",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Flight Verification",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Loop Execution",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Observation Recording",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet Updates",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder Finalization",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.",
     "created_at": "2026-04-13T04:55:07.905Z",
-    "last_save_at": "2026-04-13T10:56:00.263Z",
+    "last_save_at": "2026-04-13T14:20:38.821Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -152,11 +152,59 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Execute",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The evaluation category contains 6 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement), reporting dashboard (sprint/channel trend aggregation), evaluation dashboard generation, ablation study execution with custom parameters, baseline comparison reporting, and learning history retrieval. The four new scenarios (EX-046 through EX-049) expand coverage to comprehensive evaluation workflows and historical analysis. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.",
     "created_at": "2026-04-12T09:02:50.294Z",
-    "last_save_at": "2026-04-13T10:56:00.457Z",
+    "last_save_at": "2026-04-13T14:20:39.004Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -38,34 +38,16 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "research/research.md",
       ".opencode/command/spec_kit/resume.md",
-      ".opencode/command/spec_kit/research/research/research.md",
       ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
       ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
-      ".opencode/command/prompt/assets/improve_prompt.yaml",
       ".opencode/command/memory/save.md",
-      ".opencode/skills/system-memory/scripts/generate-context.js",
-      ".opencode/skills/system-spec-kit/SKILL.md",
-      ".opencode/skills/system-spec-kit/references/sub_folder_versioning.md",
-      ".opencode/skills/system-spec-kit/references/template_guide.md",
-      ".opencode/skills/system-memory/README.md",
-      ".opencode/skills/system-memory/references/execution_methods.md",
-      ".opencode/skills/system-memory/references/spec_folder_detection.md",
       "plan.md",
-      "references/sub_folder_versioning.md",
-      "references/template_guide.md",
-      "references/execution_methods.md",
-      "references/spec_folder_detection.md",
-      "spec.md"
+      "spec.md",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
       {
         "name": "resume.md",
         "kind": "doc",
@@ -85,57 +67,9 @@
         "source": "derived"
       },
       {
-        "name": "improve_prompt.yaml",
-        "kind": "config",
-        "path": ".opencode/command/prompt/assets/improve_prompt.yaml",
-        "source": "derived"
-      },
-      {
         "name": "save.md",
         "kind": "doc",
         "path": ".opencode/command/memory/save.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": ".opencode/skills/system-memory/scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "sub_folder_versioning.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-spec-kit/references/sub_folder_versioning.md",
-        "source": "derived"
-      },
-      {
-        "name": "template_guide.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-spec-kit/references/template_guide.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-memory/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "execution_methods.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-memory/references/execution_methods.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec_folder_detection.md",
-        "kind": "doc",
-        "path": ".opencode/skills/system-memory/references/spec_folder_detection.md",
         "source": "derived"
       },
       {
@@ -151,15 +85,117 @@
         "source": "derived"
       },
       {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
         "name": "Stateless Spec",
         "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stateless Spec Passing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Remove",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Initial Discovery",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Alignment Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Commands",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "High Impact",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active Spec Detection",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stateless Alignment",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Supporting Commands",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Final Audit",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Functional Test",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Critical Commands",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "User Decisions",
+        "kind": "proper_noun",
+        "path": "checklist.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Remove all system reliance on the `.spec-active` marker file, enforcing a strictly stateless architecture. This aligns with `AGENTS.md` Gate 5: \"NEVER create/write to .spec-active file (Stateless only)\".",
     "created_at": "2026-04-12T09:02:53.513Z",
-    "last_save_at": "2026-04-13T10:56:03.781Z",
+    "last_save_at": "2026-04-13T14:20:42.365Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -41,64 +41,28 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "scripts/create-spec-folder.sh",
-      "scripts/expand-template.js",
-      "lib/expansion/preprocessor.js",
-      "lib/complexity/features.js",
-      "lib/expansion/marker-parser.js",
-      "lib/expansion/generators/user-stories.js",
       "references/templates/level_specifications.md",
       "references/templates/template_guide.md",
-      "references/templates/complexity_guide.md",
       "references/workflows/quick_reference.md",
       "assets/template_mapping.md",
       "references/validation/validation_rules.md",
       "references/validation/phase_checklists.md",
-      "templates/plan.md",
-      "templates/tasks.md",
       "templates/level_2/checklist.md",
-      "templates/spec.md",
-      "templates/level_N/spec.md",
-      "level_2/checklist.md",
-      "templates/level_2/spec.md"
+      "templates/level_2/spec.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/references/templates/level_specifications.md",
+      ".opencode/skill/system-spec-kit/references/templates/template_guide.md",
+      ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+      ".opencode/skill/system-spec-kit/assets/template_mapping.md",
+      ".opencode/skill/system-spec-kit/references/validation/validation_rules.md",
+      ".opencode/skill/system-spec-kit/references/validation/phase_checklists.md",
+      ".opencode/skill/system-spec-kit/templates/level_2/checklist.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
     ],
     "entities": [
-      {
-        "name": "create-spec-folder.sh",
-        "kind": "script",
-        "path": "scripts/create-spec-folder.sh",
-        "source": "derived"
-      },
-      {
-        "name": "expand-template.js",
-        "kind": "code",
-        "path": "scripts/expand-template.js",
-        "source": "derived"
-      },
-      {
-        "name": "preprocessor.js",
-        "kind": "code",
-        "path": "lib/expansion/preprocessor.js",
-        "source": "derived"
-      },
-      {
-        "name": "features.js",
-        "kind": "code",
-        "path": "lib/complexity/features.js",
-        "source": "derived"
-      },
-      {
-        "name": "marker-parser.js",
-        "kind": "code",
-        "path": "lib/expansion/marker-parser.js",
-        "source": "derived"
-      },
-      {
-        "name": "user-stories.js",
-        "kind": "code",
-        "path": "lib/expansion/generators/user-stories.js",
-        "source": "derived"
-      },
       {
         "name": "level_specifications.md",
         "kind": "doc",
@@ -109,12 +73,6 @@
         "name": "template_guide.md",
         "kind": "doc",
         "path": "references/templates/template_guide.md",
-        "source": "derived"
-      },
-      {
-        "name": "complexity_guide.md",
-        "kind": "doc",
-        "path": "references/templates/complexity_guide.md",
         "source": "derived"
       },
       {
@@ -142,27 +100,117 @@
         "source": "derived"
       },
       {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "plan.md",
         "kind": "doc",
-        "path": "templates/plan.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "templates/tasks.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "templates/level_2/checklist.md",
+        "name": "Feature Specificatio",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Based Template Alignment Align",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Branch",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Complexity Assessment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Based Template Alignment",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Status",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary Align",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verified Scope",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current State Analysis",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Based Template Alignment Implementation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Align ALL SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069.",
     "created_at": "2026-04-12T09:02:53.544Z",
-    "last_save_at": "2026-04-13T10:56:03.851Z",
+    "last_save_at": "2026-04-13T14:20:42.421Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

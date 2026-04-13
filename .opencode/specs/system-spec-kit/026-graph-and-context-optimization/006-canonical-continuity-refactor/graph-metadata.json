@@ -69,18 +69,11 @@
       "research/research.md",
       "scratch/verify-phases-review.md",
       "scratch/phase-017-rerun-seed.md",
-      "./.opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
       "lib/routing/content-router.ts",
-      "lib/writing/anchor-merge.ts",
       "handover.md",
-      "findings/routing-rules.md",
-      "findings/validation-contract.md",
-      "findings/thin-continuity-schema.md",
-      "findings/feature-retargeting-map.md",
-      "findings/resume-journey.md",
-      "findings/save-journey.md",
-      "findings/migration-strategy.md",
-      "findings/conflict-handling.md"
+      "prompts/research-prompt-impact.md",
+      "lib/resume/resume-ladder.ts"
     ],
     "entities": [
       {
@@ -134,7 +127,7 @@
       {
         "name": "validate.sh",
         "kind": "script",
-        "path": "./.opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
         "source": "derived"
       },
       {
@@ -144,45 +137,93 @@
         "source": "derived"
       },
       {
-        "name": "anchor-merge.ts",
-        "kind": "code",
-        "path": "lib/writing/anchor-merge.ts",
-        "source": "derived"
-      },
-      {
         "name": "handover.md",
         "kind": "doc",
         "path": "handover.md",
         "source": "derived"
       },
       {
-        "name": "routing-rules.md",
+        "name": "research-prompt-impact.md",
         "kind": "doc",
-        "path": "findings/routing-rules.md",
+        "path": "prompts/research-prompt-impact.md",
         "source": "derived"
       },
       {
-        "name": "validation-contract.md",
-        "kind": "doc",
-        "path": "findings/validation-contract.md",
+        "name": "resume-ladder.ts",
+        "kind": "code",
+        "path": "lib/resume/resume-ladder.ts",
         "source": "derived"
       },
       {
-        "name": "thin-continuity-schema.md",
-        "kind": "doc",
-        "path": "findings/thin-continuity-schema.md",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "feature-retargeting-map.md",
-        "kind": "doc",
-        "path": "findings/feature-retargeting-map.md",
+        "name": "Canonical Continuity Refactor",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Parent",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 018 already contains substantial research, an implementation design, a 325-row resource map, and six populated child phase folders, but the root of the packet does not yet act like the authoritative parent spec folder. That leaves the packet without a canonical summary of what phase 018 is trying to deliver overall, how the six gates fit together, and what must be true before the full refactor can be considered complete.",
     "created_at": "2026-04-12T09:02:53.476Z",
-    "last_save_at": "2026-04-13T10:56:03.701Z",
+    "last_save_at": "2026-04-13T14:20:42.302Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

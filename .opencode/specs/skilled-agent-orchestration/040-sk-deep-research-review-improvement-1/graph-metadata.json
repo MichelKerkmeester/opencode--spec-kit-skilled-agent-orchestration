@@ -52,10 +52,8 @@
       "002-sk-deep-review-improvements/plan.md",
       "001-sk-deep-research-improvements/tasks.md",
       "002-sk-deep-review-improvements/tasks.md",
-      ".codex/prompts/spec_kit-deep-research.md",
       "research/deep-research-state.jsonl",
       "research/iterations/iteration-001.md",
-      "~/.cocoindex_code/daemon.sock",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -87,18 +85,6 @@
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit-deep-research.md",
-        "kind": "doc",
-        "path": ".codex/prompts/spec_kit-deep-research.md",
-        "source": "derived"
-      },
-      {
         "name": "deep-research-state.jsonl",
         "kind": "file",
         "path": "research/deep-research-state.jsonl",
@@ -111,15 +97,15 @@
         "source": "derived"
       },
       {
-        "name": "daemon.sock",
-        "kind": "file",
-        "path": "~/.cocoindex_code/daemon.sock",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -157,11 +143,71 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Purpose Make",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Two",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Make both skills operate under explicit, testable packet contracts — canonical naming, lifecycle branches, reducer semantics, release-readiness states, and runtime parity — all backed by executable Vitest guards.",
     "created_at": "2026-04-12T09:02:50.183Z",
-    "last_save_at": "2026-04-13T10:56:00.249Z",
+    "last_save_at": "2026-04-13T14:20:38.802Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

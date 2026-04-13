@@ -58,9 +58,9 @@
       "scripts/memory/reindex-embeddings.ts",
       "lib/cognitive/adaptive-ranking.ts",
       "shared/utils/path-security.ts",
-      "scripts/lib/structure-aware-chunker.ts",
       "shared/lib/structure-aware-chunker.ts",
-      "scripts/core/tree-thinning.d.ts"
+      "handlers/save/types.ts",
+      "shared/config.ts"
     ],
     "entities": [
       {
@@ -150,19 +150,67 @@
       {
         "name": "structure-aware-chunker.ts",
         "kind": "code",
-        "path": "scripts/lib/structure-aware-chunker.ts",
+        "path": "shared/lib/structure-aware-chunker.ts",
         "source": "derived"
       },
       {
-        "name": "tree-thinning.d.ts",
+        "name": "types.ts",
         "kind": "code",
-        "path": "scripts/core/tree-thinning.d.ts",
+        "path": "handlers/save/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "config.ts",
+        "kind": "code",
+        "path": "shared/config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This completed Level 3 spec captures the architecture audit of `.opencode/skill/system-spec-kit/` with focus on the ownership boundary between root `scripts/` and `mcp_server/`. The work established a boundary contract, reduced cross-area drift, hardened enforcement, merged the former `030-architecture-boundary-remediation` follow-up, and closed later verification-driven issues around naming, README coverage, symlinked runtime paths, and source-dist alignment.",
     "created_at": "2026-04-12T09:02:50.240Z",
-    "last_save_at": "2026-04-13T10:56:00.342Z",
+    "last_save_at": "2026-04-13T14:20:38.892Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
