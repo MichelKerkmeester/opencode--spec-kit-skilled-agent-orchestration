@@ -1,6 +1,6 @@
 ---
 title: "Wire Tier3 LLM Classifier into Save Handler - Tasks"
-status: completed
+status: complete
 ---
 # Tasks
 - [x] T-01: Add a production Tier3 adapter that uses the prompt contract in `mcp_server/lib/routing/content-router.ts:1128-1172` and the OpenAI-compatible fetch pattern in `mcp_server/lib/search/llm-reformulation.ts:185-274`, following `../research/research.md:59-71,151-156`.

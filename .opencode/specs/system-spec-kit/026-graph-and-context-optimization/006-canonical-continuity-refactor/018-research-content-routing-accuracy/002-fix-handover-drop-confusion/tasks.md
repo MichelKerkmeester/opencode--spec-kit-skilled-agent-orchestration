@@ -1,6 +1,6 @@
 ---
 title: "Fix Handover vs Drop Routing Confusion - Tasks"
-status: completed
+status: complete
 ---
 # Tasks
 - [x] T-01: Split the `drop` cue table in `mcp_server/lib/routing/content-router.ts:369-378` into hard wrappers and soft operational commands using the seam defined in `../research/research.md:40-53`.

@@ -84,7 +84,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 - Adding `memory_index.is_archived` as a new schema column. `../resource-map.md` F-1 and `../scratch/resource-map/01-schema.md` both mark that work as already done.
 - Gate C writer work such as `contentRouter`, `anchorMergeOperation`, `atomicIndexMemory`, `generate-context.ts` routing, or `memory-save.ts` rewiring.
 - Gate D reader work such as `memory-context.ts`, `memory-search.ts`, `session-resume.ts`, or the resume ladder.
-- Gate F permanence decisions beyond making `archived_hit_rate` visible. The 180-day thresholds, EWMA logic, and retire/keep decision remain later work.
+- Gate F permanence decisions. The archive tier, `archived_hit_rate` telemetry, and observation windows were removed per the DELETE-not-archive directive.
 
 ### Files to Change
 
@@ -94,10 +94,10 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` | Modify | Thread `source_anchor` and `target_anchor` through create, update, and read logic. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts` | Modify | Preserve the new causal-edge fields across snapshot and restore. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts` | Modify | Populate anchor-aware supersede edges during archive and replacement flows. |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` | Modify | Apply the archived-row ranking multiplier and keep fallback behavior aligned with Gate B. |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` | Verify | Confirm no archived-tier ranking logic remains (archive ranking was removed per DELETE-not-archive directive). |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/storage/schema-downgrade.ts` | Verify or document | Confirm whether the narrowed migration needs downgrade handling or record why it does not. |
 | `.opencode/skill/system-spec-kit/scripts/memory/archive-flip-018.sh` | Create | Run the bounded `is_archived=1` flip for the 155 legacy memory rows. |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts` | Modify | Surface `archived_hit_rate` so dashboard and stats tooling can observe the Gate B transition. |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts` | No change | `archived_hit_rate` removed per DELETE-not-archive directive. No archive telemetry needed. |
 | `[UNCERTAIN: optional standalone SQL file at mcp_server/database/migrations/018-002-add-causal-edges-anchor-columns.sql]` | Create only if ADR-001 chooses standalone packaging | Provide operator-visible SQL while keeping the canonical migration source of truth explicit. |
 <!-- /ANCHOR:scope -->
 
@@ -116,7 +116,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 | REQ-004 | Anchor fields must round-trip through storage helpers. | `causal-edges.ts`, `checkpoints.ts`, and `reconsolidation.ts` all read and write the new anchor fields without dropping them. |
 | REQ-005 | The archive flip must be bounded and provable. | `SELECT COUNT(*) FROM memory_index WHERE is_archived=1` returns 155 after the production flip, and non-target row counts remain consistent with the rehearsal baseline. |
 | REQ-006 | Archived rows must be demoted but still recoverable. | Stage-2 fusion applies an archived multiplier of `0.3`, and sample searches show fresh spec-doc results outranking archived rows when relevance is comparable. |
-| REQ-007 | Archived retrieval must become observable in Gate B itself. | `archived_hit_rate` is visible in the stats or dashboard surface using the presented-slot share definition from iterations 027 and 036. |
+| REQ-007 | ~~Archived retrieval must become observable in Gate B itself.~~ | Removed per DELETE-not-archive directive. Archive telemetry is not needed. |
 | REQ-008 | Rollback readiness must stay at hard-rollback quality. | Gate B sign-off uses the hard rollback path from the rehearsal, not the soft index-drop-only fallback. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -137,7 +137,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 - **SC-001**: Copy rehearsal passes, rerun is a clean no-op, and hard rollback returns the copy to logical baseline equivalence.
 - **SC-002**: `causal_edges` carries the approved anchor fields and indexes, and the storage helpers keep them intact across create, restore, and reconsolidation paths.
 - **SC-003**: The production archive flip marks exactly 155 legacy memory rows as archived without introducing unintended row loss or duplicate schema work.
-- **SC-004**: Archived results are visibly deprioritized in ranking and `archived_hit_rate` is live for later phase-020 permanence analysis.
+- **SC-004**: ~~Archived results are visibly deprioritized in ranking and `archived_hit_rate` is live.~~ Removed per DELETE-not-archive directive.
 - **SC-005**: Mixed pre/post migration causal-graph queries still complete at 2 hops, proving continuity across the cutover boundary.
 <!-- /ANCHOR:success-criteria -->
 
@@ -165,7 +165,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 
 ### Performance
 - **NFR-P01**: The rehearsal query replay stays within iteration 037's acceptance bound of no worse than `1.20x` baseline p95 for the fixed query set.
-- **NFR-P02**: Gate B makes `archived_hit_rate` visible in a form that phase 020 can consume without redefining the metric.
+- **NFR-P02**: ~~Gate B makes `archived_hit_rate` visible.~~ Removed per DELETE-not-archive directive.
 
 ### Security
 - **NFR-S01**: All rehearsal, restore, and rollback operations run against copies only until the approved maintenance window begins.
@@ -234,7 +234,7 @@ Deliver the two-week foundation gate that proves the migration path, executes th
 
 **Acceptance Criteria**:
 1. **Given** a mixed search result set, **When** comparable fresh spec-doc and archived rows compete, **Then** fresh spec-doc rows rank higher because archived rows are multiplied by `0.3`.
-2. **Given** post-Gate-B telemetry, **When** I inspect the stats surface, **Then** I can see `archived_hit_rate` without redefining the metric in a later phase.
+2. ~~**Given** post-Gate-B telemetry, **When** I inspect the stats surface, **Then** I can see `archived_hit_rate`.~~ Removed per DELETE-not-archive directive.
 3. **Given** a query that fresh spec docs do not cover yet, **When** archive fallback activates, **Then** archived results can still surface and remain measurable instead of disappearing silently.
 
 ---

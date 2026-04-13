@@ -1,6 +1,6 @@
 ---
 title: "Fix Delivery vs Progress Routing Confusion - Tasks"
-status: completed
+status: complete
 ---
 # Tasks
 - [x] T-01: Expand `RULE_CUES.narrative_delivery` in `mcp_server/lib/routing/content-router.ts:345-352` with the sequencing and verification-order terms from `../research/research.md:22-34`.
