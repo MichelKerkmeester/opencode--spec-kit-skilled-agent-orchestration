@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 21 skills, 23 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 21 skills, 23 command entry points, 60 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -21,11 +21,11 @@
 - [FEATURES](#3--features)
   - [SPEC KIT DOCUMENTATION](#spec-kit-documentation)
   - [MEMORY ENGINE](#memory-engine)
-  - [COCOINDEX + COMPACT CODE GRAPH](#cocoindex--compact-code-graph)
+  - [COCOINDEX + CODE GRAPH](#cocoindex--code-graph)
   - [SKILL ADVISOR](#skill-advisor)
   - [SKILLS LIBRARY](#skills-library)
   - [AGENT NETWORK](#agent-network)
-  - [COMMAND ARCHITECTURE](#command-architecture)
+  - [COMMANDS](#commands)
   - [CODE MODE MCP](#code-mode-mcp)
 - [CONFIGURATION](#4--configuration)
 - [FAQ](#5--faq)
@@ -62,7 +62,7 @@ The framework adds three layers on top of the base platform:
 | **🤖 12 Agents** | 12 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 23 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility |
-| **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
+| **🔧 56 MCP Tools** | 51 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
 | **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
@@ -99,7 +99,7 @@ The framework adds three layers on top of the base platform:
                  │                           │
                  ▼                           ▼
          ┌──────────────────────────────────────────┐
-         │       MEMORY ENGINE (56 MCP tools)       │
+         │       MEMORY ENGINE (60 MCP tools)       │
          │  5 core + CocoIndex bridge: Vector,      │
          │  BM25, FTS5, Causal Graph, Degree        │
          │  Graph-first routing ─ 3-tier fallback   │
@@ -360,7 +360,7 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 | **L5** | Lifecycle | 4 | 600 | Checkpoints and lifecycle state |
 | **L6** | Analysis | 10 | 1,200 | Causal graph, epistemic baselines, evaluations, and dashboards |
 | **L7** | Maintenance | 10 | 1,000 | Index scans, async ingest, learning history, and graph/CocoIndex maintenance |
-| | **Total** | **43** | **7,600** | |
+| | **Total** | **47** | **8,400** | |
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
@@ -450,8 +450,6 @@ Additional save-time processing:
 - **Context pressure** - Downgrades search mode as the context window fills
 
 
-#### SHARED MEMORY
-
 #### QUALITY GATES AND LEARNING
 
 Three layered checks before storage:
@@ -498,15 +496,15 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 
 ---
 
-### 🔍 CocoIndex + Compact Code Graph
+### 🔍 CocoIndex + Code Graph
 
-The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Compact Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
+The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
 
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
 #### How the Code Graph Works
 
-The Compact Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
+The Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
 
 **Startup injection.** When the MCP server starts, it initializes the `code-graph.sqlite` database, runs a non-blocking startup scan, and activates a file watcher. Runtimes with SessionStart hooks (Claude Code, Gemini CLI) inject a startup brief into the conversation's first turn with a one-line health summary (e.g., "Code Graph: healthy - 42 files, 8.3K nodes, 15.2K edges"). Codex CLI achieves equivalent startup via `session_bootstrap()` MCP tool. Copilot hook behavior varies by environment.
 
@@ -522,7 +520,7 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 | System | Best for | Primary surface |
 |-------|----------|-----------------|
 | **CocoIndex** | Concept search, similar implementations, unfamiliar modules | `mcp__cocoindex_code__search` |
-| **Compact Code Graph** | Callers, imports, symbol outlines, impact analysis, neighborhood expansion | `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context` |
+| **Code Graph** | Callers, imports, symbol outlines, impact analysis, neighborhood expansion | `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context` |
 | **Session bridge tools** | Session bootstrap, resume, and health checks around graph availability | `session_bootstrap`, `session_resume`, `session_health` |
 | **CCC utilities** | CocoIndex availability, reindexing, result feedback | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
 
@@ -530,7 +528,7 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 
 The default routing order is: **Code Graph** (structural) -> **CocoIndex** (semantic code) -> **Memory** (session/decision context). This graph-first approach tries structural resolution before semantic similarity, with a 3-tier FTS fallback when earlier stages miss.
 
-- Use the **Compact Code Graph** first for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
+- Use the **Code Graph** first for structural questions: callers, callees, imports, hierarchy, file outlines, and reverse impact.
 - Use **CocoIndex** for semantic and intent-based questions: "find code that validates memory quality", "show similar routing patterns", "where is the logic for X?"
 - Use **session tools** when recovering or checking environment readiness, but treat `/spec_kit:resume` as the canonical operator-facing recovery surface.
 - Rebuild task continuity in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs.
@@ -861,7 +859,7 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 ---
 
-### ⌨️ Command Architecture
+### ⌨️ Commands
 
 
 23 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
@@ -1026,11 +1024,11 @@ Defined in `opencode.json`:
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
-| `spec_kit_memory` | 47 | Cognitive memory system - the memory engine |
+| `spec_kit_memory` | 51 | Cognitive memory system - the memory engine + skill graph |
 | `code_mode` | 7 | External tool orchestration via TypeScript execution |
 | `cocoindex_code` | 1 | Semantic code search via vector embeddings |
 | `sequential_thinking` | 1 | Structured multi-step reasoning for complex problems |
-| **Total** | **56** | |
+| **Total** | **60** | |
 
 #### Code Mode Tools (7)
 
@@ -1233,7 +1231,6 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 - **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
 - **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (47 tools, 7 layers)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
-- **[→ Shared Memory Guide](.opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md)** - Spaces, roles, membership, kill switch
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
@@ -1250,4 +1247,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.2 | Last updated: 2026-04-12 | Framework: 12 agents, 21 skills, 23 commands, 56 MCP tools (47 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*
+*Documentation version: 4.2 | Last updated: 2026-04-12 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking)*

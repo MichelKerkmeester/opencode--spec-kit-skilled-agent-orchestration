@@ -89,7 +89,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
-| **Spec Kit Memory MCP**       | 47-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
+| **Spec Kit Memory MCP**       | 51-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
 | **Session Continuity**        | `generate-context.js` updates the canonical continuity surfaces for a spec folder so `/spec_kit:resume` can rebuild the next session from packet-local sources                                              |
@@ -317,7 +317,7 @@ The memory system lives in an MCP server that gives AI assistants persistent mem
 
 Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the memory stays the same because it lives on your machine, not inside any AI's context window.
 
-For full architecture details, the 47-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
+For full architecture details, the 51-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
 #### Hybrid Search
 
@@ -609,7 +609,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`SKILL.md`](./SKILL.md)                                                     | AI agent instructions: routing rules, gates, validation procedures, template application             |
 | [`README.md`](./README.md)                                                   | This file -- what Spec Kit does, how to use it, where to find things                                 |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                       | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 51-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)               | Step-by-step installation with embedding providers and environment                                   |
 | [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh)                         | Create spec folders with level-appropriate template files                                            |
@@ -1003,7 +1003,7 @@ A: The memory system can index any markdown file, beyond spec folder contents. B
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 47-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 51-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 
@@ -1044,7 +1044,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | [`SKILL.md`](./SKILL.md)                                                                         | AI agent instructions: routing, gates, validation, template application                              |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                                           | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 47-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 51-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)                                   | Step-by-step installation with embedding providers and environment variables                         |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md)                     | Detailed memory system reference                                                                     |
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md)       | All 20 validation rules with fixes                                                                   |

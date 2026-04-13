@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "47 tools"
+  - "51 tools"
   - "FSRS decay"
 ---
 
@@ -539,7 +539,7 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 ### 3.2 TOOL REFERENCE
 
-All 47 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
+All 51 tools listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
@@ -1168,7 +1168,7 @@ mcp_server/
 
 | File | What It Does |
 |------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 47 tools. |
+| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers all 51 tools. |
 | `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
 | `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
