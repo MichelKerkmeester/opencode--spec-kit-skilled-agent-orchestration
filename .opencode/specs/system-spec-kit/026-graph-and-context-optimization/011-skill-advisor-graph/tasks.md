@@ -43,9 +43,9 @@ _memory:
 ## Phase 1: Metadata & Compiler
 
 - [x] T001 Create spec folder Level 2 docs (spec.md, plan.md, tasks.md, checklist.md) + description.json + graph-metadata.json
-- [x] T002 Author all 20 per-skill `graph-metadata.json` files with correct edge data per edge inventory
+- [x] T002 Author all 21 per-skill `graph-metadata.json` files with correct edge data per edge inventory
 - [x] T003 Write `skill_graph_compiler.py` (discover, validate, compile, CLI)
-- [x] T004 Run compiler, generate `skill-graph.json`, verify size < 2KB [EVIDENCE: 1950 bytes]
+- [x] T004 Run compiler, generate `skill-graph.json`, verify size < 5KB [EVIDENCE: 4667 bytes]
 <!-- /ANCHOR:phase-1 -->
 
 ---

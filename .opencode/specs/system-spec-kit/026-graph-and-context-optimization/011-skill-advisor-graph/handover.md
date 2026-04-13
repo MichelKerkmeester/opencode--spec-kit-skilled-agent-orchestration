@@ -23,10 +23,10 @@ description: "Handover for 011-skill-advisor-graph — graph system built, resea
 
 | Decision | Rationale | Impact |
 |----------|-----------|--------|
-| Graph metadata schema separate from spec-packet schema | Skills need `skill_id`, `family`, `edges` — different from packet `packet_id`, `parent_id`, `derived` | 20 per-skill `graph-metadata.json` files with distinct schema |
+| Graph metadata schema separate from spec-packet schema | Skills need `skill_id`, `family`, `edges` — different from packet `packet_id`, `parent_id`, `derived` | 21 per-skill `graph-metadata.json` files with distinct schema |
 | Damping factors: 0.30 enhances, 0.20 depends_on, 0.15 siblings, 0.08 family | Conservative to avoid graph dominating existing boosters | Graph boosts are supplementary, not dominant |
 | Ghost candidate guard: require pre-graph evidence | GPT-5.4 research found graph-only candidates being created from family/sibling boosts | `_apply_graph_boosts()` and `_apply_family_affinity()` skip zero-evidence targets |
-| Compiled graph includes `intent_signals` and `prerequisite_for` | Research found topology-only graph insufficient; relaxed from 2KB to 4KB | `skill-graph.json` at 3957 bytes with `signals` field |
+| Compiled graph includes `intent_signals` and `prerequisite_for` | Research found topology-only graph insufficient; relaxed from 2KB to 5KB | `skill-graph.json` at 4667 bytes with `signals` field |
 | Renamed `scripts/` to `skill-advisor/` | Promote from loose folder to proper skill package | All paths self-relative, advisor still works |
 | Removed sk-deep-review ↔ sk-deep-research sibling | Research found mode leakage — review prompts could suggest research | Both skills now have empty siblings arrays |
 
@@ -41,7 +41,7 @@ description: "Handover for 011-skill-advisor-graph — graph system built, resea
 ### 2.3 Files Modified
 
 **Created (this session):**
-- `.opencode/skill/*/graph-metadata.json` — 20 per-skill graph metadata files
+- `.opencode/skill/*/graph-metadata.json` — 21 per-skill graph metadata files
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` — graph compiler
 - `.opencode/skill/skill-advisor/scripts/skill-graph.json` — compiled graph (4667 bytes)
 - `011-skill-advisor-graph/` — spec folder with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, graph-metadata.json
@@ -61,9 +61,9 @@ description: "Handover for 011-skill-advisor-graph — graph system built, resea
 ## 3. Completed Work
 
 ### Phase 007 (Core Implementation)
-- [x] 20 per-skill `graph-metadata.json` files authored
+- [x] 21 per-skill `graph-metadata.json` files authored
 - [x] `skill_graph_compiler.py` — discover, validate, compile
-- [x] `skill-graph.json` compiled (3957 bytes, 18 adjacency entries, 7 hub skills)
+- [x] `skill-graph.json` compiled (4667 bytes, 18 adjacency entries, 7 hub skills)
 - [x] `skill_advisor.py` integration — 4 functions, 3 call sites, health check
 - [x] Regression suite: 44/44 pass, 100% all gates
 

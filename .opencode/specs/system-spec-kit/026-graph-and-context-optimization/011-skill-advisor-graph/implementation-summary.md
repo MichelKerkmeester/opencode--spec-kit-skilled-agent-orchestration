@@ -53,7 +53,7 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 | Decision | Rationale |
 |----------|-----------|
 | Separate schema from spec-packet `graph-metadata.json` | Skills need `skill_id`, `family`, `edges` — different from packets' `packet_id`, `parent_id`, `derived` |
-| Exclude `prerequisite_for` from compiled output | Derivable from `depends_on` edges; saves ~150 bytes |
+| Include `prerequisite_for` in compiled output | Research audit (P0-4) found topology-only graph insufficient; `prerequisite_for` is now compiled into runtime adjacency |
 | Conservative damping factors (0.08-0.30) | Prevents graph boosts from dominating existing intent boosters |
 | Snapshot pattern in `_apply_graph_boosts()` | Prevents feedback loops during iteration |
 | Floor threshold of 0.1 for transitive boosts | Drops noise from weak transitive chains |
@@ -63,12 +63,12 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 ## 3. VERIFICATION
 
 ### Compiler
-- `skill_graph_compiler.py --validate-only` — 20 files pass, zero errors
-- Compiled output: 1950 bytes (under 2KB)
+- `skill_graph_compiler.py --validate-only` — 21 files pass, zero errors
+- Compiled output: 4667 bytes (under 5KB)
 - Hub skills correctly computed: 10 skills above median inbound edges (cli-claude-code, cli-codex, cli-copilot, cli-gemini, mcp-code-mode, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, system-spec-kit)
 
 ### Advisor Integration
-- `--health` reports `skill_graph_loaded: true`, `skill_graph_skill_count: 20`
+- `--health` reports `skill_graph_loaded: true`, `skill_graph_skill_count: 21`
 - "code review" -> sk-code-review at 0.95 (correct)
 - "use figma to export designs" -> mcp-figma at 0.95, mcp-code-mode at 0.92 with `!graph:depends(mcp-figma,0.9)` (dependency pull-up works)
 
@@ -84,7 +84,7 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 ## 4. FILES MODIFIED/CREATED
 
 ### Created
-- `.opencode/skill/*/graph-metadata.json` (20 files)
+- `.opencode/skill/*/graph-metadata.json` (21 files)
 - `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`
 - `.opencode/skill/skill-advisor/scripts/skill-graph.json` (generated)
 - `011-skill-advisor-graph/` spec folder docs (7 files)
@@ -98,6 +98,6 @@ Added a structured graph metadata system to all 20 skill folders and integrated 
 ## 5. KNOWN LIMITATIONS
 
 - Graph metadata must be manually maintained when skills change (future: auto-generate from SKILL.md analysis)
-- `prerequisite_for` edges are in per-skill files but not in compiled output (derivable from `depends_on`)
+- `prerequisite_for` edges are now compiled into runtime adjacency (P0-4 fix)
 - No conflicts defined yet (all `conflicts_with` arrays are empty) — can be populated as real conflicts are identified
 - Session bootstrap injection not yet implemented (graph is loaded at advisor call time, not pre-injected)

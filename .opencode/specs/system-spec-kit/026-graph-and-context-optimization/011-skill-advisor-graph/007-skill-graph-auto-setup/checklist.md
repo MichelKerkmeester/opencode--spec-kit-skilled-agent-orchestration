@@ -75,7 +75,7 @@ _memory:
 ## Testing
 
 - [x] CHK-020 [P0] `spec.md` contains acceptance scenarios for fresh install, fallback loading, guide resolution, continuity, and reviewer verification [EVIDENCE: spec.md success-criteria section contains 5 Given/When/Then scenarios]
-- [x] CHK-021 [P0] The canonical external setup guide documents health, validation, troubleshooting, and regression commands [EVIDENCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:279-298]
+- [x] CHK-021 [P0] The canonical external setup guide documents health check, compiler validation, and regression commands [EVIDENCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:279-298]
 - [x] CHK-022 [P1] Strict packet validation completes with exit code `0` or `1` [EVIDENCE: bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict -> 0 errors, 0 warnings after checklist evidence update]
 - [x] CHK-023 [P1] Regression verification remains part of the documented phase surface through the shipped regression harness and guide commands [EVIDENCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:296-298]
 <!-- /ANCHOR:testing -->

@@ -8,10 +8,19 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "planning"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-arch | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration"
+    last_updated_at: "2026-04-13T00:00:00Z"
+    last_updated_by: "claude-opus-4-6"
+    recent_action: "Implemented SQLite migration with 4 MCP tools"
+    next_safe_action: "Review and verify implementation"
+    key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md"]
 ---
 # Feature Specification: Skill Graph SQLite Migration
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-arch | v2.2 -->
 
 ---
 

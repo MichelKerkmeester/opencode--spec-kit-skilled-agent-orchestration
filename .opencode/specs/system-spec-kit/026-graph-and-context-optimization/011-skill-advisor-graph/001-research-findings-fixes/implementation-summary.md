@@ -69,8 +69,8 @@ Fixed the 5 P0 blocking issues and 2 of 5 P1 issues identified by the 10-iterati
 ## 3. VERIFICATION
 
 - **Regression suite**: 44/44 pass (100% rate), all P0 cases 12/12
-- **Compiler**: `--validate-only` passes, compiled output 3957 bytes (under 4KB)
-- **Health check**: `skill_graph_loaded: true`, `skill_graph_skill_count: 20`
+- **Compiler**: `--validate-only` passes, compiled output 3957 bytes at time of phase completion (current compiled graph is 4667 bytes)
+- **Health check**: `skill_graph_loaded: true`, `skill_graph_skill_count: 20` (at time of phase completion; current graph includes 21 skills)
 - **Ghost guard**: `"build something"` no longer surfaces unrelated family members
 - **Evidence separation**: graph-heavy results show reduced confidence vs direct matches
 

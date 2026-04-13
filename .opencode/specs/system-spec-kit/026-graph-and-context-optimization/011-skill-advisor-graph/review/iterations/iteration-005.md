@@ -1,19 +1,21 @@
-# Iteration 005: D1 correctness deep pass on compiler validation semantics
+# Iteration 005: D3 traceability pass on Phase 007 auto-setup
 
 ## Focus
-D1 Correctness deep pass on `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`, the checked-in `.opencode/skill/skill-advisor/scripts/skill-graph.json`, and the Section 3.3 damping constants consumed by `.opencode/skill/skill-advisor/scripts/skill_advisor.py`.
+D3 Traceability review of Phase 007 (`007-skill-graph-auto-setup`) against the shipped auto-setup surfaces: `init-skill-graph.sh`, lazy graph loading in `skill_advisor.py`, MCP startup and watcher logging in `context-server.ts`, and the external setup guide.
 
 ## Scorecard
-- Dimensions covered: D1 Correctness
-- Files reviewed: 6
-- New findings: P0=0 P1=2 P2=0
+- Dimensions covered: D3 Traceability
+- Files reviewed: 7
+- New findings: P0=0 P1=0 P2=1
 - Refined findings: P0=0 P1=0 P2=0
-- New findings ratio: 0.35
+- New findings ratio: 0.08
+- New info ratio: 0.18
 
 ## Verified claims
-- Section 3.3's damping constants still match the implementation: enhances uses `0.3`, siblings `0.15`, depends_on `0.2`, family affinity `0.08`, and the boost floor remains `0.1`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:145-147] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/plan.md:88-97] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:100-149]
-- The checked-in `skill-graph.json` still matches the structure emitted by `compile_graph()` (`schema_version`, `generated_at`, `skill_count`, `families`, `adjacency`, `signals`, `conflicts`, `hub_skills`); this pass did not find a stale generated-artifact bug. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:388-455] [SOURCE: .opencode/skill/skill-advisor/scripts/skill-graph.json:1]
-- Family classification is currently consistent with the compiler contract: metadata validation constrains `family` to the six allowed buckets and compilation emits those same sorted buckets into `families`. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:107-117] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:390-402] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:440-454] [SOURCE: .opencode/skill/skill-advisor/scripts/skill-graph.json:1]
+- REQ-001 and CHK-010 match the implementation: `init-skill-graph.sh` validates graph metadata, exports the JSON fallback, and runs the advisor health check. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:116-117] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/checklist.md:66-67] [SOURCE: .opencode/skill/skill-advisor/scripts/init-skill-graph.sh:53-60]
+- REQ-002 and CHK-011 accurately describe the lazy load chain in `skill_advisor.py`: SQLite is preferred, JSON is the fallback, and JSON auto-compilation only happens when both graph artifacts are missing. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:117-118] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/checklist.md:67-68] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:203-244]
+- REQ-003 and CHK-012 align with the MCP server: startup initializes the skill-graph database, schedules a background startup scan, and logs fresh, existing, reindexed, and new-skill states during startup and watcher-triggered refreshes. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:116-118] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/checklist.md:68-69] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/context-server.ts:1370-1401] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/context-server.ts:1732-1737] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/context-server.ts:2068-2071]
+- The phase docs correctly point to the external guide instead of a packet-local file, and the guide covers manual setup, health/validation, troubleshooting, and regression surfaces tied to Phase 007. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:124-126] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/tasks.md:71-72] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/tasks.md:97-104] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:238-246] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:276-305] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:364-403]
 
 ## Findings
 
@@ -21,18 +23,17 @@ D1 Correctness deep pass on `.opencode/skill/skill-advisor/scripts/skill_graph_c
 - None.
 
 ### P1 - Required
-- **F040**: `validate_skill_metadata()` does not enforce the edge-type-specific weight bands promised by the packet. Section 3.1 says `depends_on` / `prerequisite_for` must be `0.7-1.0`, `enhances` `0.3-0.7`, `siblings` `0.4-0.6`, and `conflicts_with` `0.5-1.0`, but the validator only checks that each weight is numeric and inside `[0.0, 1.0]`. Semantically invalid metadata such as `depends_on: 0.1` or `siblings: 0.9` will therefore pass `--validate-only` and feed incorrect boost strengths into runtime routing. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/spec.md:115-121] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:124-146] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:100-127]
-- **F041**: `validate_edge_symmetry()` treats reciprocal edges as symmetric even when the weights disagree. For `depends_on` / `prerequisite_for` and `siblings`, the check only verifies that the reverse target exists; it never compares reciprocal weights or contexts. That means `A siblings B @0.6` and `B siblings A @0.4` pass as "symmetric", even though `skill_advisor.py` consumes those directional weights directly and will apply different transitive strengths depending on which side of the pair had the initial signal. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:267-295] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:100-127]
-
-### P2 - Suggestion
 - None.
 
+### P2 - Suggestion
+- **F040**: `checklist.md` item CHK-021 is directionally correct but its evidence citation is too narrow for the claim it makes. The checklist cites `SET-UP_GUIDE.md:279-298` as proof that the guide documents health, validation, troubleshooting, and regression commands, but that cited range only covers health, validation, and regression; the troubleshooting commands live in the later troubleshooting section. This leaves a minor traceability gap in the packet evidence even though the underlying guide content is present. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/checklist.md:77-80] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:278-298] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:364-403]
+
 ## Ruled Out
-- The current `hub_skills` list is internally consistent with the shipped `compute_hub_skills()` implementation; this pass did not find a fresh emitter bug there beyond the documentation drift already captured in F023. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:366-385] [SOURCE: .opencode/skill/skill-advisor/scripts/skill-graph.json:1]
-- I did not find a family bucketing bug in the current graph: the compiler emits the six validated families and the checked artifact reflects those same buckets. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:107-117] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:390-402] [SOURCE: .opencode/skill/skill-advisor/scripts/skill-graph.json:1]
+- I did not find a Phase 007 spec/code contradiction in the init script flow, the advisor's SQLite -> JSON -> auto-compile behavior, or the MCP startup and watcher logging states. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:116-126] [SOURCE: .opencode/skill/skill-advisor/scripts/init-skill-graph.sh:53-60] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:203-244] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/context-server.ts:1370-1401]
+- The setup-guide path and regression-verification surface are current: the packet points at `.opencode/skill/skill-advisor/SET-UP_GUIDE.md`, and that guide still includes the shipped regression harness command. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/spec.md:124-126] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/tasks.md:103-104] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:293-305]
 
 ## Dead Ends
-- Investigating the current checked-in `skill-graph.json` as a stale or hand-edited artifact went nowhere; recompilation from today's metadata reproduces the same structure, adjacency, family buckets, and hub list in the checked payload. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:388-455] [SOURCE: .opencode/skill/skill-advisor/scripts/skill-graph.json:1]
+- Cross-checking the checklist evidence against the guide did not uncover a hidden Phase 007 contradiction; the remaining issue is evidence precision inside the checklist rather than missing runtime behavior. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup/checklist.md:77-80] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:278-298] [SOURCE: .opencode/skill/skill-advisor/SET-UP_GUIDE.md:364-403]
 
 ## Recommended Next Focus
-Stabilization / convergence pass - all four review dimensions are now covered, so the next iteration should re-check active P0/P1 findings and decide whether the loop is ready to synthesize.
+Stabilization pass: re-check whether the remaining post-remediation packet evidence claims, especially checklist items with bundled evidence ranges, are precise enough to support a PASS verdict.

@@ -33,11 +33,11 @@ _memory:
 | **Language/Stack** | Markdown (documentation) |
 | **Template** | sk-doc playbook snippet template |
 | **Prompt Pattern** | RCAF (Role, Context, Action, Format) |
-| **Reference** | `01--routing-accuracy/001-git-routing.md` |
+| **Reference** | `.opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md` |
 
 ### Overview
 
-Reconcile the full playbook package with current reality: keep the 24 scenario snippets on the sk-doc 5-section template, keep the root playbook as the operator guide, and normalize all Skill Advisor runtime path references to `.opencode/skill/skill-advisor/scripts/...`. Use `001-git-routing.md` as the gold standard pattern for scenario snippets.
+Reconcile the full playbook package with current reality: keep the 24 scenario snippets on the sk-doc 5-section template, keep the root playbook as the operator guide, and normalize all Skill Advisor runtime path references to `.opencode/skill/skill-advisor/scripts/...`. Use `.opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md` as the gold standard pattern for scenario snippets.
 
 ---
 
@@ -62,7 +62,7 @@ Reconcile the full playbook package with current reality: keep the 24 scenario s
 
 ### Phase 1: Graph Boosts Category (7 files)
 
-For each file in `02--graph-boosts/`:
+For each file in `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/`:
 
 1. Read current stub content (command, expected, pass/fail)
 2. Preserve the test logic (command, expected behavior)
@@ -76,40 +76,40 @@ For each file in `02--graph-boosts/`:
 **Files:**
 | ID | File | Scenario |
 |----|------|----------|
-| GB-001 | `001-dependency-pullup.md` | depends_on edge pulls up prerequisites |
-| GB-002 | `002-enhances-overlay.md` | enhances edge overlays related skills |
-| GB-003 | `003-ghost-prevention.md` | Ghost candidate guard blocks zero-evidence |
-| GB-004 | `004-family-affinity.md` | Family boost with ghost guard active |
-| GB-005 | `005-evidence-separation.md` | Graph-heavy results get confidence penalty |
-| GB-006 | `006-hub-skill-edges.md` | Hub skills surface via edge connections |
-| GB-007 | `007-prerequisite-for.md` | prerequisite_for compiled into runtime |
+| GB-001 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/001-dependency-pullup.md` | depends_on edge pulls up prerequisites |
+| GB-002 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/002-enhances-overlay.md` | enhances edge overlays related skills |
+| GB-003 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/003-ghost-prevention.md` | Ghost candidate guard blocks zero-evidence |
+| GB-004 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md` | Family boost with ghost guard active |
+| GB-005 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/005-evidence-separation.md` | Graph-heavy results get confidence penalty |
+| GB-006 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/006-hub-skill-edges.md` | Hub skills surface via edge connections |
+| GB-007 | `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/007-prerequisite-for.md` | prerequisite_for compiled into runtime |
 
 ### Phase 2: Compiler Category (5 files)
 
-Same expansion for `03--compiler/`:
+Same expansion for `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/`:
 
 | ID | File | Scenario |
 |----|------|----------|
-| CP-001 | `001-schema-validation.md` | All 20 metadata files pass validation |
-| CP-002 | `002-zero-edge-warnings.md` | Compiler warns on orphan skills |
-| CP-003 | `003-compiled-signals.md` | intent_signals present in compiled output |
-| CP-004 | `004-size-target.md` | Compiled output under 4KB |
-| CP-005 | `005-health-check.md` | Health check reports graph status |
+| CP-001 | `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/001-schema-validation.md` | All 20 metadata files pass validation |
+| CP-002 | `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/002-zero-edge-warnings.md` | Compiler warns on orphan skills |
+| CP-003 | `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/003-compiled-signals.md` | intent_signals present in compiled output |
+| CP-004 | `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/004-size-target.md` | Compiled output under 4KB |
+| CP-005 | `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/005-health-check.md` | Health check reports graph status |
 
 ### Phase 3: Regression Safety Category (4 files)
 
-Same expansion for `04--regression-safety/`:
+Same expansion for `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/`:
 
 | ID | File | Scenario |
 |----|------|----------|
-| RS-001 | `001-full-regression.md` | 44/44 cases pass, all gates green |
-| RS-002 | `002-p0-cases.md` | 12/12 P0 cases pass |
-| RS-003 | `003-graph-cases.md` | P1-GRAPH cases pass |
-| RS-004 | `004-abstain-noise.md` | Noise queries produce no result |
+| RS-001 | `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/001-full-regression.md` | 44/44 cases pass, all gates green |
+| RS-002 | `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/002-p0-cases.md` | 12/12 P0 cases pass |
+| RS-003 | `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/003-graph-cases.md` | P1-GRAPH cases pass |
+| RS-004 | `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/004-abstain-noise.md` | Noise queries produce no result |
 
 ### Phase 4: Root Playbook Rewrite
 
-Rewrite `manual_testing_playbook.md`:
+Rewrite `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`:
 - Fix all stale runtime-path prose so it uses `.opencode/skill/skill-advisor/scripts/`
 - Add execution policy block at top
 - Ensure TOC links match file paths

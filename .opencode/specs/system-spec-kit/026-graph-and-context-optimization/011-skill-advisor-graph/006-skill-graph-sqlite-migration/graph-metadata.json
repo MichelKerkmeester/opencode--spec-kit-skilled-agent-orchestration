@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "packet_id": "006-skill-graph-sqlite-migration",
   "parent_id": "011-skill-advisor-graph",
   "title": "Skill Graph SQLite Migration",
-  "status": "planned",
   "level": 3,
   "created_at": "2026-04-13",
   "derived": {
+    "status": "planned",
     "trigger_phrases": [
       "skill graph sqlite",
       "skill graph mcp",

@@ -1,23 +1,27 @@
-# Iteration 2: Security review of graph compiler and advisor trust boundaries
+# Iteration 2: Security re-review of the compiler boundary fix and graph setup surfaces
 
 ## Focus
-D2 Security review of `skill_advisor.py`, `skill_graph_compiler.py`, the compiled `skill-graph.json`, and sampled `graph-metadata.json` files.
+D2 Security review of `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`, `.opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts`, and `.opencode/skill/skill-advisor/scripts/init-skill-graph.sh` after the F010 remediation.
 
 ## Findings
 ### P0 - Blocker
 - None.
 
 ### P1 - Required
-- **F010**: Derived metadata validation accepts path traversal outside the intended skill and repository roots. `validate_derived_metadata()` rejects absolute `source_docs` paths, but it does not normalize or boundary-check `../` segments before calling `os.path.isfile()` on `source_docs`, `key_files`, or `entities[].path`, so malicious metadata can point at files outside the declared trust boundary as long as the target exists. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:205-245]
+- None.
 
 ### P2 - Suggestion
-- **F011**: `skill_advisor.py` trusts the compiled graph after syntax-only JSON parsing. `_load_skill_graph()` only catches file/JSON syntax errors, then `_apply_graph_boosts()`, `_apply_family_affinity()`, and `_apply_graph_conflict_penalty()` assume `adjacency`, `families`, `conflicts`, and edge weights already have the expected dict/list/float shapes. A tampered but syntactically valid `skill-graph.json` can therefore raise runtime exceptions and deny service to skill routing instead of degrading safely. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:70-80] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:92-127] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:139-171] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1512-1514] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:1605-1611]
+- None.
+
+## Remediation Status
+- **F010**: Direct `../` and absolute-path traversal are no longer reproducible in derived metadata validation. `validate_derived_metadata()` now normalizes candidate paths for `source_docs`, `key_files`, and `entities[].path`, then rejects normalized paths that escape `skill_dir` or `repo_root` before the `os.path.isfile()` existence check runs. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:206-255]
 
 ## Ruled Out
-- The sampled metadata corpus I checked is currently well-formed and repo-relative, so I did not find an already-materialized traversal payload in the reviewed files. [SOURCE: .opencode/skill/cli-claude-code/graph-metadata.json:68-123] [SOURCE: .opencode/skill/mcp-code-mode/graph-metadata.json:67-129] [SOURCE: .opencode/skill/sk-code-review/graph-metadata.json:77-146] [SOURCE: .opencode/skill/system-spec-kit/graph-metadata.json:71-168]
+- `skill-graph-db.ts` does not expose a SQL-injection sink in the reviewed paths. Metadata reads, writes, deletes, and upserts all use `better-sqlite3` prepared statements with bound parameters, and the only dynamic SQL fragment is a placeholder-count string used with separately bound `skillIds`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:231-245] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts:433-580]
+- `init-skill-graph.sh` does not build shell commands from untrusted strings. It computes fixed repository-local paths, then dispatches fixed `python3` commands through `run_from_repo()` using quoted `"$@"` argument forwarding. [SOURCE: .opencode/skill/skill-advisor/scripts/init-skill-graph.sh:23-31] [SOURCE: .opencode/skill/skill-advisor/scripts/init-skill-graph.sh:53-60]
 
 ## Dead Ends
-- I did not find unsafe deserialization beyond standard `json.load()` usage; the security issue is the missing trust-boundary validation around otherwise valid JSON content. [SOURCE: .opencode/skill/skill-advisor/scripts/skill_advisor.py:75-80] [SOURCE: .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:68-74]
+- None.
 
 ## Recommended Next Focus
-Return to D1 Correctness and check whether graph-derived boosts can skew routing quality or stability even when the graph file is well-formed.
+D3 Traceability - verify that the restarted gen2 review packet rebuilt its live strategy / lineage artifacts consistently and that the remediation docs now reflect the current security verdict.

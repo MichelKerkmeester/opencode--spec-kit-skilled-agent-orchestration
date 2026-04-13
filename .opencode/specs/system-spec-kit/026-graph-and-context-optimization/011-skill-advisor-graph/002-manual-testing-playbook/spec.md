@@ -109,11 +109,11 @@ Already-aligned file: `.opencode/skill/skill-advisor/manual_testing_playbook/01-
 
 | File | Action |
 |------|--------|
-| `01--routing-accuracy/001-git-routing.md` through `008-semantic-search-routing.md` | Normalize prose path references (8) |
-| `02--graph-boosts/001-dependency-pullup.md` through `007-prerequisite-for.md` | Verify rewritten snippet contract (7) |
-| `03--compiler/001-schema-validation.md` through `005-health-check.md` | Verify rewritten snippet contract (5) |
-| `04--regression-safety/001-full-regression.md` through `004-abstain-noise.md` | Verify rewritten snippet contract (4) |
-| `manual_testing_playbook.md` | Refresh root guide and feature-catalog cross-reference |
+| `.opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md` through `008-semantic-search-routing.md` | Normalize prose path references (8) |
+| `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/001-dependency-pullup.md` through `007-prerequisite-for.md` | Verify rewritten snippet contract (7) |
+| `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/001-schema-validation.md` through `005-health-check.md` | Verify rewritten snippet contract (5) |
+| `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/001-full-regression.md` through `004-abstain-noise.md` | Verify rewritten snippet contract (4) |
+| `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` | Refresh root guide and feature-catalog cross-reference |
 
 ---
 
