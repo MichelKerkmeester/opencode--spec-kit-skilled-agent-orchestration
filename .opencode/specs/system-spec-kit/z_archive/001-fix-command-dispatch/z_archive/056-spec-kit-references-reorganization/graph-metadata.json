@@ -166,7 +166,7 @@
     ],
     "causal_summary": "The `system-spec-kit` skill's `references/` folder currently has a flat structure with all reference files at the root level. This makes navigation difficult, slows down discovery of relevant documentation, and creates inconsistency with other skills like `workflows-code` that use organized sub-folder structures.",
     "created_at": "2026-04-12T09:02:53.535Z",
-    "last_save_at": "2026-04-13T04:56:07.029Z",
+    "last_save_at": "2026-04-13T05:11:45.095Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

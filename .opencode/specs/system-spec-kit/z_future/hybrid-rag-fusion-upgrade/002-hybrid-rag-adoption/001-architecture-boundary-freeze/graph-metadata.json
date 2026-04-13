@@ -143,7 +143,7 @@
     ],
     "causal_summary": "This sub-phase defines the immutable architecture rule for the adoption work: new UX may add facades, profiles, wrappers, and guidance, but it may not replace or duplicate Public's existing memory, bootstrap, save, graph, or governance authorities. It does not ship any new operator-facing tool by itself.",
     "created_at": "2026-04-13T04:56:07.087Z",
-    "last_save_at": "2026-04-13T04:56:07.087Z",
+    "last_save_at": "2026-04-13T05:11:45.190Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

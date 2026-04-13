@@ -141,7 +141,7 @@
     ],
     "causal_summary": "This sub-phase scopes a compact diagnostics surface for operators and agents. It covers summarized health hints, repair posture, dry-run/preflight surfacing, and routing-oriented debug output. It does not create a second repair tool or automated rebuild authority.",
     "created_at": "2026-04-13T04:56:07.089Z",
-    "last_save_at": "2026-04-13T04:56:07.089Z",
+    "last_save_at": "2026-04-13T05:11:45.193Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

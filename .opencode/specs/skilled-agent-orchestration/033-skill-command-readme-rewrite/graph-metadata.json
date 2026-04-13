@@ -163,7 +163,7 @@
     ],
     "causal_summary": "Skill READMEs and command READMEs vary in quality, structure and voice. Most lack two-tier voice, comparison tables, numbered Feature subsections and HVR compliance. The recently upgraded `.opencode/skill/sk-doc/references/specific/readme_creation.md` and `.opencode/skill/sk-doc/references/global/hvr_rules.md` from spec 032 define production-quality standards that no existing skill README meets except the system-spec-kit exemplars.",
     "created_at": "2026-04-12T09:02:50.178Z",
-    "last_save_at": "2026-04-13T04:56:03.832Z",
+    "last_save_at": "2026-04-13T05:11:41.775Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

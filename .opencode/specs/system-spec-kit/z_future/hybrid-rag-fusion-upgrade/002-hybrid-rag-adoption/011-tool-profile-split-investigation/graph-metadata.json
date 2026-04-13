@@ -138,7 +138,7 @@
     ],
     "causal_summary": "This sub-phase investigates whether Public should experiment with Engram-style tool-profile packaging similar to `ProfileAgent` and `ProfileAdmin`, but only as a delivery-layer teaching aid. It studies token savings, operator clarity, and failure modes without changing tool registration or ownership. It does not reduce the current tool surface or ship a new authority lane.",
     "created_at": "2026-04-13T04:56:07.091Z",
-    "last_save_at": "2026-04-13T04:56:07.091Z",
+    "last_save_at": "2026-04-13T05:11:45.195Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

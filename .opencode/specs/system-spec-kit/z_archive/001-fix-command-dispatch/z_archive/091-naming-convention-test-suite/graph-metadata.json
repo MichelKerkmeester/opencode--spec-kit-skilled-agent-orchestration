@@ -164,7 +164,7 @@
     ],
     "causal_summary": "Comprehensive test suite to verify all ~246 files adjusted during the OpenCode naming convention migration (spec 090). Tests confirm that every JS, shell, and Python script works correctly after renaming snake_case identifiers to camelCase, that 3 discovered runtime bugs are fixed, and that backward-compatible MCP handler exports function properly.",
     "created_at": "2026-04-12T09:02:53.561Z",
-    "last_save_at": "2026-04-13T04:56:07.056Z",
+    "last_save_at": "2026-04-13T05:11:45.145Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
