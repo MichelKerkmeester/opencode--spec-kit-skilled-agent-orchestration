@@ -40,6 +40,12 @@ const CANONICAL_PACKET_DOCS = [
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
 const FILE_REFERENCE_RE = /`([^`\n]+\.[A-Za-z0-9._-]+)`/g;
+const CANONICAL_PACKET_DOC_RE =
+  /^(spec\.md|plan\.md|tasks\.md|checklist\.md|decision-record\.md|implementation-summary\.md|research\.md|research\/research\.md|handover\.md)$/;
+const KEY_FILE_NOISE_RE =
+  /^(node |npx |pnpm |npm |yarn |bun |python([0-9]+(\.[0-9]+)*)? |bash |sh |vitest |jest |mocha |tsx |ts-node |TMPDIR)|^v[0-9]+\.[0-9]+(\.[0-9]+)?$|^[a-z]+\/[a-z0-9+-]+$|^_memory\.continuity$|^[A-Za-z][A-Za-z0-9_-]*:\s.+$|^console\.warn(\(|$)/;
+const BARE_FILE_RE = /^[^/]+\.[A-Za-z0-9._-]+$/;
+const TITLE_LIKE_KEY_FILE_RE = /^([A-Z][a-z]+)( [A-Z][A-Za-z0-9._-]*)+$/;
 
 interface ParsedSpecDoc {
   relativePath: string;
@@ -334,6 +340,32 @@ function extractReferencedFilePaths(content: string): string[] {
   return Array.from(referenced);
 }
 
+function keepKeyFile(candidate: string): boolean {
+  const normalized = candidate.trim().replace(/\\/g, '/');
+  if (!normalized) {
+    return false;
+  }
+  if (normalized.startsWith('../')) {
+    return false;
+  }
+  if (KEY_FILE_NOISE_RE.test(normalized)) {
+    return false;
+  }
+  if (TITLE_LIKE_KEY_FILE_RE.test(normalized)) {
+    return false;
+  }
+  if (normalized.includes('/')) {
+    const lastSegment = normalized.split('/').pop() ?? '';
+    if (!lastSegment.includes('.')) {
+      return false;
+    }
+  }
+  if (BARE_FILE_RE.test(normalized) && !CANONICAL_PACKET_DOC_RE.test(normalized)) {
+    return false;
+  }
+  return true;
+}
+
 function collectPacketDocs(specFolderPath: string): ParsedSpecDoc[] {
   const docs: ParsedSpecDoc[] = [];
   for (const relativePath of CANONICAL_PACKET_DOCS) {
@@ -417,9 +449,52 @@ function classifyEntityKind(filePath: string): string {
 
 function deriveEntities(docs: ParsedSpecDoc[], keyFiles: string[]): GraphEntityReference[] {
   const entities = new Map<string, GraphEntityReference>();
+  const canonicalDocSuffixes = new Set(docs.map((doc) => doc.relativePath.replace(/\\/g, '/')));
+
+  const isCanonicalEntityPath = (filePath: string): boolean => {
+    const normalized = filePath.replace(/\\/g, '/');
+    for (const docPath of canonicalDocSuffixes) {
+      if (normalized === docPath || normalized.endsWith(`/${docPath}`)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const prefersCandidate = (
+    existing: GraphEntityReference,
+    candidate: GraphEntityReference,
+  ): boolean => {
+    const existingPath = existing.path.replace(/\\/g, '/');
+    const candidatePath = candidate.path.replace(/\\/g, '/');
+    const existingCanonical = isCanonicalEntityPath(existingPath);
+    const candidateCanonical = isCanonicalEntityPath(candidatePath);
+    if (candidateCanonical && !existingCanonical) {
+      return true;
+    }
+    if (!candidateCanonical) {
+      return false;
+    }
+
+    const existingPathLike = existingPath.includes('/');
+    const candidatePathLike = candidatePath.includes('/');
+    return candidatePathLike && !existingPathLike;
+  };
+
+  const upsertEntityByName = (candidate: GraphEntityReference): void => {
+    const nameKey = candidate.name.trim().toLowerCase();
+    if (!nameKey || candidate.name.length > 80) {
+      return;
+    }
+
+    const existing = entities.get(nameKey);
+    if (!existing || prefersCandidate(existing, candidate)) {
+      entities.set(nameKey, candidate);
+    }
+  };
 
   for (const filePath of keyFiles) {
-    entities.set(filePath, {
+    upsertEntityByName({
       name: path.basename(filePath),
       kind: classifyEntityKind(filePath),
       path: filePath,
@@ -431,10 +506,10 @@ function deriveEntities(docs: ParsedSpecDoc[], keyFiles: string[]): GraphEntityR
     const extracted = extractEntities(doc.content).slice(0, 6);
     for (const entity of extracted) {
       const normalizedName = entity.text.replace(/[\r\n]+/g, ' ').trim();
-      if (!normalizedName || normalizedName.length > 80 || entities.has(normalizedName)) {
+      if (!normalizedName || normalizedName.length > 80) {
         continue;
       }
-      entities.set(normalizedName, {
+      upsertEntityByName({
         name: normalizedName,
         kind: entity.type,
         path: doc.relativePath,
@@ -463,10 +538,12 @@ function normalizeUnique(values: string[]): string[] {
 function deriveKeyFiles(docs: ParsedSpecDoc[]): string[] {
   const preferredDoc = docs.find((doc) => doc.relativePath === 'implementation-summary.md');
   const referenced = preferredDoc
-    ? extractReferencedFilePaths(preferredDoc.content)
+    ? extractReferencedFilePaths(preferredDoc.content).filter(keepKeyFile)
     : [];
 
-  const fallbackRefs = docs.flatMap((doc) => extractReferencedFilePaths(doc.content));
+  const fallbackRefs = docs
+    .flatMap((doc) => extractReferencedFilePaths(doc.content))
+    .filter(keepKeyFile);
   const merged = normalizeUnique([...referenced, ...fallbackRefs, ...docs.map((doc) => doc.relativePath)]);
   return merged.slice(0, 20);
 }
@@ -507,7 +584,32 @@ function deriveStatus(docs: ParsedSpecDoc[], override?: string | null): string {
     docs.find((doc) => doc.relativePath === 'plan.md')?.status,
     docs.find((doc) => doc.relativePath === 'spec.md')?.status,
   ];
-  return selectFirstValue(ranked, 'planned');
+  const frontmatterStatus = selectFirstValue(ranked, '');
+  if (frontmatterStatus) {
+    return frontmatterStatus;
+  }
+
+  const implementationSummaryDoc = docs.find((doc) => doc.relativePath === 'implementation-summary.md');
+  if (!implementationSummaryDoc) {
+    return 'planned';
+  }
+
+  const checklistDoc = docs.find((doc) => doc.relativePath === 'checklist.md');
+  if (!checklistDoc) {
+    return 'complete';
+  }
+
+  return evaluateChecklistCompletion(checklistDoc.content) === 'COMPLETE'
+    ? 'complete'
+    : 'in_progress';
+}
+
+function evaluateChecklistCompletion(content: string): 'COMPLETE' | 'INCOMPLETE' {
+  const checklistItems = content.match(/^\s*[-*]\s+\[[ xX]\]\s+.+$/gm) ?? [];
+  if (checklistItems.length === 0) {
+    return 'INCOMPLETE';
+  }
+  return checklistItems.every((line) => !/\[\s\]/.test(line)) ? 'COMPLETE' : 'INCOMPLETE';
 }
 
 function deriveImportanceTier(docs: ParsedSpecDoc[]): string {
@@ -529,7 +631,7 @@ export function deriveGraphMetadata(
   const docs = collectPacketDocs(specFolderPath);
   const specFolder = resolveSpecFolderPath(specFolderPath);
   const packetId = specFolder;
-  const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases));
+  const triggerPhrases = normalizeUnique(docs.flatMap((doc) => doc.triggerPhrases)).slice(0, 12);
   const causalSummary = deriveCausalSummary(docs);
   const keyFiles = deriveKeyFiles(docs);
   const keyTopics = deriveKeyTopics(docs, triggerPhrases, causalSummary);
@@ -657,3 +759,8 @@ export function packetReferencesToCausalLinks(manual: GraphMetadataManual): Reco
     related_to: manual.related_to.map((ref) => ref.packet_id),
   };
 }
+
+export const __testables = {
+  keepKeyFile,
+  evaluateChecklistCompletion,
+};

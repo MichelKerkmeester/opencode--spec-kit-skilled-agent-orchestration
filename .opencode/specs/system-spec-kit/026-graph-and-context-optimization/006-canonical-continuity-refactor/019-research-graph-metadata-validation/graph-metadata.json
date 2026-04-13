@@ -33,22 +33,22 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "graph-metadata.json",
       "mcp_server/lib/graph/graph-metadata-schema.ts",
       "mcp_server/lib/graph/graph-metadata-parser.ts",
       "scripts/graph/backfill-graph-metadata.ts",
       "implementation-summary.md",
       "spec.md",
       "00--ai-systems/001-global-shared/spec.md",
-      "research/research.md"
+      "checklist.md",
+      "plan.md",
+      "tasks.md",
+      "decision-record.md",
+      "research.md",
+      "research/research.md",
+      "handover.md",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json"
     ],
     "entities": [
-      {
-        "name": "graph-metadata.json",
-        "kind": "config",
-        "path": "graph-metadata.json",
-        "source": "derived"
-      },
       {
         "name": "graph-metadata-schema.ts",
         "kind": "code",
@@ -76,13 +76,31 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": "00--ai-systems/001-global-shared/spec.md",
         "source": "derived"
       },
       {
-        "name": "spec.md",
+        "name": "checklist.md",
         "kind": "doc",
-        "path": "00--ai-systems/001-global-shared/spec.md",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -92,57 +110,45 @@
         "source": "derived"
       },
       {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": "system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json",
+        "source": "derived"
+      },
+      {
         "name": "Graph Metadata Quality",
         "kind": "proper_noun",
-        "path": "spec.md",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
         "name": "Relationship Validation",
         "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Relationship Validation\n\nScan",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Background\n\nEvery",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Research Questions",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Key Files",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Method\nThis",
-        "kind": "proper_noun",
         "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "Runtime Baseline",
+        "name": "Relationship Validation Scan",
         "kind": "proper_noun",
-        "path": "research/research.md",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Background Every",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.",
     "created_at": "2026-04-13T04:56:06.987Z",
-    "last_save_at": "2026-04-13T05:11:45.013Z",
+    "last_save_at": "2026-04-13T06:08:11.997Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

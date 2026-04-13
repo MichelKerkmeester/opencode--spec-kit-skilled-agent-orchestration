@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "completed",
-      "checklist",
-      "decision",
-      "record",
-      "decision record"
+      "checklist"
     ],
     "key_topics": [
       "system",
@@ -50,8 +47,6 @@
       ".opencode/skill/system-memory/SKILL.md",
       ".opencode/skill/system-memory/mcp_server/lib/confidence-tracker.js",
       ".opencode/skill/system-memory/scripts/lib/opencode-capture.js",
-      "process.env.USERPROFILE",
-      "opencode.local.json",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -93,18 +88,6 @@
         "name": "opencode-capture.js",
         "kind": "code",
         "path": ".opencode/skill/system-memory/scripts/lib/opencode-capture.js",
-        "source": "derived"
-      },
-      {
-        "name": "process.env.USERPROFILE",
-        "kind": "file",
-        "path": "process.env.USERPROFILE",
-        "source": "derived"
-      },
-      {
-        "name": "opencode.local.json",
-        "kind": "config",
-        "path": "opencode.local.json",
         "source": "derived"
       },
       {
@@ -154,11 +137,23 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "System Health Dashboard",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory System",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "A comprehensive audit combining **20-agent deep analysis** and **System Health Dashboard** findings revealed critical bugs, alignment issues, and UX problems across multiple systems:",
     "created_at": "2026-04-12T09:02:53.522Z",
-    "last_save_at": "2026-04-13T05:11:45.067Z",
+    "last_save_at": "2026-04-13T06:08:12.027Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

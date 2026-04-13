@@ -34,78 +34,20 @@
       "features"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "spec-folder-mutex.ts",
-      "markdown-evidence-builder.ts",
-      "validation-responses.ts",
-      "v-rule-bridge.ts",
-      "lineage-state.ts",
-      "history.ts",
-      "scope-governance.ts",
-      "shared-spaces.ts",
       "shared/parsing/memory-sufficiency.ts",
       "shared/parsing/spec-doc-health.ts",
       "handlers/checkpoints.ts",
-      "confidence-tracker.ts",
-      "auto-promotion.ts",
-      "negative-feedback.ts",
-      "learned-feedback.ts",
-      "ground-truth-feedback.ts",
-      "adaptive-ranking.ts",
       "handlers/shared-memory.ts",
       "lib/collab/shared-spaces.ts",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "spec-folder-mutex.ts",
-        "kind": "code",
-        "path": "spec-folder-mutex.ts",
-        "source": "derived"
-      },
-      {
-        "name": "markdown-evidence-builder.ts",
-        "kind": "code",
-        "path": "markdown-evidence-builder.ts",
-        "source": "derived"
-      },
-      {
-        "name": "validation-responses.ts",
-        "kind": "code",
-        "path": "validation-responses.ts",
-        "source": "derived"
-      },
-      {
-        "name": "v-rule-bridge.ts",
-        "kind": "code",
-        "path": "v-rule-bridge.ts",
-        "source": "derived"
-      },
-      {
-        "name": "lineage-state.ts",
-        "kind": "code",
-        "path": "lineage-state.ts",
-        "source": "derived"
-      },
-      {
-        "name": "history.ts",
-        "kind": "code",
-        "path": "history.ts",
-        "source": "derived"
-      },
-      {
-        "name": "scope-governance.ts",
-        "kind": "code",
-        "path": "scope-governance.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared-spaces.ts",
-        "kind": "code",
-        "path": "shared-spaces.ts",
-        "source": "derived"
-      },
       {
         "name": "memory-sufficiency.ts",
         "kind": "code",
@@ -125,39 +67,87 @@
         "source": "derived"
       },
       {
-        "name": "confidence-tracker.ts",
+        "name": "shared-memory.ts",
         "kind": "code",
-        "path": "confidence-tracker.ts",
+        "path": "handlers/shared-memory.ts",
         "source": "derived"
       },
       {
-        "name": "auto-promotion.ts",
+        "name": "shared-spaces.ts",
         "kind": "code",
-        "path": "auto-promotion.ts",
+        "path": "lib/collab/shared-spaces.ts",
         "source": "derived"
       },
       {
-        "name": "negative-feedback.ts",
-        "kind": "code",
-        "path": "negative-feedback.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "learned-feedback.ts",
-        "kind": "code",
-        "path": "learned-feedback.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "ground-truth-feedback.ts",
-        "kind": "code",
-        "path": "ground-truth-feedback.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary Systematic",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 10 Mutation features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/02--mutation/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.245Z",
-    "last_save_at": "2026-04-13T05:11:41.853Z",
+    "last_save_at": "2026-04-13T06:08:08.912Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

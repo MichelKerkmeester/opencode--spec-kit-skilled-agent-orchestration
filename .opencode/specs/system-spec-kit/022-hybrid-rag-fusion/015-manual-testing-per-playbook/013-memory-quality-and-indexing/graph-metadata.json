@@ -22,15 +22,7 @@
       "memory quality tasks",
       "phase 013 tasks",
       "manual testing memory quality tasks",
-      "tasks core memory indexing",
-      "memory quality checklist",
-      "phase 013 verification",
-      "indexing checklist",
-      "m-003 m-005 m-006 039 155 164 verification",
-      "memory quality implementation summary",
-      "phase 013 summary",
-      "manual testing memory quality",
-      "memory quality test results"
+      "tasks core memory indexing"
     ],
     "key_topics": [
       "memory",
@@ -47,7 +39,7 @@
       "rag"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "tasks.md",
       "checklist.md",
@@ -105,13 +97,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\n\nExecute",
+        "name": "Purpose Execute",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -135,13 +127,13 @@
         "source": "derived"
       },
       {
-        "name": "Overview\n\nThis",
+        "name": "Overview This",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Pattern\n\nManual",
+        "name": "Pattern Manual",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -155,7 +147,7 @@
     ],
     "causal_summary": "The memory quality and indexing feature category is the largest single phase in the hybrid-RAG-fusion manual testing playbook, spanning 27 scenario files that expand to 34 exact IDs through sub-scenario decomposition (M-005 expands to M-005a/b/c, M-006 expands to M-006a/b/c, 155 expands to 155-F). These scenarios cover the verify-fix-verify loop, signal vocabulary, quality gates, reconsolidation, entity extraction, outsourced agent capture, session enrichment, post-save review, and deferred indexing among other features. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.",
     "created_at": "2026-04-12T09:02:50.300Z",
-    "last_save_at": "2026-04-13T05:11:41.920Z",
+    "last_save_at": "2026-04-13T06:08:08.969Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

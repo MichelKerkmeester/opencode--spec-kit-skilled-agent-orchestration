@@ -22,22 +22,7 @@
       "extend contamination filter",
       "filtercontamination workflow",
       "scoring filter tasks",
-      "quality scorer tasks",
-      "contamination filter tasks",
-      "002-scoring-and-filter tasks",
-      "scoring filter checklist",
-      "quality scorer verification",
-      "contamination filter verification",
-      "002-scoring-and-filter checklist",
-      "scoring filter decisions",
-      "quality scorer bonus removal decision",
-      "contamination filter scope decision",
-      "post-save penalty integration",
-      "adr-001 adr-002 adr-003 scoring filter",
-      "scoring filter implementation summary",
-      "quality scorer recalibration complete",
-      "contamination filter expansion complete",
-      "002-scoring-and-filter summary"
+      "quality scorer tasks"
     ],
     "key_topics": [
       "quality",
@@ -54,13 +39,9 @@
       "prevention"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "extractors/quality-scorer.ts",
-      "workflow.ts",
-      "session-extractor.ts",
-      "input-normalizer.ts",
-      "post-save-review.ts",
       "scripts/extractors/quality-scorer.ts",
       "scripts/core/workflow.ts",
       "scripts/extractors/contamination-filter.ts",
@@ -82,36 +63,6 @@
         "name": "quality-scorer.ts",
         "kind": "code",
         "path": "extractors/quality-scorer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "workflow.ts",
-        "source": "derived"
-      },
-      {
-        "name": "session-extractor.ts",
-        "kind": "code",
-        "path": "session-extractor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "input-normalizer.ts",
-        "kind": "code",
-        "path": "input-normalizer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "post-save-review.ts",
-        "kind": "code",
-        "path": "post-save-review.ts",
-        "source": "derived"
-      },
-      {
-        "name": "quality-scorer.ts",
-        "kind": "code",
-        "path": "scripts/extractors/quality-scorer.ts",
         "source": "derived"
       },
       {
@@ -151,12 +102,6 @@
         "source": "derived"
       },
       {
-        "name": "quality-scorer.ts",
-        "kind": "code",
-        "path": "core/quality-scorer.ts",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
@@ -173,11 +118,47 @@
         "kind": "doc",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quality Scorer Recalibration",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Contamination Filter Expansion",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Two interrelated defects undermine memory quality in the generate-context.js pipeline. First, the extractors quality scorer applies up to +0.20 in bonuses for normal session activity, ensuring that five simultaneous soft failures still produce a score above 0.95 — making quality_score effectively binary and useless for discriminating good saves from bad ones. Second, the contamination filter is applied only to `observations` and `SUMMARY`, leaving `_JSON_SESSION_SUMMARY`, `_manualDecisions`, `recentContext`, and `technicalContext` completely uncleaned. This phase recalibrates the scorer and extends the filter to close both gaps.",
     "created_at": "2026-04-12T09:02:50.278Z",
-    "last_save_at": "2026-04-13T05:11:41.889Z",
+    "last_save_at": "2026-04-13T06:08:08.948Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

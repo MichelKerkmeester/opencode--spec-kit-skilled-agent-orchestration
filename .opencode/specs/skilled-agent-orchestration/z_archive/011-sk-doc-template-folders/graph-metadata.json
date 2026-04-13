@@ -38,7 +38,7 @@
       "skill"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       ".opencode/skill/sk-doc/SKILL.md",
       ".opencode/command/create/assets/create_skill_auto.yaml",
@@ -161,7 +161,7 @@
     ],
     "causal_summary": "The sk-doc skill stores all OpenCode component templates (skill, agent, command) in a single `assets/opencode/` directory. This flat structure makes it difficult to locate templates by component type and doesn't reflect the logical grouping of skill templates vs. agent/command templates.",
     "created_at": "2026-04-12T09:02:50.207Z",
-    "last_save_at": "2026-04-13T05:11:41.814Z",
+    "last_save_at": "2026-04-13T06:08:08.881Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

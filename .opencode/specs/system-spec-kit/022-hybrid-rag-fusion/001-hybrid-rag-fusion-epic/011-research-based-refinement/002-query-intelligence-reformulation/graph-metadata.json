@@ -22,9 +22,7 @@
       "001",
       "plan",
       "002",
-      "query",
-      "ybrid",
-      "tasks"
+      "query"
     ],
     "key_topics": [
       "query",
@@ -43,54 +41,12 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "stage1-candidate-gen.ts",
-      "query-decomposer.ts",
-      "entity-linker.ts",
-      "llm-reformulation.ts",
-      "hyde.ts",
-      "vector-index-store.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md"
     ],
     "entities": [
-      {
-        "name": "stage1-candidate-gen.ts",
-        "kind": "code",
-        "path": "stage1-candidate-gen.ts",
-        "source": "derived"
-      },
-      {
-        "name": "query-decomposer.ts",
-        "kind": "code",
-        "path": "query-decomposer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "entity-linker.ts",
-        "kind": "code",
-        "path": "entity-linker.ts",
-        "source": "derived"
-      },
-      {
-        "name": "llm-reformulation.ts",
-        "kind": "code",
-        "path": "llm-reformulation.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hyde.ts",
-        "kind": "code",
-        "path": "hyde.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-store.ts",
-        "kind": "code",
-        "path": "vector-index-store.ts",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -140,21 +96,57 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\n\nIntroduce",
+        "name": "Purpose Introduce",
         "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Query Enhancement",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Exit Criteria",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "All Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Time Surrogates",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Facet Detection Heuristic",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The current retrieval pipeline treats every user query as a single opaque string — one embedding lookup, one keyword expansion, one graph probe. This works for simple, well-phrased queries but fails when the user's question is multi-faceted (\"what decisions were made about scoring AND graph pruning?\"), uses vocabulary that diverges from stored terminology, or targets concepts that sit across multiple memory clusters. The result is missed recall on complex queries while simple-query latency must remain untouched.",
     "created_at": "2026-04-12T09:02:50.234Z",
-    "last_save_at": "2026-04-13T05:11:41.843Z",
+    "last_save_at": "2026-04-13T06:08:08.902Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

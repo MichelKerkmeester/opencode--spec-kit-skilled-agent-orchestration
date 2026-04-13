@@ -42,7 +42,7 @@
       "five"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -99,13 +99,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nFive",
+        "name": "Problem Statement Five",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\n\nProvide",
+        "name": "Purpose Provide",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -123,13 +123,13 @@
         "source": "derived"
       },
       {
-        "name": "Overview\nThis",
+        "name": "Overview This",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Pattern\nMinimal",
+        "name": "Pattern Minimal",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -149,7 +149,7 @@
     ],
     "causal_summary": "Five authoritative child phases were moved under `000-dynamic-capture-deprecation/`, but the branch itself had no parent `spec.md`, `plan.md`, or `tasks.md`. That left the moved child phases with broken parent back-references under recursive validation and made the archived branch harder to navigate from the parent pack.",
     "created_at": "2026-04-12T09:02:50.264Z",
-    "last_save_at": "2026-04-13T05:11:41.873Z",
+    "last_save_at": "2026-04-13T06:08:08.933Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

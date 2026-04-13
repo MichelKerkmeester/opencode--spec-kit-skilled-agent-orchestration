@@ -22,8 +22,7 @@
       "opencode structural bootstrap tasks",
       "027 structural priming checklist",
       "opencode bootstrap checklist",
-      "027 implementation summary",
-      "opencode structural priming summary"
+      "027 implementation summary"
     ],
     "key_topics": [
       "opencode",
@@ -40,28 +39,20 @@
       "checklist"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp_server/lib/session/session-snapshot.ts",
       "mcp_server/hooks/memory-surface.ts",
-      "primePackage.structuralContext",
       "mcp_server/handlers/session-bootstrap.ts",
       "mcp_server/handlers/session-resume.ts",
       "mcp_server/handlers/session-health.ts",
       "mcp_server/context-server.ts",
-      "AGENTS.md",
       ".opencode/agent/context-prime.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "session-snapshot.ts",
-      "vitest run tests/structural-contract.vitest.ts",
-      "vitest run tests/startup-brief.vitest.ts tests/hook-state.vitest.ts tests/structural-contract.vitest.ts",
-      "structural-contract.vitest.ts",
-      "context-server.ts",
-      "memory-surface.ts",
-      "session-bootstrap.ts"
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -74,12 +65,6 @@
         "name": "memory-surface.ts",
         "kind": "code",
         "path": "mcp_server/hooks/memory-surface.ts",
-        "source": "derived"
-      },
-      {
-        "name": "primePackage.structuralContext",
-        "kind": "file",
-        "path": "primePackage.structuralContext",
         "source": "derived"
       },
       {
@@ -104,12 +89,6 @@
         "name": "context-server.ts",
         "kind": "code",
         "path": "mcp_server/context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "AGENTS.md",
         "source": "derived"
       },
       {
@@ -143,27 +122,39 @@
         "source": "derived"
       },
       {
-        "name": "session-snapshot.ts",
-        "kind": "code",
-        "path": "session-snapshot.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "structural-contract.vitest.ts",
-        "kind": "test",
-        "path": "vitest run tests/structural-contract.vitest.ts",
+        "name": "Structural Priming",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "structural-contract.vitest.ts",
-        "kind": "test",
-        "path": "vitest run tests/startup-brief.vitest.ts tests/hook-state.vitest.ts tests/structural-contract.vitest.ts",
+        "name": "Hook Structural Bootstrap Contract",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Header",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 27** under the Compact Code Graph packet.",
     "created_at": "2026-04-12T09:02:53.433Z",
-    "last_save_at": "2026-04-13T05:11:44.961Z",
+    "last_save_at": "2026-04-13T06:08:11.947Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "rid",
-      "checklist",
-      "implementation",
-      "summary",
-      "validation"
+      "checklist"
     ],
     "key_topics": [
       "hybrid",
@@ -42,7 +39,7 @@
       "checklist"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scripts/extractors/claude-code-capture.ts",
       "scripts/loaders/data-loader.ts",
@@ -51,19 +48,11 @@
       "scripts/core/quality-scorer.ts",
       "scripts/core/workflow.ts",
       "scripts/extractors/collect-session-data.ts",
-      "claude-code-capture.ts",
-      "collect-session-data.ts",
-      "quality-scorer-calibration.vitest.ts",
-      "task-enrichment.vitest.ts",
-      "memory-render-fixture.vitest.ts",
-      "claude-code-capture.vitest.ts",
-      "test-memory-quality-lane.js",
-      "validate.sh",
-      "check-completion.sh",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -91,12 +80,6 @@
         "source": "derived"
       },
       {
-        "name": "quality-scorer.ts",
-        "kind": "code",
-        "path": "scripts/core/quality-scorer.ts",
-        "source": "derived"
-      },
-      {
         "name": "workflow.ts",
         "kind": "code",
         "path": "scripts/core/workflow.ts",
@@ -109,63 +92,69 @@
         "source": "derived"
       },
       {
-        "name": "claude-code-capture.ts",
-        "kind": "code",
-        "path": "claude-code-capture.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "collect-session-data.ts",
-        "kind": "code",
-        "path": "collect-session-data.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "quality-scorer-calibration.vitest.ts",
-        "kind": "test",
-        "path": "quality-scorer-calibration.vitest.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "task-enrichment.vitest.ts",
-        "kind": "test",
-        "path": "task-enrichment.vitest.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "memory-render-fixture.vitest.ts",
-        "kind": "test",
-        "path": "memory-render-fixture.vitest.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "claude-code-capture.vitest.ts",
-        "kind": "test",
-        "path": "claude-code-capture.vitest.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "test-memory-quality-lane.js",
-        "kind": "code",
-        "path": "test-memory-quality-lane.js",
+        "name": "Session Source Validation This",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "check-completion.sh",
-        "kind": "script",
-        "path": "check-completion.sh",
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.264Z",
-    "last_save_at": "2026-04-13T05:11:41.874Z",
+    "last_save_at": "2026-04-13T06:08:08.933Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

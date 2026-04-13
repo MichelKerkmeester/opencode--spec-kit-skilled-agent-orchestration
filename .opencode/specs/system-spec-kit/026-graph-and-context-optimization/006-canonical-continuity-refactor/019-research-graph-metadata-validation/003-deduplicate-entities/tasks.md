@@ -1,13 +1,13 @@
 ---
 title: "Deduplicate Graph Metadata Entities - Tasks"
-status: planned
+status: complete
 ---
 # Tasks
-- [ ] T-01: Add `canonicalDocPaths` and a shared `upsertEntityByName(...)` helper inside `mcp_server/lib/graph/graph-metadata-parser.ts:418-446`, following `../research/research.md:282-287`.
-- [ ] T-02: Replace the direct key-file `entities.set(...)` write in `mcp_server/lib/graph/graph-metadata-parser.ts:422-428` with the helper.
-- [ ] T-03: Replace the extracted-entity `entities.set(...)` write in `mcp_server/lib/graph/graph-metadata-parser.ts:437-442` with the same helper so both write paths share the same collision policy.
-- [ ] T-04: Make canonical packet-doc paths win over basename-only or non-canonical collisions, as required by `../research/research.md:279-289`.
-- [ ] T-05: Add integration coverage for `spec.md` and `plan.md` collision cases, then confirm the phase reduces duplicate slots without changing the 16-entry cap semantics.
+- [x] T-01: Add a shared `upsertEntityByName(...)` helper and canonical-path preference inside `mcp_server/lib/graph/graph-metadata-parser.ts`.
+- [x] T-02: Replace the direct key-file `entities.set(...)` write with the helper so basename seeding no longer reserves duplicate slots.
+- [x] T-03: Replace the extracted-entity `entities.set(...)` write with the same helper so both write paths share the collision policy.
+- [x] T-04: Make canonical packet-doc paths beat basename-only duplicates and path-like canonical references beat plain basenames when names normalize to the same key.
+- [x] T-05: Add coverage for `spec.md` and `plan.md` collision cases in `mcp_server/tests/graph-metadata-schema.vitest.ts` while preserving the 16-entity cap behavior.
 ## Verification
-- [ ] T-V1: `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit`
-- [ ] T-V2: `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts`
+- [x] T-V1: `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit`
+- [x] T-V2: `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts tests/graph-metadata-schema.vitest.ts`

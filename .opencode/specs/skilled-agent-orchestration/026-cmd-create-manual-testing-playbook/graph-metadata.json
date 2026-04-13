@@ -22,9 +22,7 @@
       "testing playbook command checklist",
       "/create:testing-playbook checklist",
       "testing playbook command adr",
-      "/create:testing-playbook decision record",
-      "testing playbook command implementation summary",
-      "/create:testing-playbook summary"
+      "/create:testing-playbook decision record"
     ],
     "key_topics": [
       "create",
@@ -41,7 +39,7 @@
       "checklist"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/command/create/testing-playbook.md",
       ".opencode/command/create/assets/create_testing_playbook_auto.yaml",
@@ -55,14 +53,14 @@
       ".codex/agents/write.toml",
       ".agents/agents/write.md",
       "validate_document.py .opencode/command/create/testing-playbook.md",
-      "create_testing_playbook_auto.yaml",
-      "create_testing_playbook_confirm.yaml",
       ".gemini/commands/create/testing-playbook.toml",
       "spec.md",
       ".opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md",
       ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md",
       ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md",
-      "<skill-root>/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
+      "<skill-root>/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "plan.md",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -96,12 +94,6 @@
         "source": "derived"
       },
       {
-        "name": "README.txt",
-        "kind": "file",
-        "path": ".opencode/command/README.txt",
-        "source": "derived"
-      },
-      {
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/README.md",
@@ -114,45 +106,9 @@
         "source": "derived"
       },
       {
-        "name": "write.md",
-        "kind": "doc",
-        "path": ".claude/agents/write.md",
-        "source": "derived"
-      },
-      {
         "name": "write.toml",
         "kind": "file",
         "path": ".codex/agents/write.toml",
-        "source": "derived"
-      },
-      {
-        "name": "write.md",
-        "kind": "doc",
-        "path": ".agents/agents/write.md",
-        "source": "derived"
-      },
-      {
-        "name": "testing-playbook.md",
-        "kind": "doc",
-        "path": "validate_document.py .opencode/command/create/testing-playbook.md",
-        "source": "derived"
-      },
-      {
-        "name": "create_testing_playbook_auto.yaml",
-        "kind": "config",
-        "path": "create_testing_playbook_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_testing_playbook_confirm.yaml",
-        "kind": "config",
-        "path": "create_testing_playbook_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "testing-playbook.toml",
-        "kind": "file",
-        "path": ".gemini/commands/create/testing-playbook.toml",
         "source": "derived"
       },
       {
@@ -160,11 +116,53 @@
         "kind": "doc",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_snippet_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": "<skill-root>/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet defines the implementation contract for `/create:testing-playbook`, a new create command that must scaffold the current integrated `manual_testing_playbook/` package. The command must honor the post-021 contract: root playbook plus numbered category folders, root-owned review/orchestration guidance, per-feature files that mimic feature-catalog entry structure, and no legacy review or sub-agent ledger sidecars or `snippets/` subtree.",
     "created_at": "2026-04-12T09:02:50.174Z",
-    "last_save_at": "2026-04-13T05:11:41.770Z",
+    "last_save_at": "2026-04-13T06:08:08.842Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

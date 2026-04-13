@@ -43,12 +43,8 @@
       "decision-record.md",
       "implementation-summary.md",
       "tests/memory-save-integration.vitest.ts",
-      "node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts",
-      "_memory.continuity",
-      "generate-context.js",
       "scripts/tests/outsourced-agent-handback-docs.vitest.ts",
-      "scripts/tests/generate-context-cli-authority.vitest.ts",
-      "validate_document.py"
+      "scripts/tests/generate-context-cli-authority.vitest.ts"
     ],
     "entities": [
       {
@@ -94,24 +90,6 @@
         "source": "derived"
       },
       {
-        "name": "generate-context-cli-authority.vitest.ts",
-        "kind": "test",
-        "path": "node ./scripts/node_modules/vitest/vitest.mjs run --config ./mcp_server/vitest.config.ts scripts/tests/outsourced-agent-handback-docs.vitest.ts scripts/tests/generate-context-cli-authority.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "_memory.continuity",
-        "kind": "file",
-        "path": "_memory.continuity",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
-      {
         "name": "outsourced-agent-handback-docs.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/outsourced-agent-handback-docs.vitest.ts",
@@ -121,12 +99,6 @@
         "name": "generate-context-cli-authority.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/generate-context-cli-authority.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "validate_document.py",
-        "kind": "file",
-        "path": "validate_document.py",
         "source": "derived"
       },
       {
@@ -146,11 +118,35 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Executive Summary Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Migration Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Gate E is the canonical cutover for phase 018. The runtime no longer uses a staged rollout ladder, shadow mode, observation windows, or archived-tier continuity semantics. This phase flips the new path to the only live continuity path immediately, removes rollout-era framing from the active surfaces, and updates the mapped command, agent, skill, and README files so the repo describes the shipped contract honestly.",
     "created_at": "2026-04-12T09:02:53.480Z",
-    "last_save_at": "2026-04-13T05:11:45.001Z",
+    "last_save_at": "2026-04-13T06:08:11.984Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -923,6 +923,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       vi.doUnmock('../utils/index.js');
       vi.doUnmock('../core');
       vi.doUnmock('../core/index.js');
+      delete process.env.SPECKIT_TIER3_ROUTING;
+      delete process.env.LLM_REFORMULATION_ENDPOINT;
+      delete process.env.LLM_REFORMULATION_API_KEY;
+      vi.unstubAllGlobals();
       vi.restoreAllMocks();
       vi.resetModules();
     });
@@ -1198,6 +1202,95 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         expect.anything(),
         expect.anything(),
       );
+    });
+
+    it('uses natural routing to reach Tier 3 when no explicit routeAs is provided', async () => {
+      process.env.SPECKIT_TIER3_ROUTING = 'true';
+      process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
+      const fetchMock = vi.fn(async () => new Response(JSON.stringify({
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                category: 'narrative_progress',
+                confidence: 0.86,
+                target_doc: 'implementation-summary.md',
+                target_anchor: 'what-built',
+                merge_mode: 'append-as-paragraph',
+                reasoning: 'Ambiguous save text is best treated as progress.',
+                alternatives: [{ category: 'narrative_delivery', confidence: 0.33 }],
+              }),
+            },
+          },
+        ],
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fixture = createCanonicalRoutingFixture();
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 447,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.targetDocPath).toBe(fixture.targetPath);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(fs.readFileSync(fixture.targetPath, 'utf8')).toContain('This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.');
+    });
+
+    it('fails open to natural Tier 2 routing when Tier 3 transport throws', async () => {
+      process.env.SPECKIT_TIER3_ROUTING = 'true';
+      process.env.LLM_REFORMULATION_ENDPOINT = 'http://tier3-router.test';
+      const fetchMock = vi.fn(async () => {
+        throw new Error('simulated timeout');
+      });
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fixture = createCanonicalRoutingFixture();
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 448,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Packet-local changelog generation derives final changelog structure from packet docs rather than hand-assembling markdown.',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(result.targetDocPath).toBe(fixture.targetPath);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(fs.readFileSync(fixture.targetPath, 'utf8')).toContain('Packet-local changelog generation derives final changelog structure from packet docs rather than hand-assembling markdown.');
     });
 
     it('rolls back written file when indexMemoryFile throws on both attempts', async () => {

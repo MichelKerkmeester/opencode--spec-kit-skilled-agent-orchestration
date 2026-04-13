@@ -39,11 +39,9 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "vector-index.js",
       "scripts/lib/vector-index.js",
       "mcp_server/lib/vector-index.js",
       "scripts/generate-context.js",
-      "generate-context.js",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -53,31 +51,13 @@
       {
         "name": "vector-index.js",
         "kind": "code",
-        "path": "vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
         "path": "scripts/lib/vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "mcp_server/lib/vector-index.js",
         "source": "derived"
       },
       {
         "name": "generate-context.js",
         "kind": "code",
         "path": "scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
         "source": "derived"
       },
       {
@@ -123,7 +103,7 @@
         "source": "derived"
       },
       {
-        "name": "Context\nWe",
+        "name": "Context We",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -145,11 +125,29 @@
         "kind": "key_phrase",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Phase 1: Analysis (Diff v11 vs v12)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 2: Implementation (Port features, fix paths)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 3: Integration (Update scripts to use shared lib)",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "We have a \"Split-Brain\" issue with two versions of `vector-index.js`:",
     "created_at": "2026-04-12T09:02:53.524Z",
-    "last_save_at": "2026-04-13T05:11:45.072Z",
+    "last_save_at": "2026-04-13T06:08:12.030Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -115,10 +115,20 @@ describe('D1 Phase A: K-value optimization', () => {
         100: [2, 1, 3],
         120: [3, 1, 2],
       }),
+      makeQuery('continuity', {
+        10: [3, 1, 2],
+        20: [2, 1, 3],
+        40: [1, 3, 2],
+        60: [1, 2, 3],
+        80: [2, 1, 3],
+        100: [2, 3, 1],
+        120: [3, 2, 1],
+      }),
     ]);
 
     expect(result.bestKByIntent.literal_lookup).toBe(10);
     expect(result.bestKByIntent.understand).toBe(80);
+    expect(result.bestKByIntent.continuity).toBe(60);
     expect(Object.keys(result.metricsByIntent.literal_lookup).map(Number).sort((left, right) => left - right))
       .toEqual([...K_VALUES]);
   });

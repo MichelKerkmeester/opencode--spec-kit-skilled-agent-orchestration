@@ -37,12 +37,8 @@
       "compliance"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "compact-inject.ts",
-      "session-prime.ts",
-      "shared.ts",
-      "hook-state.ts",
       ".claude/settings.local.json",
       "mcp_server/hooks/claude/compact-inject.ts",
       "mcp_server/hooks/claude/session-prime.ts",
@@ -54,37 +50,15 @@
       ".claude/compact-context-cache.json",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
-      "compact-inject.js",
       "hooks/claude/shared.ts",
       "hooks/claude/hook-state.ts",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "compact-inject.ts",
-        "kind": "code",
-        "path": "compact-inject.ts",
-        "source": "derived"
-      },
-      {
-        "name": "session-prime.ts",
-        "kind": "code",
-        "path": "session-prime.ts",
-        "source": "derived"
-      },
-      {
-        "name": "shared.ts",
-        "kind": "code",
-        "path": "shared.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hook-state.ts",
-        "kind": "code",
-        "path": "hook-state.ts",
-        "source": "derived"
-      },
       {
         "name": "settings.local.json",
         "kind": "config",
@@ -122,45 +96,69 @@
         "source": "derived"
       },
       {
-        "name": "compact-inject.ts",
-        "kind": "code",
-        "path": "hooks/claude/compact-inject.ts",
-        "source": "derived"
-      },
-      {
-        "name": "session-prime.ts",
-        "kind": "code",
-        "path": "hooks/claude/session-prime.ts",
-        "source": "derived"
-      },
-      {
         "name": "compact-context-cache.json",
         "kind": "config",
         "path": ".claude/compact-context-cache.json",
         "source": "derived"
       },
       {
-        "name": "compact-inject.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "session-prime.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "compact-inject.js",
-        "kind": "code",
-        "path": "compact-inject.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Compaction Context Injection",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary Implement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "What Exists",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-12T09:02:50.343Z",
-    "last_save_at": "2026-04-13T05:11:41.958Z",
+    "last_save_at": "2026-04-13T06:08:09.011Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -25,12 +25,7 @@
       "deep research review tasks",
       "reducer parity tasks",
       "verification",
-      "checklist",
-      "040 checklist",
-      "deep research review checklist",
-      "implementation summary",
-      "040 summary",
-      "deep research review summary"
+      "checklist"
     ],
     "key_topics": [
       "deep",
@@ -47,15 +42,8 @@
       "verification"
     ],
     "importance_tier": "high",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "reduce-state.cjs",
-      "runtime-capabilities.cjs",
-      "review_mode_contract.yaml",
-      "deep-research-contract-parity.vitest.ts",
-      "deep-research-reducer.vitest.ts",
-      "deep-review-contract-parity.vitest.ts",
-      "deep-review-reducer-schema.vitest.ts",
       "tasks.md",
       "research/research.md",
       "research/recommendations-sk-deep-research.md",
@@ -67,56 +55,17 @@
       ".codex/prompts/spec_kit-deep-research.md",
       "research/deep-research-state.jsonl",
       "research/iterations/iteration-001.md",
-      "iteration-090.md",
-      "~/.cocoindex_code/daemon.sock"
+      "~/.cocoindex_code/daemon.sock",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "reduce-state.cjs",
-        "kind": "file",
-        "path": "reduce-state.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "runtime-capabilities.cjs",
-        "kind": "file",
-        "path": "runtime-capabilities.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "review_mode_contract.yaml",
-        "kind": "config",
-        "path": "review_mode_contract.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-contract-parity.vitest.ts",
-        "kind": "test",
-        "path": "deep-research-contract-parity.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-reducer.vitest.ts",
-        "kind": "test",
-        "path": "deep-research-reducer.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "deep-review-contract-parity.vitest.ts",
-        "kind": "test",
-        "path": "deep-review-contract-parity.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "deep-review-reducer-schema.vitest.ts",
-        "kind": "test",
-        "path": "deep-review-reducer-schema.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "tasks.md",
+        "path": "001-sk-deep-research-improvements/tasks.md",
         "source": "derived"
       },
       {
@@ -144,33 +93,75 @@
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "002-sk-deep-review-improvements/plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "001-sk-deep-research-improvements/tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "002-sk-deep-review-improvements/tasks.md",
-        "source": "derived"
-      },
-      {
         "name": "spec_kit-deep-research.md",
         "kind": "doc",
         "path": ".codex/prompts/spec_kit-deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "daemon.sock",
+        "kind": "file",
+        "path": "~/.cocoindex_code/daemon.sock",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Auto Deep Research",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Review Improvement",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Make both skills operate under explicit, testable packet contracts — canonical naming, lifecycle branches, reducer semantics, release-readiness states, and runtime parity — all backed by executable Vitest guards.",
     "created_at": "2026-04-12T09:02:50.183Z",
-    "last_save_at": "2026-04-13T05:11:41.780Z",
+    "last_save_at": "2026-04-13T06:08:08.852Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

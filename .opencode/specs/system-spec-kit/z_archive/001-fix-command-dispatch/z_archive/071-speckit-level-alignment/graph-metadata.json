@@ -22,12 +22,7 @@
       "template",
       "tasks",
       "implementation",
-      "checklist",
-      "decision",
-      "architecture",
-      "decision record",
-      "summary",
-      "implementation summary"
+      "checklist"
     ],
     "key_topics": [
       "feature",
@@ -44,7 +39,7 @@
       "checklist"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scripts/create-spec-folder.sh",
       "scripts/expand-template.js",
@@ -52,8 +47,6 @@
       "lib/complexity/features.js",
       "lib/expansion/marker-parser.js",
       "lib/expansion/generators/user-stories.js",
-      "SKILL.md",
-      "README.md",
       "references/templates/level_specifications.md",
       "references/templates/template_guide.md",
       "references/templates/complexity_guide.md",
@@ -64,8 +57,10 @@
       "templates/plan.md",
       "templates/tasks.md",
       "templates/level_2/checklist.md",
-      "create-spec-folder.sh",
-      "expand-template.js"
+      "templates/spec.md",
+      "templates/level_N/spec.md",
+      "level_2/checklist.md",
+      "templates/level_2/spec.md"
     ],
     "entities": [
       {
@@ -102,18 +97,6 @@
         "name": "user-stories.js",
         "kind": "code",
         "path": "lib/expansion/generators/user-stories.js",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": "SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": "README.md",
         "source": "derived"
       },
       {
@@ -163,11 +146,23 @@
         "kind": "doc",
         "path": "templates/plan.md",
         "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "templates/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "templates/level_2/checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Align ALL SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069.",
     "created_at": "2026-04-12T09:02:53.544Z",
-    "last_save_at": "2026-04-13T05:11:45.111Z",
+    "last_save_at": "2026-04-13T06:08:12.052Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

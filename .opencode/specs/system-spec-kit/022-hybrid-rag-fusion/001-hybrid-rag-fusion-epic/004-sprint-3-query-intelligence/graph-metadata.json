@@ -22,11 +22,7 @@
       "sprint 3 tasks",
       "query intelligence tasks",
       "complexity router tasks",
-      "sprint 3 checklist",
-      "query intelligence checklist",
-      "sprint 3 verification",
-      "004-sprint-3-query-intelligence implementation summary",
-      "004-sprint-3-query-intelligence delivery record"
+      "sprint 3 checklist"
     ],
     "key_topics": [
       "sprint",
@@ -39,134 +35,119 @@
       "plan",
       "tasks",
       "checklist",
-      "verification",
-      "004-sprint-3-query-intelligence"
+      "phase",
+      "hybrid"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "t022-query-classifier.vitest.ts",
-      "t023-rsf-fusion.vitest.ts",
-      "t024-channel-representation.vitest.ts",
-      "t027-rsf-multi.vitest.ts",
-      "t028-channel-enforcement.vitest.ts",
-      "t029-confidence-truncation.vitest.ts",
-      "t030-dynamic-token-budget.vitest.ts",
-      "t031-shadow-comparison.vitest.ts",
-      "t032-rsf-vs-rrf-kendall.vitest.ts",
-      "t033-r15-r2-interaction.vitest.ts",
-      "t042-sprint3-feature-eval.vitest.ts",
-      "t043-cross-sprint-integration.vitest.ts",
-      "channel-representation.ts",
-      "rsf-fusion.ts",
-      "rrf-fusion.ts",
-      "hybrid-search.ts",
       "spec.md",
-      "descriptions.json",
       "plan.md",
-      "tasks.md"
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "t022-query-classifier.vitest.ts",
-        "kind": "test",
-        "path": "t022-query-classifier.vitest.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t023-rsf-fusion.vitest.ts",
-        "kind": "test",
-        "path": "t023-rsf-fusion.vitest.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "t024-channel-representation.vitest.ts",
-        "kind": "test",
-        "path": "t024-channel-representation.vitest.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "t027-rsf-multi.vitest.ts",
-        "kind": "test",
-        "path": "t027-rsf-multi.vitest.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "t028-channel-enforcement.vitest.ts",
-        "kind": "test",
-        "path": "t028-channel-enforcement.vitest.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "t029-confidence-truncation.vitest.ts",
-        "kind": "test",
-        "path": "t029-confidence-truncation.vitest.ts",
+        "name": "Relative Score Fusion",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t030-dynamic-token-budget.vitest.ts",
-        "kind": "test",
-        "path": "t030-dynamic-token-budget.vitest.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t031-shadow-comparison.vitest.ts",
-        "kind": "test",
-        "path": "t031-shadow-comparison.vitest.ts",
+        "name": "Query Intelligence",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t032-rsf-vs-rrf-kendall.vitest.ts",
-        "kind": "test",
-        "path": "t032-rsf-vs-rrf-kendall.vitest.ts",
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t033-r15-r2-interaction.vitest.ts",
-        "kind": "test",
-        "path": "t033-r15-r2-interaction.vitest.ts",
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t042-sprint3-feature-eval.vitest.ts",
-        "kind": "test",
-        "path": "t042-sprint3-feature-eval.vitest.ts",
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "t043-cross-sprint-integration.vitest.ts",
-        "kind": "test",
-        "path": "t043-cross-sprint-integration.vitest.ts",
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "channel-representation.ts",
-        "kind": "code",
-        "path": "channel-representation.ts",
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "rsf-fusion.ts",
-        "kind": "code",
-        "path": "rsf-fusion.ts",
+        "name": "Feature Flags",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "rrf-fusion.ts",
-        "kind": "code",
-        "path": "rrf-fusion.ts",
+        "name": "Overview Implement",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "hybrid-search.ts",
-        "kind": "code",
-        "path": "hybrid-search.ts",
+        "name": "Evaluate Relative Score Fusion",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 4** of the Hybrid RAG Fusion Refinement specification.",
     "created_at": "2026-04-12T09:02:50.227Z",
-    "last_save_at": "2026-04-13T05:11:41.835Z",
+    "last_save_at": "2026-04-13T06:08:08.894Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

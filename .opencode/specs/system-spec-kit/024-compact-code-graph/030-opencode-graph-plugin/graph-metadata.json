@@ -29,18 +29,7 @@
       "phase creation tasks",
       "packet 030 checklist",
       "phase verification",
-      "packet 030 adr",
-      "opencode graph plugin decision record",
-      "packet 030 implementation summary",
-      "opencode graph plugin closeout",
-      "deep",
-      "research",
-      "opencode",
-      "lcm",
-      "plugin",
-      "compact",
-      "code",
-      "graph"
+      "packet 030 adr"
     ],
     "key_topics": [
       "opencode",
@@ -57,28 +46,20 @@
       "coordination"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/plugins/spec-kit-compact-code-graph.js",
-      "experimental.chat.system.transform",
-      "experimental.chat.messages.transform",
-      "experimental.session.compacting",
       ".github/hooks/superset-notify.json",
-      "runtime-detection.ts",
-      "npx vitest run tests/opencode-transport.vitest.ts tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/opencode-plugin.vitest.ts",
-      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
-      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/ensure-ready.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts",
-      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts tests/copilot-hook-wiring.vitest.ts",
-      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
-      "node --check .opencode/plugins/spec-kit-compact-code-graph.js",
-      "jq empty opencode.json",
-      "python3.11",
       ".codex/agents/context-prime.toml",
       "jq empty .github/hooks/superset-notify.json",
       "./.github/hooks/scripts/session-start.sh",
-      "description.json",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
     ],
     "entities": [
       {
@@ -88,81 +69,9 @@
         "source": "derived"
       },
       {
-        "name": "experimental.chat.system.transform",
-        "kind": "file",
-        "path": "experimental.chat.system.transform",
-        "source": "derived"
-      },
-      {
-        "name": "experimental.chat.messages.transform",
-        "kind": "file",
-        "path": "experimental.chat.messages.transform",
-        "source": "derived"
-      },
-      {
-        "name": "experimental.session.compacting",
-        "kind": "file",
-        "path": "experimental.session.compacting",
-        "source": "derived"
-      },
-      {
         "name": "superset-notify.json",
         "kind": "config",
         "path": ".github/hooks/superset-notify.json",
-        "source": "derived"
-      },
-      {
-        "name": "runtime-detection.ts",
-        "kind": "code",
-        "path": "runtime-detection.ts",
-        "source": "derived"
-      },
-      {
-        "name": "opencode-plugin.vitest.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/opencode-transport.vitest.ts tests/code-graph-ops-hardening.vitest.ts tests/session-resume.vitest.ts tests/session-bootstrap.vitest.ts tests/opencode-plugin.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hook-session-start.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-resume.vitest.ts tests/startup-brief.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-context-handler.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/ensure-ready.vitest.ts tests/code-graph-query-handler.vitest.ts tests/code-graph-context-handler.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "copilot-hook-wiring.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/runtime-detection.vitest.ts tests/cross-runtime-fallback.vitest.ts tests/copilot-hook-wiring.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "hook-session-start.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/opencode-transport.vitest.ts tests/startup-brief.vitest.ts tests/hook-session-start.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "spec-kit-compact-code-graph.js",
-        "kind": "code",
-        "path": "node --check .opencode/plugins/spec-kit-compact-code-graph.js",
-        "source": "derived"
-      },
-      {
-        "name": "jq empty opencode.json",
-        "kind": "config",
-        "path": "jq empty opencode.json",
-        "source": "derived"
-      },
-      {
-        "name": "python3.11",
-        "kind": "file",
-        "path": "python3.11",
         "source": "derived"
       },
       {
@@ -172,15 +81,87 @@
         "source": "derived"
       },
       {
-        "name": "superset-notify.json",
-        "kind": "config",
-        "path": "jq empty .github/hooks/superset-notify.json",
+        "name": "session-start.sh",
+        "kind": "script",
+        "path": "./.github/hooks/scripts/session-start.sh",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph Plugin Phased Execution",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Header",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Packet `030-opencode-graph-plugin` is no longer just a research packet. It now records a completed six-phase delivery: shared payload/provenance contracts, a real OpenCode hook plugin, graph-operations hardening, cross-runtime startup surfacing parity, bounded code graph auto-reindex parity with CocoIndex-style first-use refresh behavior, and a Copilot repo-local startup-hook wiring repair. This Level 3 packet lets future sessions recover the shipped runtime work without rereading the full research trail.",
     "created_at": "2026-04-12T09:02:53.435Z",
-    "last_save_at": "2026-04-13T05:11:44.963Z",
+    "last_save_at": "2026-04-13T06:08:11.949Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

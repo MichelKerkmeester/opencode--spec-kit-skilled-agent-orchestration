@@ -90,7 +90,7 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nThe Memory Skill",
+        "name": "Problem Statement The Memory Skill",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -146,7 +146,7 @@
     ],
     "causal_summary": "The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-time experience.",
     "created_at": "2026-04-12T09:02:53.523Z",
-    "last_save_at": "2026-04-13T05:11:45.068Z",
+    "last_save_at": "2026-04-13T06:08:12.027Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -26,11 +26,8 @@
       "classifier"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "Outer.Inner.method",
-      "structural-indexer.ts",
-      "tree-sitter-parser.ts",
       "lib/code-graph/tree-sitter-parser.ts",
       "lib/code-graph/query-intent-classifier.ts",
       "lib/code-graph/structural-indexer.ts",
@@ -42,24 +39,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "Outer.Inner.method",
-        "kind": "file",
-        "path": "Outer.Inner.method",
-        "source": "derived"
-      },
-      {
-        "name": "structural-indexer.ts",
-        "kind": "code",
-        "path": "structural-indexer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "tree-sitter-parser.ts",
-        "kind": "code",
-        "path": "tree-sitter-parser.ts",
-        "source": "derived"
-      },
       {
         "name": "tree-sitter-parser.ts",
         "kind": "code",
@@ -121,13 +100,13 @@
         "source": "derived"
       },
       {
-        "name": "What This Is\n\nThe",
+        "name": "What This Is The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "English Summary\n\nThe",
+        "name": "English Summary The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -137,11 +116,29 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Must Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Classifier Fixes",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-13T04:55:08.079Z",
-    "last_save_at": "2026-04-13T05:11:41.970Z",
+    "last_save_at": "2026-04-13T06:08:09.022Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

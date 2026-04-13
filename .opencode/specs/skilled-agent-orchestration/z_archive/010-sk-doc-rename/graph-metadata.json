@@ -22,9 +22,7 @@
       "tasks",
       "tasks core",
       "verification",
-      "checklist",
-      "summary",
-      "impl summary core"
+      "checklist"
     ],
     "key_topics": [
       "feature",
@@ -38,10 +36,10 @@
       "tasks",
       "verification",
       "checklist",
-      "summary"
+      "spec-core"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/preflight-counts.txt",
       ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv",
@@ -49,20 +47,20 @@
       ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt",
       ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
       ".opencode/specs/03--commands-and-skills/010-doc-rename/scratch/final-remnant-counts.txt",
-      "preflight-counts.txt",
-      "preflight-paths.txt",
-      "preflight-symlinks.txt",
-      "path-rename-map.tsv",
-      "path-rename-log.txt",
-      "post-path-symlinks.txt",
-      "final-remnant-counts.txt",
-      "0.81",
-      "validate.sh",
       "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
       "checklist.md",
       "scratch/preflight-counts.txt",
       "scratch/preflight-paths.txt",
-      "scratch/preflight-symlinks.txt"
+      "scratch/preflight-symlinks.txt",
+      "scratch/path-rename-map.tsv",
+      "scratch/path-rename-map-ordered.tsv",
+      "scratch/path-rename-log.txt",
+      "scratch/content-replacement-files.txt",
+      "scratch/post-path-symlinks.txt",
+      "scratch/final-remnant-counts.txt",
+      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/path-rename-log.txt",
+      "cat .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/post-path-symlinks.txt",
+      "wc -l .opencode/specs/03--commands-and-skills/010-doc-rename/scratch/content-replacement-files.txt"
     ],
     "entities": [
       {
@@ -102,69 +100,69 @@
         "source": "derived"
       },
       {
-        "name": "preflight-counts.txt",
-        "kind": "file",
-        "path": "preflight-counts.txt",
+        "name": "AGENTS.md",
+        "kind": "doc",
+        "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
         "name": "preflight-paths.txt",
         "kind": "file",
-        "path": "preflight-paths.txt",
+        "path": "scratch/preflight-paths.txt",
         "source": "derived"
       },
       {
         "name": "preflight-symlinks.txt",
         "kind": "file",
-        "path": "preflight-symlinks.txt",
+        "path": "scratch/preflight-symlinks.txt",
         "source": "derived"
       },
       {
-        "name": "path-rename-map.tsv",
+        "name": "path-rename-map-ordered.tsv",
         "kind": "file",
-        "path": "path-rename-map.tsv",
+        "path": "scratch/path-rename-map-ordered.tsv",
         "source": "derived"
       },
       {
-        "name": "path-rename-log.txt",
-        "kind": "file",
-        "path": "path-rename-log.txt",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "post-path-symlinks.txt",
-        "kind": "file",
-        "path": "post-path-symlinks.txt",
+        "name": "Wide Rename",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "final-remnant-counts.txt",
-        "kind": "file",
-        "path": "final-remnant-counts.txt",
+        "name": "Visual Skill",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "0.81",
-        "kind": "file",
-        "path": "0.81",
+        "name": "Visual Skill Cleanup",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md",
+        "name": "Problem Statement The Public",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "SPECKIT_TEMPLATE_SOURCE: \"spec-core | v2.2\"",
     "created_at": "2026-04-12T09:02:50.205Z",
-    "last_save_at": "2026-04-13T05:11:41.813Z",
+    "last_save_at": "2026-04-13T06:08:08.880Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

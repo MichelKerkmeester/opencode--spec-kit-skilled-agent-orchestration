@@ -152,6 +152,7 @@ export interface PipelineConfig {
 
   // Intent
   detectedIntent: string | null;
+  adaptiveFusionIntent?: string | null;
   intentConfidence: number;
   intentWeights: IntentWeightsConfig | null;
 

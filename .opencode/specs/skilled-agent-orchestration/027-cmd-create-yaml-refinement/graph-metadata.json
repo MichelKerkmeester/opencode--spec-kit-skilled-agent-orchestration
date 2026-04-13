@@ -22,8 +22,7 @@
       "create command yaml standardization checklist",
       "create yaml refinement adr",
       "create command yaml standardization decision",
-      "create yaml refinement summary",
-      "create command yaml standardization summary"
+      "create yaml refinement summary"
     ],
     "key_topics": [
       "create",
@@ -40,7 +39,7 @@
       "decision"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "validate_document.py .opencode/command/create/README.txt",
       "validate_document.py .opencode/command/README.txt",
@@ -55,25 +54,19 @@
       ".opencode/command/create/assets/create_changelog_confirm.yaml",
       ".opencode/command/create/assets/create_folder_readme_auto.yaml",
       ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
-      "create_feature_catalog_auto.yaml",
-      "create_feature_catalog_confirm.yaml",
-      "create_testing_playbook_auto.yaml",
-      "create_testing_playbook_confirm.yaml",
-      "create_folder_readme_auto.yaml",
-      "create_folder_readme_confirm.yaml",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/command/create/README.txt",
+      ".opencode/command/README.txt"
     ],
     "entities": [
       {
         "name": "README.txt",
         "kind": "file",
         "path": "validate_document.py .opencode/command/create/README.txt",
-        "source": "derived"
-      },
-      {
-        "name": "README.txt",
-        "kind": "file",
-        "path": "validate_document.py .opencode/command/README.txt",
         "source": "derived"
       },
       {
@@ -143,27 +136,33 @@
         "source": "derived"
       },
       {
-        "name": "create_feature_catalog_auto.yaml",
-        "kind": "config",
-        "path": "create_feature_catalog_auto.yaml",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "create_feature_catalog_confirm.yaml",
-        "kind": "config",
-        "path": "create_feature_catalog_confirm.yaml",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "create_testing_playbook_auto.yaml",
-        "kind": "config",
-        "path": "create_testing_playbook_auto.yaml",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This packet defines the refinement pass for `.opencode/command/create/assets/*.yaml` so the create-command suite more closely matches the richer `spec_kit` command YAML style. The work must strengthen the newer feature-catalog and testing-playbook assets, then add a shared structural contract across the broader create suite without rewriting command behavior or changing command names.",
     "created_at": "2026-04-12T09:02:50.175Z",
-    "last_save_at": "2026-04-13T05:11:41.770Z",
+    "last_save_at": "2026-04-13T06:08:08.842Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

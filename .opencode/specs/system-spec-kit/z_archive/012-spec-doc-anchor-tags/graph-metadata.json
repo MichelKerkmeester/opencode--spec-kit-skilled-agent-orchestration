@@ -37,7 +37,7 @@
       "checklist"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -89,13 +89,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nThis",
+        "name": "Problem Statement This",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\nKeep",
+        "name": "Purpose Keep",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -125,7 +125,7 @@
         "source": "derived"
       },
       {
-        "name": "Overview\nThis",
+        "name": "Overview This",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -137,7 +137,7 @@
         "source": "derived"
       },
       {
-        "name": "Pattern\nArchival",
+        "name": "Pattern Archival",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -145,7 +145,7 @@
     ],
     "causal_summary": "This archived system-spec-kit archive folder captures work related to Spec Doc Anchor Tags. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
     "created_at": "2026-04-12T09:02:53.566Z",
-    "last_save_at": "2026-04-13T05:11:45.155Z",
+    "last_save_at": "2026-04-13T06:08:12.076Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

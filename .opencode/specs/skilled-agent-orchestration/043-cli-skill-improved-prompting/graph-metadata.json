@@ -22,11 +22,7 @@
       "043 tasks",
       "mirror card tasks",
       "043 checklist",
-      "prompt quality verification",
-      "043 decision record",
-      "mirror card adr",
-      "043 implementation summary",
-      "mirror cards delivered"
+      "prompt quality verification"
     ],
     "key_topics": [
       "043",
@@ -43,7 +39,7 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
       ".opencode/skill/cli-claude-code/assets/prompt_quality_card.md",
@@ -51,20 +47,20 @@
       ".opencode/skill/cli-copilot/assets/prompt_quality_card.md",
       ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
       ".opencode/skill/sk-improve-prompt/SKILL.md",
-      "1.3.0.0",
       ".opencode/command/improve/prompt.md",
       ".opencode/skill/scripts/check-prompt-quality-card-sync.sh",
-      "check-prompt-quality-card-sync.sh",
-      "bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh",
-      "skill_advisor.py",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "1.2.0.0",
       "spec.md",
       ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/spec.md",
-      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md"
+      ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md",
+      "ls .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md",
+      "ls .opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
+      "ls .opencode/skill/cli-claude-code/assets/prompt_quality_card.md .opencode/skill/cli-codex/assets/prompt_quality_card.md .opencode/skill/cli-copilot/assets/prompt_quality_card.md .opencode/skill/cli-gemini/assets/prompt_quality_card.md",
+      "rg -n \"FRAMEWORK:|CLEAR_SCORE:|ENHANCED_PROMPT:|ESCALATION_NOTES:\" .opencode/skill/sk-improve-prompt/SKILL.md",
+      "ls .opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md .opencode/skill/cli-claude-code/assets/prompt_quality_card.md .opencode/skill/cli-codex/assets/prompt_quality_card.md .opencode/skill/cli-copilot/assets/prompt_quality_card.md .opencode/skill/cli-gemini/assets/prompt_quality_card.md .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md"
     ],
     "entities": [
       {
@@ -80,33 +76,9 @@
         "source": "derived"
       },
       {
-        "name": "prompt_quality_card.md",
-        "kind": "doc",
-        "path": ".opencode/skill/cli-codex/assets/prompt_quality_card.md",
-        "source": "derived"
-      },
-      {
-        "name": "prompt_quality_card.md",
-        "kind": "doc",
-        "path": ".opencode/skill/cli-copilot/assets/prompt_quality_card.md",
-        "source": "derived"
-      },
-      {
-        "name": "prompt_quality_card.md",
-        "kind": "doc",
-        "path": ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
-        "source": "derived"
-      },
-      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "1.3.0.0",
-        "kind": "file",
-        "path": "1.3.0.0",
         "source": "derived"
       },
       {
@@ -122,27 +94,9 @@
         "source": "derived"
       },
       {
-        "name": "check-prompt-quality-card-sync.sh",
-        "kind": "script",
-        "path": "check-prompt-quality-card-sync.sh",
-        "source": "derived"
-      },
-      {
-        "name": "check-prompt-quality-card-sync.sh",
-        "kind": "script",
-        "path": "bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": "skill_advisor.py",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md",
         "source": "derived"
       },
       {
@@ -162,11 +116,53 @@
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-prompt.md",
+        "kind": "doc",
+        "path": "ls .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Prompt",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quality Integration",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Mirror Cards",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The four CLI orchestration skills currently build dispatch prompts ad hoc from their local prompt-template assets. That keeps dispatches lightweight, but it leaves framework choice, prompt-quality checks, and escalation behavior implicit. This packet adds a two-tier prompt-quality layer: a tiny guard-safe mirror card that every CLI skill can load by default, and a fresh-context `@improve-prompt` agent that handles only the hard cases.",
     "created_at": "2026-04-12T09:02:50.198Z",
-    "last_save_at": "2026-04-13T05:11:41.799Z",
+    "last_save_at": "2026-04-13T06:08:08.872Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

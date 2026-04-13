@@ -39,7 +39,7 @@
       "summary"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scripts/utils/input-normalizer.ts",
       "scripts/utils/fact-coercion.ts",
@@ -47,20 +47,16 @@
       "scripts/extractors/conversation-extractor.ts",
       "scripts/extractors/decision-extractor.ts",
       "scripts/extractors/collect-session-data.ts",
-      "_manualDecision.fullText",
       "scripts/tests/runtime-memory-inputs.vitest.ts",
       "scripts/tests/test-extractors-loaders.js",
-      "session-types.ts",
       "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
       "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
-      "JSON.stringify",
-      "input-normalizer.ts",
-      "file-extractor.ts",
-      "decision-extractor.ts",
-      "collect-session-data.ts",
-      "console.warn",
       "tests/runtime-memory-inputs.vitest.ts",
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -100,12 +96,6 @@
         "source": "derived"
       },
       {
-        "name": "_manualDecision.fullText",
-        "kind": "file",
-        "path": "_manualDecision.fullText",
-        "source": "derived"
-      },
-      {
         "name": "runtime-memory-inputs.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/runtime-memory-inputs.vitest.ts",
@@ -118,51 +108,57 @@
         "source": "derived"
       },
       {
-        "name": "session-types.ts",
-        "kind": "code",
-        "path": "session-types.ts",
-        "source": "derived"
-      },
-      {
         "name": "vitest.config.ts",
         "kind": "code",
         "path": "cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts",
         "source": "derived"
       },
       {
-        "name": "test-extractors-loaders.js",
-        "kind": "code",
-        "path": "cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "JSON.stringify",
-        "kind": "file",
-        "path": "JSON.stringify",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "input-normalizer.ts",
-        "kind": "code",
-        "path": "input-normalizer.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "file-extractor.ts",
-        "kind": "code",
-        "path": "file-extractor.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "decision-extractor.ts",
-        "kind": "code",
-        "path": "decision-extractor.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Fidelity This",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.269Z",
-    "last_save_at": "2026-04-13T05:11:41.878Z",
+    "last_save_at": "2026-04-13T06:08:08.938Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

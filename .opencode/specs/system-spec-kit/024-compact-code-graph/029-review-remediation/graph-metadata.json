@@ -22,10 +22,7 @@
       "029 tasks",
       "review remediation tasks",
       "029 checklist",
-      "review remediation checklist",
-      "029 implementation summary",
-      "review remediation summary",
-      "packet 024 review fixes"
+      "review remediation checklist"
     ],
     "key_topics": [
       "029",
@@ -42,9 +39,8 @@
       "checklist"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts",
@@ -55,7 +51,6 @@
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md",
-      "AGENTS.md",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
@@ -63,15 +58,11 @@
       ".claude/agents/context-prime.md",
       ".codex/agents/context-prime.toml",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
-      {
-        "name": "hook-session-stop.vitest.ts",
-        "kind": "test",
-        "path": "TMPDIR=/Users/michelkerkmeester/.tmp/vitest-tmp npx vitest run tests/session-bootstrap.vitest.ts tests/structural-contract.vitest.ts tests/hook-session-start.vitest.ts tests/hook-session-stop.vitest.ts",
-        "source": "derived"
-      },
       {
         "name": "tool-schemas.ts",
         "kind": "code",
@@ -127,24 +118,6 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "AGENTS.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
@@ -161,11 +134,35 @@
         "kind": "doc",
         "path": ".opencode/agent/context-prime.md",
         "source": "derived"
+      },
+      {
+        "name": "context-prime.toml",
+        "kind": "file",
+        "path": ".codex/agents/context-prime.toml",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Review Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Child Header",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The completed deep review for `024-compact-code-graph` found seven active issues that leave the packet internally inconsistent across runtime contracts, hook safety, evidence traceability, and cross-runtime guidance. The current tree still advertises behavior that either is not implemented, is documented inconsistently, or is proven with stale evidence. Until these findings are remediated or explicitly downgraded with truthful packet updates, the parent packet cannot be treated as release-ready.",
     "created_at": "2026-04-12T09:02:53.434Z",
-    "last_save_at": "2026-04-13T05:11:44.963Z",
+    "last_save_at": "2026-04-13T06:08:11.948Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

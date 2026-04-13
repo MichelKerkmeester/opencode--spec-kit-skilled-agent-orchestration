@@ -39,70 +39,26 @@
       "objective"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "voyage.js",
-      "factory.js",
-      "voyage-3.5",
-      "context-index__voyage__voyage-4__1024.sqlite",
       "shared/embeddings/providers/voyage.js",
-      ".utcp_config.json",
       ".opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.js",
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
       ".opencode/skill/system-spec-kit/README.md",
       ".opencode/skill/system-spec-kit/shared/embeddings/factory.js",
       ".opencode/skill/mcp-narsil/INSTALL_GUIDE.md",
       ".opencode/skill/mcp-narsil/SKILL.md",
-      "opencode.json",
-      "profile.js",
-      "context-index__voyage__voyage-3.5__1024.sqlite",
-      "VOYAGE_EMBEDDINGS_MODEL=voyage-3.5",
-      "INSTALL_GUIDE.md",
-      "README.md",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
         "name": "voyage.js",
         "kind": "code",
-        "path": "voyage.js",
-        "source": "derived"
-      },
-      {
-        "name": "factory.js",
-        "kind": "code",
-        "path": "factory.js",
-        "source": "derived"
-      },
-      {
-        "name": "voyage-3.5",
-        "kind": "file",
-        "path": "voyage-3.5",
-        "source": "derived"
-      },
-      {
-        "name": "context-index__voyage__voyage-4__1024.sqlite",
-        "kind": "file",
-        "path": "context-index__voyage__voyage-4__1024.sqlite",
-        "source": "derived"
-      },
-      {
-        "name": "voyage.js",
-        "kind": "code",
         "path": "shared/embeddings/providers/voyage.js",
-        "source": "derived"
-      },
-      {
-        "name": ".utcp_config.json",
-        "kind": "config",
-        "path": ".utcp_config.json",
-        "source": "derived"
-      },
-      {
-        "name": "voyage.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.js",
         "source": "derived"
       },
       {
@@ -124,45 +80,81 @@
         "source": "derived"
       },
       {
-        "name": "INSTALL_GUIDE.md",
-        "kind": "doc",
-        "path": ".opencode/skill/mcp-narsil/INSTALL_GUIDE.md",
-        "source": "derived"
-      },
-      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/mcp-narsil/SKILL.md",
         "source": "derived"
       },
       {
-        "name": "opencode.json",
-        "kind": "config",
-        "path": "opencode.json",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "profile.js",
-        "kind": "code",
-        "path": "profile.js",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "context-index__voyage__voyage-3.5__1024.sqlite",
-        "kind": "file",
-        "path": "context-index__voyage__voyage-3.5__1024.sqlite",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "VOYAGE_EMBEDDINGS_MODEL=voyage-3.5",
-        "kind": "file",
-        "path": "VOYAGE_EMBEDDINGS_MODEL=voyage-3.5",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Upgrade Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Decision Required",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current State Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Current Value",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Objective: Evaluate and plan the upgrade from current Voyage models to the newly released Voyage 4 model family for both Spec Kit Memory MCP and Narsil MCP systems.",
     "created_at": "2026-04-12T09:02:53.541Z",
-    "last_save_at": "2026-04-13T05:11:45.105Z",
+    "last_save_at": "2026-04-13T06:08:12.048Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

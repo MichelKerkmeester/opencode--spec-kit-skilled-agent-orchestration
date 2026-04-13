@@ -22,14 +22,7 @@
       "graph signal activation tasks",
       "phase 010 tasks",
       "graph testing tasks",
-      "tasks core graph signal",
-      "graph signal activation checklist",
-      "phase 010 verification",
-      "graph testing checklist",
-      "016 175 verification",
-      "graph-signal-activation implementation summary",
-      "phase 010 summary",
-      "manual testing graph-signal-activation"
+      "tasks core graph signal"
     ],
     "key_topics": [
       "graph",
@@ -46,7 +39,7 @@
       "implementation"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "mcp_server/lib/search/graph-search-fn.ts",
       "mcp_server/lib/cognitive/co-activation.ts",
@@ -57,8 +50,6 @@
       "handlers/causal-graph.ts",
       "mcp_server/lib/search/search-flags.ts",
       "mcp_server/lib/search/graph-flags.ts",
-      "result-explainability.ts",
-      "causal-edges.ts",
       "mcp_server/lib/search/graph-lifecycle.ts",
       "mcp_server/lib/search/graph-calibration.ts",
       "mcp_server/lib/search/entity-linker.ts",
@@ -67,7 +58,9 @@
       "checklist.md",
       "implementation-summary.md",
       "mcp_server/handlers/causal-graph.ts",
-      "mcp_server/lib/search/result-explainability.ts"
+      "mcp_server/lib/search/result-explainability.ts",
+      "spec.md",
+      "plan.md"
     ],
     "entities": [
       {
@@ -125,18 +118,6 @@
         "source": "derived"
       },
       {
-        "name": "result-explainability.ts",
-        "kind": "code",
-        "path": "result-explainability.ts",
-        "source": "derived"
-      },
-      {
-        "name": "causal-edges.ts",
-        "kind": "code",
-        "path": "causal-edges.ts",
-        "source": "derived"
-      },
-      {
         "name": "graph-lifecycle.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/graph-lifecycle.ts",
@@ -165,11 +146,23 @@
         "kind": "doc",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Manual test scenarios for graph-signal-activation need structured per-phase documentation instead of relying on scattered playbook rows. Phase 010 covers 15 graph-focused scenarios spanning typed degree scoring, co-activation boost, causal depth signals, community detection, graph rollback and explainability, and feature-flag-driven graph lifecycle features, so reviewers need one packet that preserves the mapped feature links, acceptance criteria, and evidence expectations for each test.",
     "created_at": "2026-04-12T09:02:50.296Z",
-    "last_save_at": "2026-04-13T05:11:41.917Z",
+    "last_save_at": "2026-04-13T06:08:08.967Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

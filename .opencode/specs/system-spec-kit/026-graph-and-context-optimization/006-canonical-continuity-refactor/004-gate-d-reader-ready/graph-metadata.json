@@ -22,10 +22,7 @@
       "tasks",
       "verification",
       "checklist",
-      "decision record",
-      "archived hit rate",
-      "implementation summary",
-      "177 tests"
+      "decision record"
     ],
     "key_topics": [
       "gate",
@@ -52,18 +49,18 @@
       "mcp_server/handlers/memory-triggers.ts",
       "mcp_server/lib/resume/resume-ladder.ts",
       "lib/resume/resume-ladder.ts",
-      "_memory.continuity",
-      "memory-search.ts",
-      "memory-context.ts",
-      "session-resume.ts",
-      "memory-save.ts",
-      "session-bootstrap.ts",
-      "memory-index-discovery.ts",
-      "memory-triggers.ts",
-      "resume.fast_path_miss",
-      "resume.stage.fallback_ms",
-      "resume.fast_path_source",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "spec.md",
+      "tests/gate-d-benchmark-session-resume.vitest.ts",
+      "tests/gate-d-benchmark-memory-search.vitest.ts",
+      "tests/gate-d-trigger-perf-benchmark.vitest.ts",
+      "tests/session-bootstrap-gate-d.vitest.ts",
+      "tests/gate-d-regression-ablation-drift.vitest.ts",
+      "tests/gate-d-resume-perf.vitest.ts",
+      "tests/memory-context.resume-gate-d.vitest.ts"
     ],
     "entities": [
       {
@@ -109,63 +106,63 @@
         "source": "derived"
       },
       {
-        "name": "resume-ladder.ts",
-        "kind": "code",
-        "path": "lib/resume/resume-ladder.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "_memory.continuity",
-        "kind": "file",
-        "path": "_memory.continuity",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "memory-search.ts",
-        "kind": "code",
-        "path": "memory-search.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "memory-context.ts",
-        "kind": "code",
-        "path": "memory-context.ts",
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "session-resume.ts",
-        "kind": "code",
-        "path": "session-resume.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-save.ts",
-        "kind": "code",
-        "path": "memory-save.ts",
+        "name": "gate-d-benchmark-session-resume.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-benchmark-session-resume.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "session-bootstrap.ts",
-        "kind": "code",
-        "path": "session-bootstrap.ts",
+        "name": "gate-d-benchmark-memory-search.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-benchmark-memory-search.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "memory-index-discovery.ts",
-        "kind": "code",
-        "path": "memory-index-discovery.ts",
+        "name": "gate-d-trigger-perf-benchmark.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-trigger-perf-benchmark.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "memory-triggers.ts",
-        "kind": "code",
-        "path": "memory-triggers.ts",
+        "name": "session-bootstrap-gate-d.vitest.ts",
+        "kind": "test",
+        "path": "tests/session-bootstrap-gate-d.vitest.ts",
         "source": "derived"
       }
     ],
     "causal_summary": "Gate D moves the phase 018 read path onto the canonical continuity substrate defined in [`../implementation-design.md`](../implementation-design.md) and [`../resource-map.md`](../resource-map.md) section 4. The work keeps the existing 4-stage search pipeline, replaces memory-file primacy with a doc-first `resumeLadder`, and proves the new reader behavior through the 13-feature regression suite, resume fallback tests, and the latency budgets from iterations 013, 017, 025, 027, 029, and 039.",
     "created_at": "2026-04-12T09:02:53.480Z",
-    "last_save_at": "2026-04-13T05:11:45.000Z",
+    "last_save_at": "2026-04-13T06:08:11.984Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

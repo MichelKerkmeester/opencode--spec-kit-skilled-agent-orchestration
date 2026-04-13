@@ -40,16 +40,6 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "semantic-memory.js",
-      "vector-index.js",
-      "hybrid-search.js",
-      "composite-scoring.js",
-      "scoring.js",
-      "importance-tiers.js",
-      "checkpoints.js",
-      "config-loader.js",
-      "trigger-matcher.js",
-      "trigger-extractor.js",
       "system-memory/SKILL.md",
       "mcp-leann/SKILL.md",
       "mcp-code-context/SKILL.md",
@@ -59,69 +49,13 @@
       "sk-git/SKILL.md",
       "mcp-chrome-devtools/SKILL.md",
       "system-memory/references/troubleshooting.md",
-      "mcp-leann/references/tool_catalog.md"
+      "mcp-leann/references/tool_catalog.md",
+      "mcp-code-context/assets/usage_examples.md",
+      "spec.md",
+      "plan.md",
+      "checklist.md"
     ],
     "entities": [
-      {
-        "name": "semantic-memory.js",
-        "kind": "code",
-        "path": "semantic-memory.js",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index.js",
-        "kind": "code",
-        "path": "vector-index.js",
-        "source": "derived"
-      },
-      {
-        "name": "hybrid-search.js",
-        "kind": "code",
-        "path": "hybrid-search.js",
-        "source": "derived"
-      },
-      {
-        "name": "composite-scoring.js",
-        "kind": "code",
-        "path": "composite-scoring.js",
-        "source": "derived"
-      },
-      {
-        "name": "scoring.js",
-        "kind": "code",
-        "path": "scoring.js",
-        "source": "derived"
-      },
-      {
-        "name": "importance-tiers.js",
-        "kind": "code",
-        "path": "importance-tiers.js",
-        "source": "derived"
-      },
-      {
-        "name": "checkpoints.js",
-        "kind": "code",
-        "path": "checkpoints.js",
-        "source": "derived"
-      },
-      {
-        "name": "config-loader.js",
-        "kind": "code",
-        "path": "config-loader.js",
-        "source": "derived"
-      },
-      {
-        "name": "trigger-matcher.js",
-        "kind": "code",
-        "path": "trigger-matcher.js",
-        "source": "derived"
-      },
-      {
-        "name": "trigger-extractor.js",
-        "kind": "code",
-        "path": "trigger-extractor.js",
-        "source": "derived"
-      },
       {
         "name": "SKILL.md",
         "kind": "doc",
@@ -129,39 +63,99 @@
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
+        "name": "troubleshooting.md",
         "kind": "doc",
-        "path": "mcp-leann/SKILL.md",
+        "path": "system-memory/references/troubleshooting.md",
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
+        "name": "tool_catalog.md",
         "kind": "doc",
-        "path": "mcp-code-context/SKILL.md",
+        "path": "mcp-leann/references/tool_catalog.md",
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
+        "name": "usage_examples.md",
         "kind": "doc",
-        "path": "mcp-code-mode/SKILL.md",
+        "path": "mcp-code-context/assets/usage_examples.md",
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
+        "name": "spec.md",
         "kind": "doc",
-        "path": "system-spec-kit/SKILL.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
+        "name": "plan.md",
         "kind": "doc",
-        "path": "workflows-code/SKILL.md",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Comprehensive Skills",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Server Bug Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Server Core",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Integration Libs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Files Modified",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Comprehensive Bug Fix",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parallel Agents",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This spec documents the comprehensive bug fix effort that addressed critical security issues, high-severity bugs, medium/low issues, and documentation inconsistencies across the entire skills and MCP server ecosystem.",
     "created_at": "2026-04-12T09:02:53.521Z",
-    "last_save_at": "2026-04-13T05:11:45.064Z",
+    "last_save_at": "2026-04-13T06:08:12.025Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

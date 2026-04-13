@@ -34,12 +34,9 @@
       "features"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "memory-index.ts",
-      "memory-index-alias.ts",
       "mcp_server/handlers/memory-index-alias.ts",
-      "repair.partialSuccess",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -48,27 +45,9 @@
     ],
     "entities": [
       {
-        "name": "memory-index.ts",
-        "kind": "code",
-        "path": "memory-index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-index-alias.ts",
-        "kind": "code",
-        "path": "memory-index-alias.ts",
-        "source": "derived"
-      },
-      {
         "name": "memory-index-alias.ts",
         "kind": "code",
         "path": "mcp_server/handlers/memory-index-alias.ts",
-        "source": "derived"
-      },
-      {
-        "name": "repair.partialSuccess",
-        "kind": "file",
-        "path": "repair.partialSuccess",
         "source": "derived"
       },
       {
@@ -114,7 +93,7 @@
         "source": "derived"
       },
       {
-        "name": "Executive Summary\n\nSystematic",
+        "name": "Executive Summary Systematic",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -142,11 +121,29 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 3 Discovery features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/03--discovery/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.246Z",
-    "last_save_at": "2026-04-13T05:11:41.854Z",
+    "last_save_at": "2026-04-13T06:08:08.913Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

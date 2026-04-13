@@ -22,11 +22,7 @@
       "pre-work tasks",
       "root packet backfill",
       "gate a checklist",
-      "pre-work verification",
-      "exit gate",
-      "gate a implementation summary",
-      "pre-work closeout",
-      "blocked summary"
+      "pre-work verification"
     ],
     "key_topics": [
       "gate",
@@ -45,9 +41,7 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "validate.sh",
       "implementation-summary.md",
-      "memory-018-pre.db",
       ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
       ".opencode/skill/system-spec-kit/templates/level_3+/spec.md",
       ".opencode/skill/system-spec-kit/templates/handover.md",
@@ -58,43 +52,27 @@
       ".opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db",
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
       "mcp_server/lib/search/vector-index-schema.ts",
-      "memory-save.ts",
       ".opencode/skill/system-spec-kit/mcp_server/database/memory.db",
-      "vector-index-schema.ts",
-      "memory.db",
       "tests/gate-d-benchmark-session-resume.vitest.ts",
       "tests/gate-d-resume-perf.vitest.ts",
-      "tests/resume-ladder.vitest.ts"
+      "tests/resume-ladder.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "scripts/tests/generate-context-cli-authority.vitest.ts"
     ],
     "entities": [
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "memory-018-pre.db",
-        "kind": "file",
-        "path": "memory-018-pre.db",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/level_3+/spec.md",
         "source": "derived"
       },
       {
@@ -122,21 +100,9 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/implementation-summary.md",
-        "source": "derived"
-      },
-      {
         "name": "memory-018-pre.db",
         "kind": "file",
         "path": ".opencode/skill/system-spec-kit/mcp_server/database/memory-018-pre.db",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
         "source": "derived"
       },
       {
@@ -146,27 +112,57 @@
         "source": "derived"
       },
       {
-        "name": "memory-save.ts",
-        "kind": "code",
-        "path": "memory-save.ts",
-        "source": "derived"
-      },
-      {
         "name": "memory.db",
         "kind": "file",
         "path": ".opencode/skill/system-spec-kit/mcp_server/database/memory.db",
         "source": "derived"
       },
       {
-        "name": "vector-index-schema.ts",
-        "kind": "code",
-        "path": "vector-index-schema.ts",
+        "name": "gate-d-benchmark-session-resume.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-benchmark-session-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-resume-perf.vitest.ts",
+        "kind": "test",
+        "path": "tests/gate-d-resume-perf.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "resume-ladder.vitest.ts",
+        "kind": "test",
+        "path": "tests/resume-ladder.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context-cli-authority.vitest.ts",
+        "kind": "test",
+        "path": "scripts/tests/generate-context-cli-authority.vitest.ts",
         "source": "derived"
       }
     ],
     "causal_summary": "Gate A exists because phase 018 cannot safely begin merge-time continuity writes or archive-state migration while known template debt is still live. `../resource-map.md` flags orphan `metadata` anchor closes in `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`, plus anchorless `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/research.md`, and `.opencode/skill/system-spec-kit/templates/debug-delegation.md`; iteration 022 makes those defects hard blockers because `ANCHORS_VALID` and `MERGE_LEGALITY` fail on orphan or missing targets.",
     "created_at": "2026-04-12T09:02:53.477Z",
-    "last_save_at": "2026-04-13T05:11:44.997Z",
+    "last_save_at": "2026-04-13T06:08:11.981Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

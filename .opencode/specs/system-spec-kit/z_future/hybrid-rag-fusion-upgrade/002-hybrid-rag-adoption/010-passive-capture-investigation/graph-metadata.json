@@ -28,7 +28,6 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "generate-context.js",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
       ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
@@ -41,12 +40,6 @@
       "checklist.md"
     ],
     "entities": [
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
       {
         "name": "generate-context.js",
         "kind": "code",
@@ -114,7 +107,7 @@
         "source": "derived"
       },
       {
-        "name": "Scope\nThis",
+        "name": "Scope This",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -136,11 +129,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Success Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates whether Engram-style passive capture or close-session helpers belong in Public at all, and if so, whether they can exist only as thin wrappers over the current JSON-primary save workflow. It defines the research question, baseline measurements, and authority checks needed before any adopt/prototype/reject decision. It does not ship a new save surface.",
     "created_at": "2026-04-13T04:56:07.090Z",
-    "last_save_at": "2026-04-13T05:11:45.194Z",
+    "last_save_at": "2026-04-13T06:08:12.105Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

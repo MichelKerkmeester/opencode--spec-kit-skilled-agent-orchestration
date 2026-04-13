@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "known",
-      "verification",
-      "checklist",
-      "summary",
-      "implementation summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -42,13 +39,12 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.js",
       ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.js",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.js",
       ".opencode/agent/orchestrate.md",
-      "AGENTS.md",
       ".opencode/skill/system-spec-kit/scripts/scripts-registry.json",
       ".opencode/skill/system-spec-kit/scripts/README.md",
       ".opencode/skill/system-spec-kit/scripts/spec/check-completion.sh",
@@ -58,12 +54,13 @@
       ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
       ".opencode/skill/system-spec-kit/mcp_server/lib/access-tracker.js",
       "grep -rn \"Gate 4\" .opencode/agent/ AGENTS.md",
-      "SET-UP - AGENTS.md",
       "087-speckit-deep-analysis/known-limitations.md",
       "087-speckit-deep-analysis/implementation-summary.md",
-      "scripts-registry.json",
       "scripts/README.md",
-      "scripts/spec/check-completion.sh"
+      "scripts/spec/check-completion.sh",
+      "spec.md",
+      "plan.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -88,12 +85,6 @@
         "name": "orchestrate.md",
         "kind": "doc",
         "path": ".opencode/agent/orchestrate.md",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "AGENTS.md",
         "source": "derived"
       },
       {
@@ -151,21 +142,27 @@
         "source": "derived"
       },
       {
-        "name": "SET-UP - AGENTS.md",
-        "kind": "doc",
-        "path": "SET-UP - AGENTS.md",
-        "source": "derived"
-      },
-      {
         "name": "known-limitations.md",
         "kind": "doc",
         "path": "087-speckit-deep-analysis/known-limitations.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "087-speckit-deep-analysis/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs and 15+ moderate misalignments, but deferred 4 known limitations that require separate implementation work: (1) existing SQLite databases have a drifted schema with three conflicting DDL definitions causing silent INSERT failures, (2) stale Gate 4/6 references remain in 7 active files plus the legacy install guide, (3) three spec management scripts are undocumented in capability tables, and (4) minor signal handler gaps exist in the MCP server.",
     "created_at": "2026-04-12T09:02:53.559Z",
-    "last_save_at": "2026-04-13T05:11:45.141Z",
+    "last_save_at": "2026-04-13T06:08:12.068Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

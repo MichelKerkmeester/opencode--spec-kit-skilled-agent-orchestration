@@ -46,6 +46,8 @@ const DEFAULT_DELIVERY_ANCHOR = 'how-delivered' as const;
 const DEFAULT_METADATA_ANCHOR = '_memory.continuity' as const;
 const DEFAULT_TASK_ANCHOR = 'phase-1' as const;
 const MANUAL_REVIEW_ANCHOR = 'manual-review' as const;
+const SESSION_CACHE_PREFIX = 'session' as const;
+const SPEC_FOLDER_CACHE_PREFIX = 'spec-folder' as const;
 
 type PacketLevel = 'L1' | 'L2' | 'L3' | 'L3+';
 type PacketKind = 'feature' | 'phase' | 'remediation' | 'research' | 'unknown';
@@ -276,6 +278,44 @@ const DEFAULT_PROTOTYPES = validatePrototypeLibrary(
   routingPrototypeLibrary as PrototypeLibrary,
 );
 
+interface InMemoryRouterCacheRecord {
+  entry: Tier3CacheEntry;
+  expiresAt: number | null;
+}
+
+export class InMemoryRouterCache implements RouterCache {
+  private readonly entries = new Map<string, InMemoryRouterCacheRecord>();
+
+  get(scope: CacheScope, key: string, context: SessionHints): Tier3CacheEntry | null {
+    const cacheKey = this.buildKey(scope, key, context);
+    const record = this.entries.get(cacheKey);
+    if (!record) {
+      return null;
+    }
+    if (record.expiresAt !== null && record.expiresAt <= Date.now()) {
+      this.entries.delete(cacheKey);
+      return null;
+    }
+    return record.entry;
+  }
+
+  set(scope: CacheScope, key: string, entry: Tier3CacheEntry, ttlMs: number, context: SessionHints): void {
+    const expiresAt = Number.isFinite(ttlMs) ? Date.now() + Math.max(0, ttlMs) : null;
+    this.entries.set(this.buildKey(scope, key, context), {
+      entry,
+      expiresAt,
+    });
+  }
+
+  private buildKey(scope: CacheScope, key: string, context: SessionHints): string {
+    if (scope === 'session') {
+      const sessionId = context.session_id?.trim();
+      return `${SESSION_CACHE_PREFIX}:${sessionId || context.spec_folder}:${key}`;
+    }
+    return `${SPEC_FOLDER_CACHE_PREFIX}:${context.spec_folder}:${key}`;
+  }
+}
+
 const TIER1_RULE_LIBRARY = [
   {
     id: 'tier1.structured.decision',
@@ -337,14 +377,26 @@ const TIER1_RULE_LIBRARY = [
   when: (chunk: ContentChunk, normalized: string) => boolean;
 }>;
 
+const DELIVERY_SEQUENCE_CUES = /\b(only then|then|after|before|followed by|in order|delivered in (?:two|three|four|\d+|\w+) passes)\b/u;
+const DELIVERY_GATING_CUES = /\b(gate|gated|gating|prerequisite|depends on|blocked by|kept (?:the work )?pending until)\b/u;
+const DELIVERY_ROLLOUT_CUES = /\b(feature flag|feature-flag|shadow|rollout|deployed?|deployment|canary|dual-write|ship(?:ped|ping)?|release(?:d)?|migrat(?:e|ed|ion)|staging)\b/u;
+const DELIVERY_VERIFICATION_CUES = /\b(verify|verified|validate(?:d|s|ion)?|confirm(?:ed|s)?|check(?:ed|ing|s)?|verification stayed|closure only happened after|awaiting runtime verification|auditable)\b/u;
+const STRONG_DELIVERY_PHRASES = /\b(updated together|same-?pass|same runtime truth|kept (?:the work )?pending until|closure only happened after|awaiting runtime verification|verification stayed|only then)\b/u;
+const HARD_DROP_WRAPPER_CUES = /\b(conversation transcript|generic recovery hints|tool telemetry|table of contents|raw tool|repository state|assistant:|user:|tool:|recovery scenarios|diagnostic commands)\b/u;
+const SOFT_OPERATIONAL_DROP_CUES = /\b(git diff|list memories|force re-index)\b/u;
+const STRONG_HANDOVER_LANGUAGE = /\b(current state|next session|resume|blocker|continuation|hand off|pick up where|active files|current blockers|remaining effort|immediate next session work|recent action|next safe action|fresh session|restart recipe)\b/u;
+
 const RULE_CUES: Record<RoutingCategory, RegExp[]> = {
   narrative_progress: [
     /\b(refactor|refactored|implemented|merged|added|built|fixed|updated|shipped|unblock|behavior changed)\b/,
     /\btests pass|verification passed|runtime correction|new capability|moving parts\b/,
   ],
   narrative_delivery: [
-    /\b(feature flag|feature-flag|shadow|rollout|deployed|sequenced|gated|delivered in|same-pass|migration)\b/,
-    /\bverification stayed|awaiting runtime verification|staging|canary|dual-write\b/,
+    DELIVERY_SEQUENCE_CUES,
+    DELIVERY_GATING_CUES,
+    DELIVERY_ROLLOUT_CUES,
+    DELIVERY_VERIFICATION_CUES,
+    STRONG_DELIVERY_PHRASES,
   ],
   decision: [
     /\bwe chose|alternatives considered|trade-?off|rejected|consequence|rollback|decision\b/,
@@ -367,8 +419,7 @@ const RULE_CUES: Record<RoutingCategory, RegExp[]> = {
     /\bknowledgeScore|uncertaintyScore|contextScore|causal_links|session_id|completion_pct\b/,
   ],
   drop: [
-    /\bconversation transcript|generic recovery hints|tool telemetry|table of contents|raw tool|repository state\b/,
-    /\bassistant:|user:|tool:|git diff|list memories|force re-index\b/,
+    HARD_DROP_WRAPPER_CUES,
   ],
 };
 
@@ -649,7 +700,12 @@ async function resolveTier3Decision(params: {
   }
 
   const start = now();
-  const raw = await classifyWithTier3(input);
+  let raw: Tier3RawResponse | null;
+  try {
+    raw = await classifyWithTier3(input);
+  } catch {
+    return null;
+  }
   if (!raw) {
     return null;
   }
@@ -842,6 +898,16 @@ function runTier1Rules(chunk: ContentChunk, normalizedText: string): Tier1Result
 function scoreCategories(chunk: ContentChunk, normalizedText: string): Partial<Record<RoutingCategory, number>> {
   const scores: Partial<Record<RoutingCategory, number>> = {};
   const implementationVerbMatch = /\b(refactor|refactored|implement|implemented|merged|added|built|fixed|updated|patched|shipped)\b/.test(normalizedText);
+  const deliveryMechanicMatchCount = [
+    DELIVERY_SEQUENCE_CUES,
+    DELIVERY_GATING_CUES,
+    DELIVERY_ROLLOUT_CUES,
+    DELIVERY_VERIFICATION_CUES,
+  ].reduce((count, pattern) => count + (pattern.test(normalizedText) ? 1 : 0), 0);
+  const strongDeliveryMechanics = STRONG_DELIVERY_PHRASES.test(normalizedText) || deliveryMechanicMatchCount >= 2;
+  const strongHandoverLanguage = STRONG_HANDOVER_LANGUAGE.test(normalizedText);
+  const hardDropWrapperSignals = HARD_DROP_WRAPPER_CUES.test(normalizedText);
+  const softOperationalSignals = SOFT_OPERATIONAL_DROP_CUES.test(normalizedText);
 
   for (const category of ROUTING_CATEGORIES) {
     const cueScore = RULE_CUES[category].reduce((acc, pattern) => acc + (pattern.test(normalizedText) ? 0.18 : 0), 0);
@@ -850,14 +916,14 @@ function scoreCategories(chunk: ContentChunk, normalizedText: string): Partial<R
     }
   }
 
-  if (chunk.sourceField === 'observations' && implementationVerbMatch) {
+  if (chunk.sourceField === 'observations' && implementationVerbMatch && !strongDeliveryMechanics) {
     scores.narrative_progress = Math.max(scores.narrative_progress ?? 0, 0.72);
   }
-  if (chunk.sourceField === 'exchanges' && /\bimplemented|refactored|tests pass|added\b/.test(normalizedText)) {
+  if (chunk.sourceField === 'exchanges' && /\bimplemented|refactored|tests pass|added\b/.test(normalizedText) && !strongDeliveryMechanics) {
     scores.narrative_progress = Math.max(scores.narrative_progress ?? 0, 0.71);
   }
-  if (/\bfeature flag|shadow|rollout|canary|dual-write\b/.test(normalizedText)) {
-    scores.narrative_delivery = Math.max(scores.narrative_delivery ?? 0, 0.74);
+  if (DELIVERY_ROLLOUT_CUES.test(normalizedText) || strongDeliveryMechanics) {
+    scores.narrative_delivery = Math.max(scores.narrative_delivery ?? 0, strongDeliveryMechanics ? 0.78 : 0.74);
   }
   if (/\bwe chose|alternatives considered|trade-?off|preferred|rejected|chose to\b/.test(normalizedText)) {
     scores.decision = Math.max(scores.decision ?? 0, 0.76);
@@ -865,8 +931,8 @@ function scoreCategories(chunk: ContentChunk, normalizedText: string): Partial<R
   if (/\[[ xX]\]\s*(?:T\d{3}|CHK-\d{3})/.test(chunk.text) || /\bT\d{3}\b/.test(normalizedText)) {
     scores.task_update = Math.max(scores.task_update ?? 0, 0.9);
   }
-  if (/\brecent action|next safe action|current state|resume\b/.test(normalizedText)) {
-    scores.handover_state = Math.max(scores.handover_state ?? 0, 0.84);
+  if (strongHandoverLanguage) {
+    scores.handover_state = Math.max(scores.handover_state ?? 0, softOperationalSignals ? 0.88 : 0.84);
   }
   if (/\bcited|source|found that|investigation|evidence|upstream\b/.test(normalizedText)) {
     scores.research_finding = Math.max(scores.research_finding ?? 0, 0.8);
@@ -874,8 +940,10 @@ function scoreCategories(chunk: ContentChunk, normalizedText: string): Partial<R
   if (/\bpreflight|postflight|trigger_phrases|importance_tier|contexttype|fingerprint|knowledgeScore\b/i.test(normalizedText)) {
     scores.metadata_only = Math.max(scores.metadata_only ?? 0, 0.93);
   }
-  if (/\bassistant:|user:|tool:|recovery scenarios|table of contents|git diff\b/.test(normalizedText)) {
+  if (hardDropWrapperSignals) {
     scores.drop = Math.max(scores.drop ?? 0, 0.92);
+  } else if (softOperationalSignals) {
+    scores.drop = Math.max(scores.drop ?? 0, strongHandoverLanguage ? 0.36 : 0.6);
   }
 
   if (!Object.values(scores).some((score) => (score ?? 0) > 0)) {

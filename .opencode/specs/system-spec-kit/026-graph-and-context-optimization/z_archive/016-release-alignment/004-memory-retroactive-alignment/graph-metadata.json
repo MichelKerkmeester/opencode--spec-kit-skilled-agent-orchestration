@@ -22,14 +22,7 @@
       "settled corpus plan",
       "memory alignment tasks",
       "retroactive remediation tasks",
-      "memory corpus completion tasks",
-      "memory alignment checklist",
-      "retroactive remediation verification",
-      "memory corpus settled checklist",
-      "memory remediation summary",
-      "retroactive alignment implementation summary",
-      "149 memories remediated",
-      "memory corpus settled summary"
+      "memory corpus completion tasks"
     ],
     "key_topics": [
       "memory",
@@ -46,7 +39,7 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scratch/remediate-memories.mjs",
       "scratch/audit-report.md",
@@ -54,8 +47,7 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "verify_alignment_drift.py"
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -101,12 +93,6 @@
         "source": "derived"
       },
       {
-        "name": "verify_alignment_drift.py",
-        "kind": "file",
-        "path": "verify_alignment_drift.py",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -119,13 +105,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nOlder",
+        "name": "Problem Statement Older",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\nRecord",
+        "name": "Purpose Record",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -153,11 +139,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Older memory files across `.opencode/specs/**/memory/*.md` had drifted away from the current v2.2 standard. The completed remediation run needed to eliminate placeholder `/100` markers, normalize required frontmatter, raise trigger phrase coverage, preserve deprecated archive state correctly, and prove that the full corpus could settle cleanly after reruns.",
     "created_at": "2026-04-12T09:02:53.475Z",
-    "last_save_at": "2026-04-13T05:11:45.021Z",
+    "last_save_at": "2026-04-13T06:08:12.002Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

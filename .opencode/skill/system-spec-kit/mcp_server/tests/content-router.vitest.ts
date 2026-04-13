@@ -73,6 +73,17 @@ describe('content-router tier 1 classification', () => {
     expect(decision.target.anchorId).toBe('how-delivered');
   });
 
+  it('keeps delivery ahead of progress when implementation verbs coexist with sequencing and verification cues', async () => {
+    const decision = await router.classifyContent({
+      id: 'chunk-2b',
+      text: 'Implemented the writer update, then deployed it behind a gate, kept the release blocked by verification checks, and only then confirmed the final ship step.',
+      sourceField: 'observations',
+    }, makeContext());
+
+    expect(decision.category).toBe('narrative_delivery');
+    expect(decision.target.anchorId).toBe('how-delivered');
+  });
+
   it('routes structured decisions to ADR insertion on L3+', async () => {
     const decision = await router.classifyContent({
       id: 'chunk-3',
@@ -117,6 +128,18 @@ describe('content-router tier 1 classification', () => {
     expect(decision.category).toBe('handover_state');
     expect(decision.target.docPath).toBe('handover.md');
     expect(decision.target.mergeMode).toBe('append-section');
+  });
+
+  it('keeps handover state when soft operational commands coexist with stop-state language', async () => {
+    const decision = await router.classifyContent({
+      id: 'chunk-5b',
+      text: 'Current state: focused fix compiled. Current blockers are runtime restart verification and one final review. Next session should resume with git diff, list memories, and force re-index after the blocker clears.',
+      sourceField: 'exchanges',
+    }, makeContext());
+
+    expect(decision.category).toBe('handover_state');
+    expect(decision.target.docPath).toBe('handover.md');
+    expect(decision.refusal).toBe(false);
   });
 
   it('routes research findings to research doc', async () => {
@@ -351,7 +374,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
       },
     };
     const embedText = (text: string): number[] => {
-      if (text.includes('same runtime truth')) {
+      if (text.includes('ambiguous parity note')) {
         return [0.66, 0, 0, 0, 0, 0, 0, 0, 0.751265];
       }
       switch (text) {
@@ -383,13 +406,72 @@ describe('content-router tier 2 and tier 3 behavior', () => {
 
     const decision = await router.classifyContent({
       id: 'chunk-15',
-      text: 'Commands, validators, and docs were updated together so every surface pointed at the same runtime truth instead of landing in a separate pass.',
+      text: 'This ambiguous parity note talks about synchronized packet surfaces without naming a clear canonical destination.',
       sourceField: 'unknown',
     }, makeContext());
 
     expect(decision.category).toBe('narrative_delivery');
     expect(decision.warningMessage).toContain('Tier 3 unavailable');
     expect(decision.confidence).toBeGreaterThanOrEqual(TIER3_THRESHOLD);
+  });
+
+  it('fails open when the injected Tier 3 classifier throws and Tier 2 can still route safely', async () => {
+    const prototypes = {
+      version: 1,
+      embeddingProfile: 'routing-throw-fallback-test',
+      categories: {
+        narrative_progress: [{ id: 'np', label: 'progress', sourceShape: 'test', tags: ['progress'], negativeHints: [], chunk: 'progress-prototype' }],
+        narrative_delivery: [{ id: 'nd', label: 'delivery', sourceShape: 'test', tags: ['delivery'], negativeHints: [], chunk: 'delivery-prototype' }],
+        decision: [{ id: 'de', label: 'decision', sourceShape: 'test', tags: ['decision'], negativeHints: [], chunk: 'decision-prototype' }],
+        handover_state: [{ id: 'hs', label: 'handover', sourceShape: 'test', tags: ['handover'], negativeHints: [], chunk: 'handover-prototype' }],
+        research_finding: [{ id: 'rf', label: 'research', sourceShape: 'test', tags: ['research'], negativeHints: [], chunk: 'research-prototype' }],
+        task_update: [{ id: 'tu', label: 'task', sourceShape: 'test', tags: ['task'], negativeHints: [], chunk: 'task-prototype' }],
+        metadata_only: [{ id: 'mo', label: 'metadata', sourceShape: 'test', tags: ['metadata'], negativeHints: [], chunk: 'metadata-prototype' }],
+        drop: [{ id: 'dr', label: 'drop', sourceShape: 'test', tags: ['drop'], negativeHints: [], chunk: 'drop-prototype' }],
+      },
+    };
+    const embedText = (text: string): number[] => {
+      if (text.includes('ambiguous prototype progress note')) {
+        return [0.66, 0, 0, 0, 0, 0, 0, 0, 0.751265];
+      }
+      switch (text) {
+        case 'progress-prototype':
+          return [1, 0, 0, 0, 0, 0, 0, 0, 0];
+        case 'delivery-prototype':
+          return [0, 1, 0, 0, 0, 0, 0, 0, 0];
+        case 'decision-prototype':
+          return [0, 0, 1, 0, 0, 0, 0, 0, 0];
+        case 'handover-prototype':
+          return [0, 0, 0, 1, 0, 0, 0, 0, 0];
+        case 'research-prototype':
+          return [0, 0, 0, 0, 1, 0, 0, 0, 0];
+        case 'task-prototype':
+          return [0, 0, 0, 0, 0, 1, 0, 0, 0];
+        case 'metadata-prototype':
+          return [0, 0, 0, 0, 0, 0, 1, 0, 0];
+        case 'drop-prototype':
+          return [0, 0, 0, 0, 0, 0, 0, 1, 0];
+        default:
+          return [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1];
+      }
+    };
+    const router = createContentRouter({
+      embedText,
+      classifyWithTier3: async () => {
+        throw new Error('simulated timeout');
+      },
+      prototypes,
+    });
+
+    const decision = await router.classifyContent({
+      id: 'chunk-15b',
+      text: 'This ambiguous prototype progress note avoids obvious heuristics while still landing nearest to the progress prototype.',
+      sourceField: 'unknown',
+    }, makeContext());
+
+    expect(decision.category).toBe('narrative_progress');
+    expect(decision.warningMessage).toContain('Tier 3 unavailable');
+    expect(decision.refusal).toBe(false);
   });
 
   it('honors explicit route-as overrides even against a natural drop classification', async () => {
@@ -416,6 +498,31 @@ describe('content-router helper contracts', () => {
     const library = getDefaultPrototypeLibrary();
     expect(library.version).toBe(1);
     expect(Object.keys(library.categories)).toHaveLength(8);
+  });
+
+  it('keeps the refreshed delivery, progress, and handover prototypes on their intended side of the boundary', async () => {
+    const router = createContentRouter({
+      embedText: makeEmbeddingFn(),
+    });
+    const library = getDefaultPrototypeLibrary();
+    const expectations = [
+      { category: 'narrative_delivery', id: 'ND-03' },
+      { category: 'narrative_delivery', id: 'ND-04' },
+      { category: 'narrative_progress', id: 'NP-05' },
+      { category: 'handover_state', id: 'HS-01' },
+      { category: 'handover_state', id: 'HS-04' },
+    ] as const;
+
+    for (const expectation of expectations) {
+      const prototype = library.categories[expectation.category].find((entry) => entry.id === expectation.id);
+      expect(prototype, `missing prototype ${expectation.id}`).toBeTruthy();
+      const decision = await router.classifyContent({
+        id: expectation.id,
+        text: prototype?.chunk ?? '',
+        sourceField: expectation.category === 'handover_state' ? 'exchanges' : 'observations',
+      }, makeContext());
+      expect(decision.category).toBe(expectation.category);
+    }
   });
 
   it('builds the frozen Tier 3 prompt contract', () => {

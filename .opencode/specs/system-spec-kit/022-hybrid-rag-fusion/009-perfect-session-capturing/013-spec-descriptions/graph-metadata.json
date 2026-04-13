@@ -22,8 +22,7 @@
       "description tasks",
       "implementation tasks",
       "description verification",
-      "checklist",
-      "description implementation"
+      "checklist"
     ],
     "key_topics": [
       "descriptions",
@@ -40,17 +39,8 @@
       "tasks"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "folder-discovery.ts",
-      "slug-utils.ts",
-      "workflow.ts",
-      "create.sh",
-      "description.json",
-      "spec-affinity.ts",
-      "spec-folder-extractor.ts",
-      "path.sep",
-      "descriptions.json",
       "specs/descriptions.json",
       "mcp_server/lib/search/folder-discovery.ts",
       "scripts/spec/create.sh",
@@ -59,65 +49,14 @@
       "scripts/spec-folder/generate-description.ts",
       "mcp_server/tests/folder-discovery.vitest.ts",
       "mcp_server/tests/folder-discovery-integration.vitest.ts",
-      "generate-description.js",
       "spec.md",
-      "file-helpers.ts"
+      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "tasks.md"
     ],
     "entities": [
-      {
-        "name": "folder-discovery.ts",
-        "kind": "code",
-        "path": "folder-discovery.ts",
-        "source": "derived"
-      },
-      {
-        "name": "slug-utils.ts",
-        "kind": "code",
-        "path": "slug-utils.ts",
-        "source": "derived"
-      },
-      {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "workflow.ts",
-        "source": "derived"
-      },
-      {
-        "name": "create.sh",
-        "kind": "script",
-        "path": "create.sh",
-        "source": "derived"
-      },
-      {
-        "name": "description.json",
-        "kind": "config",
-        "path": "description.json",
-        "source": "derived"
-      },
-      {
-        "name": "spec-affinity.ts",
-        "kind": "code",
-        "path": "spec-affinity.ts",
-        "source": "derived"
-      },
-      {
-        "name": "spec-folder-extractor.ts",
-        "kind": "code",
-        "path": "spec-folder-extractor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "path.sep",
-        "kind": "file",
-        "path": "path.sep",
-        "source": "derived"
-      },
-      {
-        "name": "descriptions.json",
-        "kind": "config",
-        "path": "descriptions.json",
-        "source": "derived"
-      },
       {
         "name": "descriptions.json",
         "kind": "config",
@@ -159,11 +98,65 @@
         "kind": "test",
         "path": "mcp_server/tests/folder-discovery.vitest.ts",
         "source": "derived"
+      },
+      {
+        "name": "folder-discovery-integration.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/folder-discovery-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "04-spec-folder-description-discovery.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Folder Descript",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.274Z",
-    "last_save_at": "2026-04-13T05:11:41.884Z",
+    "last_save_at": "2026-04-13T06:08:08.944Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -29,7 +29,14 @@
     "status": "planned",
     "key_files": [
       "mcp_server/lib/search/cross-encoder.ts",
-      "spec.md"
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/cross-encoder.vitest.ts tests/cross-encoder-extended.vitest.ts tests/search-extended.vitest.ts tests/search-limits-scoring.vitest.ts",
+      "mcp_server/tests/cross-encoder.vitest.ts",
+      "mcp_server/tests/cross-encoder-extended.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
     ],
     "entities": [
       {
@@ -39,9 +46,51 @@
         "source": "derived"
       },
       {
+        "name": "search-limits-scoring.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/cross-encoder.vitest.ts tests/cross-encoder-extended.vitest.ts tests/search-extended.vitest.ts tests/search-limits-scoring.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cross-encoder.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/cross-encoder.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cross-encoder-extended.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/cross-encoder-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -57,7 +106,7 @@
         "source": "derived"
       },
       {
-        "name": "Scope\n\nDelete",
+        "name": "Scope Delete",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -79,14 +128,24 @@
         "kind": "heading",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Execution Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Delete the length penalty logic from the cross-encoder reranker entirely. In an embedded RAG system the documents are fixed-size spec-doc artifacts -- penalizing 78.6% of the corpus for exceeding 2000 characters is counterproductive. Short-doc boosting (< 50 chars) is equally unjustified and should be removed in the same pass.",
     "created_at": "2026-04-13T05:11:45.011Z",
-    "last_save_at": "2026-04-13T05:11:45.011Z",
+    "last_save_at": "2026-04-13T06:08:11.993Z",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
     ]
   }
 }

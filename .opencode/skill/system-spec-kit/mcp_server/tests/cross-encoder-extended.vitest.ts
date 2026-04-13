@@ -72,28 +72,26 @@ describe('Cross Encoder Extended Tests', () => {
   // 1. APPLYLENGTHPENALTY
   // ───────────────────────────────────────────────────────────────
   describe('1. applyLengthPenalty', () => {
-    it('short content (<50 chars) applies 0.9 penalty', () => {
-      const shortContent = mockResult(1, 'hi', 0.8);          // 2 chars < 50 → penalty 0.9
+    it('short content no longer changes reranker scores', () => {
+      const shortContent = mockResult(1, 'hi', 0.8);
       const results = crossEncoder.applyLengthPenalty([shortContent]);
-      const expected = 0.8 * 0.9; // 0.72
       expect(results.length).toBe(1);
-      expect(results[0].rerankerScore).toBeCloseTo(expected, 9);
+      expect(results[0].rerankerScore).toBeCloseTo(0.8, 9);
     });
 
-    it('medium content (50-2000 chars) no penalty', () => {
-      const medContent = mockResult(2, 'a'.repeat(500), 0.8);  // 500 chars: 50..2000 → penalty 1.0
+    it('medium content remains unchanged', () => {
+      const medContent = mockResult(2, 'a'.repeat(500), 0.8);
       const results = crossEncoder.applyLengthPenalty([medContent]);
       expect(results[0].rerankerScore).toBeCloseTo(0.8, 9);
     });
 
-    it('long content (>2000 chars) applies 0.95 penalty', () => {
-      const longContent = mockResult(3, 'b'.repeat(3000), 0.8);  // 3000 chars > 2000 → penalty 0.95
+    it('long content no longer changes reranker scores', () => {
+      const longContent = mockResult(3, 'b'.repeat(3000), 0.8);
       const results = crossEncoder.applyLengthPenalty([longContent]);
-      const expected = 0.8 * 0.95; // 0.76
-      expect(results[0].rerankerScore).toBeCloseTo(expected, 9);
+      expect(results[0].rerankerScore).toBeCloseTo(0.8, 9);
     });
 
-    it('missing content treated as empty (penalty 0.9)', () => {
+    it('missing content is still a no-op', () => {
       const noContent: RerankResult = {
         id: 4,
         rerankerScore: 1.0,
@@ -102,10 +100,8 @@ describe('Cross Encoder Extended Tests', () => {
         provider: 'test',
         scoringMethod: 'cross-encoder',
       };
-      // No 'content' property → falls back to '' → length 0 → penalty 0.9
       const results = crossEncoder.applyLengthPenalty([noContent]);
-      const expected = 1.0 * 0.9;
-      expect(results[0].rerankerScore).toBeCloseTo(expected, 9);
+      expect(results[0].rerankerScore).toBeCloseTo(1.0, 9);
     });
 
     it('empty array returns empty array', () => {
@@ -113,11 +109,11 @@ describe('Cross Encoder Extended Tests', () => {
       expect(results.length).toBe(0);
     });
 
-    it('mixed lengths apply correct penalties', () => {
+    it('mixed lengths preserve scores and ordering', () => {
       const mixed = [
-        mockResult(1, 'x', 1.0),             // short → *0.9 = 0.9
-        mockResult(2, 'y'.repeat(100), 1.0),  // medium → *1.0 = 1.0
-        mockResult(3, 'z'.repeat(5000), 1.0), // long → *0.95 = 0.95
+        mockResult(1, 'x', 1.0),
+        mockResult(2, 'y'.repeat(100), 0.95),
+        mockResult(3, 'z'.repeat(5000), 0.9),
       ];
       const results = crossEncoder.applyLengthPenalty(mixed);
       expect(results[0].rerankerScore).toBeCloseTo(1.0, 9);
@@ -129,14 +125,12 @@ describe('Cross Encoder Extended Tests', () => {
     });
 
     it('boundary at exactly 50 chars (no penalty)', () => {
-      // Boundary: exactly 50 chars → NOT < 50, so penalty = 1.0
       const boundary50 = mockResult(10, 'c'.repeat(50), 0.6);
       const results = crossEncoder.applyLengthPenalty([boundary50]);
       expect(results[0].rerankerScore).toBeCloseTo(0.6, 9);
     });
 
     it('boundary at exactly 2000 chars (no penalty)', () => {
-      // Boundary: exactly 2000 chars → NOT < 50, NOT > 2000, so penalty = 1.0
       const boundary2000 = mockResult(11, 'd'.repeat(2000), 0.6);
       const results = crossEncoder.applyLengthPenalty([boundary2000]);
       expect(results[0].rerankerScore).toBeCloseTo(0.6, 9);
@@ -387,7 +381,7 @@ describe('Cross Encoder Extended Tests', () => {
       expect(results[0].scoringMethod).toBe('cross-encoder');
     });
 
-    it('applies length penalty to provider results', async () => {
+    it('keeps provider scores unchanged after removing the length penalty', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
       mockFetch(200, {
         data: [
@@ -395,12 +389,10 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      // Short content (<50 chars) → length penalty 0.9
       const docs = [{ id: 4, content: 'tiny' }];
       const results = await crossEncoder.rerankResults('q', docs, { useCache: false });
 
-      // RerankerScore should be 1.0 * 0.9 = 0.9 after length penalty
-      expect(results[0].rerankerScore).toBeCloseTo(0.9, 9);
+      expect(results[0].rerankerScore).toBeCloseTo(1.0, 9);
     });
 
     it('provider error falls back gracefully', async () => {
@@ -460,6 +452,11 @@ describe('Cross Encoder Extended Tests', () => {
       // Second call with same query+docs — should use cache
       await crossEncoder.rerankResults('cache query', docs, { useCache: true });
       expect(fetchCallCount).toBe(1);
+
+      const status = crossEncoder.getRerankerStatus();
+      expect(status.cache.hits).toBe(1);
+      expect(status.cache.misses).toBe(1);
+      expect(status.cache.staleHits).toBe(0);
     });
 
     it('useCache=false bypasses cache', async () => {
@@ -483,6 +480,10 @@ describe('Cross Encoder Extended Tests', () => {
 
       await crossEncoder.rerankResults('no-cache query', docs, { useCache: false });
       expect(fetchCallCount).toBe(2);
+
+      const status = crossEncoder.getRerankerStatus();
+      expect(status.cache.hits).toBe(0);
+      expect(status.cache.misses).toBe(0);
     });
   });
 
@@ -500,6 +501,7 @@ describe('Cross Encoder Extended Tests', () => {
       const status = crossEncoder.getRerankerStatus();
       expect(status.latency.count).toBeGreaterThanOrEqual(1);
       expect(status.latency.avg).toBeGreaterThanOrEqual(0);
+      expect(status.cache.entries).toBe(0);
     });
   });
 

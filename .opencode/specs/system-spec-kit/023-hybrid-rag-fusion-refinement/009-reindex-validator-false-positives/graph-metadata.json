@@ -22,13 +22,7 @@
       "tasks",
       "009 tasks",
       "reindex validator tasks",
-      "checklist",
-      "reindex validator",
-      "false positive verification",
-      "implementation summary",
-      "009 reindex validator",
-      "false positive fix summary",
-      "contextType migration"
+      "checklist"
     ],
     "key_topics": [
       "reindex",
@@ -45,14 +39,9 @@
       "topical"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "v-rule-bridge.ts",
-      "memory-save.ts",
       "shared/context-types.ts",
-      "vector-index-schema.ts",
-      "schema-downgrade.ts",
-      "params.contextType",
       "shared/index.ts",
       "scripts/lib/validate-memory-quality.ts",
       "scripts/lib/frontmatter-migration.ts",
@@ -64,45 +53,18 @@
       "mcp_server/lib/storage/schema-downgrade.ts",
       "mcp_server/handlers/save/dedup.ts",
       "mcp_server/tests/memory-parser-extended.vitest.ts",
-      "context-types.ts",
-      "types.ts",
-      "mcp_server/handlers/memory-index.ts"
+      "mcp_server/handlers/memory-index.ts",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "tasks.md"
     ],
     "entities": [
-      {
-        "name": "v-rule-bridge.ts",
-        "kind": "code",
-        "path": "v-rule-bridge.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-save.ts",
-        "kind": "code",
-        "path": "memory-save.ts",
-        "source": "derived"
-      },
       {
         "name": "context-types.ts",
         "kind": "code",
         "path": "shared/context-types.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-schema.ts",
-        "kind": "code",
-        "path": "vector-index-schema.ts",
-        "source": "derived"
-      },
-      {
-        "name": "schema-downgrade.ts",
-        "kind": "code",
-        "path": "schema-downgrade.ts",
-        "source": "derived"
-      },
-      {
-        "name": "params.contextType",
-        "kind": "file",
-        "path": "params.contextType",
         "source": "derived"
       },
       {
@@ -164,11 +126,41 @@
         "kind": "code",
         "path": "mcp_server/handlers/save/dedup.ts",
         "source": "derived"
+      },
+      {
+        "name": "memory-parser-extended.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory-parser-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Batch reindex discovered substantially more files on disk than were inserted into the memory index. Two validation rules were producing false positives in bulk mode, which blocked valid memory and spec documentation content from indexing.",
     "created_at": "2026-04-12T09:02:50.322Z",
-    "last_save_at": "2026-04-13T05:11:41.945Z",
+    "last_save_at": "2026-04-13T06:08:08.998Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

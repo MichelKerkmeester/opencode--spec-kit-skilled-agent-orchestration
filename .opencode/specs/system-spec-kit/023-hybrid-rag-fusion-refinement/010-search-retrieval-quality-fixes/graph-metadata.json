@@ -22,14 +22,7 @@
       "search retrieval fix plan",
       "intent propagation fix plan",
       "folder narrowing fix plan",
-      "token truncation fix plan",
-      "search retrieval fix tasks",
-      "intent propagation tasks",
-      "folder narrowing tasks",
-      "search retrieval checklist",
-      "retrieval quality verification",
-      "search retrieval implementation summary",
-      "retrieval quality fixes summary"
+      "token truncation fix plan"
     ],
     "key_topics": [
       "search",
@@ -46,17 +39,11 @@
       "memory"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "mcp_server/handlers/memory-context.ts",
       "mcp_server/handlers/memory-search.ts",
       "mcp_server/lib/search/folder-discovery.ts",
-      "memory-context.ts",
-      "memory-search.ts",
-      "appliedBoosts.folder",
-      "folder-discovery.ts",
-      "args.intent",
-      "options.specFolder",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -80,42 +67,6 @@
         "name": "folder-discovery.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/folder-discovery.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-context.ts",
-        "kind": "code",
-        "path": "memory-context.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-search.ts",
-        "kind": "code",
-        "path": "memory-search.ts",
-        "source": "derived"
-      },
-      {
-        "name": "appliedBoosts.folder",
-        "kind": "file",
-        "path": "appliedBoosts.folder",
-        "source": "derived"
-      },
-      {
-        "name": "folder-discovery.ts",
-        "kind": "code",
-        "path": "folder-discovery.ts",
-        "source": "derived"
-      },
-      {
-        "name": "args.intent",
-        "kind": "file",
-        "path": "args.intent",
-        "source": "derived"
-      },
-      {
-        "name": "options.specFolder",
-        "kind": "file",
-        "path": "options.specFolder",
         "source": "derived"
       },
       {
@@ -159,11 +110,47 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Phase Context",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 10** of the ESM Module Compliance specification. It addresses six retrieval quality issues discovered during root-cause analysis of `memory_context` returning 0 results for \"semantic search\" — a query that should match 20+ memories.",
     "created_at": "2026-04-12T09:02:50.323Z",
-    "last_save_at": "2026-04-13T05:11:41.946Z",
+    "last_save_at": "2026-04-13T06:08:08.998Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

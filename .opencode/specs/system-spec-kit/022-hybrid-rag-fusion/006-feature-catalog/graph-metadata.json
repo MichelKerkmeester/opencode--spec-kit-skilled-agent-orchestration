@@ -22,14 +22,7 @@
       "tasks",
       "verification",
       "checklist",
-      "decision",
-      "record",
-      "decision record",
-      "implementation",
-      "summary",
-      "implementation summary",
-      "session",
-      "handover"
+      "decision"
     ],
     "key_topics": [
       "feature",
@@ -43,14 +36,11 @@
       "verification",
       "checklist",
       "decision",
-      "record"
+      "wrapper"
     ],
     "importance_tier": "important",
     "status": "In Progress",
     "key_files": [
-      "session-transition.ts",
-      "ranking-contract.ts",
-      "verify_alignment_drift.py",
       ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md",
       ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
@@ -67,27 +57,12 @@
       ".opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md",
       ".opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md",
       ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md",
-      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md"
+      ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/02-memory-health-auto-repair.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md"
     ],
     "entities": [
-      {
-        "name": "session-transition.ts",
-        "kind": "code",
-        "path": "session-transition.ts",
-        "source": "derived"
-      },
-      {
-        "name": "ranking-contract.ts",
-        "kind": "code",
-        "path": "ranking-contract.ts",
-        "source": "derived"
-      },
-      {
-        "name": "verify_alignment_drift.py",
-        "kind": "file",
-        "path": "verify_alignment_drift.py",
-        "source": "derived"
-      },
       {
         "name": "11-feature-catalog-code-references.md",
         "kind": "doc",
@@ -104,12 +79,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/README.md",
         "source": "derived"
       },
       {
@@ -165,11 +134,35 @@
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md",
         "source": "derived"
+      },
+      {
+        "name": "06-shared-memory-admin-identity-governance.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/17--governance/06-shared-memory-admin-identity-governance.md",
+        "source": "derived"
+      },
+      {
+        "name": "07-governance-audit-review-and-rollout-metrics.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/17--governance/07-governance-audit-review-and-rollout-metrics.md",
+        "source": "derived"
+      },
+      {
+        "name": "09-runtime-config-contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "10-filter-config-contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/10-filter-config-contract.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This wrapper packet preserves the historical 2026-03-08 through 2026-03-26 audit trail, but it must no longer be read as the live denominator source on its own.",
     "created_at": "2026-04-12T09:02:50.241Z",
-    "last_save_at": "2026-04-13T05:11:41.850Z",
+    "last_save_at": "2026-04-13T06:08:08.909Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

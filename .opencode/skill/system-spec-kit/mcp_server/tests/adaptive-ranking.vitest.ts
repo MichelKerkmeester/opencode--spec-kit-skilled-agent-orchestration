@@ -83,7 +83,10 @@ function createStage2TestDb(): Database.Database {
   return db;
 }
 
-function createStage2Input(candidates: Array<Record<string, unknown>>): Stage2Input {
+function createStage2Input(
+  candidates: Array<Record<string, unknown>>,
+  configOverrides: Partial<Stage2Input['config']> = {},
+): Stage2Input {
   return {
     candidates: candidates as Array<Record<string, unknown> & { id: number }>,
     stage1Metadata: {
@@ -110,8 +113,10 @@ function createStage2Input(candidates: Array<Record<string, unknown>>): Stage2In
       enableCausalBoost: false,
       trackAccess: true,
       detectedIntent: null,
+      adaptiveFusionIntent: null,
       intentConfidence: 0,
       intentWeights: null,
+      ...configOverrides,
     },
   };
 }
@@ -249,6 +254,39 @@ describe('Phase 4 adaptive ranking shadow proposals', () => {
     ).toEqual([
       { memory_id: 1, signal_type: 'access', signal_value: 1, query: 'adaptive access query' },
       { memory_id: 2, signal_type: 'access', signal_value: 1, query: 'adaptive access query' },
+    ]);
+  });
+
+  it('accepts continuity-oriented prompts without requiring a public intent union update', async () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+
+    db = createStage2TestDb();
+    db.prepare(`
+      INSERT INTO memory_index (id, stability, difficulty, review_count, access_count, last_review, created_at)
+      VALUES (1, 2.5, 5.5, 0, 0, '2026-03-01T00:00:00.000Z', '2026-02-01T00:00:00.000Z')
+    `).run();
+    mockRequireDb.mockReturnValue(db);
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion.js');
+    await executeStage2(createStage2Input(
+      [
+        { id: 1, score: 0.9, similarity: 90, stability: 2.5, last_review: '2026-03-01T00:00:00.000Z', created_at: '2026-02-01T00:00:00.000Z' },
+      ],
+      {
+        query: 'continue the canonical continuity refactor',
+        detectedIntent: 'understand',
+        adaptiveFusionIntent: 'continuity',
+      },
+    ));
+
+    expect(
+      db.prepare(`
+        SELECT signal_type, query
+        FROM adaptive_signal_events
+        ORDER BY id ASC
+      `).all()
+    ).toEqual([
+      { signal_type: 'access', query: 'continue the canonical continuity refactor' },
     ]);
   });
 

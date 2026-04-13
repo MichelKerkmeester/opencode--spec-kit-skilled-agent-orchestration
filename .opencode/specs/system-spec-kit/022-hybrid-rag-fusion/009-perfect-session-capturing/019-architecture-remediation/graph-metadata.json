@@ -22,12 +22,7 @@
       "wave 3 synthesis",
       "019 checklist",
       "architecture remediation verification",
-      "wave 3 quality gates",
-      "019 decision record",
-      "architecture remediation adr",
-      "opus-b3 synthesis",
-      "019 implementation summary",
-      "architecture remediation summary"
+      "wave 3 quality gates"
     ],
     "key_topics": [
       "architecture",
@@ -44,28 +39,28 @@
       "agents"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "plan.md",
       "decision-record.md",
-      "conversation-extractor.ts",
-      "collect-session-data.ts",
       "tasks.md",
       "checklist.md",
       "scratch/codex-1-core-pipeline.md",
       "scratch/opus-5-type-system.md",
-      "check-architecture-boundaries.ts",
       "scratch/wave3-priority-matrix.md",
       "scratch/wave3-decision-records.md",
       "scratch/wave3-checklist.md",
-      "test-scripts-modules.js",
-      "run-quality-legacy-remediation.js",
-      "task-enrichment.vitest.ts",
-      "memory-render-fixture.vitest.ts",
-      "workflow.ts",
       "core/workflow.ts",
-      "cli-capture-shared.ts",
-      "descriptions.json"
+      "scratch/codex-2-extractors.md",
+      "scratch/codex-3-utils-lib.md",
+      "scratch/codex-4-memory-system.md",
+      "scratch/codex-5-tests-evals.md",
+      "scratch/opus-1-phase-tree.md",
+      "scratch/opus-2-spec-alignment.md",
+      "scratch/opus-3-architecture.md",
+      "scratch/opus-4-git-diff.md",
+      "spec.md",
+      "grep 'structure-aware-chunker' scripts/memory/ast-parser.ts"
     ],
     "entities": [
       {
@@ -78,18 +73,6 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
-        "source": "derived"
-      },
-      {
-        "name": "conversation-extractor.ts",
-        "kind": "code",
-        "path": "conversation-extractor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "collect-session-data.ts",
-        "kind": "code",
-        "path": "collect-session-data.ts",
         "source": "derived"
       },
       {
@@ -117,12 +100,6 @@
         "source": "derived"
       },
       {
-        "name": "check-architecture-boundaries.ts",
-        "kind": "code",
-        "path": "check-architecture-boundaries.ts",
-        "source": "derived"
-      },
-      {
         "name": "wave3-priority-matrix.md",
         "kind": "doc",
         "path": "scratch/wave3-priority-matrix.md",
@@ -141,33 +118,51 @@
         "source": "derived"
       },
       {
-        "name": "test-scripts-modules.js",
+        "name": "workflow.ts",
         "kind": "code",
-        "path": "test-scripts-modules.js",
+        "path": "core/workflow.ts",
         "source": "derived"
       },
       {
-        "name": "run-quality-legacy-remediation.js",
-        "kind": "code",
-        "path": "run-quality-legacy-remediation.js",
+        "name": "codex-2-extractors.md",
+        "kind": "doc",
+        "path": "scratch/codex-2-extractors.md",
         "source": "derived"
       },
       {
-        "name": "task-enrichment.vitest.ts",
-        "kind": "test",
-        "path": "task-enrichment.vitest.ts",
+        "name": "codex-3-utils-lib.md",
+        "kind": "doc",
+        "path": "scratch/codex-3-utils-lib.md",
         "source": "derived"
       },
       {
-        "name": "memory-render-fixture.vitest.ts",
-        "kind": "test",
-        "path": "memory-render-fixture.vitest.ts",
+        "name": "codex-4-memory-system.md",
+        "kind": "doc",
+        "path": "scratch/codex-4-memory-system.md",
+        "source": "derived"
+      },
+      {
+        "name": "codex-5-tests-evals.md",
+        "kind": "doc",
+        "path": "scratch/codex-5-tests-evals.md",
+        "source": "derived"
+      },
+      {
+        "name": "opus-1-phase-tree.md",
+        "kind": "doc",
+        "path": "scratch/opus-1-phase-tree.md",
+        "source": "derived"
+      },
+      {
+        "name": "opus-2-spec-alignment.md",
+        "kind": "doc",
+        "path": "scratch/opus-2-spec-alignment.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Global architecture, bug fix, and alignment deep dive across the entire `009-perfect-session-capturing` subsystem. This phase deployed 15 parallel analysis agents across 3 waves (5 GPT 5.4 via Codex CLI + 5 Claude Opus Wave 1/2 analysis, plus 5 Claude Opus Wave 3 synthesis) to produce a comprehensive findings report covering:",
     "created_at": "2026-04-12T09:02:50.282Z",
-    "last_save_at": "2026-04-13T05:11:41.900Z",
+    "last_save_at": "2026-04-13T06:08:08.952Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

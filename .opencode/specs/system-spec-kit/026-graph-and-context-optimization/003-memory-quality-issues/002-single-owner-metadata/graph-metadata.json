@@ -22,17 +22,7 @@
       "pr-4",
       "importance-tier ssot plan",
       "provenance-only injection plan",
-      "phase 2 tasks",
-      "single-owner metadata tasks",
-      "pr-3 tasks",
-      "pr-4 tasks",
-      "phase 2 checklist",
-      "single-owner metadata checklist",
-      "f-ac4 checklist",
-      "f-ac6 checklist",
-      "phase 2 implementation summary",
-      "single owner metadata summary",
-      "d4 d7 closeout"
+      "phase 2 tasks"
     ],
     "key_topics": [
       "phase",
@@ -49,11 +39,8 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "session-extractor.ts",
-      "frontmatter-migration.ts",
-      "post-save-review.ts",
       ".opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts",
       ".opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts",
       ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
@@ -62,35 +49,19 @@
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase2-pr4.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC4-importance-tier.json",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC6-provenance.json",
-      "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
-      "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
       "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
       "checklist.md",
       "implementation-summary.md",
-      "workflow.ts",
-      "validate.sh",
-      "generate-context.js",
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "tests/memory-quality-phase2-pr4.test.ts",
+      "scripts/core/workflow.ts",
+      "tests/fixtures/memory-quality/F-AC6-provenance.json",
+      "tests/memory-quality-phase2-pr3.test.ts",
+      "tests/fixtures/memory-quality/F-AC4-importance-tier.json"
     ],
     "entities": [
-      {
-        "name": "session-extractor.ts",
-        "kind": "code",
-        "path": "session-extractor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "frontmatter-migration.ts",
-        "kind": "code",
-        "path": "frontmatter-migration.ts",
-        "source": "derived"
-      },
-      {
-        "name": "post-save-review.ts",
-        "kind": "code",
-        "path": "post-save-review.ts",
-        "source": "derived"
-      },
       {
         "name": "session-extractor.ts",
         "kind": "code",
@@ -140,24 +111,6 @@
         "source": "derived"
       },
       {
-        "name": "memory-quality-phase2-pr3.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase2-pr3.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase2-pr4.test.ts",
-        "kind": "test",
-        "path": "npx vitest run tests/memory-quality-phase2-pr4.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "git diff --stat -- .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
-        "source": "derived"
-      },
-      {
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
@@ -168,11 +121,47 @@
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Owner Metadata Fixes",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Overview",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 is the P1 child packet for the two metadata defects that the parent research grouped into the same rollout band: D4 importance-tier mismatch and D7 empty git provenance. The phase exists to land PR-3 and PR-4 without pulling in the broader heuristic or refactor work reserved for later phases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1156-1157]",
     "created_at": "2026-04-12T09:02:53.457Z",
-    "last_save_at": "2026-04-13T05:11:44.986Z",
+    "last_save_at": "2026-04-13T06:08:11.970Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

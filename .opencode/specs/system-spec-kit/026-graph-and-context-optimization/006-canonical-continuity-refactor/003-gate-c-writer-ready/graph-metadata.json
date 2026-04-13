@@ -22,8 +22,7 @@
       "checklist",
       "decision record",
       "continuity",
-      "implementation summary",
-      "canonical writer"
+      "implementation summary"
     ],
     "key_topics": [
       "gate",
@@ -47,21 +46,21 @@
       "mcp_server/handlers/save/atomic-index-memory.ts",
       "mcp_server/handlers/save/create-record.ts",
       "mcp_server/lib/merge/anchor-merge-operation.ts",
-      "_memory.continuity",
-      "create-record.ts",
-      "anchor-merge-operation.ts",
       "decision-record.md",
-      "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
-      "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
-      "memory-save.ts",
-      "spec-doc-structure.ts",
-      "validate.sh",
-      "generate-context.ts",
-      "memory-search.ts",
-      "memory-context.ts",
-      "session-resume.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts"
+      ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "scratch/pending-route-<ts>.json",
+      "tests/content-router.vitest.ts",
+      "tests/thin-continuity-record.vitest.ts",
+      "tests/spec-doc-structure.vitest.ts",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -95,75 +94,75 @@
         "source": "derived"
       },
       {
-        "name": "_memory.continuity",
-        "kind": "file",
-        "path": "_memory.continuity",
-        "source": "derived"
-      },
-      {
-        "name": "create-record.ts",
-        "kind": "code",
-        "path": "create-record.ts",
-        "source": "derived"
-      },
-      {
-        "name": "anchor-merge-operation.ts",
-        "kind": "code",
-        "path": "anchor-merge-operation.ts",
-        "source": "derived"
-      },
-      {
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "create-record-identity.vitest.ts --config vitest.config.ts",
-        "kind": "code",
-        "path": "node node_modules/vitest/vitest.mjs run tests/spec-doc-structure.vitest.ts tests/content-router.vitest.ts tests/anchor-merge-operation.vitest.ts tests/thin-continuity-record.vitest.ts tests/atomic-index-memory.vitest.ts tests/memory-save-extended.vitest.ts tests/handler-memory-save.vitest.ts tests/tool-input-schema.vitest.ts tests/create-record-identity.vitest.ts --config vitest.config.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "node ./scripts/node_modules/vitest/vitest.mjs run scripts/tests/generate-context-cli-authority.vitest.ts --config ./mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-save.ts",
-        "kind": "code",
-        "path": "memory-save.ts",
-        "source": "derived"
-      },
-      {
         "name": "spec-doc-structure.ts",
         "kind": "code",
-        "path": "spec-doc-structure.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts",
+        "source": "derived"
+      },
+      {
+        "name": "content-router.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+        "source": "derived"
+      },
+      {
+        "name": "thin-continuity-record.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts",
         "source": "derived"
       },
       {
         "name": "validate.sh",
         "kind": "script",
-        "path": "validate.sh",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
         "source": "derived"
       },
       {
-        "name": "generate-context.ts",
-        "kind": "code",
-        "path": "generate-context.ts",
+        "name": "pending-route-<ts>.json",
+        "kind": "config",
+        "path": "scratch/pending-route-<ts>.json",
         "source": "derived"
       },
       {
-        "name": "memory-search.ts",
-        "kind": "code",
-        "path": "memory-search.ts",
+        "name": "content-router.vitest.ts",
+        "kind": "test",
+        "path": "tests/content-router.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "thin-continuity-record.vitest.ts",
+        "kind": "test",
+        "path": "tests/thin-continuity-record.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-structure.vitest.ts",
+        "kind": "test",
+        "path": "tests/spec-doc-structure.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Gate C is the code-critical path of phase 018. It replaces standalone memory-file writes with canonical spec-doc writes by delivering the five-rule validator bridge, the 3-tier `contentRouter`, the five-mode `anchorMergeOperation`, the `atomicIndexMemory` drop-in for `atomicSaveMemory`, and the XL `memory-save.ts` rewrite that keeps `withSpecFolderLock` unchanged. Grounding: `../implementation-design.md`; resource-map F-4/F-5/F-6/F-7; rows B1, C1, C10, C11, D1-D30; iterations 001-005, 021-024, 029, 031-034, 038.",
     "created_at": "2026-04-12T09:02:53.479Z",
-    "last_save_at": "2026-04-13T05:11:44.999Z",
+    "last_save_at": "2026-04-13T06:08:11.982Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -37,11 +37,10 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".codex/agents/review.toml",
       ".codex/agents/orchestrate.toml",
-      "skill_advisor.py",
       ".opencode/skill/README.md",
       ".opencode/README.md",
       "spec.md",
@@ -49,8 +48,6 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "python3 .opencode/skill/scripts/skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
-      "python3 .opencode/skill/scripts/skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
       ".codex/agents/{review,orchestrate}.toml",
       ".opencode/skill/sk-code-review/SKILL.md",
       ".opencode/skill/sk-code-review/README.md",
@@ -58,7 +55,10 @@
       ".opencode/agent/orchestrate.md",
       ".gemini/agents/review.md",
       ".gemini/agents/orchestrate.md",
-      ".claude/agents/review.md"
+      ".claude/agents/review.md",
+      ".claude/agents/orchestrate.md",
+      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/specs/03--commands-and-skills/016-sk-code-review-creation/spec.md"
     ],
     "entities": [
       {
@@ -74,27 +74,15 @@
         "source": "derived"
       },
       {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": "skill_advisor.py",
-        "source": "derived"
-      },
-      {
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/skill/README.md",
         "source": "derived"
       },
       {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/README.md",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/specs/03--commands-and-skills/016-sk-code-review-creation/spec.md",
         "source": "derived"
       },
       {
@@ -122,18 +110,6 @@
         "source": "derived"
       },
       {
-        "name": "skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
-        "kind": "file",
-        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"review this PR for race conditions and auth bugs\" --threshold 0.8",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
-        "kind": "file",
-        "path": "python3 .opencode/skill/scripts/skill_advisor.py \"help me rebase and split commits\" --threshold 0.8",
-        "source": "derived"
-      },
-      {
         "name": "{review,orchestrate}.toml",
         "kind": "file",
         "path": ".codex/agents/{review,orchestrate}.toml",
@@ -146,21 +122,45 @@
         "source": "derived"
       },
       {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skill/sk-code-review/README.md",
-        "source": "derived"
-      },
-      {
         "name": "review.md",
         "kind": "doc",
         "path": ".opencode/agent/review.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Level 2 specification for converting the draft `legacy-single-hyphen-review` package into `sk-code-review`, aligning router behavior to `sk-doc` standards, and wiring `@review` workflows to a baseline+overlay model. ---",
     "created_at": "2026-04-12T09:02:50.217Z",
-    "last_save_at": "2026-04-13T05:11:41.821Z",
+    "last_save_at": "2026-04-13T06:08:08.884Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

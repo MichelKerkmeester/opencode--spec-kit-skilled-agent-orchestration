@@ -34,12 +34,8 @@
       "features"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "transaction-manager-extended.vitest.ts",
-      "bm25-index.ts",
-      "embeddings.ts",
-      "archival-manager.ts",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -47,30 +43,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "transaction-manager-extended.vitest.ts",
-        "kind": "test",
-        "path": "transaction-manager-extended.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "bm25-index.ts",
-        "kind": "code",
-        "path": "bm25-index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "embeddings.ts",
-        "kind": "code",
-        "path": "embeddings.ts",
-        "source": "derived"
-      },
-      {
-        "name": "archival-manager.ts",
-        "kind": "code",
-        "path": "archival-manager.ts",
-        "source": "derived"
-      },
       {
         "name": "plan.md",
         "kind": "doc",
@@ -114,7 +86,7 @@
         "source": "derived"
       },
       {
-        "name": "Executive Summary\n\nSystematic",
+        "name": "Executive Summary Systematic",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -142,11 +114,35 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Audit",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Read",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 7 Lifecycle features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/05--lifecycle/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.247Z",
-    "last_save_at": "2026-04-13T05:11:41.855Z",
+    "last_save_at": "2026-04-13T06:08:08.914Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -22,12 +22,7 @@
       "tasks",
       "checklist",
       "decision",
-      "record",
-      "decision record",
-      "summary",
-      "implementation summary",
-      "research",
-      "approaches"
+      "record"
     ],
     "key_topics": [
       "spec",
@@ -44,12 +39,8 @@
       "record"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "folder-scoring.js",
-      "memory-crud.js",
-      "context-server.js",
-      "search.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/folder-scoring.js",
       ".opencode/skill/system-spec-kit/scripts/rank-memories.js",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud.js",
@@ -63,35 +54,14 @@
       "research/research.md",
       ".opencode/command/memory-database.md",
       ".opencode/config/memory-preferences.yaml",
-      "005-anobel.com",
-      "recencyScore = 1.0",
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "folder-scoring.js",
-        "kind": "code",
-        "path": "folder-scoring.js",
-        "source": "derived"
-      },
-      {
-        "name": "memory-crud.js",
-        "kind": "code",
-        "path": "memory-crud.js",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "search.md",
-        "kind": "doc",
-        "path": "search.md",
-        "source": "derived"
-      },
       {
         "name": "folder-scoring.js",
         "kind": "code",
@@ -163,11 +133,35 @@
         "kind": "doc",
         "path": ".opencode/command/memory-database.md",
         "source": "derived"
+      },
+      {
+        "name": "memory-preferences.yaml",
+        "kind": "config",
+        "path": ".opencode/config/memory-preferences.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The memory dashboard displays \"top folders\" ranked purely by **memory file count**. This creates several issues:",
     "created_at": "2026-04-12T09:02:53.543Z",
-    "last_save_at": "2026-04-13T05:11:45.109Z",
+    "last_save_at": "2026-04-13T06:08:12.050Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

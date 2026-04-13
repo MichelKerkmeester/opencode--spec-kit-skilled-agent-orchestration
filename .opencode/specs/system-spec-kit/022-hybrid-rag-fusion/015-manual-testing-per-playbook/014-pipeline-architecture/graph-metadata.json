@@ -22,13 +22,7 @@
       "pipeline architecture tasks",
       "phase 014 tasks",
       "manual testing pipeline tasks",
-      "pipeline architecture checklist",
-      "phase 014 verification",
-      "manual pipeline architecture checklist",
-      "049 050 051 pipeline checklist",
-      "pipeline-architecture implementation summary",
-      "phase 014 summary",
-      "manual testing pipeline-architecture summary"
+      "pipeline architecture checklist"
     ],
     "key_topics": [
       "pipeline",
@@ -45,47 +39,20 @@
       "tasks"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "validation-metadata.ts",
-      "stage2-fusion.ts",
-      "save-quality-gate.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "trigger-extractor.js",
-      "search-flags.ts",
       "handlers/memory-search.ts",
       "tests/memory-lineage-state.vitest.ts",
-      "vector-index-schema.ts",
       "lib/storage/lineage-state.ts",
       "tests/memory-lineage-backfill.vitest.ts",
-      "lib/storage/checkpoints.ts",
-      "memory-lineage-state.vitest.ts",
-      "checkpoints.ts",
-      "memory-lineage-backfill.vitest.ts"
+      "lib/storage/checkpoints.ts"
     ],
     "entities": [
-      {
-        "name": "validation-metadata.ts",
-        "kind": "code",
-        "path": "validation-metadata.ts",
-        "source": "derived"
-      },
-      {
-        "name": "stage2-fusion.ts",
-        "kind": "code",
-        "path": "stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "save-quality-gate.ts",
-        "kind": "code",
-        "path": "save-quality-gate.ts",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -117,18 +84,6 @@
         "source": "derived"
       },
       {
-        "name": "trigger-extractor.js",
-        "kind": "code",
-        "path": "trigger-extractor.js",
-        "source": "derived"
-      },
-      {
-        "name": "search-flags.ts",
-        "kind": "code",
-        "path": "search-flags.ts",
-        "source": "derived"
-      },
-      {
         "name": "memory-search.ts",
         "kind": "code",
         "path": "handlers/memory-search.ts",
@@ -138,12 +93,6 @@
         "name": "memory-lineage-state.vitest.ts",
         "kind": "test",
         "path": "tests/memory-lineage-state.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-schema.ts",
-        "kind": "code",
-        "path": "vector-index-schema.ts",
         "source": "derived"
       },
       {
@@ -163,11 +112,47 @@
         "kind": "code",
         "path": "lib/storage/checkpoints.ts",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Manual Testing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pipeline Architecture",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The pipeline architecture category (14--pipeline-architecture) contains 22 features spanning the 4-stage pipeline refactor, chunk-to-memory aggregation, schema validation, DB path standardisation, cross-process rebinding, and lineage projection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.",
     "created_at": "2026-04-12T09:02:50.301Z",
-    "last_save_at": "2026-04-13T05:11:41.921Z",
+    "last_save_at": "2026-04-13T06:08:08.970Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

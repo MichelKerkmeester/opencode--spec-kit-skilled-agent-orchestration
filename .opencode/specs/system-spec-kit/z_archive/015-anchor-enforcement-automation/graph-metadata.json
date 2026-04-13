@@ -22,14 +22,7 @@
       "checklist",
       "decision record",
       "normalization",
-      "implementation summary",
-      "research",
-      "root",
-      "cause",
-      "analysis",
-      "template",
-      "132",
-      "anchor"
+      "implementation summary"
     ],
     "key_topics": [
       "015-anchor-enforcement-automation",
@@ -46,7 +39,7 @@
       "decision"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -54,26 +47,22 @@
       ".opencode/skill/system-spec-kit/scripts/rules/check-anchors.sh",
       ".opencode/agent/chatgpt/speckit.md",
       ".opencode/agent/chatgpt/orchestrate.md",
-      "AGENTS.md",
-      "validate.sh",
       ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
       ".opencode/specs/system-spec-kit/z_archive/011-upgrade-auto-populate/spec.md",
-      "grep -c \"ANCHOR:\" spec.md",
-      "generate-context.js",
       "handover.md",
       "research/research.md",
       ".opencode/agent/speckit.md",
-      "check-anchors.sh",
       "level_3/spec.md",
-      "speckit.md",
-      "orchestrate.md",
-      "tasks.md"
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
         "source": "derived"
       },
       {
@@ -107,42 +96,6 @@
         "source": "derived"
       },
       {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "AGENTS.md",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/011-upgrade-auto-populate/spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "grep -c \"ANCHOR:\" spec.md",
-        "kind": "doc",
-        "path": "grep -c \"ANCHOR:\" spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
-      {
         "name": "handover.md",
         "kind": "doc",
         "path": "handover.md",
@@ -155,21 +108,57 @@
         "source": "derived"
       },
       {
-        "name": "speckit.md",
+        "name": "tasks.md",
         "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "check-anchors.sh",
-        "kind": "script",
-        "path": "check-anchors.sh",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Anchor Enforcement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Anchor Enforcement Automation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement This",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This archived system-spec-kit archive folder captures work related to Anchor Enforcement Automation. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
     "created_at": "2026-04-12T09:02:53.567Z",
-    "last_save_at": "2026-04-13T05:11:45.159Z",
+    "last_save_at": "2026-04-13T06:08:12.077Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

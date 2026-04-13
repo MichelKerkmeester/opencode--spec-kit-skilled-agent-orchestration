@@ -35,7 +35,7 @@
       "meta-phase"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",
       "mcp_server/lib/validation/preflight.ts",
@@ -45,18 +45,11 @@
       "mcp_server/handlers/memory-save.ts",
       "mcp_server/handlers/checkpoints.ts",
       "mcp_server/handlers/memory-crud-health.ts",
-      "preflight.ts",
-      "database.js",
-      "config.js",
-      "config.scoring",
-      "config.retrieval.scoring",
-      "batch-learning.ts",
-      "confidence-scoring.ts",
-      "graph-calibration.ts",
-      "llm-cache.ts",
-      "recovery-payload.ts",
-      "result-explainability.ts",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -108,57 +101,57 @@
         "source": "derived"
       },
       {
-        "name": "preflight.ts",
-        "kind": "code",
-        "path": "preflight.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "database.js",
-        "kind": "code",
-        "path": "database.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "config.js",
-        "kind": "code",
-        "path": "config.js",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "config.scoring",
-        "kind": "file",
-        "path": "config.scoring",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "config.retrieval.scoring",
-        "kind": "file",
-        "path": "config.retrieval.scoring",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "batch-learning.ts",
-        "kind": "code",
-        "path": "batch-learning.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "confidence-scoring.ts",
-        "kind": "code",
-        "path": "confidence-scoring.ts",
+        "name": "Code Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "graph-calibration.ts",
-        "kind": "code",
-        "path": "graph-calibration.ts",
+        "name": "Executive Summary",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "META-PHASE synthesizing remediation needs identified across all 20 preceding audit phases. This phase collects cross-cutting catalog hygiene issues, classifies them by severity, and tracks their resolution. The original zero-MISMATCH baseline is superseded by the re-audit/deep-review state: 222 audited features, 133 MATCH, 84 PARTIAL, and 5 MISMATCH. Remediation now spans both catalog hygiene and audit/runtime-path drift. Full remediation plan pending — 22 P1 findings documented in `../review-report.md`.",
     "created_at": "2026-04-12T09:02:50.256Z",
-    "last_save_at": "2026-04-13T05:11:41.866Z",
+    "last_save_at": "2026-04-13T06:08:08.925Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

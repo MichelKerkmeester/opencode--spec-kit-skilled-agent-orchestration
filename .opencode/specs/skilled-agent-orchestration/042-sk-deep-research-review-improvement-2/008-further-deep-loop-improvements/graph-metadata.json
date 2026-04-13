@@ -39,15 +39,12 @@
       "isolation"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/changelog/12--sk-deep-research/v1.6.0.0.md",
       ".opencode/changelog/13--sk-deep-review/v1.3.0.0.md",
       ".opencode/changelog/15--sk-improve-agent/v1.2.0.0.md",
       "scratch/closing-review.md",
-      "v1.6.0.0",
-      "v1.3.0.0",
-      "v1.2.0.0",
       "implementation-summary.md",
       ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements/scratch/closing-review.md",
       ".opencode/skill/sk-deep-research/manual_testing_playbook/04--convergence-and-recovery/032-blocked-stop-reducer-surfacing.md",
@@ -60,7 +57,10 @@
       ".opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "checklist.md",
+      "decision-record.md",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -88,33 +88,9 @@
         "source": "derived"
       },
       {
-        "name": "v1.6.0.0",
-        "kind": "file",
-        "path": "v1.6.0.0",
-        "source": "derived"
-      },
-      {
-        "name": "v1.3.0.0",
-        "kind": "file",
-        "path": "v1.3.0.0",
-        "source": "derived"
-      },
-      {
-        "name": "v1.2.0.0",
-        "kind": "file",
-        "path": "v1.2.0.0",
-        "source": "derived"
-      },
-      {
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "closing-review.md",
-        "kind": "doc",
-        "path": ".opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/008-further-deep-loop-improvements/scratch/closing-review.md",
         "source": "derived"
       },
       {
@@ -158,11 +134,35 @@
         "kind": "doc",
         "path": ".opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/034-replay-consumer.md",
         "source": "derived"
+      },
+      {
+        "name": "graph-aware-stop.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/graph-aware-stop.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-isolation.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/session-isolation.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 008 completed the runtime-truth closeout for the 042 bundle. It landed the visible contract fixes that the deep-research audit had called out: blocked-stop emission, graph-aware stop gating, reducer-owned graph and blocked-stop surfacing, fail-closed review handling, improve-agent journal wiring, sample-size enforcement, replay consumers, durable fixtures, and release packaging across all three skills.",
     "created_at": "2026-04-12T09:02:50.197Z",
-    "last_save_at": "2026-04-13T05:11:41.798Z",
+    "last_save_at": "2026-04-13T06:08:08.870Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

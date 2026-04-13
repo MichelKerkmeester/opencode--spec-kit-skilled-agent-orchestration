@@ -22,15 +22,7 @@
       "archived-tier deprecation audit",
       "gate f tasks",
       "cleanup verification tasks",
-      "gate b cleanup result",
-      "orphan edges",
-      "gate f checklist",
-      "cleanup verification checklist",
-      "orphan edge verification",
-      "gate f implementation summary",
-      "cleanup verification summary",
-      "stale memory rows",
-      "baseline archived row"
+      "gate b cleanup result"
     ],
     "key_topics": [
       "gate",
@@ -57,18 +49,9 @@
       "implementation-summary.md",
       "2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md",
       "mcp_server/lib/search/pipeline/stage2-fusion.ts",
-      "0.3",
       "mcp_server/handlers/memory-crud-stats.ts",
       "mcp_server/lib/search/vector-index-schema.ts",
-      "mcp_server/handlers/memory-context.ts",
-      "routing-prototypes.json",
-      "gate-d-regression-embedding-semantic-search.vitest.ts",
-      "stage2-fusion.ts",
-      "memory-crud-stats.ts",
-      "vector-index-schema.ts",
-      "_memory.continuity",
-      "context-index.sqlite",
-      "memory-context.ts"
+      "mcp_server/handlers/memory-context.ts"
     ],
     "entities": [
       {
@@ -86,7 +69,7 @@
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": "2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md",
         "source": "derived"
       },
       {
@@ -108,21 +91,9 @@
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "2174|.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/002-semantic-coverage-graph/plan.md",
-        "source": "derived"
-      },
-      {
         "name": "stage2-fusion.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/pipeline/stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "0.3",
-        "kind": "file",
-        "path": "0.3",
         "source": "derived"
       },
       {
@@ -144,33 +115,45 @@
         "source": "derived"
       },
       {
-        "name": "routing-prototypes.json",
-        "kind": "config",
-        "path": "routing-prototypes.json",
+        "name": "Cleanup Verification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "gate-d-regression-embedding-semantic-search.vitest.ts",
-        "kind": "test",
-        "path": "gate-d-regression-embedding-semantic-search.vitest.ts",
+        "name": "Verify Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "stage2-fusion.ts",
-        "kind": "code",
-        "path": "stage2-fusion.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "memory-crud-stats.ts",
-        "kind": "code",
-        "path": "memory-crud-stats.ts",
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Gate",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Gate B cleanup was supposed to delete legacy `**/memory/*.md` artifacts and retire archived-tier runtime branches, but the Gate F packet still described a dead observation-and-decision model. Until this packet is rewritten and the cleanup is re-verified against the live SQLite database plus on-disk spec tree, the phase does not provide an auditable answer to the real question: did Gate B actually finish the cleanup without leaving stale rows, orphan causal edges, or misleading packet guidance behind?",
     "created_at": "2026-04-12T09:02:53.481Z",
-    "last_save_at": "2026-04-13T05:11:45.002Z",
+    "last_save_at": "2026-04-13T06:08:11.985Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

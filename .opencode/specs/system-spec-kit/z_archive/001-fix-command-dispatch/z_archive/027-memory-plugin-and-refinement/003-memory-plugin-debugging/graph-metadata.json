@@ -22,12 +22,7 @@
       "plan",
       "migration",
       "tasks",
-      "verification",
-      "checklist",
-      "opencode",
-      "database",
-      "access",
-      "research"
+      "verification"
     ],
     "key_topics": [
       "memory",
@@ -48,7 +43,6 @@
     "key_files": [
       ".opencode/skills/system-memory/database/memory-index.sqlite",
       ".opencode/plugin/semantic_memory_plugin/index.js",
-      "experimental.chat.system.transform",
       ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
       "spec.md",
       "plan.md",
@@ -67,12 +61,6 @@
         "name": "index.js",
         "kind": "code",
         "path": ".opencode/plugin/semantic_memory_plugin/index.js",
-        "source": "derived"
-      },
-      {
-        "name": "experimental.chat.system.transform",
-        "kind": "file",
-        "path": "experimental.chat.system.transform",
         "source": "derived"
       },
       {
@@ -118,13 +106,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Root Cause\n\nThe",
+        "name": "Root Cause The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -142,7 +130,7 @@
         "source": "derived"
       },
       {
-        "name": "Technical Approach\n\nReplace",
+        "name": "Technical Approach Replace",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -152,11 +140,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview Migrate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The semantic memory plugin fails to load memories into the AI context dashboard, showing \"Loaded 0 memories for dashboard\" despite 66+ memories existing in the database. This prevents the AI from having automatic access to relevant context at session start.",
     "created_at": "2026-04-12T09:02:53.520Z",
-    "last_save_at": "2026-04-13T05:11:45.062Z",
+    "last_save_at": "2026-04-13T06:08:12.024Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -22,13 +22,7 @@
       "plan",
       "tasks",
       "upgrade",
-      "verification",
-      "checklist",
-      "decision",
-      "record",
-      "decision record",
-      "summary",
-      "implementation summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -45,60 +39,20 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "test-template-system.js",
-      "test-validation-extended.sh",
-      "test-mcp-tools.js",
-      "test-scripts-modules.js",
-      "test-integration.js",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "generate-context.js",
       "database/context-index.sqlite",
       "cp database/context-index.sqlite.bak database/context-index.sqlite",
       "scripts/compose.sh",
       "scripts/test-validation.sh",
-      "node generate-context.js /tmp/data.json",
-      "analysis.md",
-      "review.md",
-      "refinement-recommendations.md",
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "test-template-system.js",
-        "kind": "code",
-        "path": "test-template-system.js",
-        "source": "derived"
-      },
-      {
-        "name": "test-validation-extended.sh",
-        "kind": "script",
-        "path": "test-validation-extended.sh",
-        "source": "derived"
-      },
-      {
-        "name": "test-mcp-tools.js",
-        "kind": "code",
-        "path": "test-mcp-tools.js",
-        "source": "derived"
-      },
-      {
-        "name": "test-scripts-modules.js",
-        "kind": "code",
-        "path": "test-scripts-modules.js",
-        "source": "derived"
-      },
-      {
-        "name": "test-integration.js",
-        "kind": "code",
-        "path": "test-integration.js",
-        "source": "derived"
-      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -130,21 +84,9 @@
         "source": "derived"
       },
       {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
-      {
         "name": "context-index.sqlite",
         "kind": "file",
         "path": "database/context-index.sqlite",
-        "source": "derived"
-      },
-      {
-        "name": "context-index.sqlite",
-        "kind": "file",
-        "path": "cp database/context-index.sqlite.bak database/context-index.sqlite",
         "source": "derived"
       },
       {
@@ -160,15 +102,57 @@
         "source": "derived"
       },
       {
-        "name": "data.json",
-        "kind": "config",
-        "path": "node generate-context.js /tmp/data.json",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template Upgrade Testing",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Validate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This specification defines a comprehensive test suite to validate the system-spec-kit v1.9.0 after the CORE+ADDENDUM template architecture upgrade. The test suite covers 44 JavaScript modules, 14 MCP tools, 17 shell scripts, and the complete template system to ensure all components function correctly post-upgrade.",
     "created_at": "2026-04-12T09:02:53.547Z",
-    "last_save_at": "2026-04-13T05:11:45.117Z",
+    "last_save_at": "2026-04-13T06:08:12.055Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

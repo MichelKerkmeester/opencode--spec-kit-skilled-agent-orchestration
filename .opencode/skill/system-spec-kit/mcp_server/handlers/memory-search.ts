@@ -827,6 +827,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       // Auto-profile is best-effort — never breaks search
     }
   }
+  const adaptiveFusionIntent = effectiveProfile === 'resume'
+    ? 'continuity'
+    : detectedIntent;
 
   // Re-run artifact routing with detected intent for fallback coverage
   if (detectedIntent && artifactRouting?.detectedClass === 'unknown' && artifactRouting?.confidence === 0) {
@@ -862,6 +865,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     includeContent,
     anchors,
     detectedIntent,
+    adaptiveFusionIntent,
     minState: minState ?? '',
     rerank,
     applyLengthPenalty,
@@ -924,6 +928,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       enableCausalBoost,
       trackAccess,
       detectedIntent,
+      adaptiveFusionIntent,
       intentConfidence,
       intentWeights: toIntentWeightsConfig(intentWeights),
       artifactRouting: artifactRouting as unknown as PipelineConfig['artifactRouting'],

@@ -39,20 +39,8 @@
       "mcp_server/lib/search/vector-index-store.ts",
       "mcp_server/configs/search-weights.json",
       "mcp_server/lib/search/stage1-candidate-gen.ts",
-      "search-weights.json",
-      "hybrid-search.ts",
-      "relevance=0.5",
-      "recency=0.3",
-      "access=0.2",
-      "0.2346",
-      "vector-index-store.ts",
-      "0.9",
-      "0.95",
-      "0.52",
-      "0.18",
-      "0.07",
-      "0.23",
-      "spec.md"
+      "spec.md",
+      "research/research.md"
     ],
     "entities": [
       {
@@ -80,81 +68,81 @@
         "source": "derived"
       },
       {
-        "name": "search-weights.json",
-        "kind": "config",
-        "path": "mcp_server/configs/search-weights.json",
-        "source": "derived"
-      },
-      {
         "name": "stage1-candidate-gen.ts",
         "kind": "code",
         "path": "mcp_server/lib/search/stage1-candidate-gen.ts",
         "source": "derived"
       },
       {
-        "name": "search-weights.json",
-        "kind": "config",
-        "path": "search-weights.json",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "hybrid-search.ts",
-        "kind": "code",
-        "path": "hybrid-search.ts",
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "relevance=0.5",
-        "kind": "file",
-        "path": "relevance=0.5",
+        "name": "Search Fusion",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "recency=0.3",
-        "kind": "file",
-        "path": "recency=0.3",
+        "name": "Reranking Configuration Tuning",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "access=0.2",
-        "kind": "file",
-        "path": "access=0.2",
+        "name": "Reranking Configuration Tuning Investigate",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "0.2346",
-        "kind": "file",
-        "path": "0.2346",
+        "name": "Background The",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "vector-index-store.ts",
-        "kind": "code",
-        "path": "vector-index-store.ts",
+        "name": "Research Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "0.9",
-        "kind": "file",
-        "path": "0.9",
+        "name": "Key Files",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "0.95",
-        "kind": "file",
-        "path": "0.95",
+        "name": "Research Synthesis",
+        "kind": "proper_noun",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
-        "name": "0.52",
-        "kind": "file",
-        "path": "0.52",
+        "name": "Search Fusion Weight Optimization",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Safe Continuity",
+        "kind": "proper_noun",
+        "path": "research/research.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Investigate whether the hardcoded thresholds, weights, and decay constants in the search pipeline are optimal. No historical save data is needed - all research uses the current codebase, schema, and synthetic query generation.",
     "created_at": "2026-04-13T04:56:06.986Z",
-    "last_save_at": "2026-04-13T05:11:45.010Z",
+    "last_save_at": "2026-04-13T06:08:11.993Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

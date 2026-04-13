@@ -12,22 +12,40 @@ import {
   type GraphMetadata,
   validateGraphMetadataContent,
 } from '../api';
+import { __testables as graphMetadataParserTestables } from '../lib/graph/graph-metadata-parser.js';
 
 const createdRoots = new Set<string>();
 
-function createSpecFolder(): string {
+interface GraphMetadataFixtureOptions {
+  specStatus?: string | null;
+  planStatus?: string | null;
+  implementationSummaryStatus?: string | null;
+  includeChecklist?: boolean;
+  checklistItems?: string[];
+  implementationSummaryReferences?: string[];
+  specTriggerPhrases?: string[];
+}
+
+function createSpecFolder(options: GraphMetadataFixtureOptions = {}): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'graph-metadata-schema-'));
   createdRoots.add(root);
   const specFolder = path.join(root, '.opencode', 'specs', 'system-spec-kit', '900-graph-metadata');
   fs.mkdirSync(specFolder, { recursive: true });
-  fs.writeFileSync(path.join(specFolder, 'spec.md'), [
+  const specFrontmatter = [
     '---',
     'title: "Graph Metadata Packet"',
     'description: "Packet-level graph metadata coverage."',
-    'trigger_phrases: ["graph metadata", "packet graph"]',
+    `trigger_phrases: [${(options.specTriggerPhrases ?? ['graph metadata', 'packet graph'])
+      .map((phrase) => `"${phrase}"`)
+      .join(', ')}]`,
     'importance_tier: "critical"',
-    'status: "planned"',
-    '---',
+  ];
+  if (options.specStatus !== null) {
+    specFrontmatter.push(`status: "${options.specStatus ?? 'planned'}"`);
+  }
+  specFrontmatter.push('---');
+  fs.writeFileSync(path.join(specFolder, 'spec.md'), [
+    ...specFrontmatter,
     '',
     '# Graph Metadata Packet',
     '',
@@ -39,27 +57,49 @@ function createSpecFolder(): string {
     '|-----------|-------------|-------------|',
     '| `mcp_server/lib/graph/graph-metadata-parser.ts` | Add | Parser implementation |',
   ].join('\n'), 'utf-8');
-  fs.writeFileSync(path.join(specFolder, 'plan.md'), [
+  const planFrontmatter = [
     '---',
     'title: "Plan"',
     'trigger_phrases: ["graph metadata plan"]',
-    'status: "in_progress"',
-    '---',
-    '',
-    '# Plan',
-  ].join('\n'), 'utf-8');
+  ];
+  if (options.planStatus !== null) {
+    planFrontmatter.push(`status: "${options.planStatus ?? 'in_progress'}"`);
+  }
+  planFrontmatter.push('---');
+  fs.writeFileSync(path.join(specFolder, 'plan.md'), [...planFrontmatter, '', '# Plan'].join('\n'), 'utf-8');
   fs.writeFileSync(path.join(specFolder, 'tasks.md'), '# Tasks\n', 'utf-8');
-  fs.writeFileSync(path.join(specFolder, 'implementation-summary.md'), [
+  const implementationSummaryFrontmatter = [
     '---',
     'title: "Implementation Summary"',
-    'status: "complete"',
-    '---',
+  ];
+  if (options.implementationSummaryStatus !== null) {
+    implementationSummaryFrontmatter.push(`status: "${options.implementationSummaryStatus ?? 'complete'}"`);
+  }
+  implementationSummaryFrontmatter.push('---');
+  const implementationSummaryLines = options.implementationSummaryReferences ?? [
+    'scripts/core/workflow.ts',
+    'mcp_server/handlers/memory-index.ts',
+  ];
+  fs.writeFileSync(path.join(specFolder, 'implementation-summary.md'), [
+    ...implementationSummaryFrontmatter,
     '',
     '| File Path | Change Type | Description |',
     '|-----------|-------------|-------------|',
-    '| `scripts/core/workflow.ts` | Modify | Refresh graph metadata after save |',
-    '| `mcp_server/handlers/memory-index.ts` | Modify | Include graph metadata discovery |',
+    ...implementationSummaryLines.map((reference, index) => (
+      `| \`${reference}\` | Modify | Fixture reference ${index + 1} |`
+    )),
   ].join('\n'), 'utf-8');
+  if (options.includeChecklist ?? false) {
+    const checklistItems = options.checklistItems ?? ['- [x] Verify graph metadata'];
+    fs.writeFileSync(path.join(specFolder, 'checklist.md'), [
+      '---',
+      'title: "Checklist"',
+      '---',
+      '',
+      '# Checklist',
+      ...checklistItems,
+    ].join('\n'), 'utf-8');
+  }
   return specFolder;
 }
 
@@ -150,5 +190,111 @@ describe('graph metadata schema and parser', () => {
     expect(validation.metadata?.manual.depends_on[0]?.packet_id).toBe('system-spec-kit/010-foundation');
     expect(validation.metadata?.manual.supersedes[0]?.packet_id).toBe('system-spec-kit/009-older');
     expect(validation.metadata?.manual.related_to[0]?.packet_id).toBe('system-spec-kit/011-peer');
+  });
+
+  it('derives complete status when implementation-summary exists and checklist items are all checked', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: null,
+      implementationSummaryStatus: null,
+      includeChecklist: true,
+      checklistItems: [
+        '- [x] P0 parser change applied',
+        '- [x] P1 verification recorded',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('complete');
+  });
+
+  it('derives in_progress status when implementation-summary exists and checklist items remain unchecked', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: null,
+      implementationSummaryStatus: null,
+      includeChecklist: true,
+      checklistItems: [
+        '- [x] P0 parser change applied',
+        '- [ ] P1 verification still pending',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('in_progress');
+  });
+
+  it('derives complete status when implementation-summary exists without a checklist', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: null,
+      implementationSummaryStatus: null,
+      includeChecklist: false,
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('complete');
+  });
+
+  it('keeps explicit frontmatter status ahead of checklist-aware fallback logic', () => {
+    const specFolder = createSpecFolder({
+      specStatus: null,
+      planStatus: 'planned',
+      implementationSummaryStatus: null,
+      includeChecklist: true,
+      checklistItems: ['- [x] P0 parser change applied'],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.status).toBe('planned');
+  });
+
+  it('filters command, version, mime, pseudo-field, relative, and bare-noise key file candidates', () => {
+    expect(graphMetadataParserTestables.keepKeyFile('node scripts/build.js')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('TMPDIR=.tmp/vitest-tmp')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('v1.2.3')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('application/json')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('_memory.continuity')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('Summary: not a file path')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('../spec.md')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('workflow.ts')).toBe(false);
+    expect(graphMetadataParserTestables.keepKeyFile('spec.md')).toBe(true);
+    expect(graphMetadataParserTestables.keepKeyFile('research/research.md')).toBe(true);
+  });
+
+  it('prefers canonical path-like key file entities over basename duplicates', () => {
+    const specFolder = createSpecFolder({
+      implementationSummaryReferences: [
+        'specs/system-spec-kit/900-graph-metadata/spec.md',
+        'spec.md',
+        'specs/system-spec-kit/900-graph-metadata/plan.md',
+        'plan.md',
+      ],
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+    const specEntity = metadata.derived.entities.find((entity) => entity.name === 'spec.md');
+    const planEntity = metadata.derived.entities.find((entity) => entity.name === 'plan.md');
+
+    expect(specEntity?.path).toBe('specs/system-spec-kit/900-graph-metadata/spec.md');
+    expect(planEntity?.path).toBe('specs/system-spec-kit/900-graph-metadata/plan.md');
+    expect(metadata.derived.entities.filter((entity) => entity.name === 'spec.md')).toHaveLength(1);
+    expect(metadata.derived.entities.filter((entity) => entity.name === 'plan.md')).toHaveLength(1);
+  });
+
+  it('caps derived trigger_phrases at 12 entries', () => {
+    const specFolder = createSpecFolder({
+      specTriggerPhrases: Array.from({ length: 15 }, (_, index) => `graph phrase ${index + 1}`),
+    });
+
+    const metadata = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+
+    expect(metadata.derived.trigger_phrases).toHaveLength(12);
+    expect(metadata.derived.trigger_phrases[0]).toBe('graph phrase 1');
+    expect(metadata.derived.trigger_phrases[11]).toBe('graph phrase 12');
   });
 });

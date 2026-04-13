@@ -22,13 +22,7 @@
       "plan",
       "tasks",
       "compatibility",
-      "verification",
-      "checklist",
-      "decision",
-      "record",
-      "decision record",
-      "summary",
-      "implementation summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -49,24 +43,24 @@
     "key_files": [
       ".opencode/command/create/agent.md",
       ".opencode/command/create/folder_readme.md",
-      "create_skill_auto.yaml",
-      "create_skill_confirm.yaml",
-      "create_agent_auto.yaml",
-      "create_agent_confirm.yaml",
-      "create_folder_readme_auto.yaml",
-      "create_folder_readme_confirm.yaml",
-      "create_install_guide_auto.yaml",
-      "create_install_guide_confirm.yaml",
-      "create_skill_asset_auto.yaml",
-      "create_skill_asset_confirm.yaml",
-      "create_skill_reference_auto.yaml",
-      "create_skill_reference_confirm.yaml",
       "decision-record.md",
       ".opencode/command/create/assets/create_skill_auto.yaml",
       ".opencode/command/create/assets/create_skill_confirm.yaml",
       ".opencode/command/create/assets/create_agent_auto.yaml",
       ".opencode/command/create/assets/create_agent_confirm.yaml",
-      ".opencode/command/create/assets/create_folder_readme_auto.yaml"
+      ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+      ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+      ".opencode/command/create/assets/create_install_guide_auto.yaml",
+      ".opencode/command/create/assets/create_install_guide_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_asset_auto.yaml",
+      ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
+      ".opencode/command/create/assets/create_skill_reference_auto.yaml",
+      ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md"
     ],
     "entities": [
       {
@@ -82,78 +76,6 @@
         "source": "derived"
       },
       {
-        "name": "create_skill_auto.yaml",
-        "kind": "config",
-        "path": "create_skill_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_confirm.yaml",
-        "kind": "config",
-        "path": "create_skill_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_agent_auto.yaml",
-        "kind": "config",
-        "path": "create_agent_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_agent_confirm.yaml",
-        "kind": "config",
-        "path": "create_agent_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_folder_readme_auto.yaml",
-        "kind": "config",
-        "path": "create_folder_readme_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_folder_readme_confirm.yaml",
-        "kind": "config",
-        "path": "create_folder_readme_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_install_guide_auto.yaml",
-        "kind": "config",
-        "path": "create_install_guide_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_install_guide_confirm.yaml",
-        "kind": "config",
-        "path": "create_install_guide_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_auto.yaml",
-        "kind": "config",
-        "path": "create_skill_asset_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_asset_confirm.yaml",
-        "kind": "config",
-        "path": "create_skill_asset_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_auto.yaml",
-        "kind": "config",
-        "path": "create_skill_reference_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "create_skill_reference_confirm.yaml",
-        "kind": "config",
-        "path": "create_skill_reference_confirm.yaml",
-        "source": "derived"
-      },
-      {
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
@@ -164,11 +86,83 @@
         "kind": "config",
         "path": ".opencode/command/create/assets/create_skill_auto.yaml",
         "source": "derived"
+      },
+      {
+        "name": "create_skill_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_agent_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_agent_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_agent_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_folder_readme_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_folder_readme_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_install_guide_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_install_guide_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_install_guide_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_asset_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_reference_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_reference_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Codex (OpenAI's coding agent) misinterprets agent routing metadata in `/create` command `.md` and `.yaml` files as dispatch instructions, causing unintended agent invocations. This spec applied the same three-pronged compatibility strategy from spec 010 (spec_kit commands) to all 20 create command files, and additionally cleaned up stale emoji optionality language aligned with spec 011.",
     "created_at": "2026-04-12T09:02:50.215Z",
-    "last_save_at": "2026-04-13T05:11:41.816Z",
+    "last_save_at": "2026-04-13T06:08:08.882Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

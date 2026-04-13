@@ -22,18 +22,7 @@
       "implementation",
       "plan",
       "tasks",
-      "architecture",
-      "validation",
-      "checklist",
-      "decision",
-      "record",
-      "dynamic",
-      "complexity",
-      "decision record",
-      "summary",
-      "implementation summary",
-      "session",
-      "handover"
+      "architecture"
     ],
     "key_topics": [
       "feature",
@@ -50,48 +39,30 @@
       "architecture"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "detector.js",
-      "classifier.js",
-      "features.js",
       "scorers/scope.js",
       "scorers/risk.js",
       "scorers/research.js",
       "scorers/multi-agent.js",
       "scorers/coordination.js",
-      "preprocessor.js",
-      "marker-parser.js",
-      "detect-complexity.js",
-      "expand-template.js",
       "config/complexity-config.jsonc",
       "references/templates/complexity_guide.md",
       "references/templates/level_specifications.md",
       "assets/complexity_decision_matrix.md",
       "scripts/create-spec-folder.sh",
-      "SKILL.md",
-      "test-detector.js",
-      "test-marker-parser.js"
+      ".opencode/skill/system-spec-kit/scripts/create-spec-folder.sh",
+      ".opencode/skill/system-spec-kit/scripts/detect-complexity.js",
+      ".opencode/skill/system-spec-kit/scripts/expand-template.js",
+      ".opencode/skill/system-spec-kit/config/complexity-config.jsonc",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/spec.md",
+      "spec.md",
+      "tasks.md",
+      "checklist.md",
+      "plan.md",
+      "fixtures/sample-request.txt"
     ],
     "entities": [
-      {
-        "name": "detector.js",
-        "kind": "code",
-        "path": "detector.js",
-        "source": "derived"
-      },
-      {
-        "name": "classifier.js",
-        "kind": "code",
-        "path": "classifier.js",
-        "source": "derived"
-      },
-      {
-        "name": "features.js",
-        "kind": "code",
-        "path": "features.js",
-        "source": "derived"
-      },
       {
         "name": "scope.js",
         "kind": "code",
@@ -123,30 +94,6 @@
         "source": "derived"
       },
       {
-        "name": "preprocessor.js",
-        "kind": "code",
-        "path": "preprocessor.js",
-        "source": "derived"
-      },
-      {
-        "name": "marker-parser.js",
-        "kind": "code",
-        "path": "marker-parser.js",
-        "source": "derived"
-      },
-      {
-        "name": "detect-complexity.js",
-        "kind": "code",
-        "path": "detect-complexity.js",
-        "source": "derived"
-      },
-      {
-        "name": "expand-template.js",
-        "kind": "code",
-        "path": "expand-template.js",
-        "source": "derived"
-      },
-      {
         "name": "complexity-config.jsonc",
         "kind": "file",
         "path": "config/complexity-config.jsonc",
@@ -169,11 +116,53 @@
         "kind": "doc",
         "path": "assets/complexity_decision_matrix.md",
         "source": "derived"
+      },
+      {
+        "name": "create-spec-folder.sh",
+        "kind": "script",
+        "path": "scripts/create-spec-folder.sh",
+        "source": "derived"
+      },
+      {
+        "name": "detect-complexity.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/detect-complexity.js",
+        "source": "derived"
+      },
+      {
+        "name": "expand-template.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/expand-template.js",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level.",
     "created_at": "2026-04-12T09:02:53.542Z",
-    "last_save_at": "2026-04-13T05:11:45.107Z",
+    "last_save_at": "2026-04-13T06:08:12.049Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

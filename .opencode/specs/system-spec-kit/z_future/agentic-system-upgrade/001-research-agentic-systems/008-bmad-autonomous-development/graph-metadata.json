@@ -38,7 +38,7 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/iterations/iteration-011.md",
       "research/iterations/iteration-020.md",
@@ -49,12 +49,8 @@
       "implementation-summary.md",
       "wc -l research/deep-research-state.jsonl",
       "research/deep-research-dashboard.md",
-      "phase-research-prompt.md",
       "research/deep-research-state.jsonl",
-      "deep-research-state.jsonl",
-      "skill_advisor.py",
       "skills/bad/SKILL.md",
-      "iteration-001.md",
       ".opencode/agent/orchestrate.md"
     ],
     "entities": [
@@ -113,39 +109,9 @@
         "source": "derived"
       },
       {
-        "name": "phase-research-prompt.md",
-        "kind": "doc",
-        "path": "phase-research-prompt.md",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "research/deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "deep-research-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": "skill_advisor.py",
-        "source": "derived"
-      },
-      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": "skills/bad/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "iteration-001.md",
-        "kind": "doc",
-        "path": "iteration-001.md",
         "source": "derived"
       },
       {
@@ -153,11 +119,41 @@
         "kind": "doc",
         "path": ".opencode/agent/orchestrate.md",
         "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Research Continuation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Autonomous Development",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement This",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Capture",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This phase already contained Phase 1 BAD research artifacts, but it did not have the required Level 1 packet docs and its phase prompt still referenced stale extracted-repo paths. Phase 2 needed to extend the research through iterations `011`-`020`, merge the findings into the packet synthesis, and leave the folder in a validator-clean state instead of as an orphaned research dump.",
     "created_at": "2026-04-12T09:02:53.489Z",
-    "last_save_at": "2026-04-13T05:11:45.177Z",
+    "last_save_at": "2026-04-13T06:08:12.089Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

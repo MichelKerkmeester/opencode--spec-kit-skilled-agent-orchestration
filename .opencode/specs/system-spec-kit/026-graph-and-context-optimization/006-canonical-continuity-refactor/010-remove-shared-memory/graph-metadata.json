@@ -22,10 +22,7 @@
       "hard delete shared memory tasks",
       "018 010 checklist",
       "shared memory removal checklist",
-      "hard delete shared memory verification",
-      "018 010 implementation summary",
-      "shared memory removal summary",
-      "hard delete shared memory closeout"
+      "hard delete shared memory verification"
     ],
     "key_topics": [
       "018",
@@ -44,50 +41,32 @@
     "importance_tier": "critical",
     "status": "complete",
     "key_files": [
-      "vector-index-schema.ts",
-      "context-server.ts",
       "lib/cognitive/archival-manager.ts",
-      "capability-flags.ts",
       "mcp_server/handlers/shared-memory.ts",
       "mcp_server/lib/collab/shared-spaces.ts",
       "mcp_server/tool-schemas.ts",
       ".opencode/command/memory/manage.md",
       "cd .opencode/skill/system-spec-kit/mcp_server && ./node_modules/.bin/vitest run tests/stage1-expansion.vitest.ts tests/memory-governance.vitest.ts tests/governance-e2e.vitest.ts tests/context-server.vitest.ts tests/cognitive-gaps.vitest.ts tests/memory-roadmap-flags.vitest.ts tests/feature-flag-reference-docs.vitest.ts",
-      "memory_index.shared_space_id",
       ".opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tools/types.ts",
       ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
-      "lifecycle-tools.ts",
-      "tool-input-schemas.ts",
-      "tool-schemas.ts",
-      "tools/types.ts"
+      "tools/types.ts",
+      "handlers/shared-memory.ts",
+      "lib/collab/shared-spaces.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "vector-index-schema.ts",
-        "kind": "code",
-        "path": "vector-index-schema.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.ts",
-        "kind": "code",
-        "path": "context-server.ts",
-        "source": "derived"
-      },
       {
         "name": "archival-manager.ts",
         "kind": "code",
         "path": "lib/cognitive/archival-manager.ts",
-        "source": "derived"
-      },
-      {
-        "name": "capability-flags.ts",
-        "kind": "code",
-        "path": "capability-flags.ts",
         "source": "derived"
       },
       {
@@ -121,12 +100,6 @@
         "source": "derived"
       },
       {
-        "name": "memory_index.shared_space_id",
-        "kind": "file",
-        "path": "memory_index.shared_space_id",
-        "source": "derived"
-      },
-      {
         "name": "lifecycle-tools.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts",
@@ -145,27 +118,51 @@
         "source": "derived"
       },
       {
-        "name": "tool-schemas.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "shared-memory.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "shared-spaces.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 018 still exposes a full shared-memory collaboration surface through MCP lifecycle tools, shared-space runtime helpers, governed retrieval filters, save-path enforcement, feature-flag docs, feature-catalog entries, playbook scenarios, and tests. The user explicitly wants that feature removed as if it never shipped, with only the SQLite schema columns left in place because those columns cannot be safely dropped in-place.",
     "created_at": "2026-04-12T09:02:53.483Z",
-    "last_save_at": "2026-04-13T05:11:45.004Z",
+    "last_save_at": "2026-04-13T06:08:11.987Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

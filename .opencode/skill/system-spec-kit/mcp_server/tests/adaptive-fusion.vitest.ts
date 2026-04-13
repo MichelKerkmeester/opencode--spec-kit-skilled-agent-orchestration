@@ -103,6 +103,14 @@ describe('C136-10 Adaptive Fusion', () => {
     expect(w.graphWeight).toBeCloseTo((DEFAULT_WEIGHTS.graphWeight ?? 0) / 1.15, 9);
   });
 
+  it('T5b: returns the dedicated internal continuity weights unchanged', () => {
+    const w = getAdaptiveWeights('continuity');
+    expect(w.semanticWeight).toBeCloseTo(0.52, 9);
+    expect(w.keywordWeight).toBeCloseTo(0.18, 9);
+    expect(w.recencyWeight).toBeCloseTo(0.07, 9);
+    expect(w.graphWeight).toBeCloseTo(0.23, 9);
+  });
+
   // ---- T6: Weights sum <= 1.0 ----
   it('T6: all weight profiles sum to <= 1.0', () => {
     const allProfiles = { ...INTENT_WEIGHT_PROFILES, default: DEFAULT_WEIGHTS };
@@ -287,6 +295,12 @@ describe('C136-10 Adaptive Fusion', () => {
     expect(wFindSpec.keywordWeight).toBeLessThan(wUnderstand.keywordWeight);
     expect(wFindSpec.recencyWeight).toBeLessThan(wUnderstand.recencyWeight);
     expect((wFindSpec.graphWeight ?? 0)).toBeGreaterThan(wUnderstand.graphWeight ?? 0);
+  });
+
+  it('T15b: continuity stays semantic-first while preserving graph support', () => {
+    const continuity = getAdaptiveWeights('continuity');
+    expect(continuity.semanticWeight).toBeGreaterThan(continuity.keywordWeight);
+    expect((continuity.graphWeight ?? 0)).toBeGreaterThan(continuity.recencyWeight);
   });
 
   // ---- C138 ADDITIONS: Intent-Weighted RRF Activation ----

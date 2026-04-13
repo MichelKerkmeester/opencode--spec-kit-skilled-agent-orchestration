@@ -38,19 +38,12 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "debug-delegation.md",
       ".opencode/command/spec_kit/debug.md",
       "spec.md",
       "plan.md",
       "checklist.md"
     ],
     "entities": [
-      {
-        "name": "debug-delegation.md",
-        "kind": "doc",
-        "path": "debug-delegation.md",
-        "source": "derived"
-      },
       {
         "name": "debug.md",
         "kind": "doc",
@@ -88,13 +81,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Solution\nCreate",
+        "name": "Solution Create",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -140,11 +133,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Debug Delegation Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The `debug-delegation.md` template exists in SpecKit but is underutilized. There's no active workflow that triggers its use, and debugging tasks are handled ad-hoc without structured context handoff to sub-agents.",
     "created_at": "2026-04-12T09:02:53.514Z",
-    "last_save_at": "2026-04-13T05:11:45.052Z",
+    "last_save_at": "2026-04-13T06:08:12.018Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

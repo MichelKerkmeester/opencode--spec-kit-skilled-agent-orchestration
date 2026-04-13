@@ -36,28 +36,23 @@
       "module"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp_server/package.json",
-      ">=20.11.0",
-      "import.meta.dirname",
-      "import.meta.filename",
       "mcp_server/tsconfig.json",
-      "node dist/context-server.js",
-      "package.json",
       "dist/context-server.js",
       "mcp_server/context-server.ts",
-      ">=18.0.0",
-      "engines.node",
       "lib/cognitive/archival-manager.ts",
       "lib/cognitive/tier-classifier.ts",
       "lib/errors/core.ts",
       "lib/scoring/composite-scoring.ts",
       "lib/ops/file-watcher.ts",
       "handlers/v-rule-bridge.ts",
-      "import.meta.url",
       "handlers/index.ts",
-      "require.resolve"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -67,39 +62,9 @@
         "source": "derived"
       },
       {
-        "name": ">=20.11.0",
-        "kind": "file",
-        "path": ">=20.11.0",
-        "source": "derived"
-      },
-      {
-        "name": "import.meta.dirname",
-        "kind": "file",
-        "path": "import.meta.dirname",
-        "source": "derived"
-      },
-      {
-        "name": "import.meta.filename",
-        "kind": "file",
-        "path": "import.meta.filename",
-        "source": "derived"
-      },
-      {
         "name": "tsconfig.json",
         "kind": "config",
         "path": "mcp_server/tsconfig.json",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "node dist/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "package.json",
-        "kind": "config",
-        "path": "package.json",
         "source": "derived"
       },
       {
@@ -112,18 +77,6 @@
         "name": "context-server.ts",
         "kind": "code",
         "path": "mcp_server/context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": ">=18.0.0",
-        "kind": "file",
-        "path": ">=18.0.0",
-        "source": "derived"
-      },
-      {
-        "name": "engines.node",
-        "kind": "file",
-        "path": "engines.node",
         "source": "derived"
       },
       {
@@ -155,11 +108,53 @@
         "kind": "code",
         "path": "lib/ops/file-watcher.ts",
         "source": "derived"
+      },
+      {
+        "name": "v-rule-bridge.ts",
+        "kind": "code",
+        "path": "handlers/v-rule-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 2** of the ESM Module Compliance specification.",
     "created_at": "2026-04-12T09:02:50.317Z",
-    "last_save_at": "2026-04-13T05:11:41.939Z",
+    "last_save_at": "2026-04-13T06:08:08.993Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

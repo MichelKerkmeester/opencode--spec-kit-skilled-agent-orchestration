@@ -22,13 +22,7 @@
       "tool routing tasks",
       "enforcement tasks",
       "tool routing checklist",
-      "enforcement verification",
-      "tool routing decisions",
-      "enforcement architecture",
-      "implementation",
-      "summary",
-      "template",
-      "impl summary core"
+      "enforcement verification"
     ],
     "key_topics": [
       "tool",
@@ -45,40 +39,34 @@
       "semantic"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".gemini/agents/context-prime.md",
-      "tool-schemas.ts",
       "mcp_server/context-server.ts",
       "mcp_server/hooks/memory-surface.ts",
       "mcp_server/tool-schemas.ts",
       "mcp_server/lib/session/session-snapshot.ts",
-      "primePackage.routingRules",
       ".opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md",
-      "PrimePackage.routingRules",
       "hooks/memory-surface.ts",
       "lib/session/session-snapshot.ts",
       ".opencode/agent/context-prime.md",
-      "context-server.ts",
-      "routingRules.toolRouting",
-      "memory-surface.ts",
-      "session-snapshot.ts",
-      "CLAUDE.md",
       ".claude/agents/context-prime.md",
       ".codex/agents/context-prime.toml",
-      ".agents/agents/context-prime.md"
+      ".agents/agents/context-prime.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md",
+      ".claude/CLAUDE.md",
+      "lib/code-graph/query-intent-classifier.ts",
+      "constitutional/gate-tool-routing.md",
+      "tests/context-server.vitest.ts",
+      "tests/memory-surface-routing.vitest.ts",
+      "hooks/claude/session-prime.ts",
+      "hooks/gemini/session-prime.ts"
     ],
     "entities": [
       {
         "name": "context-prime.md",
         "kind": "doc",
         "path": ".gemini/agents/context-prime.md",
-        "source": "derived"
-      },
-      {
-        "name": "tool-schemas.ts",
-        "kind": "code",
-        "path": "tool-schemas.ts",
         "source": "derived"
       },
       {
@@ -106,69 +94,75 @@
         "source": "derived"
       },
       {
-        "name": "primePackage.routingRules",
-        "kind": "file",
-        "path": "primePackage.routingRules",
-        "source": "derived"
-      },
-      {
         "name": "gate-tool-routing.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md",
         "source": "derived"
       },
       {
-        "name": "PrimePackage.routingRules",
+        "name": "context-prime.toml",
         "kind": "file",
-        "path": "PrimePackage.routingRules",
+        "path": ".codex/agents/context-prime.toml",
         "source": "derived"
       },
       {
-        "name": "memory-surface.ts",
-        "kind": "code",
-        "path": "hooks/memory-surface.ts",
-        "source": "derived"
-      },
-      {
-        "name": "session-snapshot.ts",
-        "kind": "code",
-        "path": "lib/session/session-snapshot.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-prime.md",
+        "name": "267-tool-routing-enforcement.md",
         "kind": "doc",
-        "path": ".opencode/agent/context-prime.md",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/267-tool-routing-enforcement.md",
         "source": "derived"
       },
       {
-        "name": "context-server.ts",
+        "name": "CLAUDE.md",
+        "kind": "doc",
+        "path": ".claude/CLAUDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "query-intent-classifier.ts",
         "kind": "code",
-        "path": "context-server.ts",
+        "path": "lib/code-graph/query-intent-classifier.ts",
         "source": "derived"
       },
       {
-        "name": "routingRules.toolRouting",
-        "kind": "file",
-        "path": "routingRules.toolRouting",
+        "name": "context-server.vitest.ts",
+        "kind": "test",
+        "path": "tests/context-server.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "memory-surface.ts",
+        "name": "memory-surface-routing.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-surface-routing.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
         "kind": "code",
-        "path": "memory-surface.ts",
+        "path": "hooks/claude/session-prime.ts",
         "source": "derived"
       },
       {
-        "name": "session-snapshot.ts",
-        "kind": "code",
-        "path": "session-snapshot.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Tool Routing Enforcement",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph",
+        "kind": "proper_noun",
+        "path": "research/research.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 025** of the compact-code-graph specification.",
     "created_at": "2026-04-12T09:02:53.431Z",
-    "last_save_at": "2026-04-13T05:11:44.960Z",
+    "last_save_at": "2026-04-13T06:08:11.946Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

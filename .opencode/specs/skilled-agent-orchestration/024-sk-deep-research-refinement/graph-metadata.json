@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "via",
-      "verification",
-      "checklist",
-      "implementation summary",
-      "deep research refinement summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -42,7 +39,7 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
       "scratch/improvement-proposals-v3.md",
@@ -51,7 +48,6 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "validate.sh",
       ".opencode/skill/sk-deep-research/SKILL.md",
       ".opencode/skill/sk-deep-research/references/convergence.md",
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
@@ -62,8 +58,7 @@
       ".claude/agents/deep-research.md",
       ".codex/agents/deep-research.toml",
       ".opencode/agent/deep-research.md",
-      "convergenceThreshold: 0.02",
-      "spec_kit_deep-research_auto.yaml"
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -109,12 +104,6 @@
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-deep-research/SKILL.md",
@@ -157,15 +146,21 @@
         "source": "derived"
       },
       {
-        "name": "deep-research.md",
+        "name": "deep-research.toml",
+        "kind": "file",
+        "path": ".codex/agents/deep-research.toml",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": ".claude/agents/deep-research.md",
+        "path": "implementation-summary.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The sk-deep-research system (v1) is functional but has 18 documented improvement proposals (from spec 023) that need rigorous validation, prioritization refinement, and implementation-ready specifications before they can be executed. The proposals were derived from a 14-iteration research cycle but need a second-pass deep investigation that:",
     "created_at": "2026-04-12T09:02:50.173Z",
-    "last_save_at": "2026-04-13T05:11:41.768Z",
+    "last_save_at": "2026-04-13T06:08:08.840Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

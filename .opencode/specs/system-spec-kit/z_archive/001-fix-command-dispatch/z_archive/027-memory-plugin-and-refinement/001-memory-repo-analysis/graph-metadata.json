@@ -22,21 +22,7 @@
       "plan",
       "roampal",
       "technical",
-      "task",
-      "breakdown",
-      "hybrid",
-      "context",
-      "injection",
-      "tasks",
-      "quality",
-      "checklist",
-      "decision",
-      "record",
-      "decision record",
-      "research",
-      "session",
-      "handover",
-      "document"
+      "task"
     ],
     "key_topics": [
       "feature",
@@ -56,9 +42,6 @@
     "status": "planned",
     "key_files": [
       ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/spec.md",
-      "session.created",
-      "session.idle",
-      "session.prompt.before",
       ".opencode/plugin/memory-context.js",
       "spec.md",
       "tasks.md",
@@ -71,10 +54,13 @@
       ".opencode/skills/system-memory/mcp_server/semantic-memory.js",
       ".opencode/skills/system-memory/database/memory-index.sqlite",
       ".opencode/skills/system-memory/scripts/generate-context.js",
-      "opencode.json",
-      "mcp.semantic_memory",
-      "inject-context.js",
-      "store-exchange.js"
+      "roampal/backend/modules/memory/scoring_service.py",
+      "roampal/backend/modules/memory/outcome_service.py",
+      "roampal/backend/modules/memory/promotion_service.py",
+      "roampal/hooks/user_prompt_submit_hook.py",
+      "roampal/hooks/stop_hook.py",
+      ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/checklist.md",
+      "memory/17-12-25_14-10__roampal-analysis.md"
     ],
     "entities": [
       {
@@ -84,33 +70,9 @@
         "source": "derived"
       },
       {
-        "name": "session.created",
-        "kind": "file",
-        "path": "session.created",
-        "source": "derived"
-      },
-      {
-        "name": "session.idle",
-        "kind": "file",
-        "path": "session.idle",
-        "source": "derived"
-      },
-      {
-        "name": "session.prompt.before",
-        "kind": "file",
-        "path": "session.prompt.before",
-        "source": "derived"
-      },
-      {
         "name": "memory-context.js",
         "kind": "code",
         "path": ".opencode/plugin/memory-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -122,7 +84,7 @@
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/checklist.md",
         "source": "derived"
       },
       {
@@ -134,7 +96,7 @@
       {
         "name": "decision-record.md",
         "kind": "doc",
-        "path": "decision-record.md",
+        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/decision-record.md",
         "source": "derived"
       },
       {
@@ -147,12 +109,6 @@
         "name": "research.md",
         "kind": "doc",
         "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/research/research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "decision-record.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-roampal-analysis/decision-record.md",
         "source": "derived"
       },
       {
@@ -172,11 +128,41 @@
         "kind": "code",
         "path": ".opencode/skills/system-memory/scripts/generate-context.js",
         "source": "derived"
+      },
+      {
+        "name": "scoring_service.py",
+        "kind": "file",
+        "path": "roampal/backend/modules/memory/scoring_service.py",
+        "source": "derived"
+      },
+      {
+        "name": "outcome_service.py",
+        "kind": "file",
+        "path": "roampal/backend/modules/memory/outcome_service.py",
+        "source": "derived"
+      },
+      {
+        "name": "promotion_service.py",
+        "kind": "file",
+        "path": "roampal/backend/modules/memory/promotion_service.py",
+        "source": "derived"
+      },
+      {
+        "name": "user_prompt_submit_hook.py",
+        "kind": "file",
+        "path": "roampal/hooks/user_prompt_submit_hook.py",
+        "source": "derived"
+      },
+      {
+        "name": "stop_hook.py",
+        "kind": "file",
+        "path": "roampal/hooks/stop_hook.py",
+        "source": "derived"
       }
     ],
     "causal_summary": "Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities.",
     "created_at": "2026-04-12T09:02:53.518Z",
-    "last_save_at": "2026-04-13T05:11:45.059Z",
+    "last_save_at": "2026-04-13T06:08:12.022Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -22,12 +22,7 @@
       "memory duplication tasks",
       "phase 6 research wave",
       "phase 6 checklist",
-      "memory duplication checklist",
-      "phase 6 implementation summary",
-      "memory duplication summary",
-      "phase 6 research",
-      "memory duplication research",
-      "residual duplication remediation"
+      "memory duplication checklist"
     ],
     "key_topics": [
       "phase",
@@ -44,7 +39,7 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
       ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
@@ -59,13 +54,13 @@
       ".opencode/skill/system-spec-kit/templates/context_template.md",
       ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-template.test.ts",
-      "CHECK-DUP1..DUP7",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
-      "F001.1",
-      "F001.3",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
-      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase6-template.test.ts tests/memory-quality-phase6-extractors.test.ts tests/memory-quality-phase6-trigger.test.ts tests/memory-quality-phase6-migration.test.ts"
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase6-template.test.ts tests/memory-quality-phase6-extractors.test.ts tests/memory-quality-phase6-trigger.test.ts tests/memory-quality-phase6-migration.test.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts tests/memory-quality-phase2-pr3.test.ts tests/memory-quality-phase2-pr4.test.ts tests/memory-quality-phase3-pr5.vitest.ts tests/memory-quality-phase3-pr6.vitest.ts tests/memory-quality-phase4-pr7.test.ts tests/memory-quality-phase4-pr9.test.ts",
+      "research/research.md",
+      "research/findings-registry.json"
     ],
     "entities": [
       {
@@ -147,12 +142,6 @@
         "source": "derived"
       },
       {
-        "name": "CHECK-DUP1..DUP7",
-        "kind": "file",
-        "path": "CHECK-DUP1..DUP7",
-        "source": "derived"
-      },
-      {
         "name": "memory-quality-phase6-extractors.test.ts",
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
@@ -163,11 +152,17 @@
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
         "source": "derived"
+      },
+      {
+        "name": "memory-quality-phase6-migration.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-issues`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.461Z",
-    "last_save_at": "2026-04-13T05:11:44.991Z",
+    "last_save_at": "2026-04-13T06:08:11.974Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

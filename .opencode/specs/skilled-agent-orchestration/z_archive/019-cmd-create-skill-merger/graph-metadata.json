@@ -39,7 +39,7 @@
       "retroactive"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/command/create/sk-skill.md",
       ".opencode/command/create/assets/create_sk_skill_auto.yaml",
@@ -49,7 +49,6 @@
       ".opencode/agent/write.md",
       ".codex/agents/write.toml",
       ".opencode/README.md",
-      "README.md",
       ".opencode/install_guides/README.md",
       ".opencode/install_guides/SET-UP - AGENTS.md",
       ".opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/metadata.json",
@@ -60,7 +59,8 @@
       ".opencode/command/create/assets/create_skill_asset_auto.yaml",
       ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
       "memory/metadata.json",
-      "create_sk_skill_auto.yaml"
+      "spec.md",
+      "plan.md"
     ],
     "entities": [
       {
@@ -94,12 +94,6 @@
         "source": "derived"
       },
       {
-        "name": "write.md",
-        "kind": "doc",
-        "path": ".opencode/agent/write.md",
-        "source": "derived"
-      },
-      {
         "name": "write.toml",
         "kind": "file",
         "path": ".codex/agents/write.toml",
@@ -109,18 +103,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": "README.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/install_guides/README.md",
         "source": "derived"
       },
       {
@@ -158,11 +140,29 @@
         "kind": "config",
         "path": ".opencode/command/create/assets/create_skill_reference_confirm.yaml",
         "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_asset_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "create_skill_asset_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/create/assets/create_skill_asset_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The create command surface for skills was fragmented across separate command files and YAML workflows (`/create:skill`, `/create:skill_reference`, `/create:skill_asset`). That duplication increased maintenance cost and made routing behavior harder to keep consistent across operation and mode variants. After canonical merger, active runtime and onboarding documentation still needed explicit synchronization to canonical `/create:sk-skill` references.",
     "created_at": "2026-04-12T09:02:50.220Z",
-    "last_save_at": "2026-04-13T05:11:41.825Z",
+    "last_save_at": "2026-04-13T06:08:08.887Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

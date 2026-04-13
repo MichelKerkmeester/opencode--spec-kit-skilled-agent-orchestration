@@ -22,17 +22,7 @@
       "cocoindex tasks",
       "coco-index tasks",
       "cocoindex_code tasks",
-      "semantic search tasks",
-      "cocoindex checklist",
-      "coco-index verification",
-      "cocoindex_code checklist",
-      "cocoindex implementation",
-      "cocoindex summary",
-      "coco-index integration summary",
-      "semantic code search delivered",
-      "code indexing",
-      "coco-index",
-      "code intelligence"
+      "semantic search tasks"
     ],
     "key_topics": [
       "cocoindex",
@@ -45,15 +35,12 @@
       "plan",
       "config",
       "tasks",
-      "checklist",
-      "verification"
+      "opencode",
+      "capability"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "bash .opencode/skill/mcp-coco-index/scripts/install.sh",
-      ".mcp.json",
-      "opencode.json",
       ".claude/mcp.json",
       ".agents/settings.json",
       ".gemini/settings.json",
@@ -65,32 +52,17 @@
       ".opencode/skill/mcp-coco-index/references/cross_cli_playbook.md",
       ".opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md",
       "research/research.md",
-      "doctor.sh",
-      "ensure_ready.sh",
-      "common.sh",
-      "0.2.3",
-      "bash .opencode/skill/mcp-coco-index/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json",
-      "bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json"
+      ".opencode/skill/mcp-coco-index/README.md",
+      ".opencode/skill/mcp-coco-index/scripts/install.sh",
+      ".opencode/skill/mcp-coco-index/scripts/update.sh",
+      ".opencode/agent/context.md",
+      ".opencode/skill/mcp-coco-index/SKILL.md",
+      "rm ~/.cocoindex_code/daemon.sock",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
-      {
-        "name": "install.sh",
-        "kind": "script",
-        "path": "bash .opencode/skill/mcp-coco-index/scripts/install.sh",
-        "source": "derived"
-      },
-      {
-        "name": ".mcp.json",
-        "kind": "config",
-        "path": ".mcp.json",
-        "source": "derived"
-      },
-      {
-        "name": "opencode.json",
-        "kind": "config",
-        "path": "opencode.json",
-        "source": "derived"
-      },
       {
         "name": "mcp.json",
         "kind": "config",
@@ -101,12 +73,6 @@
         "name": "settings.json",
         "kind": "config",
         "path": ".agents/settings.json",
-        "source": "derived"
-      },
-      {
-        "name": "settings.json",
-        "kind": "config",
-        "path": ".gemini/settings.json",
         "source": "derived"
       },
       {
@@ -158,21 +124,45 @@
         "source": "derived"
       },
       {
-        "name": "doctor.sh",
-        "kind": "script",
-        "path": "doctor.sh",
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/README.md",
         "source": "derived"
       },
       {
-        "name": "ensure_ready.sh",
+        "name": "install.sh",
         "kind": "script",
-        "path": "ensure_ready.sh",
+        "path": ".opencode/skill/mcp-coco-index/scripts/install.sh",
+        "source": "derived"
+      },
+      {
+        "name": "update.sh",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-coco-index/scripts/update.sh",
+        "source": "derived"
+      },
+      {
+        "name": "context.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-coco-index/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "daemon.sock",
+        "kind": "file",
+        "path": "rm ~/.cocoindex_code/daemon.sock",
         "source": "derived"
       }
     ],
     "causal_summary": "OpenCode had no semantic code search capability. All code exploration relied on Grep (exact/regex text patterns), Glob (file path patterns), and Read (full file retrieval). The @context agent had to re-discover code structure every session with no persistent index and no way to query code by intent or concept. Searching for \"find authentication middleware\" with Grep required knowing the exact identifiers; with no semantic layer, fuzzy or conceptual queries returned zero results.",
     "created_at": "2026-04-12T09:02:50.170Z",
-    "last_save_at": "2026-04-13T05:11:41.766Z",
+    "last_save_at": "2026-04-13T06:08:08.838Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

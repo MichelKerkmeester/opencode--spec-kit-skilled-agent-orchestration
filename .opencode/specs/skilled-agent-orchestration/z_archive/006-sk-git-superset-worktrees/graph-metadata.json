@@ -22,12 +22,7 @@
       "superset",
       "worktree",
       "alignment",
-      "006",
-      "sk-git superset checklist",
-      "worktree alignment verification",
-      "decision",
-      "record",
-      "decision record"
+      "006"
     ],
     "key_topics": [
       "sk-git",
@@ -41,7 +36,7 @@
       "implementation",
       "tasks",
       "006",
-      "checklist"
+      "adapt"
     ],
     "importance_tier": "important",
     "status": "planned",
@@ -58,14 +53,11 @@
       "checklist.md",
       "decision-record.md",
       ".superset/config.json",
-      "worktree.json",
-      "\"isolated workspace\": 2.0",
-      "\"parallel agents\": 1.8",
       "<main-repo>/.opencode/worktree.json",
-      "worktree_config_template.json",
       ".superset/worktree.json",
       "spec.md",
-      "assets/worktree_config_template.json"
+      "assets/worktree_config_template.json",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -141,33 +133,33 @@
         "source": "derived"
       },
       {
-        "name": "worktree.json",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "worktree_config_template.json",
         "kind": "config",
-        "path": "worktree.json",
+        "path": "assets/worktree_config_template.json",
         "source": "derived"
       },
       {
-        "name": "\"isolated workspace\": 2.0",
-        "kind": "file",
-        "path": "\"isolated workspace\": 2.0",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "\"parallel agents\": 1.8",
-        "kind": "file",
-        "path": "\"parallel agents\": 1.8",
-        "source": "derived"
-      },
-      {
-        "name": "worktree.json",
-        "kind": "config",
-        "path": "<main-repo>/.opencode/worktree.json",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Adapt the sk-git skill's worktree handling from Superset IDE's git worktree model. Superset treats each workspace as an isolated worktree with centralized storage, config-driven lifecycle hooks, and structured init/teardown flows. The current sk-git skill uses a simpler, manual-choice model that lacks these capabilities. This adaptation translates Superset's desktop-app patterns into CLI/AI-skill documentation.",
     "created_at": "2026-04-12T09:02:50.202Z",
-    "last_save_at": "2026-04-13T05:11:41.808Z",
+    "last_save_at": "2026-04-13T06:08:08.877Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

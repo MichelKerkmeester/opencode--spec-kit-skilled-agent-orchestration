@@ -22,8 +22,7 @@
       "023 phase 5 tasks",
       "fix failing tests",
       "implementation summary",
-      "phase 5 remediation summary",
-      "100 percent pass rate"
+      "phase 5 remediation summary"
     ],
     "key_topics": [
       "test",
@@ -40,9 +39,8 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "db-state.js",
       ".opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/integration-error-recovery.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts",
@@ -51,25 +49,20 @@
       ".opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
       ".opencode/skill/system-spec-kit/mcp_server/tests/crash-recovery.vitest.ts",
-      "hydra-spec-pack-consistency.vitest.ts",
-      "feature-flag-reference-docs.vitest.ts",
-      "modularization.vitest.ts",
-      "integration-causal-graph.vitest.ts",
-      "integration-error-recovery.vitest.ts",
-      "learning-stats-filters.vitest.ts",
-      "transaction-manager-recovery.vitest.ts",
-      "stdio-logging-safety.vitest.ts",
       "mcp_server/tests/integration-causal-graph.vitest.ts",
       "mcp_server/tests/integration-error-recovery.vitest.ts",
-      "mcp_server/tests/learning-stats-filters.vitest.ts"
+      "mcp_server/tests/learning-stats-filters.vitest.ts",
+      "mcp_server/tests/transaction-manager-recovery.vitest.ts",
+      "mcp_server/tests/stdio-logging-safety.vitest.ts",
+      "mcp_server/tests/modularization.vitest.ts",
+      "mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
+      "mcp_server/tests/feature-flag-reference-docs.vitest.ts",
+      "tasks.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md"
     ],
     "entities": [
-      {
-        "name": "db-state.js",
-        "kind": "code",
-        "path": "db-state.js",
-        "source": "derived"
-      },
       {
         "name": "integration-causal-graph.vitest.ts",
         "kind": "test",
@@ -121,49 +114,55 @@
       {
         "name": "hydra-spec-pack-consistency.vitest.ts",
         "kind": "test",
-        "path": "hydra-spec-pack-consistency.vitest.ts",
+        "path": "mcp_server/tests/hydra-spec-pack-consistency.vitest.ts",
         "source": "derived"
       },
       {
         "name": "feature-flag-reference-docs.vitest.ts",
         "kind": "test",
-        "path": "feature-flag-reference-docs.vitest.ts",
+        "path": "mcp_server/tests/feature-flag-reference-docs.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "modularization.vitest.ts",
-        "kind": "test",
-        "path": "modularization.vitest.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "integration-causal-graph.vitest.ts",
-        "kind": "test",
-        "path": "integration-causal-graph.vitest.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "integration-error-recovery.vitest.ts",
-        "kind": "test",
-        "path": "integration-error-recovery.vitest.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "learning-stats-filters.vitest.ts",
-        "kind": "test",
-        "path": "learning-stats-filters.vitest.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "transaction-manager-recovery.vitest.ts",
-        "kind": "test",
-        "path": "transaction-manager-recovery.vitest.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Scenario Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This is **Phase 5** of the ESM Module Compliance specification.",
     "created_at": "2026-04-12T09:02:50.319Z",
-    "last_save_at": "2026-04-13T05:11:41.942Z",
+    "last_save_at": "2026-04-13T06:08:08.994Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

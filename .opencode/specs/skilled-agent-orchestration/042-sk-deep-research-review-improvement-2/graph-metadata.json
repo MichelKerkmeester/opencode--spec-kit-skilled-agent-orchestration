@@ -32,12 +32,7 @@
       "phase plan",
       "tasks",
       "phase index",
-      "verification checklist",
-      "phase verification",
-      "decision record",
-      "adr index",
-      "implementation summary",
-      "runtime improvement bundle"
+      "verification checklist"
     ],
     "key_topics": [
       "042",
@@ -54,13 +49,11 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "deep-loop-graph.sqlite",
       "review/archive-rvw-2026-04-11/review-report.md",
       ".opencode/skill/sk-deep-review/references/state_format.md",
       ".opencode/skill/sk-deep-review/references/loop_protocol.md",
-      "session-isolation.vitest.ts",
       ".opencode/agent/deep-review.md",
       ".opencode/skill/sk-deep-review/references/convergence.md",
       "008-further-deep-loop-improvements/implementation-summary.md",
@@ -68,22 +61,12 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "board.json",
       "decision-record.md",
-      "mutation-coverage.cjs",
-      "deep-research-state.jsonl",
       "research/research-ideas.md",
-      "SKILL.md",
       "plan.md",
       "research/research.md"
     ],
     "entities": [
-      {
-        "name": "deep-loop-graph.sqlite",
-        "kind": "file",
-        "path": "deep-loop-graph.sqlite",
-        "source": "derived"
-      },
       {
         "name": "review-report.md",
         "kind": "doc",
@@ -100,12 +83,6 @@
         "name": "loop_protocol.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-deep-review/references/loop_protocol.md",
-        "source": "derived"
-      },
-      {
-        "name": "session-isolation.vitest.ts",
-        "kind": "test",
-        "path": "session-isolation.vitest.ts",
         "source": "derived"
       },
       {
@@ -145,39 +122,51 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "board.json",
-        "kind": "config",
-        "path": "board.json",
-        "source": "derived"
-      },
-      {
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
         "source": "derived"
       },
       {
-        "name": "mutation-coverage.cjs",
-        "kind": "file",
-        "path": "mutation-coverage.cjs",
+        "name": "research-ideas.md",
+        "kind": "doc",
+        "path": "research/research-ideas.md",
         "source": "derived"
       },
       {
-        "name": "deep-research-state.jsonl",
-        "kind": "file",
-        "path": "deep-research-state.jsonl",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Research",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Review Runtime Improvement Bundle",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This parent packet coordinates **eight child implementation phases plus a post-phase-008 closing-audit remediation pass**. The bundle keeps the same core goal as the original packet: make `sk-deep-research`, `sk-deep-review`, and `sk-improve-agent` easier to trust, resume, scale, and improve without collapsing them into a hidden generic workflow. What changed is the delivery model. The detailed design and task breakdown live in dedicated child folders (`001`–`008`) plus the live `review/` packet that drives closing audits, while this root spec tracks the cross-phase shape, sequencing, and handoff logic.",
     "created_at": "2026-04-12T09:02:50.190Z",
-    "last_save_at": "2026-04-13T05:11:41.790Z",
+    "last_save_at": "2026-04-13T06:08:08.863Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

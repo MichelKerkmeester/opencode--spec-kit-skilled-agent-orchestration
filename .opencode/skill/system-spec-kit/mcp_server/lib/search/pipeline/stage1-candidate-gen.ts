@@ -531,6 +531,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   let candidates: PipelineRow[] = [];
   let channelCount = 0;
+  const hybridSearchOptions = {
+    limit,
+    specFolder,
+    includeArchived,
+    intent: config.adaptiveFusionIntent ?? undefined,
+  };
 
   // -- D2 REQ-D2-002: Graph Concept Routing -----------------------------------
   //
@@ -702,7 +708,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                   return hybridSearch.collectRawCandidates(
                     q,
                     facetEmbedding,
-                    { limit, specFolder, includeArchived }
+                    hybridSearchOptions
                   ) as Promise<PipelineRow[]>;
                 })
               ),
@@ -765,7 +771,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                 const variantResults = await hybridSearch.collectRawCandidates(
                   variant,
                   variantEmbedding,
-                  { limit, specFolder, includeArchived }
+                  hybridSearchOptions
                 );
                 return variantResults as PipelineRow[];
               })
@@ -799,7 +805,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           candidates = (await hybridSearch.collectRawCandidates(
             query,
             effectiveEmbedding,
-            { limit, specFolder, includeArchived }
+            hybridSearchOptions
           )) as PipelineRow[];
         }
       } else {
@@ -808,7 +814,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         candidates = (await hybridSearch.collectRawCandidates(
           query,
           effectiveEmbedding,
-          { limit, specFolder, includeArchived }
+          hybridSearchOptions
         )) as PipelineRow[];
       }
 
@@ -847,7 +853,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               hybridSearch.collectRawCandidates(
                 query,
                 effectiveEmbedding,
-                { limit, specFolder, includeArchived }
+                hybridSearchOptions
               ).catch((err: unknown): PipelineRow[] => {
                 console.warn(
                   '[stage1-candidate-gen] Baseline candidate collection failed:',
@@ -864,7 +870,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                   return hybridSearch.collectRawCandidates(
                     expanded.combinedQuery,
                     expandedEmb,
-                    { limit, specFolder, includeArchived }
+                    hybridSearchOptions
                   ) as Promise<PipelineRow[]>;
                 }
               ).catch((err: unknown): PipelineRow[] => {
@@ -911,7 +917,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           const hybridResults = (await hybridSearch.collectRawCandidates(
             effectiveQuery,
             effectiveEmbedding,
-            { limit, specFolder, includeArchived }
+            hybridSearchOptions
           )) as PipelineRow[];
           candidates = hybridResults;
         } catch (hybridErr: unknown) {
@@ -1134,7 +1140,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               return hybridSearch.collectRawCandidates(
                 q,
                 emb,
-                { limit, specFolder, includeArchived }
+                hybridSearchOptions
               ) as Promise<PipelineRow[]>;
             })
           );

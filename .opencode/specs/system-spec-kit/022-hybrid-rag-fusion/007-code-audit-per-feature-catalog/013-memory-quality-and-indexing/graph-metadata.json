@@ -35,18 +35,13 @@
       "summary"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "scripts/core/title-builder.ts",
-      "slug-utils.ts",
       "scripts/core/file-writer.ts",
-      "entity-linker.ts",
-      "fsrs-scheduler.ts",
-      "title-builder.ts",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "file-writer.ts",
       "spec.md",
       "implementation-summary.md"
     ],
@@ -58,33 +53,9 @@
         "source": "derived"
       },
       {
-        "name": "slug-utils.ts",
-        "kind": "code",
-        "path": "slug-utils.ts",
-        "source": "derived"
-      },
-      {
         "name": "file-writer.ts",
         "kind": "code",
         "path": "scripts/core/file-writer.ts",
-        "source": "derived"
-      },
-      {
-        "name": "entity-linker.ts",
-        "kind": "code",
-        "path": "entity-linker.ts",
-        "source": "derived"
-      },
-      {
-        "name": "fsrs-scheduler.ts",
-        "kind": "code",
-        "path": "fsrs-scheduler.ts",
-        "source": "derived"
-      },
-      {
-        "name": "title-builder.ts",
-        "kind": "code",
-        "path": "title-builder.ts",
         "source": "derived"
       },
       {
@@ -103,12 +74,6 @@
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "file-writer.ts",
-        "kind": "code",
-        "path": "file-writer.ts",
         "source": "derived"
       },
       {
@@ -142,15 +107,45 @@
         "source": "derived"
       },
       {
-        "name": "Executive Summary\n\nSystematic",
+        "name": "Executive Summary Systematic",
         "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Model Context Protocol",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Systematic code audit of 24 Memory Quality and Indexing features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/13--memory-quality-and-indexing/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.",
     "created_at": "2026-04-12T09:02:50.251Z",
-    "last_save_at": "2026-04-13T05:11:41.860Z",
+    "last_save_at": "2026-04-13T06:08:08.920Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

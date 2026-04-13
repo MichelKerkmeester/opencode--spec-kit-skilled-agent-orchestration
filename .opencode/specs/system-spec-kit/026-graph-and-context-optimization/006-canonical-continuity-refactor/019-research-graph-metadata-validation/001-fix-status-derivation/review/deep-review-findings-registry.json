@@ -1,0 +1,58 @@
+{
+  "sessionId": "2026-04-13T08:30:00Z-019-001-review",
+  "parentSessionId": "2026-04-13T08:25:00Z-019-graph-metadata-validation-review",
+  "generation": 1,
+  "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": {
+    "stopReason": "max_iterations",
+    "totalIterations": 10,
+    "timestamp": "2026-04-13T09:21:00Z"
+  },
+  "status": "COMPLETE",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P2",
+      "title": "Explicit status passthrough leaves non-canonical buckets in the active corpus",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      "line": 587,
+      "description": "`deriveStatus()` returns the first ranked frontmatter status verbatim, so values like `\"Complete\"`, `\"In Progress\"`, and `\"completed\"` survive backfill and still appear as separate buckets in active packet metadata.",
+      "dimension": "correctness",
+      "firstSeen": 6,
+      "lastSeen": 6,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 6,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "openFindingsCount": 1,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 1,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

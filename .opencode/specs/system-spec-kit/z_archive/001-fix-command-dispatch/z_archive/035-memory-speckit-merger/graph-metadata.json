@@ -39,9 +39,6 @@
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "generate-context.js",
-      "opencode.json",
-      "AGENTS.md",
       ".opencode/skill/system-spec-kit/scripts/skill_advisor.py",
       ".opencode/skill/system-memory/SKILL.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
@@ -49,36 +46,21 @@
       "lib/services/database.js",
       "lib/services/file-scanner.js",
       "scripts/generate-context.js",
-      "save.md",
       "system-memory/scripts/generate-context.js",
       "system-memory/SKILL.md",
-      "search.md",
-      "load.md",
-      "checkpoint.md",
       "mcp_server/context-server.js",
-      "context-index.sqlite",
-      "memory-index.sqlite",
-      ".opencode/skill/system-memory/scripts/generate-context.js"
+      ".opencode/skill/system-memory/scripts/generate-context.js",
+      ".opencode/skill/system-spec-kit/scripts/generate-context.js",
+      ".opencode/command/memory/save.md",
+      "system-spec-kit/scripts/generate-context.js",
+      "system-spec-kit/SKILL.md",
+      ".opencode/command/memory/search.md",
+      ".opencode/command/memory/load.md",
+      ".opencode/command/memory/checkpoint.md",
+      "lib/index.js",
+      "database/context-index.sqlite"
     ],
     "entities": [
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "opencode.json",
-        "kind": "config",
-        "path": "opencode.json",
-        "source": "derived"
-      },
-      {
-        "name": "AGENTS.md",
-        "kind": "doc",
-        "path": "AGENTS.md",
-        "source": "derived"
-      },
       {
         "name": "skill_advisor.py",
         "kind": "file",
@@ -89,12 +71,6 @@
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/system-memory/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/SKILL.md",
         "source": "derived"
       },
       {
@@ -122,45 +98,69 @@
         "source": "derived"
       },
       {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": "mcp_server/context-server.js",
+        "source": "derived"
+      },
+      {
         "name": "save.md",
         "kind": "doc",
-        "path": "save.md",
-        "source": "derived"
-      },
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "system-memory/scripts/generate-context.js",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": "system-memory/SKILL.md",
+        "path": ".opencode/command/memory/save.md",
         "source": "derived"
       },
       {
         "name": "search.md",
         "kind": "doc",
-        "path": "search.md",
+        "path": ".opencode/command/memory/search.md",
         "source": "derived"
       },
       {
         "name": "load.md",
         "kind": "doc",
-        "path": "load.md",
+        "path": ".opencode/command/memory/load.md",
         "source": "derived"
       },
       {
         "name": "checkpoint.md",
         "kind": "doc",
-        "path": "checkpoint.md",
+        "path": ".opencode/command/memory/checkpoint.md",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": "lib/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.sqlite",
+        "kind": "file",
+        "path": "database/context-index.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "Memory System",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory System Integration",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Doc Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The current architecture has **two overlapping skill folders** for documentation and context management:",
     "created_at": "2026-04-12T09:02:53.523Z",
-    "last_save_at": "2026-04-13T05:11:45.070Z",
+    "last_save_at": "2026-04-13T06:08:12.029Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

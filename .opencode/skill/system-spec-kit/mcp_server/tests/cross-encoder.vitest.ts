@@ -13,12 +13,12 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
       expect(crossEncoder.LENGTH_PENALTY.longThreshold).toBe(2000);
     });
 
-    it('LENGTH_PENALTY shortPenalty is 0.9', () => {
-      expect(crossEncoder.LENGTH_PENALTY.shortPenalty).toBe(0.9);
+    it('LENGTH_PENALTY shortPenalty is a no-op', () => {
+      expect(crossEncoder.LENGTH_PENALTY.shortPenalty).toBe(1.0);
     });
 
-    it('LENGTH_PENALTY longPenalty is 0.95', () => {
-      expect(crossEncoder.LENGTH_PENALTY.longPenalty).toBe(0.95);
+    it('LENGTH_PENALTY longPenalty is a no-op', () => {
+      expect(crossEncoder.LENGTH_PENALTY.longPenalty).toBe(1.0);
     });
 
     it('PROVIDER_CONFIG includes voyage, cohere, local', () => {
@@ -84,19 +84,19 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
       expect(penalty).toBe(1.0);
     });
 
-    it('calculateLengthPenalty returns shortPenalty (0.9) for short content', () => {
+    it('calculateLengthPenalty returns 1.0 for short content', () => {
       const penalty = crossEncoder.calculateLengthPenalty(10);
-      expect(penalty).toBe(0.9);
+      expect(penalty).toBe(1.0);
     });
 
-    it('calculateLengthPenalty returns shortPenalty (0.9) for zero length', () => {
+    it('calculateLengthPenalty returns 1.0 for zero length', () => {
       const penalty = crossEncoder.calculateLengthPenalty(0);
-      expect(penalty).toBe(0.9);
+      expect(penalty).toBe(1.0);
     });
 
-    it('calculateLengthPenalty returns longPenalty (0.95) for very long content', () => {
+    it('calculateLengthPenalty returns 1.0 for very long content', () => {
       const penalty = crossEncoder.calculateLengthPenalty(3000);
-      expect(penalty).toBe(0.95);
+      expect(penalty).toBe(1.0);
     });
 
     it('T049: Length penalty for content at exactly shortThreshold', () => {
@@ -104,9 +104,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
       expect(penalty).toBe(1.0);
     });
 
-    it('T049: Length penalty for content just below shortThreshold', () => {
+    it('T049: Length penalty for content just below shortThreshold is also a no-op', () => {
       const penalty = crossEncoder.calculateLengthPenalty(49);
-      expect(penalty).toBe(0.9);
+      expect(penalty).toBe(1.0);
     });
   });
 
@@ -157,12 +157,24 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
       expect(typeof status.latency.avg).toBe('number');
       expect(typeof status.latency.p95).toBe('number');
       expect(typeof status.latency.count).toBe('number');
+      expect(status.cache).toBeTruthy();
+      expect(typeof status.cache.hits).toBe('number');
+      expect(typeof status.cache.misses).toBe('number');
+      expect(typeof status.cache.staleHits).toBe('number');
+      expect(typeof status.cache.evictions).toBe('number');
+      expect(typeof status.cache.entries).toBe('number');
+      expect(typeof status.cache.maxEntries).toBe('number');
+      expect(typeof status.cache.ttlMs).toBe('number');
     });
 
     it('resetSession clears session state', () => {
       crossEncoder.resetSession();
       const status = crossEncoder.getRerankerStatus();
       expect(status.latency.count).toBe(0);
+      expect(status.cache.hits).toBe(0);
+      expect(status.cache.misses).toBe(0);
+      expect(status.cache.staleHits).toBe(0);
+      expect(status.cache.evictions).toBe(0);
     });
   });
 

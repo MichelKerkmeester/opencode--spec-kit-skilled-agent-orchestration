@@ -39,14 +39,13 @@
       "rag"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "description.json"
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -80,12 +79,6 @@
         "source": "derived"
       },
       {
-        "name": "description.json",
-        "kind": "config",
-        "path": "description.json",
-        "source": "derived"
-      },
-      {
         "name": "Spec Kit Memory",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -110,13 +103,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\nProvide",
+        "name": "Purpose Provide",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -134,13 +127,19 @@
         "source": "derived"
       },
       {
-        "name": "Overview\nPhase",
+        "name": "Overview Phase",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Pattern\nManual",
+        "name": "Pattern Manual",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -148,7 +147,7 @@
     ],
     "causal_summary": "The code audit remediation and revalidation phase (catalog phase 021) synthesized findings from all 20 prior audit phases, identifying ~45 PARTIAL verdicts across 220+ features with 5 issue categories (source file list inflation, stale references, deprecated-as-active modules, flag default contradictions, and behavioral description mismatches). Manual testing scenarios are needed to verify that remediation tracking captures all findings, the revalidation checklist works against fixed items, and the finding closure workflow operates end-to-end.",
     "created_at": "2026-04-12T09:02:50.306Z",
-    "last_save_at": "2026-04-13T05:11:41.927Z",
+    "last_save_at": "2026-04-13T06:08:08.976Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

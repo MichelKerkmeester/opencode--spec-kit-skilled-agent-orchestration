@@ -1,0 +1,54 @@
+{
+  "sessionId": "2026-04-13T07:15:00Z-017-003-continuity-search-profile-review",
+  "parentSessionId": "2026-04-13T06:15:00Z-017-search-fusion-tuning-review",
+  "generation": 1,
+  "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "status": "INITIALIZED",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Stage 3 MMR ignores the internal continuity intent",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+      "line": 209,
+      "description": "`handleMemorySearch()` maps `profile === 'resume'` to `adaptiveFusionIntent = 'continuity'`, and Stage 1 passes that value into hybrid search, but Stage 3 MMR still selects its lambda from `config.detectedIntent` and the lambda map has no `continuity` entry. Because `SPECKIT_MMR` defaults to enabled, resume-profile searches lose their continuity-specific ranking behavior in the final ordering step. [SOURCE: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:830`] [SOURCE: `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:538`] [SOURCE: `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:209`] [SOURCE: `.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts:641`]",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0
+  },
+  "openFindingsCount": 1,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 1,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

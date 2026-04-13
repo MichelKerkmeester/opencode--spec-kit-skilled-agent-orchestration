@@ -26,11 +26,10 @@
       "context"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "lib/session/context-metrics.ts",
       "handlers/session-health.ts",
-      "context-server.ts",
       "lib/response/envelope.ts",
       "handlers/eval-reporting.ts",
       "spec.md",
@@ -52,12 +51,6 @@
         "name": "session-health.ts",
         "kind": "code",
         "path": "handlers/session-health.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.ts",
-        "kind": "code",
-        "path": "context-server.ts",
         "source": "derived"
       },
       {
@@ -127,13 +120,19 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nWe",
+        "name": "Problem Statement We",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\nDocument",
+        "name": "Purpose Document",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -141,7 +140,7 @@
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-13T04:55:10.699Z",
-    "last_save_at": "2026-04-13T05:11:44.653Z",
+    "last_save_at": "2026-04-13T06:08:11.656Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

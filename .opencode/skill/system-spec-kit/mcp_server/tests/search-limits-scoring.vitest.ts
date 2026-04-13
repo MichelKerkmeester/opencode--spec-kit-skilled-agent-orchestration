@@ -174,12 +174,11 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
   });
 
   describe('T211 - Length Penalty Scoring Effects', () => {
-    it('T211-LP1: Long content (5000 chars) gets penalty', () => {
+    it('T211-LP1: Long content (5000 chars) now keeps a no-op penalty', () => {
       if (!crossEncoder?.calculateLengthPenalty) return;
 
       const longPenalty = crossEncoder.calculateLengthPenalty(5000);
-      expect(longPenalty).toBeLessThan(1.0);
-      expect(longPenalty).toBeGreaterThanOrEqual(0.8);
+      expect(longPenalty).toBe(1.0);
     });
 
     it('T211-LP2: Medium content (500 chars) no penalty', () => {
@@ -189,14 +188,14 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       expect(midPenalty).toBe(1.0);
     });
 
-    it('T211-LP3: Short content (10 chars) gets penalty', () => {
+    it('T211-LP3: Short content (10 chars) now keeps a no-op penalty', () => {
       if (!crossEncoder?.calculateLengthPenalty) return;
 
       const shortPenalty = crossEncoder.calculateLengthPenalty(10);
-      expect(shortPenalty).toBeLessThan(1.0);
+      expect(shortPenalty).toBe(1.0);
     });
 
-    it('T211-LP4: Long doc rerankerScore reduced by penalty', () => {
+    it('T211-LP4: Content length no longer changes rerankerScore', () => {
       if (!crossEncoder?.applyLengthPenalty) return;
 
       type PenalizedDocument = Parameters<typeof crossEncoder.applyLengthPenalty>[0][number];
@@ -223,7 +222,7 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       const penalized = crossEncoder.applyLengthPenalty(docs);
 
       expect(penalized[0].rerankerScore).toBe(0.9);
-      expect(penalized[1].rerankerScore).toBeLessThan(0.9);
+      expect(penalized[1].rerankerScore).toBe(0.9);
     });
   });
 

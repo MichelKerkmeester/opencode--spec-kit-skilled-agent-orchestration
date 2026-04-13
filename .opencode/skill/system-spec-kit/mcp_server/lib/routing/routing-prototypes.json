@@ -41,7 +41,7 @@
         "sourceShape": "implementation-summary",
         "tags": ["packet", "changelog", "behavior", "output"],
         "negativeHints": ["narrative_delivery", "task_update"],
-        "chunk": "The workflow can now create nested changelog output for packet roots and child phases without inventing filenames or scattering release history across phase folders. Root packets write a packet-root changelog and child phases write packet-phase changelogs in the parent packet. The emphasis is on the new productized behavior and its output shape."
+        "chunk": "The canonical generator now exposes nested changelog output for packet roots and child phases from one shared runtime contract instead of scattering changelog logic across packet folders. It resolves the right output surface for both packet roots and child phases, keeps filename derivation deterministic, and centralizes the output structure in one capability. The emphasis is on the new behavior that now exists in the system."
       }
     ],
     "narrative_delivery": [
@@ -67,7 +67,7 @@
         "sourceShape": "implementation-summary",
         "tags": ["runtime", "attempt", "pending", "verification"],
         "negativeHints": ["handover_state", "narrative_progress"],
-        "chunk": "Attempt one confirmed that semantic search returned results again, but attempt two kept the work pending until the MCP server could be restarted and the new focused-mode fix rechecked in a fresh session. The implementation compiled before handover, yet the delivery story deliberately stopped at awaiting runtime verification after restart."
+        "chunk": "Attempt one confirmed that semantic search returned results again, then attempt two kept the work pending until the MCP server restart could happen and the focused-mode fix could be rechecked in order. The implementation compiled before handover, but release was deliberately blocked by the verification gate and only then could the delivery story close. The emphasis is on sequencing, gating, and verification order."
       },
       {
         "id": "ND-04",
@@ -75,7 +75,7 @@
         "sourceShape": "implementation-summary",
         "tags": ["alignment", "same-pass", "docs", "runtime"],
         "negativeHints": ["narrative_progress", "decision"],
-        "chunk": "Commands, templates, validators, and reference docs were updated together because a packet-local workflow is only useful if every surface points at the same runtime truth. The team deliberately avoided shipping the generator first and documentation later. That same-pass alignment language is a delivery pattern."
+        "chunk": "Commands, templates, validators, and reference docs were updated together in the same pass because the packet could only ship after every surface pointed at the same runtime truth. Documentation was not released before runtime parity, and verification checks happened before the final delivery step. That same-pass, verify-before-release language is a delivery pattern."
       },
       {
         "id": "ND-05",
@@ -135,7 +135,7 @@
         "sourceShape": "handover",
         "tags": ["continuation", "progress", "next-session", "resume"],
         "negativeHints": ["task_update", "narrative_progress"],
-        "chunk": "Continuation attempt one. Objective: improve deep-review logic and then implement the accepted roadmap. Progress is roughly eighty-five percent: research is complete, the foundation phase is complete, and later phases were dispatched as parallel agents. The next session needs to verify the agent outputs, inspect git diff, and finish the remaining template update."
+        "chunk": "Current state for the continuation: research is complete, the foundation phase is complete, and later phases were dispatched as parallel agents. The blocker is verification of those agent outputs before closure. Next session work is to inspect git diff, review the generated changes, and then finish the remaining template update. The emphasis is the stop-state and resume path, not the command itself."
       },
       {
         "id": "HS-02",
@@ -159,7 +159,7 @@
         "sourceShape": "handover",
         "tags": ["resume", "instructions", "order", "quick-start"],
         "negativeHints": ["task_update", "drop"],
-        "chunk": "To resume, run the resume command and then review the handover's listed files in order: the focused handler fix, the stage one scope fix, the stage two graph diagnostic warning, and the packet docs that still need verification evidence. This is a restart recipe for the next session."
+        "chunk": "To resume in the next session, start from the current state recorded here and review the handover's listed files in order: the focused handler fix, the stage one scope fix, the stage two graph diagnostic warning, and the packet docs that still need verification evidence. The resume command is part of the restart recipe, but the durable content is the stop-state and file order for picking up where work paused."
       },
       {
         "id": "HS-05",

@@ -22,22 +22,7 @@
       "004-graphify task list",
       "graphify deep-research tasks",
       "graphify checklist",
-      "graphify verification",
-      "004-graphify verification",
-      "graphify decision record",
-      "graphify ADR",
-      "graphify engine switch",
-      "graphify iter 7 override",
-      "graphify implementation summary",
-      "004-graphify outcome",
-      "graphify research complete",
-      "graphify research",
-      "graphify external repo",
-      "two-pass AST extraction",
-      "Leiden community detection",
-      "evidence tagging EXTRACTED INFERRED AMBIGUOUS",
-      "graph-first PreToolUse hook",
-      "multimodal codebase extraction"
+      "graphify verification"
     ],
     "key_topics": [
       "graphify",
@@ -54,28 +39,28 @@
       "execution"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
-      "extract.py",
       "external/skills/graphify/skill.md",
-      "build.py",
-      "graph.json",
       "123,488 / 1,726 = 71.55x",
-      "export.py",
-      "wiki.py",
-      "serve.py",
-      "manifest.py",
-      "validate.py",
-      "reduce-state.cjs",
-      "gpt-5.4",
       "implementation-summary.md",
       "external/worked/mixed-corpus/GRAPH_REPORT.md",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
-      "detect.py",
-      "cache.py",
-      "external/worked/karpathy-repos/GRAPH_REPORT.md"
+      "external/worked/karpathy-repos/GRAPH_REPORT.md",
+      "research/iterations/iteration-001.md",
+      "research/iterations/iteration-020.md",
+      "research/deep-research-config.json",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-strategy.md",
+      "research/findings-registry.json",
+      "research/deep-research-dashboard.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "decision-record.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -85,75 +70,15 @@
         "source": "derived"
       },
       {
-        "name": "extract.py",
-        "kind": "file",
-        "path": "extract.py",
-        "source": "derived"
-      },
-      {
         "name": "skill.md",
         "kind": "doc",
         "path": "external/skills/graphify/skill.md",
         "source": "derived"
       },
       {
-        "name": "build.py",
-        "kind": "file",
-        "path": "build.py",
-        "source": "derived"
-      },
-      {
-        "name": "graph.json",
-        "kind": "config",
-        "path": "graph.json",
-        "source": "derived"
-      },
-      {
         "name": " 1,726 = 71.55x",
         "kind": "file",
         "path": "123,488 / 1,726 = 71.55x",
-        "source": "derived"
-      },
-      {
-        "name": "export.py",
-        "kind": "file",
-        "path": "export.py",
-        "source": "derived"
-      },
-      {
-        "name": "wiki.py",
-        "kind": "file",
-        "path": "wiki.py",
-        "source": "derived"
-      },
-      {
-        "name": "serve.py",
-        "kind": "file",
-        "path": "serve.py",
-        "source": "derived"
-      },
-      {
-        "name": "manifest.py",
-        "kind": "file",
-        "path": "manifest.py",
-        "source": "derived"
-      },
-      {
-        "name": "validate.py",
-        "kind": "file",
-        "path": "validate.py",
-        "source": "derived"
-      },
-      {
-        "name": "reduce-state.cjs",
-        "kind": "file",
-        "path": "reduce-state.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "gpt-5.4",
-        "kind": "file",
-        "path": "gpt-5.4",
         "source": "derived"
       },
       {
@@ -173,11 +98,71 @@
         "kind": "file",
         "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
         "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-020.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-020.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-config.json",
+        "kind": "config",
+        "path": "research/deep-research-config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-strategy.md",
+        "kind": "doc",
+        "path": "research/deep-research-strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-dashboard.md",
+        "kind": "doc",
+        "path": "research/deep-research-dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 4 of `001-research-graph-context-systems` is a read-only audit of the graphify external Python skill to translate its two-pass codebase knowledge graph patterns into concrete improvements for Code_Environment/Public's existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table grounded in specific `external/graphify/` file:line citations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.448Z",
-    "last_save_at": "2026-04-13T05:11:44.979Z",
+    "last_save_at": "2026-04-13T06:08:11.963Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

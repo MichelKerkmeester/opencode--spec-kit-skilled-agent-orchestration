@@ -22,8 +22,7 @@
       "017",
       "tasks",
       "implementation",
-      "summary",
-      "implementation summary"
+      "summary"
     ],
     "key_topics": [
       "install",
@@ -40,13 +39,10 @@
       "930"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "package.json",
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
       ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
-      "validate_document.py",
-      "INSTALL_GUIDE.md.bak",
       "spec.md",
       "plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/package.json",
@@ -54,12 +50,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "package.json",
-        "kind": "config",
-        "path": "package.json",
-        "source": "derived"
-      },
       {
         "name": "INSTALL_GUIDE.md",
         "kind": "doc",
@@ -70,18 +60,6 @@
         "name": "INSTALL_GUIDE.md.bak",
         "kind": "file",
         "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md.bak",
-        "source": "derived"
-      },
-      {
-        "name": "validate_document.py",
-        "kind": "file",
-        "path": "validate_document.py",
-        "source": "derived"
-      },
-      {
-        "name": "INSTALL_GUIDE.md.bak",
-        "kind": "file",
-        "path": "INSTALL_GUIDE.md.bak",
         "source": "derived"
       },
       {
@@ -133,13 +111,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\n\nVerify",
+        "name": "Purpose Verify",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -149,11 +127,29 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Update",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The install guide (mcp_server/INSTALL_GUIDE.md, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.",
     "created_at": "2026-04-12T09:02:50.308Z",
-    "last_save_at": "2026-04-13T05:11:41.929Z",
+    "last_save_at": "2026-04-13T06:08:08.978Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -89,7 +89,14 @@ import { runPostInsertEnrichment } from './save/post-insert.js';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
 import { atomicIndexMemory } from './save/atomic-index-memory.js';
 import { createMCPErrorResponse } from '../lib/response/envelope.js';
-import { createContentRouter } from '../lib/routing/content-router.js';
+import {
+  buildTier3Prompt,
+  createContentRouter,
+  getTier3Contract,
+  InMemoryRouterCache,
+  type Tier3ClassifierInput,
+  type Tier3RawResponse,
+} from '../lib/routing/content-router.js';
 import { anchorMergeOperation } from '../lib/merge/anchor-merge-operation.js';
 import {
   readThinContinuityRecord,
@@ -128,6 +135,7 @@ import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 const MANUAL_FALLBACK_SOURCE_CLASSIFICATION = 'manual-fallback' as const;
 const ROUTED_CONTINUITY_ANCHOR_ID = '_memory.continuity';
+const tier3RoutingCache = new InMemoryRouterCache();
 
 interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
@@ -699,6 +707,10 @@ function buildRoutedSaveOptions(
   };
 }
 
+function shouldUseCanonicalRouting(params: Pick<AtomicSaveParams, 'routeAs' | 'mergeModeHint' | 'targetAnchorId'>): boolean {
+  return Boolean(params.routeAs || params.mergeModeHint || params.targetAnchorId || isTier3RoutingEnabled());
+}
+
 function pickRoutedIdentityValue(value: unknown): string | null {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
 }
@@ -809,6 +821,130 @@ function normalizeRoutingChunkText(markdown: string): string {
     .replace(/\r\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function isTier3RoutingEnabled(): boolean {
+  return (process.env.SPECKIT_TIER3_ROUTING?.trim().toLowerCase() ?? '') === 'true';
+}
+
+function getTier3RoutingEndpoint(): string | null {
+  const endpoint = process.env.LLM_REFORMULATION_ENDPOINT?.trim();
+  return endpoint ? endpoint.replace(/\/+$/u, '') : null;
+}
+
+function extractTier3MessageText(content: unknown): string | null {
+  if (typeof content === 'string') {
+    const trimmed = content.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+  if (Array.isArray(content)) {
+    const text = content
+      .map((entry) => {
+        if (!entry || typeof entry !== 'object') {
+          return '';
+        }
+        const textValue = (entry as { text?: unknown }).text;
+        return typeof textValue === 'string' ? textValue : '';
+      })
+      .join('')
+      .trim();
+    return text.length > 0 ? text : null;
+  }
+  return null;
+}
+
+function isTier3RawResponseShape(parsed: unknown): parsed is Tier3RawResponse {
+  if (!parsed || typeof parsed !== 'object') {
+    return false;
+  }
+
+  const record = parsed as Record<string, unknown>;
+  return typeof record.category === 'string'
+    && typeof record.confidence === 'number'
+    && typeof record.target_doc === 'string'
+    && typeof record.target_anchor === 'string'
+    && typeof record.merge_mode === 'string'
+    && typeof record.reasoning === 'string';
+}
+
+function parseTier3ClassifierResponse(rawText: string): Tier3RawResponse | null {
+  try {
+    const parsed = JSON.parse(rawText) as Record<string, unknown>;
+    if (!parsed || typeof parsed !== 'object') {
+      return null;
+    }
+    return isTier3RawResponseShape(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function classifyWithTier3Llm(input: Tier3ClassifierInput): Promise<Tier3RawResponse | null> {
+  if (!isTier3RoutingEnabled()) {
+    return null;
+  }
+
+  const endpoint = getTier3RoutingEndpoint();
+  if (!endpoint) {
+    return null;
+  }
+
+  const apiKey = process.env.LLM_REFORMULATION_API_KEY?.trim() ?? '';
+  const contract = getTier3Contract();
+  const prompt = buildTier3Prompt(input);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), contract.timeoutMs);
+
+  try {
+    const response = await fetch(`${endpoint}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
+      },
+      body: JSON.stringify({
+        model: contract.model,
+        messages: [
+          { role: 'system', content: prompt.system },
+          { role: 'user', content: prompt.user },
+        ],
+        reasoning_effort: contract.reasoningEffort,
+        temperature: contract.temperature,
+        max_tokens: contract.maxOutputTokens,
+        response_format: { type: 'json_object' },
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json() as {
+      choices?: Array<{
+        message?: {
+          content?: unknown;
+        };
+      }>;
+    };
+    const rawText = extractTier3MessageText(data.choices?.[0]?.message?.content);
+    return rawText ? parseTier3ClassifierResponse(rawText) : null;
+  } catch {
+    clearTimeout(timeoutId);
+    return null;
+  }
+}
+
+function buildCanonicalRouter() {
+  if (!isTier3RoutingEnabled()) {
+    return createContentRouter();
+  }
+  return createContentRouter({
+    classifyWithTier3: classifyWithTier3Llm,
+    cache: tier3RoutingCache,
+  });
 }
 
 function collapseInlineWhitespace(value: string): string {
@@ -1005,7 +1141,7 @@ async function buildCanonicalAtomicPreparedSave(
 
   const specFolderAbsolute = resolveSpecFolderAbsoluteFromFilePath(params.file_path, preparedMemory.parsed.specFolder);
   const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
-  const router = createContentRouter();
+  const router = buildCanonicalRouter();
   const routingChunkText = normalizeRoutingChunkText(params.content);
   const likelyPhaseAnchor = deriveLikelyPhaseAnchorForCanonicalRouting({
     routingChunkText,
@@ -2237,7 +2373,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
 
   return atomicIndexMemory<PreparedParsedMemory | CanonicalAtomicPrepared>(params, options, {
     prepare: async (currentParams, _context) => {
-      if (currentParams.routeAs || currentParams.mergeModeHint || currentParams.targetAnchorId) {
+      if (shouldUseCanonicalRouting(currentParams)) {
         const canonicalPrepared = await buildCanonicalAtomicPreparedSave(currentParams, database);
         if (canonicalPrepared.status !== 'ready') {
           return canonicalPrepared;

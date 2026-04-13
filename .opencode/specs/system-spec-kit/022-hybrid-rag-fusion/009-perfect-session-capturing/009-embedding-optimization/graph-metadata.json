@@ -22,8 +22,7 @@
       "embedd",
       "verificat",
       "checklist",
-      "summary",
-      "optimization"
+      "summary"
     ],
     "key_topics": [
       "feature",
@@ -40,7 +39,7 @@
       "summary"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "shared/embeddings.ts",
       "scripts/lib/semantic-summarizer.ts",
@@ -50,18 +49,18 @@
       "scripts/tests/memory-indexer-weighting.vitest.ts",
       "mcp_server/tests/embedding-weighting.vitest.ts",
       "mcp_server/tests/embedding-pipeline-weighting.vitest.ts",
-      "node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-indexer-weighting.vitest.ts tests/semantic-signal-golden.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
       "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts tests/embedding-pipeline-weighting.vitest.ts tests/embeddings.vitest.ts tests/handler-memory-save.vitest.ts",
       "memory/16-03-26_20-38__implemented-weighted-document-embedding-input-for.md",
-      "metadata.json",
       "scripts/tests/test-embeddings-behavioral.js",
-      "memory-indexer.ts",
-      "embedding-pipeline.ts",
       "mcp_server/lib/providers/embeddings.ts",
       "shared/index.ts",
       "mcp_server/lib/search/vector-index-queries.ts",
       "mcp_server/lib/cognitive/tier-classifier.ts",
-      "mcp_server/lib/search/vector-index-schema.ts"
+      "mcp_server/lib/search/vector-index-schema.ts",
+      "spec.md",
+      "plan.md",
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -113,12 +112,6 @@
         "source": "derived"
       },
       {
-        "name": "vitest.config.ts",
-        "kind": "code",
-        "path": "node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-indexer-weighting.vitest.ts tests/semantic-signal-golden.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
-        "source": "derived"
-      },
-      {
         "name": "handler-memory-save.vitest.ts",
         "kind": "test",
         "path": "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts tests/embedding-pipeline-weighting.vitest.ts tests/embeddings.vitest.ts tests/handler-memory-save.vitest.ts",
@@ -131,39 +124,45 @@
         "source": "derived"
       },
       {
-        "name": "metadata.json",
-        "kind": "config",
-        "path": "metadata.json",
-        "source": "derived"
-      },
-      {
         "name": "test-embeddings-behavioral.js",
         "kind": "code",
         "path": "scripts/tests/test-embeddings-behavioral.js",
         "source": "derived"
       },
       {
-        "name": "memory-indexer.ts",
+        "name": "index.ts",
         "kind": "code",
-        "path": "memory-indexer.ts",
+        "path": "shared/index.ts",
         "source": "derived"
       },
       {
-        "name": "embedding-pipeline.ts",
+        "name": "vector-index-queries.ts",
         "kind": "code",
-        "path": "embedding-pipeline.ts",
+        "path": "mcp_server/lib/search/vector-index-queries.ts",
         "source": "derived"
       },
       {
-        "name": "embeddings.ts",
+        "name": "tier-classifier.ts",
         "kind": "code",
-        "path": "mcp_server/lib/providers/embeddings.ts",
+        "path": "mcp_server/lib/cognitive/tier-classifier.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.272Z",
-    "last_save_at": "2026-04-13T05:11:41.882Z",
+    "last_save_at": "2026-04-13T06:08:08.941Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

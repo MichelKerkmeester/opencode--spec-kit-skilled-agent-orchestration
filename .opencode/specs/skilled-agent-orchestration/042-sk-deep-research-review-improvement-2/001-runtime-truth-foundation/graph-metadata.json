@@ -22,14 +22,7 @@
       "042.001",
       "tasks",
       "legal stop",
-      "continuedFromRun",
-      "verification checklist",
-      "decision record",
-      "stop reason taxonomy",
-      "claim ledger",
-      "council synthesis",
-      "implementation summary",
-      "stop contract"
+      "continuedFromRun"
     ],
     "key_topics": [
       "042",
@@ -46,11 +39,8 @@
       "implementation"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "legalStop.blockedBy",
-      "legalStop.gateResults",
-      "legalStop.replayInputs",
       "scratch/codex-gpt54-deep-research.md",
       ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/consolidated-research-report.md",
       ".opencode/skill/sk-deep-research/SKILL.md",
@@ -67,27 +57,12 @@
       ".opencode/skill/sk-deep-review/references/convergence.md",
       ".opencode/skill/sk-deep-review/references/state_format.md",
       ".opencode/skill/sk-deep-review/references/quick_reference.md",
-      ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml"
+      ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml",
+      ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+      ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+      ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md"
     ],
     "entities": [
-      {
-        "name": "legalStop.blockedBy",
-        "kind": "file",
-        "path": "legalStop.blockedBy",
-        "source": "derived"
-      },
-      {
-        "name": "legalStop.gateResults",
-        "kind": "file",
-        "path": "legalStop.gateResults",
-        "source": "derived"
-      },
-      {
-        "name": "legalStop.replayInputs",
-        "kind": "file",
-        "path": "legalStop.replayInputs",
-        "source": "derived"
-      },
       {
         "name": "codex-gpt54-deep-research.md",
         "kind": "doc",
@@ -155,21 +130,39 @@
         "source": "derived"
       },
       {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skill/sk-deep-review/SKILL.md",
+        "name": "review_mode_contract.yaml",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/review_mode_contract.yaml",
         "source": "derived"
       },
       {
-        "name": "loop_protocol.md",
+        "name": "deep_review_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_strategy.md",
         "kind": "doc",
-        "path": ".opencode/skill/sk-deep-review/references/loop_protocol.md",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_review_dashboard.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-review/assets/deep_review_dashboard.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This packet converts the consolidated agentic-systems research into one implementation plan for the two autonomous deep-loop products: `sk-deep-research` and `sk-deep-review`. The work is centered on runtime truth, not feature sprawl: real stop reasons, legal completion gates, resume-from-run semantics, auditability, claim verification, behavior-first tests, and richer dashboards that make loop state easier to trust and resume.",
     "created_at": "2026-04-12T09:02:50.192Z",
-    "last_save_at": "2026-04-13T05:11:41.791Z",
+    "last_save_at": "2026-04-13T06:08:08.864Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

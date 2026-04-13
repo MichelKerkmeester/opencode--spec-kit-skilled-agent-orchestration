@@ -45,9 +45,8 @@
       "sub-phases"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "generate-context.js",
       "implementation-summary.md",
       "spec.md",
       "plan.md",
@@ -65,16 +64,9 @@
       ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts",
       ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-      "experimental.session.compacting",
-      "context-server.ts"
+      "decision-record.md"
     ],
     "entities": [
-      {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
-        "source": "derived"
-      },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
@@ -164,11 +156,17 @@
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts",
         "source": "derived"
+      },
+      {
+        "name": "memory-crud-health.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet converts the completed `001-research-hybrid-rag-fusion-systems` work into two coordinated tracks: nine implementation-ready adopt-now sub-phases and nine investigation sub-phases that answer the remaining prototype-later, measurement, and new-feature questions without widening current scope. It preserves Public's current authorities and only imports proven patterns as thin facades. The adopt-now track covers authority freezing, `memory_review`, JSON-primary save ergonomics, compaction preservation, bootstrap guidance, doctor/debug overlays, workflow routing guidance, rollout evidence gates, and a bounded prototype backlog. The investigation track covers passive capture, tool-profile bundling, drift-checker applicability, FSRS decay defaults, BM25 field weighting, RRF/hybrid evaluation, connected-doc hints, temporal facts, and wake-up layering.",
     "created_at": "2026-04-13T04:56:07.086Z",
-    "last_save_at": "2026-04-13T05:11:45.190Z",
+    "last_save_at": "2026-04-13T06:08:12.100Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

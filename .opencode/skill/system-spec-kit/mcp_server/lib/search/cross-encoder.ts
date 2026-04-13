@@ -62,8 +62,8 @@ const PROVIDER_CONFIG: Record<string, ProviderConfigEntry> = {
 const LENGTH_PENALTY = {
   shortThreshold: 50,
   longThreshold: 2000,
-  shortPenalty: 0.9,
-  longPenalty: 0.95,
+  shortPenalty: 1.0,
+  longPenalty: 1.0,
 } as const;
 
 /* ───────────────────────────────────────────────────────────────
@@ -106,6 +106,15 @@ interface RerankerStatus {
     p95: number;
     count: number;
   };
+  cache: {
+    hits: number;
+    misses: number;
+    staleHits: number;
+    evictions: number;
+    entries: number;
+    maxEntries: number;
+    ttlMs: number;
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -115,6 +124,12 @@ interface RerankerStatus {
 const cache = new Map<string, { results: RerankResult[]; timestamp: number }>();
 const CACHE_TTL = 300000; // 5 minutes
 const MAX_CACHE_ENTRIES = 200;
+const cacheTelemetry = {
+  hits: 0,
+  misses: 0,
+  staleHits: 0,
+  evictions: 0,
+};
 
 /**
  * Phase C: Enforce cache size bound.
@@ -132,7 +147,10 @@ function enforceCacheBound(): void {
       oldestKey = key;
     }
   }
-  if (oldestKey) cache.delete(oldestKey);
+  if (oldestKey) {
+    cache.delete(oldestKey);
+    cacheTelemetry.evictions++;
+  }
 }
 
 const latencyTracker: { durations: number[] } = { durations: [] };
@@ -210,26 +228,15 @@ function resolveProvider(): string | null {
 ----------------------------------------------------------------*/
 
 function calculateLengthPenalty(contentLength: number): number {
-  if (contentLength < LENGTH_PENALTY.shortThreshold) return LENGTH_PENALTY.shortPenalty;
-  if (contentLength > LENGTH_PENALTY.longThreshold) return LENGTH_PENALTY.longPenalty;
+  void contentLength;
   return 1.0;
 }
 
 function applyLengthPenalty(
   results: RerankResult[]
 ): RerankResult[] {
-  return results
-    .map(r => {
-      const content = (r.content as string) || '';
-      const penalty = calculateLengthPenalty(content.length);
-      const rerankerScore = r.rerankerScore * penalty;
-      return {
-        ...r,
-        rerankerScore,
-        score: rerankerScore,
-      };
-    })
-    .sort((a, b) => b.score - a.score);
+  // Length penalty removed - in an embedded RAG system, penalizing docs for natural size is counterproductive (78.6% of spec docs exceed 2000 chars)
+  return [...results];
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -426,8 +433,18 @@ async function rerankResults(
   if (useCache) {
     const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
     const cached = cache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return cached.results.slice(0, limit);
+    if (cached) {
+      if (Date.now() - cached.timestamp < CACHE_TTL) {
+        cacheTelemetry.hits++;
+        return cached.results.slice(0, limit);
+      }
+
+      cacheTelemetry.misses++;
+      cacheTelemetry.staleHits++;
+      cacheTelemetry.evictions++;
+      cache.delete(cacheKey);
+    } else {
+      cacheTelemetry.misses++;
     }
   }
 
@@ -519,11 +536,24 @@ function getRerankerStatus(): RerankerStatus {
       p95: Math.round(p95),
       count: durations.length,
     },
+    cache: {
+      hits: cacheTelemetry.hits,
+      misses: cacheTelemetry.misses,
+      staleHits: cacheTelemetry.staleHits,
+      evictions: cacheTelemetry.evictions,
+      entries: cache.size,
+      maxEntries: MAX_CACHE_ENTRIES,
+      ttlMs: CACHE_TTL,
+    },
   };
 }
 
 function resetSession(): void {
   cache.clear();
+  cacheTelemetry.hits = 0;
+  cacheTelemetry.misses = 0;
+  cacheTelemetry.staleHits = 0;
+  cacheTelemetry.evictions = 0;
   latencyTracker.durations = [];
   circuitBreakers.clear();
 }

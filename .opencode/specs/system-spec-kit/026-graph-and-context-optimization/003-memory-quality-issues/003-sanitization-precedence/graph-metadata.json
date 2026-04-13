@@ -22,17 +22,7 @@
       "pr-6",
       "trigger phrase sanitizer",
       "decision precedence",
-      "phase 3 tasks",
-      "pr-5 tasks",
-      "pr-6 tasks",
-      "sanitization precedence tasks",
-      "phase 3 checklist",
-      "f-ac3 checklist",
-      "f-ac2 checklist",
-      "degraded payload checklist",
-      "phase 3 implementation summary",
-      "sanitization precedence summary",
-      "d3 d2 closeout"
+      "phase 3 tasks"
     ],
     "key_topics": [
       "phase",
@@ -49,7 +39,7 @@
       "payload"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
       ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
@@ -58,19 +48,19 @@
       ".opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-sanitizer.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr5.vitest.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase3-pr6.vitest.ts",
-      "npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts",
       "checklist.md",
       "implementation-summary.md",
       "lib/trigger-phrase-sanitizer.ts",
-      "validate.sh",
-      "generate-context.js",
-      "workflow.ts",
-      "semantic-signal-extractor.ts",
-      "decision-extractor.ts",
-      "trigger-phrase-sanitizer.ts",
       "spec.md",
       "plan.md",
-      "tasks.md"
+      "tasks.md",
+      "tests/trigger-phrase-sanitizer.vitest.ts",
+      "tests/memory-quality-phase3-pr5.vitest.ts",
+      "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts",
+      "tests/memory-quality-phase3-pr6.vitest.ts",
+      "rg -n \"PR-5|PR-6|F-AC2|F-AC3|003→004|003 -> 004\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/spec.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/plan.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/tasks.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/checklist.md",
+      "scripts/lib/trigger-phrase-sanitizer.ts",
+      "scripts/core/workflow.ts"
     ],
     "entities": [
       {
@@ -116,15 +106,9 @@
         "source": "derived"
       },
       {
-        "name": "memory-quality-phase3-pr5.vitest.ts",
-        "kind": "test",
-        "path": "npx vitest run --config ../mcp_server/vitest.config.ts tests/trigger-phrase-sanitizer.vitest.ts tests/memory-quality-phase3-pr5.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": "rg -n \"PR-5|PR-6|F-AC2|F-AC3|003→004|003 -> 004\" .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/spec.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/plan.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/tasks.md .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/003-sanitization-precedence/checklist.md",
         "source": "derived"
       },
       {
@@ -134,45 +118,51 @@
         "source": "derived"
       },
       {
-        "name": "trigger-phrase-sanitizer.ts",
-        "kind": "code",
-        "path": "lib/trigger-phrase-sanitizer.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "generate-context.js",
-        "kind": "code",
-        "path": "generate-context.js",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "workflow.ts",
+        "name": "memory-quality-phase1.vitest.ts",
+        "kind": "test",
+        "path": "cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/memory-quality-phase1.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "semantic-signal-extractor.ts",
-        "kind": "code",
-        "path": "semantic-signal-extractor.ts",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "decision-extractor.ts",
-        "kind": "code",
-        "path": "decision-extractor.ts",
+        "name": "Decision Precedence",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Overview",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Phase 3 is the packet's P2 child spec. It isolates the two behavior-sensitive fixes that the parent packet intentionally deferred until the low-risk foundation and metadata phases landed first: PR-5 for D3 trigger-phrase sanitization and PR-6 for the D2 precedence-only decision gate. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/spec.md:177-183] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:216-223] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/research/research.md:1158-1159]",
     "created_at": "2026-04-12T09:02:53.458Z",
-    "last_save_at": "2026-04-13T05:11:44.987Z",
+    "last_save_at": "2026-04-13T06:08:11.971Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

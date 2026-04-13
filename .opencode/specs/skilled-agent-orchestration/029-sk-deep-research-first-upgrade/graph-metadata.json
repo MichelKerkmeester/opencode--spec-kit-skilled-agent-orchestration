@@ -22,9 +22,7 @@
       "first upgrade tasks",
       "implementation",
       "summary",
-      "deep",
-      "research",
-      "improving"
+      "deep"
     ],
     "key_topics": [
       "029",
@@ -38,10 +36,10 @@
       "tasks",
       "implementation",
       "summary",
-      "improving"
+      "sk-deep-research"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/research/research.md",
       ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/implementation-summary.md",
@@ -50,19 +48,16 @@
       "plan.md",
       "tasks.md",
       "research/research.md",
-      "external_reference.md",
       ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/plan.md",
       ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/tasks.md",
-      "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-      "deep-research-dashboard.md",
-      "research-ideas.md",
-      "parking-lot.md",
       ".opencode/skill/sk-deep-research/SKILL.md",
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
       ".opencode/skill/sk-deep-research/references/convergence.md",
       ".opencode/skill/sk-deep-research/references/state_format.md",
       ".opencode/skill/sk-deep-research/references/quick_reference.md",
-      ".opencode/skill/sk-deep-research/assets/deep_research_config.json"
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -84,36 +79,6 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "research.md",
-        "kind": "doc",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "external_reference.md",
-        "kind": "doc",
-        "path": "external_reference.md",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
         "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/plan.md",
@@ -123,30 +88,6 @@
         "name": "tasks.md",
         "kind": "doc",
         "path": ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh",
-        "source": "derived"
-      },
-      {
-        "name": "deep-research-dashboard.md",
-        "kind": "doc",
-        "path": "deep-research-dashboard.md",
-        "source": "derived"
-      },
-      {
-        "name": "research-ideas.md",
-        "kind": "doc",
-        "path": "research-ideas.md",
-        "source": "derived"
-      },
-      {
-        "name": "parking-lot.md",
-        "kind": "doc",
-        "path": "parking-lot.md",
         "source": "derived"
       },
       {
@@ -160,11 +101,65 @@
         "kind": "doc",
         "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
         "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "state_format.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/state_format.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_strategy.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "First Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Capture",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The first sk-deep-research upgrade needed grounded input from comparable autonomous research systems. Without a documented comparison against ResearcherSkill and autoresearch, upgrade choices would lean on intuition instead of evidence.",
     "created_at": "2026-04-12T09:02:50.176Z",
-    "last_save_at": "2026-04-13T05:11:41.772Z",
+    "last_save_at": "2026-04-13T06:08:08.844Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

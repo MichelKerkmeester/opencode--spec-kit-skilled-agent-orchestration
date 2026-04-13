@@ -26,7 +26,7 @@
       "never"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/agent/agent-improver.md",
       ".claude/agents/agent-improver.md",
@@ -37,17 +37,14 @@
       ".opencode/command/improve/assets/improve_agent-improver_confirm.yaml",
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/skill/scripts/skill_advisor.py",
-      "agent-improver.md",
       "sk-improve-agent/SKILL.md",
       "generate-profile.cjs --agent=.opencode/agent/agent-improver.md",
       "implementation-summary.md",
-      "run-benchmark.cjs",
-      "agent-improvement-state.jsonl",
-      "agent-improvement-dashboard.md",
-      "experiment-registry.json",
-      "integration-report.json",
-      "dynamic-profile.json",
-      "improve/agent.md"
+      "improve/agent.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -57,21 +54,9 @@
         "source": "derived"
       },
       {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".claude/agents/agent-improver.md",
-        "source": "derived"
-      },
-      {
         "name": "agent-improver.toml",
         "kind": "file",
         "path": ".codex/agents/agent-improver.toml",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": ".agents/agents/agent-improver.md",
         "source": "derived"
       },
       {
@@ -105,51 +90,63 @@
         "source": "derived"
       },
       {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": "agent-improver.md",
-        "source": "derived"
-      },
-      {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": "sk-improve-agent/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improver.md",
-        "kind": "doc",
-        "path": "generate-profile.cjs --agent=.opencode/agent/agent-improver.md",
-        "source": "derived"
-      },
-      {
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "run-benchmark.cjs",
-        "kind": "file",
-        "path": "run-benchmark.cjs",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improvement-state.jsonl",
-        "kind": "file",
-        "path": "agent-improvement-state.jsonl",
-        "source": "derived"
-      },
-      {
-        "name": "agent-improvement-dashboard.md",
+        "name": "spec.md",
         "kind": "doc",
-        "path": "agent-improvement-dashboard.md",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Improver Self",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Solution Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.",
     "created_at": "2026-04-13T04:55:07.905Z",
-    "last_save_at": "2026-04-13T05:11:41.789Z",
+    "last_save_at": "2026-04-13T06:08:08.861Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

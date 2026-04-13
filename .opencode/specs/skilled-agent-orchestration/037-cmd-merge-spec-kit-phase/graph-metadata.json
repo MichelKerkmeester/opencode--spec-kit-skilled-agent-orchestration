@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "phase",
-      "verification",
-      "checklist",
-      "summary",
-      "implementation summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -42,12 +39,9 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "README.txt",
-      "CLAUDE.md",
       ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
-      "optional_workflows.phase_decomposition",
       ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
       ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
       ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
@@ -60,34 +54,19 @@
       "spec_kit/assets/spec_kit_complete_confirm.yaml",
       "spec_kit/README.txt",
       "plan.md",
-      "create.sh",
-      "recommend-level.sh",
-      "spec_kit_complete_auto.yaml",
-      ".opencode/command/spec_kit/plan.md"
+      ".opencode/command/spec_kit/plan.md",
+      ".opencode/command/spec_kit/assets/spec_kit_phase_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_phase_confirm.yaml",
+      "spec.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "README.txt",
-        "kind": "file",
-        "path": "README.txt",
-        "source": "derived"
-      },
-      {
-        "name": "CLAUDE.md",
-        "kind": "doc",
-        "path": "CLAUDE.md",
-        "source": "derived"
-      },
       {
         "name": "spec_kit_plan_auto.yaml",
         "kind": "config",
         "path": ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "optional_workflows.phase_decomposition",
-        "kind": "file",
-        "path": "optional_workflows.phase_decomposition",
         "source": "derived"
       },
       {
@@ -127,45 +106,63 @@
         "source": "derived"
       },
       {
-        "name": "spec_kit_plan_auto.yaml",
-        "kind": "config",
-        "path": "spec_kit/assets/spec_kit_plan_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_plan_confirm.yaml",
-        "kind": "config",
-        "path": "spec_kit/assets/spec_kit_plan_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_complete_auto.yaml",
-        "kind": "config",
-        "path": "spec_kit/assets/spec_kit_complete_auto.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "spec_kit_complete_confirm.yaml",
-        "kind": "config",
-        "path": "spec_kit/assets/spec_kit_complete_confirm.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "README.txt",
-        "kind": "file",
-        "path": "spec_kit/README.txt",
-        "source": "derived"
-      },
-      {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": ".opencode/command/spec_kit/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Eliminate",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The `/spec_kit:phase` command is a standalone 7-step workflow that only creates folder structure (parent + N children) without doing any planning or implementation. Users must then separately invoke `/spec_kit:plan` per child phase. This three-command chain (phase -> plan per child -> implement per child) adds friction. The phase decomposition capability should be an integrated option within the existing plan and complete workflows, following the same pattern as the existing `:with-research` flag.",
     "created_at": "2026-04-12T09:02:50.181Z",
-    "last_save_at": "2026-04-13T05:11:41.778Z",
+    "last_save_at": "2026-04-13T06:08:08.850Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

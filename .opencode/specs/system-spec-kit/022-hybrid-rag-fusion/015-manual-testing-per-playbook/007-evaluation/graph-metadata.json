@@ -22,15 +22,7 @@
       "evaluation test plan",
       "ablation test plan",
       "dashboard test plan",
-      "evaluation tasks",
-      "evaluation test tasks",
-      "ablation dashboard tasks",
-      "evaluation checklist",
-      "evaluation verification",
-      "ablation dashboard checklist",
-      "evaluation summary",
-      "evaluation results",
-      "ablation dashboard results"
+      "evaluation tasks"
     ],
     "key_topics": [
       "evaluation",
@@ -47,12 +39,11 @@
       "history"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "mcp_server/lib/eval/ablation-framework.ts",
       "mcp_server/handlers/eval-reporting.ts",
       "mcp_server/lib/eval/reporting-dashboard.ts",
-      "AblationResult.delta",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/07--evaluation/026-ablation-studies-eval-run-ablation.md",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md",
       ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/046-anchor-aware-chunk-thinning-r7.md",
@@ -62,11 +53,8 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "eval-db.ts",
-      "ground-truth-data.ts",
       "spec.md",
-      "plan.md",
-      "data.report.results"
+      "plan.md"
     ],
     "entities": [
       {
@@ -85,12 +73,6 @@
         "name": "reporting-dashboard.ts",
         "kind": "code",
         "path": "mcp_server/lib/eval/reporting-dashboard.ts",
-        "source": "derived"
-      },
-      {
-        "name": "AblationResult.delta",
-        "kind": "file",
-        "path": "AblationResult.delta",
         "source": "derived"
       },
       {
@@ -148,27 +130,33 @@
         "source": "derived"
       },
       {
-        "name": "eval-db.ts",
-        "kind": "code",
-        "path": "eval-db.ts",
-        "source": "derived"
-      },
-      {
-        "name": "ground-truth-data.ts",
-        "kind": "code",
-        "path": "ground-truth-data.ts",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The evaluation category contains 6 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement), reporting dashboard (sprint/channel trend aggregation), evaluation dashboard generation, ablation study execution with custom parameters, baseline comparison reporting, and learning history retrieval. The four new scenarios (EX-046 through EX-049) expand coverage to comprehensive evaluation workflows and historical analysis. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.",
     "created_at": "2026-04-12T09:02:50.294Z",
-    "last_save_at": "2026-04-13T05:11:41.915Z",
+    "last_save_at": "2026-04-13T06:08:08.965Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

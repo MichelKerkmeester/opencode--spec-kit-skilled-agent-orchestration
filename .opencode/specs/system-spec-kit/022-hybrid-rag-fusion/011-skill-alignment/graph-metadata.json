@@ -25,8 +25,7 @@
       "checklist",
       "summary",
       "implementation summary",
-      "011",
-      "skill"
+      "011"
     ],
     "key_topics": [
       "skill",
@@ -43,7 +42,7 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "spec.md",
       "plan.md",
@@ -70,31 +69,31 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "tasks.md",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks.md",
         "source": "derived"
       },
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "implementation-summary.md",
+        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md",
         "source": "derived"
       },
       {
@@ -158,15 +157,15 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **4 commands**, with retrieval documented under `/memory:search` and shared-memory lifecycle routed through `/memory:manage shared`.",
     "created_at": "2026-04-12T09:02:50.284Z",
-    "last_save_at": "2026-04-13T05:11:41.904Z",
+    "last_save_at": "2026-04-13T06:08:08.955Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

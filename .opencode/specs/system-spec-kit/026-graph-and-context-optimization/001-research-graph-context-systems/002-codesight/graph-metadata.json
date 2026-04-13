@@ -22,15 +22,7 @@
       "002-codesight task list",
       "codesight deep-research tasks",
       "002-codesight checklist",
-      "002-codesight verification",
-      "codesight verification",
-      "002-codesight decision record",
-      "002-codesight ADR",
-      "codesight engine choice",
-      "codesight sandbox extract workaround",
-      "002-codesight implementation summary",
-      "002-codesight outcome",
-      "codesight research complete"
+      "002-codesight verification"
     ],
     "key_topics": [
       "002-codesight",
@@ -47,7 +39,7 @@
       "execution"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
       "external/src/ast/loader.ts",
@@ -55,11 +47,6 @@
       "external/src/generators/ai-config.ts",
       "external/src/detectors/blast-radius.ts",
       "external/src/eval.ts",
-      "pnpm-workspace.yaml",
-      "package.json",
-      "turbo.json",
-      "nx.json",
-      "lerna.json",
       "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
       "research/deep-research-config.json",
       "research/deep-research-state.jsonl",
@@ -68,7 +55,12 @@
       "research/findings-registry.json",
       "implementation-summary.md",
       "memory/metadata.json",
-      "CLAUDE.md"
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      "external/src/ast/extract-routes.ts",
+      "external/src/types.ts",
+      "external/src/detectors/graph.ts",
+      "external/src/detectors/contracts.ts"
     ],
     "entities": [
       {
@@ -108,36 +100,6 @@
         "source": "derived"
       },
       {
-        "name": "pnpm-workspace.yaml",
-        "kind": "config",
-        "path": "pnpm-workspace.yaml",
-        "source": "derived"
-      },
-      {
-        "name": "package.json",
-        "kind": "config",
-        "path": "package.json",
-        "source": "derived"
-      },
-      {
-        "name": "turbo.json",
-        "kind": "config",
-        "path": "turbo.json",
-        "source": "derived"
-      },
-      {
-        "name": "nx.json",
-        "kind": "config",
-        "path": "nx.json",
-        "source": "derived"
-      },
-      {
-        "name": "lerna.json",
-        "kind": "config",
-        "path": "lerna.json",
-        "source": "derived"
-      },
-      {
         "name": "codex-iter-NNN-output.md",
         "kind": "doc",
         "path": "codex exec --model gpt-5.4 -c model_reasoning_effort=\"high\" --sandbox read-only -o /tmp/codex-iter-NNN-output.md",
@@ -166,11 +128,41 @@
         "kind": "doc",
         "path": "research/deep-research-dashboard.md",
         "source": "derived"
+      },
+      {
+        "name": "findings-registry.json",
+        "kind": "config",
+        "path": "research/findings-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "metadata.json",
+        "kind": "config",
+        "path": "memory/metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-13T05:11:44.976Z",
+    "last_save_at": "2026-04-13T06:08:11.961Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

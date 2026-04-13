@@ -33,14 +33,7 @@
       "P2 D2 D3",
       "P3 D5 D6",
       "memory quality tasks",
-      "research tasks complete",
-      "remediation task placeholder",
-      "memory quality parent checklist",
-      "packet closeout checklist",
-      "phase rollup evidence",
-      "memory quality parent implementation summary",
-      "five phase closeout summary",
-      "pr1 pr11 packet summary"
+      "research tasks complete"
     ],
     "key_topics": [
       "memory",
@@ -57,7 +50,7 @@
       "map"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "checklist.md",
@@ -69,34 +62,22 @@
       "005-operations-tail-prs/checklist.md",
       "plan.md",
       "tasks.md",
-      "gpt-5.4",
-      "workflow.ts",
-      "post-save-review.ts",
-      "find-predecessor-memory.ts",
       "005-operations-tail-prs/spec.md",
       "005-operations-tail-prs/implementation-summary.md",
       "006-memory-duplication-reduction/checklist.md",
       "006-memory-duplication-reduction/implementation-summary.md",
       "006-memory-duplication-reduction/tasks.md",
-      "005-operations-tail-prs/telemetry-catalog.md"
+      "005-operations-tail-prs/telemetry-catalog.md",
+      "001-foundation-templates-truncation/implementation-summary.md",
+      "001-foundation-templates-truncation/plan.md",
+      "001-foundation-templates-truncation/tasks.md",
+      "scripts/lib/trigger-phrase-sanitizer.ts"
     ],
     "entities": [
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
+        "path": "005-operations-tail-prs/spec.md",
         "source": "derived"
       },
       {
@@ -106,81 +87,93 @@
         "source": "derived"
       },
       {
-        "name": "checklist.md",
+        "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "002-single-owner-metadata/checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "003-sanitization-precedence/checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "004-heuristics-refactor-guardrails/checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "005-operations-tail-prs/checklist.md",
+        "path": "005-operations-tail-prs/implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": "001-foundation-templates-truncation/plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "tasks.md",
+        "path": "006-memory-duplication-reduction/tasks.md",
         "source": "derived"
       },
       {
-        "name": "gpt-5.4",
-        "kind": "file",
-        "path": "gpt-5.4",
-        "source": "derived"
-      },
-      {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "workflow.ts",
-        "source": "derived"
-      },
-      {
-        "name": "post-save-review.ts",
-        "kind": "code",
-        "path": "post-save-review.ts",
-        "source": "derived"
-      },
-      {
-        "name": "find-predecessor-memory.ts",
-        "kind": "code",
-        "path": "find-predecessor-memory.ts",
-        "source": "derived"
-      },
-      {
-        "name": "spec.md",
+        "name": "telemetry-catalog.md",
         "kind": "doc",
-        "path": "005-operations-tail-prs/spec.md",
+        "path": "005-operations-tail-prs/telemetry-catalog.md",
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "005-operations-tail-prs/implementation-summary.md",
+        "name": "trigger-phrase-sanitizer.ts",
+        "kind": "code",
+        "path": "scripts/lib/trigger-phrase-sanitizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Quality Backend Improvements",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Packet Shape",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research State",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Rollout Gate Matrix",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The original research packet identified eight distinct JSON-mode memory defects across content shaping, metadata consistency, lineage capture, git provenance, and template structure. Shipping only the research would have left the save pipeline unrepaired, and shipping only the narrow code fixes would have left the packet without phase-level proof, operational tail decisions, or a durable closeout surface.",
     "created_at": "2026-04-12T09:02:53.454Z",
-    "last_save_at": "2026-04-13T05:11:44.984Z",
+    "last_save_at": "2026-04-13T06:08:11.968Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

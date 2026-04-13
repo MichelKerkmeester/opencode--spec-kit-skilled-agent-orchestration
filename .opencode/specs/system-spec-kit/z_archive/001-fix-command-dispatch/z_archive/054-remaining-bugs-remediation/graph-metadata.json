@@ -22,9 +22,7 @@
       "checklist",
       "decision",
       "record",
-      "decision record",
-      "summary",
-      "implementation summary"
+      "decision record"
     ],
     "key_topics": [
       "spec",
@@ -38,18 +36,16 @@
       "checklist",
       "decision",
       "record",
-      "summary"
+      "following"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "mcp_server/lib/vector-index.js",
       "mcp_server/context-server.js",
       "scripts/generate-context.js",
       "mcp_server/lib/memory-parser.js",
       "mcp_server/configs/search-weights.json",
-      "fs.statSync(dbPath).mtimeMs",
-      "options.autoClean",
       "decision-record.md",
       "spec.md",
       "plan.md",
@@ -86,18 +82,6 @@
         "name": "search-weights.json",
         "kind": "config",
         "path": "mcp_server/configs/search-weights.json",
-        "source": "derived"
-      },
-      {
-        "name": "fs.statSync(dbPath).mtimeMs",
-        "kind": "file",
-        "path": "fs.statSync(dbPath).mtimeMs",
-        "source": "derived"
-      },
-      {
-        "name": "options.autoClean",
-        "kind": "file",
-        "path": "options.autoClean",
         "source": "derived"
       },
       {
@@ -149,7 +133,19 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\n\nFollowing",
+        "name": "Problem Statement Following",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Impact Assessment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Bug Inventory",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -157,7 +153,7 @@
     ],
     "causal_summary": "Following comprehensive analysis of spec folders 052-codebase-fixes and 053-script-analysis-testing, along with a deep bug hunt of the Spec Kit Memory system, **13 bugs** were identified that require remediation:",
     "created_at": "2026-04-12T09:02:53.534Z",
-    "last_save_at": "2026-04-13T05:11:45.093Z",
+    "last_save_at": "2026-04-13T06:08:12.041Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

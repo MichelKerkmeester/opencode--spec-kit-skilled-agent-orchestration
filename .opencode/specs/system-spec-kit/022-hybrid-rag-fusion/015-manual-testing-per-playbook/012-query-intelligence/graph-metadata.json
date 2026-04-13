@@ -22,18 +22,7 @@
       "query decomposition",
       "phase 012 execution plan",
       "query intelligence manual test plan",
-      "query intelligence execution",
-      "phase 012 plan",
-      "phase 012 tasks",
-      "query intelligence tasks",
-      "query intelligence task tracker",
-      "phase 012 checklist",
-      "query intelligence verification checklist",
-      "query intelligence checklist",
-      "phase 012 implementation summary",
-      "query intelligence execution summary",
-      "query intelligence test results",
-      "phase 012 verdicts"
+      "query intelligence execution"
     ],
     "key_topics": [
       "query",
@@ -50,13 +39,8 @@
       "036"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      "QUALITY_FLOOR=0.005",
-      "Sprint3PipelineMeta.truncation",
-      "traceMetadata.confidenceTruncation",
-      "LOW_CONFIDENCE_THRESHOLD=0.45",
-      "MIN_MATCH_THRESHOLD=0.15",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
@@ -64,46 +48,10 @@
       "mcp_server/lib/search/pipeline/stage1-candidate-gen.ts",
       "mcp_server/lib/search/query-surrogates.ts",
       "mcp_server/lib/search/surrogate-storage.ts",
-      "query-classifier.ts",
-      "query-router.ts",
-      "rsf-fusion.ts",
-      "hybrid-search.ts",
-      "channel-representation.ts",
-      "channel-enforcement.ts",
-      "confidence-truncation.ts",
-      "dynamic-token-budget.ts"
+      "spec.md",
+      "plan.md"
     ],
     "entities": [
-      {
-        "name": "QUALITY_FLOOR=0.005",
-        "kind": "file",
-        "path": "QUALITY_FLOOR=0.005",
-        "source": "derived"
-      },
-      {
-        "name": "Sprint3PipelineMeta.truncation",
-        "kind": "file",
-        "path": "Sprint3PipelineMeta.truncation",
-        "source": "derived"
-      },
-      {
-        "name": "traceMetadata.confidenceTruncation",
-        "kind": "file",
-        "path": "traceMetadata.confidenceTruncation",
-        "source": "derived"
-      },
-      {
-        "name": "LOW_CONFIDENCE_THRESHOLD=0.45",
-        "kind": "file",
-        "path": "LOW_CONFIDENCE_THRESHOLD=0.45",
-        "source": "derived"
-      },
-      {
-        "name": "MIN_MATCH_THRESHOLD=0.15",
-        "kind": "file",
-        "path": "MIN_MATCH_THRESHOLD=0.15",
-        "source": "derived"
-      },
       {
         "name": "tasks.md",
         "kind": "doc",
@@ -147,33 +95,63 @@
         "source": "derived"
       },
       {
-        "name": "query-classifier.ts",
-        "kind": "code",
-        "path": "query-classifier.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "query-router.ts",
-        "kind": "code",
-        "path": "query-router.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "rsf-fusion.ts",
-        "kind": "code",
-        "path": "rsf-fusion.ts",
+        "name": "Feature Specific",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "hybrid-search.ts",
-        "kind": "code",
-        "path": "hybrid-search.ts",
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Not Started",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Manual",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "Manual query-intelligence scenarios for the Spec Kit Memory system live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated query-intelligence packet, Phase 012 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Wave 2-5 additions introduce LLM reformulation, HyDE shadow generation, query surrogates, and query decomposition.",
     "created_at": "2026-04-12T09:02:50.299Z",
-    "last_save_at": "2026-04-13T05:11:41.919Z",
+    "last_save_at": "2026-04-13T06:08:08.968Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

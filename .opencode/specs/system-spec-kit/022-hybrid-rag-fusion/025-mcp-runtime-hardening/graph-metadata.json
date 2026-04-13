@@ -22,8 +22,7 @@
       "runtime hardening tasks",
       "025 mcp hardening checklist",
       "runtime hardening verification",
-      "025 mcp hardening summary",
-      "runtime hardening implementation"
+      "025 mcp hardening summary"
     ],
     "key_topics": [
       "mcp",
@@ -40,10 +39,8 @@
       "025"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "data.error",
-      "data.details",
       "lib/utils/cleanup-helpers.ts",
       "mcp_server/tests/db-dimension-integrity.vitest.ts",
       "mcp_server/tests/lifecycle-shutdown.vitest.ts",
@@ -54,28 +51,17 @@
       "mcp_server/context-server.ts",
       ".opencode/specs/descriptions.json",
       "lib/errors/core.ts",
-      "db-dimension-integrity.vitest.ts",
-      "context-server.ts",
-      "lifecycle-shutdown.vitest.ts",
-      "stage2b-enrichment-extended.vitest.ts",
-      "cleanup-helpers.ts",
       "tests/db-dimension-integrity.vitest.ts",
       "tests/lifecycle-shutdown.vitest.ts",
-      "tests/stage2b-enrichment-extended.vitest.ts"
+      "tests/stage2b-enrichment-extended.vitest.ts",
+      "tests/error-sanitization.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "data.error",
-        "kind": "file",
-        "path": "data.error",
-        "source": "derived"
-      },
-      {
-        "name": "data.details",
-        "kind": "file",
-        "path": "data.details",
-        "source": "derived"
-      },
       {
         "name": "cleanup-helpers.ts",
         "kind": "code",
@@ -113,12 +99,6 @@
         "source": "derived"
       },
       {
-        "name": "cleanup-helpers.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/utils/cleanup-helpers.ts",
-        "source": "derived"
-      },
-      {
         "name": "context-server.ts",
         "kind": "code",
         "path": "mcp_server/context-server.ts",
@@ -131,39 +111,57 @@
         "source": "derived"
       },
       {
-        "name": "core.ts",
-        "kind": "code",
-        "path": "lib/errors/core.ts",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "db-dimension-integrity.vitest.ts",
-        "kind": "test",
-        "path": "db-dimension-integrity.vitest.ts",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "context-server.ts",
-        "kind": "code",
-        "path": "context-server.ts",
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "lifecycle-shutdown.vitest.ts",
-        "kind": "test",
-        "path": "lifecycle-shutdown.vitest.ts",
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
         "source": "derived"
       },
       {
-        "name": "stage2b-enrichment-extended.vitest.ts",
-        "kind": "test",
-        "path": "stage2b-enrichment-extended.vitest.ts",
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Hardening",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The `024-codex-memory-mcp-fix` packet documented six follow-on recommendations (T020-T025) for runtime hardening, but none were implemented. Key gaps: no integration tests for custom-path DB + embedding-dimension mismatch; no lifecycle tests for shutdown sequencing or tool-cache invalidation; `buildErrorResponse()` passes unsanitized provider error messages to callers; and launcher docs lack consolidated MEMORY_DB_PATH and clean-transport guidance.",
     "created_at": "2026-04-12T09:02:50.314Z",
-    "last_save_at": "2026-04-13T05:11:41.936Z",
+    "last_save_at": "2026-04-13T06:08:08.989Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -45,12 +45,7 @@
       "manual testing tasks",
       "playbook phase tasks",
       "umbrella test tasks",
-      "manual testing checklist",
-      "playbook verification",
-      "umbrella checklist",
-      "manual testing implementation summary",
-      "playbook umbrella summary",
-      "phase documentation complete"
+      "manual testing checklist"
     ],
     "key_topics": [
       "manual",
@@ -67,28 +62,28 @@
       "tasks"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "context-server.ts",
-      "learned-combiner.ts",
-      "matrix-math.ts",
       "shared/index.ts",
-      "stage2-fusion.ts",
-      "anchor-metadata.vitest.ts",
       "spec.md",
       "plan.md",
-      "review-report.md",
-      "validate.sh",
       ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md",
       ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md",
       ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md",
       ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md",
       ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md",
       ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md",
-      ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md"
+      ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md"
     ],
     "entities": [
       {
@@ -110,39 +105,9 @@
         "source": "derived"
       },
       {
-        "name": "context-server.ts",
-        "kind": "code",
-        "path": "context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": "learned-combiner.ts",
-        "kind": "code",
-        "path": "learned-combiner.ts",
-        "source": "derived"
-      },
-      {
-        "name": "matrix-math.ts",
-        "kind": "code",
-        "path": "matrix-math.ts",
-        "source": "derived"
-      },
-      {
         "name": "index.ts",
         "kind": "code",
         "path": "shared/index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "stage2-fusion.ts",
-        "kind": "code",
-        "path": "stage2-fusion.ts",
-        "source": "derived"
-      },
-      {
-        "name": "anchor-metadata.vitest.ts",
-        "kind": "test",
-        "path": "anchor-metadata.vitest.ts",
         "source": "derived"
       },
       {
@@ -155,18 +120,6 @@
         "name": "plan.md",
         "kind": "doc",
         "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "review-report.md",
-        "kind": "doc",
-        "path": "review-report.md",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
         "source": "derived"
       },
       {
@@ -186,11 +139,53 @@
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md",
         "source": "derived"
+      },
+      {
+        "name": "07-namespace-management-crud-tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "09-correction-tracking-with-undo.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/09-correction-tracking-with-undo.md",
+        "source": "derived"
+      },
+      {
+        "name": "09-anchor-tags-as-graph-nodes.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md",
+        "source": "derived"
+      },
+      {
+        "name": "10-causal-neighbor-boost-and-injection.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md",
+        "source": "derived"
+      },
+      {
+        "name": "11-temporal-contiguity-layer.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md",
+        "source": "derived"
+      },
+      {
+        "name": "15-tool-level-ttl-cache.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md",
+        "source": "derived"
+      },
+      {
+        "name": "16-access-driven-popularity-scoring.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.",
     "created_at": "2026-04-12T09:02:50.288Z",
-    "last_save_at": "2026-04-13T05:11:41.908Z",
+    "last_save_at": "2026-04-13T06:08:08.959Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

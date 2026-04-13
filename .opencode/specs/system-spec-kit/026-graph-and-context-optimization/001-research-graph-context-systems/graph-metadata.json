@@ -29,16 +29,7 @@
       "follow-on packets",
       "graph context packet tasks",
       "follow-on packet tasks",
-      "root packet conformance",
-      "graph context packet checklist",
-      "research packet verification",
-      "recommendation readiness",
-      "graph context packet ADR",
-      "measurement contract",
-      "conditional warm-start",
-      "graph context packet summary",
-      "master research summary",
-      "v1 to v2 packet summary"
+      "root packet conformance"
     ],
     "key_topics": [
       "graph",
@@ -55,7 +46,7 @@
       "trust-axis"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "research/research.md",
       "research/recommendations.md",
@@ -63,7 +54,6 @@
       "research/cross-phase-matrix.md",
       "research/iterations/q-d-adoption-sequencing.md",
       "research/iterations/q-f-killer-combos.md",
-      "description.json",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -76,7 +66,8 @@
       "003-contextador/CONTEXT.md",
       "001-claude-optimization-settings/spec.md",
       "002-codesight/spec.md",
-      "003-contextador/spec.md"
+      "003-contextador/spec.md",
+      "004-graphify/spec.md"
     ],
     "entities": [
       {
@@ -116,15 +107,9 @@
         "source": "derived"
       },
       {
-        "name": "description.json",
-        "kind": "config",
-        "path": "description.json",
-        "source": "derived"
-      },
-      {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": "001-claude-optimization-settings/spec.md",
         "source": "derived"
       },
       {
@@ -174,11 +159,17 @@
         "kind": "doc",
         "path": "scratch/spec-doc-phase-2-summary.md",
         "source": "derived"
+      },
+      {
+        "name": "CONTEXT.md",
+        "kind": "doc",
+        "path": "003-contextador/CONTEXT.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet turns the v2 master synthesis into a Level 3 coordination root for `Public`. The research now says Public should preserve its split semantic, structural, and continuity topology, prioritize seam-hardening contracts ahead of packaging work, and translate the strongest surviving recommendations into follow-on packets instead of treating any external system as a replacement architecture. A later derivative child packet, `006-research-memory-redundancy`, now tightens one local continuity rule for those follow-ons: persisted or cached summary artifacts should act as compact wrappers pointing at canonical packet docs rather than second narrative owners. [SOURCE: research/research.md:20-28] [SOURCE: research/research.md:274-306] [SOURCE: research/recommendations.md:3-101]",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-13T05:11:44.973Z",
+    "last_save_at": "2026-04-13T06:08:11.958Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

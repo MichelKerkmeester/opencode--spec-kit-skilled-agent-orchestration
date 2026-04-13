@@ -76,13 +76,13 @@
         "source": "derived"
       },
       {
-        "name": "Overview\nRefine",
+        "name": "Overview Refine",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Problem\nCurrent",
+        "name": "Problem Current",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -130,7 +130,7 @@
         "source": "derived"
       },
       {
-        "name": "trigger_phrases:\n  -",
+        "name": "trigger_phrases:   -",
         "kind": "quoted",
         "path": "plan.md",
         "source": "derived"
@@ -144,7 +144,7 @@
     ],
     "causal_summary": "Refine the gate-enforcement.md constitutional memory to cover ALL 4 HARD BLOCK gates (0, 3, 5, 6) instead of just 2 (3, 5).",
     "created_at": "2026-04-12T09:02:53.523Z",
-    "last_save_at": "2026-04-13T05:11:45.069Z",
+    "last_save_at": "2026-04-13T06:08:12.028Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

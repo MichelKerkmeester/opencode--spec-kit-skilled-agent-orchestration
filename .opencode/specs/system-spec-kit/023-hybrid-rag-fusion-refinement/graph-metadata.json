@@ -54,19 +54,12 @@
       "summary"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "scripts/core/workflow.ts",
-      "context-server.ts",
-      "engines.node >= 20.11.0",
       "dist/index.js",
       "shared/paths.ts",
-      "workflow.ts",
       "api/index.ts",
-      "cli.ts",
-      "node dist/context-server.js",
-      "import.meta.dirname",
-      ">=20.11.0",
       "research/research.md",
       "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/spec.md",
       "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/plan.md",
@@ -75,25 +68,20 @@
       "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md",
       "scripts/package.json",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "mcp_server/handlers/memory-save.ts",
+      "mcp_server/handlers/memory-index.ts",
+      "mcp_server/handlers/shared-memory.ts",
+      "mcp_server/lib/search/vector-index-store.ts"
     ],
     "entities": [
       {
         "name": "workflow.ts",
         "kind": "code",
         "path": "scripts/core/workflow.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.ts",
-        "kind": "code",
-        "path": "context-server.ts",
-        "source": "derived"
-      },
-      {
-        "name": "engines.node >= 20.11.0",
-        "kind": "file",
-        "path": "engines.node >= 20.11.0",
         "source": "derived"
       },
       {
@@ -109,39 +97,9 @@
         "source": "derived"
       },
       {
-        "name": "workflow.ts",
-        "kind": "code",
-        "path": "workflow.ts",
-        "source": "derived"
-      },
-      {
         "name": "index.ts",
         "kind": "code",
         "path": "api/index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "cli.ts",
-        "kind": "code",
-        "path": "cli.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context-server.js",
-        "kind": "code",
-        "path": "node dist/context-server.js",
-        "source": "derived"
-      },
-      {
-        "name": "import.meta.dirname",
-        "kind": "file",
-        "path": "import.meta.dirname",
-        "source": "derived"
-      },
-      {
-        "name": ">=20.11.0",
-        "kind": "file",
-        "path": ">=20.11.0",
         "source": "derived"
       },
       {
@@ -173,11 +131,53 @@
         "kind": "doc",
         "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "scripts/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-memory.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/shared-memory.ts",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-store.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/vector-index-store.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The finished 20-iteration research in `research/research.md` locked the migration strategy that this packet now records as shipped. The delivered implementation migrated `@spec-kit/shared` and `@spec-kit/mcp-server` to native ESM, kept `@spec-kit/scripts` as CommonJS, and used explicit package-boundary async loading plus scripts-owned bridge code where CommonJS had to cross into ESM. Dual-build or conditional exports remained a fallback option only and were not needed for the shipped path.",
     "created_at": "2026-04-12T09:02:50.316Z",
-    "last_save_at": "2026-04-13T05:11:41.938Z",
+    "last_save_at": "2026-04-13T06:08:08.991Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

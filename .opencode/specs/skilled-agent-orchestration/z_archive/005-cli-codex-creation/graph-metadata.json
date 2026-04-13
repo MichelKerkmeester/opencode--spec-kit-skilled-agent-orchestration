@@ -22,10 +22,7 @@
       "plan",
       "tasks",
       "consolidation",
-      "verification",
-      "checklist",
-      "summary",
-      "implementation summary"
+      "verification"
     ],
     "key_topics": [
       "feature",
@@ -42,14 +39,11 @@
       "verification"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
-      "gemini-3.1-pro-preview",
       ".opencode/skill/cli-codex/SKILL.md",
       ".opencode/skill/cli-codex/assets/prompt_templates.md",
       ".opencode/skill/scripts/skill_advisor.py",
-      "README.md",
-      "validate.sh",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -57,12 +51,6 @@
       "implementation-summary.md"
     ],
     "entities": [
-      {
-        "name": "gemini-3.1-pro-preview",
-        "kind": "file",
-        "path": "gemini-3.1-pro-preview",
-        "source": "derived"
-      },
       {
         "name": "SKILL.md",
         "kind": "doc",
@@ -79,18 +67,6 @@
         "name": "skill_advisor.py",
         "kind": "file",
         "path": ".opencode/skill/scripts/skill_advisor.py",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": "README.md",
-        "source": "derived"
-      },
-      {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
         "source": "derived"
       },
       {
@@ -136,13 +112,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement\nThe",
+        "name": "Problem Statement The",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Purpose\nConsolidate",
+        "name": "Purpose Consolidate",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -152,11 +128,29 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Editing Codex",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The existing `cli-gemini` skill referenced multiple Gemini model variants, which created avoidable decision overhead. At the same time, there was no companion `cli-codex` skill even though Codex CLI support already existed elsewhere in the repository.",
     "created_at": "2026-04-12T09:02:50.202Z",
-    "last_save_at": "2026-04-13T05:11:41.807Z",
+    "last_save_at": "2026-04-13T06:08:08.876Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

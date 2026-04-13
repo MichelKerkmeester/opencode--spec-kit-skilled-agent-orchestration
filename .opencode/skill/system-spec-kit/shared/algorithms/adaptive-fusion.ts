@@ -65,6 +65,7 @@ const INTENT_WEIGHT_PROFILES: Record<string, FusionWeights> = {
   refactor:        { semanticWeight: 0.6, keywordWeight: 0.3, recencyWeight: 0.1, graphWeight: 0.15, graphCausalBias: 0.10 },
   security_audit:  { semanticWeight: 0.3, keywordWeight: 0.5, recencyWeight: 0.2, graphWeight: 0.15, graphCausalBias: 0.10 },
   find_decision:   { semanticWeight: 0.3, keywordWeight: 0.2, recencyWeight: 0.1, graphWeight: 0.50, graphCausalBias: 0.15 },
+  continuity:      { semanticWeight: 0.52, keywordWeight: 0.18, recencyWeight: 0.07, graphWeight: 0.23, graphCausalBias: 0.15 },
 };
 
 const DEFAULT_WEIGHTS: FusionWeights = {

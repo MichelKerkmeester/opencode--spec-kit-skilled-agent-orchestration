@@ -22,12 +22,7 @@
       "session capturing pipeline",
       "source-dist alignment",
       "audit plan",
-      "tooling and scripts",
-      "tasks",
-      "checklist",
-      "implementation summary",
-      "tooling & scripts",
-      "code audit"
+      "tooling and scripts"
     ],
     "key_topics": [
       "tooling",
@@ -44,7 +39,7 @@
       "validation"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md",
       ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
@@ -56,16 +51,16 @@
       "mcp_server/api/index.ts",
       "scripts/spec/check-completion.sh",
       "checklist.md",
-      "validate.sh",
       "scripts/ops/runbook.sh",
       ".opencode/skill/system-spec-kit/nodes/phase-system.md",
       "scripts/spec/create.sh",
-      "shell-common.sh",
-      "git-branch.sh",
-      "template-utils.sh",
-      "generate-description.js",
       "scripts/spec/validate.sh",
-      ".speckit.yaml"
+      "scripts/core/tree-thinning.ts",
+      "scripts/evals/check-architecture-boundaries.ts",
+      "scripts/spec/progressive-validate.sh",
+      "mcp_server/lib/ops/file-watcher.ts",
+      "mcp_server/cli.ts",
+      "scripts/evals/check-source-dist-alignment.ts"
     ],
     "entities": [
       {
@@ -87,21 +82,9 @@
         "source": "derived"
       },
       {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
-        "source": "derived"
-      },
-      {
         "name": "speckit.toml",
         "kind": "file",
         "path": ".codex/agents/speckit.toml",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".gemini/agents/speckit.md",
         "source": "derived"
       },
       {
@@ -129,12 +112,6 @@
         "source": "derived"
       },
       {
-        "name": "validate.sh",
-        "kind": "script",
-        "path": "validate.sh",
-        "source": "derived"
-      },
-      {
         "name": "runbook.sh",
         "kind": "script",
         "path": "scripts/ops/runbook.sh",
@@ -153,21 +130,39 @@
         "source": "derived"
       },
       {
-        "name": "shell-common.sh",
+        "name": "validate.sh",
         "kind": "script",
-        "path": "shell-common.sh",
+        "path": "scripts/spec/validate.sh",
         "source": "derived"
       },
       {
-        "name": "git-branch.sh",
+        "name": "tree-thinning.ts",
+        "kind": "code",
+        "path": "scripts/core/tree-thinning.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-architecture-boundaries.ts",
+        "kind": "code",
+        "path": "scripts/evals/check-architecture-boundaries.ts",
+        "source": "derived"
+      },
+      {
+        "name": "progressive-validate.sh",
         "kind": "script",
-        "path": "git-branch.sh",
+        "path": "scripts/spec/progressive-validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/ops/file-watcher.ts",
         "source": "derived"
       }
     ],
     "causal_summary": "This packet audits the 17 Tooling and Scripts catalog entries that support Spec Kit build workflows, validation rules, admin operations, checkpointing, and source-dist hygiene. The verified result is 16 MATCH and 1 PARTIAL, with the remaining drift concentrated in the code-standards-alignment entry rather than runtime behavior.",
     "created_at": "2026-04-12T09:02:50.253Z",
-    "last_save_at": "2026-04-13T05:11:41.862Z",
+    "last_save_at": "2026-04-13T06:08:08.922Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

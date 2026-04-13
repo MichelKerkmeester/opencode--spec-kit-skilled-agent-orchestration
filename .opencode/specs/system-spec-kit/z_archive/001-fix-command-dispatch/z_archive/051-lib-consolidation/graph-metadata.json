@@ -22,11 +22,7 @@
       "plan",
       "verification",
       "checklist",
-      "decision",
-      "record",
-      "decision record",
-      "summary",
-      "implementation summary"
+      "decision"
     ],
     "key_topics": [
       "lib",
@@ -43,7 +39,7 @@
       "decision"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/shared/embeddings.js",
       ".opencode/skill/system-spec-kit/shared/trigger-extractor.js",
@@ -57,14 +53,14 @@
       ".opencode/skill/system-spec-kit/scripts/shared/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/shared/README.md",
       ".opencode/skill/system-spec-kit/scripts/shared/embeddings-legacy.js",
-      "retry-utils.js",
       "scripts/shared/retry-manager.js",
-      "vector-index.js",
-      "embeddings.js",
-      "trigger-extractor.js",
-      "retry-manager.js",
       ".opencode/skill/system-spec-kit/shared/retry-utils.js",
-      ".opencode/skill/system-spec-kit/scripts/generate-context.js"
+      ".opencode/skill/system-spec-kit/scripts/generate-context.js",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
+      ".opencode/skill/system-spec-kit/mcp_server/shared/vector-index.js",
+      ".opencode/skill/system-spec-kit/README.md",
+      "mcp_server/shared/retry-manager.js",
+      "lib/retry-utils.js"
     ],
     "entities": [
       {
@@ -92,81 +88,81 @@
         "source": "derived"
       },
       {
-        "name": "embeddings.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/shared/embeddings.js",
-        "source": "derived"
-      },
-      {
-        "name": "trigger-extractor.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/shared/trigger-extractor.js",
-        "source": "derived"
-      },
-      {
-        "name": "embeddings.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/shared/embeddings.js",
-        "source": "derived"
-      },
-      {
-        "name": "trigger-extractor.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/shared/trigger-extractor.js",
-        "source": "derived"
-      },
-      {
         "name": "retry-manager.js",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/shared/retry-manager.js",
         "source": "derived"
       },
       {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/scripts/shared/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/shared/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "embeddings-legacy.js",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/shared/embeddings-legacy.js",
-        "source": "derived"
-      },
-      {
         "name": "retry-utils.js",
         "kind": "code",
-        "path": "retry-utils.js",
+        "path": ".opencode/skill/system-spec-kit/shared/retry-utils.js",
         "source": "derived"
       },
       {
-        "name": "retry-manager.js",
+        "name": "generate-context.js",
         "kind": "code",
-        "path": "scripts/shared/retry-manager.js",
+        "path": ".opencode/skill/system-spec-kit/scripts/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "context-server.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.js",
         "source": "derived"
       },
       {
         "name": "vector-index.js",
         "kind": "code",
-        "path": "vector-index.js",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/shared/vector-index.js",
         "source": "derived"
       },
       {
-        "name": "embeddings.js",
-        "kind": "code",
-        "path": "embeddings.js",
+        "name": "Lib Consolidation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Shared Module Unification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Heavy Dependency Chain",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Relative Path Fragility Cross",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Drift",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "The system-spec-kit has shared JavaScript modules duplicated or re-exported across two separate lib folders, creating several issues:",
     "created_at": "2026-04-12T09:02:53.533Z",
-    "last_save_at": "2026-04-13T05:11:45.089Z",
+    "last_save_at": "2026-04-13T06:08:12.039Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -45,6 +45,7 @@ interface CacheArgsInput {
   includeContent: boolean;
   anchors?: string[] | string;
   detectedIntent: string | null;
+  adaptiveFusionIntent?: string | null;
   minState: string;
   rerank: boolean;
   applyLengthPenalty: boolean;
@@ -128,6 +129,7 @@ function buildCacheArgs({
   includeContent,
   anchors,
   detectedIntent,
+  adaptiveFusionIntent,
   minState,
   rerank,
   applyLengthPenalty,
@@ -157,6 +159,7 @@ function buildCacheArgs({
     includeContent,
     anchors,
     intent: detectedIntent,
+    fusionIntent: adaptiveFusionIntent,
     minState,
     rerank,
     applyLengthPenalty,

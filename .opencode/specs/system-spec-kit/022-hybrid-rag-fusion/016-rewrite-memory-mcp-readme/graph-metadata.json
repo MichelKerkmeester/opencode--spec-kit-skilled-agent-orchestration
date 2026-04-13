@@ -22,8 +22,7 @@
       "readme",
       "016",
       "tasks",
-      "implementation",
-      "implementation summary"
+      "implementation"
     ],
     "key_topics": [
       "mcp",
@@ -36,20 +35,17 @@
       "plan",
       "tasks",
       "implementation",
-      "summary",
-      "1281"
+      "1281",
+      "lines"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG_IN_SIMPLE_TERMS.md",
       ".opencode/skill/system-spec-kit/SHARED_MEMORY_DATABASE.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md.bak",
-      "validate_document.py",
-      "tool-schemas.ts",
       "scratch/research-brief.md",
-      "README.md.bak",
       "spec.md",
       "plan.md",
       ".opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md",
@@ -83,27 +79,9 @@
         "source": "derived"
       },
       {
-        "name": "validate_document.py",
-        "kind": "file",
-        "path": "validate_document.py",
-        "source": "derived"
-      },
-      {
-        "name": "tool-schemas.ts",
-        "kind": "code",
-        "path": "tool-schemas.ts",
-        "source": "derived"
-      },
-      {
         "name": "research-brief.md",
         "kind": "doc",
         "path": "scratch/research-brief.md",
-        "source": "derived"
-      },
-      {
-        "name": "README.md.bak",
-        "kind": "file",
-        "path": "README.md.bak",
         "source": "derived"
       },
       {
@@ -153,11 +131,29 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The MCP server README (mcp_server/README.md, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 33 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.",
     "created_at": "2026-04-12T09:02:50.308Z",
-    "last_save_at": "2026-04-13T05:11:41.928Z",
+    "last_save_at": "2026-04-13T06:08:08.977Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

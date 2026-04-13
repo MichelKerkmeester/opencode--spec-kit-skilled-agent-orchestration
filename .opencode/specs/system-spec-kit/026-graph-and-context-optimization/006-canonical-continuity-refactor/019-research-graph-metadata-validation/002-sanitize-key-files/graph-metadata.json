@@ -10,38 +10,86 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "phase 002 implementation summary",
+      "sanitize key files summary"
+    ],
     "key_topics": [
+      "phase",
+      "002",
+      "implementation",
+      "summary",
+      "sanitize",
+      "key",
+      "files",
       "add",
       "validation",
       "pass",
       "rejects",
-      "shell",
-      "commands",
-      "version",
-      "tokens",
-      "bare",
-      "titles",
-      "mime",
-      "types"
+      "shell"
     ],
-    "importance_tier": "important",
+    "importance_tier": "critical",
     "status": "planned",
     "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts",
+      "tasks.md",
+      "implementation-summary.md",
+      "cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/graph-metadata-integration.vitest.ts tests/graph-metadata-schema.vitest.ts",
       "mcp_server/lib/graph/graph-metadata-parser.ts",
-      "spec.md"
+      "mcp_server/tests/graph-metadata-schema.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "checklist.md",
+      "decision-record.md"
     ],
     "entities": [
       {
         "name": "graph-metadata-parser.ts",
         "kind": "code",
-        "path": "mcp_server/lib/graph/graph-metadata-parser.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-schema.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/graph-metadata-schema.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -57,7 +105,7 @@
         "source": "derived"
       },
       {
-        "name": "Scope\n\nAdd",
+        "name": "Scope Add",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -79,14 +127,31 @@
         "kind": "heading",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Execution Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Add a validation pass that rejects shell commands, version tokens, bare titles, MIME types, and other non-path strings from `key_files` before storing them in graph metadata. Currently 40.13% of key_files entries point to non-existent files because the parser accepts arbitrary strings.",
     "created_at": "2026-04-13T05:11:45.014Z",
-    "last_save_at": "2026-04-13T05:11:45.014Z",
+    "last_save_at": "2026-04-13T06:08:11.998Z",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   }
 }
