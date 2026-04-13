@@ -5,20 +5,20 @@
 
 ### Purpose
 
-Investigate whether the three-tier content router classifies canonical continuity saves correctly, where it escalates, which confusion pairs remain, and whether the current confidence floors are the right tradeoff for the currently wired runtime.
+Investigate whether the three-tier content router classifies canonical continuity saves correctly, which confusion pairs dominate the residual errors, and what specific code and prototype changes should fix those errors without broadening scope.
 
 ### Usage
 
-- Init: seed the topic, six packet research questions, and read-only boundaries from the packet spec.
+- Init: seed the topic, packet-local research questions, and read-only boundaries from the packet spec.
 - Per iteration: read the current focus, inspect code and runtime evidence, write one iteration artifact, append one JSONL record, then let the reducer refresh the machine-owned sections.
-- Synthesis target: produce an implementation-ready recommendation for routing thresholds, routing cue tuning, merge-mode safety, and `routeAs` override handling.
+- Synthesis target: produce implementation-ready guidance for delivery/progress cue tuning, handover/drop relaxation, Tier3 wiring, prototype refreshes, and regression coverage.
 
 ---
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:topic -->
 ## 2. TOPIC
-Content routing classification accuracy and threshold optimization
+Content routing classification accuracy and remediation design
 
 ---
 
@@ -31,6 +31,11 @@ Content routing classification accuracy and threshold optimization
 - [x] RQ-4: Are the 0.70/0.70/0.50 thresholds optimal, or would different values reduce escalation without losing accuracy?
 - [x] RQ-5: What merge modes succeed vs fail for each category? Are there categories where the default merge mode is wrong?
 - [x] RQ-6: How does the `routeAs` override interact with natural classification? Does override produce better or worse outcomes?
+- [x] RQ-7: Which exact delivery-versus-progress cues cause the current misclassifications, and what delivery lexicon should be added?
+- [x] RQ-8: Which handover patterns are currently pulled into `drop`, and how should the drop heuristic be relaxed?
+- [x] RQ-9: What exact code is missing to wire Tier3 into `memory-save.ts`, and what latency or cost envelope does that imply?
+- [x] RQ-10: Are the Tier2 prototype vectors well distributed across categories, especially at the delivery/progress and handover/drop boundaries?
+- [x] RQ-11: Which routing categories and edge cases lack meaningful regression coverage today?
 
 <!-- /ANCHOR:key-questions -->
 <!-- ANCHOR:non-goals -->
@@ -44,9 +49,10 @@ Content routing classification accuracy and threshold optimization
 <!-- /ANCHOR:non-goals -->
 <!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
-- All six research questions have evidence-backed answers tied to code or measured runtime behavior.
-- Confusion pairs and escalation reasons are documented with at least one concrete example each.
-- Threshold recommendations distinguish between the currently wired runtime and the not-yet-wired Tier3 contract.
+- The baseline accuracy and threshold questions stay answered with code-backed evidence.
+- The delivery/progress and handover/drop confusion seams each have concrete code-level remediation guidance.
+- Tier3 wiring guidance names the exact missing constructor seam and the missing classifier adapter.
+- Prototype and test coverage recommendations are specific enough to hand directly to phases `001`, `002`, and `003`.
 
 ---
 
@@ -59,6 +65,11 @@ Content routing classification accuracy and threshold optimization
 - RQ-4: Are the 0.70/0.70/0.50 thresholds optimal, or would different values reduce escalation without losing accuracy?
 - RQ-5: What merge modes succeed vs fail for each category? Are there categories where the default merge mode is wrong?
 - RQ-6: How does the `routeAs` override interact with natural classification? Does override produce better or worse outcomes?
+- RQ-7: Which exact delivery-versus-progress cues cause the current misclassifications, and what delivery lexicon should be added?
+- RQ-8: Which handover patterns are currently pulled into `drop`, and how should the drop heuristic be relaxed?
+- RQ-9: What exact code is missing to wire Tier3 into `memory-save.ts`, and what latency or cost envelope does that imply?
+- RQ-10: Are the Tier2 prototype vectors well distributed across categories, especially at the delivery/progress and handover/drop boundaries?
+- RQ-11: Which routing categories and edge cases lack meaningful regression coverage today?
 
 <!-- /ANCHOR:answered-questions -->
 <!-- ANCHOR:what-worked -->
@@ -73,6 +84,16 @@ Content routing classification accuracy and threshold optimization
 - The legality validator and merge operation complement each other, so reading both produced a reliable failure map. (iteration 8)
 - Simulating threshold changes on recorded Tier1/Tier2 outputs made the tradeoff visible without pretending Tier3 is live when it is not. (iteration 9)
 - Combining static code reading with a measured synthetic corpus avoided overfitting to either tests or speculation. (iteration 10)
+- Reading the regex table beside the score floors made it obvious that delivery is under-specified in two separate places. (iteration 11)
+- A lightweight token-overlap pass was enough to show that the corpus itself reinforces the ambiguity the heuristics struggle with. (iteration 12)
+- Reading the score floors and the trigger-reason ladder together made the `drop` dominance obvious. (iteration 13)
+- Prototype nearest-neighbor checks exposed a corpus-shape problem that the regex audit alone could not prove. (iteration 14)
+- Searching for production references to the Tier3 contract quickly separated test-only behavior from runtime reality. (iteration 15)
+- The latency budget and caching behavior are explicit enough in code to make a bounded operational estimate without live provider calls. (iteration 16)
+- Looking at negative-hint frequencies and category-specific vocabulary clarified that the problem is concentrated, not widespread. (iteration 17)
+- Reading router and handler tests side by side exposed the gap between contract coverage and save-path coverage. (iteration 18)
+- Mapping each phase spec directly onto the exact lines and fixtures kept the guidance concrete. (iteration 19)
+- The second wave stayed tightly scoped to fix design, so every iteration produced directly actionable implementation guidance. (iteration 20)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -87,6 +108,16 @@ Content routing classification accuracy and threshold optimization
 - Router target selection alone could not explain write failures because several rejections happen after routing. (iteration 8)
 - A single "best" threshold point is misleading because the accuracy gain is category-specific and comes with extra refusals. (iteration 9)
 - Threshold tuning alone could not solve the category-specific cue collisions that dominate the remaining errors. (iteration 10)
+- Prototype labels alone hid the real issue because the live heuristics never read those labels. (iteration 11)
+- Prototype count balance obscured the fact that the actual wording clusters together. (iteration 12)
+- Looking only at the cue text missed how the numeric floor prevents later recovery. (iteration 13)
+- Prototype labels such as "handover" or "drop" were not meaningful enough by themselves; the actual chunk text carried the overlap. (iteration 14)
+- The existing phase spec understates the amount of missing plumbing because it only names the call site and the router, not the absent client implementation. (iteration 15)
+- The current code does not expose real ambiguous-call counts, so the exact production hit rate remains unmeasured. (iteration 16)
+- Prototype counts initially made the library look healthier than it is. (iteration 17)
+- Category happy-path tests created a false sense of completeness because the fragile boundary cases live outside those samples. (iteration 18)
+- The original phase specs were accurate at the theme level but too compressed to drive implementation without this extra pass. (iteration 19)
+- The research packet did not start with explicit remediation questions, which forced the second wave to retrofit them after the first synthesis. (iteration 20)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -100,6 +131,11 @@ Content routing classification accuracy and threshold optimization
 - What was tried: Assuming `routeAs` makes any classified chunk merge-safe regardless of target and merge-mode validity.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Assuming `routeAs` makes any classified chunk merge-safe regardless of target and merge-mode validity.
+
+### Assuming balanced prototype counts are enough to prevent confusion in Tier2. -- BLOCKED (iteration 12, 1 attempts)
+- What was tried: Assuming balanced prototype counts are enough to prevent confusion in Tier2.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Assuming balanced prototype counts are enough to prevent confusion in Tier2.
 
 ### Assuming hard rules are the dominant driver of routing quality. On this corpus they are precise but relatively rare. -- BLOCKED (iteration 5, 1 attempts)
 - What was tried: Assuming hard rules are the dominant driver of routing quality. On this corpus they are precise but relatively rare.
@@ -116,35 +152,85 @@ Content routing classification accuracy and threshold optimization
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Assuming metadata-only and task updates share the same failure profile because both report `update-in-place`.
 
+### Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies. -- BLOCKED (iteration 16, 1 attempts)
+- What was tried: Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies.
+
 ### Assuming the prototype library is sparse or skewed toward one category. It is balanced by count. -- BLOCKED (iteration 2, 1 attempts)
 - What was tried: Assuming the prototype library is sparse or skewed toward one category. It is balanced by count.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Assuming the prototype library is sparse or skewed toward one category. It is balanced by count.
+
+### Assuming there is already a hidden production caller for `buildTier3Prompt()`. -- BLOCKED (iteration 15, 1 attempts)
+- What was tried: Assuming there is already a hidden production caller for `buildTier3Prompt()`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Assuming there is already a hidden production caller for `buildTier3Prompt()`.
 
 ### Blaming delivery and handover failures on Tier2. In the key examples, Tier2 preferred the expected class but never got a chance because Tier1 accepted early or `drop` cues dominated. -- BLOCKED (iteration 6, 1 attempts)
 - What was tried: Blaming delivery and handover failures on Tier2. In the key examples, Tier2 preferred the expected class but never got a chance because Tier1 accepted early or `drop` cues dominated.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Blaming delivery and handover failures on Tier2. In the key examples, Tier2 preferred the expected class but never got a chance because Tier1 accepted early or `drop` cues dominated.
 
+### Deferring the regression tests until after the cue/prototype fixes land. -- BLOCKED (iteration 19, 1 attempts)
+- What was tried: Deferring the regression tests until after the cue/prototype fixes land.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Deferring the regression tests until after the cue/prototype fixes land.
+
+### Expecting `negativeHints` to already act as a live penalty signal. -- BLOCKED (iteration 12, 1 attempts)
+- What was tried: Expecting `negativeHints` to already act as a live penalty signal.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Expecting `negativeHints` to already act as a live penalty signal.
+
 ### Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead.
+
+### Keeping `git diff` in the same severity class as transcript wrappers and table-of-contents scaffolding. -- BLOCKED (iteration 13, 1 attempts)
+- What was tried: Keeping `git diff` in the same severity class as transcript wrappers and table-of-contents scaffolding.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Keeping `git diff` in the same severity class as transcript wrappers and table-of-contents scaffolding.
 
 ### Looking for a hidden `classifyWithTier3` injection elsewhere in the non-test server code. The only production callsite creates the router without one. -- BLOCKED (iteration 3, 1 attempts)
 - What was tried: Looking for a hidden `classifyWithTier3` injection elsewhere in the non-test server code. The only production callsite creates the router without one.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Looking for a hidden `classifyWithTier3` injection elsewhere in the non-test server code. The only production callsite creates the router without one.
 
+### Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`. -- BLOCKED (iteration 11, 1 attempts)
+- What was tried: Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`.
+
+### Looking only at router tests and ignoring the handler path where Tier3 would actually be wired. -- BLOCKED (iteration 18, 1 attempts)
+- What was tried: Looking only at router tests and ignoring the handler path where Tier3 would actually be wired.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking only at router tests and ignoring the handler path where Tier3 would actually be wired.
+
 ### Making accuracy claims from prototype count balance alone. -- BLOCKED (iteration 5, 1 attempts)
 - What was tried: Making accuracy claims from prototype count balance alone.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Making accuracy claims from prototype count balance alone.
 
+### Rebuilding the entire prototype library as the first remediation step. -- BLOCKED (iteration 17, 1 attempts)
+- What was tried: Rebuilding the entire prototype library as the first remediation step.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Rebuilding the entire prototype library as the first remediation step.
+
 ### Recommending a blanket threshold increase as an unqualified improvement. -- BLOCKED (iteration 9, 1 attempts)
 - What was tried: Recommending a blanket threshold increase as an unqualified improvement.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Recommending a blanket threshold increase as an unqualified improvement.
+
+### Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land. -- BLOCKED (iteration 20, 1 attempts)
+- What was tried: Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land.
+
+### Rewriting the drop corpus as the main fix for handover/drop confusion. -- BLOCKED (iteration 14, 1 attempts)
+- What was tried: Rewriting the drop corpus as the main fix for handover/drop confusion.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Rewriting the drop corpus as the main fix for handover/drop confusion.
 
 ### Searching for a fifth hidden escalation reason. -- BLOCKED (iteration 4, 1 attempts)
 - What was tried: Searching for a fifth hidden escalation reason.
@@ -166,15 +252,45 @@ Content routing classification accuracy and threshold optimization
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating all categories as equally safe once the router selects a target doc.
 
+### Treating command-first handover prose as harmless prototype decoration. -- BLOCKED (iteration 14, 1 attempts)
+- What was tried: Treating command-first handover prose as harmless prototype decoration.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating command-first handover prose as harmless prototype decoration.
+
+### Treating delivery confusion as a prototype-only issue. The heuristic floor in `scoreCategories()` is part of the bug. -- BLOCKED (iteration 11, 1 attempts)
+- What was tried: Treating delivery confusion as a prototype-only issue. The heuristic floor in `scoreCategories()` is part of the bug.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating delivery confusion as a prototype-only issue. The heuristic floor in `scoreCategories()` is part of the bug.
+
+### Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate. -- BLOCKED (iteration 13, 1 attempts)
+- What was tried: Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate.
+
+### Treating phase `003` as a one-line constructor tweak in `memory-save.ts`. -- BLOCKED (iteration 15, 1 attempts)
+- What was tried: Treating phase `003` as a one-line constructor tweak in `memory-save.ts`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating phase `003` as a one-line constructor tweak in `memory-save.ts`.
+
 ### Treating phase-anchor inference as the main handover failure driver. -- BLOCKED (iteration 6, 1 attempts)
 - What was tried: Treating phase-anchor inference as the main handover failure driver.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating phase-anchor inference as the main handover failure driver.
 
+### Treating the current test suite as sufficient because every category already has one positive-path assertion. -- BLOCKED (iteration 18, 1 attempts)
+- What was tried: Treating the current test suite as sufficient because every category already has one positive-path assertion.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the current test suite as sufficient because every category already has one positive-path assertion.
+
 ### Treating the currently unwired Tier3 contract as the main source of routing inaccuracy. -- BLOCKED (iteration 10, 1 attempts)
 - What was tried: Treating the currently unwired Tier3 contract as the main source of routing inaccuracy.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating the currently unwired Tier3 contract as the main source of routing inaccuracy.
+
+### Treating the implementation phases as independent. The code and test changes need to move together. -- BLOCKED (iteration 19, 1 attempts)
+- What was tried: Treating the implementation phases as independent. The code and test changes need to move together.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the implementation phases as independent. The code and test changes need to move together.
 
 ### Treating the spec's "7 rules" text as authoritative. The code clearly ships eight hard rules today. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Treating the spec's "7 rules" text as authoritative. The code clearly ships eight hard rules today.
@@ -190,6 +306,21 @@ Content routing classification accuracy and threshold optimization
 - What was tried: Treating Tier2 as independent from target selection. The prototype scorer still inherits the same `buildTarget()` mapping as Tier1 and Tier3.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating Tier2 as independent from target selection. The prototype scorer still inherits the same `buildTarget()` mapping as Tier1 and Tier3.
+
+### Treating Tier3 cost as the main blocker before measuring the ambiguous-call rate. -- BLOCKED (iteration 16, 1 attempts)
+- What was tried: Treating Tier3 cost as the main blocker before measuring the ambiguous-call rate.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating Tier3 cost as the main blocker before measuring the ambiguous-call rate.
+
+### Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself. -- BLOCKED (iteration 20, 1 attempts)
+- What was tried: Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself.
+
+### Using prototype count balance as a proxy for semantic separation. -- BLOCKED (iteration 17, 1 attempts)
+- What was tried: Using prototype count balance as a proxy for semantic separation.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Using prototype count balance as a proxy for semantic separation.
 
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:ruled-out-directions -->
@@ -214,18 +345,39 @@ Content routing classification accuracy and threshold optimization
 - Recommending a blanket threshold increase as an unqualified improvement. (iteration 9)
 - Shipping a threshold-only fix as the sole remediation. (iteration 10)
 - Treating the currently unwired Tier3 contract as the main source of routing inaccuracy. (iteration 10)
+- Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`. (iteration 11)
+- Treating delivery confusion as a prototype-only issue. The heuristic floor in `scoreCategories()` is part of the bug. (iteration 11)
+- Assuming balanced prototype counts are enough to prevent confusion in Tier2. (iteration 12)
+- Expecting `negativeHints` to already act as a live penalty signal. (iteration 12)
+- Keeping `git diff` in the same severity class as transcript wrappers and table-of-contents scaffolding. (iteration 13)
+- Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate. (iteration 13)
+- Rewriting the drop corpus as the main fix for handover/drop confusion. (iteration 14)
+- Treating command-first handover prose as harmless prototype decoration. (iteration 14)
+- Assuming there is already a hidden production caller for `buildTier3Prompt()`. (iteration 15)
+- Treating phase `003` as a one-line constructor tweak in `memory-save.ts`. (iteration 15)
+- Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies. (iteration 16)
+- Treating Tier3 cost as the main blocker before measuring the ambiguous-call rate. (iteration 16)
+- Rebuilding the entire prototype library as the first remediation step. (iteration 17)
+- Using prototype count balance as a proxy for semantic separation. (iteration 17)
+- Looking only at router tests and ignoring the handler path where Tier3 would actually be wired. (iteration 18)
+- Treating the current test suite as sufficient because every category already has one positive-path assertion. (iteration 18)
+- Deferring the regression tests until after the cue/prototype fixes land. (iteration 19)
+- Treating the implementation phases as independent. The code and test changes need to move together. (iteration 19)
+- Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land. (iteration 20)
+- Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself. (iteration 20)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Open an implementation phase that tunes delivery and handover cue weighting, adds regression tests for the identified confusion pairs, and wires Tier3 only if the team wants LLM-backed disambiguation in the live save path.
+Implement phases `001`, `002`, and `003` in that order, then rerun the same synthetic corpus and regression suite as an explicit before/after benchmark.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->
 ## 12. KNOWN CONTEXT
-- The packet spec defines eight routing categories, four confidence-related constants, and six research questions for a synthetic-data investigation.
+- The packet spec defines eight routing categories, four confidence-related constants, and six baseline accuracy questions for a synthetic-data investigation.
 - The runtime save path is `memory-save.ts` -> `createContentRouter()` -> `anchorMergeOperation()` or thin continuity frontmatter upsert, depending on the routed category.
-- Research must stay read-only and use synthetic payloads derived from current spec-doc-style content, not historical save records.
+- Research stayed read-only and used synthetic payloads derived from current spec-doc-style content, not historical save records.
+- The second research wave focused on remediation design for delivery/progress cues, handover/drop relaxation, Tier3 wiring, prototype quality, and test coverage.
 
 ---
 
@@ -233,13 +385,12 @@ Open an implementation phase that tunes delivery and handover cue weighting, add
 <!-- ANCHOR:research-boundaries -->
 ## 13. RESEARCH BOUNDARIES
 - Read-only, no historical saves, synthetic payloads from spec-doc content
-- Max iterations: 10
-- Convergence threshold: 0.05
+- Max iterations: 20
 - Per-iteration budget: 12 tool calls, 10 minutes
 - Progressive synthesis: true
 - research/research.md ownership: workflow-owned canonical synthesis output
 - Lifecycle branches: `new`, `resume`, `restart`
-- Machine-owned sections: reducer controls Sections 3, 6, 7-11
+- Machine-owned sections: reducer controls Sections 3, 6-11
 - Current generation: 1
 - Started: 2026-04-13T04:51:24Z
 <!-- /ANCHOR:research-boundaries -->

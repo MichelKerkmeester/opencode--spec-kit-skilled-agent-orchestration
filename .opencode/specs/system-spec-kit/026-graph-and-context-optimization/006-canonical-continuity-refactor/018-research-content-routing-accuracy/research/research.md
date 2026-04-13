@@ -1,146 +1,147 @@
-# Research Synthesis: Content Routing Classification Accuracy
+# Research Synthesis: Content Routing Accuracy And Remediation Design
 
 ## Scope And Method
 
-This research covered the content router in `.opencode/skill/system-spec-kit/mcp_server/` with writes restricted to this packet's `research/` folder. The investigation stayed read-only and used a synthetic corpus built from the shipped Tier2 prototypes plus targeted test-style samples, because the packet explicitly forbids historical-save reconstruction. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:49] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48]
+This packet stayed read-only and only updated `research/` artifacts. Iterations 1-10 established the baseline accuracy picture for the current three-tier router; iterations 11-20 investigated how to fix the remaining confusion pairs without changing the overall routing architecture. The analysis used direct source inspection, the shipped prototype corpus, the existing tests, and packet-local lexical comparisons over `routing-prototypes.json`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48]
 
-The live router shape is:
-- Tier1: hard rules plus heuristic cue scoring.
-- Tier2: top-3 prototype similarity.
-- Tier3: prompt contract exists, but the canonical save handler currently instantiates `createContentRouter()` without a classifier dependency, so the active save path is effectively Tier1 + Tier2 + penalized Tier2 fallback/refusal. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008]
+## Baseline Snapshot From Iterations 1-10
 
-## Key Findings
+The first wave findings still stand:
+- The live router ships eight hard Tier1 rules, not seven. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:280]
+- The measured baseline on the 132-sample synthetic corpus was `87.88%` accuracy at the shipped `0.70 / 0.70 / 0.50` thresholds. [INFERENCE: iteration-5 and iteration-9 corpus measurements]
+- The strongest confusion pairs were `narrative_delivery -> narrative_progress` and `handover_state -> drop`, each with four observed errors. [INFERENCE: iterations 5-6 corpus analysis]
+- The best tested threshold-only alternative (`Tier1=0.75`, `Tier2=0.65`) improved measured accuracy, but at the cost of more refusals and without fixing the underlying cue collisions. [INFERENCE: iteration-9 threshold sweep]
+- Tier3 exists as a contract in `content-router.ts`, but the canonical save path does not inject a real classifier today. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008]
 
-### 1. Tier1 hard rules are accurate but not dominant
+That means the second wave did not overturn the earlier conclusions. It translated them into concrete remediation guidance.
 
-The code currently ships eight hard Tier1 rules, not seven: structured `decision`, `handover`, `research`, `task_update`, `metadata_only`, plus hard drops for `toolCalls`, transcript wrappers, and placeholder boilerplate. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/018-research-content-routing-accuracy/spec.md:28]
+## 1. Delivery Versus Progress: What Is Actually Broken
 
-On the 132-sample synthetic corpus, those hard rules fired only 14 times, but they were perfect on the observed set:
+The key asymmetry is inside `scoreCategories()`, not just the regex table.
 
-| Hard rule | Fires | Observed accuracy |
-|---|---:|---:|
-| `tier1.placeholder.boilerplate` | 9 | 100% |
-| `tier1.transcript.wrapper` | 2 | 100% |
-| `tier1.structured.decision` | 1 | 100% |
-| `tier1.structured.metadata-only` | 1 | 100% |
-| `tier1.structured.task-update` | 1 | 100% |
+- `narrative_progress` matches a wide set of implementation verbs such as `implemented`, `merged`, `added`, `built`, `fixed`, `updated`, and `shipped`, then gets an explicit `0.72` floor whenever those verbs appear in an `observations` chunk. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:341] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853]
+- `narrative_delivery` only gets narrow rollout-specific phrases such as `feature flag`, `shadow`, `rollout`, `canary`, `dual-write`, `staging`, and `awaiting runtime verification`, plus a small delivery floor when some of those exact words appear. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:345] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:859]
+- The delivery prototypes rely on more subtle sequencing and gating language that the cue table does not learn today: `updated together`, `only then`, `same pass`, `kept pending until`, `verification stayed`, `auditable`, and other "how we delivered it" phrasing. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37]
 
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:286] [INFERENCE: live execution of dist/lib/routing/content-router.js on the 132-sample synthetic corpus]
+The practical fix for phase `001-fix-delivery-progress-confusion` is:
+- Expand `RULE_CUES.narrative_delivery` in [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:345) with sequencing and verification-order language taken directly from `ND-01` through `ND-05`.
+- Add a second delivery-biased floor in [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:859) for phrases like `only then`, `updated together`, `same pass`, `kept pending until`, and `awaiting runtime verification`.
+- Gate or soften the progress override in [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853) when strong delivery cues are present in the same chunk, so delivery can outrank raw implementation verbs.
+- Refresh the most ambiguous delivery/progress prototypes in [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37), especially `ND-03`, `ND-04`, and `NP-05`, so the Tier2 corpus reinforces the new boundary instead of repeating the old overlap. [INFERENCE: iteration-12 nearest-neighbor analysis]
 
-The accuracy problem therefore is not hard-rule false positives in the measured set. It is the much larger heuristic zone.
+## 2. Handover Versus Drop: Why Good Handover Notes Get Refused
 
-### 2. Tier2 is already essential in the current runtime
+The handover problem is caused by one heuristic decision: the router currently treats command-like operational language almost as harshly as transcript wrappers.
 
-The overall corpus result at the shipped thresholds (`0.70 / 0.70 / 0.50`) was:
+- The `drop` cue table lumps together real wrapper signals (`conversation transcript`, `tool telemetry`, `table of contents`) and softer operational phrases like `git diff`, `list memories`, and `force re-index`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369]
+- The `drop` score then jumps to `0.92` as soon as a small subset of those patterns appears, including `git diff`. Handover only gets a `0.84` floor for `recent action`, `next safe action`, `current state`, or `resume`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:877]
+- The handover prototypes themselves prove why this matters: `HS-01`, `HS-03`, and `HS-04` contain `git diff`, `run the resume command`, and file-review instructions, so the prototype corpus reinforces the same operational overlap the heuristics already struggle with. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83]
 
-| Metric | Result |
-|---|---:|
-| Samples | 132 |
-| Overall labeled accuracy | 87.88% |
-| Tier2 routes | 64 |
-| Refusals | 8 |
-| Tier1-only accuracy | 72.73% |
+The practical fix for phase `002-fix-handover-drop-confusion` is:
+- Split `drop` into hard wrappers versus soft operational commands inside [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369). Transcript wrappers, table-of-contents scaffolding, and explicit boilerplate can keep the current hard drop behavior. `git diff`, `list memories`, and similar operator commands should become a lower-weight branch.
+- Raise or preserve `handover_state` when strong stop-state language coexists with those softer command mentions. The right seam is [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:868), where the current handover floor can be extended with `next session`, `active files`, `remaining effort`, and other state-first phrases seen in `HS-02` and `HS-05`.
+- Keep `extractHardNegativeFlags()` focused on true wrappers and boilerplate, not ordinary command mentions, so mixed-signal escalation remains meaningful. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:904]
+- Refresh 1-2 handover prototypes in [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83) to be more state-first and less command-first, rather than weakening correctly categorized drop examples. [INFERENCE: iteration-14 prototype-boundary analysis]
 
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:452] [INFERENCE: live execution of dist/lib/routing/content-router.js on the 132-sample synthetic corpus]
+## 3. Tier3 Wiring: What Is Missing And What It Will Cost
 
-Tier2 therefore is not just a fallback convenience; it recovers a meaningful amount of accuracy from Tier1 misreads even before Tier3 is live.
+The Tier3 contract is real, but the runtime implementation is not.
 
-### 3. The confusion hotspots are narrow and specific
+- `createContentRouter()` already accepts `classifyWithTier3` and `cache`, and `resolveTier3Decision()` already knows how to validate, cache, and incorporate the result. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:386] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:630]
+- `memory-save.ts` never injects those dependencies. The current call in [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008) constructs the router with no arguments, which hardwires `classifyWithTier3` to a null-returning stub. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:391]
+- There is no production Tier3 client anywhere else in the repo. The only reusable pattern is the OpenAI-compatible `fetch()` wrapper in [llm-reformulation.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/llm-reformulation.ts:185), which already handles env-based endpoint configuration, timeout, aborts, and fail-open behavior.
 
-The largest confusion pairs were:
+The practical fix for phase `003-wire-tier3-llm-classifier` is:
+- Add a small classifier adapter that builds the Tier3 prompt via [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128), sends it to an OpenAI-compatible endpoint, and returns `Tier3RawResponse | null`.
+- Inject that adapter into the router constructor at [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008), along with a cache implementation so repeated ambiguous chunks can reuse the existing session/spec-folder cache logic.
+- Keep the integration fail-open. If the endpoint is missing, slow, or invalid, the current Tier2 fallback path should remain the runtime behavior.
 
-| Confusion pair | Count | Pattern |
-|---|---:|---|
-| `narrative_delivery -> narrative_progress` | 4 | implementation verbs beat sequencing/gating cues |
-| `handover_state -> drop` | 4 | resume notes mention `git diff`, tooling, or recovery-style language |
-| `narrative_progress -> research_finding` | 2 | "source of truth" or doc-language sounds like research |
-| `handover_state -> task_update` | 2 | abbreviated handover fragments lose state context |
+Expected latency and cost impact:
+- The contract is intentionally bounded: `gpt-5.4`, `reasoningEffort: low`, `temperature: 0`, `maxOutputTokens: 200`, `timeoutMs: 2000`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:12]
+- Tier3 only runs on the ambiguous tail after Tier1 and Tier2 fail to accept, so the additional model call is not on every save. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:470]
+- Repeated identical chunks can become zero-cost after the first call because of the existing cache. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:640]
+- The main operational risk is latency, not token volume, because `memory-save.ts` normalizes markdown before routing but does not hard-cap chunk length prior to Tier3. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:806] [INFERENCE: live save chunks are not length-capped before Tier3]
 
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369] [INFERENCE: live corpus misclassification clusters from iterations 5 and 6]
+## 4. Prototype Quality: Balanced, But Not Well Separated
 
-This is why the weakest categories were `handover_state` (`62.5%`) and `narrative_delivery` (`68.75%`), while structured categories remained perfect on the measured corpus. [INFERENCE: live execution of dist/lib/routing/content-router.js on the 132-sample synthetic corpus]
+`routing-prototypes.json` is healthy by count and unhealthy by semantic spacing.
 
-### 4. The merge contract matters as much as the class label
+- Each category has five examples, so coverage is even. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1]
+- Delivery and progress still share a large amount of vocabulary, and handover and drop are closer than they should be in operational language. [INFERENCE: packet-local lexical overlap and nearest-neighbor scans from iterations 12 and 14]
+- `negativeHints` are present on every prototype, but the live router does not currently use them anywhere in heuristic or Tier2 scoring. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:151]
 
-The router's target mapping is deterministic by category, but the write surface is not equally robust:
+That means the right prototype fix is targeted:
+- Adjust a few delivery and handover examples so they become stronger anchors for their categories.
+- Leave the rest of the corpus stable so the post-fix benchmark measures cue/prototype improvements, not a wholesale library rewrite.
 
-| Category | Default target | Merge mode | Risk summary |
-|---|---|---|---|
-| `narrative_progress` | `implementation-summary.md::what-built` | `append-as-paragraph` | low risk, safe no-op dedupe |
-| `narrative_delivery` | `implementation-summary.md::how-delivered` | `append-as-paragraph` | low risk, same as progress |
-| `decision` (`L3/L3+`) | `decision-record.md::adr-NNN` | `insert-new-adr` | medium risk, depends on healthy ADR anchor container |
-| `handover_state` | `handover.md::session-log` | `append-section` | low/medium risk, resilient but still anchor-shape dependent |
-| `research_finding` | `research/research.md::findings` | `append-section` | low/medium risk, resilient |
-| `task_update` | `tasks.md::<phase-anchor>` | `update-in-place` | highest risk, needs exactly one target checklist line |
-| `metadata_only` | `_memory.continuity` frontmatter | `update-in-place` via continuity helper | lowest risk in practice, bypasses anchor merge |
-| `drop` | `scratch/pending-route-*.json::manual-review` | `refuse-to-route` | intentional non-merge path |
+## 5. Test Coverage: Happy Paths Exist, Regression Coverage Does Not
 
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:918] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:925] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:440] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts:627]
+The current tests prove the router API shape, but they do not defend the failure modes the research found.
 
-`task_update` is the most brittle category because both payload construction and the merge operation require a specific task/checklist identifier and a unique matching line. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:952] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/merge/anchor-merge-operation.ts:455]
+- `content-router.vitest.ts` has one positive-path test per category, several Tier3 contract/cache tests, and one override-against-drop test. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48]
+- It does not have regression cases for:
+  - delivery text that also contains implementation verbs,
+  - handover text that also contains `git diff` or restart-command language,
+  - research/metadata overlap,
+  - decision/research or task/handover adversarial boundaries. [INFERENCE: iteration-18 test audit]
+- `handler-memory-save.vitest.ts` only proves routed behavior when `routeAs` is explicitly provided, so it does not currently verify the natural routing path where Tier3 would be wired. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1076]
 
-### 5. `routeAs` is strong override, not soft guidance
+The implementation phases should therefore add:
+- Router-level regression tests for the two measured confusion seams.
+- At least one handler-level natural-routing test that reaches Tier3 and one that proves safe fallback when the classifier returns `null` or times out.
 
-`routeAs` is applied after the natural decision is computed. It forces the category and target, raises confidence to at least `0.50`, preserves the original natural decision in `naturalDecision`, and warns when the natural route was `drop`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:428] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:395]
+## Implementation Guidance By Phase
 
-That means override can rescue misclassifications, but it can also intentionally bypass a semantic refusal. The downstream save handler still enforces merge-mode compatibility and target existence, so override is not a bypass around write safety. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1053] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1069]
+### Phase 001: `001-fix-delivery-progress-confusion`
 
-## Threshold Analysis
+Primary code targets:
+- [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:345)
+- [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:853)
+- [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:37)
+- [content-router.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:65)
 
-The current thresholds are not obviously wrong, but the measured tradeoff is not one-dimensional.
+Change description:
+- Expand delivery cues with sequencing, gating, same-pass, and verification-order language.
+- Add a delivery-biased floor when those phrases are present.
+- Prevent the progress floor from automatically winning when strong delivery cues coexist.
+- Refresh 2-3 ambiguous delivery/progress prototypes.
+- Add regression tests for ambiguous delivery chunks that currently look like implementation summaries.
 
-Baseline:
-- `Tier1=0.70`, `Tier2=0.70`, `fallback/Tier3 floor=0.50`
-- `87.88%` accuracy
-- 8 refusals
+### Phase 002: `002-fix-handover-drop-confusion`
 
-Best measured accuracy point in the tested grid:
-- `Tier1=0.75`, `Tier2=0.65`, `fallback/Tier3 floor=0.45`
-- `90.15%` accuracy
-- 9 refusals
+Primary code targets:
+- [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:353)
+- [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:877)
+- [routing-prototypes.json](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:83)
+- [content-router.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:110)
 
-[INFERENCE: threshold sweep over recorded Tier1/Tier2 outputs from the live router]
+Change description:
+- Split hard drop wrappers from soft operational commands.
+- Let strong stop-state and resume language outrank soft command mentions.
+- Keep true transcript and boilerplate wrappers as hard drops.
+- Refresh 1-2 handover prototypes so they lead with state, blockers, and next safe action rather than commands.
+- Add regression tests where handover coexists with `git diff`, restart instructions, or file-review lists.
 
-The improvement comes mainly from routing more borderline delivery cases through Tier2 instead of accepting Tier1 too early. But that same change slightly harms `narrative_progress` and raises refusal count. Changes to `Tier2` and `Tier3` floors mainly shifted refusal counts, while `Tier1` was the dominant accuracy lever in the tested range. [INFERENCE: threshold sweep over recorded Tier1/Tier2 outputs from the live router]
+### Phase 003: `003-wire-tier3-llm-classifier`
 
-## Recommendations
+Primary code targets:
+- [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008)
+- [content-router.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1128)
+- [llm-reformulation.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/llm-reformulation.ts:185)
+- [handler-memory-save.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1076)
 
-### Primary recommendation
+Change description:
+- Implement a real Tier3 classifier adapter using the existing prompt contract.
+- Inject it into the canonical save-path router.
+- Reuse timeout, abort, and env-based configuration patterns from the existing OpenAI-compatible helper.
+- Preserve fail-open fallback behavior and expose audit visibility for latency/cache hits.
+- Add natural-routing handler tests plus router tests for timeouts, null responses, and cache reuse.
 
-Keep the shipped `0.70 / 0.70 / 0.50` thresholds for now, because:
-- the current runtime does not actually wire Tier3 into canonical saves,
-- the measured improvement from higher Tier1 floors is real but comes with more refusals,
-- the largest errors are cue/prototype collisions, not broad threshold failure.
+## Final Recommendation
 
-### Better next move than threshold-only tuning
+Implement the phases in this order:
+1. `001-fix-delivery-progress-confusion`
+2. `002-fix-handover-drop-confusion`
+3. `003-wire-tier3-llm-classifier`
 
-Tune cues and prototypes in two places:
-- Strengthen `narrative_delivery` cues around sequencing, gating, rollout discipline, and verification order so they beat implementation verbs when appropriate.
-- Relax `drop` dominance when strong handover language (`current state`, `next session`, `resume`, `blocker`) coexists with command/tool mentions.
-
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:340] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:369] [INFERENCE: corpus misclassification clusters]
-
-### If a threshold experiment is still desired
-
-Run a shadow-mode experiment at:
-- `Tier1 = 0.75`
-- `Tier2 = 0.65`
-- fallback floor `0.45` or `0.50`
-
-Treat that as an experiment, not an immediate default change, and measure:
-- delivery accuracy gain,
-- progress false-refusal cost,
-- any increase in manual-review load.
-
-### Tier3-specific recommendation
-
-Do not over-optimize the `0.50` Tier3 threshold until Tier3 is actually wired into `memory-save.ts`. Today it mostly acts as the penalized Tier2 fallback/refusal cutoff, not a live model acceptance floor. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1008] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:518]
-
-## Direct Answers To The Packet Questions
-
-1. Tier1 hard-rule accuracy is effectively perfect on the measured hard-rule subset, but those rules cover only 14 of 132 corpus samples. The spec's "7 rules" wording is stale; the code currently has 8 hard rules.
-2. Tier1->Tier2 escalation is common: 64 of 132 measured samples used Tier2, driven mostly by `top1_below_0_70`, then `margin_too_narrow`, then `mixed_signals`.
-3. The main confusion pairs are delivery-progress and handover-drop, with smaller progress-research and handover-task spillover.
-4. The current thresholds are defensible; a stricter Tier1 floor improves measured accuracy slightly but at the cost of more refusals. Threshold-only tuning is weaker than cue/prototype tuning.
-5. Merge-mode safety varies by category. `task_update` is the most fragile; `metadata_only` is the safest because it bypasses anchor merge.
-6. `routeAs` is a real override that can rescue or force routes, but it still lives under downstream target and merge-mode validation.
+Then rerun the same synthetic corpus and targeted regression tests as a before/after benchmark. The research no longer points to a threshold-first fix. It points to cue tuning, prototype sharpening, and missing save-path wiring.

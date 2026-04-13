@@ -1,6 +1,6 @@
 {
   "topic": "Content routing classification accuracy and threshold optimization",
-  "maxIterations": 10,
+  "maxIterations": 20,
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,
@@ -14,14 +14,14 @@
   "lineage": {
     "sessionId": "73f56143-edd1-45c2-9893-149fa736250f",
     "parentSessionId": null,
-    "lineageMode": "new",
+    "lineageMode": "resume",
     "allowedModes": [
       "new",
       "resume",
       "restart"
     ],
     "generation": 1,
-    "continuedFromRun": null
+    "continuedFromRun": 10
   },
   "reducer": {
     "enabled": true,
