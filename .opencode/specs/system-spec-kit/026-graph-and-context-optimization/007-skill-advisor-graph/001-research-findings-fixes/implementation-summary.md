@@ -79,16 +79,16 @@ Fixed the 5 P0 blocking issues and 2 of 5 P1 issues identified by the 10-iterati
 ## 4. FILES MODIFIED/CREATED
 
 ### Modified
-- `.opencode/skill/skill-advisor/skill_advisor.py` — ghost guard, evidence separation (~40 lines)
-- `.opencode/skill/skill-advisor/skill_graph_compiler.py` — intent_signals, prerequisite_for, validation hardening (~60 lines)
+- `.opencode/skill/skill-advisor/scripts/skill_advisor.py` — ghost guard, evidence separation (~40 lines)
+- `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` — intent_signals, prerequisite_for, validation hardening (~60 lines)
 - `.opencode/skill/system-spec-kit/graph-metadata.json` — +3 enhances edges
 - `.opencode/skill/sk-doc/graph-metadata.json` — +1 enhances edge
 - `.opencode/skill/mcp-coco-index/graph-metadata.json` — +1 enhances edge
 - `.opencode/skill/sk-improve-prompt/graph-metadata.json` — +4 enhances edges to CLI skills
 - `.opencode/skill/sk-deep-review/graph-metadata.json` — siblings emptied
 - `.opencode/skill/sk-deep-research/graph-metadata.json` — siblings emptied
-- `.opencode/skill/skill-advisor/skill-graph.json` — regenerated (3957 bytes)
-- `.opencode/skill/skill-advisor/fixtures/skill_advisor_regression_cases.jsonl` — 3 fixed, 3 added
+- `.opencode/skill/skill-advisor/scripts/skill-graph.json` — regenerated (3957 bytes)
+- `.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` — 3 fixed, 3 added
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Playbook Template Alignment"
-description: "Task breakdown for rewriting 16 playbook snippets and root playbook."
+description: "Task breakdown for reconciling the full 24-scenario playbook package and root operator guide."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook tasks"
@@ -74,6 +74,6 @@ _memory:
 
 ## Phase 5: Verification
 
-- [ ] T018 Update all playbook command paths from `skill-advisor/skill_advisor.py` to `skill-advisor/scripts/skill_advisor.py` [NOTE: scripts moved to scripts/ subfolder after playbook rewrites]
-- [x] T019 Verify all 16 snippets have 5 numbered sections (OVERVIEW through SOURCE METADATA) [EVIDENCE: all 16 confirmed 5 sections]
-- [x] T020 Verify all 16 snippets contain RCAF prompt pattern in sections 2 and 3 [EVIDENCE: 32 RCAF prompts across 16 files]
+- [x] T018 Normalize ALL path mentions in `01--routing-accuracy` prompts, commands, triage, and source file tables to use the `skill-advisor/scripts/` prefix [EVIDENCE: required grep sweep for bare `skill-advisor/skill_advisor.py` returned 0 matches; `no feature catalog` grep returned 0 matches]
+- [x] T019 Verify all 24 scenario snippets have 5 numbered sections (OVERVIEW through SOURCE METADATA); root guide intentionally uses operator-guide format [EVIDENCE: all 24 scenario snippets confirmed 5 sections]
+- [x] T020 Verify all 24 scenario snippets contain RCAF prompt pattern in sections 2 and 3 [EVIDENCE: 48 RCAF prompts across 24 scenario snippets]

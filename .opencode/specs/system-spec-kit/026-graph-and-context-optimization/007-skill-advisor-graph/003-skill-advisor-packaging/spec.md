@@ -1,124 +1,265 @@
 ---
 title: "Feature Specification: Skill Advisor Packaging"
-description: "Rename scripts/ to skill-advisor/, create sk-doc-aligned manual testing playbook (24 scenarios) and feature catalog, update all references."
+description: "Repair the packaging packet so it matches the shipped skill-advisor layout, uses concrete evidence paths, and passes strict Level 3 validation."
 trigger_phrases:
   - "003-skill-advisor-packaging"
   - "skill advisor packaging"
-  - "skill-advisor playbook"
-  - "skill-advisor feature catalog"
+  - "skill advisor packet repair"
+  - "skill-advisor scripts subfolder"
 importance_tier: "important"
-contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+contextType: "implementation"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging"
-    last_updated_at: "2026-04-13T18:00:00Z"
-    last_updated_by: "claude-opus-4-6"
-    recent_action: "18 catalog files + root created by copilot GPT-5.4; scripts moved to scripts/ subfolder; paths need update in catalog/playbook"
-    next_safe_action: "Update command paths in catalog and playbook from skill-advisor/skill_advisor.py to skill-advisor/scripts/skill_advisor.py"
-    key_files: ["spec.md"]
-
+    last_updated_at: "2026-04-13T13:52:38Z"
+    last_updated_by: "gpt-5.4"
+    recent_action: "Review findings triaged"
+    next_safe_action: "Run strict validation"
+    key_files: ["spec.md", "plan.md", "tasks.md", "checklist.md", "decision-record.md", "graph-metadata.json"]
 ---
 # Feature Specification: Skill Advisor Packaging
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
 ## EXECUTIVE SUMMARY
 
-Promote the skill advisor from a loose `scripts/` folder to a proper skill package at `.opencode/skill/skill-advisor/`. Add a manual testing playbook (24 scenarios, 4 categories) and feature catalog (~20 features, 4 categories) aligned with sk-doc templates and matching the system-spec-kit examples.
+The shipped `skill-advisor` package now uses a clean root layout with `../../../../../skill/skill-advisor/README.md`, the package setup guide, `feature_catalog/`, `manual_testing_playbook/`, `scripts/`, and `graph-metadata.json` under `../../../../../skill/skill-advisor/`. This remediation pass updates the packet so it describes that live layout accurately, replaces loose metadata placeholders with concrete file evidence, and restores the Level 3 headers and anchors required by strict validation.
+
+**Key Decisions**: Keep the packet on the Level 3 scaffold, record the `scripts/` subfolder reorganization as a formal ADR, and use concrete file paths instead of directory or glob placeholders.
+
+**Critical Dependencies**: `../../../../../skill/skill-advisor/feature_catalog/feature_catalog.md`, `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`, `../../../../../skill/skill-advisor/scripts/skill_advisor.py`, `../../../../../skill/skill-advisor/scripts/skill_graph_compiler.py`
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
+| **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Review |
 | **Created** | 2026-04-13 |
+| **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `002-manual-testing-playbook` |
+| **Related Packet** | `../002-manual-testing-playbook/spec.md` |
+| **Review Source** | `review/deep-review-findings.md` |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## 2. WHAT CHANGED SO FAR
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-### Done
-- The legacy shared scripts directory under `.opencode/skill` was renamed to `.opencode/skill/skill-advisor/` (Copilot GPT-5.4 session)
-- `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.json`, regression harness all work at new path (self-relative paths)
-- Empty `manual_testing_playbook/` and `feature_catalog/` directory structures created with category subdirs
-- `01--routing-accuracy/` playbook snippets (8 files) rewritten to sk-doc template format with RCAF prompts
+### Problem Statement
 
-### Pending
-- Rewrite remaining 16 playbook snippets (02--graph-boosts, 03--compiler, 04--regression-safety) to sk-doc template
-- Rewrite root `MANUAL_TESTING_PLAYBOOK.md` to match system-spec-kit root playbook format
-- Create root `FEATURE_CATALOG.md` matching system-spec-kit root catalog format
-- Create all ~20 per-feature catalog files matching sk-doc snippet template
-- Update references in CLAUDE.md from `scripts/` to `skill-advisor/`
-- Update `skill_advisor.py` Gate 2 invocation path in CLAUDE.md
-- Add `graph-metadata.json` for skill-advisor skill folder
+This packet still described an earlier packaging shape, used invalid packet-relative markdown references, and stored incomplete metadata for downstream tooling. The live package now places runtime scripts in `../../../../../skill/skill-advisor/scripts/`, while `feature_catalog/` and `manual_testing_playbook/` live alongside that subfolder at the package root, but the packet did not describe that layout consistently enough for strict validation.
+
+### Purpose
+
+Update the packet so it matches the shipped `skill-advisor` package, resolves the six requested review findings, and becomes machine-valid again.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Manual testing playbook: 24 scenarios across 4 categories
-  - 01--routing-accuracy (8): git, review, figma, CLI, spec, deep-review, prompt, search
-  - 02--graph-boosts (7): dependency pull-up, enhances, ghost guard, family, evidence separation, hub edges, prerequisite_for
-  - 03--compiler (5): schema validation, zero-edge warnings, signals, size, health
-  - 04--regression-safety (4): full suite, P0 cases, graph cases, noise abstain
-- Feature catalog: ~20 features across 4 categories
-  - 01--routing-pipeline (6): discovery, normalization, keyword boosting, phrase boosting, calibration, filtering
-  - 02--graph-system (8): metadata, compiler, compiled graph, transitive boosts, family affinity, conflict penalty, ghost guard, evidence separation
-  - 03--semantic-search (2): CocoIndex integration, auto-triggers
-  - 04--testing (2): regression harness, health check
-- All files must use sk-doc templates with RCAF prompt pattern
-- Root files must match system-spec-kit style (frontmatter, TOC, numbered all-caps H2s)
+
+- Rewrite `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` onto the active Level 3 scaffold.
+- Record the live package layout where `feature_catalog/`, `manual_testing_playbook/`, and `scripts/` sit under `../../../../../skill/skill-advisor/`.
+- Replace packet `graph-metadata.json` key-file placeholders with concrete evidence files.
+- Add ADR-003 for the `scripts/` subfolder reorganization.
+- Repair packet-local markdown references so strict integrity checks resolve cleanly.
 
 ### Out of Scope
-- Creating a SKILL.md for skill-advisor (could be future work)
-- Moving graph-metadata.json files from individual skill folders
-- Changing the skill_advisor.py code
+
+- Editing runtime Python code or changing shipped skill-advisor behavior.
+- Renaming the shipped root catalog file or manual playbook file.
+- Rewriting the deep-review findings document itself.
+- Touching sibling packet content outside references already required by this packet.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Restore template headers and describe the live package layout |
+| `plan.md` | Modify | Document the remediation phases and validation gate |
+| `tasks.md` | Modify | Replace stale task text with the actual remediation work and current paths |
+| `checklist.md` | Modify | Convert custom checks to template sections and correct the root-catalog rule |
+| `decision-record.md` | Modify | Add anchors and ADR-003 for the `scripts/` subfolder reorganization |
+| `graph-metadata.json` | Modify | Replace placeholder key files with concrete evidence paths |
+<!-- /ANCHOR:scope -->
 
 ---
 
-## 4. TEMPLATES TO FOLLOW
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-| Artifact | Template | Example |
-|----------|----------|---------|
-| Playbook snippet | `sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md` | `system-spec-kit/manual_testing_playbook/01--retrieval/001-unified-context-retrieval-memory-context.md` |
-| Playbook root | (system-spec-kit root playbook pattern) | `system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` |
-| Catalog snippet | `sk-doc/assets/documentation/feature_catalog/feature_catalog_snippet_template.md` | `system-spec-kit/feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md` |
-| Catalog root | (system-spec-kit root catalog pattern) | `system-spec-kit/feature_catalog/FEATURE_CATALOG.md` |
+### P0 - Blockers (MUST complete)
 
-### Prompt Pattern (RCAF)
-All playbook prompts MUST use: `As a {role} validation operator, {action} against {target}. Verify {expected}. Return a concise pass/fail verdict with the main reason and cited evidence.`
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Strict packet validation must stop failing | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging --strict` exits `0` or `1`, never `2` |
+| REQ-002 | The four core packet docs must expose the required Level 3 template headers and anchors | `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain the validator-required section headers and ANCHOR pairs |
+| REQ-003 | The packet must describe the shipped package layout accurately | The packet states that runtime scripts live in `../../../../../skill/skill-advisor/scripts/` and that `feature_catalog/` plus `manual_testing_playbook/` live alongside it in `../../../../../skill/skill-advisor/` |
+| REQ-004 | Packet graph metadata must use concrete file evidence | `graph-metadata.json` lists real files such as `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md`, `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py`, and `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` |
+| REQ-005 | The scripts-subfolder reorganization must be captured as a formal decision | `decision-record.md` includes ADR-003 with context, rationale, alternatives, consequences, and implementation notes |
 
-### Snippet Structure (5 sections)
-1. OVERVIEW (with "Why This Matters")
-2. CURRENT REALITY (objective, real user request, prompt, expected signals, pass/fail)
-3. TEST EXECUTION (prompt, commands, expected, evidence, pass/fail, failure triage)
-4. SOURCE FILES (implementation + test anchors table)
-5. SOURCE METADATA (group, playbook ID, root source, file path)
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-006 | Packet task descriptions must use the live `skill-advisor/scripts/` paths where runtime files are referenced | `tasks.md` references `../../../../../skill/skill-advisor/scripts/...` for runtime script evidence |
+| REQ-007 | The checklist must distinguish per-feature snippet rules from the root catalog format | `checklist.md` states that the 18 per-feature catalog files follow the 4-section snippet template, while the root feature catalog uses its own multi-section format |
+| REQ-008 | Packet markdown references must resolve to real files | Any `.md` file reference in packet docs points to a valid local or relative repo path |
+<!-- /ANCHOR:requirements -->
 
 ---
 
-## 5. KEY FILES
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-| File | Status |
-|------|--------|
-| `.opencode/skill/skill-advisor/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` | Needs rewrite |
-| `.opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/*.md` (8) | Done |
-| `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/*.md` (7) | Needs rewrite |
-| `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/*.md` (5) | Needs rewrite |
-| `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/*.md` (4) | Needs rewrite |
-| `.opencode/skill/skill-advisor/feature_catalog/FEATURE_CATALOG.md` | Needs creation |
-| `.opencode/skill/skill-advisor/feature_catalog/01--routing-pipeline/*.md` (6) | Needs creation |
-| `.opencode/skill/skill-advisor/feature_catalog/02--graph-system/*.md` (8) | Needs creation |
-| `.opencode/skill/skill-advisor/feature_catalog/03--semantic-search/*.md` (2) | Needs creation |
-| `.opencode/skill/skill-advisor/feature_catalog/04--testing/*.md` (2) | Needs creation |
+- SC-001: Strict validation for this packet exits with warnings at worst.
+- SC-002: The packet records the live layout accurately: `../../../../../skill/skill-advisor/` contains `feature_catalog/`, `manual_testing_playbook/`, `scripts/`, `../../../../../skill/skill-advisor/README.md`, the package setup guide, and `graph-metadata.json`.
+- SC-003: `graph-metadata.json` lists concrete packaging evidence files instead of directory or glob placeholders.
+- SC-004: `tasks.md`, `checklist.md`, and `decision-record.md` reflect the `scripts/` subfolder reorganization and the root-catalog exception correctly.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | `../../../../../skill/skill-advisor/feature_catalog/feature_catalog.md` must remain the shipped root catalog path | If the live file name changes again, packet metadata and checklist evidence drift immediately | Read the live folder before editing the packet and record the concrete file that exists now |
+| Dependency | `../../../../../skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md` and runtime scripts must remain present | Missing evidence files would make the packet description inaccurate | Use only concrete files confirmed on disk |
+| Risk | Restoring template headers could remove packet intent if the rewrite is too generic | The packet would validate but stop being useful | Keep the packaging-specific details inside the template sections |
+| Risk | A packet-relative markdown path could still be invalid | Validation would continue to fail under `SPEC_DOC_INTEGRITY` | Use local packet files or repository-relative paths only |
+<!-- /ANCHOR:risks -->
+
+---
+
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Maintainability
+
+- NFR-M01: The packet must follow the active Level 3 scaffold so future review passes can target stable anchors.
+- NFR-M02: File evidence must use concrete paths that remain readable in plain text and machine tooling.
+
+### Reliability
+
+- NFR-R01: Completion claims in this packet must be reproducible through live file reads plus strict validation.
+
+### Traceability
+
+- NFR-T01: The packet metadata must point at the packaging surfaces that were actually reviewed.
+
+---
+
+## 8. EDGE CASES
+
+- If the root feature catalog keeps a different file name than the template convention, the packet must still reference the file that exists on disk.
+- If `scripts/` contains more runtime helpers later, the packet should still point at the primary evidence files instead of falling back to directory placeholders.
+- If future packet edits mention external markdown files, they must use valid relative paths from this packet folder.
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 14/25 | Six packet artifacts and one metadata file |
+| Risk | 18/25 | Validation, metadata, and path accuracy all gate completion |
+| Research | 8/20 | Current package layout must be verified before doc changes |
+| Multi-Agent | 4/15 | Single-writer packet remediation |
+| Coordination | 10/15 | Packet docs must align with shipped skill-advisor assets |
+| **Total** | **54/100** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | A stale markdown reference remains in packet docs | High | Medium | Replace all `.md` references with valid relative paths or local packet files |
+| R-002 | Packet metadata points at directories instead of real files | High | Medium | Enumerate concrete evidence files from the shipped `skill-advisor` package |
+| R-003 | Decision history omits the `scripts/` subfolder move | Medium | Medium | Add ADR-003 with explicit rationale and consequences |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Reviewer Gets a Valid Packet
+
+As a packet reviewer, I want the packet to pass strict validation, so I can trust it as a current source of truth.
+
+### US-002: Maintainer Sees the Real Package Layout
+
+As a maintainer, I want the packet to describe the live `skill-advisor` root and `scripts/` subfolder correctly, so I do not follow stale paths.
+
+### US-003: Retrieval Tool Gets Concrete Evidence Files
+
+As a downstream retrieval tool, I want packet metadata to point at real files, so indexing and resume flows can surface the right evidence.
+
+### Acceptance Scenarios
+
+1. **Given** the packet previously failed strict validation, **when** the Level 3 headers and anchors are restored, **then** the validator stops returning exit code `2`.
+2. **Given** the package root contains `feature_catalog/`, `manual_testing_playbook/`, and `scripts/`, **when** the packet is read, **then** it describes that live layout directly.
+3. **Given** `graph-metadata.json` previously used placeholder entries, **when** metadata is rewritten, **then** it points at concrete packaging evidence files.
+4. **Given** the `scripts/` subfolder move was not yet documented as an ADR, **when** `decision-record.md` is read, **then** ADR-003 explains that reorganization and its rationale.
+5. **Given** runtime evidence appears in packet tasks, **when** `tasks.md` is read, **then** those references point at `../../../../../skill/skill-advisor/scripts/...` instead of stale package-root paths.
+6. **Given** the root catalog does not follow the snippet section count, **when** `checklist.md` is read, **then** it treats only the 18 per-feature files as 4-section snippets and treats the root catalog as a multi-section exception.
+
+### AI Execution Protocol
+
+### Pre-Task Checklist
+
+- Confirm edits stay inside this packet's markdown docs and packet JSON.
+- Treat `../../../../../skill/skill-advisor/` files as evidence sources, not edit targets.
+- Re-run strict validation after any structural rewrite.
+
+### Execution Rules
+
+| Rule ID | Rule | Why |
+|---------|------|-----|
+| AI-SCOPE-003 | Edit only packet markdown or packet JSON under `003-skill-advisor-packaging/` | Prevents unrelated repo churn |
+| AI-VALIDATE-003 | Validate after each major packet rewrite | Keeps template drift from stacking up |
+| AI-EVIDENCE-003 | Record layout and metadata claims from current on-disk files only | Prevents stale or invented packet evidence |
+| AI-ADR-003 | Keep the `scripts/` subfolder decision explicit in the packet | Prevents the reorganization from becoming undocumented state |
+
+### Status Reporting Format
+
+- Start state: validator failures and review findings.
+- Work state: packet doc rewrite, metadata normalization, and ADR update.
+- End state: strict validation result and the changed packet files.
+
+### Blocked Task Protocol
+
+1. Stop if a packet claim depends on a file that was not re-read.
+2. Leave the related task or checklist item open until that evidence is confirmed.
+3. Record any unresolved gap in `implementation-summary.md` instead of guessing.
+
+---
+
+<!-- ANCHOR:questions -->
+## 12. OPEN QUESTIONS
+
+- None at this time. The live package layout and the required packet fixes are known.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: `plan.md`
+- **Task Breakdown**: `tasks.md`
+- **Verification Checklist**: `checklist.md`
+- **Decision Record**: `decision-record.md`
+- **Review Findings**: `review/deep-review-findings.md`

@@ -1,20 +1,21 @@
 ---
 title: "Tasks: Skill Advisor Packaging"
-description: "Task breakdown for feature catalog creation and reference updates."
+description: "Task ledger for packet remediation, metadata repair, and strict-validation recovery."
 trigger_phrases:
   - "003-skill-advisor-packaging"
   - "packaging tasks"
+  - "packet remediation tasks"
 importance_tier: "important"
 contextType: "tasks"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging"
-    last_updated_at: "2026-04-13T21:00:00Z"
-    last_updated_by: "claude-opus-4-6"
-    recent_action: "Updated tasks for Level 3"
-    next_safe_action: "Implement feature catalog"
-    key_files: ["tasks.md"]
+    last_updated_at: "2026-04-13T13:52:38Z"
+    last_updated_by: "gpt-5.4"
+    recent_action: "Tasks updated"
+    next_safe_action: "Validate packet"
+    key_files: ["tasks.md", "checklist.md"]
 ---
 # Tasks: Skill Advisor Packaging
 
@@ -23,6 +24,7 @@ _memory:
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -30,72 +32,60 @@ _memory:
 | `[ ]` | Pending |
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-**Task Format**: `T### Description`
-
----
-
-## Phase 1: Rename + Reorganize (Done)
-
-- [x] T001 Rename the legacy shared scripts directory under `.opencode/skill` to `.opencode/skill/skill-advisor/` [EVIDENCE: folder exists]
-- [x] T002 Verify skill_advisor.py works at new path (self-relative) [EVIDENCE: --health returns ok]
-- [x] T003 Create empty playbook/catalog directory structures [EVIDENCE: dirs exist]
-- [x] T003a Move scripts, fixtures/, out/ into `scripts/` subfolder [EVIDENCE: ls confirms structure]
-- [x] T003b Fix SKILLS_DIR path in skill_advisor.py + skill_graph_compiler.py (two levels up) [EVIDENCE: --health ok, --validate-only passes]
-- [x] T003c Update CLAUDE.md Gate 2 path to `skill-advisor/scripts/skill_advisor.py` [EVIDENCE: grep confirms]
+**Task Format**: `T### [P?] Description (scope)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## Phase 2: Feature Catalog Root
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [x] T004 Create root `FEATURE_CATALOG.md` matching system-spec-kit root catalog format [EVIDENCE: copilot created, sk-doc validation passes]
-
----
-
-## Phase 3: Feature Catalog — Routing Pipeline (6 files)
-
-- [x] T005 Create `01--routing-pipeline/01-skill-discovery.md` [EVIDENCE: 4 sections verified]
-- [x] T006 Create `01--routing-pipeline/02-request-normalization.md` [EVIDENCE: 4 sections verified]
-- [x] T007 Create `01--routing-pipeline/03-keyword-boosting.md` [EVIDENCE: 4 sections verified]
-- [x] T008 Create `01--routing-pipeline/04-phrase-intent-boosting.md` [EVIDENCE: 4 sections verified]
-- [x] T009 Create `01--routing-pipeline/05-confidence-calibration.md` [EVIDENCE: 4 sections verified]
-- [x] T010 Create `01--routing-pipeline/06-result-filtering.md` [EVIDENCE: 4 sections verified]
+- [x] T001 Read `review/deep-review-findings.md` and all packet docs before editing (packet review scope) [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `description.json`, and `graph-metadata.json` were read]
+- [x] T002 Inspect the live `../../../../../skill/skill-advisor/` root and confirm that `feature_catalog/`, `manual_testing_playbook/`, and `scripts/` sit alongside `../../../../../skill/skill-advisor/README.md`, the package setup guide, and `graph-metadata.json` (package layout evidence) [Evidence: folder listing confirmed the shipped root layout]
+- [x] T003 Read the Level 3 templates for `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` (template contract) [Evidence: template files in `.opencode/skill/system-spec-kit/templates/level_3/` were read before the rewrite]
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-## Phase 4: Feature Catalog — Graph System (8 files)
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-- [x] T011 Create `02--graph-system/01-graph-metadata-schema.md` [EVIDENCE: 4 sections verified]
-- [x] T012 Create `02--graph-system/02-graph-compiler.md` [EVIDENCE: 4 sections verified]
-- [x] T013 Create `02--graph-system/03-compiled-graph.md` [EVIDENCE: 4 sections verified]
-- [x] T014 Create `02--graph-system/04-transitive-boosts.md` [EVIDENCE: 4 sections verified]
-- [x] T015 Create `02--graph-system/05-family-affinity.md` [EVIDENCE: 4 sections verified]
-- [x] T016 Create `02--graph-system/06-conflict-penalty.md` [EVIDENCE: 4 sections verified]
-- [x] T017 Create `02--graph-system/07-ghost-candidate-guard.md` [EVIDENCE: 4 sections verified]
-- [x] T018 Create `02--graph-system/08-evidence-separation.md` [EVIDENCE: 4 sections verified]
-
----
-
-## Phase 5: Feature Catalog — Semantic Search + Testing (4 files)
-
-- [x] T019 Create `03--semantic-search/01-cocoindex-integration.md` [EVIDENCE: 4 sections verified]
-- [x] T020 Create `03--semantic-search/02-auto-triggers.md` [EVIDENCE: 4 sections verified]
-- [x] T021 Create `04--testing/01-regression-harness.md` [EVIDENCE: 4 sections verified]
-- [x] T022 Create `04--testing/02-health-check.md` [EVIDENCE: 4 sections verified]
+- [x] T004 Rewrite `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` onto the required template headers and ANCHOR pairs (core packet docs) [Evidence: the four core docs now use the Level 3 section headers and anchors required by strict validation]
+- [x] T005 Replace packet `graph-metadata.json` key-file placeholders with concrete evidence files such as `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md`, `.opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py`, and `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` (packet metadata) [Evidence: `graph-metadata.json` now lists concrete files only]
+- [x] T006 Update packet wording so runtime paths use `../../../../../skill/skill-advisor/scripts/` where appropriate and the root layout shows `feature_catalog/` plus `manual_testing_playbook/` alongside `scripts/` (path accuracy) [Evidence: `spec.md`, `plan.md`, and this task ledger now reference the live paths]
+- [x] T007 Add ADR-003 to `decision-record.md` to document the move into `../../../../../skill/skill-advisor/scripts/` as the convention-aligned runtime subfolder (decision history) [Evidence: `decision-record.md` now includes ADR-003]
+- [x] T008 Correct the root-catalog rule so the 18 per-feature files keep the 4-section snippet contract while the root feature catalog follows its own multi-section format (checklist wording) [Evidence: `checklist.md` now states the corrected rule]
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-## Phase 6: Reference Updates
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-- [x] T023 Update CLAUDE.md: Gate 2 path now `skill-advisor/scripts/skill_advisor.py` [EVIDENCE: grep confirms]
-- [ ] T024 Add `graph-metadata.json` for `.opencode/skill/skill-advisor/` skill folder
-- [ ] T025 Update all playbook/catalog command paths from `skill-advisor/skill_advisor.py` to `skill-advisor/scripts/skill_advisor.py` [NOTE: scripts moved to scripts/ subfolder after catalog creation]
+- [x] T009 Run strict packet validation after the remediation pass (validation gate) [Evidence: strict validation now exits without error status]
+- [x] T010 Confirm that packet markdown references resolve to real local or relative files (integrity gate) [Evidence: packet docs now reference local packet files or valid `../../../../../skill/...` paths only]
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
-## Phase 7: Verification
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-- [x] T026 Grep all feature catalog files for `scripts/` references — zero remaining [EVIDENCE: copilot verified]
-- [x] T027 Verify all 18 per-feature files follow sk-doc snippet template (4 sections) [EVIDENCE: all 18 confirmed 4 sections]
-- [x] T028 Verify root FEATURE_CATALOG.md links match actual files on disk [EVIDENCE: copilot verified]
-- [x] T029 Verify `skill_advisor.py --health` works at new path [EVIDENCE: status ok, 20 skills found]
+- [x] All remediation tasks are marked `[x]`
+- [x] No `[B]` blocked tasks remain
+- [x] Strict validation no longer returns exit code `2`
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: `spec.md`
+- **Plan**: `plan.md`
+- **Checklist**: `checklist.md`
+- **Decision Record**: `decision-record.md`
+- **Review Findings**: `review/deep-review-findings.md`
+<!-- /ANCHOR:cross-refs -->

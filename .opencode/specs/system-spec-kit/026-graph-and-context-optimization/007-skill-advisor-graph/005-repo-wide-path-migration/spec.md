@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 status: complete
-closed_by_commit: TBD
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 _memory:
   continuity:

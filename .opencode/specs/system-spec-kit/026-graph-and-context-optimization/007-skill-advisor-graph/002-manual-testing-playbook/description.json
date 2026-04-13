@@ -1,8 +1,8 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook",
-  "description": "Manual testing playbook for skill advisor routing pipeline and graph system - 24 scenarios across 4 categories",
+  "description": "Manual testing playbook packet for the skill advisor routing and graph system - 24 scenario files across 4 categories plus the root operator guide",
   "keywords": ["testing", "playbook", "skill-advisor", "manual-testing", "validation"],
-  "lastUpdated": "2026-04-13T17:00:00.000Z",
+  "lastUpdated": "2026-04-13T13:52:28.098Z",
   "specId": "002",
   "folderSlug": "manual-testing-playbook",
   "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "007-skill-advisor-graph"],

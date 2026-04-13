@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 status: complete
-closed_by_commit: TBD
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:

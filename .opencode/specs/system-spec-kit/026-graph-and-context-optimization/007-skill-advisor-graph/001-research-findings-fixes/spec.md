@@ -40,7 +40,7 @@ Fix the issues found by a 10-iteration GPT-5.4 deep research audit of the skill 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | Complete (P0 + P1-1/P1-3 landed; P1-2/P1-4/P1-5 deferred) |
 | **Created** | 2026-04-13 |
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
@@ -130,16 +130,16 @@ Semantic search subprocess failures return empty `[]` with no diagnostic trace.
 
 | File | Action | Issues |
 |------|--------|--------|
-| `.opencode/skill/skill-advisor/skill_advisor.py` | Modify | P0-1, P0-5, P1-4, P1-5 |
-| `.opencode/skill/skill-advisor/skill_graph_compiler.py` | Modify | P0-3, P0-4, P1-1, P1-2 |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify | P0-1, P0-5, P1-4, P1-5 |
+| `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` | Modify | P0-3, P0-4, P1-1, P1-2 |
 | `.opencode/skill/system-spec-kit/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/mcp-coco-index/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-doc/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-improve-prompt/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-deep-review/graph-metadata.json` | Modify | P1-3 |
 | `.opencode/skill/sk-deep-research/graph-metadata.json` | Modify | P1-3 |
-| `.opencode/skill/skill-advisor/skill-graph.json` | Regenerate | After all metadata fixes |
-| `.opencode/skill/skill-advisor/fixtures/skill_advisor_regression_cases.jsonl` | Modify | New test cases |
+| `.opencode/skill/skill-advisor/scripts/skill-graph.json` | Regenerate | After all metadata fixes |
+| `.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Modify | New test cases |
 <!-- /ANCHOR:files -->
 
 ---
@@ -147,12 +147,15 @@ Semantic search subprocess failures return empty `[]` with no diagnostic trace.
 <!-- ANCHOR:success -->
 ## 5. SUCCESS CRITERIA
 
-- [ ] No skill appears in recommendations purely from graph propagation (P0-1)
-- [ ] system-spec-kit, mcp-coco-index, sk-doc, sk-improve-prompt have correct outbound edges (P0-2)
-- [ ] Compiled skill-graph.json includes intent_signals (P0-3)
-- [ ] prerequisite_for edges are either compiled or removed from schema (P0-4)
-- [ ] Graph-derived boosts are distinguishable from direct evidence in calibration (P0-5)
-- [ ] Compiler warns on zero-edge skills and dependency cycles (P1-1)
-- [ ] Regression suite passes with zero failures
-- [ ] Research audit verdict changes from "not production-ready" to "production-ready"
+- [x] Ghost candidate prevention: DONE [EVIDENCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py` functions `_apply_graph_boosts()` and `_apply_family_affinity()` both gate graph/family boosts on pre-graph snapshot evidence.]
+- [x] Edge gaps filled: DONE [EVIDENCE: `.opencode/skill/system-spec-kit/graph-metadata.json` adds 3 outbound enhances edges; `.opencode/skill/sk-doc/graph-metadata.json` adds 1; `.opencode/skill/mcp-coco-index/graph-metadata.json` adds 1; `.opencode/skill/sk-improve-prompt/graph-metadata.json` adds 4.]
+- [x] `intent_signals` in compiled output: DONE [EVIDENCE: `.opencode/skill/skill-advisor/scripts/skill-graph.json` contains the top-level `signals` field.]
+- [x] `prerequisite_for` compiled: DONE [EVIDENCE: `.opencode/skill/skill-advisor/scripts/skill-graph.json` adjacency includes `mcp-code-mode.prerequisite_for` and `sk-code-review.prerequisite_for`.]
+- [x] Graph evidence separation: DONE [EVIDENCE: `.opencode/skill/skill-advisor/scripts/skill_advisor.py` tracks `_graph_boost_count` before confidence calibration.]
+- [x] Compiler warnings: DONE [EVIDENCE: `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` returns zero-edge warnings and the compiler source validates self-edges and dependency cycles.]
+- [x] Regression passes: DONE [EVIDENCE: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` returned 44/44 passing, including 12/12 P0.]
+- [ ] Audit-drift diagnostics: DEFERRED [DEFERRED: P1-2 `--audit-drift` flag remains unimplemented.]
+- [x] Deep-review/deep-research sibling leak fixed: DONE [EVIDENCE: `.opencode/skill/sk-deep-review/graph-metadata.json` and `.opencode/skill/sk-deep-research/graph-metadata.json` both set `"siblings": []`.]
+- [ ] Reason ordering: DEFERRED [DEFERRED: P1-4 still sorts reasons alphabetically.]
+- [ ] CocoIndex diagnostics: DEFERRED [DEFERRED: P1-5 semantic-search failures still return without diagnostic trace.]
 <!-- /ANCHOR:success -->

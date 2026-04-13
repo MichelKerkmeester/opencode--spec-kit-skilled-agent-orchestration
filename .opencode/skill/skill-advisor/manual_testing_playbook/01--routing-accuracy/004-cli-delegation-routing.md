@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-004` and confirm the
 
 - Objective: Each CLI skill routes correctly when explicitly named
 - Real user request: `"delegate to codex for code generation"`
-- Prompt: `As a routing accuracy operator, validate CLI delegation routing against skill_advisor.py with 4 CLI-specific prompts. Verify each routes to its named CLI skill with explicit match and no ghost sibling candidates. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate CLI delegation routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py with 4 CLI-specific prompts. Verify each routes to its named CLI skill with explicit match and no ghost sibling candidates. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: each prompt routes to its named CLI skill, explicit reason present, no ghost siblings
 - Pass/fail: PASS if each prompt routes to its named CLI skill with no ghost siblings; FAIL if wrong skill is top-1 or siblings appear with only graph:family evidence
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-004` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate CLI delegation routing against skill_advisor.py with 4 CLI-specific prompts. Verify each routes to its named CLI skill with explicit match and no ghost sibling candidates. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate CLI delegation routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py with 4 CLI-specific prompts. Verify each routes to its named CLI skill with explicit match and no ghost sibling candidates. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -59,7 +59,7 @@ Capture the full JSON output for each command showing the top-1 skill, confidenc
 
 ### Failure Triage
 
-Check skill_advisor.py explicit name matching logic. Verify ghost guard is filtering candidates with only graph reasons. Review CLI skill graph-metadata.json files for unintended family boost configurations.
+Check `.opencode/skill/skill-advisor/scripts/skill_advisor.py` explicit name matching logic. Verify ghost guard is filtering candidates with only graph reasons. Review CLI skill graph-metadata.json files for unintended family boost configurations.
 
 ---
 

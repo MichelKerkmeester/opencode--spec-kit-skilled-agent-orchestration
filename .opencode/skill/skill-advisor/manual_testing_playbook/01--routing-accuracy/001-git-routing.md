@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-001` and confirm the
 
 - Objective: Correct routing of git prompts to sk-git
 - Real user request: `"create a pull request on github"`
-- Prompt: `As a routing accuracy operator, validate git workflow routing against skill_advisor.py "create a pull request on github". Verify sk-git is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate git workflow routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github". Verify sk-git is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: sk-git as top-1, confidence >= 0.80, passes_threshold true
 - Pass/fail: PASS if sk-git is top-1 with confidence >= 0.80; FAIL if different skill is top-1 or confidence < 0.80
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-001` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate git workflow routing against skill_advisor.py "create a pull request on github". Verify sk-git is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate git workflow routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github". Verify sk-git is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -58,7 +58,7 @@ Capture the full JSON output showing skill name, confidence score, passes_thresh
 
 ### Failure Triage
 
-Check skill_advisor.py signal matching for git-related keywords. Verify sk-git graph-metadata.json contains correct trigger_phrases and intent_signals. Review skill-graph.json for unexpected edge boosts overriding the match.
+Check `.opencode/skill/skill-advisor/scripts/skill_advisor.py` signal matching for git-related keywords. Verify sk-git graph-metadata.json contains correct trigger_phrases and intent_signals. Review `.opencode/skill/skill-advisor/scripts/skill-graph.json` for unexpected edge boosts overriding the match.
 
 ---
 

@@ -1,12 +1,12 @@
 {
   "title": "Graph Metadata Enrichment",
-  "description": "Enrich all 20 per-skill graph-metadata.json files with derived data blocks (trigger_phrases, key_files, entities, causal_summary) matching the spec-folder pattern.",
+  "description": "Packet closeout for the already-completed schema v2 enrichment across all 21 per-skill graph-metadata.json files, including the live derived blocks, corrected example schema, and Level 3 packet decisions.",
   "trigger_phrases": [
     "004-graph-metadata-enrichment",
     "graph metadata enrichment",
-    "skill metadata enrichment",
-    "rich graph metadata"
+    "schema v2 derived metadata",
+    "skill metadata closeout"
   ],
   "importance_tier": "important",
-  "contextType": "planning"
+  "contextType": "implementation"
 }

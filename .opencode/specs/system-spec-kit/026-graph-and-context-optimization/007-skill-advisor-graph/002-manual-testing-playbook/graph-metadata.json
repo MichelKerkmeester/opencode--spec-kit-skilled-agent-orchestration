@@ -2,10 +2,11 @@
   "packet_id": "007-skill-advisor-graph/002-manual-testing-playbook",
   "parent_id": "007-skill-advisor-graph",
   "title": "Playbook Template Alignment",
-  "status": "planned",
+  "status": "complete",
   "level": 3,
   "derived": {
     "key_files": [
+      ".opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/",
       ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/",
       ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/",
       ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/",

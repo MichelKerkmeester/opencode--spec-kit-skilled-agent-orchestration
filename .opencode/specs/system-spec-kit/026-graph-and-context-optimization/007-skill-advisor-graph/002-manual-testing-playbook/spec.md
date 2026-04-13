@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Playbook Template Alignment"
-description: "Rewrite 16 playbook snippets (02/03/04 categories) and root playbook to sk-doc template format with RCAF prompts."
+description: "Align the full 24-scenario playbook package and root operator guide with live skill-advisor/scripts paths and the correct template contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook alignment"
@@ -14,8 +14,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook"
     last_updated_at: "2026-04-13T21:00:00Z"
     last_updated_by: "claude-opus-4-6"
-    recent_action: "16 snippets + root rewritten by copilot GPT-5.4; paths need scripts/ update"
-    next_safe_action: "Update command paths in all playbook files from skill-advisor/skill_advisor.py to skill-advisor/scripts/skill_advisor.py"
+    recent_action: "Loaded deep-review findings and identified stale scope, path, and metadata language across the packet"
+    next_safe_action: "Normalize routing-accuracy prose paths and refresh packet acceptance criteria for the full 24-scenario corpus"
     key_files: ["spec.md", "plan.md", "tasks.md"]
 ---
 # Feature Specification: Playbook Template Alignment
@@ -27,7 +27,7 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Rewrite 16 playbook snippets (categories 02--graph-boosts, 03--compiler, 04--regression-safety) and the root `manual_testing_playbook.md` to match the sk-doc playbook snippet template with RCAF-pattern prompts. The 01--routing-accuracy category (8 files) is already aligned and serves as the reference pattern.
+Align the full manual testing playbook package with current reality: all 24 scenario snippets follow the sk-doc 5-section/RCAF snippet contract, the root `manual_testing_playbook.md` remains a multi-section operator guide, and every Skill Advisor runtime path reference uses `.opencode/skill/skill-advisor/scripts/...` rather than bare `skill-advisor/...` or the retired `.opencode/skill/scripts/...` location.
 
 ---
 
@@ -37,7 +37,7 @@ Rewrite 16 playbook snippets (categories 02--graph-boosts, 03--compiler, 04--reg
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-04-13 |
 | **Parent Spec** | `../spec.md` |
 | **Predecessor** | `001-research-findings-fixes` |
@@ -46,39 +46,37 @@ Rewrite 16 playbook snippets (categories 02--graph-boosts, 03--compiler, 04--reg
 
 ## 2. PROBLEM STATEMENT
 
-The 01--routing-accuracy playbook snippets follow the sk-doc template (5 sections, RCAF prompts, frontmatter, "Why This Matters", failure triage, source files tables). The remaining 16 snippets across 3 categories are minimal 15-25 line stubs with only a command, expected output, and pass/fail. This inconsistency means:
+The 24 scenario snippets are already template-aligned, but the packet still carries stale follow-up language: several packet docs still describe the retired path policy, the routing-accuracy prose still mentions bare `skill_advisor.py` / `skill-graph.json`, and the root guide understates the live feature-catalog surface. This inconsistency means:
 
-- Operators cannot follow a uniform testing process
-- No structured failure triage for graph boost, compiler, or regression scenarios
-- No source file anchors linking scenarios to implementation code
-- Root playbook references stale `scripts/` paths
+- Operators receive conflicting guidance about which runtime paths are valid
+- Auditors cannot tell whether the root guide is intentionally different from the 24 scenario snippets
+- Cross-reference evidence understates the live feature-catalog surface
+- Packet acceptance criteria and playbook prose no longer describe the live runtime paths or full playbook package
 
 ### Current State (per category)
 
 | Category | Files | Template Aligned? | Format |
 |----------|-------|-------------------|--------|
 | 01--routing-accuracy | 8 | Yes | 5-section, RCAF, frontmatter |
-| 02--graph-boosts | 7 | No | 15-20 line stubs |
-| 03--compiler | 5 | No | 15-20 line stubs |
-| 04--regression-safety | 4 | No | 15-20 line stubs |
-| Root playbook | 1 | Partial | Has TOC but uses `scripts/` paths, missing execution policy |
+| 02--graph-boosts | 7 | Yes | 5-section, RCAF, frontmatter |
+| 03--compiler | 5 | Yes | 5-section, RCAF, frontmatter |
+| 04--regression-safety | 4 | Yes | 5-section, RCAF, frontmatter |
+| Root playbook | 1 | Distinct by design | Multi-section operator guide with TOC, review policy, and cross-reference index |
 
 ---
 
 ## 3. SCOPE
 
 ### In Scope
-- Rewrite 7 graph-boost snippets to sk-doc template (5 sections, RCAF prompts)
-- Rewrite 5 compiler snippets to sk-doc template
-- Rewrite 4 regression-safety snippets to sk-doc template
-- Rewrite root `manual_testing_playbook.md` to match system-spec-kit root format
-- Fix all `scripts/` → `skill-advisor/` path references in all 17 files
+- Verify that all 24 scenario snippets follow the sk-doc 5-section/RCAF snippet contract
+- Preserve the root `manual_testing_playbook.md` as the canonical multi-section operator guide for the package
+- Normalize every Skill Advisor runtime path reference to `.opencode/skill/skill-advisor/scripts/skill_advisor.py` or `.opencode/skill/skill-advisor/scripts/skill-graph.json`
+- Refresh packet metadata, verification language, and task wording so they describe the full 24-scenario corpus plus the root guide
 
 ### Out of Scope
-- 01--routing-accuracy snippets (already aligned)
 - Creating new test scenarios beyond the existing 24
 - Changing the skill_advisor.py code
-- Feature catalog (covered by Phase 003)
+- Replacing live `.opencode/skill/skill-advisor/scripts/` runtime paths with bare `skill-advisor/` references or the retired `.opencode/skill/scripts/` location
 
 ---
 
@@ -111,22 +109,24 @@ Already-aligned file: `.opencode/skill/skill-advisor/manual_testing_playbook/01-
 
 | File | Action |
 |------|--------|
-| `02--graph-boosts/001-dependency-pullup.md` through `007-prerequisite-for.md` | Rewrite (7) |
-| `03--compiler/001-schema-validation.md` through `005-health-check.md` | Rewrite (5) |
-| `04--regression-safety/001-full-regression.md` through `004-abstain-noise.md` | Rewrite (4) |
-| `manual_testing_playbook.md` | Rewrite root |
-| `01--routing-accuracy/001-git-routing.md` | Reference (read-only) |
+| `01--routing-accuracy/001-git-routing.md` through `008-semantic-search-routing.md` | Normalize prose path references (8) |
+| `02--graph-boosts/001-dependency-pullup.md` through `007-prerequisite-for.md` | Verify rewritten snippet contract (7) |
+| `03--compiler/001-schema-validation.md` through `005-health-check.md` | Verify rewritten snippet contract (5) |
+| `04--regression-safety/001-full-regression.md` through `004-abstain-noise.md` | Verify rewritten snippet contract (4) |
+| `manual_testing_playbook.md` | Refresh root guide and feature-catalog cross-reference |
 
 ---
 
 ## 6. SUCCESS CRITERIA
 
-- [ ] All 16 snippets follow the 5-section sk-doc template structure
-- [ ] All 16 snippets contain RCAF-pattern prompts in sections 2 and 3
-- [ ] All 16 snippets have frontmatter with title and description
-- [ ] All 16 snippets have "Why This Matters" in section 1
-- [ ] All 16 snippets have failure triage in section 3
-- [ ] All 16 snippets have source files table in section 4
-- [ ] Root playbook uses `skill-advisor/` paths (not `scripts/`)
+- [ ] All 24 scenario snippets follow the 5-section sk-doc template structure
+- [ ] All 24 scenario snippets contain RCAF-pattern prompts in sections 2 and 3
+- [ ] All 24 scenario snippets have frontmatter with title and description
+- [ ] All 24 scenario snippets have "Why This Matters" in section 1
+- [ ] All 24 scenario snippets have failure triage in section 3
+- [ ] All 24 scenario snippets have source files table in section 4
+- [ ] Root playbook is treated as a multi-section operator guide, not a 5-section snippet
+- [ ] All Skill Advisor command paths use `.opencode/skill/skill-advisor/scripts/skill_advisor.py` rather than bare `skill-advisor/skill_advisor.py` or `.opencode/skill/scripts/skill_advisor.py`
+- [ ] All `skill-graph.json` references use `.opencode/skill/skill-advisor/scripts/skill-graph.json`
 - [ ] Root playbook matches system-spec-kit root playbook format
-- [ ] Zero references to `scripts/` remain in any playbook file
+- [ ] Root playbook points to the live `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md` surface

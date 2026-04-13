@@ -42,7 +42,7 @@ The Skill Advisor stack now includes:
 Typical invocation used by workflows:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8
 ```
 
 Interpretation:
@@ -62,13 +62,13 @@ Interpretation:
 
 ```bash
 python3 --version
-ls -la .opencode/skill/scripts/skill_advisor.py
+ls -la .opencode/skill/skill-advisor/scripts/skill_advisor.py
 ```
 
 Optional executable bit:
 
 ```bash
-chmod +x .opencode/skill/scripts/skill_advisor.py
+chmod +x .opencode/skill/skill-advisor/scripts/skill_advisor.py
 ```
 
 ---
@@ -78,7 +78,7 @@ chmod +x .opencode/skill/scripts/skill_advisor.py
 ### Step 1: Health Check
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
 ```
 
 Expected characteristics:
@@ -90,11 +90,11 @@ Expected characteristics:
 ### Step 2: Smoke Routing
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "create a pull request on github"
-python3 .opencode/skill/scripts/skill_advisor.py "save this conversation context to memory"
-python3 .opencode/skill/scripts/skill_advisor.py "/memory:save this context"
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/scripts/skill_advisor.py "auto review release readiness"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "save this conversation context to memory"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/memory:save this context"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "auto review release readiness"
 ```
 
 Expected behavior:
@@ -110,7 +110,7 @@ Expected behavior:
 ### One-Shot (Default)
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "your prompt"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt"
 ```
 
 Uses dual-threshold filtering:
@@ -120,10 +120,10 @@ Uses dual-threshold filtering:
 ### CocoIndex Alias Flags
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex-hits '[{"path":".opencode/skill/mcp-coco-index/SKILL.md","score":0.9}]'
 ```
 
 Both flag pairs are aliases. Use either spelling consistently in local workflows.
@@ -131,7 +131,7 @@ Both flag pairs are aliases. Use either spelling consistently in local workflows
 ### Confidence-Only Override
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
 ```
 
 Use this only when you intentionally want high-confidence suggestions even when uncertainty is above default limits.
@@ -141,13 +141,13 @@ Use this only when you intentionally want high-confidence suggestions even when 
 File mode:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
 ```
 
 Stdin mode:
 
 ```bash
-cat prompts.txt | python3 .opencode/skill/scripts/skill_advisor.py --batch-stdin
+cat prompts.txt | python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-stdin
 ```
 
 Batch mode reduces repeated process overhead for multi-prompt evaluations.
@@ -155,8 +155,8 @@ Batch mode reduces repeated process overhead for multi-prompt evaluations.
 ### Optional Debug/Control Flags
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "prompt" --show-rejections
-python3 .opencode/skill/scripts/skill_advisor.py --force-refresh --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "prompt" --show-rejections
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
 ```
 
 ---
@@ -166,9 +166,9 @@ python3 .opencode/skill/scripts/skill_advisor.py --force-refresh --health
 ### Regression Harness
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/scripts/out/regression-report.json
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
 ```
 
 Validates:
@@ -179,10 +179,10 @@ Validates:
 ### Benchmark Harness
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
   --runs 7 \
-  --out .opencode/skill/scripts/out/benchmark-report.json
+  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 ```
 
 Reports:
@@ -193,7 +193,7 @@ Reports:
 ### Script-Level Alignment
 
 ```bash
-python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/skill-advisor/scripts
 ```
 
 Expected: zero `ERROR` findings before claiming completion.
@@ -211,8 +211,8 @@ Possible causes:
 Check:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "your prompt" --show-rejections
-python3 .opencode/skill/scripts/skill_advisor.py "your prompt" --threshold 0.8 --confidence-only
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --show-rejections
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your prompt" --threshold 0.8 --confidence-only
 ```
 
 ### Batch Mode Input Errors
@@ -220,8 +220,8 @@ python3 .opencode/skill/scripts/skill_advisor.py "your prompt" --threshold 0.8 -
 Invalid batch combinations are rejected with JSON error payloads and exit code `2`:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py --batch-file /tmp/missing.txt
-python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt --batch-stdin
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file /tmp/missing.txt
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt --batch-stdin
 ```
 
 ### Skills Not Refreshing
@@ -229,7 +229,7 @@ python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt --batc
 Force refresh cached discovery:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py --force-refresh --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --force-refresh --health
 ```
 
 ---
@@ -241,7 +241,7 @@ python3 .opencode/skill/scripts/skill_advisor.py --force-refresh --health
 - [ ] explicit slash prompts can route to `kind: "command"`
 - [ ] regression harness passes
 - [ ] benchmark harness passes
-- [ ] alignment verifier reports no errors for `.opencode/skill/scripts`
+- [ ] alignment verifier reports no errors for `.opencode/skill/skill-advisor/scripts`
 
 ---
 
@@ -249,31 +249,31 @@ python3 .opencode/skill/scripts/skill_advisor.py --force-refresh --health
 
 ```bash
 # Health
-python3 .opencode/skill/scripts/skill_advisor.py --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health
 
 # One-shot default mode
-python3 .opencode/skill/scripts/skill_advisor.py "create a pull request on github"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a pull request on github"
 
 # CocoIndex alias flags
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --semantic
-python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --cocoindex
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --semantic
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --cocoindex
 
 # Confidence-only override
-python3 .opencode/skill/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
 
 # Batch file mode
-python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
 
 # Regression report
-python3 .opencode/skill/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/scripts/out/regression-report.json
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
 
 # Benchmark report
-python3 .opencode/skill/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
   --runs 7 \
-  --out .opencode/skill/scripts/out/benchmark-report.json
+  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 
 # Alignment verification
 python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts

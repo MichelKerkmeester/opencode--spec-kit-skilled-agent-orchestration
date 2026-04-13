@@ -357,7 +357,7 @@ Complex performance issue: TBT is 800ms on mobile, LCP is 4.2s.
 
 **What you see:** Skill not activating via Gate 2 routing.
 **Common causes:** The task description did not contain enough keyword signals for the router to score above the threshold.
-**Fix:** Run `python3 .opencode/skill/scripts/skill_advisor.py "your task description" --threshold 0.8` to check the routing score. Add explicit keywords (implement, debug, verify, performance) to your request, or invoke the skill directly with `Read(".opencode/skill/sk-code-web/SKILL.md")`.
+**Fix:** Run `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "your task description" --threshold 0.8` to check the routing score. Add explicit keywords (implement, debug, verify, performance) to your request, or invoke the skill directly with `Read(".opencode/skill/sk-code-web/SKILL.md")`.
 
 ---
 

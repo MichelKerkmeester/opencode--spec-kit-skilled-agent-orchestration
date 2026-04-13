@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-005` and confirm the
 
 - Objective: Correct routing of spec/memory prompts to system-spec-kit
 - Real user request: `"save this conversation context to memory"`
-- Prompt: `As a routing accuracy operator, validate spec/memory routing against skill_advisor.py "save this conversation context to memory". Verify system-spec-kit is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate spec/memory routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "save this conversation context to memory". Verify system-spec-kit is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: system-spec-kit as top-1, confidence >= 0.80
 - Pass/fail: PASS if system-spec-kit is top-1 with confidence >= 0.80; FAIL if different skill is top-1 or confidence < 0.80
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-005` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate spec/memory routing against skill_advisor.py "save this conversation context to memory". Verify system-spec-kit is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate spec/memory routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "save this conversation context to memory". Verify system-spec-kit is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 

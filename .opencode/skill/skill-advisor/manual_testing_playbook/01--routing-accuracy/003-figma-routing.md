@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-003` and confirm the
 
 - Objective: Correct routing of figma prompts with dependency companion
 - Real user request: `"export figma components as images"`
-- Prompt: `As a routing accuracy operator, validate figma MCP routing against skill_advisor.py "export figma components as images". Verify mcp-figma is top-1 and mcp-code-mode appears in results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate figma MCP routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "export figma components as images". Verify mcp-figma is top-1 and mcp-code-mode appears in results. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: mcp-figma as top-1, mcp-code-mode present via graph:depends, both pass threshold
 - Pass/fail: PASS if mcp-figma is top-1 AND mcp-code-mode appears; FAIL if mcp-figma not top-1 or mcp-code-mode missing
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-003` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate figma MCP routing against skill_advisor.py "export figma components as images". Verify mcp-figma is top-1 and mcp-code-mode appears in results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate figma MCP routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "export figma components as images". Verify mcp-figma is top-1 and mcp-code-mode appears in results. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -56,7 +56,7 @@ Capture the full JSON output showing both skill entries, their confidence scores
 
 ### Failure Triage
 
-Check mcp-figma graph-metadata.json for depends_on edge pointing to mcp-code-mode. Verify skill_advisor.py dependency pull-up logic is active. Confirm skill-graph.json adjacency includes the depends relationship.
+Check mcp-figma graph-metadata.json for depends_on edge pointing to mcp-code-mode. Verify `.opencode/skill/skill-advisor/scripts/skill_advisor.py` dependency pull-up logic is active. Confirm `.opencode/skill/skill-advisor/scripts/skill-graph.json` adjacency includes the depends relationship.
 
 ---
 

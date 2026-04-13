@@ -1,20 +1,50 @@
 {
+  "schema_version": 1,
   "packet_id": "007-skill-advisor-graph/004-graph-metadata-enrichment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/004-graph-metadata-enrichment",
   "parent_id": "007-skill-advisor-graph",
+  "children_ids": [],
   "title": "Graph Metadata Enrichment",
-  "status": "planned",
+  "status": "complete",
   "level": 3,
+  "manual": {
+    "depends_on": [
+      "007-skill-advisor-graph/001-research-findings-fixes"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "007-skill-advisor-graph/003-skill-advisor-packaging",
+      "007-skill-advisor-graph/005-repo-wide-path-migration"
+    ]
+  },
   "derived": {
+    "trigger_phrases": [
+      "004-graph-metadata-enrichment",
+      "graph metadata enrichment",
+      "schema v2 derived metadata",
+      "skill metadata closeout"
+    ],
     "key_files": [
-      ".opencode/skill/*/graph-metadata.json",
-      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
-      ".opencode/skill/skill-advisor/scripts/skill-graph.json"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "review/deep-review-findings.md",
+      "../../../../../skill/sk-deep-review/graph-metadata.json",
+      "../../../../../skill/skill-advisor/graph-metadata.json",
+      "../../../../../skill/skill-advisor/scripts/skill_graph_compiler.py",
+      "../../../../../skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl"
     ],
-    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
-    "related_packets": [
-      "007-skill-advisor-graph/002-manual-testing-playbook",
-      "007-skill-advisor-graph/003-skill-advisor-packaging"
-    ],
-    "supersedes": null
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "review/deep-review-findings.md"
+    ]
   }
 }

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-007` and confirm the
 
 - Objective: Correct routing to sk-improve-prompt
 - Real user request: `"improve this prompt with COSTAR framework"`
-- Prompt: `As a routing accuracy operator, validate prompt improvement routing against skill_advisor.py "improve this prompt with COSTAR framework". Verify sk-improve-prompt is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate prompt improvement routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "improve this prompt with COSTAR framework". Verify sk-improve-prompt is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: sk-improve-prompt as top-1, confidence >= 0.80
 - Pass/fail: PASS if sk-improve-prompt is top-1 with confidence >= 0.80; FAIL if different skill is top-1 or confidence < 0.80
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-007` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate prompt improvement routing against skill_advisor.py "improve this prompt with COSTAR framework". Verify sk-improve-prompt is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate prompt improvement routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "improve this prompt with COSTAR framework". Verify sk-improve-prompt is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 

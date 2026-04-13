@@ -51,7 +51,7 @@ description: "Handover for 007-skill-advisor-graph — graph system built, resea
 - `007-skill-advisor-graph/research/` — 10 iteration deep research files + state
 
 **Modified (this session):**
-- `.opencode/skill/skill-advisor/skill_advisor.py` — added `_load_skill_graph()`, `_apply_graph_boosts()`, `_apply_family_affinity()`, `_apply_graph_conflict_penalty()`, ghost guard, evidence separation, health check extension (~120 lines added)
+- `.opencode/skill/skill-advisor/scripts/skill_advisor.py` — added `_load_skill_graph()`, `_apply_graph_boosts()`, `_apply_family_affinity()`, `_apply_graph_conflict_penalty()`, ghost guard, evidence separation, health check extension (~120 lines added)
 - `.opencode/skill/skill-advisor/fixtures/skill_advisor_regression_cases.jsonl` — fixed 3 expectations, added 3 graph cases (44 total)
 - 4 graph-metadata.json files with new edges (system-spec-kit, sk-doc, mcp-coco-index, sk-improve-prompt)
 - 2 graph-metadata.json files with removed siblings (sk-deep-review, sk-deep-research)

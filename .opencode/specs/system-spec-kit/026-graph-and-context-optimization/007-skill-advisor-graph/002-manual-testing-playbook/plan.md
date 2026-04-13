@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Playbook Template Alignment"
-description: "Plan for rewriting 16 playbook snippets and root playbook to sk-doc template format."
+description: "Plan for reconciling the full playbook package with live runtime paths and the correct root-versus-snippet contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "plan"
@@ -37,7 +37,7 @@ _memory:
 
 ### Overview
 
-Rewrite 16 minimal playbook stubs into full sk-doc template-aligned snippets with RCAF prompts, and rewrite the root playbook to match the system-spec-kit root format. Use `001-git-routing.md` as the gold standard pattern.
+Reconcile the full playbook package with current reality: keep the 24 scenario snippets on the sk-doc 5-section template, keep the root playbook as the operator guide, and normalize all Skill Advisor runtime path references to `.opencode/skill/skill-advisor/scripts/...`. Use `001-git-routing.md` as the gold standard pattern for scenario snippets.
 
 ---
 
@@ -46,15 +46,15 @@ Rewrite 16 minimal playbook stubs into full sk-doc template-aligned snippets wit
 ### Definition of Ready
 - [x] sk-doc snippet template reviewed
 - [x] Reference example (001-git-routing.md) analyzed
-- [x] All 16 stub files identified on disk
+- [x] All 24 scenario files identified on disk
 - [x] Root playbook current state assessed
 - [x] system-spec-kit root playbook pattern reviewed
 
 ### Definition of Done
-- [ ] All 16 snippets follow 5-section template
-- [ ] All contain RCAF prompts
-- [ ] Root playbook rewritten
-- [ ] Zero `scripts/` path references remain
+- [ ] All 24 scenario snippets follow the 5-section template
+- [ ] All 24 scenario snippets contain RCAF prompts
+- [ ] Root playbook remains a multi-section operator guide with accurate cross-references
+- [ ] All Skill Advisor runtime path references use `.opencode/skill/skill-advisor/scripts/...`
 
 ---
 
@@ -110,7 +110,7 @@ Same expansion for `04--regression-safety/`:
 ### Phase 4: Root Playbook Rewrite
 
 Rewrite `manual_testing_playbook.md`:
-- Fix all `scripts/` → `skill-advisor/` paths
+- Fix all stale runtime-path prose so it uses `.opencode/skill/skill-advisor/scripts/`
 - Add execution policy block at top
 - Ensure TOC links match file paths
 - Match system-spec-kit root playbook section format
@@ -121,6 +121,6 @@ Rewrite `manual_testing_playbook.md`:
 
 | Risk | Likelihood | Mitigation |
 |------|-----------|------------|
-| RCAF prompts don't match actual skill_advisor.py behavior | Low | Prompts derived from existing test commands that are verified working |
+| RCAF prompts don't match actual `.opencode/skill/skill-advisor/scripts/skill_advisor.py` behavior | Low | Prompts derived from existing test commands that are verified working |
 | Inconsistency between snippet and root playbook | Low | Root playbook rewritten last, referencing final snippet state |
-| Stale `scripts/` paths missed | Low | Grep sweep after all writes |
+| Bare or legacy runtime paths missed | Low | Grep sweep after all writes |

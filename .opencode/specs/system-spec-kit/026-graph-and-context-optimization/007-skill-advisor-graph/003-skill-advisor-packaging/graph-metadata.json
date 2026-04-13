@@ -1,21 +1,136 @@
 {
-  "packet_id": "007-skill-advisor-graph/003-skill-advisor-packaging",
-  "parent_id": "007-skill-advisor-graph",
-  "title": "Skill Advisor Packaging",
-  "status": "planned",
-  "level": 3,
-  "derived": {
-    "key_files": [
-      ".opencode/skill/skill-advisor/feature_catalog/FEATURE_CATALOG.md",
-      ".opencode/skill/skill-advisor/feature_catalog/01--routing-pipeline/",
-      ".opencode/skill/skill-advisor/feature_catalog/02--graph-system/",
-      ".opencode/skill/skill-advisor/feature_catalog/03--semantic-search/",
-      ".opencode/skill/skill-advisor/feature_catalog/04--testing/",
-      ".opencode/skill/skill-advisor/graph-metadata.json",
-      "CLAUDE.md"
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/001-research-findings-fixes",
+        "reason": "The packaging packet depends on the earlier research packet that established the migration targets and evidence expectations.",
+        "source": "manual"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook",
+        "reason": "The packaging packet references the shipped manual playbook layout that Phase 002 produced.",
+        "source": "manual"
+      }
     ],
-    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
-    "related_packets": ["007-skill-advisor-graph/002-manual-testing-playbook"],
-    "supersedes": null
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/005-repo-wide-path-migration",
+        "reason": "Phase 005 depends on this packet describing the skill-advisor layout and metadata accurately.",
+        "source": "manual"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "003-skill-advisor-packaging",
+      "skill advisor packaging",
+      "packet remediation",
+      "scripts subfolder adr",
+      "feature catalog root rule",
+      "strict packet validation"
+    ],
+    "key_topics": [
+      "skill-advisor",
+      "packaging",
+      "scripts",
+      "feature-catalog",
+      "manual-testing-playbook",
+      "packet-validation",
+      "graph-metadata"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/skill-advisor/graph-metadata.json",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.json",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet documents and repairs the packaging surface for the shipped skill-advisor package. The packet now describes the live root layout, captures the scripts-subfolder decision, and points retrieval tooling at concrete packaging evidence files instead of placeholders.",
+    "created_at": "2026-04-13T00:00:00.000Z",
+    "last_save_at": "2026-04-13T13:52:38.000Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
   }
 }

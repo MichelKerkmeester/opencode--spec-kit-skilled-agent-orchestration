@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: Playbook Template Alignment"
-description: "Checklist for verifying 16 playbook snippets match sk-doc template."
+description: "Checklist for verifying the 24 scenario snippets and root operator guide match the intended playbook contract."
 trigger_phrases:
   - "002-manual-testing-playbook"
   - "playbook checklist"
@@ -35,13 +35,14 @@ _memory:
 
 ## Template Structure (P0)
 
-- [ ] CHK-001: All 16 snippets contain frontmatter with `title` and `description`
-- [ ] CHK-002: All 16 snippets have 5 numbered sections (1. OVERVIEW through 5. SOURCE METADATA)
-- [ ] CHK-003: All 16 snippets have "Why This Matters" subsection in section 1
-- [ ] CHK-004: All 16 snippets have RCAF prompt in section 2 (CURRENT REALITY)
-- [ ] CHK-005: All 16 snippets have RCAF prompt in section 3 (TEST EXECUTION)
-- [ ] CHK-006: All 16 snippets have failure triage subsection in section 3
-- [ ] CHK-007: All 16 snippets have source files table in section 4
+- [ ] CHK-001: All 24 scenario snippets contain frontmatter with `title` and `description`
+- [ ] CHK-002: All 24 scenario snippets have 5 numbered sections (1. OVERVIEW through 5. SOURCE METADATA)
+- [ ] CHK-003: All 24 scenario snippets have "Why This Matters" subsection in section 1
+- [ ] CHK-004: All 24 scenario snippets have RCAF prompt in section 2 (CURRENT REALITY)
+- [ ] CHK-005: All 24 scenario snippets have RCAF prompt in section 3 (TEST EXECUTION)
+- [ ] CHK-006: All 24 scenario snippets have failure triage subsection in section 3
+- [ ] CHK-007: All 24 scenario snippets have source files table in section 4
+- [ ] CHK-008: Root playbook remains a multi-section operator guide rather than a 5-section snippet
 
 ---
 
@@ -55,8 +56,8 @@ _memory:
 
 ## Path References (P0)
 
-- [ ] CHK-020: Zero references to `scripts/` in any playbook file (grep: 0 matches)
-- [ ] CHK-021: All command paths use `skill-advisor/` prefix
+- [ ] CHK-020: Zero bare `skill-advisor/skill_advisor.py` or legacy `.opencode/skill/scripts/skill_advisor.py` references remain in any playbook file
+- [ ] CHK-021: All Skill Advisor command paths use `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
 - [ ] CHK-022: Root playbook links match actual file paths on disk
 
 ---
@@ -66,7 +67,8 @@ _memory:
 - [ ] CHK-030: Root playbook has execution policy block
 - [ ] CHK-031: Root playbook has prerequisites section
 - [ ] CHK-032: Root playbook scenario directory matches file inventory
-- [ ] CHK-033: Root playbook uses `skill-advisor/` paths throughout
+- [ ] CHK-033: Root playbook uses `.opencode/skill/skill-advisor/scripts/` paths throughout when referencing runtime artifacts
+- [ ] CHK-034: Root playbook points to the live `.opencode/skill/skill-advisor/feature_catalog/feature_catalog.md`
 
 ---
 

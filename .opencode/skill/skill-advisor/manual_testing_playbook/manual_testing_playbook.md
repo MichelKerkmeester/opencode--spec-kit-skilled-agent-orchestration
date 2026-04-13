@@ -240,31 +240,31 @@ These scenarios validate the permanent regression harness and the abstain guardr
 
 ## 12. FEATURE CATALOG CROSS-REFERENCE INDEX
 
-Skill Advisor does not currently ship a dedicated `feature_catalog/` package. Until that exists, this index treats each playbook feature file as the canonical scenario reference and records the catalog gap explicitly.
+Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/feature_catalog.md`](../feature_catalog/feature_catalog.md). Use that catalog for the current-state inventory, and use this playbook package for operator prompts, execution steps, evidence capture, and verdict criteria.
 
-| Feature ID | Feature Name | Category | Feature File | Catalog Status |
+| Feature ID | Feature Name | Category | Feature File | Catalog Reference |
 |---|---|---|---|---|
-| RA-001 | Git workflow routing | Routing Accuracy | [RA-001](01--routing-accuracy/001-git-routing.md) | No dedicated feature-catalog entry yet |
-| RA-002 | Code review routing | Routing Accuracy | [RA-002](01--routing-accuracy/002-code-review-routing.md) | No dedicated feature-catalog entry yet |
-| RA-003 | Figma MCP routing | Routing Accuracy | [RA-003](01--routing-accuracy/003-figma-routing.md) | No dedicated feature-catalog entry yet |
-| RA-004 | CLI delegation routing | Routing Accuracy | [RA-004](01--routing-accuracy/004-cli-delegation-routing.md) | No dedicated feature-catalog entry yet |
-| RA-005 | Spec/memory routing | Routing Accuracy | [RA-005](01--routing-accuracy/005-spec-memory-routing.md) | No dedicated feature-catalog entry yet |
-| RA-006 | Deep review routing | Routing Accuracy | [RA-006](01--routing-accuracy/006-deep-review-routing.md) | No dedicated feature-catalog entry yet |
-| RA-007 | Prompt improvement routing | Routing Accuracy | [RA-007](01--routing-accuracy/007-prompt-improvement-routing.md) | No dedicated feature-catalog entry yet |
-| RA-008 | Semantic search routing | Routing Accuracy | [RA-008](01--routing-accuracy/008-semantic-search-routing.md) | No dedicated feature-catalog entry yet |
-| GB-001 | Dependency pull-up | Graph Boosts | [GB-001](02--graph-boosts/001-dependency-pullup.md) | No dedicated feature-catalog entry yet |
-| GB-002 | Enhances overlay | Graph Boosts | [GB-002](02--graph-boosts/002-enhances-overlay.md) | No dedicated feature-catalog entry yet |
-| GB-003 | Ghost candidate prevention | Graph Boosts | [GB-003](02--graph-boosts/003-ghost-prevention.md) | No dedicated feature-catalog entry yet |
-| GB-004 | Family affinity guard | Graph Boosts | [GB-004](02--graph-boosts/004-family-affinity.md) | No dedicated feature-catalog entry yet |
-| GB-005 | Evidence separation | Graph Boosts | [GB-005](02--graph-boosts/005-evidence-separation.md) | No dedicated feature-catalog entry yet |
-| GB-006 | Hub skill edges | Graph Boosts | [GB-006](02--graph-boosts/006-hub-skill-edges.md) | No dedicated feature-catalog entry yet |
-| GB-007 | Prerequisite_for compiled | Graph Boosts | [GB-007](02--graph-boosts/007-prerequisite-for.md) | No dedicated feature-catalog entry yet |
-| CP-001 | Schema validation | Compiler | [CP-001](03--compiler/001-schema-validation.md) | No dedicated feature-catalog entry yet |
-| CP-002 | Zero-edge warnings | Compiler | [CP-002](03--compiler/002-zero-edge-warnings.md) | No dedicated feature-catalog entry yet |
-| CP-003 | Compiled output includes signals | Compiler | [CP-003](03--compiler/003-compiled-signals.md) | No dedicated feature-catalog entry yet |
-| CP-004 | Size under 4KB | Compiler | [CP-004](03--compiler/004-size-target.md) | No dedicated feature-catalog entry yet |
-| CP-005 | Health check integration | Compiler | [CP-005](03--compiler/005-health-check.md) | No dedicated feature-catalog entry yet |
-| RS-001 | Full regression suite | Regression Safety | [RS-001](04--regression-safety/001-full-regression.md) | No dedicated feature-catalog entry yet |
-| RS-002 | P0 cases untouched | Regression Safety | [RS-002](04--regression-safety/002-p0-cases.md) | No dedicated feature-catalog entry yet |
-| RS-003 | Graph-specific cases | Regression Safety | [RS-003](04--regression-safety/003-graph-cases.md) | No dedicated feature-catalog entry yet |
-| RS-004 | Abstain on noise | Regression Safety | [RS-004](04--regression-safety/004-abstain-noise.md) | No dedicated feature-catalog entry yet |
+| RA-001 | Git workflow routing | Routing Accuracy | [RA-001](01--routing-accuracy/001-git-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-002 | Code review routing | Routing Accuracy | [RA-002](01--routing-accuracy/002-code-review-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-003 | Figma MCP routing | Routing Accuracy | [RA-003](01--routing-accuracy/003-figma-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-004 | CLI delegation routing | Routing Accuracy | [RA-004](01--routing-accuracy/004-cli-delegation-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-005 | Spec/memory routing | Routing Accuracy | [RA-005](01--routing-accuracy/005-spec-memory-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-006 | Deep review routing | Routing Accuracy | [RA-006](01--routing-accuracy/006-deep-review-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-007 | Prompt improvement routing | Routing Accuracy | [RA-007](01--routing-accuracy/007-prompt-improvement-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RA-008 | Semantic search routing | Routing Accuracy | [RA-008](01--routing-accuracy/008-semantic-search-routing.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-001 | Dependency pull-up | Graph Boosts | [GB-001](02--graph-boosts/001-dependency-pullup.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-002 | Enhances overlay | Graph Boosts | [GB-002](02--graph-boosts/002-enhances-overlay.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-003 | Ghost candidate prevention | Graph Boosts | [GB-003](02--graph-boosts/003-ghost-prevention.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-004 | Family affinity guard | Graph Boosts | [GB-004](02--graph-boosts/004-family-affinity.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-005 | Evidence separation | Graph Boosts | [GB-005](02--graph-boosts/005-evidence-separation.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-006 | Hub skill edges | Graph Boosts | [GB-006](02--graph-boosts/006-hub-skill-edges.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| GB-007 | Prerequisite_for compiled | Graph Boosts | [GB-007](02--graph-boosts/007-prerequisite-for.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-001 | Schema validation | Compiler | [CP-001](03--compiler/001-schema-validation.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-002 | Zero-edge warnings | Compiler | [CP-002](03--compiler/002-zero-edge-warnings.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-003 | Compiled output includes signals | Compiler | [CP-003](03--compiler/003-compiled-signals.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-004 | Size under 4KB | Compiler | [CP-004](03--compiler/004-size-target.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-005 | Health check integration | Compiler | [CP-005](03--compiler/005-health-check.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RS-001 | Full regression suite | Regression Safety | [RS-001](04--regression-safety/001-full-regression.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RS-002 | P0 cases untouched | Regression Safety | [RS-002](04--regression-safety/002-p0-cases.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RS-003 | Graph-specific cases | Regression Safety | [RS-003](04--regression-safety/003-graph-cases.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| RS-004 | Abstain on noise | Regression Safety | [RS-004](04--regression-safety/004-abstain-noise.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |

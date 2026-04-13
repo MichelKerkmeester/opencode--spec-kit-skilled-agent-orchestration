@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-002` and confirm the
 
 - Objective: Correct routing of review prompts to sk-code-review
 - Real user request: `"security code review for regressions"`
-- Prompt: `As a routing accuracy operator, validate code review routing against skill_advisor.py "security code review for regressions". Verify sk-code-review is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate code review routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "security code review for regressions". Verify sk-code-review is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: sk-code-review as top-1, confidence >= 0.80, reason includes code review phrase match
 - Pass/fail: PASS if sk-code-review is top-1 with confidence >= 0.80; FAIL if different skill is top-1
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-002` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate code review routing against skill_advisor.py "security code review for regressions". Verify sk-code-review is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate code review routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "security code review for regressions". Verify sk-code-review is top-1 with confidence >= 0.80. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -58,7 +58,7 @@ Capture the full JSON output showing skill name, confidence score, passes_thresh
 
 ### Failure Triage
 
-Check skill_advisor.py phrase matching for review-related terms. Verify sk-code-review graph-metadata.json trigger_phrases. Confirm no competing skill (sk-code-opencode, sk-code-web) overrides via graph boosts.
+Check `.opencode/skill/skill-advisor/scripts/skill_advisor.py` phrase matching for review-related terms. Verify sk-code-review graph-metadata.json trigger_phrases. Confirm no competing skill (sk-code-opencode, sk-code-web) overrides via graph boosts.
 
 ---
 

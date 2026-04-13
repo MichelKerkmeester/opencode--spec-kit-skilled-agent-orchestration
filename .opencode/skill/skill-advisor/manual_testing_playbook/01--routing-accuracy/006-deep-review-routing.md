@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `RA-006` and confirm the
 
 - Objective: Deep review routes to sk-deep-review not sk-deep-research
 - Real user request: `"deep review loop for release readiness"`
-- Prompt: `As a routing accuracy operator, validate deep review routing against skill_advisor.py "deep review loop for release readiness". Verify sk-deep-review is top-1 and sk-deep-research is absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a routing accuracy operator, validate deep review routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "deep review loop for release readiness". Verify sk-deep-review is top-1 and sk-deep-research is absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: sk-deep-review as top-1, sk-deep-research absent or below threshold
 - Pass/fail: PASS if sk-deep-review is top-1 and sk-deep-research absent; FAIL if sk-deep-research is top-1 or appears via graph sibling boost
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `RA-006` and confirm the
 
 ### Prompt
 
-`As a routing accuracy operator, validate deep review routing against skill_advisor.py "deep review loop for release readiness". Verify sk-deep-review is top-1 and sk-deep-research is absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a routing accuracy operator, validate deep review routing against .opencode/skill/skill-advisor/scripts/skill_advisor.py "deep review loop for release readiness". Verify sk-deep-review is top-1 and sk-deep-research is absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -56,7 +56,7 @@ Capture the full JSON output showing the top-1 skill and confirming sk-deep-rese
 
 ### Failure Triage
 
-Check that sibling edges between sk-deep-review and sk-deep-research have been removed in graph-metadata.json. Verify skill_advisor.py is not confusing "review" and "research" keywords. Confirm skill-graph.json does not contain stale sibling relationships.
+Check that sibling edges between sk-deep-review and sk-deep-research have been removed in graph-metadata.json. Verify `.opencode/skill/skill-advisor/scripts/skill_advisor.py` is not confusing "review" and "research" keywords. Confirm `.opencode/skill/skill-advisor/scripts/skill-graph.json` does not contain stale sibling relationships.
 
 ---
 

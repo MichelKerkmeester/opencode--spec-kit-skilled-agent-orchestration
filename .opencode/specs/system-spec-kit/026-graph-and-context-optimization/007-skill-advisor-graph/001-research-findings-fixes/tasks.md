@@ -62,7 +62,7 @@ _memory:
 - [x] T011 Add compiler validation: zero-edge skill warnings [EVIDENCE: compiler warns on orphans]
 - [x] T012 Add compiler validation: self-edge detection [EVIDENCE: compiler errors on self-refs]
 - [x] T013 Add compiler validation: dependency cycle detection (depends_on chains) [EVIDENCE: cycle detection in place]
-- [x] T014 Add compiler validation: enhances weight asymmetry warnings [DEFERRED: P1-1 partial]
+- [ ] T014 Add compiler validation: enhances weight asymmetry warnings [DEFERRED: P1-1 partial, low priority]
 - [ ] T015 Add `--audit-drift` flag comparing PHRASE_INTENT_BOOSTERS with graph intent_signals [DEFERRED: P1-2]
 - [x] T016 Remove sibling edge between sk-deep-review and sk-deep-research [EVIDENCE: both siblings arrays empty]
 - [ ] T017 Fix reason ordering: sort by score contribution, group by source type [DEFERRED: P1-4]
