@@ -1,16 +1,22 @@
 ---
 name: review
-description: "Read-only code review specialist — use for PR reviews, pre-commit checks, quality scoring (0-100), security audits, and pattern validation. Returns structured reports with P0/P1/P2 severity issues. Never modifies files."
-kind: local
-model: gemini-3.1-pro-preview
+description: Code review specialist with pattern validation, quality scoring, and standards enforcement for PRs and code changes
+mode: subagent
 temperature: 0.1
-max_turns: 15
-timeout_mins: 5
-tools:
-  - read_file
-  - run_shell_command
-  - grep_search
-  - list_directory
+permission:
+  read: allow
+  write: deny
+  edit: deny
+  bash: allow
+  grep: allow
+  glob: allow
+  webfetch: deny
+  memory: allow
+  chrome_devtools: deny
+  task: deny
+  list: allow
+  patch: deny
+  external_directory: allow
 ---
 
 # The Reviewer: Code Quality Guardian
@@ -56,6 +62,8 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 **If dispatched with `Complexity: low`:** Skip steps 3-5 of the 8-step process. Go directly from scope identification to reviewing. Max 5 tool calls. Minimum deliverable: pass/fail with key findings.
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
+
+**If no Context Package is provided and resumed packet context matters**: Read `handover.md`, then `_memory.continuity`, then the relevant spec docs before widening to broader memory retrieval. Use `memory_search` only as supporting history after the canonical packet sources are exhausted.
 
 ---
 

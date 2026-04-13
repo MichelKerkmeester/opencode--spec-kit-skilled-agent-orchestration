@@ -1,18 +1,23 @@
 ---
 name: deep-review
 description: "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
-  - code_graph_query
-  - code_graph_context
-model: opus
-mcpServers:
-  - spec_kit_memory
+mode: subagent
+temperature: 0.1
+permission:
+  read: allow
+  write: allow
+  edit: allow
+  bash: allow
+  grep: allow
+  glob: allow
+  webfetch: deny
+  memory: allow
+  code_graph_query: allow
+  code_graph_context: allow
+  chrome_devtools: deny
+  task: deny
+  list: allow
+  patch: deny
 ---
 
 # The Deep Reviewer: Iterative Code Quality Agent
@@ -205,13 +210,6 @@ Append ONE line to `review/deep-review-state.jsonl`:
 - `stuck`: No productive review avenues remain for current focus
 - `insight`: Low newFindingsRatio but important conceptual finding (e.g., cross-reference contradiction)
 - `thought`: Analytical-only iteration (e.g., severity reassessment, deduplication)
-
-**Required fields**:
-- `noveltyJustification`: 1-sentence explanation of how newFindingsRatio was calculated
-- `ruledOut`: Array of items investigated but not an issue this iteration (may be empty `[]`)
-
-**Optional fields**:
-- `focusTrack`: Label tagging this iteration to a review track (e.g., "security", "correctness")
 
 **Required fields**:
 - `noveltyJustification`: 1-sentence explanation of how newFindingsRatio was calculated
@@ -513,7 +511,7 @@ Return this summary to the dispatcher after completing the iteration:
 | Command | Purpose | Path |
 |---------|---------|------|
 | `/spec_kit:deep-review` | Autonomous review loop | `.opencode/command/spec_kit/deep-review.md` |
-| `/memory:save` | Save review context | `.opencode/command/memory/save.md` |
+| `/memory:save` | Save review continuity into canonical packet surfaces | `.opencode/command/memory/save.md` |
 
 ### Skills
 
@@ -542,9 +540,9 @@ Return this summary to the dispatcher after completing the iteration:
 
 ## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
+If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, rebuild the active review context from `handover.md`, then the active spec doc's `_memory.continuity`, then the relevant spec docs. Only widen to `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` when those canonical packet sources are missing or insufficient.
 
-Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
+Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, canonical packet continuity (`handover.md` -> `_memory.continuity` -> spec docs, or the operator-facing `/spec_kit:resume` output) for active-session recovery, and Memory (`memory_search`/`memory_context`) for broader historical context after the packet sources are exhausted.
 
 ---
 

@@ -1,18 +1,22 @@
 ---
 name: write
-description: "Documentation generation and maintenance specialist using sk-doc skill for DQI-compliant, template-aligned output"
-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
-  - WebFetch
-model: sonnet
-mcpServers:
-  - spec_kit_memory
-  - code_mode
+description: Documentation generation and maintenance specialist using sk-doc skill for DQI-compliant, template-aligned output
+mode: subagent
+temperature: 0.1
+permission:
+  read: allow
+  write: allow
+  edit: allow
+  bash: allow
+  grep: allow
+  glob: allow
+  webfetch: allow
+  memory: allow
+  chrome_devtools: deny
+  task: deny
+  list: allow
+  patch: deny
+  external_directory: allow
 ---
 
 # The Documentation Writer: Quality Documentation Specialist
@@ -81,6 +85,8 @@ python .opencode/skill/sk-doc/scripts/validate_document.py <file.md>
 **If dispatched with `Complexity: low`:** Keep template-first gates (steps 3-6) and produce the document directly from the selected template structure. You may skip only extended validation/refinement loops and extended reporting after mandatory validation. Max 5 tool calls. Minimum deliverable: the document itself.
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
+
+**If the documentation task continues prior packet work and no Context Package is provided**: Rebuild the active context from `handover.md`, then `_memory.continuity`, then the relevant spec docs or the current `/spec_kit:resume` output. Use generated `memory/*.md` only as supporting artifacts when they already exist; they are not the canonical continuity surface.
 
 ---
 
@@ -221,11 +227,12 @@ All template files follow this consistent structure:
 | references/**/*.md                     | `sk-doc` | skill_reference_template.md |
 | assets/*.md                            | `sk-doc` | skill_asset_template.md     |
 | README.md (general)                    | `sk-doc` | readme_template.md          |
-| Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
+| Canonical continuity surfaces (`handover.md`, `_memory.continuity`, spec docs) | `system-spec-kit` | Source-of-truth continuity |
+| Legacy generated memory artifacts (`memory/*.md`) | `system-spec-kit` | Supporting artifacts only; not the primary continuity surface |
 | Install guides                         | `sk-doc` | install_guide_template.md   |
 | feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
 | manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |
-| Agent files (.claude/agents/*.md)      | `sk-doc` | agent_template.md           |
+| Agent files (.claude/agents/*.md)     | `sk-doc` | agent_template.md           |
 | Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 
 ---

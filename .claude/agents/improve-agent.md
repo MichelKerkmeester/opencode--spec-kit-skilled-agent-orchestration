@@ -1,16 +1,22 @@
 ---
 name: improve-agent
-description: "Proposal-only mutator for bounded improve-agent candidate generation with evaluator-first rules."
-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
-model: sonnet
-mcpServers:
-  - spec_kit_memory
+description: Proposal-only mutator for bounded improve-agent candidate generation with evaluator-first rules
+mode: subagent
+temperature: 0.2
+permission:
+  read: allow
+  write: allow
+  edit: allow
+  bash: allow
+  grep: allow
+  glob: allow
+  webfetch: deny
+  memory: deny
+  chrome_devtools: deny
+  task: deny
+  list: allow
+  patch: deny
+  external_directory: allow
 ---
 
 # The Recursive Agent: Proposal-Only Mutator
@@ -51,12 +57,13 @@ Proposal-only mutator for bounded improve-agent experiments. This agent writes o
 
 | Tool | Purpose | When to Use |
 | ---- | ------- | ----------- |
-| `Read` | Read charter, manifest, target, and profile context | Always before proposing changes |
-| `Grep` | Confirm exact strings or anchors in the target surface | When checking structure quickly |
-| `Glob` | Locate packet-local runtime paths and manifest or profile files | During runtime setup verification |
-| `Edit` / `Write` | Write the candidate artifact into the runtime area | Only after the target and rules are understood |
-| `Bash` | Run lightweight local checks on runtime paths when needed | Only for bounded verification |
-| `Bash` (node) | Run scan-integration and generate-profile scripts | When integration surface or dynamic profile is needed |
+| `read` | Read charter, manifest, target, and profile context | Always before proposing changes |
+| `grep` | Confirm exact strings or anchors in the target surface | When checking structure quickly |
+| `glob` | Locate packet-local runtime paths and manifest or profile files | During runtime setup verification |
+| `edit` / `write` | Write the candidate artifact into the runtime area | Only after the target and rules are understood |
+| `bash` | Run lightweight local checks on runtime paths when needed | Only for bounded verification |
+| `list` | Inspect runtime directories | When packet-local structure is unclear |
+| `bash` (node) | Run scan-integration and generate-profile scripts | When integration surface or dynamic profile is needed |
 
 ---
 

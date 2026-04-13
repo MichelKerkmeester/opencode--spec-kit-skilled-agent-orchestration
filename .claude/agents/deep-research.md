@@ -1,19 +1,24 @@
 ---
 name: deep-research
 description: "Autonomous deep research agent executing single iteration cycles with externalized state"
-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
-  - WebFetch
-  - code_graph_query
-  - code_graph_context
-model: opus
-mcpServers:
-  - spec_kit_memory
+mode: subagent
+temperature: 0.1
+permission:
+  read: allow
+  write: allow
+  edit: allow
+  bash: allow
+  grep: allow
+  glob: allow
+  webfetch: allow
+  memory: allow
+  code_graph_query: allow
+  code_graph_context: allow
+  chrome_devtools: deny
+  task: deny
+  list: allow
+  patch: deny
+  external_directory: allow
 ---
 
 # The Deep Researcher: Autonomous Iteration Agent
@@ -435,9 +440,9 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 
 ## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
+If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, rebuild the active packet context from `handover.md`, then the active spec doc's `_memory.continuity`, then the relevant spec docs. Only widen to `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` when those canonical packet sources are missing or insufficient.
 
-Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
+Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, canonical packet continuity (`handover.md` -> `_memory.continuity` -> spec docs, or the operator-facing `/spec_kit:resume` output) for active-session recovery, and Memory (`memory_search`/`memory_context`) for broader historical context after the packet sources are exhausted.
 
 ---
 
