@@ -147,7 +147,7 @@ contextType: "implementation"
 
 ### Advisor Utilization
 
-- [x] T055 Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary [10m]
+- [x] T055 Update `.opencode/skill/skill-advisor/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary [10m]
 - [x] T056 Add semantic exploration auto-routing without overriding exact-text prompts [10m]
 
 ### Verification

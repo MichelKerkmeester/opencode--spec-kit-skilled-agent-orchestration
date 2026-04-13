@@ -79,7 +79,7 @@ exec
 1930:## Task 2: Build sk-deep-research manual testing playbook (index + per-feature snippets)
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Senior code review iteration 17 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness and cross-phase reducer consistency across reduce-state.cjs in sk-deep-research, sk-deep-review, and sk-improve-agent" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Senior code review iteration 17 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness and cross-phase reducer consistency across reduce-state.cjs in sk-deep-research, sk-deep-review, and sk-improve-agent" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call

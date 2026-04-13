@@ -48,7 +48,7 @@
       ".opencode/skill/mcp-coco-index/scripts/common.sh",
       ".opencode/skill/mcp-coco-index/scripts/doctor.sh",
       ".opencode/skill/mcp-coco-index/scripts/ensure_ready.sh",
-      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/mcp-coco-index/references/cross_cli_playbook.md",
       ".opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md",
       "research/research.md",
@@ -102,7 +102,7 @@
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {

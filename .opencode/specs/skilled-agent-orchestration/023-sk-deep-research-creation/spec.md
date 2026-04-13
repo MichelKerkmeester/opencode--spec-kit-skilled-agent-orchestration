@@ -119,7 +119,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | `CLAUDE.md` | Modify | Add @deep-research to agent routing table |
 | `.claude/agents/orchestrate.md` | Modify | Add @deep-research to agent selection |
 | `.opencode/skill/README.md` | Modify | Add sk-deep-research to catalog (16 to 17) |
-| `.opencode/skill/scripts/skill_advisor.py` | Modify | Add deep-research keyword mappings |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify | Add deep-research keyword mappings |
 | `.opencode/specs/descriptions.json` | Modify | Add 023-sk-deep-research-creation entry |
 | `.agents/commands/spec_kit/deep-research.toml` | Create | TOML registration for command |
 <!-- /ANCHOR:scope -->

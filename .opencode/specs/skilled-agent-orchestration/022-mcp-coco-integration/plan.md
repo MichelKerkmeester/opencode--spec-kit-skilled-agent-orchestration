@@ -148,7 +148,7 @@ CLI Agent Query ("find authentication middleware")
 - [x] Add `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
 - [x] Add `scripts/common.sh`, `scripts/doctor.sh`, and `scripts/ensure_ready.sh` per `sk-code-opencode`
 - [x] Update `scripts/install.sh` and `scripts/update.sh` to reuse shared helpers and support `--root`
-- [x] Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic exploration prompts
+- [x] Update `.opencode/skill/skill-advisor/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic exploration prompts
 - [x] Validate helper scripts, JSON output cleanliness, and advisor routing behavior
 
 ### Phase 8: Phase 3 Strict Readiness & Adoption Packaging (2026-03-18)

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "cli-claude-code",
   "family": "cli",
   "category": "cli-orchestrator",
@@ -7,13 +7,119 @@
     "depends_on": [],
     "enhances": [],
     "siblings": [
-      { "target": "cli-codex", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-copilot", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-gemini", "weight": 0.5, "context": "CLI orchestrator peer" }
+      {
+        "target": "cli-codex",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-copilot",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-gemini",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["cli", "delegation", "cross-ai", "reasoning", "code-editing"],
-  "intent_signals": ["claude code", "claude cli", "delegate to claude"]
+  "domains": [
+    "cli",
+    "delegation",
+    "cross-ai",
+    "reasoning",
+    "code-editing"
+  ],
+  "intent_signals": [
+    "claude code",
+    "claude cli",
+    "delegate to claude"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "claude code",
+      "claude cli",
+      "delegate to claude",
+      "claude code cli orchestration",
+      "delegate to claude code",
+      "anthropic cli second opinion",
+      "structured claude code output",
+      "cli-claude-code",
+      "cli claude code",
+      "claude-code",
+      "claude-cli",
+      "anthropic"
+    ],
+    "key_topics": [
+      "cli",
+      "delegation",
+      "cross-ai",
+      "reasoning",
+      "code-editing",
+      "claude code",
+      "cli orchestration",
+      "cross-ai delegation",
+      "deep reasoning",
+      "structured output"
+    ],
+    "key_files": [
+      ".opencode/skill/cli-claude-code/SKILL.md",
+      ".opencode/skill/cli-claude-code/README.md",
+      ".opencode/skill/cli-claude-code/references/cli_reference.md",
+      ".opencode/skill/cli-claude-code/references/claude_tools.md",
+      ".opencode/skill/cli-claude-code/references/integration_patterns.md",
+      ".opencode/skill/cli-claude-code/references/agent_delegation.md"
+    ],
+    "entities": [
+      {
+        "name": "cli-claude-code",
+        "kind": "skill",
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-claude-code/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-claude-code/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "claude_tools",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-claude-code/references/claude_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-claude-code/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-claude-code/references/agent_delegation.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Claude Code CLI orchestrator enabling external AI assistants (Gemini, Codex, Copilot) to invoke Anthropic's Claude Code CLI for supplementary tasks including deep reasoning, code editing, structured output, code review, agent delegation, and extended thinking. It matters because it gives another assistant a reliable way to escalate difficult terminal work to Claude Code without breaking the surrounding workflow.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/cli_reference.md",
+      "references/claude_tools.md",
+      "references/agent_delegation.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

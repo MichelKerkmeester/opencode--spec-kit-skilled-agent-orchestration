@@ -52,7 +52,7 @@ hook: UserPromptSubmit Completed
 codex
 I’m treating this as a packet-local deep research pass for Phase 3 of packet `042`, with the spec folder already approved. First I’m going to do the required routing and context checks, then I’ll read the phase docs and current implementation before running the 10 research iterations.
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep research on Phase 3 Wave Executor of packet 042; read packet docs, implementation, search codebase for wave/segment/parallel patterns, and do web research on LangGraph CrewAI AutoGen shared-state parallel execution" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep research on Phase 3 Wave Executor of packet 042; read packet docs, implementation, search codebase for wave/segment/parallel patterns, and do web research on LangGraph CrewAI AutoGen shared-state parallel execution" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call

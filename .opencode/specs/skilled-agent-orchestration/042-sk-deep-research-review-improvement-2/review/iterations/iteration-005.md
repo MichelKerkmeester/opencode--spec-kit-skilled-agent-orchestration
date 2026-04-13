@@ -72,7 +72,7 @@ exec
 exec
 /bin/zsh -lc "rg --files -g 'CLAUDE.md'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 5 for spec folder 042-sk-deep-research-review-improvement-2 focused on correctness in Phase 003 wave-executor wave-*.cjs modules" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 5 for spec folder 042-sk-deep-research-review-improvement-2 focused on correctness in Phase 003 wave-executor wave-*.cjs modules" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 175ms:
 CLAUDE.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/CLAUDE.md
@@ -249,7 +249,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
@@ -1840,7 +1840,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "deep review maintainability review of .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-*.cjs and scripts/tests/coverage-graph-*.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "deep review maintainability review of .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-*.cjs and scripts/tests/coverage-graph-*.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 457ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-IKzw201K' (errno=Operation not permitted)
 [
@@ -2081,7 +2081,7 @@ exec
 1930:## Task 2: Build sk-deep-research manual testing playbook (index + per-feature snippets)
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 3 for spec folder 042-sk-deep-research-review-improvement-2 traceability focus on 001-runtime-truth-foundation spec.md vs reduce-state.cjs runtime-capabilities.cjs and referenced docs state_format.md loop_protocol.md convergence.md for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 3 for spec folder 042-sk-deep-research-review-improvement-2 traceability focus on 001-runtime-truth-foundation spec.md vs reduce-state.cjs runtime-capabilities.cjs and referenced docs state_format.md loop_protocol.md convergence.md for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 421ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-2VwJ4svQ' (errno=Operation not permitted)
 [

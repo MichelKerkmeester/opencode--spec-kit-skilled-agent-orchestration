@@ -67,7 +67,7 @@ exec
 /bin/zsh -lc 'rg -n "042-sk-deep-research-review-improvement-2|sk-deep-research-review-improvement-2|rvw-2026-04-11T13-50-06Z|REQ-026|REQ-034" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Security deep review of spec-kit command workflow YAML assets versus SKILL.md documented workflows in 042-sk-deep-research-review-improvement-2" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Security deep review of spec-kit command workflow YAML assets versus SKILL.md documented workflows in 042-sk-deep-research-review-improvement-2" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
 /bin/zsh -lc 'find .. -name AGENTS.md -print' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 499ms:
@@ -11329,7 +11329,7 @@ const MIRROR_TEMPLATES = [
   '.agents/agents/{name}.md',
 ];
 const GLOBAL_DOC_PATHS = ['CLAUDE.md', '.claude/CLAUDE.md'];
-const SKILL_ADVISOR_PATH = '.opencode/skill/scripts/skill_advisor.py';
+const SKILL_ADVISOR_PATH = '.opencode/skill/skill-advisor/scripts/skill_advisor.py';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. UTILITIES

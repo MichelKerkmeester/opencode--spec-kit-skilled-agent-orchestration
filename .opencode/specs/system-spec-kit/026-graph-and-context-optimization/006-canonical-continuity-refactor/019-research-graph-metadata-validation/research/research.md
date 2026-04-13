@@ -515,8 +515,99 @@ Build one residual-hygiene phase focused on `key_files` plus entity extraction p
 4. Suppress code-fence language tokens and slash-joined heading composites from `entities`
 5. Reduce entity-cap saturation from `360/364` to a materially lower steady state
 
+## Wave 5: Post-Fix Revalidation (Iterations 36-38)
+
+### RVQ-1: Key-Files Noise After F11
+Active-corpus rerun:
+- Active `graph-metadata.json` files: `365`
+- Total stored `key_files`: `4,748`
+- Resolved under the same three-base heuristic (`repo root`, `spec-relative`, `system-spec-kit skill-relative`): `3,901` (`82.16%`)
+- Missing: `847` (`17.84%`)
+
+Most important validation result:
+- Stored command-shaped `key_files` entries are now `0`. The exact F11 defect class is closed in the stored corpus, not merely reclassified. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:43-49] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+Residual miss families:
+- `749` path-like misses
+- `84` cross-track repo-relative misses
+- `9` obsolete `memory/metadata.json` references
+- `5` bare filenames
+
+Top repeated unresolved values:
+- `memory/metadata.json` (`9`)
+- `hooks/memory-surface.ts` (`9`)
+- `hooks/claude/session-prime.ts` (`7`)
+- `.opencode/agent/agent-improver.md` (`7`)
+
+Interpretation:
+The filter tightening worked. `key_files` quality improved from Wave 4, but the remaining work has shifted fully into path canonicalization and old-reference cleanup rather than junk-token suppression.
+
+### RVQ-2: Status, Trigger, and Freshness After F13-F15
+Updated status distribution:
+- `complete`: `226`
+- `in_progress`: `90`
+- `planned`: `49`
+- other/outlier: `0`
+
+Trigger and freshness checks:
+- Trigger sets over 12: `0`
+- Maximum trigger count: `12`
+- Stale packets by current `source_docs` mtime: `0`
+
+Important nuance:
+- Four packets still store `planned` while `implementation-summary.md` exists on disk, but this is now traceable to explicit document frontmatter rather than normalization drift or stale-backfill lag:
+  - `018-research-content-routing-accuracy/001-fix-delivery-progress-confusion`
+  - `018-research-content-routing-accuracy/002-fix-handover-drop-confusion`
+  - `018-research-content-routing-accuracy/003-wire-tier3-llm-classifier`
+  - `006-canonical-continuity-refactor`
+- Two additional packets still remain `planned` with a fully checked checklist because `implementation-summary.md` is missing:
+  - `skilled-agent-orchestration/041-sk-recursive-agent-loop/010-sk-agent-improver-self-test-fixes`
+  - `skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync`
+
+Interpretation:
+Status normalization and freshness are now clean at the corpus level. The remaining status caveats are packet-contract or packet-authoring issues, not parser health issues.
+
+### RVQ-3: Entity Precision and Convergence
+Updated entity surface:
+- Total entity rows: `5,840`
+- Average entity count per folder: `16.00`
+- Duplicate-name rows: `0`
+- Suspicious names: `1` (`python`)
+- True cross-spec canonical-doc leaks: `9`
+- Entity lists at cap 16: `365 / 365`
+
+The one surviving suspicious name is:
+- `python` in `skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync`, sourced from code-fence language capture. [SOURCE: .opencode/specs/skilled-agent-orchestration/041-sk-recursive-agent-loop/011-sk-agent-improver-advisor-readme-sync/graph-metadata.json:133] [SOURCE: live filesystem scan over `.opencode/specs` on 2026-04-13]
+
+The `9` true cross-spec canonical-doc leaks are narrowly concentrated:
+- Mirrored `skilled-agent-orchestration` packets still prefer canonical-doc paths from sibling or aliased spec trees such as `03--commands-and-skills/...`.
+- One `z_future` packet still points at an old `999-hybrid-rag-fusion-upgrade` decision record path.
+
+Interpretation:
+Entity de-duplication remains solid, but entity precision is not clean. The main issue is now prioritization and scoped canonical-path choice, not duplicate names.
+
+### Updated Health Score
+Heuristic health score (still a synthesis aid, not a runtime metric):
+- Structural integrity: `100/100`
+  - `0` broken dependencies, `0` ghost children, no structural regression detected
+- Status fidelity and freshness: `99/100`
+  - outliers and stale packets are gone; the only residual caveats are explicit `planned` frontmatter and two missing `implementation-summary.md` files
+- `key_files` quality: `82/100`
+  - command noise is gone, but `847` misses still remain
+- Entity quality: `79/100`
+  - duplicate names are gone, but cap saturation is now universal and `9` scoped canonical-doc leaks remain
+
+Weighted overall score:
+- `91/100`
+
+Interpretation:
+The corpus is healthier than it was at iteration 35, but it is still not clean. The remaining gaps are implementation-only hygiene, not undiscovered graph-metadata failures.
+
 ## Updated Final Recommendation
-The implementation wave materially improved graph metadata quality, and no further broad discovery loop is needed. The remaining work is now sharply scoped:
-1. Refresh the three stale doc-alignment packets so their stored metadata catches up with the docs that are already complete.
-2. Fix the one remaining `in-progress` normalization edge.
-3. Open a single residual-hygiene phase for `key_files` and entity precision, with explicit success metrics tied to path resolution and cap saturation.
+Stop the research loop early at iteration `38`. Three consecutive post-fix revalidation passes stayed below the `0.1` novelty threshold and did not reveal a new defect class.
+
+The remaining work is now sharply scoped:
+1. Open one residual-hygiene implementation phase for `key_files` path canonicalization and obsolete memory-path cleanup.
+2. Improve entity prioritization so the corpus no longer saturates the 16-entity cap in every active packet.
+3. Fix the `9` surviving cross-spec canonical-doc entity leaks.
+4. Optionally clean up the two complete-checklist packets that still lack `implementation-summary.md` if those packets should surface as completed work.

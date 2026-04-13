@@ -1,0 +1,12 @@
+{
+  "title": "Graph Metadata Enrichment",
+  "description": "Enrich all 20 per-skill graph-metadata.json files with derived data blocks (trigger_phrases, key_files, entities, causal_summary) matching the spec-folder pattern.",
+  "trigger_phrases": [
+    "004-graph-metadata-enrichment",
+    "graph metadata enrichment",
+    "skill metadata enrichment",
+    "rich graph metadata"
+  ],
+  "importance_tier": "important",
+  "contextType": "planning"
+}

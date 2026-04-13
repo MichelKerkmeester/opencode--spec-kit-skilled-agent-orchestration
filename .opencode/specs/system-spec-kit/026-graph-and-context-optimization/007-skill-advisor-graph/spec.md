@@ -122,7 +122,7 @@ Each skill folder gets a `graph-metadata.json` (distinct from the spec-packet `g
 
 ### 3.2 Compiled Skill Graph
 
-Single file at `.opencode/skill/scripts/skill-graph.json`:
+Single file at `.opencode/skill/skill-advisor/scripts/skill-graph.json`:
 
 ```json
 {
@@ -190,9 +190,9 @@ Pipeline insertion: after PHRASE_INTENT_BOOSTERS, before explicit variant matchi
 
 | File | Action |
 |------|--------|
-| `.opencode/skill/scripts/skill_advisor.py` | Modify |
-| `.opencode/skill/scripts/skill_graph_compiler.py` | Create |
-| `.opencode/skill/scripts/skill-graph.json` | Create (generated) |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify |
+| `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` | Create |
+| `.opencode/skill/skill-advisor/scripts/skill-graph.json` | Create (generated) |
 | `.opencode/skill/*/graph-metadata.json` (20 files) | Create |
-| `.opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Modify |
+| `.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Modify |
 <!-- /ANCHOR:files -->

@@ -1,0 +1,20 @@
+{
+  "packet_id": "007-skill-advisor-graph/004-graph-metadata-enrichment",
+  "parent_id": "007-skill-advisor-graph",
+  "title": "Graph Metadata Enrichment",
+  "status": "planned",
+  "level": 3,
+  "derived": {
+    "key_files": [
+      ".opencode/skill/*/graph-metadata.json",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json"
+    ],
+    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
+    "related_packets": [
+      "007-skill-advisor-graph/002-manual-testing-playbook",
+      "007-skill-advisor-graph/003-skill-advisor-packaging"
+    ],
+    "supersedes": null
+  }
+}

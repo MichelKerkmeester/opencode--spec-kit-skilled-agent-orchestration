@@ -41,9 +41,9 @@ Across this skill tree, `/spec_kit:resume` is the canonical recovery surface for
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`.opencode/skill/` holds 20 skill folders plus one shared `scripts/` directory. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, and scripts so all domain knowledge stays close to the code that uses it.
+`.opencode/skill/` holds 20 skill folders plus the `skill-advisor/` support package. Skills are not passive references. Each skill contains executable guidance that an AI agent loads on demand through Gate 2 routing or explicit invocation. Skills carry their own references, assets, and scripts so all domain knowledge stays close to the code that uses it.
 
-Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations.
+Skills divide into five categories: CLI orchestrators that delegate work to external AI binaries, MCP integrations that wrap third-party tools, code quality overlays that cover different stack contexts, documentation and improvement-loop utilities, and the system-spec-kit foundation that governs every file modification. The routing engine at `skill-advisor/scripts/skill_advisor.py` scores each incoming request against all skill descriptions and returns confidence-ranked recommendations.
 
 Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffolding workflow, gets a SKILL.md with proper frontmatter, and is immediately discoverable by `skill_advisor.py` without any manual registration.
 
@@ -84,7 +84,7 @@ Three ways to use this library:
 Run the advisor before any non-trivial task. Pass the user's request and a confidence threshold.
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "rewrite README for skill library" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "rewrite README for skill library" --threshold 0.8
 ```
 
 **2. Open a skill directly**
@@ -195,17 +195,22 @@ The skill system covers four distinct workflow domains.
 ├── mcp-coco-index/         # Semantic code search via vector embeddings
 ├── mcp-code-mode/          # MCP orchestration hub (TypeScript)
 ├── mcp-figma/              # Figma design file access via MCP
-├── scripts/                # Shared skill routing scripts
-├── sk-improve-agent/ # Evaluator-first agent improvement loop
-├── sk-code-full-stack/    # Stack-agnostic implementation orchestrator
-├── sk-code-opencode/      # OpenCode system code standards
-├── sk-code-review/        # Findings-first code review baseline
-├── sk-code-web/           # Web implementation and verification
+├── skill-advisor/          # Shared routing package
+│   ├── README.md
+│   ├── SET-UP_GUIDE.md
+│   ├── feature_catalog/
+│   ├── manual_testing_playbook/
+│   └── scripts/            # skill_advisor.py, compiler, regression, fixtures, out
+├── sk-improve-agent/       # Evaluator-first agent improvement loop
+├── sk-code-full-stack/     # Stack-agnostic implementation orchestrator
+├── sk-code-opencode/       # OpenCode system code standards
+├── sk-code-review/         # Findings-first code review baseline
+├── sk-code-web/            # Web implementation and verification
 ├── sk-deep-research/       # Autonomous deep research loop
 ├── sk-deep-review/         # Autonomous iterative code review
 ├── sk-doc/                 # Documentation quality and templates
 ├── sk-git/                 # Git workflow orchestrator
-├── sk-improve-prompt/     # Prompt engineering specialist
+├── sk-improve-prompt/      # Prompt engineering specialist
 ├── system-spec-kit/        # Spec folder and memory foundation
 └── README.md               # This file
 ```
@@ -308,7 +313,7 @@ The `name` and `description` fields are required. `trigger_phrases` strengthen r
 
 ```bash
 # Documentation task: sk-doc is recommended at high confidence
-python3 .opencode/skill/scripts/skill_advisor.py "create a flowchart for the auth flow" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a flowchart for the auth flow" --threshold 0.8
 ```
 
 ### Load a skill directly
@@ -351,15 +356,15 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 ```bash
 # Regression quality check
-python3 .opencode/skill/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/scripts/out/regression-report.json
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
 
 # Latency benchmark
-python3 .opencode/skill/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
   --runs 7 \
-  --out .opencode/skill/scripts/out/benchmark-report.json
+  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 ```
 
 <!-- /ANCHOR:usage-examples -->
@@ -385,7 +390,7 @@ ls .opencode/skill/*/SKILL.md
 head -10 .opencode/skill/sk-git/SKILL.md
 
 # Lower the threshold temporarily to inspect low-confidence matches
-python3 .opencode/skill/scripts/skill_advisor.py "commit changes" --threshold 0.5
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "commit changes" --threshold 0.5
 ```
 
 ### Wrong skill is recommended
@@ -409,7 +414,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "commit changes" --threshold 0.
 head -15 .opencode/skill/my-new-skill/SKILL.md
 
 # Force a discovery refresh (clears the mtime cache)
-python3 .opencode/skill/scripts/skill_advisor.py "test" --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "test" --health
 ```
 
 ### Skill scripts fail with import errors
@@ -445,7 +450,7 @@ Yes. The advisor returns a ranked list. A task may load a primary skill (for exa
 
 **Q: What is the difference between skill-local scripts and the shared scripts/ folder?**
 
-Shared scripts in `.opencode/skill/scripts/` handle cross-skill concerns: routing, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation (document validation, spec creation, memory generation) that only that skill uses.
+The shared routing package lives in `.opencode/skill/skill-advisor/scripts/` and handles cross-skill concerns: routing, benchmarking, and regression testing. Skill-local scripts in a skill's own `scripts/` folder handle domain-specific automation (document validation, spec creation, memory generation) that only that skill uses.
 
 **Q: Why does the advisor cap confidence at 0.95?**
 
@@ -461,8 +466,8 @@ The cap preserves a margin of uncertainty so the calling AI retains judgment on 
 | Document | Purpose |
 | --- | --- |
 | [Main Framework README](../../README.md) | Root project overview and framework entry point |
-| [Shared Scripts README](scripts/README.md) | skill_advisor.py usage, architecture, and configuration |
-| [Skill Advisor Setup Guide](scripts/SET-UP_GUIDE.md) | Step-by-step customization for new projects |
+| [Skill Advisor README](skill-advisor/README.md) | skill_advisor.py usage, architecture, feature catalog, and playbook index |
+| [Skill Advisor Setup Guide](skill-advisor/SET-UP_GUIDE.md) | Step-by-step customization for new projects |
 | [system-spec-kit SKILL.md](system-spec-kit/SKILL.md) | Spec folder workflow and memory foundation |
 | [sk-doc SKILL.md](sk-doc/SKILL.md) | Documentation quality standards and templates |
 | [sk-git SKILL.md](sk-git/SKILL.md) | Git workflow orchestration |

@@ -52,7 +52,7 @@
       ".opencode/skill/sk-improve-agent/assets/improvement_config.json",
       ".opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
       ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
-      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/specs/descriptions.json",
       "plan.md",
       "tasks.md",
@@ -126,7 +126,7 @@
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {

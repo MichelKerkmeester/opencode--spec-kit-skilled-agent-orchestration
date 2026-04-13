@@ -17,7 +17,7 @@ Changes:
 
 ## D2: Update Skill Advisor (Public)
 
-**File**: `.opencode/skill/scripts/skill_advisor.py`
+**File**: `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
 
 ### Add INTENT_BOOSTERS (single-token)
 ```python
@@ -58,7 +58,7 @@ Changes:
 
 ## D3: Sync COMMAND_BRIDGES to Barter
 
-**File**: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/scripts/skill_advisor.py`
+**File**: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/skill-advisor/scripts/skill_advisor.py`
 
 Add same COMMAND_BRIDGES as D2 EXCEPT:
 - `/improve:agent` → skip (sk-improve-agent not in Barter)
@@ -70,11 +70,11 @@ Also add PHRASE_INTENT_BOOSTERS for `/improve:prompt` and `/create:*` commands.
 
 ```bash
 # Test Phase 008+ routing
-python3 .opencode/skill/scripts/skill_advisor.py "evaluate agent with 5 dimensions" --threshold 0.8
-python3 .opencode/skill/scripts/skill_advisor.py "integration scanning" --threshold 0.8
-python3 .opencode/skill/scripts/skill_advisor.py "/improve:agent" --threshold 0.8
-python3 .opencode/skill/scripts/skill_advisor.py "/improve:prompt" --threshold 0.8
-python3 .opencode/skill/scripts/skill_advisor.py "/create:agent" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "evaluate agent with 5 dimensions" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "integration scanning" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/improve:agent" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/improve:prompt" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/create:agent" --threshold 0.8
 
 # Verify README
 grep "sk-improve-agent" .opencode/skill/README.md

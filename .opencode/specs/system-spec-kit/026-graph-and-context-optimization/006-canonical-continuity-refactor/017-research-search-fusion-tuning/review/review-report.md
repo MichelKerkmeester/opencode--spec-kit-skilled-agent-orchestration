@@ -94,7 +94,7 @@ Route this outcome to `/spec_kit:plan`, not changelog or publish follow-up, beca
 
 ### Key Commands
 
-- `python3 .opencode/skill/scripts/skill_advisor.py "Run 10 sk-deep-review iterations across 017-research-search-fusion-tuning and ALL its sub-phases (001-005)..." --threshold 0.8`
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Run 10 sk-deep-review iterations across 017-research-search-fusion-tuning and ALL its sub-phases (001-005)..." --threshold 0.8`
 - `rg -n "SPECKIT_TIER3_ROUTING" . -g '!**/node_modules/**' -g '!**/dist/**'`
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict <target>`
 - `rg -n "continuity|Stage 3|lambda|getRerankerStatus|applyLengthPenalty" <runtime/docs>`

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "cli-gemini",
   "family": "cli",
   "category": "cli-orchestrator",
@@ -7,13 +7,119 @@
     "depends_on": [],
     "enhances": [],
     "siblings": [
-      { "target": "cli-claude-code", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-codex", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-copilot", "weight": 0.5, "context": "CLI orchestrator peer" }
+      {
+        "target": "cli-claude-code",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-codex",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-copilot",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["cli", "delegation", "cross-ai", "web-research", "architecture"],
-  "intent_signals": ["gemini cli", "delegate to gemini", "google search"]
+  "domains": [
+    "cli",
+    "delegation",
+    "cross-ai",
+    "web-research",
+    "architecture"
+  ],
+  "intent_signals": [
+    "gemini cli",
+    "delegate to gemini",
+    "google search"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "gemini cli",
+      "delegate to gemini",
+      "google search",
+      "gemini cli orchestration",
+      "google search coding workflow",
+      "gemini second opinion",
+      "cli-gemini",
+      "cli gemini",
+      "gemini",
+      "gemini-cli",
+      "google",
+      "cross-ai"
+    ],
+    "key_topics": [
+      "cli",
+      "delegation",
+      "cross-ai",
+      "web-research",
+      "architecture",
+      "gemini cli",
+      "google search",
+      "architecture analysis",
+      "cross-ai validation",
+      "parallel tasks"
+    ],
+    "key_files": [
+      ".opencode/skill/cli-gemini/SKILL.md",
+      ".opencode/skill/cli-gemini/README.md",
+      ".opencode/skill/cli-gemini/references/cli_reference.md",
+      ".opencode/skill/cli-gemini/references/gemini_tools.md",
+      ".opencode/skill/cli-gemini/references/integration_patterns.md",
+      ".opencode/skill/cli-gemini/references/agent_delegation.md"
+    ],
+    "entities": [
+      {
+        "name": "cli-gemini",
+        "kind": "skill",
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-gemini/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-gemini/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "gemini_tools",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-gemini/references/gemini_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-gemini/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-gemini/references/agent_delegation.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing. It matters because it gives the assistant a fast route to Gemini-backed coding and Google-search-oriented research inside the same terminal session.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/cli_reference.md",
+      "references/gemini_tools.md",
+      "references/agent_delegation.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

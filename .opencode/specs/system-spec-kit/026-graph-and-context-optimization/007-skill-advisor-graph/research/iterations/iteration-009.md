@@ -1,12 +1,12 @@
 ## Summary
 
-This iteration tested regression risk for the current graph-integrated `skill_advisor.py` routing path, with emphasis on whether graph boosts can change the winning recommendation in harmful ways. The relevant integration points are `_apply_graph_boosts()` and `_apply_family_affinity()` in `.opencode/skill/scripts/skill_advisor.py:81-143`, invoked before lexical scoring and ranking in `.opencode/skill/scripts/skill_advisor.py:1496-1498`.
+This iteration tested regression risk for the current graph-integrated `skill_advisor.py` routing path, with emphasis on whether graph boosts can change the winning recommendation in harmful ways. The relevant integration points are `_apply_graph_boosts()` and `_apply_family_affinity()` in `.opencode/skill/skill-advisor/scripts/skill_advisor.py:81-143`, invoked before lexical scoring and ranking in `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1496-1498`.
 
 The main result is reassuring but not zero-risk:
 
 - The official regression harness still passes cleanly: `44/44` cases passed, `top1_accuracy=1.0`, `p0_pass_rate=1.0`, `command_bridge_fp_rate=0.0`.
 - Only `1/44` cases changed top-1 when compared against a controlled no-graph-boost baseline.
-- That single top-1 flip was `P1-FULLSTACK-001`, where graph family affinity promoted `sk-code-full-stack` over `sk-code-opencode`. This is not currently a regression because the fixture explicitly allows either winner (`.opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl:38`).
+- That single top-1 flip was `P1-FULLSTACK-001`, where graph family affinity promoted `sk-code-full-stack` over `sk-code-opencode`. This is not currently a regression because the fixture explicitly allows either winner (`.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl:38`).
 - The three requested edge-case prompts did not change top-1 with graph boosts enabled.
 
 Method used for the with-graph vs without-graph comparison:
@@ -19,14 +19,14 @@ Method used for the with-graph vs without-graph comparison:
 Official regression command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor_regression.py --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```
 
 Full output:
 
 ```json
 {
-  "dataset": ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+  "dataset": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
   "mode": "both",
   "thresholds": {
     "confidence": 0.8,
@@ -125,7 +125,7 @@ Representative secondary-noise cases:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'save context and create spec folder' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'save context and create spec folder' --threshold 0
 ```
 
 Full output:
@@ -194,7 +194,7 @@ Graph-risk assessment:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'improve this agent evaluation' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'improve this agent evaluation' --threshold 0
 ```
 
 Full output:
@@ -247,7 +247,7 @@ Graph-risk assessment:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'delegate code review to external cli' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'delegate code review to external cli' --threshold 0
 ```
 
 Full output:

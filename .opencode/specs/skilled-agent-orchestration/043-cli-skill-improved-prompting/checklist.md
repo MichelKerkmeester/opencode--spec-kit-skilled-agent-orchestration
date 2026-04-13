@@ -17,7 +17,7 @@ _memory:
     blockers: []
     key_files:
       - ".opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/checklist.md"
-      - ".opencode/skill/scripts/check-prompt-quality-card-sync.sh"
+      - ".opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh"
     session_dedup:
       fingerprint: "sha256:043-cli-skill-improved-prompting"
       session_id: "043-cli-skill-improved-prompting"
@@ -53,7 +53,7 @@ _memory:
 - [x] CHK-001 [P0] Requirements are documented in `spec.md` [Evidence: `.opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/spec.md`]
 - [x] CHK-002 [P0] Technical approach is defined in `plan.md` [Evidence: `.opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/plan.md`]
 - [x] CHK-003 [P1] Current guard constraints and active runtime directories were inspected from real repo files [Evidence: `rg -n "prompt_quality_card\\.md|LOADING_LEVELS\\[\\\"ALWAYS\\\"\\]" .opencode/skill/cli-*/SKILL.md`; `ls .opencode/agent/improve-prompt.md .claude/agents/improve-prompt.md .codex/agents/improve-prompt.toml .gemini/agents/improve-prompt.md`]
-- [x] CHK-004 [P1] Optional drift-fixture decision is recorded before packet closeout [Evidence: `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`; `bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh -> SYNC OK`]
+- [x] CHK-004 [P1] Optional drift-fixture decision is recorded before packet closeout [Evidence: `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`; `bash .opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh -> SYNC OK`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -98,7 +98,7 @@ _memory:
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `decision-record.md` describe the same two-tier architecture [Evidence: packet root docs all describe mirror-card fast path plus `@improve-prompt` deep path]
 - [x] CHK-041 [P1] The implementation summary is updated from placeholder to delivery summary once implementation completes [Evidence: `.opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/implementation-summary.md`]
-- [x] CHK-042 [P1] The packet explicitly records whether the drift fixture landed or was deferred [Evidence: `spec.md` open-questions closeout note plus `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`]
+- [x] CHK-042 [P1] The packet explicitly records whether the drift fixture landed or was deferred [Evidence: `spec.md` open-questions closeout note plus `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`]
 - [x] CHK-043 [P1] The command and skill docs both point to the same `@improve-prompt` escalation surface [Evidence: `.opencode/command/improve/prompt.md:296-297,367-381`; `.opencode/skill/cli-claude-code/assets/prompt_quality_card.md:39-41`; parallel mirror-card wording in the other three CLI skills]
 <!-- /ANCHOR:docs -->
 
@@ -136,7 +136,7 @@ _memory:
 - [x] CHK-100 [P0] Architecture decisions are captured in `decision-record.md` [Evidence: `.opencode/specs/skilled-agent-orchestration/043-cli-skill-improved-prompting/decision-record.md`]
 - [x] CHK-101 [P1] Mirror-card versus cross-skill-reference tradeoffs are documented with rejection rationale [Evidence: ADR-001 alternatives table in `decision-record.md`]
 - [x] CHK-102 [P1] Fast-path versus deep-path behavior is documented consistently across spec, plan, and command surfaces [Evidence: `spec.md`, `plan.md`, and `.opencode/command/improve/prompt.md:217,296-297,367-381`]
-- [x] CHK-103 [P2] Drift-management guidance is documented and reviewed [Evidence: mirror `<!-- sync: ... -->` footers plus `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`]
+- [x] CHK-103 [P2] Drift-management guidance is documented and reviewed [Evidence: mirror `<!-- sync: ... -->` footers plus `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`]
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -167,7 +167,7 @@ _memory:
 
 - [x] CHK-130 [P1] Compliance/security triggers explicitly route to agent mode [Evidence: mirror-card escalation wording at line `39` in all four CLI cards]
 - [x] CHK-131 [P1] The packet preserves the decision to leave `skill_advisor.py` unchanged [Evidence: `spec.md` out-of-scope section and ADR-001 decision bundle D-006]
-- [x] CHK-132 [P2] Optional drift-check automation is reviewed for maintenance cost before landing [Evidence: implementation summary decision table plus landed `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`]
+- [x] CHK-132 [P2] Optional drift-check automation is reviewed for maintenance cost before landing [Evidence: implementation summary decision table plus landed `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`]
 <!-- /ANCHOR:compliance-verify -->
 
 ---

@@ -1,19 +1,123 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "mcp-chrome-devtools",
   "family": "mcp",
   "category": "mcp-tool",
   "edges": {
     "depends_on": [
-      { "target": "mcp-code-mode", "weight": 0.7, "context": "MCP tool calls via Code Mode" }
+      {
+        "target": "mcp-code-mode",
+        "weight": 0.7,
+        "context": "MCP tool calls via Code Mode"
+      }
     ],
     "enhances": [
-      { "target": "sk-code-web", "weight": 0.5, "context": "browser debugging for web code" }
+      {
+        "target": "sk-code-web",
+        "weight": 0.5,
+        "context": "browser debugging for web code"
+      }
     ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["devtools", "browser", "debugging", "performance", "dom", "css"],
-  "intent_signals": ["chrome devtools", "browser debug", "dom inspect", "lighthouse"]
+  "domains": [
+    "devtools",
+    "browser",
+    "debugging",
+    "performance",
+    "dom",
+    "css"
+  ],
+  "intent_signals": [
+    "chrome devtools",
+    "browser debug",
+    "dom inspect",
+    "lighthouse"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "chrome devtools",
+      "browser debug",
+      "dom inspect",
+      "lighthouse",
+      "chrome devtools orchestration",
+      "browser debugger cli routing",
+      "capture browser screenshots",
+      "inspect network requests",
+      "mcp-chrome-devtools",
+      "mcp chrome devtools",
+      "chrome-devtools",
+      "cdp"
+    ],
+    "key_topics": [
+      "devtools",
+      "browser",
+      "debugging",
+      "performance",
+      "dom",
+      "css",
+      "chrome devtools",
+      "browser debugging",
+      "cli routing",
+      "screenshots"
+    ],
+    "key_files": [
+      ".opencode/skill/mcp-chrome-devtools/SKILL.md",
+      ".opencode/skill/mcp-chrome-devtools/README.md",
+      ".opencode/skill/mcp-chrome-devtools/references/cdp_patterns.md",
+      ".opencode/skill/mcp-chrome-devtools/scripts/install.sh",
+      ".opencode/skill/mcp-chrome-devtools/examples/animation-testing.sh",
+      ".opencode/skill/mcp-chrome-devtools/examples/performance-baseline.sh"
+    ],
+    "entities": [
+      {
+        "name": "mcp-chrome-devtools",
+        "kind": "skill",
+        "path": ".opencode/skill/mcp-chrome-devtools/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/mcp-chrome-devtools/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cdp_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/mcp-chrome-devtools/references/cdp_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "install",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-chrome-devtools/scripts/install.sh",
+        "source": "derived"
+      },
+      {
+        "name": "animation-testing",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-chrome-devtools/examples/animation-testing.sh",
+        "source": "derived"
+      },
+      {
+        "name": "performance-baseline",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-chrome-devtools/examples/performance-baseline.sh",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Chrome DevTools orchestrator providing intelligent routing between CLI (bdg) and MCP (Code Mode) approaches. CLI prioritized for speed and token efficiency; MCP fallback for multi-tool integration scenarios. It matters because it routes browser-debugging work to the cheapest effective interface first while preserving an MCP fallback for richer multi-tool workflows.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/cdp_patterns.md",
+      "references/session_management.md",
+      "references/troubleshooting.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

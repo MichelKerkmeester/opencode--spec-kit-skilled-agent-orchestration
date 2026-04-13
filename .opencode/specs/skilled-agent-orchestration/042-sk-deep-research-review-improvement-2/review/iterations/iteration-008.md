@@ -69,7 +69,7 @@ user cancelled MCP tool call
 exec
 /bin/zsh -lc "rg --files -g 'AGENTS.md'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 8 for spec folder 042-sk-deep-research-review-improvement-2. Focus on maintainability of Phase 003-004 abstractions: wave-coordination-board.cjs and wave-segment-state.cjs, coupling to coverage-graph modules, optimizer replay tests and fixture quality." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 8 for spec folder 042-sk-deep-research-review-improvement-2. Focus on maintainability of Phase 003-004 abstractions: wave-coordination-board.cjs and wave-segment-state.cjs, coupling to coverage-graph modules, optimizer replay tests and fixture quality." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 188ms:
 AGENTS.md
 .opencode/specs/system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin/external/opencode-lcm-master/AGENTS.md

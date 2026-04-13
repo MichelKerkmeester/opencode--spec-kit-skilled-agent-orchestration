@@ -1,21 +1,148 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "sk-code-review",
   "family": "sk-code",
   "category": "code-quality",
   "edges": {
     "depends_on": [],
     "enhances": [
-      { "target": "sk-code-opencode", "weight": 0.7, "context": "review overlay for opencode" },
-      { "target": "sk-code-web", "weight": 0.7, "context": "review overlay for web" },
-      { "target": "sk-code-full-stack", "weight": 0.7, "context": "review overlay for full-stack" }
+      {
+        "target": "sk-code-opencode",
+        "weight": 0.7,
+        "context": "review overlay for opencode"
+      },
+      {
+        "target": "sk-code-web",
+        "weight": 0.7,
+        "context": "review overlay for web"
+      },
+      {
+        "target": "sk-code-full-stack",
+        "weight": 0.7,
+        "context": "review overlay for full-stack"
+      }
     ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": [
-      { "target": "sk-deep-review", "weight": 0.8, "context": "deep-review depends on review baseline" }
+      {
+        "target": "sk-deep-review",
+        "weight": 0.8,
+        "context": "deep-review depends on review baseline"
+      }
     ]
   },
-  "domains": ["review", "audit", "security", "quality-gate", "merge-readiness", "findings"],
-  "intent_signals": ["code review", "pr review", "security review", "quality gate", "findings"]
+  "domains": [
+    "review",
+    "audit",
+    "security",
+    "quality-gate",
+    "merge-readiness",
+    "findings"
+  ],
+  "intent_signals": [
+    "code review",
+    "pr review",
+    "security review",
+    "quality gate",
+    "findings"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "code review",
+      "pr review",
+      "security review",
+      "quality gate",
+      "findings",
+      "code review baseline",
+      "security and correctness review",
+      "merge readiness findings",
+      "review overlay guidance",
+      "sk-code-review",
+      "sk code review",
+      "code-review"
+    ],
+    "key_topics": [
+      "review",
+      "audit",
+      "security",
+      "quality-gate",
+      "merge-readiness",
+      "findings",
+      "findings-first review",
+      "security review",
+      "merge readiness",
+      "quality gates"
+    ],
+    "key_files": [
+      ".opencode/skill/sk-code-review/SKILL.md",
+      ".opencode/skill/sk-code-review/README.md",
+      ".opencode/skill/sk-code-review/references/review_core.md",
+      ".opencode/skill/sk-code-review/references/security_checklist.md",
+      ".opencode/skill/sk-code-review/references/code_quality_checklist.md",
+      ".opencode/skill/sk-code-review/references/test_quality_checklist.md",
+      ".opencode/agent/review.md",
+      ".claude/agents/review.md"
+    ],
+    "entities": [
+      {
+        "name": "sk-code-review",
+        "kind": "skill",
+        "path": ".opencode/skill/sk-code-review/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-review/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "review_core",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-review/references/review_core.md",
+        "source": "derived"
+      },
+      {
+        "name": "security_checklist",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-review/references/security_checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "code_quality_checklist",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-review/references/code_quality_checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "test_quality_checklist",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-review/references/test_quality_checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "@review",
+        "kind": "agent",
+        "path": ".opencode/agent/review.md",
+        "source": "derived"
+      },
+      {
+        "name": "@review (claude runtime)",
+        "kind": "agent",
+        "path": ".claude/agents/review.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code-opencode, sk-code-web, and sk-code-full-stack standards. It matters because it establishes the findings-first review baseline that other stack-specific review overlays build on.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/review_core.md",
+      "references/security_checklist.md",
+      "references/quick_reference.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

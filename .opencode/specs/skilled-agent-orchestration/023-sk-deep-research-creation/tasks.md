@@ -68,7 +68,7 @@ contextType: "general"
 - [x] T-040: Update CLAUDE.md (agent routing table)
 - [x] T-041: Update .claude/agents/orchestrate.md (agent selection)
 - [x] T-042: Update .opencode/skill/README.md (catalog count)
-- [x] T-043: Update .opencode/skill/scripts/skill_advisor.py (keywords)
+- [x] T-043: Update .opencode/skill/skill-advisor/scripts/skill_advisor.py (keywords)
 - [x] T-044: Update .opencode/specs/descriptions.json (add entry)
 
 ### Phase 5.5: Legacy @research Removal

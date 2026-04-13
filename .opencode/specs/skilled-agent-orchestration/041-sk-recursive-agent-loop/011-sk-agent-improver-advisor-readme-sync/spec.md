@@ -14,8 +14,8 @@
 After Phase 008-010, the skill advisor and skill README are outdated:
 
 1. **Skill README** (`skill/README.md`): Lists sk-improve-agent at version 0.1.0.0 with old description. Should be 1.0.0.0 with 5D scoring, integration scanning, dynamic profiling.
-2. **Skill advisor** (`skill/scripts/skill_advisor.py`): Missing routing for Phase 008+ capabilities — no entries for "5-dimension", "integration scan", "dynamic profile", "/improve:agent", "evaluate agent", "score agent". Also missing COMMAND_BRIDGES for `/improve:agent`, `/improve:prompt`, and all `/create:*` commands.
-3. **Barter sync**: The Barter version at `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/scripts/skill_advisor.py` needs the same COMMAND_BRIDGES additions (for `/improve:prompt` and `/create:*` commands) even though it doesn't have sk-improve-agent.
+2. **Skill advisor** (`skill/skill-advisor/scripts/skill_advisor.py`): Missing routing for Phase 008+ capabilities — no entries for "5-dimension", "integration scan", "dynamic profile", "/improve:agent", "evaluate agent", "score agent". Also missing COMMAND_BRIDGES for `/improve:agent`, `/improve:prompt`, and all `/create:*` commands.
+3. **Barter sync**: The Barter version at `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/skill-advisor/scripts/skill_advisor.py` needs the same COMMAND_BRIDGES additions (for `/improve:prompt` and `/create:*` commands) even though it doesn't have sk-improve-agent.
 
 ## Solution
 
@@ -28,8 +28,8 @@ After Phase 008-010, the skill advisor and skill README are outdated:
 ### In Scope
 
 - `.opencode/skill/README.md` — version bump + description update for sk-improve-agent
-- `.opencode/skill/scripts/skill_advisor.py` — add Phase 008+ routing entries + COMMAND_BRIDGES
-- Barter `skill/scripts/skill_advisor.py` — sync COMMAND_BRIDGES only (no sk-improve-agent routes)
+- `.opencode/skill/skill-advisor/scripts/skill_advisor.py` — add Phase 008+ routing entries + COMMAND_BRIDGES
+- Barter `skill/skill-advisor/scripts/skill_advisor.py` — sync COMMAND_BRIDGES only (no sk-improve-agent routes)
 
 ### Out of Scope
 
@@ -49,6 +49,6 @@ After Phase 008-010, the skill advisor and skill README are outdated:
 
 ## Success Criteria
 
-- `python3 .opencode/skill/scripts/skill_advisor.py "evaluate agent with 5 dimensions" --threshold 0.8` returns sk-improve-agent
-- `python3 .opencode/skill/scripts/skill_advisor.py "/improve:agent" --threshold 0.8` returns sk-improve-agent
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "evaluate agent with 5 dimensions" --threshold 0.8` returns sk-improve-agent
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "/improve:agent" --threshold 0.8` returns sk-improve-agent
 - skill/README.md shows `sk-improve-agent | 1.0.0.0`

@@ -84,7 +84,7 @@ exec
 1930:## Task 2: Build sk-deep-research manual testing playbook (index + per-feature snippets)
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 3 for spec folder 042-sk-deep-research-review-improvement-2 traceability focus on 001-runtime-truth-foundation spec.md vs reduce-state.cjs runtime-capabilities.cjs and referenced docs state_format.md loop_protocol.md convergence.md for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 3 for spec folder 042-sk-deep-research-review-improvement-2 traceability focus on 001-runtime-truth-foundation spec.md vs reduce-state.cjs runtime-capabilities.cjs and referenced docs state_format.md loop_protocol.md convergence.md for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 421ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-2VwJ4svQ' (errno=Operation not permitted)
 [

@@ -82,8 +82,8 @@ Verification completed:
 - `node --check .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs`
 - `node --check .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs`
 - `python3.11` JSON parsing across packet-local improvement JSON artifacts
-- `python3 -m py_compile .opencode/skill/scripts/skill_advisor.py`
-- `python3 .opencode/skill/scripts/skill_advisor.py "recursive agent benchmark harness for handover and context-prime" --threshold 0.8`
+- `python3 -m py_compile .opencode/skill/skill-advisor/scripts/skill_advisor.py`
+- `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "recursive agent benchmark harness for handover and context-prime" --threshold 0.8`
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop/002-sk-improve-agent-full-skill --strict`
 - Final parallel read-only review evidence is recorded in `review/parallel-review-summary.md`, and the final re-check returned `NO_FINDINGS`
 

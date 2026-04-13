@@ -80,7 +80,7 @@ contextType: "general"
 ### Registration and Runtime Packaging
 
 - [x] T-050: Register the skill in the skill catalog
-- [x] T-051: Add skill routing keywords to `.opencode/skill/scripts/skill_advisor.py`
+- [x] T-051: Add skill routing keywords to `.opencode/skill/skill-advisor/scripts/skill_advisor.py`
 - [x] T-052: Add the packet/feature entry to `.opencode/specs/descriptions.json`
 - [x] T-053: Update the framework README to reference the new capability
 - [x] T-054: Create runtime loop-agent definitions needed for invocation outside canonical OpenCode

@@ -80,7 +80,7 @@ exec
 1588:## Task 2: Align legacy exports and DS tickets to the verified delta
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION deep review traceability: verify deep_research_config.json, review_mode_contract.yaml, improvement_config.json, convergence.md, loop_protocol.md, Phase 001 spec.md fixes and report FIXED/PARTIAL/OPEN/REGRESSED with new findings" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION deep review traceability: verify deep_research_config.json, review_mode_contract.yaml, improvement_config.json, convergence.md, loop_protocol.md, Phase 001 spec.md fixes and report FIXED/PARTIAL/OPEN/REGRESSED with new findings" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
@@ -798,7 +798,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
@@ -2813,7 +2813,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-022.md:4163:.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md:21:Graph momentum computes a temporal degree delta: `current_degree - degree_7d_ago`. The `degree_snapshots` table records per-node degree counts at daily granularity with a UNIQUE constraint on `(memory_id, snapshot_date)`. The `snapshotDegrees()` function captures the current state, and `computeMomentum()` looks back 7 days to calculate the delta.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:12:**Focus:** Phase 001 runtime-truth-foundation: stop-reason taxonomy, legal-stop gates, resume semantics in reduce-state.cjs and runtime-capabilities.cjs for both sk-deep-research and sk-deep-review. Check .opencode/skill/sk-deep-research/scripts/reduce-state.cjs and .opencode/skill/sk-deep-review/scripts/reduce-state.cjs for correct stopReason handling, legalStop gate logic, and blocked-stop event shapes.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:35:FOCUS: Phase 001 runtime-truth-foundation: stop-reason taxonomy, legal-stop gates, resume semantics in reduce-state.cjs and runtime-capabilities.cjs for both sk-deep-research and sk-deep-review. Check .opencode/skill/sk-deep-research/scripts/reduce-state.cjs and .opencode/skill/sk-deep-review/scripts/reduce-state.cjs for correct stopReason handling, legalStop gate logic, and blocked-stop event shapes.
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:72:/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Review iteration 1 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness in Phase 001 runtime-truth-foundation stop-reason taxonomy legal-stop gates resume semantics reduce-state.cjs runtime-capabilities.cjs for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:72:/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Review iteration 1 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness in Phase 001 runtime-truth-foundation stop-reason taxonomy legal-stop gates resume semantics reduce-state.cjs runtime-capabilities.cjs for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:206:| **Resume prior work**     | `/spec_kit:resume` → Rebuild context from `handover.md` → `_memory.continuity` → canonical spec docs → Review checklist → Continue |
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:230:1. **FIRST ACTION** — use `/spec_kit:resume` as the canonical recovery surface
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-001.md:439:    +- STEP 1: Score intents (top-2 when ambiguity delta <= 1.0)
@@ -5197,7 +5197,7 @@ exec
 /bin/zsh -lc "rg -n \"namespace isolation|coverage-graph-query|coverage-graph-signals|promote\\.cjs|search\\.cjs|replay-corpus\\.cjs|rvw-2026-04-12T11-30-00Z|security\" /Users/michelkerkmeester/.codex/memories/MEMORY.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 392ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-hhtKW75A' (errno=Operation not permitted)
 [
@@ -5456,7 +5456,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 920ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-L5wyQGiv' (errno=Operation not permitted)
 [
@@ -5712,7 +5712,7 @@ user cancelled MCP tool call
 exec
 /bin/zsh -lc "pwd && rg --files -g 'AGENTS.md' -g 'CLAUDE.md' | sed 's#"'^#./#'"'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 20 for spec folder 042-sk-deep-research-review-improvement-2 covering maintainability, architecture coherence, shared library coupling, database schema evolution, MCP tool surface area growth, test fixture maintainability, operational documentation completeness, and release readiness" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 20 for spec folder 042-sk-deep-research-review-improvement-2 covering maintainability, architecture coherence, shared library coupling, database schema evolution, MCP tool surface area growth, test fixture maintainability, operational documentation completeness, and release readiness" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 174ms:
 ./CLAUDE.md
 ./AGENTS.md

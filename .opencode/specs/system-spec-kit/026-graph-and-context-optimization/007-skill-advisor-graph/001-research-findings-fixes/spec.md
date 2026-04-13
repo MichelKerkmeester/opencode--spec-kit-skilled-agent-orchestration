@@ -40,7 +40,7 @@ Fix the issues found by a 10-iteration GPT-5.4 deep research audit of the skill 
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Planned |
+| **Status** | Complete |
 | **Created** | 2026-04-13 |
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
@@ -130,16 +130,16 @@ Semantic search subprocess failures return empty `[]` with no diagnostic trace.
 
 | File | Action | Issues |
 |------|--------|--------|
-| `.opencode/skill/scripts/skill_advisor.py` | Modify | P0-1, P0-5, P1-4, P1-5 |
-| `.opencode/skill/scripts/skill_graph_compiler.py` | Modify | P0-3, P0-4, P1-1, P1-2 |
+| `.opencode/skill/skill-advisor/skill_advisor.py` | Modify | P0-1, P0-5, P1-4, P1-5 |
+| `.opencode/skill/skill-advisor/skill_graph_compiler.py` | Modify | P0-3, P0-4, P1-1, P1-2 |
 | `.opencode/skill/system-spec-kit/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/mcp-coco-index/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-doc/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-improve-prompt/graph-metadata.json` | Modify | P0-2 |
 | `.opencode/skill/sk-deep-review/graph-metadata.json` | Modify | P1-3 |
 | `.opencode/skill/sk-deep-research/graph-metadata.json` | Modify | P1-3 |
-| `.opencode/skill/scripts/skill-graph.json` | Regenerate | After all metadata fixes |
-| `.opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Modify | New test cases |
+| `.opencode/skill/skill-advisor/skill-graph.json` | Regenerate | After all metadata fixes |
+| `.opencode/skill/skill-advisor/fixtures/skill_advisor_regression_cases.jsonl` | Modify | New test cases |
 <!-- /ANCHOR:files -->
 
 ---

@@ -294,7 +294,7 @@ Each agent dispatch gets a fresh context window. State continuity comes from fil
 ### Data Flow
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 9 for spec folder 042-sk-deep-research-review-improvement-2, correctness focus on Phase 005 agent-improver alignment and sk-improve-agent scripts improvement-journal.cjs mutation-coverage.cjs trade-off-detector.cjs candidate-lineage.cjs benchmark-stability.cjs" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 9 for spec folder 042-sk-deep-research-review-improvement-2, correctness focus on Phase 005 agent-improver alignment and sk-improve-agent scripts improvement-journal.cjs mutation-coverage.cjs trade-off-detector.cjs candidate-lineage.cjs benchmark-stability.cjs" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 571ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-tNQVr1jS' (errno=Operation not permitted)
 [

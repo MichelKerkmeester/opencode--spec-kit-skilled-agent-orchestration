@@ -55,8 +55,8 @@ Updated the skill advisor routing tables and root README to make Phase 008+ capa
 
 | File | What changed |
 | --- | --- |
-| `.opencode/skill/scripts/skill_advisor.py` | 7 intent boosters, 13 phrase intent boosters, 8 command bridges (Public). |
-| `.opencode/skill/scripts/skill_advisor.py` (Barter) | 7 command bridges, 2 phrase intent boosters. |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | 7 intent boosters, 13 phrase intent boosters, 8 command bridges (Public). |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` (Barter) | 7 command bridges, 2 phrase intent boosters. |
 | `sk-improve-agent/README.md` | Version 0.1.0.0 to 1.0.0.0, updated description. |
 | `README.md` (root) | Agent Network section and Improve Agent description updated. |
 | `.opencode/command/*/README.txt` | 5 command README.txt files updated across runtimes. |

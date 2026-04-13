@@ -67,7 +67,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "deep review maintainability review of .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-*.cjs and scripts/tests/coverage-graph-*.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "deep review maintainability review of .opencode/skill/system-spec-kit/scripts/lib/coverage-graph-*.cjs and scripts/tests/coverage-graph-*.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 457ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-IKzw201K' (errno=Operation not permitted)
 [

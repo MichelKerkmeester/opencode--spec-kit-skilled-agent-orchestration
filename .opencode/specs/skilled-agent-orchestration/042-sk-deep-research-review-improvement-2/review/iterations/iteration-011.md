@@ -70,7 +70,7 @@ exec
 /bin/zsh -lc 'rg -n "042-sk-deep-research-review-improvement-2|005-agent-improver-deep-loop-alignment|006-graph-testing-and-playbook-alignment|15--sk-improve-agent" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "deep review iteration 11 traceability for 042-sk-deep-research-review-improvement-2 focusing on 005-agent-improver-deep-loop-alignment and 006-graph-testing-and-playbook-alignment, changelog parity, test file existence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "deep review iteration 11 traceability for 042-sk-deep-research-review-improvement-2 focusing on 005-agent-improver-deep-loop-alignment and 006-graph-testing-and-playbook-alignment, changelog parity, test file existence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 553ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-P0YaoY6a' (errno=Operation not permitted)
 [
@@ -843,7 +843,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
@@ -1323,7 +1323,7 @@ exec
     38	| `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs` | Modified | Family derivation, configurable plateau window, accepted counting |
     39	| `.opencode/skill/sk-improve-agent/assets/improvement_config.json` | Modified | Added `plateauWindow` field |
     40	| `.opencode/skill/sk-improve-agent/assets/improvement_config_reference.md` | Modified | Documented `plateauWindow` |
-    41	| `.opencode/skill/scripts/skill_advisor.py` | Modified | Phase 008+ routing entries + COMMAND_BRIDGES |
+    41	| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modified | Phase 008+ routing entries + COMMAND_BRIDGES |
     42	| `.opencode/skill/README.md` | Modified | Version bump to 1.0.0.0 |
     43	| `README.md` | Modified | Added Context-Prime and Agent-Improver agents, rewrote Improve commands |
     44	| `.opencode/command/README.txt` | Modified | Added improve group, fixed command counts |

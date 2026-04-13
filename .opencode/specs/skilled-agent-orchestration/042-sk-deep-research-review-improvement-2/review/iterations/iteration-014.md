@@ -67,7 +67,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 14 for spec folder 042-sk-deep-research-review-improvement-2 focusing on security review of coverage-graph-db.ts v2 schema migration drop-and-recreate safety, composite primary key correctness, and session-isolation.vitest.ts shared-ID collision regression coverage." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 14 for spec folder 042-sk-deep-research-review-improvement-2 focusing on security review of coverage-graph-db.ts v2 schema migration drop-and-recreate safety, composite primary key correctness, and session-isolation.vitest.ts shared-ID collision regression coverage." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 633ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-Ff8yrpJX' (errno=Operation not permitted)
 [

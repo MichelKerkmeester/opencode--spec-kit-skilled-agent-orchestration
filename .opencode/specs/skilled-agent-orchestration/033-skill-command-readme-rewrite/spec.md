@@ -63,7 +63,7 @@ Rewrite all 23 READMEs from scratch to match the quality demonstrated by `.openc
 | 8 | mcp-coco-index | `.opencode/skill/mcp-coco-index/README.md` |
 | 9 | mcp-code-mode | `.opencode/skill/mcp-code-mode/README.md` |
 | 10 | mcp-figma | `.opencode/skill/mcp-figma/README.md` |
-| 11 | scripts | `.opencode/skill/scripts/README.md` |
+| 11 | scripts | `.opencode/skill/skill-advisor/README.md` |
 | 12 | sk-code-full-stack | `.opencode/skill/sk-code-full-stack/README.md` |
 | 13 | sk-code-opencode | `.opencode/skill/sk-code-opencode/README.md` |
 | 14 | sk-code-review | `.opencode/skill/sk-code-review/README.md` |

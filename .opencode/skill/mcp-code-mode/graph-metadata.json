@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "mcp-code-mode",
   "family": "mcp",
   "category": "mcp-tool",
@@ -9,11 +9,123 @@
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": [
-      { "target": "mcp-figma", "weight": 0.9, "context": "figma tools via Code Mode" },
-      { "target": "mcp-clickup", "weight": 0.9, "context": "clickup tools via Code Mode" },
-      { "target": "mcp-chrome-devtools", "weight": 0.7, "context": "devtools MCP fallback via Code Mode" }
+      {
+        "target": "mcp-figma",
+        "weight": 0.9,
+        "context": "figma tools via Code Mode"
+      },
+      {
+        "target": "mcp-clickup",
+        "weight": 0.9,
+        "context": "clickup tools via Code Mode"
+      },
+      {
+        "target": "mcp-chrome-devtools",
+        "weight": 0.7,
+        "context": "devtools MCP fallback via Code Mode"
+      }
     ]
   },
-  "domains": ["mcp", "tool-chain", "orchestration", "typescript-execution"],
-  "intent_signals": ["code mode", "mcp tool", "call tool chain"]
+  "domains": [
+    "mcp",
+    "tool-chain",
+    "orchestration",
+    "typescript-execution"
+  ],
+  "intent_signals": [
+    "code mode",
+    "mcp tool",
+    "call tool chain"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "code mode",
+      "mcp tool",
+      "call tool chain",
+      "code mode orchestration",
+      "run mcp tool chain",
+      "typescript mcp executor",
+      "external tool integration via code mode",
+      "mcp-code-mode",
+      "mcp code mode",
+      "typescript-execution",
+      "multi-tool-workflow",
+      "tool-orchestration"
+    ],
+    "key_topics": [
+      "mcp",
+      "tool-chain",
+      "orchestration",
+      "typescript-execution",
+      "typescript execution",
+      "tool chaining",
+      "external integrations",
+      "context reduction",
+      "type-safe orchestration",
+      "mcp code mode"
+    ],
+    "key_files": [
+      ".opencode/skill/mcp-code-mode/SKILL.md",
+      ".opencode/skill/mcp-code-mode/README.md",
+      ".opencode/skill/mcp-code-mode/references/architecture.md",
+      ".opencode/skill/mcp-code-mode/references/tool_catalog.md",
+      ".opencode/skill/mcp-code-mode/mcp_server/index.ts",
+      ".opencode/skill/mcp-code-mode/mcp_server/package.json",
+      ".opencode/skill/mcp-code-mode/scripts/validate_config.py"
+    ],
+    "entities": [
+      {
+        "name": "mcp-code-mode",
+        "kind": "skill",
+        "path": ".opencode/skill/mcp-code-mode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/mcp-code-mode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "architecture",
+        "kind": "reference",
+        "path": ".opencode/skill/mcp-code-mode/references/architecture.md",
+        "source": "derived"
+      },
+      {
+        "name": "tool_catalog",
+        "kind": "reference",
+        "path": ".opencode/skill/mcp-code-mode/references/tool_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "index",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-code-mode/mcp_server/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package",
+        "kind": "config",
+        "path": ".opencode/skill/mcp-code-mode/mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "validate_config",
+        "kind": "script",
+        "path": ".opencode/skill/mcp-code-mode/scripts/validate_config.py",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "MCP orchestration via TypeScript execution for efficient multi-tool workflows. Use Code Mode for ALL MCP tool calls (ClickUp, Notion, Figma, Webflow, Chrome DevTools, etc.). Provides 98.7% context reduction, 60% faster execution, and type-safe invocation. Mandatory for external tool integration. It matters because it standardizes how external MCP tools are discovered and invoked with low context overhead and type-safe execution.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "mcp_server/README.md",
+      "references/architecture.md",
+      "references/tool_catalog.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

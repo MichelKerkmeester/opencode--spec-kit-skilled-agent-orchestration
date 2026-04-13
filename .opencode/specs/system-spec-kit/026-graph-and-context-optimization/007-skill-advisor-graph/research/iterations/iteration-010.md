@@ -20,9 +20,9 @@ Taken together, this means the current system is acceptable as an experimental a
 
 ### Schema Issues
 
-1. The validator is shape-correct but semantics-light. It enforces schema/version/category/family/target existence/weight range, but it does not reject self-edges, dependency cycles, zero-edge skills, or asymmetric `enhances` data. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:80-154`, `.opencode/skill/scripts/skill_graph_compiler.py:157-204`. Provenance: iterations 003 and 006.
-2. The schema/runtime contract is misleading for compiled output. `domains` and `intent_signals` are required in every per-skill metadata file, but the compiler validates them and then discards them from the runtime artifact. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:148-152`, `.opencode/skill/scripts/skill_graph_compiler.py:233-292`. Provenance: iterations 004 and 005.
-3. The `hub_skills` description overstates what is measured. The docstring says "across all types", but hub detection only sees the compiled adjacency subset, which excludes `prerequisite_for` and all metadata-only signals. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:211-230`, `.opencode/skill/scripts/skill_graph_compiler.py:253-264`. Provenance: iteration 003.
+1. The validator is shape-correct but semantics-light. It enforces schema/version/category/family/target existence/weight range, but it does not reject self-edges, dependency cycles, zero-edge skills, or asymmetric `enhances` data. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:80-154`, `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:157-204`. Provenance: iterations 003 and 006.
+2. The schema/runtime contract is misleading for compiled output. `domains` and `intent_signals` are required in every per-skill metadata file, but the compiler validates them and then discards them from the runtime artifact. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:148-152`, `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:233-292`. Provenance: iterations 004 and 005.
+3. The `hub_skills` description overstates what is measured. The docstring says "across all types", but hub detection only sees the compiled adjacency subset, which excludes `prerequisite_for` and all metadata-only signals. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:211-230`, `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:253-264`. Provenance: iteration 003.
 
 ### Edge Data Issues
 
@@ -31,28 +31,28 @@ Taken together, this means the current system is acceptable as an experimental a
 3. `sk-doc` is a zero-edge orphan despite explicit integration with `system-spec-kit` on documentation-quality flows. Evidence: `.opencode/skill/sk-doc/graph-metadata.json:6-15`, `.opencode/skill/system-spec-kit/SKILL.md:921-923`, `.opencode/skill/system-spec-kit/SKILL.md:948-950`, `.opencode/skill/sk-doc/SKILL.md:802-808`. Provenance: iterations 006 and 007.
 4. `sk-git` is also zero-edge, but the evidence supports a narrower workflow link than a broad code-quality overlay. Evidence: `.opencode/skill/sk-git/graph-metadata.json:6-15`, `.opencode/skill/system-spec-kit/SKILL.md:948-949`. Provenance: iterations 006 and 007.
 5. `sk-improve-prompt` is under-connected. It only models a sibling tie to `sk-improve-agent`, while all four CLI skills now ALWAYS load `assets/prompt_quality_card.md` before dispatch. Evidence: `.opencode/skill/sk-improve-prompt/graph-metadata.json:6-17`, `.opencode/skill/cli-claude-code/SKILL.md:112-113`, `.opencode/skill/cli-claude-code/SKILL.md:429-432`, `.opencode/skill/cli-codex/SKILL.md:108-109`, `.opencode/skill/cli-codex/SKILL.md:446-448`, `.opencode/skill/cli-copilot/SKILL.md:106-107`, `.opencode/skill/cli-copilot/SKILL.md:384-386`, `.opencode/skill/cli-gemini/SKILL.md:105-106`, `.opencode/skill/cli-gemini/SKILL.md:373-375`. Provenance: iteration 006.
-6. `mcp-code-mode` has a source/runtime mismatch: its `prerequisite_for` edges exist in metadata but are dropped from compiled runtime adjacency, and its frontmatter names downstream integrations that are not all represented as graph nodes. Evidence: `.opencode/skill/mcp-code-mode/graph-metadata.json:6-18`, `.opencode/skill/mcp-code-mode/SKILL.md:2-3`, `.opencode/skill/mcp-code-mode/SKILL.md:19-20`, `.opencode/skill/scripts/skill_graph_compiler.py:253-264`. Provenance: iterations 001 and 004.
+6. `mcp-code-mode` has a source/runtime mismatch: its `prerequisite_for` edges exist in metadata but are dropped from compiled runtime adjacency, and its frontmatter names downstream integrations that are not all represented as graph nodes. Evidence: `.opencode/skill/mcp-code-mode/graph-metadata.json:6-18`, `.opencode/skill/mcp-code-mode/SKILL.md:2-3`, `.opencode/skill/mcp-code-mode/SKILL.md:19-20`, `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:253-264`. Provenance: iterations 001 and 004.
 7. `sk-code-review` and the `sk-code-*` overlays are intentionally asymmetric, but that asymmetry is currently unchecked and materially affects routing strength (`0.7` outbound from review vs `0.3` reverse). Evidence: `.opencode/skill/sk-code-review/graph-metadata.json:8-17`, `.opencode/skill/sk-code-opencode/graph-metadata.json:8-19`, `.opencode/skill/sk-code-web/graph-metadata.json:8-19`, `.opencode/skill/sk-code-full-stack/graph-metadata.json:8-19`. Provenance: iterations 001 and 003.
 8. `sk-deep-review <-> sk-deep-research` is structurally valid but semantically risky as a routing sibling because it leaks the wrong autonomous mode into review-only prompts. Evidence: `.opencode/skill/sk-deep-review/graph-metadata.json:7-18`. Provenance: iterations 007 and 008.
 9. `mcp-chrome-devtools -> sk-code-web` is directionally correct and useful; any weight change should wait until the broader graph-noise issues are fixed. Evidence: `.opencode/skill/mcp-chrome-devtools/graph-metadata.json:7-18`. Provenance: iterations 005 and 007.
 
 ### Compiler Gaps
 
-1. The compiler excludes `prerequisite_for` from runtime adjacency, making those source edges inert for graph-based boosting. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:253-264`. Provenance: iterations 001, 003, and 007.
-2. The compiler emits topology only, so the runtime graph cannot replace or even directly consume canonical `intent_signals` or `domains`. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:233-292`. Provenance: iterations 004 and 005.
-3. Zero-edge skills disappear from compiled adjacency entirely, which hides important hub/orphan modeling gaps at runtime and during audits. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py:249-267`. Provenance: iterations 003, 004, and 007.
-4. There is no compiler-side drift check between `PHRASE_INTENT_BOOSTERS` and graph metadata, so exact duplicates and partially graph-backed phrase pairs can silently diverge. Primary edit surface: `.opencode/skill/scripts/skill_graph_compiler.py` plus `.opencode/skill/scripts/skill_advisor.py:613-760`. Provenance: iteration 004.
-5. If richer routing metadata becomes canonical, the current `~2KB` target is unrealistic for a single artifact. Iteration testing showed roughly `3.5KB` for a compact indexed single-file design and `5.2KB` for naive raw inclusion. Primary design surface: `.opencode/skill/scripts/skill_graph_compiler.py`, `.opencode/skill/scripts/skill-graph.json`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/spec.md:31`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/spec.md:139`. Provenance: iteration 005.
+1. The compiler excludes `prerequisite_for` from runtime adjacency, making those source edges inert for graph-based boosting. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:253-264`. Provenance: iterations 001, 003, and 007.
+2. The compiler emits topology only, so the runtime graph cannot replace or even directly consume canonical `intent_signals` or `domains`. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:233-292`. Provenance: iterations 004 and 005.
+3. Zero-edge skills disappear from compiled adjacency entirely, which hides important hub/orphan modeling gaps at runtime and during audits. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:249-267`. Provenance: iterations 003, 004, and 007.
+4. There is no compiler-side drift check between `PHRASE_INTENT_BOOSTERS` and graph metadata, so exact duplicates and partially graph-backed phrase pairs can silently diverge. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` plus `.opencode/skill/skill-advisor/scripts/skill_advisor.py:613-760`. Provenance: iteration 004.
+5. If richer routing metadata becomes canonical, the current `~2KB` target is unrealistic for a single artifact. Iteration testing showed roughly `3.5KB` for a compact indexed single-file design and `5.2KB` for naive raw inclusion. Primary design surface: `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`, `.opencode/skill/skill-advisor/scripts/skill-graph.json`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/spec.md:31`, `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/spec.md:139`. Provenance: iteration 005.
 
 ### Advisor Integration Issues
 
-1. Graph-derived boosts can create visible candidates that have zero lexical or direct intent evidence. This is most obvious in family and sibling propagation. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:81-143`, `.opencode/skill/scripts/skill_advisor.py:1496-1498`. Provenance: iterations 007 and 008.
-2. Family affinity is the highest-risk live mechanism. It already caused one top-1 winner flip in the regression corpus (`1/44`) and eleven top-3 membership changes (`11/44`). It also injects unrelated MCP and utility skills into ranked tails. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:123-143`. Provenance: iterations 007 and 008.
-3. The current transitive coefficients and `0.1` floor make some legitimate edges nearly inert (`siblings`, `family`) and others only weakly substitutable for hardcoded phrase companions. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:98-119`, `.opencode/skill/scripts/skill_advisor.py:123-143`. Provenance: iterations 002 and 004.
-4. Graph-derived reasons are mixed into the same evidence bucket as direct phrase, intent, and semantic matches, so confidence and uncertainty overstate certainty when graph signals are only transformed evidence. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:1244-1289`, `.opencode/skill/scripts/skill_advisor.py:1292-1318`, `.opencode/skill/scripts/skill_advisor.py:1524-1580`. Provenance: iteration 005.
-5. The reason field is alphabetically sorted and truncated, which hurts explainability because graph tokens can crowd out stronger direct evidence. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:1573-1580`. Provenance: iteration 007.
-6. Built-in CocoIndex search fails closed to `[]` on any subprocess problem, so semantic/graph interaction silently disappears in restricted environments. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:1038-1065`. Provenance: iteration 005.
-7. The runtime still relies on a large manual phrase table for canonical routing, including several multi-skill pairs that either duplicate metadata or should be promoted into the graph. Primary edit surface: `.opencode/skill/scripts/skill_advisor.py:613-760`. Provenance: iteration 004.
+1. Graph-derived boosts can create visible candidates that have zero lexical or direct intent evidence. This is most obvious in family and sibling propagation. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:81-143`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1496-1498`. Provenance: iterations 007 and 008.
+2. Family affinity is the highest-risk live mechanism. It already caused one top-1 winner flip in the regression corpus (`1/44`) and eleven top-3 membership changes (`11/44`). It also injects unrelated MCP and utility skills into ranked tails. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:123-143`. Provenance: iterations 007 and 008.
+3. The current transitive coefficients and `0.1` floor make some legitimate edges nearly inert (`siblings`, `family`) and others only weakly substitutable for hardcoded phrase companions. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:98-119`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:123-143`. Provenance: iterations 002 and 004.
+4. Graph-derived reasons are mixed into the same evidence bucket as direct phrase, intent, and semantic matches, so confidence and uncertainty overstate certainty when graph signals are only transformed evidence. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1244-1289`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1292-1318`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1524-1580`. Provenance: iteration 005.
+5. The reason field is alphabetically sorted and truncated, which hurts explainability because graph tokens can crowd out stronger direct evidence. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1573-1580`. Provenance: iteration 007.
+6. Built-in CocoIndex search fails closed to `[]` on any subprocess problem, so semantic/graph interaction silently disappears in restricted environments. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1038-1065`. Provenance: iteration 005.
+7. The runtime still relies on a large manual phrase table for canonical routing, including several multi-skill pairs that either duplicate metadata or should be promoted into the graph. Primary edit surface: `.opencode/skill/skill-advisor/scripts/skill_advisor.py:613-760`. Provenance: iteration 004.
 
 ### Improvement Opportunities
 
@@ -67,7 +67,7 @@ Taken together, this means the current system is acceptable as an experimental a
 ### P0: Required Before Calling This Production-Ready
 
 1. Prevent graph-only candidate creation.
-   - Change `.opencode/skill/scripts/skill_advisor.py:81-143` so `siblings` and `family` boosts can only refine candidates that already have lexical, phrase, explicit-name, semantic, or direct intent evidence.
+   - Change `.opencode/skill/skill-advisor/scripts/skill_advisor.py:81-143` so `siblings` and `family` boosts can only refine candidates that already have lexical, phrase, explicit-name, semantic, or direct intent evidence.
    - Minimum implementation expectation: do not let `_apply_graph_boosts()` or `_apply_family_affinity()` create a brand-new skill solely from graph propagation.
 
 2. Close the hub/orphan edge gaps with explicit high-signal relationships.
@@ -83,25 +83,25 @@ Taken together, this means the current system is acceptable as an experimental a
      - `system-spec-kit -> sk-doc` and `system-spec-kit -> sk-git` only if the packet wants symmetric hub traversal, not just directional routing.
 
 3. Eliminate the compiler/runtime contract drift.
-   - Update `.opencode/skill/scripts/skill_graph_compiler.py:233-292` so the compiled runtime artifact includes canonical routing metadata, or emit a second compact sidecar dedicated to routing metadata.
+   - Update `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:233-292` so the compiled runtime artifact includes canonical routing metadata, or emit a second compact sidecar dedicated to routing metadata.
    - The current topology-only artifact is not enough if the project expects graph metadata to become the source of truth for routing.
 
 4. Resolve the inert `prerequisite_for` path.
-   - Update `.opencode/skill/scripts/skill_graph_compiler.py:253-264` so `prerequisite_for` either compiles into runtime adjacency, is materialized as a reverse view, or is explicitly removed from source metadata in favor of normalized reverse `depends_on`.
+   - Update `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:253-264` so `prerequisite_for` either compiles into runtime adjacency, is materialized as a reverse view, or is explicitly removed from source metadata in favor of normalized reverse `depends_on`.
    - Keep `mcp-code-mode` aligned at `.opencode/skill/mcp-code-mode/graph-metadata.json:11-15`; right now those edges are present in source but not active in runtime graph scoring.
 
 5. Separate derived graph evidence from direct evidence in scoring.
-   - Update `.opencode/skill/scripts/skill_advisor.py:1244-1318` and `.opencode/skill/scripts/skill_advisor.py:1524-1580` so graph-propagated evidence does not reduce uncertainty or increase confidence as strongly as direct phrase, lexical, or semantic matches.
+   - Update `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1244-1318` and `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1524-1580` so graph-propagated evidence does not reduce uncertainty or increase confidence as strongly as direct phrase, lexical, or semantic matches.
    - This is necessary for trustworthy thresholds and explanations once graph routing becomes more complete.
 
 ### P1: Should Land Soon After P0
 
-1. Harden validation in `.opencode/skill/scripts/skill_graph_compiler.py:80-204`.
+1. Harden validation in `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:80-204`.
    - Add warnings or errors for self-edges, zero-edge skills, dependency cycles, and `enhances` asymmetry/weight drift.
    - At minimum, zero-edge hubs like `system-spec-kit` should not pass silently.
 
 2. Add a compiler-side drift audit between metadata and phrase routing.
-   - Compare `.opencode/skill/scripts/skill_advisor.py:613-760` against compiled `intent_signals`.
+   - Compare `.opencode/skill/skill-advisor/scripts/skill_advisor.py:613-760` against compiled `intent_signals`.
    - Report exact duplicates, graph-backed secondary phrase pairs, and phrase pairs still missing graph representation.
 
 3. Reclassify or de-route the `sk-deep-review <-> sk-deep-research` relationship.
@@ -109,21 +109,21 @@ Taken together, this means the current system is acceptable as an experimental a
    - If the relationship is useful only for documentation or discoverability, keep it out of runtime ranking.
 
 4. Improve reason ordering for audits.
-   - Update `.opencode/skill/scripts/skill_advisor.py:1573-1580` so reasons preserve score order or group by source (`direct`, `semantic`, `graph`) instead of sorting alphabetically.
+   - Update `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1573-1580` so reasons preserve score order or group by source (`direct`, `semantic`, `graph`) instead of sorting alphabetically.
 
 5. Make CocoIndex failure debuggable.
-   - Update `.opencode/skill/scripts/skill_advisor.py:1038-1065` to emit a non-fatal diagnostic or trace reason when built-in semantic search fails.
+   - Update `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1038-1065` to emit a non-fatal diagnostic or trace reason when built-in semantic search fails.
 
 ### P2: Nice-to-Haves After the Core Fixes
 
-1. Revisit transitive multipliers and floors in `.opencode/skill/scripts/skill_advisor.py:98-119`, `.opencode/skill/scripts/skill_advisor.py:123-143`.
+1. Revisit transitive multipliers and floors in `.opencode/skill/skill-advisor/scripts/skill_advisor.py:98-119`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:123-143`.
    - Do this only after graph-only candidate creation is blocked and the missing edge data is filled in.
 
 2. Decide whether the compiled runtime surface should be:
    - one richer artifact in the `3-4KB` range, or
    - a topology-only `skill-graph.json` plus a compact routing-metadata sidecar.
 
-3. Clarify `hub_skills` semantics in `.opencode/skill/scripts/skill_graph_compiler.py:211-230`.
+3. Clarify `hub_skills` semantics in `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:211-230`.
    - Either rename/document the current behavior accurately or move to a richer centrality definition once the compiled data model stabilizes.
 
 4. Re-evaluate directional weights such as:
@@ -146,11 +146,11 @@ If the bar is "ready to become the authoritative production routing substrate," 
 
 ### Blocking Issues
 
-1. Graph-only candidate creation is still happening through family and sibling propagation in `.opencode/skill/scripts/skill_advisor.py:81-143`.
-2. The compiler/runtime contract is incomplete because canonical routing metadata is validated but dropped at compile time in `.opencode/skill/scripts/skill_graph_compiler.py:233-292`.
+1. Graph-only candidate creation is still happening through family and sibling propagation in `.opencode/skill/skill-advisor/scripts/skill_advisor.py:81-143`.
+2. The compiler/runtime contract is incomplete because canonical routing metadata is validated but dropped at compile time in `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:233-292`.
 3. Important hub and utility skills are still graph-orphans or graph-invisible: `system-spec-kit`, `mcp-coco-index`, `sk-doc`, `sk-improve-prompt`.
-4. `prerequisite_for` is modeled in source but inert in runtime graph scoring because it is excluded in `.opencode/skill/scripts/skill_graph_compiler.py:253-264`.
-5. Confidence and uncertainty are not epistemically sound once graph evidence is mixed with direct evidence in `.opencode/skill/scripts/skill_advisor.py:1244-1318`, `.opencode/skill/scripts/skill_advisor.py:1524-1580`.
+4. `prerequisite_for` is modeled in source but inert in runtime graph scoring because it is excluded in `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py:253-264`.
+5. Confidence and uncertainty are not epistemically sound once graph evidence is mixed with direct evidence in `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1244-1318`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1524-1580`.
 
 ### Nice-to-Haves
 

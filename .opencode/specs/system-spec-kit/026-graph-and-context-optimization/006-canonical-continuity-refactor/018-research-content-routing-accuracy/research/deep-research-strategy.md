@@ -105,21 +105,24 @@ Content routing classification accuracy and remediation design
 - Reading router and handler tests side by side exposed the gap between contract coverage and save-path coverage. (iteration 18)
 - Mapping each phase spec directly onto the exact lines and fixtures kept the guidance concrete. (iteration 19)
 - The second wave stayed tightly scoped to fix design, so every iteration produced directly actionable implementation guidance. (iteration 20)
-- Reading the live floors and the delivery prototypes side by side was enough to turn cue asymmetry into exact regex candidates and a minimal guard condition. (iteration 21)
-- Separating hard drop heuristics from softer prototype overlap made the handover problem materially more precise. (iteration 22)
-- Treating the fetch helper and the router dependency interface as templates made the Tier3 wiring effort easy to size without touching runtime code. (iteration 23)
-- A direct category-floor audit answered the zero-coverage question quickly and kept the final testing guidance honest. (iteration 24)
-- The convergence wave stayed focused on exact patch shapes, so the final synthesis tightened implementation guidance instead of reopening settled questions. (iteration 25)
-- Splitting the replay into an exact preserved subset and a best-effort compact reconstruction kept the post-implementation benchmark claims honest. (iteration 26)
-- Treating compact-fragment reconstruction as diagnostic rather than baseline-equivalent prevented false precision in the before-after story. (iteration 27)
-- Reading the live handler seam and the router fallback logic together made the always-on Tier3 contract obvious without touching code. (iteration 28)
-- Narrowing verification to the routing-only tests answered the Tier3 question without dragging in unrelated handler failures. (iteration 29)
-- The canonical docs are concise enough that a line-by-line parity pass against the live code surfaces drift quickly. (iteration 30)
-- Comparing wording claims to the exact env-guard in code separated a real availability nuance from functional documentation drift. (iteration 31)
-- A simple centroid-distance pass quantified that the refreshed prototype library is improved but still not globally well separated. (iteration 32)
-- Pairing nearest-neighbor prototype scans with the new boundary tests showed that behavior improved faster than the corpus geometry itself. (iteration 33)
-- Synthesizing benchmark, runtime, docs, and prototype signals together made the residual scope much smaller and more honest. (iteration 34)
-- Holding the follow-on recommendation to the smallest believable next moves avoided reopening the already-fixed seams. (iteration 35)
+- Reading the live floors and the delivery prototypes side by side was enough to turn a vague "cue asymmetry" diagnosis into exact regex candidates. (iteration 21)
+- Matching individual handover prototype sentences against the live drop regex separated the hard heuristic problem from the softer Tier 2 overlap. (iteration 22)
+- Treating the fetch helper and the router dependency interface as templates made the missing wiring work easy to size without touching production code. (iteration 23)
+- A direct coverage audit answered the zero-coverage question quickly and prevented another round of vague "tests are thin" language. (iteration 24)
+- The final pass stayed focused on exact change surfaces, so it converged quickly instead of reopening settled debates. (iteration 25)
+- Replaying the preserved subset kept the post-implementation comparison honest without mixing in the Tier 3 save-path change. (iteration 26)
+- Explicitly splitting preserved versus reconstructed evidence kept the benchmark claims defensible. (iteration 27)
+- Reading the handler seam and the router fallback logic together made the new runtime contract obvious without any code edits. (iteration 28)
+- Narrowing the test run to the routing assertions answered the packet question without repo-wide test noise. (iteration 29)
+- The docs are concise enough that a line-by-line read against the code surfaces parity quickly. (iteration 30)
+- The workflow reference preserves the same conceptual chunks as the operator docs, so parity checking was fast once the code trace was already in hand. (iteration 31)
+- A simple lexical-vector pass was enough to quantify whether the prototype library really spread the categories apart. (iteration 32)
+- Nearest-neighbor inspection exposed the real prototype hotspots more clearly than centroid averages alone. (iteration 33)
+- Pulling the benchmark, runtime, docs, and prototype signals together made the remaining scope much smaller and more honest. (iteration 34)
+- The post-implementation wave answered the right follow-up questions instead of simply restating the pre-implementation research. (iteration 35)
+- Replaying the exact preserved subset gave a direct apples-to-apples answer for the user’s post-fix verification ask. (iteration 36)
+- The distilled identity probe was enough to prove the fix shape without widening into the noisy full handler suite. (iteration 37)
+- A narrow final sweep answered the user’s “look for remaining edge cases” request without reopening settled packet history. (iteration 38)
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
@@ -144,21 +147,24 @@ Content routing classification accuracy and remediation design
 - Category happy-path tests created a false sense of completeness because the fragile boundary cases live outside those samples. (iteration 18)
 - The original phase specs were accurate at the theme level but too compressed to drive implementation without this extra pass. (iteration 19)
 - The research packet did not start with explicit remediation questions, which forced the second wave to retrofit them after the first synthesis. (iteration 20)
-- Prototype overlap counting alone still understated the delivery bug until the live progress floor was modeled explicitly. (iteration 21)
-- Looking only at the hard drop regex would have missed the resume-command overlap that lives in the prototype corpus. (iteration 22)
-- Sizing phase `003` from the constructor callsite alone still underestimates the missing cache and env-contract work. (iteration 23)
-- Category presence in tests is not the same thing as meaningful boundary coverage. (iteration 24)
-- The earlier synthesis was still slightly too high-level for direct patch authoring, which is why this explicit convergence pass was needed. (iteration 25)
-- The earlier compact-variant generator was not preserved in packet artifacts, so a full 132-sample replay cannot be made strictly apples-to-apples after implementation. (iteration 26)
-- Reconstructed compact fragments are too sensitive to generation choices to serve as the sole post-implementation headline metric. (iteration 27)
-- Reading only the router would have hidden the now-unconditional handler entrypoint for Tier3. (iteration 28)
-- The full handler suite is noisy for this question because unrelated rollback and concurrency failures obscure the routing verdict. (iteration 29)
-- Save-doc parity still leaves low-level threshold details in code, so documentation can be accurate without being exhaustive. (iteration 30)
-- Environment-dependent wording is easy to overread as a hard runtime guarantee when the code intentionally fail-opens instead. (iteration 31)
-- Balanced prototype counts still overstate how cleanly separated the narrative categories really are. (iteration 32)
-- Prototype distance alone still cannot tell whether the live router now compensates correctly for the remaining overlap. (iteration 33)
-- It is tempting to treat any remaining error as proof that the old seams are still broken, even after the residual categories have clearly shifted. (iteration 34)
-- The missing exact compact-generator replay leaves one piece of the final story less tidy than the rest of the verification wave. (iteration 35)
+- Counting prototype overlap without tracing the floor logic still understated why progress wins in practice. (iteration 21)
+- Looking only at the heuristic tables would have missed the resume-command overlap living in the prototype corpus. (iteration 22)
+- Looking only at `memory-save.ts:1008` still underestimates the missing cache and env-contract work. (iteration 23)
+- Category-name counting alone would have overstated confidence because the missing cases are boundary-shaped, not absence-shaped. (iteration 24)
+- The earlier synthesis was still a little too high-level for direct patch authoring, which is why this convergence pass was worth doing. (iteration 25)
+- The earlier compact-variant generator was not preserved as an artifact, so only the full, first-sentence, and test-style slices are strictly reproducible. (iteration 26)
+- The compact-only replay is too sensitive to reconstruction choices to serve as a hard before-after metric. (iteration 27)
+- Looking at the router alone would have missed the now-unconditional handler entrypoint. (iteration 28)
+- The broader handler suite mixes routing work with separate atomic-save rollback and concurrency scenarios. (iteration 29)
+- The save docs do not preserve every low-level threshold detail, so code still has to be the authority for exact acceptance behavior. (iteration 30)
+- Environmental wording is easy to overread as a hard runtime guarantee when the code intentionally fail-opens instead. (iteration 31)
+- Counts and labels still hide how much shared narrative vocabulary the categories retain. (iteration 32)
+- Prototype distance by itself cannot tell whether the live router now compensates correctly for the remaining overlap. (iteration 33)
+- It is tempting to treat any remaining error as proof that the original seams still need work, but the residual categories have shifted. (iteration 34)
+- The original compact-generator gap prevents one neat single-number story across all 132 prior samples. (iteration 35)
+- Looking only at raw category equality would have hidden the fact that `DR-05-s1` still fails as a refusal-floor miss. (iteration 36)
+- Full end-to-end handler execution would have added unrelated database and suite noise for a question that was really about routed identity. (iteration 37)
+- Historical review artifacts still contain now-stale wording, so broad repository sweeps are noisy unless scoped to active operator-facing surfaces. (iteration 38)
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
@@ -172,6 +178,11 @@ Content routing classification accuracy and remediation design
 - What was tried: Assuming `routeAs` makes any classified chunk merge-safe regardless of target and merge-mode validity.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Assuming `routeAs` makes any classified chunk merge-safe regardless of target and merge-mode validity.
+
+### Assuming a reusable production `RouterCache` already exists and phase `003` only needs to pass it through. -- BLOCKED (iteration 23, 1 attempts)
+- What was tried: Assuming a reusable production `RouterCache` already exists and phase `003` only needs to pass it through.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Assuming a reusable production `RouterCache` already exists and phase `003` only needs to pass it through.
 
 ### Assuming balanced prototype counts are enough to prevent confusion in Tier2. -- BLOCKED (iteration 12, 1 attempts)
 - What was tried: Assuming balanced prototype counts are enough to prevent confusion in Tier2.
@@ -193,6 +204,11 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Assuming metadata-only and task updates share the same failure profile because both report `update-in-place`.
 
+### Assuming that always-on Tier 3 makes every canonical save network-dependent. -- BLOCKED (iteration 28, 1 attempts)
+- What was tried: Assuming that always-on Tier 3 makes every canonical save network-dependent.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Assuming that always-on Tier 3 makes every canonical save network-dependent.
+
 ### Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies. -- BLOCKED (iteration 16, 1 attempts)
 - What was tried: Assuming the current 2-second timeout is automatically safe for arbitrarily long routed save bodies.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -213,6 +229,21 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Blaming delivery and handover failures on Tier2. In the key examples, Tier2 preferred the expected class but never got a chance because Tier1 accepted early or `drop` cues dominated.
 
+### Continuing the research loop again before deciding whether short-fragment robustness is worth another targeted code pass. -- BLOCKED (iteration 35, 1 attempts)
+- What was tried: Continuing the research loop again before deciding whether short-fragment robustness is worth another targeted code pass.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Continuing the research loop again before deciding whether short-fragment robustness is worth another targeted code pass.
+
+### Continuing the research loop instead of handing the packet back to implementation. -- BLOCKED (iteration 25, 1 attempts)
+- What was tried: Continuing the research loop instead of handing the packet back to implementation.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Continuing the research loop instead of handing the packet back to implementation.
+
+### Counting `DR-05-s1` as a clean pass because the category stays `drop` even though it still refuses below the floor. -- BLOCKED (iteration 36, 1 attempts)
+- What was tried: Counting `DR-05-s1` as a clean pass because the category stays `drop` even though it still refuses below the floor.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Counting `DR-05-s1` as a clean pass because the category stays `drop` even though it still refuses below the floor.
+
 ### Deferring the regression tests until after the cue/prototype fixes land. -- BLOCKED (iteration 19, 1 attempts)
 - What was tried: Deferring the regression tests until after the cue/prototype fixes land.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -222,6 +253,16 @@ Content routing classification accuracy and remediation design
 - What was tried: Expecting `negativeHints` to already act as a live penalty signal.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Expecting `negativeHints` to already act as a live penalty signal.
+
+### Expecting another research pass to change the phase order or revive threshold tuning as the primary fix. -- BLOCKED (iteration 25, 1 attempts)
+- What was tried: Expecting another research pass to change the phase order or revive threshold tuning as the primary fix.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Expecting another research pass to change the phase order or revive threshold tuning as the primary fix.
+
+### Expecting prototype refreshes alone to remove the need for heuristic boundary rules in the narrative categories. -- BLOCKED (iteration 33, 1 attempts)
+- What was tried: Expecting prototype refreshes alone to remove the need for heuristic boundary rules in the narrative categories.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Expecting prototype refreshes alone to remove the need for heuristic boundary rules in the narrative categories.
 
 ### Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Historical save-log mining. The packet scope and current memory model explicitly require synthetic payloads instead.
@@ -238,6 +279,31 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Looking for a hidden `classifyWithTier3` injection elsewhere in the non-test server code. The only production callsite creates the router without one.
 
+### Looking for a missing category or stale Tier 3 flag claim in the primary save docs after the doc-alignment phase was already shipped. -- BLOCKED (iteration 30, 1 attempts)
+- What was tried: Looking for a missing category or stale Tier 3 flag claim in the primary save docs after the doc-alignment phase was already shipped.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a missing category or stale Tier 3 flag claim in the primary save docs after the doc-alignment phase was already shipped.
+
+### Looking for a new same-path identity collision after the fix; the helper now resolves continuity identity onto the canonical host doc and anchor explicitly. -- BLOCKED (iteration 37, 1 attempts)
+- What was tried: Looking for a new same-path identity collision after the fix; the helper now resolves continuity identity onto the canonical host doc and anchor explicitly.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a new same-path identity collision after the fix; the helper now resolves continuity identity onto the canonical host doc and anchor explicitly.
+
+### Looking for a routing category that is completely absent from `content-router.vitest.ts`. -- BLOCKED (iteration 24, 1 attempts)
+- What was tried: Looking for a routing category that is completely absent from `content-router.vitest.ts`.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a routing category that is completely absent from `content-router.vitest.ts`.
+
+### Looking for a second hidden doc drift after the save docs already agree on categories, tiers, boundaries, and context rules. -- BLOCKED (iteration 31, 1 attempts)
+- What was tried: Looking for a second hidden doc drift after the save docs already agree on categories, tiers, boundaries, and context rules.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for a second hidden doc drift after the save docs already agree on categories, tiers, boundaries, and context rules.
+
+### Looking for the old delivery and handover confusion pairs in the preserved replay after the implemented cue and prototype changes. -- BLOCKED (iteration 26, 1 attempts)
+- What was tried: Looking for the old delivery and handover confusion pairs in the preserved replay after the implemented cue and prototype changes.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Looking for the old delivery and handover confusion pairs in the preserved replay after the implemented cue and prototype changes.
+
 ### Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`. -- BLOCKED (iteration 11, 1 attempts)
 - What was tried: Looking only at `RULE_CUES` without tracing the extra progress floor in `scoreCategories()`.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -253,6 +319,11 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Making accuracy claims from prototype count balance alone.
 
+### Opening a new remediation phase for the `metadata_only` fix itself. -- BLOCKED (iteration 38, 1 attempts)
+- What was tried: Opening a new remediation phase for the `metadata_only` fix itself.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Opening a new remediation phase for the `metadata_only` fix itself.
+
 ### Rebuilding the entire prototype library as the first remediation step. -- BLOCKED (iteration 17, 1 attempts)
 - What was tried: Rebuilding the entire prototype library as the first remediation step.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -262,6 +333,16 @@ Content routing classification accuracy and remediation design
 - What was tried: Recommending a blanket threshold increase as an unqualified improvement.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Recommending a blanket threshold increase as an unqualified improvement.
+
+### Removing all command language from handover guidance. Real handover notes legitimately contain commands; the fix is to demote the soft ones, not ban them. -- BLOCKED (iteration 22, 1 attempts)
+- What was tried: Removing all command language from handover guidance. Real handover notes legitimately contain commands; the fix is to demote the soft ones, not ban them.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Removing all command language from handover guidance. Real handover notes legitimately contain commands; the fix is to demote the soft ones, not ban them.
+
+### Reopening the delivery/progress or handover/drop remediation plan as the primary next step. -- BLOCKED (iteration 34, 1 attempts)
+- What was tried: Reopening the delivery/progress or handover/drop remediation plan as the primary next step.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Reopening the delivery/progress or handover/drop remediation plan as the primary next step.
 
 ### Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land. -- BLOCKED (iteration 20, 1 attempts)
 - What was tried: Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land.
@@ -283,15 +364,40 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Shipping a threshold-only fix as the sole remediation.
 
+### Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional. -- BLOCKED (iteration 21, 1 attempts)
+- What was tried: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
+
 ### Treating `append-section` and `update-in-place` as equally tolerant operations. -- BLOCKED (iteration 8, 1 attempts)
 - What was tried: Treating `append-section` and `update-in-place` as equally tolerant operations.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating `append-section` and `update-in-place` as equally tolerant operations.
 
+### Treating `same-pass` as sufficient by itself. The overlap spans sequencing, pending-until-verification language, and synchronized-surface wording. -- BLOCKED (iteration 21, 1 attempts)
+- What was tried: Treating `same-pass` as sufficient by itself. The overlap spans sequencing, pending-until-verification language, and synchronized-surface wording.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating `same-pass` as sufficient by itself. The overlap spans sequencing, pending-until-verification language, and synchronized-surface wording.
+
+### Treating a missing exact compact-generator replay as a blocker to drawing a useful post-implementation verdict. -- BLOCKED (iteration 35, 1 attempts)
+- What was tried: Treating a missing exact compact-generator replay as a blocker to drawing a useful post-implementation verdict.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating a missing exact compact-generator replay as a blocker to drawing a useful post-implementation verdict.
+
 ### Treating all categories as equally safe once the router selects a target doc. -- BLOCKED (iteration 7, 1 attempts)
 - What was tried: Treating all categories as equally safe once the router selects a target doc.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating all categories as equally safe once the router selects a target doc.
+
+### Treating category presence as equivalent to meaningful regression coverage. -- BLOCKED (iteration 24, 1 attempts)
+- What was tried: Treating category presence as equivalent to meaningful regression coverage.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating category presence as equivalent to meaningful regression coverage.
+
+### Treating centroid distance alone as a proxy for live routed accuracy. -- BLOCKED (iteration 32, 1 attempts)
+- What was tried: Treating centroid distance alone as a proxy for live routed accuracy.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating centroid distance alone as a proxy for live routed accuracy.
 
 ### Treating command-first handover prose as harmless prototype decoration. -- BLOCKED (iteration 14, 1 attempts)
 - What was tried: Treating command-first handover prose as harmless prototype decoration.
@@ -303,10 +409,25 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating delivery confusion as a prototype-only issue. The heuristic floor in `scoreCategories()` is part of the bug.
 
+### Treating documentation parity as the missing ingredient in the residual accuracy story. -- BLOCKED (iteration 34, 1 attempts)
+- What was tried: Treating documentation parity as the missing ingredient in the residual accuracy story.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating documentation parity as the missing ingredient in the residual accuracy story.
+
 ### Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate. -- BLOCKED (iteration 13, 1 attempts)
 - What was tried: Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating every command mention inside a handover chunk as proof that the content is generic operator boilerplate.
+
+### Treating F7 as a hidden fix for the `research_finding` versus `metadata_only` classification seam. -- BLOCKED (iteration 37, 1 attempts)
+- What was tried: Treating F7 as a hidden fix for the `research_finding` versus `metadata_only` classification seam.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating F7 as a hidden fix for the `research_finding` versus `metadata_only` classification seam.
+
+### Treating historical packet-doc flag mentions as evidence of an active documentation regression in the shipped save surfaces. -- BLOCKED (iteration 38, 1 attempts)
+- What was tried: Treating historical packet-doc flag mentions as evidence of an active documentation regression in the shipped save surfaces.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating historical packet-doc flag mentions as evidence of an active documentation regression in the shipped save surfaces.
 
 ### Treating phase `003` as a one-line constructor tweak in `memory-save.ts`. -- BLOCKED (iteration 15, 1 attempts)
 - What was tried: Treating phase `003` as a one-line constructor tweak in `memory-save.ts`.
@@ -318,6 +439,21 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating phase-anchor inference as the main handover failure driver.
 
+### Treating resume-command language as the same thing as transcript or wrapper boilerplate. -- BLOCKED (iteration 22, 1 attempts)
+- What was tried: Treating resume-command language as the same thing as transcript or wrapper boilerplate.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating resume-command language as the same thing as transcript or wrapper boilerplate.
+
+### Treating the `metadata_only` target fix as a silent routing-accuracy change. -- BLOCKED (iteration 36, 1 attempts)
+- What was tried: Treating the `metadata_only` target fix as a silent routing-accuracy change.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the `metadata_only` target fix as a silent routing-accuracy change.
+
+### Treating the absence of the original compact-variant generator as a reason to skip post-implementation benchmarking. -- BLOCKED (iteration 26, 1 attempts)
+- What was tried: Treating the absence of the original compact-variant generator as a reason to skip post-implementation benchmarking.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the absence of the original compact-variant generator as a reason to skip post-implementation benchmarking.
+
 ### Treating the current test suite as sufficient because every category already has one positive-path assertion. -- BLOCKED (iteration 18, 1 attempts)
 - What was tried: Treating the current test suite as sufficient because every category already has one positive-path assertion.
 - Why blocked: Repeated iteration evidence ruled this direction out.
@@ -328,10 +464,45 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating the currently unwired Tier3 contract as the main source of routing inaccuracy.
 
+### Treating the endpoint-availability wording nuance as a substantive documentation mismatch. -- BLOCKED (iteration 31, 1 attempts)
+- What was tried: Treating the endpoint-availability wording nuance as a substantive documentation mismatch.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the endpoint-availability wording nuance as a substantive documentation mismatch.
+
+### Treating the env contract choice as free. Reuse-versus-new-env naming is a real scope decision inside the wiring phase. -- BLOCKED (iteration 23, 1 attempts)
+- What was tried: Treating the env contract choice as free. Reuse-versus-new-env naming is a real scope decision inside the wiring phase.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the env contract choice as free. Reuse-versus-new-env naming is a real scope decision inside the wiring phase.
+
+### Treating the handler change as proof that Tier 3 necessarily decides every routed save. -- BLOCKED (iteration 28, 1 attempts)
+- What was tried: Treating the handler change as proof that Tier 3 necessarily decides every routed save.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the handler change as proof that Tier 3 necessarily decides every routed save.
+
 ### Treating the implementation phases as independent. The code and test changes need to move together. -- BLOCKED (iteration 19, 1 attempts)
 - What was tried: Treating the implementation phases as independent. The code and test changes need to move together.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating the implementation phases as independent. The code and test changes need to move together.
+
+### Treating the packet as still documentation-drifted just because earlier research was written before implementation landed. -- BLOCKED (iteration 30, 1 attempts)
+- What was tried: Treating the packet as still documentation-drifted just because earlier research was written before implementation landed.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the packet as still documentation-drifted just because earlier research was written before implementation landed.
+
+### Treating the reconstructed compact replay as a strict substitute for the earlier 132-sample benchmark. -- BLOCKED (iteration 27, 1 attempts)
+- What was tried: Treating the reconstructed compact replay as a strict substitute for the earlier 132-sample benchmark.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the reconstructed compact replay as a strict substitute for the earlier 132-sample benchmark.
+
+### Treating the refreshed hotspot prototypes as still behaviorally broken just because their embeddings remain close. -- BLOCKED (iteration 33, 1 attempts)
+- What was tried: Treating the refreshed hotspot prototypes as still behaviorally broken just because their embeddings remain close.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the refreshed hotspot prototypes as still behaviorally broken just because their embeddings remain close.
+
+### Treating the routing-only Tier 3 tests as redundant now that the handler wiring exists in code. -- BLOCKED (iteration 29, 1 attempts)
+- What was tried: Treating the routing-only Tier 3 tests as redundant now that the handler wiring exists in code.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Treating the routing-only Tier 3 tests as redundant now that the handler wiring exists in code.
 
 ### Treating the spec's "7 rules" text as authoritative. The code clearly ships eight hard rules today. -- BLOCKED (iteration 1, 1 attempts)
 - What was tried: Treating the spec's "7 rules" text as authoritative. The code clearly ships eight hard rules today.
@@ -358,35 +529,25 @@ Content routing classification accuracy and remediation design
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself.
 
+### Trying to infer the exact earlier compact-variant generator from the current packet state alone. -- BLOCKED (iteration 27, 1 attempts)
+- What was tried: Trying to infer the exact earlier compact-variant generator from the current packet state alone.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Trying to infer the exact earlier compact-variant generator from the current packet state alone.
+
+### Using balanced prototype counts as proof that the refreshed corpus is now semantically well separated. -- BLOCKED (iteration 32, 1 attempts)
+- What was tried: Using balanced prototype counts as proof that the refreshed corpus is now semantically well separated.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Using balanced prototype counts as proof that the refreshed corpus is now semantically well separated.
+
 ### Using prototype count balance as a proxy for semantic separation. -- BLOCKED (iteration 17, 1 attempts)
 - What was tried: Using prototype count balance as a proxy for semantic separation.
 - Why blocked: Repeated iteration evidence ruled this direction out.
 - Do NOT retry: Using prototype count balance as a proxy for semantic separation.
 
-### Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring. -- BLOCKED (iteration 23, 1 attempts)
-- What was tried: Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring.
-- Why blocked: Repo inspection found the interface and test doubles, but no non-test implementation.
-- Do NOT retry: Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring.
-
-### Looking for a routing category with zero presence in `content-router.vitest.ts`. -- BLOCKED (iteration 24, 1 attempts)
-- What was tried: Looking for a routing category with zero presence in `content-router.vitest.ts`.
-- Why blocked: Every routing category already has at least one positive-path assertion; the real gap is adversarial boundary coverage.
-- Do NOT retry: Looking for a routing category with zero presence in `content-router.vitest.ts`.
-
-### Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional. -- BLOCKED (iteration 21, 1 attempts)
-- What was tried: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
-- Why blocked: The dominant collision comes from sequencing and verification-order language plus the unconditional progress floor, not from one missing rollout noun.
-- Do NOT retry: Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional.
-
-### Treating category presence as equivalent to meaningful regression coverage. -- BLOCKED (iteration 24, 1 attempts)
-- What was tried: Treating category presence as equivalent to meaningful regression coverage.
-- Why blocked: The remaining failures are boundary-shaped and live outside the current happy-path assertions.
-- Do NOT retry: Treating category presence as equivalent to meaningful regression coverage.
-
-### Treating resume-command overlap as a hard-drop problem only. -- BLOCKED (iteration 22, 1 attempts)
-- What was tried: Treating resume-command overlap as a hard-drop problem only.
-- Why blocked: Part of the overlap lives in Tier 2 prototypes, not just the Tier 1 drop regex.
-- Do NOT retry: Treating resume-command overlap as a hard-drop problem only.
+### Using the full handler suite as the primary signal for this question when unrelated atomic-save failure-injection tests still fail elsewhere in the file. -- BLOCKED (iteration 29, 1 attempts)
+- What was tried: Using the full handler suite as the primary signal for this question when unrelated atomic-save failure-injection tests still fail elsewhere in the file.
+- Why blocked: Repeated iteration evidence ruled this direction out.
+- Do NOT retry: Using the full handler suite as the primary signal for this question when unrelated atomic-save failure-injection tests still fail elsewhere in the file.
 
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:ruled-out-directions -->
@@ -432,26 +593,46 @@ Content routing classification accuracy and remediation design
 - Reopening the threshold debate as the primary path forward before the cue, prototype, and test fixes land. (iteration 20)
 - Treating Tier3 wiring as the fix for delivery/progress and handover/drop by itself. (iteration 20)
 - Solving delivery confusion by adding one more rollout noun while leaving the current progress floor unconditional. (iteration 21)
-- Treating resume-command overlap as a hard-drop problem only. (iteration 22)
-- Assuming a reusable production `RouterCache` already exists and phase `003` only needs constructor wiring. (iteration 23)
-- Looking for a routing category with zero presence in `content-router.vitest.ts`. (iteration 24)
+- Treating `same-pass` as sufficient by itself. The overlap spans sequencing, pending-until-verification language, and synchronized-surface wording. (iteration 21)
+- Removing all command language from handover guidance. Real handover notes legitimately contain commands; the fix is to demote the soft ones, not ban them. (iteration 22)
+- Treating resume-command language as the same thing as transcript or wrapper boilerplate. (iteration 22)
+- Assuming a reusable production `RouterCache` already exists and phase `003` only needs to pass it through. (iteration 23)
+- Treating the env contract choice as free. Reuse-versus-new-env naming is a real scope decision inside the wiring phase. (iteration 23)
+- Looking for a routing category that is completely absent from `content-router.vitest.ts`. (iteration 24)
 - Treating category presence as equivalent to meaningful regression coverage. (iteration 24)
 - Continuing the research loop instead of handing the packet back to implementation. (iteration 25)
+- Expecting another research pass to change the phase order or revive threshold tuning as the primary fix. (iteration 25)
+- Looking for the old delivery and handover confusion pairs in the preserved replay after the implemented cue and prototype changes. (iteration 26)
 - Treating the absence of the original compact-variant generator as a reason to skip post-implementation benchmarking. (iteration 26)
 - Treating the reconstructed compact replay as a strict substitute for the earlier 132-sample benchmark. (iteration 27)
-- Assuming that always-on Tier3 makes every canonical save network-dependent. (iteration 28)
-- Treating the routing-only Tier3 tests as redundant now that the handler wiring exists in code. (iteration 29)
-- Treating the packet as still documentation-drifted just because the earlier research was written before implementation landed. (iteration 30)
+- Trying to infer the exact earlier compact-variant generator from the current packet state alone. (iteration 27)
+- Assuming that always-on Tier 3 makes every canonical save network-dependent. (iteration 28)
+- Treating the handler change as proof that Tier 3 necessarily decides every routed save. (iteration 28)
+- Treating the routing-only Tier 3 tests as redundant now that the handler wiring exists in code. (iteration 29)
+- Using the full handler suite as the primary signal for this question when unrelated atomic-save failure-injection tests still fail elsewhere in the file. (iteration 29)
+- Looking for a missing category or stale Tier 3 flag claim in the primary save docs after the doc-alignment phase was already shipped. (iteration 30)
+- Treating the packet as still documentation-drifted just because earlier research was written before implementation landed. (iteration 30)
+- Looking for a second hidden doc drift after the save docs already agree on categories, tiers, boundaries, and context rules. (iteration 31)
 - Treating the endpoint-availability wording nuance as a substantive documentation mismatch. (iteration 31)
+- Treating centroid distance alone as a proxy for live routed accuracy. (iteration 32)
 - Using balanced prototype counts as proof that the refreshed corpus is now semantically well separated. (iteration 32)
+- Expecting prototype refreshes alone to remove the need for heuristic boundary rules in the narrative categories. (iteration 33)
 - Treating the refreshed hotspot prototypes as still behaviorally broken just because their embeddings remain close. (iteration 33)
-- Reopening the delivery/progress or handover/drop remediation plan as the primary next step after the implemented fixes removed those seams from the preserved replay. (iteration 34)
+- Reopening the delivery/progress or handover/drop remediation plan as the primary next step. (iteration 34)
+- Treating documentation parity as the missing ingredient in the residual accuracy story. (iteration 34)
 - Continuing the research loop again before deciding whether short-fragment robustness is worth another targeted code pass. (iteration 35)
+- Treating a missing exact compact-generator replay as a blocker to drawing a useful post-implementation verdict. (iteration 35)
+- Counting `DR-05-s1` as a clean pass because the category stays `drop` even though it still refuses below the floor. (iteration 36)
+- Treating the `metadata_only` target fix as a silent routing-accuracy change. (iteration 36)
+- Looking for a new same-path identity collision after the fix; the helper now resolves continuity identity onto the canonical host doc and anchor explicitly. (iteration 37)
+- Treating F7 as a hidden fix for the `research_finding` versus `metadata_only` classification seam. (iteration 37)
+- Opening a new remediation phase for the `metadata_only` fix itself. (iteration 38)
+- Treating historical packet-doc flag mentions as evidence of an active documentation regression in the shipped save surfaces. (iteration 38)
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
 ## 11. NEXT FOCUS
-Research is reconverged after the user-authorized extension through iteration 35. The core packet question is closed: the delivered phases fixed the original delivery/progress and handover/drop seams, the always-on Tier3 path fail-opens correctly, and the docs are functionally aligned. The only meaningful follow-on work would be a small short-fragment refinement pass for progress-versus-research, research-versus-metadata, and terse drop telemetry cues.
+None. Stop early and hand the packet back as converged unless the team explicitly chooses the optional short-fragment follow-on.
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->

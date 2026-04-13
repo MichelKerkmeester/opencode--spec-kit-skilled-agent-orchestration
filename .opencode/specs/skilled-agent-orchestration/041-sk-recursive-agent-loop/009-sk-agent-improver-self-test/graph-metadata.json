@@ -36,7 +36,7 @@
       ".opencode/command/improve/assets/improve_agent-improver_auto.yaml",
       ".opencode/command/improve/assets/improve_agent-improver_confirm.yaml",
       ".opencode/skill/sk-improve-agent/SKILL.md",
-      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "sk-improve-agent/SKILL.md",
       "generate-profile.cjs --agent=.opencode/agent/agent-improver.md",
       "implementation-summary.md",
@@ -86,7 +86,7 @@
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {

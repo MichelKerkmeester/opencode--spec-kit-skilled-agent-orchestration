@@ -19,7 +19,7 @@ completedAt: 2026-04-12T18:09:46Z
 I’m mapping the security review surface first so I can inspect the exact hardening paths and only report issues with line-level evidence.
 
 ● Run skill advisor for review task (shell)
-  │ python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 44 security validation
+  │ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 44 security validation
   │ for 042 Deep Research & Review Runtime Improvement Bundle. Verify optimizer security hardening
   │ in promote.cjs, search.cjs, replay-corpus.cjs and related manifests/workflows for path
   │ traversal/root escape issues." --threshold 0.8

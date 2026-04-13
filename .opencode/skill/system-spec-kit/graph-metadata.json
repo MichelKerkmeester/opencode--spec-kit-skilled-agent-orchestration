@@ -1,19 +1,170 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "system-spec-kit",
   "family": "system",
   "category": "system",
   "edges": {
     "depends_on": [],
     "enhances": [
-      { "target": "sk-doc", "weight": 0.4, "context": "spec folder documentation" },
-      { "target": "sk-git", "weight": 0.3, "context": "git workflow integration" },
-      { "target": "sk-code-opencode", "weight": 0.3, "context": "opencode standards" }
+      {
+        "target": "sk-doc",
+        "weight": 0.4,
+        "context": "spec folder documentation"
+      },
+      {
+        "target": "sk-git",
+        "weight": 0.3,
+        "context": "git workflow integration"
+      },
+      {
+        "target": "sk-code-opencode",
+        "weight": 0.3,
+        "context": "opencode standards"
+      }
     ],
     "siblings": [],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["spec", "memory", "context", "continuity", "validation", "session"],
-  "intent_signals": ["spec folder", "save context", "save memory", "spec kit", "memory search"]
+  "domains": [
+    "spec",
+    "memory",
+    "context",
+    "continuity",
+    "validation",
+    "session"
+  ],
+  "intent_signals": [
+    "spec folder",
+    "save context",
+    "save memory",
+    "spec kit",
+    "memory search"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "spec folder",
+      "save context",
+      "save memory",
+      "spec kit",
+      "memory search",
+      "spec folder workflow",
+      "resume prior session context",
+      "save memory with spec kit",
+      "validate spec packet",
+      "system-spec-kit",
+      "system spec kit",
+      "spec-kit"
+    ],
+    "key_topics": [
+      "spec",
+      "memory",
+      "context",
+      "continuity",
+      "validation",
+      "session",
+      "spec folders",
+      "context preservation",
+      "hybrid memory search",
+      "validation gates"
+    ],
+    "key_files": [
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+      ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+      ".opencode/skill/system-spec-kit/config/config.jsonc",
+      ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      ".opencode/agent/speckit.md",
+      ".claude/agents/speckit.md"
+    ],
+    "entities": [
+      {
+        "name": "system-spec-kit",
+        "kind": "skill",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE",
+        "kind": "reference",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference",
+        "kind": "reference",
+        "path": ".opencode/skill/system-spec-kit/references/workflows/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_system",
+        "kind": "reference",
+        "path": ".opencode/skill/system-spec-kit/references/memory/memory_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "config",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/config/config.jsonc",
+        "source": "derived"
+      },
+      {
+        "name": "context-server",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/context-server.ts",
+        "source": "derived"
+      },
+      {
+        "name": "create",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validate",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "@speckit",
+        "kind": "agent",
+        "path": ".opencode/agent/speckit.md",
+        "source": "derived"
+      },
+      {
+        "name": "@speckit (claude runtime)",
+        "kind": "agent",
+        "path": ".claude/agents/speckit.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Unified documentation and context preservation: spec folder workflow (levels 1-3+), CORE + ADDENDUM template architecture (v2.2), validation, and Spec Kit Memory for context preservation. Mandatory for all file modifications. It matters because it is the backbone for spec-folder governance, validation, memory retrieval, and continuity across AI-assisted development sessions.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "ARCHITECTURE.md",
+      "references/workflows/quick_reference.md",
+      "references/memory/memory_system.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

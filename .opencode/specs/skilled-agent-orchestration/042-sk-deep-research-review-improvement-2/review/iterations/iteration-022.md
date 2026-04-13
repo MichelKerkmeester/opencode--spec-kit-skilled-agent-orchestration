@@ -60,7 +60,7 @@ exec
 /bin/zsh -lc "rg -n \"namespace isolation|coverage-graph-query|coverage-graph-signals|promote\\.cjs|search\\.cjs|replay-corpus\\.cjs|rvw-2026-04-12T11-30-00Z|security\" /Users/michelkerkmeester/.codex/memories/MEMORY.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 392ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-hhtKW75A' (errno=Operation not permitted)
 [

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "sk-deep-research",
   "family": "sk-deep",
   "category": "autonomous-loop",
@@ -10,6 +10,120 @@
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["research", "investigation", "analysis", "convergence"],
-  "intent_signals": ["deep research", "research loop", "investigate"]
+  "domains": [
+    "research",
+    "investigation",
+    "analysis",
+    "convergence"
+  ],
+  "intent_signals": [
+    "deep research",
+    "research loop",
+    "investigate"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "deep research",
+      "research loop",
+      "investigate",
+      "deep research loop",
+      "iterative investigation workflow",
+      "research convergence detection",
+      "externalized research state",
+      "sk-deep-research",
+      "sk deep research",
+      "autoresearch",
+      "deep-research",
+      "iterative-research"
+    ],
+    "key_topics": [
+      "research",
+      "investigation",
+      "analysis",
+      "convergence",
+      "iterative research",
+      "externalized state",
+      "convergence detection",
+      "jsonl state",
+      "fresh context",
+      "autoresearch"
+    ],
+    "key_files": [
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/README.md",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/convergence.md",
+      ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+      ".claude/agents/deep-research.md",
+      ".opencode/agent/deep-research.md"
+    ],
+    "entities": [
+      {
+        "name": "sk-deep-research",
+        "kind": "skill",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-deep-research/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_strategy",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state",
+        "kind": "script",
+        "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "deep_research_config",
+        "kind": "config",
+        "path": ".opencode/skill/sk-deep-research/assets/deep_research_config.json",
+        "source": "derived"
+      },
+      {
+        "name": "@deep-research (claude runtime)",
+        "kind": "agent",
+        "path": ".claude/agents/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "@deep-research",
+        "kind": "agent",
+        "path": ".opencode/agent/deep-research.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Autonomous deep research loop protocol with iterative investigation, externalized state, convergence detection, and fresh context per iteration. It matters because it turns long-form investigation into a disciplined iterative loop with explicit state, convergence checks, and resumable outputs.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/loop_protocol.md",
+      "references/convergence.md",
+      "references/state_format.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

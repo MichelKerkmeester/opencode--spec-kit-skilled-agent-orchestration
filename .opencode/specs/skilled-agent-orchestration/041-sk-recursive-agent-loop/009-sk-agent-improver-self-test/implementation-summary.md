@@ -29,7 +29,7 @@ The scanner discovered **9 surfaces** for `agent-improver`:
 | YAML (auto) | `.opencode/command/improve/assets/improve_agent-improver_auto.yaml` | 2 references |
 | YAML (confirm) | `.opencode/command/improve/assets/improve_agent-improver_confirm.yaml` | 2 references |
 | Skill | `.opencode/skill/sk-improve-agent/SKILL.md` | 6 references |
-| Skill Advisor | `.opencode/skill/scripts/skill_advisor.py` | Matched |
+| Skill Advisor | `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Matched |
 
 ### Dynamic Profile Results
 

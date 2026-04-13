@@ -40,10 +40,10 @@ _memory:
 <!-- ANCHOR:p0-ghost -->
 ## Ghost Candidate Prevention (P0)
 
-- [ ] CHK-001: `_apply_graph_boosts()` skips targets with zero pre-graph score
-- [ ] CHK-002: `_apply_family_affinity()` skips members with zero pre-graph score
-- [ ] CHK-003: Query `"build something generic"` does NOT surface unrelated family members purely from graph
-- [ ] CHK-004: Query `"code review"` still shows graph boosts for skills that already have lexical evidence
+- [x] CHK-001: `_apply_graph_boosts()` skips targets with zero pre-graph score [EVIDENCE: snapshot check in _apply_graph_boosts()]
+- [x] CHK-002: `_apply_family_affinity()` skips members with zero pre-graph score [EVIDENCE: snapshot check in _apply_family_affinity()]
+- [x] CHK-003: Query `"build something generic"` does NOT surface unrelated family members purely from graph [EVIDENCE: verified in regression]
+- [x] CHK-004: Query `"code review"` still shows graph boosts for skills that already have lexical evidence [EVIDENCE: sk-code-review at 0.95]
 <!-- /ANCHOR:p0-ghost -->
 
 ---
@@ -51,11 +51,11 @@ _memory:
 <!-- ANCHOR:p0-edges -->
 ## Edge Gap Fixes (P0)
 
-- [ ] CHK-010: system-spec-kit has 3+ outbound enhances edges
-- [ ] CHK-011: sk-doc has enhances edge to system-spec-kit
-- [ ] CHK-012: mcp-coco-index has enhances edge to system-spec-kit
-- [ ] CHK-013: sk-improve-prompt has enhances edges to all 4 CLI skills
-- [ ] CHK-014: Compiler validation still passes after all edge changes
+- [x] CHK-010: system-spec-kit has 3+ outbound enhances edges [EVIDENCE: sk-doc, sk-git, sk-code-opencode]
+- [x] CHK-011: sk-doc has enhances edge to system-spec-kit [EVIDENCE: graph-metadata.json updated]
+- [x] CHK-012: mcp-coco-index has enhances edge to system-spec-kit [EVIDENCE: graph-metadata.json updated]
+- [x] CHK-013: sk-improve-prompt has enhances edges to all 4 CLI skills [EVIDENCE: 4 enhances edges added]
+- [x] CHK-014: Compiler validation still passes after all edge changes [EVIDENCE: --validate-only passes]
 <!-- /ANCHOR:p0-edges -->
 
 ---
@@ -63,10 +63,10 @@ _memory:
 <!-- ANCHOR:p0-compiler -->
 ## Compiler & Schema Fixes (P0)
 
-- [ ] CHK-020: Compiled skill-graph.json includes `signals` field with intent_signals
-- [ ] CHK-021: Compiled skill-graph.json includes `prerequisite_for` in adjacency
-- [ ] CHK-022: Compiled file size under 4KB
-- [ ] CHK-023: `--validate-only` still passes
+- [x] CHK-020: Compiled skill-graph.json includes `signals` field with intent_signals [EVIDENCE: signals field present in skill-graph.json]
+- [x] CHK-021: Compiled skill-graph.json includes `prerequisite_for` in adjacency [EVIDENCE: prerequisite_for edges in compiled output]
+- [x] CHK-022: Compiled file size under 4KB [EVIDENCE: 3957 bytes]
+- [x] CHK-023: `--validate-only` still passes [EVIDENCE: "VALIDATION PASSED"]
 <!-- /ANCHOR:p0-compiler -->
 
 ---
@@ -74,9 +74,9 @@ _memory:
 <!-- ANCHOR:p0-evidence -->
 ## Evidence Separation (P0)
 
-- [ ] CHK-030: Graph-derived boosts tracked separately from direct evidence
-- [ ] CHK-031: Confidence slightly reduced when majority of evidence is graph-derived
-- [ ] CHK-032: Recommendations with only direct evidence are unaffected
+- [x] CHK-030: Graph-derived boosts tracked separately from direct evidence [EVIDENCE: _graph_boost_count field]
+- [x] CHK-031: Confidence slightly reduced when majority of evidence is graph-derived [EVIDENCE: 10% penalty at >50% graph fraction]
+- [x] CHK-032: Recommendations with only direct evidence are unaffected [EVIDENCE: regression suite 44/44]
 <!-- /ANCHOR:p0-evidence -->
 
 ---
@@ -84,10 +84,10 @@ _memory:
 <!-- ANCHOR:p1-validation -->
 ## Compiler Validation Hardening (P1)
 
-- [ ] CHK-040: Warning emitted for zero-edge skills
-- [ ] CHK-041: Error emitted for self-referencing edges
-- [ ] CHK-042: Warning emitted for dependency cycles
-- [ ] CHK-043: Warning emitted for enhances weight asymmetry >0.3
+- [x] CHK-040: Warning emitted for zero-edge skills [EVIDENCE: compiler warns on orphans]
+- [x] CHK-041: Error emitted for self-referencing edges [EVIDENCE: compiler errors on self-refs]
+- [x] CHK-042: Warning emitted for dependency cycles [EVIDENCE: cycle detection implemented]
+- [ ] CHK-043: Warning emitted for enhances weight asymmetry >0.3 [DEFERRED: P1-1 partial, low priority]
 <!-- /ANCHOR:p1-validation -->
 
 ---
@@ -95,10 +95,10 @@ _memory:
 <!-- ANCHOR:p1-other -->
 ## Other P1 Fixes
 
-- [ ] CHK-050: `--audit-drift` flag works and reports phrase/graph overlap
-- [ ] CHK-051: sk-deep-review and sk-deep-research no longer siblings
-- [ ] CHK-052: Reason field groups by source type (direct, semantic, graph)
-- [ ] CHK-053: CocoIndex failures produce diagnostic trace in boost_reasons
+- [ ] CHK-050: `--audit-drift` flag works and reports phrase/graph overlap [DEFERRED: P1-2]
+- [x] CHK-051: sk-deep-review and sk-deep-research no longer siblings [EVIDENCE: both siblings arrays empty]
+- [ ] CHK-052: Reason field groups by source type (direct, semantic, graph) [DEFERRED: P1-4]
+- [ ] CHK-053: CocoIndex failures produce diagnostic trace in boost_reasons [DEFERRED: P1-5]
 <!-- /ANCHOR:p1-other -->
 
 ---
@@ -106,7 +106,7 @@ _memory:
 <!-- ANCHOR:regression -->
 ## Regression Safety (P0)
 
-- [ ] CHK-060: All existing regression cases pass
-- [ ] CHK-061: New ghost-candidate prevention test cases added and passing
-- [ ] CHK-062: New edge-gap test cases added and passing
+- [x] CHK-060: All existing regression cases pass [EVIDENCE: 44/44 pass, 100% rate]
+- [x] CHK-061: New ghost-candidate prevention test cases added and passing [EVIDENCE: P1-GRAPH cases pass]
+- [x] CHK-062: New edge-gap test cases added and passing [EVIDENCE: regression suite green]
 <!-- /ANCHOR:regression -->

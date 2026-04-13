@@ -18,7 +18,7 @@ _memory:
     blockers: []
     key_files:
       - ".opencode/specs/skilled-agent-orchestration/036-sk-deep-research-review-split/implementation-summary.md"
-      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
       - ".opencode/skill/sk-deep-review/graph-metadata.json"
       - ".opencode/skill/sk-deep-research/graph-metadata.json"
     session_dedup:

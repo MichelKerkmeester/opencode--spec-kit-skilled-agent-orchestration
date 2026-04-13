@@ -39,11 +39,11 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`.opencode/skill/scripts/` contains the shared routing scripts used by the OpenCode framework. The primary script is `skill_advisor.py`, the routing engine that powers Gate 2 in AGENTS.md. It analyzes a user's request using token normalization, synonym expansion, intent boosting, and confidence calibration, then returns a ranked list of skill recommendations in JSON.
+`.opencode/skill/skill-advisor/` is the support package for the shared routing scripts used by the OpenCode framework. The primary entry point lives at `scripts/skill_advisor.py`, the routing engine that powers Gate 2 in AGENTS.md. It analyzes a user's request using token normalization, synonym expansion, intent boosting, and confidence calibration, then returns a ranked list of skill recommendations in JSON.
 
 Three supporting scripts extend the core engine. `skill_advisor_runtime.py` provides cached skill discovery and fast frontmatter parsing so the advisor avoids re-reading SKILL.md files on every call. `skill_advisor_regression.py` runs a versioned fixture set to catch routing quality regressions before they ship. `skill_advisor_bench.py` measures latency and throughput in one-shot, warm, and batch modes.
 
-The directory also holds `fixtures/` for versioned test cases and `out/` for report output. `SET-UP_GUIDE.md` covers project-specific customization.
+The package also includes `feature_catalog/` for capability inventory, `manual_testing_playbook/` for operator validation, `scripts/fixtures/` for versioned test cases, and `scripts/out/` for report output. `SET-UP_GUIDE.md` covers project-specific customization.
 
 These routing scripts can surface the right packet helpers, but canonical packet continuity still belongs to `/spec_kit:resume` and packet docs. The recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept as support only.
 
@@ -88,21 +88,21 @@ These routing scripts can surface the right packet helpers, but canonical packet
 python3 --version
 # Expected: Python 3.6+
 
-python3 .opencode/skill/scripts/skill_advisor.py "test"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "test"
 # Expected: JSON array (may be empty for generic queries)
 ```
 
 **2. Run a real request**
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "help me commit my changes"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes"
 # Expected: sk-git at ~0.92 confidence
 ```
 
 **3. Integrate in an agent workflow**
 
 ```bash
-RESULT=$(python3 .opencode/skill/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8)
+RESULT=$(python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST" --threshold 0.8)
 SKILL=$(echo "$RESULT" | python3 -c "import sys,json; r=json.load(sys.stdin); print(r[0]['skill'] if r else '')")
 CONFIDENCE=$(echo "$RESULT" | python3 -c "import sys,json; r=json.load(sys.stdin); print(r[0]['confidence'] if r else 0)")
 
@@ -205,18 +205,23 @@ fi
 ## 4. STRUCTURE
 
 ```text
-.opencode/skill/scripts/
-├── skill_advisor.py                         # Skill routing engine (Gate 2)
-├── skill_advisor_runtime.py                 # Cache and metadata runtime helpers
-├── skill_advisor_regression.py              # Quality regression harness
-├── skill_advisor_bench.py                   # Latency and throughput benchmarks
-├── fixtures/
-│   └── skill_advisor_regression_cases.jsonl # Versioned routing fixture set
-├── out/
-│   ├── regression-report.json               # Latest regression run output
-│   └── benchmark-report.json                # Latest benchmark run output
+.opencode/skill/skill-advisor/
+├── README.md                                # This file
 ├── SET-UP_GUIDE.md                          # Customization guide for new projects
-└── README.md                                # This file
+├── feature_catalog/                         # Capability inventory and per-feature docs
+├── manual_testing_playbook/                 # Operator validation package
+└── scripts/
+    ├── skill_advisor.py                     # Skill routing engine (Gate 2)
+    ├── skill_advisor_runtime.py             # Cache and metadata runtime helpers
+    ├── skill_advisor_regression.py          # Quality regression harness
+    ├── skill_advisor_bench.py               # Latency and throughput benchmarks
+    ├── skill_graph_compiler.py              # Graph metadata compiler and validator
+    ├── fixtures/
+    │   └── skill_advisor_regression_cases.jsonl
+    ├── out/
+    │   ├── regression-report.json
+    │   └── benchmark-report.json
+    └── skill-graph.json                     # Compiled graph snapshot
 ```
 
 ### How It Fits in the Framework
@@ -225,7 +230,7 @@ fi
 AGENTS.md (Gate 2)
     |
     v
-python3 .opencode/skill/scripts/skill_advisor.py "$USER_REQUEST"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "$USER_REQUEST"
     |
     v
 skill_advisor_runtime.py (cached skill discovery)
@@ -318,7 +323,7 @@ For full customization guidance, see [SET-UP_GUIDE.md](./SET-UP_GUIDE.md).
 
 ```bash
 # Git commit request -> sk-git at high confidence
-python3 .opencode/skill/scripts/skill_advisor.py "help me commit my changes and push to remote"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "help me commit my changes and push to remote"
 
 # Expected:
 # [
@@ -334,7 +339,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "help me commit my changes and 
 ### Documentation request
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "create a flowchart for the authentication process"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "create a flowchart for the authentication process"
 
 # Expected:
 # [
@@ -349,7 +354,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "create a flowchart for the aut
 ### Memory and context
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "save this conversation context for later"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "save this conversation context for later"
 
 # Expected:
 # [
@@ -364,7 +369,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "save this conversation context
 ### No strong match
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py "hello"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "hello"
 # Expected: []
 ```
 
@@ -372,11 +377,11 @@ python3 .opencode/skill/scripts/skill_advisor.py "hello"
 
 ```bash
 # Default mode: uncertainty gate active, result filtered
-python3 .opencode/skill/scripts/skill_advisor.py "api chain mcp" --threshold 0.8
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8
 # []
 
 # Confidence-only: uncertainty gate bypassed, result shown
-python3 .opencode/skill/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
 # [{ "skill": "mcp-code-mode", "confidence": 0.85, "uncertainty": 0.39, ... }]
 ```
 
@@ -388,25 +393,25 @@ cat prompts.txt
 # save this conversation context to memory
 # /spec_kit:plan create docs
 
-python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt
 # Returns a JSON array with per-prompt recommendation lists
 ```
 
 ### Run regression harness
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
-  --out .opencode/skill/scripts/out/regression-report.json
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --out .opencode/skill/skill-advisor/scripts/out/regression-report.json
 ```
 
 ### Run benchmark harness
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor_bench.py \
-  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
+  --dataset .opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl \
   --runs 7 \
-  --out .opencode/skill/scripts/out/benchmark-report.json
+  --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 ```
 
 ### Common request patterns
@@ -444,7 +449,7 @@ head -10 .opencode/skill/sk-git/SKILL.md
 # Should start with: ---\nname: sk-git\n...
 
 # Run the health check
-python3 .opencode/skill/scripts/skill_advisor.py "test" --health
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "test" --health
 ```
 
 ### Correct skill returned but below threshold
@@ -457,7 +462,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "test" --health
 
 ```bash
 # Inspect rejected candidates
-python3 .opencode/skill/scripts/skill_advisor.py "my request" --show-rejections
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "my request" --show-rejections
 
 # Verify the skill's description contains relevant terms
 head -5 .opencode/skill/sk-git/SKILL.md
@@ -481,7 +486,7 @@ head -5 .opencode/skill/sk-git/SKILL.md
 
 ```bash
 cd /path/to/project
-python3 .opencode/skill/scripts/skill_advisor.py "my request"
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "my request"
 ```
 
 ### JSON output mixed with error text
@@ -493,7 +498,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "my request"
 **Fix.** Redirect stderr when capturing output in automation:
 
 ```bash
-RESULT=$(python3 .opencode/skill/scripts/skill_advisor.py "my request" 2>/dev/null)
+RESULT=$(python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "my request" 2>/dev/null)
 ```
 
 <!-- /ANCHOR:troubleshooting -->
@@ -529,7 +534,9 @@ Yes. Copy `skill_advisor.py` and `skill_advisor_runtime.py` into any project tha
 | Document | Purpose |
 | --- | --- |
 | [SET-UP_GUIDE.md](./SET-UP_GUIDE.md) | Step-by-step customization guide for adapting the advisor to a new project |
-| [skill_advisor.py](./skill_advisor.py) | Source implementation for routing, scoring, and confidence calibration |
+| [scripts/skill_advisor.py](./scripts/skill_advisor.py) | Source implementation for routing, scoring, and confidence calibration |
+| [feature_catalog/](./feature_catalog/) | Capability inventory for the routing and graph package |
+| [manual_testing_playbook/](./manual_testing_playbook/) | Manual validation package for routing, graph, compiler, and regression checks |
 | [Skills Library README](../README.md) | Full catalog of all 19 skills and routing policy |
 | [system-spec-kit SKILL.md](../system-spec-kit/SKILL.md) | Spec folder and memory foundation |
 | [sk-doc SKILL.md](../sk-doc/SKILL.md) | Documentation standards and component templates |

@@ -104,8 +104,8 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | `.opencode/skill/mcp-coco-index/scripts/ensure_ready.sh` | Added | Idempotent bootstrap wrapper with strict post-bootstrap validation and machine-readable readiness output |
 | `.opencode/skill/mcp-coco-index/scripts/install.sh` | Modified | Added root override support and shared shell helpers |
 | `.opencode/skill/mcp-coco-index/scripts/update.sh` | Modified | Added root override support and post-update index health guidance |
-| `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and auto-boosts semantic code-search prompts |
-| `.opencode/skill/scripts/skill_advisor.py` | Modified | Added `mcp-coco-index` `INTENT_BOOSTERS`, `PHRASE_INTENT_BOOSTERS` entries |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and auto-boosts semantic code-search prompts |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modified | Added `mcp-coco-index` `INTENT_BOOSTERS`, `PHRASE_INTENT_BOOSTERS` entries |
 | `AGENTS.md` | Modified | Added Code Search Protocol section |
 | `GEMINI.md` | Modified | Added Code Search Protocol section |
 | `.opencode/agent/context.md` | Modified | Added CocoIndex as first-class exploration tool |

@@ -29,10 +29,10 @@
     "status": "planned",
     "key_files": [
       "skill/README.md",
-      "skill/scripts/skill_advisor.py",
-      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/scripts/skill_advisor.py",
+      "skill/skill-advisor/scripts/skill_advisor.py",
+      "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/.opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/README.md",
-      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -48,7 +48,7 @@
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": "skill/scripts/skill_advisor.py",
+        "path": "skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {

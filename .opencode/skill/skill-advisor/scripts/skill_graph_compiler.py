@@ -27,10 +27,11 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 # ───────────────────────────────────────────────────────────────
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
+SKILLS_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "skill-graph.json")
 
-SCHEMA_VERSION = 1
+COMPILED_SCHEMA_VERSION = 1
+ALLOWED_METADATA_SCHEMA_VERSIONS = {1, 2}
 
 ALLOWED_FAMILIES = {"cli", "mcp", "sk-code", "sk-deep", "sk-util", "system"}
 ALLOWED_CATEGORIES = {
@@ -38,6 +39,7 @@ ALLOWED_CATEGORIES = {
     "autonomous-loop", "utility", "system",
 }
 EDGE_TYPES = {"depends_on", "enhances", "siblings", "conflicts_with", "prerequisite_for"}
+ALLOWED_ENTITY_KINDS = {"skill", "agent", "script", "config", "reference"}
 
 
 # ───────────────────────────────────────────────────────────────
@@ -89,8 +91,12 @@ def validate_skill_metadata(
     errors = []
 
     # Required top-level fields
-    if data.get("schema_version") != SCHEMA_VERSION:
-        errors.append(f"schema_version must be {SCHEMA_VERSION}, got {data.get('schema_version')}")
+    schema_version = data.get("schema_version")
+    if schema_version not in ALLOWED_METADATA_SCHEMA_VERSIONS:
+        errors.append(
+            "schema_version must be one of "
+            f"{sorted(ALLOWED_METADATA_SCHEMA_VERSIONS)}, got {schema_version}"
+        )
 
     skill_id = data.get("skill_id")
     if not skill_id:
@@ -152,6 +158,91 @@ def validate_skill_metadata(
         errors.append("missing or invalid 'domains' array")
     if not isinstance(data.get("intent_signals"), list):
         errors.append("missing or invalid 'intent_signals' array")
+
+    if schema_version == 2:
+        errors.extend(validate_derived_metadata(folder_name, data.get("derived")))
+
+    return errors
+
+
+def validate_derived_metadata(folder_name: str, derived: Any) -> List[str]:
+    """Validate additive schema-version-2 derived metadata."""
+    errors = []
+
+    if not isinstance(derived, dict):
+        return ["schema_version 2 requires a 'derived' object"]
+
+    for field_name in ("trigger_phrases", "key_topics", "key_files", "entities", "source_docs"):
+        field_value = derived.get(field_name)
+        if not isinstance(field_value, list) or not field_value:
+            errors.append(f"derived.{field_name} must be a non-empty array")
+
+    causal_summary = derived.get("causal_summary")
+    if not isinstance(causal_summary, str) or not causal_summary.strip():
+        errors.append("derived.causal_summary must be a non-empty string")
+
+    for field_name in ("created_at", "last_updated_at"):
+        timestamp = derived.get(field_name)
+        if not isinstance(timestamp, str) or not timestamp.strip():
+            errors.append(f"derived.{field_name} must be a non-empty ISO timestamp string")
+            continue
+        try:
+            datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        except ValueError:
+            errors.append(f"derived.{field_name} must be valid ISO 8601, got {timestamp!r}")
+
+    skill_dir = os.path.join(SKILLS_DIR, folder_name)
+    repo_root = os.path.dirname(os.path.dirname(SKILLS_DIR))
+
+    for index, phrase in enumerate(derived.get("trigger_phrases", [])):
+        if not isinstance(phrase, str) or not phrase.strip():
+            errors.append(f"derived.trigger_phrases[{index}] must be a non-empty string")
+
+    for index, topic in enumerate(derived.get("key_topics", [])):
+        if not isinstance(topic, str) or not topic.strip():
+            errors.append(f"derived.key_topics[{index}] must be a non-empty string")
+
+    for index, rel_path in enumerate(derived.get("source_docs", [])):
+        if not isinstance(rel_path, str) or not rel_path.strip():
+            errors.append(f"derived.source_docs[{index}] must be a non-empty string")
+            continue
+        if os.path.isabs(rel_path):
+            errors.append(f"derived.source_docs[{index}] must be skill-relative, got absolute path")
+            continue
+        candidate = os.path.join(skill_dir, rel_path)
+        if not os.path.isfile(candidate):
+            errors.append(f"derived.source_docs[{index}] path does not exist: {rel_path}")
+
+    for index, file_path in enumerate(derived.get("key_files", [])):
+        if not isinstance(file_path, str) or not file_path.strip():
+            errors.append(f"derived.key_files[{index}] must be a non-empty string")
+            continue
+        resolved_path = os.path.join(repo_root, file_path)
+        if not os.path.isfile(resolved_path):
+            errors.append(f"derived.key_files[{index}] path does not exist: {file_path}")
+
+    for index, entity in enumerate(derived.get("entities", [])):
+        if not isinstance(entity, dict):
+            errors.append(f"derived.entities[{index}] must be an object")
+            continue
+
+        for field_name in ("name", "kind", "path", "source"):
+            field_value = entity.get(field_name)
+            if not isinstance(field_value, str) or not field_value.strip():
+                errors.append(f"derived.entities[{index}].{field_name} must be a non-empty string")
+
+        entity_kind = entity.get("kind")
+        if entity_kind and entity_kind not in ALLOWED_ENTITY_KINDS:
+            errors.append(
+                f"derived.entities[{index}].kind must be one of "
+                f"{sorted(ALLOWED_ENTITY_KINDS)}, got {entity_kind!r}"
+            )
+
+        entity_path = entity.get("path")
+        if isinstance(entity_path, str) and entity_path.strip():
+            resolved_path = os.path.join(repo_root, entity_path)
+            if not os.path.isfile(resolved_path):
+                errors.append(f"derived.entities[{index}].path does not exist: {entity_path}")
 
     return errors
 
@@ -353,7 +444,7 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
     hub_skills = compute_hub_skills(adjacency)
 
     return {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": COMPILED_SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "skill_count": len(all_metadata),
         "families": dict(sorted(families.items())),

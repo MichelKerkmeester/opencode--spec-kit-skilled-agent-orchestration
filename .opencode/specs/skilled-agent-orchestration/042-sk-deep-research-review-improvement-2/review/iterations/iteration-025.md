@@ -57,7 +57,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 25 for deep review correctness dimension. Validate improve-agent helper fixes: trade-off-detector.cjs scored dimension emission, improvement-journal.cjs plateau stop reason, workflow YAML explicit helper call steps, real target agent identifier, and session-boundary gate." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 25 for deep review correctness dimension. Validate improve-agent helper fixes: trade-off-detector.cjs scored dimension emission, improvement-journal.cjs plateau stop reason, workflow YAML explicit helper call steps, real target agent identifier, and session-boundary gate." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 489ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-dX8eKNIr' (errno=Operation not permitted)
 [
@@ -1808,7 +1808,7 @@ exec
 .opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/017-temporal-knowledge-graph-investigation/graph-metadata.json:7:Key Topics: sub-phase, investigates, whether, public, ever, add, bounded, temporal-fact, sidecar, inspired, mempalace, separate
 .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:16:Investigate template-data warnings in successful workflow runs.
 .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:41:I’ll investigate this as a read-only audit: first I’ll run the required routing check, then trace warning emissions in the renderer and map how `workflow.ts` treats them so we can tell when successful runs still warn and whether tests enforce warning-free output.
-.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:47:/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Investigate template-data warnings in successful workflow runs by analyzing template-renderer.ts and workflow.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.27s:
+.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:47:/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Investigate template-data warnings in successful workflow runs by analyzing template-renderer.ts and workflow.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.27s:
 .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:543:- It is gated by `if (value === undefined || value === null)` plus `!OPTIONAL_PLACEHOLDERS.has(key)` at [template-renderer.ts:144](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts:144) and [template-renderer.ts:146](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts:146).
 .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:555:- If missing values break template contract-required fields, run aborts later at contract gate ([workflow.ts:2158](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts:2158), [memory-template-contract.ts:261](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts:261)).
 .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/agent-output-iter-006-codex-A1.md:556:- Conclusion for Q10: **Yes, successful runs can still emit template-data warnings** when missing fields are non-optional but not severe enough to fail contract/quality gates.
@@ -5056,7 +5056,7 @@ exec
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:35:FOCUS: Phase 005 agent-improver alignment: verify .opencode/skill/sk-improve-agent/scripts/ (13 CJS modules) correctly implement stop-reason taxonomy, journal wiring, and advisory optimizer contract. Focus on improvement-journal.cjs, mutation-coverage.cjs, trade-off-detector.cjs, candidate-lineage.cjs, benchmark-stability.cjs.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:65:Reviewing iteration 9 for the Phase 005 `sk-improve-agent` scripts with a correctness lens. I’m starting by loading any relevant prior context and the deep-review skill guidance, then I’ll read the named modules closely and trace their contracts against the surrounding implementation.
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:70:/bin/zsh -lc 'rg -n "042-sk-deep-research-review-improvement-2|sk-improve-agent|Phase 005|REQ-026|REQ-034|rvw-2026-04-11T13-50-06Z" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:297:/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 9 for spec folder 042-sk-deep-research-review-improvement-2, correctness focus on Phase 005 agent-improver alignment and sk-improve-agent scripts improvement-journal.cjs mutation-coverage.cjs trade-off-detector.cjs candidate-lineage.cjs benchmark-stability.cjs" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+.opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:297:/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 9 for spec folder 042-sk-deep-research-review-improvement-2, correctness focus on Phase 005 agent-improver alignment and sk-improve-agent scripts improvement-journal.cjs mutation-coverage.cjs trade-off-detector.cjs candidate-lineage.cjs benchmark-stability.cjs" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:302:    "skill": "sk-improve-agent",
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:307:    "reason": "Matched: !sk-improve-agent(explicit), !sk-improve-agent(phrase), candidate~, improve(name), improvement"
 .opencode/specs/skilled-agent-orchestration/042-sk-deep-research-review-improvement-2/review/iterations/iteration-009.md:352:The review skill routing is clear: `sk-deep-review`, `sk-code-review`, and `sk-improve-agent` all matched strongly, so I’m using the deep-review loop contract for iteration discipline, the code-review format for findings, and the improve-agent skill only as needed for contract expectations. Next I’m mapping the Phase 005 files and their callers so the correctness checks stay grounded in actual runtime use.
@@ -6367,7 +6367,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 920ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-L5wyQGiv' (errno=Operation not permitted)
 [
@@ -6592,7 +6592,7 @@ exec
 /bin/zsh -lc "rg -n \"namespace isolation|coverage-graph-query|coverage-graph-signals|promote\\.cjs|search\\.cjs|replay-corpus\\.cjs|rvw-2026-04-12T11-30-00Z|security\" /Users/michelkerkmeester/.codex/memories/MEMORY.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 22 of deep review session security validation for namespace isolation fixes in coverage graph query/signals handlers and optimizer scripts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 392ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-hhtKW75A' (errno=Operation not permitted)
 [
@@ -6836,7 +6836,7 @@ exec
 1588:## Task 2: Align legacy exports and DS tickets to the verified delta
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION deep review traceability: verify deep_research_config.json, review_mode_contract.yaml, improvement_config.json, convergence.md, loop_protocol.md, Phase 001 spec.md fixes and report FIXED/PARTIAL/OPEN/REGRESSED with new findings" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION deep review traceability: verify deep_research_config.json, review_mode_contract.yaml, improvement_config.json, convergence.md, loop_protocol.md, Phase 001 spec.md fixes and report FIXED/PARTIAL/OPEN/REGRESSED with new findings" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
@@ -7276,7 +7276,7 @@ I’m locating the existing deep-loop packet and reading the reducer implementat
 ● skill(sk-code-opencode)
 
 ● Route relevant skill (shell)
-  │ python3 .opencode/skill/scripts/skill_advisor.py "Fix correctness bugs in deep-loop reducers and
+  │ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Fix correctness bugs in deep-loop reducers and
   │ related improve-agent scripts" --threshold 0.8
   └ 11 lines...
 

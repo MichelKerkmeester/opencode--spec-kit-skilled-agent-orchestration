@@ -47,10 +47,10 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      ".opencode/skill/scripts/skill_graph_compiler.py",
-      ".opencode/skill/scripts/skill-graph.json",
-      ".opencode/skill/scripts/skill_advisor.py",
-      ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -61,25 +61,25 @@
       {
         "name": "skill_graph_compiler.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_graph_compiler.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
         "source": "derived"
       },
       {
         "name": "skill-graph.json",
         "kind": "config",
-        "path": ".opencode/skill/scripts/skill-graph.json",
+        "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json",
         "source": "derived"
       },
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
         "name": "skill_advisor_regression_cases.jsonl",
         "kind": "file",
-        "path": ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "path": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
         "source": "derived"
       },
       {

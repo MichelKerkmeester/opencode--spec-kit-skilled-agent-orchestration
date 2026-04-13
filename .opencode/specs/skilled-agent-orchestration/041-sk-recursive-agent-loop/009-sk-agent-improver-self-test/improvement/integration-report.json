@@ -76,7 +76,7 @@
     ],
     "globalDocs": [],
     "skillAdvisor": {
-      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "matched": true
     }
   },

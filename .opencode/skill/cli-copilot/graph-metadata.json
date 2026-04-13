@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "cli-copilot",
   "family": "cli",
   "category": "cli-orchestrator",
@@ -7,13 +7,118 @@
     "depends_on": [],
     "enhances": [],
     "siblings": [
-      { "target": "cli-claude-code", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-codex", "weight": 0.5, "context": "CLI orchestrator peer" },
-      { "target": "cli-gemini", "weight": 0.5, "context": "CLI orchestrator peer" }
+      {
+        "target": "cli-claude-code",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-codex",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-gemini",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["cli", "delegation", "cross-ai", "planning", "cloud"],
-  "intent_signals": ["copilot cli", "delegate to copilot"]
+  "domains": [
+    "cli",
+    "delegation",
+    "cross-ai",
+    "planning",
+    "cloud"
+  ],
+  "intent_signals": [
+    "copilot cli",
+    "delegate to copilot"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "copilot cli",
+      "delegate to copilot",
+      "copilot cli orchestration",
+      "github copilot cloud agent",
+      "copilot planning handoff",
+      "cli-copilot",
+      "cli copilot",
+      "copilot",
+      "copilot-cli",
+      "github",
+      "cross-ai",
+      "planning"
+    ],
+    "key_topics": [
+      "cli",
+      "delegation",
+      "cross-ai",
+      "planning",
+      "cloud",
+      "github copilot",
+      "cloud delegation",
+      "collaborative planning",
+      "autonomous execution",
+      "multi-model routing"
+    ],
+    "key_files": [
+      ".opencode/skill/cli-copilot/SKILL.md",
+      ".opencode/skill/cli-copilot/README.md",
+      ".opencode/skill/cli-copilot/references/cli_reference.md",
+      ".opencode/skill/cli-copilot/references/copilot_tools.md",
+      ".opencode/skill/cli-copilot/references/integration_patterns.md",
+      ".opencode/skill/cli-copilot/references/agent_delegation.md"
+    ],
+    "entities": [
+      {
+        "name": "cli-copilot",
+        "kind": "skill",
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-copilot/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-copilot/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "copilot_tools",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-copilot/references/copilot_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-copilot/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-copilot/references/agent_delegation.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution. It matters because it connects local assistant workflows to Copilot CLI and cloud-agent style execution when broader delegation is useful.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/cli_reference.md",
+      "references/copilot_tools.md",
+      "references/agent_delegation.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

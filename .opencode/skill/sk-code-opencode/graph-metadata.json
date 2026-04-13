@@ -1,20 +1,128 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "sk-code-opencode",
   "family": "sk-code",
   "category": "code-quality",
   "edges": {
     "depends_on": [],
     "enhances": [
-      { "target": "sk-code-review", "weight": 0.3, "context": "opencode-specific review overlay" }
+      {
+        "target": "sk-code-review",
+        "weight": 0.3,
+        "context": "opencode-specific review overlay"
+      }
     ],
     "siblings": [
-      { "target": "sk-code-full-stack", "weight": 0.4, "context": "code quality peer" },
-      { "target": "sk-code-web", "weight": 0.4, "context": "code quality peer" }
+      {
+        "target": "sk-code-full-stack",
+        "weight": 0.4,
+        "context": "code quality peer"
+      },
+      {
+        "target": "sk-code-web",
+        "weight": 0.4,
+        "context": "code quality peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["opencode", "javascript", "typescript", "python", "shell", "mcp-server"],
-  "intent_signals": ["opencode", "system code", "mcp server code", "skill code"]
+  "domains": [
+    "opencode",
+    "javascript",
+    "typescript",
+    "python",
+    "shell",
+    "mcp-server"
+  ],
+  "intent_signals": [
+    "opencode",
+    "system code",
+    "mcp server code",
+    "skill code"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "opencode",
+      "system code",
+      "mcp server code",
+      "skill code",
+      "opencode code standards",
+      "verify alignment drift",
+      "python shell json standards",
+      "system code style guidance",
+      "sk-code-opencode",
+      "sk code opencode",
+      "opencode style",
+      "script standards"
+    ],
+    "key_topics": [
+      "opencode",
+      "javascript",
+      "typescript",
+      "python",
+      "shell",
+      "mcp-server",
+      "opencode standards",
+      "alignment drift",
+      "multi-language conventions",
+      "json config quality"
+    ],
+    "key_files": [
+      ".opencode/skill/sk-code-opencode/SKILL.md",
+      ".opencode/skill/sk-code-opencode/README.md",
+      ".opencode/skill/sk-code-opencode/references/shared/universal_patterns.md",
+      ".opencode/skill/sk-code-opencode/references/shared/code_organization.md",
+      ".opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py",
+      ".opencode/skill/sk-code-opencode/scripts/test_verify_alignment_drift.py"
+    ],
+    "entities": [
+      {
+        "name": "sk-code-opencode",
+        "kind": "skill",
+        "path": ".opencode/skill/sk-code-opencode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "universal_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-opencode/references/shared/universal_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "code_organization",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-opencode/references/shared/code_organization.md",
+        "source": "derived"
+      },
+      {
+        "name": "verify_alignment_drift",
+        "kind": "script",
+        "path": ".opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py",
+        "source": "derived"
+      },
+      {
+        "name": "test_verify_alignment_drift",
+        "kind": "script",
+        "path": ".opencode/skill/sk-code-opencode/scripts/test_verify_alignment_drift.py",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists. It matters because it keeps OpenCode system code consistent across languages and provides the alignment verifier used before completion claims.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/shared/universal_patterns.md",
+      "references/shared/code_organization.md",
+      "references/shared/alignment_verification_automation.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

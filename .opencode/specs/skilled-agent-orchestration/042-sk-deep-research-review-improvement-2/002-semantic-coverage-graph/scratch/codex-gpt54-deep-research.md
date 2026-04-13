@@ -1083,7 +1083,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
@@ -11522,7 +11522,7 @@ exec
    446	## Task 1: Rename packet `041-sk-auto-agent-improvement` to `041-sk-recursive-agent-loop`, outcome success
 
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "You are a deep research agent. Run 10 research iterations on Phase 2 (Semantic Coverage Graph) of packet 042." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "You are a deep research agent. Run 10 research iterations on Phase 2 (Semantic Coverage Graph) of packet 042." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 2991ms:
 2026-04-10 14:06:03.837 xcodebuild[46421:32043920]  DVTFilePathFSEvents: Failed to start fs event stream.
 2026-04-10 14:06:04.031 xcodebuild[46421:32043916] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.

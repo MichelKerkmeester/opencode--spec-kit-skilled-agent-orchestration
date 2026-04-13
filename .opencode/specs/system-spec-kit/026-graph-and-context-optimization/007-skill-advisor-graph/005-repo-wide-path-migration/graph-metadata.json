@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/005-repo-wide-path-migration",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/005-repo-wide-path-migration",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/003-skill-advisor-packaging",
+        "reason": "Phase 005 closes the repo-wide documentation cleanup that followed the packaging migration.",
+        "source": "manual"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/004-graph-metadata-enrichment",
+        "reason": "Phase 005 relies on the enriched graph metadata surface being present before the repo-wide packet can close.",
+        "source": "manual"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-skill-advisor-graph/002-manual-testing-playbook",
+        "reason": "Playbook updates are part of the repo-wide migration evidence captured by this packet.",
+        "source": "manual"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-repo-wide-path-migration",
+      "repo-wide path migration",
+      "skill advisor path cleanup",
+      "packet closeout plan",
+      "packet closeout checklist",
+      "implementation summary"
+    ],
+    "key_topics": [
+      "repo-wide",
+      "path",
+      "migration",
+      "skill-advisor",
+      "packet",
+      "validation",
+      "grep cleanup",
+      "runtime verification",
+      "metadata normalization",
+      "documentation closure"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      ".opencode/skill/skill-advisor/README.md",
+      ".opencode/skill/README.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/skill-advisor/graph-metadata.json",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py",
+      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression.py",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 005 closes the documentation surface for the already-shipped skill-advisor path migration. The packet restores the active Level 3 scaffold, adds the missing closeout files, normalizes packet metadata, and removes forbidden literal legacy path strings from the active 007 packet tree while preserving the migration story in prose.",
+    "created_at": "2026-04-13T00:00:00.000Z",
+    "last_save_at": "2026-04-13T00:00:00.000Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

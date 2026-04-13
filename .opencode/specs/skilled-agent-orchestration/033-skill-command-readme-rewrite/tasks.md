@@ -47,7 +47,7 @@ contextType: "implementation"
 - [x] T004 Rewrite the CLI skill READMEs under `.opencode/skill/cli-*/README.md`
 - [x] T005 Rewrite the MCP skill READMEs under `.opencode/skill/mcp-*/README.md`
 - [x] T006 Rewrite the sk-code and sk-doc READMEs under `.opencode/skill/sk-*/README.md`
-- [x] T007 Rewrite the remaining skill READMEs under `.opencode/skill/README.md`, `.opencode/skill/scripts/README.md`, and related skill folders
+- [x] T007 Rewrite the remaining skill READMEs under `.opencode/skill/README.md`, `.opencode/skill/skill-advisor/README.md`, and related skill folders
 
 ### Command and Follow-Up Work
 - [x] T008 Update the command README surfaces under `.opencode/command/README.txt`, `.opencode/command/create/README.txt`, `.opencode/command/memory/README.txt`, and `.opencode/command/spec_kit/README.txt`

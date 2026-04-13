@@ -69,7 +69,7 @@ exec
 exec
 /bin/zsh -lc "rg --files -g 'AGENTS.md' -g 'MEMORY.md' . /Users/michelkerkmeester/.codex/memories | sed 's#"'^./##'"'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "security deep review of spec folder 042-sk-deep-research-review-improvement-2 focusing on replay-corpus.cjs and replay-runner.cjs path traversal, bounds validation, and promotion gate enforcement" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "security deep review of spec folder 042-sk-deep-research-review-improvement-2 focusing on replay-corpus.cjs and replay-runner.cjs path traversal, bounds validation, and promotion gate enforcement" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 187ms:
 AGENTS.md
 /Users/michelkerkmeester/.codex/memories/MEMORY.md
@@ -5565,7 +5565,7 @@ exec
 exec
 /bin/zsh -lc "rg --files -g 'CLAUDE.md'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 5 for spec folder 042-sk-deep-research-review-improvement-2 focused on correctness in Phase 003 wave-executor wave-*.cjs modules" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 5 for spec folder 042-sk-deep-research-review-improvement-2 focused on correctness in Phase 003 wave-executor wave-*.cjs modules" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 175ms:
 CLAUDE.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest/external/CLAUDE.md

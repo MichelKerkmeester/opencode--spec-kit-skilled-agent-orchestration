@@ -1,20 +1,136 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "sk-code-web",
   "family": "sk-code",
   "category": "code-quality",
   "edges": {
     "depends_on": [],
     "enhances": [
-      { "target": "sk-code-review", "weight": 0.3, "context": "web-specific review overlay" }
+      {
+        "target": "sk-code-review",
+        "weight": 0.3,
+        "context": "web-specific review overlay"
+      }
     ],
     "siblings": [
-      { "target": "sk-code-opencode", "weight": 0.4, "context": "code quality peer" },
-      { "target": "sk-code-full-stack", "weight": 0.4, "context": "code quality peer" }
+      {
+        "target": "sk-code-opencode",
+        "weight": 0.4,
+        "context": "code quality peer"
+      },
+      {
+        "target": "sk-code-full-stack",
+        "weight": 0.4,
+        "context": "code quality peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["web", "frontend", "css", "webflow", "cdn", "browser", "responsive"],
-  "intent_signals": ["web code", "frontend", "webflow", "css standards"]
+  "domains": [
+    "web",
+    "frontend",
+    "css",
+    "webflow",
+    "cdn",
+    "browser",
+    "responsive"
+  ],
+  "intent_signals": [
+    "web code",
+    "frontend",
+    "webflow",
+    "css standards"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "web code",
+      "frontend",
+      "webflow",
+      "css standards",
+      "web development workflow",
+      "browser verification checklist",
+      "webflow deployment guidance",
+      "frontend debugging and verification",
+      "sk-code-web",
+      "sk code web",
+      "development-orchestrator",
+      "frontend-development"
+    ],
+    "key_topics": [
+      "web",
+      "frontend",
+      "css",
+      "webflow",
+      "cdn",
+      "browser",
+      "responsive",
+      "frontend implementation",
+      "browser verification",
+      "webflow integration"
+    ],
+    "key_files": [
+      ".opencode/skill/sk-code-web/SKILL.md",
+      ".opencode/skill/sk-code-web/README.md",
+      ".opencode/skill/sk-code-web/references/implementation/implementation_workflows.md",
+      ".opencode/skill/sk-code-web/references/verification/verification_workflows.md",
+      ".opencode/skill/sk-code-web/assets/patterns/performance_patterns.js",
+      ".opencode/skill/sk-code-web/scripts/minify-webflow.mjs",
+      ".opencode/skill/sk-code-web/scripts/verify-minification.mjs"
+    ],
+    "entities": [
+      {
+        "name": "sk-code-web",
+        "kind": "skill",
+        "path": ".opencode/skill/sk-code-web/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-web/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation_workflows",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-web/references/implementation/implementation_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "verification_workflows",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-code-web/references/verification/verification_workflows.md",
+        "source": "derived"
+      },
+      {
+        "name": "performance_patterns",
+        "kind": "script",
+        "path": ".opencode/skill/sk-code-web/assets/patterns/performance_patterns.js",
+        "source": "derived"
+      },
+      {
+        "name": "minify-webflow",
+        "kind": "script",
+        "path": ".opencode/skill/sk-code-web/scripts/minify-webflow.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "verify-minification",
+        "kind": "script",
+        "path": ".opencode/skill/sk-code-web/scripts/verify-minification.mjs",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Orchestrator guiding developers through implementation, debugging, and verification phases across specialized code quality skills (project). It matters because it coordinates implementation, debugging, and verification for web-facing work where browser behavior and performance checks are essential.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/implementation/implementation_workflows.md",
+      "references/verification/verification_workflows.md",
+      "references/performance/resource_loading.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }

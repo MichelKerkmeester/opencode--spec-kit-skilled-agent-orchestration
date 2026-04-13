@@ -121,7 +121,7 @@ Define and implement a guard-safe two-tier prompt-quality architecture that impr
 | `.codex/agents/` | Create | Codex runtime mirror |
 | `.gemini/agents/` | Create | Gemini runtime mirror |
 | `.opencode/command/improve/prompt.md` | Modify | Add dispatch-mode branch and agent routing documentation |
-| `.opencode/skill/scripts/check-prompt-quality-card-sync.sh` | Create | Drift-check script that hashes the framework-selection table across the canonical card and four mirrors |
+| `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh` | Create | Drift-check script that hashes the framework-selection table across the canonical card and four mirrors |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -292,7 +292,7 @@ Define and implement a guard-safe two-tier prompt-quality architecture that impr
 
 No open questions remain for packet closeout.
 
-- Resolved: the optional drift check landed as `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`, and `bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh` reports `SYNC OK`.
+- Resolved: the optional drift check landed as `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`, and `bash .opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh` reports `SYNC OK`.
 - Resolved: `/improve:prompt` now auto-selects Agent mode from `complexity_hint >= 7` and from explicit isolation or fresh-context requests, while keeping Inline mode as the default otherwise.
 <!-- /ANCHOR:questions -->
 

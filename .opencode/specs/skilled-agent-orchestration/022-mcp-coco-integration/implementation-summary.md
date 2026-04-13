@@ -58,7 +58,7 @@ The `cocoindex_code` MCP server entry is registered in all 6 CLI config files us
 | `.opencode/skill/mcp-coco-index/scripts/common.sh` | Added | Shared shell helpers for readiness tooling |
 | `.opencode/skill/mcp-coco-index/scripts/doctor.sh` | Added | Read-only health check with strict readiness modes and expected-config validation |
 | `.opencode/skill/mcp-coco-index/scripts/ensure_ready.sh` | Added | Idempotent bootstrap helper with strict post-bootstrap validation |
-| `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and boosts semantic discovery prompts |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and boosts semantic discovery prompts |
 | `.opencode/skill/mcp-coco-index/references/cross_cli_playbook.md` | Added | Canonical operating guide for repeated-query and cross-CLI usage |
 | `.opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md` | Added | Minimum sibling-repo rollout checklist for payload, config wiring, and gitignore hygiene |
 
@@ -118,9 +118,9 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | `bash .opencode/skill/mcp-coco-index/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json` | PASS - reports `status: "ready"`, `expectedConfigs: ["opencode.json"]`, `indexFiles: 5859`, `indexChunks: 78525` after recovery |
 | `bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json` | PASS - reindexed the shared repo (`actionsPerformed: ["index"]`) and returned `status: "ready"` |
 | `bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --root <tmpdir>` | PASS - performs `init` and `index`, then exits `24` with `blockingIssues: [24]` when config wiring is still missing |
-| `python3 .opencode/skill/scripts/skill_advisor.py --health` | PASS - reports repo-local `.venv/bin/ccc` |
-| `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` | PASS - routes to `mcp-coco-index` at 0.95 confidence |
-| `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` | PASS - exact-text prompt does not pass threshold for CocoIndex |
+| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` | PASS - reports repo-local `.venv/bin/ccc` |
+| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` | PASS - routes to `mcp-coco-index` at 0.95 confidence |
+| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` | PASS - exact-text prompt does not pass threshold for CocoIndex |
 
 **NFR Verification**:
 

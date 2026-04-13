@@ -74,10 +74,10 @@ After the code and docs landed, I ran strict spec validation, validated the new 
 
 | Check | Result |
 |-------|--------|
-| `python3 -m py_compile .opencode/skill/scripts/skill_advisor.py` | PASS |
+| `python3 -m py_compile .opencode/skill/skill-advisor/scripts/skill_advisor.py` | PASS |
 | `python3.11` JSON + TOML parse for `descriptions.json` and new runtime wrappers | PASS |
 | `node --check` on `score-candidate.cjs`, `reduce-state.cjs`, `promote-candidate.cjs`, `rollback-candidate.cjs`, and `check-mirror-drift.cjs` | PASS |
-| `python3 .opencode/skill/scripts/skill_advisor.py "continue with agent improvement loop for handover target proposal-only evaluator-first scoring" --threshold 0.8` | PASS, `sk-improve-agent` returned at `0.95` confidence |
+| `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "continue with agent improvement loop for handover target proposal-only evaluator-first scoring" --threshold 0.8` | PASS, `sk-improve-agent` returned at `0.95` confidence |
 | `git diff -- .opencode/agent/handover.md` during proposal-only dry run | PASS, no canonical edits before promotion |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/041-sk-improve-agent-loop --strict` | PASS |
 | Proposal-only and promotion evidence in `improvement/` | PASS, baseline, tie candidate, rejected candidate, accepted candidate, and infra-failure evidence created in the reducer ledger |

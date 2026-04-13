@@ -1,6 +1,6 @@
 ## Summary
 
-This iteration validated the current `skill_advisor.py` routing behavior against the compiled graph generated on `2026-04-13T08:50:16Z` and focused on whether graph-derived reasons help or hurt real routing decisions. The advisor still applies graph boosts after lexical and phrase boosts, then surfaces them directly in the `reason` field (`.opencode/skill/scripts/skill_advisor.py:81-143`, `.opencode/skill/scripts/skill_advisor.py:1496-1498`, `.opencode/skill/scripts/skill_advisor.py:1573-1579`).
+This iteration validated the current `skill_advisor.py` routing behavior against the compiled graph generated on `2026-04-13T08:50:16Z` and focused on whether graph-derived reasons help or hurt real routing decisions. The advisor still applies graph boosts after lexical and phrase boosts, then surfaces them directly in the `reason` field (`.opencode/skill/skill-advisor/scripts/skill_advisor.py:81-143`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1496-1498`, `.opencode/skill/skill-advisor/scripts/skill_advisor.py:1573-1579`).
 
 The most important result is that graph boosts are now visible enough to audit, but they are still doing two different jobs:
 
@@ -9,10 +9,10 @@ The most important result is that graph boosts are now visible enough to audit, 
 
 This iteration also revalidated the structural gaps behind those behaviors:
 
-- `system-spec-kit` still has zero declared edges in source metadata (`.opencode/skill/system-spec-kit/graph-metadata.json:1-15`) and therefore no compiled adjacency entry (`.opencode/skill/scripts/skill-graph.json:39-145`).
+- `system-spec-kit` still has zero declared edges in source metadata (`.opencode/skill/system-spec-kit/graph-metadata.json:1-15`) and therefore no compiled adjacency entry (`.opencode/skill/skill-advisor/scripts/skill-graph.json:39-145`).
 - `mcp-coco-index` still has zero declared edges (`.opencode/skill/mcp-coco-index/graph-metadata.json:1-15`) and currently enters unrelated MCP results mainly through family affinity rather than an explicit workflow relationship.
 - `sk-doc` still has zero declared edges (`.opencode/skill/sk-doc/graph-metadata.json:1-15`).
-- `sk-improve-prompt` still compiles only a sibling edge to `sk-improve-agent` and no CLI-facing workflow edges (`.opencode/skill/sk-improve-prompt/graph-metadata.json:1-17`, `.opencode/skill/scripts/skill-graph.json:136-145`).
+- `sk-improve-prompt` still compiles only a sibling edge to `sk-improve-agent` and no CLI-facing workflow edges (`.opencode/skill/sk-improve-prompt/graph-metadata.json:1-17`, `.opencode/skill/skill-advisor/scripts/skill-graph.json:136-145`).
 
 ## Test Results
 
@@ -27,7 +27,7 @@ Validation method:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'review my opencode typescript module' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'review my opencode typescript module' --threshold 0
 ```
 
 Full output:
@@ -81,7 +81,7 @@ Assessment:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'use chrome devtools to debug css layout' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'use chrome devtools to debug css layout' --threshold 0
 ```
 
 Full output:
@@ -177,7 +177,7 @@ Assessment:
 Command:
 
 ```bash
-python3 .opencode/skill/scripts/skill_advisor.py 'deep review the spec folder' --threshold 0
+python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py 'deep review the spec folder' --threshold 0
 ```
 
 Full output:
@@ -276,28 +276,28 @@ Assessment:
    - Recommendation: require a minimum lexical or intent evidence floor before family/sibling boosts can create a new candidate. If a skill has zero non-graph evidence, graph should only refine rank, not create it.
 
 2. Add explicit edges for the current zero-edge hub and orphan skills.
-   - Evidence: `system-spec-kit`, `mcp-coco-index`, and `sk-doc` still declare no edges at all (`.opencode/skill/system-spec-kit/graph-metadata.json:1-15`, `.opencode/skill/mcp-coco-index/graph-metadata.json:1-15`, `.opencode/skill/sk-doc/graph-metadata.json:1-15`), and none of them appear in compiled adjacency (`.opencode/skill/scripts/skill-graph.json:39-145`).
+   - Evidence: `system-spec-kit`, `mcp-coco-index`, and `sk-doc` still declare no edges at all (`.opencode/skill/system-spec-kit/graph-metadata.json:1-15`, `.opencode/skill/mcp-coco-index/graph-metadata.json:1-15`, `.opencode/skill/sk-doc/graph-metadata.json:1-15`), and none of them appear in compiled adjacency (`.opencode/skill/skill-advisor/scripts/skill-graph.json:39-145`).
    - Recommendation: model the real workflow relationships instead of letting these skills rely on keyword coincidence or family spillover. The minimum high-signal set still looks like:
      - `sk-doc -> system-spec-kit` as `enhances`
      - `system-spec-kit -> sk-doc` and `system-spec-kit -> sk-git` as explicit workflow edges if the packet wants hub traversal symmetry
      - `mcp-coco-index -> sk-code-opencode` and `mcp-coco-index -> sk-code-web` as semantic-search workflow edges
 
 3. Add the missing CLI prompt-quality integration edges.
-   - Evidence: `sk-improve-prompt` still compiles only a sibling edge to `sk-improve-agent` (`.opencode/skill/sk-improve-prompt/graph-metadata.json:6-16`, `.opencode/skill/scripts/skill-graph.json:136-145`), so current CLI routing cannot use that relationship even though the prompt-quality card is a shared dependency surface.
+   - Evidence: `sk-improve-prompt` still compiles only a sibling edge to `sk-improve-agent` (`.opencode/skill/sk-improve-prompt/graph-metadata.json:6-16`, `.opencode/skill/skill-advisor/scripts/skill-graph.json:136-145`), so current CLI routing cannot use that relationship even though the prompt-quality card is a shared dependency surface.
    - Recommendation: add `enhances` edges from `sk-improve-prompt` to all four CLI skills so prompt-quality routing is explicit instead of invisible.
 
 ### P1
 
 1. Keep `depends_on` as the main prerequisite routing primitive, but fix compiler completeness for explainability.
-   - Evidence: current routing can already explain `mcp-code-mode` on the DevTools query via compiled `depends_on` from `mcp-chrome-devtools` (`.opencode/skill/mcp-chrome-devtools/graph-metadata.json:6-18`, `.opencode/skill/scripts/skill-graph.json:68-88`), so missing `prerequisite_for` output is not blocking this routing path.
+   - Evidence: current routing can already explain `mcp-code-mode` on the DevTools query via compiled `depends_on` from `mcp-chrome-devtools` (`.opencode/skill/mcp-chrome-devtools/graph-metadata.json:6-18`, `.opencode/skill/skill-advisor/scripts/skill-graph.json:68-88`), so missing `prerequisite_for` output is not blocking this routing path.
    - Recommendation: preserve the existing reverse-usable `depends_on` behavior, but also emit provenance or an explicit reverse view in the compiled artifact so audits do not treat valid prerequisite relationships as dropped.
 
 2. Re-tune family affinity after the gating fix.
-   - Evidence: `_apply_family_affinity()` currently adds `max_boost * 0.08` whenever a family member already exceeds `1.5` and the candidate has no score yet (`.opencode/skill/scripts/skill_advisor.py:123-143`).
+   - Evidence: `_apply_family_affinity()` currently adds `max_boost * 0.08` whenever a family member already exceeds `1.5` and the candidate has no score yet (`.opencode/skill/skill-advisor/scripts/skill_advisor.py:123-143`).
    - Recommendation: after P0 gating lands, lower the weight or add domain-aware exclusions for broad families like `mcp`. The current 0.08 value is small numerically but still large enough to leak unrelated MCP skills into the visible result set.
 
 3. Improve reason-field ordering for audits.
-   - Evidence: the advisor currently sorts the deduplicated reason set alphabetically and truncates to five entries (`.opencode/skill/scripts/skill_advisor.py:1573-1579`).
+   - Evidence: the advisor currently sorts the deduplicated reason set alphabetically and truncates to five entries (`.opencode/skill/skill-advisor/scripts/skill_advisor.py:1573-1579`).
    - Recommendation: preserve score order or group reasons by category so audits can see the strongest lexical/intent cause before graph decoration. Right now graph tokens can crowd out more informative evidence.
 
 ### P2

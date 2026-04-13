@@ -96,7 +96,7 @@ Define a safe, phased plan for `sk-improve-agent` that starts with one canonical
 | `.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs` | Create | Reducer for dashboard, accepted state, and score summaries |
 | `.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs` | Create | Deterministic evaluator harness for the first target |
 | `.opencode/skill/README` | Modify | Register the new skill in the catalog |
-| `.opencode/skill/scripts/skill_advisor.py` | Modify | Route agent-improvement queries to the new skill |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify | Route agent-improvement queries to the new skill |
 | `.opencode/specs/descriptions.json` | Modify | Add packet/feature description entry |
 | `.opencode/README` | Modify | Document the new loop as an available capability |
 <!-- /ANCHOR:scope -->

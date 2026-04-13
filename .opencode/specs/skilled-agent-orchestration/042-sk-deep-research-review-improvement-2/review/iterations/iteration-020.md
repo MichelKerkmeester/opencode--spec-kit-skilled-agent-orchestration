@@ -69,7 +69,7 @@ user cancelled MCP tool call
 exec
 /bin/zsh -lc "pwd && rg --files -g 'AGENTS.md' -g 'CLAUDE.md' | sed 's#"'^#./#'"'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 20 for spec folder 042-sk-deep-research-review-improvement-2 covering maintainability, architecture coherence, shared library coupling, database schema evolution, MCP tool surface area growth, test fixture maintainability, operational documentation completeness, and release readiness" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 20 for spec folder 042-sk-deep-research-review-improvement-2 covering maintainability, architecture coherence, shared library coupling, database schema evolution, MCP tool surface area growth, test fixture maintainability, operational documentation completeness, and release readiness" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 174ms:
 ./CLAUDE.md
 ./AGENTS.md
@@ -305,7 +305,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
@@ -2034,7 +2034,7 @@ exec
     83	exec
     84	/bin/zsh -lc 'find .. -name AGENTS.md -print' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
     85	exec
-    86	/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review iteration 19 for spec folder 042-sk-deep-research-review-improvement-2 focusing on traceability: verify docs and references across sk-deep-research, sk-deep-review, and sk-improve-agent match current runtime code and detect stale function names, outdated field names, removed branches, or phantom features." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+    86	/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review iteration 19 for spec folder 042-sk-deep-research-review-improvement-2 focusing on traceability: verify docs and references across sk-deep-research, sk-deep-review, and sk-improve-agent match current runtime code and detect stale function names, outdated field names, removed branches, or phantom features." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
     87	 succeeded in 468ms:
     88	python3: error: couldn't create cache file '/tmp/xcrun_db-dXCBcuuT' (errno=Operation not permitted)
     89	[

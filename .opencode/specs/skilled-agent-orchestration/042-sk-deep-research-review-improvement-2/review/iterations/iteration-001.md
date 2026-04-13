@@ -69,7 +69,7 @@ user cancelled MCP tool call
 exec
 /bin/zsh -lc "rg --files -g 'AGENTS.md' -g 'CLAUDE.md' ." in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Review iteration 1 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness in Phase 001 runtime-truth-foundation stop-reason taxonomy legal-stop gates resume semantics reduce-state.cjs runtime-capabilities.cjs for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Review iteration 1 for spec folder 042-sk-deep-research-review-improvement-2 focusing on correctness in Phase 001 runtime-truth-foundation stop-reason taxonomy legal-stop gates resume semantics reduce-state.cjs runtime-capabilities.cjs for sk-deep-research and sk-deep-review" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 169ms:
 ./CLAUDE.md
 ./AGENTS.md
@@ -273,7 +273,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
-1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
+1. A) Run: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`

@@ -4113,7 +4113,7 @@ const MIRROR_TEMPLATES = [
   '.agents/agents/{name}.md',
 ];
 const GLOBAL_DOC_PATHS = ['CLAUDE.md', '.claude/CLAUDE.md'];
-const SKILL_ADVISOR_PATH = '.opencode/skill/scripts/skill_advisor.py';
+const SKILL_ADVISOR_PATH = '.opencode/skill/skill-advisor/scripts/skill_advisor.py';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. UTILITIES

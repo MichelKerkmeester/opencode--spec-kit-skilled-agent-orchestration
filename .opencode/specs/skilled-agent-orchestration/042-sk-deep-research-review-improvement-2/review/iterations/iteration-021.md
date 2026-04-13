@@ -57,7 +57,7 @@ mcp: spec_kit_memory/memory_match_triggers started
 mcp: spec_kit_memory/memory_match_triggers (failed)
 user cancelled MCP tool call
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "POST-FIX VALIDATION iteration 21 of deep review: validate reducer fixes in sk-deep-review/scripts/reduce-state.cjs, sk-deep-research/scripts/reduce-state.cjs, and sk-improve-agent/scripts/reduce-state.cjs; report fixed/partial/open/regressed and any new findings with exact file/line evidence" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 920ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-L5wyQGiv' (errno=Operation not permitted)
 [

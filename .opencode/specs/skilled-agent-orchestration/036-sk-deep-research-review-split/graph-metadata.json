@@ -45,7 +45,7 @@
       ".agents/commands/spec_kit/deep-review.toml",
       ".opencode/changelog/13--sk-deep-review/v1.0.0.0.md",
       ".opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/handover.md",
-      ".opencode/skill/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -80,7 +80,7 @@
       {
         "name": "skill_advisor.py",
         "kind": "file",
-        "path": ".opencode/skill/scripts/skill_advisor.py",
+        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {

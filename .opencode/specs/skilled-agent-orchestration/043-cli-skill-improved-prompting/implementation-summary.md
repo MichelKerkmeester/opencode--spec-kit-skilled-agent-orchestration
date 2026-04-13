@@ -65,7 +65,7 @@ The feature landed as the two-tier prompt-quality architecture planned in this p
 - `.opencode/skill/sk-improve-prompt/SKILL.md` now documents the canonical card, the agent invocation contract, the fast-path asset, and the version bump to `1.3.0.0`.
 - `@improve-prompt` landed across `.opencode/agent/`, `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`.
 - `.opencode/command/improve/prompt.md` now supports Inline versus Agent dispatch mode selection and documents the shared escalation surface.
-- The optional drift check landed as `.opencode/skill/scripts/check-prompt-quality-card-sync.sh`.
+- The optional drift check landed as `.opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh`.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -99,7 +99,7 @@ The command surface was aligned with the same design: `/improve:prompt` now supp
 | Check | Result |
 |-------|--------|
 | Presence checks for canonical card, four mirrors, four runtime agents, and drift script | PASS |
-| Mirror sync check via `bash .opencode/skill/scripts/check-prompt-quality-card-sync.sh` | PASS (`SYNC OK`) |
+| Mirror sync check via `bash .opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh` | PASS (`SYNC OK`) |
 | CLI skill card references via `grep -c 'prompt_quality_card.md' .opencode/skill/cli-*/SKILL.md` | PASS (`4` hits per file) |
 | Guard-safe routing check via `grep -H 'prompt_quality_card' .opencode/skill/cli-*/SKILL.md | grep '\\.\\.'` | PASS (`NO_DOTDOT_MATCHES`) |
 | Framework-tag counts via `grep -c '^Framework:' .opencode/skill/cli-*/assets/prompt_templates.md` | PASS (`25`, `34`, `20`, `24`) |

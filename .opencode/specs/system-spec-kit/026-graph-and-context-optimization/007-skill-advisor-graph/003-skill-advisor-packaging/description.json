@@ -1,0 +1,12 @@
+{
+  "title": "Skill Advisor Packaging",
+  "description": "Feature catalog creation, CLAUDE.md reference updates, and graph-metadata.json for the skill-advisor skill folder.",
+  "trigger_phrases": [
+    "003-skill-advisor-packaging",
+    "skill advisor packaging",
+    "feature catalog",
+    "skill-advisor catalog"
+  ],
+  "importance_tier": "important",
+  "contextType": "planning"
+}

@@ -1,0 +1,18 @@
+{
+  "packet_id": "007-skill-advisor-graph/002-manual-testing-playbook",
+  "parent_id": "007-skill-advisor-graph",
+  "title": "Playbook Template Alignment",
+  "status": "planned",
+  "level": 3,
+  "derived": {
+    "key_files": [
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md"
+    ],
+    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
+    "related_packets": ["007-skill-advisor-graph/003-skill-advisor-packaging"],
+    "supersedes": null
+  }
+}

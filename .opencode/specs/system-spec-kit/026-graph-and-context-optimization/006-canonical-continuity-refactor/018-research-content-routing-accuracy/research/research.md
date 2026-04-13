@@ -87,13 +87,22 @@ If the team wants a stronger 95%+ short-fragment story, the smallest next change
 3. Add one more guard so spec-doc nouns alone do not push progress narratives into `research_finding`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:390] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:409]
 4. If more headroom is needed without a full corpus rewrite, let prototype `negativeHints` influence Tier 2 tie-breaking or fallback penalties. Those hints exist in the library today but do not participate in the live scoring path. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:11] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:802] [INFERENCE: packet-local code inspection]
 
+## 6. Post-Fix Verification After Iteration 35
+
+Iterations 36-38 reran the post-fix spot checks requested after the `metadata_only` target correction and doc cleanup.
+
+- The exact preserved replay is still `95.65%` on `92` samples, with the same four misses as before: `NP-02`, `NP-04`, `RF-03`, and refusal on `DR-05-s1`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json:1] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:48] [INFERENCE: packet-local preserved-subset replay over dist/lib/routing/content-router.js]
+- The `metadata_only` fix changes routed save-target identity, not classifier behavior. The create-record helper now resolves routed metadata saves onto `implementation-summary.md::_memory.continuity`, and the handler still falls back to `spec.md` only when `implementation-summary.md` is absent. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:111] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1055] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1157]
+- No new router edge case surfaced in the final focused sweep. The remaining mechanics are unchanged: two progress chunks still get accepted early as research, one research chunk still gets accepted early as metadata, and one terse telemetry fragment still refuses below the `drop` floor. [INFERENCE: packet-local edge-case replay over dist/lib/routing/content-router.js]
+- Active save docs stay clean. The only checked live-surface `SPECKIT_TIER3_ROUTING` mentions are the feature-catalog rows that explicitly describe the flag as removed. [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md:130] [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4480] [INFERENCE: targeted `rg` sweep across active save surfaces]
+
 ## Final Recommendation
 
-The packet is reconverged after implementation.
+The packet remains reconverged after the post-fix verification sweep.
 
 1. The delivered phases fixed the original delivery/progress and handover/drop seams.
 2. The always-on Tier 3 path is wired correctly and fail-opens the right way.
 3. The canonical docs are functionally aligned with shipped behavior.
 4. The remaining accuracy work is optional and much narrower: short-fragment robustness around progress versus research, research versus metadata, and terse drop telemetry.
 
-If the team wants another pass, it should be a small follow-on refinement wave aimed at those short-fragment cases. If not, this packet's main research question is answered.
+If the team wants another pass, it should be a small follow-on refinement wave aimed at those short-fragment cases. If not, this packet can stop here; the main research question stayed answered after the fix verification.

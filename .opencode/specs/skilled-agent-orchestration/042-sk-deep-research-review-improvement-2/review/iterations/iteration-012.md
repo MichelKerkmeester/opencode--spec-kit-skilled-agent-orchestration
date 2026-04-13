@@ -70,7 +70,7 @@ exec
 /bin/zsh -lc 'rg -n "042-sk-deep-research-review-improvement-2|rvw-2026-04-11T13-50-06Z|REQ-026|REQ-034|coverage-graph|sk-improve-agent" /Users/michelkerkmeester/.codex/memories/MEMORY.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  exited 1 in 0ms:
 exec
-/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Deep review maintainability of vitest assertion quality, edge cases, and documented contract coverage for .opencode/skill/sk-improve-agent/scripts/tests/ and .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts plus coverage-graph-stress.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+/bin/zsh -lc 'python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "Deep review maintainability of vitest assertion quality, edge cases, and documented contract coverage for .opencode/skill/sk-improve-agent/scripts/tests/ and .opencode/skill/system-spec-kit/scripts/tests/coverage-graph-integration.vitest.ts plus coverage-graph-stress.vitest.ts" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
  succeeded in 513ms:
 python3: error: couldn't create cache file '/tmp/xcrun_db-UzrG25tx' (errno=Operation not permitted)
 [

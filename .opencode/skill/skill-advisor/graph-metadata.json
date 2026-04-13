@@ -1,0 +1,73 @@
+{
+  "schema_version": 2,
+  "skill_id": "skill-advisor",
+  "family": "system",
+  "category": "system",
+  "edges": {
+    "depends_on": [
+      { "target": "mcp-coco-index", "weight": 0.4, "context": "semantic search routing and discovery signals" }
+    ],
+    "enhances": [
+      { "target": "cli-claude-code", "weight": 0.8, "context": "routes claude delegation requests" },
+      { "target": "cli-codex", "weight": 0.8, "context": "routes codex delegation requests" },
+      { "target": "cli-copilot", "weight": 0.8, "context": "routes copilot delegation requests" },
+      { "target": "cli-gemini", "weight": 0.8, "context": "routes gemini delegation requests" },
+      { "target": "mcp-chrome-devtools", "weight": 0.8, "context": "routes browser debugging requests" },
+      { "target": "mcp-clickup", "weight": 0.8, "context": "routes clickup workflow requests" },
+      { "target": "mcp-coco-index", "weight": 0.8, "context": "routes semantic code search requests" },
+      { "target": "mcp-code-mode", "weight": 0.8, "context": "routes MCP orchestration requests" },
+      { "target": "mcp-figma", "weight": 0.8, "context": "routes figma integration requests" },
+      { "target": "sk-code-full-stack", "weight": 0.8, "context": "routes full-stack implementation requests" },
+      { "target": "sk-code-opencode", "weight": 0.8, "context": "routes opencode system code requests" },
+      { "target": "sk-code-review", "weight": 0.8, "context": "routes code review requests" },
+      { "target": "sk-code-web", "weight": 0.8, "context": "routes web implementation requests" },
+      { "target": "sk-deep-research", "weight": 0.8, "context": "routes autonomous research requests" },
+      { "target": "sk-deep-review", "weight": 0.8, "context": "routes autonomous review requests" },
+      { "target": "sk-doc", "weight": 0.8, "context": "routes documentation requests" },
+      { "target": "sk-git", "weight": 0.8, "context": "routes git workflow requests" },
+      { "target": "sk-improve-agent", "weight": 0.8, "context": "routes agent improvement requests" },
+      { "target": "sk-improve-prompt", "weight": 0.8, "context": "routes prompt improvement requests" },
+      { "target": "system-spec-kit", "weight": 0.8, "context": "routes spec folder and memory requests" }
+    ],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["routing", "advisor", "scoring", "graph", "confidence"],
+  "intent_signals": ["skill routing", "gate 2", "which skill", "route request"],
+  "derived": {
+    "trigger_phrases": [
+      "skill routing", "gate 2 routing", "which skill", "route request",
+      "skill advisor", "confidence threshold", "skill discovery",
+      "regression harness", "benchmark harness", "graph compiler"
+    ],
+    "key_topics": [
+      "routing", "advisor", "scoring", "graph", "confidence",
+      "calibration", "regression", "benchmark", "compiler", "discovery"
+    ],
+    "key_files": [
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor_bench.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/skill-advisor/scripts/skill-graph.json",
+      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      ".opencode/skill/skill-advisor/README.md"
+    ],
+    "entities": [
+      { "name": "skill-advisor", "kind": "skill", "path": ".opencode/skill/skill-advisor/README.md", "source": "derived" },
+      { "name": "skill_advisor.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py", "source": "derived" },
+      { "name": "skill_graph_compiler.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py", "source": "derived" },
+      { "name": "skill_advisor_regression.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_advisor_regression.py", "source": "derived" },
+      { "name": "skill-graph.json", "kind": "config", "path": ".opencode/skill/skill-advisor/scripts/skill-graph.json", "source": "derived" }
+    ],
+    "causal_summary": "The skill advisor is the Gate 2 routing engine that scores user requests against all 20 skill descriptions using token normalization, synonym expansion, intent boosting, graph-derived transitive boosts, and confidence calibration. It returns ranked recommendations with dual-threshold filtering so the calling AI can invoke the right skill with measured certainty.",
+    "source_docs": [
+      "README.md",
+      "SET-UP_GUIDE.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
+}

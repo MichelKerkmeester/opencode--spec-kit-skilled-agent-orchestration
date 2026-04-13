@@ -46,7 +46,7 @@ contextType: "implementation"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks
-  - **Evidence**: All 5 JSON files and 1 TOML file pass syntax validation via `python3 json.load` and `python3.11 tomllib.load`; touched shell scripts pass `bash -n`; `.opencode/skill/scripts/skill_advisor.py` passes `python3 -m py_compile`
+  - **Evidence**: All 5 JSON files and 1 TOML file pass syntax validation via `python3 json.load` and `python3.11 tomllib.load`; touched shell scripts pass `bash -n`; `.opencode/skill/skill-advisor/scripts/skill_advisor.py` passes `python3 -m py_compile`
 - [x] CHK-011 [P0] No console errors or warnings
   - **Evidence**: `ccc index` completed without errors; `doctor.sh`, `doctor.sh --json`, `ensure_ready.sh --json`, and advisor verification commands all exited 0
 - [x] CHK-012 [P1] Error handling implemented
@@ -145,9 +145,9 @@ contextType: "implementation"
 - [x] CHK-072 [P1] Helper scripts are operational in both the main repo and a fresh temp project
   - **Evidence**: `doctor.sh` reported healthy binary/index/daemon/config status in the repo root; `ensure_ready.sh --json --root <tmpdir>` performed `init` and `index` and returned clean JSON with `actionsPerformed` showing both steps
 - [x] CHK-073 [P1] Advisor prefers the repo-local CocoIndex binary
-  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py --health` reports `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` in `cocoindex_binary`
+  - **Evidence**: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` reports `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` in `cocoindex_binary`
 - [x] CHK-074 [P1] Semantic exploration prompts route to CocoIndex without strongly routing exact-text prompts
-  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-coco-index` at 0.95 confidence; `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
+  - **Evidence**: `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-coco-index` at 0.95 confidence; `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
 
 
 ---

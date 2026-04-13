@@ -18,7 +18,7 @@ _memory:
     next_safe_action: "Keep packet docs synced with any future deep-review or advisor adjustments"
     blockers: []
     key_files:
-      - ".opencode/skill/scripts/skill_advisor.py"
+      - ".opencode/skill/skill-advisor/scripts/skill_advisor.py"
       - ".opencode/skill/sk-deep-review/graph-metadata.json"
       - ".opencode/skill/sk-deep-research/graph-metadata.json"
     session_dedup:
@@ -87,7 +87,7 @@ Separate the review-mode experience into a dedicated `sk-deep-review` skill and 
 | `.opencode/skill/sk-deep-review/` | Create | New dedicated review skill package |
 | `.opencode/command/spec_kit/deep-review.md` | Create | New review command entrypoint |
 | `.opencode/skill/sk-deep-research/` | Modify | Remove review-mode content and keep research-only guidance |
-| `.opencode/skill/scripts/skill_advisor.py` | Modify | Route review keywords to `sk-deep-review` |
+| `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify | Route review keywords to `sk-deep-review` |
 | `.agents/commands/spec_kit/deep-review.toml` | Create | Add runtime wrapper for the new command |
 | `AGENTS.md`, `CLAUDE.md`, `README.md` | Modify | Update top-level references to the split command/skill structure |
 <!-- /ANCHOR:scope -->

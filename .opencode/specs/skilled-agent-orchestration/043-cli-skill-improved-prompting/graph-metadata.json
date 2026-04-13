@@ -48,7 +48,7 @@
       ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
       ".opencode/skill/sk-improve-prompt/SKILL.md",
       ".opencode/command/improve/prompt.md",
-      ".opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+      ".opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -90,7 +90,7 @@
       {
         "name": "check-prompt-quality-card-sync.sh",
         "kind": "script",
-        "path": ".opencode/skill/scripts/check-prompt-quality-card-sync.sh",
+        "path": ".opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh",
         "source": "derived"
       },
       {

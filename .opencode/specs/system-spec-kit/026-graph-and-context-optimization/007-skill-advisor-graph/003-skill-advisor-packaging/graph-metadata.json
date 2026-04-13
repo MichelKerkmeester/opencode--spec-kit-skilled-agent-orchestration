@@ -1,0 +1,21 @@
+{
+  "packet_id": "007-skill-advisor-graph/003-skill-advisor-packaging",
+  "parent_id": "007-skill-advisor-graph",
+  "title": "Skill Advisor Packaging",
+  "status": "planned",
+  "level": 3,
+  "derived": {
+    "key_files": [
+      ".opencode/skill/skill-advisor/feature_catalog/FEATURE_CATALOG.md",
+      ".opencode/skill/skill-advisor/feature_catalog/01--routing-pipeline/",
+      ".opencode/skill/skill-advisor/feature_catalog/02--graph-system/",
+      ".opencode/skill/skill-advisor/feature_catalog/03--semantic-search/",
+      ".opencode/skill/skill-advisor/feature_catalog/04--testing/",
+      ".opencode/skill/skill-advisor/graph-metadata.json",
+      "CLAUDE.md"
+    ],
+    "dependencies": ["007-skill-advisor-graph/001-research-findings-fixes"],
+    "related_packets": ["007-skill-advisor-graph/002-manual-testing-playbook"],
+    "supersedes": null
+  }
+}

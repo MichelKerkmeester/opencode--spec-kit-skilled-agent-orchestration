@@ -1,22 +1,151 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "skill_id": "sk-improve-prompt",
   "family": "sk-util",
   "category": "utility",
   "edges": {
     "depends_on": [],
     "enhances": [
-      { "target": "cli-claude-code", "weight": 0.4, "context": "prompt quality card" },
-      { "target": "cli-codex", "weight": 0.4, "context": "prompt quality card" },
-      { "target": "cli-copilot", "weight": 0.4, "context": "prompt quality card" },
-      { "target": "cli-gemini", "weight": 0.4, "context": "prompt quality card" }
+      {
+        "target": "cli-claude-code",
+        "weight": 0.4,
+        "context": "prompt quality card"
+      },
+      {
+        "target": "cli-codex",
+        "weight": 0.4,
+        "context": "prompt quality card"
+      },
+      {
+        "target": "cli-copilot",
+        "weight": 0.4,
+        "context": "prompt quality card"
+      },
+      {
+        "target": "cli-gemini",
+        "weight": 0.4,
+        "context": "prompt quality card"
+      }
     ],
     "siblings": [
-      { "target": "sk-improve-agent", "weight": 0.4, "context": "improvement utility peer" }
+      {
+        "target": "sk-improve-agent",
+        "weight": 0.4,
+        "context": "improvement utility peer"
+      }
     ],
     "conflicts_with": [],
     "prerequisite_for": []
   },
-  "domains": ["prompt", "framework", "scoring", "enhancement", "clear"],
-  "intent_signals": ["improve prompt", "enhance prompt", "prompt framework", "clear score"]
+  "domains": [
+    "prompt",
+    "framework",
+    "scoring",
+    "enhancement",
+    "clear"
+  ],
+  "intent_signals": [
+    "improve prompt",
+    "enhance prompt",
+    "prompt framework",
+    "clear score"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "improve prompt",
+      "enhance prompt",
+      "prompt framework",
+      "clear score",
+      "improve this prompt",
+      "prompt engineering framework",
+      "depth thinking workflow",
+      "score prompt quality",
+      "sk-improve-prompt",
+      "sk improve prompt",
+      "prompt-engineering",
+      "prompt-improvement"
+    ],
+    "key_topics": [
+      "prompt",
+      "framework",
+      "scoring",
+      "enhancement",
+      "clear",
+      "prompt engineering",
+      "framework selection",
+      "clear scoring",
+      "depth methodology",
+      "structured prompting"
+    ],
+    "key_files": [
+      ".opencode/skill/sk-improve-prompt/SKILL.md",
+      ".opencode/skill/sk-improve-prompt/README.md",
+      ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
+      ".opencode/skill/sk-improve-prompt/references/patterns_evaluation.md",
+      ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
+      ".opencode/skill/sk-improve-prompt/assets/format_guide_markdown.md",
+      ".claude/agents/improve-prompt.md",
+      ".opencode/agent/improve-prompt.md"
+    ],
+    "entities": [
+      {
+        "name": "sk-improve-prompt",
+        "kind": "skill",
+        "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-improve-prompt/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "depth_framework",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-improve-prompt/references/depth_framework.md",
+        "source": "derived"
+      },
+      {
+        "name": "patterns_evaluation",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-improve-prompt/references/patterns_evaluation.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_prompt_quality_card",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
+        "source": "derived"
+      },
+      {
+        "name": "format_guide_markdown",
+        "kind": "reference",
+        "path": ".opencode/skill/sk-improve-prompt/assets/format_guide_markdown.md",
+        "source": "derived"
+      },
+      {
+        "name": "@improve-prompt (claude runtime)",
+        "kind": "agent",
+        "path": ".claude/agents/improve-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "@improve-prompt",
+        "kind": "agent",
+        "path": ".opencode/agent/improve-prompt.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Prompt engineering specialist that transforms vague requests into structured, scored AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR scoring across text modes. It matters because it transforms loose requests into structured prompts with explicit framework choice, scoring, and output formatting guidance.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/depth_framework.md",
+      "references/patterns_evaluation.md",
+      "assets/cli_prompt_quality_card.md"
+    ],
+    "created_at": "2026-04-13T00:00:00Z",
+    "last_updated_at": "2026-04-13T23:00:00Z"
+  }
 }
