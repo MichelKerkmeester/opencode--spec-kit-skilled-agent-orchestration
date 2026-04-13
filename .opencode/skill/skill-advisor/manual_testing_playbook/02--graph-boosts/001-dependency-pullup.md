@@ -49,7 +49,7 @@ mcp-figma is the top-1 result. mcp-code-mode also appears in the ranked results 
 
 Capture the full JSON output showing both skill entries, their confidence scores, the passes_threshold flags, and the graph-derived reason on mcp-code-mode.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: mcp-figma is top-1 and mcp-code-mode appears with the expected graph depends reason
 - **Fail**: mcp-code-mode is missing, lacks the graph depends reason, or mcp-figma is no longer top-1

@@ -49,7 +49,7 @@ mcp-figma is top-1. mcp-code-mode also appears in the results with `!graph:depen
 
 Capture the full JSON output showing both skill entries, their confidence scores, and match reasons -- especially the graph:depends reason on mcp-code-mode.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: mcp-figma is top-1 AND mcp-code-mode appears in results with dependency reason
 - **Fail**: mcp-figma not top-1, or mcp-code-mode missing from results

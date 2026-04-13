@@ -49,7 +49,7 @@ The compiler prints a `ZERO-EDGE WARNINGS` section, lists current orphan skills 
 
 Capture the warning section, the named orphan skills, the final validation summary, and the exit status from the command.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: Zero-edge warnings are present for the known orphan skills and validation still passes
 - **Fail**: The warnings are missing for known orphan skills, or the warning path causes validation to fail

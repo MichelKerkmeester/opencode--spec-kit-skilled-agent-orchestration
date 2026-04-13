@@ -36,6 +36,7 @@ ADVISOR_PATH = os.path.join(SCRIPT_DIR, "skill_advisor.py")
 # ───────────────────────────────────────────────────────────────
 
 def load_advisor_module() -> Any:
+    """Load the advisor module from disk for regression checks."""
     spec = importlib.util.spec_from_file_location("skill_advisor", ADVISOR_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Failed to load advisor module from {ADVISOR_PATH}")
@@ -46,6 +47,7 @@ def load_advisor_module() -> Any:
 
 
 def load_jsonl(path: str) -> List[Dict[str, Any]]:
+    """Load a JSONL dataset and surface line-numbered parse failures."""
     rows: List[Dict[str, Any]] = []
     with open(path, "r", encoding="utf-8") as handle:
         for line_number, raw in enumerate(handle, start=1):
@@ -64,6 +66,7 @@ def load_jsonl(path: str) -> List[Dict[str, Any]]:
 # ───────────────────────────────────────────────────────────────
 
 def evaluate_case(advisor: Any, case: Dict[str, Any], threshold: float, uncertainty: float) -> Dict[str, Any]:
+    """Run a single regression case and record its expectation checks."""
     prompt = case["prompt"]
     confidence_only = bool(case.get("confidence_only", False))
     recommendations = advisor.analyze_prompt(
@@ -112,6 +115,7 @@ def evaluate_case(advisor: Any, case: Dict[str, Any], threshold: float, uncertai
 
 
 def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Aggregate pass rates and command-bridge error metrics."""
     total = len(results)
     passed = sum(1 for item in results if item["passed"])
 
@@ -163,6 +167,7 @@ def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
 # ───────────────────────────────────────────────────────────────
 
 def ensure_parent_dir(path: str) -> None:
+    """Create the destination parent directory when an output path is nested."""
     parent = os.path.dirname(path)
     if parent:
         os.makedirs(parent, exist_ok=True)
@@ -173,6 +178,7 @@ def ensure_parent_dir(path: str) -> None:
 # ───────────────────────────────────────────────────────────────
 
 def main() -> int:
+    """Execute the regression suite and emit a JSON report."""
     parser = argparse.ArgumentParser(description="Run skill advisor regression suite.")
     parser.add_argument("--dataset", required=True, help="Path to JSONL regression dataset.")
     parser.add_argument("--out", default="", help="Optional path to write JSON report.")

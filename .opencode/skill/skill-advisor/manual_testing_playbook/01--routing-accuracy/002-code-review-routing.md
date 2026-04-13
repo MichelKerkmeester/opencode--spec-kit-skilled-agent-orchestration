@@ -51,7 +51,7 @@ sk-code-review is the top-1 result with confidence >= 0.80 and reason includes `
 
 Capture the full JSON output showing skill name, confidence score, passes_threshold flag, and match reasons for each command.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: sk-code-review is top-1 with confidence >= 0.80 for all prompts
 - **Fail**: Different skill is top-1 for any prompt

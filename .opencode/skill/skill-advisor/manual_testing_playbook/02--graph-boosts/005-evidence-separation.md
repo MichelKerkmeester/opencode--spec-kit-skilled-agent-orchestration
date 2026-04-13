@@ -49,7 +49,7 @@ Results with mostly graph-derived reasons expose `_graph_boost_count` in the raw
 
 Capture the full JSON output, including `_graph_boost_count`, reason fields, and confidence scores for the direct-match and graph-heavy recommendations you compare.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: Graph-heavy results show a reasonable confidence discount instead of inflating past direct matches
 - **Fail**: Results dominated by graph evidence keep the same or higher confidence than equivalent direct matches

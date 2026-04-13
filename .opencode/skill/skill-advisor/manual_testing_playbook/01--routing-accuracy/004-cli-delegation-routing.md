@@ -52,7 +52,7 @@ Each command routes to its named CLI skill (cli-codex, cli-gemini, cli-claude-co
 
 Capture the full JSON output for each command showing the top-1 skill, confidence, match reasons (confirming explicit match), and verify no sibling CLI skills appear with graph-only evidence.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: Each prompt routes to its named CLI skill; no ghost sibling candidates appear
 - **Fail**: Wrong skill is top-1 for any prompt, or sibling CLIs appear with only `!graph:family(cli)` evidence

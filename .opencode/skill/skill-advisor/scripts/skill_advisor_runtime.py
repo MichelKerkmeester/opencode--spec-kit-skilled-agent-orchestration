@@ -69,11 +69,13 @@ def parse_frontmatter_fast(file_path: str) -> Optional[Dict[str, str]]:
 # ───────────────────────────────────────────────────────────────
 
 def _normalize_terms(text: str, stop_words: Set[str]) -> Set[str]:
+    """Normalize free-form text into comparable lowercase term tokens."""
     terms = re.findall(r"\b\w+\b", text.lower())
     return {term for term in terms if len(term) > 2 and term not in stop_words}
 
 
 def _build_variants(skill_name: str) -> Set[str]:
+    """Build slash, dollar, and spacing variants for a skill identifier."""
     lowered = skill_name.lower()
     return {
         lowered,
@@ -89,11 +91,13 @@ def _build_variants(skill_name: str) -> Set[str]:
 # ───────────────────────────────────────────────────────────────
 
 def _discover_skill_files(skills_dir: str) -> list[str]:
+    """Discover every `SKILL.md` file under the top-level skills directory."""
     pattern = os.path.join(skills_dir, "*/SKILL.md")
     return sorted(glob.glob(pattern))
 
 
 def _compute_signature(file_paths: Iterable[str]) -> Tuple[Tuple[str, int, int], ...]:
+    """Capture file mtimes and sizes for cache invalidation."""
     signature: list[Tuple[str, int, int]] = []
     for path in file_paths:
         try:
@@ -108,6 +112,7 @@ def _build_skill_record(
     file_path: str,
     stop_words: Set[str],
 ) -> Optional[Tuple[str, Dict[str, Any]]]:
+    """Build one normalized cache record from a skill frontmatter file."""
     meta = parse_frontmatter_fast(file_path)
     if not meta:
         return None
@@ -137,6 +142,7 @@ def _build_skill_record(
 
 
 def _clone_records(records: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    """Clone cached records so callers cannot mutate shared cache state."""
     cloned: Dict[str, Dict[str, Any]] = {}
     for name, record in records.items():
         cloned[name] = {

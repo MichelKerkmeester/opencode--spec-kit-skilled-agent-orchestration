@@ -25,8 +25,8 @@ Operators run the exact prompt and command sequence for `CP-005` and confirm the
 
 - Objective: Verify advisor health output reports graph load state and skill count
 - Real user request: `"run the skill advisor health check"`
-- Prompt: `As a compiler validation operator, validate health output against .opencode/skill/skill-advisor/scripts/skill_advisor.py --health. Verify skill_graph_loaded is true, skill_graph_skill_count reports the active skill count, and status is ok. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: `"skill_graph_loaded": true`, `"skill_graph_skill_count": 20`, and `"status": "ok"` appear in the JSON diagnostics output
+- Prompt: `As a compiler validation operator, validate health output against .opencode/skill/skill-advisor/scripts/skill_advisor.py --health. Verify skill_graph_loaded is true, skill_graph_skill_count reports 21, and status is ok. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected signals: `"skill_graph_loaded": true`, `"skill_graph_skill_count": 21`, and `"status": "ok"` appear in the JSON diagnostics output
 - Pass/fail: PASS if those fields are present with the expected values; FAIL if the graph is not loaded, the count drifts unexpectedly, or status is not ok
 
 ---
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `CP-005` and confirm the
 
 ### Prompt
 
-`As a compiler validation operator, validate health output against .opencode/skill/skill-advisor/scripts/skill_advisor.py --health. Verify skill_graph_loaded is true, skill_graph_skill_count reports the active skill count, and status is ok. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a compiler validation operator, validate health output against .opencode/skill/skill-advisor/scripts/skill_advisor.py --health. Verify skill_graph_loaded is true, skill_graph_skill_count reports 21, and status is ok. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -43,16 +43,16 @@ Operators run the exact prompt and command sequence for `CP-005` and confirm the
 
 ### Expected
 
-The health JSON shows `skill_graph_loaded` as true, reports the current graph skill count as 20, and sets `status` to `ok`.
+The health JSON shows `skill_graph_loaded` as true, reports the current graph skill count as 21, and sets `status` to `ok`.
 
 ### Evidence
 
 Capture the full JSON diagnostics output, including cache information, graph path, graph-loaded state, skill count, and status.
 
-### Pass / Fail
+### Pass/Fail
 
-- **Pass**: `skill_graph_loaded` is true, `skill_graph_skill_count` is 20, and `status` is `ok`
-- **Fail**: The graph is not loaded, the reported count is not 20, or status is not `ok`
+- **Pass**: `skill_graph_loaded` is true, `skill_graph_skill_count` is 21, and `status` is `ok`
+- **Fail**: The graph is not loaded, the reported count is not 21, or status is not `ok`
 
 ### Failure Triage
 

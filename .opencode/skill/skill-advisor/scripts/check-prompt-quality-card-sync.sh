@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: PROMPT QUALITY CARD SYNC CHECK
+# ───────────────────────────────────────────────────────────────
+# Verifies that prompt quality framework tables stay in sync across CLI skills.
+#
+# Usage: check-prompt-quality-card-sync.sh [repo-root]
 set -euo pipefail
 
 ROOT="${1:-.}"

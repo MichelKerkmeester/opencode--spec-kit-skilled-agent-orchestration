@@ -52,11 +52,11 @@ These routing scripts can surface the right packet helpers, but canonical packet
 | Component | Count | Notes |
 | --- | --- | --- |
 | Stop words | 106 | Filtered from queries before matching |
-| Synonym mappings | 90 | Expand user language to technical terms |
-| Intent boosters | 170 | Direct keyword-to-skill score mappings |
+| Synonym mappings | 95 | Expand user language to technical terms |
+| Intent boosters | 185 | Direct keyword-to-skill score mappings |
 | Multi-skill boosters | 32 | Ambiguous keywords that boost multiple skills |
-| Phrase intent boosters | 131 | Multi-token phrases with high-signal routing boosts |
-| Command bridges | 2 | Slash commands exposed as pseudo-skills |
+| Phrase intent boosters | 159 | Multi-token phrases with high-signal routing boosts |
+| Command bridges | 10 | Slash commands exposed as pseudo-skills |
 | Regression fixtures | 1 file | `skill_advisor_regression_cases.jsonl` |
 
 ### Scripts Inventory
@@ -132,7 +132,7 @@ fi
 
 **CocoIndex aliases and discovery routing.** `--semantic` and `--cocoindex` are equivalent aliases for built-in CocoIndex search. `--semantic-hits` and `--cocoindex-hits` are equivalent aliases for pre-computed JSON hits. Discovery prompts such as "find code that", "semantic code search", "code search", "where is the logic", and "how does X work" are optimized to favor `mcp-coco-index`.
 
-**Autonomous review boundary.** Explicit autonomous workflows such as `autoresearch`, `/autoresearch`, `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-research`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code-review`.
+**Autonomous review boundary.** Explicit research workflows such as `autoresearch` and `/autoresearch` route to `sk-deep-research`. Explicit review-loop workflows such as `deep review`, `review loop`, `:review:auto`, and `auto review release readiness` route to `sk-deep-review`. Ordinary review requests such as `code review`, `review this PR`, and `auto review this PR` stay on `sk-code-review`.
 
 ### 3.2 FEATURE REFERENCE
 
@@ -255,7 +255,7 @@ The script resolves its own location at startup and does not require running fro
 
 ```python
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
+SKILLS_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 ```
 
 `SKILLS_DIR` points to `.opencode/skill/`. The advisor scans all subdirectories for SKILL.md files.
@@ -304,10 +304,10 @@ Boost values: 0.3-0.5 for moderate confidence, 0.6-1.0 for strong confidence.
 
 ### Regression Fixture Format
 
-Each line in `fixtures/skill_advisor_regression_cases.jsonl` is a JSON object:
+Each line in `fixtures/skill_advisor_regression_cases.jsonl` is a JSON object. The harness currently reads fields such as `id`, `priority`, `prompt`, `expect_result`, `expected_top_any`, `expect_kind`, `confidence_only`, and `allow_command_bridge`:
 
 ```json
-{"prompt": "help me commit my changes", "expected_skill": "sk-git", "min_confidence": 0.8}
+{"id":"P0-GIT-001","priority":"P0","prompt":"help me commit my changes","expect_result":true,"expected_top_any":["sk-git"],"expect_kind":"skill","allow_command_bridge":false}
 ```
 
 For full customization guidance, see [SET-UP_GUIDE.md](./SET-UP_GUIDE.md).

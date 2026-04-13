@@ -5,7 +5,7 @@ description: "Operator-facing reference combining the manual testing directory, 
 
 # Skill Advisor & Graph: Manual Testing Playbook
 
-> **EXECUTION POLICY**: Every scenario MUST be executed for real — not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
+> **EXECUTION POLICY**: Every scenario MUST be executed for real - not mocked, not stubbed, not classified as "unautomatable". AI agents executing these scenarios must run the actual commands, inspect real files, call real handlers, and verify real outputs. The only acceptable classifications are PASS, FAIL, or SKIP (with a specific sandbox blocker documented). "UNAUTOMATABLE" is not a valid status.
 
 This document combines the full manual-validation contract for the `skill-advisor` package into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide: it explains how realistic user-driven tests should be run, how evidence should be captured, how results should be graded, and where each per-feature validation file lives. The per-feature files provide the deeper execution contract for each scenario, including the user request, operator prompt, execution process, source anchors, and validation criteria.
 
@@ -67,7 +67,7 @@ Coverage note (2026-04-13): all 24 scenario files now follow the split-document 
 1. Working directory is the repository root.
 2. Python 3 is available in the execution environment.
 3. `.opencode/skill/skill-advisor/scripts/skill-graph.json` exists or can be regenerated before graph-sensitive checks.
-4. The 20 skill folders with `graph-metadata.json` are present in `.opencode/skill/`.
+4. The 21 skill folders with `graph-metadata.json` are present in `.opencode/skill/`.
 5. Terminal transcript capture is enabled so JSON output, compiler warnings, and exit statuses are preserved.
 6. This playbook has no destructive scenarios. Parallel execution is allowed except when a run regenerates `.opencode/skill/skill-advisor/scripts/skill-graph.json`, which should be isolated to one worker.
 
@@ -206,11 +206,11 @@ These scenarios validate the graph compiler and the advisor health surface that 
 
 | ID | Scenario | Command | Expected | File |
 |---|---|---|---|---|
-| CP-001 | Schema validation | `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` | 20 metadata files discovered, zero validation errors, exit 0 | [001-schema-validation.md](03--compiler/001-schema-validation.md) |
+| CP-001 | Schema validation | `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` | 21 metadata files discovered, zero validation errors, exit 0 | [001-schema-validation.md](03--compiler/001-schema-validation.md) |
 | CP-002 | Zero-edge warnings | `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only` | Orphan skills warned without failing validation | [002-zero-edge-warnings.md](03--compiler/002-zero-edge-warnings.md) |
 | CP-003 | Compiled output includes signals | `python3 -c "...skill-graph.json..."` | `signals` field present and populated | [003-compiled-signals.md](03--compiler/003-compiled-signals.md) |
-| CP-004 | Size under 4KB | `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` | Reported output size <= 4096 bytes | [004-size-target.md](03--compiler/004-size-target.md) |
-| CP-005 | Health check integration | `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` | `skill_graph_loaded: true`, count 20, status `ok` | [005-health-check.md](03--compiler/005-health-check.md) |
+| CP-004 | Size target enforcement | `python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` | Compiler prints the byte count and warning state that matches the 4096-byte threshold | [004-size-target.md](03--compiler/004-size-target.md) |
+| CP-005 | Health check integration | `python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --health` | `skill_graph_loaded: true`, `skill_graph_skill_count: 21`, status `ok` | [005-health-check.md](03--compiler/005-health-check.md) |
 
 ---
 
@@ -262,7 +262,7 @@ Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/featur
 | CP-001 | Schema validation | Compiler | [CP-001](03--compiler/001-schema-validation.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | CP-002 | Zero-edge warnings | Compiler | [CP-002](03--compiler/002-zero-edge-warnings.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | CP-003 | Compiled output includes signals | Compiler | [CP-003](03--compiler/003-compiled-signals.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
-| CP-004 | Size under 4KB | Compiler | [CP-004](03--compiler/004-size-target.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| CP-004 | Size target enforcement | Compiler | [CP-004](03--compiler/004-size-target.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | CP-005 | Health check integration | Compiler | [CP-005](03--compiler/005-health-check.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | RS-001 | Full regression suite | Regression Safety | [RS-001](04--regression-safety/001-full-regression.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | RS-002 | P0 cases untouched | Regression Safety | [RS-002](04--regression-safety/002-p0-cases.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |

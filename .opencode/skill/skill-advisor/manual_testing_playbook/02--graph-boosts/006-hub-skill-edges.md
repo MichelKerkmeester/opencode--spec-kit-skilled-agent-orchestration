@@ -49,7 +49,7 @@ system-spec-kit and sk-doc both appear in the ranked results. At least one of th
 
 Capture the full JSON output showing the two skill entries, their confidence scores, and the graph-derived reason that links the hub skill to its documentation companion.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: system-spec-kit and sk-doc both appear with visible graph edge evidence
 - **Fail**: One skill is missing, or the output never shows the graph relationship

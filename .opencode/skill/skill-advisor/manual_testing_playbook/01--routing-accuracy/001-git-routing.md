@@ -51,7 +51,7 @@ sk-git is the top-1 result with confidence >= 0.80 and passes_threshold is true 
 
 Capture the full JSON output showing skill name, confidence score, passes_threshold flag, and match reasons for each command.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: sk-git is top-1 with confidence >= 0.80 for all prompts
 - **Fail**: Different skill is top-1, or confidence < 0.80 for any prompt

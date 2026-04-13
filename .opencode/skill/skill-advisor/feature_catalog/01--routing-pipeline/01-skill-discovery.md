@@ -15,7 +15,7 @@ The advisor cannot rank anything until it knows the current skill and command su
 
 ## 2. CURRENT REALITY
 
-`get_skills()` starts from the cached skill inventory returned by the runtime helper and then appends inline bridge records for slash-command surfaces such as `command-spec-kit`, `command-memory-save`, and the create or improve commands. Each synthesized record carries a normalized name, description, variants, kind, and optional path so the rest of the pipeline can score skills and command bridges with the same machinery.
+`get_skills()` starts from the cached skill inventory returned by the runtime helper and then appends inline bridge records for slash-command surfaces such as `command-spec-kit`, `command-memory-save`, and the create or improve commands. In the current workspace, that yields 20 skill records plus 10 command bridges. Each synthesized record carries a normalized name, description, variants, kind, and optional path so the rest of the pipeline can score skills and command bridges with the same machinery.
 
 `skill_advisor.py` also keeps the discovery entry points that the rest of the advisor depends on. `parse_frontmatter()` is the safe wrapper for frontmatter extraction, `_build_variants()` adds slash, dollar-sign, space, and underscore spellings, and `load_all_skills()` forces a fresh scan for diagnostics. That keeps discovery lightweight during normal routing while still exposing a full refresh path for health reporting.
 

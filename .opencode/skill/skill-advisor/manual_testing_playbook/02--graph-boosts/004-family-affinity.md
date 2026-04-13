@@ -49,7 +49,7 @@ cli-codex ranks first. The sibling CLI skills do not appear from family affinity
 
 Capture the full JSON output and inspect every sibling CLI entry, if any, so the evidence shows whether it has non-graph reasons in addition to any family boost.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: cli-codex is top-1 and any sibling CLI result has direct evidence beyond `!graph:family(cli)`
 - **Fail**: A sibling CLI appears with only family-boost evidence, or cli-codex is not top-1

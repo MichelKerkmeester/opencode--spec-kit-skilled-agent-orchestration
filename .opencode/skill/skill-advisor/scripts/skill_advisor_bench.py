@@ -41,6 +41,7 @@ BENCH_ENV_FLAG = "SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC"
 # ───────────────────────────────────────────────────────────────
 
 def load_advisor_module() -> Any:
+    """Load the advisor module from disk for in-process benchmarks."""
     spec = importlib.util.spec_from_file_location("skill_advisor", ADVISOR_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Failed to load advisor module from {ADVISOR_PATH}")
@@ -51,13 +52,17 @@ def load_advisor_module() -> Any:
 
 
 def load_prompts_from_dataset(path: str) -> List[str]:
+    """Read prompt strings from a JSONL benchmark dataset."""
     prompts: List[str] = []
     with open(path, "r", encoding="utf-8") as handle:
-        for raw in handle:
+        for line_number, raw in enumerate(handle, start=1):
             stripped = raw.strip()
             if not stripped:
                 continue
-            row = json.loads(stripped)
+            try:
+                row = json.loads(stripped)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"Invalid JSONL at line {line_number}: {exc}") from exc
             prompt = row.get("prompt", "").strip()
             if prompt:
                 prompts.append(prompt)
@@ -69,6 +74,7 @@ def load_prompts_from_dataset(path: str) -> List[str]:
 # ───────────────────────────────────────────────────────────────
 
 def summarize(samples_ms: List[float]) -> Dict[str, float]:
+    """Summarize latency samples using median, p95, and mean statistics."""
     if not samples_ms:
         return {"count": 0, "p50_ms": 0.0, "p95_ms": 0.0, "min_ms": 0.0, "max_ms": 0.0, "mean_ms": 0.0}
 
@@ -88,6 +94,7 @@ def summarize(samples_ms: List[float]) -> Dict[str, float]:
 # ───────────────────────────────────────────────────────────────
 
 def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncertainty: float) -> Dict[str, Any]:
+    """Benchmark one-shot subprocess execution for advisor prompts."""
     latencies: List[float] = []
     total_prompts = 0
     run_env = os.environ.copy()
@@ -121,6 +128,7 @@ def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncert
 
 
 def benchmark_inprocess(prompts: List[str], runs: int, threshold: float, uncertainty: float) -> Dict[str, Any]:
+    """Benchmark warm in-process advisor calls after module load."""
     advisor = load_advisor_module()
     latencies: List[float] = []
     total_prompts = 0
@@ -145,6 +153,7 @@ def benchmark_inprocess(prompts: List[str], runs: int, threshold: float, uncerta
 
 
 def benchmark_batch_mode(prompts: List[str], runs: int, threshold: float, uncertainty: float) -> Dict[str, Any]:
+    """Benchmark batch-file execution to measure amortized throughput."""
     batch_latencies: List[float] = []
     total_prompts = 0
     run_env = os.environ.copy()
@@ -196,6 +205,7 @@ def benchmark_batch_mode(prompts: List[str], runs: int, threshold: float, uncert
 # ───────────────────────────────────────────────────────────────
 
 def ensure_parent_dir(path: str) -> None:
+    """Create the destination parent directory when an output path is nested."""
     parent = os.path.dirname(path)
     if parent:
         os.makedirs(parent, exist_ok=True)
@@ -206,6 +216,7 @@ def ensure_parent_dir(path: str) -> None:
 # ───────────────────────────────────────────────────────────────
 
 def main() -> int:
+    """Run the benchmark suite and emit a JSON report."""
     parser = argparse.ArgumentParser(description="Benchmark skill advisor latency and throughput.")
     parser.add_argument("--dataset", required=True, help="Path to JSONL dataset containing prompt fields.")
     parser.add_argument("--runs", type=int, default=7, help="Number of benchmark iterations.")

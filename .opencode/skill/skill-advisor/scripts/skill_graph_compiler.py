@@ -14,10 +14,10 @@ Usage:
     python skill_graph_compiler.py --output PATH      # Custom output path
 """
 
-import sys
-import os
-import json
 import argparse
+import json
+import os
+import sys
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
 
@@ -460,6 +460,7 @@ def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
 # ───────────────────────────────────────────────────────────────
 
 def main() -> int:
+    """Validate skill graph metadata and optionally compile the aggregated graph."""
     parser = argparse.ArgumentParser(
         description="Compile skill graph-metadata.json files into skill-graph.json",
     )

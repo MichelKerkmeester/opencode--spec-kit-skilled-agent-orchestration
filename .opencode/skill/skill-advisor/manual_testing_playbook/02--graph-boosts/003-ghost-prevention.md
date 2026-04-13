@@ -49,7 +49,7 @@ Every result has at least one non-graph match reason. No skill appears in the ou
 
 Capture the full JSON output and inspect each `reason` field so the evidence clearly shows whether any result contains only graph-derived matches.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: Every returned skill includes at least one non-graph evidence source
 - **Fail**: Any returned skill appears with only graph-derived evidence

@@ -49,7 +49,7 @@ The printed adjacency for mcp-code-mode includes a `prerequisite_for` section co
 
 Capture the printed JSON block for `adjacency.mcp-code-mode`, making sure the prerequisite_for group and all expected target skills are visible in the transcript.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: prerequisite_for edges are present in the compiled adjacency for all expected targets
 - **Fail**: prerequisite_for is missing entirely, or one of the expected targets is absent

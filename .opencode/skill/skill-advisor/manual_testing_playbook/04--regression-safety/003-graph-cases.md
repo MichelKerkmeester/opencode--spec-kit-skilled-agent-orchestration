@@ -49,7 +49,7 @@ The filtered command reports `All GRAPH cases pass`, which implies P1-GRAPH-001,
 
 Capture the filtered command output and, if needed, the full JSON regression report showing an empty GRAPH-specific failure subset.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: No GRAPH-prefixed case appears in the failures list
 - **Fail**: Any GRAPH-prefixed case appears in the failures list

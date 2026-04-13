@@ -15,13 +15,14 @@ Options:
     --threshold   Confidence threshold used by default dual-threshold filtering (default: 0.8)
     --confidence-only  Explicitly bypass uncertainty filtering
 """
-import sys
+import argparse
+import importlib.util
 import json
 import os
 import re
-import argparse
-import subprocess
 import shutil
+import subprocess
+import sys
 from typing import Any, Dict, List, Optional, Set
 
 
@@ -47,18 +48,18 @@ DISABLE_BUILTIN_SEMANTIC_ENV = "SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC"
 RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
 _RUNTIME_SPEC = None
 _runtime_module = None
+_runtime_load_error: Optional[Exception] = None
 try:
-    import importlib.util
-
     _RUNTIME_SPEC = importlib.util.spec_from_file_location("skill_advisor_runtime", RUNTIME_PATH)
     if _RUNTIME_SPEC and _RUNTIME_SPEC.loader:
         _runtime_module = importlib.util.module_from_spec(_RUNTIME_SPEC)
         _RUNTIME_SPEC.loader.exec_module(_runtime_module)
-except Exception as _runtime_exc:  # pragma: no cover - startup safety
+except Exception as exc:  # pragma: no cover - startup safety
+    _runtime_load_error = exc
     _runtime_module = None
 
 if _runtime_module is None:
-    raise RuntimeError(f"Failed to load runtime helpers from {RUNTIME_PATH}")
+    raise RuntimeError(f"Failed to load runtime helpers from {RUNTIME_PATH}") from _runtime_load_error
 
 # Compiled skill graph for relationship-aware routing
 SKILL_GRAPH_PATH = os.path.join(SCRIPT_DIR, "skill-graph.json")
@@ -953,11 +954,13 @@ def parse_frontmatter(file_path: str) -> Optional[Dict[str, str]]:
 
 
 def _normalize_terms(text: str) -> Set[str]:
+    """Split text into normalized search terms while filtering stop words."""
     terms = re.findall(r'\b\w+\b', text.lower())
     return {term for term in terms if len(term) > 2 and term not in STOP_WORDS}
 
 
 def _build_variants(skill_name: str) -> Set[str]:
+    """Build slash, dollar, and spacing variants for a skill identifier."""
     lowered = skill_name.lower()
     return {
         lowered,
@@ -976,6 +979,7 @@ def _build_inline_record(
     path: Optional[str] = None,
     extra_variants: Optional[Set[str]] = None,
 ) -> Dict[str, Any]:
+    """Create an in-memory skill or command record with normalized metadata."""
     variants = _build_variants(name)
     if extra_variants:
         variants.update(extra_variants)

@@ -15,7 +15,7 @@ Sometimes the fastest way to verify the routing stack is to ask it what it sees 
 
 ## 2. CURRENT REALITY
 
-`health_check()` returns the advisor's local diagnostics payload. It reports overall status, how many real skills and command bridges were discovered, the discovered names, the configured skills directory, whether that directory exists, the current cache status from the runtime helper, whether the compiled graph loaded successfully, and how many skills the loaded graph contains. The CLI path then enriches that payload with `cocoindex_available` and the resolved CocoIndex binary path before printing JSON.
+`health_check()` returns the advisor's local diagnostics payload. It reports overall status, how many real skills and command bridges were discovered, the discovered names, the configured skills directory, whether that directory exists, the current cache status from the runtime helper, whether the compiled graph loaded successfully, and how many skills the loaded graph contains. In the current workspace, `--health` reports 20 discovered skills, 10 command bridges, and a loaded graph with `skill_graph_skill_count` set to 21. The CLI path then enriches that payload with `cocoindex_available` and the resolved CocoIndex binary path before printing JSON.
 
 This makes `--health` a thin operational readiness probe for the whole routing stack. Operators can confirm that discovery is working, the compiled graph is readable, the runtime cache is alive, and semantic search dependencies are present without needing to reason through a specific prompt or inspect files by hand.
 

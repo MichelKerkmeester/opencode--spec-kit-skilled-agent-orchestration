@@ -49,7 +49,7 @@ sk-code-review or sk-code-opencode ranks first, the companion skill also appears
 
 Capture the full JSON output showing both overlay skills, their confidence scores, and the enhances reason that links them.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: Both overlay skills appear and the graph enhances relationship is visible in the reasons
 - **Fail**: Only one skill appears, or the companion result lacks graph enhances evidence

@@ -25,9 +25,9 @@ Operators run the exact prompt and command sequence for `CP-001` and confirm the
 
 - Objective: Verify all discovered graph metadata files pass compiler validation
 - Real user request: `"validate every skill graph metadata file"`
-- Prompt: `As a compiler validation operator, validate schema compliance against .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only. Verify 20 graph-metadata.json files are discovered, validation passes, and the command exits cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: the compiler reports 20 discovered metadata files, prints a validation-passed message, and exits with code 0
-- Pass/fail: PASS if 20 files are discovered with zero validation errors and exit code 0; FAIL if validation errors appear or the discovered count drops below 20
+- Prompt: `As a compiler validation operator, validate schema compliance against .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only. Verify 21 graph-metadata.json files are discovered, validation passes, and the command exits cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected signals: the compiler reports 21 discovered metadata files, prints a validation-passed message, and exits with code 0
+- Pass/fail: PASS if 21 files are discovered with zero validation errors and exit code 0; FAIL if validation errors appear or the discovered count drops below 21
 
 ---
 
@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `CP-001` and confirm the
 
 ### Prompt
 
-`As a compiler validation operator, validate schema compliance against .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only. Verify 20 graph-metadata.json files are discovered, validation passes, and the command exits cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+`As a compiler validation operator, validate schema compliance against .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only. Verify 21 graph-metadata.json files are discovered, validation passes, and the command exits cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ### Commands
 
@@ -43,16 +43,16 @@ Operators run the exact prompt and command sequence for `CP-001` and confirm the
 
 ### Expected
 
-The compiler reports `Discovered 20 skill graph-metadata.json files`, prints a validation-passed message, and exits successfully with no schema errors.
+The compiler reports `Discovered 21 skill graph-metadata.json files`, prints a validation-passed message, and exits successfully with no schema errors.
 
 ### Evidence
 
 Capture the full compiler transcript, including the discovered-file count, validation summary, and shell exit status.
 
-### Pass / Fail
+### Pass/Fail
 
-- **Pass**: 20 metadata files are discovered, validation passes, and the command exits 0
-- **Fail**: Any validation error appears, the discovered count is lower than 20, or the command exits non-zero
+- **Pass**: 21 metadata files are discovered, validation passes, and the command exits 0
+- **Fail**: Any validation error appears, the discovered count is lower than 21, or the command exits non-zero
 
 ### Failure Triage
 

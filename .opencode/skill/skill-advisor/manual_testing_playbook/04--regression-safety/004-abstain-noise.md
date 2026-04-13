@@ -51,7 +51,7 @@ Each invocation returns an empty JSON array, confirming the advisor abstains ins
 
 Capture the raw JSON output for all three prompts so the evidence clearly shows `[]` on each invocation.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: All three prompts return empty results
 - **Fail**: Any one of the noise prompts returns a skill recommendation

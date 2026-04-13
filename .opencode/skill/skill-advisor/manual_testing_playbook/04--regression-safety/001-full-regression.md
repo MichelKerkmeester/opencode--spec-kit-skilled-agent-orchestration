@@ -49,7 +49,7 @@ The JSON report shows `overall_pass` as true, `pass_rate` as 1.0, `failed_cases`
 
 Capture the full JSON regression report, including metrics, gate outcomes, and the empty failures list.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: `overall_pass` is true, `failed_cases` is 0, and every gate is green
 - **Fail**: Any case fails, any gate is false, or the report exits non-zero

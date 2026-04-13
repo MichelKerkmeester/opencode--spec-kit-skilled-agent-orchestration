@@ -49,7 +49,7 @@ sk-deep-review is top-1. sk-deep-research does NOT appear in results (sibling ed
 
 Capture the full JSON output showing the top-1 skill and confirming sk-deep-research is absent from the results array entirely.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: sk-deep-review is top-1; sk-deep-research absent or below threshold
 - **Fail**: sk-deep-research is top-1 or appears via graph sibling boost

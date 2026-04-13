@@ -49,7 +49,7 @@ The regression report shows `p0_total` as 12, `p0_passed` as 12, and `p0_pass_ra
 
 Capture the full JSON report or a filtered excerpt containing the P0 metrics and any related failures list.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: All 12 P0 cases pass and `p0_pass_rate` remains 1.0
 - **Fail**: Any P0 case fails or the P0 metrics drift from the expected values

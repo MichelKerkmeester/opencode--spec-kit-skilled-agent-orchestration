@@ -49,7 +49,7 @@ The command prints `True` followed by a populated entry count near the current s
 
 Capture the command output plus, if needed, a short JSON excerpt showing that `signals` maps skill IDs to intent_signals arrays.
 
-### Pass / Fail
+### Pass/Fail
 
 - **Pass**: The signals field is present and contains entries for most or all skills
 - **Fail**: The signals field is missing, false, or empty

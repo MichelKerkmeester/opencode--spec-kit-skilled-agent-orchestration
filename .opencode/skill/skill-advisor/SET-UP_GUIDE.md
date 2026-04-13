@@ -1,6 +1,6 @@
 # Skill Advisor Setup Guide
 
-Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/scripts/`.
+Complete setup and validation guide for the Skill Advisor workflow in `.opencode/skill/skill-advisor/scripts/`.
 
 This guide reflects the current runtime:
 - default dual-threshold routing (`confidence >= 0.8` and `uncertainty <= 0.35`)
@@ -18,7 +18,7 @@ This guide reflects the current runtime:
 The Skill Advisor stack now includes:
 
 ```text
-.opencode/skill/scripts/
+.opencode/skill/skill-advisor/scripts/
 ├── skill_advisor.py
 ├── skill_advisor_runtime.py
 ├── skill_advisor_regression.py
@@ -101,7 +101,7 @@ Expected behavior:
 - natural language prompts prefer `kind: "skill"`
 - explicit slash prompts may return `kind: "command"`
 - discovery prompts with `--semantic` or `--cocoindex` should favor `mcp-coco-index`
-- explicit autonomous review wording should favor `sk-deep-research`
+- explicit autonomous review wording should favor `sk-deep-review`
 
 ---
 
@@ -276,5 +276,5 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
   --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 
 # Alignment verification
-python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/scripts
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/skill-advisor/scripts
 ```
