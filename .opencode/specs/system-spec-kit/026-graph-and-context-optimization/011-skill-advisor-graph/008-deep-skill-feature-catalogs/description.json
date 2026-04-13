@@ -1,0 +1,9 @@
+{
+  "packet_id": "008-deep-skill-feature-catalogs",
+  "parent_id": "011-skill-advisor-graph",
+  "title": "Deep Skill Feature Catalogs",
+  "summary": "Create feature catalogs for sk-deep-research, sk-deep-review, and sk-improve-agent following the subsection template pattern.",
+  "status": "planned",
+  "level": 3,
+  "created_at": "2026-04-13"
+}
