@@ -26,7 +26,7 @@ Use this catalog as the canonical inventory for the live `skill-advisor` feature
 | Category | Coverage | Primary Runtime Surface |
 |---|---:|---|
 | Routing pipeline | 6 features | `skill_advisor.py` |
-| Graph system | 8 features | `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.json` |
+| Graph system | 10 features | `skill_advisor.py`, `skill_graph_compiler.py`, `skill-graph.sqlite` |
 | Semantic search | 2 features | `skill_advisor.py` |
 | Testing | 2 features | `skill_advisor_regression.py`, `skill_advisor.py` |
 
@@ -134,7 +134,7 @@ See [`01--routing-pipeline/06-result-filtering.md`](01--routing-pipeline/06-resu
 
 ## 3. GRAPH SYSTEM
 
-These entries describe the relationship-aware overlay that validates per-skill metadata, compiles a compact runtime graph, and feeds graph evidence back into routing without letting the graph invent unsupported candidates.
+These entries describe the relationship-aware overlay that validates per-skill metadata, compiles export snapshots, maintains the live SQLite graph store, and feeds graph evidence back into routing without letting the graph invent unsupported candidates.
 
 ### Graph metadata schema
 
@@ -261,6 +261,38 @@ Graph reasons are tagged separately, counted separately, and heavily graph-drive
 #### Source Files
 
 See [`02--graph-system/08-evidence-separation.md`](02--graph-system/08-evidence-separation.md) for full implementation and test file listings.
+
+---
+
+### SQLite graph store
+
+#### Description
+
+Stores the compiled skill graph in a dedicated SQLite database instead of a static JSON file, enabling real-time queries and auto-indexing.
+
+#### Current Reality
+
+The skill graph is stored in `skill-graph.sqlite` alongside `code-graph.sqlite` and `deep-loop-graph.sqlite`. The advisor reads from SQLite first and falls back to JSON if unavailable. Four MCP tools (`skill_graph_scan`, `skill_graph_query`, `skill_graph_status`, `skill_graph_validate`) provide structural queries accessible from all runtimes.
+
+#### Source Files
+
+See [`02--graph-system/09-sqlite-graph-store.md`](02--graph-system/09-sqlite-graph-store.md) for full implementation and test file listings.
+
+---
+
+### Auto-indexing
+
+#### Description
+
+Watches `graph-metadata.json` files for changes and automatically reindexes the SQLite store without manual recompilation.
+
+#### Current Reality
+
+A Chokidar file watcher monitors `.opencode/skill/*/graph-metadata.json` with 2-second debounce. On startup, an async non-blocking scan indexes all 21 metadata files. Content hashing (SHA-256) skips unchanged files for fast incremental updates.
+
+#### Source Files
+
+See [`02--graph-system/10-auto-indexing.md`](02--graph-system/10-auto-indexing.md) for full implementation and test file listings.
 
 ---
 

@@ -622,6 +622,49 @@ const codeGraphContext: ToolDefinition = {
   },
 };
 
+const skillGraphScan: ToolDefinition = {
+  name: 'skill_graph_scan',
+  description: '[L7:Maintenance] Index or re-index all .opencode/skill/*/graph-metadata.json files into skill-graph.sqlite using the hash-aware SQLite indexer. Token Budget: 800.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      skillsRoot: { type: 'string', description: 'Optional skills root to scan (default: .opencode/skill)' },
+    },
+    required: [],
+  },
+};
+
+const skillGraphQuery: ToolDefinition = {
+  name: 'skill_graph_query',
+  description: '[L6:Analysis] Query the SQLite-backed skill graph using structural relationship traversals. Supports depends_on, dependents, enhances, enhanced_by, family_members, conflicts, transitive_path, hub_skills, orphans, and subgraph. Token Budget: 1000.',
+  inputSchema: {
+    type: 'object', additionalProperties: false,
+    properties: {
+      queryType: { type: 'string', enum: ['depends_on', 'dependents', 'enhances', 'enhanced_by', 'family_members', 'conflicts', 'transitive_path', 'hub_skills', 'orphans', 'subgraph'], description: 'Query type to execute (required)' },
+      skillId: { type: 'string', description: 'Skill identifier for single-skill queries' },
+      sourceSkillId: { type: 'string', description: 'Source skill identifier for transitive_path' },
+      targetSkillId: { type: 'string', description: 'Target skill identifier for transitive_path' },
+      family: { type: 'string', enum: ['cli', 'mcp', 'sk-code', 'sk-deep', 'sk-util', 'system'], description: 'Family name for family_members query' },
+      minInbound: { type: 'number', minimum: 0, maximum: 200, default: 2, description: 'Minimum inbound edge count for hub_skills query' },
+      depth: { type: 'number', minimum: 1, maximum: 10, default: 2, description: 'Traversal depth for subgraph query' },
+      limit: { type: 'number', minimum: 1, maximum: 200, default: 50, description: 'Maximum results to return for list queries' },
+    },
+    required: ['queryType'],
+  },
+};
+
+const skillGraphStatus: ToolDefinition = {
+  name: 'skill_graph_status',
+  description: '[L7:Maintenance] Report skill graph health: node/edge counts, family/category distribution, source staleness, and validation summary from the live SQLite graph. Token Budget: 500.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+};
+
+const skillGraphValidate: ToolDefinition = {
+  name: 'skill_graph_validate',
+  description: '[L7:Maintenance] Validate the live skill graph for schema-version drift, broken edges, recommended weight-band violations, reciprocal symmetry, and lightweight dependency-cycle errors. Token Budget: 800.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+};
+
 const cccStatus: ToolDefinition = {
   name: 'ccc_status',
   description: '[L7:Maintenance] Check CocoIndex availability, binary path, and index status.',
@@ -850,6 +893,11 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   codeGraphQuery,
   codeGraphStatus,
   codeGraphContext,
+  // L8: Skill Graph
+  skillGraphScan,
+  skillGraphQuery,
+  skillGraphStatus,
+  skillGraphValidate,
   // L8: CocoIndex
   cccStatus,
   cccReindex,

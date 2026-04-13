@@ -19,6 +19,7 @@ Canonical source artifacts:
 - `.opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/`
 - `.opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/`
+- `.opencode/skill/skill-advisor/manual_testing_playbook/05--sqlite-graph/`
 
 ---
 
@@ -34,16 +35,17 @@ Canonical source artifacts:
 - [8. GRAPH BOOSTS (`GB-001..GB-007`)](#8--graph-boosts-gb-001gb-007)
 - [9. COMPILER (`CP-001..CP-005`)](#9--compiler-cp-001cp-005)
 - [10. REGRESSION SAFETY (`RS-001..RS-004`)](#10--regression-safety-rs-001rs-004)
-- [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
-- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+- [11. SQLITE GRAPH (`SG-001..SG-004`)](#11--sqlite-graph-sg-001sg-004)
+- [12. AUTOMATED TEST CROSS-REFERENCE](#12--automated-test-cross-reference)
+- [13. FEATURE CATALOG CROSS-REFERENCE INDEX](#13--feature-catalog-cross-reference-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 24 deterministic scenarios across 4 categories validating the `skill-advisor` routing and graph pipeline. Each feature keeps its original ID and links to a dedicated feature file with the full execution contract.
+This playbook provides 28 deterministic scenarios across 5 categories validating the `skill-advisor` routing and graph pipeline. Each feature keeps its original ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-13): all 24 scenario files now follow the split-document playbook contract, the 02/03/04 category stubs were rewritten to the sk-doc snippet shape, and the package uses the live `.opencode/skill/skill-advisor/` paths instead of the retired shared routing-script location.
+Coverage note (2026-04-13): all 28 scenario files now follow the split-document playbook contract, and the package now includes a dedicated SQLite graph category covering startup scan, MCP query tools, auto-reindex, and JSON fallback behavior.
 
 ### Realistic Test Model
 
@@ -66,10 +68,12 @@ Coverage note (2026-04-13): all 24 scenario files now follow the split-document 
 
 1. Working directory is the repository root.
 2. Python 3 is available in the execution environment.
-3. `.opencode/skill/skill-advisor/scripts/skill-graph.json` exists or can be regenerated before graph-sensitive checks.
-4. The 21 skill folders with `graph-metadata.json` are present in `.opencode/skill/`.
-5. Terminal transcript capture is enabled so JSON output, compiler warnings, and exit statuses are preserved.
-6. This playbook has no destructive scenarios. Parallel execution is allowed except when a run regenerates `.opencode/skill/skill-advisor/scripts/skill-graph.json`, which should be isolated to one worker.
+3. `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite` exists or can be regenerated before SQLite graph checks.
+4. `.opencode/skill/skill-advisor/scripts/skill-graph.json` exists or can be regenerated before JSON fallback checks.
+5. The 21 skill folders with `graph-metadata.json` are present in `.opencode/skill/`.
+6. The system-spec-kit MCP server is running for `SG-001`, `SG-002`, and `SG-003`.
+7. Terminal transcript capture is enabled so JSON output, compiler warnings, exit statuses, and MCP tool responses are preserved.
+8. This playbook includes one controlled destructive scenario, `SG-004`, which temporarily renames `skill-graph.sqlite`. Run that scenario in isolation and restore the database file before parallel execution resumes.
 
 ---
 
@@ -88,6 +92,7 @@ Coverage note (2026-04-13): all 24 scenario files now follow the split-document 
 ## 4. DETERMINISTIC COMMAND NOTATION
 
 - CLI commands are written exactly as they should be pasted into the terminal.
+- MCP tool invocations are written as `tool_name({...})` and should be executed through the active runtime's MCP client without rewriting arguments.
 - One-line Python inspection commands must be captured verbatim, including their inline JSON parsing.
 - `->` separates ordered sequential steps when a feature file needs more than one command.
 - If a command emits JSON, preserve raw output before summarizing it in the verdict.
@@ -103,6 +108,7 @@ Coverage note (2026-04-13): all 24 scenario files now follow the split-document 
 3. Scenario execution evidence
 4. Triage notes for all non-pass outcomes
 5. Any regenerated graph artifact if the run rebuilt `.opencode/skill/skill-advisor/scripts/skill-graph.json`
+6. Proof that `SG-004` restored `skill-graph.sqlite` after fallback validation
 
 ### Scenario Acceptance Rules
 
@@ -127,6 +133,7 @@ Scenario verdict:
 
 Hard rule:
 - Any failed compiler or regression-safety scenario makes the package `NOT READY`.
+- A failed `SG-004` restore also makes the package `NOT READY` until `skill-graph.sqlite` is back in place.
 
 ### Release Readiness Rule
 
@@ -134,9 +141,10 @@ Release is `READY` only when:
 
 1. No scenario verdict is `FAIL`.
 2. All compiler and regression-safety scenarios are `PASS`.
-3. Coverage is 100% of the 24 scenario files linked in this root document.
+3. Coverage is 100% of the 28 scenario files linked in this root document.
 4. No unresolved blocker remains after triage.
 5. No retired script-directory path references remain anywhere under `manual_testing_playbook/`.
+6. `skill-graph.sqlite` has been restored after any JSON fallback run.
 
 Rule: keep global verdict logic in the root playbook. Put feature-specific acceptance caveats in the matching per-feature files.
 
@@ -151,9 +159,9 @@ This section records wave planning and capacity guidance for the Skill Advisor m
 ### Operational Rules
 
 1. Reserve one coordinator to keep the verdict ledger and evidence log coherent.
-2. Run routing-accuracy scenarios as one wave, graph boosts as a second wave, compiler checks as a third wave, and regression safety as a fourth wave.
-3. If the graph must be rebuilt, do that before running graph boosts or regression safety.
-4. Do not mix graph-regeneration commands with read-only inspection commands in the same parallel wave.
+2. Run routing-accuracy scenarios as one wave, graph boosts as a second wave, compiler checks as a third wave, regression safety as a fourth wave, and SQLite graph scenarios as a fifth wave.
+3. If the graph must be rebuilt, do that before running graph boosts, regression safety, or SQLite graph checks.
+4. Do not mix graph-regeneration commands, watcher-driven metadata edits, or the `SG-004` database rename with read-only inspection commands in the same parallel wave.
 5. Capture every FAIL with the matching per-feature file path and the exact command output that triggered it.
 6. Re-run only the affected scenario after a targeted fix rather than rerunning the whole playbook by default.
 
@@ -227,7 +235,20 @@ These scenarios validate the permanent regression harness and the abstain guardr
 
 ---
 
-## 11. AUTOMATED TEST CROSS-REFERENCE
+## 11. SQLITE GRAPH (`SG-001..SG-004`)
+
+These scenarios validate the live SQLite graph store, the MCP graph tools, watcher-driven reindexing, and the advisor's JSON fallback path.
+
+| ID | Scenario | Command | Expected | File |
+|---|---|---|---|---|
+| SG-001 | SQLite startup scan | `ls .opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite -> skill_graph_status({})` | Database file exists and `totalSkills` reports 21 | [001-sqlite-startup-scan.md](05--sqlite-graph/001-sqlite-startup-scan.md) |
+| SG-002 | MCP query tools | `skill_graph_query({queryType:"depends_on",skillId:"mcp-figma"})` | `mcp-code-mode` returned as the outbound dependency | [002-mcp-query-tools.md](05--sqlite-graph/002-mcp-query-tools.md) |
+| SG-003 | Auto reindex | `edit graph-metadata.json -> wait 3s -> skill_graph_query({queryType:"depends_on",skillId:"mcp-figma"})` | Updated edge weight appears without running the compiler | [003-auto-reindex.md](05--sqlite-graph/003-auto-reindex.md) |
+| SG-004 | JSON fallback | `mv skill-graph.sqlite ... -> python3 .../skill_advisor.py "test" --health` | Advisor reports `skill_graph_source: "json"` while SQLite is absent | [004-json-fallback.md](05--sqlite-graph/004-json-fallback.md) |
+
+---
+
+## 12. AUTOMATED TEST CROSS-REFERENCE
 
 | Test Module | Coverage | Playbook Overlap |
 |---|---|---|
@@ -235,10 +256,13 @@ These scenarios validate the permanent regression harness and the abstain guardr
 | `.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Stable routing, graph, and abstain fixtures | RA-001, RA-005, GB-001, GB-002, RS-001..RS-004 |
 | `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py` | Schema validation, warning emission, compiled graph generation, size reporting | CP-001, CP-002, CP-003, CP-004, GB-007 |
 | `.opencode/skill/skill-advisor/scripts/skill_advisor.py --health` | Runtime graph diagnostics and cache reporting | CP-005 |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts` | SQLite schema, hash-aware indexing, and scan summaries | SG-001, SG-003 |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/{scan,query,status,validate}.ts` | Live MCP skill graph scans, queries, health, and validation | SG-001, SG-002, SG-003 |
+| `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Startup scan and watcher-driven auto-reindex behavior | SG-001, SG-003 |
 
 ---
 
-## 12. FEATURE CATALOG CROSS-REFERENCE INDEX
+## 13. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/feature_catalog.md`](../feature_catalog/feature_catalog.md). Use that catalog for the current-state inventory, and use this playbook package for operator prompts, execution steps, evidence capture, and verdict criteria.
 
@@ -268,3 +292,7 @@ Skill Advisor ships a live feature catalog rooted at [`../feature_catalog/featur
 | RS-002 | P0 cases untouched | Regression Safety | [RS-002](04--regression-safety/002-p0-cases.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | RS-003 | Graph-specific cases | Regression Safety | [RS-003](04--regression-safety/003-graph-cases.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
 | RS-004 | Abstain on noise | Regression Safety | [RS-004](04--regression-safety/004-abstain-noise.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| SG-001 | SQLite startup scan | SQLite Graph | [SG-001](05--sqlite-graph/001-sqlite-startup-scan.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| SG-002 | MCP query tools | SQLite Graph | [SG-002](05--sqlite-graph/002-mcp-query-tools.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| SG-003 | Auto reindex | SQLite Graph | [SG-003](05--sqlite-graph/003-auto-reindex.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |
+| SG-004 | JSON fallback | SQLite Graph | [SG-004](05--sqlite-graph/004-json-fallback.md) | [Root feature catalog](../feature_catalog/feature_catalog.md) |

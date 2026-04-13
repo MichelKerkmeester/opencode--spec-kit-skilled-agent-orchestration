@@ -22,9 +22,10 @@
   - [SPEC KIT DOCUMENTATION](#spec-kit-documentation)
   - [MEMORY ENGINE](#memory-engine)
   - [COCOINDEX + COMPACT CODE GRAPH](#cocoindex--compact-code-graph)
+  - [SKILL ADVISOR](#skill-advisor)
+  - [SKILLS LIBRARY](#skills-library)
   - [AGENT NETWORK](#agent-network)
   - [COMMAND ARCHITECTURE](#command-architecture)
-  - [SKILLS LIBRARY](#skills-library)
   - [CODE MODE MCP](#code-mode-mcp)
 - [CONFIGURATION](#4--configuration)
 - [FAQ](#5--faq)
@@ -543,9 +544,227 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ---
 
+### 🎯 Skill Advisor
+
+The Skill Advisor is an intelligent routing system that automatically matches user requests to the right skill. It powers Gate 2 in the gate system, analyzing every request against 21 skills using a multi-stage scoring pipeline with a SQLite-backed relationship graph. Average routing time: **0.5ms per query**.
+
+#### How It Works
+
+```
+  YOU TYPE: "use figma to export designs"
+                      │
+                      ▼
+           ┌──────────────────────┐
+      1.   │  NORMALIZE (0.1ms)   │  Lowercase, tokenize, expand
+           │                      │  synonyms, canonical intent rules
+           └──────────┬───────────┘
+                      ▼
+           ┌──────────────────────┐
+      2.   │  SCORE (0.2ms)       │  170 single-skill boosters
+           │                      │  32 multi-skill boosters
+           │                      │  134 phrase intent boosters
+           └──────────┬───────────┘
+                      ▼
+      ┌───────────────────────────────┐
+      │  3. GRAPH BOOSTS (0.1ms)      │  Reads skill-graph.sqlite:
+      │                               │  mcp-figma depends_on
+      │  SQLite-backed skill graph    │    mcp-code-mode -> boost it
+      │  with typed relationships,    │  MCP family -> light boost
+      │  auto-indexed via watcher     │    to other MCP skills
+      │                               │  Ghost guard: only boost
+      │  4 MCP tools for any runtime  │    skills already scored
+      └───────────────┬───────────────┘
+                      ▼
+           ┌──────────────────────┐
+      4.   │  CALIBRATE (0.1ms)   │  Confidence + uncertainty
+           │                      │  Graph-heavy results get haircut
+           │                      │  Conflict penalty if applicable
+           └──────────┬───────────┘
+                      ▼
+           ┌──────────────────────┐
+      5.   │  FILTER              │  confidence >= 0.8 AND
+           │                      │  uncertainty <= 0.35
+           └──────────┬───────────┘
+                      ▼
+                RESULT:
+           mcp-figma      0.95  pass
+           mcp-code-mode  0.95  pass  <- graph pulled this up
+           mcp-clickup    0.55  fail  <- below threshold
+```
+
+
+#### Skill Graph (SQLite-Backed)
+
+Every skill folder contains a `graph-metadata.json` declaring typed relationships to other skills. The graph is stored in `skill-graph.sqlite` (alongside `code-graph.sqlite` and `deep-loop-graph.sqlite`) and auto-indexed on MCP server startup and on file changes via a Chokidar watcher. The advisor reads SQLite first, falling back to the compiled JSON if SQLite is unavailable.
+
+4 MCP tools expose the graph to all runtimes:
+
+| Tool | Purpose |
+|------|---------|
+| `skill_graph_scan` | Index/reindex all metadata files into SQLite |
+| `skill_graph_query` | Structural queries: depends_on, enhances, family, transitive paths, hubs |
+| `skill_graph_status` | Health: node/edge counts, staleness, family distribution |
+| `skill_graph_validate` | Weight band, symmetry, and schema validation |
+
+
+#### Relationship Types
+
+| Edge Type | Semantics | Damping | Example |
+|-----------|-----------|---------|---------|
+| `depends_on` | Cannot function without target | 0.20 | mcp-figma depends on mcp-code-mode |
+| `enhances` | Adds value alongside target (overlay) | 0.30 | sk-code-review enhances sk-code-opencode |
+| `siblings` | Peer with shared characteristics | 0.15 | cli-gemini siblings cli-codex |
+| `conflicts_with` | Should not be recommended together | penalty | - |
+| `prerequisite_for` | Inverse of depends_on | 0.20 | mcp-code-mode prerequisite for mcp-figma |
+
+Family affinity gives an additional 8% boost to same-family members when one has a strong signal. A ghost candidate guard prevents the graph from creating brand-new winners -- graph boosts only apply to candidates that already have positive evidence.
+
+
+#### Validation and Testing
+
+- `skill_graph_compiler.py --validate-only` validates all 21 metadata files with schema, weight band, and edge symmetry checks
+- `skill_advisor.py --health` reports graph source (sqlite/json), skill count, and CocoIndex availability
+- 44-case regression suite with 12 P0 cases, 3 graph-specific test cases, and 100% pass rate
+- 28-scenario manual testing playbook covering routing, graph boosts, compiler, regression safety, and SQLite graph
+- 20-feature catalog across 4 categories (routing pipeline, graph system, semantic search, testing)
+
+For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README.md).
+
+---
+
+### 🎯 Skills Library
+
+21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
+
+#### DOCUMENTATION
+
+**system-spec-kit**
+- Mandatory orchestrator for all file modifications - activates automatically for any code file change
+- Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
+- Integrates the 47-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
+- Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
+
+**sk-doc**
+- Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
+- HVR v0.210 compliance checking and component creation workflows (skills, agents, commands)
+- Handles README templates, frontmatter validation, feature catalog authoring, install guide generation
+
+#### CODE WORKFLOW
+
+**sk-code-full-stack**
+- Stack-agnostic development orchestrator with automatic stack detection via marker files
+- Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default
+- 3 mandatory phases: implementation → testing/debugging → verification
+
+**sk-code-web**
+- Frontend development orchestrator with 5-phase lifecycle
+- Enforces mandatory browser testing before any completion claims with DevTools integration
+- Targets PageSpeed, Lighthouse, TBT and INP metrics. Includes Webflow integration.
+
+**sk-code-review**
+- Stack-agnostic code review baseline implementing the baseline + overlay model
+- Baseline always runs first: security checklist, correctness checklist, SOLID checklist, threat model
+- Security and correctness minimums are mandatory and NEVER relaxed by the overlay. P0/P1/P2 findings.
+
+**sk-code-opencode**
+- Multi-language standards for OpenCode system code across 5 languages
+- JavaScript (CommonJS), TypeScript (strict), Python (snake_case), Shell (set -euo pipefail), JSON/JSONC
+- Evidence-based patterns extracted from the actual codebase with `file:line` citations
+
+**sk-git**
+- Git workflow orchestrator coordinating 3 sub-skills
+- **git-worktree**: workspace isolation, branch creation, parallel development
+- **git-commit**: conventional commit format, staged change analysis, scope detection
+- **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
+
+**sk-deep-research** (v1.6.2.0)
+- Autonomous research investigation system with iterative LEAF cycles
+- Fresh context per iteration, externalized JSONL state, 3-signal convergence detection (Rolling Average + MAD Noise Floor + Coverage/Age)
+- Semantic coverage graph with 7 relation types, question coverage tracking, sourceDiversity and evidenceDepth guards
+- Progressive synthesis, negative knowledge preservation, quality guards (source diversity, focus alignment, weak-source checks)
+- Fail-closed corruption handling, graph convergence fallback scoring, terminal stop metadata parsing
+- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-research` command
+
+**sk-deep-review** (v1.3.2.0)
+- Autonomous code quality auditing system with iterative LEAF cycles
+- P0/P1/P2 severity-weighted findings across 4 dimensions (Correctness, Security, Traceability, Maintainability)
+- 3-signal convergence model, P0 override blocks stop, adversarial self-check (Hunter/Skeptic/Referee)
+- Binary quality gates (evidence, scope, coverage), graph-aware legal-stop checks, semantic coverage graph
+- 9-section review report with PASS/CONDITIONAL/FAIL verdict
+- Fail-closed corruption, claim-adjudication `finalSeverity`, stale STOP veto auto-clearing
+- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
+
+#### MCP INTEGRATION
+
+**mcp-code-mode**
+- MCP orchestration engine providing access to 200+ external tools through a single TypeScript interface
+- Reduces context overhead by 98.7% (1.6k tokens vs 141k for 47 tools loaded individually)
+- Progressive tool loading - zero upfront cost, tools load on first use. Type-safe with autocomplete.
+
+**mcp-coco-index**
+- Semantic code search via vector embeddings (Voyage Code 3 and All-MiniLM-L6-v2 models)
+- Natural-language discovery of code patterns and implementations across 28+ languages
+- Two access modes: CLI (`ccc`) for direct terminal use, MCP server for AI agent integration
+
+**mcp-figma**
+- 18 Figma tools across 6 categories: file access, asset export, design system extraction
+- Design tokens (colors, typography, effects), collaboration (comments), team management
+- Two setup options: Official Figma MCP (HTTP, OAuth) or Framelink (stdio, local)
+
+**mcp-chrome-devtools**
+- Chrome DevTools orchestrator with intelligent 2-mode routing
+- CLI mode (`bdg`) prioritized for speed - runs in terminal, supports Unix pipes, composable in CI/CD
+- MCP mode as fallback for multi-tool integration scenarios
+
+**mcp-clickup**
+- ClickUp project management orchestrator with 2-mode routing
+- CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed
+- MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
+
+#### CROSS-AI CLI
+
+**cli-gemini**
+- Gemini CLI orchestrator enabling cross-AI delegation from Claude Code, Codex, or Copilot
+- Real-time web search via Google Search grounding (no other CLI skill has this)
+- Deep codebase architecture analysis leveraging 1M+ token context. Single model: `gemini-3.1-pro-preview`
+
+**cli-codex**
+- OpenAI Codex CLI orchestrator with dual model support (`gpt-5.4` + `gpt-5.3-codex`)
+- `/review` command with diff-aware code review, `--search` for web browsing, `--image` for screenshot analysis
+- Session management (resume/fork), agent profiles, cost control via `--max-budget-usd`
+
+**cli-claude-code**
+- Claude Code CLI orchestrator with 3 models (Opus 4.6, Sonnet 4.6, Haiku 4.5)
+- Extended thinking with chain-of-thought, surgical diff-based code editing
+- JSON schema-validated structured output, 9 built-in agents, session continuity
+
+**cli-copilot**
+- GitHub Copilot CLI orchestrator with 5 models across 3 providers
+- Explore/Task agents for architecture mapping, `/delegate` for cloud-hosted coding agents
+- Autopilot autonomous execution mode, MCP server integration, native GitHub ecosystem perspective
+
+#### OTHER
+
+**sk-improve-prompt**
+- Prompt engineering specialist auto-selecting from 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
+- DEPTH thinking methodology with 3-10 iteration rounds of progressive refinement
+- CLEAR quality scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold)
+
+**sk-improve-agent** (v1.2.2.0)
+- Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
+- Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
+- Dynamic profile generator derives scoring rubric from any agent's own rules, no hardcoded profiles needed
+- Proposal-first: candidates in packet-local runtime areas, canonical target untouched until guarded promotion
+- Guarded promotion with scoring, benchmark, repeatability and operator approval gates. Rollback support.
+- Dimensional progress tracking with plateau detection (3+ identical scores triggers stop)
+- All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
+- Legal-stop events, session-boundary gate, `plateau` stop reason, dashboard sections for journal/lineage/coverage
+
+---
+
 ### 🤖 Agent Network
 
-11 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
+12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -793,136 +1012,6 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 - The receiving AI operates under its own system prompt - full identity adoption
 - Use for cross-AI delegation where the target AI needs to behave as itself
 
-
----
-
-### 🎯 Skills Library
-
-21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
-
-#### DOCUMENTATION
-
-**system-spec-kit**
-- Mandatory orchestrator for all file modifications - activates automatically for any code file change
-- Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
-- Integrates the 47-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
-- Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
-
-**sk-doc**
-- Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
-- HVR v0.210 compliance checking and component creation workflows (skills, agents, commands)
-- Handles README templates, frontmatter validation, feature catalog authoring, install guide generation
-
-#### CODE WORKFLOW
-
-**sk-code-full-stack**
-- Stack-agnostic development orchestrator with automatic stack detection via marker files
-- Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default
-- 3 mandatory phases: implementation → testing/debugging → verification
-
-**sk-code-web**
-- Frontend development orchestrator with 5-phase lifecycle
-- Enforces mandatory browser testing before any completion claims with DevTools integration
-- Targets PageSpeed, Lighthouse, TBT and INP metrics. Includes Webflow integration.
-
-**sk-code-review**
-- Stack-agnostic code review baseline implementing the baseline + overlay model
-- Baseline always runs first: security checklist, correctness checklist, SOLID checklist, threat model
-- Security and correctness minimums are mandatory and NEVER relaxed by the overlay. P0/P1/P2 findings.
-
-**sk-code-opencode**
-- Multi-language standards for OpenCode system code across 5 languages
-- JavaScript (CommonJS), TypeScript (strict), Python (snake_case), Shell (set -euo pipefail), JSON/JSONC
-- Evidence-based patterns extracted from the actual codebase with `file:line` citations
-
-**sk-git**
-- Git workflow orchestrator coordinating 3 sub-skills
-- **git-worktree**: workspace isolation, branch creation, parallel development
-- **git-commit**: conventional commit format, staged change analysis, scope detection
-- **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
-
-**sk-deep-research** (v1.6.2.0)
-- Autonomous research investigation system with iterative LEAF cycles
-- Fresh context per iteration, externalized JSONL state, 3-signal convergence detection (Rolling Average + MAD Noise Floor + Coverage/Age)
-- Semantic coverage graph with 7 relation types, question coverage tracking, sourceDiversity and evidenceDepth guards
-- Progressive synthesis, negative knowledge preservation, quality guards (source diversity, focus alignment, weak-source checks)
-- Fail-closed corruption handling, graph convergence fallback scoring, terminal stop metadata parsing
-- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-research` command
-
-**sk-deep-review** (v1.3.2.0)
-- Autonomous code quality auditing system with iterative LEAF cycles
-- P0/P1/P2 severity-weighted findings across 4 dimensions (Correctness, Security, Traceability, Maintainability)
-- 3-signal convergence model, P0 override blocks stop, adversarial self-check (Hunter/Skeptic/Referee)
-- Binary quality gates (evidence, scope, coverage), graph-aware legal-stop checks, semantic coverage graph
-- 9-section review report with PASS/CONDITIONAL/FAIL verdict
-- Fail-closed corruption, claim-adjudication `finalSeverity`, stale STOP veto auto-clearing
-- Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
-
-#### MCP INTEGRATION
-
-**mcp-code-mode**
-- MCP orchestration engine providing access to 200+ external tools through a single TypeScript interface
-- Reduces context overhead by 98.7% (1.6k tokens vs 141k for 47 tools loaded individually)
-- Progressive tool loading - zero upfront cost, tools load on first use. Type-safe with autocomplete.
-
-**mcp-coco-index**
-- Semantic code search via vector embeddings (Voyage Code 3 and All-MiniLM-L6-v2 models)
-- Natural-language discovery of code patterns and implementations across 28+ languages
-- Two access modes: CLI (`ccc`) for direct terminal use, MCP server for AI agent integration
-
-**mcp-figma**
-- 18 Figma tools across 6 categories: file access, asset export, design system extraction
-- Design tokens (colors, typography, effects), collaboration (comments), team management
-- Two setup options: Official Figma MCP (HTTP, OAuth) or Framelink (stdio, local)
-
-**mcp-chrome-devtools**
-- Chrome DevTools orchestrator with intelligent 2-mode routing
-- CLI mode (`bdg`) prioritized for speed - runs in terminal, supports Unix pipes, composable in CI/CD
-- MCP mode as fallback for multi-tool integration scenarios
-
-**mcp-clickup**
-- ClickUp project management orchestrator with 2-mode routing
-- CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed
-- MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
-
-#### CROSS-AI CLI
-
-**cli-gemini**
-- Gemini CLI orchestrator enabling cross-AI delegation from Claude Code, Codex, or Copilot
-- Real-time web search via Google Search grounding (no other CLI skill has this)
-- Deep codebase architecture analysis leveraging 1M+ token context. Single model: `gemini-3.1-pro-preview`
-
-**cli-codex**
-- OpenAI Codex CLI orchestrator with dual model support (`gpt-5.4` + `gpt-5.3-codex`)
-- `/review` command with diff-aware code review, `--search` for web browsing, `--image` for screenshot analysis
-- Session management (resume/fork), agent profiles, cost control via `--max-budget-usd`
-
-**cli-claude-code**
-- Claude Code CLI orchestrator with 3 models (Opus 4.6, Sonnet 4.6, Haiku 4.5)
-- Extended thinking with chain-of-thought, surgical diff-based code editing
-- JSON schema-validated structured output, 9 built-in agents, session continuity
-
-**cli-copilot**
-- GitHub Copilot CLI orchestrator with 5 models across 3 providers
-- Explore/Task agents for architecture mapping, `/delegate` for cloud-hosted coding agents
-- Autopilot autonomous execution mode, MCP server integration, native GitHub ecosystem perspective
-
-#### OTHER
-
-**sk-improve-prompt**
-- Prompt engineering specialist auto-selecting from 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
-- DEPTH thinking methodology with 3-10 iteration rounds of progressive refinement
-- CLEAR quality scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold)
-
-**sk-improve-agent** (v1.2.2.0)
-- Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
-- Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
-- Dynamic profile generator derives scoring rubric from any agent's own rules, no hardcoded profiles needed
-- Proposal-first: candidates in packet-local runtime areas, canonical target untouched until guarded promotion
-- Guarded promotion with scoring, benchmark, repeatability and operator approval gates. Rollback support.
-- Dimensional progress tracking with plateau detection (3+ identical scores triggers stop)
-- All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
-- Legal-stop events, session-boundary gate, `plateau` stop reason, dashboard sections for journal/lineage/coverage
 
 ---
 

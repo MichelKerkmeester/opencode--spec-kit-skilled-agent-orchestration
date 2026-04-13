@@ -41,11 +41,11 @@ trigger_phrases:
 
 `.opencode/skill/skill-advisor/` is the support package for the shared routing and graph-compilation scripts used by the OpenCode framework. The primary runtime entry point lives at `scripts/skill_advisor.py`, the routing engine that powers Gate 2 in AGENTS.md. It analyzes a user's request using token normalization, synonym expansion, intent boosting, graph-derived overlays, and confidence calibration, then returns a ranked list of skill recommendations in JSON.
 
-The package's graph metadata system lives alongside the runtime. Every folder under `.opencode/skill/` now ships with `graph-metadata.json`. `skill_graph_compiler.py` validates those packet-local graph files and compiles them into `scripts/skill-graph.json`, which the advisor loads for relationship-aware boosts, family affinity, and conflict handling.
+The package's graph metadata system lives alongside the runtime. Every folder under `.opencode/skill/` now ships with `graph-metadata.json`. `skill_graph_compiler.py` still validates those packet-local graph files and writes `scripts/skill-graph.json` for export and CI, but the live runtime store is `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite`. `skill_advisor.py` loads SQLite first and falls back to the JSON snapshot when the database is unavailable.
 
 Three supporting scripts extend the core engine. `skill_advisor_runtime.py` provides cached skill discovery and fast frontmatter parsing so the advisor avoids re-reading SKILL.md files on every call. `skill_advisor_regression.py` runs a versioned fixture set to catch routing quality regressions before they ship. `skill_advisor_bench.py` measures latency and throughput in one-shot, warm, and batch modes.
 
-The package also includes `feature_catalog/` for capability inventory, `manual_testing_playbook/` for operator validation, `scripts/fixtures/` for versioned test cases, and `scripts/out/` for report output. `SET-UP_GUIDE.md` covers project-specific customization.
+The package also includes `feature_catalog/` for capability inventory, `manual_testing_playbook/` for operator validation, `scripts/fixtures/` for versioned test cases, and `scripts/out/` for report output. `SET-UP_GUIDE.md` covers project-specific customization. Four MCP tools exposed by the shared system-spec-kit server, `skill_graph_scan`, `skill_graph_query`, `skill_graph_status`, and `skill_graph_validate`, provide scan, traversal, health, and validation access to the live SQLite graph from every runtime.
 
 These routing scripts can surface the right packet helpers, but canonical packet continuity still belongs to `/spec_kit:resume` and packet docs. The recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept as support only.
 
@@ -62,6 +62,8 @@ These routing scripts can surface the right packet helpers, but canonical packet
 | Skill folders with graph metadata | 21 | One `graph-metadata.json` file per folder under `.opencode/skill/` |
 | Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
 | Compiled graph edges | 67 | Sparse `enhances`, `depends_on`, `siblings`, and `prerequisite_for` links |
+| Live graph store | 1 database | `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite` |
+| MCP skill graph tools | 4 | `skill_graph_scan`, `skill_graph_query`, `skill_graph_status`, `skill_graph_validate` |
 | Regression fixtures | 1 file | `skill_advisor_regression_cases.jsonl` |
 
 ### Scripts Inventory
@@ -134,13 +136,17 @@ fi
 
 **Command bridge separation.** Slash commands (for example `/spec_kit:plan` and `/memory:save`) are exposed as command bridges tagged `kind: command`. Natural language prompts deprioritize command bridges so they do not crowd out real skill results. Explicit slash syntax allows command bridges to rank first.
 
-**Graph-derived boosts.** `skill_graph_compiler.py` turns the per-folder `graph-metadata.json` files into `scripts/skill-graph.json`. At runtime, `skill_advisor.py` uses `enhances`, `depends_on`, and `siblings` edges to reinforce candidates that already have direct prompt evidence, and it tags each overlay as a `!graph:*` reason.
+**Graph-derived boosts.** `skill_graph_compiler.py` still turns the per-folder `graph-metadata.json` files into `scripts/skill-graph.json` for export and CI. At runtime, `skill_advisor.py` first loads compiled-equivalent graph data from `skill-graph.sqlite`, falls back to the JSON snapshot when needed, then uses `enhances`, `depends_on`, and `siblings` edges to reinforce candidates that already have direct prompt evidence.
 
 **Family affinity.** The compiled graph groups the current 21 folders into 6 families. When one family member has strong evidence, nearby family members can receive a small follow-on boost, but only if they already have a weaker positive score of their own.
 
 **Ghost candidate guard.** Graph overlays never create a brand-new candidate. The advisor freezes the pre-graph score snapshot and skips any target that lacks positive evidence before graph processing starts.
 
 **Evidence separation.** Graph reasons stay separate from lexical and intent evidence. The advisor counts `!graph:*` matches independently, then applies a confidence haircut when a recommendation is driven too heavily by graph overlays instead of direct prompt evidence.
+
+**SQLite graph store and MCP tools.** The live graph store sits in `skill-graph.sqlite` beside `code-graph.sqlite` and `deep-loop-graph.sqlite` under the shared system-spec-kit MCP server database directory. The `skill_graph_scan`, `skill_graph_query`, `skill_graph_status`, and `skill_graph_validate` tools expose the same SQLite-backed graph for scan, traversal, health, and validation workflows across all runtimes.
+
+**Auto-indexing.** The MCP server kicks off a non-blocking startup scan and starts a Chokidar watcher for `.opencode/skill/*/graph-metadata.json`. A 2-second debounce and SHA-256 content hashing keep reindexing incremental, so unchanged metadata files are skipped and live graph updates land without rerunning the compiler.
 
 **Regression and benchmark tooling.** The regression harness runs against a versioned JSONL fixture set and writes a report to `out/regression-report.json`. The benchmark harness measures p50/p95 latency across one-shot, warm, and batch run modes.
 
@@ -228,20 +234,23 @@ fi
 │   └── 02--graph-system/                    # Graph metadata, compiler, and guardrail docs
 ├── manual_testing_playbook/                 # Operator validation package
 │   ├── manual_testing_playbook.md           # Root playbook and scenario index
-│   └── 02--graph-boosts/                    # Graph-system validation scenarios
+│   ├── 02--graph-boosts/                    # Graph-system validation scenarios
+│   └── 05--sqlite-graph/                    # SQLite graph validation scenarios
 └── scripts/
     ├── skill_advisor.py                     # Skill routing engine (Gate 2)
     ├── skill_advisor_runtime.py             # Cache and metadata runtime helpers
     ├── skill_advisor_regression.py          # Quality regression harness
     ├── skill_advisor_bench.py               # Latency and throughput benchmarks
-    ├── skill_graph_compiler.py              # Graph metadata compiler and validator
+    ├── skill_graph_compiler.py              # Graph metadata compiler and JSON export builder
     ├── fixtures/
     │   └── skill_advisor_regression_cases.jsonl
     ├── out/
     │   ├── regression-report.json
     │   └── benchmark-report.json
-    └── skill-graph.json                     # Compiled graph snapshot
+    └── skill-graph.json                     # Export and JSON fallback snapshot
 ```
+
+The live runtime store is separate from this package tree: `.opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite`. That SQLite database is the first graph source the advisor tries at runtime.
 
 ### How It Fits in the Framework
 
@@ -298,7 +307,7 @@ trigger_phrases:
 
 ### Adding graph edges for a new skill
 
-Each folder under `.opencode/skill/` can contribute graph metadata. Add the family and any sparse edge groups to that folder's `graph-metadata.json`, then rebuild the compiled graph:
+Each folder under `.opencode/skill/` can contribute graph metadata. Add the family and any sparse edge groups to that folder's `graph-metadata.json`. When the shared MCP server is running, the live SQLite graph reindexes these files automatically. `scripts/skill-graph.json` stays in place for export, CI, and JSON fallback:
 
 ```json
 {
@@ -314,7 +323,13 @@ Each folder under `.opencode/skill/` can contribute graph metadata. Add the fami
 }
 ```
 
-Supported compiled edge groups are `depends_on`, `enhances`, `siblings`, and `prerequisite_for`. After editing any graph metadata file, validate and rebuild `scripts/skill-graph.json`:
+Supported compiled edge groups are `depends_on`, `enhances`, `siblings`, and `prerequisite_for`. After editing any graph metadata file, inspect the live SQLite store with the MCP tools, then rebuild `scripts/skill-graph.json` only when the export or fallback snapshot needs a refresh:
+
+```text
+skill_graph_status({})
+skill_graph_validate({})
+skill_graph_scan({})
+```
 
 ```bash
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
@@ -458,13 +473,20 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor_bench.py \
   --out .opencode/skill/skill-advisor/scripts/out/benchmark-report.json
 ```
 
-### Validate or rebuild the graph snapshot
+### Inspect the live graph store or rebuild the JSON snapshot
+
+```text
+skill_graph_status({})
+skill_graph_validate({})
+skill_graph_scan({})
+skill_graph_query({queryType:"depends_on",skillId:"mcp-figma"})
+```
 
 ```bash
 # Validate every graph-metadata.json file without writing output
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --validate-only
 
-# Rebuild the compiled graph used at runtime
+# Rebuild the JSON snapshot kept for export, CI, and fallback
 python3 .opencode/skill/skill-advisor/scripts/skill_graph_compiler.py --pretty
 ```
 

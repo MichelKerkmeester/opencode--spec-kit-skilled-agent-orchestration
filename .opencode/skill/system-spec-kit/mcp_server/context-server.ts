@@ -20,6 +20,7 @@ import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprot
 import {
   DEFAULT_BASE_PATH,
   ALLOWED_BASE_PATHS,
+  DATABASE_DIR,
   DATABASE_PATH,
   checkDatabaseUpdated,
   setEmbeddingModelReady, waitForEmbeddingModel,
@@ -82,6 +83,11 @@ import { createUnifiedGraphSearchFn } from './lib/search/graph-search-fn.js';
 import { isGraphUnifiedEnabled } from './lib/search/graph-flags.js';
 import * as graphDb from './lib/code-graph/code-graph-db.js';
 import { detectRuntime, type RuntimeInfo } from './lib/code-graph/runtime-detection.js';
+import {
+  closeDb as closeSkillGraphDb,
+  indexSkillMetadata,
+  initDb as initSkillGraphDb,
+} from './lib/skill-graph/skill-graph-db.js';
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';
@@ -196,6 +202,12 @@ type AfterToolCallback = (tool: string, callId: string, result: unknown) => Prom
 
 const afterToolCallbacks: Array<AfterToolCallback> = [];
 
+interface ChokidarModule {
+  default: {
+    watch: (paths: string | string[], options: Record<string, unknown>) => FSWatcher;
+  };
+}
+
 /** Timeout (ms) for waiting on embedding model readiness during startup scan. */
 const EMBEDDING_MODEL_TIMEOUT_MS = 30_000;
 
@@ -206,6 +218,8 @@ const GRAPH_ENRICHMENT_TIMEOUT_MS = 250;
 const GRAPH_ENRICHMENT_OUTLINE_LIMIT = 6;
 const GRAPH_ENRICHMENT_NEIGHBOR_LIMIT = 6;
 const GRAPH_ENRICHMENT_SYMBOL_LIMIT = 4;
+const SKILL_GRAPH_WATCH_DEBOUNCE_MS = 2000;
+const SKILL_GRAPH_METADATA_FILENAME = 'graph-metadata.json';
 const GRAPH_CONTEXT_EXCLUDED_TOOLS = new Set<string>([
   ...MEMORY_AWARE_TOOLS,
   'code_graph_query',
@@ -1330,6 +1344,122 @@ async function startupScan(basePath: string): Promise<void> {
   }
 }
 
+function resolveSkillGraphSourceDir(): string | null {
+  const candidates = Array.from(new Set([
+    path.resolve(DEFAULT_BASE_PATH, '.opencode', 'skill'),
+    path.resolve(process.cwd(), '.opencode', 'skill'),
+    path.resolve(import.meta.dirname, '..', '..', '..', '..', '.opencode', 'skill'),
+  ]));
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+async function loadSkillGraphWatchFactory(): Promise<(paths: string | string[], options: Record<string, unknown>) => FSWatcher> {
+  const chokidarModule = await import('chokidar') as ChokidarModule;
+  return chokidarModule.default.watch;
+}
+
+function logSkillGraphIndexResult(trigger: string, result: ReturnType<typeof indexSkillMetadata>): void {
+  console.error(
+    '[context-server] Skill graph %s: scanned=%d indexed=%d skipped=%d edges=%d rejected=%d deleted=%d',
+    trigger,
+    result.scannedFiles,
+    result.indexedFiles,
+    result.skippedFiles,
+    result.indexedEdges,
+    result.rejectedEdges,
+    result.deletedNodes,
+  );
+}
+
+async function runSkillGraphIndex(trigger: string): Promise<void> {
+  if (skillGraphScanInProgress) {
+    skillGraphScanQueued = true;
+    return;
+  }
+
+  const skillGraphSourceDir = resolveSkillGraphSourceDir();
+  if (!skillGraphSourceDir) {
+    console.warn('[context-server] Skill graph source directory not found; skipping index');
+    return;
+  }
+
+  skillGraphScanInProgress = true;
+  try {
+    const result = indexSkillMetadata(skillGraphSourceDir);
+    logSkillGraphIndexResult(trigger, result);
+  } catch (skillGraphIndexErr: unknown) {
+    const message = skillGraphIndexErr instanceof Error ? skillGraphIndexErr.message : String(skillGraphIndexErr);
+    console.warn('[context-server] Skill graph index failed:', message);
+  } finally {
+    skillGraphScanInProgress = false;
+    if (skillGraphScanQueued) {
+      skillGraphScanQueued = false;
+      setImmediate(() => {
+        void runSkillGraphIndex('queued-rescan');
+      });
+    }
+  }
+}
+
+function scheduleSkillGraphIndex(trigger: string): void {
+  if (skillGraphWatchDebounceTimer) {
+    clearTimeout(skillGraphWatchDebounceTimer);
+  }
+
+  skillGraphWatchDebounceTimer = setTimeout(() => {
+    skillGraphWatchDebounceTimer = null;
+    void runSkillGraphIndex(trigger);
+  }, SKILL_GRAPH_WATCH_DEBOUNCE_MS);
+}
+
+async function startupSkillGraphScan(): Promise<void> {
+  await runSkillGraphIndex('startup-scan');
+}
+
+async function startSkillGraphWatcher(): Promise<void> {
+  if (skillGraphWatcher) {
+    return;
+  }
+
+  const skillGraphSourceDir = resolveSkillGraphSourceDir();
+  if (!skillGraphSourceDir) {
+    console.warn('[context-server] Skill graph watcher skipped: skill directory not found');
+    return;
+  }
+
+  const watchFactory = await loadSkillGraphWatchFactory();
+  const watchGlob = path.join(skillGraphSourceDir, '*', SKILL_GRAPH_METADATA_FILENAME);
+  skillGraphWatcher = watchFactory(watchGlob, {
+    ignoreInitial: true,
+    awaitWriteFinish: { stabilityThreshold: 1000 },
+    followSymlinks: false,
+  });
+
+  const schedule = (trigger: string) => (targetPath: unknown) => {
+    if (typeof targetPath !== 'string') {
+      return;
+    }
+    scheduleSkillGraphIndex(`${trigger}:${path.basename(path.dirname(targetPath))}`);
+  };
+
+  skillGraphWatcher.on('add', schedule('watcher-add'));
+  skillGraphWatcher.on('change', schedule('watcher-change'));
+  skillGraphWatcher.on('unlink', schedule('watcher-unlink'));
+  skillGraphWatcher.on('error', (watchErr: unknown) => {
+    const message = watchErr instanceof Error ? watchErr.message : String(watchErr);
+    console.warn('[context-server] Skill graph watcher error:', message);
+  });
+
+  console.error(`[context-server] Skill graph watcher started for ${watchGlob}`);
+}
+
 /* ───────────────────────────────────────────────────────────────
    7. GRACEFUL SHUTDOWN
 ──────────────────────────────────────────────────────────────── */
@@ -1340,6 +1470,10 @@ let transport: StdioServerTransport | null = null;
 // P1-11 FIX: Module-level guard to avoid redundant initializeDb() calls per tool invocation
 let dbInitialized = false;
 let fileWatcher: FSWatcher | null = null;
+let skillGraphWatcher: FSWatcher | null = null;
+let skillGraphWatchDebounceTimer: NodeJS.Timeout | null = null;
+let skillGraphScanInProgress = false;
+let skillGraphScanQueued = false;
 
 /** Maximum time (ms) to wait for async cleanup before force-exiting. */
 const SHUTDOWN_DEADLINE_MS = 5000;
@@ -1371,10 +1505,21 @@ async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
         fileWatcher = null;
       }
     });
+    await runAsyncCleanupStep('skillGraphWatcher', async () => {
+      if (skillGraphWatchDebounceTimer) {
+        clearTimeout(skillGraphWatchDebounceTimer);
+        skillGraphWatchDebounceTimer = null;
+      }
+      if (skillGraphWatcher) {
+        await skillGraphWatcher.close();
+        skillGraphWatcher = null;
+      }
+    });
     await runAsyncCleanupStep('local-reranker', async () => {
       await disposeLocalReranker();
     });
     runCleanupStep('vectorIndex', () => vectorIndex.closeDb());
+    runCleanupStep('skillGraphDb', () => closeSkillGraphDb());
     // P1-09 FIX: Close MCP transport on shutdown
     runCleanupStep('transport', () => {
       if (transport) {
@@ -1549,6 +1694,13 @@ async function main(): Promise<void> {
 
   console.error('[context-server] Initializing database...');
   vectorIndex.initializeDb();
+  try {
+    initSkillGraphDb(DATABASE_DIR);
+    console.error('[context-server] Skill graph database initialized');
+  } catch (skillGraphInitErr: unknown) {
+    const message = skillGraphInitErr instanceof Error ? skillGraphInitErr.message : String(skillGraphInitErr);
+    console.warn('[context-server] Skill graph database init failed (non-fatal):', message);
+  }
   dbInitialized = true;
   console.error('[context-server] Database initialized');
   console.error('[context-server] Database path: ' + DATABASE_PATH);
@@ -1844,6 +1996,13 @@ async function main(): Promise<void> {
         const message = watchErr instanceof Error ? watchErr.message : String(watchErr);
         console.warn('[context-server] File watcher startup failed:', message);
       }
+
+      try {
+        await startSkillGraphWatcher();
+      } catch (skillGraphWatchErr: unknown) {
+        const message = skillGraphWatchErr instanceof Error ? skillGraphWatchErr.message : String(skillGraphWatchErr);
+        console.warn('[context-server] Skill graph watcher startup failed:', message);
+      }
     }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -1869,7 +2028,10 @@ async function main(): Promise<void> {
   console.error('[context-server] Context MCP server running on stdio');
 
   // Background startup scan
-  setImmediate(() => startupScan(DEFAULT_BASE_PATH));
+  setImmediate(() => {
+    void startupScan(DEFAULT_BASE_PATH);
+    void startupSkillGraphScan();
+  });
 }
 
 const isMain = process.argv[1] && decodeURIComponent(import.meta.url).endsWith(process.argv[1].replace(/\\/g, '/'));

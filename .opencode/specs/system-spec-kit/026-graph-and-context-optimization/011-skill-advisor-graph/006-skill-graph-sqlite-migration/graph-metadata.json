@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "packet_id": "006-skill-graph-sqlite-migration",
+  "parent_id": "011-skill-advisor-graph",
+  "title": "Skill Graph SQLite Migration",
+  "status": "planned",
+  "level": 3,
+  "created_at": "2026-04-13",
+  "derived": {
+    "trigger_phrases": [
+      "skill graph sqlite",
+      "skill graph mcp",
+      "skill graph migration",
+      "006-skill-graph-sqlite-migration"
+    ],
+    "key_topics": [
+      "sqlite migration",
+      "mcp tools",
+      "skill graph",
+      "auto-indexing",
+      "file watcher",
+      "code graph pattern"
+    ],
+    "key_files": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration/checklist.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {"name": "skill-graph.sqlite", "kind": "database", "path": ".opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite"},
+      {"name": "skill-graph-db.ts", "kind": "module", "path": ".opencode/skill/system-spec-kit/mcp_server/lib/skill-graph/skill-graph-db.ts"},
+      {"name": "skill_graph_scan", "kind": "mcp-tool", "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/scan.ts"},
+      {"name": "skill_graph_query", "kind": "mcp-tool", "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts"},
+      {"name": "skill_graph_status", "kind": "mcp-tool", "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/status.ts"},
+      {"name": "skill_graph_validate", "kind": "mcp-tool", "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/validate.ts"},
+      {"name": "skill_advisor.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py"},
+      {"name": "skill_graph_compiler.py", "kind": "script", "path": ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py"}
+    ],
+    "causal_summary": "Migrates the skill graph from static JSON files to SQLite with MCP tools, aligning it with the code graph and deep loop graph architecture patterns for consistent storage, querying, and auto-indexing across all runtimes."
+  }
+}

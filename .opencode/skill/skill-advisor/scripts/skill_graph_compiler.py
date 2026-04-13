@@ -8,8 +8,9 @@ Skill Graph Compiler - Scans skill folders for graph-metadata.json,
 validates schema, and compiles into a single skill-graph.json.
 
 Usage:
-    python skill_graph_compiler.py                    # Compile to default output
+    python skill_graph_compiler.py                    # Validate + compile in memory
     python skill_graph_compiler.py --validate-only    # Validate without writing
+    python skill_graph_compiler.py --export-json      # Write compiled JSON to default output
     python skill_graph_compiler.py --pretty           # Human-readable output
     python skill_graph_compiler.py --output PATH      # Custom output path
 """
@@ -578,6 +579,11 @@ def main() -> int:
         action="store_true",
         help="Pretty-print JSON output",
     )
+    parser.add_argument(
+        "--export-json",
+        action="store_true",
+        help="Write compiled JSON output to disk",
+    )
     args = parser.parse_args()
 
     # Discover
@@ -644,23 +650,31 @@ def main() -> int:
 
     # Compile
     graph = compile_graph(all_metadata)
-    indent = 2 if args.pretty else None
-    output_json = json.dumps(graph, indent=indent, ensure_ascii=False)
+    output_json = None
+    size_bytes = None
+    if args.export_json:
+        indent = 2 if args.pretty else None
+        output_json = json.dumps(graph, indent=indent, ensure_ascii=False)
 
-    # Write
-    with open(args.output, "w", encoding="utf-8") as f:
-        f.write(output_json)
-        f.write("\n")
+        with open(args.output, "w", encoding="utf-8") as f:
+            f.write(output_json)
+            f.write("\n")
 
-    size_bytes = len(output_json.encode("utf-8"))
-    print(f"Compiled skill-graph.json: {size_bytes} bytes ({graph['skill_count']} skills)")
+        size_bytes = len(output_json.encode("utf-8"))
+        print(f"Compiled skill-graph.json: {size_bytes} bytes ({graph['skill_count']} skills)")
+    else:
+        print(f"Compiled skill graph in memory ({graph['skill_count']} skills)")
+
     print(f"  Families: {len(graph['families'])}")
     print(f"  Adjacency entries: {len(graph['adjacency'])}")
     print(f"  Conflicts: {len(graph['conflicts'])}")
     print(f"  Hub skills: {graph['hub_skills']}")
-    print(f"  Output: {args.output}")
+    if args.export_json:
+        print(f"  Output: {args.output}")
+    else:
+        print("  Output: skipped (use --export-json to write skill-graph.json)")
 
-    if size_bytes > 4096:
+    if size_bytes is not None and size_bytes > 4096:
         print(f"WARNING: Output exceeds 4KB target ({size_bytes} bytes)", file=sys.stderr)
 
     return 0

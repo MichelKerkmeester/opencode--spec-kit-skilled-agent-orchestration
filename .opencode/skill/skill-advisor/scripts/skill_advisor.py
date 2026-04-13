@@ -22,6 +22,7 @@ import json
 import os
 import re
 import shutil
+import sqlite3
 import subprocess
 import sys
 from typing import Any, Dict, List, Optional, Set
@@ -64,20 +65,155 @@ if _runtime_module is None:
 
 # Compiled skill graph for relationship-aware routing
 SKILL_GRAPH_PATH = os.path.join(SCRIPT_DIR, "skill-graph.json")
+SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
+    os.path.dirname(__file__),
+    '..',
+    '..',
+    'system-spec-kit',
+    'mcp_server',
+    'database',
+    'skill-graph.sqlite',
+))
+GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
 _SKILL_GRAPH: Optional[Dict[str, Any]] = None
+_SKILL_GRAPH_SOURCE: Optional[str] = None
+
+
+def _compute_hub_skills(adjacency: Dict[str, Dict[str, Dict[str, float]]]) -> List[str]:
+    """Compute hub skills using the compiled-graph median inbound-degree rule."""
+    inbound_counts: Dict[str, int] = {}
+
+    for edge_groups in adjacency.values():
+        for targets in edge_groups.values():
+            for target in targets:
+                inbound_counts[target] = inbound_counts.get(target, 0) + 1
+
+    if not inbound_counts:
+        return []
+
+    counts = sorted(inbound_counts.values())
+    median = counts[len(counts) // 2]
+    return sorted(skill for skill, count in inbound_counts.items() if count > median)
+
+
+def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
+    """Load compiled-equivalent skill graph data from SQLite."""
+    if not os.path.exists(SKILL_GRAPH_SQLITE_PATH):
+        return None
+
+    try:
+        with sqlite3.connect(SKILL_GRAPH_SQLITE_PATH) as connection:
+            connection.row_factory = sqlite3.Row
+
+            node_rows = connection.execute(
+                "SELECT id, family, intent_signals FROM skill_nodes ORDER BY id ASC"
+            ).fetchall()
+            if not node_rows:
+                return None
+
+            edge_rows = connection.execute(
+                """
+                SELECT source_id, target_id, edge_type, weight
+                FROM skill_edges
+                ORDER BY source_id ASC, edge_type ASC, target_id ASC
+                """
+            ).fetchall()
+
+            schema_row = connection.execute(
+                "SELECT version FROM schema_version LIMIT 1"
+            ).fetchone()
+            generated_at_row = connection.execute(
+                "SELECT value FROM skill_graph_metadata WHERE key = 'last_scan_timestamp'"
+            ).fetchone()
+    except sqlite3.Error:
+        return None
+
+    try:
+        families: Dict[str, List[str]] = {}
+        adjacency: Dict[str, Dict[str, Dict[str, float]]] = {}
+        signals: Dict[str, List[str]] = {}
+        conflicts: Set[tuple[str, str]] = set()
+
+        for node_row in node_rows:
+            skill_id = str(node_row["id"])
+            family = str(node_row["family"])
+            families.setdefault(family, []).append(skill_id)
+
+            raw_signals = node_row["intent_signals"]
+            if raw_signals:
+                parsed_signals = json.loads(raw_signals)
+                if isinstance(parsed_signals, list) and parsed_signals:
+                    signals[skill_id] = [str(signal) for signal in parsed_signals]
+
+        for edge_row in edge_rows:
+            source_id = str(edge_row["source_id"])
+            target_id = str(edge_row["target_id"])
+            edge_type = str(edge_row["edge_type"])
+            weight = float(edge_row["weight"])
+
+            if edge_type == "conflicts_with":
+                conflicts.add(tuple(sorted((source_id, target_id))))
+                continue
+
+            if edge_type not in GRAPH_ADJACENCY_EDGE_TYPES:
+                continue
+
+            adjacency.setdefault(source_id, {}).setdefault(edge_type, {})[target_id] = weight
+
+        for family_name in families:
+            families[family_name] = sorted(families[family_name])
+
+        generated_at = (
+            str(generated_at_row["value"])
+            if generated_at_row and generated_at_row["value"]
+            else None
+        )
+
+        schema_version = int(schema_row["version"]) if schema_row and schema_row["version"] is not None else 1
+
+        return {
+            "schema_version": schema_version,
+            "generated_at": generated_at,
+            "skill_count": len(node_rows),
+            "families": dict(sorted(families.items())),
+            "adjacency": dict(sorted(adjacency.items())),
+            "signals": dict(sorted(signals.items())),
+            "conflicts": [list(pair) for pair in sorted(conflicts)],
+            "hub_skills": _compute_hub_skills(adjacency),
+        }
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return None
+
+
+def _load_skill_graph_json() -> Optional[Dict[str, Any]]:
+    """Load the legacy compiled JSON graph."""
+    try:
+        with open(SKILL_GRAPH_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return None
 
 
 def _load_skill_graph() -> Optional[Dict[str, Any]]:
-    """Load compiled skill graph. Returns None if file missing (backwards-compatible)."""
-    global _SKILL_GRAPH
+    """Load compiled skill graph, preferring SQLite with JSON fallback."""
+    global _SKILL_GRAPH, _SKILL_GRAPH_SOURCE
     if _SKILL_GRAPH is not None:
         return _SKILL_GRAPH
-    try:
-        with open(SKILL_GRAPH_PATH, "r", encoding="utf-8") as f:
-            _SKILL_GRAPH = json.load(f)
+
+    sqlite_graph = _load_skill_graph_sqlite()
+    if sqlite_graph is not None:
+        _SKILL_GRAPH = sqlite_graph
+        _SKILL_GRAPH_SOURCE = "sqlite"
         return _SKILL_GRAPH
-    except (OSError, json.JSONDecodeError):
-        return None
+
+    json_graph = _load_skill_graph_json()
+    if json_graph is not None:
+        _SKILL_GRAPH = json_graph
+        _SKILL_GRAPH_SOURCE = "json"
+        return _SKILL_GRAPH
+
+    _SKILL_GRAPH_SOURCE = None
+    return None
 
 
 def _apply_graph_boosts(
@@ -620,6 +756,9 @@ MULTI_SKILL_BOOSTERS = {
 # Format: phrase -> list of (skill_name, boost_amount)
 PHRASE_INTENT_BOOSTERS = {
     "create documentation": [("sk-doc", 1.0)],
+    "write documentation": [("sk-doc", 1.5)],
+    "write docs": [("sk-doc", 1.2)],
+    "generate documentation": [("sk-doc", 1.2)],
     "save context": [("system-spec-kit", 1.0)],
     "save memory": [("system-spec-kit", 1.0)],
     "save this context": [("system-spec-kit", 1.0)],
@@ -1684,13 +1823,20 @@ def health_check() -> Dict[str, Any]:
         "skills_dir_exists": os.path.exists(SKILLS_DIR),
         "cache": get_cache_status(),
         "skill_graph_loaded": graph_loaded,
+        "skill_graph_source": _SKILL_GRAPH_SOURCE if _SKILL_GRAPH_SOURCE in {"sqlite", "json"} else "json",
         "skill_graph_skill_count": graph.get("skill_count", 0) if graph else 0,
-        "skill_graph_path": SKILL_GRAPH_PATH,
+        "skill_graph_path": SKILL_GRAPH_SQLITE_PATH if _SKILL_GRAPH_SOURCE == "sqlite" else SKILL_GRAPH_PATH,
+        "skill_graph_sqlite_path": SKILL_GRAPH_SQLITE_PATH,
+        "skill_graph_json_path": SKILL_GRAPH_PATH,
     }
 
     if not graph_loaded:
+        sqlite_path_exists = os.path.exists(SKILL_GRAPH_SQLITE_PATH)
         graph_path_exists = os.path.exists(SKILL_GRAPH_PATH)
-        result["skill_graph_error"] = "corrupt" if graph_path_exists else "missing"
+        if sqlite_path_exists:
+            result["skill_graph_error"] = "sqlite_unavailable"
+        else:
+            result["skill_graph_error"] = "corrupt" if graph_path_exists else "missing"
 
     return result
 
