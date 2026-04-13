@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-code-web",
+  "family": "sk-code",
+  "category": "code-quality",
+  "edges": {
+    "depends_on": [],
+    "enhances": [
+      { "target": "sk-code-review", "weight": 0.3, "context": "web-specific review overlay" }
+    ],
+    "siblings": [
+      { "target": "sk-code-opencode", "weight": 0.4, "context": "code quality peer" },
+      { "target": "sk-code-full-stack", "weight": 0.4, "context": "code quality peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["web", "frontend", "css", "webflow", "cdn", "browser", "responsive"],
+  "intent_signals": ["web code", "frontend", "webflow", "css standards"]
+}

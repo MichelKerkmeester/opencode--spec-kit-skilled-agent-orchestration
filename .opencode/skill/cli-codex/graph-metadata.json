@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "cli-codex",
+  "family": "cli",
+  "category": "cli-orchestrator",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "cli-claude-code", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-copilot", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-gemini", "weight": 0.5, "context": "CLI orchestrator peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["cli", "delegation", "cross-ai", "code-generation", "web-research"],
+  "intent_signals": ["codex cli", "codex exec", "delegate to codex"]
+}

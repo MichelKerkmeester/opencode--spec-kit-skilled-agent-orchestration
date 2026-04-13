@@ -550,7 +550,7 @@ These nine fixes address problems in how scores are calculated and combined. Iss
 
 ### Local GGUF reranker via node-llama-cpp
 
-After the initial search finds candidate results, this feature uses a small AI model running on your own computer to re-sort them for better accuracy. It works entirely offline with no network calls, so it is both private and free to use. If the model file is missing or the computer does not have enough memory, the system quietly skips this step and keeps the original order. Its shared reranker cache now separates providers and option settings correctly, and its p95 latency reading no longer overstates small samples.
+After the initial search finds candidate results, this feature uses a small AI model running on your own computer to re-sort them for better accuracy. It works entirely offline with no network calls, so it is both private and free to use. If the model file is missing or the computer does not have enough memory, the system quietly skips this step and keeps the original order. The shared reranker cache now reports its own hits, misses, stale hits and evictions through `getRerankerStatus()`, and the old document-length penalty no longer changes scores.
 
 ### Tool-level TTL cache
 
@@ -742,7 +742,7 @@ When two memories look very similar, the system automatically classifies them in
 
 ### 4-stage pipeline refactor
 
-When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable. A later improvement tightened this further by making all four steps use the same scoring method, so results are evaluated consistently across the entire pipeline and scoring weights stay balanced automatically.
+When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable. Resume-style continuity searches now get their own balance in the scoring step, leaning hardest on semantic matches while still keeping graph support, and the rerank step only wakes up when at least four results make it that far.
 
 ### MPAB chunk-to-memory aggregation
 

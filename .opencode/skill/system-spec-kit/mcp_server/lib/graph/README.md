@@ -85,8 +85,15 @@ graph/
 | `community-summaries.ts` | Generates text summaries per community from member titles/topics, stores in `community_summaries` table | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `community-storage.ts` | Stores and retrieves community data (assignments, membership) | `SPECKIT_COMMUNITY_SUMMARIES` |
 | `contradiction-detection.ts` | Detects superseding and conflicting edge relations, auto-invalidates old edges via `temporal-edges.ts` | `SPECKIT_TEMPORAL_EDGES` |
-| `graph-metadata-parser.ts` | Reads `graph-metadata.json` packet artifacts and normalizes derived graph fields for runtime use | Always on |
+| `graph-metadata-parser.ts` | Reads `graph-metadata.json` packet artifacts and derives normalized runtime fields: checklist-aware lowercase status, sanitized key files, deduplicated entities, and trigger phrases capped at 12 | Always on |
 | `graph-metadata-schema.ts` | Defines the schema and validators that keep `graph-metadata.json` contract-stable | Always on |
+
+### Graph Metadata Derivation Highlights
+
+- `status` is stored in lowercase. When explicit frontmatter status is missing, the parser falls back to `implementation-summary.md` presence and then checklist completion (`complete` vs `in_progress`).
+- `key_files` are sanitized before dedupe and truncation so shell commands, version literals, title-shaped values, and other non-path noise do not occupy the 20-slot cap.
+- `entities` are deduplicated by entity name with canonical packet-doc paths preferred over basename-only candidates when both exist.
+- `trigger_phrases` are deduplicated and capped at 12 derived values.
 | `graph-signals.ts` | Degree snapshots, momentum scoring (recent degree delta), causal depth via SCC condensation | `SPECKIT_GRAPH_SIGNALS` |
 | `temporal-edges.ts` | Adds `valid_at`/`invalid_at` columns to `causal_edges`, provides `invalidateEdge()` and `getValidEdges()` | `SPECKIT_TEMPORAL_EDGES` |
 | `usage-ranking-signal.ts` | `computeUsageBoost()` — log-scale normalization producing 0.0-0.10 boost | `SPECKIT_USAGE_RANKING` |

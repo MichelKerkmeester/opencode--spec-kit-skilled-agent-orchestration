@@ -509,6 +509,11 @@ specs/007-auth-system/
 - Trigger: `/memory:save`, "save context", or "save memory"
 - **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
 - Canonical saves via `generate-context.js` also refresh `graph-metadata.json` derived fields in the spec folder.
+- Derived graph metadata now follows the parser contract:
+  - `status` is normalized to lowercase and falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent.
+  - `trigger_phrases` are deduplicated and capped at 12.
+  - `key_files` are sanitized before storage so shell commands, version tokens, and title-like noise do not survive into the packet surface.
+  - `entities` are deduplicated by name, preferring canonical packet-doc paths over basename-only candidates.
 - AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` for session continuity updates.
 - **JSON mode (PREFERRED):** AI composes structured JSON → pass via `--json`, `--stdin`, or temp file. The AI has strictly better information about its own session than any DB query.
 - **Structured JSON fields:** The JSON payload supports optional structured summary fields that improve memory quality:
@@ -540,6 +545,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --j
 ```
 
 Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes packet continuity and `graph-metadata.json` instead of authoring a standalone `memory/*.md` primary artifact. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+
+Canonical routed saves use the live 8-category content router: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 3 LLM routing is now wired into the save handler when `SPECKIT_TIER3_ROUTING=true`; otherwise saves stay on Tier 1/Tier 2 routing with safe fallback or refusal. Delivery routing now keys off sequencing, gating, rollout, and verification language, handover stays reserved for stop-state and resume instructions, and hard transcript/tool telemetry still routes to `drop`. `routeAs` may force a category and preserve the natural decision for audit, while `packet_kind` is derived from spec metadata first with parent-phase fallback only when metadata is silent. See [save_workflow.md](./references/memory/save_workflow.md) for the detailed routing contract.
+
+For manual corpus repair, `scripts/dist/graph/backfill-graph-metadata.js` is inclusive by default and refreshes all packet folders, including `z_archive/` and `z_future/`. Use `--active-only` only when you intentionally want to skip archived trees.
 
 **Canonical Continuity Shape:**
 ```markdown
@@ -580,7 +589,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 | `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
 | `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
 
-> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
+> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. Adaptive fusion includes an internal continuity profile (`semantic 0.52`, `keyword 0.18`, `recency 0.07`, `graph 0.23`), Stage 3 uses a minimum rerank gate of 4 candidates, the retained `applyLengthPenalty` input is a compatibility no-op, and `getRerankerStatus()` exposes reranker cache hits, misses, stale hits, and evictions. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
 **memory_context() — Mode Routing:**
 
@@ -621,7 +630,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **Checkpoints** — Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
 - **Indexing persistence** — After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
 - **Artifact routing** — 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
-- **Adaptive fusion** — Intent-aware weighted RRF with 7 task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision), plus corrected channel fallback and normalization behavior in the live hybrid pipeline
+- **Adaptive fusion** — Intent-aware weighted RRF with the 7 public task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision) plus the internal continuity profile used for resume-oriented retrieval, along with corrected channel fallback and normalization behavior in the live hybrid pipeline
 - **Adaptive ranking** — Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per memory. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
 - **Causal graph diagnostics** — `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
 - **Eval guardrails** — Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
@@ -643,7 +652,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 
 | Flag                          | Default | Effect                                                                                      |
 | ----------------------------- | ------- | ------------------------------------------------------------------------------------------- |
-| `SPECKIT_ADAPTIVE_FUSION`     | on      | Enables intent-aware weighted RRF with 7 task-type profiles in `memory_search()` (set `false` to disable) |
+| `SPECKIT_ADAPTIVE_FUSION`     | on      | Enables intent-aware weighted RRF in `memory_search()`, including the internal continuity profile used for resume-style retrieval (set `false` to disable) |
 | `SPECKIT_EXTENDED_TELEMETRY`  | off     | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture metadata when explicitly set to `true` |
 | `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. |
 | `SPECKIT_SAVE_QUALITY_GATE`  | on      | Pre-storage quality gate rejects content below 0.4 signal density (14-day warn-only period after activation) |

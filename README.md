@@ -383,14 +383,14 @@ Every search passes through 4 stages:
 
 - **Candidate generation** - Parallel retrieval from the active channels plus constitutional injection where applicable.
 - **Fusion** - RRF-based scoring with post-fusion signals such as co-activation, FSRS decay, interference control, intent weights, and graph/session boosts when enabled.
-- **Rerank** - Cross-encoder reranking with chunk reassembly; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
+- **Rerank** - Cross-encoder reranking with chunk reassembly, a minimum Stage 3 gate of 4 candidates, and compatibility-only length-penalty wiring that now resolves to a neutral `1.0` multiplier. `getRerankerStatus()` exposes latency plus cache hits, misses, stale hits, and evictions; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
 - **Filtering** - State/quality filtering, confidence annotation, token-budget enforcement, and final response shaping without mutating post-rerank scores.
 
 
 #### QUERY INTELLIGENCE
 
 - **Complexity routing** - Simple (2 channels), moderate (4), complex (all 5)
-- **Intent classification** - 7 types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`), each with its own channel weight profile
+- **Intent classification** - 7 public types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`) plus an internal continuity profile for resume-oriented retrieval (`semantic 0.52`, `keyword 0.18`, `recency 0.07`, `graph 0.23`; Stage 3 MMR lambda `0.65`)
 - **Query decomposition** - Multi-topic queries split into sub-queries, expanded with related terms
 - **Context pressure** - Downgrades search mode at 60% and 80% window usage
 - **Fallback strategies** - LLM reformulation or HyDE for low-confidence searches

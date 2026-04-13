@@ -27,7 +27,7 @@ Session handover template for preserving context and enabling seamless continuat
 - Complex multi-session features requiring state preservation
 - Session compaction detected and recovery needed
 
-**Status values:** Draft | In Progress | Review | Complete | Archived
+**Status values:** draft | in_progress | review | complete | archived
 <!-- /ANCHOR:when-to-use -->
 
 ---
@@ -55,12 +55,12 @@ Session handover template for preserving context and enabling seamless continuat
 ### 2.2 Blockers Encountered
 | Blocker     | Status          | Resolution/Workaround |
 | ----------- | --------------- | --------------------- |
-| [YOUR_VALUE_HERE: blocker_1] | [YOUR_VALUE_HERE: RESOLVED/OPEN] | [YOUR_VALUE_HERE: how it was handled] |
+| [YOUR_VALUE_HERE: blocker_1] | [YOUR_VALUE_HERE: resolved/open] | [YOUR_VALUE_HERE: how it was handled] |
 
 ### 2.3 Files Modified
 | File        | Change Summary | Status                 |
 | ----------- | -------------- | ---------------------- |
-| [YOUR_VALUE_HERE: file_path] | [YOUR_VALUE_HERE: what changed] | [YOUR_VALUE_HERE: COMPLETE/IN_PROGRESS] |
+| [YOUR_VALUE_HERE: file_path] | [YOUR_VALUE_HERE: what changed] | [YOUR_VALUE_HERE: complete/in_progress] |
 <!-- /ANCHOR:context-transfer -->
 
 ---

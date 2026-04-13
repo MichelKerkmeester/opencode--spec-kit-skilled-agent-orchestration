@@ -376,12 +376,12 @@ Deep-mode reformulation and HyDE candidates pass the same scope, tier, contextTy
 ### EX-006 | Memory indexing (memory_save)
 
 #### Description
-Spec-doc anchored continuity save routing.
+8-category canonical continuity save routing.
 
 #### Current Reality
-Prompt: `As a mutation validation operator, validate Memory indexing (memory_save) against memory_save(filePath). Verify save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection. Return a concise pass/fail verdict with the main reason and cited evidence.`
+Prompt: `As a mutation validation operator, validate Memory indexing (memory_save) against memory_save(filePath). Verify the 8-category content router chooses the correct target or safe refusal; spec-doc continuity updates when the route merges; searchable result appears for merged saves; and no template-contract or insufficiency rejection appears. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
-Save action reported; spec-doc continuity updated; searchable result appears; no template-contract or insufficiency rejection
+Correct route or safe refusal reported; spec-doc continuity updated for merged saves; searchable result appears; no template-contract or insufficiency rejection
 
 #### Test Execution
 > **Feature File:** [EX-006](02--mutation/006-memory-indexing-memory-save.md)
@@ -2151,9 +2151,9 @@ Job state transitions through queued→parsing→embedding→indexing→complete
 Confirm reranker gating and graceful fallback.
 
 #### Current Reality
-Prompt: `Validate RERANKER_LOCAL strict check and memory thresholds. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; cache keys stay distinct across provider/order/length-penalty combinations; p95 latency uses the bounded percentile index; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate RERANKER_LOCAL strict check and reranker status telemetry. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty is compatibility-only and does not change scores; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; cache keys stay distinct across provider/order/options; p95 latency uses the bounded percentile index; scoring runs sequentially in logs
+Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty is compatibility-only; scoring runs sequentially in logs
 
 #### Test Execution
 > **Feature File:** [098](11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md)

@@ -24,6 +24,8 @@ The phase-018 writer path is split across four core modules and one supporting r
 
 Together these modules make spec-doc writes canonical while leaving the continuity payload as thin supporting state instead of a separate memory-file feature.
 
+The same canonical save pass also refreshes `graph-metadata.json` for the packet. That derived surface is now checklist-aware and normalized: `status` falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent, stored values are lowercase, `trigger_phrases` are deduplicated and capped at 12, `key_files` are sanitized before storage, and entity rows are deduplicated with canonical-path preference.
+
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -37,6 +39,7 @@ Together these modules make spec-doc writes canonical while leaving the continui
 | `mcp_server/lib/resume/resume-ladder.ts` | Lib | `handover.md -> _memory.continuity -> spec docs` recovery ladder |
 | `mcp_server/handlers/memory-save.ts` | Handler | Save pipeline that wires the substrate together |
 | `scripts/memory/generate-context.ts` | Script | CLI save entrypoint that feeds canonical continuity writes |
+| `mcp_server/lib/graph/graph-metadata-parser.ts` | Lib | Derives refreshed packet metadata from canonical docs during save/backfill |
 
 ### Tests
 

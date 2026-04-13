@@ -28,7 +28,7 @@ Debug delegation template for escalating stuck issues to specialized debugging a
 - Escalating to a debugging specialist model
 - Documenting failed attempts for knowledge transfer
 
-**Status values:** Draft | In Progress | Review | Complete | Archived
+**Status values:** draft | in_progress | review | complete | archived
 <!-- /ANCHOR:when-to-use -->
 
 ---

@@ -299,6 +299,31 @@ The save path updates packet docs rather than creating a separate primary sessio
 - packet narrative remains in canonical docs rather than a parallel memory note.
 - recovery begins with `handover.md`, then `_memory.continuity`, then the rest of the packet docs.
 
+### Canonical Save Router
+
+The routed save path classifies each canonical chunk into exactly 8 categories:
+
+| Category | Typical target | Notes |
+|----------|----------------|-------|
+| `narrative_progress` | `implementation-summary.md::what-built` | Substantive system or packet delta |
+| `narrative_delivery` | `implementation-summary.md::how-delivered` | Sequencing, gating, rollout, and verification path |
+| `decision` | `decision-record.md::adr-NNN` on L3/L3+ or `implementation-summary.md::decisions` on L1/L2 | Choice, tradeoff, rationale |
+| `handover_state` | `handover.md::session-log` | Recent action, blocker, resume order, next safe action |
+| `research_finding` | `research/research.md::findings` | Investigation result or cited evidence |
+| `task_update` | `tasks.md::<phase-anchor>` | Task or checklist mutation |
+| `metadata_only` | `_memory.continuity` | Machine-owned continuity payloads |
+| `drop` | `scratch/pending-route-<hash>.json` via refusal | Transcript/tooling noise that must not merge |
+
+Routing contract highlights:
+
+- Tier 1 handles structured routes and strong heuristics.
+- Tier 2 uses routing-prototype similarity.
+- Tier 3 is now live in the save handler when `SPECKIT_TIER3_ROUTING=true` and `LLM_REFORMULATION_ENDPOINT` is configured. If Tier 3 is disabled or unavailable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses to route.
+- Delivery cues are intentionally stronger when the chunk mentions sequencing, gating, rollout, or verification.
+- Handover and drop now split hard transcript/tool telemetry wrappers from softer operational phrases like `git diff`, `list memories`, or `force re-index`.
+- `routeAs` can force a category and keeps the natural decision for audit if the override crosses a natural `drop`.
+- Router context passes `packet_kind` derived from spec metadata first (`type`, `title`, `description`), with parent-phase fallback only when metadata is silent.
+
 ### Anchor Tags
 
 Packet docs should continue to use HTML comment anchors for targeted retrieval:

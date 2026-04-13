@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-deep-research",
+  "family": "sk-deep",
+  "category": "autonomous-loop",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "sk-deep-review", "weight": 0.5, "context": "autonomous loop peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["research", "investigation", "analysis", "convergence"],
+  "intent_signals": ["deep research", "research loop", "investigate"]
+}

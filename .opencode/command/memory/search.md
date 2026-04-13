@@ -99,8 +99,10 @@ The unified context tool runs a hybrid retrieval pipeline with **graph-first rou
 - Tri-channel retrieval (graph + vector/semantic + FTS5/BM25) with graph results given precedence in the fusion merge
 - CocoIndex semantic search (`mcp__cocoindex_code__search`) integrates as the vector/semantic channel, providing natural-language code discovery alongside memory vector search
 - When graph and semantic channels miss or return weak results, a 3-tier FTS fallback activates: FTS5 full-text → BM25 keyword scoring → Grep/Glob filesystem search. Post-026 FTS5 remediation improved BM25 tokenization and ranking accuracy
-- Intent-adaptive fusion and reranking (weights adapt when `SPECKIT_ADAPTIVE_FUSION` is enabled)
-- MMR diversity pruning to reduce redundant chunks
+- Intent-adaptive fusion and reranking (weights adapt when `SPECKIT_ADAPTIVE_FUSION` is enabled, including the internal continuity profile: semantic `0.52`, keyword `0.18`, recency `0.07`, graph `0.23`)
+- MMR diversity pruning to reduce redundant chunks, with continuity-oriented Stage 3 passes using a dedicated lambda of `0.65`
+- Cross-encoder reranking only runs when at least 4 candidates reach Stage 3; `applyLengthPenalty` remains on the API surface for compatibility but currently resolves to a neutral `1.0` multiplier for every document
+- `getRerankerStatus()` exposes reranker latency plus cache `hits`, `misses`, `staleHits`, and `evictions`
 - Deep-mode query expansion for broader lexical coverage
 - Evidence-gap detection (026) to flag low-confidence retrievals with explicit gap warnings, enabling downstream reasoning to remain cautious and avoid acting on sparse evidence
 
@@ -795,7 +797,7 @@ STATUS=OK ACTION=dashboard
 
 > **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, governed retrieval params (`tenantId`, `userId`, `agentId`), `limit`, `sessionId`, `enableDedup`, `includeContent`, `includeTrace`, `tokenUsage`, and `anchors`. `spec_kit_memory_memory_quick_search()` also supports governed retrieval via `tenantId`, `userId`, and `agentId`. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
 
-> **Adaptive Fusion, Hybrid Routing & Telemetry:** Retrieval combines vector, FTS5/BM25, and graph channels, then applies intent-adaptive fusion and reranking. Results may be routed through artifact-class classification before scoring. When `SPECKIT_ADAPTIVE_FUSION` is enabled, weights adapt dynamically by intent. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, extended telemetry is captured (query timing, score distributions, fusion decisions) and written to the telemetry log.
+> **Adaptive Fusion, Hybrid Routing & Telemetry:** Retrieval combines vector, FTS5/BM25, and graph channels, then applies intent-adaptive fusion and reranking. Results may be routed through artifact-class classification before scoring. When `SPECKIT_ADAPTIVE_FUSION` is enabled, weights adapt dynamically by intent, including the internal continuity profile (`0.52 / 0.18 / 0.07 / 0.23`) used for resume-style retrieval. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, extended telemetry is captured (query timing, score distributions, fusion decisions) and written to the telemetry log, while `getRerankerStatus()` reports reranker latency and cache `hits` / `misses` / `staleHits` / `evictions`.
 >
 > **MMR and Evidence Gap Prevention:** Post-fusion MMR reduces redundant context chunks, and low-confidence retrieval can trigger an early evidence-gap warning so sparse results are treated cautiously.
 
@@ -910,7 +912,7 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `minQualityScore` | number | — | **Deprecated alias** for `min_quality_score`. Prefer the snake_case parameter name |
 | `bypassCache` | boolean | false | Skip tool cache and force fresh search |
 | `rerank` | boolean | true | Enable cross-encoder reranking |
-| `applyLengthPenalty` | boolean | true | Penalize very long memories during reranking |
+| `applyLengthPenalty` | boolean | true | Compatibility-only reranker option. Current runtime keeps it on the surface, but the length multiplier is always `1.0` so no documents are penalized for size |
 | `applyStateLimits` | boolean | false | Enforce per-tier quantity limits for result diversity |
 | `minState` | string | `WARM` | Minimum active memory state: `HOT`, `WARM`, `COLD`, `DORMANT` |
 | `autoDetectIntent` | boolean | true | Auto-detect intent from query if not explicitly set |

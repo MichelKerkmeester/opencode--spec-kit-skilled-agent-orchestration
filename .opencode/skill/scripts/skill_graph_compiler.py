@@ -1,0 +1,382 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: SKILL GRAPH COMPILER
+# ───────────────────────────────────────────────────────────────
+
+"""
+Skill Graph Compiler - Scans skill folders for graph-metadata.json,
+validates schema, and compiles into a single skill-graph.json.
+
+Usage:
+    python skill_graph_compiler.py                    # Compile to default output
+    python skill_graph_compiler.py --validate-only    # Validate without writing
+    python skill_graph_compiler.py --pretty           # Human-readable output
+    python skill_graph_compiler.py --output PATH      # Custom output path
+"""
+
+import sys
+import os
+import json
+import argparse
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+
+# ───────────────────────────────────────────────────────────────
+# 1. CONFIGURATION
+# ───────────────────────────────────────────────────────────────
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
+DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "skill-graph.json")
+
+SCHEMA_VERSION = 1
+
+ALLOWED_FAMILIES = {"cli", "mcp", "sk-code", "sk-deep", "sk-util", "system"}
+ALLOWED_CATEGORIES = {
+    "cli-orchestrator", "mcp-tool", "code-quality",
+    "autonomous-loop", "utility", "system",
+}
+EDGE_TYPES = {"depends_on", "enhances", "siblings", "conflicts_with", "prerequisite_for"}
+
+
+# ───────────────────────────────────────────────────────────────
+# 2. DISCOVERY
+# ───────────────────────────────────────────────────────────────
+
+def discover_graph_metadata(skills_dir: str) -> List[Tuple[str, str, dict]]:
+    """Scan skill folders for graph-metadata.json files.
+
+    Returns list of (skill_folder_name, file_path, parsed_json) tuples.
+    Skills without graph-metadata.json are silently skipped.
+    """
+    results = []
+    if not os.path.isdir(skills_dir):
+        return results
+
+    for entry in sorted(os.listdir(skills_dir)):
+        meta_path = os.path.join(skills_dir, entry, "graph-metadata.json")
+        if not os.path.isfile(meta_path):
+            continue
+
+        # Skip the scripts directory itself
+        if entry == "scripts":
+            continue
+
+        try:
+            with open(meta_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            results.append((entry, meta_path, data))
+        except (json.JSONDecodeError, OSError) as exc:
+            print(f"WARNING: Failed to parse {meta_path}: {exc}", file=sys.stderr)
+
+    return results
+
+
+# ───────────────────────────────────────────────────────────────
+# 3. VALIDATION
+# ───────────────────────────────────────────────────────────────
+
+def validate_skill_metadata(
+    folder_name: str,
+    data: dict,
+    all_skill_ids: Set[str],
+) -> List[str]:
+    """Validate a single skill's graph-metadata.json against the schema.
+
+    Returns list of error messages (empty = valid).
+    """
+    errors = []
+
+    # Required top-level fields
+    if data.get("schema_version") != SCHEMA_VERSION:
+        errors.append(f"schema_version must be {SCHEMA_VERSION}, got {data.get('schema_version')}")
+
+    skill_id = data.get("skill_id")
+    if not skill_id:
+        errors.append("missing required field: skill_id")
+    elif skill_id != folder_name:
+        errors.append(f"skill_id '{skill_id}' does not match folder name '{folder_name}'")
+
+    family = data.get("family")
+    if not family:
+        errors.append("missing required field: family")
+    elif family not in ALLOWED_FAMILIES:
+        errors.append(f"family '{family}' not in allowed set: {sorted(ALLOWED_FAMILIES)}")
+
+    category = data.get("category")
+    if not category:
+        errors.append("missing required field: category")
+    elif category not in ALLOWED_CATEGORIES:
+        errors.append(f"category '{category}' not in allowed set: {sorted(ALLOWED_CATEGORIES)}")
+
+    # Edges validation
+    edges = data.get("edges")
+    if not isinstance(edges, dict):
+        errors.append("missing or invalid 'edges' object")
+    else:
+        for edge_type in EDGE_TYPES:
+            edge_list = edges.get(edge_type, [])
+            if not isinstance(edge_list, list):
+                errors.append(f"edges.{edge_type} must be an array")
+                continue
+            for i, edge in enumerate(edge_list):
+                if not isinstance(edge, dict):
+                    errors.append(f"edges.{edge_type}[{i}] must be an object")
+                    continue
+
+                target = edge.get("target")
+                if not target:
+                    errors.append(f"edges.{edge_type}[{i}] missing 'target'")
+                elif target not in all_skill_ids:
+                    errors.append(f"edges.{edge_type}[{i}] target '{target}' is not a known skill")
+
+                weight = edge.get("weight")
+                if not isinstance(weight, (int, float)):
+                    errors.append(f"edges.{edge_type}[{i}] missing or invalid 'weight'")
+                elif weight < 0.0 or weight > 1.0:
+                    errors.append(f"edges.{edge_type}[{i}] weight {weight} out of range [0.0, 1.0]")
+
+                if "context" not in edge:
+                    errors.append(f"edges.{edge_type}[{i}] missing 'context'")
+
+        # Check for unexpected edge types
+        for key in edges:
+            if key not in EDGE_TYPES:
+                errors.append(f"unexpected edge type: '{key}'")
+
+    # Domains and intent_signals
+    if not isinstance(data.get("domains"), list):
+        errors.append("missing or invalid 'domains' array")
+    if not isinstance(data.get("intent_signals"), list):
+        errors.append("missing or invalid 'intent_signals' array")
+
+    return errors
+
+
+def validate_edge_symmetry(
+    all_metadata: List[Tuple[str, str, dict]],
+) -> List[str]:
+    """Cross-validate edge symmetry across all skills.
+
+    Checks: if A depends_on B, B should have prerequisite_for A.
+    Returns list of warnings (soft validation).
+    """
+    warnings = []
+
+    # Build lookup
+    skill_edges = {}
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        edges = data.get("edges", {})
+        skill_edges[skill_id] = edges
+
+    # Check depends_on <-> prerequisite_for symmetry
+    for skill_id, edges in skill_edges.items():
+        for edge in edges.get("depends_on", []):
+            target = edge.get("target")
+            if not target or target not in skill_edges:
+                continue
+            target_prereqs = {
+                e.get("target") for e in skill_edges[target].get("prerequisite_for", [])
+            }
+            if skill_id not in target_prereqs:
+                warnings.append(
+                    f"SYMMETRY: {skill_id} depends_on {target}, "
+                    f"but {target} missing prerequisite_for {skill_id}"
+                )
+
+    # Check siblings symmetry
+    for skill_id, edges in skill_edges.items():
+        for edge in edges.get("siblings", []):
+            target = edge.get("target")
+            if not target or target not in skill_edges:
+                continue
+            target_siblings = {
+                e.get("target") for e in skill_edges[target].get("siblings", [])
+            }
+            if skill_id not in target_siblings:
+                warnings.append(
+                    f"SYMMETRY: {skill_id} has sibling {target}, "
+                    f"but {target} missing sibling {skill_id}"
+                )
+
+    return warnings
+
+
+# ───────────────────────────────────────────────────────────────
+# 4. COMPILATION
+# ───────────────────────────────────────────────────────────────
+
+def compute_hub_skills(adjacency: Dict[str, dict]) -> List[str]:
+    """Compute hub skills by counting inbound edges across all types."""
+    inbound_counts: Dict[str, int] = {}
+
+    for skill_id, edge_groups in adjacency.items():
+        for edge_type, targets in edge_groups.items():
+            for target in targets:
+                inbound_counts[target] = inbound_counts.get(target, 0) + 1
+
+    if not inbound_counts:
+        return []
+
+    # Return skills with above-median inbound degree
+    counts = sorted(inbound_counts.values())
+    median = counts[len(counts) // 2]
+    hubs = [
+        skill for skill, count in inbound_counts.items()
+        if count > median
+    ]
+    return sorted(hubs)
+
+
+def compile_graph(all_metadata: List[Tuple[str, str, dict]]) -> dict:
+    """Compile all per-skill metadata into a single skill-graph.json."""
+    families: Dict[str, List[str]] = {}
+    adjacency: Dict[str, dict] = {}
+    conflicts: List[List[str]] = []
+    seen_conflicts: Set[tuple] = set()
+
+    for folder_name, _, data in all_metadata:
+        skill_id = data.get("skill_id", folder_name)
+        family = data.get("family", "unknown")
+
+        # Build families
+        if family not in families:
+            families[family] = []
+        families[family].append(skill_id)
+
+        # Build sparse adjacency
+        edges = data.get("edges", {})
+        skill_adj: Dict[str, dict] = {}
+
+        # Exclude prerequisite_for from compiled output (derivable from depends_on)
+        for edge_type in ("depends_on", "enhances", "siblings"):
+            edge_list = edges.get(edge_type, [])
+            if edge_list:
+                targets = {}
+                for edge in edge_list:
+                    target = edge.get("target")
+                    weight = edge.get("weight", 0.0)
+                    if target and weight > 0.0:
+                        targets[target] = weight
+                if targets:
+                    skill_adj[edge_type] = targets
+
+        if skill_adj:
+            adjacency[skill_id] = skill_adj
+
+        # Collect conflicts
+        for edge in edges.get("conflicts_with", []):
+            target = edge.get("target")
+            if target:
+                pair = tuple(sorted([skill_id, target]))
+                if pair not in seen_conflicts:
+                    seen_conflicts.add(pair)
+                    conflicts.append(list(pair))
+
+    # Sort family members
+    for family in families:
+        families[family] = sorted(families[family])
+
+    hub_skills = compute_hub_skills(adjacency)
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "skill_count": len(all_metadata),
+        "families": dict(sorted(families.items())),
+        "adjacency": dict(sorted(adjacency.items())),
+        "conflicts": sorted(conflicts),
+        "hub_skills": hub_skills,
+    }
+
+
+# ───────────────────────────────────────────────────────────────
+# 5. CLI
+# ───────────────────────────────────────────────────────────────
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Compile skill graph-metadata.json files into skill-graph.json",
+    )
+    parser.add_argument(
+        "--validate-only",
+        action="store_true",
+        help="Validate all metadata files without writing output",
+    )
+    parser.add_argument(
+        "--output",
+        default=DEFAULT_OUTPUT,
+        help=f"Output path (default: {DEFAULT_OUTPUT})",
+    )
+    parser.add_argument(
+        "--pretty",
+        action="store_true",
+        help="Pretty-print JSON output",
+    )
+    args = parser.parse_args()
+
+    # Discover
+    all_metadata = discover_graph_metadata(SKILLS_DIR)
+    print(f"Discovered {len(all_metadata)} skill graph-metadata.json files")
+
+    if not all_metadata:
+        print("ERROR: No graph-metadata.json files found", file=sys.stderr)
+        return 2
+
+    # Collect all skill IDs for cross-validation
+    all_skill_ids = {data.get("skill_id", folder) for folder, _, data in all_metadata}
+
+    # Validate
+    total_errors = 0
+    for folder_name, file_path, data in all_metadata:
+        errors = validate_skill_metadata(folder_name, data, all_skill_ids)
+        if errors:
+            print(f"\nERRORS in {folder_name}:")
+            for err in errors:
+                print(f"  - {err}")
+            total_errors += len(errors)
+
+    # Symmetry warnings
+    symmetry_warnings = validate_edge_symmetry(all_metadata)
+    if symmetry_warnings:
+        print(f"\nSYMMETRY WARNINGS ({len(symmetry_warnings)}):")
+        for warn in symmetry_warnings:
+            print(f"  - {warn}")
+
+    if total_errors > 0:
+        print(f"\nVALIDATION FAILED: {total_errors} error(s)")
+        return 2
+
+    print("VALIDATION PASSED: all metadata files are valid")
+
+    if args.validate_only:
+        return 0
+
+    # Compile
+    graph = compile_graph(all_metadata)
+    indent = 2 if args.pretty else None
+    output_json = json.dumps(graph, indent=indent, ensure_ascii=False)
+
+    # Write
+    with open(args.output, "w", encoding="utf-8") as f:
+        f.write(output_json)
+        f.write("\n")
+
+    size_bytes = len(output_json.encode("utf-8"))
+    print(f"Compiled skill-graph.json: {size_bytes} bytes ({graph['skill_count']} skills)")
+    print(f"  Families: {len(graph['families'])}")
+    print(f"  Adjacency entries: {len(graph['adjacency'])}")
+    print(f"  Conflicts: {len(graph['conflicts'])}")
+    print(f"  Hub skills: {graph['hub_skills']}")
+    print(f"  Output: {args.output}")
+
+    if size_bytes > 2048:
+        print(f"WARNING: Output exceeds 2KB target ({size_bytes} bytes)", file=sys.stderr)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -132,6 +132,8 @@ Key runtime modules:
 - `mcp_server/lib/merge/anchor-merge-operation.ts`
 - `mcp_server/lib/continuity/thin-continuity-record.ts`
 
+The live canonical writer uses an 8-category router: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 1 handles structured and heuristic matches, Tier 2 compares against routing prototypes, and Tier 3 is now wired into the save handler when `SPECKIT_TIER3_ROUTING=true` and the configured LLM endpoint is available. Delivery routing now keys off sequencing, gating, rollout, and verification cues instead of generic implementation verbs, while the handover/drop boundary separates hard transcript or telemetry wrappers from softer operational language like `git diff`. `routeAs` can force a category for operator-directed saves, and the router context derives `packet_kind` from spec metadata first (`type`, `title`, `description`) with parent-phase fallback only when metadata is silent.
+
 ### Supporting artifacts
 
 Generated memory files still matter for search, traceability, and evidence capture, but they are supporting artifacts rather than the canonical operator-facing session state.
@@ -144,6 +146,10 @@ Generated memory files still matter for search, traceability, and evidence captu
 ### Search and retrieval
 
 `mcp_server/lib/search/` remains the hybrid retrieval subsystem. It provides vector, BM25, FTS5, graph, and structural graph channels, then fuses them in a staged ranking pipeline. Retrieval is subordinate to the resume ladder for packet recovery.
+
+The adaptive fusion profile for continuity-oriented retrieval now lives with the other runtime weight profiles in `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`, using `semantic 0.52`, `keyword 0.18`, `recency 0.07`, and `graph 0.23`. Stage 3 keeps the complementary continuity-specific MMR lambda in `mcp_server/lib/search/intent-classifier.ts` at `0.65`, so resume-style searches stay semantic-first while still preserving graph support.
+
+Reranking behavior is owned by `mcp_server/lib/search/pipeline/stage3-rerank.ts` and `mcp_server/lib/search/cross-encoder.ts`: the pipeline now waits for at least 4 candidates before invoking the reranker, the legacy `applyLengthPenalty` option is retained as a compatibility no-op (`1.0` multiplier for every document), and `getRerankerStatus()` reports latency plus cache hits, misses, stale hits, and evictions for the shared reranker cache.
 
 ### Graph systems
 

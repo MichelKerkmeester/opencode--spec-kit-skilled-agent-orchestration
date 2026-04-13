@@ -71,6 +71,38 @@ Save the current conversation context, including session summary, key decisions,
 - `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, or anchor-managed compatibility output.
 - Standalone memory markdown is not the primary operator-facing destination for this command.
 
+### Routed Save Categories
+
+The canonical save router works with 8 categories:
+
+| Category | Typical target | Notes |
+| -------- | -------------- | ----- |
+| `narrative_progress` | `implementation-summary.md::what-built` | What changed in the system or packet |
+| `narrative_delivery` | `implementation-summary.md::how-delivered` | Sequencing, gating, rollout, and verification story |
+| `decision` | `decision-record.md::adr-NNN` on L3/L3+ or `implementation-summary.md::decisions` on L1/L2 | Choice, tradeoff, rationale |
+| `handover_state` | `handover.md::session-log` | Stop-state, blockers, recent action, next safe action |
+| `research_finding` | `research/research.md::findings` | Evidence, investigation result, cited upstream behavior |
+| `task_update` | `tasks.md::<phase-anchor>` | Checklist/task status mutation |
+| `metadata_only` | `_memory.continuity` in frontmatter | Machine-owned continuity payloads |
+| `drop` | `scratch/pending-route-<hash>.json` via refusal | Non-canonical transcript/tooling noise; never auto-merged |
+
+Routing tiers:
+
+- Tier 1 handles structured routes and strong heuristics.
+- Tier 2 uses prototype similarity against the frozen routing library.
+- Tier 3 is now wired into the live save handler when `SPECKIT_TIER3_ROUTING=true` and `LLM_REFORMULATION_ENDPOINT` is configured. If Tier 3 is disabled or unavailable, the save path falls back to Tier 2 with a confidence penalty when safe, otherwise it refuses the merge.
+
+Boundary rules:
+
+- Delivery cues are now stronger when the chunk mentions sequencing, gating, rollout, or verification.
+- Handover keeps state-first stop/resume notes even if they mention soft operational commands like `git diff`, `list memories`, or `force re-index`.
+- Hard transcript, telemetry, and wrapper scaffolding still route to `drop`.
+
+Override and context rules:
+
+- `routeAs` can force any of the 8 categories. The router preserves the natural decision for audit and warns if an override is accepted against a natural `drop`.
+- Router context passes `packet_kind` derived from spec metadata first (`type`, `title`, `description`), with parent-phase fallback only when the metadata is silent.
+
 ---
 
 ## 2. CONTRACT
@@ -78,7 +110,7 @@ Save the current conversation context, including session summary, key decisions,
 | Field   | Value                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------- |
 | Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
-| Output  | Canonical spec-doc continuity updates + indexed continuity data. Also refreshes `graph-metadata.json` derived fields (trigger_phrases, key_files, entities, status) in the spec folder. |
+| Output  | Canonical spec-doc continuity updates + indexed continuity data. Also refreshes `graph-metadata.json` derived fields in the spec folder: `trigger_phrases` are deduplicated and capped at 12, `key_files` are sanitized before storage, `entities` are deduplicated with canonical-path preference, and `status` is checklist-aware and normalized to lowercase. |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
 | Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
@@ -302,7 +334,7 @@ Content...
 | `sessionSummary`   | 100+ chars | Becomes OVERVIEW: be comprehensive                   |
 | `keyDecisions`     | 1+ items   | Each decision with rationale                         |
 | `filesModified`    | 0+ items   | Actual paths modified                                |
-| `triggerPhrases`   | 5-10 items | Keywords for semantic search                         |
+| `triggerPhrases`   | 5-12 items | Keywords for semantic search. Parser-enforced cap at 12. |
 | `technicalContext` | Optional   | Additional technical details                         |
 | `toolCalls`        | Optional   | AI-summarized tool calls (richer than DB extraction) |
 | `exchanges`        | Optional   | Key user-assistant exchanges during session          |
@@ -316,6 +348,8 @@ Content...
 > **Why JSON mode:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs.
 
 > **026 Memory Quality (Post-Save Review):** After `generate-context.js` completes, it outputs a POST-SAVE QUALITY REVIEW. HIGH-severity issues (stale titles, weak trigger phrases, wrong importance tier) MUST be patched via Edit tool immediately. MEDIUM issues should be patched when practical. Trigger phrases are sanitized: generic phrases (e.g., "context", "session") are flagged for replacement with domain-specific terms per 026-003-009/010 trigger sanitization rules.
+
+> **Graph metadata refresh:** The same save pass refreshes `graph-metadata.json` with checklist-aware status fallback (`implementation-summary.md` presence + checklist completion), lowercase status normalization, sanitized `key_files`, deduplicated entities, and a 12-item cap on derived trigger phrases.
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 

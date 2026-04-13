@@ -1,5 +1,12 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Backfill Graph Metadata
+// Usage:
+//   node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js [--dry-run] [--root <specs-dir>]
+//   node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js [--dry-run] --active-only [--root <specs-dir>]
+//
+// Default behavior is inclusive: all packet folders under the selected specs root
+// are refreshed, including z_archive/ and z_future/. Use --active-only only when
+// you intentionally want to skip archived trees.
 // ───────────────────────────────────────────────────────────────
 
 import fs from 'node:fs';

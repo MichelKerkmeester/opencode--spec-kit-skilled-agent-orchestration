@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-code-opencode",
+  "family": "sk-code",
+  "category": "code-quality",
+  "edges": {
+    "depends_on": [],
+    "enhances": [
+      { "target": "sk-code-review", "weight": 0.3, "context": "opencode-specific review overlay" }
+    ],
+    "siblings": [
+      { "target": "sk-code-full-stack", "weight": 0.4, "context": "code quality peer" },
+      { "target": "sk-code-web", "weight": 0.4, "context": "code quality peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["opencode", "javascript", "typescript", "python", "shell", "mcp-server"],
+  "intent_signals": ["opencode", "system code", "mcp server code", "skill code"]
+}

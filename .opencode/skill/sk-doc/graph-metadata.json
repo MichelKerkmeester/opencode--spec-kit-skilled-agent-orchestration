@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-doc",
+  "family": "sk-util",
+  "category": "utility",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["documentation", "markdown", "readme", "guide", "flowchart", "catalog"],
+  "intent_signals": ["create readme", "write documentation", "install guide", "feature catalog"]
+}

@@ -18,7 +18,7 @@ After the initial search finds candidate results, this feature uses a small AI m
 
 **IMPLEMENTED (Sprint 019).** Implements the `RERANKER_LOCAL` flag with `node-llama-cpp` in Stage 3 using `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB). Activation is strict: `RERANKER_LOCAL` must equal `'true'`, rollout gating must permit the feature, the configured model path must be readable and the host must meet the total-memory threshold (8GB by default, 2GB when `SPECKIT_RERANKER_MODEL` is set). The guard intentionally checks total system RAM rather than free-memory readings. Sequential per-candidate inference remains intentional. If local execution is unavailable or runtime scoring fails, the local path returns the incoming order unchanged. New file: `lib/search/local-reranker.ts`.
 
-The shared cross-encoder path now keys its reranker cache by provider, document order, and option bits such as `applyLengthPenalty`, and both cache lookup and cache store use that stronger key. That prevents false cache hits across providers or option combinations. The reranker status p95 latency calculation also now uses the bounded ceil-based percentile index, which removes the old off-by-one upward bias on small sample sets.
+The shared cross-encoder path now keys its reranker cache by provider, query, and canonicalized document IDs. Because the length penalty was retired, `applyLengthPenalty` no longer changes cache keys or scores. `getRerankerStatus()` now exposes cache `hits`, `misses`, `staleHits`, `evictions`, entry counts, TTL, and bounded p95 latency so operators can inspect cache behavior directly.
 
 ---
 

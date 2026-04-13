@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-deep-review",
+  "family": "sk-deep",
+  "category": "autonomous-loop",
+  "edges": {
+    "depends_on": [
+      { "target": "sk-code-review", "weight": 0.8, "context": "dispatches review baseline per iteration" }
+    ],
+    "enhances": [],
+    "siblings": [
+      { "target": "sk-deep-research", "weight": 0.5, "context": "autonomous loop peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["review", "audit", "iterative", "convergence", "severity"],
+  "intent_signals": ["deep review", "review loop", "iterative review", "spec folder review"]
+}

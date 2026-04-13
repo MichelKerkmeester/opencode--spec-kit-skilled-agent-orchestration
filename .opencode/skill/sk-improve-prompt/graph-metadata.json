@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-improve-prompt",
+  "family": "sk-util",
+  "category": "utility",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "sk-improve-agent", "weight": 0.4, "context": "improvement utility peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["prompt", "framework", "scoring", "enhancement", "clear"],
+  "intent_signals": ["improve prompt", "enhance prompt", "prompt framework", "clear score"]
+}

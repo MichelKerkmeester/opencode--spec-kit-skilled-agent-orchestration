@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "cli-copilot",
+  "family": "cli",
+  "category": "cli-orchestrator",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "cli-claude-code", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-codex", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-gemini", "weight": 0.5, "context": "CLI orchestrator peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["cli", "delegation", "cross-ai", "planning", "cloud"],
+  "intent_signals": ["copilot cli", "delegate to copilot"]
+}

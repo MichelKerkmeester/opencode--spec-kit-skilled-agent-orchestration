@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "skill_id": "mcp-coco-index",
+  "family": "mcp",
+  "category": "mcp-tool",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["code-search", "semantic-search", "vector-embeddings", "codebase-understanding"],
+  "intent_signals": ["semantic search", "code search", "find code", "coco index"]
+}

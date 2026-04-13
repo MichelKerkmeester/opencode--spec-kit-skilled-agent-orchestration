@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-git",
+  "family": "sk-util",
+  "category": "utility",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["git", "worktree", "commit", "branch", "pull-request", "merge"],
+  "intent_signals": ["git workflow", "worktree", "conventional commit", "pull request", "finish work"]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-code-review",
+  "family": "sk-code",
+  "category": "code-quality",
+  "edges": {
+    "depends_on": [],
+    "enhances": [
+      { "target": "sk-code-opencode", "weight": 0.7, "context": "review overlay for opencode" },
+      { "target": "sk-code-web", "weight": 0.7, "context": "review overlay for web" },
+      { "target": "sk-code-full-stack", "weight": 0.7, "context": "review overlay for full-stack" }
+    ],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": [
+      { "target": "sk-deep-review", "weight": 0.8, "context": "deep-review depends on review baseline" }
+    ]
+  },
+  "domains": ["review", "audit", "security", "quality-gate", "merge-readiness", "findings"],
+  "intent_signals": ["code review", "pr review", "security review", "quality gate", "findings"]
+}

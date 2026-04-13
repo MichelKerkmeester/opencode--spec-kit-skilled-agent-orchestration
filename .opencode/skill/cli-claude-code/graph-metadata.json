@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "cli-claude-code",
+  "family": "cli",
+  "category": "cli-orchestrator",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "cli-codex", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-copilot", "weight": 0.5, "context": "CLI orchestrator peer" },
+      { "target": "cli-gemini", "weight": 0.5, "context": "CLI orchestrator peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["cli", "delegation", "cross-ai", "reasoning", "code-editing"],
+  "intent_signals": ["claude code", "claude cli", "delegate to claude"]
+}

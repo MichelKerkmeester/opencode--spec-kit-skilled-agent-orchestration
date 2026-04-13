@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "skill_id": "system-spec-kit",
+  "family": "system",
+  "category": "system",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["spec", "memory", "context", "continuity", "validation", "session"],
+  "intent_signals": ["spec folder", "save context", "save memory", "spec kit", "memory search"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "mcp-chrome-devtools",
+  "family": "mcp",
+  "category": "mcp-tool",
+  "edges": {
+    "depends_on": [
+      { "target": "mcp-code-mode", "weight": 0.7, "context": "MCP tool calls via Code Mode" }
+    ],
+    "enhances": [
+      { "target": "sk-code-web", "weight": 0.5, "context": "browser debugging for web code" }
+    ],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["devtools", "browser", "debugging", "performance", "dom", "css"],
+  "intent_signals": ["chrome devtools", "browser debug", "dom inspect", "lighthouse"]
+}

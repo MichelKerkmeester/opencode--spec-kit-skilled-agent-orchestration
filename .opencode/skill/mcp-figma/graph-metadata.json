@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "mcp-figma",
+  "family": "mcp",
+  "category": "mcp-tool",
+  "edges": {
+    "depends_on": [
+      { "target": "mcp-code-mode", "weight": 0.9, "context": "MCP tool calls via Code Mode" }
+    ],
+    "enhances": [
+      { "target": "sk-code-web", "weight": 0.4, "context": "design-to-code workflow" }
+    ],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["design", "figma", "components", "styles", "image-export"],
+  "intent_signals": ["figma", "design file", "figma component", "figma export"]
+}

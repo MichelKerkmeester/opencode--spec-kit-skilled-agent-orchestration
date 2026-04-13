@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill_id": "sk-improve-agent",
+  "family": "sk-util",
+  "category": "utility",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      { "target": "sk-improve-prompt", "weight": 0.4, "context": "improvement utility peer" }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["agent", "evaluation", "improvement", "scoring", "promotion"],
+  "intent_signals": ["improve agent", "evaluate agent", "agent scoring"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "skill_id": "mcp-code-mode",
+  "family": "mcp",
+  "category": "mcp-tool",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": [
+      { "target": "mcp-figma", "weight": 0.9, "context": "figma tools via Code Mode" },
+      { "target": "mcp-clickup", "weight": 0.9, "context": "clickup tools via Code Mode" },
+      { "target": "mcp-chrome-devtools", "weight": 0.7, "context": "devtools MCP fallback via Code Mode" }
+    ]
+  },
+  "domains": ["mcp", "tool-chain", "orchestration", "typescript-execution"],
+  "intent_signals": ["code mode", "mcp tool", "call tool chain"]
+}

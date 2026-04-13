@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill_id": "mcp-clickup",
+  "family": "mcp",
+  "category": "mcp-tool",
+  "edges": {
+    "depends_on": [
+      { "target": "mcp-code-mode", "weight": 0.9, "context": "MCP tool calls via Code Mode" }
+    ],
+    "enhances": [],
+    "siblings": [],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": ["project-management", "tasks", "clickup", "goals", "docs"],
+  "intent_signals": ["clickup", "project management", "clickup task"]
+}

@@ -60,6 +60,108 @@ except Exception as _runtime_exc:  # pragma: no cover - startup safety
 if _runtime_module is None:
     raise RuntimeError(f"Failed to load runtime helpers from {RUNTIME_PATH}")
 
+# Compiled skill graph for relationship-aware routing
+SKILL_GRAPH_PATH = os.path.join(SCRIPT_DIR, "skill-graph.json")
+_SKILL_GRAPH: Optional[Dict[str, Any]] = None
+
+
+def _load_skill_graph() -> Optional[Dict[str, Any]]:
+    """Load compiled skill graph. Returns None if file missing (backwards-compatible)."""
+    global _SKILL_GRAPH
+    if _SKILL_GRAPH is not None:
+        return _SKILL_GRAPH
+    try:
+        with open(SKILL_GRAPH_PATH, "r", encoding="utf-8") as f:
+            _SKILL_GRAPH = json.load(f)
+        return _SKILL_GRAPH
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _apply_graph_boosts(
+    skill_boosts: Dict[str, float],
+    boost_reasons: Dict[str, List[str]],
+) -> None:
+    """Apply transitive boosts from skill graph relationships."""
+    graph = _load_skill_graph()
+    if not graph:
+        return
+
+    adjacency = graph.get("adjacency", {})
+    snapshot = dict(skill_boosts)
+
+    for skill_name, current_boost in snapshot.items():
+        if current_boost <= 0:
+            continue
+        edges = adjacency.get(skill_name, {})
+
+        for target, weight in edges.get("enhances", {}).items():
+            transitive = current_boost * weight * 0.3
+            if transitive >= 0.1:
+                skill_boosts[target] = skill_boosts.get(target, 0) + transitive
+                boost_reasons.setdefault(target, []).append(
+                    f"!graph:enhances({skill_name},{weight:.1f})"
+                )
+
+        for target, weight in edges.get("siblings", {}).items():
+            transitive = current_boost * weight * 0.15
+            if transitive >= 0.1:
+                skill_boosts[target] = skill_boosts.get(target, 0) + transitive
+                boost_reasons.setdefault(target, []).append(
+                    f"!graph:sibling({skill_name},{weight:.1f})"
+                )
+
+        for target, weight in edges.get("depends_on", {}).items():
+            transitive = current_boost * weight * 0.2
+            if transitive >= 0.1:
+                skill_boosts[target] = skill_boosts.get(target, 0) + transitive
+                boost_reasons.setdefault(target, []).append(
+                    f"!graph:depends({skill_name},{weight:.1f})"
+                )
+
+
+def _apply_family_affinity(
+    skill_boosts: Dict[str, float],
+    boost_reasons: Dict[str, List[str]],
+) -> None:
+    """When one family member has a strong signal, lightly boost siblings."""
+    graph = _load_skill_graph()
+    if not graph:
+        return
+    families = graph.get("families", {})
+
+    for family_name, members in families.items():
+        boosted = [(m, skill_boosts.get(m, 0)) for m in members if skill_boosts.get(m, 0) > 1.0]
+        if not boosted:
+            continue
+        max_boost = max(b for _, b in boosted)
+        for member in members:
+            if skill_boosts.get(member, 0) <= 0 and max_boost > 1.5:
+                affinity = max_boost * 0.08
+                if affinity >= 0.1:
+                    skill_boosts[member] = skill_boosts.get(member, 0) + affinity
+                    boost_reasons.setdefault(member, []).append(f"!graph:family({family_name})")
+
+
+def _apply_graph_conflict_penalty(recommendations: List[Dict[str, Any]]) -> None:
+    """Increase uncertainty when conflicting skills are both recommended."""
+    graph = _load_skill_graph()
+    if not graph:
+        return
+    conflicts = graph.get("conflicts", [])
+    if not conflicts:
+        return
+
+    passing = {r["skill"] for r in recommendations if r.get("passes_threshold")}
+    conflict_set: Set[str] = set()
+    for pair in conflicts:
+        if len(pair) == 2 and pair[0] in passing and pair[1] in passing:
+            conflict_set.update(pair)
+
+    for rec in recommendations:
+        if rec["skill"] in conflict_set:
+            rec["uncertainty"] = min(rec["uncertainty"] + 0.15, 1.0)
+
 get_cache_status = _runtime_module.get_cache_status
 get_cached_skill_records = _runtime_module.get_cached_skill_records
 parse_frontmatter_fast = _runtime_module.parse_frontmatter_fast
