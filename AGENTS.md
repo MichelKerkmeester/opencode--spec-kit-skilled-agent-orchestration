@@ -37,7 +37,7 @@
 
 - **Plan before acting** on multi-step work. Decide which files to read first, which tools to use, and how the result will be verified before making changes.
 - **Use a research-first approach.** Read the actual code, docs, and local instructions first. Never use an edit-first approach, and prefer surgical edits over broad rewrites.
-- **Apply project-specific conventions from `CLAUDE.md` files** before acting.
+- **Apply project-specific conventions from `AGENTS.md`** before acting.
 - **Take responsibility for issues encountered during execution.** Do not dodge ownership with phrases like `not caused by my changes` or `pre-existing issue`; work toward the fix.
 - **Do not stop early when the requested solution is still incomplete.** Do not frame partial progress as a `good stopping point`, `natural checkpoint`, or `future work` when a safe path forward exists.
 - **Do not ask for permission to continue when the next safe step is already clear and in scope.** Avoid `should I continue?` or `want me to keep going?` when you can proceed safely under the existing rules.
