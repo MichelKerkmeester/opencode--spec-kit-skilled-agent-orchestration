@@ -50,9 +50,9 @@ Use `scratch/` for temporary files that help during implementation but have no l
 Do NOT use `scratch/` for:
 
 - **Permanent documentation** - Use spec folder root (`spec.md`, `plan.md`, `checklist.md`, etc.)
-- **Context for future sessions** - Use `memory/` folder for decisions, blockers and session summaries
+- **Context for future sessions** - Use `handover.md`, `_memory.continuity`, and the canonical spec docs
 - **Final implementation files** - Production code belongs in project source directories
-- **Important decisions** - Document in `decision-record.md` or `memory/`
+- **Important decisions** - Document in `decision-record.md` or `implementation-summary.md`
 - **Test results requiring retention** - Move to `checklist.md` verification section
 
 <!-- /ANCHOR:what-not-here -->
@@ -65,7 +65,7 @@ Do NOT use `scratch/` for:
 The `scratch/` folder should be emptied when spec work completes:
 
 1. Review files for any insights worth preserving
-2. Move important findings to appropriate permanent locations (`memory/`, `checklist.md`, etc.)
+2. Move important findings to appropriate permanent locations (`implementation-summary.md`, `handover.md`, `checklist.md`, etc.)
 3. Delete all scratch files
 4. Leave only `.gitkeep` in the folder
 
@@ -79,7 +79,7 @@ This folder is gitignored - contents never commit to version control.
 <!-- ANCHOR:related -->
 
 - [Folder Structure](../../references/structure/folder_structure.md) - Complete spec folder organization
-- [Memory System](../../references/memory/memory_system.md) - When to use `memory/` vs `scratch/`
+- [Memory System](../../references/memory/memory_system.md) - Canonical continuity and recovery rules
 - [Template Guide](../../references/templates/template_guide.md) - Template selection and usage
 
 <!-- /ANCHOR:related -->

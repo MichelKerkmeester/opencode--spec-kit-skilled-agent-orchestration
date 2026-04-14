@@ -22,8 +22,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@speckit`, `@deep-research`, `@handover`, `@context`) from this document
-- **DO NOT** dispatch `@handover` unless the user explicitly requests it at the final step (Step 7)
+- **DO NOT** dispatch any agent (`@deep-research`, `@context`) from this document
 - **DO NOT** dispatch `@deep-research` unless confidence < 60% during planning (Step 5)
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
@@ -226,7 +225,7 @@ $ARGUMENTS
 | 4    | Clarification    | Resolve ambiguities          | updated spec.md          |
 | 5    | Planning         | Create technical plan        | plan.md, checklist.md    |
 | 6    | Save Context     | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
-| 7    | Handover Check   | Prompt for session handover  | handover.md (optional)   |
+| 7    | Workflow Finish  | Close the planning pass after context refresh | planning_summary |
 
 ### Packet Graph Metadata
 
@@ -466,7 +465,7 @@ Next step: `/spec_kit:implement [spec-folder-path]`
 | Ready to implement           | `/spec_kit:implement [spec-folder-path]` | Continue to implementation|
 | Need stakeholder review      | Share `plan.md` for review               | Get approval before coding|
 | Technical uncertainty        | `/spec_kit:deep-research [topic]`        | Investigate first         |
-| Need to pause                | `/spec_kit:handover [spec-folder-path]`  | Save context for later    |
+| Need to pause                | `/memory:save [spec-folder-path]`        | Refresh the indexed canonical spec document before pausing |
 | Refresh search support       | `/memory:save [spec-folder-path]`        | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 
 **ALWAYS** end with: "What would you like to do next?"

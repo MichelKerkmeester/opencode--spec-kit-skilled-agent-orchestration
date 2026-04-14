@@ -602,12 +602,10 @@ Fix verification gaps first
 | Agent           | File               | Type       | Key Patterns                                                                                |
 | --------------- | ------------------ | ---------- | ------------------------------------------------------------------------------------------- |
 | @context        | context.md         | Subagent   | Context retrieval, active dispatch (@explore + @deep-research), structured Context Package output |
-| @debug          | debug.md           | Subagent   | 4-phase methodology, structured handoff                                                          |
+| @debug          | debug.md           | Subagent   | 5-phase methodology, Task-tool dispatch after repeated failures                                  |
 | @general        | (built-in)         | Agent      | Implementation, complex tasks, full tool access                                                  |
-| @handover       | handover.md        | Subagent   | Session continuation, context preservation                                                       |
 | @deep-research  | deep-research.md   | Subagent   | Iterative research loop, externalized state, convergence detection                               |
 | @review         | review.md          | Subagent   | Quality rubric, orchestrator integration                                                         |
-| @speckit        | speckit.md         | Subagent   | Template-first, level-based documentation                                                        |
 | @write          | write.md           | Subagent   | DQI scoring, template alignment                                                                  |
 | orchestrate     | orchestrate.md     | Primary    | Task decomposition, circuit breaker                                                              |
 
@@ -699,11 +697,9 @@ Before deploying an agent, verify:
 | context        | `.opencode/agent/context.md`          | Context retrieval & exploration dispatch  |
 | debug          | `.opencode/agent/debug.md`            | Fresh perspective debugging               |
 | general        | (built-in)                            | Implementation, complex tasks             |
-| handover       | `.opencode/agent/handover.md`         | Session continuation & context preservation |
 | orchestrate    | `.opencode/agent/orchestrate.md`      | Task decomposition & delegation           |
 | deep-research  | `.opencode/agent/deep-research.md`    | Iterative technical investigation         |
 | review         | `.opencode/agent/review.md`           | Code quality validation                   |
-| speckit        | `.opencode/agent/speckit.md`          | Spec folder documentation                 |
 | write          | `.opencode/agent/write.md`            | Documentation creation                    |
 
 ### Documentation

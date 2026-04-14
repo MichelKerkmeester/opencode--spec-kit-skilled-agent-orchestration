@@ -13,11 +13,11 @@ This scenario validates Template Compliance Contract Enforcement for `208`. It f
 
 ## 2. CURRENT REALITY
 
-Operators verify the shared contract reference and embedded @speckit contracts are in sync, then run strict validation against compliant and non-compliant fixtures to confirm structural violations and content-minimum guardrails are caught with actionable output.
+Operators verify the shared contract reference and embedded spec-authoring runtime contracts are in sync, then run strict validation against compliant and non-compliant fixtures to confirm structural violations and content-minimum guardrails are caught with actionable output.
 
 - Objective: Confirm the 3-layer template compliance contract blocks non-compliant spec documents
 - Prompt: `As a tooling validation operator, validate Template Compliance Contract Enforcement against references/validation/template_compliance_contract.md. Verify the 3-layer template compliance contract blocks non-compliant spec documents. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: the canonical contract exists in the shared reference and embedded @speckit definitions; compliant fixtures pass `validate.sh --strict`; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface
+- Expected signals: the canonical contract exists in the shared reference and embedded spec-authoring runtime definitions; compliant fixtures pass `validate.sh --strict`; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface
 - Pass/fail: PASS if contract presence is confirmed, compliant fixtures pass strict validation, and non-compliant fixtures fail for the expected structural reasons
 
 ---
@@ -27,12 +27,12 @@ Operators verify the shared contract reference and embedded @speckit contracts a
 ### Prompt
 
 ```
-As a tooling validation operator, confirm the 3-layer template compliance contract blocks non-compliant spec documents against references/validation/template_compliance_contract.md. Verify the canonical contract exists in the shared reference and embedded @speckit definitions; compliant fixtures pass validate.sh --strict; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a tooling validation operator, confirm the 3-layer template compliance contract blocks non-compliant spec documents against references/validation/template_compliance_contract.md. Verify the canonical contract exists in the shared reference and embedded spec-authoring runtime definitions; compliant fixtures pass validate.sh --strict; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. inspect `references/validation/template_compliance_contract.md` and the five CLI `@speckit` agent definitions to confirm the compact contract is embedded
+1. inspect `references/validation/template_compliance_contract.md` and the five CLI `distributed-governance spec authoring` agent definitions to confirm the compact contract is embedded
 2. run strict validation on the compliant fixture path and capture exit code 0
 3. run strict validation on the extra-header fixture and confirm warning-only drift is promoted to failure in strict mode
 4. run strict validation on the missing-header and reordered-anchor fixtures and capture the targeted failure output
@@ -40,7 +40,7 @@ As a tooling validation operator, confirm the 3-layer template compliance contra
 
 ### Expected
 
-the canonical contract exists in the shared reference and embedded @speckit definitions; compliant fixtures pass `validate.sh --strict`; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface
+the canonical contract exists in the shared reference and embedded spec-authoring runtime definitions; compliant fixtures pass `validate.sh --strict`; warning-only template drift fails in strict mode; missing or reordered required sections fail with targeted validator output; section-count minimum checks are present in the enforcement surface
 
 ### Evidence
 

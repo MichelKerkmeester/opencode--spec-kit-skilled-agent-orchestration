@@ -76,7 +76,7 @@ At completion, add and fill:
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-short-name/
 ```
 
-Resume follow-up work through `/spec_kit:resume`, which rebuilds packet continuity from `handover.md -> _memory.continuity -> spec docs`; generated `memory/` artifacts stay secondary.
+Resume follow-up work through `/spec_kit:resume`, which rebuilds packet continuity from `handover.md -> _memory.continuity -> spec docs`. Save continuity with `/memory:save`, which routes updates into canonical packet docs such as `implementation-summary.md` and `handover.md`.
 
 <!-- /ANCHOR:quick-start -->
 

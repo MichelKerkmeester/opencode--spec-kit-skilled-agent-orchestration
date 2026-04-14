@@ -619,9 +619,7 @@ Commands are slash-prefixed shortcuts for common workflows.
 | Command               | Description                           | Output                      |
 | --------------------- | ------------------------------------- | --------------------------- |
 | `/spec_kit:complete`  | Full spec workflow (plan + implement) | Complete implementation     |
-| `/spec_kit:debug`     | Debug mode for troubleshooting        | Debug session               |
 | `/spec_kit:deep-research` | Iterative deep research workflow | Research findings and state |
-| `/spec_kit:handover`  | Session handover documentation        | Handover document           |
 | `/spec_kit:implement` | Execute pre-planned work              | Implementation from plan    |
 | `/spec_kit:plan :with-phases` | Phase decomposition (integrated into plan/complete) | Parent and child spec packs |
 | `/spec_kit:plan`      | Planning phase only                   | Plan without implementation |

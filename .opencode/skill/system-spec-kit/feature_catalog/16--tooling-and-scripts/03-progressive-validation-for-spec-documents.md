@@ -24,7 +24,7 @@ The `progressive-validate.sh` wrapper in `scripts/spec/` runs a 4-level pipeline
 
 Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--verbose`. Exit code behavior matches `validate.sh`: **0 = pass, 1 = warnings, 2 = errors** (with `--strict`, warnings are promoted to exit 2).
 
-**Cross-reference**: The structural contracts validated by `validate.sh` are now codified in `references/validation/template_compliance_contract.md` and embedded as compact anchor-to-H2 mapping tables in all @speckit agent definitions. See `18-template-compliance-contract-enforcement.md` for the 3-layer enforcement architecture that ensures agents produce compliant documents at generation time.
+**Cross-reference**: The structural contracts validated by `validate.sh` are now codified in `references/validation/template_compliance_contract.md` and embedded as compact anchor-to-H2 mapping tables in all distributed-governance spec-authoring flow definitions. See `18-template-compliance-contract-enforcement.md` for the 3-layer enforcement architecture that ensures agents produce compliant documents at generation time.
 
 ---
 

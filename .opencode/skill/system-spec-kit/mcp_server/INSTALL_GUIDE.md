@@ -1052,7 +1052,6 @@ MCP TOOLS: memory_context, memory_search, memory_match_triggers,
 
 - MCP package manifest: `.opencode/skill/system-spec-kit/mcp_server/package.json`
 - Skill README: `.opencode/skill/system-spec-kit/README.md`
-- Memory context in spec folders: `specs/*/memory/`
 
 ---
 

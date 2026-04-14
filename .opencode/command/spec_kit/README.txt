@@ -40,7 +40,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `spec_kit` command group manages the full development lifecycle around spec folders. Commands cover planning, implementation, deep-research, debugging, session handover, resumption, and end-to-end workflows.
+The `spec_kit` command group manages the full development lifecycle around spec folders. Commands cover planning, implementation, deep-research, resumption, and end-to-end workflows.
 
 Each command loads a YAML workflow from `assets/` and executes it step by step. Most commands support `:auto` and `:confirm` execution modes.
 
@@ -57,10 +57,9 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | **implement** | `/spec_kit:implement <spec-folder> [:auto\|:confirm]` | 9 | Execute pre-planned work (requires existing plan.md) |
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **deep-review** | `/spec_kit:deep-review <target> [:auto\|:confirm]` | iterative | Autonomous code review loop with severity-weighted findings |
-| **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
-| **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
-| **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:with-phases] [:auto-debug]` | 14+ | Full end-to-end workflow combining all phases. `:with-phases` adds phase decomposition pre-workflow |
+| **start** | `/spec_kit:start [description] [:auto\|:confirm]` | varies | Canonical intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
+| **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:with-phases]` | 14+ | Full end-to-end workflow combining all phases. `:with-phases` adds phase decomposition pre-workflow |
 
 ### Command Dependencies
 
@@ -70,8 +69,6 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | `implement` | Existing `plan.md` in spec folder |
 | `deep-research` | Nothing (iterative research with convergence detection) |
 | `deep-review` | Target files or spec folder to review |
-| `debug` | Existing spec folder with failing task |
-| `handover` | Existing spec folder with work history |
 | `resume` | Existing spec folder with saved state or recoverable session context |
 | `complete` | Nothing (runs full lifecycle) |
 
@@ -84,25 +81,21 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 
 ```text
 spec_kit/
-├── README.txt        # This file, 8-command index and workflow guide
+├── README.txt        # This file, 7-command index and workflow guide
 ├── complete.md       # /spec_kit:complete - Full end-to-end workflow
-├── debug.md          # /spec_kit:debug - Debug delegation
 ├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
 ├── deep-review.md    # /spec_kit:deep-review - Autonomous code review loop
-├── handover.md       # /spec_kit:handover - Session handover
 ├── implement.md      # /spec_kit:implement - Execute planned work
 ├── plan.md           # /spec_kit:plan - Planning only
 ├── resume.md         # /spec_kit:resume - Resume existing work
+├── start.md          # /spec_kit:start - Canonical spec intake
 └── assets/           # YAML workflow definitions
     ├── spec_kit_complete_auto.yaml
     ├── spec_kit_complete_confirm.yaml
-    ├── spec_kit_debug_auto.yaml
-    ├── spec_kit_debug_confirm.yaml
     ├── spec_kit_deep-research_auto.yaml
     ├── spec_kit_deep-research_confirm.yaml
     ├── spec_kit_deep-review_auto.yaml
     ├── spec_kit_deep-review_confirm.yaml
-    ├── spec_kit_handover_full.yaml
     ├── spec_kit_implement_auto.yaml
     ├── spec_kit_implement_confirm.yaml
     ├── spec_kit_plan_auto.yaml
@@ -133,13 +126,7 @@ phase (optional: decompose into phase children)
 implement (execute plan.md tasks)
     |
     v
-debug (if issues arise, 3+ failed attempts)
-    |
-    v
-handover (preserve context for next session)
-    |
-    v
-resume (continue in new session)
+resume (continue in a new or interrupted session)
 ```
 
 The `complete` command combines deep-research, plan, and implement into a single invocation.
@@ -148,15 +135,14 @@ The `complete` command combines deep-research, plan, and implement into a single
 
 | Command | Delegates To |
 |---------|-------------|
-| plan | @speckit (spec folder creation), @deep-research (optional) |
-| implement | @general (code changes), @speckit (documentation) |
+| plan | Main agent owns planning and may reuse `/spec_kit:start`; @deep-research optional |
+| implement | @general (code changes), distributed governance for packet docs |
 | deep-research | @deep-research (iterative investigation) |
 | deep-review | @deep-review (iterative code audit) |
-| debug | @debug (fresh perspective analysis) |
-| handover | @handover (context preservation) |
 | resume | Loads memory context, continues from last state |
-| phase | @speckit (folder creation), @general (script execution) |
-| complete | @deep-research, @speckit, @general as needed |
+| phase | Main agent creates packet folders, @general runs scripts as needed |
+| start | Main agent performs canonical intake and publishes the trio |
+| complete | @deep-research and @general as needed, with `/spec_kit:start` delegation when packet state requires repair |
 
 <!-- /ANCHOR:workflow-progression -->
 
@@ -175,12 +161,10 @@ The `complete` command supports two additional flags:
 | Flag | Effect |
 |------|--------|
 | `:with-research` | Add research phase before planning |
-| `:auto-debug` | Automatically delegate to @debug on failure |
 
 Each mode maps to a YAML workflow file in `assets/`:
 - Auto: `spec_kit_<command>_auto.yaml`
 - Confirm: `spec_kit_<command>_confirm.yaml`
-- Handover uses a single file: `spec_kit_handover_full.yaml`
 
 <!-- /ANCHOR:execution-modes -->
 
@@ -202,17 +186,14 @@ Each mode maps to a YAML workflow file in `assets/`:
 # Decompose a complex feature into phases
 /spec_kit:plan:auto "Build hybrid RAG search system" :with-phases --phases 3
 
-# Delegate debugging after repeated failures
-/spec_kit:debug specs/012-rate-limiting
-
-# Create handover for session continuation
-/spec_kit:handover specs/012-rate-limiting
+# Save continuity before ending a long session
+/memory:save specs/012-rate-limiting
 
 # Resume work in a new or interrupted session
 /spec_kit:resume specs/012-rate-limiting :auto
 
-# Full end-to-end with research and auto-debug
-/spec_kit:complete "Add WebSocket support" :auto :with-research :auto-debug
+# Full end-to-end with research
+/spec_kit:complete "Add WebSocket support" :auto :with-research
 ```
 
 <!-- /ANCHOR:usage-examples -->
@@ -226,13 +207,13 @@ Each mode maps to a YAML workflow file in `assets/`:
 
 `/spec_kit:plan` creates the spec folder and plan.md, then stops. It does not implement anything. `/spec_kit:complete` runs the full lifecycle: optional research, planning, and implementation in a single command. Use `plan` when you want to review and adjust the plan before committing to implementation. Use `complete` when you want to run the whole workflow without interruption.
 
-**Q: When should I use `/spec_kit:debug` instead of just fixing the issue directly?**
+**Q: When should I dispatch `@debug` instead of just fixing the issue directly?**
 
-Use `/spec_kit:debug` after 3 or more failed fix attempts on the same task. The debug command delegates to a specialized sub-agent with a fresh context, which avoids compounding errors from the current session's assumptions. It is also the right choice when the root cause is unclear and you need a structured diagnosis rather than another patch attempt.
+Dispatch `@debug` via the Task tool after 3 or more failed fix attempts on the same task. The specialist brings a fresh context and a 5-phase methodology, which helps avoid compounding the current session's assumptions when the root cause is still unclear.
 
-**Q: Can I resume a spec folder that was never explicitly handed over?**
+**Q: Can I resume a spec folder that was never explicitly saved?**
 
-Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder even if you never wrote a handover. The canonical recovery ladder is `handover.md` -> `_memory.continuity` -> canonical spec docs. If one rung is missing, resume continues with the next packet-local source. If no saved state exists anywhere in that ladder, the command prompts you to start fresh with `/spec_kit:plan`. Running `/spec_kit:handover` before ending a session still improves the first recovery pass, but it is not required.
+Yes. `/spec_kit:resume` loads the best available continuation context for the spec folder even if you never wrote a handover entry. The canonical recovery ladder is `handover.md` -> `_memory.continuity` -> canonical spec docs. If one rung is missing, resume continues with the next packet-local source. If no saved state exists anywhere in that ladder, the command prompts you to start fresh with `/spec_kit:plan`. Running `/memory:save` before ending a session still improves the first recovery pass, but it is not required.
 
 **Q: How does `:with-phases` relate to the parent spec folder?**
 
@@ -249,9 +230,9 @@ The `:with-phases` flag on `/spec_kit:plan` or `/spec_kit:complete` creates a pa
 |---------|-------|-----|
 | Implement fails: "no plan.md" | Spec folder missing plan.md | Run `/spec_kit:plan` first |
 | Resume finds no context | No saved memory for spec folder | Start fresh with `/spec_kit:plan` |
-| Debug produces no result | No clear failing task to debug | Provide specific error context in the spec folder |
+| Debug routing unclear | No clear failing task or repeated failure pattern | Dispatch `@debug` via Task tool once failure_count >= 3 and provide specific error context |
 | YAML workflow not found | Missing asset file | Verify `assets/` contains matching YAML for your mode |
-| Handover doc is empty | No significant work in session | Ensure you have completed tasks before handover |
+| Continuity save adds little context | No significant work in session | Use `/memory:save` after meaningful progress or rely on `/spec_kit:resume` ladder |
 | Phase creates wrong structure | Incorrect --phases or --phase-names | Verify parent spec folder exists, re-run with correct arguments |
 | Complete takes too long | Full lifecycle runs all phases | Use specific commands (plan, implement) for faster execution |
 

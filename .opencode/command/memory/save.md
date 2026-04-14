@@ -77,6 +77,10 @@ Save the current conversation context, including session summary, key decisions,
 - `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, or anchor-managed compatibility output.
 - Standalone memory markdown is not the primary operator-facing destination for this command.
 
+### Handover Document Maintenance
+
+`/memory:save` is the canonical maintainer for `handover.md` through `handover_state` routing. When a packet does not already contain `handover.md`, create it from `.opencode/skill/system-spec-kit/templates/handover.md`, then merge subsequent stop-state updates into `handover.md::session-log` while keeping `_memory.continuity` aligned for `/spec_kit:resume`.
+
 ### Routed Save Categories
 
 The canonical save router works with 8 categories:
@@ -86,7 +90,7 @@ The canonical save router works with 8 categories:
 | `narrative_progress` | `implementation-summary.md::what-built` | What changed in the system or packet |
 | `narrative_delivery` | `implementation-summary.md::how-delivered` | Sequencing, gating, rollout, and verification story |
 | `decision` | `decision-record.md::adr-NNN` on L3/L3+ or `implementation-summary.md::decisions` on L1/L2 | Choice, tradeoff, rationale |
-| `handover_state` | `handover.md::session-log` | Stop-state, blockers, recent action, next safe action |
+| `handover_state` | `handover.md::session-log` | Stop-state, blockers, recent action, next safe action. Use `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation when `handover.md` does not exist. |
 | `research_finding` | `research/research.md::findings` | Evidence, investigation result, cited upstream behavior |
 | `task_update` | `tasks.md::<phase-anchor>` | Checklist/task status mutation |
 | `metadata_only` | `_memory.continuity` in frontmatter | Machine-owned continuity payloads |
@@ -357,6 +361,10 @@ Content...
 
 > **Graph metadata refresh:** The same save pass refreshes `graph-metadata.json` with checklist-aware status fallback (`implementation-summary.md` presence + checklist completion), lowercase status normalization, sanitized `key_files`, deduplicated entities, and a 12-item cap on derived trigger phrases.
 
+> **Auto-index of touched files (Step 11.5):** After the canonical save updates packet docs and `graph-metadata.json`, the workflow runs an incremental `memory_index_scan` scoped to the target spec folder. This re-indexes any canonical spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`, `research/research.md`) and `graph-metadata.json` that were modified earlier in the session. Incremental mode skips unchanged files cheaply via mtime + content-hash checks.
+>
+> Kill switches: `SPECKIT_AUTO_INDEX_TOUCHED=false` (targeted opt-out) or `SPECKIT_INDEX_SPEC_DOCS=false` (existing global opt-out) disables Step 11.5. The backend has a 51s cooldown between scans; when a save fires during cooldown, Step 11.5 logs `skipped (scan cooldown active; retry on next save)` and continues — the index catches up on the next save.
+
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
 > SECURITY: When using heredoc or --stdin, ensure JSON content is properly escaped. Prefer --json flag with single-quoted inline JSON or write to /tmp/save-context-data.json via Write tool first (exception to the Write tool exclusion: writing the intermediate JSON data file is permitted).
@@ -511,9 +519,8 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | Topic-folder mismatch   | Warn, suggest alternatives, ask to confirm      |
 | Empty conversation      | Return `STATUS=FAIL ERROR="No context to save"` |
 | Script execution fails  | Show error, suggest manual save                 |
-| Embedding fails         | File saved, will auto-index on MCP restart      |
-| MCP unavailable         | File saved, indexing deferred to restart        |
-| Duplicate session (<1h) | Warn, offer: Overwrite / Append / New / Cancel  |
+| Embedding fails         | Canonical docs updated, will auto-index on MCP restart |
+| MCP unavailable         | Canonical docs updated, indexing deferred to restart   |
 | JSON not loaded         | Check temp file path and content format          |
 
 ---
@@ -523,7 +530,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | Condition                    | Suggested Command                          | Reason                        |
 | ---------------------------- | ------------------------------------------ | ----------------------------- |
 | Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
-| Ending session               | `/spec_kit:handover [spec-folder-path]`    | Create full handover document |
+| Ending session               | `/memory:save [spec-folder-path]`           | Update `handover.md` through `handover_state` routing |
 | Search saved memories        | `/memory:search [query]`                | Find related context          |
 | Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
 
@@ -537,7 +544,6 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/spec_kit:handover`: Full session handover document
 
 ---
 <!-- APPENDIX: Reference material for AI agent implementation -->
@@ -677,25 +683,6 @@ Fallback triggers if Task tool returns error, times out, or sub-agent returns `s
 | Token efficiency      | Heavy context extraction happens in sub-agent context |
 | Main agent responsive | Validation and reporting stay lightweight             |
 | Fallback safety       | Commands always work, even without Task tool          |
-
-### Session Deduplication
-
-Prevents redundant saves of the same conversation content (accidental duplicates, post-compaction saves, database bloat).
-
-**Detection:** Generate SHA-256 fingerprint of (topic + files + timeframe), compare against most recent memory in target folder. If match AND time delta < 1 hour → DUPLICATE DETECTED. Delta 1-4h → suggest review. Delta > 4h → proceed normally.
-
-> **026 Compaction Note:** Post-026 context compaction uses bootstrap hardening (`session_bootstrap()`) on the canonical resume/bootstrap path. When a compaction event triggers a save, the dedup check uses the compacted session's fingerprint. If the pre-compaction session already saved context to the same folder within 1 hour, the duplicate detection fires as expected.
-
-**User Options on Duplicate:**
-
-| Option        | File Action                         | Metadata                            |
-| ------------- | ----------------------------------- | ----------------------------------- |
-| **Overwrite** | Replace file content, keep filename | `dedup_status: duplicate_overwrite` |
-| **Append**    | Merge sections, preserve anchors    | Update `related_sessions` array     |
-| **New**       | Create new file with +1 minute      | `dedup_status: duplicate_new`       |
-| **Cancel**    | No file created                     | No changes                          |
-
-**Metadata** in YAML frontmatter: `session_hash`, `session_timestamp`, `previous_session_id`, `dedup_status`, `related_sessions[]`.
 
 ### Governance, Provenance & Retention
 

@@ -44,7 +44,7 @@ function run() {
 
   // T-FMB-001: No false-positive frontmatter detection after leading comments.
   try {
-    const content = `<!-- TEMPLATE: context_template.md v2.2 -->\n\n---\n\n# SESSION SUMMARY\n\n| **Meta Data** | **Value** |\n|:--------------|:----------|\n| Context Type | general |\n\n---\n`;
+    const content = `<!-- TEMPLATE: retired-legacy-template v2.2 -->\n\n---\n\n# SESSION SUMMARY\n\n| **Meta Data** | **Value** |\n|:--------------|:----------|\n| Context Type | general |\n\n---\n`;
     const detection = migration.detectFrontmatter(content);
     if (!detection.found) {
       pass('T-FMB-001: Thematic separator after comments is not frontmatter', 'detectFrontmatter().found === false');

@@ -271,6 +271,20 @@ STATUS=CANCELLED PATH=[spec-path]
 
 ---
 
+## REFERENCE
+
+| Category | Paths |
+|----------|-------|
+| Spec folder path | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/` |
+| Related commands | `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/resume.md` |
+| Skill references | `.opencode/skill/system-spec-kit/SKILL.md`, `.opencode/skill/sk-deep-research/SKILL.md`, `.opencode/skill/sk-deep-research/references/spec_check_protocol.md` |
+| YAML assets | `.opencode/command/spec_kit/assets/spec_kit_start_auto.yaml`, `.opencode/command/spec_kit/assets/spec_kit_start_confirm.yaml` |
+| Helper scripts | `.opencode/skill/system-spec-kit/scripts/spec/create.sh`, `.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`, `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js` |
+
+This command is the canonical intake surface for direct runs and delegated parent flows. `/spec_kit:plan` and `/spec_kit:complete` may reuse the returned contract inline, while `/spec_kit:deep-research` consumes the same spec folder through the bounded `spec.md` anchoring rules in `spec_check_protocol.md`.
+
+---
+
 ## 7. SKILL REFERENCE
 
 Full protocol documentation: `.opencode/skill/system-spec-kit/SKILL.md`
@@ -316,7 +330,7 @@ For deep research integration, see `sk-deep-research` skill (`.opencode/skill/sk
 | Canonical trio ready, move into planning | `/spec_kit:plan [feature-description]` | Continue with plan authoring on a real spec folder |
 | Canonical trio ready, research first | `/spec_kit:deep-research [topic]` | Anchor research to the new or repaired `spec.md` |
 | Need completion workflow later | `/spec_kit:complete [spec-folder]` | Resume closeout on the stabilized packet |
-| Need to pause | `/spec_kit:handover [spec-folder]` | Preserve continuation context for the next session |
+| Need to pause | `/memory:save [spec-folder]` | Refresh canonical continuity before the next session |
 
 ---
 
@@ -324,4 +338,3 @@ For deep research integration, see `sk-deep-research` skill (`.opencode/skill/sk
 
 **Spec-first implementation path:** `/spec_kit:start` -> `/spec_kit:plan` -> `/spec_kit:implement`
 **Spec-first research path:** `/spec_kit:start` -> `/spec_kit:deep-research` -> `/spec_kit:plan`
-

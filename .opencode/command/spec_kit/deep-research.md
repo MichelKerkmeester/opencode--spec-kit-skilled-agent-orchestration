@@ -252,7 +252,6 @@ For code review, see `sk-deep-review` skill (`.opencode/skill/sk-deep-review/SKI
 | Need more investigation | `/spec_kit:deep-research [new-topic]` | Another deep research session |
 | Need code/spec audit | `/spec_kit:deep-review [target]` | Iterative code review |
 | Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
-| Need to pause | `/spec_kit:handover [spec-folder]` | Save context for later |
 
 ---
 

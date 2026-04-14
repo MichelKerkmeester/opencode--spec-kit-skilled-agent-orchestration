@@ -1235,13 +1235,13 @@ You have completed the installation. Here is your roadmap for getting started.
 | **Git Operations**       | sk-git skill           | Commit, PR creation workflows                             |
 | **Implementation**       | sk-code-web or sk-code-full-stack | 3-phase implementation lifecycle                          |
 
-### 16.3 Available Commands (20 total)
+### 16.3 Available Commands
 
 | Category | Commands                                                                                                |
 | -------- | ------------------------------------------------------------------------------------------------------- |
 | Create   | `/create:agent`, `/create:changelog`, `/create:feature-catalog`, `/create:folder_readme`, `/create:prompt`, `/create:sk-skill`, `/create:testing-playbook` |
 | Memory   | `/memory:search`, `/memory:learn`, `/memory:manage`, `/memory:save` |
-| SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:resume`, `/spec_kit:start` |
+| SpecKit  | `/spec_kit:complete`, `/spec_kit:deep-research`, `/spec_kit:deep-review`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:resume`, `/spec_kit:start` |
 | Utility  | `/agent_router` |
 
 For the SpecKit chain, `/spec_kit:start` is the canonical intake entry, `/spec_kit:plan` and `/spec_kit:complete` can delegate back to it when packet state still needs repair, and `/spec_kit:deep-research` now anchors each run to `spec.md` through `spec_check_protocol.md`.

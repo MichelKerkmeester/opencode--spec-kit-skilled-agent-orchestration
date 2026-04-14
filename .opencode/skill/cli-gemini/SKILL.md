@@ -287,7 +287,7 @@ The calling AI acts as the **conductor** that delegates tasks to Gemini CLI. Gem
 | Architecture exploration | `@context` | `gemini "As @context agent: Analyze the architecture of this project" -o text` |
 | Technical research | `@deep-research` | `gemini "As @deep-research agent: Research latest Express.js security advisories" -o text` |
 | Documentation generation | `@write` | `gemini "As @write agent: Generate README for this project" -o text` |
-| Fresh-perspective debugging | `@debug` | `gemini "As @debug agent: Debug this error: [error]" -o text` |
+| Fresh-perspective debugging | `@debug` | `Task tool -> @debug`, then run the Gemini CLI prompt with the packaged context |
 | Multi-strategy planning | `@ultra-think` | `gemini "As @ultra-think agent: Plan the authentication redesign" -m gemini-3.1-pro-preview -o text` |
 
 **Orchestration principle**: The calling AI decides WHAT to delegate. The Gemini agent definition shapes HOW Gemini processes it. The calling AI always validates and integrates the output.

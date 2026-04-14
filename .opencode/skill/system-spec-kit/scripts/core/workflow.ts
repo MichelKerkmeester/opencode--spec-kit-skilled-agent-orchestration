@@ -18,12 +18,11 @@ import {
   extractPhasesFromData,
   enhanceFilesWithSemanticDescriptions,
 } from '../extractors';
-import { detectSpecFolder, setupContextDirectory } from '../spec-folder';
+import { detectSpecFolder, ensureSpecFolderExists } from '../spec-folder';
 import { populateTemplate } from '../renderers';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
-import { writeFilesAtomically } from './file-writer';
-import { generateContentSlug, ensureUniqueMemoryFilename } from '../utils/slug-utils';
+import { generateContentSlug } from '../utils/slug-utils';
 import { pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import {
   buildSpecAffinityTargets,
@@ -66,12 +65,7 @@ import {
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { evaluateSpecDocHealth } from '@spec-kit/shared/parsing/spec-doc-health';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
-import {
-  indexMemory,
-  updateMetadataEmbeddingStatus,
-  type IndexingStatusValue,
-  type WorkflowIndexingStatus,
-} from './memory-indexer';
+import { type WorkflowIndexingStatus } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
 import { reviewPostSaveQuality, printPostSaveReview, computeReviewScorePenalty } from './post-save-review';
 import {
@@ -102,7 +96,6 @@ import {
 import {
   buildMemoryClassificationContext,
   buildSessionDedupContext,
-  autoPopulateCausalLinks,
   buildCausalLinksContext,
   readExplicitMemoryText,
   resolveParentSpec,
@@ -785,10 +778,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }
     log(`   Using: ${specFolder}\n`);
 
-    // Step 3: Setup context directory
-    log('Step 3: Setting up context directory...');
-    const contextDir: string = await setupContextDirectory(specFolder);
-    log(`   Created: ${contextDir}\n`);
+    // Step 3: Validate the target spec folder
+    log('Step 3: Validating spec folder...');
+    const validatedSpecFolderPath: string = await ensureSpecFolderExists(specFolder);
+    log(`   Using existing spec folder: ${validatedSpecFolderPath}\n`);
 
     // F-23: Define contamination cleaning functions before enrichment
     let hadContamination = false;
@@ -1442,49 +1435,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData.causalLinks = nextCausalLinks;
     }
   }
-  const autoCausalLinks = autoPopulateCausalLinks(collectedData, specFolder, {
-    sessionId: sessionData.SESSION_ID,
-    contextType: sessionData.CONTEXT_TYPE,
-  });
-  const currentCausalLinkField = (...keys: string[]): unknown => {
-    for (const source of [currentSnakeCaseCausalLinks, currentCamelCaseCausalLinks]) {
-      if (!source) {
-        continue;
-      }
-      for (const key of keys) {
-        if (key in source) {
-          return source[key];
-        }
-      }
-    }
-    return undefined;
-  };
-  const mergeCausalLinkList = (primary: unknown, fallback: string[]): string[] => {
-    const seen = new Set<string>();
-    const merged: string[] = [];
-    for (const value of [
-      ...(Array.isArray(primary) ? primary : []),
-      ...fallback,
-    ]) {
-      if (typeof value !== 'string') {
-        continue;
-      }
-      const trimmed = value.trim();
-      if (!trimmed || seen.has(trimmed)) {
-        continue;
-      }
-      seen.add(trimmed);
-      merged.push(trimmed);
-    }
-    return merged;
-  };
   collectedData.causal_links = {
     ...((currentSnakeCaseCausalLinks ?? currentCamelCaseCausalLinks ?? {}) as Record<string, unknown>),
-    caused_by: mergeCausalLinkList(currentCausalLinkField('caused_by', 'causedBy'), autoCausalLinks.CAUSED_BY),
-    supersedes: mergeCausalLinkList(currentCausalLinkField('supersedes'), autoCausalLinks.SUPERSEDES),
-    derived_from: mergeCausalLinkList(currentCausalLinkField('derived_from', 'derivedFrom'), autoCausalLinks.DERIVED_FROM),
-    blocks: mergeCausalLinkList(currentCausalLinkField('blocks'), autoCausalLinks.BLOCKS),
-    related_to: mergeCausalLinkList(currentCausalLinkField('related_to', 'relatedTo'), autoCausalLinks.RELATED_TO),
   };
   collectedData.causalLinks = collectedData.causal_links;
   const causalLinks = buildCausalLinksContext(collectedData);
@@ -1581,70 +1533,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           .join(', ');
         return `${exchanges.length} exchanges${topics ? ` \u2014 ${topics}` : ''}`;
       })(),
-    }),
-    'metadata.json': JSON.stringify({
-      timestamp: `${sessionData.DATE} ${sessionData.TIME}`,
-      messageCount: sessionData.MESSAGE_COUNT,
-      decisionCount: decisions.DECISIONS.length,
-      diagramCount: diagrams.DIAGRAMS.length,
-      skillVersion: CONFIG.SKILL_VERSION,
-      autoTriggered: shouldAutoSave(sessionData.MESSAGE_COUNT),
-      filtering: (() => {
-        const rawFiltering = filterPipeline.getStats() as unknown as Record<string, unknown>;
-        const { qualityScore, ...restFiltering } = rawFiltering;
-        return {
-          ...restFiltering,
-          input_completeness_score: typeof qualityScore === 'number' ? qualityScore : null,
-          _note: 'input_completeness_score is 0-100 input completeness; render_quality_score is 0.0-1.0 rendered wrapper quality',
-        };
-      })(),
-      contaminationAudit: contaminationAuditTrail,
-      semanticSummary: {
-        task: implSummary.task.substring(0, 100),
-        filesCreated: implSummary.filesCreated.length,
-        filesModified: implSummary.filesModified.length,
-        decisions: implSummary.decisions.length,
-        messageStats: implSummary.messageStats
-      },
-      fileCounts: {
-        fileCount: sessionData.FILE_COUNT,
-        capturedFileCount: sessionData.CAPTURED_FILE_COUNT,
-        filesystemFileCount: sessionData.FILESYSTEM_FILE_COUNT,
-        gitChangedFileCount: sessionData.GIT_CHANGED_FILE_COUNT,
-      },
-      sourceProvenance: {
-        transcriptPath: sessionData.SOURCE_TRANSCRIPT_PATH,
-        sessionId: sessionData.SOURCE_SESSION_ID,
-        sessionCreated: sessionData.SOURCE_SESSION_CREATED,
-        sessionUpdated: sessionData.SOURCE_SESSION_UPDATED,
-      },
-      embedding: {
-        status: 'pending',
-        model: MODEL_NAME,
-        dimensions: EMBEDDING_DIM
-      }
-    }, null, 2)
+    })
   };
-  let duplicateExistingFilename: string | null = null;
-  const existingRawPath = path.join(contextDir, rawCtxFilename);
-  if (fsSync.existsSync(existingRawPath)) {
-    try {
-      const existingRawContent = fsSync.readFileSync(existingRawPath, 'utf-8');
-      if (existingRawContent === files[ctxFilename]) {
-        duplicateExistingFilename = rawCtxFilename;
-      } else {
-        const uniqueCtxFilename = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
-        if (uniqueCtxFilename !== ctxFilename) {
-          files[uniqueCtxFilename] = files[ctxFilename];
-          delete files[ctxFilename];
-          ctxFilename = uniqueCtxFilename;
-        }
-      }
-    } catch (e: unknown) {
-      const errMsg = e instanceof Error ? e.message : String(e);
-      warn(`   Warning: Could not preflight duplicate check for ${rawCtxFilename}: ${errMsg}`);
-    }
-  }
+  const duplicateExistingFilename: string | null = null;
 
   const isSimulation: boolean = !collectedData || !!collectedData._isSimulation || simFactory.requiresSimulation(collectedData);
   log(`   Template populated (quality: ${filterStats.qualityScore}/100)\n`);
@@ -1665,12 +1556,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 8.6: Quality validation + scoring
   log('Step 8.6: Quality scoring...');
   const qualityValidation = validateMemoryQualityContent(files[ctxFilename], {
-    filePath: path.join(contextDir, ctxFilename),
+    filePath: path.join(validatedSpecFolderPath, ctxFilename),
   });
   contaminationAuditTrail.push(qualityValidation.contaminationAudit);
-  const metadataJson = JSON.parse(files['metadata.json']) as Record<string, unknown>;
-  metadataJson.contaminationAudit = contaminationAuditTrail;
-  files['metadata.json'] = JSON.stringify(metadataJson, null, 2);
   const qualitySignals: ValidationSignal[] = qualityValidation.ruleResults.map((rule) => ({
     ruleId: rule.ruleId,
     passed: rule.passed,
@@ -1815,54 +1703,17 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
   }
 
-  // Phase 004 T035-T036: Pre-save overlap check (advisory, enabled by default — set SPECKIT_PRE_SAVE_DEDUP=false to disable)
-  if (process.env.SPECKIT_PRE_SAVE_DEDUP !== 'false' && process.env.SPECKIT_PRE_SAVE_DEDUP !== '0') {
-    try {
-      const crypto = await import('node:crypto');
-      const contentForHash = files[ctxFilename] || '';
-      const fingerprint = crypto.createHash('sha1').update(contentForHash).digest('hex');
-      // Query last 20 memories for this spec folder to detect overlaps
-      const candidateFiles = fsSync.readdirSync(contextDir)
-        .filter((f: string) => f.endsWith('.md') && f !== ctxFilename)
-        .sort()
-        .slice(-12);
-      const candidateFilesBySize = candidateFiles.filter((existingFile) => {
-        try {
-          const existingStats = fsSync.statSync(path.join(contextDir, existingFile));
-          return existingStats.size === Buffer.byteLength(contentForHash, 'utf8');
-        } catch {
-          return false;
-        }
-      });
-      for (const existingFile of candidateFilesBySize) {
-        try {
-          const existingContent = fsSync.readFileSync(path.join(contextDir, existingFile), 'utf8');
-          const existingHash = crypto.createHash('sha1').update(existingContent).digest('hex');
-          if (existingHash === fingerprint) {
-            warn(`   [PRE-SAVE OVERLAP] Memory content matches existing "${existingFile}" — possible duplicate save`);
-            break;
-          }
-        } catch (e: unknown) {
-          console.warn('[pre-save-overlap] File read failed:', e instanceof Error ? e.message : String(e));
-        }
-      }
-    } catch (overlapErr: unknown) {
-      // Fail open — overlap detection is advisory, must not block save
-      warn(`   Pre-save overlap check failed (advisory): ${overlapErr instanceof Error ? overlapErr.message : String(overlapErr)}`);
-    }
-  }
-
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   if (duplicateExistingFilename) {
-    log(`   Skipping ${ctxFilename}: duplicate of existing ${duplicateExistingFilename}`);
-    delete files[ctxFilename];
+    log(`   Legacy duplicate detection skipped for retired artifact ${ctxFilename}`);
   }
-  const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
+  const writtenFiles: string[] = [];
+  log('   Skipping legacy [spec]/memory/*.md writes');
 
   // RC-6 fix: Check if the primary context file was actually written (it may
   // Have been skipped as a duplicate). Guard downstream operations accordingly.
-  const ctxFileWritten = writtenFiles.includes(ctxFilename);
+  const ctxFileWritten = false;
   // Update per-folder description.json memory tracking (only if file was written)
   if (ctxFileWritten) {
     try {
@@ -1954,15 +1805,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log();
 
-  // Step 10: Success confirmation (file written; indexing runs in Step 11)
-  log('Context file written.\n');
-  log(`Location: ${contextDir}\n`);
-  log('Files created:');
-  for (const [filename, content] of Object.entries(files)) {
-    const lines = content.split('\n').length;
-    log(`  - ${filename} (${lines} lines)`);
-  }
-  log();
+  // Step 10: Success confirmation
+  log('Legacy memory artifact write skipped.\n');
+  log(`Validated spec folder: ${validatedSpecFolderPath}\n`);
   log('Summary:');
   log(`  - ${conversations.MESSAGES.length} messages captured`);
   log(`  - ${effectiveDecisionCount} key decisions documented`);
@@ -1971,7 +1816,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 10.5: Post-save quality review (JSON mode only)
   if (ctxFileWritten && captureCapabilities.inputMode !== 'captured') {
-    const savedFilePath = path.join(contextDir, ctxFilename);
+    const savedFilePath = path.join(validatedSpecFolderPath, ctxFilename);
     const jsonSessionSummary = typeof (collectedData as Record<string, unknown>)?._JSON_SESSION_SUMMARY === 'string'
       ? (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string
       : undefined;
@@ -2057,90 +1902,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 11: Indexing semantic memory...');
 
   let memoryId: number | null = null;
-  let indexingStatus: WorkflowIndexingStatus | null = null;
-  const persistIndexingStatus = async (
-    status: IndexingStatusValue,
-    reason?: string,
-    errorMessage?: string
-  ): Promise<void> => {
-    indexingStatus = {
-      status,
-      memoryId,
-      ...(reason ? { reason } : {}),
-      ...(errorMessage ? { errorMessage } : {}),
-    };
-    const persisted = await updateMetadataEmbeddingStatus(contextDir, indexingStatus);
-    if (!persisted) {
-      const warning = `Failed to persist embedding metadata status to ${path.join(contextDir, 'metadata.json')}.`;
-      workflowWarnings.push(warning);
-      warn(`   Warning: ${warning}`);
-    }
+  const indexingStatus: WorkflowIndexingStatus = {
+    status: 'skipped_index_policy',
+    memoryId,
+    reason: 'Legacy [spec]/memory/*.md indexing retired. Canonical spec-doc indexing continues in Step 11.5.',
   };
-
-  // RC-6 fix: Only index if the context file was actually written (not a duplicate skip)
-  if (!ctxFileWritten) {
-    log('   Skipping indexing — context file was a duplicate');
-    await persistIndexingStatus(
-      'skipped_duplicate',
-      'Context file content matched an existing memory file, so semantic indexing was skipped.'
-    );
-  } else {
-    try {
-      const indexDecision = shouldIndexMemory({
-        ctxFileWritten,
-        validationDisposition,
-        templateContractValid: templateContractEarly.valid,
-        sufficiencyPass: sufficiencyResult.pass,
-        qualityScore01: qualityResult.score01,
-        qualityAbortThreshold: QUALITY_ABORT_THRESHOLD,
-      });
-
-      if (indexDecision.shouldIndex) {
-        const embeddingSections = buildWeightedEmbeddingSections(implSummary, files[ctxFilename]);
-        memoryId = await indexMemory(
-          contextDir,
-          ctxFilename,
-          files[ctxFilename],
-          specFolderName,
-          collectedData,
-          preExtractedTriggers,
-          embeddingSections
-        );
-        if (memoryId !== null) {
-          log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
-          await persistIndexingStatus(
-            'indexed',
-            qualityValidation.failedRules.length > 0
-              ? `Indexed despite soft validation failures: ${qualityValidation.failedRules.join(', ')}.`
-              : 'Indexed after all write and semantic-index gates passed.'
-          );
-          log('   Updated metadata.json with embedding info');
-        } else {
-          log('   Embedding unavailable — semantic indexing skipped');
-          await persistIndexingStatus(
-            'skipped_embedding_unavailable',
-            'Embedding generation returned null, so semantic indexing was skipped for this saved memory.'
-          );
-        }
-      } else {
-        log('   Index policy: skipping semantic indexing for this file');
-        await persistIndexingStatus(
-          validationDisposition.disposition === 'write_skip_index' ? 'skipped_index_policy' : 'skipped_quality_gate',
-          indexDecision.reason ?? 'Rendered memory failed validation, so semantic indexing was skipped.'
-        );
-      }
-    } catch (e: unknown) {
-      const errMsg = e instanceof Error ? e.message : String(e);
-      await persistIndexingStatus(
-        'failed_embedding',
-        'Embedding generation or semantic indexing failed after the memory file was written.',
-        errMsg
-      );
-      warn(`   Warning: Embedding failed: ${errMsg}`);
-      warn('   Context file saved without semantic indexing');
-      warn('   Run "npm run rebuild" to retry indexing later');
-    }
-  }
+  log('   Skipping retired legacy memory indexing');
 
   // Step 11.5: Auto-index touched canonical spec docs + graph-metadata.json in target folder.
   // Closes the "only the new memory file is indexed" gap documented in
@@ -2155,7 +1922,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     process.env.SPECKIT_AUTO_INDEX_TOUCHED === 'false' ||
     process.env.SPECKIT_INDEX_SPEC_DOCS === 'false';
 
-  if (ctxFileWritten && !autoIndexTouchedDisabled && specFolderName) {
+  // Guard on specFolderName only so canonical docs still re-index even though
+  // the legacy memory artifact is no longer written by this workflow.
+  if (specFolderName && !autoIndexTouchedDisabled) {
     try {
       const { runMemoryIndexScan, initializeIndexingRuntime } = await import('@spec-kit/mcp-server/api/indexing');
       log('Step 11.5: Indexing touched canonical spec documents...');
@@ -2197,11 +1966,15 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (scanIsError) {
         const reason = typeof scanData?.error === 'string' ? scanData.error : (scanEnvelope?.summary ?? 'unknown error');
         const code = typeof scanData?.code === 'string' ? scanData.code : null;
-        if (code === 'E429' || /rate.?limit/i.test(reason) || /cooldown/i.test(reason)) {
-          // Cooldown is non-fatal — index will catch up on next save or manual scan.
-          log(`   Step 11.5: skipped (scan cooldown active; retry on next save)`);
+        // P1-2 fix: trust the backend error-code contract; drop the over-eager regex fallback
+        // That could accidentally swallow unrelated errors whose message happens to contain
+        // "rate limit" or "cooldown" substrings.
+        if (code === 'E429') {
+          log('   Step 11.5: skipped (scan cooldown active; retry on next save)');
+        } else if (code === 'E_RESTORE_IN_PROGRESS') {
+          log('   Step 11.5: skipped (checkpoint restore in progress; retry after restore)');
         } else {
-          warn(`   Warning: Step 11.5 scan reported error: ${reason}`);
+          warn(`   Warning: Step 11.5 scan reported error: ${reason}${code ? ` [${code}]` : ''}`);
         }
       } else if (scanData && typeof scanData === 'object') {
         const indexed = Number(scanData.indexed) || 0;
@@ -2210,6 +1983,34 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         const failed = Number(scanData.failed) || 0;
         const scanned = Number(scanData.scanned) || 0;
         log(`   Step 11.5: ${indexed + updated} indexed/updated, ${unchanged} unchanged, ${failed} failed (${scanned} files scanned)`);
+        // P1-3 fix: when failures occur, surface per-file detail (capped at 3) so prod
+        // Investigations don't need a second manual memory_index_scan to diagnose.
+        // Backend increments `failed` for ANY non-successful status; per-file entries
+        // Use the actual status string ('rejected', 'failed', etc.) — match the inverse
+        // Of the success set rather than hard-coding 'failed'.
+        if (failed > 0) {
+          const successStatuses = new Set([
+            'success', 'indexed', 'updated', 'unchanged', 'reinforced', 'duplicate', 'deferred',
+          ]);
+          const filesList = Array.isArray(scanData.files) ? scanData.files : [];
+          const failedFiles = filesList.filter(
+            (entry: unknown): entry is { file?: string; status?: string; error?: string } => {
+              if (typeof entry !== 'object' || entry === null) return false;
+              const status = (entry as { status?: string }).status;
+              return typeof status === 'string' && !successStatuses.has(status);
+            }
+          );
+          const failureCap = 3;
+          for (const failure of failedFiles.slice(0, failureCap)) {
+            const fileName = typeof failure.file === 'string' ? failure.file : 'unknown';
+            const statusLabel = typeof failure.status === 'string' ? failure.status : 'failed';
+            const errorMsg = typeof failure.error === 'string' ? failure.error : '';
+            warn(`     - ${statusLabel}: ${fileName}${errorMsg ? ` - ${errorMsg}` : ''}`);
+          }
+          if (failedFiles.length > failureCap) {
+            warn(`     - (${failedFiles.length - failureCap} additional failure(s) omitted)`);
+          }
+        }
       } else {
         log('   Step 11.5: scan completed (no summary payload)');
       }
@@ -2244,17 +2045,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log();
 
       return {
-        contextDir,
+        contextDir: validatedSpecFolderPath,
         specFolder,
         specFolderName,
         contextFilename: ctxFilename,
         writtenFiles,
         memoryId,
-        indexingStatus: indexingStatus ?? {
-          status: 'failed_embedding',
-          memoryId,
-          reason: 'Indexing status was not finalized before workflow completion.',
-        },
+        indexingStatus,
         warnings: workflowWarnings,
         stats: {
           messageCount: conversations.MESSAGES.length,

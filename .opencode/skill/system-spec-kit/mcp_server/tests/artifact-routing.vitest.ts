@@ -43,11 +43,6 @@ describe('C136-09 classifyArtifact', () => {
     expect(classifyArtifact('/specs/007-auth/implementation-summary.md')).toBe('implementation-summary');
   });
 
-  it('classifies memory files in memory/ subdirectory', () => {
-    expect(classifyArtifact('/specs/007-auth/memory/18-02-26_08-44__session.md')).toBe('memory');
-    expect(classifyArtifact('/specs/007/memory/context.md')).toBe('memory');
-  });
-
   it('classifies research.md files', () => {
     expect(classifyArtifact('/specs/007-auth/research/research.md')).toBe('research');
     expect(classifyArtifact('/specs/007-auth/research.md')).toBe('research');

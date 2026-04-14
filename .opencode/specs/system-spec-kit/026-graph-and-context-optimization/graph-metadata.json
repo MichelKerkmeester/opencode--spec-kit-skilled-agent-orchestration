@@ -14,7 +14,9 @@
     "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
     "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
     "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
-    "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph"
+    "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
+    "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
+    "system-spec-kit/026-graph-and-context-optimization/013-memory-folder-deprecation-audit"
   ],
   "manual": {
     "depends_on": [],
@@ -208,7 +210,7 @@
     ],
     "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It now coordinates an 11-phase child train after the former `006-canonical-continuity-refactor` lane was split into five focused phases, keeping the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later graph and continuity branches aligned to one dependency-aware execution map instead of relying on numeric slug order alone.",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-13T16:22:53.276Z",
+    "last_save_at": "2026-04-14T17:11:44.434Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

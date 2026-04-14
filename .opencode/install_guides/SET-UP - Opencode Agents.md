@@ -179,9 +179,7 @@ User Request
 |  +-> @write: Documentation with template enforcement          |
 |  +-> @deep-research: Autonomous iterative research loop       |
 |  +-> @review: Code quality and security assessment            |
-|  +-> @speckit: Spec folder documentation (Level 1-3+)         |
-|  +-> @handover: Session continuation and context preservation |
-|  +-> @debug: Fresh perspective debugging (4-phase method)     |
+|  +-> @debug: Task-tool debug dispatch after repeated failures |
 +---------------------------------------------------------------+
     |
     v
@@ -599,9 +597,7 @@ When subagents create child sessions, navigate between them:
 | write          | All      | `@write`       | Documentation creation with DQI scoring     |
 | deep-research  | Subagent | `@deep-research` | Autonomous iterative research loop        |
 | review         | Subagent | `@review`      | Code quality and security assessment        |
-| speckit        | Subagent | `@speckit`     | Spec folder documentation (Level 1-3+)      |
-| handover       | Subagent | `@handover`    | Session continuation and context export     |
-| debug          | Subagent | `@debug`       | Fresh perspective debugging (4-phase)       |
+| debug          | Subagent | `@debug`       | Fresh-perspective debugging via Task tool   |
 
 ### First Use Recommendations
 
@@ -612,9 +608,9 @@ When subagents create child sessions, navigate between them:
 5. **For documentation tasks**: Type `@write` to invoke the documentation agent with template enforcement.
 6. **For complex multi-step tasks**: Type `@orchestrate` to decompose and delegate work.
 7. **For code reviews**: Type `@review` for quality scoring and security assessment.
-8. **For spec folder creation**: Type `@speckit` to create Level 1-3+ spec documentation.
-9. **For session handover**: Type `@handover` or use `/spec_kit:handover` to preserve context.
-10. **For stuck debugging**: Type `@debug` for a fresh perspective with the 4-phase methodology.
+8. **For spec folder creation**: Use `/spec_kit:start` or `/spec_kit:plan` and let the main agent apply templates under distributed governance.
+9. **For session continuity**: Use `/memory:save` to refresh packet continuity before ending the session.
+10. **For stuck debugging**: Dispatch `@debug` via the Task tool after 3+ failed attempts.
 
 ---
 
@@ -737,11 +733,9 @@ Agent files should follow this structure:
 .opencode/agent/
 +-- context.md      # Context retrieval and exploration dispatch agent
 +-- debug.md        # Fresh perspective debugging agent
-+-- handover.md     # Session continuation agent
 +-- orchestrate.md  # Task decomposition and delegation agent
 +-- research.md     # Technical investigation agent
 +-- review.md       # Code quality and security assessment agent
-+-- speckit.md      # Spec folder documentation agent
 +-- write.md        # Documentation creation agent
 ```
 
@@ -1134,8 +1128,6 @@ done
 | write       | `./write.md`           | Documentation creation                   |
 | deep-research | `./deep-research.md` | Iterative technical investigation        |
 | review      | `./review.md`          | Code quality and security assessment     |
-| speckit     | `./speckit.md`         | Spec folder documentation                |
-| handover    | `./handover.md`        | Session continuation                     |
 | debug       | `./debug.md`           | Fresh perspective debugging              |
 
 ### Related Skills

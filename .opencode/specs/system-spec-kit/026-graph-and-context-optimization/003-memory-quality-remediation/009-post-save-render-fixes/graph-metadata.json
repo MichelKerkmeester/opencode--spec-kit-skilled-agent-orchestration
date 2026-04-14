@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Packet `009-post-save-render-fixes` repairs the nine systematic render-layer defects still visible in the 2026-04-09 `005-code-graph-upgrades` memory saves: filename-garbage titles, empty canonical sources, zeroed file counts, prose-bigram trigger noise, duplicated distinguishing evidence, stale phase and status capture, missing causal link auto-population, self-referential `parent_spec`, and the unresolved two-scorer naming conflict. The goal is to make fresh memory saves honestly satisfy the compact-wrapper contract defined by the sibling `001/.../006-research-memory-redundancy` packet without reopening the wrapper-template body or the Phase 6 sanitizer and duplication-review work that shipped in commit `7f0c0572a`. [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_08-46__created-the-new-level-3-planning-packet-014-code.md:2-35] [SOURCE: ../../005-code-graph-upgrades/memory/09-04-26_10-30__implemented-the-014-code-graph-upgrade-runtime.md:2-39] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/spec.md:44-58] [SOURCE: ../../001-research-graph-context-systems/006-research-memory-redundancy/research/research.md:103-120]",
     "created_at": "2026-04-12T09:02:53.463Z",
-    "last_save_at": "2026-04-13T16:22:53.325Z",
+    "last_save_at": "2026-04-14T17:11:44.468Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

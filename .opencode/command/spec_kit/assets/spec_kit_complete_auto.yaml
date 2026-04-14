@@ -19,7 +19,6 @@ operating_mode:
     Executes the 14-step workflow without step-by-step approval.
     Supports optional chained workflows:
     - :with-research - Run research phase before planning
-    - :auto-debug - Auto-dispatch debug agent on 3+ failures
     Checkpoints still pause for confirmation after optional workflows complete.
 
 development_philosophy:
@@ -46,25 +45,6 @@ optional_workflows:
       - { key: "Y", action: "continue" }
       - { key: "n", action: "pause" }
       - { key: "review", action: "show_output" }
-
-  debug_integration:
-    enabled: true
-    trigger:
-      flag: ":auto-debug"
-      auto_suggest: true
-      failure_threshold: 3
-    within_step: 10
-    workflow_reference: "../debug.md"
-    checkpoint:
-      enabled: true
-      prompt: |
-        WORKFLOW CHECKPOINT - Debug Complete
-        Root Cause: {root_cause} | Fix: {fix_status}
-        Continue with Step 10? [Y/n/review]
-      options:
-      - { key: "Y", action: "retry_task" }
-      - { key: "n", action: "pause" }
-      - { key: "review", action: "show_debug_report" }
 
   phase_decomposition:
     enabled: true
@@ -310,13 +290,6 @@ agent_availability:
     agent_file: "[runtime_agent_path]/deep-research.md"
     fallback: "general"
     not_for: "proactive research or pre-step investigation"
-  speckit:
-    available_at_step: 3
-    condition: "ONLY dispatch when Step 3 is actively executing"
-    agent_file: "[runtime_agent_path]/speckit.md"
-    model: opus
-    fallback: "general"
-    not_for: "reviewing this workflow prompt or any pre-step activity"
   review:
     available_at_step: 11
     condition: "ONLY dispatch when Step 11 is actively executing and all prior steps are completed"
@@ -338,15 +311,8 @@ agent_availability:
     agent_file: "[runtime_agent_path]/debug.md"
     fallback: "general-purpose"
     failure_tracking: { counter: "task_failure_count", reset_on: "new_task", threshold: 3 }
-    on_threshold_auto_debug: "auto_dispatch_debug"
-    on_threshold_else: "Suggest: A) Dispatch debug B) Continue manually C) Skip task D) Pause"
+    on_threshold: "Escalate to user with a diagnostic summary; user may dispatch @debug via Task tool"
     not_for: "proactive debugging, pre-step investigation, or reviewing this workflow"
-  handover:
-    available_at_step: 14
-    condition: "ONLY dispatch when user explicitly requests handover at Step 14"
-    agent_file: "[runtime_agent_path]/handover.md"
-    fallback: "general"
-    not_for: "automatic handover, pre-step context saving, or premature session ending"
 
 # ─────────────────────────────────────────────────────────────────
 # QUALITY GATES
@@ -398,7 +364,7 @@ circuit_breaker:
   enabled: true
   thresholds: { failures: 3, recovery_s: 60, success_to_close: 1 }
   states: { CLOSED: dispatch_to_agent, OPEN: use_fallback, HALF_OPEN: test_single }
-  agents: { research: { fallback: general }, speckit: { fallback: general }, review: { fallback: general, preserve: [blocking] } }
+  agents: { research: { fallback: general }, review: { fallback: general, preserve: [blocking] } }
   logging: { on_state_change: true, on_fallback_used: true, include_failure_details: true }
 
 # ─────────────────────────────────────────────────────────────────
@@ -904,18 +870,17 @@ workflow:
           high_80_plus: { action: "Implement task, mark [x]" }
           medium_40_79: { action: "Implement with extra validation", requirement: "Add inline comments" }
           low_below_40: { action: "STOP - Do not implement uncertain code", wait_for: "Resolution" }
-    debug_integration:
+    debug_escalation:
       failure_tracking: { enabled: true, counter_name: "task_failure_count", reset_on: "new_task", threshold: 3 }
       on_threshold_reached:
-        if_auto_debug_flag:
-          action: "auto_dispatch_debug"
-        else:
-          action: "suggest_debug"
-          prompt: |
-            Multiple fix attempts failed (3+) for task {current_task_id}
-            A) Yes - Dispatch debug agent
-            B) No - Continue debugging manually
-            C) Skip task - Move to next task
+        action: "escalate_to_user"
+        prompt: |
+          Multiple fix attempts failed (3+) for task {current_task_id}
+          Provide a diagnostic summary, then wait for the user's decision:
+          A) Dispatch @debug via Task tool
+          B) Continue debugging manually
+          C) Skip task - Move to next task
+          D) Pause workflow
             D) Pause - Stop workflow and review
       debug_dispatch:
         subagent_type: "general-purpose"
@@ -1066,15 +1031,15 @@ workflow:
       tier_reference: "constitutional > critical > important > normal > temporary > deprecated"
 
   step_14_handover_check:
-    purpose: Offer session handover before workflow completion
+    purpose: Final workflow closeout before completion
     activities:
-    - Check if user needs session continuity documentation
-    - Offer to run /spec_kit:handover for comprehensive handover
+    - Confirm the workflow is ready to terminate cleanly
+    - Remind the operator to run /memory:save before pausing if another continuity refresh is needed
     options:
-    - { label: "Run Handover", action: "Execute handover workflow" }
+    - { label: "Refresh Context", action: "Run /memory:save" }
     - { label: "Skip", action: "Proceed to termination" }
-    note: "Handover is optional but recommended for complex implementations"
-    validation: handover_offered
+    note: "Use /memory:save when you want one more indexed continuity refresh before ending the workflow."
+    validation: workflow_finish_confirmed
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW TERMINATION

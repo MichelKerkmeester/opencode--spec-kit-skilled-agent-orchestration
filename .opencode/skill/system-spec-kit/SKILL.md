@@ -58,26 +58,19 @@ Think of it as a "project folder" for AI-assisted development - it keeps context
 **Rule of thumb:** If modifying ANY file content → Activate this skill.
 Status: ✅ This requirement applies immediately once file edits are requested.
 
-### Agent Exclusivity
+### Distributed Governance Rule
 
-**⛔ CRITICAL:** `@speckit` is the ONLY agent permitted to create or substantively write spec folder documentation (*.md files).
+Any agent writing spec folder docs (*.md) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. @deep-research retains exclusive write access for research/research.md; @debug retains exclusive write access for debug-delegation.md.
 
-- **Requires @speckit:** spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, and any other *.md in spec folders
-- **Exceptions:**
-  - canonical continuity saves → use `generate-context.js`
-  - `scratch/` → temporary workspace, any agent
-  - `handover.md` → @handover agent only
-  - `research/research.md` → @deep-research agent only
-  - `debug-delegation.md` → @debug agent only
-
-Routing to `@general`, `@write`, or other agents for spec documentation is a **hard violation**. See constitutional memory: `speckit-exclusivity.md`
+- `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation.
+- `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
 
 ### Utility Template Triggers
 
 | Template              | Trigger Keywords                                                                                                              | Action                    |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| `handover.md`         | "handover", "next session", "continue later", "pass context", "ending session", "save state", "multi-session", "for next AI"  | Suggest creating handover |
-| `debug-delegation.md` | "stuck", "can't fix", "tried everything", "same error", "fresh eyes", "hours on this", "still failing", "need help debugging" | Suggest `/spec_kit:debug` |
+| `handover.md`         | "handover", "next session", "continue later", "pass context", "ending session", "save state", "multi-session", "for next AI"  | Suggest `/memory:save` handover maintenance |
+| `debug-delegation.md` | "stuck", "can't fix", "tried everything", "same error", "fresh eyes", "hours on this", "still failing", "need help debugging" | Suggest Task-tool debug delegation |
 
 **Rule:** When detected, proactively suggest the appropriate action.
 
@@ -217,9 +210,7 @@ COMMAND_BOOSTS = {
     "/spec_kit:start": "PLAN",
     "/spec_kit:plan": "PLAN",
     "/spec_kit:implement": "IMPLEMENT",
-    "/spec_kit:debug": "DEBUG",
     "/spec_kit:complete": "COMPLETE",
-    "/spec_kit:handover": "HANDOVER",
     "/spec_kit:plan :with-phases": "PHASE",
     "/memory:search": "MEMORY",
     "/memory:save": "MEMORY",
@@ -525,6 +516,7 @@ specs/007-auth-system/
   - The AI has strictly better information about its own session than any DB extraction; these fields provide richer context at source.
 - Location: target packet canonical continuity surfaces
 - Primary continuity block: `_memory.continuity` in `implementation-summary.md`
+- Retired `[spec]/memory/*.md` notes are no longer produced. Active continuity now lives in `handover.md`, `_memory.continuity` in `implementation-summary.md`, and routed updates to canonical packet docs such as `decision-record.md` and `implementation-summary.md`.
 - Content includes: packet pointer, recent action, next safe action, key files, and routed packet-state updates
 
 **Subfolder Support:**
@@ -545,7 +537,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --j
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit","sessionSummary":"..."}' system-spec-kit
 ```
 
-Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes packet continuity and `graph-metadata.json` instead of authoring a standalone `memory/*.md` primary artifact. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes packet continuity and `graph-metadata.json`, and the retired `[spec]/memory/*.md` write surface is no longer produced. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
 
 Canonical routed saves use the live 8-category content router: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 3 LLM routing is part of the live save handler by default: when `LLM_REFORMULATION_ENDPOINT` is reachable and returns a usable decision, it participates automatically; otherwise saves stay on Tier 1/Tier 2 routing with safe fallback or refusal. Delivery routing now keys off sequencing, gating, rollout, and verification language, handover stays reserved for stop-state and resume instructions, and hard transcript/tool telemetry still routes to `drop`. `routeAs` may force a category and preserve the natural decision for audit, while `packet_kind` is derived from spec metadata first with parent-phase fallback only when metadata is silent. See [save_workflow.md](./references/memory/save_workflow.md) for the detailed routing contract.
 
@@ -655,7 +647,8 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | ----------------------------- | ------- | ------------------------------------------------------------------------------------------- |
 | `SPECKIT_ADAPTIVE_FUSION`     | on      | Enables intent-aware weighted RRF in `memory_search()`, including the internal continuity profile used for resume-style retrieval (set `false` to disable) |
 | `SPECKIT_EXTENDED_TELEMETRY`  | off     | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture metadata when explicitly set to `true` |
-| `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. |
+| `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. Also disables the Step 11.5 auto-index pass in `/memory:save`. |
+| `SPECKIT_AUTO_INDEX_TOUCHED` | on      | Enables Step 11.5 auto-index pass in `/memory:save` workflow: after canonical packet docs and `graph-metadata.json` are updated, an incremental `memory_index_scan` runs scoped to the target spec folder, re-indexing any touched canonical spec docs plus `graph-metadata.json`. Set `SPECKIT_AUTO_INDEX_TOUCHED=false` to disable (targeted opt-out, leaves `SPECKIT_INDEX_SPEC_DOCS` behavior unchanged). |
 | `SPECKIT_SAVE_QUALITY_GATE`  | on      | Pre-storage quality gate rejects content below 0.4 signal density (14-day warn-only period after activation) |
 | `SPECKIT_RECONSOLIDATION`    | off     | Auto-merges similar memories on save when similarity ≥0.88; supersedes at 0.75-0.88 when explicitly enabled |
 | `SPECKIT_NEGATIVE_FEEDBACK`  | on      | `wasUseful=false` applies score demotion with 30-day recovery window |
@@ -814,8 +807,8 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 11. **Suggest handover.md on session-end keywords** - "continue later", "next session"
 12. **Run validate.sh before completion** - Completion Verification requirement
 13. **Create implementation-summary.md at end of implementation phase (Level 1+)** - Document what was built
-14. **Suggest /spec_kit:handover when session-end keywords detected OR after extended work (15+ tool calls)** - Proactive context preservation
-15. **Suggest /spec_kit:debug after 3+ failed fix attempts on same error** - Do not continue without offering debug delegation
+14. **Suggest /memory:save when session-end keywords detected OR after extended work (15+ tool calls)** - Proactive context preservation
+15. **Suggest Task-tool debug delegation after 3+ failed fix attempts on same error** - Do not continue without offering a fresh debugging pass
 16. **Suggest /spec_kit:plan :with-phases when task requires multi-phase decomposition** - Complex specs spanning multiple sessions or workstreams
 17. **Route all code creation/updates through `sk-code-opencode`** - Full alignment is mandatory before claiming completion
 18. **Route all documentation creation/updates through `sk-doc`** - Full alignment is mandatory before claiming completion
@@ -935,6 +928,8 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | Next spec number | `ls -d specs/[0-9]*/ \| sed 's/.*\/\([0-9]*\)-.*/\1/' \| sort -n \| tail -1` |
 | Upgrade level | `bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/007-feature/ --to 2` |
 | Completeness | `.opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh specs/007-feature/` |
+
+Canonical command lifecycle: `/spec_kit:start` establishes the packet, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder with smart delegation only when `folder_state` still needs repair.
 
 ---
 

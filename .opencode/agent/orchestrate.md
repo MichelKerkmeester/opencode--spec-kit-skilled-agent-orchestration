@@ -93,12 +93,10 @@ flowchart TD
 | 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                                    | `"general"`   |
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
-| 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                                 | `"general"`   |
-| 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
-| 6        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
-| 7        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
-| 8        | Debugging (stuck, 3+ fails)                                               | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
-| 9        | Session handover                                                          | `@handover`            | LEAF | `system-spec-kit`                                                                 | `"general"`   |
+| 4        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
+| 5        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
+| 6        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
+| 7        | Debugging when `failure_count >= 3` and the Task tool dispatches a focused debug pass | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
 
 ### Nesting Depth Protocol (NDP)
 
@@ -109,7 +107,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @debug, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -131,7 +129,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 #### ✅ Legal Chains
 
 ```
-LEGAL: Orchestrator(0) → @speckit(1)
+LEGAL: Orchestrator(0) → @review(1)
 LEGAL: Orchestrator(0) → @context(1) + @review(1)            [parallel at depth 1]
 LEGAL: Orchestrator(0) → @general(1)
 ```
@@ -140,7 +138,7 @@ LEGAL: Orchestrator(0) → @general(1)
 
 ```
 ILLEGAL: Orch(0) → @context(1) → @review(2)
-ILLEGAL: Orch(0) → @speckit(1) → @general(2)
+ILLEGAL: Orch(0) → @review(1) → @general(2)
 ILLEGAL: Orch(0) → Sub-Orch(1) → @leaf(2)
 ```
 
@@ -157,7 +155,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 2. **INCLUDE** the agent file's content in the Task prompt (or a focused summary for large files)
 3. **SET** `subagent_type: "general"` (all custom agents use the general subagent type)
 
-**Why:** Agent definition files contain specialized instructions, templates, enforcement rules, and quality standards that differentiate them from generic agents. Telling a general agent "you are @speckit" is NOT equivalent to loading `speckit.md` — it loses template enforcement, validation workflows, and Level 1-3+ standards.
+**Why:** Agent definition files contain specialized instructions, templates, enforcement rules, and quality standards that differentiate them from generic agents. Telling a general agent "you are @debug" is NOT equivalent to loading `debug.md` — it loses the specialized debugging workflow and verification discipline.
 
 **Exception:** If the agent file was already loaded in a prior dispatch within the same session AND no context compaction has occurred, you may reference it rather than re-reading it.
 
@@ -168,11 +166,9 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | @context  | `.opencode/agent/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
 | @deep-research | `.opencode/agent/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
 | @ultra-think | `.opencode/agent/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
-| @speckit  | `.opencode/agent/speckit.md`  | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research/research.md |
 | @review   | `.opencode/agent/review.md`   | Codebase-agnostic quality scoring                                                      |
 | @write    | `.opencode/agent/write.md`    | DQI standards enforcement                                                              |
 | @debug    | `.opencode/agent/debug.md`    | Isolated by design (no conversation context)                                           |
-| @handover | `.opencode/agent/handover.md` | Sub-agent; context preservation                                                        |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -190,7 +186,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @speckit | @debug | @handover
+├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
@@ -333,16 +329,17 @@ TASK #2: Implement Notification System
    - Spec folder path matches `specs/[###-name]/` or `.opencode/specs/[###-name]/` pattern
    - Level selection (1, 2, 3, 3+) is determined and documented
    - User confirmation received (Option A/B/C/D from Gate 3)
-2. **DISPATCH VALIDATION**: When dispatching @speckit:
+2. **AUTHORING VALIDATION**: When the main agent writes spec folder docs directly:
    - Spec folder path MUST be provided in task context
    - Level MUST be specified
    - Template source (`templates/level_N/`) MUST be referenced
-3. **POST-CREATION VERIFICATION**: After @speckit completes:
+   - `validate.sh --strict` MUST run after each doc write
+3. **POST-AUTHORING VERIFICATION**:
    - Verify files exist via @context file existence check
    - Confirm validation passed (exit code 0 or 1, NOT 2)
 4. If none exists (or user selected Option B), delegate to `@context` to discover patterns for the new spec.
 
-**ENFORCEMENT**: Dispatches to @speckit without spec folder path or level determination MUST be rejected. Sub-agent must retry with required context.
+**ENFORCEMENT**: Spec-doc authoring without a spec folder path, level determination, template source, and `validate.sh --strict` evidence MUST be rejected.
 
 ### Rule 3: Context Preservation
 **Trigger:** Completion of major milestone or session end.
@@ -353,19 +350,18 @@ TASK #2: Implement Notification System
 **Action:** ALWAYS dispatch `@context` (subagent_type: `"general"`). @context performs direct retrieval only and returns structured Context Packages.
 **Logic:** Direct exploration by other agents bypasses memory checks and structured packaging. @context centralizes memory-first retrieval without nested delegation.
 
-### Rule 5: Spec Documentation Exclusivity
+### Rule 5: Spec Documentation Governance
 **Trigger:** Any task that creates or substantively writes spec folder template documents.
-**Action:** MUST dispatch `@speckit`. NEVER use `@general`, `@write`, or any other agent to create these files.
+**Action:** The main agent writes spec-folder docs directly using `templates/level_N/`, runs `validate.sh --strict` after each doc write, and routes continuity via `/memory:save`.
 **Scope:** ALL documentation (*.md) written inside spec folders (`specs/[###-name]/`). This includes but is not limited to: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md, and any other markdown documentation.
 **Exceptions:**
 - `scratch/` subdirectory → temporary workspace, any agent may write
-- `handover.md` → `@handover` agent exclusively (session continuation documents)
 - `research/research.md` → `@deep-research` agent exclusively (iterative investigation findings)
+- `debug-delegation.md` → `@debug` retains exclusive ownership for fresh-perspective debugging passes
 - `_memory.continuity` YAML block inside `implementation-summary.md` → may be edited directly by any implementing agent for lightweight session continuity updates
 - **Reading** spec docs is permitted by any agent
 - **Minor status updates** (e.g., checking task boxes) by implementing agents are acceptable
-**Logic:** `@speckit` enforces template structure, Level 1-3+ standards, and validation that other agents lack. Bypassing `@speckit` produces non-standard documentation that fails quality gates.
-**Dispatch Protocol:** When dispatching @speckit, READ `.opencode/agent/speckit.md` and include its content in the Task prompt. This ensures template structure, Level 1-3+ standards, and validation workflows are enforced. Simply instructing a general agent to "act as @speckit" bypasses all enforcement.
+**Logic:** Distributed governance keeps spec-doc quality anchored to template usage, strict validation, and `/memory:save` continuity routing without relying on a deprecated dedicated spec agent.
 
 ### Rule 6: Routing Violation Detection
 
@@ -375,29 +371,29 @@ TASK #2: Implement Notification System
 
 | Violation Type                | Detection Signal                                                                                                | Correct Routing                |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Wrong Agent for Spec Docs** | Task creates `specs/*/spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md` via @general/@write | @speckit ONLY                  |
+| **Wrong Route for Spec Docs** | Task creates `specs/*/spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md` without templates or validation evidence | Main agent + templates + `validate.sh --strict` |
 | **Template Bypass**           | Write tool used on spec folder paths WITHOUT prior Read from `templates/level_N/`                               | REJECT → Must use templates    |
-| **Level Not Determined**      | @speckit dispatch without explicit Level (1/2/3/3+) in task context                                             | REJECT → Determine level first |
-| **No Validation**             | @speckit completion claim without `validate.sh` output                                                          | REJECT → Run validation        |
+| **Level Not Determined**      | Spec-doc authoring without explicit Level (1/2/3/3+) in task context                                             | REJECT → Determine level first |
+| **No Validation**             | Spec-doc completion claim without `validate.sh` output                                                          | REJECT → Run validation        |
 
 **ENFORCEMENT ACTIONS**:
 
 1. **Pre-Dispatch Check**: Before dispatching ANY agent for spec folder work:
-   - If task involves creating/modifying spec template files → Agent MUST be @speckit
-   - If agent is @speckit → Task context MUST include spec folder path + level
+   - If task involves creating/modifying spec template files → main-agent distributed governance rules MUST be active
+   - Task context MUST include spec folder path + level
 
-2. **Output Review**: When reviewing @speckit outputs (see §5):
+2. **Output Review**: When reviewing spec-doc outputs (see §5):
    - Verify `validate.sh` was run (exit code in output)
    - Verify template source cited (e.g., "copied from templates/level_3/spec.md")
    - Verify all required files for level present
 
 3. **Violation Response**: If wrong agent detected:
    - STOP synthesis immediately
-   - Log violation: "ROUTING VIOLATION: [agent] attempted spec documentation (Rule 5 requires @speckit)"
+   - Log violation: "ROUTING VIOLATION: spec documentation bypassed distributed governance"
    - REJECT output
-   - Re-dispatch to @speckit with proper context
+   - Re-run the write through the template + `validate.sh --strict` path
 
-**EMERGENCY BYPASS**: If @speckit repeatedly fails (3+ attempts) AND user explicitly approves bypass, log exception and proceed with @general. This must be recorded in decision-record.md.
+**EMERGENCY BYPASS**: If direct spec-doc authoring repeatedly fails (3+ attempts) AND user explicitly approves a narrower workaround, log the exception and record it in `decision-record.md`.
 
 ### Single-Hop Dispatch Model
 
@@ -408,7 +404,7 @@ The orchestrator uses a two-phase approach with single-hop dispatch only:
 - Purpose: Build complete understanding before action
 
 **Phase 2: ACTION** — Orchestrator dispatches implementation agents
-- @general, @write, @review, @speckit, @debug, @handover
+- @general, @write, @review, @debug
 - Uses Context Package from Phase 1 as input
 - Purpose: Execute with full context
 
@@ -493,7 +489,7 @@ STOP (do not synthesize rejected output) → provide specific feedback stating e
 ### Retry → Reassign → Escalate Protocol
 
 1. **RETRY (Attempts 1-2):** Provide additional context from other sub-agents, clarify success criteria, re-dispatch same agent with enhanced prompt. If still fails → REASSIGN.
-2. **REASSIGN (Attempt 3):** Try different agent type (e.g., @general instead of @context), or suggest `/spec_kit:debug` for model selection. Document what was tried and why it failed. If still fails → ESCALATE.
+2. **REASSIGN (Attempt 3):** Try different agent type (e.g., @general instead of @context), or dispatch `@debug` via Task tool when `failure_count >= 3`. Document what was tried and why it failed. If still fails → ESCALATE.
 3. **ESCALATE (After 3+ failures):** Report to user with complete attempt history, all partial findings, and suggested alternative approaches. Request user decision.
 
 ### Aborted Task Recovery
@@ -528,7 +524,7 @@ Isolate failures to prevent cascading issues. States: CLOSED (normal) → OPEN (
 
 **After repeated session degradation:**
 - Recommend starting a fresh session
-- Use `@handover` to create a continuation document first
+- Run `/memory:save` to refresh canonical continuity before ending the session
 
 ### Timeout Handling
 
@@ -540,7 +536,7 @@ Isolate failures to prevent cascading issues. States: CLOSED (normal) → OPEN (
 
 ### Debug Delegation Trigger
 
-After 3 failed attempts on the same error, suggest `/spec_kit:debug` for a fresh agent with model selection. Auto-detect keywords: "stuck", "tried everything", "same error", "keeps failing", or 3+ sub-agent dispatches returning errors.
+After 3 failed attempts on the same error, prepare a diagnostic summary and dispatch `@debug` via Task tool. Auto-detect keywords: "stuck", "tried everything", "same error", "keeps failing", or 3+ sub-agent dispatches returning errors.
 
 ---
 
@@ -563,10 +559,10 @@ The documentation has been updated with DQI score 95/100 [by @write].
 - If a tool returns >50 lines, summarize key findings in 3-5 bullet points.
 - When synthesizing multi-agent results: produce ONE unified response, not assembled fragments.
 
-### Context Preservation & Handover
+### Context Preservation & Session Save
 
 **Trigger:** 15+ tool calls, 5+ files modified, user says "stopping"/"continue later", or session approaching context limits.
-**Action:** Suggest `/spec_kit:handover` → mandate sub-agents save context → compile orchestration decisions summary → preserve task state, pending work, blockers.
+**Action:** Suggest `/memory:save` → mandate sub-agents save context → compile orchestration decisions summary → preserve task state, pending work, blockers.
 
 After complex multi-agent workflows, save orchestration context via JSON mode: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"###-folder","sessionSummary":"..."}' specs/###-folder/`
 
@@ -588,7 +584,7 @@ When ANY context pressure signal fires:
 1. **PAUSE** — do not dispatch another agent
 2. **ANNOUNCE** — tell the user: "Context pressure detected — recommend saving context before continuing"
 3. **WAIT** — for user confirmation before continuing
-4. If user does not save context: synthesize completed results and suggest `/spec_kit:handover`
+4. If user does not save context: synthesize completed results and suggest `/memory:save`
 
 ### Command Suggestions
 
@@ -596,8 +592,8 @@ When ANY context pressure signal fires:
 
 | Condition                              | Suggest              | Reason                                 |
 | -------------------------------------- | -------------------- | -------------------------------------- |
-| Sub-agent stuck 3+ times on same error | `/spec_kit:debug`    | Fresh perspective with model selection |
-| Session ending or user says "stopping" | `/spec_kit:handover` | Preserve context for continuation      |
+| Sub-agent stuck 3+ times on same error | `Task tool → @debug` | Fresh perspective debugging dispatch   |
+| Session ending or user says "stopping" | `/memory:save`       | Preserve canonical continuity          |
 | Need formal research before planning   | `/spec_kit:deep-research` | Autonomous iterative research loop  |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
@@ -742,13 +738,13 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Single agents with too many sequential operations exceed system execution limits, returning "Tool execution aborted" and losing all progress. Always estimate tool calls before dispatch and split at 12+. See §8.
 
 ❌ **Never improvise custom agent instructions instead of loading their definition file**
-- Every custom agent has a definition file in `.opencode/agent/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @speckit" in the prompt produces documentation without template enforcement, validation, or Level 1-3+ compliance. ALWAYS read and include the actual agent definition file. See §2.
+- Every custom agent has a definition file in `.opencode/agent/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @debug" in the prompt loses the specialized debugging workflow. ALWAYS read and include the actual agent definition file. See §2.
 
 ❌ **Never dispatch beyond maximum depth 2 (depth counter 0-1)**
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
 
 ❌ **Never let LEAF agents dispatch sub-agents**
-- LEAF agents (@context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
+- LEAF agents (@context, @general, @ultra-think, @write, @review, @debug, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
 
 ❌ **Never read 3+ large files back-to-back in main context**
 - Loading multiple large files floods the orchestrator's context window. Delegate bulk file reads to `@context` and receive summarized Context Packages. See §8 Self-Protection Rules.
@@ -779,8 +775,6 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 | Resource                    | Purpose                                         | Path                                         |
 | --------------------------- | ----------------------------------------------- | -------------------------------------------- |
-| `/spec_kit:debug`           | Debug delegation with model selection           | `.opencode/command/spec_kit/debug.md`        |
-| `/spec_kit:handover`        | Session continuation                            | `.opencode/command/spec_kit/handover.md`     |
 | `/spec_kit:complete`        | Verification workflow                           | `.opencode/command/spec_kit/complete.md`     |
 | `/spec_kit:deep-research`   | Autonomous iterative research loop              | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`              | Context preservation                            | `.opencode/command/memory/save.md`           |

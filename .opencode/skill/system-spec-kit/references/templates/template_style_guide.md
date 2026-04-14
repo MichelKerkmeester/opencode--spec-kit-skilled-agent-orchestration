@@ -26,7 +26,7 @@ Consistent templates enable predictable documentation structure, automated valid
 
 ### Template Inventory
 
-Current templates (10 user-facing + 1 internal):
+Current templates (user-facing only):
 
 | Level | Templates |
 |-------|-----------|
@@ -34,7 +34,6 @@ Current templates (10 user-facing + 1 internal):
 | **Level 2** | + checklist.md |
 | **Level 3** | + decision-record.md, research/research.md |
 | **Utility** | handover.md, debug-delegation.md |
-| **Internal** | context_template.md (generated continuity artifact rendering) |
 
 ---
 
@@ -60,7 +59,6 @@ Use bulleted list format for metadata sections in all templates:
 
 | Template | Format | Reason |
 |----------|--------|--------|
-| `context_template.md` | Mustache syntax (`{{VARIABLE}}`) | Programmatic generation via generate-context.js |
 | `debug-delegation.md` | Inline format | Auto-generated content structure |
 
 ### Why Bulleted Lists
@@ -84,7 +82,6 @@ Use bulleted list format for metadata sections in all templates:
 | `[FORMAT: options]` | Constrained format | `[FORMAT: YYYY-MM-DD]` |
 | `[NEEDS CLARIFICATION: question]` | Multi-choice questions | `[NEEDS CLARIFICATION: (a) option (b) option]` |
 | `[OPTIONAL: description]` | Optional fields | `[OPTIONAL: link to spec.md]` |
-| `{{MUSTACHE}}` | Auto-generated (context_template.md only) | `{{SESSION_ID}}` |
 
 ### Usage Guidelines
 
@@ -276,7 +273,6 @@ The `validate.sh` script enforces these rules:
 | Template | Location | Purpose |
 |----------|----------|---------|
 | All spec templates | `templates/` | Spec folder documentation |
-| context_template.md | `templates/` | Generated continuity artifact rendering |
 
 ### Validation
 

@@ -118,13 +118,11 @@ If the runtime does not surface command menus clearly, use this compact command 
 - `/spec_kit:plan` - define or refine a scoped spec and plan
 - `/spec_kit:implement` - execute an existing spec and plan packet
 - `/spec_kit:complete` - run the full spec-to-implementation lifecycle
-- `/spec_kit:debug` - delegate a persistent issue to debug workflow
-- `/spec_kit:handover` - write continuation context for the next session
 - `/spec_kit:deep-research` - run iterative research before planning
 - `/spec_kit:deep-review` - run iterative review and finding synthesis
 
 **Memory commands**
-- `/memory:save` - preserve the current session context into spec memory
+- `/memory:save` - preserve the current session context into spec memory and refresh packet continuity
 - `/memory:search` - retrieve prior context, decisions, and analysis
 - `/memory:manage` - run maintenance, checkpoint, cleanup, and ingest operations
 - `/memory:learn` - create or manage constitutional always-surface rules
@@ -518,15 +516,11 @@ Only load root memory when updating coordination snapshots.
 - Core continuity block: `_memory.continuity` in `implementation-summary.md`
 - No workspace-root fallback; direct CLI targets stay inside the selected root spec or phase packet
 
-### Session Handover
+### Session Continuity Save
 
-**Command:** `/spec_kit:handover`
+**Command:** `/memory:save`
 
-**Variants:**
-- `/spec_kit:handover:quick` (default) - Minimal handover for quick continuation
-- `/spec_kit:handover:full` - Comprehensive handover with full context
-
-**Purpose:** Creates a continuation document for smooth session transitions.
+**Purpose:** Refresh packet continuity before a pause or handoff while keeping `handover.md`, `_memory.continuity`, and the packet docs aligned for the next `/spec_kit:resume` pass.
 
 **Use when:**
 - Ending a long session
@@ -595,7 +589,7 @@ specs/###-parent/
 - **ALWAYS fill ALL placeholders** - No `<PLACEHOLDER>` marker in final docs
 - **ALWAYS respond to workflow prompts** - Ask user for A/B/C/D/E choice
 - **ALWAYS get user approval** - Explicit "yes" before file changes
-- **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research/research.md), @debug (debug-delegation.md)
+- **Use distributed governance for spec docs** — Any agent writing packet markdown must use the level templates, run `validate.sh --strict`, and route continuity refreshes through `/memory:save`. Preserve `@deep-research` ownership of `research/research.md` and `@debug` ownership of `debug-delegation.md`.
 
 ### Enforcement
 

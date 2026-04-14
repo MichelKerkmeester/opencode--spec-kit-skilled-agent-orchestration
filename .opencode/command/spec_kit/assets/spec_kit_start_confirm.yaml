@@ -553,7 +553,7 @@ completion_report:
   next_steps:
     - "/spec_kit:plan {feature_description}"
     - "/spec_kit:deep-research {feature_description}"
-    - "/spec_kit:handover {spec_folder}"
+    - "/memory:save {spec_folder}"
 
 # ─────────────────────────────────────────────────────────────────
 # ERROR RECOVERY

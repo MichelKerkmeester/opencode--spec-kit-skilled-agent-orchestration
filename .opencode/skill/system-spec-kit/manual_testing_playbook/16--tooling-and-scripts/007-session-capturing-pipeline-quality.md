@@ -67,7 +67,7 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `grep -n 'claude-code-capture\|codex-cli-capture\|copilot-cli-capture\|gemini-cli-capture' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
     - `grep -n 'INSUFFICIENT_CONTEXT_ABORT\|evaluateMemorySufficiency' .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/shared/parsing/memory-sufficiency.ts`
     - `grep -n 'WORKFLOW_HTML_COMMENT_RE\|stripWorkflowHtmlOutsideCodeFences' .opencode/skill/system-spec-kit/scripts/core/workflow.ts`
-    - `grep -n 'SYSTEM_SPEC_KIT_CAPTURE_SOURCE\|trigger_phrases' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts .opencode/skill/system-spec-kit/templates/context_template.md`
+    - `grep -n 'SYSTEM_SPEC_KIT_CAPTURE_SOURCE\|trigger_phrases' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`
   - Targeted automated closure suite:
     - `cd .opencode/skill/system-spec-kit/scripts && npm run check`
     - `cd .opencode/skill/system-spec-kit/scripts && npm run build`

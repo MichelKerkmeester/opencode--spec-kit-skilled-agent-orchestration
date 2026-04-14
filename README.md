@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 21 skills, 23 command entry points, 60 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 12 agents, 21 skills, 24 command entry points, 60 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -61,7 +61,7 @@ The framework adds three layers on top of the base platform:
 |---|---|
 | **🤖 12 Agents** | 12 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
-| **⌨️ 23 Commands** | 8 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility |
+| **⌨️ 24 Commands** | 9 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 utility |
 | **🔧 56 MCP Tools** | 51 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
@@ -862,7 +862,7 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 ### ⌨️ Commands
 
 
-23 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
+24 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
 #### SPEC KIT
 
@@ -929,6 +929,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
   └─► /spec_kit:complete
        └─► delegates back to /spec_kit:start when folder_state still needs intake
 ```
+
+`/spec_kit:deep-research` only enters that chain after a real `spec.md` exists; it follows `spec_check_protocol.md` for advisory-lock handling, `folder_state` classification, and bounded generated-fence sync.
 
 #### MEMORY
 

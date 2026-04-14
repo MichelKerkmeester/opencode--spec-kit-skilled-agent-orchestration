@@ -55,7 +55,7 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Tools | 56 | 47 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
 | Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
-| Commands | 21 | Markdown command entry points in `.opencode/command/` (8 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
+| Commands | 22 | Markdown command entry points in `.opencode/command/` (9 spec_kit + 4 memory + 6 create + 2 improve + 1 utility) |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 29 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
@@ -102,17 +102,15 @@ This is a 12-agent / 4-runtime model (OpenCode, Claude, Codex, Gemini) with alig
 |-------|-------------|-------------|
 | `@orchestrate` | Task decomposition and multi-agent coordination | Complex requests needing delegation across multiple agents |
 | `@context` | Codebase exploration and context retrieval (read-only) | ALL file search, pattern discovery and context loading tasks |
-| `@debug` | Fresh-perspective debugging (4-phase methodology) | After 3+ failed debug attempts, stuck issues |
+| `@debug` | Fresh-perspective debugging specialist with 5-phase methodology | Dispatch via Task tool after 3+ failed debug attempts |
 | `@deep-research` | Autonomous iterative research loop with externalized state | Deep multi-round investigation, evidence-based analysis |
 | `@deep-review` | Autonomous iterative review loop with findings convergence | Multi-round release and quality audits |
-| `@speckit` | Spec folder documentation (Level 1-3+) | Creating/updating spec folder docs (EXCLUSIVE for spec templates) |
 | `@review` | Code review with 5-dimension quality scoring | PR reviews, pre-commit checks, code quality validation |
 | `@write` | Documentation generation (READMEs, guides, skills) | Project-level docs outside spec folders |
-| `@handover` | Session continuation and context preservation | Ending sessions, branching work, team handoffs |
 | `@ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies |
 | `@improve-agent` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
 
-**Agent Routing:** Automatic via Gate 2 (`skill_advisor.py`) or manual via `@agent_name` syntax. Current agent state includes model-agnostic `@review`, Haiku-tier `@handover` and Codex profile-based agent frontmatter.
+**Agent Routing:** Automatic via Gate 2 (`skill_advisor.py`) or manual via `@agent_name` syntax. Current agent state keeps runtime frontmatter aligned across the supported runtimes.
 
 <!-- /ANCHOR:agents-overview -->
 
@@ -165,8 +163,6 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:complete`: Full 14+ step workflow from research to completion, with inline `/spec_kit:start` delegation when the packet needs intake repair
 - `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking plus bounded `spec.md` anchoring via `spec_check_protocol.md`
 - `/spec_kit:deep-review`: Autonomous iterative code review workflow with convergence tracking
-- `/spec_kit:debug`: Debug delegation with model selection and task dispatch
-- `/spec_kit:handover`: Session continuation with context preservation
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
 
 ### Memory Commands (`/memory:*`)
@@ -327,7 +323,7 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 - **File modification:** Gate 1, Gate 2, Gate 3 (ask spec folder), Load memory context, Execute
 - **Research task:** `memory_match_triggers()`, `memory_context()`, Document findings
 - **Resume session:** `/spec_kit:resume`, Review checklist, Continue work
-- **End session:** `/spec_kit:handover`, Save context, Continuation prompt
+- **End session:** `/memory:save`, Continuation prompt
 
 ### Further Reading
 

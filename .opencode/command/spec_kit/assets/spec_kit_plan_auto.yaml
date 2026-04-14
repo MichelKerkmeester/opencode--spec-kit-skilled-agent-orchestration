@@ -243,13 +243,6 @@ multi_agent_config:
 # Do NOT dispatch agents based on reading this section.
 # Agents are activated ONLY when their designated step is executing.
 agent_availability:
-  speckit:
-    available_at_step: 3
-    condition: "ONLY dispatch when Step 3 is actively executing"
-    agent_file: "[runtime_agent_path]/speckit.md"
-    model: opus
-    fallback: "general"
-    not_for: "reviewing this workflow prompt or any pre-step activity"
   deep-research:
     available_at_step: 5
     condition: "ONLY dispatch when confidence < 60% during Step 5 planning OR user explicitly requests research"
@@ -257,13 +250,6 @@ agent_availability:
     fallback: "general"
     conditional: true
     not_for: "proactive research, pre-step investigation, or reviewing this workflow"
-  handover:
-    available_at_step: 7
-    condition: "ONLY dispatch when user explicitly requests handover at Step 7"
-    agent_file: "[runtime_agent_path]/handover.md"
-    fallback: "general"
-    not_for: "automatic handover, pre-step context saving, or premature session ending"
-
 # ─────────────────────────────────────────────────────────────────
 # QUALITY GATES
 # ─────────────────────────────────────────────────────────────────
@@ -288,7 +274,6 @@ quality_gates:
       - { id: plan_exists, points: 25 }
       - { id: tasks_exists, points: 20 }
       - { id: context_saved, points: 15 }
-      - { id: handover_check, points: 15 }
     on_fail: "Post-execution gate below threshold. Missing: {missing_checks}."
 
 # ─────────────────────────────────────────────────────────────────
@@ -569,16 +554,14 @@ workflow:
       tier_reference: "constitutional > critical > important > normal > temporary > deprecated"
 
   step_7_handover_check:
-    purpose: Prompt user to create session handover for future continuity
-    activities: [Display handover prompt, "If accepted: run /spec_kit:handover", "If declined: proceed to completion"]
+    purpose: Final workflow closeout after planning
+    activities: [Confirm the planning pass is ready to end, Remind the operator to run /memory:save before pausing if another continuity refresh is needed]
     mandatory_check: true
     display_prompt: |
-      Planning complete. Would you like to create a handover document?
-      Run: /spec_kit:handover
-      Recommended if: implementation in different session, another dev may implement, planning has nuances.
-    user_response_handling: { accept: "Run /spec_kit:handover", decline: "Proceed to termination", default: "Wait for user response" }
-    outputs: ["handover.md (optional)"]
-    validation: handover_check_completed
+      Planning complete. End the workflow now, or run /memory:save first if you want another indexed continuity refresh before pausing.
+    user_response_handling: { accept: "Run /memory:save", decline: "Proceed to termination", default: "Wait for user response" }
+    outputs: ["workflow closeout confirmed"]
+    validation: workflow_finish_confirmed
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW TERMINATION

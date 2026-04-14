@@ -62,6 +62,10 @@ import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/sh
 
 type NormalizedDbRow = Parameters<typeof dbRowToMemory>[0];
 
+function legacySpecMemoryPath(prefix: string, fileName: string): string {
+  return [prefix, '.opencode', 'specs', '003', '100', 'memory', fileName].join('/');
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PHASE 2: TYPE CONFIGURATION
    ═══════════════════════════════════════════════════════════════ */
@@ -88,10 +92,6 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       });
     }
 
-    it('Returns "memory" for file in /memory/ directory even if named spec.md', () => {
-      expect(inferDocumentTypeFromPath('/project/.opencode/specs/003/100/memory/spec.md')).toBe('memory');
-    });
-
     it('Returns "constitutional" for constitutional files', () => {
       expect(inferDocumentTypeFromPath('/project/.opencode/skill/system-spec-kit/constitutional/rules.md')).toBe('constitutional');
     });
@@ -101,13 +101,6 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(inferDocumentTypeFromPath('/project/.opencode/command/spec_kit/README.txt')).toBe('memory');
     });
 
-    it('Returns "memory" for unrecognized files', () => {
-      expect(inferDocumentTypeFromPath('/project/.opencode/specs/003/100/memory/random-notes.md')).toBe('memory');
-    });
-
-    it('Returns "memory" for spec.md NOT in /specs/ directory', () => {
-      expect(inferDocumentTypeFromPath('/project/docs/spec.md')).toBe('memory');
-    });
   });
 
   describe('T063: SPEC_DOCUMENT_CONFIGS completeness', () => {
@@ -244,14 +237,6 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       expect(extractDocumentType('/p/.opencode/command/kit/README.txt')).toBe('memory');
     });
 
-    it('Returns "memory" for unrecognized files in memory/', () => {
-      expect(extractDocumentType('/p/.opencode/specs/003/100/memory/notes.md')).toBe('memory');
-    });
-
-    it('Returns "memory" for spec.md in /memory/ directory', () => {
-      expect(extractDocumentType('/p/.opencode/specs/003/100/memory/spec.md')).toBe('memory');
-    });
-
     it('Returns "memory" for spec.md in /scratch/ directory', () => {
       expect(extractDocumentType('/p/.opencode/specs/003/100/scratch/spec.md')).toBe('memory');
     });
@@ -263,7 +248,7 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
 
   describe('T067: isMemoryFile() recognizes spec documents', () => {
     it('Rejects legacy memory/ paths (retired surface)', () => {
-      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/notes.md')).toBe(false);
+      expect(isMemoryFile(legacySpecMemoryPath('/p', 'notes.md'))).toBe(false);
     });
 
     it('Accepts spec.md in specs/ directory', () => {
@@ -283,7 +268,7 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
     });
 
     it('Rejects spec.md placed inside legacy /memory/ directory', () => {
-      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/spec.md')).toBe(false);
+      expect(isMemoryFile(legacySpecMemoryPath('/p', 'spec.md'))).toBe(false);
     });
 
     it('Rejects spec.md in /scratch/ directory', () => {
@@ -308,11 +293,6 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
   });
 
   describe('T068: extractSpecFolder() handles non-memory paths', () => {
-    it('Extracts folder from standard memory path', () => {
-      const result = extractSpecFolder('/p/.opencode/specs/system-spec-kit/100-feature/memory/notes.md');
-      expect(result).toBe('system-spec-kit/100-feature');
-    });
-
     it('Extracts folder from spec.md path (non-memory)', () => {
       const result = extractSpecFolder('/p/.opencode/specs/system-spec-kit/100-feature/spec.md');
       expect(result).toBe('system-spec-kit/100-feature');
@@ -390,10 +370,6 @@ describe('Spec 126 Phase 5: Indexing Pipeline', () => {
 
     it('constitutional -> 1.0', () => {
       expect(calculateDocumentWeight('/p/constitutional/rules.md', 'constitutional')).toBe(1.0);
-    });
-
-    it('memory -> 0.5', () => {
-      expect(calculateDocumentWeight('/p/specs/x/memory/notes.md', 'memory')).toBe(0.5);
     });
 
     it('README paths with explicit memory type use baseline memory weight', () => {
@@ -814,7 +790,7 @@ describe('Spec 126: Backward Compatibility', () => {
     });
 
     it('calculateDocumentWeight defaults to 0.5 for unknown type path', () => {
-      const weight = calculateDocumentWeight('/p/specs/x/memory/notes.md');
+      const weight = calculateDocumentWeight('/p/specs/x/random-notes.md');
       expect(weight).toBe(0.5);
     });
 
@@ -822,13 +798,6 @@ describe('Spec 126: Backward Compatibility', () => {
       expect(getDefaultTierForDocumentType('memory')).toBe('normal');
     });
 
-    it('inferDocumentTypeFromPath returns memory for non-spec files', () => {
-      expect(inferDocumentTypeFromPath('/p/specs/003/100/memory/random.md')).toBe('memory');
-    });
-
-    it('extractDocumentType returns memory for standard memory files', () => {
-      expect(extractDocumentType('/p/.opencode/specs/003/100/memory/notes.md')).toBe('memory');
-    });
   });
 });
 

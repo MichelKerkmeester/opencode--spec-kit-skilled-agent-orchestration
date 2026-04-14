@@ -387,7 +387,7 @@ When the query intent is semantic (find code by concept, understand implementati
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
 | @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
-| @speckit  | `.opencode/agent/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
+| Spec authoring | Distributed governance | Spec documentation uses @context findings through the main-agent governance flow |
 
 ### Memory Tools (Spec Kit Memory MCP)
 

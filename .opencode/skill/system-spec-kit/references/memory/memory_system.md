@@ -14,7 +14,7 @@ Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and packet-first continuity. Phase 018 makes `handover.md -> _memory.continuity -> spec docs` the canonical recovery chain; indexed legacy memory artifacts remain supporting retrieval material rather than the primary continuity surface. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
+The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and packet-first continuity. Phase 018 makes `handover.md -> _memory.continuity -> spec docs` the canonical recovery chain; retired `[spec]/memory/*.md` artifacts are no longer produced at save time and only matter when older packets still contain them. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
 
 ### Architecture
 
@@ -41,13 +41,13 @@ The memory system indexes content from three distinct sources:
 |--------|-----------------|-------------|--------------|-----------|
 | **Spec Documents** | `specs/**/*.md` and `.opencode/specs/**/*.md` | Per-type (spec, plan, tasks, etc.) | `normal` | `findSpecDocuments()` |
 | **Constitutional Rules** | `.opencode/skill/*/constitutional/*.md` | `meta-cognitive` | `constitutional` | `findConstitutionalFiles()` |
-| **Legacy Memory Artifacts** | `specs/*/memory/*.{md,txt}` when present | Varies (episodic, procedural, etc.) | `normal` | `findMemoryFiles()` |
+| **Retired Compatibility Artifacts** | Older `specs/*/memory/*.{md,txt}` files already present in historical packets | Varies (episodic, procedural, etc.) | `normal` | Historical compatibility only |
 
 **Content Source Behavior:**
 
 - **Spec Documents** — Canonical packet continuity source. Recovery should read `handover.md`, then `_memory.continuity`, then the rest of the packet docs before widening into search.
 - **Constitutional Rules** — Always-surface critical rules. Injected at top of every search result. No decay.
-- **Legacy Memory Artifacts** — Older indexed session notes still discoverable when present, but no longer the primary save target or operator guidance surface.
+- **Retired Compatibility Artifacts** — Older session notes may still exist in historical packets, but save workflows no longer produce them and operators should not treat them as an active surface.
 
 **Spec Document Indexing Pipeline:**
 1. `findSpecDocuments()` walks both supported specs roots and discovers supported doc filenames
@@ -129,7 +129,7 @@ Six-tier system for prioritizing memory relevance:
 | L6: Analysis | `eval_reporting_dashboard()` | Generate evaluation and reporting dashboard data | Review system metrics |
 | L6: Analysis | `code_graph_query()` | Query structural relationships such as callers, imports, and outlines | Find what calls a symbol or which files import a module |
 | L6: Analysis | `code_graph_context()` | Expand CocoIndex or symbol seeds into compact graph neighborhoods | Pull structural context for an LLM prompt |
-| L7: Maintenance | `memory_index_scan()` | Bulk scan and index packet docs, constitutional files, and any legacy memory artifacts | After continuity or spec-doc updates |
+| L7: Maintenance | `memory_index_scan()` | Bulk scan and index packet docs, constitutional files, and graph metadata | After continuity or spec-doc updates |
 | L7: Maintenance | `memory_ingest_start()` | Start async bulk memory ingestion | Import large memory sets |
 | L7: Maintenance | `memory_ingest_status()` | Check status of running ingestion job | Monitor import progress |
 | L7: Maintenance | `memory_ingest_cancel()` | Cancel a running ingestion job | Stop runaway imports |

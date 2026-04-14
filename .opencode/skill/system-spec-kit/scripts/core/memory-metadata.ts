@@ -40,12 +40,6 @@ export type CausalLinksContext = {
   RELATED_TO: string[];
 };
 
-type ExistingMemoryHeader = {
-  sessionId: string;
-  contextType: string;
-  timestampMs: number;
-};
-
 export type WorkflowObservationEvidence = {
   TITLE?: string;
   title?: string;
@@ -270,91 +264,6 @@ export function readExplicitMemoryText(collectedData: CollectedDataFull): {
   return {
     ...(title.length > 0 ? { title } : {}),
     ...(description.length > 0 ? { description } : {}),
-  };
-}
-
-function parseFrontmatterValue(frontmatter: string, key: string): string {
-  const match = frontmatter.match(new RegExp(`^${key}:\\s*"?(.*?)"?\\s*$`, 'm'));
-  return match?.[1]?.trim() ?? '';
-}
-
-function parseStructuredValue(content: string, keys: string[]): string {
-  for (const key of keys) {
-    const value = parseFrontmatterValue(content, key);
-    if (value) {
-      return value;
-    }
-  }
-
-  return '';
-}
-
-function parseExistingMemoryHeader(filePath: string): ExistingMemoryHeader | null {
-  try {
-    const content = fsSync.readFileSync(filePath, 'utf8');
-    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    const frontmatter = frontmatterMatch?.[1] ?? '';
-    const sessionId = parseStructuredValue(frontmatter, ['session_id'])
-      || parseStructuredValue(content, ['session_id']);
-    if (!sessionId) {
-      return null;
-    }
-
-    const contextType = parseStructuredValue(frontmatter, ['context_type', 'contextType'])
-      || parseStructuredValue(content, ['context_type', 'contextType']);
-
-    return {
-      sessionId,
-      contextType: contextType.toLowerCase(),
-      timestampMs: fsSync.statSync(filePath).mtimeMs,
-    };
-  } catch {
-    return null;
-  }
-}
-
-export function autoPopulateCausalLinks(
-  collectedData: CollectedDataFull,
-  specFolderPath: string,
-  currentSession: { sessionId: string; contextType: string },
-): CausalLinksContext {
-  const existing = buildCausalLinksContext(collectedData);
-  const memoryDir = path.join(specFolderPath, 'memory');
-  if (!fsSync.existsSync(memoryDir) || !fsSync.statSync(memoryDir).isDirectory()) {
-    return existing;
-  }
-
-  const previousMemories = fsSync.readdirSync(memoryDir)
-    .filter((entry) => entry.endsWith('.md'))
-    .map((entry) => parseExistingMemoryHeader(path.join(memoryDir, entry)))
-    .filter((entry): entry is ExistingMemoryHeader => entry !== null && entry.sessionId !== currentSession.sessionId)
-    .sort((left, right) => right.timestampMs - left.timestampMs);
-
-  if (previousMemories.length === 0) {
-    return existing;
-  }
-
-  const latest = previousMemories[0];
-  const merge = (current: string[], additions: string[]): string[] => {
-    const seen = new Set<string>();
-    const merged: string[] = [];
-    for (const value of [...current, ...additions]) {
-      const trimmed = value.trim();
-      if (!trimmed || seen.has(trimmed)) {
-        continue;
-      }
-      seen.add(trimmed);
-      merged.push(trimmed);
-    }
-    return merged;
-  };
-
-  return {
-    ...existing,
-    DERIVED_FROM: merge(existing.DERIVED_FROM, [latest.sessionId]),
-    SUPERSEDES: currentSession.contextType === 'implementation' && latest.contextType === 'planning'
-      ? merge(existing.SUPERSEDES, [latest.sessionId])
-      : existing.SUPERSEDES,
   };
 }
 

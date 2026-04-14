@@ -949,99 +949,6 @@ async function testErrorHandling() {
 ────────────────────────────────────────────────────────────────
 */
 
-async function testContextTemplate() {
-  log('\n--- TEST SUITE: Context Template ---');
-
-  try {
-    const contextTemplate = readFile(path.join(TEMPLATES_DIR, 'context_template.md'));
-
-    if (!contextTemplate) {
-      fail('TC-700a: context_template.md exists', 'File not found');
-      return;
-    }
-
-    pass('TC-700a: context_template.md exists', 'File found');
-
-    // Check for mustache-style variables
-    const mustacheVars = contextTemplate.match(/\{\{[A-Z_]+\}\}/g) || [];
-    if (mustacheVars.length > 10) {
-      pass('TC-700b: context_template has mustache variables', `Found ${mustacheVars.length} variables`);
-    } else {
-      fail('TC-700b: context_template has mustache variables', `Only ${mustacheVars.length} found`);
-    }
-
-    // Check for anchor markers
-    const anchors = contextTemplate.match(/<!-- ANCHOR:[^>]+ -->/g) || [];
-    if (anchors.length >= 3) {
-      pass('TC-700c: context_template has anchor markers', `Found ${anchors.length} anchors`);
-    } else {
-      fail('TC-700c: context_template has anchor markers', `Only ${anchors.length} found`);
-    }
-
-    // Check for importance tier documentation
-    if (contextTemplate.includes('constitutional') && contextTemplate.includes('critical') && contextTemplate.includes('important')) {
-      pass('TC-700d: context_template documents importance tiers', 'All tiers documented');
-    } else {
-      fail('TC-700d: context_template documents importance tiers', 'Some tiers missing');
-    }
-
-    // Check for YAML metadata block
-    if (contextTemplate.includes('```yaml') && contextTemplate.includes('session_id:')) {
-      pass('TC-700e: context_template has YAML metadata block', 'Metadata block found');
-    } else {
-      fail('TC-700e: context_template has YAML metadata block', 'Metadata block missing');
-    }
-
-    // Check for session summary table
-    if (contextTemplate.includes('SESSION SUMMARY') && contextTemplate.includes('Meta Data')) {
-      pass('TC-700f: context_template has session summary', 'Summary section found');
-    } else {
-      fail('TC-700f: context_template has session summary', 'Summary section missing');
-    }
-
-    // Check for decisions section
-    if (contextTemplate.includes('DECISIONS')) {
-      pass('TC-700g: context_template has decisions section', 'Decisions section found');
-    } else {
-      fail('TC-700g: context_template has decisions section', 'Decisions section missing');
-    }
-
-    // Check for conversation section
-    if (contextTemplate.includes('CONVERSATION')) {
-      pass('TC-700h: context_template has conversation section', 'Conversation section found');
-    } else {
-      fail('TC-700h: context_template has conversation section', 'Conversation section missing');
-    }
-
-    // Check for preflight/postflight learning delta
-    if (contextTemplate.includes('PREFLIGHT') && contextTemplate.includes('POSTFLIGHT')) {
-      pass('TC-700i: context_template has learning delta sections', 'Pre/Post flight sections found');
-    } else {
-      skip('TC-700i: context_template has learning delta sections', 'May use different structure');
-    }
-
-    // Check TOC heading/link labels are uppercase to match section headings
-    const hasUppercaseToc =
-      contextTemplate.includes('## TABLE OF CONTENTS') &&
-      contextTemplate.includes('[CONTINUE SESSION](#continue-session)') &&
-      contextTemplate.includes('[PROJECT STATE SNAPSHOT](#project-state-snapshot)') &&
-      contextTemplate.includes('[OVERVIEW](#overview)') &&
-      contextTemplate.includes('[DECISIONS](#decisions)') &&
-      contextTemplate.includes('[CONVERSATION](#conversation)') &&
-      contextTemplate.includes('[RECOVERY HINTS](#recovery-hints)') &&
-      contextTemplate.includes('[MEMORY METADATA](#memory-metadata)');
-
-    if (hasUppercaseToc) {
-      pass('TC-700j: context_template TOC uses uppercase labels', 'TOC heading and required links are uppercase');
-    } else {
-      fail('TC-700j: context_template TOC uses uppercase labels', 'TOC heading/links are not all uppercase');
-    }
-
-  } catch (error) {
-    fail('TC-700: Context template', error.message);
-  }
-}
-
 /* ─────────────────────────────────────────────────────────────
    11. TEST SUITE: EXAMPLE TEMPLATE VALIDATION
 ────────────────────────────────────────────────────────────────
@@ -1229,7 +1136,6 @@ async function main() {
   await testTemplateVariableValidation();
   await testCrossLevelConsistency();
   await testErrorHandling();
-  await testContextTemplate();
   await testExampleTemplates();
   await testVerboseVariants();
 

@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Make Phase 2 the durable review-mode contract by aligning docs, assets, workflow YAML, runtime mirrors, manual testing playbook surfaces, and packet closeout evidence around one canonical deep-review packet model.",
     "created_at": "2026-04-12T09:02:50.184Z",
-    "last_save_at": "2026-04-13T16:22:48.566Z",
+    "last_save_at": "2026-04-14T17:11:40.708Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

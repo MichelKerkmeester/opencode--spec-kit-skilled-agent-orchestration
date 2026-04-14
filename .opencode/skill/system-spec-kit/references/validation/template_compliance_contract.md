@@ -19,7 +19,7 @@ Defines the exact heading hierarchy, required anchors, and content minimums for 
 ### Source of Truth
 
 - **Generator:** `template-structure.js` `loadTemplateContract()` output (`scripts/utils/template-structure.js`)
-- **Applies to:** `@speckit` agent definitions across all CLIs
+- **Applies to:** `distributed-governance spec authoring` agent definitions across all CLIs
 
 ### When to Use
 
@@ -250,7 +250,7 @@ When templates in `templates/level_N/` change:
 1. Run `node scripts/utils/template-structure.js contract <level> <basename>`
    for each changed doc type to extract the updated contract JSON
 2. Update this file with the new headers/anchors
-3. Update the inline compact contract in all 4 @speckit agent definitions:
+3. Update the inline compact contract in all 4 distributed-governance spec-authoring flow definitions:
    - `.claude/agents/speckit.md`
    - `.opencode/agent/speckit.md`
    - `.codex/agents/speckit.toml`

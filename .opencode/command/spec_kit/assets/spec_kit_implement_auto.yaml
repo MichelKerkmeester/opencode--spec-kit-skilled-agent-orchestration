@@ -213,12 +213,6 @@ agent_availability:
     failure_tracking: { counter: "task_failure_count", reset_on: "new_task", threshold: 3 }
     on_threshold: "Suggest: A) Dispatch debug B) Continue manually C) Skip task D) Pause"
     not_for: "proactive debugging, pre-step investigation, or reviewing this workflow"
-  handover:
-    available_at_step: 9
-    condition: "ONLY dispatch when user explicitly requests handover at Step 9"
-    agent_file: "[runtime_agent_path]/handover.md"
-    fallback: "general"
-    not_for: "automatic handover, pre-step context saving, or premature session ending"
 
 # ─────────────────────────────────────────────────────────────────
 # QUALITY GATES
@@ -414,7 +408,7 @@ workflow:
     debug_delegation:
       trigger: "Same error 3+ times after fix attempts"
       enforcement: MANDATORY
-      action: "STOP → suggest /spec_kit:debug → wait for user decision"
+      action: "STOP → escalate to user with diagnostic summary; user may dispatch @debug via Task tool"
     approach: autonomous_implementation_with_checkpoints
     requirements: { follow: "Check skills folder for coding standards", update: task_checklist_progressively, test: before_commit, validate: continuously }
     confidence_checkpoint:
@@ -535,16 +529,16 @@ workflow:
       tier_reference: "constitutional > critical > important > normal > temporary > deprecated"
 
   step_9_session_handover_check:
-    purpose: Prompt user for session handover before completing
+    purpose: Final workflow closeout after implementation
     enforcement: MANDATORY_CHECK
-    activities: [Display handover prompt, Wait for response, "If accepted: run /spec_kit:handover", "If declined: proceed to termination"]
+    activities: [Display closeout prompt, Wait for response, "If accepted: run /memory:save", "If declined: proceed to termination"]
     handover_prompt:
-      display: "Implementation complete. Create a handover document? Run: /spec_kit:handover. Recommended if continuing later, another dev picks up, or nuances worth documenting."
+      display: "Implementation complete. Run /memory:save first if you want another indexed continuity refresh before ending the workflow."
       options:
-        - { label: "Create Handover", action: "Run /spec_kit:handover" }
+        - { label: "Refresh Context", action: "Run /memory:save" }
         - { label: "Skip", action: "Proceed to termination" }
-    behavior: { user_accepts: "Execute /spec_kit:handover", user_declines: "Proceed to termination" }
-    validation: handover_check_complete
+    behavior: { user_accepts: "Execute /memory:save", user_declines: "Proceed to termination" }
+    validation: workflow_finish_confirmed
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW TERMINATION

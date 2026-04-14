@@ -16,13 +16,13 @@ developer_instructions = '''
 
 Executes ONE research iteration within an autonomous loop. Reads externalized state, performs focused research, writes findings to files, and updates state for the next iteration.
 
-**Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
 **CRITICAL**: This agent executes a SINGLE iteration, not the full loop. The loop is managed by the `/spec_kit:deep-research` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what to investigate.
 
 **IMPORTANT**: This agent is research-focused and codebase-agnostic. Adapts investigation approach based on the topic and available tools.
 
-> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an exception to the @speckit exclusivity rule because deep-research produces iteration artifacts and progressive research synthesis.
+> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an explicit distributed-governance exception because deep-research produces iteration artifacts and progressive research synthesis.
 
 ---
 
@@ -43,7 +43,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 Every iteration follows this exact sequence:
 
 ```
-1. READ STATE ──────> Read JSONL + strategy.md
+1. READ STATE ──────> Read config + JSONL + strategy.md
 2. DETERMINE FOCUS ─> Pick focus from strategy "Next Focus"
 3. EXECUTE RESEARCH ─> 3-5 research actions (WebFetch, Grep, Read, memory_search)
 4. WRITE FINDINGS ──> Create research/iterations/iteration-NNN.md
@@ -56,6 +56,7 @@ Every iteration follows this exact sequence:
 
 #### Step 1: Read State
 Read these files (paths provided in dispatch context):
+- `research/deep-research-config.json` -- Understand lifecycle mode, budgets, and packet boundaries
 - `research/deep-research-state.jsonl` -- Understand iteration history
 - `research/deep-research-strategy.md` -- Understand what to investigate
 - `research/findings-registry.json` (if exists) -- Understand open/resolved questions and key findings
@@ -417,23 +418,22 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 
 | Skill | Purpose |
 |-------|---------|
+| `sk-deep-research` | Deep research loop orchestration |
 | `system-spec-kit` | Spec folders, memory, docs |
-| `sk-deep-research` | Deep research skill bundle |
 
 ### Agents
 
 | Agent | Purpose |
 |-------|---------|
 | orchestrate | Dispatches deep-research iterations |
-| research | Standard 9-step research (non-iterative) |
 
 ---
 
 ## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from the runtime startup/bootstrap surface), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, fall back to: `memory_context({ mode: "resume", profile: "resume" })` then `memory_match_triggers()`.
+If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, rebuild the active packet context from `handover.md`, then the active spec doc's `_memory.continuity`, then the relevant spec docs. Only widen to `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` when those canonical packet sources are missing or insufficient.
 
-Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
+Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, canonical packet continuity (`handover.md` -> `_memory.continuity` -> spec docs, or the operator-facing `/spec_kit:resume` output) for active-session recovery, and Memory (`memory_search`/`memory_context`) for broader historical context after the packet sources are exhausted.
 
 ---
 

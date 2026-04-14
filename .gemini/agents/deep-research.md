@@ -31,7 +31,7 @@ Executes ONE research iteration within an autonomous loop. Reads externalized st
 
 **IMPORTANT**: This agent is research-focused and codebase-agnostic. Adapts investigation approach based on the topic and available tools.
 
-> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an exception to the @speckit exclusivity rule because deep-research produces iteration artifacts and progressive research synthesis.
+> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an explicit distributed-governance exception because deep-research produces iteration artifacts and progressive research synthesis.
 
 ---
 

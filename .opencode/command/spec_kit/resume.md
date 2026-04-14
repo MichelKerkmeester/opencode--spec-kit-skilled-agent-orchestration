@@ -406,7 +406,7 @@ Resume is a **utility workflow** — no parallel dispatch. All steps sequential.
 | `/spec_kit:complete`  | Start new (resume continues existing)                   |
 | `/spec_kit:plan`      | Create planning artifacts (if missing on resume)        |
 | `/spec_kit:implement` | Execute implementation (call after resume)              |
-| `/spec_kit:handover`  | Create handover doc (resume loads these)                |
+| `/memory:save`        | Refresh canonical continuity before pausing or resuming |
 | `/memory:search`     | Broader historical lookup and learning-history review   |
 
 ---
@@ -414,10 +414,10 @@ Resume is a **utility workflow** — no parallel dispatch. All steps sequential.
 ## 17. COMMAND CHAIN
 
 ```
-[/spec_kit:handover] → /spec_kit:resume → [Continue workflow]
+[/memory:save] → /spec_kit:resume → [Continue workflow]
 ```
 
-Prerequisite: `/spec_kit:handover [spec-folder-path]` (creates handover.md)
+Prerequisite: `/memory:save [spec-folder-path]` (refreshes the canonical continuity packet before a later resume)
 
 ---
 
@@ -428,8 +428,8 @@ Prerequisite: `/spec_kit:handover [spec-folder-path]` (creates handover.md)
 | Planning incomplete        | `/spec_kit:plan [feature-description]`   | Complete planning phase   |
 | Ready to implement         | `/spec_kit:implement [spec-folder-path]` | Continue implementation   |
 | Implementation in progress | Continue from last task                  | Resume where you left off |
-| Found issues               | `/spec_kit:debug [spec-folder-path]`     | Debug problems            |
+| Found issues               | `Task tool → @debug`                     | Fresh debugging pass after repeated failures |
 | Need broader history       | `/memory:search history [spec-folder]`  | Inspect learning history  |
-| Session ending again       | `/spec_kit:handover [spec-folder-path]`  | Save progress for later   |
+| Session ending again       | `/memory:save [spec-folder-path]`        | Refresh canonical continuity before pausing |
 
 **ALWAYS** end with: "What would you like to do next?"

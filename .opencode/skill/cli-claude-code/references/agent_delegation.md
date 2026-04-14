@@ -18,16 +18,15 @@ The calling AI decides WHAT to do, Claude Code decides HOW to do it within the d
 
 ### Purpose
 
-Documents the 9 specialized Claude Code agents in `.opencode/agent/` and how external AI assistants orchestrate them. The calling AI (Gemini, Codex, Copilot, etc.) acts as the **conductor** (planner, validator, integrator) while Claude Code executes targeted tasks through its agent system.
+Documents the active Claude Code agents in `.opencode/agent/` and how external AI assistants orchestrate them. The calling AI (Gemini, Codex, Copilot, etc.) acts as the **conductor** (planner, validator, integrator) while Claude Code executes targeted tasks through its agent system.
 
 ### When to Use
 
 - Delegating supplementary implementation or analysis tasks to Claude Code agents
 - Cross-AI code review or architectural second opinion via `@review`
 - Deep reasoning and extended thinking via `@ultra-think`
-- Fresh-perspective debugging after the calling AI's attempts fail via `@debug`
+- Fresh-perspective debugging after the calling AI's attempts fail via Task-tool dispatch to `@debug`
 - Codebase exploration in read-only mode via `@context`
-- Session handover and context preservation via `@handover`
 
 <!-- /ANCHOR:overview -->
 
@@ -94,11 +93,9 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 .opencode/agent/
 ├── context.md        # Read-only codebase exploration
 ├── debug.md          # Systematic debugging
-├── handover.md       # Session state capture
 ├── orchestrate.md    # Multi-agent coordination
 ├── research.md       # Evidence gathering
 ├── review.md         # Code review, security audits
-├── speckit.md        # Spec folder documentation
 ├── ultra-think.md    # Multi-strategy planning
 └── write.md          # Documentation generation
 ```
@@ -117,11 +114,9 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 |-------|-----------------|---------|----------|
 | `context` | `plan` (read-only) | Read-only codebase exploration, file discovery, pattern analysis | You need to understand code structure, dependencies, or patterns before implementing |
 | `debug` | default | Systematic debugging, root cause analysis, fresh perspective | Calling AI's debugging attempts failed; need independent root cause analysis |
-| `handover` | default | Session state capture, context preservation for continuation | Ending a multi-step workflow; need to preserve context for next session |
 | `orchestrate` | `plan` (read-only) | Multi-agent coordination, complex workflow decomposition | Running multiple Claude Code agents for interconnected tasks |
 | `research` | default | Evidence gathering, feasibility analysis, technical investigation | Need current best practices, technical comparisons, or feasibility assessment |
 | `review` | `plan` (read-only) | Code review, security audits, quality scoring, architecture review | Second opinion on generated code, architecture, or security posture |
-| `speckit` | default | Spec folder documentation generation (spec.md, plan.md, etc.) | Need structured documentation following the spec-kit framework |
 | `ultra-think` | `plan` (read-only) | Multi-strategy planning, diverse reasoning strategies, scored rubric | Complex planning requiring multiple perspectives scored by quality dimensions |
 | `write` | default | Documentation generation, README creation, guide writing | Creating or updating technical documentation, guides, READMEs |
 
@@ -181,24 +176,6 @@ claude -p "This test fails intermittently: [test name]. Analyze @[test file] and
 
 ---
 
-### @handover — Session Continuity
-
-**Purpose:** Capture session state, create continuation documents, preserve context for future sessions.
-
-**Best for:** Ending multi-step workflows, preserving context before session timeout, creating handoff documentation.
-
-```bash
-# Create handover document
-claude -p "Create a handover document for the current state of the auth module refactoring" \
-  --agent handover --output-format text 2>&1
-
-# Session state summary
-claude -p "Summarize the current state of all in-progress changes and next steps" \
-  --agent handover --output-format text 2>&1
-```
-
----
-
 ### @orchestrate — Multi-Agent Coordinator
 
 **Purpose:** Coordinate multiple Claude Code agents, decompose complex workflows, manage agent pipelines.
@@ -253,24 +230,6 @@ claude -p "Review the overall architecture of src/services/. Assess: coupling, c
 # Quality scoring
 claude -p "Score the code quality of @src/utils.ts on: readability (1-10), maintainability (1-10), test coverage potential (1-10), security (1-10)." \
   --agent review --permission-mode plan --output-format text 2>&1
-```
-
----
-
-### @speckit — Spec Documentation
-
-**Purpose:** Create structured specification documents following the spec-kit framework (spec.md, plan.md, tasks.md, checklist.md).
-
-**Best for:** Generating project documentation that follows a structured template system.
-
-```bash
-# Create spec folder
-claude -p "Create a Level 2 spec folder for the user authentication feature" \
-  --agent speckit --output-format text 2>&1
-
-# Generate implementation plan
-claude -p "Generate a detailed implementation plan for migrating to TypeScript" \
-  --agent speckit --output-format text 2>&1
 ```
 
 ---
@@ -334,9 +293,9 @@ REVIEW CODE          → @review (with --permission-mode plan)
 PLAN ARCHITECTURE    → @ultra-think (with --model claude-opus-4-6)
 RESEARCH A TOPIC     → @deep-research
 GENERATE DOCS        → @write
-CREATE SPEC DOCS     → @speckit
 COORDINATE AGENTS    → @orchestrate (with --permission-mode plan)
-PRESERVE SESSION     → @handover
+SPEC PACKET WORK     → Main agent + `/spec_kit:start` or `/spec_kit:plan`
+SAVE CONTINUITY      → `/memory:save`
 ```
 
 ### Model + Agent Combinations

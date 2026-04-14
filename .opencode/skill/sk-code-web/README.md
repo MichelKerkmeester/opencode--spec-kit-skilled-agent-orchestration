@@ -381,7 +381,7 @@ Complex performance issue: TBT is 800ms on mobile, LCP is 4.2s.
 
 **What you see:** Three or more debugging attempts have not resolved the bug.
 **Common causes:** The approach is targeting a symptom rather than the root cause, or the root cause is in a third-party library or Webflow-generated code.
-**Fix:** Stop making changes. Escalate via `/spec_kit:debug` to get a fresh perspective. Provide the full DevTools console output, the stack trace, and a description of all three failed attempts. If the root cause is in Webflow-generated code, escalate immediately since that code cannot be modified.
+**Fix:** Stop making changes. Dispatch `@debug` via the Task tool to get a fresh perspective. Provide the full DevTools console output, the stack trace, and a description of all three failed attempts. If the root cause is in Webflow-generated code, escalate immediately since that code cannot be modified.
 
 ---
 

@@ -361,7 +361,7 @@ Releases use a 4-part versioning scheme: `MAJOR.MINOR.SERIES.PATCH`
 | `1.2.5.x` | 1.2.5.0   | workflows-code--opencode Phase 17 alignment                                                                                     |
 | `1.3.0.x` | 1.3.0.0   | Agent fleet overhaul + @context                                                                                                 |
 | `1.3.1.x` | 1.3.1.0   | @context prompt compression                                                                                                     |
-| `1.3.2.x` | 1.3.2.0   | @speckit exclusivity + governance rules                                                                                         |
+| `1.3.2.x` | 1.3.2.0   | distributed-governance exclusivity + governance rules                                                                                         |
 | `1.3.3.x` | 1.3.3.0   | Claude Code subagents + orchestrate.md improvements                                                                             |
 | `2.0.0.x` | 2.0.0.0-7 | JS→TS migration, Spec Kit script automation, architectural refactoring                                                          |
 | `2.0.1.x` | 2.0.1.0-5 | Documentation alignment, security fixes & optimization (specs 008, 111-118)                                                     |

@@ -298,7 +298,7 @@ workflow:
       - Create folder: specs/[NNN]-[agent-name]/
     - IF spec_choice == A or C (Use existing):
       - Use selected spec_path
-    - "Dispatch @speckit for spec.md and plan.md creation (AGENTS.md Rule 5)"
+    - "Route spec.md and plan.md creation through distributed governance (AGENTS.md Rule 5)"
     agent_availability:
       agent_file: "[runtime_agent_path]/speckit.md"
       rule_reference: "AGENTS.md Rule 5 — spec folder docs"

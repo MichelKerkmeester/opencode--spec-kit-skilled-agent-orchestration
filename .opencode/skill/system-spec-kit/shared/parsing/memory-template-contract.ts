@@ -4,7 +4,9 @@
 
 const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
 const RAW_MUSTACHE_RE = /\{\{[^}]+\}\}/;
-const LEGACY_TEMPLATE_BANNER_RE = /^\s*<!-- TEMPLATE: context_template\.md v[0-9.]+ - DO NOT EDIT GENERATED FILES -->/m;
+// Deprecated legacy generated-memory banner detection retained for historical saves
+// created before the v3.4.0.0 template retirement.
+const LEGACY_TEMPLATE_BANNER_RE = /^\s*<!-- TEMPLATE:\s*[^\n]+ - DO NOT EDIT GENERATED FILES -->/m;
 const CONSTITUTIONAL_GUIDANCE_RE = /<!-- Constitutional Tier Promotion:/m;
 const FRONTMATTER_KEY_RE = /^([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)$/;
 

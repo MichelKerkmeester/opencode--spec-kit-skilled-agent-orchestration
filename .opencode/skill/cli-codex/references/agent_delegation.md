@@ -18,15 +18,14 @@ The calling AI decides WHAT to do, Codex CLI decides HOW to do it within the del
 
 ### Purpose
 
-Documents the 9 specialized Codex agents in `.codex/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Codex CLI executes targeted tasks through its agent system.
+Documents the active Codex agents in `.codex/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Codex CLI executes targeted tasks through its agent system.
 
 ### When to Use
 
 - Delegating supplementary implementation or analysis tasks to Codex CLI agents
 - Cross-AI code review or architectural second opinion
 - Web research via `--search` flag (`@deep-research`)
-- Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
-- Spec folder documentation generation (`@speckit`)
+- Fresh-perspective debugging after the calling AI's attempts fail (dispatch `@debug` via the Task tool)
 - Multi-agent Codex-side workflows (`@orchestrate`)
 
 <!-- /ANCHOR:overview -->
@@ -195,27 +194,6 @@ codex exec -p debug -s workspace-write \
 
 ---
 
-### @handover — Session Continuity
-
-| Property           | Value                                            |
-| ------------------ | ------------------------------------------------ |
-| **Role**           | Session state capture and continuation documents |
-| **Model**          | gpt-5.3-codex                                    |
-| **Sandbox Mode**   | workspace-write                                  |
-| **Modifies Files** | Yes (handover.md only)                           |
-
-**Best for:** Creating handover documents, capturing session state, enabling continuation across sessions.
-
-**Delegate when:** You need Codex to summarize its own session state or create continuation artifacts from a Codex-side workflow.
-
-```bash
-codex exec -p handover -s workspace-write \
-  "Create handover document for the authentication refactor in specs/042-auth-refactor/" \
-  --model gpt-5.3-codex
-```
-
----
-
 ### @orchestrate — Task Commander
 
 | Property           | Value                                           |
@@ -283,27 +261,6 @@ codex exec -p review \
 
 ---
 
-### @speckit — Spec Documentation Specialist
-
-| Property           | Value                                  |
-| ------------------ | -------------------------------------- |
-| **Role**           | Spec folder documentation (Level 1-3+) |
-| **Model**          | gpt-5.3-codex                          |
-| **Sandbox Mode**   | workspace-write                        |
-| **Modifies Files** | Yes (spec folder docs only)            |
-
-**Best for:** Creating spec folder documentation from templates (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md).
-
-**Delegate when:** You need Codex to create or update spec documentation following the CORE + ADDENDUM template architecture. Useful for parallel documentation generation.
-
-```bash
-codex exec -p speckit -s workspace-write \
-  "Create Level 2 spec folder documentation for the authentication refactor at specs/042-auth-refactor/" \
-  --model gpt-5.3-codex
-```
-
----
-
 ### @ultra-think — Multi-Strategy Planner
 
 | Property           | Value                                                |
@@ -359,9 +316,9 @@ codex exec -p write -s workspace-write \
 | Web/API research         | @deep-research (`--search`) | @write          | Live web browsing capability         |
 | Architecture planning    | @ultra-think           | @deep-research       | Multi-lens analysis, no file changes |
 | Bug investigation        | @debug                 | @context             | Fresh perspective methodology        |
-| Documentation generation | @write                 | @speckit             | Template-first, web-enrichable       |
-| Spec folder docs         | @speckit               | (none)               | Exclusive spec authority             |
-| Session state capture    | @handover              | (none)               | Continuation artifacts               |
+| Documentation generation | @write                 | (none)               | Non-spec documentation and guides    |
+| Spec folder docs         | Main agent + `/spec_kit:start` | `/spec_kit:plan` | Distributed governance for packet docs |
+| Session continuity       | `/memory:save`         | `/spec_kit:resume`   | Refresh continuity before pause      |
 | Complex multi-agent task | @orchestrate           | (decompose manually) | Codex-internal coordination          |
 
 <!-- /ANCHOR:routing-table -->

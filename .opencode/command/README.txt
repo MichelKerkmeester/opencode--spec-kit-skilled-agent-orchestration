@@ -45,7 +45,7 @@ Commands are organized into five groups:
 | **doctor** | `command/doctor/` | 2 | MCP server diagnostics, installation, and repair (mcp_debug, mcp_install) |
 | **improve** | `command/improve/` | 2 | Evaluate and improve AI agents and prompts with structured scoring |
 | **memory** | `command/memory/` | 4 | Memory system operations (search, save, learn, manage with shared lifecycle) |
-| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, deep-review, debug, handover, resume, complete) |
+| **spec_kit** | `command/spec_kit/` | 7 | Spec folder workflows (plan, implement, deep-research, deep-review, start, resume, complete) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -95,10 +95,8 @@ command/
 │   └── README.txt            # Memory command index
 └── spec_kit/                 # Spec folder workflow commands
     ├── complete.md           # Full end-to-end workflow
-    ├── debug.md              # Debug delegation
     ├── deep-research.md      # Iterative deep research workflow
     ├── deep-review.md        # Iterative code review workflow
-    ├── handover.md           # Session handover
     ├── implement.md          # Execute pre-planned work
     ├── plan.md               # Spec through plan only
     ├── resume.md             # Resume existing spec work
@@ -161,10 +159,9 @@ Structured workflows for the spec folder development lifecycle.
 | Command | Invocation | Purpose |
 |---------|------------|---------|
 | Complete | `/spec_kit:complete <description>` | Full end-to-end workflow (14+ steps) |
-| Debug | `/spec_kit:debug [spec-folder]` | Delegate debugging to specialized sub-agent |
 | Deep Research | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | Iterative technical investigation with convergence |
 | Deep Review | `/spec_kit:deep-review <target> [:auto\|:confirm]` | Iterative code review with severity-weighted findings |
-| Handover | `/spec_kit:handover [spec-folder]` | Create session handover for continuation |
+| Start | `/spec_kit:start [description] [:auto\|:confirm]` | Canonical intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
 | Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
 | Plan | `/spec_kit:plan <description> [:with-phases]` | Planning workflow (spec through plan only; `:with-phases` adds phase decomposition) |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
@@ -211,8 +208,7 @@ Structured workflows for the spec folder development lifecycle.
 # With research phase
 /spec_kit:complete "New feature" :with-research
 
-# With auto-debug on failure
-/spec_kit:complete "Fix auth" :auto-debug
+# With automatic debug recovery notes
 ```
 
 ### Agent Router
@@ -243,7 +239,6 @@ Each mode maps to a separate YAML workflow file in the command's `assets/` folde
 
 The `spec_kit:complete` command supports two additional modes:
 - `:with-research` adds a research phase before planning
-- `:auto-debug` enables automatic debug delegation on failure
 
 <!-- /ANCHOR:execution-modes -->
 

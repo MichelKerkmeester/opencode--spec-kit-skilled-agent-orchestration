@@ -204,7 +204,7 @@
     ],
     "causal_summary": "The ablation study (`eval_run_ablation`) produces all-zero retrieval metrics — Recall, MRR, Precision, NDCG, MAP, and Hit Rate are all 0.0 — because `ground-truth.json` references memory IDs (e.g., 32599, 22351, 22303, 7518, 7285) from a prior database snapshot. The current live database contains 411 parent memories with IDs in the range 266–25784; none of the stale IDs exist. The script referenced in code comments — `scripts/map-ground-truth-ids.ts` (cited in `ground-truth-generator.ts` line 101) — was never created.",
     "created_at": "2026-04-12T09:02:50.311Z",
-    "last_save_at": "2026-04-13T16:22:48.945Z",
+    "last_save_at": "2026-04-14T17:11:40.958Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

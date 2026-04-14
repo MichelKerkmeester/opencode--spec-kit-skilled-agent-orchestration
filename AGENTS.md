@@ -141,7 +141,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 | **Resume prior work**     | `/spec_kit:resume` → Rebuild context from `handover.md` → `_memory.continuity` → canonical spec docs → Review → Continue    |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed                                 |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
-| **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
+| **End session**           | `/memory:save` → `handover_state` routing updates `handover.md` → Provide continuation prompt                                      |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
@@ -298,12 +298,14 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@orchestrate`** - Multi-agent coordination, complex workflows
 - **`@write`** - Creating READMEs, Skills, Guides
 - **`@review`** - Code review, PRs, quality gates (READ-ONLY)
-- **`@speckit`** - Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: canonical continuity updates via `generate-context.js`, `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `review-report.md` (@deep-review), `debug-delegation.md` (@debug)
-- **`@debug`** - Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
-- **`@handover`** - Session continuation, context preservation. May write `handover.md` inside spec folders
+- **`@debug`** - Fresh perspective debugging, root cause analysis. Dispatch via Task tool when a dedicated debugging pass is needed; retains exclusive write access for `debug-delegation.md` inside spec folders
 - **`@deep-research`** - Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
 - **`@deep-review`** - Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 4 review dimensions. Dispatched by `/spec_kit:deep-review` command
 - **`@ultra-think`** - Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
+
+#### Distributed Governance Rule
+
+- Any agent writing spec folder docs (*.md) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. @deep-research retains exclusive write access for research/research.md; @debug retains exclusive write access for debug-delegation.md.
 
 ---
 

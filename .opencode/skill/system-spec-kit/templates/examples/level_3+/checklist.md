@@ -140,8 +140,6 @@ and formal sign-off sections. Use this for enterprise-scale changes. -->
   - **Evidence**: No temp files outside scratch/
 - [x] CHK-051 [P1] scratch/ cleaned before completion
   - **Evidence**: scratch/ folder empty
-- [x] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: Session context saved with key decisions
 - [x] CHK-053 [P1] All new files in appropriate directories
   - **Evidence**: auth/ for endpoints, utils/ for services
 
@@ -275,7 +273,7 @@ and formal sign-off sections. Use this for enterprise-scale changes. -->
 - [x] CHK-172 [P2] User-facing documentation updated
   - **Evidence**: Help center articles drafted
 - [x] CHK-173 [P2] Knowledge transfer documented
-  - **Evidence**: Session notes in memory/
+  - **Evidence**: `/memory:save` routed session state into `handover.md` and `implementation-summary.md`
 
 
 <!-- /ANCHOR:docs-verify -->

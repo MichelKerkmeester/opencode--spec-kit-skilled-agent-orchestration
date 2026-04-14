@@ -60,7 +60,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | Category                    | Count                | Details                                                                                         |
 | --------------------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
 | **MCP Tools**               | 47                   | Across 7 layers (L1-L7), including code graph, CocoIndex lifecycle, and session bootstrap tools |
-| **Commands**                | 12                   | 8 spec_kit + 4 memory                                                                           |
+| **Commands**                | 13                   | 9 spec_kit + 4 memory                                                                           |
 | **Documentation Levels**    | 4                    | Levels 1, 2, 3, 3+                                                                              |
 | **Feature Catalog Entries** | 291                  | Across 22 categories                                                                            |
 | **Search Channels**         | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree, plus CocoIndex for semantic code discovery       |
@@ -146,7 +146,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 042-my-feature
 # Files: spec.md, plan.md, tasks.md (Level 1 starters)
 ```
 
-The script sets up the folder, copies the right templates for the chosen level, initializes `description.json` and creates `memory/` and `scratch/` subdirectories.
+The script sets up the folder, copies the right templates for the chosen level, initializes `description.json`, and prepares the packet docs plus `scratch/` workspace. Continuity no longer writes to `[spec]/memory/*.md`; use `/memory:save` to route updates into canonical packet docs such as `implementation-summary.md`, `decision-record.md`, and `handover.md`.
 
 ### Save Context at the End of a Session
 
@@ -414,8 +414,6 @@ Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` opera
 | `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation, with smart `/spec_kit:start` delegation for `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade` packets |
 | `/spec_kit:implement`   | 9     | Execute pre-planned work. Requires existing `plan.md`; packet-aware targets also generate local changelog output during closeout |
 | `/spec_kit:resume`      | 4     | Resume a previous session on an existing spec folder                                                                             |
-| `/spec_kit:handover`    | 4     | Create a session handover document for the next AI                                                                               |
-| `/spec_kit:debug`       | 5     | Delegate debugging to a specialized sub-agent with fresh perspective                                                             |
 | `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection plus bounded `spec.md` anchoring under [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md) |
 | `/spec_kit:deep-review` | N/A   | Autonomous code review loop with convergence detection                                                                           |
 
@@ -427,7 +425,6 @@ Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` opera
 | `:confirm`       | Pause at each step for approval                                                                       |
 | `:with-phases`   | Phase decomposition mode on planning / completion flows, not a standalone command                     |
 | `:with-research` | Dispatch deep research before verification (`/spec_kit:complete` only)                               |
-| `:auto-debug`    | Auto-dispatch debug agent on 3+ failures (`/spec_kit:complete` only)                                 |
 
 **Command source files**: `.opencode/command/spec_kit/`
 
@@ -499,7 +496,6 @@ After editing core or addendum templates, run `templates/compose.sh` to regenera
 
 | Template                      | Purpose                                                         |
 | ----------------------------- | --------------------------------------------------------------- |
-| `context_template.md` (~26K)  | Memory context template with standard ANCHOR sections           |
 | `research/research.md` (~20K) | Deep research template for autonomous investigation             |
 | `handover.md`                 | Session continuity template for handing off to the next AI      |
 | `debug-delegation.md`         | Debug delegation template for fresh-perspective troubleshooting |
@@ -572,7 +568,6 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
 │   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
 │   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
-│   ├── context_template.md     # Memory context template (~26K)
 │   ├── research/research.md             # Deep research template (~20K)
 │   ├── handover.md             # Session continuity template
 │   └── debug-delegation.md     # Debug delegation template
@@ -627,6 +622,8 @@ The **spec folder workflow** is the filing system. Every time you modify files, 
 The **memory system** is the librarian. When a session ends, `generate-context.js` updates the packet's canonical continuity surfaces so the next session can recover from packet-local sources first. The MCP server indexes those packet docs into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `/spec_kit:resume` rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs. If you need deeper retrieval after that, `session_bootstrap()` bundles resume context, health, and structural readiness into one follow-up recovery call before broader `memory_context` work begins.
 
 The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:start` owns canonical intake, `/spec_kit:plan` and `/spec_kit:complete` reuse that intake inline when `folder_state` requires delegation, and `/spec_kit:deep-research` anchors research to `spec.md` through [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md). `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
+
+The common packet lifecycle is now spec-first: `/spec_kit:start` establishes the canonical trio, `/spec_kit:deep-research` can enrich that packet under the bounded `spec_check_protocol.md` rules, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder without reopening intake unless `folder_state` still requires repair.
 
 ```text
 Session starts

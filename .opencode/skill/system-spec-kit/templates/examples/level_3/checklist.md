@@ -115,8 +115,6 @@ and deployment readiness sections added to the Level 2 base. -->
   - **Evidence**: No temp files outside scratch/
 - [x] CHK-051 [P1] scratch/ cleaned before completion
   - **Evidence**: scratch/ folder empty
-- [x] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: Session context saved with key decisions
 
 
 <!-- /ANCHOR:file-org -->

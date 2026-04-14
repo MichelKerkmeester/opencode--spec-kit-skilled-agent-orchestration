@@ -1258,19 +1258,6 @@ export function buildManagedFrontmatter(
     ? normalizeContextType(existingContextValue)
     : null;
 
-  if (
-    classification.kind === 'template' &&
-    classification.fileName === 'context_template.md'
-  ) {
-    return frontmatterForContextTemplate(
-      classification,
-      existingDescription,
-      existingTriggers,
-      existingTier,
-      existingContext
-    );
-  }
-
   const titleBase = inferTitleBase(content, existingTitle, classification);
   const title = truncateWithSuffix(titleBase, classification.suffix, maxTitleLength);
 

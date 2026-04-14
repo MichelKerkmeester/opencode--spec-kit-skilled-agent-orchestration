@@ -5,7 +5,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. DIRECTORY SETUP
 // ───────────────────────────────────────────────────────────────
-// Creates and configures spec folder directory structure with memory subdirectories
+// Validates that the target spec folder exists and is usable
 
 // Node stdlib
 import * as fs from 'fs/promises';
@@ -19,7 +19,7 @@ import { CONFIG, findActiveSpecsDir, getSpecsDirectories, SPEC_FOLDER_PATTERN } 
    1. DIRECTORY SETUP
 ------------------------------------------------------------------*/
 
-async function setupContextDirectory(specFolder: string): Promise<string> {
+async function ensureSpecFolderExists(specFolder: string): Promise<string> {
   let sanitizedPath: string;
   try {
     sanitizedPath = sanitizePath(specFolder, getSpecsDirectories());
@@ -82,28 +82,7 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
     throw err;
   }
 
-  const contextDir: string = path.join(sanitizedPath, 'memory');
-
-  try {
-    await fs.mkdir(contextDir, { recursive: true });
-  } catch (mkdirError: unknown) {
-    const nodeErr = mkdirError instanceof Error ? (mkdirError as NodeJS.ErrnoException) : undefined;
-    structuredLog('error', 'Failed to create memory directory', {
-      contextDir,
-      error: nodeErr?.message ?? String(mkdirError),
-      code: nodeErr?.code
-    });
-
-    let errorMsg = `Failed to create memory directory: ${contextDir}`;
-    if (nodeErr?.code === 'EACCES') {
-      errorMsg += ' (Permission denied. Check directory permissions.)';
-    } else if (nodeErr?.code === 'ENOSPC') {
-      errorMsg += ' (No space left on device.)';
-    }
-    throw new Error(errorMsg);
-  }
-
-  return contextDir;
+  return sanitizedPath;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -111,5 +90,5 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
 ------------------------------------------------------------------*/
 
 export {
-  setupContextDirectory,
+  ensureSpecFolderExists,
 };

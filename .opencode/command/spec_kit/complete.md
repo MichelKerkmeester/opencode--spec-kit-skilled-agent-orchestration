@@ -1,6 +1,6 @@
 ---
-description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, :with-phases, and :auto-debug modes
-argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:with-phases] [:auto-debug] [--phases N] [--phase-names list] [--phase-folder=<path>]"
+description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, and :with-phases modes
+argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:with-phases] [--phases N] [--phase-names list] [--phase-folder=<path>]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
@@ -12,7 +12,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_k
 >
 > **YOUR FIRST ACTION:**
 > 1. Determine execution mode from user input (`:auto` or `:confirm`)
->    Note: :with-research, :with-phases, and :auto-debug are feature flags, not execution modes. They modify the :auto or :confirm workflow but do not change the base execution mode.
+>    Note: :with-research and :with-phases are feature flags, not execution modes. They modify the :auto or :confirm workflow but do not change the base execution mode.
 > 2. Load the corresponding YAML file from `assets/`:
 >    - Auto mode → `spec_kit_complete_auto.yaml`
 >    - Confirm mode → `spec_kit_complete_confirm.yaml`
@@ -22,10 +22,9 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_k
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@review`, `@debug`, `@handover`, `@speckit`, `@context`, `@deep-research`) from this document
+- **DO NOT** dispatch any agent (`@review`, `@debug`, `@context`, `@deep-research`) from this document
 - **DO NOT** dispatch `@review` to review this workflow or command prompt
-- **DO NOT** dispatch `@handover` unless the user explicitly requests it at the final step (Step 14)
-- **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 10)
+- **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 10) and the workflow has already prepared a diagnostic summary for the Task-tool handoff
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
 
@@ -56,7 +55,6 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    ├─ ":with-phases" present → phase_decomposition = TRUE (omit Q6)
    │   Parse additional flags: --phases N (default 3), --phase-names "a,b,c" (optional)
    │   Include Q7 (Phase Count) and Q8 (Phase Names) if not provided via flags
-   ├─ ":auto-debug" present → auto_debug = TRUE
    └─ None of above → respective flag = FALSE; phase_decomposition = "ASK" (include Q6)
 
 1b. CHECK --phase-folder flag:
@@ -244,7 +242,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | 11.5 | **POSTFLIGHT Capture** | Capture learning delta | postflight_delta |
 | 12 | Completion | Generate summary (MANDATORY L2+) | implementation-summary.md |
 | 13 | Save Context | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
-| 14 | Handover Check | Offer handover before completion | User prompted |
+| 14 | Workflow Finish | Close the workflow after the final continuity check | workflow_closed |
 
 ### Packet Graph Metadata
 
@@ -260,8 +258,6 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | `:confirm` | `/spec_kit:complete :confirm "feature"` | Pause at each step for approval |
 | `:with-research` | `/spec_kit:complete :with-research "feature"` | Insert research phase after Step 2 (before specification) |
 | `:with-phases` | `/spec_kit:complete :with-phases "feature"` | Insert phase decomposition before Step 1, then complete first child |
-| `:auto-debug` | `/spec_kit:complete :auto-debug "feature"` | Auto-delegate to debug agent on 3+ failures |
-| (combined) | `/spec_kit:complete :auto :with-research :with-phases :auto-debug` | All options combined |
 | (default) | `/spec_kit:complete "feature"` | Ask user to choose mode during setup |
 
 ---
@@ -325,7 +321,7 @@ When `:with-phases` flag present:
 | 11.5 | **POSTFLIGHT Capture** | postflight_delta | Learning delta calculated |
 | 12 | Completion | `implementation-summary.md` + nested changelog when applicable | **Summary file created (MANDATORY Level 1+)** |
 | 13 | Save Context | canonical spec doc refreshed | Context preserved without changing the canonical resume path |
-| 14 | Handover Check | User prompted | Handover offered before completion |
+| 14 | Workflow Finish | workflow_closed | Final continuity state confirmed |
 
 ### Step Requirements
 
@@ -348,7 +344,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity update in canonical spec docss directly; the script refreshes the indexed canonical spec document and the packet's `graph-metadata.json` while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
 
-**Step 14 (Session Handover Check):** Display handover prompt offering `/spec_kit:handover`. Recommended if: continuing later, another dev may pick up, implementation has nuances. Wait for user response before marking workflow complete.
+**Step 14 (Workflow Finish):** Present the final closeout checkpoint. If the user wants to pause or refresh continuity again, use `/memory:save` before marking the workflow complete.
 
 ---
 
@@ -357,10 +353,8 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 Track failure_count per task during Step 10 (reset for each task in tasks.md):
 
 IF failure_count >= 3:
-- IF `:auto-debug` flag -> AUTO dispatch debug sub-agent
-- ELSE -> Suggest: A) Dispatch debug agent B) Continue manually (reset count) C) Skip task D) Pause workflow
-
-IF debug triggered: Store current_task_id, execute debug workflow (5 steps) via Task tool, display checkpoint (root cause, fix status, progress). User responds: Y (retry) / n (pause) / review (debug findings).
+- Escalate to the user with a diagnostic summary (error, affected files, attempted fixes, current_task_id)
+- User may manually dispatch `@debug` via Task tool, continue manually, skip the task, or pause
 
 ---
 
@@ -496,7 +490,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 |-------|--------|
 | Missing feature description | Re-prompt user |
 | Planning gate fails (<70) | Return to incomplete step, complete it |
-| 3+ implementation failures | :auto-debug -> debug agent; else suggest to user |
+| 3+ implementation failures | Escalate to the user with diagnostics; user may manually dispatch `@debug` via Task tool |
 | Review agent P0 FAIL | BLOCK completion; user must fix |
 | Agent unavailable | Fall back to `general` with warning |
 | Validation errors (exit 2) | Fix before proceeding |
@@ -509,8 +503,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 - **Standard**: `/spec_kit:complete "feature"` -- 14 steps
 - **With Research**: `/spec_kit:complete "feature" :with-research` -- Research + 14 steps
 - **With Phases**: `/spec_kit:complete "feature" :with-phases --phases 3` -- Phase decomposition + 14 steps on first child
-- **Auto-Debug**: `/spec_kit:complete "feature" :auto-debug` -- 14 steps with auto debug
-- **Full Options**: `/spec_kit:complete "feature" :auto :with-research :with-phases :auto-debug`
+- **Full Options**: `/spec_kit:complete "feature" :auto :with-research :with-phases`
 - **Split workflows**: `/spec_kit:deep-research` -> `/spec_kit:plan [:with-phases]` -> `/spec_kit:implement`
 
 ---
@@ -521,8 +514,8 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 |-----------|-------------------|--------|
 | Implementation complete | Verify in browser | Test functionality |
 | Need to refresh search support | `/memory:save [spec-folder-path]` | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
-| Ending session | `/spec_kit:handover [spec-folder-path]` | Create continuation doc |
-| Found bugs | `/spec_kit:debug [spec-folder-path]` | Delegate debugging |
+| Ending session | `/memory:save [spec-folder-path]` | Refresh canonical continuity before pausing |
+| Found bugs | `Task tool → @debug` | Dispatch a focused debugging pass after user escalation |
 | Ready for next feature | `/spec_kit:complete [feature-description]` | Start new workflow |
 | Need crash recovery | `/spec_kit:resume` | Session recovery and continuation |
 | Record constitutional rule | `/memory:learn [rule]` | Save a durable repo-wide rule |

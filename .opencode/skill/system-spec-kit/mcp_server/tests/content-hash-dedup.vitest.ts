@@ -23,6 +23,10 @@ function sha256(content: string): string {
   return crypto.createHash('sha256').update(content, 'utf-8').digest('hex');
 }
 
+function artifactPath(specFolder: string, fileName: string): string {
+  return path.posix.join('/', specFolder, fileName);
+}
+
 /**
  * Create a minimal in-memory DB with the memory_index schema
  * needed for the content-hash dedup check.
@@ -149,7 +153,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
     it('T054-2: Returns undefined when spec_folder does not match', () => {
       const content = 'Unique content for T054-2 test case';
       const hash = sha256(content);
-      insertIndexedMemory(db, 'specs/other-folder', '/path/to/memory/file.md', content);
+      insertIndexedMemory(db, 'specs/other-folder', '/path/to/other-file.md', content);
 
       const result = checkContentHashDedup(db, buildParsedMemory('specs/test-folder', content), false, []);
       expect(result).toBeNull();
@@ -163,7 +167,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const originalId = insertIndexedMemory(
         db,
         'specs/dedup-test',
-        '/specs/dedup-test/memory/original.md',
+        artifactPath('specs/dedup-test', 'implementation-summary.md'),
         content,
         'Original Memory'
       );
@@ -174,7 +178,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       expect(result).not.toBeNull();
       expect(result!.id).toBe(originalId);
       expect(result!.status).toBe('duplicate');
-      expect(result!.message).toContain('/specs/dedup-test/memory/original.md');
+      expect(result!.message).toContain(artifactPath('specs/dedup-test', 'implementation-summary.md'));
     });
 
     it('T054-4: Changing 1 character produces a different hash — dedup does NOT trigger', () => {
@@ -191,7 +195,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       insertIndexedMemory(
         db,
         'specs/changed-content',
-        '/specs/changed-content/memory/doc.md',
+        artifactPath('specs/changed-content', 'plan.md'),
         originalContent
       );
 
@@ -208,7 +212,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       db.prepare(`
         INSERT INTO memory_index (spec_folder, file_path, content_hash, embedding_status)
         VALUES (?, ?, ?, 'pending')
-      `).run('specs/pending-test', '/specs/pending-test/memory/pending.md', hash);
+      `).run('specs/pending-test', artifactPath('specs/pending-test', 'tasks.md'), hash);
 
       const result = checkContentHashDedup(db, buildParsedMemory('specs/pending-test', content), false, []);
       expect(result).toBeNull();
@@ -235,7 +239,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       insertIndexedMemory(
         db,
         folder,
-        '/specs/governed-dedup/memory/tenant-a.md',
+        artifactPath('specs/governed-dedup', 'implementation-summary.md'),
         content,
         'Tenant A',
         'success',
@@ -260,7 +264,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const insertedId = insertIndexedMemory(
         db,
         folder,
-        '/specs/governed-dedup-match/memory/tenant-a.md',
+        artifactPath('specs/governed-dedup-match', 'implementation-summary.md'),
         content,
         'Tenant A',
         'success',
@@ -286,7 +290,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const insertedId = insertIndexedMemory(
         db,
         folder,
-        '/specs/partial-parent/memory/chunked.md',
+        artifactPath('specs/partial-parent', 'implementation-summary.md'),
         content,
         'Chunked Parent',
         'partial'
@@ -304,7 +308,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       insertIndexedMemory(
         db,
         folder,
-        '/specs/invalid-complete-status/memory/legacy.md',
+        artifactPath('specs/invalid-complete-status', 'implementation-summary.md'),
         content,
         'Legacy Complete',
         'complete'
@@ -360,8 +364,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       checkExistingRow(
         dbSpy,
         buildParsedMemory('specs/sql-shape', 'content', 'SQL Shape'),
-        '/specs/sql-shape/memory/canonical.md',
-        '/specs/sql-shape/memory/file.md',
+        artifactPath('specs/sql-shape', 'implementation-summary.md'),
+        artifactPath('specs/sql-shape', 'plan.md'),
         false,
         [],
         { tenantId: 'tenant-a' },
@@ -403,7 +407,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6d: Same-path unchanged does not short-circuit failed embeddings', () => {
       const content = 'Existing failed embedding should not be treated as unchanged.';
-      const filePath = '/specs/failed-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/failed-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
@@ -424,7 +428,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6e: Same-path unchanged still short-circuits partial parents', () => {
       const content = 'Existing partial parent remains unchanged-eligible.';
-      const filePath = '/specs/partial-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/partial-same-path', 'implementation-summary.md');
       const inserted = db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
@@ -446,7 +450,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6f: Same-path unchanged does not short-circuit when trigger phrases changed', () => {
       const content = 'Existing same-path row with stale trigger phrases.';
-      const filePath = '/specs/metadata-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/metadata-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags, parent_id
@@ -476,7 +480,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6g: Same-path metadata drift is not reclassified as folder duplicate', () => {
       const content = 'Existing same-path row with stale trigger phrases.';
-      const filePath = '/specs/metadata-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/metadata-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags, parent_id
@@ -508,7 +512,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T079-1: Force saves skip same-path content-hash dedup rejection', () => {
       const content = 'Intentional same-path force save should not be rejected as duplicate.';
-      const filePath = '/specs/forced-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/forced-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
@@ -534,8 +538,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6h: Cross-path duplicates remain detectable when legacy rows have NULL canonical_file_path', () => {
       const content = 'Legacy rows with null canonical paths must still dedup across paths.';
-      const originalFilePath = '/specs/legacy-null-canonical/memory/original.md';
-      const incomingFilePath = '/specs/legacy-null-canonical/memory/incoming.md';
+      const originalFilePath = artifactPath('specs/legacy-null-canonical', 'implementation-summary.md');
+      const incomingFilePath = artifactPath('specs/legacy-null-canonical', 'handover.md');
       const inserted = db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
@@ -562,7 +566,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6i: Same-path exclusion stays effective for legacy rows with NULL canonical_file_path', () => {
       const content = 'Same-path legacy rows with null canonical paths should still be excluded.';
-      const filePath = '/specs/legacy-null-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/legacy-null-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
@@ -587,7 +591,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6j: Same-path unchanged ignores matching content in another tenant scope', () => {
       const content = 'Same-path unchanged must remain tenant-scoped.';
-      const filePath = '/specs/governed-same-path/memory/doc.md';
+      const filePath = artifactPath('specs/governed-same-path', 'implementation-summary.md');
       db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, tenant_id, parent_id
@@ -616,7 +620,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
     it('T054-6k: Same-path predecessor lookup stays inside the current governance scope', () => {
       const content = 'Append-first predecessor lookup must not cross tenants.';
-      const filePath = '/specs/governed-predecessor/memory/doc.md';
+      const filePath = artifactPath('specs/governed-predecessor', 'implementation-summary.md');
       const tenantAId = db.prepare(`
         INSERT INTO memory_index (
           spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, tenant_id, parent_id
@@ -694,7 +698,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const insertedId = insertIndexedMemory(
         db,
         folder,
-        '/specs/shape-test/memory/shape.md',
+        artifactPath('specs/shape-test', 'implementation-summary.md'),
         content,
         'Shape Test Title'
       );
@@ -703,7 +707,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       expect(result).not.toBeNull();
       expect(result).toHaveProperty('id', insertedId);
       expect(result).toHaveProperty('status', 'duplicate');
-      expect(result!.message).toContain('/specs/shape-test/memory/shape.md');
+      expect(result!.message).toContain(artifactPath('specs/shape-test', 'implementation-summary.md'));
       expect(result).toHaveProperty('title', 'Shape Test Title');
     });
 
@@ -716,7 +720,7 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       db.prepare(`
         INSERT INTO memory_index (spec_folder, file_path, content_hash, embedding_status)
         VALUES (?, ?, ?, 'success')
-      `).run(folder, '/specs/null-title-test/memory/notitle.md', hash);
+      `).run(folder, artifactPath('specs/null-title-test', 'implementation-summary.md'), hash);
 
       const result = checkContentHashDedup(db, buildParsedMemory(folder, content, null), false, []);
       expect(result).not.toBeNull();

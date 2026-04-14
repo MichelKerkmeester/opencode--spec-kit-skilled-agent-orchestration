@@ -3896,11 +3896,11 @@ See [`16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](16--too
 
 #### Description
 
-Template compliance contract enforcement is a 3-layer defense-in-depth system that helps spec folder documents pass structural validation on first write. It gives `@speckit` agents the exact required structure before they write, validates immediately after write, and backs that with section-depth minimums so thin documents do not slip through on headings alone.
+Template compliance contract enforcement is a 3-layer defense-in-depth system that helps spec folder documents pass structural validation on first write. It gives `distributed-governance spec authoring` agents the exact required structure before they write, validates immediately after write, and backs that with section-depth minimums so thin documents do not slip through on headings alone.
 
 #### Current Reality
 
-The canonical structural contract lives in `references/validation/template_compliance_contract.md`. A compact anchor-to-H2 contract is embedded in all five CLI `@speckit` agent definitions so each runtime knows the required section order, anchors, and minimum structure before writing spec folder markdown.
+The canonical structural contract lives in `references/validation/template_compliance_contract.md`. A compact anchor-to-H2 contract is embedded in all five CLI spec-authoring runtime definitions so each runtime knows the required section order, anchors, and minimum structure before writing spec folder markdown.
 
 After any spec folder `.md` write, the workflow runs `validate.sh --strict` against the spec folder. Exit code `2` flags concrete violations for repair, while the contract's section-count minimums provide a third safeguard against documents that are structurally valid but not substantive enough for their level.
 

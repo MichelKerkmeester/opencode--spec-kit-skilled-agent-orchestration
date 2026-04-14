@@ -77,7 +77,6 @@ specs/008-fix-button-alignment/
 ├── spec.md      # Problem description, acceptance criteria
 ├── plan.md      # CSS changes needed
 ├── tasks.md     # [ ] Update button.css, [ ] Test in browsers
-├── memory/      # (empty until context save)
 └── scratch/     # (empty)
 ```
 
@@ -133,7 +132,6 @@ specs/009-notification-system/
 ├── plan.md        # Implementation approach, component breakdown
 ├── tasks.md       # Granular task list with priorities
 ├── checklist.md   # QA validation checklist
-├── memory/        # Context preservation for multi-session work
 └── scratch/       # Debug logs, test scripts
 ```
 
@@ -143,7 +141,7 @@ specs/009-notification-system/
 |--------|----------|
 | Two-Phase | Separating plan and implement allows review |
 | Checklist | Level 2 adds checklist.md for QA validation |
-| Multi-Session | memory/ folder enables context preservation |
+| Multi-Session | `/memory:save` routes continuity into packet docs for later recovery |
 | Priority Tags | P0/P1/P2 in checklist.md guide completion order |
 
 ---
@@ -211,7 +209,6 @@ specs/010-graphql-migration/
 ├── tasks.md           # Detailed task breakdown
 ├── checklist.md       # QA and rollback validation
 ├── decision-record.md # ADR documenting rationale
-├── memory/            # Session context, blockers, decisions
 └── scratch/           # Migration scripts, test queries
 ```
 
@@ -274,7 +271,7 @@ AI: Loading context for specs/009-notification-system/
 
 | File | Purpose |
 |------|---------|
-| `memory/handover.md` | Session state snapshot |
+| `handover.md` | Session state snapshot in the packet root |
 | `checklist.md` | Progress tracking (6/10 items) |
 | `tasks.md` | Next action identification |
 
@@ -282,7 +279,7 @@ AI: Loading context for specs/009-notification-system/
 
 | Aspect | Learning |
 |--------|----------|
-| Handover Files | Created via `/spec_kit:handover` before session end |
+| Handover Files | Maintained through `/memory:save` and packet continuity refreshes before session end |
 | Progress Tracking | Checklist shows completion percentage |
 | Blocker Awareness | Resume surfaces any documented blockers |
 | Seamless Continuation | No need to re-explain context |
@@ -309,7 +306,7 @@ AI: Loading context for specs/009-notification-system/
 | `/spec_kit:plan` | Planning phase only |
 | `/spec_kit:implement` | Implementation with existing plan |
 | `/spec_kit:resume` | Continue from previous session |
-| `/spec_kit:handover` | Save context before ending session |
+| `/memory:save` | Save context before ending session |
 
 ### Level Selection Guide
 

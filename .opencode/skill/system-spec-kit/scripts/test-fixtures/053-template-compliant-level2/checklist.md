@@ -82,7 +82,6 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: no temp files committed]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: no scratch artifacts]
-- [ ] CHK-052 [P2] Findings saved to memory/ [DEFERRED: Fixture-only test]
 <!-- /ANCHOR:file-org -->
 
 ---

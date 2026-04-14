@@ -675,7 +675,7 @@ workflow:
     next_steps:
       - "/spec_kit:plan [feature-description]"
       - "/spec_kit:deep-research [new-topic] (for related deep research)"
-      - "/spec_kit:handover {spec_folder} (prepare the canonical resume packet for the next session)"
+      - "/memory:save {spec_folder} (refresh canonical continuity before the next session)"
 
 # ─────────────────────────────────────────────────────────────────
 # ERROR RECOVERY

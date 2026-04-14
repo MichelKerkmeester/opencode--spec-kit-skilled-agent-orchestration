@@ -18,7 +18,7 @@ import {
   validateContentAlignment,
   validateFolderAlignment,
 } from './alignment-validator';
-import { setupContextDirectory } from './directory-setup';
+import { ensureSpecFolderExists } from './directory-setup';
 import {
   buildNestedChangelogData,
   generateNestedChangelogMarkdown,
@@ -33,7 +33,8 @@ export {
   ALIGNMENT_CONFIG,
   detectSpecFolder,
   filterArchiveFolders,
-  setupContextDirectory,
+  ensureSpecFolderExists,
+  ensureSpecFolderExists as setupContextDirectory,
   extractConversationTopics,
   extractObservationKeywords,
   calculateAlignmentScore,

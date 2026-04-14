@@ -85,7 +85,6 @@ contextType: "general"
 
 - [ ] CHK-050 [P1] Temp files in scratch/ only
 - [ ] CHK-051 [P1] scratch/ cleaned before completion
-- [ ] CHK-052 [P2] Findings saved to memory/
 <!-- /ANCHOR:file-org -->
 
 ---

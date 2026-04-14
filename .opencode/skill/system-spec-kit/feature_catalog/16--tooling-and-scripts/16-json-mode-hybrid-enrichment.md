@@ -144,7 +144,6 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | `scripts/extractors/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
 | `scripts/lib/validate-memory-quality.ts` | V13 YAML parsing and memory-quality validation |
 | `scripts/renderers/template-renderer.ts` | Optional-placeholder handling for compact tool/exchange sections |
-| `templates/context_template.md` | Compact `toolCalls` and `exchanges` template sections |
 | `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
 | `mcp_server/lib/providers/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
 | `mcp_server/handlers/memory-crud-health.ts` | `embeddingRetry` block in `memory_health` MCP response |

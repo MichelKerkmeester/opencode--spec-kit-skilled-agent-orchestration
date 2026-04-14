@@ -732,8 +732,8 @@ Some templates are not level-specific but can be used at any documentation level
 
 | Template | Purpose | When to Use | Created By |
 |----------|---------|-------------|------------|
-| `handover.md` | Session context transfer | End of work session requiring handoff | `/spec_kit:handover` command |
-| `debug-delegation.md` | Debug task delegation | When stuck debugging (3+ failed attempts) | `/spec_kit:debug` command |
+| `handover.md` | Session context transfer | End of work session requiring handoff | Main-agent narrative with `/memory:save` handover_state routing |
+| `debug-delegation.md` | Debug task delegation | When stuck debugging (3+ failed attempts) | Task tool -> `@debug` |
 
 **Template Sources:**
 - `.opencode/skill/system-spec-kit/templates/handover.md`

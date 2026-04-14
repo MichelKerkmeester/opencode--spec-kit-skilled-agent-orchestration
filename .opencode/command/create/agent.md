@@ -208,7 +208,7 @@ The YAML contains: detailed step activities, checkpoints, confidence scoring, er
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@context`, `@speckit`) from this document
+- **DO NOT** dispatch any agent (`@context`, `spec authoring`) from this document
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: run Phase 0, then Setup Phase, then load the YAML file
 

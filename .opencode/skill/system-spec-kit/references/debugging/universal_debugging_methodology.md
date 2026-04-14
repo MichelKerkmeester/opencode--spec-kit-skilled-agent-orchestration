@@ -19,7 +19,7 @@ Provides a universal debugging methodology that works across all technology stac
 ### When to Use
 
 - Debugging any code issue (frontend, backend, infrastructure)
-- When `/spec_kit:debug` is invoked
+- When `@debug` is dispatched via the Task tool
 - After 3+ failed fix attempts on the same error
 - When systematic debugging approach is needed
 
@@ -140,7 +140,7 @@ After any debugging session:
 <!-- ANCHOR:when-to-escalate -->
 ## 5. WHEN TO ESCALATE
 
-Escalate (use `/spec_kit:debug` delegation) when:
+Escalate (dispatch `@debug` via the Task tool) when:
 - Same error persists after 3+ fix attempts
 - Need fresh perspective on complex issue
 - Stuck in a debugging loop
@@ -176,7 +176,7 @@ The methodology stays the same: **Observe → Analyze → Hypothesize → Fix**.
 
 | Command | Purpose |
 |---------|---------|
-| `/spec_kit:debug` | Delegate debugging to sub-agent with full context |
+| `Task tool -> @debug` | Delegate debugging to the fresh-perspective specialist with full context |
 
 ### Templates
 

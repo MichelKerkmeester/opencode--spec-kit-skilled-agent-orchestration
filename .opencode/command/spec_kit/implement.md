@@ -19,9 +19,8 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@review`, `@debug`, `@handover`, `@speckit`) from this document
+- **DO NOT** dispatch any agent (`@review`, `@debug`) from this document
 - **DO NOT** dispatch `@review` to review this workflow or command prompt
-- **DO NOT** dispatch `@handover` unless the user explicitly requests it at the final step (Step 9)
 - **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 6)
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
@@ -150,14 +149,14 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run the 9-step implementation workflow: plan review, task breakdown, quality validation, development, completion summary, and handover check. Picks up where `/spec_kit:plan` left off.
+Run the 9-step implementation workflow: plan review, task breakdown, quality validation, development, completion summary, and workflow closeout. Picks up where `/spec_kit:plan` left off.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` -- Spec folder path (REQUIRED) with optional parameters
-**Outputs:** Completed implementation + implementation-summary.md + nested changelog when applicable + optional handover.md + `STATUS=<OK|FAIL|CANCELLED>`
+**Outputs:** Completed implementation + implementation-summary.md + nested changelog when applicable + `STATUS=<OK|FAIL|CANCELLED>`
 
 ### Prerequisites
 
@@ -173,16 +172,16 @@ Missing prerequisites -> guide user to `/spec_kit:plan` first.
 | Step | Name                   | Purpose                                       | Outputs                   |
 | ---- | ---------------------- | --------------------------------------------- | ------------------------- |
 | 1    | Review Plan & Spec     | Understand requirements                       | requirements_summary      |
-| 2    | Task Breakdown         | Create/validate tasks.md (via @speckit)        | tasks.md                  |
+| 2    | Task Breakdown         | Create/validate tasks.md with template compliance | tasks.md                  |
 | 3    | Analysis               | Verify consistency                            | consistency_report        |
 | 4    | Quality Checklist      | Validate checklists (used at completion)      | checklist_status          |
 | 5    | Implementation Check   | Verify prerequisites                          | greenlight                |
 | 5.5  | PREFLIGHT Capture      | Epistemic baseline for learning measurement   | preflight_baseline        |
 | 6    | Development            | Execute implementation                        | code changes              |
-| 7    | Completion             | Generate summary (via @speckit)               | implementation-summary.md + nested changelog when applicable |
+| 7    | Completion             | Generate implementation summary with template compliance | implementation-summary.md + nested changelog when applicable |
 | 7.5  | POSTFLIGHT Capture     | Learning delta and improvement calculation    | postflight_delta          |
 | 8    | Save Context           | Refresh continuity update in canonical spec docs           | canonical spec doc updated via `generate-context.js` |
-| 9    | Session Handover Check | Prompt for handover document                  | handover.md (optional)    |
+| 9    | Workflow Finish        | Close the implementation pass after continuity refresh | workflow_closed |
 
 > **Note:** This step validates checklist structure and item presence. Evidence verification occurs after implementation in the completion phase.
 
@@ -343,7 +342,7 @@ Runs automatically: **PLACEHOLDER_FILLED** (replace `[PLACEHOLDER]`), **PRIORITY
 ## 14. COMMAND CHAIN
 
 ```
-[/spec_kit:plan] -> /spec_kit:implement -> [/spec_kit:handover]
+[/spec_kit:plan] -> /spec_kit:implement -> [/memory:save]
 ```
 
 Prerequisite: `/spec_kit:plan [feature-description]` (creates spec.md, plan.md)
@@ -356,8 +355,8 @@ Prerequisite: `/spec_kit:plan [feature-description]` (creates spec.md, plan.md)
 | ------------------------- | ------------------------------------------ | ------------------------------- |
 | Implementation complete   | Verify in browser                          | Test functionality              |
 | Need to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
-| Ending session            | `/spec_kit:handover [spec-folder-path]`    | Create continuation document    |
-| Found bugs during testing | `/spec_kit:debug [spec-folder-path]`       | Delegate to fresh agent         |
+| Ending session            | `/memory:save [spec-folder-path]`          | Refresh canonical continuity before pausing |
+| Found bugs during testing | `Task tool → @debug`                       | Dispatch a focused debugging pass after user escalation |
 | Ready for next feature    | `/spec_kit:complete [feature-description]` | Start new workflow              |
 | Need crash recovery       | `/spec_kit:resume`                         | Session recovery and continuation |
 

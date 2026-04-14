@@ -17,7 +17,7 @@
 #   L3: +Architecture decisions - decision-record.md
 #   L3+: +Enterprise governance - extended content
 #
-# Also creates scratch/ and memory/ directories.
+# Also creates scratch/ directories.
 
 set -euo pipefail
 
@@ -241,7 +241,7 @@ while [[ $i -le $# ]]; do
             echo "  Higher levels ADD value, not just length."
             echo "  Templates located in: .opencode/skill/system-spec-kit/templates/"
             echo ""
-            echo "All levels include: scratch/ (git-ignored) + memory/ (context preservation)"
+            echo "All levels include: scratch/ (git-ignored working files)"
             echo ""
             echo "Examples:"
             echo "  $0 'Add user authentication system' --short-name 'user-auth'"
@@ -250,11 +250,11 @@ while [[ $i -le $# ]]; do
             echo "  $0 'Large platform migration' --level 3 --sharded"
             echo ""
             echo "Sub-folder Versioning Examples:"
-            echo "  $0 --subfolder specs/005-memory 'Initial implementation'"
-            echo "  $0 --subfolder specs/005-memory --topic 'refactor' 'Phase 2 refactoring'"
+            echo "  $0 --subfolder specs/005-context-capture 'Initial implementation'"
+            echo "  $0 --subfolder specs/005-context-capture --topic 'refactor' 'Phase 2 refactoring'"
             echo ""
-            echo "  Creates: specs/005-memory/001-initial-implementation/"
-            echo "           specs/005-memory/002-refactor/"
+            echo "  Creates: specs/005-context-capture/001-initial-implementation/"
+            echo "           specs/005-context-capture/002-refactor/"
             echo ""
             echo "Phase Mode Examples:"
             echo "  $0 --phase 'Large platform migration'"
@@ -332,10 +332,8 @@ create_versioned_subfolder() {
     local subfolder_name="${version_str}-${topic}"
     local subfolder_path="$base_folder/$subfolder_name"
     
-    # Create sub-folder structure with independent memory/ and scratch/
-    mkdir -p "$subfolder_path/memory"
+    # Create sub-folder scratch/ workspace.
     mkdir -p "$subfolder_path/scratch"
-    touch "$subfolder_path/memory/.gitkeep"
     touch "$subfolder_path/scratch/.gitkeep"
     create_graph_metadata_file "$subfolder_path" "${FEATURE_DESCRIPTION:-$topic}" "planned"
     
@@ -571,12 +569,8 @@ if [[ "$SUBFOLDER_MODE" = true ]]; then
         for file in "${CREATED_FILES[@]}"; do
             echo "          ├── $file"
         done
-        echo "          ├── scratch/          (git-ignored working files)"
-        echo "          │   └── .gitkeep"
-        echo "          └── memory/           (independent context)"
+        echo "          └── scratch/          (git-ignored working files)"
         echo "              └── .gitkeep"
-        echo ""
-        echo "  Note: Each sub-folder has independent memory/ and scratch/ directories."
         echo ""
         echo "───────────────────────────────────────────────────────────────────"
     fi
@@ -725,8 +719,8 @@ if [[ "$PHASE_MODE" = true ]]; then
             FEATURE_NUM="000"
         fi
 
-        mkdir -p "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
-        touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+        mkdir -p "$FEATURE_DIR/scratch"
+        touch "$FEATURE_DIR/scratch/.gitkeep"
         create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
     else
         # ── Branch name generation (shared function) ──
@@ -735,8 +729,8 @@ if [[ "$PHASE_MODE" = true ]]; then
 
         # ── Create parent spec folder ──
         FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
-        mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
-        touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+        mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch"
+        touch "$FEATURE_DIR/scratch/.gitkeep"
         create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
         # Copy parent templates based on documentation level
@@ -930,8 +924,8 @@ if [[ "$PHASE_MODE" = true ]]; then
         _child_created_files=()
 
         # Create child directory structure
-        mkdir -p "$_child_path" "$_child_path/memory" "$_child_path/scratch"
-        touch "$_child_path/memory/.gitkeep" "$_child_path/scratch/.gitkeep"
+        mkdir -p "$_child_path" "$_child_path/scratch"
+        touch "$_child_path/scratch/.gitkeep"
         create_graph_metadata_file "$_child_path" "Phase ${_i}: ${_child_folder#*-}" "planned"
 
         # Copy Level 1 templates to child folder
@@ -1065,14 +1059,10 @@ if [[ "$PHASE_MODE" = true ]]; then
                 [[ -z "$_f" ]] && continue
                 echo "      │   ├── $_f"
             done
-            echo "      │   ├── scratch/"
-            echo "      │   │   └── .gitkeep"
-            echo "      │   └── memory/"
+            echo "      │   └── scratch/"
             echo "      │       └── .gitkeep"
         done
-        echo "      ├── scratch/          (git-ignored working files)"
-        echo "      │   └── .gitkeep"
-        echo "      └── memory/           (context preservation)"
+        echo "      └── scratch/          (git-ignored working files)"
         echo "          └── .gitkeep"
         echo ""
         echo "  Phase Documentation Map injected into parent spec.md"
@@ -1128,8 +1118,8 @@ if [[ ! -d "$LEVEL_TEMPLATES_DIR" ]]; then
     LEVEL_TEMPLATES_DIR="$TEMPLATES_BASE"
 fi
 
-mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch" "$FEATURE_DIR/memory"
-touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
+mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch"
+touch "$FEATURE_DIR/scratch/.gitkeep"
 create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
 # ───────────────────────────────────────────────────────────────
@@ -1258,9 +1248,7 @@ else
         echo "      ├── $file"
     done
     echo "      ├── description.json   (per-folder identity)"
-    echo "      ├── scratch/          (git-ignored working files)"
-    echo "      │   └── .gitkeep"
-    echo "      └── memory/           (context preservation)"
+    echo "      └── scratch/          (git-ignored working files)"
     echo "          └── .gitkeep"
     echo ""
     echo "  Level $DOC_LEVEL Documentation (CORE + ADDENDUM v2.0):"

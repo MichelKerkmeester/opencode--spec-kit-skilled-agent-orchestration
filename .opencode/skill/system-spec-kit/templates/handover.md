@@ -123,7 +123,7 @@ Before handover, verify:
 - Missing file references or line numbers
 
 **Related templates:**
-- Use with `/spec_kit:handover` command for automated context saving
+- Use with `/memory:save` so the main agent can capture end-of-session continuity
 - Reference `handover.md`, `_memory.continuity` in `implementation-summary.md`, and canonical spec docs for context recovery
 - Link to spec.md, plan.md, and tasks.md for complete picture
 - Run `generate-context.js` before handover when the session also needs an indexed save

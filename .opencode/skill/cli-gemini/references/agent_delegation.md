@@ -18,14 +18,14 @@ The calling AI decides WHAT to do, Gemini CLI decides HOW to do it within the de
 
 ### Purpose
 
-Documents the 9 specialized Gemini agents in `.gemini/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Gemini CLI executes targeted tasks through its agent system.
+Documents the active Gemini agents in `.gemini/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Gemini CLI executes targeted tasks through its agent system.
 
 ### When to Use
 
 - Delegating supplementary tasks to Gemini CLI agents
 - Cross-AI code review or architectural second opinion
 - Web research via Google Search grounding (`@deep-research`)
-- Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
+- Fresh-perspective debugging after the calling AI's attempts fail (dispatch `@debug` via the Task tool)
 - Multi-agent Gemini-side workflows (`@orchestrate`)
 
 <!-- /ANCHOR:overview -->
@@ -135,26 +135,6 @@ gemini "As @debug agent: Login returns 401 despite valid credentials. Error in s
 
 ---
 
-### @handover — Session Continuity
-
-| Property | Value |
-|----------|-------|
-| **Role** | Session state capture and continuation documents |
-| **Model** | gemini-3.1-pro-preview |
-| **Tools** | read_file, write_file, replace, grep_search, list_directory |
-| **Modifies files** | Yes (handover.md only) |
-| **Max turns** | 10 |
-
-**Best for:** Creating handover documents, capturing session state, enabling continuation across sessions.
-
-**Delegate when:** You need Gemini to summarize its own session state or create continuation artifacts from a Gemini-side workflow.
-
-```bash
-gemini "As @handover agent: Create handover document for the current authentication refactor in specs/042-auth-refactor/" -o text
-```
-
----
-
 ### @orchestrate — Task Commander
 
 | Property | Value |
@@ -219,26 +199,6 @@ gemini "As @review agent: Review these files for security vulnerabilities and co
 
 ---
 
-### @speckit — Spec Documentation Specialist
-
-| Property | Value |
-|----------|-------|
-| **Role** | Spec folder documentation (Level 1-3+) |
-| **Model** | gemini-3.1-pro-preview |
-| **Tools** | read_file, write_file, replace, run_shell_command, grep_search, list_directory |
-| **Modifies files** | Yes (spec folder docs only) |
-| **Max turns** | 20 |
-
-**Best for:** Creating spec folder documentation from templates (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md).
-
-**Delegate when:** You need Gemini to create or update spec documentation following the CORE + ADDENDUM template architecture. Useful for parallel documentation generation.
-
-```bash
-gemini "As @speckit agent: Create Level 2 spec folder documentation for the authentication refactor at specs/042-auth-refactor/" -y -o text
-```
-
----
-
 ### @ultra-think — Multi-Strategy Planner
 
 | Property | Value |
@@ -293,9 +253,9 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 | Web/API research | @deep-research | @write | Google Search grounding |
 | Architecture planning | @ultra-think | @deep-research | Multi-lens analysis |
 | Bug investigation | @debug | @context | Fresh perspective methodology |
-| Documentation generation | @write | @speckit | Template-first, web-enriched |
-| Spec folder docs | @speckit | (none) | Exclusive spec authority |
-| Session state capture | @handover | (none) | Continuation artifacts |
+| Documentation generation | @write | (none) | Non-spec documentation and guides |
+| Spec folder docs | Main agent + `/spec_kit:start` | `/spec_kit:plan` | Distributed governance for packet docs |
+| Session continuity | `/memory:save` | `/spec_kit:resume` | Refresh continuity before pause |
 | Complex multi-agent task | @orchestrate | (decompose manually) | Gemini-internal coordination |
 
 <!-- /ANCHOR:routing-table -->

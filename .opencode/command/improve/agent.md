@@ -342,7 +342,7 @@ Do **not** document or attempt journal replay, iteration carry-forward, or `resu
 ### Evaluate Handover Agent (Interactive)
 
 ```
-/improve:agent ".opencode/agent/handover.md" :confirm --spec-folder=specs/041/008
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder=specs/041/008
 ```
 
 ### Evaluate Any Agent (Dynamic Profile, Autonomous)
@@ -372,7 +372,7 @@ Setup phase lists available agents and asks for selection.
 Agent Improvement Loop Complete
 ────────────────────────────────
 
-Target: .opencode/agent/handover.md
+Target: .opencode/agent/debug.md
 Profile: generated dynamic profile
 Scoring: 5-dimension dynamic
 Iterations: 3
@@ -412,7 +412,6 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 | Command | Purpose |
 | --- | --- |
 | `/spec_kit:complete` | Full spec-driven development workflow |
-| `/spec_kit:handover` | Create session handover for continuing work |
 | `/improve:prompt` | Improve AI prompts with DEPTH + CLEAR scoring |
 | `/spec_kit:deep-review` | Iterative code review with convergence detection |
 

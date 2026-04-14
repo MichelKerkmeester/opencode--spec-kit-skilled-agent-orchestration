@@ -96,7 +96,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 - Keep checklist evidence current before completion claims.
 - Finalize `implementation-summary.md` at the end of delivery.
 - Resume architectural follow-up through `/spec_kit:resume`, using `handover.md -> _memory.continuity -> spec docs` as the canonical continuity order.
-- Generated `memory/` artifacts stay supporting/indexed context only.
+- Save continuity with `/memory:save`, which routes updates into canonical packet docs such as `decision-record.md`, `implementation-summary.md`, and `handover.md`.
 
 <!-- /ANCHOR:workflow-notes -->
 

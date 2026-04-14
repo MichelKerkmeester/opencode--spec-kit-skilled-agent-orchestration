@@ -97,7 +97,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 - [ ] Error handling implemented
 - [ ] Edge cases covered
 - [ ] Browser verification completed (frontend changes)
-- [ ] If stuck on same error 3+ times, run `/spec_kit:debug`
+- [ ] If stuck on same error 3+ times, dispatch `@debug` via the Task tool
 - [ ] If debugging > 15 minutes without progress, consider delegation
 
 ### P2 - Nice to Have
@@ -135,8 +135,8 @@ When debugging becomes prolonged or repetitive:
 - Frustration indicators ("stuck", "tried everything")
 
 **Action:**
-1. Run `/spec_kit:debug` command
-2. Select AI model when prompted (Claude/Gemini/Codex)
+1. Package the current failure state and prior attempts
+2. Dispatch `@debug` via the Task tool
 3. Review sub-agent findings
 4. Apply fix or iterate
 

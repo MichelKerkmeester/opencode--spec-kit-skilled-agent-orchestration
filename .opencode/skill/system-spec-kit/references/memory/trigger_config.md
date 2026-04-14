@@ -209,9 +209,9 @@ Include any of these phrases in your message:
 
 ### Save Location
 
-- **Save location:** `{spec_folder}/memory/` (spec-folder boundary enforced)
+- **Save path:** `/memory:save` targets the selected spec folder and routes continuity into canonical packet docs such as `implementation-summary.md`, `decision-record.md`, and `handover.md`.
 
-**Filename pattern:** `DD-MM-YY_HH-MM__short-description.md`
+**Continuity home:** packet-local canonical docs plus `_memory.continuity`, not a standalone `{spec_folder}/memory/*.md` note.
 
 ---
 
@@ -278,16 +278,14 @@ function detectCustomTrigger(userMessage: string, customPhrases: readonly string
 
 ### Per-Project Configuration
 
-Override defaults in your spec folder's memory settings:
+Packet-local continuity no longer uses `memory/config.md`. Customize continuity through canonical docs and save input instead:
 
 ```markdown
-<!-- specs/001-feature/memory/config.md -->
-# Memory Configuration
-
-## Custom Triggers
-- "feature complete"
-- "milestone reached"
-- "ready for review"
+<!-- implementation-summary.md frontmatter -->
+_memory:
+  continuity:
+    recent_action: "Completed implementation milestone"
+    next_safe_action: "Run strict validation and save handoff state"
 ```
 
 ---

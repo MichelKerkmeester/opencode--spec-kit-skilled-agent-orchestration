@@ -536,7 +536,7 @@ These templates support session continuity, temporary workspaces, and context pr
 
 **Purpose:** Comprehensive session handover document for complex, multi-phase work
 
-**Created by:** `/spec_kit:handover:full` command
+**Created by:** Main-agent narrative plus `/memory:save` handover_state routing (initial file seeded from the template)
 
 **Location:** Spec folder root
 
@@ -627,7 +627,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 
 **Purpose:** Structured handoff document for delegating debugging tasks to a specialized sub-agent.
 
-**Created By:** `/spec_kit:debug` command (or manually)
+**Created By:** Task-tool `@debug` dispatch (or manually)
 
 **Location:** Spec folder root (preserved for reference)
 
@@ -641,7 +641,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 
 ```text
 1. TRIGGER
-   ├── Manual: Run /spec_kit:debug
+   ├── Manual: Dispatch `@debug` via the Task tool
    └── Auto-suggested: After repeated failures or frustration keywords
 
 2. MODEL SELECTION (MANDATORY)
@@ -692,10 +692,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 
 ```bash
 # Manual trigger
-/spec_kit:debug specs/007-feature/
+Task tool -> @debug for specs/007-feature/
 
 # Auto-suggested after repeated failures
-💡 Debug Delegation Suggested - Run: /spec_kit:debug
+💡 Debug Delegation Suggested - Dispatch `@debug` via the Task tool
 ```
 
 **Integration with SpecKit:**

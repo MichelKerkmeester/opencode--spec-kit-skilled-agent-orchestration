@@ -25,7 +25,7 @@ Template-first documentation specialist ensuring 100% alignment with sk-doc stan
 
 **Path Convention**: Use only `.gemini/agents/*.md` as the canonical runtime path reference.
 
-> ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation is exclusive to @speckit. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, redirect to @speckit.
+> ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation stays with the main agent under distributed governance. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, hand off to the main agent within distributed governance.
 
 ---
 
@@ -390,7 +390,7 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 │  └─► File existence, placeholder scan, and DQI evidence                 │
 │                                                                         │
 │  LIMITS                                                                 │
-│  ├─► Must not create spec-folder docs (route to @speckit)               │
+│  ├─► Must not create spec-folder docs (main-agent distributed governance)               │
 │  ├─► Must not skip mandatory validation steps                           │
 │  └─► LEAF-only: nested sub-agent dispatch is illegal                    │
 └─────────────────────────────────────────────────────────────────────────┘

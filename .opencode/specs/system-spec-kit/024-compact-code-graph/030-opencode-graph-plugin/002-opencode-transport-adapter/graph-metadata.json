@@ -206,7 +206,7 @@
     ],
     "causal_summary": "Phase 2 turned the transport concept into a real shipped OpenCode plugin. The Level 3 repair keeps that runtime claim intact while adding the architecture and verification scaffolding needed for trustworthy packet recovery.",
     "created_at": "2026-04-12T09:02:53.436Z",
-    "last_save_at": "2026-04-13T16:22:53.255Z",
+    "last_save_at": "2026-04-14T17:11:44.423Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

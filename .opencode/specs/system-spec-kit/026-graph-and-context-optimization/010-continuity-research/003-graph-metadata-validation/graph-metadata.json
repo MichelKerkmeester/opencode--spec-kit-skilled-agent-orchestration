@@ -1,10 +1,210 @@
-Packet: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation
-Spec Folder: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation
-Status: complete
-Importance Tier: important
-Summary: Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.
-Parent: system-spec-kit/026-graph-and-context-optimization/010-continuity-research
-Children: system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/001-fix-status-derivation, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/002-sanitize-key-files, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/003-deduplicate-entities, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/004-normalize-legacy-files, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/005-doc-surface-alignment, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution, system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements
-Key Topics: scan, 515, graph-metadata, json, files, disk, validate, relationship, integrity, entity, quality, derived
-Key Files: mcp_server/lib/graph/graph-metadata-schema.ts, mcp_server/lib/graph/graph-metadata-parser.ts, scripts/graph/backfill-graph-metadata.ts, .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts, .opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts, implementation-summary.md, spec.md, checklist.md, plan.md, tasks.md, research/research.md, system-spec-kit/023-hybrid-rag-fusion-refinement/graph-metadata.json, hooks/memory-surface.ts, handlers/memory-search.ts, handlers/memory-context.ts, hooks/claude/session-prime.ts
-Source Docs: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, research/research.md
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/001-fix-status-derivation",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/002-sanitize-key-files",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/003-deduplicate-entities",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/004-normalize-legacy-files",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/005-doc-surface-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution",
+    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [
+      "scan",
+      "515",
+      "graph-metadata",
+      "json",
+      "files",
+      "disk",
+      "validate",
+      "relationship",
+      "integrity",
+      "entity",
+      "quality",
+      "derived"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/lib/graph/graph-metadata-schema.ts",
+      "mcp_server/lib/graph/graph-metadata-parser.ts",
+      "scripts/graph/backfill-graph-metadata.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "graph-metadata-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/graph-metadata-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/graph/graph-metadata-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "backfill-graph-metadata.ts",
+        "kind": "code",
+        "path": "scripts/graph/backfill-graph-metadata.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-backfill.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-backfill.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph Metadata Quality",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Relationship Validation",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Relationship Validation Scan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Background Every",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Questions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Files",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Close",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Steps",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification",
+        "kind": "heading",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Should Fix",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P1 (Should Fix)",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "P2 (Advisory)",
+        "kind": "heading",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Scan all 515+ graph-metadata.json files on disk to validate relationship integrity, entity quality, and derived field accuracy. No historical save data needed - this is a pure filesystem and code analysis.",
+    "created_at": "2026-04-14T17:11:35.288Z",
+    "last_save_at": "2026-04-14T17:11:44.510Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
+}

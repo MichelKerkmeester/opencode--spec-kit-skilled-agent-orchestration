@@ -1508,20 +1508,19 @@ Tools: Read, Grep, Bash (for search)
 }
 ```
 
-### Integration with /spec_kit:debug
+### Integration with Task-tool Debug Dispatch
 
-For complex debugging sessions, use the debug delegation command:
+For complex debugging sessions, dispatch the debug specialist through the Task tool:
 
 ```markdown
 After 3+ failed fix attempts:
-1. User runs: /spec_kit:debug
-2. System asks for model selection (Sonnet for speed, Opus for depth)
-3. Task tool dispatches debug sub-agent with:
+1. Main agent packages the current error state and prior attempts
+2. Task tool dispatches `@debug` with:
    - Current error state
    - Previous fix attempts
    - Relevant file context
-4. Sub-agent returns structured analysis
-5. Main agent applies recommended fix
+3. Sub-agent returns structured analysis
+4. Main agent applies the recommended fix
 ```
 
 **Debug sub-agent template:**
@@ -1929,10 +1928,10 @@ bdg stop 2>&1
 
 ### Related Skills
 - `mcp-chrome-devtools` - CLI-based browser automation via browser-debugger-cli (bdg)
-- `system-spec-kit` - Spec folder management and debug delegation (`/spec_kit:debug`)
+- `system-spec-kit` - Spec folder management and Task-tool debug escalation
 
 ### Related Commands
-- `/spec_kit:debug` - Debug delegation to sub-agent with model selection
+- `Task tool -> @debug` - Dispatch the fresh-perspective debugging specialist after repeated failures
 
 ### Memory Files (Evidence)
 - `specs/005-example.com/z_archive/004-table-of-content/003-icon-animation-isolation/memory/2024-12-14_toc-scroll-lenis-fix.md` - Lenis conflict resolution case study

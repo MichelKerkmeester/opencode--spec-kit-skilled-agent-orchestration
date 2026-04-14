@@ -145,7 +145,7 @@ The memory system supports **2 independent execution paths**. Any method can be 
 
 1. Slash command expands to full prompt
 2. AI agent analyzes conversation history
-3. AI agent creates structured JSON summary (any agent can invoke generate-context.js for memory - this is an exception to the @speckit exclusivity rule)
+3. AI agent creates structured JSON summary (the main agent or a delegated packet writer can invoke generate-context.js for memory under distributed governance)
 4. AI agent calls `generate-context.js` with JSON data
 5. Canonical continuity updated inside the active root-spec or phase packet
 
@@ -253,13 +253,13 @@ If that explicit CLI argument resolves to a phase folder, the command keeps that
 
 ### Canonical Output Surfaces
 
-The Phase 018 save path is packet-first. `generate-context.js` no longer treats a standalone timestamped `memory/*.md` file as the primary continuity artifact. Instead it updates continuity inside the selected packet and reindexes the affected docs.
+The Phase 018 save path is packet-first. Retired `[spec]/memory/*.md` writes are no longer part of the workflow. `generate-context.js` updates continuity inside the selected packet and reindexes the affected docs.
 
 | Surface | Role |
 |---------|------|
 | `implementation-summary.md` | Primary continuity document carrying `_memory.continuity` in frontmatter |
 | Routed packet docs | Canonical narrative updates applied in-place to spec/plan/tasks/checklist/decision/summary surfaces as appropriate |
-| `handover.md` | Separate first-class recovery surface created by `/spec_kit:handover`, not by routine `/memory:save` |
+| `handover.md` | First-class recovery surface refreshed by `/memory:save` when `handover_state` routing applies, using the packet template for initial creation |
 
 ### Continuity Block Shape
 
@@ -282,7 +282,7 @@ _memory:
 specs/###-feature-name/
 ├── implementation-summary.md    # carries _memory.continuity
 ├── spec.md / plan.md / tasks.md # canonical packet docs
-└── handover.md                  # optional, separate command-managed surface
+└── handover.md                  # optional recovery surface refreshed through `/memory:save`
 ```
 
 ---
@@ -336,13 +336,13 @@ Content here...
 
 ### All Indexed Content Sources (3)
 
-The canonical save path updates packet docs first. During `memory_index_scan()`, the memory system indexes three supporting source families:
+The canonical save path updates packet docs first. During `memory_index_scan()`, the memory system indexes three active source families:
 
 | Content Type | Location | Weight | Indexed By |
 |-------------|----------|--------|------------|
 | Spec documents | `.opencode/specs/**/*.md` and `specs/**/*.md` | Per-type multiplier | `findSpecDocuments()` |
 | Constitutional rules | `.opencode/skill/*/constitutional/*.md` | 1.0 | `findConstitutionalFiles()` |
-| Legacy memory artifacts | `specs/*/memory/*.{md,txt}` when present | 0.5 | `findMemoryFiles()` |
+| Graph metadata | `graph-metadata.json` adjacent to spec docs | Packet metadata weighting | Graph metadata parser + scan pipeline |
 
 Spec documents are controlled by the `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Spec documents use per-document scoring multipliers (e.g., spec: 1.4x, plan: 1.3x, constitutional: 2.0x) and schema v23 fields (`document_type`, `spec_level`).
 
@@ -558,9 +558,9 @@ After `generate-context.js` completes, it emits a **POST-SAVE QUALITY REVIEW** b
 - Trigger phrase sanitization strips overly generic single-word triggers during save-time validation
 - Lineage handling preserves parent-child spec folder relationships in metadata when saving to nested packet paths
 
-### Context Template Expectations
+### Saved Markdown Expectations
 
-The context template (`templates/context_template.md`) defines the expected output structure. The post-save quality review validates against this template, checking for:
+Legacy rendered continuity templates were retired in v3.4.0.0. The post-save quality review now validates the saved canonical markdown directly, checking for:
 - Required ANCHOR pairs (opening and closing)
 - PROJECT STATE SNAPSHOT section presence
 - Proper frontmatter fields (title, specFolder, importance_tier)
@@ -613,6 +613,4 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --h
 - [SKILL.md](../../SKILL.md) - Main workflow-memory skill documentation
 - [troubleshooting.md](../debugging/troubleshooting.md) - Troubleshooting guide for memory operations
 
-### Templates
-- [context_template.md](../../templates/context_template.md) - Context document template structure
 <!-- /ANCHOR:related-resources -->

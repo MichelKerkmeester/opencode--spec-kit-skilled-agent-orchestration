@@ -115,8 +115,6 @@ verification evidence. Each item marked [x] includes evidence of completion. -->
   - **Evidence**: No temp files created outside scratch/
 - [x] CHK-051 [P1] scratch/ cleaned before completion
   - **Evidence**: scratch/ folder empty
-- [x] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: N/A - no complex findings requiring memory save
 
 
 <!-- /ANCHOR:file-org -->

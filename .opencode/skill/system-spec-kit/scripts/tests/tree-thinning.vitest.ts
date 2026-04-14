@@ -8,9 +8,7 @@ import { describe, it, expect } from 'vitest';
 import {
   applyTreeThinning,
   estimateTokenCount,
-  isMemoryFile,
   deriveParentPath,
-  DEFAULT_THINNING_CONFIG,
 } from '../core/tree-thinning';
 import type { ThinFileInput, ThinningConfig } from '../core/tree-thinning';
 
@@ -26,11 +24,6 @@ function makeContent(tokens: number): string {
 /** Build a ThinFileInput for a non-memory spec folder file. */
 function specFile(name: string, tokens: number): ThinFileInput {
   return { path: `specs/001-feature/${name}`, content: makeContent(tokens) };
-}
-
-/** Build a ThinFileInput for a memory file. */
-function memFile(name: string, tokens: number): ThinFileInput {
-  return { path: `specs/001-feature/memory/${name}`, content: makeContent(tokens) };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -59,39 +52,20 @@ describe('estimateTokenCount', () => {
 });
 
 /* ───────────────────────────────────────────────────────────────
-   T2: isMemoryFile
-------------------------------------------------------------------*/
-
-describe('isMemoryFile', () => {
-  it('T2-A: detects /memory/ segment', () => {
-    expect(isMemoryFile('specs/001-feature/memory/ctx.md')).toBe(true);
-  });
-
-  it('T2-B: false for non-memory paths', () => {
-    expect(isMemoryFile('specs/001-feature/spec.md')).toBe(false);
-    expect(isMemoryFile('specs/001-feature/scratch/notes.md')).toBe(false);
-  });
-
-  it('T2-C: handles Windows-style paths', () => {
-    expect(isMemoryFile('specs\\001-feature\\memory\\ctx.md')).toBe(true);
-  });
-});
-
-/* ───────────────────────────────────────────────────────────────
-   T3: deriveParentPath
+   T2: deriveParentPath
 ------------------------------------------------------------------*/
 
 describe('deriveParentPath', () => {
-  it('T3-A: returns parent directory', () => {
+  it('T2-A: returns parent directory', () => {
     expect(deriveParentPath('specs/001-feature/spec.md')).toBe('specs/001-feature');
   });
 
-  it('T3-B: returns null for top-level filename', () => {
+  it('T2-B: returns null for top-level filename', () => {
     expect(deriveParentPath('spec.md')).toBeNull();
   });
 
-  it('T3-C: handles nested paths', () => {
-    expect(deriveParentPath('specs/001-feature/memory/ctx.md')).toBe('specs/001-feature/memory');
+  it('T2-C: handles nested paths', () => {
+    expect(deriveParentPath('specs/001-feature/research/research.md')).toBe('specs/001-feature/research');
   });
 });
 
@@ -170,54 +144,11 @@ describe('Content-as-summary threshold (500 tokens) — standard files', () => {
 });
 
 /* ───────────────────────────────────────────────────────────────
-   T6: Memory-specific thresholds (150/100 tokens)
-------------------------------------------------------------------*/
-
-describe('Memory-specific thresholds (150/100 tokens)', () => {
-  it('T6-A: memory file with 99 tokens is content-as-summary (text IS the summary)', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 99)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('content-as-summary');
-  });
-
-  it('T6-B: memory file with exactly 100 tokens is merged-into-parent (boundary: >= 100, < 150)', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 100)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('merged-into-parent');
-  });
-
-  it('T6-C: memory file with 149 tokens is merged-into-parent', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 149)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('merged-into-parent');
-  });
-
-  it('T6-D: memory file with exactly 150 tokens is kept (boundary: >= memoryThinThreshold)', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 150)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('keep');
-  });
-
-  it('T6-E: memory file with 400 tokens is kept', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 400)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('keep');
-  });
-
-  it('T6-F: memory thresholds do NOT apply to non-memory files', () => {
-    // Non-memory file with 99 tokens must be merged (< 200), not content-as-summary
-    const files: FileEntry[] = [specFile('notes.md', 99)];
-    const result = applyTreeThinning(files);
-    expect(result.thinned[0].action).toBe('merged-into-parent');
-  });
-});
-
-/* ───────────────────────────────────────────────────────────────
-   T7: No content loss during merge
+   T6: No content loss during merge
 ------------------------------------------------------------------*/
 
 describe('No content loss during merge', () => {
-  it('T7-A: merged summary contains all child content', () => {
+  it('T6-A: merged summary contains all child content', () => {
     const childA = { path: 'specs/001/tiny-a.md', content: 'UNIQUE_CONTENT_A' };
     const childB = { path: 'specs/001/tiny-b.md', content: 'UNIQUE_CONTENT_B' };
     // Force merge by using very short content (< 200 tokens)
@@ -230,7 +161,7 @@ describe('No content loss during merge', () => {
     expect(mergedSummary).toContain('UNIQUE_CONTENT_B');
   });
 
-  it('T7-B: merged summary contains source path references', () => {
+  it('T6-B: merged summary contains source path references', () => {
     const files: FileEntry[] = [
       { path: 'specs/001/tiny.md', content: 'hello world' },
     ];
@@ -238,7 +169,7 @@ describe('No content loss during merge', () => {
     expect(result.merged[0].mergedSummary).toContain('specs/001/tiny.md');
   });
 
-  it('T7-C: kept files retain their original content unchanged', () => {
+  it('T6-C: kept files retain their original content unchanged', () => {
     const original = makeContent(600);
     const files: FileEntry[] = [
       { path: 'specs/001/large.md', content: original },
@@ -248,7 +179,7 @@ describe('No content loss during merge', () => {
     expect(result.thinned[0].action).toBe('keep');
   });
 
-  it('T7-D: content-as-summary files retain their original content', () => {
+  it('T6-D: content-as-summary files retain their original content', () => {
     const original = makeContent(350);
     const files: FileEntry[] = [
       { path: 'specs/001/medium.md', content: original },
@@ -258,7 +189,7 @@ describe('No content loss during merge', () => {
     expect(result.thinned[0].action).toBe('content-as-summary');
   });
 
-  it('T7-E: empty file list produces empty result with zero stats', () => {
+  it('T6-E: empty file list produces empty result with zero stats', () => {
     const result = applyTreeThinning([]);
     expect(result.thinned).toHaveLength(0);
     expect(result.merged).toHaveLength(0);
@@ -315,7 +246,7 @@ describe('Pre-pipeline boundary — thinning is pure, no side effects', () => {
       specFile('a.md', 100),
       specFile('b.md', 300),
       specFile('c.md', 600),
-      memFile('ctx.md', 50),
+      specFile('context-summary.md', 50),
     ];
     const result1 = applyTreeThinning(files);
     const result2 = applyTreeThinning(files);
@@ -365,35 +296,5 @@ describe('Pre-pipeline boundary — thinning is pure, no side effects', () => {
       const original = files.find((f) => f.path === kept.path);
       expect(kept.content).toBe(original!.content);
     }
-  });
-});
-
-/* ───────────────────────────────────────────────────────────────
-   T10: Mixed memory and non-memory files
-------------------------------------------------------------------*/
-
-describe('Mixed memory and non-memory files', () => {
-  it('T10-A: each file uses its own threshold independently', () => {
-    const files: FileEntry[] = [
-      specFile('spec.md', 150),      // 150 < 200 → merged-into-parent
-      memFile('ctx.md', 149),        // 100 <= 149 < 150 → merged-into-parent (memory)
-      specFile('plan.md', 350),      // 200 <= 350 < 500 → content-as-summary
-      memFile('big-ctx.md', 350),    // >= 150 → keep (memory)
-    ];
-    const result = applyTreeThinning(files);
-    const actionMap = Object.fromEntries(
-      result.thinned.map((f) => [f.path.split('/').pop()!, f.action])
-    );
-    expect(actionMap['spec.md']).toBe('merged-into-parent');
-    expect(actionMap['ctx.md']).toBe('merged-into-parent');
-    expect(actionMap['plan.md']).toBe('content-as-summary');
-    expect(actionMap['big-ctx.md']).toBe('keep');
-  });
-
-  it('T10-B: DEFAULT_THINNING_CONFIG matches documented thresholds', () => {
-    expect(DEFAULT_THINNING_CONFIG.mergeThreshold).toBe(200);
-    expect(DEFAULT_THINNING_CONFIG.contentAsTextThreshold).toBe(500);
-    expect(DEFAULT_THINNING_CONFIG.memoryThinThreshold).toBe(150);
-    expect(DEFAULT_THINNING_CONFIG.memoryTextThreshold).toBe(100);
   });
 });

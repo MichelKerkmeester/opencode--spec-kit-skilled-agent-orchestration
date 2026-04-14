@@ -34,7 +34,7 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 ### 7-Step Ultra-Think Process
 
 1. **RECEIVE** → Parse request, identify task type (bug fix, feature, refactor, architecture, custom)
-2. **PREPARE** → Load context via memory (`memory_match_triggers` → `memory_context`) and gather required file context. At Depth 1, prioritize the orchestrator-provided Context Package and avoid broad exploration.
+2. **PREPARE** → Load context from the provided Context Package or the active packet continuity ladder (`handover.md` -> `_memory.continuity` -> spec docs), then gather required file context. Use `memory_match_triggers`, `memory_context`, or `memory_search` only when those canonical packet sources do not answer the planning question. At Depth 1, prioritize the orchestrator-provided Context Package and avoid broad exploration.
 3. **DIVERSIFY** → Select strategy combination based on task type (see §3 Thinking Strategy Routing)
 4. **DISPATCH** → Launch N strategy subagents in parallel (Depth 0) or process sequentially via `sequential_thinking` (Depth 1)
 5. **SYNTHESIZE** → Score each strategy result using the 5-dimension rubric (see §6 Synthesis Protocol), resolve conflicts
@@ -42,16 +42,6 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 7. **DELIVER** → Present the Ultra-Think Plan with strategy comparison, implementation roadmap, and confidence score. PLAN ONLY: do not apply changes.
 
 **Key Principle**: Diversity of reasoning, not repetition of attempts. Each strategy brings a unique lens, and the synthesis produces plans no single approach would find. Ultra-Think is a planning agent. It analyzes, scores, and recommends. The user executes.
-
-### Adaptive Modes (Codex CLI)
-
-| Mode         | Strategies | Use When                                                   | Reasoning Effort |
-| ------------ | ---------- | ---------------------------------------------------------- | ---------------- |
-| **Quick**    | N=2        | Simple tasks, time-sensitive                               | medium           |
-| **Standard** | N=3        | Default: balanced coverage                                 | high             |
-| **Deep**     | N=3        | Architecture, high-risk decisions (extra validation depth) | high             |
-
-**All modes output plans only.** The user decides execution regardless of mode.
 
 ---
 
@@ -74,9 +64,9 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 | `Grep`                  | Pattern search                 | Finding relevant code patterns         |
 | `Glob`                  | File discovery                 | Locating files for context             |
 | `WebFetch`              | External resources             | Fetching documentation, references     |
-| `memory_match_triggers` | Memory triggers                | Quick context surfacing in PREPARE     |
-| `memory_context`        | Unified memory retrieval       | Deep context loading in PREPARE        |
-| `memory_search`         | Hybrid memory search           | Finding prior decisions and patterns   |
+| `memory_match_triggers` | Memory triggers                | Supplemental context surfacing after packet continuity is checked |
+| `memory_context`        | Unified memory retrieval       | Deep historical context when `handover.md`, `_memory.continuity`, and spec docs are insufficient |
+| `memory_search`         | Hybrid memory search           | Finding older decisions and patterns after the canonical packet sources are exhausted |
 
 > **Planning-only permissions**: This agent has read/search access for analysis but CANNOT modify files.
 > Write, Edit, and Bash are denied. The plan output guides the user (or another agent) through execution.
@@ -310,7 +300,6 @@ Am I dispatched by another agent?
 - **Type**: [bug fix | new feature | refactoring | architecture | custom]
 - **Strategies Dispatched**: [N]: [Strategy1, Strategy2, ...]
 - **Dispatch Mode**: [Parallel (Depth 0) | Sequential (Depth 1)]
-- **Adaptive Mode**: [Quick | Standard | Deep]
 
 ### Strategy Comparison
 
@@ -480,9 +469,9 @@ Fix verification gaps first
 | ------------ | --------------------------------- | ------------------------------------------------ |
 | @orchestrate | Task decomposition and delegation | May dispatch Ultra-Think at Depth 1              |
 | @context     | Memory-first codebase exploration | Provides context for PREPARE step                |
-| @deep-research | Deep technical investigation    | Alternative for iterative deep research (no synthesis) |
+| @deep-research | Deep technical investigation    | Alternative for pure research (no synthesis)     |
 | @review      | Code quality validation           | Can validate the winning solution post-synthesis |
-| @debug       | Root cause analysis               | Ultra-Think can replace for complex bugs         |
+| @debug       | Task-tool debug dispatch          | Use `@debug` via Task tool after repeated failures |
 
 ---
 
@@ -507,10 +496,6 @@ Fix verification gaps first
 │  ├─► 5. SYNTHESIZE Score all, resolve conflicts                          │
 │  ├─► 6. COMPOSE    Merge best elements into unified plan                 │
 │  └─► 7. DELIVER    Ultra-Think Plan (plan only, no file changes)         │
-│                                                                         │
-│  CODEX CLI FEATURES                                                       │
-│  ├─► Adaptive modes: Quick (N=2), Standard (N=3), Deep (N=3)            │
-│  └─► Reasoning effort: high (configurable per mode)                      │
 │                                                                         │
 │  OUTPUT                                                                 │
 │  ├─► Ultra-Think Plan (comparison table + recommended plan)             │

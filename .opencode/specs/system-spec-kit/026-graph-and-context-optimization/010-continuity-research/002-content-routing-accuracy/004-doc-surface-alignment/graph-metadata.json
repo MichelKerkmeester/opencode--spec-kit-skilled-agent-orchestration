@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Several user-facing documentation surfaces still describe an older canonical save-routing contract. Before this phase, the docs could misstate the routing category count, present Tier 3 as dormant instead of live behind an env flag, blur delivery cues with narrative progress, blur handover with hard-drop cases, omit `routeAs` override semantics, or describe `packet_kind` too heavily as a path-driven heuristic.",
     "created_at": "2026-04-13T08:18:57.065Z",
-    "last_save_at": "2026-04-13T16:22:53.377Z",
+    "last_save_at": "2026-04-14T17:11:44.506Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -42,12 +42,22 @@
       ".opencode/skill/skill-advisor/scripts/skill-graph.json",
       ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md",
       ".opencode/skill/skill-advisor/manual_testing_playbook/01--routing-accuracy/001-git-routing.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/001-dependency-pullup.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/001-schema-validation.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/001-full-regression.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
       ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "decision-record.md"
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/002-enhances-overlay.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/003-ghost-prevention.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/005-evidence-separation.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/006-hub-skill-edges.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/007-prerequisite-for.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/002-zero-edge-warnings.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/003-compiled-signals.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/004-size-target.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/005-health-check.md",
+      ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/002-p0-cases.md"
     ],
     "entities": [
       {
@@ -75,39 +85,99 @@
         "source": "derived"
       },
       {
+        "name": "001-dependency-pullup.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/001-dependency-pullup.md",
+        "source": "derived"
+      },
+      {
+        "name": "001-schema-validation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/001-schema-validation.md",
+        "source": "derived"
+      },
+      {
+        "name": "001-full-regression.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/001-full-regression.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
         "name": "feature_catalog.md",
         "kind": "doc",
         "path": ".opencode/skill/skill-advisor/feature_catalog/feature_catalog.md",
         "source": "derived"
       },
       {
-        "name": "spec.md",
+        "name": "002-enhances-overlay.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/002-enhances-overlay.md",
         "source": "derived"
       },
       {
-        "name": "plan.md",
+        "name": "003-ghost-prevention.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/003-ghost-prevention.md",
         "source": "derived"
       },
       {
-        "name": "tasks.md",
+        "name": "004-family-affinity.md",
         "kind": "doc",
-        "path": "tasks.md",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/004-family-affinity.md",
         "source": "derived"
       },
       {
-        "name": "checklist.md",
+        "name": "005-evidence-separation.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/005-evidence-separation.md",
         "source": "derived"
       },
       {
-        "name": "decision-record.md",
+        "name": "006-hub-skill-edges.md",
         "kind": "doc",
-        "path": "decision-record.md",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/006-hub-skill-edges.md",
+        "source": "derived"
+      },
+      {
+        "name": "007-prerequisite-for.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/02--graph-boosts/007-prerequisite-for.md",
+        "source": "derived"
+      },
+      {
+        "name": "002-zero-edge-warnings.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/002-zero-edge-warnings.md",
+        "source": "derived"
+      },
+      {
+        "name": "003-compiled-signals.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/003-compiled-signals.md",
+        "source": "derived"
+      },
+      {
+        "name": "004-size-target.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/004-size-target.md",
+        "source": "derived"
+      },
+      {
+        "name": "005-health-check.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/03--compiler/005-health-check.md",
+        "source": "derived"
+      },
+      {
+        "name": "002-p0-cases.md",
+        "kind": "doc",
+        "path": ".opencode/skill/skill-advisor/manual_testing_playbook/04--regression-safety/002-p0-cases.md",
         "source": "derived"
       },
       {
@@ -133,71 +203,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Current State",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Template Aligned",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Implementation Plan",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Technical Context",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Prompt Pattern",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Overview Reconcile",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Task Notation",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Task Format",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Graph Boosts Category",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Compiler Category",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Align the full manual testing playbook package with current reality: all 24 scenario snippets follow the sk-doc 5-section/RCAF snippet contract, the root `manual_testing_playbook.md` remains a multi-section operator guide, and every Skill Advisor runtime path reference uses `.opencode/skill/skill-advisor/scripts/...` rather than bare `skill-advisor/...` or the retired `.opencode/skill/scripts/...` location.",
     "created_at": "2026-04-13T14:17:29.252Z",
-    "last_save_at": "2026-04-13T16:22:53.397Z",
+    "last_save_at": "2026-04-14T17:11:44.521Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

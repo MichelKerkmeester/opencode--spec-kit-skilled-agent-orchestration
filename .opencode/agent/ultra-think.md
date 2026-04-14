@@ -487,7 +487,7 @@ Fix verification gaps first
 | @context     | Memory-first codebase exploration | Provides context for PREPARE step                |
 | @deep-research | Deep technical investigation    | Alternative for pure research (no synthesis)     |
 | @review      | Code quality validation           | Can validate the winning solution post-synthesis |
-| @debug       | Root cause analysis               | Ultra-Think can replace for complex bugs         |
+| @debug       | Task-tool debug dispatch          | Use `@debug` via Task tool after repeated failures |
 
 ---
 

@@ -306,17 +306,16 @@ copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting
 Framework: CRAFT
 
 ```bash
-copilot -p "Execute a complex refactor of @./[dir]. Use @context to map dependencies, @debug to fix errors, and @review to verify quality." \
+copilot -p "Execute a complex refactor of @./[dir]. Use @context to map dependencies, dispatch @debug via the Task tool for stubborn errors, and use @review to verify quality." \
   --agent orchestrate --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
-### Session Handover
+### Session Continuity Save
 
 Framework: RCAF
 
 ```bash
-copilot -p "Summarize progress for the current task. List: completed files, remaining work, and context for the next developer." \
-  --agent handover --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+/memory:save specs/###-feature-name
 ```
 
 <!-- /ANCHOR:specialized_tasks -->

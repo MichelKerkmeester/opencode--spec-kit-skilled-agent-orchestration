@@ -47,12 +47,10 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `level_2/` | Level 1 + verification (`checklist.md`) |
 | `level_3/` | Level 2 + architecture (`decision-record.md`) |
 | `level_3+/` | Level 3 + governance extensions |
-| `context_template.md` | Context snapshot template |
 | `research/research.md` | Research artifact template |
 | `handover.md` | Session handover template |
 | `debug-delegation.md` | Debug delegation template |
 | `examples/` | Filled references only |
-| `memory/` | Generated continuity support artifacts (never hand-authored) |
 | `changelog/` | Packet-local nested changelog templates for root specs and phase children |
 | `scratch/` | Temporary workspace for non-committed artifacts |
 | `sharded/` | Sharded template set |
@@ -78,9 +76,10 @@ LOC is guidance, not a hard limit. Risk and complexity can move work up a level.
 <!-- ANCHOR:workflow-notes -->
 
 - Gate 3 spec-folder choice applies before implementation work.
+- `/spec_kit:start` is the canonical intake entry before `/spec_kit:plan`, `/spec_kit:complete`, or `/spec_kit:deep-research` continue on the packet.
 - `implementation-summary.md` is required for all levels and finalized after implementation.
 - `/spec_kit:resume` is the canonical recovery surface; active continuity rebuild order is `handover.md -> _memory.continuity -> spec docs`.
-- Generated `memory/` artifacts are supporting indexed output, not the packet source of truth.
+- `/memory:save` routes continuity into canonical packet docs via the content-router, targeting `decision-record.md`, `implementation-summary.md`, and `handover.md` as needed.
 - Nested packet changelogs can be generated at completion time with `../scripts/dist/spec-folder/nested-changelog.js`.
 - Level 2+ completion uses checklist verification (P0, then P1, then P2).
 - Memory context is saved via `../scripts/dist/memory/generate-context.js`, never manual file creation.
