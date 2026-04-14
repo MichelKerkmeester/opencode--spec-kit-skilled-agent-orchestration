@@ -70,11 +70,26 @@ Each grep hit classified as ONE of:
 | 5 | maintainability (pivoted from traceability per iter-4 closure) | Duplicate-new spawn root cause — save-side Session Deduplication contract vs runtime | **DONE** — 2 P0 (F017, F020), 1 P1 (F019), 1 P2 (F021); contract-claim-without-implementation is a NEW defect family |
 | 6 | **security** (repromoted from slot 9 per iter-5 closure) | Path validation + race condition between existsSync (workflow.ts:1630) and atomic commit (file-writer.ts:187) + content-injection audit | **DONE** — 0 P0, 0 P1, 1 P2 (F022, defense-in-depth); all 4 vectors (traversal, injection, TOCTOU, containment) closed by existing guards |
 | 7 | maintainability | Test fixtures + templates/ scaffolding + scripts/dist/ mirror confirmation (cross-validation sweep) | **DONE** — 0 P0, 2 P1 (F023 test-fixture-drift, F024 templates-teach-retirement-violation), 1 P2 (F025 templates/memory/README internal inconsistency); dist parity clean (F003 covers); all 4 dimensions complete |
-| 8 | synthesis | Gap analysis + reconciliation ledger (7 operator-facing surfaces + test fixtures) + prioritized remediation proposal (3 paths: honor retirement / rescind claim / implement missing contract) | pending |
+| 8 | synthesis | Gap analysis + reconciliation ledger (7 operator-facing surfaces + test fixtures) + prioritized remediation proposal (3 paths: honor retirement / rescind claim / implement missing contract) | **DONE (r1)** — review-report.md generated; Path A was selected and executed; v3.4.1.0 shipped |
 | 9 | (slot freed by iter-5 coverage) | — | — |
 | 10 | (reserve) | — | — |
 
 Convergence expected at iteration 4–6 (focused grep audit has finite surface).
+
+### r2 Pivot Plan (14-iter dispatch, iters 3-7 complete)
+
+| Iter | Dimension | Focus | Status |
+|---|---|---|---|
+| r2-1 | (reserved — r2 fix bundle pre-iter) | F001 (2 dead test files deleted), F002 (contextFilename + indexingStatus removed from WorkflowResult), F003 (Steps 8.5/8.6/CG-07/CG-07b deleted), F009 (save.md Pre-Flight Check 2 removed), F011 (v3.4.1.0 post-publish addendum), F013 (memory_system.md reframed as 2 active + 1 retired-compat) | **DONE** — pre-iter bundle |
+| r2-2 | (reserved — r2 deferred-by-design decisions) | F004 + F012 (compat alias setupContextDirectory KEPT due to 5+ test consumers) | **DEFERRED BY DESIGN** |
+| **r2-3** | **maintainability** | Re-audit r1's 25 findings against Path A v3.4.1.0 cutover; changelog-claim vs code-reality cross-check | **DONE** — 2 P0 (F026 phantom-render, F027 test-scripts-modules broken), 2 P1 (F028 contextFilename-test-drift, F029 compat-alias-teaching-drift), 1 P2 (F030 indexingStatus-dead-compute) |
+| **r2-4** | **security** | 4-vector re-audit of post-Path A surface (path-traversal / content-injection / TOCTOU / containment) on canonical-doc + graph-metadata path | **DONE** — 0 P0, 1 P1 (F031 writeGraphMetadataFile missing-realpath regression), 2 P2 (F032 refresh-concurrency-drift, F033 retirement-transition-log-noise) |
+| **r2-5** | **correctness** | Content-router 8-category coverage audit (mcp_server/handlers/memory-save.ts + lib/routing/content-router.ts) post memory/*.md fallback removal | **DONE** — 0 P0, 1 P1 (F034 hard-abort-when-implementation-summary-missing), 2 P2 (F035 handover.md-seed-friction, F036 drop-response-semantics-ambiguity) |
+| **r2-6** | **traceability** | Governance (CLAUDE.md, AGENTS.md×2, Barter/AGENTS.md) + SKILL.md stale-ref sweep for deleted symbols | **DONE** — 0 P0, 0 P1, 1 P2 (F037 templates/.hashes orphan-hash); surface is CLEAN — all 5 target docs have zero stale refs |
+| **r2-7** | **maintainability** | Test suite orphan-mock + fixture-drift + 8-file migration-claim verification | **DONE** — 1 P0 (F038 13-file orphan mock on memory-indexer), 1 P1 (F039 setupContextDirectory mock teaching retired layout), 1 P2 (F040 test-naming drift) |
+| r2-8 | dedicated-test-execution | Run `npm run test` capture failure set (recommended) | pending |
+| r2-9 | synthesis | r2 findings synthesis into v2 review-report.md updating 25-finding ledger | pending |
+| r2-10-14 | remediation-validation / reserve | Post-fix regression audit if operator executes follow-up fixes | reserve |
 
 ---
 
@@ -87,7 +102,35 @@ Convergence expected at iteration 4–6 (focused grep audit has finite surface).
 | traceability | **complete** (8 operator-facing retirement-claim-contradiction surfaces enumerated; half-migrated verdict fully characterised) | 1, 2, 3, 4, (5 cross-ref), (7 templates) | F008 (save.md) + F010 (INSTALL_GUIDE.md) + F011 (v3.4.0.0 changelog ×2 mirrors) + F012 (manage.md:50) + F014 (save_workflow.md) + F016 (worked_examples.md wrong-layout teaching) + F019 (save.md:520 Recovery table) + F024 (templates: context_template.md + CHK-052 across 4 checklists + scratch/README.md, iter 7). Retirement-claim-contradiction family spans 7 doc surfaces + 1 scaffolding-pipeline surface; contract-claim-without-implementation (F017/F019) is a distinct family. |
 | maintainability | **complete** (save-side dedup contract characterised + test-fixture drift surfaced + templates surface cross-validated) | 5, 7 | F017 (save-side Session Deduplication entirely unimplemented: 4 fallback heuristics, 0 contract matches) + F020 (phantom frontmatter metadata keys: session_hash/dedup_status/previous_session_id/related_sessions zero producers) + F021 (pre-save overlap SHA-1 structural misalignment) + F023 (test-fixture-drift across ≥8 vitest files encoding retirement-violating contract as expected behavior) + F025 (templates/memory/README internal inconsistency, P2). All maintenance-burden surfaces surfaced. |
 
-## Running Findings (severity-weighted)
+## r2 Running Findings (post-Path A cutover)
+
+| Severity | Count | Weight | Contribution |
+|---|---|---|---|
+| P0 | 3 | 10 | 30 |
+| P1 | 5 | 5 | 25 |
+| P2 | 7 | 1 | 7 |
+| **Total (r2)** | **15** | | **62** |
+
+Active r2 findings:
+- **F026** (P0, iter 3): `workflow.ts:1241-1442` + `template-renderer.ts:294-296,106` phantom-render — `populateTemplate('context', ...)` still runs on every save, falls through to `buildLegacyContextCompatibilityDocument`
+- **F027** (P0, iter 3): `test-scripts-modules.js:1474-1526` requires deleted `file-writer` module; asserts on deleted `indexMemory` / `writeFilesAtomically` APIs
+- **F038** (P0, iter 7): 13 vitest/test files orphan-mock `../core/memory-indexer` (`indexMemory` + `updateMetadataEmbeddingStatus`); module is now type-only
+- **F028** (P1, iter 3): 14+ test files still read `result.contextFilename`; WorkflowResult no longer declares it — silent undefined reads
+- **F029** (P1, iter 3): `setupContextDirectory` compat-alias teaching-drift in `scripts/spec-folder/README.md:109` + 14 test files mocking non-existent "contextDir" concept
+- **F031** (P1, iter 4): `writeGraphMetadataFile` lacks realpath containment — defense-in-depth regression vs retired `file-writer.ts::verifyResolvedWriteTarget`
+- **F034** (P1, iter 5): Content-router hard-aborts for `narrative_progress` / `narrative_delivery` / (non-L3) `decision` when `implementation-summary.md` missing; no fallback replaces retired `memory/*.md` last-resort
+- **F039** (P1, iter 7): 13 test files mock `setupContextDirectory` returning `workflowHarness.contextDir`, teaching retired layout
+- **F030** (P2, iter 3): `workflow.ts:1546,1747-1752` retains `indexingStatus` + `qualityResult` dead-compute
+- **F032** (P2, iter 4): `refreshGraphMetadataForSpecFolder` concurrency drift (no mutex on script-side path)
+- **F033** (P2, iter 4): Retirement-transition log-noise at `workflow.ts:1554,1651,1752`
+- **F035** (P2, iter 5): `handover.md` seed-friction — first `handover_state` save aborts until operator manually copies template
+- **F036** (P2, iter 5): `drop` category response semantics ambiguity — `targetDocPath` implies queue that doesn't happen
+- **F037** (P2, iter 6): `templates/.hashes:7` orphan SHA256 for deleted `context_template.md`
+- **F040** (P2, iter 7): `test-scripts-modules.js:1038-1051` T-015 tests teach deprecated-named API authoritatively
+
+---
+
+## r1 Running Findings (pre-Path A, for reference)
 
 | Severity | Count | Weight | Contribution |
 |---|---|---|---|
@@ -208,4 +251,17 @@ Active P2 findings:
 - **Zero-hit grep for contract artefacts** is a strong negative-evidence tool: when a contract names frontmatter keys or config constants, one grep across the implementation tree definitively classifies whether the contract is shipped or phantom
 
 ## Next Focus
-**Synthesis complete — iter 9-10 reserved for remediation validation if operator requests.** Iteration 8 produced the final `review/review-report.md` (consolidated 7 iterations + 25 active findings + 6 defect families + 3 remediation paths + recommended path = B or B+C). Active findings unchanged: 9 P0 + 9 P1 + 7 P2 = 25 total / weight 142 (F025 P2 included). **Verdict FAIL hasAdvisories=true** confirmed — 9 active P0 block release. **Recommended Path: B** (rescind retirement claim — lowest risk, fastest closure of 22/25 findings in ~4-8 hours) **+ optional C** (implement dedup contract — closes F017/F019/F020/F021; leaves only F022 defense-in-depth P2 for follow-up). Iter 9-10 slots available if operator wants: (a) post-remediation deep-review re-run to verify closure after Path B or C lands, (b) finer-grained DB-migration impact analysis if operator chooses Path A, (c) preflight/postflight retrieval-quality evaluation via `/memory:search`. **No further audit iterations warranted without new scope.** Operator actions: see `review-report.md` §9 Next Steps — recommended sequence is `/spec_kit:plan` with Path B scope.
+
+**r1 state (archived):** iter-8 synthesis produced `review/review-report.md` recommending Path A (honor retirement). Path A was chosen and shipped as `v3.4.1.0`.
+
+**r2 state (active, iters 3-7 complete):** 15 new findings across 4 dimensions documenting Path A cutover defects:
+- 3 P0: F026 (phantom-render survives template deletion), F027 (test-scripts-modules broken), F038 (13-file orphan-mock on memory-indexer)
+- 5 P1: F028 (14+ test-files silently read undefined contextFilename), F029 (compat-alias teaching-drift), F031 (writeGraphMetadataFile containment-regression), F034 (content-router hard-abort without fallback), F039 (setupContextDirectory mock teaching retired layout)
+- 7 P2: F030, F032, F033, F035, F036, F037, F040 (various drift + edge-case + cosmetic)
+
+**r2 verdict:** FAIL — 3 active P0 block next release. Path A as shipped left significant test-surface drift (13 orphan mocks + 14 broken contextFilename asserts + 1 broken CommonJS smoke-test surface) AND a new P0 behavior defect (phantom-render on every save). r2 addendum at `v3.4.1.0:166` addressed only 2 of the 15 actual r2 issues.
+
+**r2 recommended next focus:**
+- r2-8 (dedicated test-execution pass): run `npm run test` in both `scripts/` and `mcp_server/`; capture failure set; enumerate what passes-as-false-positive vs fails-outright.
+- r2-9 (synthesis): consolidate r1 + r2 findings into a v2 `review-report.md` tracking closed-by-Path-A / active-post-Path-A / new-introduced-by-Path-A categories. Recommend operator execute a follow-up spec to close the 3 P0 + 5 P1.
+- Operator action before r2-8: decide whether to (a) continue auditing (r2-8 through r2-14) or (b) kick off a remediation spec immediately from the r2 iter 3-7 findings. The 3 P0 are actionable without further audit.

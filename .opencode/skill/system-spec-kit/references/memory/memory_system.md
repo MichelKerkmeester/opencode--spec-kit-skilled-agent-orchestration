@@ -35,7 +35,7 @@ The Spec Kit Memory system provides context preservation across sessions through
 
 ### Indexable Content Sources
 
-The memory system indexes content from three distinct sources:
+The memory system indexes content from two active sources, plus a retired-compatibility row preserved for read-side retrieval against historical packets:
 
 | Source | Location Pattern | Memory Type | Default Tier | Discovery |
 |--------|-----------------|-------------|--------------|-----------|

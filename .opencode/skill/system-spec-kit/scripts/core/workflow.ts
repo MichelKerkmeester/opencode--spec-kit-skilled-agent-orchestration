@@ -314,20 +314,16 @@ export interface WorkflowOptions {
 
 /** Result object returned after a successful workflow execution. */
 export interface WorkflowResult {
-  /** Absolute path to the memory output directory. */
+  /** Absolute path to the spec folder (post-v3.4.1.0: no per-save context subdirectory is created). */
   contextDir: string;
   /** Relative path of the resolved spec folder. */
   specFolder: string;
   /** Basename of the spec folder (e.g., "015-outsourced-agent-handback"). */
   specFolderName: string;
-  /** Filename of the primary context markdown file written. */
-  contextFilename: string;
-  /** List of absolute paths for all files written during this run. */
+  /** List of absolute paths for all files written during this run (canonical spec docs via content-router). */
   writtenFiles: string[];
-  /** Numeric memory ID from indexing, or null if indexing was skipped. */
+  /** Numeric memory ID from indexing, or null if indexing was skipped. Always null post-v3.4.1.0 — Step 11.5 indexes canonical docs separately. */
   memoryId: number | null;
-  /** Explicit indexing outcome for this workflow run. */
-  indexingStatus: WorkflowIndexingStatus;
   /** Non-fatal warnings encountered while persisting workflow artifacts. */
   warnings: string[];
   /** Summary statistics for the generated memory. */
@@ -1542,166 +1538,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 8.5: Content cleaning — strip leaked HTML tags from rendered content
   // Preserves HTML inside fenced code blocks (```...```) which is legitimate code.
-  log('Step 8.5: Content cleaning...');
-  const rawContent = files[ctxFilename];
-  const cleanedContent = stripWorkflowHtmlOutsideCodeFences(rawContent);
-  // Only update if cleaning made changes
-  if (cleanedContent !== rawContent) {
-    files[ctxFilename] = cleanedContent;
-    log('   Stripped leaked HTML tags from content (code blocks preserved)');
-  } else {
-    log('   No HTML cleaning needed');
-  }
-
-  // Step 8.6: Quality validation + scoring
-  log('Step 8.6: Quality scoring...');
-  const qualityValidation = validateMemoryQualityContent(files[ctxFilename], {
-    filePath: path.join(validatedSpecFolderPath, ctxFilename),
-  });
-  contaminationAuditTrail.push(qualityValidation.contaminationAudit);
-  const qualitySignals: ValidationSignal[] = qualityValidation.ruleResults.map((rule) => ({
-    ruleId: rule.ruleId,
-    passed: rule.passed,
-  }));
-  const sufficiencySnapshot = buildWorkflowMemoryEvidenceSnapshot({
-    title: memoryTitle,
-    content: files[ctxFilename],
-    triggerPhrases: preExtractedTriggers,
-    files: effectiveFiles,
-    observations: sessionData.OBSERVATIONS || [],
-    decisions: decisions.DECISIONS,
-    outcomes: sessionData.OUTCOMES || [],
-    nextAction: sessionData.NEXT_ACTION,
-    blockers: sessionData.BLOCKERS,
-    recentContext: collectedData.recentContext,
-  });
-  const sufficiencyResult = evaluateMemorySufficiency(sufficiencySnapshot);
-  const qualityV2 = scoreMemoryQualityV2({
-    content: files[ctxFilename],
-    validatorSignals: qualitySignals,
-    hadContamination,
-    contaminationSeverity: contaminationMaxSeverity,
-    messageCount: conversations.MESSAGES.length,
-    toolCount: patchedToolCount,
-    decisionCount: effectiveDecisionCount,
-    sufficiencyScore: sufficiencyResult.score,
-    insufficientContext: !sufficiencyResult.pass,
-  });
-  files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.score01, qualityV2.qualityFlags);
-
-  // Step 8.5b: Spec document health annotation (non-blocking)
-  let specDocHealth: ReturnType<typeof evaluateSpecDocHealth> | null = null;
-  try {
-    const specFolderAbsForHealth = path.resolve(specFolder);
-    specDocHealth = evaluateSpecDocHealth(specFolderAbsForHealth);
-    if (!specDocHealth.pass) {
-      log(`   Spec doc health: ${specDocHealth.errors} errors, ${specDocHealth.warnings} warnings (score: ${specDocHealth.score})`);
-    }
-    files[ctxFilename] = injectSpecDocHealthMetadata(files[ctxFilename], specDocHealth);
-  } catch (e: unknown) {
-    // Non-blocking — health annotation failure must not prevent memory save
-    log(`   Spec doc health check skipped: ${e instanceof Error ? e.message : String(e)}`);
-  }
-
-  // CG-07b: Validate template contract BEFORE any banner/warning is prepended.
-  // Banners prepended after this point (low-quality, simulation, medium-quality)
-  // would shift the frontmatter away from position 0, causing false
-  // missing_frontmatter violations when the contract is checked later.
-  const templateContractEarly = validateMemoryTemplateContract(files[ctxFilename]);
-  if (!templateContractEarly.valid) {
-    const contractDetails = templateContractEarly.violations
-      .map((violation: { code: string; sectionId?: string }) => violation.sectionId ? `${violation.code}:${violation.sectionId}` : violation.code)
-      .join(', ');
-    const contractAbortMsg = `QUALITY_GATE_ABORT: Rendered memory violated template contract: ${contractDetails}`;
-    warn(contractAbortMsg);
-    throw new Error(contractAbortMsg);
-  }
-
-  if (filterStats.qualityScore < 20) {
-    const warningHeader = `> **Note:** This session had limited actionable content (input_completeness_score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
-    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], warningHeader);
-    log(`   Warning: Low quality session (${filterStats.qualityScore}/100) - warning header added`);
-  }
-
-  if (isSimulation) {
-    const simWarning = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
-    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], simWarning);
-    log('   Warning: Simulation mode: placeholder content warning added');
-  }
-
-  if (!qualityValidation.valid) {
-    warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);
-  }
-  // Unified quality scoring: use v2 scorer for all decisions (abort, index, metadata)
-  const qualityResult = qualityV2;
-  log(
-    `   Memory quality score: ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)})`
-  );
-  if (qualityResult.warnings.length > 0) {
-    for (const warning of qualityResult.warnings) {
-      warn(`   Quality warning: ${warning}`);
-    }
-  }
-  if (qualityResult.dimensions && qualityResult.dimensions.length > 0) {
-    const dimSummary = qualityResult.dimensions
-      .filter((d) => !d.passed)
-      .map((d) => d.id)
-      .join(', ');
-    if (dimSummary) {
-      log(`   Failed dimensions: ${dimSummary}`);
-    }
-  }
-
-  if (!sufficiencyResult.pass) {
-    const insufficiencyAbortMsg = formatSufficiencyAbort(sufficiencyResult);
-    warn(insufficiencyAbortMsg);
-    throw new Error(insufficiencyAbortMsg);
-  }
-
-  const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
-  if (qualityResult.score01 < QUALITY_ABORT_THRESHOLD) {
-    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +
-      `is below minimum threshold (${QUALITY_ABORT_THRESHOLD.toFixed(2)}). ` +
-      `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
-      `To force save, pass data via JSON file instead of runtime capture.`;
-    warn(abortMsg);
-    throw new Error(abortMsg);
-  }
-
-  const validationDisposition = determineValidationDisposition(qualityValidation.failedRules, captureSource);
-  if (validationDisposition.disposition === 'abort_write') {
-    const failedContaminationRules = validationDisposition.blockingRuleIds.filter((ruleId) => ruleId === 'V8' || ruleId === 'V9');
-    if (failedContaminationRules.length > 0) {
-      const contaminationAbortMsg = `CONTAMINATION_GATE_ABORT: Critical contamination rules failed: [${failedContaminationRules.join(', ')}]. ` +
-        `Content contains cross-spec contamination that would corrupt the memory index. Aborting write.`;
-      warn(contaminationAbortMsg);
-      throw new Error(contaminationAbortMsg);
-    }
-
-    const validationAbortMsg = `QUALITY_GATE_ABORT: Save blocked due to failed validation rules: ${validationDisposition.blockingRuleIds.join(', ')}`;
-    warn(validationAbortMsg);
-    throw new Error(validationAbortMsg);
-  }
-
-  if (qualityValidation.failedRules.length > 0) {
-    if (validationDisposition.disposition === 'write_skip_index') {
-      warn(
-        `QUALITY_GATE_WARN: Save continuing, but semantic indexing will be skipped due to validation rules: ` +
-        `${validationDisposition.indexBlockingRuleIds.join(', ')}`
-      );
-    } else if (captureCapabilities.inputMode === 'captured') {
-      warn(`QUALITY_GATE_WARN: Captured-session save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
-    } else {
-      warn(`QUALITY_GATE_WARN: Structured save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
-    }
-  }
-
-  // CG-07: Add warning banner for medium-quality scores (0.30-0.60)
-  if (qualityResult.score01 < 0.6 && qualityResult.score01 >= QUALITY_ABORT_THRESHOLD) {
-    const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}), which is below the recommended threshold of 0.60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
-    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], mediumQualityWarning);
-    log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
-  }
+  // Steps 8.5/8.6/8.5b/CG-07/CG-07b removed in v3.4.1.0 cutover (Path A r2 P1-fix F003/F010).
+  // These steps validated, scored, and gated the rendered [spec]/memory/*.md artifact that
+  // No longer exists. Quality + sufficiency + template-contract checks for canonical-doc
+  // Saves are owned by the content-router (handlers/memory-save.ts) and Step 11.5 indexer.
+  // Variables previously used downstream are stubbed for compatibility:
+  const qualityResult = { score01: 1, score100: 100, warnings: [] as string[], dimensions: [] as Array<{ id: string; passed: boolean }>, qualityFlags: [] as string[] };
 
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
@@ -2048,16 +1890,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         contextDir: validatedSpecFolderPath,
         specFolder,
         specFolderName,
-        contextFilename: ctxFilename,
         writtenFiles,
         memoryId,
-        indexingStatus,
         warnings: workflowWarnings,
         stats: {
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,
           diagramCount: diagrams.DIAGRAMS.length,
-          qualityScore: qualityResult.score,
+          qualityScore: qualityResult.score100,
           isSimulation
         }
       };

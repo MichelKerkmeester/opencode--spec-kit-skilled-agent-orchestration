@@ -151,17 +151,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)
 
-#### Check 2: Duplicate Session Detection
-
-- Call `spec_kit_memory_memory_stats({})`
-- Compare `lastSessionHash` vs current conversation fingerprint
-- If duplicate detected (same topic + timeframe < 1h):
-  - WARN: "Recent save detected for this topic"
-  - Show: Last save time, topic, file path
-  - ASK: `[O]verwrite | [A]ppend | [N]ew file | [C]ancel`
-  - WAIT for explicit response
-
-#### Check 3: Token Budget Validation
+#### Check 2: Token Budget Validation
 
 - Estimate conversation size: `message_count * avg_tokens_per_message`
 - If estimated > 50,000 tokens:
@@ -169,19 +159,12 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - OPTIONS: `[C]ontinue anyway | [S]plit save | [E]dit scope`
   - WAIT for response
 
-#### Check 4: Spec Folder Existence
+#### Check 3: Spec Folder Existence
 
 - If `$ARGUMENTS` contains folder → validate exists, store as `pending_folder`
 - If `$ARGUMENTS` empty → defer to Phase 1
 
-#### Check 5: File Naming Conflict
-
-- Generate filename: `{DD-MM-YY}_{HH-MM}__{topic}.md`
-- If file already exists (and not duplicate from Check 2):
-  - WARN: "Filename collision detected"
-  - ASK: `[A]uto-increment | [R]ename | [O]verwrite`
-
-#### Check 6: Stop Hook Awareness
+#### Check 4: Stop Hook Awareness
 
 - Confirm whether recent hook-driven context preservation evidence exists for this session
 - Current limitation: no dedicated `pendingStopSave` field is shipped in the hook state, so `/memory:save` must not claim a guaranteed auto-save merge marker
@@ -190,11 +173,9 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 **Phase 0 Output:**
 ```text
 anchor_validation: PASSED | WARNED
-duplicate_check:   PASSED | DUPLICATE_RESOLVED
 token_budget:      PASSED | SPLIT_REQUESTED
 folder_existence:  PASSED
-filename_conflict:  PASSED | RENAMED_TO=[new_name]
-stop_hook_check:   PASSED | DUPLICATE_RESOLVED
+stop_hook_check:   PASSED
 ```
 
 ### Spec Folder Validation (Phase 1)
