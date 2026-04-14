@@ -15,11 +15,9 @@ import {
   extractConversations,
   extractDecisions,
   extractDiagrams,
-  extractPhasesFromData,
   enhanceFilesWithSemanticDescriptions,
 } from '../extractors';
 import { detectSpecFolder, ensureSpecFolderExists } from '../spec-folder';
-import { populateTemplate } from '../renderers';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { generateContentSlug } from '../utils/slug-utils';
@@ -48,8 +46,6 @@ import {
 import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
 import { extractGitContext } from '../extractors/git-context-extractor';
 
-// Static imports replacing lazy require()
-import * as flowchartGen from '../lib/flowchart-generator';
 import { createFilterPipeline } from '../lib/content-filter';
 import type { FilterStats, ContaminationAuditRecord } from '../lib/content-filter';
 import {
@@ -67,11 +63,6 @@ import { evaluateSpecDocHealth } from '@spec-kit/shared/parsing/spec-doc-health'
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { type WorkflowIndexingStatus } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
-import { reviewPostSaveQuality, printPostSaveReview, computeReviewScorePenalty } from './post-save-review';
-import {
-  emitMemoryMetric,
-  METRIC_M9_MEMORY_SAVE_DURATION_SECONDS,
-} from '../lib/memory-telemetry';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
@@ -1060,7 +1051,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       observations: narrativeObservations,
     };
 
-    const [sessionData, conversations, decisions, diagrams, workflowData] = await Promise.all([
+    const [sessionData, conversations, decisions, diagrams] = await Promise.all([
     (async () => {
       log('   Collecting session data...');
       const result = await sessionDataFn(narrativeCollectedData, specFolderName, options.sessionId);
@@ -1084,47 +1075,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const result = await extractDiagrams(collectedData as Parameters<typeof extractDiagrams>[0]);
       log(`   Found ${result.DIAGRAMS.length} diagrams`);
       return result;
-    })(),
-    (async () => {
-      log('   Generating workflow flowchart...');
-      const phases = extractPhasesFromData(narrativeCollectedData as Parameters<typeof extractPhasesFromData>[0]);
-      const patternType: string = flowchartGen.detectWorkflowPattern(phases);
-      const phaseDetails = flowchartGen.buildPhaseDetails(phases);
-      const features = flowchartGen.extractFlowchartFeatures(phases, patternType);
-      const useCases = flowchartGen.getPatternUseCases(patternType);
-      const useCaseTitle = specFolderName.replace(/^\d+-/, '').replace(/-/g, ' ');
-
-      log(`   Workflow data generated (${patternType})`);
-      return {
-        WORKFLOW_FLOWCHART: flowchartGen.generateWorkflowFlowchart(phases),
-        HAS_WORKFLOW_DIAGRAM: false,
-        PATTERN_TYPE: patternType.charAt(0).toUpperCase() + patternType.slice(1),
-        PATTERN_LINEAR: patternType === 'linear',
-        PATTERN_PARALLEL: patternType === 'parallel',
-        PHASES: phaseDetails,
-        HAS_PHASES: phaseDetails.length > 0,
-        USE_CASE_TITLE: useCaseTitle,
-        FEATURES: features,
-        USE_CASES: useCases
-      };
     })()
   ]);
     log('\n   All extraction complete (parallel execution)\n');
-
-  // O1-4: Use local variable instead of mutating extractor result in-place
-  // Patch TOOL_COUNT for enriched captured-session saves so V7 does not flag
-  // Synthetic file paths as contradictory with zero tool usage.
-  // RC-9 fix: Guard against NaN/undefined TOOL_COUNT before any comparison.
-  let patchedToolCount = Number.isFinite(sessionData.TOOL_COUNT) ? sessionData.TOOL_COUNT : 0;
-  const enrichedFileCount = collectedData.FILES?.length ?? 0;
-  const captureToolEvidenceCount = typeof collectedData._toolCallCount === 'number'
-    && Number.isFinite(collectedData._toolCallCount)
-    ? collectedData._toolCallCount
-    : 0;
-  const inferredToolCount = Math.max(enrichedFileCount, captureToolEvidenceCount);
-  if (isCapturedSessionMode && patchedToolCount === 0 && inferredToolCount > 0) {
-    patchedToolCount = inferredToolCount;
-  }
 
   // Step 7.5: Generate semantic implementation summary
   log('Step 7.5: Generating semantic summary...');
@@ -1435,102 +1388,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     ...((currentSnakeCaseCausalLinks ?? currentCamelCaseCausalLinks ?? {}) as Record<string, unknown>),
   };
   collectedData.causalLinks = collectedData.causal_links;
-  const causalLinks = buildCausalLinksContext(collectedData);
   const effectiveDecisionCount = Math.max(sessionData.DECISION_COUNT, decisions.DECISIONS.length);
 
-  const files: Record<string, string> = {
-    [ctxFilename]: await populateTemplate('context', {
-      ...sessionData,
-      ...conversations,
-      ...workflowData,
-      // RC-9: Re-assert TOOL_COUNT after spreading conversations ONLY in
-      // Captured-session mode, because conversations object contains TOOL_COUNT: 0
-      // Which overwrites the patched value from captured-session enrichment.
-      // Non-captured flows should keep conversations.TOOL_COUNT as-is.
-      // O1-4: Uses patchedToolCount (local variable) instead of mutated sessionData.
-      ...(isCapturedSessionMode ? { TOOL_COUNT: patchedToolCount } : {}),
-      FILES: effectiveFiles,
-      HAS_FILES: effectiveFiles.length > 0,
-      MESSAGE_COUNT: conversations.MESSAGES.length,
-      DECISION_COUNT: effectiveDecisionCount,
-      DIAGRAM_COUNT: diagrams.DIAGRAMS.length,
-      PHASE_COUNT: conversations.PHASE_COUNT,
-      // Compact wrapper mode: pass canonical docs and evidence instead of full decisions/conversation
-      CANONICAL_DOCS: sessionData.CANONICAL_DOCS || {},
-      CANONICAL_SOURCE_ENTRIES: Array.isArray((sessionData.CANONICAL_DOCS as unknown as Record<string, unknown> | undefined)?.CANONICAL_SOURCE_ENTRIES)
-        ? (sessionData.CANONICAL_DOCS as unknown as Record<string, unknown>).CANONICAL_SOURCE_ENTRIES as Array<Record<string, string>>
-        : [],
-      DISTINGUISHING_EVIDENCE: sessionData.DISTINGUISHING_EVIDENCE || [],
-      DECISION_HEADLINES: decisions.DECISIONS.slice(0, 2).map(d => d.TITLE),
-      HAS_EXPANDED_DECISIONS: false,
-      HAS_IMPLEMENTATION_GUIDE: sessionData.HAS_IMPLEMENTATION_GUIDE === true,
-      // P1-4: Convert 0-1 confidence to 0-100 for template percentage rendering (kept for fallback mode)
-      DECISIONS: [],
-      HIGH_CONFIDENCE_COUNT: 0,
-      MEDIUM_CONFIDENCE_COUNT: 0,
-      LOW_CONFIDENCE_COUNT: 0,
-      FOLLOWUP_COUNT: 0,
-      HAS_AUTO_GENERATED: diagrams.HAS_AUTO_GENERATED,
-      FLOW_TYPE: diagrams.FLOW_TYPE,
-      AUTO_CONVERSATION_FLOWCHART: diagrams.AUTO_CONVERSATION_FLOWCHART,
-      AUTO_DECISION_TREES: diagrams.AUTO_DECISION_TREES,
-      DIAGRAMS: diagrams.DIAGRAMS,
-      // Remove expanded implementation summary bindings (now in canonical docs)
-      IMPLEMENTATION_SUMMARY: '',
-      HAS_IMPLEMENTATION_SUMMARY: false,
-      IMPL_TASK: '',
-      IMPL_SOLUTION: '',
-      IMPL_FILES_CREATED: [],
-      IMPL_FILES_MODIFIED: [],
-      IMPL_DECISIONS: [],
-      IMPL_OUTCOMES: [],
-      HAS_IMPL_FILES_CREATED: false,
-      HAS_IMPL_FILES_MODIFIED: false,
-      HAS_IMPL_DECISIONS: false,
-      HAS_IMPL_OUTCOMES: false,
-      TOPICS: keyTopics,
-      HAS_KEY_TOPICS: keyTopics.length > 0,
-      TRIGGER_PHRASES: preExtractedTriggers,
-      TRIGGER_PHRASES_YAML: renderTriggerPhrasesYaml(preExtractedTriggers),
-      KEY_FILES: [],
-      ...memoryClassification,
-      ...sessionDedup,
-      ...causalLinks,
-      RELATED_SESSIONS: [],
-      PARENT_SPEC: resolveParentSpec(specFolder, specFolderName),
-      CHILD_SESSIONS: [],
-      EMBEDDING_MODEL: MODEL_NAME || 'text-embedding-3-small',
-      EMBEDDING_VERSION: '1.0',
-      CHUNK_COUNT: 1,
-      MEMORY_TITLE: memoryTitle,
-      MEMORY_DASHBOARD_TITLE: memoryDashboardTitle,
-      MEMORY_DESCRIPTION: memoryDescription,
-      GRAPH_CONTEXT: '',
-      HAS_GRAPH_CONTEXT: false,
-      // Phase 004 T020: Bind toolCalls and exchanges from CollectedDataBase to template context
-      hasToolCalls: Array.isArray((collectedData as Record<string, unknown>).toolCalls) &&
-        ((collectedData as Record<string, unknown>).toolCalls as unknown[]).length > 0,
-      TOOL_CALLS_COMPACT: Array.isArray((collectedData as Record<string, unknown>).toolCalls)
-        ? ((collectedData as Record<string, unknown>).toolCalls as Array<Record<string, unknown>>)
-            .slice(0, 3)
-            .map(tc => `\`${tc.tool || tc.name || 'unknown'}\` (${tc.count || 1})`)
-            .join(' | ')
-        : '',
-      hasExchanges: Array.isArray((collectedData as Record<string, unknown>).exchanges) &&
-        ((collectedData as Record<string, unknown>).exchanges as unknown[]).length > 0,
-      EXCHANGES_COMPACT: (() => {
-        const exchanges = (collectedData as Record<string, unknown>).exchanges;
-        if (!Array.isArray(exchanges) || exchanges.length === 0) return '';
-        const topics = (exchanges as Array<Record<string, unknown>>)
-          .slice(0, 3)
-          .map(ex => ex.topic || ex.userInput || 'exchange')
-          .filter(Boolean)
-          .map(t => `\`${t}\``)
-          .join(', ');
-        return `${exchanges.length} exchanges${topics ? ` \u2014 ${topics}` : ''}`;
-      })(),
-    })
-  };
+  // Path A retired the legacy [spec]/memory/*.md output, so workflow no longer
+  // renders a compatibility document in-memory before skipping the write.
   const duplicateExistingFilename: string | null = null;
 
   const isSimulation: boolean = !collectedData || !!collectedData._isSimulation || simFactory.requiresSimulation(collectedData);
@@ -1542,8 +1403,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // These steps validated, scored, and gated the rendered [spec]/memory/*.md artifact that
   // No longer exists. Quality + sufficiency + template-contract checks for canonical-doc
   // Saves are owned by the content-router (handlers/memory-save.ts) and Step 11.5 indexer.
-  // Variables previously used downstream are stubbed for compatibility:
-  const qualityResult = { score01: 1, score100: 100, warnings: [] as string[], dimensions: [] as Array<{ id: string; passed: boolean }>, qualityFlags: [] as string[] };
 
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
@@ -1655,90 +1514,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log(`  - ${effectiveDecisionCount} key decisions documented`);
   log(`  - ${diagrams.DIAGRAMS.length} diagrams preserved`);
   log(`  - Session duration: ${sessionData.DURATION}\n`);
-
-  // Step 10.5: Post-save quality review (JSON mode only)
-  if (ctxFileWritten && captureCapabilities.inputMode !== 'captured') {
-    const savedFilePath = path.join(validatedSpecFolderPath, ctxFilename);
-    const jsonSessionSummary = typeof (collectedData as Record<string, unknown>)?._JSON_SESSION_SUMMARY === 'string'
-      ? (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string
-      : undefined;
-    const reviewStartedAt = Date.now();
-    const reviewInputMode = typeof captureCapabilities.inputMode === 'string'
-      ? captureCapabilities.inputMode
-      : SaveMode.Json;
-    const reviewCollectedData = collectedData
-      ? {
-          ...collectedData,
-          sessionSummary: collectedData.sessionSummary || jsonSessionSummary,
-          provenanceExpected: collectedData.saveMode === SaveMode.Json
-            && collectedData.repositoryState !== 'unavailable',
-          renderQualityScore: qualityResult.score01,
-          inputCompletenessScore: typeof (filterPipeline.getStats() as { qualityScore?: unknown }).qualityScore === 'number'
-            ? (filterPipeline.getStats() as { qualityScore: number }).qualityScore
-            : null,
-        }
-      : collectedData;
-    structuredLog('info', 'memory_save_started', {
-      input_mode: reviewInputMode,
-      save_mode: collectedData?.saveMode ?? SaveMode.Json,
-      spec_folder_name: specFolderName,
-      provenance_expected: reviewCollectedData?.provenanceExpected === true,
-      review_enabled: true,
-    });
-    const reviewResult = reviewPostSaveQuality({
-      savedFilePath,
-      content: files[ctxFilename],
-      collectedData: reviewCollectedData,
-      inputMode: reviewInputMode,
-    });
-    printPostSaveReview(reviewResult);
-    const reviewDurationSeconds = (Date.now() - reviewStartedAt) / 1000;
-    emitMemoryMetric(METRIC_M9_MEMORY_SAVE_DURATION_SECONDS, reviewDurationSeconds, {
-      input_mode: reviewInputMode,
-      save_mode: collectedData?.saveMode ?? SaveMode.Json,
-      outcome: reviewResult.status.toLowerCase(),
-    });
-    structuredLog(
-      reviewResult.status === 'REJECTED'
-        ? 'error'
-        : reviewResult.status === 'ISSUES_FOUND' || reviewResult.status === 'REVIEWER_ERROR'
-          ? 'warn'
-          : 'info',
-      'memory_save_review_completed',
-      {
-        status: reviewResult.status,
-        issue_count: reviewResult.issues.length,
-        high_count: reviewResult.highCount ?? reviewResult.issues.filter((issue) => issue.severity === 'HIGH').length,
-        medium_count: reviewResult.mediumCount ?? reviewResult.issues.filter((issue) => issue.severity === 'MEDIUM').length,
-        low_count: reviewResult.lowCount ?? reviewResult.issues.filter((issue) => issue.severity === 'LOW').length,
-        score_penalty: reviewResult.issues.length > 0 ? computeReviewScorePenalty(reviewResult.issues) : 0,
-        duration_ms: Math.round(reviewDurationSeconds * 1000),
-        blocking: reviewResult.blocking === true,
-      },
-    );
-    if (reviewResult.status === 'REVIEWER_ERROR') {
-      warn(`   Post-save reviewer failed: ${reviewResult.reviewerError || 'unknown reviewer error'}`);
-      structuredLog('warn', 'memory_save_review_failure', {
-        check_id: 'D10',
-        severity: 'HIGH',
-        saved_file_path: savedFilePath,
-        input_mode: reviewInputMode,
-        save_mode: collectedData?.saveMode ?? SaveMode.Json,
-        message: reviewResult.reviewerError || 'Unexpected reviewer failure',
-      });
-    }
-    // Phase 002 T035: Log post-save review score impact (advisory — does not patch saved file
-    // to preserve content-based duplicate detection at line 1259)
-    if ((reviewResult.status === 'ISSUES_FOUND' || reviewResult.status === 'REJECTED') && reviewResult.issues.length > 0) {
-      const scorePenalty = computeReviewScorePenalty(reviewResult.issues);
-      if (scorePenalty < 0) {
-        log(`   Post-save review: render_quality_score penalty ${scorePenalty.toFixed(2)} (${reviewResult.issues.length} issues found)`);
-      }
-    }
-    if (reviewResult.status === 'REJECTED') {
-      throw new Error(reviewResult.blockerReason || 'POST_SAVE_REVIEW_REJECTED');
-    }
-  }
 
   // Step 11: Semantic memory indexing
   log('Step 11: Indexing semantic memory...');
@@ -1897,7 +1672,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,
           diagramCount: diagrams.DIAGRAMS.length,
-          qualityScore: qualityResult.score100,
+          qualityScore: 100,
           isSimulation
         }
       };

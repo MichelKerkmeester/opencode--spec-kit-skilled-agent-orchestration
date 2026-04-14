@@ -966,13 +966,21 @@ export function refreshGraphMetadataForSpecFolder(
   specFolderPath: string,
   options: GraphMetadataRefreshOptions = {},
 ): GraphMetadataRefreshResult {
-  if (!canClassifyAsGraphMetadataPath(path.join(specFolderPath, GRAPH_METADATA_FILENAME))) {
-    throw new Error(`Spec folder is not under a supported specs root: ${specFolderPath}`);
+  const resolvedSpecFolderPath = path.resolve(specFolderPath);
+  let canonicalSpecFolderPath: string;
+  try {
+    canonicalSpecFolderPath = fs.realpathSync(resolvedSpecFolderPath);
+  } catch {
+    throw new Error(`Spec folder path is invalid or contains a broken symlink: ${resolvedSpecFolderPath}`);
   }
 
-  const filePath = path.join(specFolderPath, GRAPH_METADATA_FILENAME);
+  if (!canClassifyAsGraphMetadataPath(path.join(canonicalSpecFolderPath, GRAPH_METADATA_FILENAME))) {
+    throw new Error(`Spec folder is not under a supported specs root: ${canonicalSpecFolderPath}`);
+  }
+
+  const filePath = path.join(canonicalSpecFolderPath, GRAPH_METADATA_FILENAME);
   const existing = loadGraphMetadata(filePath);
-  const refreshed = deriveGraphMetadata(specFolderPath, existing, options);
+  const refreshed = deriveGraphMetadata(canonicalSpecFolderPath, existing, options);
   const merged = mergeGraphMetadata(existing, refreshed);
   writeGraphMetadataFile(filePath, merged);
 

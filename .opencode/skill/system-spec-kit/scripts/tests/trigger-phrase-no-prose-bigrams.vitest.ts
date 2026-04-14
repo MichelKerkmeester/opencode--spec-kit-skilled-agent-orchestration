@@ -13,12 +13,6 @@ const workflowHarness = vi.hoisted(() => ({
 
 vi.mock('../spec-folder', () => ({
   detectSpecFolder: vi.fn(async () => workflowHarness.specFolderPath),
-  setupContextDirectory: vi.fn(async () => workflowHarness.contextDir),
-}));
-
-vi.mock('../core/memory-indexer', () => ({
-  indexMemory: vi.fn(async () => 42),
-  updateMetadataEmbeddingStatus: vi.fn(async () => true),
 }));
 
 vi.mock('@spec-kit/mcp-server/api/providers', () => ({

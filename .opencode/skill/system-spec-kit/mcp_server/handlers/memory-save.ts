@@ -94,6 +94,9 @@ import {
   createContentRouter,
   getTier3Contract,
   InMemoryRouterCache,
+  TIER2_FALLBACK_PENALTY,
+  TIER3_THRESHOLD,
+  type RoutingDecision,
   type Tier3ClassifierInput,
   type Tier3RawResponse,
 } from '../lib/routing/content-router.js';
@@ -1064,10 +1067,58 @@ function resolveCanonicalTargetDocPath(
   specFolderAbsolute: string,
   routedDocPath: string,
 ): string {
-  if (routedDocPath === 'spec-frontmatter') {
+  if (routedDocPath === 'spec-frontmatter' || routedDocPath === 'implementation-summary.md') {
     return resolveMetadataHostDocPath(specFolderAbsolute);
   }
   return path.join(specFolderAbsolute, routedDocPath);
+}
+
+function clampRoutingConfidence(value: number): number {
+  return Math.min(1, Math.max(0, value));
+}
+
+function selectTier2FailOpenFallback(
+  specFolderAbsolute: string,
+  decision: RoutingDecision,
+): {
+  category: RouteCategory;
+  confidence: number;
+  targetDocPath: string;
+  routedDocPath: string;
+  targetAnchorId: string;
+  mergeMode: RoutingDecision['target']['mergeMode'];
+  warningMessage: string;
+} | null {
+  if (decision.tierUsed !== 3) {
+    return null;
+  }
+
+  for (const hit of decision.tier2TopK) {
+    if (hit.category === 'drop') {
+      continue;
+    }
+    const fallbackConfidence = clampRoutingConfidence(hit.similarity - TIER2_FALLBACK_PENALTY);
+    if (fallbackConfidence < TIER3_THRESHOLD) {
+      continue;
+    }
+
+    const targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, hit.target_doc);
+    if (!fs.existsSync(targetDocPath)) {
+      continue;
+    }
+
+    return {
+      category: hit.category as RouteCategory,
+      confidence: fallbackConfidence,
+      targetDocPath,
+      routedDocPath: hit.target_doc,
+      targetAnchorId: hit.target_anchor,
+      mergeMode: hit.merge_intent,
+      warningMessage: `Tier 3 routing was unusable; fell back to Tier 2 prototype match ${hit.category}.`,
+    };
+  }
+
+  return null;
 }
 
 function buildFallbackContinuityRecord(params: {
@@ -1229,7 +1280,29 @@ async function buildCanonicalAtomicPreparedSave(
     },
   );
 
-  if (decision.refusal || decision.category === 'drop') {
+  let effectiveDecision = decision;
+  const applyTier2FailOpenFallback = (): boolean => {
+    const fallback = selectTier2FailOpenFallback(specFolderAbsolute, effectiveDecision);
+    if (!fallback) {
+      return false;
+    }
+    effectiveDecision = {
+      ...effectiveDecision,
+      category: fallback.category,
+      confidence: fallback.confidence,
+      target: {
+        docPath: fallback.routedDocPath,
+        anchorId: fallback.targetAnchorId,
+        mergeMode: fallback.mergeMode,
+      },
+      tierUsed: 2,
+      warningMessage: fallback.warningMessage,
+      refusal: false,
+    };
+    return true;
+  };
+
+  if ((effectiveDecision.refusal || effectiveDecision.category === 'drop') && !applyTier2FailOpenFallback()) {
     return {
       status: 'abort',
       result: {
@@ -1237,14 +1310,14 @@ async function buildCanonicalAtomicPreparedSave(
         filePath: params.file_path,
         status: 'rejected',
         summary: 'Canonical routed save refused to merge content',
-        message: decision.warningMessage ?? 'Router refused to route canonical content safely',
-        routeCategory: decision.category,
-        targetDocPath: decision.target.docPath,
+        message: `${effectiveDecision.warningMessage ?? 'Router refused to route canonical content safely'} Nothing was written; "${effectiveDecision.target.docPath}" is only a manual-review suggestion.`,
+        routeCategory: effectiveDecision.category,
+        targetDocPath: effectiveDecision.target.docPath,
       },
     };
   }
 
-  if (params.mergeModeHint && params.mergeModeHint !== decision.target.mergeMode) {
+  if (params.mergeModeHint && params.mergeModeHint !== effectiveDecision.target.mergeMode) {
     return {
       status: 'abort',
       result: {
@@ -1252,16 +1325,16 @@ async function buildCanonicalAtomicPreparedSave(
         filePath: params.file_path,
         status: 'rejected',
         summary: 'Canonical routed save rejected conflicting merge-mode hint',
-        message: `mergeModeHint "${params.mergeModeHint}" did not match routed mode "${decision.target.mergeMode}"`,
-        routeCategory: decision.category,
+        message: `mergeModeHint "${params.mergeModeHint}" did not match routed mode "${effectiveDecision.target.mergeMode}"`,
+        routeCategory: effectiveDecision.category,
         mergeMode: params.mergeModeHint,
-        targetDocPath: decision.target.docPath,
+        targetDocPath: effectiveDecision.target.docPath,
       },
     };
   }
 
-  const targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, decision.target.docPath);
-  if (!fs.existsSync(targetDocPath)) {
+  let targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, effectiveDecision.target.docPath);
+  if (!fs.existsSync(targetDocPath) && !applyTier2FailOpenFallback()) {
     return {
       status: 'abort',
       result: {
@@ -1270,13 +1343,14 @@ async function buildCanonicalAtomicPreparedSave(
         status: 'error',
         summary: 'Canonical routed save target document is missing',
         message: `Target document "${targetDocPath}" does not exist`,
-        routeCategory: decision.category,
+        routeCategory: effectiveDecision.category,
       },
     };
   }
+  targetDocPath = resolveCanonicalTargetDocPath(specFolderAbsolute, effectiveDecision.target.docPath);
 
   const originalTargetContent = fs.readFileSync(targetDocPath, 'utf8');
-  const routedMergeMode = params.mergeModeHint ?? decision.target.mergeMode;
+  const routedMergeMode = params.mergeModeHint ?? effectiveDecision.target.mergeMode;
   if (!isMergeModeHint(routedMergeMode)) {
     return {
       status: 'abort',
@@ -1285,10 +1359,10 @@ async function buildCanonicalAtomicPreparedSave(
         filePath: targetDocPath,
         status: 'rejected',
         summary: 'Canonical routed save refused unsupported merge mode',
-        message: `Routed merge mode "${decision.target.mergeMode}" is not supported by atomic writer saves`,
-        routeCategory: decision.category,
+        message: `Routed merge mode "${effectiveDecision.target.mergeMode}" is not supported by atomic writer saves`,
+        routeCategory: effectiveDecision.category,
         targetDocPath,
-        targetAnchorId: decision.target.anchorId ?? undefined,
+        targetAnchorId: effectiveDecision.target.anchorId ?? undefined,
       },
     };
   }
@@ -1296,15 +1370,15 @@ async function buildCanonicalAtomicPreparedSave(
   const relativeTargetFile = path.relative(specFolderAbsolute, targetDocPath).replace(/\\/g, '/');
 
   let persistedContent = originalTargetContent;
-  let targetAnchorId = decision.target.anchorId;
+  let targetAnchorId = effectiveDecision.target.anchorId;
 
-  if (decision.category === 'metadata_only') {
+  if (effectiveDecision.category === 'metadata_only') {
     const readResult = readThinContinuityRecord(params.content);
     const continuityRecord = readResult.ok && readResult.record
       ? readResult.record
       : buildFallbackContinuityRecord({
           parsed: preparedMemory.parsed,
-          routeCategory: decision.category,
+          routeCategory: effectiveDecision.category,
           targetDocPath,
           specFolderAbsolute,
           currentContent: params.content,
@@ -1320,13 +1394,13 @@ async function buildCanonicalAtomicPreparedSave(
         result: {
           success: false,
           filePath: targetDocPath,
-          status: 'rejected',
-          summary: 'Canonical continuity update failed validation',
-          message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
-          routeCategory: decision.category,
-          mergeMode,
-          targetDocPath,
-          targetAnchorId: ROUTED_CONTINUITY_ANCHOR_ID,
+        status: 'rejected',
+        summary: 'Canonical continuity update failed validation',
+        message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
+        routeCategory: effectiveDecision.category,
+        mergeMode,
+        targetDocPath,
+        targetAnchorId: ROUTED_CONTINUITY_ANCHOR_ID,
         },
       };
     }
@@ -1342,7 +1416,7 @@ async function buildCanonicalAtomicPreparedSave(
         mergeMode,
         payload: buildCanonicalMergePayload({
           parsed: preparedMemory.parsed,
-          routeCategory: decision.category,
+          routeCategory: effectiveDecision.category,
           mergeMode,
           content: params.content,
         }) as never,
@@ -1358,7 +1432,7 @@ async function buildCanonicalAtomicPreparedSave(
           status: 'rejected',
           summary: 'Canonical anchor merge failed',
           message: error instanceof Error ? error.message : String(error),
-          routeCategory: decision.category,
+          routeCategory: effectiveDecision.category,
           mergeMode,
           targetDocPath,
           targetAnchorId,
@@ -1368,7 +1442,7 @@ async function buildCanonicalAtomicPreparedSave(
 
     const continuityRecord = buildFallbackContinuityRecord({
       parsed: preparedMemory.parsed,
-      routeCategory: decision.category,
+      routeCategory: effectiveDecision.category,
       targetDocPath,
       specFolderAbsolute,
       currentContent: params.content,
@@ -1384,13 +1458,13 @@ async function buildCanonicalAtomicPreparedSave(
         result: {
           success: false,
           filePath: targetDocPath,
-          status: 'rejected',
-          summary: 'Canonical continuity update failed after merge',
-          message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
-          routeCategory: decision.category,
-          mergeMode,
-          targetDocPath,
-          targetAnchorId,
+        status: 'rejected',
+        summary: 'Canonical continuity update failed after merge',
+        message: writeResult.errors.map((error) => `${error.code}:${error.field}:${error.message}`).join('; '),
+        routeCategory: effectiveDecision.category,
+        mergeMode,
+        targetDocPath,
+        targetAnchorId,
         },
       };
     }
@@ -1401,7 +1475,7 @@ async function buildCanonicalAtomicPreparedSave(
     targetDocPath,
     canonicalFilePath: getCanonicalPathKey(targetDocPath),
     targetAnchorId,
-    routeAs: decision.category,
+    routeAs: effectiveDecision.category,
     mergeModeHint: mergeMode,
     continuitySourceKey: 'frontmatter',
   };
@@ -1416,7 +1490,7 @@ async function buildCanonicalAtomicPreparedSave(
       validatorPlan: {
         folder: specFolderAbsolute,
         level: toValidatorLevel(packetLevel),
-        mergePlan: decision.category === 'metadata_only'
+        mergePlan: effectiveDecision.category === 'metadata_only'
           ? null
           : {
               targetFile: relativeTargetFile,
@@ -1425,9 +1499,9 @@ async function buildCanonicalAtomicPreparedSave(
               chunkText: routingChunkText,
             },
         contaminationPlan: {
-          routeCategory: decision.category,
+          routeCategory: effectiveDecision.category,
           chunkText: routingChunkText,
-          routeOverrideAccepted: decision.overrideApplied,
+          routeOverrideAccepted: effectiveDecision.overrideApplied,
         },
         postSavePlan: {
           file: relativeTargetFile,

@@ -86,124 +86,6 @@ function stripTemplateConfigComments(text: string): string {
   return result;
 }
 
-function yamlScalar(value: unknown): string {
-  const normalized = value === undefined || value === null ? '' : String(value);
-  return `"${normalized.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
-}
-
-function yamlNumber(value: unknown): string {
-  return typeof value === 'number' && Number.isFinite(value) ? String(value) : '0';
-}
-
-function blockText(value: unknown, fallback: string): string {
-  if (typeof value !== 'string') {
-    return fallback;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : fallback;
-}
-
-function buildLegacyContextCompatibilityDocument(data: TemplateContext): string {
-  const title = blockText(data.MEMORY_TITLE ?? data.MEMORY_DASHBOARD_TITLE ?? data.TITLE, 'Saved context');
-  const description = blockText(data.MEMORY_DESCRIPTION ?? data.SUMMARY, 'Saved context artifact.');
-  const triggerPhrasesYaml = typeof data.TRIGGER_PHRASES_YAML === 'string'
-    ? data.TRIGGER_PHRASES_YAML
-    : 'trigger_phrases: []';
-  const contextSummary = blockText(data.CONTEXT_SUMMARY ?? data.SUMMARY, 'Canonical continuity now lives in packet-local sources.');
-  const nextAction = blockText(data.NEXT_ACTION, 'Review the canonical packet docs for the next step.');
-  const blockers = blockText(data.BLOCKERS, 'None');
-  const lastAction = blockText(data.LAST_ACTION, 'Canonical continuity was refreshed.');
-
-  return [
-    '---',
-    `title: ${yamlScalar(data.MEMORY_DASHBOARD_TITLE ?? title)}`,
-    `description: ${yamlScalar(description)}`,
-    triggerPhrasesYaml,
-    `importance_tier: ${yamlScalar(data.IMPORTANCE_TIER ?? 'normal')}`,
-    `contextType: ${yamlScalar(data.CONTEXT_TYPE ?? 'general')}`,
-    `_sourceTranscriptPath: ${yamlScalar(data.SOURCE_TRANSCRIPT_PATH ?? '')}`,
-    `_sourceSessionId: ${yamlScalar(data.SOURCE_SESSION_ID ?? '')}`,
-    `_sourceSessionCreated: ${yamlNumber(data.SOURCE_SESSION_CREATED)}`,
-    `_sourceSessionUpdated: ${yamlNumber(data.SOURCE_SESSION_UPDATED)}`,
-    `captured_file_count: ${yamlNumber(data.CAPTURED_FILE_COUNT)}`,
-    `filesystem_file_count: ${yamlNumber(data.FILESYSTEM_FILE_COUNT)}`,
-    `git_changed_file_count: ${yamlNumber(data.GIT_CHANGED_FILE_COUNT)}`,
-    '---',
-    '',
-    `# ${title}`,
-    '',
-    '## TABLE OF CONTENTS',
-    '',
-    '- [CONTINUE SESSION](#continue-session)',
-    '- [CANONICAL DOCS](#canonical-docs)',
-    '- [PROJECT STATE SNAPSHOT](#project-state-snapshot)',
-    '- [OVERVIEW](#overview)',
-    '- [DISTINGUISHING EVIDENCE](#evidence)',
-    '- [RECOVERY HINTS](#recovery-hints)',
-    '- [MEMORY METADATA](#memory-metadata)',
-    '',
-    '<!-- ANCHOR:continue-session -->',
-    '## CONTINUE SESSION',
-    '',
-    contextSummary,
-    '',
-    '<!-- /ANCHOR:continue-session -->',
-    '',
-    '<!-- ANCHOR:canonical-docs -->',
-    '## CANONICAL DOCS',
-    '',
-    '- `handover.md`',
-    '- `_memory.continuity`',
-    '- `implementation-summary.md`',
-    '',
-    '<!-- /ANCHOR:canonical-docs -->',
-    '',
-    '<!-- ANCHOR:project-state-snapshot -->',
-    '## PROJECT STATE SNAPSHOT',
-    '',
-    `- Last Action: ${lastAction}`,
-    `- Next Action: ${nextAction}`,
-    `- Blockers: ${blockers}`,
-    '',
-    '<!-- /ANCHOR:project-state-snapshot -->',
-    '',
-    '<!-- ANCHOR:overview -->',
-    '## OVERVIEW',
-    '',
-    blockText(data.SUMMARY, 'No session summary provided.'),
-    '',
-    '<!-- /ANCHOR:overview -->',
-    '',
-    '<!-- ANCHOR:evidence -->',
-    '## DISTINGUISHING EVIDENCE',
-    '',
-    '- Canonical continuity refresh executed without legacy template files.',
-    '',
-    '<!-- /ANCHOR:evidence -->',
-    '',
-    '<!-- ANCHOR:recovery-hints -->',
-    '## RECOVERY HINTS',
-    '',
-    '- Use `/spec_kit:resume` for recovery.',
-    `- Review next action: ${nextAction}`,
-    '',
-    '<!-- /ANCHOR:recovery-hints -->',
-    '',
-    '<!-- ANCHOR:metadata -->',
-    '## MEMORY METADATA',
-    '',
-    '```yaml',
-    `session_id: ${yamlScalar(data.SESSION_ID ?? '')}`,
-    `importance_tier: ${yamlScalar(data.IMPORTANCE_TIER ?? 'normal')}`,
-    `context_type: ${yamlScalar(data.CONTEXT_TYPE ?? 'general')}`,
-    `decision_count: ${yamlNumber(data.DECISION_COUNT)}`,
-    '```',
-    '',
-    '<!-- /ANCHOR:metadata -->',
-    '',
-  ].join('\n');
-}
-
 // ───────────────────────────────────────────────────────────────
 // 6. CORE RENDERING
 // ───────────────────────────────────────────────────────────────
@@ -292,10 +174,6 @@ function renderTemplate(template: string, data: TemplateContext, parentData: Tem
 // 7. PUBLIC API
 // ───────────────────────────────────────────────────────────────
 async function populateTemplate(templateName: string, data: TemplateContext): Promise<string> {
-  if (templateName === 'context') {
-    return buildLegacyContextCompatibilityDocument(data);
-  }
-
   const templateDir: string = CONFIG.TEMPLATE_DIR;
   const templatePath: string = path.join(templateDir, `${templateName}_template.md`);
 

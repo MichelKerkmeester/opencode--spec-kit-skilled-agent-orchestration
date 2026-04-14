@@ -14,12 +14,6 @@ const workflowHarness = vi.hoisted(() => ({
 
 vi.mock('../spec-folder', () => ({
   detectSpecFolder: vi.fn(async () => workflowHarness.specFolderPath),
-  setupContextDirectory: vi.fn(async () => workflowHarness.contextDir),
-}));
-
-vi.mock('../core/memory-indexer', () => ({
-  indexMemory: vi.fn(async () => 42),
-  updateMetadataEmbeddingStatus: vi.fn(async () => true),
 }));
 
 vi.mock('@spec-kit/mcp-server/api/providers', () => ({
@@ -121,7 +115,7 @@ describe.skip('workflow explicit session id forwarding', () => {
         '017-workflow-session-id',
         explicitSessionId,
       );
-      expect(result.memoryId).toBe(42);
+      expect(result.memoryId).toBeNull();
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;
       fs.rmSync(tempRoot, { recursive: true, force: true });

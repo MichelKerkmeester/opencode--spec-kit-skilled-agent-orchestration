@@ -1032,10 +1032,10 @@ async function testSpecFolderAlignmentValidator() {
 }
 
 async function testSpecFolderDirectorySetup() {
-  log('\n🔬 SPEC-FOLDER: directory-setup.js');
+  log('\n🔬 SPEC-FOLDER: index.js (setupContextDirectory compat alias)');
 
   try {
-    const { setupContextDirectory } = require(path.join(SCRIPTS_DIR, 'spec-folder', 'directory-setup'));
+    const { setupContextDirectory } = require(path.join(SCRIPTS_DIR, 'spec-folder'));
 
     // Test 1: setupContextDirectory is a function
     assertType(setupContextDirectory, 'function', 'T-015a: setupContextDirectory is a function');
@@ -1469,64 +1469,26 @@ async function testExtractorsCollectSessionData() {
 async function testCoreWorkflowAdditional() {
   log('\n🔬 CORE: workflow.js (Additional Functions)');
 
+  // NOTE (v3.4.1.0 + r2 cleanup): T-024 tests for file-writer + indexMemory +
+  // Related helpers were removed because those modules were deleted in the
+  // [spec]/memory/*.md retirement cutover. The negative-assertion regression
+  // Test below (T-024a-neg) replaces them: it asserts the deleted symbols
+  // Stay deleted. See changelog v3.4.1.0.
+
   try {
     const workflow = require(path.join(SCRIPTS_DIR, 'core', 'workflow'));
-    const fileWriter = require(path.join(SCRIPTS_DIR, 'core', 'file-writer'));
-    const memoryIndexer = require(path.join(SCRIPTS_DIR, 'core', 'memory-indexer'));
 
-    // Test 1: workflow only exposes orchestration entry point
+    // T-024a-neg: workflow exposes runWorkflow only; the deleted
+    // Writing/indexing helpers must stay off the public surface.
     if (typeof workflow.runWorkflow === 'function' &&
         workflow.writeFilesAtomically === undefined &&
         workflow.indexMemory === undefined) {
-      pass('T-024a: workflow keeps internal helpers private', 'runWorkflow only public entry point');
+      pass('T-024a-neg: workflow omits retired helpers', 'runWorkflow is the only public entry point; writeFilesAtomically + indexMemory stay deleted');
     } else {
-      fail('T-024a: workflow keeps internal helpers private', `Exports: ${Object.keys(workflow).join(', ')}`);
+      fail('T-024a-neg: workflow omits retired helpers', `Exports: ${Object.keys(workflow).join(', ')}`);
     }
-
-    // Test 2: writeFilesAtomically is exported from file-writer module
-    assertType(fileWriter.writeFilesAtomically, 'function', 'T-024b: writeFilesAtomically exported via file-writer');
-
-    // Test 3: indexMemory is exported from memory-indexer module
-    assertType(memoryIndexer.indexMemory, 'function', 'T-024c: indexMemory exported via memory-indexer');
-
-    // Test 4: notifyDatabaseUpdated remains private to preserve module boundaries
-    if (memoryIndexer.notifyDatabaseUpdated === undefined) {
-      pass('T-024e: notifyDatabaseUpdated remains private', 'Not exported from memory-indexer');
-    } else {
-      fail('T-024e: notifyDatabaseUpdated remains private', `Type: ${typeof memoryIndexer.notifyDatabaseUpdated}`);
-    }
-    if (!Object.prototype.hasOwnProperty.call(memoryIndexer, 'notifyDatabaseUpdated')) {
-      pass('T-024f: memory-indexer public exports exclude notifyDatabaseUpdated', 'Private helper not exposed');
-    } else {
-      fail('T-024f: memory-indexer public exports exclude notifyDatabaseUpdated', 'notifyDatabaseUpdated unexpectedly exported');
-    }
-
-    // Test 6: writeFilesAtomically rejects leaked placeholders
-    const tempDir = path.join(__dirname, '../scratch/test-atomic');
-    fs.mkdirSync(tempDir, { recursive: true });
-    try {
-      // This should throw because of leaked placeholder
-      await fileWriter.writeFilesAtomically(tempDir, { 'test.md': 'Content with {{LEAKED_PLACEHOLDER}}' });
-      fail('T-024g: writeFilesAtomically rejects leaked placeholders', 'Did not throw');
-    } catch (e) {
-      if (e.message.includes('Leaked placeholders')) {
-        pass('T-024g: writeFilesAtomically rejects leaked placeholders', 'Threw expected error');
-      } else {
-        fail('T-024g: writeFilesAtomically rejects leaked placeholders', e.message);
-      }
-    } finally {
-      try { fs.rmSync(tempDir, { recursive: true, force: true }); } catch (_) {}
-    }
-
-    // Test 7: indexMemory signature check (async function)
-    if (memoryIndexer.indexMemory.constructor.name === 'AsyncFunction') {
-      pass('T-024h: indexMemory is async function', 'AsyncFunction confirmed');
-    } else {
-      fail('T-024h: indexMemory is async function', 'Not an async function');
-    }
-
   } catch (error) {
-    fail('T-024: Core workflow additional functions', error.message);
+    fail('T-024a-neg: workflow omits retired helpers', error.message);
   }
 }
 

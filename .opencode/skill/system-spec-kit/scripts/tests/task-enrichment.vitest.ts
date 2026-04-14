@@ -76,7 +76,6 @@ vi.mock('../spec-folder', () => ({
     });
     return workflowHarness.specFolderPath;
   }),
-  setupContextDirectory: vi.fn(async () => workflowHarness.contextDir),
 }));
 
 vi.mock('../extractors', () => ({
@@ -234,11 +233,6 @@ vi.mock('../core/tree-thinning', () => ({
     merged: [],
     stats: { totalFiles: 0, thinnedCount: 0, mergedCount: 0, tokensSaved: 0 },
   })),
-}));
-
-vi.mock('../core/memory-indexer', () => ({
-  indexMemory: vi.fn(async () => null),
-  updateMetadataEmbeddingStatus: vi.fn(async () => undefined),
 }));
 
 vi.mock('@spec-kit/shared/parsing/memory-sufficiency', () => ({
@@ -1207,8 +1201,6 @@ describe('workflow seam guardrail', () => {
       })).rejects.toThrow(/ALIGNMENT_BLOCK.*% of captured file paths/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
-      const memoryIndexer = await import('../core/memory-indexer');
-      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -1262,8 +1254,6 @@ describe('workflow seam guardrail', () => {
       })).rejects.toThrow(/INSUFFICIENT_CONTEXT_ABORT/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
-      const memoryIndexer = await import('../core/memory-indexer');
-      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -1386,8 +1376,6 @@ describe('workflow seam guardrail', () => {
       })).rejects.toThrow(/QUALITY_GATE_ABORT: Rendered memory violated template contract/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
-      const memoryIndexer = await import('../core/memory-indexer');
-      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
     } finally {
       if (previousImplementation) {
         populateTemplateMock.mockImplementation(previousImplementation);
