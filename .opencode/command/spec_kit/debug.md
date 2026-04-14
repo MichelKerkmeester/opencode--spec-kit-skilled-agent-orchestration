@@ -305,7 +305,7 @@ Agent file: `[runtime_agent_path]/debug.md`
 
 After resolution:
 - Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`
-- Consider refreshing the indexed support artifact after debugging and `/memory:learn` for durable repo-wide debugging rules
+- Consider refreshing the indexed canonical spec document after debugging and `/memory:learn` for durable repo-wide debugging rules
 - debug-delegation.md serves as memory for the spec folder
 
 ---
@@ -328,7 +328,7 @@ After resolution: Return to the original workflow step that triggered debugging.
 | Fix applied successfully       | Verify in browser/tests                 | Confirm fix works               |
 | Fix applied, continue work     | Return to original workflow             | Resume implementation           |
 | Issue needs more analysis      | `/spec_kit:debug` (retry)              | Fresh perspective               |
-| Want to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed support artifact while canonical continuity stays in spec docs |
+| Want to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 | Debugging session complete     | `/spec_kit:handover [spec-folder-path]`| Document for future reference   |
 | Record lasting debugging rule | `/memory:learn [rule]`                 | Save a constitutional rule from debugging |
 

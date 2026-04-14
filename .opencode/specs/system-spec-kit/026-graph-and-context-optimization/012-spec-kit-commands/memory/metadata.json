@@ -1,18 +1,18 @@
 {
-  "timestamp": "14-04-26 10-41",
-  "messageCount": 2,
-  "decisionCount": 3,
+  "timestamp": "14-04-26 17-36",
+  "messageCount": 1,
+  "decisionCount": 2,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 2,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-04-14T09:41:32.064Z",
+        "timestamp": "2026-04-14T16:36:35.596Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -49,8 +49,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:2",
-          "kept_items:2"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
@@ -60,13 +60,13 @@
       "duplicate": 0,
       "lowQuality": 0
     },
-    "input_completeness_score": 30,
+    "input_completeness_score": 70,
     "_note": "input_completeness_score is 0-100 input completeness; render_quality_score is 0.0-1.0 rendered wrapper quality"
   },
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-04-14T09:41:31.480Z",
+      "timestamp": "2026-04-14T16:36:35.143Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:43"
+        "processed_fields:22"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-04-14T09:41:32.064Z",
+      "timestamp": "2026-04-14T16:36:35.596Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -168,13 +168,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:2",
-        "kept_items:2"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-04-14T09:41:32.103Z",
+      "timestamp": "2026-04-14T16:36:35.662Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -192,31 +192,31 @@
       "passedThrough": [
         "current_spec:012-spec-kit-commands",
         "trigger_phrases:6",
-        "key_topics:12",
-        "captured_file_count:12",
-        "filesystem_file_count:12"
+        "key_topics:10",
+        "captured_file_count:1",
+        "filesystem_file_count:1"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 0,
+    "filesModified": 2,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 0,
+      "implementation": 1,
       "result": 0,
       "decision": 0,
-      "total": 2
+      "total": 1
     }
   },
   "fileCounts": {
-    "fileCount": 12,
-    "capturedFileCount": 12,
-    "filesystemFileCount": 12,
-    "gitChangedFileCount": 12
+    "fileCount": 1,
+    "capturedFileCount": 1,
+    "filesystemFileCount": 1,
+    "gitChangedFileCount": 1
   },
   "sourceProvenance": {
     "transcriptPath": "",
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 9824,
-    "updatedAt": "2026-04-14T09:41:32.887Z",
-    "generatedAt": "2026-04-14T09:41:32.887Z",
-    "reason": "Indexed despite soft validation failures: V6."
+    "memoryId": 9851,
+    "updatedAt": "2026-04-14T16:36:41.579Z",
+    "generatedAt": "2026-04-14T16:36:41.579Z",
+    "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

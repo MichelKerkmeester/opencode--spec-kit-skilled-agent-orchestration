@@ -348,7 +348,7 @@ Call MCP tools directly — NEVER through Code Mode.
 | `memory_delete`         | Remove memory by ID or spec folder     |
 | `memory_update`         | Update metadata (title, triggers, tier)|
 | `memory_validate`       | Record validation feedback             |
-| `memory_index_scan`     | Bulk index support artifacts created by `generate-context.js` |
+| `memory_index_scan`     | Bulk index canonical spec documents refreshed by `generate-context.js` |
 | `memory_health`         | Check database/embeddings/index status |
 
 ### Checkpoint Tools

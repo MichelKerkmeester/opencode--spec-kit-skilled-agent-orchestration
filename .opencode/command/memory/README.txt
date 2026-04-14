@@ -113,7 +113,7 @@ memory/
 ├── README.txt      # This file, 4-command index and coverage matrix
 ├── search.md       # /memory:search - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 ├── learn.md        # /memory:learn - Constitutional memory manager
-├── manage.md       # /memory:manage - Database management, ingest, shared lifecycle
+├── manage.md       # /memory:manage - Database management and ingest
 └── save.md         # /memory:save - Context saving
 ```
 
@@ -154,7 +154,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # View database stats
 /memory:manage stats
 
-# Scan for new continuity artifacts
+# Scan for new or updated canonical spec documents
 /memory:manage scan
 
 # Force re-index all files

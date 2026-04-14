@@ -291,7 +291,7 @@ termination:
     question: "Debug workflow complete. What's next?"
     options:
       - { label: "A) Verify fix", description: "Run tests or check in browser" }
-      - { label: "B) Refresh search support", description: "Refresh the indexed support artifact while canonical continuity stays in spec docs" }
+      - { label: "B) Refresh search support", description: "Refresh the indexed canonical spec document while continuity stays in spec docs" }
       - { label: "C) Continue work", description: "Return to original task" }
       - { label: "D) Done", description: "End debugging session" }
     wait: true

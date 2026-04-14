@@ -211,7 +211,7 @@ Show created file path and continuation instructions.
 **Output Location:** `[spec_folder]/handover.md` (NOT in memory/)
 
 > **MANDATORY:** After creating handover, run:
-> `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`
+> `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-path> [spec-folder-path]` (use a path under `$TMPDIR` or the conventional `/tmp/save-context-data.json`)
 
 ### Handover Success
 ```text
@@ -257,7 +257,7 @@ Show created file path and continuation instructions.
 | `/spec_kit:complete` | Start new feature (handover captures in-progress)                |
 | `/memory:save`       | Optional support-artifact refresh for search indexing; canonical continuity stays in spec docs |
 
-> After creating handover.md, refresh the indexed support artifact with structured JSON input to `generate-context.js`; `/spec_kit:resume` still recovers from `handover.md`, then `_memory.continuity`, then the packet spec docs.
+> After creating handover.md, refresh the indexed canonical spec document with structured JSON input to `generate-context.js`; `/spec_kit:resume` still recovers from `handover.md`, then `_memory.continuity`, then the packet spec docs.
 
 ### Agents
 
@@ -315,7 +315,7 @@ Next step: `/spec_kit:resume [spec-folder-path]` (in new session)
 | ------------------------- | ------------------------------------------ | ------------------------- |
 | Handover created          | Copy continuation prompt                   | Ready for new session     |
 | Ready to continue now     | `/spec_kit:resume [spec-folder-path]`      | Load context and continue |
-| Want to refresh search support | `generate-context.js /tmp/save-context-data.json [spec-folder-path]` | Refresh indexed support artifact without changing the canonical resume path |
+| Want to refresh search support | `generate-context.js /tmp/save-context-data.json [spec-folder-path]` | Refresh indexed canonical spec document without changing the canonical resume path |
 | Starting new work         | `/spec_kit:complete [feature-description]` | Begin different feature   |
 
 **ALWAYS** end with: "What would you like to do next?"

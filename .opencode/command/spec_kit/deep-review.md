@@ -166,7 +166,7 @@ Run an iterative loop for code review: Initialize the review packet under `{spec
 | Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | Review packet in `{spec_folder}/review/` |
 | Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | `review/iterations/iteration-NNN.md` files, `review/deep-review-dashboard.md` |
 | Synth | Synthesize | Build finding registry, deduplicate, compile `review/review-report.md` | `review/review-report.md` (9 sections) |
-| Save | Preserve | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
+| Save | Preserve | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
 
 ### Execution Modes
 
@@ -216,7 +216,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 Deep review complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_dimensions_clean]
 Findings: P0=[N] P1=[N] P2=[N] | Verdict: [PASS|CONDITIONAL|FAIL] [PASS may include hasAdvisories=true]
-Artifacts: review/review-report.md, [N] iteration files in review/, continuity support artifact refreshed
+Artifacts: review/review-report.md, [N] iteration files in review/, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:plan [remediation] (if FAIL/CONDITIONAL)
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -282,7 +282,7 @@ Key references:
 | Review PASS, ready for release | `/create:changelog` | Generate changelog entry |
 | Need to fix specific findings | `/spec_kit:implement [spec-folder]` | Implement fixes from existing plan |
 | Need more investigation | `/spec_kit:deep-research [topic]` | Deep research session for unclear areas |
-| Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed support artifact while canonical continuity stays in spec docs |
+| Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 | Need to pause | `/spec_kit:handover [spec-folder]` | Save context for later |
 
 ---

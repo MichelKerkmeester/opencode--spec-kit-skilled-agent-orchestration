@@ -13,27 +13,37 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands"
-    last_updated_at: "2026-04-14T00:00:00Z"
-    last_updated_by: "codex-gpt-5"
-    recent_action: "Completed M7 structural parity and sk-doc compliance verification and recorded the packet report"
-    next_safe_action: "Remediate the failed M7 checks or route through /spec_kit:complete after structural fixes"
+    last_updated_at: "2026-04-14T12:00:00Z"
+    last_updated_by: "claude-opus-4-6"
+    recent_action: "Extended scope with M9 middleware deprecation"
+    next_safe_action: "Execute M9 Phase 2 deletions"
     blockers:
-      - "CHK-036 failed because start.md is missing a REFERENCE section"
-      - "CHK-040 failed because all three required overlap calculations fell below the 50 percent threshold using the exact requested diff formula"
+      - "CHK-036 start.md missing REFERENCE section"
+      - "CHK-040 overlap below 50% threshold"
     key_files:
-      - ".opencode/command/spec_kit/start.md"
-      - ".opencode/command/spec_kit/assets/spec_kit_start_auto.yaml"
-      - ".opencode/command/spec_kit/assets/spec_kit_start_confirm.yaml"
-      - ".opencode/skill/sk-deep-research/references/spec_check_protocol.md"
+      - ".opencode/command/spec_kit/handover.md"
+      - ".opencode/command/spec_kit/debug.md"
+      - ".opencode/agent/handover.md"
+      - ".opencode/agent/speckit.md"
+      - ".opencode/agent/orchestrate.md"
+      - ".opencode/command/memory/save.md"
+      - ".opencode/skill/system-spec-kit/SKILL.md"
+      - "CLAUDE.md"
+      - "AGENTS.md"
+      - ".opencode/command/spec_kit/complete.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "012-spec-kit-commands-m7-verification"
-      parent_session_id: null
+      session_id: "012-spec-kit-commands-m9-scope-extension"
+      parent_session_id: "012-spec-kit-commands-m7-verification"
     completion_pct: 60
     open_questions:
-      - "Should NFR-Q05 keep the current diff formula or normalize add/remove counts before overlap calculation?"
+      - "M9-Q1: :auto-debug replacement pattern"
+      - "M9-Q2: /memory:save full-template handler enhancement deferral"
+      - "M9-Q3: Distributed-governance practical validation"
     answered_questions:
-      - "The live command and skill surface contains 14 target files under .opencode/command/spec_kit and .opencode/skill/sk-deep-research, not 15"
+      - "M9 scope additive to packet 012; no new phase-child folder"
+      - "YAML workflows + bash scripts execute spec-folder authoring without @speckit dispatch"
+      - "Stop-hook and /spec_kit:resume operate independently of @handover and @speckit"
 ---
 # Implementation Summary
 
@@ -255,5 +265,23 @@ Additional Step 2 structural findings:
 2. Rework `start.md`, `spec_kit_start_auto.yaml`, and `spec_kit_start_confirm.yaml` against their nearest siblings until the exact overlap measurements clear the `>= 50 percent` bar, or revise the packet if a different overlap formula was intended.
 3. Re-run the five M7 checks after the structural fixes, then update `completion_pct` to `100` only if all five verifications pass.
 4. Repair the packet-local markdown reference integrity issues and add a citation to `research/research.md`, then rerun `validate.sh --strict`.
-5. Use `/spec_kit:complete` only after M7 remediation, or open a small follow-on packet dedicated to the remaining structural parity failures.
+5. Use `/spec_kit:complete` only after M7 + M9 remediation, or open a small follow-on packet dedicated to the remaining structural parity failures.
+
+### M9 Middleware Cleanup (NEW — scope extended 2026-04-14)
+
+Packet scope extended to include **M9 Middleware Cleanup**, deprecating middleware surfaces now redundant after v3.4.0.0 canonical-doc refactor. See `spec.md` §3 (M9 Files to Change), `plan.md` Phase 9, `tasks.md` T031–T051, and `checklist.md` CHK-044–CHK-054 for full scope.
+
+**Pending execution of M9 Phase 2-7:**
+
+1. **Phase 2 deletions (17 files)**: `/spec_kit:handover` + `/spec_kit:debug` commands + 3 YAML assets, `@handover` agent × 4 runtimes, `@speckit` agent × 4 runtimes, 2 Gemini command TOML mirrors.
+2. **Phase 3 responsibility transfer**: Update CLAUDE.md, AGENTS.md, AGENTS_example_fs_enterprises.md, `.opencode/skill/system-spec-kit/SKILL.md`, `.opencode/command/memory/save.md` — replace `@speckit` exclusivity with distributed-governance rule; reposition `/memory:save` as `handover.md` maintainer.
+3. **Phase 4 orchestrate + commands + YAML**: 15+ file updates across 4 orchestrate runtime mirrors, 7 spec_kit command files, 10 YAML assets. Biggest single edit: remove `:auto-debug` flag logic entirely from `complete.md` + YAMLs.
+4. **Phase 5 agent descriptions**: 4 `@debug` runtime files (description-only updates; agents stay), 4 ultra-think runtime files.
+5. **Phase 6 skills + references + install guides**: 15+ files including `.opencode/README.md`, 3 install guides, 2 command READMEs, system-spec-kit README, sk-code-web docs, 8 reference documents, 5 CLI skill references, miscellaneous.
+6. **Phase 7 verification sweep**: zero-reference grep for `@handover`, `@speckit`, `/spec_kit:(handover|debug)` on active docs (with archive/future/iterations exclusions); preservation check for `@debug`, `@deep-research`, templates, skill, MCP routing code; `validate.sh --strict` on packet; sk-doc validator on modified markdown.
+
+**Capability trade-offs accepted:**
+- Full 7-section `handover.md` at session end no longer auto-generated (trade-off; `/memory:save` still maintains `session-log` anchor, stop-hook autosaves continuity)
+- Spec folder write governance becomes discipline-based + programmatic (`validate.sh --strict`), not agent-based exclusivity
+- `@debug` dispatch moves from `/spec_kit:debug` wrapper to direct Task-tool dispatch; `:auto-debug` flag in `/spec_kit:complete` replaced with user-escalation path
 <!-- /ANCHOR:limitations -->

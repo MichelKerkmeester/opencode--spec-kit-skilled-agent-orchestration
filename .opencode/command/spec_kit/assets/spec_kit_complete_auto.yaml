@@ -780,7 +780,7 @@ workflow:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: "Intermediate checkpoint - planning phase complete"
     outputs:
-    - checkpoint_file: "[SPEC_FOLDER]/memory/checkpoint__planning_complete.md"
+    - checkpoint_file: "[SPEC_FOLDER]/scratch/checkpoint__planning_complete.md"
     validation: checkpoint_saved
 
   step_7_task_breakdown:
@@ -942,7 +942,7 @@ workflow:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: "Intermediate checkpoint - development phase complete"
     outputs:
-    - checkpoint_file: "[SPEC_FOLDER]/memory/checkpoint__development_complete.md"
+    - checkpoint_file: "[SPEC_FOLDER]/scratch/checkpoint__development_complete.md"
     validation: checkpoint_saved
 
   step_11_checklist_verify:
@@ -1028,7 +1028,7 @@ workflow:
     - Preserve full dialogue flow with decisions
     - Auto-generate workflow flowcharts
     - Preserve file changes and implementation details
-    - Index the generated continuity support artifact for immediate search availability
+    - Index the routed canonical spec document for immediate search availability
     memory_creation:
       enforcement: HARD_BLOCK
       method: "MUST use structured JSON input with generate-context.js"
@@ -1043,9 +1043,9 @@ workflow:
 
     post_save_indexing:
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
+      invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after the support artifact is written to disk"
+      when: "Immediately after the canonical spec document is refreshed on disk"
 
     anchor_requirements:
       enforcement: MANDATORY

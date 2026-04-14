@@ -133,6 +133,20 @@ _memory:
 - [ ] CHK-041 [P2] NFR-Q06 (sweep): Run `grep -lrE "spec_kit:(plan|complete|deep-research|implement|start|resume|handover)" --include="README.md" --include="SKILL.md" .` from repo root. Also explicitly verify root `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/README.md` is included. Record matched-file count and list.
 - [ ] CHK-042 [P2] NFR-Q06 (content): For every file from CHK-041, confirm: (a) command inventories include `/spec_kit:start`, (b) deep-research descriptions mention `spec.md` anchoring or `spec_check_protocol`, (c) plan/complete descriptions mention smart delegation / `folder_state`, (d) command-chain diagrams (if present) are updated, (e) no stale descriptions of pre-M1 behavior remain.
 - [ ] CHK-043 [P2] NFR-Q06 (discipline): `git diff --stat` on modified README/SKILL files shows additions and in-place clarifications only. No section deletions. No renames. Any structural changes justified inline or in `decision-record.md`.
+
+### M9 Middleware Cleanup
+
+- [ ] CHK-044 [P0] REQ-012: Verify 7 deleted command + YAML files no longer exist: `.opencode/command/spec_kit/{handover,debug}.md`, `.opencode/command/spec_kit/assets/{spec_kit_handover_full,spec_kit_debug_auto,spec_kit_debug_confirm}.yaml`, `.gemini/commands/spec_kit/{handover,debug}.toml`. Run `ls` on each path; all must return "No such file".
+- [ ] CHK-045 [P0] REQ-013: Verify 8 deleted agent files no longer exist: `{.opencode/agent,.claude/agents,.gemini/agents}/{handover,speckit}.md` + `.codex/agents/{handover,speckit}.toml`. Run `ls` on each path; all must return "No such file".
+- [ ] CHK-046 [P0] REQ-014: Verify distributed-governance rule present in CLAUDE.md, AGENTS.md, AGENTS_example_fs_enterprises.md, and `.opencode/skill/system-spec-kit/SKILL.md`. Grep: `grep -E "validate\.sh --strict"` in these 4 files — rule must appear in each with correct `templates/level_N/` + `/memory:save` + `@deep-research` + `@debug` exclusivity preservation.
+- [ ] CHK-047 [P1] REQ-015: Zero-reference grep sweep across active docs for `/spec_kit:(handover|debug)`, `@handover`, `@speckit`. Command: `grep -rE "..." --include="*.md" --include="*.txt" --include="*.toml" --include="*.yaml" . 2>/dev/null | grep -vE "(z_archive|z_future|/iterations/|\.bak|legacy-memory-quarantine|scratch/|\.opencode/changelog/|\.opencode/specs/)"`. Expected: empty output for all three patterns.
+- [ ] CHK-048 [P1] REQ-016: Preservation check — `@debug` agent (4 runtime files exist), `@deep-research` agent (4 runtime files exist), templates (`.opencode/skill/system-spec-kit/templates/{handover.md,debug-delegation.md,level_N/}`), `system-spec-kit` skill directory exists, MCP server code unchanged (`handlers/memory-save.ts`, `routing-prototypes.json`, type `'handover_state'` in `types.ts`), stop-hook autosave logic unchanged, `/spec_kit:resume` recovery ladder still reads handover.md.
+- [ ] CHK-049 [P1] REQ-017: `/memory:save` positioning — `save.md` contains new "Handover Document Maintenance" subsection in §1; `handover_state` contract row mentions template path for initial creation; §8 Next-Steps replaces `/spec_kit:handover` row with `/memory:save`; §9 Related-Commands removes `/spec_kit:handover` ref. `:auto-debug` flag absent from `spec_kit_complete_{auto,confirm}.yaml` (grep returns empty); user-escalation replacement logic present.
+- [ ] CHK-050 [P2] SC-009: Zero-ref grep for `/spec_kit:(handover|debug)` on active docs — empty after exclusions.
+- [ ] CHK-051 [P2] SC-010: Zero-ref grep for `@handover|@speckit` on active docs — empty after exclusions.
+- [ ] CHK-052 [P2] SC-011: `grep -E "handover_state|handover\.md::session-log" .opencode/command/memory/save.md` returns ≥ 2 matches; `grep -E "handover_state" .opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json` unchanged from pre-M9 state.
+- [ ] CHK-053 [P2] SC-012: `grep -E "handover\.md" .opencode/command/spec_kit/resume.md` returns ≥ 5 matches (recovery ladder intact); functional test: run `/spec_kit:resume` on a spec folder with handover.md and verify continuity is presented correctly.
+- [ ] CHK-054 [P2] SC-013 + SC-014: Functional test — dispatch `@debug` via Task tool (verify fresh-perspective debugging works); verify main agent can write spec folder `*.md` using template + `validate.sh --strict` pass; verify `@deep-research` still exclusive for `research/research.md`; verify `system-spec-kit` skill still advertised by skill-advisor.
 <!-- /ANCHOR:quality-consistency -->
 
 ---
@@ -142,9 +156,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 0/7 |
-| P1 Items | 4 | 0/4 |
-| P2 Items | 24 | 0/24 |
+| P0 Items | 10 | 0/10 |
+| P1 Items | 7 | 0/7 |
+| P2 Items | 29 | 0/29 |
 
 **Verification Date**: 2026-04-14
 <!-- /ANCHOR:summary -->
@@ -153,7 +167,7 @@ _memory:
 
 <!--
 LEVEL 2 CHECKLIST
-- P0 = REQ-001..REQ-006 + REQ-011 (7 items)
-- P1 = REQ-007..REQ-010 (4 items)
-- P2 = NFR-P01..P02, NFR-S01..S04, NFR-R01..R02, NFR-Q01..Q06, and success criteria SC-001..SC-008 (24 items)
+- P0 = REQ-001..REQ-006 + REQ-011 + REQ-012..REQ-014 (10 items)
+- P1 = REQ-007..REQ-010 + REQ-015..REQ-017 (7 items)
+- P2 = NFR-P01..P02, NFR-S01..S04, NFR-R01..R02, NFR-Q01..Q06, success criteria SC-001..SC-008, and M9 SC-009..SC-014 (29 items)
 -->

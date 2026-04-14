@@ -1531,6 +1531,10 @@ function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
   }
 }
 
+// Idempotent: runs on every startup. If the column is gone we return without
+// touching the database. If DROP COLUMN throws (older SQLite), we swallow the
+// error and leave the orphan column in place; the runtime never reads or
+// writes it either way.
 function dropDeprecatedSharedSpaceColumn(database: Database.Database): void {
   if (!hasTable(database, 'memory_index')) return;
   const columnNames = getTableColumns(database, 'memory_index');
@@ -1538,7 +1542,7 @@ function dropDeprecatedSharedSpaceColumn(database: Database.Database): void {
   try {
     database.exec('ALTER TABLE memory_index DROP COLUMN shared_space_id');
   } catch {
-    // Older SQLite without DROP COLUMN support: leave the column in place. The runtime never reads or writes it.
+    // Older SQLite without DROP COLUMN support: leave the column in place.
   }
 }
 

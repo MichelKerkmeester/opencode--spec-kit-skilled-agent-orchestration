@@ -586,11 +586,11 @@ workflow:
 
   step_6_save_context:
     purpose: Save conversation context for planning documentation
-    activities: [Invoke system-spec-kit skill, Preserve requirements/clarifications, Preserve technical approach decisions, Preserve architecture discussions, Index generated continuity artifact]
+    activities: [Invoke system-spec-kit skill, Preserve requirements/clarifications, Preserve technical approach decisions, Preserve architecture discussions, Index the routed canonical spec document]
     tool_invocation:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: 'Read SKILL.md to activate context saving'
-    outputs: ["Canonical continuity refreshed in spec docs + indexed support artifact under [SPEC_FOLDER]/memory/"]
+    outputs: ["Canonical continuity refreshed in spec docs (decision-record.md / implementation-summary.md / handover.md) and indexed via memory_save"]
     validation: context_saved_successfully
     checkpoint:
       question: "Step 6 Complete: Context saved. Planning workflow finished!"
@@ -603,7 +603,7 @@ workflow:
         command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_path}"
         note: "First compose structured JSON, then run generate-context.js before MCP indexing"
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
+      invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Then index via memory_save or memory_index_scan. Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the generated continuity artifact is written to disk"
     anchor_requirements:

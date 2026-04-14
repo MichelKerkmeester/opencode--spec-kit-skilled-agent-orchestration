@@ -118,7 +118,7 @@ Override and context rules:
 | Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
 | Output  | Canonical spec-doc continuity updates + indexed continuity data. Also refreshes `graph-metadata.json` derived fields in the spec folder: `trigger_phrases` are deduplicated and capped at 12, `key_files` are sanitized before storage, `entities` are deduplicated with canonical-path preference, and `status` is checklist-aware and normalized to lowercase. |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
-| Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
+| Primary | **JSON mode:** `generate-context.js <json-data-path>` (e.g. a path under `$TMPDIR` or `/tmp/save-context-data.json`) or `--json '<data>'` |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
 ---
@@ -141,8 +141,8 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 
 #### Check 1: Anchor Format Validation
 
-- Scan conversation for existing continuity support artifact references
-- If legacy support artifacts under `memory/` were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
+- Scan conversation for existing canonical spec-doc references
+- If any canonical spec documents (`decision-record.md`, `implementation-summary.md`, `handover.md`) were read during the session, verify they contain BOTH opening AND closing ANCHOR tags
 - Pattern: `<!-- ANCHOR:id --> ... <!-- /ANCHOR:id -->`
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)
@@ -239,7 +239,7 @@ Extract from the current conversation:
 
 ### Step 3: Anchor Generation (MANDATORY)
 
-Every generated continuity support artifact MUST include anchors for section-specific retrieval (enables 93% token savings).
+Every generated canonical spec document MUST include anchors for section-specific retrieval (enables 93% token savings).
 
 **Anchor Format:**
 ```html
@@ -299,7 +299,7 @@ Content...
 
 ### Step 4: Create JSON Data (AI CONSTRUCTS THIS)
 
-**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. The script requires proper JSON input to produce high-quality continuity artifacts plus canonical spec-doc updates.
+**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. The script requires proper JSON input to produce high-quality canonical spec-doc updates across decision-record.md, implementation-summary.md, and handover.md.
 
 **Required JSON Structure:**
 ```json
@@ -544,7 +544,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## APPENDIX A: MCP TOOL REFERENCE
 
-> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` remains intentionally excluded. `Edit` is allowed only for direct `_memory.continuity` frontmatter updates inside `implementation-summary.md`. Use `generate-context.js` for indexed saves, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, anchor-managed compatibility output, and any workflow that would otherwise create standalone continuity artifacts. See AGENTS.md Memory Save Rule.
+> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` remains intentionally excluded. `Edit` is allowed only for direct `_memory.continuity` frontmatter updates inside `implementation-summary.md`. Use `generate-context.js` for indexed saves, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, and anchor-managed canonical spec-doc routing. Standalone `memory/*.md` files are retired and the runtime rejects them. See AGENTS.md Memory Save Rule.
 
 > **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
 
@@ -570,7 +570,7 @@ spec_kit_memory_memory_index_scan({
 })
 ```
 
-`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing indexed continuity support artifact. Used by the `[t]` edit triggers action in the post-save review.
+`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing indexed canonical spec document. Used by the `[t]` edit triggers action in the post-save review.
 
 ---
 
@@ -620,7 +620,7 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 
 | Parameter        | Type    | Default    | Description                                         |
 | ---------------- | ------- | ---------- | --------------------------------------------------- |
-| `filePath`       | string  | *required* | Absolute path to the generated continuity support artifact |
+| `filePath`       | string  | *required* | Absolute path to the generated canonical spec document |
 | `force`          | boolean | false      | Force re-index even if content hash unchanged       |
 | `dryRun`         | boolean | false      | Validate only without saving                        |
 | `skipPreflight`  | boolean | false      | Skip pre-flight validation checks (not recommended) |

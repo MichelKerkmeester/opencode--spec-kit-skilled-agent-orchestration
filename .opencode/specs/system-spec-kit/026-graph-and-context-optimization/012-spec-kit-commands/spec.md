@@ -66,6 +66,7 @@ _memory:
 
 - `/spec_kit:start` guarantees the canonical trio (`spec.md`, `description.json`, `graph-metadata.json`) for create, repair, or placeholder-upgrade intake flows; optional memory-save behavior is a separate branch that only runs when structured context exists.
 - `/spec_kit:deep-research` anchors every run to a real `spec.md` and syncs back an abridged findings block through a bounded generated fence rather than broad document rewriting.
+- **M9 Middleware Cleanup** (additive scope): Deprecate `/spec_kit:debug` and `/spec_kit:handover` commands, plus the `@handover` and `@speckit` agents (4 runtime mirrors each). These are redundant after v3.4.0.0 moved continuity into canonical docs and introduced the `/memory:save` content-router. The `@debug` agent stays (description-only updates), and all templates (`handover.md`, `debug-delegation.md`, `level_N/`) stay. The `@speckit` exclusivity rule for spec-folder `*.md` writes is replaced with a distributed-governance rule: main agent writes using templates, runs `validate.sh --strict`, and routes continuity via `/memory:save`; `@deep-research` and `@debug` retain file-specific exclusivity for `research/research.md` and `debug-delegation.md`.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -80,6 +81,7 @@ _memory:
 - **Plan / complete smart-delegation**: detect `no-spec`, `partial-folder`, `repair-mode`, and unresolved placeholder-upgrade state in setup; absorb `/start` intake inline inside the parent command's consolidated prompt before original workflow steps resume
 - **Command-layer safety**: staged canonical commit, seed-marker lifecycle handling, normalized-topic dedupe, and optional save-path branching around existing helper interfaces
 - **Skill reference**: `.opencode/skill/sk-deep-research/` gains a `spec_check_protocol` reference doc describing lock lifecycle, seed-marker rules, host-anchor ownership, generated-fence replacement, audit events, and idempotency rules
+- **M9 deprecations**: Delete `/spec_kit:handover` + `/spec_kit:debug` commands and their YAML assets; delete `@handover` + `@speckit` agents across 4 runtime mirrors each; delete Gemini command TOML mirrors; update references across orchestrate agents (4 runtimes), spec_kit commands, YAML workflows, root docs (CLAUDE.md / AGENTS.md / AGENTS_example_fs_enterprises.md), install guides, skill SKILL.md + README.md, reference documents, CLI skill references; replace `@speckit` exclusivity rule with distributed-governance rule in root docs + system-spec-kit SKILL.md; reposition `/memory:save` as canonical `handover.md` maintainer; remove `:auto-debug` flag logic from `/spec_kit:complete`
 
 ### Out of Scope
 
@@ -108,6 +110,87 @@ _memory:
 | `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml` | Modify | Same delegation contract with confirm-mode gates around intake and continuation |
 | `.opencode/skill/sk-deep-research/SKILL.md` | Modify | Add `spec_check_protocol` loading guidance under the runtime workflow section |
 | `.opencode/skill/sk-deep-research/references/spec_check_protocol` | Create | Contract for advisory locking, folder-state detection, seed markers, host-anchor ownership, generated-fence replacement, audit events, and idempotency |
+
+#### M9 Files to Change (Middleware Cleanup)
+
+**DELETE (17 files)**:
+
+| File Path | Change Type | Reason |
+|-----------|-------------|--------|
+| `.opencode/command/spec_kit/handover.md` | Delete | Command deprecated |
+| `.opencode/command/spec_kit/debug.md` | Delete | Command deprecated |
+| `.opencode/command/spec_kit/assets/spec_kit_handover_full.yaml` | Delete | Command YAML asset |
+| `.opencode/command/spec_kit/assets/spec_kit_debug_auto.yaml` | Delete | Command YAML asset |
+| `.opencode/command/spec_kit/assets/spec_kit_debug_confirm.yaml` | Delete | Command YAML asset |
+| `.opencode/agent/handover.md` | Delete | @handover agent runtime 1/4 |
+| `.claude/agents/handover.md` | Delete | @handover runtime 2/4 |
+| `.codex/agents/handover.toml` | Delete | @handover runtime 3/4 |
+| `.gemini/agents/handover.md` | Delete | @handover runtime 4/4 |
+| `.opencode/agent/speckit.md` | Delete | @speckit agent runtime 1/4 |
+| `.claude/agents/speckit.md` | Delete | @speckit runtime 2/4 |
+| `.codex/agents/speckit.toml` | Delete | @speckit runtime 3/4 |
+| `.gemini/agents/speckit.md` | Delete | @speckit runtime 4/4 |
+| `.gemini/commands/spec_kit/handover.toml` | Delete | Gemini command mirror |
+| `.gemini/commands/spec_kit/debug.toml` | Delete | Gemini command mirror |
+
+**MODIFY (reference removal and distributed-governance adoption)**:
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `CLAUDE.md` | Modify | Delete @speckit + @handover bullets; update @debug bullet to Task-tool dispatch; add distributed-governance rule; update Quick Reference workflow rows |
+| `AGENTS.md` | Modify | Same edits as CLAUDE.md |
+| `AGENTS_example_fs_enterprises.md` | Modify | Same edits |
+| `.opencode/agent/orchestrate.md` | Modify | Remove @speckit + @handover routing rows, LEAF-list entries, agent-files entries; update @debug routing to Task-tool dispatch; replace deprecated-command suggestions with `/memory:save` + Task-tool patterns |
+| `.claude/agents/orchestrate.md` | Modify | Same edits (runtime mirror) |
+| `.codex/agents/orchestrate.toml` | Modify | Same edits (runtime mirror) |
+| `.gemini/agents/orchestrate.md` | Modify | Same edits (runtime mirror) |
+| `.opencode/command/spec_kit/resume.md` | Modify | Delete `/spec_kit:handover` + `/spec_kit:debug` Next-Steps rows; keep handover.md recovery refs; update session-ending row to `/memory:save` |
+| `.opencode/command/spec_kit/plan.md` | Modify | Remove @speckit + @handover from Do-Not-Dispatch lists; remove Handover Check row; update pause-Next-Steps to `/memory:save` |
+| `.opencode/command/spec_kit/complete.md` | Modify | Remove `:auto-debug` flag entirely (argument-hint + workflow logic); remove @speckit + @handover dispatch restrictions; delete debug-integration subsection; replace `:auto-debug` fallback with user-escalation |
+| `.opencode/command/spec_kit/implement.md` | Modify | Remove @speckit + @handover from Do-Not-Dispatch; remove Session Handover Check step; remove deprecated-command Next-Steps rows |
+| `.opencode/command/spec_kit/start.md` | Modify | Remove `/spec_kit:handover` Next-Steps row; remove @speckit dispatch language |
+| `.opencode/command/spec_kit/deep-research.md` | Modify | Remove `/spec_kit:handover` Next-Steps row |
+| `.opencode/command/spec_kit/deep-review.md` | Modify | Remove `/spec_kit:handover` Next-Steps row |
+| `.opencode/command/spec_kit/assets/spec_kit_complete_{auto,confirm}.yaml` | Modify | Delete `:auto-debug` flag logic, debug_integration blocks, handover check steps |
+| `.opencode/command/spec_kit/assets/spec_kit_plan_{auto,confirm}.yaml` | Modify | Delete handover-check + deprecated-command Next-Steps entries |
+| `.opencode/command/spec_kit/assets/spec_kit_implement_{auto,confirm}.yaml` | Modify | Delete handover check + debug-dispatch steps |
+| `.opencode/command/spec_kit/assets/spec_kit_start_{auto,confirm}.yaml` | Modify | Delete `/spec_kit:handover` Next-Steps entries |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_{auto,confirm}.yaml` | Modify | Remove @speckit/@handover dispatch calls if present |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-review_{auto,confirm}.yaml` | Modify | Remove @speckit/@handover dispatch calls if present |
+| `.opencode/command/memory/save.md` | Modify | Insert §1 "Handover Document Maintenance" subsection; update `handover_state` contract row; update §8 Next-Steps + §9 Related-Commands to remove `/spec_kit:handover` refs |
+| `.opencode/agent/debug.md` | Modify | Update description to remove `/spec_kit:debug` dispatcher language; clarify Task-tool dispatch pattern |
+| `.claude/agents/debug.md` | Modify | Same edits (runtime mirror) |
+| `.codex/agents/debug.toml` | Modify | Same edits (runtime mirror) |
+| `.gemini/agents/debug.md` | Modify | Same edits (runtime mirror) |
+| `.opencode/agent/ultra-think.md` | Modify | Update @debug routing row to Task-tool dispatch pattern; remove @speckit refs |
+| `.claude/agents/ultra-think.md` | Modify | Same edits (runtime mirror) |
+| `.codex/agents/ultra-think.toml` | Modify | Same edits (runtime mirror) |
+| `.gemini/agents/ultra-think.md` | Modify | Same edits (runtime mirror) |
+| `.opencode/README.md` | Modify | Delete @handover + @speckit rows; update @debug; delete deprecated-command bullets; update end-session workflow row |
+| `.opencode/install_guides/README.md` | Modify | Agent table: delete @handover + @speckit rows; SpecKit commands: remove deprecated commands |
+| `.opencode/install_guides/SET-UP - AGENTS.md` | Modify | Delete rows for `/spec_kit:debug`, `/spec_kit:handover`, @speckit, @handover |
+| `.opencode/install_guides/SET-UP - Opencode Agents.md` | Modify | Remove @speckit + @handover refs; update @debug refs |
+| `.opencode/command/README.txt` | Modify | Remove debug + handover from SpecKit command list + rows |
+| `.opencode/command/spec_kit/README.txt` | Modify | Delete all `/spec_kit:debug` and `/spec_kit:handover` references |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Replace @speckit exclusivity narrative with distributed-governance rule; remove deprecated-command refs; update trigger phrases |
+| `.opencode/skill/system-spec-kit/README.md` | Modify | Remove deprecated-command refs; remove @speckit agent refs; keep all template + recovery-surface refs |
+| `.opencode/skill/sk-code-web/README.md` | Modify | Delete deprecated-command refs; keep debugging methodology |
+| `.opencode/skill/sk-code-web/references/debugging/debugging_workflows.md` | Modify | Remove `/spec_kit:debug` command refs; keep workflow content |
+| `.opencode/skill/system-spec-kit/references/workflows/quick_reference.md` | Modify | Delete `/spec_kit:handover` + `/spec_kit:handover:full`/`:quick` subsections; replace @handover + @speckit refs with distributed-governance language |
+| `.opencode/skill/system-spec-kit/references/workflows/worked_examples.md` | Modify | Update/remove deprecated-command workflow examples |
+| `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Modify | Replace `/spec_kit:handover` attribution with `/memory:save` + template narrative |
+| `.opencode/skill/system-spec-kit/references/templates/template_guide.md` | Modify | Replace `/spec_kit:handover:full` attribution with `/memory:save` + main-agent narrative |
+| `.opencode/skill/system-spec-kit/references/templates/level_specifications.md` | Modify | Remove deprecated-command refs; remove @speckit agent refs |
+| `.opencode/skill/system-spec-kit/references/validation/phase_checklists.md` | Modify | Remove `/spec_kit:handover` + @speckit gate refs |
+| `.opencode/skill/system-spec-kit/references/debugging/universal_debugging_methodology.md` | Modify | Remove `/spec_kit:debug` command refs; keep @debug agent methodology |
+| `.opencode/skill/cli-claude-code/references/agent_delegation.md` | Modify | Delete @handover + @speckit entries; update @debug entries to Task-tool dispatch |
+| `.opencode/skill/cli-codex/references/agent_delegation.md` | Modify | Same edits |
+| `.opencode/skill/cli-gemini/references/agent_delegation.md` | Modify | Same edits |
+| `.opencode/skill/cli-gemini/SKILL.md` | Modify | Update @debug dispatch example to Task-tool pattern |
+| `.opencode/skill/cli-gemini/README.md` | Modify | Remove @debug command ref; keep handover.md recovery ref |
+| `.opencode/skill/cli-copilot/assets/prompt_templates.md` | Modify | Delete handover/debug command refs; update @debug to Task-tool dispatch |
+| `.opencode/command/improve/agent.md` | Modify | Remove @handover + @speckit improvement targeting; update @debug; remove deprecated-command refs |
+| `.opencode/skill/sk-doc/assets/agents/agent_template.md` | Modify | Agent table: delete @handover + @speckit rows; update @debug description |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -135,6 +218,22 @@ _memory:
 | REQ-009 | `/start` supports `:auto` and `:confirm` through one shared state graph and one shared output contract | Both YAML workflows implement the same folder states (`empty-folder`, `partial-folder`, `repair-mode`, `placeholder-upgrade`, `populated-folder`) and returned fields; only approval density and prompt compression differ |
 | REQ-010 | Deep-research and `/start` flows are idempotent across repeated runs on the same topic or repair path | Normalized research topics, tracked seed markers, generated-fence replacement, and manual-relationship object dedupe prevent duplicate Open Questions, context notes, findings blocks, or manual edges across reruns |
 | REQ-011 | Intake resume and re-entry contract is enforced across `/start` and delegated parent flows | `/start`, delegated `/plan`, and delegated `/complete` normalize `start_state` into `empty-folder`, `partial-folder`, `repair-mode`, `placeholder-upgrade`, or `populated-folder`; reruns persist and return `resume_question_id`, `repair_mode`, and `reentry_reason`; success is blocked until the canonical trio validates and every tracked seed marker is cleared or explicitly replaced with `N/A - insufficient source context` |
+
+### P0 — M9 Middleware Cleanup (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-012 | `/spec_kit:debug` and `/spec_kit:handover` commands + YAML assets + Gemini command TOML mirrors are deleted | The 7 command/asset files (`handover.md`, `debug.md`, `spec_kit_handover_full.yaml`, `spec_kit_debug_{auto,confirm}.yaml`, `.gemini/commands/spec_kit/{handover,debug}.toml`) no longer exist; `grep -rE "/spec_kit:(handover|debug)"` on active docs returns empty after exclusion filter for archive/future/iterations/scratch/changelog/specs |
+| REQ-013 | `@handover` and `@speckit` agents deleted across all 4 runtime mirrors (8 files total) | The 8 agent files (`{opencode/agent,claude/agents,gemini/agents}/{handover,speckit}.md` + `.codex/agents/{handover,speckit}.toml`) no longer exist; `grep -rE "@handover\|@speckit"` on active docs returns empty after exclusion filter |
+| REQ-014 | `@speckit` exclusivity rule replaced with distributed-governance rule across CLAUDE.md, AGENTS.md, AGENTS_example_fs_enterprises.md, and `.opencode/skill/system-spec-kit/SKILL.md` | All four files contain the replacement rule: "Any agent writing spec folder docs MUST use templates from `templates/level_N/`, run `bash .../validate.sh [spec_folder] --strict` after each file write, and route continuity updates through `/memory:save`"; `@deep-research` and `@debug` remain exclusive for `research/research.md` and `debug-delegation.md` respectively |
+
+### P1 — M9 Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-015 | All active-doc references to deprecated commands/agents updated (orchestrate routing, spec_kit commands, YAML assets, install guides, skill docs, reference docs, CLI skill refs) | Verified by zero-reference grep sweep across 50+ active files; no dangling `@handover`, `@speckit`, `/spec_kit:handover`, `/spec_kit:debug` references in active code surface (exclusions applied) |
+| REQ-016 | Preserved capabilities: `@debug` agent (4 runtime mirrors with description-only updates), all templates (`handover.md`, `debug-delegation.md`, `level_N/`), `system-spec-kit` skill, all MCP server code (handlers, routing, schemas, types), stop-hook autosave, `/spec_kit:resume` recovery ladder | Verified by survival check: 4 @debug files exist; 2 template files exist; skill directory exists; MCP server code unchanged; `/spec_kit:resume` still reads `handover.md` as first recovery source; `handover_state` routing category in `routing-prototypes.json` unchanged |
+| REQ-017 | `/memory:save` positioned as canonical `handover.md` maintainer via `handover_state` content-router category; `:auto-debug` flag removed from `/spec_kit:complete` with explicit user-escalation replacement | `save.md` contains new "Handover Document Maintenance" subsection in §1; `spec_kit_complete_{auto,confirm}.yaml` contains no `:auto-debug` references; escalation path replaces auto-debug fallback logic |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -150,6 +249,15 @@ _memory:
 - **SC-006**: Zero regression — running `/spec_kit:plan` or `/spec_kit:complete` on a folder that already satisfies the healthy-folder contract behaves exactly as today (no new prompts, no delegation)
 - **SC-007**: Placeholder-upgrade flows only complete after every tracked seed marker is replaced with confirmed content or the explicit fallback `N/A - insufficient source context`
 - **SC-008**: Optional memory-save mode only runs when sufficient structured context exists, and its skip or failure state does not invalidate an already committed canonical trio
+
+### M9 Success Criteria
+
+- **SC-009**: `grep -rE "/spec_kit:(handover|debug)"` across active docs (excluding archive/future/iterations/scratch/changelog/specs) returns zero matches after M9 executes
+- **SC-010**: `grep -rE "@handover|@speckit"` across active docs (with same exclusions) returns zero matches after M9 executes
+- **SC-011**: `/memory:save` command card documents it as canonical `handover.md` maintainer via `handover_state` routing; routing prototype in `routing-prototypes.json` unchanged
+- **SC-012**: Running `/spec_kit:resume` on an existing spec folder still reads `handover.md` as the first recovery source and presents continuity correctly (no regression)
+- **SC-013**: `@debug` agent remains dispatchable via Task tool in all 4 runtimes; `@deep-research` retains exclusive write access for `research/research.md`; main agent can write other spec-folder `*.md` files using templates under the distributed-governance rule
+- **SC-014**: `system-spec-kit` skill, `handover.md` template, `debug-delegation.md` template, `level_N/` templates, and all MCP server code (handlers, routing, schemas, types) remain unchanged and functional
 
 ### Acceptance Scenarios
 
@@ -176,6 +284,11 @@ _memory:
 | Dependency | `create.sh`, `generate-description.js`, and Level 1/2 templates | Canonical trio emission depends on helper reuse and template-path stability | Reuse helpers and templates as-is; implement staged commit and save branching at the command layer only |
 | Dependency | `recommend-level.sh` CLI contract | Level suggestion depends on stable helper inputs and output parsing | Derive numeric `loc/files/risk` proxies before invocation and store helper output separately from the confirmed level |
 | Dependency | `validate_document.py` and packet strict validation | Success criteria depend on markdown/schema and packet validation remaining available | Run validator-backed verification as part of completion and treat failures as blockers |
+| Risk (M9) | Main agent or third-party agent writes spec folder docs without templates or `validate.sh --strict` after @speckit deletion | Quality degrades; packet validation fails at completion | Add distributed-governance rule to CLAUDE.md / AGENTS.md / SKILL.md; YAML workflow steps explicitly call `validate.sh`; checklist.md at packet closure catches gaps |
+| Risk (M9) | Hidden dispatcher of `@speckit` or `@handover` in MCP handlers or hooks that Explore agents missed | Deletion breaks workflows | Phase 7 zero-reference sweep catches any remaining refs; rollback path deletes the 17 files as one commit that can be reverted together |
+| Risk (M9) | `:auto-debug` flag removal breaks users who relied on auto-escalation at 3+ failures | Silent loss of auto-debug fallback in `/spec_kit:complete` | Replace with explicit "escalate to user with diagnostic summary" path; main agent can still Task-dispatch `@debug` manually; document migration note in complete.md |
+| Risk (M9) | Full 7-section `handover.md` regeneration becomes unavailable (no command produces it) | Users lose deliberate-handover capability | Accept trade-off; `/memory:save` still maintains `session-log` anchor; stop-hook still auto-saves continuity; follow-on packet may enhance `/memory:save` handler to auto-initialize full template |
+| Dependency (M9) | `handover.md` template + `level_N/` templates + bash scripts (`validate.sh`, `create.sh`, `recommend-level.sh`) | Distributed governance depends on these remaining stable | Templates and scripts are explicitly preserved by M9; Phase 7 survival check verifies |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -255,6 +368,11 @@ _memory:
 
 - No blocking open questions remain after iteration 010. The remaining work is implementation sequencing: choose the concrete staged-write wrapper, wire the runtime audit sink, and patch the markdown/YAML surfaces in milestone order.
 
+### M9 Open Questions
+
+- **M9-Q1**: `:auto-debug` flag replacement — default is user escalation; orchestrate can still Task-dispatch `@debug` manually. Confirm during M9 execution whether a lightweight auto-dispatch-at-3-failures retained via Task tool is preferred over pure user escalation.
+- **M9-Q2**: `/memory:save` handler enhancement to auto-initialize full 7-section `handover.md` from template when file does not exist — deliberately deferred to a follow-on packet. Confirm M9 does not need to absorb this scope.
+- **M9-Q3**: Governance reversal path — if distributed-governance rule fails in practice (agents bypass `validate.sh`), a follow-on can introduce `@spec-master` as a slim replacement with same exclusive-writer contract. No action needed in M9 unless reversal triggers early.
 <!-- /ANCHOR:questions -->
 
 ---

@@ -44,7 +44,7 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Phase 018 still exposes a full shared-memory collaboration surface through MCP lifecycle tools, shared-space runtime helpers, governed retrieval filters, save-path enforcement, feature-flag docs, feature-catalog entries, playbook scenarios, and tests. The user explicitly wants that feature removed as if it never shipped. The follow-up cleanup adds a one-time `ALTER TABLE memory_index DROP COLUMN shared_space_id` migration on startup so deployed databases lose the orphan column on first launch, with a silent fallback for older SQLite installs that lack DROP COLUMN support.
+Phase 018 still exposes a full shared-memory collaboration surface through MCP lifecycle tools, shared-space runtime helpers, governed retrieval filters, save-path enforcement, feature-flag docs, feature-catalog entries, playbook scenarios, and tests. The user explicitly wants that feature removed as if it never shipped. The follow-up cleanup adds an idempotent `dropDeprecatedSharedSpaceColumn()` helper that runs on every startup. When the column is still present the helper issues `ALTER TABLE memory_index DROP COLUMN shared_space_id`. When the column is already gone (or when the SQLite build does not support DROP COLUMN) the helper silently returns without doing anything, so subsequent starts never fail on deployed installs.
 
 Leaving the code in a disabled or documented-only state is out of scope. The system has to stop registering shared-memory tools, stop resolving shared-space scope, stop shipping shared-memory docs and tests, and stop advertising shared-memory setup or rollout flows.
 
@@ -62,10 +62,10 @@ Delete the shared-memory feature end to end while preserving only the unavoidabl
 - Delete the dedicated shared-memory handler and shared-space collaboration library files, plus any runtime imports, exports, and barrel references that point at them.
 - Remove shared-space filtering and `sharedSpaceId` request plumbing from retrieval, trigger matching, governed save, checkpoint, preflight, and related runtime helpers.
 - Delete shared-memory docs, shared-space directories, feature-catalog entries, playbook scenarios, and shared-memory-only tests.
-- Drop the `shared_space_id` column from `memory_index` on startup via a one-time `ALTER TABLE DROP COLUMN` migration. The runtime never reads or writes the column, so installs on SQLite versions without DROP COLUMN support keep the orphan column harmlessly.
+- Run the idempotent `dropDeprecatedSharedSpaceColumn()` helper on every startup. When the column is present, the helper issues `ALTER TABLE memory_index DROP COLUMN shared_space_id`. When the column is already gone, or when the SQLite build does not support DROP COLUMN, the helper returns without doing anything. The runtime never reads or writes the column, so installs that cannot execute DROP COLUMN keep an unused column on disk without side effects.
 
 ### Out of Scope
-- Forced data migration or destructive rewrites for installs on SQLite older than 3.35. The startup migration falls back to a no-op so those installs keep an unused column instead of failing the boot.
+- Forced data migration or destructive rewrites for installs on SQLite older than 3.35. The startup helper falls back to a no-op so those installs keep an unused column instead of failing the boot.
 - Broad governance redesign unrelated to shared memory. Tenant, user, agent, and session scope remain if they are still used elsewhere.
 - Git commit or push actions. This phase ends with a commit-ready file list only.
 

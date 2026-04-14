@@ -1,4 +1,3 @@
-<!-- runtime mirrors: .claude/agents/, .codex/agents/*.toml, .gemini/agents/ — sync on every edit -->
 ---
 name: improve-prompt
 description: Improve-prompt specialist for framework selection, CLEAR validation, and dispatch-ready prompt packages for high-stakes external CLI invocations

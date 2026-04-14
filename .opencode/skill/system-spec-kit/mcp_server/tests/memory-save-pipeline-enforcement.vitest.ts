@@ -393,7 +393,7 @@ describe('Cat 1: Parser Validation', () => {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, buildValidPipelineMemory(), 'utf8');
 
-    // isMemoryFile checks for specs/*/memory/ pattern
+    // isMemoryFile now only accepts canonical spec documents and constitutional memories; non-canonical paths are rejected
     expect(memoryParser.isMemoryFile(filePath)).toBe(false);
   });
 

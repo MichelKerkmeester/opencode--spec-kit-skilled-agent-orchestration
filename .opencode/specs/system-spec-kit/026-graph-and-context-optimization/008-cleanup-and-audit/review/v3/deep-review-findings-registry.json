@@ -3,10 +3,34 @@
     {
       "findingId": "F005",
       "status": "open",
-      "iteration": 3,
-      "severity": "P2",
+      "iteration": 4,
+      "severity": "P1",
       "dimension": "traceability",
-      "note": "Packet docs and changelog describe the shared_space_id cleanup as one-time / first-startup, but the runtime retries the silent no-op path on every bootstrap while the column still exists on unsupported SQLite builds."
+      "note": "Packet docs and changelog still describe the shared_space_id cleanup as one-time / first-startup, but the runtime retries the DROP COLUMN attempt on every bootstrap while the column still exists on unsupported SQLite builds."
+    },
+    {
+      "findingId": "F006",
+      "status": "open",
+      "iteration": 4,
+      "severity": "P1",
+      "dimension": "maintainability",
+      "note": "memory/save.md, memory/manage.md, and memory/README.txt still describe a legacy memory/ continuity surface even though the shipped contract retires standalone memory/*.md artifacts."
+    },
+    {
+      "findingId": "F007",
+      "status": "open",
+      "iteration": 5,
+      "severity": "P1",
+      "dimension": "maintainability",
+      "note": "The workflow YAML family (deep-review, deep-research, spec_kit_complete, plus the plan/implement save-context flows) still describes indexing generated support artifacts and authoring guardrails under memory/ instead of pinning continuity to canonical spec documents."
+    },
+    {
+      "findingId": "F008",
+      "status": "open",
+      "iteration": 7,
+      "severity": "P1",
+      "dimension": "traceability",
+      "note": "The live feature catalog for memory_index_scan still says the scanner discovers retired spec-folder memory files even though memory-index-discovery.ts excludes memory/ directories and the runtime keeps packet continuity spec-doc-first."
     }
   ],
   "resolvedFindings": [
@@ -32,27 +56,57 @@
       "note": "Lifecycle playbooks 097 and 144 now reference canonical spec docs (decision-record.md and implementation-summary.md) instead of retired memory artifacts."
     }
   ],
-  "repeatedFindings": [],
+  "repeatedFindings": [
+    {
+      "iteration": 6,
+      "findingRefs": [
+        "F005",
+        "F006",
+        "F007"
+      ],
+      "note": "Exact-pattern closure sweep over packet docs, changelog, workflow YAMLs, manuals, and key runtime files found no hidden P0/P1 beyond the stable residual F005/F006/F007 cluster."
+    },
+    {
+      "iteration": 8,
+      "findingRefs": [],
+      "note": "Targeted correctness regression probe re-validated the spec-doc-health walk-up and context-server mock cleanup without reopening retired memory-path acceptance or stale test references."
+    },
+    {
+      "iteration": 9,
+      "findingRefs": [],
+      "note": "Adversarial live-entry-point re-read confirmed that memory_save, memory_index_scan, create-agent, and representative completion workflows do not reopen retired spec-folder memory/*.md acceptance or emission."
+    },
+    {
+      "iteration": 10,
+      "findingRefs": [
+        "F005",
+        "F006",
+        "F007",
+        "F008"
+      ],
+      "note": "Terminal convergence pass confirmed that the residual set remains exactly four documentary P1 findings and that no reviewed runtime or security surface reopened."
+    }
+  ],
   "dimensionCoverage": {
     "correctness": true,
     "security": true,
     "traceability": true,
-    "maintainability": false
+    "maintainability": true
   },
   "findingsBySeverity": {
     "P0": 0,
-    "P1": 0,
-    "P2": 1
+    "P1": 4,
+    "P2": 0
   },
   "traceabilityProtocols": {
-    "spec_code": "partial",
-    "checklist_evidence": "partial",
-    "skill_agent": "pending",
-    "agent_cross_runtime": "pending",
-    "feature_catalog_code": "pending",
+    "spec_code": "fail",
+    "checklist_evidence": "fail",
+    "skill_agent": "pass",
+    "agent_cross_runtime": "pass",
+    "feature_catalog_code": "fail",
     "playbook_capability": "pass"
   },
-  "iterationsCompleted": 3,
-  "convergenceScore": 0.75,
-  "hasAdvisories": true
+  "iterationsCompleted": 10,
+  "convergenceScore": 1,
+  "hasAdvisories": false
 }

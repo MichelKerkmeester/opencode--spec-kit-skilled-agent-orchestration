@@ -47,7 +47,7 @@ operating_mode:
 
 ## 0. INSTRUCTIONS
 
-Parse the requested mode first, then execute only the matching management workflow. Treat canonical spec docs as the active continuity source and describe `memory/` inputs as legacy compatibility material when they appear in scan output.
+Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `memory/*.md` surface is no longer accepted by the runtime.
 
 ---
 

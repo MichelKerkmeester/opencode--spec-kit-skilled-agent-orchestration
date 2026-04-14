@@ -84,7 +84,7 @@ SETUP EXECUTION LOGIC:
    - Ask operation only when missing or invalid
    - Ask source strategy always
    - Ask spec folder choice always
-   - Ask memory loading only when existing spec is selected and memory files exist
+   - Ask prior-session context loading only when existing spec is selected and the spec docs include recent `_memory.continuity` entries or a `handover.md`
    - Ask execution mode only when no suffix is present
 
 6) Ask ONE consolidated setup prompt with only missing items
@@ -108,9 +108,9 @@ SETUP EXECUTION LOGIC:
        D) Skip
        E) Phase folder
 
-   Q4. Memory Context (if existing spec has memory files)
-       A) Load latest memory
-       B) Load up to 3 recent memories
+   Q4. Prior Session Context (if existing spec has it)
+       A) Load `handover.md` + `_memory.continuity` from `implementation-summary.md`
+       B) Load canonical spec docs (spec.md, plan.md, tasks.md, decision-record.md) up to a recent cap
        C) Skip
 
    Q5. Execution Mode (if no suffix)

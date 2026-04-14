@@ -1,0 +1,30 @@
+{
+  "specFolder": "external-reviews/001-cg-p2-ds-variables-label-button-review",
+  "description": "10-iteration deep-review of external Cg P.2 DS variables task spec (FE label + button + CTA + dropdown updates); verdict FAIL with 13 findings (P0=1, ",
+  "keywords": [
+    "10-iteration",
+    "deep-review",
+    "external",
+    "variables",
+    "task",
+    "spec",
+    "label",
+    "button",
+    "cta",
+    "dropdown",
+    "updates",
+    "verdict",
+    "fail",
+    "findings"
+  ],
+  "lastUpdated": "2026-04-14T15:08:45.476Z",
+  "specId": "001",
+  "folderSlug": "cg-p2-ds-variables-label-button-review",
+  "parentChain": [
+    "external-reviews"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "14-04-26_16-09__completed-10-iteration-spec-kit-deep-review-of.md"
+  ]
+}

@@ -491,7 +491,7 @@ workflow:
     tool_invocation:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: "Intermediate checkpoint - development phase complete"
-    outputs: ["[SPEC_FOLDER]/memory/checkpoint__development_complete.md"]
+    outputs: ["[SPEC_FOLDER]/scratch/checkpoint__development_complete.md"]
     validation: checkpoint_saved
 
   step_7_completion:
@@ -564,11 +564,11 @@ workflow:
 
   step_8_save_context:
     purpose: Save conversation context
-    activities: [Invoke system-spec-kit skill, Preserve decisions/insights/changes, Index generated continuity artifact for search]
+    activities: [Invoke system-spec-kit skill, Preserve decisions/insights/changes, Index the routed canonical spec document for search]
     tool_invocation:
       command: Read(".opencode/skill/system-spec-kit/SKILL.md")
       note: "Activate context saving"
-    outputs: ["Canonical continuity refreshed in spec docs + indexed support artifact under [SPEC_FOLDER]/memory/"]
+    outputs: ["Canonical continuity refreshed in spec docs (decision-record.md / implementation-summary.md / handover.md) and indexed via memory_save"]
     validation: context_saved_successfully
     checkpoint:
       question: "Step 8 Complete: Implementation workflow finished!"
@@ -579,11 +579,11 @@ workflow:
       enforcement: HARD_BLOCK
       method: "MUST use structured JSON input with generate-context.js"
       command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]"
-      forbidden: ["Manual Write/Edit authoring of continuity support artifacts under memory/"]
-      violation_recovery: "DELETE the manually authored support artifact, then re-run via script"
+      forbidden: ["Manual Write/Edit authoring of files under retired memory/ paths (the runtime rejects them)"]
+      violation_recovery: "DELETE the manually authored file, then re-run generate-context.js so the save routes into decision-record.md, implementation-summary.md, or handover.md"
     post_save_indexing:
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[generated-support-artifact-path]" })'
+      invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the generated continuity artifact is written to disk"
     anchor_requirements:

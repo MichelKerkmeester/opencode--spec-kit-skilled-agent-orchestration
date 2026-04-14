@@ -644,7 +644,7 @@ readme_workflow:
       - Validation results
       - Any challenges or decisions made
     outputs:
-    - memory_file: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__readme_creation_session.md"
+    - implementation_summary: "[SPEC_FOLDER]/implementation-summary.md"
     validation: context_saved
     checkpoint:
       question: "Context saved. README creation complete!"
@@ -656,14 +656,14 @@ readme_workflow:
 
     # -- SEMANTIC MEMORY INTEGRATION -----------------------------------------
     post_save_indexing:
-      purpose: "Index memory file immediately for search availability"
+      purpose: "Index the canonical spec document immediately for search availability"
       mcp_tool: memory_save
       invocation: |
         spec_kit_memory_memory_save({
-          filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__readme_creation_session.md"
+          filePath: "[SPEC_FOLDER]/implementation-summary.md"
         })
-      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after memory file is written to disk"
+      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode. The save target is a canonical spec document; standalone memory/*.md files are retired and the runtime rejects them."
+      when: "Immediately after implementation-summary.md is written to disk"
 
     anchor_requirements:
       enforcement: MANDATORY
@@ -1193,7 +1193,7 @@ install_guide_workflow:
       - Troubleshooting scenarios captured
       - Any challenges or decisions made
     outputs:
-    - memory_file: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__install_guide_session.md"
+    - implementation_summary: "[SPEC_FOLDER]/implementation-summary.md"
     validation: context_saved
     checkpoint:
       question: "Context saved. Installation guide creation complete!"
@@ -1205,14 +1205,14 @@ install_guide_workflow:
 
     # -- SEMANTIC MEMORY INTEGRATION -----------------------------------------
     post_save_indexing:
-      purpose: "Index memory file immediately for search availability"
+      purpose: "Index the canonical spec document immediately for search availability"
       mcp_tool: memory_save
       invocation: |
         spec_kit_memory_memory_save({
-          filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__install_guide_session.md"
+          filePath: "[SPEC_FOLDER]/implementation-summary.md"
         })
-      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after memory file is written to disk"
+      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode. The save target is a canonical spec document; standalone memory/*.md files are retired and the runtime rejects them."
+      when: "Immediately after implementation-summary.md is written to disk"
 
     anchor_requirements:
       enforcement: MANDATORY

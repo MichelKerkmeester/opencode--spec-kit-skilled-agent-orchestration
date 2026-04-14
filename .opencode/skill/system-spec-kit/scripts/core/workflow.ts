@@ -2142,6 +2142,83 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }
   }
 
+  // Step 11.5: Auto-index touched canonical spec docs + graph-metadata.json in target folder.
+  // Closes the "only the new memory file is indexed" gap documented in
+  // command/memory/save.md APPENDIX A: "Canonical spec-doc surfaces participate
+  // In spec-doc indexing." Reuses the same incremental mtime + content-hash path as
+  // Memory_index_scan so unchanged files are skipped cheaply.
+  //
+  // Kill switches (either disables this step):
+  //   SPECKIT_AUTO_INDEX_TOUCHED=false  — new, targeted at Step 11.5 only
+  //   SPECKIT_INDEX_SPEC_DOCS=false     — existing global opt-out, honored by handler
+  const autoIndexTouchedDisabled =
+    process.env.SPECKIT_AUTO_INDEX_TOUCHED === 'false' ||
+    process.env.SPECKIT_INDEX_SPEC_DOCS === 'false';
+
+  if (ctxFileWritten && !autoIndexTouchedDisabled && specFolderName) {
+    try {
+      const { runMemoryIndexScan, initializeIndexingRuntime } = await import('@spec-kit/mcp-server/api/indexing');
+      log('Step 11.5: Indexing touched canonical spec documents...');
+      // Ensure indexing runtime is initialized. Idempotent: safe to call even if Step 11
+      // Already initialized it via the vectorIndex module (different init path).
+      try {
+        initializeIndexingRuntime();
+      } catch (initErr: unknown) {
+        // Not fatal — runtime may already be warm; runMemoryIndexScan will surface real errors.
+        const initMsg = initErr instanceof Error ? initErr.message : String(initErr);
+        if (!/already/i.test(initMsg)) {
+          warn(`   Step 11.5: indexing runtime init note: ${initMsg}`);
+        }
+      }
+      const scanResult = await runMemoryIndexScan({
+        specFolder: specFolderName,
+        includeSpecDocs: true,
+        includeConstitutional: false,
+        incremental: true,
+        force: false,
+      });
+
+      // runMemoryIndexScan returns MCP-style { content: [{ type: "text", text: "<json>" }], isError }.
+      // Parse the nested JSON envelope to extract scan counts.
+      let scanEnvelope: { summary?: string; data?: Record<string, unknown> } | null = null;
+      try {
+        const contentText = (scanResult as {
+          content?: Array<{ text?: string }>
+        } | null | undefined)?.content?.[0]?.text;
+        if (typeof contentText === 'string' && contentText.length > 0) {
+          scanEnvelope = JSON.parse(contentText) as { summary?: string; data?: Record<string, unknown> };
+        }
+      } catch {
+        // Fall through to generic message below.
+      }
+
+      const scanIsError = Boolean((scanResult as { isError?: boolean } | null | undefined)?.isError);
+      const scanData = scanEnvelope?.data;
+      if (scanIsError) {
+        const reason = typeof scanData?.error === 'string' ? scanData.error : (scanEnvelope?.summary ?? 'unknown error');
+        const code = typeof scanData?.code === 'string' ? scanData.code : null;
+        if (code === 'E429' || /rate.?limit/i.test(reason) || /cooldown/i.test(reason)) {
+          // Cooldown is non-fatal — index will catch up on next save or manual scan.
+          log(`   Step 11.5: skipped (scan cooldown active; retry on next save)`);
+        } else {
+          warn(`   Warning: Step 11.5 scan reported error: ${reason}`);
+        }
+      } else if (scanData && typeof scanData === 'object') {
+        const indexed = Number(scanData.indexed) || 0;
+        const updated = Number(scanData.updated) || 0;
+        const unchanged = Number(scanData.unchanged) || 0;
+        const failed = Number(scanData.failed) || 0;
+        const scanned = Number(scanData.scanned) || 0;
+        log(`   Step 11.5: ${indexed + updated} indexed/updated, ${unchanged} unchanged, ${failed} failed (${scanned} files scanned)`);
+      } else {
+        log('   Step 11.5: scan completed (no summary payload)');
+      }
+    } catch (e: unknown) {
+      const errMsg = e instanceof Error ? e.message : String(e);
+      warn(`   Warning: Step 11.5 auto-index skipped: ${errMsg}`);
+    }
+  }
+
   // Step 12: Opportunistic retry processing
   try {
     const retryManager = await loadWorkflowRetryManager();

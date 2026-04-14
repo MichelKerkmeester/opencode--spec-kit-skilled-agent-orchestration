@@ -150,8 +150,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - IF delegated `/start` adjusts the target: update `feature_description` and `spec_path` from the returned contract before Step 1
 
 9. Execute background operations:
-   - IF memory_choice == A: Load the most recent indexed continuity support artifact
-   - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
+   - IF memory_choice == A: Load the most recent indexed canonical spec document
+   - IF memory_choice == B: Load up to 3 recent indexed canonical spec documents or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
    - IF `start_delegation_required = TRUE`: continue the existing 7-step workflow using the bound `feature_description`, `spec_path`, `selected_level`, `start_state`, `repair_mode`, and `manual_relationships`
 
@@ -206,7 +206,7 @@ Run the planning workflow: specification, clarification, and technical planning.
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` — Feature description with optional parameters (branch, scope, context)
-**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), a scaffolded root `graph-metadata.json` packet contract, plus a refreshed continuity support artifact generated via structured `generate-context.js` input
+**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), a scaffolded root `graph-metadata.json` packet contract, plus a refreshed continuity update in canonical spec docs generated via structured `generate-context.js` input
 
 > **Level 1 Note:** /spec_kit:plan creates spec.md, plan.md, and tasks.md. For complete Level 1 baseline implementation execution, run /spec_kit:implement after planning or use /spec_kit:complete instead.
 
@@ -225,7 +225,7 @@ $ARGUMENTS
 | 3    | Specification    | Create spec.md               | spec.md                  |
 | 4    | Clarification    | Resolve ambiguities          | updated spec.md          |
 | 5    | Planning         | Create technical plan        | plan.md, checklist.md    |
-| 6    | Save Context     | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
+| 6    | Save Context     | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
 | 7    | Handover Check   | Prompt for session handover  | handover.md (optional)   |
 
 ### Packet Graph Metadata
@@ -252,7 +252,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 ✅ SpecKit Planning Complete — All 7 steps executed.
-Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), graph-metadata.json scaffolded, continuity support artifact refreshed
+Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), graph-metadata.json scaffolded, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:implement [spec-folder-path]
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -342,13 +342,13 @@ Use `/memory:search` with intent-aware retrieval:
 | Before Step 1 | `/memory:search --intent:{intent} "topic"`            | Find prior related work     |
 | During Step 3 | `memory_search({ query: "architecture patterns", anchors: ['architecture'] })`          | Existing patterns/decisions |
 | During Step 5 | `memory_search({ query: "planning decisions rationale", anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
-| After Step 6  | `generate-context.js /tmp/save-context-data.json [spec-folder]` | Refresh the indexed support artifact   |
+| After Step 6  | `generate-context.js /tmp/save-context-data.json [spec-folder]` | Refresh the indexed canonical spec document   |
 
 ### After Planning
 
 1. **Generate:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
 2. **Anchors auto-extracted:** planning-[feature], decisions, architecture, next-steps
-3. **Verify:** Check the support artifact under `memory/` was created and indexed; the canonical continuity path still lives in spec docs and `_memory.continuity`
+3. **Verify:** Confirm the routed canonical spec document (`decision-record.md`, `implementation-summary.md`, or `handover.md`) was updated and indexed; the canonical continuity path lives in those spec docs and the `_memory.continuity` YAML block inside `implementation-summary.md`
 
 ---
 
@@ -467,6 +467,6 @@ Next step: `/spec_kit:implement [spec-folder-path]`
 | Need stakeholder review      | Share `plan.md` for review               | Get approval before coding|
 | Technical uncertainty        | `/spec_kit:deep-research [topic]`        | Investigate first         |
 | Need to pause                | `/spec_kit:handover [spec-folder-path]`  | Save context for later    |
-| Refresh search support       | `/memory:save [spec-folder-path]`        | Refresh the indexed support artifact while canonical continuity stays in spec docs |
+| Refresh search support       | `/memory:save [spec-folder-path]`        | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 
 **ALWAYS** end with: "What would you like to do next?"

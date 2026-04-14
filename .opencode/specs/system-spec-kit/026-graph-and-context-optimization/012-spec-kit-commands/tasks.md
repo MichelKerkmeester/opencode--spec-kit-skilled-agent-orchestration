@@ -122,6 +122,45 @@ _memory:
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## Phase 4: M9 Middleware Cleanup
+
+**M9a — DELETE 17 files**
+- [ ] T031 Delete `/spec_kit:handover` + `/spec_kit:debug` command files and 3 YAML assets (`spec_kit_handover_full.yaml`, `spec_kit_debug_auto.yaml`, `spec_kit_debug_confirm.yaml`). Depends on: T030.
+- [ ] T032 Delete `@handover` agent across 4 runtime mirrors (`.opencode/agent/handover.md`, `.claude/agents/handover.md`, `.codex/agents/handover.toml`, `.gemini/agents/handover.md`). Depends on: T031.
+- [ ] T033 Delete `@speckit` agent across 4 runtime mirrors (`.opencode/agent/speckit.md`, `.claude/agents/speckit.md`, `.codex/agents/speckit.toml`, `.gemini/agents/speckit.md`). Depends on: T031.
+- [ ] T034 Delete Gemini command TOML mirrors (`.gemini/commands/spec_kit/handover.toml`, `.gemini/commands/spec_kit/debug.toml`). Depends on: T031.
+
+**M9b — Responsibility Transfer (root docs + skill)**
+- [ ] T035 Update `CLAUDE.md`: delete `@handover` + `@speckit` bullets; update `@debug` bullet to Task-tool dispatch language; add distributed-governance rule for spec folder `*.md` authoring; update Quick Reference "End session" row to use `/memory:save`. Depends on: T031–T034.
+- [ ] T036 Update `AGENTS.md` and `AGENTS_example_fs_enterprises.md`: same edits as T035. Depends on: T035.
+- [ ] T037 Update `.opencode/skill/system-spec-kit/SKILL.md`: replace `@speckit` exclusivity narrative with distributed-governance rule; remove deprecated-command refs; update trigger phrases. Depends on: T035.
+- [ ] T038 Update `.opencode/command/memory/save.md`: insert §1 "Handover Document Maintenance" subsection positioning `/memory:save` as canonical `handover.md` maintainer via `handover_state` routing; update `handover_state` contract row to reference template path for initial creation; update §8 Next-Steps and §9 Related-Commands to remove `/spec_kit:handover` refs. Depends on: T035.
+
+**M9c — Orchestrate + Commands + YAML**
+- [ ] T039 [P] Update 4 orchestrate runtime mirrors: remove `@speckit` (row 4) and `@handover` (row 9) from routing matrix; remove from LEAF agent list; remove from agent-files table; update `@debug` routing row to Task-tool dispatch language; remove `/spec_kit:debug` and `/spec_kit:handover` decision-tree rows; replace deprecated-command suggestions with `/memory:save` + Task-tool dispatch patterns. Depends on: T032–T033.
+- [ ] T040 [P] Update 7 spec_kit command files (`resume.md`, `plan.md`, `complete.md`, `implement.md`, `start.md`, `deep-research.md`, `deep-review.md`): remove `@speckit` + `@handover` from Do-Not-Dispatch lists; remove deprecated-command Next-Steps entries; update session-ending rows to `/memory:save`; `complete.md` loses `:auto-debug` flag + workflow logic entirely and replaces with explicit user-escalation path. Depends on: T031.
+- [ ] T041 [P] Update 10 YAML assets (`spec_kit_complete_{auto,confirm}.yaml`, `spec_kit_plan_{auto,confirm}.yaml`, `spec_kit_implement_{auto,confirm}.yaml`, `spec_kit_start_{auto,confirm}.yaml`, `spec_kit_deep-research_{auto,confirm}.yaml`, `spec_kit_deep-review_{auto,confirm}.yaml`): delete `:auto-debug` logic from complete YAMLs; delete handover-check steps from plan/implement/start YAMLs; remove deprecated-command Next-Steps entries; remove `@speckit`/`@handover` dispatch calls if present. Depends on: T031.
+
+**M9d — Agent descriptions**
+- [ ] T042 [P] Update 4 `@debug` agent runtime files (`.opencode/agent/debug.md`, `.claude/agents/debug.md`, `.codex/agents/debug.toml`, `.gemini/agents/debug.md`): description-only edits to clarify Task-tool dispatch pattern; preserve workflow, permissions, phases, template references. Depends on: T031.
+- [ ] T043 [P] Update 4 ultra-think runtime files (`.opencode/agent/ultra-think.md`, `.claude/agents/ultra-think.md`, `.codex/agents/ultra-think.toml`, `.gemini/agents/ultra-think.md`): update `@debug` routing row to Task-tool dispatch; remove `@speckit` references. Depends on: T033.
+
+**M9e — Skills + References + Install Guides**
+- [ ] T044 [P] Update `.opencode/README.md` + 3 install guides (`install_guides/README.md`, `SET-UP - AGENTS.md`, `SET-UP - Opencode Agents.md`): remove `@handover` + `@speckit` agent rows; update `@debug` rows to Task-tool dispatch; delete deprecated-command bullets/rows; update end-session workflow row to `/memory:save`. Depends on: T035.
+- [ ] T045 [P] Update 2 command READMEs (`.opencode/command/README.txt`, `.opencode/command/spec_kit/README.txt`): delete all `/spec_kit:debug` and `/spec_kit:handover` references + SpecKit command list updates. Depends on: T031.
+- [ ] T046 [P] Update `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/sk-code-web/README.md`, `.opencode/skill/sk-code-web/references/debugging/debugging_workflows.md`, and 8 system-spec-kit reference documents (workflows/quick_reference, worked_examples, memory/save_workflow, templates/template_guide, templates/level_specifications, validation/phase_checklists, debugging/universal_debugging_methodology, memory/*): remove deprecated-command refs, remove `@speckit` agent refs, keep template + recovery-surface refs, replace `@handover (handover.md)` and `@speckit (spec folder docs)` attributions with distributed-governance language. Depends on: T037.
+- [ ] T047 [P] Update 5 CLI skill references (`.opencode/skill/cli-claude-code/references/agent_delegation.md`, `.opencode/skill/cli-codex/references/agent_delegation.md`, `.opencode/skill/cli-gemini/references/agent_delegation.md`, `.opencode/skill/cli-gemini/SKILL.md`, `.opencode/skill/cli-copilot/assets/prompt_templates.md`) plus `.opencode/skill/cli-gemini/README.md`: delete `@handover` + `@speckit` entries; update `@debug` entries to Task-tool dispatch; remove deprecated-command refs from prompt examples. Depends on: T032, T033.
+- [ ] T048 Update miscellaneous (`.opencode/command/improve/agent.md`, `.opencode/skill/sk-doc/assets/agents/agent_template.md`, `.opencode/skill/skill-advisor/*` if present): remove `@handover` + `@speckit` improvement targeting + agent-table rows; update `@debug` refs to Task-tool dispatch; remove deprecated-command refs. Depends on: T032, T033.
+
+**M9f — Verification sweep**
+- [ ] T049 Run zero-reference grep sweep for `/spec_kit:(handover|debug)`, `@handover`, `@speckit` across active docs with exclusion filter (z_archive, z_future, iterations, scratch, .bak, changelog, specs); expected empty. Depends on: T031–T048.
+- [ ] T050 Run preservation checks: @debug (4 files), @deep-research (4 files), templates (`handover.md`, `debug-delegation.md`, `level_N/`), system-spec-kit skill, MCP server code (handlers, routing, schemas, types) all intact. Depends on: T031–T048.
+- [ ] T051 Run `python3 .opencode/skill/sk-doc/scripts/validate_document.py` on all modified markdown files and packet-strict validation `bash .../validate.sh 012-spec-kit-commands --strict`. Record results in implementation-summary.md §Verification. Depends on: T049, T050.
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -144,10 +183,11 @@ _memory:
 
 <!--
 TASKS
-- 30 atomic tasks mapped to milestones M1-M8 inside the Level 2 section scaffold
+- 51 atomic tasks mapped to milestones M1-M9 inside the Level 2 section scaffold
 - T001-T022: M1-M6 implementation tasks (scaffolding, deep-research integration, delegation, idempotency, audit)
 - T023-T027: M7 structural parity + sk-doc compliance (NFR-Q01..Q05)
 - T028-T030: M8 README & SKILL documentation reference audit (NFR-Q06)
+- T031-T051: M9 middleware cleanup (deprecations of /spec_kit:debug + /spec_kit:handover commands and @handover + @speckit agents; responsibility transfer to distributed-governance rule + /memory:save + main agent)
 - Mixes single-file tasks with a few explicit logical hardening units
 - Ends with packet-local regression on this same spec folder
 -->

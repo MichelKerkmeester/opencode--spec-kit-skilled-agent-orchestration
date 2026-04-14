@@ -155,7 +155,7 @@ Run an iterative loop for deep research: Initialize state, dispatch `@deep-resea
 | Init | Initialize | Create config, strategy (with research charter), state files | State files in `research/` |
 | Loop | Iterate | Dispatch @deep-research agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, deep-research-dashboard.md |
 | Synth | Synthesize | Compile final research/research.md | research/research.md (17 sections) |
-| Save | Preserve | Refresh continuity support artifact | support artifact generated via `generate-context.js` |
+| Save | Preserve | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
 
 ### Execution Modes
 
@@ -184,7 +184,7 @@ The YAML contains the full loop workflow: initialization, iteration dispatch, co
 ```
 Deep research complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_answered]
-Artifacts: research/research.md, [N] iteration files, continuity support artifact refreshed
+Artifacts: research/research.md, [N] iteration files, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:plan [feature-description]
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -251,7 +251,7 @@ For code review, see `sk-deep-review` skill (`.opencode/skill/sk-deep-review/SKI
 | Research complete, ready to plan | `/spec_kit:plan [feature]` | Use findings for spec/plan |
 | Need more investigation | `/spec_kit:deep-research [new-topic]` | Another deep research session |
 | Need code/spec audit | `/spec_kit:deep-review [target]` | Iterative code review |
-| Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed support artifact while canonical continuity stays in spec docs |
+| Want to refresh search support | `/memory:save [spec-folder]` | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 | Need to pause | `/spec_kit:handover [spec-folder]` | Save context for later |
 
 ---

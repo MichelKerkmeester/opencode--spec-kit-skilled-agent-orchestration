@@ -99,9 +99,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 3. Search for related spec folders:
    $ ls -d specs/*/ 2>/dev/null | tail -10
 
-4. Determine if memory loading question is needed:
-   - Will be asked ONLY if user selects A or C for spec folder AND memory/ has files
-   - Include Q3 placeholder with note "(if using existing spec with memory files)"
+4. Determine if prior-session context loading is needed:
+   - Will be asked ONLY if user selects A or C for spec folder AND the spec docs include recent `_memory.continuity` entries or a `handover.md`
+   - Include Q3 placeholder with note "(if using existing spec with prior-session context)"
 
 5. ASK user with SINGLE CONSOLIDATED prompt (include only applicable questions):
 
@@ -122,9 +122,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    A) Interactive - Confirm at each step (Recommended)          │
    │    B) Autonomous - Execute without prompts                     │
    │                                                                │
-   │ **Q3. Memory Context** (if using existing spec with memory/):  │
-   │    A) Load most recent memory file                              │
-   │    B) Load all recent files, up to 3                            │
+   │ **Q3. Prior Session Context** (if existing spec has it):        │
+   │    A) Load `handover.md` + `_memory.continuity` from            │
+   │       `implementation-summary.md`                                │
+   │    B) Load canonical spec docs (spec.md, plan.md, tasks.md,     │
+   │       decision-record.md) up to a recent cap                    │
    │    C) Skip (start fresh)                                       │
    │                                                                │
    │ Reply with answers, e.g.: "B, A, C" or "quality-gate, B, A, C" │
