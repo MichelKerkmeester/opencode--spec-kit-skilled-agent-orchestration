@@ -1,5 +1,10 @@
 # Deep Research Synthesis: Spec Kit Command Intake Refactor
 
+<!-- ANCHOR:overview -->
+## Overview
+This synthesis consolidates the converged design guidance for Phase 012: a thin `/spec_kit:start` intake surface, late-INIT `spec.md` anchoring for `/spec_kit:deep-research`, bounded generated-fence write-back, and inline `/start` absorption inside `/spec_kit:plan` and `/spec_kit:complete` when folder state is not yet healthy. It reflects the final state of the ten-iteration research loop captured in this packet's research artifacts. [SOURCE: deep-research-strategy.md:Overview] [SOURCE: iteration-010.md:Final Findings]
+<!-- /ANCHOR:overview -->
+
 ## 1. Executive Summary
 Research converged on a clear split of responsibilities. `/spec_kit:start` should be a thin intake command that creates or repairs the canonical trio (`spec.md`, `description.json`, `graph-metadata.json`) and then hands off to `/spec_kit:plan` or `/spec_kit:complete`; it should not absorb planning, dispatch, or phase-decomposition concerns. `/spec_kit:deep-research` should anchor every run to a real `spec.md`, but it must do so with late-init detection, single-writer locking, append-only pre-init context, and a fenced generated findings block during synthesis rather than by rewriting human-authored sections. [SOURCE: iteration-001.md:Findings] [SOURCE: iteration-004.md:Findings] [SOURCE: iteration-006.md:Findings] [SOURCE: iteration-010.md:Final Findings]
 

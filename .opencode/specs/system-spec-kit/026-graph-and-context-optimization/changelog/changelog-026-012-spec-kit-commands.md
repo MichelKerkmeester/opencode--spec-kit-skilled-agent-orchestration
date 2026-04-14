@@ -19,7 +19,7 @@ contextType: "implementation"
 
 ### Summary
 
-Packet 012 is complete. The work introduced /spec_kit:start as the canonical intake surface, anchored /spec_kit:deep-research to real spec-folder state, taught /spec_kit:plan and /spec_kit:complete to inline-absorb /start when a target folder is not healthy, and finished the M9 middleware cleanup that removed deprecated wrapper surfaces while preserving continuity, recovery, and debugging pathways. This final pass converted the remaining unchecked checklist rows to source-contract verification, refreshed the packet summary artifacts, and separated packet-doc hygiene debt from the implemented command behavior.
+Packet 012 is complete. The work introduced /spec_kit:start as the canonical intake surface, anchored /spec_kit:deep-research to real spec-folder state, taught /spec_kit:plan and /spec_kit:complete to inline-absorb /start when a target folder is not healthy, and finished the M9 middleware cleanup that removed deprecated wrapper surfaces while preserving continuity, recovery, and debugging pathways. This final pass converted the remaining unchecked checklist rows to source-contract verification, refreshed the packet summary artifacts, and closed the packet's strict-validation tail.
 
 ### Added
 
@@ -46,22 +46,30 @@ Packet 012 is complete. The work introduced /spec_kit:start as the canonical int
 - [P] Patch the plan auto YAML to inject /start intake for no-spec, partial-folder, repair-mode, and placeholder-upgrade (.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml). Depends on: T013. Evidence: completed in prior sessions M4 — spec_kit_plan_auto.yaml (+52 net) per implementation-summary.md §M4.
 - Implement normalized-topic dedupe, tracked seed-marker handling, and manual-relationship dedupe as one shared hardening unit. Depends on: T002, T003, T011, T012, T014, T015, T017, T018. Evidence: completed in prior sessions M5 — hardening contracts in start + deep-research YAMLs + spec_check_protocol.md per implementation-summary.md §M5.
 - Validate repair-mode and re-entry coverage against the five-state intake contract (empty-folder, partial-folder, repair-mode, placeholder-upgrade, populated-folder). Depends on: T019. Evidence: completed in prior sessions M5 — five-state intake contract enforced across start_{auto,confirm}.yaml per implementation-summary.md §M5.
-- Run packet-local regression and strict validation, including deep-research on this same packet after implementation. Depends on: T009, T011, T012, T014, T015, T017, T018, T021. Evidence: baseline-only rerun of bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands --strict captured current packet debt outside the M7/M8 slice; no fresh deep-research runtime pass was introduced in this doc-only remediation.
+- Run packet-local regression and strict validation, including deep-research on this same packet after implementation. Depends on: T009, T011, T012, T014, T015, T017, T018, T021. Evidence: the closeout reran bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands --strict to a clean passed result; no fresh deep-research runtime pass was introduced in this doc-only remediation.
 
 ### Verification
 
 - Source-contract sweep for CHK-001 through CHK-035 - PASS - all previously unchecked rows are now marked [x] with grep-based evidence in the checklist
 - Existing verification tail - PASS - CHK-036 through CHK-054 are now all marked [x], including source-contract closure for the two stale blocker rows
-- Final checklist state - PASS - 54/54 checklist items are marked [x] (10/10 P0, 7/7 P1, 29/29 P2)
-- Nested changelog generation - PENDING - packet-local changelog will be generated after this summary update
-- Final sk-doc validator batch - PENDING - rerun after changelog generation
-- Final packet strict validation - PENDING - rerun after changelog generation
+- Final task state - PASS - 54/54 tasks are marked [x]
+- Final checklist state - PASS - 46/46 checklist items are marked [x] (10/10 P0, 7/7 P1, 29/29 P2)
+- Nested changelog generation - PASS - packet-local changelog exists at .opencode/specs/system-spec-kit/026-graph-and-context-optimization/changelog/changelog-026-012-spec-kit-commands.md
+- Final sk-doc validator batch - PASS - the changed-markdown closeout set validated cleanly, including the packet docs, nested changelog, release note, and root README
+- Final packet strict validation - PASS - packet strict validation now completes with RESULT: PASSED
 - P0 - CHK-001 REQ-001: Source contract verified. (EVIDENCE: rg -n 'folder_state|spec_check_result|deep-research.lock' returned 34 matches across .opencode/command/spec_kit/assets/spec_kit_deep-research_{auto,confirm}.yaml, .opencode/command/spec_kit/deep-research.md, and .opencode/skill/sk-deep-research/references/spec_check_protocol.md, including the advisory lock path, folder_state enum, and typed spec_check_result audit event.)
 - P0 - CHK-002 REQ-002: Source contract verified. (EVIDENCE: rg -n 'spec_seed_created|deep-research seed|seed.?marker' returned 12 matches across .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml and .opencode/skill/sk-deep-research/references/spec_check_protocol.md, including spec_seed_created, DR seed markers, and the pre-LOOP seeding path.)
 
 ### Files Changed
 
 _No file-level detail recorded._
+
+### References
+
+- implementation-summary.md - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/implementation-summary.md
+- tasks.md - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/tasks.md
+- checklist.md - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/checklist.md
+- decision-record.md - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/decision-record.md
 
 ### Follow-Ups
 

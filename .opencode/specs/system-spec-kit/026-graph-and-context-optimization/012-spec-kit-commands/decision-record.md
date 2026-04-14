@@ -15,8 +15,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands"
     last_updated_at: "2026-04-14T00:00:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Recorded corrected structural overlap formula for M7 remediation"
-    next_safe_action: "Sync checklist and task evidence for M7 and M8"
+    recent_action: "Retained the structural overlap formula as the packet's M7 parity reference"
+    next_safe_action: "Use this ADR when reviewing M7 command and YAML parity evidence"
     blockers: []
     key_files:
       - ".opencode/command/spec_kit/start.md"
@@ -26,7 +26,7 @@ _memory:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "012-spec-kit-commands-m7-m8-remediation"
       parent_session_id: null
-    completion_pct: 90
+    completion_pct: 100
     open_questions: []
     answered_questions:
       - "Unified diff overlap percentages were misleading because additions and removals were both counted"
@@ -62,7 +62,7 @@ We still needed a lightweight, file-local measurement that fits the packet's ver
 ### Constraints
 
 - The metric must be computable from repo files without introducing new tooling requirements.
-- The packet still needs a comparable measurement across `start.md` and both new start YAML assets.
+- The packet still needs a comparable measurement across `.opencode/command/spec_kit/start.md` and both new start YAML assets.
 - The recorded result must explain intentional divergence rather than hiding it.
 <!-- /ANCHOR:adr-001-context -->
 
@@ -139,12 +139,12 @@ We still needed a lightweight, file-local measurement that fits the packet's ver
 
 | Pair | Common lines | Max total lines | Corrected overlap |
 |------|--------------|-----------------|-------------------|
-| `start.md` vs `deep-research.md` | 159 | 340 | 46.76% |
+| `.opencode/command/spec_kit/start.md` vs `.opencode/command/spec_kit/deep-research.md` | 159 | 340 | 46.76% |
 | `spec_kit_start_auto.yaml` vs `spec_kit_deep-research_auto.yaml` | 112 | 722 | 15.51% |
 | `spec_kit_start_confirm.yaml` vs `spec_kit_deep-research_confirm.yaml` | 145 | 897 | 16.16% |
 
 **Divergence rationale**:
-- `start.md` now matches the sibling command-card skeleton more closely after the added `REFERENCE` section, but it still owns a different setup contract and output schema than deep research.
+- `.opencode/command/spec_kit/start.md` now matches the sibling command-card skeleton more closely after the added `REFERENCE` section, but it still owns a different setup contract and output schema than deep research.
 - The start YAMLs intentionally diverge because intake workflows bind folder-state, level recommendation, and manual relationships, while deep-research YAMLs manage iteration loops, locks, convergence, and synthesis. Structural parity is therefore better evidenced by shared top-level key order, required step naming, and vocabulary conventions than by raw shared-line percentage alone.
 
 **How to roll back**: Delete this ADR and restore checklist/task evidence to the earlier diff-based wording if the packet later standardizes on a different structural metric.

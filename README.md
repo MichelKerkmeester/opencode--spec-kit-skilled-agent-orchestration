@@ -874,7 +874,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 **Complete**
 - End-to-end workflow: intake/delegate → research → plan → implement → verify → save memory
 - Smart-detects missing or unhealthy packet state and delegates canonical intake to `/spec_kit:start`; healthy folders continue without extra setup prompts
-- Modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research), `:auto-debug` (auto-delegates failures)
+- Modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research)
+- After 3 failed implementation attempts, surface diagnostics and let the user dispatch `@debug` via the Task tool
 
 **Plan**
 - Planning-only workflow that authors `spec.md`, `plan.md`, and `tasks.md` without implementing

@@ -111,9 +111,9 @@ Direct `/spec_kit:start` runs collect the minimal intake fields, classify folder
 
 ### M9 File-Level Change Map (Middleware Cleanup)
 
-**DELETE (17 files)**: See `spec.md` §3 Files-to-Change (M9 Files to Change table) for complete list with reasons. Short version: 2 command markdowns, 3 command YAML assets, 4 @handover runtime mirrors, 4 @speckit runtime mirrors, 2 Gemini command TOML mirrors.
+**DELETE (15 enumerated paths)**: See `spec.md` §3 Files-to-Change (M9 Files to Change table) for the complete list with reasons. Short version: 2 command Markdown surfaces, 3 command YAML assets, 4 `@handover` runtime mirrors, 4 `@speckit` runtime mirrors, and 2 Gemini command TOML mirrors.
 
-**MODIFY (~50 files)**: See `spec.md` §3 Files-to-Change (MODIFY table). Includes 4 orchestrate runtime mirrors, 4 @debug description updates, 4 ultra-think runtime mirrors, 7 spec_kit command files, 10 spec_kit YAML assets, 3 root docs (CLAUDE.md/AGENTS.md/AGENTS_example_fs_enterprises.md), 4 install guides, 2 command READMEs, 2 system-spec-kit docs, 2 sk-code-web docs, 8 reference documents, 5 CLI skill references, 3 miscellaneous (improve/agent.md, sk-doc agent template, skill-advisor), `/memory:save` card (with new "Handover Document Maintenance" subsection).
+**MODIFY (~50 files)**: See `spec.md` §3 Files-to-Change (MODIFY table). Includes 4 orchestrate runtime mirrors, 4 `@debug` description updates, 4 ultra-think runtime mirrors, 7 `spec_kit` command files, 10 `spec_kit` YAML assets, 3 root docs (CLAUDE.md/AGENTS.md/AGENTS_example_fs_enterprises.md), 4 install guides, 2 command READMEs, 2 system-spec-kit docs, 2 sk-code-web docs, 8 reference documents, 5 CLI skill references, 3 miscellaneous (`.opencode/command/improve/agent.md`, `.opencode/skill/sk-doc/assets/agents/agent_template.md`, and `skill-advisor` surfaces), plus `.opencode/command/memory/save.md` with the new "Handover Document Maintenance" subsection.
 
 The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumerates the same files only when a specific phase action needs to be referenced.
 <!-- /ANCHOR:architecture -->
@@ -154,21 +154,21 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 - [ ] Finish with packet-local regression runs and strict validation before the implementation packet can be closed
 
 ### Phase 7: Structural Parity & sk-doc Compliance (M7)
-- [ ] Use `/spec_kit:deep-research/plan.md` or `/spec_kit:complete.md` as the structural templates for `/spec_kit:start.md`. Required top-level sections, frontmatter shape, and callout style MUST match the nearest sibling. Refer to NFR-Q01.
+- [ ] Use `.opencode/command/spec_kit/deep-research.md` or `.opencode/command/spec_kit/complete.md` as the structural templates for `.opencode/command/spec_kit/start.md`. Required top-level sections, frontmatter shape, and callout style MUST match the nearest sibling. Refer to NFR-Q01.
 - [ ] Use `spec_kit_deep-research_auto.yaml` as the structural template for `spec_kit_start_auto.yaml` (and `_confirm.yaml`). Top-level keys, step ID naming, and variable vocabulary MUST match prior art. Refer to NFR-Q02.
 - [ ] Run `python3 .opencode/skill/sk-doc/scripts/validate_document.py` on every new or modified markdown file; zero errors required, only template-inherited warnings allowed. Refer to NFR-Q03.
-- [ ] All modifications to existing `plan.md`, `complete.md`, `deep-research.md` (and paired YAMLs) preserve existing section ordering, anchor comments, and step IDs; no renames without migration note. Refer to NFR-Q04.
+- [ ] All modifications to the existing `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, and `.opencode/command/spec_kit/deep-research.md` surfaces (and their paired YAMLs) preserve existing section ordering, anchor comments, and step IDs; no renames without migration note. Refer to NFR-Q04.
 - [ ] Run `diff -u <new-file> <nearest-existing-sibling>` spot checks; structural overlap MUST be ≥ 50 percent. Divergences recorded in `decision-record.md` or architecture section. Refer to NFR-Q05.
 
 ### Phase 8: README & Skill Documentation Reference Audit (M8)
 - [ ] Enumerate every README and SKILL document in the repo that may reference speckit commands or deep-research behavior. Required sweep: `grep -lrE "spec_kit:(plan|complete|deep-research|implement|start|resume|handover)" --include="README.md" --include="SKILL.md" .` — plus the root `README.md`.
-- [ ] For each match, audit for references that are now stale or incomplete given M1-M7 changes: missing `/spec_kit:start` in command inventories, deep-research descriptions that omit the `spec.md` integration, plan/complete descriptions that omit smart delegation, missing links to `spec_check_protocol.md`, and outdated command-chain diagrams.
+- [ ] For each match, audit for references that are now stale or incomplete given M1-M7 changes: missing `/spec_kit:start` in command inventories, deep-research descriptions that omit the `spec.md` integration, plan/complete descriptions that omit smart delegation, missing links to `.opencode/skill/sk-deep-research/references/spec_check_protocol.md`, and outdated command-chain diagrams.
 - [ ] Update in place:
   - Root `README.md` — command inventory, chain diagram, and any "what changed" section
   - `.opencode/README.md` — if it maintains a speckit command list
-  - `.opencode/skill/system-spec-kit/README.md` and `SKILL.md` — speckit lifecycle description
-  - `.opencode/skill/sk-deep-research/README.md` and `SKILL.md` — spec.md integration, spec_check_protocol reference, folder_state detection
-  - `.opencode/skill/sk-deep-review/README.md` and `SKILL.md` — cross-reference if deep-review docs mention deep-research behavior
+  - `.opencode/skill/system-spec-kit/README.md` and `.opencode/skill/system-spec-kit/SKILL.md` — speckit lifecycle description
+  - `.opencode/skill/sk-deep-research/README.md` and `.opencode/skill/sk-deep-research/SKILL.md` — spec.md integration, the spec-check protocol reference, and folder_state detection
+  - `.opencode/skill/sk-deep-review/README.md` and `.opencode/skill/sk-deep-review/SKILL.md` — cross-reference if deep-review docs mention deep-research behavior
   - `.opencode/skill/skill-advisor/README.md` — routing table if it lists speckit commands
   - `.opencode/install_guides/README.md` — if it enumerates commands
   - `.opencode/skill/system-spec-kit/templates/*/README.md` — if any mention command inventory
@@ -177,9 +177,9 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 
 ### Phase 9: Middleware Cleanup — Deprecate @handover + @speckit + /spec_kit:debug + /spec_kit:handover (M9)
 
-**Phase 9a — DELETE (17 files)**
+**Phase 9a — DELETE (15 enumerated paths)**
 - [ ] Delete `/spec_kit:handover` command + `/spec_kit:debug` command + 3 command YAML assets (`spec_kit_handover_full.yaml`, `spec_kit_debug_{auto,confirm}.yaml`)
-- [ ] Delete @handover agent across 4 runtime mirrors (`{.opencode/agent,.claude/agents,.gemini/agents}/handover.md` + `.codex/agents/handover.toml`)
+- [ ] Delete the 4 runtime `@handover` mirrors: the three Markdown mirrors under `.opencode/agent/`, `.claude/agents/`, and `.gemini/agents/`, plus `.codex/agents/handover.toml`
 - [ ] Delete @speckit agent across 4 runtime mirrors (`{.opencode/agent,.claude/agents,.gemini/agents}/speckit.md` + `.codex/agents/speckit.toml`)
 - [ ] Delete Gemini command TOML mirrors (`.gemini/commands/spec_kit/{handover,debug}.toml`)
 - [ ] Verify git status shows exactly 17 deletions
@@ -193,7 +193,7 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 
 **Phase 9c — Orchestrate + Commands + YAML (15+ files)**
 - [ ] Update 4 orchestrate runtime mirrors: remove @speckit (row 4) + @handover (row 9) routing matrix entries, remove from LEAF list, remove from agent-files table, update @debug routing language, remove deprecated-command suggestions
-- [ ] Update 7 spec_kit command files (`resume.md`, `plan.md`, `complete.md`, `implement.md`, `start.md`, `deep-research.md`, `deep-review.md`): remove @speckit + @handover from Do-Not-Dispatch lists, remove deprecated-command Next-Steps entries, update session-ending rows to `/memory:save`; `complete.md` loses `:auto-debug` flag entirely
+- [ ] Update the 7 live `spec_kit` command files (`.opencode/command/spec_kit/resume.md`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/command/spec_kit/implement.md`, `.opencode/command/spec_kit/start.md`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/deep-review.md`): remove `@speckit` + `@handover` from Do-Not-Dispatch lists, remove deprecated-command Next-Steps entries, update session-ending rows to `/memory:save`, and remove the `:auto-debug` flag entirely from `.opencode/command/spec_kit/complete.md`
 - [ ] Update 10 YAML assets: delete `:auto-debug` logic from `spec_kit_complete_*.yaml`, delete handover-check steps from plan/implement/start YAMLs, remove deprecated-command Next-Steps entries, remove @speckit/@handover dispatch calls if present
 
 **Phase 9d — Agent descriptions (8 files)**
@@ -204,19 +204,19 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 - [ ] Update `.opencode/README.md` + 3 install_guides files: remove deprecated-command and agent refs, update @debug rows, update end-session workflow
 - [ ] Update 2 command READMEs (`.opencode/command/README.txt`, `.opencode/command/spec_kit/README.txt`): delete all deprecated-command rows
 - [ ] Update `.opencode/skill/system-spec-kit/README.md`: remove deprecated-command refs, remove @speckit agent refs, keep template + recovery-surface refs
-- [ ] Update `.opencode/skill/sk-code-web/README.md` + `references/debugging/debugging_workflows.md`: remove `/spec_kit:debug` refs, keep debugging methodology
+- [ ] Update `.opencode/skill/sk-code-web/README.md` + `.opencode/skill/sk-code-web/references/debugging/debugging_workflows.md`: remove `/spec_kit:debug` refs and keep the debugging methodology
 - [ ] Update 8 system-spec-kit reference documents (workflows/quick_reference, worked_examples, memory/save_workflow, templates/template_guide, templates/level_specifications, validation/phase_checklists, debugging/universal_debugging_methodology, memory/*): replace @speckit / @handover references with distributed-governance language
-- [ ] Update 5 CLI skill references (cli-claude-code, cli-codex, cli-gemini agent_delegation.md + cli-gemini SKILL.md/README.md + cli-copilot prompt_templates.md): delete deprecated agent/command entries, update @debug entries to Task-tool dispatch
-- [ ] Update 3 misc (`improve/agent.md`, `sk-doc/assets/agents/agent_template.md`, `skill-advisor/*`): remove deprecated-agent entries, update @debug refs
+- [ ] Update 5 CLI skill references (`.opencode/skill/cli-claude-code/references/agent_delegation.md`, `.opencode/skill/cli-codex/references/agent_delegation.md`, `.opencode/skill/cli-gemini/references/agent_delegation.md`, `.opencode/skill/cli-gemini/SKILL.md`, `.opencode/skill/cli-copilot/assets/prompt_templates.md`) plus `.opencode/skill/cli-gemini/README.md`: delete deprecated agent/command entries and update `@debug` entries to Task-tool dispatch
+- [ ] Update 3 misc surfaces (`.opencode/command/improve/agent.md`, `.opencode/skill/sk-doc/assets/agents/agent_template.md`, `skill-advisor/*`): remove deprecated-agent entries and update `@debug` refs
 
 **Phase 9f — Verification sweep**
 - [ ] Run zero-reference grep sweep for `/spec_kit:(handover|debug)`, `@handover`, `@speckit` (with archive/future/iterations/scratch/changelog/specs exclusions) — expect empty
 - [ ] Verify @debug agent survival: 4 runtime files still exist
 - [ ] Verify @deep-research agent survival: 4 runtime files still exist
-- [ ] Verify template survival: `handover.md`, `debug-delegation.md`, `level_N/` all exist
-- [ ] Verify `system-spec-kit` skill survival: SKILL.md exists and skill-advisor routing returns it
-- [ ] Verify `/memory:save` routing intact: `handover_state` + `handover.md::session-log` references remain in `save.md`
-- [ ] Verify `/spec_kit:resume` unchanged: still reads handover.md as first recovery source
+- [ ] Verify template survival: `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/debug-delegation.md`, and `.opencode/skill/system-spec-kit/templates/level_N/` all exist
+- [ ] Verify `system-spec-kit` skill survival: `.opencode/skill/system-spec-kit/SKILL.md` exists and skill-advisor routing returns it
+- [ ] Verify `/memory:save` routing is intact: `handover_state` and the packet handover `session-log` anchor references remain in `.opencode/command/memory/save.md`
+- [ ] Verify `/spec_kit:resume` is unchanged: it still reads the packet handover document as the first recovery source
 - [ ] Verify MCP server code unchanged: `handlers/memory-save.ts`, `routing-prototypes.json`, type `'handover_state'` all present
 - [ ] Run `python3 .opencode/skill/sk-doc/scripts/validate_document.py` on all modified markdown files: zero errors
 - [ ] Run packet-strict validation: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands --strict`
@@ -234,7 +234,7 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 | Dry-run / fixture | `folder_state` classification, seed creation, repair-mode, placeholder-upgrade, generated-fence replacement | Command dry-runs against empty, partial, repair, seeded, healthy, and conflict fixtures |
 | Regression | Existing healthy-folder `/plan` and `/complete` behavior; deep-research reruns on same topic | Packet-local command runs plus strict validation |
 | Manual review | Human-authored content preservation, generated-fence boundaries, optional memory-save branching | File review in `spec.md`, JSON metadata inspection |
-| **Structural parity** | New `start.md` vs nearest speckit sibling; new `spec_kit_start_*.yaml` vs nearest YAML sibling; modified files preserve ordering/anchors/step-IDs | `diff -u` vs nearest sibling, structural checklist items, `python3 .opencode/skill/sk-doc/scripts/validate_document.py` |
+| **Structural parity** | New `.opencode/command/spec_kit/start.md` vs the nearest speckit sibling, new `spec_kit_start_*.yaml` vs the nearest YAML sibling, and modified files preserving ordering/anchors/step-IDs | `diff -u` vs nearest sibling, structural checklist items, `python3 .opencode/skill/sk-doc/scripts/validate_document.py` |
 
 ### Requirement Coverage
 - **REQ-001 to REQ-004**: verify deep-research late-INIT lock, `folder_state`, seed-create, bounded pre-init mutation, and generated-fence write-back on both empty and populated fixtures.
@@ -250,10 +250,10 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 |-----------|-------|-------|
 | Deletion verification | 17 deleted files are absent; 8 preserved agent files remain (`@debug` + `@deep-research` across 4 runtimes each) | `ls` + git status |
 | Zero-reference grep sweep | Active docs contain no `@handover`, `@speckit`, `/spec_kit:handover`, `/spec_kit:debug` refs | `grep -rE "..."` with exclusion filter for archive/future/iterations/scratch/changelog/specs |
-| Preservation check | Templates (`handover.md`, `debug-delegation.md`, `level_N/`), `system-spec-kit` skill, MCP server code (handlers, routing, schemas, types, dist/) remain intact | `ls` + content hash comparison |
+| Preservation check | `.opencode/skill/system-spec-kit/templates/handover.md`, `.opencode/skill/system-spec-kit/templates/debug-delegation.md`, `.opencode/skill/system-spec-kit/templates/level_N/`, the `system-spec-kit` skill, and MCP server code (handlers, routing, schemas, types, dist/) remain intact | `ls` + content hash comparison |
 | Distributed-governance rule presence | CLAUDE.md, AGENTS.md, `.opencode/skill/system-spec-kit/SKILL.md` contain the new rule with `validate.sh --strict` reference | `grep -E "validate\.sh --strict"` in the 3 files |
-| `/memory:save` positioning | `save.md` §1 contains "Handover Document Maintenance" subsection; `handover_state` contract row references template path for initial creation | `grep -E "Handover Document Maintenance\|handover_state"` in save.md |
-| `/spec_kit:resume` recovery ladder unchanged | `handover.md` still read as first recovery source | `grep -E "handover\.md"` in `resume.md` matches ≥ 5 times |
+| `/memory:save` positioning | `.opencode/command/memory/save.md` §1 contains the "Handover Document Maintenance" subsection, and the `handover_state` contract row references the template path for initial creation | `grep -E "Handover Document Maintenance\|handover_state"` in `.opencode/command/memory/save.md` |
+| `/spec_kit:resume` recovery ladder unchanged | The packet handover document is still read as the first recovery source | `grep -E "handover\.md"` in `.opencode/command/spec_kit/resume.md` matches ≥ 5 times |
 | Orchestrate routing consistency | All 4 orchestrate runtime mirrors apply identical edits | `diff` on relevant sections between runtimes |
 | sk-doc validator | All modified markdown files pass with 0 errors | `python3 .opencode/skill/sk-doc/scripts/validate_document.py` |
 | Packet strict validation after M9 | Packet 012 passes `validate.sh --strict` | `bash .../validate.sh ... --strict` |
@@ -269,7 +269,7 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 ### M9 End-to-End Functional Verification
 
 - **Main-agent spec-folder writes**: invoke `/spec_kit:start` on a new folder after M9; verify main agent writes `spec.md` from template and `validate.sh --strict` passes
-- **/memory:save handover_state routing**: trigger `/memory:save` with `routeAs: 'handover_state'`; verify content lands in `handover.md::session-log`
+- **/memory:save handover_state routing**: trigger `/memory:save` with `routeAs: 'handover_state'`; verify content lands in the packet handover `session-log` anchor
 - **@debug Task-tool dispatch**: dispatch `@debug` via Task tool; verify fresh-perspective debugging works without the deprecated `/spec_kit:debug` wrapper
 - **@deep-research exclusive write preserved**: verify only `@deep-research` writes `research/research.md` (rule preserved as standalone, no longer carve-out from @speckit)
 - **Orchestrate routing correctness**: orchestrate agent on deprecation-pattern tasks should suggest `/memory:save` + Task-tool dispatch, never `@speckit`, `@handover`, `/spec_kit:debug`, or `/spec_kit:handover`
@@ -288,12 +288,12 @@ The consolidated table lives in `spec.md` to avoid duplication. `plan.md` enumer
 | `scripts/dist/memory/generate-context.js` | Internal helper | Yellow | Optional memory-save mode can reuse it only after canonical trio success and only when structured context exists; it is not the baseline create/repair path |
 | `.opencode/skill/system-spec-kit/templates/level_{1,2}/` | Internal templates | Green | Deep-research seed-create and `/start` scaffold output depend on the existing templates staying stable |
 | `validate_document.py` and `spec/validate.sh --strict` | Verification tooling | Green | Completion evidence depends on validator-backed markdown/schema checks remaining available |
-| **Existing speckit command cards as structural templates** — `plan.md`, `deep-research.md`, `complete.md`, `implement.md`, `handover.md` | Structural reference | Green | `/spec_kit:start.md` MUST mirror their top-level sections, frontmatter shape, and callout style per NFR-Q01. Verified via `diff -u` vs nearest sibling. |
+| **Existing speckit command cards as structural templates** — `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/deep-research.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/command/spec_kit/implement.md`, `.opencode/command/spec_kit/resume.md` | Structural reference | Green | `.opencode/command/spec_kit/start.md` MUST mirror their top-level sections, frontmatter shape, and callout style per NFR-Q01. Verified via `diff -u` vs the nearest sibling. |
 | **Existing speckit YAML assets as structural templates** — `spec_kit_plan_auto.yaml`, `spec_kit_deep-research_auto.yaml`, `spec_kit_complete_auto.yaml` (+ confirm variants) | Structural reference | Green | `spec_kit_start_auto.yaml` and `_confirm.yaml` MUST mirror their top-level key ordering, step-ID naming, and variable vocabulary per NFR-Q02. |
 | **sk-doc validator** — `.opencode/skill/sk-doc/scripts/validate_document.py` | Verification tooling | Green | Every new or modified markdown file MUST pass with zero errors per NFR-Q03. Template-inherited warnings only. |
 | **M9 `validate.sh --strict` + templates** — bash scripts at `scripts/spec/` and templates at `templates/level_N/` | Runtime substrate for distributed governance | Green | After @speckit deletion, spec-folder authoring quality depends on these scripts + templates remaining stable. M9 does not modify them; Phase 7 survival check verifies presence |
-| **M9 `/memory:save` content router** — `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` + `routing-prototypes.json` | Runtime handler for `handover_state` routing | Green | M9 repositions `/memory:save` as handover.md maintainer in documentation only; handler code is unchanged. Phase 7 preservation check verifies |
-| **M9 `/spec_kit:resume` recovery ladder** — `.opencode/skill/system-spec-kit/mcp_server/dist/lib/resume/resume-ladder.js` | Runtime reads handover.md as first recovery source | Green | No changes; Phase 7 verification confirms `resume.md` still references handover.md |
+| **M9 `/memory:save` content router** — `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` + `routing-prototypes.json` | Runtime handler for `handover_state` routing | Green | M9 repositions `/memory:save` as the packet-handover maintainer in documentation only; handler code is unchanged. Phase 7 preservation check verifies this. |
+| **M9 `/spec_kit:resume` recovery ladder** — `.opencode/skill/system-spec-kit/mcp_server/dist/lib/resume/resume-ladder.js` | Runtime reads the packet handover document as its first recovery source | Green | No changes; Phase 7 verification confirms `.opencode/command/spec_kit/resume.md` still references the handover ladder. |
 <!-- /ANCHOR:dependencies -->
 
 ---

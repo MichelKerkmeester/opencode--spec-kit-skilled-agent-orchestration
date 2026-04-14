@@ -14,8 +14,8 @@ _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands"
     last_updated_at: "2026-04-14"
-    last_updated_by: "claude-opus-4-6"
-    recent_action: "Completed M9 middleware cleanup + final verification; 51/51 tasks marked [x], 54/54 checklist items marked [x]"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Closed strict validation and synced final packet evidence"
     next_safe_action: "Packet ready for closeout; dispatch @deep-review for independent quality audit if desired"
     blockers: []
     key_files:
@@ -62,7 +62,7 @@ _memory:
 
 ### Overview
 
-Packet 012 is complete. The work introduced `/spec_kit:start` as the canonical intake surface, anchored `/spec_kit:deep-research` to real spec-folder state, taught `/spec_kit:plan` and `/spec_kit:complete` to inline-absorb `/start` when a target folder is not healthy, and finished the M9 middleware cleanup that removed deprecated wrapper surfaces while preserving continuity, recovery, and debugging pathways. This final pass converted the remaining unchecked checklist rows to source-contract verification, refreshed the packet summary artifacts, and separated packet-doc hygiene debt from the implemented command behavior.
+Packet 012 is complete. The work introduced `/spec_kit:start` as the canonical intake surface, anchored `/spec_kit:deep-research` to real spec-folder state, taught `/spec_kit:plan` and `/spec_kit:complete` to inline-absorb `/start` when a target folder is not healthy, and finished the M9 middleware cleanup that removed deprecated wrapper surfaces while preserving continuity, recovery, and debugging pathways. This final pass converted the remaining unchecked checklist rows to source-contract verification, refreshed the packet summary artifacts, and closed the packet's strict-validation tail.
 
 ### Milestones Completed
 
@@ -82,7 +82,7 @@ Packet 012 is complete. The work introduced `/spec_kit:start` as the canonical i
 
 This closeout includes the middleware deprecation wave that removed redundant debug, handover, and speckit wrapper surfaces while preserving the canonical continuity and recovery stack.
 
-- **17 deletions**: deprecated command cards, YAML assets, Gemini command mirrors, and runtime agent mirrors for `@handover` and `@speckit`.
+- **15 verified deletions**: deprecated command cards, YAML assets, Gemini command mirrors, and runtime agent mirrors for `@handover` and `@speckit`.
 - **~50 file modifications**: command cards, YAML workflows, orchestrate/runtime mirrors, root guidance docs, install guides, CLI delegation references, and system-spec-kit documentation.
 - **Distributed-governance rule inserted**: spec-folder markdown writes now rely on template usage, `validate.sh --strict`, and `/memory:save`, while `@deep-research` remains exclusive for the research artifact and `@debug` remains exclusive for the debug delegation artifact.
 
@@ -126,7 +126,7 @@ The final pass used the packet-local contract in the packet docs and the already
 |----------|-----|
 | Use source-contract grep verification for the remaining unchecked rows | The user explicitly scoped this closeout pass to source-level evidence plus structural confirmation rather than fixture or slash-command execution |
 | Treat middleware deprecation as complete while preserving continuity and recovery surfaces | The packet removed deprecated wrappers and agents without regressing `/memory:save`, `/spec_kit:resume`, `@debug`, or `@deep-research` |
-| Keep packet-doc integrity debt separate from implementation completion | The remaining validator failures are document-hygiene issues in packet artifacts, not missing Phase 012 command behavior |
+| Close packet-doc integrity drift inside the packet rather than deferring it | The final strict-validation blockers were canonical-doc contradictions and research-doc sufficiency gaps inside Packet 012 itself, so the closeout aligned those docs instead of carrying a false-fail tail forward |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -138,10 +138,11 @@ The final pass used the packet-local contract in the packet docs and the already
 |-------|--------|
 | Source-contract sweep for CHK-001 through CHK-035 | `PASS` - all previously unchecked rows are now marked `[x]` with grep-based evidence in the checklist |
 | Existing verification tail | `PASS` - CHK-036 through CHK-054 are now all marked `[x]`, including source-contract closure for the two stale blocker rows |
-| Final checklist state | `PASS` - `54/54` checklist items are marked `[x]` (`10/10` P0, `7/7` P1, `29/29` P2) |
+| Final task state | `PASS` - `54/54` tasks are marked `[x]` |
+| Final checklist state | `PASS` - `46/46` checklist items are marked `[x]` (`10/10` P0, `7/7` P1, `29/29` P2) |
 | Nested changelog generation | `PASS` - `nested-changelog.js --write` generated `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/changelog/changelog-026-012-spec-kit-commands.md` |
-| Final sk-doc validator batch | `PASS` - `validate_document.py` returned `0` issues for both the implementation summary and the decision record |
-| Final packet strict validation | `FAIL (exit 2)` - final `validate.sh --strict` reports one frontmatter-memory issue on the requested `recent_action` text, one research citation sufficiency warning, two non-blocking anchor/header deviations, and 126 packet-local markdown-path integrity errors outside the implemented command behavior |
+| Final sk-doc validator batch | `PASS` - `validate_document.py` returned `0` issues across the full changed-markdown closeout set, including the packet docs, nested changelog, release note, and root README |
+| Final packet strict validation | `PASS` - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands --strict` completed with `RESULT: PASSED` and `0` warnings |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -151,13 +152,13 @@ The final pass used the packet-local contract in the packet docs and the already
 
 ### Outstanding Issues
 
-1. **All M7/M8/M9 implementation blockers are resolved for this packet.** The remaining red validator output is documentation-integrity debt, not missing command behavior.
-2. **Packet-local markdown-path integrity is still stale in older packet docs.** Deleted middleware paths and shorthand sibling-doc references still trip the strict validator in packet artifacts outside this closeout rewrite.
-3. **The research artifact still needs a citation.** That research-document hygiene issue predates this closeout pass and remains deferred.
+1. **No implementation blockers remain in Packet 012.** The command, YAML, documentation, and middleware-cleanup surfaces now validate together as one coherent packet.
+2. **Residual risk is limited to future regression, not current packet debt.** Any new drift would come from later edits reintroducing deprecated references or breaking the distributed-governance wording.
+3. **Deep-review remains optional confidence amplification.** The packet no longer needs it for closure, but an independent pass could still be useful if extra assurance is desired.
 
 ### Next Steps
 
-1. Open a focused follow-on packet to repair stale markdown-path references across the packet docs.
-2. Add the missing research citation, then rerun packet strict validation to clear the remaining documentation debt.
-3. If extra confidence is desired beyond this source-contract closeout, dispatch `@deep-review` for an independent audit.
+1. If extra confidence is desired beyond this source-contract closeout, dispatch `@deep-review` for an independent audit.
+2. Keep the zero-reference sweep and packet strict validation as the regression gate for any future edits touching the M9 surfaces.
+3. Re-run the changed-markdown validator batch whenever the packet summary artifacts or release notes are updated again.
 <!-- /ANCHOR:limitations -->
