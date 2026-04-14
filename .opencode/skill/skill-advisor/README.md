@@ -450,6 +450,7 @@ python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py "api chain mcp" -
 cat prompts.txt
 # create a pull request on github
 # save this conversation context to memory
+# /spec_kit:start create docs
 # /spec_kit:plan create docs
 
 python3 .opencode/skill/skill-advisor/scripts/skill_advisor.py --batch-file prompts.txt

@@ -94,6 +94,7 @@ Large specs can be decomposed into ordered phases using the Phase System (Spec 1
 
 - **Gate 3 Option E** targets a specific phase child folder for implementation work.
 - **`/spec_kit:plan :with-phases`** (or `/spec_kit:complete :with-phases`) decomposes a spec into phases, creating parent and child folders with proper linking.
+- If the target packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` and `/spec_kit:complete` delegate to `/spec_kit:start` before phase work continues.
 - Phase addendum templates live in `addendum/phase/`:
   - `phase-child-header.md` — prepended to child spec files to link back to the parent.
   - `phase-parent-section.md` — appended to the parent spec to list and track child phases.

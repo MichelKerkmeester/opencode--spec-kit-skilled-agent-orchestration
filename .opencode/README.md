@@ -157,12 +157,13 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 
 Commands are invoked with `/command_name` syntax in the chat interface.
 
-### Spec Kit Commands (`/spec_kit:*`) — 8 commands
+### Spec Kit Commands (`/spec_kit:*`) — 9 commands
 
-- `/spec_kit:plan`: 7-step planning workflow from research to task breakdown (supports `:with-phases` mode)
+- `/spec_kit:start`: Canonical intake interview that publishes `spec.md`, `description.json`, and `graph-metadata.json`
+- `/spec_kit:plan`: 7-step planning workflow from research to task breakdown (supports `:with-phases` mode) and smart-delegates to `/spec_kit:start` when the target packet is missing or in `partial-folder`, `repair-mode`, or `placeholder-upgrade`
 - `/spec_kit:implement`: Implementation workflow with quality gates
-- `/spec_kit:complete`: Full 14+ step workflow from research to completion
-- `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking
+- `/spec_kit:complete`: Full 14+ step workflow from research to completion, with inline `/spec_kit:start` delegation when the packet needs intake repair
+- `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking plus bounded `spec.md` anchoring via `spec_check_protocol.md`
 - `/spec_kit:deep-review`: Autonomous iterative code review workflow with convergence tracking
 - `/spec_kit:debug`: Debug delegation with model selection and task dispatch
 - `/spec_kit:handover`: Session continuation with context preservation

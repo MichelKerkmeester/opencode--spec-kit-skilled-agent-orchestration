@@ -99,7 +99,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Phase decomposition is strongly recommended for Level 3+ complexity. High-complexity work benefits from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure.
+Phase decomposition is strongly recommended for Level 3+ complexity. High-complexity work benefits from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to `/spec_kit:start` before phase setup continues.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

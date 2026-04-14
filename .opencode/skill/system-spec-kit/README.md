@@ -403,19 +403,20 @@ The memory system includes built-in tools for measuring search quality:
 
 ### 3.3 COMMANDS
 
-Spec Kit exposes 12 top-level workflow commands: 8 `spec_kit` + 4 `memory` operations. Repository-wide command entry points total 21 when combined with 6 `create` commands, 2 `improve` commands, and 1 `agent_router` utility. Each command opens access to a specific set of tools.
+Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` operations. Repository-wide command entry points total 22 when combined with 6 `create` commands, 2 `improve` commands, and 1 `agent_router` utility. Each command opens access to a specific set of tools.
 
-#### Spec Kit Commands (8)
+#### Spec Kit Commands (9)
 
 | Command                 | Steps | Purpose                                                                                                                          |
 | ----------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `/spec_kit:complete`    | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout where applicable        |
-| `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation                                                                            |
+| `/spec_kit:start`       | N/A   | Canonical intake interview that publishes `spec.md`, `description.json`, and `graph-metadata.json`                              |
+| `/spec_kit:complete`    | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout, with inline `/spec_kit:start` delegation when intake is still needed |
+| `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation, with smart `/spec_kit:start` delegation for `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade` packets |
 | `/spec_kit:implement`   | 9     | Execute pre-planned work. Requires existing `plan.md`; packet-aware targets also generate local changelog output during closeout |
 | `/spec_kit:resume`      | 4     | Resume a previous session on an existing spec folder                                                                             |
 | `/spec_kit:handover`    | 4     | Create a session handover document for the next AI                                                                               |
 | `/spec_kit:debug`       | 5     | Delegate debugging to a specialized sub-agent with fresh perspective                                                             |
-| `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection                                                                              |
+| `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection plus bounded `spec.md` anchoring under [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md) |
 | `/spec_kit:deep-review` | N/A   | Autonomous code review loop with convergence detection                                                                           |
 
 **Mode Suffixes** change how commands run:
@@ -625,7 +626,7 @@ The **spec folder workflow** is the filing system. Every time you modify files, 
 
 The **memory system** is the librarian. When a session ends, `generate-context.js` updates the packet's canonical continuity surfaces so the next session can recover from packet-local sources first. The MCP server indexes those packet docs into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `/spec_kit:resume` rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs. If you need deeper retrieval after that, `session_bootstrap()` bundles resume context, health, and structural readiness into one follow-up recovery call before broader `memory_context` work begins.
 
-The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:complete` runs a full workflow from spec through implementation and packet-local changelog closeout when applicable. `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
+The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:start` owns canonical intake, `/spec_kit:plan` and `/spec_kit:complete` reuse that intake inline when `folder_state` requires delegation, and `/spec_kit:deep-research` anchors research to `spec.md` through [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md). `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
 
 ```text
 Session starts

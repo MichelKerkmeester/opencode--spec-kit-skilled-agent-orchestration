@@ -415,14 +415,14 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 | Command                 | Purpose                                                            |
 | ----------------------- | ------------------------------------------------------------------ |
 | `/spec_kit:deep-review` | Primary invocation point for review-only mode                      |
-| `/spec_kit:plan`        | Next step when review verdict is FAIL or CONDITIONAL               |
+| `/spec_kit:plan`        | Next step when review verdict is FAIL or CONDITIONAL; if the remediation packet still needs intake, planning can smart-delegate to `/spec_kit:start` first |
 | `/memory:save`          | Manual context preservation (deep review auto-saves on completion) |
 
 ### Related Skills
 
 | Skill              | Relationship                                                                                              |
 | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `sk-deep-research` | Shares loop architecture, state format, and convergence algorithm. Use for investigation, not code audit. |
+| `sk-deep-research` | Shares loop architecture, state format, and convergence algorithm. Its bounded `spec.md` anchoring contract lives in [`../sk-deep-research/references/spec_check_protocol.md`](../sk-deep-research/references/spec_check_protocol.md). Use it for investigation, not code audit. |
 | `sk-code-review`  | Single-pass review baseline. Use for quick checks; use `sk-deep-review` for release gates.                |
 
 ### Workflow YAMLs

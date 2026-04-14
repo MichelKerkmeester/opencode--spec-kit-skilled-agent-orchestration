@@ -40,6 +40,10 @@ The packet is now lineage-aware. Every run carries `sessionId`, `parentSessionId
 
 The packet is also reducer-synchronized. The agent writes the iteration file plus the JSONL record. The workflow reducer then updates the machine-owned packet surfaces so `deep-research-strategy.md`, `findings-registry.json`, `deep-research-dashboard.md`, and synthesis metadata cannot drift apart.
 
+The workflow also anchors every run to a real `spec.md`. During late INIT it follows [`references/spec_check_protocol.md`](references/spec_check_protocol.md): acquire `research/.deep-research.lock`, classify `folder_state` as `no-spec`, `spec-present`, `spec-just-created-by-this-run`, or `conflict-detected`, and then either seed a Level 1 spec or append bounded context before LOOP starts.
+
+During SYNTHESIS the same contract replaces exactly one `<!-- BEGIN GENERATED: deep-research/spec-findings -->` ... `<!-- END GENERATED: deep-research/spec-findings -->` block under the chosen host anchor while keeping `research/research.md` canonical.
+
 Outside the research loop itself, `/spec_kit:resume` remains the canonical recovery surface for packet work. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
 
 For iterative code review, use `sk-deep-review`.
@@ -81,6 +85,9 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 | Reducer synchronization | Strategy, dashboard, registry, and synthesis metadata are updated from canonical iteration outputs. |
 | Packet-first recovery | Hook and non-hook runtimes derive the same next action from packet files. |
 | Runtime capability matrix | One documented and machine-readable source of truth for provider quirks and parity expectations. |
+| `spec.md` anchoring | Late INIT follows `references/spec_check_protocol.md` to seed or sync bounded packet context before LOOP begins. |
+| Folder-state contract | `folder_state` resolves to `no-spec`, `spec-present`, `spec-just-created-by-this-run`, or `conflict-detected` before any `spec.md` mutation branch runs. |
+| Advisory lock + generated fence | The workflow holds `research/.deep-research.lock` through synthesis and replaces one `BEGIN/END GENERATED` findings block in `spec.md`. |
 | Progressive synthesis | `research.md` can be updated incrementally and is finalized during synthesis. |
 | Negative knowledge | Ruled-out directions and dead ends are preserved as first-class outputs. |
 | Quality guards | Source diversity, focus alignment, and weak-source checks must pass before STOP is accepted. |
@@ -144,6 +151,7 @@ Ownership model:
 - Agent-owned writes: `iteration-NNN.md`, JSONL iteration/event append, optional progressive synthesis content.
 - Reducer-owned writes: `deep-research-strategy.md` machine-owned sections, `findings-registry.json`, `deep-research-dashboard.md`.
 - Workflow-owned output: `research.md` and lifecycle snapshot files such as `synthesis-v{generation}.md`.
+- Protocol-owned packet mutations: bounded `spec.md` seeding, context append, advisory lock lifecycle, and generated-fence replacement defined in `references/spec_check_protocol.md`.
 <!-- /ANCHOR:structure -->
 
 ---
@@ -191,6 +199,7 @@ Read `.opencode/skill/sk-deep-research/references/capability_matrix.md` for the 
 | JSONL parse failure | Run `cat research/deep-research-state.jsonl | jq .` and fall back to iteration-file reconstruction if needed. |
 | Runtime mirror behaves differently | Compare the mirror against `references/capability_matrix.md`. |
 | Loop will not continue after pause | Remove `research/.deep-research-pause` and restart the command so the lifecycle check can emit `resumed`. |
+| `spec.md` write is blocked | Inspect `folder_state`, `research/.deep-research.lock`, and the conflict details defined in `references/spec_check_protocol.md`. |
 <!-- /ANCHOR:troubleshooting -->
 
 ---
@@ -210,6 +219,9 @@ A: Both were described in earlier drafts but never shipped as runtime branches. 
 **Q: Can non-hook runtimes use the same workflow safely?**
 A: Yes. Packet files are the authority. Hooks only improve startup ergonomics.
 
+**Q: What can `/spec_kit:deep-research` change in `spec.md`?**
+A: Only the bounded mutations in `references/spec_check_protocol.md`: seed markers or pre-init context during INIT, plus one machine-owned `BEGIN GENERATED` / `END GENERATED` findings block during SYNTHESIS.
+
 **Q: Where should review work go now?**
 A: Use `sk-deep-review` and `/spec_kit:deep-review`.
 <!-- /ANCHOR:faq -->
@@ -223,6 +235,7 @@ A: Use `sk-deep-review` and `/spec_kit:deep-review`.
 |----------|---------|
 | `SKILL.md` | Full protocol and rules |
 | `references/loop_protocol.md` | Detailed lifecycle and reducer sequencing |
+| `references/spec_check_protocol.md` | Bounded `spec.md` anchoring, `folder_state` rules, advisory lock lifecycle, and generated-fence write-back |
 | `references/state_format.md` | Canonical config, JSONL, registry, and dashboard schemas |
 | `references/convergence.md` | Stop and recovery logic, including graph-aware legal-stop behavior |
 | `manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md` | Operator test case for graph stop guards and blocked-stop behavior |

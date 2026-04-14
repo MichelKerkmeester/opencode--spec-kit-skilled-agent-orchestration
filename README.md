@@ -866,13 +866,19 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 #### SPEC KIT
 
+**Start**
+- Canonical intake workflow that publishes `spec.md`, `description.json`, and `graph-metadata.json`
+- Used directly for new packet setup and reused inline by `/spec_kit:plan` and `/spec_kit:complete` when `folder_state` is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
+- Modes: `:auto`, `:confirm`
+
 **Complete**
-- End-to-end workflow: research → plan → implement → verify → save memory
-- The primary entry point for new features - creates spec folder and runs everything
+- End-to-end workflow: intake/delegate → research → plan → implement → verify → save memory
+- Smart-detects missing or unhealthy packet state and delegates canonical intake to `/spec_kit:start`; healthy folders continue without extra setup prompts
 - Modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research), `:auto-debug` (auto-delegates failures)
 
 **Plan**
-- Planning-only workflow that creates spec.md, plan.md and tasks.md without implementing
+- Planning-only workflow that authors `spec.md`, `plan.md`, and `tasks.md` without implementing
+- Smart-delegates to `/spec_kit:start` when the packet is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
 - Dispatches up to 4 parallel context agents for codebase exploration during planning
 - Use when you need stakeholder review before coding. Modes: `:auto`, `:confirm`
 
@@ -893,6 +899,7 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 **Deep Research**
 - Autonomous research loop dispatching deep-research agents iteratively until convergence
+- Anchors every run to a real `spec.md` under `spec_check_protocol.md`, with advisory lock handling, `folder_state` detection, and bounded `BEGIN/END GENERATED` write-back
 - Externalized JSONL state enables pause/resume across sessions
 - Reducer parses terminal `synthesis_complete` events for authoritative stop metadata
 - Graph convergence guards block premature STOP when sourceDiversity or evidenceDepth thresholds fail
@@ -912,6 +919,16 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Creates session handover document for continuing work in a new conversation
 - Gathers key decisions, blockers, current phase and next steps from spec folder state
 - Variants: `:quick` (summary) or `:full` (comprehensive)
+
+**Spec-first command chains**
+
+```text
+/spec_kit:start
+  ├─► /spec_kit:plan -> /spec_kit:implement
+  ├─► /spec_kit:deep-research -> /spec_kit:plan
+  └─► /spec_kit:complete
+       └─► delegates back to /spec_kit:start when folder_state still needs intake
+```
 
 #### MEMORY
 

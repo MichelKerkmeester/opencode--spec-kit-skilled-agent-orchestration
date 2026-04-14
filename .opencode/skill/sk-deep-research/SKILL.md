@@ -215,6 +215,12 @@ Save --> generate-context.js --> verify memory artifact
 
 Late-INIT can also anchor the research run to `spec.md`: the workflow acquires the advisory lock, classifies `folder_state`, seeds or appends bounded context before LOOP, and then syncs one generated findings block back into `spec.md` during SYNTHESIS while keeping `research/research.md` canonical.
 
+That contract is exact:
+- `folder_state` is always one of `no-spec`, `spec-present`, `spec-just-created-by-this-run`, or `conflict-detected`
+- the advisory lock lives at `research/.deep-research.lock` from late INIT through save, skip-save, or cancel cleanup
+- post-synthesis write-back replaces exactly one `<!-- BEGIN GENERATED: deep-research/spec-findings -->` ... `<!-- END GENERATED: deep-research/spec-findings -->` fence under the chosen host anchor
+- the full bounded mutation rules live in [spec_check_protocol.md](references/spec_check_protocol.md)
+
 ### Key Concepts
 
 | Concept | Description |
@@ -436,7 +442,8 @@ After research:
 
 | Command | Purpose |
 |---------|---------|
-| `/spec_kit:deep-research` | Full loop workflow |
+| `/spec_kit:start` | Optional upfront intake when a packet still needs a canonical `spec.md` before research begins |
+| `/spec_kit:deep-research` | Full loop workflow with bounded `spec.md` anchoring under `spec_check_protocol.md` |
 | `/memory:save` | Manual context preservation |
 
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)

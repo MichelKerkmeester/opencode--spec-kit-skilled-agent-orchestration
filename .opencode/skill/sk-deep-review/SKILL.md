@@ -532,7 +532,7 @@ After review:
 
 | Skill | When to Use Instead |
 |-------|---------------------|
-| `sk-deep-research` | For investigation and topic research, not code review |
+| `sk-deep-research` | For investigation and topic research, not code review; its bounded `spec.md` anchoring contract lives in `../sk-deep-research/references/spec_check_protocol.md` |
 | `sk-code-review` | For simple single-pass code review without iteration |
 
 **For one-page cheat sheet**: See [quick_reference.md](references/quick_reference.md)

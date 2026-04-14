@@ -47,7 +47,7 @@ Each addendum adds a distinct concern layer on top of the core spec template, ke
 | 3     | Level 2 + `level3-arch`               |
 | 3+    | Level 3 + `level3plus-govern`         |
 
-The `phase/` addendum is orthogonal to level composition -- it can be applied to any level when a spec is decomposed into ordered phase children via `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases`.
+The `phase/` addendum is orthogonal to level composition -- it can be applied to any level when a spec is decomposed into ordered phase children via `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases`. If the targeted packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, those parent commands delegate to `/spec_kit:start` first.
 
 <!-- /ANCHOR:composition-model -->
 
