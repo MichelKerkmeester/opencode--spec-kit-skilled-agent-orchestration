@@ -16,7 +16,7 @@ This scenario validates Async ingestion job lifecycle (P0-3) for `097`. It focus
 Operators run the exact prompt and command sequence for `097` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm job state machine and crash recovery
-- Prompt: `As a lifecycle validation operator, validate Async ingestion job lifecycle (P0-3) against memory_ingest_start({paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a lifecycle validation operator, validate Async ingestion job lifecycle (P0-3) against memory_ingest_start({paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart
 - Pass/fail: PASS if state machine transitions correctly, duplicate inputs are deduplicated before queueing, and cancel works
 
@@ -27,12 +27,12 @@ Operators run the exact prompt and command sequence for `097` and confirm the ex
 ### Prompt
 
 ```
-As a lifecycle validation operator, confirm job state machine, duplicate-path dedup, and crash recovery against memory_ingest_start({paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a lifecycle validation operator, confirm job state machine, duplicate-path dedup, and crash recovery against memory_ingest_start({paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"]}). Verify job state transitions through queued→parsing→embedding→indexing→complete in order; duplicate input paths are deduplicated before queueing with explicit reporting; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. `memory_ingest_start({paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"]})` → capture `jobId`, `duplicatePathCount`, and the dedup hint (must be explicit `.md` file paths, not directories)
+1. `memory_ingest_start({paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"]})` → capture `jobId`, `duplicatePathCount`, and the dedup hint (must be explicit `.md` file paths, not directories)
 2. `memory_ingest_status({jobId})` → verify state transitions (queued→parsing→embedding→indexing→complete)
 3. start a new job, then `memory_ingest_cancel({jobId})` → verify cancelled state
 4. verify job IDs are nanoid-style (`job_` prefix + 12 alphanumeric chars)

@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/003-readme-alignment-revisit",
-  "description": "Feature Specification: 018 / 009 \u2014 README release-alignment revisit",
+  "description": "Feature Specification: 018 / 009 — README release-alignment revisit",
   "keywords": [
     "feature",
     "specification",
@@ -10,7 +10,7 @@
     "release-alignment",
     "revisit"
   ],
-  "lastUpdated": "2026-04-13T04:56:29.596Z",
+  "lastUpdated": "2026-04-14T08:02:29.287Z",
   "specId": "003",
   "folderSlug": "readme-alignment-revisit",
   "parentChain": [

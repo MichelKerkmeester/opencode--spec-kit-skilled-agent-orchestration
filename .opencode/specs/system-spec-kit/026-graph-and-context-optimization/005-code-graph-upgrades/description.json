@@ -1,9 +1,6 @@
 {
-  "title": "Feature Specification: Code Graph Upgrades",
-  "type": "phase-packet",
-  "path": "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-code-graph-upgrades",
-  "description": "Plan the bounded post-R5/R6 code-graph upgrade packet that adds detector provenance, graph payload richness, and code-graph-local query ergonomics without overlapping packet 008.",
+  "description": "Feature Specification: Code Graph Upgrades",
   "keywords": [
     "feature",
     "specification",
@@ -11,7 +8,7 @@
     "graph",
     "upgrades"
   ],
-  "lastUpdated": "2026-04-13T16:13:03Z",
+  "lastUpdated": "2026-04-14T08:02:29.261Z",
   "specId": "005",
   "folderSlug": "code-graph-upgrades",
   "parentChain": [

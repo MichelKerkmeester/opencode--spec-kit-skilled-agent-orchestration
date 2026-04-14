@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits/002-cmd-memory-speckit-revisit",
-  "description": "Feature Specification: 018 / 008 \u2014 command release-alignment revisit",
+  "description": "Feature Specification: 018 / 008 — command release-alignment revisit",
   "keywords": [
     "feature",
     "specification",
@@ -10,7 +10,7 @@
     "release-alignment",
     "revisit"
   ],
-  "lastUpdated": "2026-04-13T04:56:30.628Z",
+  "lastUpdated": "2026-04-14T08:02:29.282Z",
   "specId": "002",
   "folderSlug": "cmd-memory-speckit-revisit",
   "parentChain": [

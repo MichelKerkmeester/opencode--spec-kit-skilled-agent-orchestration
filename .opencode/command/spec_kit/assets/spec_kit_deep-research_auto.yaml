@@ -54,6 +54,7 @@ skill_reference:
   skill_md: .opencode/skill/sk-deep-research/SKILL.md
   references:
     loop_protocol: .opencode/skill/sk-deep-research/references/loop_protocol.md
+    spec_check_protocol: .opencode/skill/sk-deep-research/references/spec_check_protocol.md
     state_format: .opencode/skill/sk-deep-research/references/state_format.md
     convergence: .opencode/skill/sk-deep-research/references/convergence.md
   templates:
@@ -83,6 +84,7 @@ state_paths:
   registry: "{spec_folder}/research/findings-registry.json"
   dashboard: "{spec_folder}/research/deep-research-dashboard.md"
   pause_sentinel: "{spec_folder}/research/.deep-research-pause"
+  lock_file: "{spec_folder}/research/.deep-research.lock"
   archive_root: "{spec_folder}/research/archive"
   synthesis_snapshot_pattern: "{spec_folder}/research/synthesis-v{generation}.md"
   iteration_pattern: "{spec_folder}/research/iterations/iteration-{NNN}.md"
@@ -124,6 +126,11 @@ workflow:
         migration_policy: "dual-read / single-write for 4 weeks"
         on_legacy_read:
           append_jsonl: '{"type":"event","event":"migration","legacyPath":"{legacy_path}","canonicalPath":"{canonical_path}","timestamp":"{ISO_8601_NOW}"}'
+
+      step_acquire_lock:
+        action: "Acquire the advisory lock defined by the spec_check_protocol before session classification"
+        command: "Open {state_paths.lock_file} with exclusive non-blocking advisory locking semantics; fail closed on contention."
+        note: "macOS/BSD locking here is advisory. Stale-lock override is confirm-only or explicit recovery-only."
 
       step_classify_session:
         action: "Classify the session before writing files"
@@ -209,6 +216,59 @@ workflow:
         condition: "prior_context_found"
         edit: "{spec_folder}/research/deep-research-strategy.md"
         note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
+
+      step_detect_spec_present:
+        action: "Classify late-INIT spec.md state after the durable research packet exists"
+        inspect:
+          - "{spec_folder}/spec.md"
+          - "{state_paths.lock_file}"
+        classify:
+          no-spec: "spec.md is absent before any pre-init mutation"
+          spec-present: "spec.md exists and approved host anchors are available for bounded mutation"
+          spec-just-created-by-this-run: "spec.md already carries this run's DR seed markers and should not be reseeded"
+          conflict-detected: "missing host anchor, duplicate markers, or generated-block ambiguity makes mutation unsafe"
+        outputs:
+          - folder_state: "no-spec | spec-present | spec-just-created-by-this-run | conflict-detected"
+          - normalized_topic: "Trim, lowercase, and collapse whitespace in research_topic before dedupe checks"
+        append_to_jsonl: '{"type":"event","event":"spec_check_result","folder_state":"{folder_state}","normalized_topic":"{normalized_topic}","specPath":"{spec_folder}/spec.md","lockPath":"{state_paths.lock_file}","timestamp":"{ISO_8601_NOW}"}'
+
+      step_preinit_spec_branch:
+        action: "Run the bounded pre-init spec branch required by spec_check_protocol"
+        protocol_reference: ".opencode/skill/sk-deep-research/references/spec_check_protocol.md"
+        branches:
+          no-spec:
+            create: "{spec_folder}/spec.md"
+            seed_markers:
+              - "<!-- DR-SEED:REQUIREMENTS -->"
+              - "<!-- DR-SEED:SCOPE -->"
+            requirements_host: "Seed Requirements from the research ask without broadening scope"
+            scope_host: "Seed Scope from the research ask without inventing implementation details"
+            set:
+              folder_state: "spec-just-created-by-this-run"
+            append_to_jsonl: '{"type":"spec_mutation","event":"spec_seed_created","folder_state":"spec-just-created-by-this-run","anchors_touched":["Requirements","Scope"],"diff_summary":"Seeded Level 1 spec.md from research topic with DR seed markers.","seed_markers":["DR-SEED:REQUIREMENTS","DR-SEED:SCOPE"],"timestamp":"{ISO_8601_NOW}"}'
+          spec-present:
+            edit: "{spec_folder}/spec.md"
+            idempotency_check:
+              host_anchor: "Open Questions"
+              normalized_match: "Normalize the existing anchor text by lowercasing, stripping punctuation, collapsing whitespace, and trimming before comparing with {normalized_topic}."
+              if_match:
+                skip_append: true
+                append_to_jsonl: '{"type":"spec_mutation","event":"spec_preinit_context_deduped","folder_state":"spec-present","anchors_touched":["Open Questions"],"diff_summary":"Skipped duplicate pre-init topic append because normalized topic already exists in Open Questions.","normalized_topic":"{normalized_topic}","specPath":"{spec_folder}/spec.md","timestamp":"{ISO_8601_NOW}"}'
+              if_no_match:
+                append_only:
+                  - host_anchor: "Open Questions"
+                    content: "Add the normalized research topic only if it is not already present."
+                  - host_anchor: "Research Context"
+                    content: "Add a bounded note that deep-research is active for this topic and that research/research.md remains canonical."
+                append_to_jsonl: '{"type":"spec_mutation","event":"spec_preinit_context_added","folder_state":"spec-present","anchors_touched":["Open Questions","Research Context"],"diff_summary":"Appended bounded pre-init research context for the normalized topic.","normalized_topic":"{normalized_topic}","specPath":"{spec_folder}/spec.md","timestamp":"{ISO_8601_NOW}"}'
+          spec-just-created-by-this-run:
+            verify_markers:
+              - "<!-- DR-SEED:REQUIREMENTS -->"
+              - "<!-- DR-SEED:SCOPE -->"
+            note: "Treat already-seeded spec.md as a no-op guard and continue."
+          conflict-detected:
+            append_to_jsonl: '{"type":"spec_mutation","event":"spec_mutation_conflict","folder_state":"conflict-detected","reason":"Pre-init spec.md mutation is ambiguous or unsafe.","specPath":"{spec_folder}/spec.md","timestamp":"{ISO_8601_NOW}"}'
+            halt: true
 
       step_init_complete:
         log: "Initialization complete. Config, state, and strategy files created."
@@ -543,6 +603,26 @@ workflow:
           - Segment transitions, wave scores, and checkpoint metrics are experimental and omitted from the live report.
         append_to_jsonl: '{"type":"event","event":"synthesis_complete","totalIterations":{iteration_count},"answeredCount":{answered_count},"totalQuestions":{total_questions},"stopReason":"{reason}","timestamp":"{ISO_8601_NOW}"}'
 
+      step_writeback_spec_findings:
+        action: "Write or replace the bounded generated findings block in spec.md before config completion"
+        edit: "{spec_folder}/spec.md"
+        host_anchor: "Use the chosen host anchor required by spec_check_protocol"
+        generated_fence_begin: "<!-- BEGIN GENERATED: deep-research/spec-findings -->"
+        generated_fence_end: "<!-- END GENERATED: deep-research/spec-findings -->"
+        fail_closed_conflict_check:
+          if_existing_generated_fence_present:
+            detect_manual_edits: "Use generated checksum metadata or an explicit MANUAL-EDIT marker inside the existing fence to detect human edits before overwrite."
+            on_manual_edit_conflict:
+              append_to_jsonl: '{"type":"spec_mutation","event":"spec_mutation_conflict","folder_state":"conflict-detected","reason":"Manual edits detected inside existing generated findings fence.","specPath":"{spec_folder}/spec.md","generatedFence":"deep-research/spec-findings","conflictKind":"generated-fence-manual-edit","timestamp":"{ISO_8601_NOW}"}'
+              halt: true
+        instructions:
+          - "Read `{state_paths.research_output}` as the canonical synthesis source."
+          - "Replace exactly one generated findings block under the chosen host anchor."
+          - "Fail closed if the host anchor is missing, duplicate markers exist, or human edits are detected inside the generated block."
+          - "Do not overwrite a generated block that fails checksum validation or carries an explicit MANUAL-EDIT marker."
+          - "Emit `spec_synthesis_deferred` instead of partial output when synthesis cannot safely write back."
+        append_to_jsonl: '{"type":"spec_mutation","event":"spec_mutation","phase":"post-synthesis","anchors_touched":["<chosen host anchor>"],"diff_summary":"Replaced generated deep-research findings fence from research/research.md.","generatedFence":"deep-research/spec-findings","timestamp":"{ISO_8601_NOW}"}'
+
       step_update_config_status:
         action: "Mark config as complete"
         edit: "{spec_folder}/research/deep-research-config.json"
@@ -567,9 +647,14 @@ workflow:
         note: "Use the actual file path returned by generate-context.js; memory_index_scan remains the bulk fallback"
 
       step_verify_save:
-        action: "Verify generated continuity support artifact was created"
-        check: "Does {spec_folder}/memory/*.md exist?"
+        action: "Verify canonical save routed content into the correct spec document"
+        check: "Does {spec_folder}/implementation-summary.md, {spec_folder}/decision-record.md, or {spec_folder}/handover.md carry the new continuity update?"
         on_fail: "Log warning but do not block completion"
+
+      step_release_lock:
+        action: "Release the advisory lock after save, skip-save, or cancellation cleanup has resolved"
+        command: "Close or unlock {state_paths.lock_file} using advisory semantics only."
+        append_to_jsonl: '{"type":"event","event":"lock_released","path":"{state_paths.lock_file}","releasePhase":"save","timestamp":"{ISO_8601_NOW}"}'
 
   # ═══════════════════════════════════════════════════════════════
   # COMPLETION

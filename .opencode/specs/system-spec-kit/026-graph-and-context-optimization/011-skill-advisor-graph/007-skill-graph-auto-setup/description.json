@@ -1,12 +1,21 @@
 {
-  "title": "Skill Graph Auto-Setup",
-  "description": "Level 2 phase packet for auto-initializing the skill graph, documenting lazy advisor fallback behavior, context-server startup and watcher logging, setup guide updates, and regression verification.",
-  "trigger_phrases": [
-    "007-skill-graph-auto-setup",
-    "skill graph auto setup",
-    "init skill graph",
-    "skill advisor setup guide"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/007-skill-graph-auto-setup",
+  "description": "Feature Specification: Skill Graph Auto-Setup",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "graph",
+    "auto-setup"
   ],
-  "importance_tier": "important",
-  "contextType": "planning"
+  "lastUpdated": "2026-04-14T08:02:29.484Z",
+  "specId": "007",
+  "folderSlug": "skill-graph-auto-setup",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-skill-advisor-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

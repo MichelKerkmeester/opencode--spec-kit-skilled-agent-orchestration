@@ -769,7 +769,6 @@ STATUS=OK ACTION=dashboard
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:manage shared`: Shared-memory spaces
 
 ---
 <!-- APPENDIX: Reference material for AI agent implementation -->

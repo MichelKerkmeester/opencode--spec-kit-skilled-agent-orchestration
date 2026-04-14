@@ -646,7 +646,7 @@ workflow:
       - Behavioral rules defined
       - Any challenges or decisions made
     outputs:
-    - memory_file: "specs/[NNN]-[agent-name]/memory/[timestamp]_agent_creation.md"
+    - implementation_summary: "specs/[NNN]-[agent-name]/implementation-summary.md"
     validation: context_saved
     checkpoint:
       question: "Context saved. Agent creation complete!"
@@ -658,14 +658,14 @@ workflow:
 
     # ── SEMANTIC MEMORY INTEGRATION ─────────────────────────────────
     post_save_indexing:
-      purpose: "Index memory file immediately for search availability"
+      purpose: "Index the canonical spec document immediately for search availability"
       mcp_tool: memory_save
       invocation: |
         spec_kit_memory_memory_save({
-          filePath: "specs/[NNN]-[agent-name]/memory/[timestamp]_agent_creation.md"
+          filePath: "specs/[NNN]-[agent-name]/implementation-summary.md"
         })
-      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after memory file is written to disk"
+      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode. The save target is a canonical spec document; standalone memory/*.md files are retired and the runtime rejects them."
+      when: "Immediately after implementation-summary.md is written to disk"
 
     anchor_requirements:
       enforcement: MANDATORY

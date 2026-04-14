@@ -38,6 +38,8 @@ This workflow gathers ALL inputs in ONE prompt. Round-trip: 1 user interaction.
 
 **FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No analysis, no tool calls — ask ALL questions immediately, then wait.
 
+Read-only discovery to classify delegated `/start` folder state is allowed when `spec_path` is explicit or can be inferred from the setup answers. Healthy folders keep the existing prompt shape; non-healthy folders inline-absorb `/start` intake inside the same consolidated prompt and MUST NOT open a second visible command flow.
+
 **STATUS: BLOCKED**
 
 ```
@@ -75,6 +77,12 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 5. Memory loading question needed ONLY if user selects A or C for spec folder AND memory/ has files.
 
+5a. CHECK delegated `/start` intake requirement when `spec_path` is explicit or can be derived from Q1 / `--phase-folder`:
+   ├─ Inspect `{spec_path}` for `spec.md`, `description.json`, `graph-metadata.json`, and tracked placeholder markers
+   ├─ Normalize `folder_state` to one of: `no-spec` | `partial-folder` | `repair-mode` | `placeholder-upgrade` | `populated`
+   ├─ `folder_state == populated` → `start_delegation_required = FALSE` and preserve the current prompt unchanged
+   └─ Otherwise → `start_delegation_required = TRUE`, inherit the parent `execution_mode`, and INLINE absorb `/start` intake before Step 1 continues
+
 6. ASK with SINGLE prompt (include only applicable questions):
 
    Q0. Feature Description (if not in command): What feature to plan?
@@ -109,6 +117,23 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      Provide phase names? (Optional — auto-generated if skipped)
      Example: "data-model, api-layer, ui-components"
 
+   `/start` intake block (ONLY if `start_delegation_required = TRUE`; keep this inside the SAME prompt, not a second command flow):
+   `/start Q0.` Feature Description (if not already bound): What should this spec folder capture?
+   `/start Q1.` Target Folder State:
+     A) Empty / create canonical trio
+     B) Partial / resume unfinished folder
+     C) Repair existing folder metadata
+     D) Populated / review before overwrite or metadata-only repair
+     Note: tracked placeholder markers force `placeholder-upgrade` even if the folder otherwise looks populated.
+   `/start Q2.` Documentation Level:
+     Recommendation: [show `level_recommendation` and brief rationale]
+     Keep it, or override to Level 1 / 2 / 3 / 3+?
+   `/start Q3.` Record relationships now?
+     A) No
+     B) Yes
+   `/start Q4+.` Relationship entries (only if `/start Q3 = yes`):
+     Provide grouped `depends_on`, `related_to`, and/or `supersedes` entries using `packet_id` as the key.
+
    Reply format: "B, A, A, C, A" or "Add auth, B, A, C, A"
 
 7. WAIT for user response (DO NOT PROCEED)
@@ -121,11 +146,14 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - dispatch_mode = [single/multi_small/multi_large from Q3]
    - memory_choice = [A/B/C from Q4, or N/A]
    - research_intent = [add_feature/fix_bug/refactor/understand from Q5]
+   - IF `start_delegation_required = TRUE`: bind `selected_level`, `start_state`, `repair_mode`, and `manual_relationships` from the inline `/start` intake block
+   - IF delegated `/start` adjusts the target: update `feature_description` and `spec_path` from the returned contract before Step 1
 
 9. Execute background operations:
    - IF memory_choice == A: Load the most recent indexed continuity support artifact
    - IF memory_choice == B: Load up to 3 recent indexed support artifacts or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
+   - IF `start_delegation_required = TRUE`: continue the existing 7-step workflow using the bound `feature_description`, `spec_path`, `selected_level`, `start_state`, `repair_mode`, and `manual_relationships`
 
 10. SET STATUS: PASSED
 
@@ -141,6 +169,7 @@ STOP HERE - Wait for user answers before continuing.
 - `feature_description` | `spec_choice` | `spec_path`
 - `execution_mode` | `dispatch_mode` | `memory_loaded` | `research_intent`
 - `phase_decomposition` | `phase_count` | `phase_names` (if `:with-phases`)
+- `selected_level` | `start_state` | `repair_mode` | `manual_relationships` (when delegated `/start` intake runs)
 
 > **Cross-reference**: Implements AGENTS.md Section 2 "Gate 3: Spec Folder Question" and "First Message Protocol".
 

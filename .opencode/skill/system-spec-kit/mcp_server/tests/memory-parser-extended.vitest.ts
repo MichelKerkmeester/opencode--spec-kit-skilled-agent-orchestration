@@ -9,8 +9,8 @@ import * as mod from '../lib/parsing/memory-parser';
 
 // TEST: MEMORY PARSER - EXTENDED (UNTESTED EXPORTS)
 // Covers: readFileWithEncoding, parseMemoryFile, extractSpecFolder,
-// IsMemoryFile, validateParsedMemory, findMemoryFiles,
-// ExtractCausalLinks, hasCausalLinks, MEMORY_FILE_PATTERN,
+// IsMemoryFile, validateParsedMemory,
+// ExtractCausalLinks, hasCausalLinks,
 //         CONTEXT_TYPE_MAP
 /* ───────────────────────────────────────────────────────────────
    TEMP DIRECTORY HELPERS
@@ -178,38 +178,6 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
   });
 
   // ───────────────────────────────────────────────────────────────
-  // 4.1 MEMORY_FILE_PATTERN
-  // ───────────────────────────────────────────────────────────────
-  describe('MEMORY_FILE_PATTERN', () => {
-    const regex: RegExp = mod.MEMORY_FILE_PATTERN;
-
-    it('T01: matches specs/NNN-name/memory/file.md', () => {
-      const p = 'specs/003-feature/memory/context.md';
-      expect(regex.test(p)).toBe(true);
-    });
-
-    it('T02: matches nested sub-folder memory path', () => {
-      const p = 'specs/003-feature/001-sub/memory/note.md';
-      expect(regex.test(p)).toBe(true);
-    });
-
-    it('T03: accepts .txt file in memory dir (txt support)', () => {
-      const p = 'specs/003-feature/memory/file.txt';
-      expect(regex.test(p)).toBe(true);
-    });
-
-    it('T04: rejects .md outside memory/ dir', () => {
-      const p = 'specs/003-feature/scratch/notes.md';
-      expect(regex.test(p)).toBe(false);
-    });
-
-    it('T05: rejects path without specs/ prefix', () => {
-      const p = 'other/003-feature/memory/file.md';
-      expect(regex.test(p)).toBe(false);
-    });
-  });
-
-  // ───────────────────────────────────────────────────────────────
   // 4.2 CONTEXT_TYPE_MAP
   // ───────────────────────────────────────────────────────────────
   describe('CONTEXT_TYPE_MAP', () => {
@@ -349,19 +317,19 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
   // 4.5 isMemoryFile
   // ───────────────────────────────────────────────────────────────
   describe('isMemoryFile', () => {
-    it('T17: recognizes specs memory .md file', () => {
-      expect(mod.isMemoryFile('/project/specs/003-auth/memory/session.md')).toBe(true);
+    it('T17: recognizes canonical spec document', () => {
+      expect(mod.isMemoryFile('/project/.opencode/specs/003-auth/spec.md')).toBe(true);
     });
 
     it('T18: recognizes constitutional memory file', () => {
       expect(mod.isMemoryFile('/project/.opencode/skill/my-skill/constitutional/rules.md')).toBe(true);
     });
 
-    it('T19: rejects non-.md file in memory dir', () => {
-      expect(mod.isMemoryFile('/project/specs/003-auth/memory/data.json')).toBe(false);
+    it('T19: rejects legacy memory/ path (retired surface)', () => {
+      expect(mod.isMemoryFile('/project/specs/003-auth/memory/session.md')).toBe(false);
     });
 
-    it('T20: rejects .md file outside memory/constitutional', () => {
+    it('T20: rejects .md file outside recognized locations', () => {
       expect(mod.isMemoryFile('/project/specs/003-auth/scratch/notes.md')).toBe(false);
     });
 
@@ -369,8 +337,8 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
       expect(mod.isMemoryFile('/project/.opencode/skill/my-skill/constitutional/README.md')).toBe(false);
     });
 
-    it('T22: handles backslash paths for isMemoryFile', () => {
-      expect(mod.isMemoryFile('C:\\project\\specs\\003-auth\\memory\\session.md')).toBe(true);
+    it('T22: handles backslash paths for spec documents', () => {
+      expect(mod.isMemoryFile('C:\\project\\.opencode\\specs\\003-auth\\plan.md')).toBe(true);
     });
   });
 
@@ -561,55 +529,4 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // ───────────────────────────────────────────────────────────────
-  // 4.10 findMemoryFiles
-  // ───────────────────────────────────────────────────────────────
-  describe('findMemoryFiles', () => {
-    let memDir1: string;
-    let memDir2: string;
-
-    beforeAll(() => {
-      memDir1 = createSpecMemoryDir('030-find');
-      memDir2 = createSpecMemoryDir('031-other');
-      writeFile(memDir1, 'context-a.md', '# A\n\nContent A');
-      writeFile(memDir1, 'context-b.md', '# B\n\nContent B');
-      writeFile(memDir2, 'context-c.md', '# C\n\nContent C');
-      // Also write a non-.md file that should be ignored
-      writeFile(memDir1, 'data.json', '{"key": "value"}');
-      // Write a file in scratch (not memory) that should be ignored
-      const scratchDir = path.join(tmpRoot, 'specs', '030-find', 'scratch');
-      fs.mkdirSync(scratchDir, { recursive: true });
-      writeFile(scratchDir, 'temp.md', '# Temp');
-    });
-
-    it('T40: finds all memory .md files', () => {
-      const files = mod.findMemoryFiles(tmpRoot);
-      const mdFiles = files.filter((f: string) => f.endsWith('.md'));
-      expect(mdFiles.length).toBeGreaterThanOrEqual(3);
-    });
-
-    it('T41: excludes non-.md files', () => {
-      const files = mod.findMemoryFiles(tmpRoot);
-      const jsonFiles = files.filter((f: string) => f.endsWith('.json'));
-      expect(jsonFiles).toHaveLength(0);
-    });
-
-    it('T42: excludes files outside memory/ dirs', () => {
-      const files = mod.findMemoryFiles(tmpRoot);
-      const scratchFiles = files.filter((f: string) => f.includes('scratch'));
-      expect(scratchFiles).toHaveLength(0);
-    });
-
-    it('T43: filters by specFolder option', () => {
-      const files = mod.findMemoryFiles(tmpRoot, { specFolder: '030-find' });
-      expect(files).toHaveLength(2);
-      expect(files.every((f: string) => f.includes('030-find'))).toBe(true);
-    });
-
-    it('T44: returns empty array for nonexistent workspace', () => {
-      const files = mod.findMemoryFiles('/nonexistent/workspace/path');
-      expect(Array.isArray(files)).toBe(true);
-      expect(files).toHaveLength(0);
-    });
-  });
 });

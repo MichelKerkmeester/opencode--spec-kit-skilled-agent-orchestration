@@ -213,6 +213,8 @@ Synthesize --> Compile final research/research.md
 Save --> generate-context.js --> verify memory artifact
 ```
 
+Late-INIT can also anchor the research run to `spec.md`: the workflow acquires the advisory lock, classifies `folder_state`, seeds or appends bounded context before LOOP, and then syncs one generated findings block back into `spec.md` during SYNTHESIS while keeping `research/research.md` canonical.
+
 ### Key Concepts
 
 | Concept | Description |
@@ -292,6 +294,7 @@ These concepts remain documented for future design work, but they are not part o
 | Document | Purpose | Key Insight |
 |----------|---------|-------------|
 | [loop_protocol.md](references/loop_protocol.md) | Loop lifecycle (4 phases) | Init, iterate, synthesize, save |
+| [spec_check_protocol.md](references/spec_check_protocol.md) | Bounded `spec.md` integration contract | Locking, folder states, pre-init branches, generated-fence write-back |
 | [state_format.md](references/state_format.md) | State file schemas | JSONL + strategy.md + config.json |
 | [convergence.md](references/convergence.md) | Stop condition algorithms | shouldContinue(), stuck recovery |
 | [quick_reference.md](references/quick_reference.md) | One-page cheat sheet | Commands, tuning, troubleshooting |

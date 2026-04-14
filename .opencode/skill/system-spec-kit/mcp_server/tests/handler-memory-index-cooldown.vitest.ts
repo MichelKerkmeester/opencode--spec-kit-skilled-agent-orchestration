@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   mockCompleteIndexScanLease: vi.fn(),
   mockCheckDatabaseUpdated: vi.fn(),
   mockProcessBatches: vi.fn(),
-  mockFindMemoryFiles: vi.fn((): string[] => []),
+  mockFindSpecDocuments: vi.fn((): string[] => []),
   mockRequireDb: vi.fn(() => ({
     prepare: vi.fn(() => ({
       all: vi.fn(() => []),
@@ -69,8 +69,11 @@ vi.mock('../utils', () => ({
   toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
 }));
 
-vi.mock('../lib/parsing/memory-parser', () => ({
-  findMemoryFiles: mocks.mockFindMemoryFiles,
+vi.mock('../handlers/memory-index-discovery', () => ({
+  findSpecDocuments: mocks.mockFindSpecDocuments,
+  findConstitutionalFiles: vi.fn((): string[] => []),
+  findGraphMetadataFiles: vi.fn((): string[] => []),
+  detectSpecLevel: vi.fn(() => null),
 }));
 
 vi.mock('../lib/providers/embeddings', () => ({
@@ -116,7 +119,7 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockAcquireIndexScanLease.mockReset();
     mocks.mockCompleteIndexScanLease.mockReset();
     mocks.mockCheckDatabaseUpdated.mockReset();
-    mocks.mockFindMemoryFiles.mockReset();
+    mocks.mockFindSpecDocuments.mockReset();
     mocks.mockProcessBatches.mockReset();
     mocks.mockRequireDb.mockReset();
     mocks.mockCategorizeFilesForIndexing.mockReset();
@@ -137,7 +140,7 @@ describe('handler-memory-index cooldown behavior', () => {
     });
     mocks.mockCompleteIndexScanLease.mockResolvedValue(undefined);
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
-    mocks.mockFindMemoryFiles.mockReturnValue([]);
+    mocks.mockFindSpecDocuments.mockReturnValue([]);
     mocks.mockProcessBatches.mockImplementation(async (files: string[], worker: (file: string) => Promise<unknown>) => Promise.all(files.map(worker)));
     mocks.mockRequireDb.mockReturnValue({
       prepare: vi.fn(() => ({
@@ -182,7 +185,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     expect(mocks.mockCompleteIndexScanLease).not.toHaveBeenCalled();
@@ -194,7 +197,7 @@ describe('handler-memory-index cooldown behavior', () => {
   it('sets cooldown timestamp after successful scan response', async () => {
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     expect(mocks.mockCompleteIndexScanLease).toHaveBeenCalledTimes(1);
@@ -205,7 +208,7 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('removes stale index records even when discovery finds zero files', async () => {
-    mocks.mockFindMemoryFiles.mockReturnValue([]);
+    mocks.mockFindSpecDocuments.mockReturnValue([]);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({
       toIndex: [],
       toUpdate: [],
@@ -217,7 +220,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     expect(mocks.mockCategorizeFilesForIndexing).toHaveBeenCalledWith([]);
@@ -236,7 +239,7 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('consumes incremental toDelete and removes stale indexed records', async () => {
-    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/active.md']);
+    mocks.mockFindSpecDocuments.mockReturnValue(['/tmp/active.md']);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({
       toIndex: [],
       toUpdate: [],
@@ -248,7 +251,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     expect(mocks.mockListIndexedRecordIdsForDeletedPaths).toHaveBeenCalledWith(['/tmp/deleted.md']);
@@ -268,7 +271,7 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('tracks stale delete failures without aborting scan', async () => {
-    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/active.md']);
+    mocks.mockFindSpecDocuments.mockReturnValue(['/tmp/active.md']);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({
       toIndex: [],
       toUpdate: [],
@@ -284,7 +287,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     const envelope = JSON.parse(result.content[0].text);
@@ -299,7 +302,7 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('defers stale deletion when replacement indexing fails in the same scan', async () => {
-    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/replacement.md']);
+    mocks.mockFindSpecDocuments.mockReturnValue(['/tmp/replacement.md']);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({
       toIndex: ['/tmp/replacement.md'],
       toUpdate: [],
@@ -318,7 +321,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     const envelope = JSON.parse(result.content[0].text);
@@ -333,7 +336,7 @@ describe('handler-memory-index cooldown behavior', () => {
   });
 
   it('treats RetryErrorResult entries as failed files and captures retry details', async () => {
-    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/retry-target.md']);
+    mocks.mockFindSpecDocuments.mockReturnValue(['/tmp/retry-target.md']);
     mocks.mockCategorizeFilesForIndexing.mockReturnValue({
       toIndex: ['/tmp/retry-target.md'],
       toUpdate: [],
@@ -351,7 +354,7 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const result = await handler.handleMemoryIndexScan({
       includeConstitutional: false,
-      includeSpecDocs: false,
+      includeSpecDocs: true,
     });
 
     const envelope = JSON.parse(result.content[0].text);

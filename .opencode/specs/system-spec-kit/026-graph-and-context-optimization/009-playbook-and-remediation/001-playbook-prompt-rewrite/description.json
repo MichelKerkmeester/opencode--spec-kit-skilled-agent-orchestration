@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite",
-  "description": "Feature Specification: Phase 014 \u2014 Manual Testing Playbook Prompt Rewrite",
+  "description": "Feature Specification: Phase 014 — Manual Testing Playbook Prompt Rewrite",
   "keywords": [
     "feature",
     "specification",
@@ -12,7 +12,7 @@
     "prompt",
     "rewrite"
   ],
-  "lastUpdated": "2026-04-13T04:56:30.532Z",
+  "lastUpdated": "2026-04-14T08:02:29.314Z",
   "specId": "001",
   "folderSlug": "playbook-prompt-rewrite",
   "parentChain": [

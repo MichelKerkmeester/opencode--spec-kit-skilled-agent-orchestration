@@ -1,0 +1,58 @@
+{
+  "openFindings": [
+    {
+      "findingId": "F005",
+      "status": "open",
+      "iteration": 3,
+      "severity": "P2",
+      "dimension": "traceability",
+      "note": "Packet docs and changelog describe the shared_space_id cleanup as one-time / first-startup, but the runtime retries the silent no-op path on every bootstrap while the column still exists on unsupported SQLite builds."
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "findingId": "F001",
+      "status": "closed",
+      "iteration": 1,
+      "dimension": "correctness",
+      "note": "Current runtime save/index entry points no longer accept or discover retired specs/**/memory/*.md public paths."
+    },
+    {
+      "findingId": "NF003",
+      "status": "closed",
+      "iteration": 1,
+      "dimension": "correctness",
+      "note": "The current context-server harness mocks discoverMemoryFiles and no longer carries the removed findMemoryFiles surface."
+    },
+    {
+      "findingId": "F004",
+      "status": "closed",
+      "iteration": 3,
+      "dimension": "traceability",
+      "note": "Lifecycle playbooks 097 and 144 now reference canonical spec docs (decision-record.md and implementation-summary.md) instead of retired memory artifacts."
+    }
+  ],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": false
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "traceabilityProtocols": {
+    "spec_code": "partial",
+    "checklist_evidence": "partial",
+    "skill_agent": "pending",
+    "agent_cross_runtime": "pending",
+    "feature_catalog_code": "pending",
+    "playbook_capability": "pass"
+  },
+  "iterationsCompleted": 3,
+  "convergenceScore": 0.75,
+  "hasAdvisories": true
+}

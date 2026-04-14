@@ -24,7 +24,7 @@ rows: 22
 | 4 | `.opencode/skill/system-spec-kit/scripts/memory/rank-memories.ts` | utility | Reads memory result sets and computes composite ranking / recent-folder summaries. | Extend summaries so routed spec-doc continuity records and archived-state handling stay dashboard-safe after migration. | extend | S | shared folder-scoring, `is_archived` semantics |
 | 5 | `.opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts` | utility | Backward-compatible CLI shim around canonical memory-quality validation library. | Bridge quality-gate entrypoint to anchor-targeted continuity content or keep it as a compatibility wrapper if validation moves wholly into new save pipeline. | bridge | S | `lib/validate-memory-quality`, routed save pipeline |
 | 6 | `.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts` | migration-script | Cleans orphaned vector rows / history entries from the store. | Sweep stale legacy memory rows after dual-write / routed-write migration to avoid hybrid index drift. | migrate | M | vector ledger, document-type migration plan |
-| 7 | `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | migration-script | Dry-run-only inventory / audit for historical JSON-mode memory defects. | Reuse as dry-run discovery surface for legacy standalone memory files that must be routed into spec docs instead of rewritten as new memory markdown. | audit | M | routed write library, legacy memory corpus |
+| 7 | `Legacy PR-10 dry-run classifier (script removed post-routing refactor)` | retired-script | Historical dry-run-only inventory / audit for historical JSON-mode memory defects. | Keep only as packet history; no active reuse surface remains after the routed spec-doc save refactor. | retired | M | routed write library, legacy memory corpus |
 | 8 | `.opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts` | migration-script | Corpus trigger-phrase sanitizer / canonicalizer for historical memories. | Extend trigger cleanup to routed spec-doc continuity surfaces if trigger phrases remain machine-owned frontmatter. | extend | M | live sanitizer, `_memory` frontmatter ownership |
 | 9 | `.opencode/skill/system-spec-kit/scripts/memory/rebuild-auto-entities.ts` | migration-script | Rebuilds auto-entity metadata from indexed content. | Recompute entities after continuity/spec-doc reindex so derived metadata follows new canonical storage. | extend | S | rebuilt index corpus, document-type expansion |
 | 10 | `.opencode/skill/system-spec-kit/scripts/spec-folder/nested-changelog.ts` | generator | Canonical read-transform-render-write utility for root/phase changelog markdown. | Reuse its read-transform-write envelope and payload/render split as the phase-018 model for anchor-targeted doc mutation. | reuse | L | changelog templates, doc parsing helpers, atomic write wrapper |
@@ -187,8 +187,8 @@ rows: 22
 - `migrate-trigger-phrase-residual.ts` is a conditional migration companion.
   It only joins the routed path if trigger phrases remain machine-managed frontmatter on spec docs after phase 018.
 
-- `migrate-historical-json-mode-memories.ts` should stay discovery-first unless a separate write-mode phase is approved.
-  Its dry-run posture is valuable for planning legacy import without mutating content during this refactor.
+- Legacy PR-10 dry-run classifier is retired post-routing refactor.
+  Keep it as historical packet context only; it is not an active discovery or migration surface anymore.
 
 - `cleanup-orphaned-vectors.ts` and `rebuild-auto-entities.ts` are post-cutover maintenance, not primary save callers.
   They migrate with the generator operationally, but not as front-door routed-write entrypoints.

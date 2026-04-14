@@ -1,12 +1,21 @@
 {
-  "title": "Repo-Wide Path Migration",
-  "description": "Close the repo-wide skill-advisor path migration by cleaning stale legacy references across playbooks, READMEs, spec folders, and changelog notes.",
-  "trigger_phrases": [
-    "005-repo-wide-path-migration",
-    "path migration",
-    "scripts path fix",
-    "skill advisor path update"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/005-repo-wide-path-migration",
+  "description": "Feature Specification: Repo-Wide Path Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "repo-wide",
+    "path",
+    "migration"
   ],
-  "importance_tier": "important",
-  "contextType": "planning"
+  "lastUpdated": "2026-04-14T08:02:29.474Z",
+  "specId": "005",
+  "folderSlug": "repo-wide-path-migration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-skill-advisor-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

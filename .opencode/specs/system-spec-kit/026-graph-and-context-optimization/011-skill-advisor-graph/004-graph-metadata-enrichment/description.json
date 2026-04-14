@@ -1,12 +1,21 @@
 {
-  "title": "Graph Metadata Enrichment",
-  "description": "Packet closeout for the already-completed schema v2 enrichment across all 21 per-skill graph-metadata.json files, including the live derived blocks, corrected example schema, and Level 3 packet decisions.",
-  "trigger_phrases": [
-    "004-graph-metadata-enrichment",
-    "graph metadata enrichment",
-    "schema v2 derived metadata",
-    "skill metadata closeout"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/004-graph-metadata-enrichment",
+  "description": "Feature Specification: Graph Metadata Enrichment",
+  "keywords": [
+    "feature",
+    "specification",
+    "graph",
+    "metadata",
+    "enrichment"
   ],
-  "importance_tier": "important",
-  "contextType": "implementation"
+  "lastUpdated": "2026-04-14T08:02:29.468Z",
+  "specId": "004",
+  "folderSlug": "graph-metadata-enrichment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-skill-advisor-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

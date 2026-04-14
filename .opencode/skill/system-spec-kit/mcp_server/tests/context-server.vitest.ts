@@ -904,8 +904,6 @@ describe('Context Server', () => {
         isBm25Enabled: vi.fn(() => options?.bm25Enabled ?? false),
         getIndex: vi.fn(() => ({ rebuildFromDatabase: vi.fn(() => 0) })),
       }))
-      vi.doMock('../lib/parsing/memory-parser', () => ({ findMemoryFiles: vi.fn(() => []) }))
-      vi.doMock('../lib/parsing/memory-parser.js', () => ({ findMemoryFiles: vi.fn(() => []) }))
       vi.doMock('../lib/parsing/trigger-matcher', () => ({ clearCache: triggerMatcherClearMock }))
       vi.doMock('../lib/telemetry/scoring-observability', () => ({ initScoringObservability: vi.fn() }))
       vi.doMock('../lib/telemetry/scoring-observability.js', () => ({ initScoringObservability: vi.fn() }))

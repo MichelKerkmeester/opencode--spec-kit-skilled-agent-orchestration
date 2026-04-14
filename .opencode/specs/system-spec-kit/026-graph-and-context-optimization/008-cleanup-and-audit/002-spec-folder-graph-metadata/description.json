@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/002-spec-folder-graph-metadata",
-  "description": "Feature Specification: 018 / 011 \u2014 graph-metadata.json packet contract",
+  "description": "Feature Specification: 018 / 011 — graph-metadata.json packet contract",
   "keywords": [
     "feature",
     "specification",
@@ -11,7 +11,7 @@
     "packet",
     "contract"
   ],
-  "lastUpdated": "2026-04-13T04:56:31.100Z",
+  "lastUpdated": "2026-04-14T08:02:29.297Z",
   "specId": "002",
   "folderSlug": "spec-folder-graph-metadata",
   "parentChain": [

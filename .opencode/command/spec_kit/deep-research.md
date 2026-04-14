@@ -30,6 +30,10 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_conte
 - **YAML START CONDITION**: do not load YAML until ALL required inputs are bound:
   - `research_topic`, `spec_folder`, `execution_mode`, `maxIterations`, `convergenceThreshold`
 
+> **Note:** Late-INIT `spec.md` detection and bounded `spec.md` mutations follow
+> `.opencode/skill/sk-deep-research/references/spec_check_protocol.md`.
+> Acquire `{spec_folder}/research/.deep-research.lock` before `folder_state` classification and keep `research/research.md` as the source of truth for any generated findings sync.
+
 # SINGLE CONSOLIDATED SETUP PROMPT
 
 This workflow gathers all setup inputs in one prompt. Confirm mode still includes multiple approval gates after setup; only the setup round-trip is consolidated here.
@@ -219,6 +223,7 @@ Full protocol documentation: `.opencode/skill/sk-deep-research/SKILL.md`
 
 Key references:
 - Loop protocol: `sk-deep-research/references/loop_protocol.md`
+- Spec check protocol: `sk-deep-research/references/spec_check_protocol.md`
 - State formats: `sk-deep-research/references/state_format.md`
 - Convergence: `sk-deep-research/references/convergence.md`
 - Quick reference: `sk-deep-research/references/quick_reference.md`
@@ -238,6 +243,8 @@ For code review, see `sk-deep-review` skill (`.opencode/skill/sk-deep-review/SKI
 ---
 
 ## 9. NEXT STEPS
+
+> **Note:** Deep-research now anchors bounded findings back into `spec.md` through the generated findings fence while keeping `research/research.md` canonical.
 
 | Condition | Suggested Command | Reason |
 |-----------|-------------------|--------|

@@ -41,7 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts",
       "checklist.md",
       "implementation-summary.md",
       ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
@@ -51,17 +50,10 @@
       "plan.md",
       "scripts/core/post-save-review.ts",
       "scripts/core/workflow.ts",
-      "scripts/memory/migrate-historical-json-mode-memories.ts",
       "scratch/pr10-dry-run-report.json",
       "tasks.md"
     ],
     "entities": [
-      {
-        "name": "migrate-historical-json-mode-memories.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts",
-        "source": "derived"
-      },
       {
         "name": "checklist.md",
         "kind": "doc",

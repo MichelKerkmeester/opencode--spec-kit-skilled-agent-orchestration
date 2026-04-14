@@ -21,7 +21,7 @@ Global component changelog files live at `.opencode/changelog/{NN--component}/v{
 
 ## What Changed
 
-### {Category Name}
+#### {Category Name}
 
 - **{Feature/Fix name}** -- {What was broken or missing}. {What we did}. {Why it matters}.
 
@@ -51,21 +51,15 @@ Use this format when individual fixes need full explanation -- typically for aud
 
 {Optional 1-2 sentence introduction for the category.}
 
----
+#### {Short heading}
 
-### {Short heading}
+{One flowing paragraph that explains what was broken or missing AND what was done about it. Write for a smart person who is not a developer. State the broken behavior first, then the new behavior. Use analogies if they help. No unexplained jargon -- first use of a technical term includes a parenthetical definition like "BM25 (exact word matching)" or "CTE (a reusable SQL subquery)." Technical specifics (file paths, function names, SQL syntax) go in the Files Changed table, not here.}
 
-**Problem:** {Explain what was broken or missing in plain English. Write for a smart person who is not a developer. Use analogies if they help. No unexplained jargon -- first use of a technical term includes a parenthetical definition like "BM25 (exact word matching)" or "CTE (a reusable SQL subquery)."}
+&nbsp;
 
-**Fix:** {Explain what was done to fix it. Focus on the behavior change, not the implementation details. What does the system do differently now? What does the user experience? Technical specifics (file paths, function names, SQL syntax) go in the Files Changed table, not here.}
+#### {Next heading}
 
----
-
-### {Next heading}
-
-**Problem:** {Same pattern...}
-
-**Fix:** {Same pattern...}
+{Same pattern -- one merged paragraph covering the broken behavior and the fix.}
 
 ---
 
@@ -155,11 +149,14 @@ These rules apply to both changelog files and GitHub release notes. See `PUBLIC_
 
 - **Analogies welcome** when they help understanding
 - **Short bullet points** (1-3 sentences each) in compact format
-- **Full Problem/Fix paragraphs** in expanded format
+- **Single merged paragraph** in expanded format -- combine the broken behavior and the fix into one flowing paragraph. Do NOT use `**Problem:** / **Fix:**` labels.
 - **Short sub-headings** in expanded format: 2-5 words, easy to scan, not sentence-length
 - **No numbered item titles** in expanded format unless the content truly depends on sequence
 - **No metrics soup** -- do not pack 10 numbers into one sentence
-- **Horizontal rule (`---`) between every section** -- place a `---` divider before each `##` and `###` heading (except the first heading in the document). This creates visual separation in GitHub release notes
+- **H4 (`####`) for category subsections** under each H2 -- never H3
+- **`&nbsp;` between H4 subsections within the same H2** -- this is the soft separator that renders as an invisible line on GitHub. Do NOT use `---` between H4s.
+- **`---` only between H2 sections** -- place a `---` divider before each `##` heading. Do NOT place `---` (or `&nbsp;`) between an H2 (or its intro paragraph) and the first H4 underneath it.
+- **No Oxford commas, em dashes, or semicolons** -- see HVR rules in `.opencode/skill/sk-doc/references/global/hvr_rules.md`
 
 ### Category vocabulary (use plain names)
 

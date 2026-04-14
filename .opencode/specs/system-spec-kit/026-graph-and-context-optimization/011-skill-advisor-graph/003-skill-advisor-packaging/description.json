@@ -1,12 +1,21 @@
 {
-  "title": "Skill Advisor Packaging",
-  "description": "Feature catalog creation, CLAUDE.md reference updates, and graph-metadata.json for the skill-advisor skill folder.",
-  "trigger_phrases": [
-    "003-skill-advisor-packaging",
-    "skill advisor packaging",
-    "feature catalog",
-    "skill-advisor catalog"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/003-skill-advisor-packaging",
+  "description": "Feature Specification: Skill Advisor Packaging",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "advisor",
+    "packaging"
   ],
-  "importance_tier": "important",
-  "contextType": "planning"
+  "lastUpdated": "2026-04-14T08:02:29.464Z",
+  "specId": "003",
+  "folderSlug": "skill-advisor-packaging",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-skill-advisor-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

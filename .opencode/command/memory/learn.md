@@ -502,7 +502,6 @@ STATUS=OK ACTION=budget
 - `/memory:save`: Save conversation context
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:manage shared`: Shared-memory spaces
 
 **Constitutional directory:** `.opencode/skill/system-spec-kit/constitutional/`
 **Full documentation:** `.opencode/skill/system-spec-kit/constitutional/README.md`

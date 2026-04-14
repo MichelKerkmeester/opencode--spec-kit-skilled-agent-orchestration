@@ -1,6 +1,6 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit/001-remove-shared-memory",
-  "description": "Feature Specification: 018 / 010 \u2014 Remove shared memory feature surface",
+  "description": "Feature Specification: 018 / 010 — Remove shared memory feature surface",
   "keywords": [
     "feature",
     "specification",
@@ -11,7 +11,7 @@
     "memory",
     "surface"
   ],
-  "lastUpdated": "2026-04-13T04:56:29.688Z",
+  "lastUpdated": "2026-04-14T08:02:29.292Z",
   "specId": "001",
   "folderSlug": "remove-shared-memory",
   "parentChain": [

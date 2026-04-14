@@ -315,12 +315,11 @@ The scan re-indexes all previously indexed continuity artifacts and canonical sp
 | "No results" from knowledge | Query too narrow or no matching memories | Broaden query or try different intent |
 | Save fails | Spec folder path invalid or missing | Verify path exists under `specs/` |
 | Resume finds no session | No saved context from prior session | Use `/spec_kit:plan` to start fresh or `/memory:search` with a manual query |
-| Manage scan finds 0 files | No continuity sources found in expected directories | Check generated artifacts under `specs/**/memory/`, constitutional rules under `.opencode/skill/*/constitutional/`, and canonical spec docs under `.opencode/specs/` |
+| Manage scan finds 0 files | No continuity sources found in expected directories | Check canonical spec docs under `.opencode/specs/` and constitutional rules under `.opencode/skill/*/constitutional/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
 | Search ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |
 | Ablation warns about missing IDs | `groundTruthQueryIds` do not exist in the active static dataset | Fix the requested IDs or rerun `scripts/evals/map-ground-truth-ids.ts` after DB rebuild/swap |
 | Ablation shows `Token budget overflow` with fewer than `recallK` candidates | Candidate truncation made Recall@K unreliable | Treat the run as investigation-only until truncation is fixed |
-| Shared space access denied | No membership | Use `/memory:manage shared member` to grant access |
 | Ingest job not found | Invalid or expired job ID | Start a new job with `/memory:manage ingest start` |
 | History returns empty | No PREFLIGHT/POSTFLIGHT records | Use `/memory:search preflight` before tasks, view with `/memory:search history` |
 

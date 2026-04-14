@@ -141,7 +141,7 @@ Each iteration audits a distinct surface end-to-end. All iterations are read-onl
 
 **Audits**: `.opencode/skill/system-spec-kit/scripts/memory/` and `mcp_server/core/`. Specifically:
 - `scripts/memory/generate-context.ts` — the central refactor point
-- `scripts/memory/backfill-frontmatter.ts`, `reindex-embeddings.ts`, `rank-memories.ts`, `validate-memory-quality.ts`, `cleanup-orphaned-vectors.ts`, `rebuild-auto-entities.ts`, `migrate-historical-json-mode-memories.ts`, `migrate-trigger-phrase-residual.ts`, `fix-memory-h1.mjs`, `ast-parser.ts`
+- `scripts/memory/backfill-frontmatter.ts`, `reindex-embeddings.ts`, `rank-memories.ts`, `validate-memory-quality.ts`, `cleanup-orphaned-vectors.ts`, `rebuild-auto-entities.ts`, `migrate-trigger-phrase-residual.ts`, `fix-memory-h1.mjs`, `ast-parser.ts`
 - `mcp_server/core/memory-indexer.ts`, `core/memory-metadata.ts`, `core/find-predecessor-memory.ts`
 - `scripts/dist/memory/` compiled outputs
 

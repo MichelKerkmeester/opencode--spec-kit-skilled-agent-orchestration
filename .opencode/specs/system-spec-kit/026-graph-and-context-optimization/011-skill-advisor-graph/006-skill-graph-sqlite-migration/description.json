@@ -1,21 +1,22 @@
 {
-  "packet_id": "006-skill-graph-sqlite-migration",
-  "parent_id": "011-skill-advisor-graph",
-  "title": "Skill Graph SQLite Migration",
-  "summary": "Migrate skill graph from static JSON to SQLite with 4 MCP tools, aligning with code graph and deep loop graph architecture patterns.",
-  "status": "planned",
-  "level": 3,
-  "created_at": "2026-04-13",
-  "files_in_scope": [
-    "mcp_server/lib/skill-graph/skill-graph-db.ts",
-    "mcp_server/lib/skill-graph/skill-graph-queries.ts",
-    "mcp_server/handlers/skill-graph/scan.ts",
-    "mcp_server/handlers/skill-graph/query.ts",
-    "mcp_server/handlers/skill-graph/status.ts",
-    "mcp_server/handlers/skill-graph/validate.ts",
-    "mcp_server/tool-schemas.ts",
-    "mcp_server/context-server.ts",
-    ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
-    ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py"
-  ]
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph/006-skill-graph-sqlite-migration",
+  "description": "Feature Specification: Skill Graph SQLite Migration",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "graph",
+    "sqlite",
+    "migration"
+  ],
+  "lastUpdated": "2026-04-14T08:02:29.479Z",
+  "specId": "006",
+  "folderSlug": "skill-graph-sqlite-migration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-skill-advisor-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

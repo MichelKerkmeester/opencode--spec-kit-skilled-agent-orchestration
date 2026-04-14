@@ -104,10 +104,6 @@ interface ExtractImportanceTierOptions {
 
 // ───────────────────────────────────────────────────────────────
 /**
- * Defines the MEMORY_FILE_PATTERN constant.
- */
-export const MEMORY_FILE_PATTERN: RegExp = /specs\/([^/]+)(?:\/[^/]+)*\/memory\/[^/]+\.(?:md|txt)$/i;
-/**
  * Defines the MAX_CONTENT_LENGTH constant.
  */
 const _parsedMaxLen = parseInt(process.env.MCP_MAX_CONTENT_LENGTH || '250000', 10);
@@ -955,16 +951,9 @@ function isMarkdownOrTextFile(filePath: string): boolean {
   return /\.(md|txt)$/i.test(filePath);
 }
 
-/** Check if a file path is a valid memory file */
+/** Check if a file path is indexable by the memory system (spec document or constitutional memory) */
 export function isMemoryFile(filePath: string): boolean {
   const normalizedPath = filePath.replace(/\\/g, '/');
-
-  // Standard memory files in specs
-  const isSpecsMemory = (
-    isMarkdownOrTextFile(normalizedPath) &&
-    normalizedPath.includes('/memory/') &&
-    normalizedPath.includes('/specs/')
-  );
 
   // Spec folder documents (spec.md, plan.md, tasks.md, etc.).
   const isSpecDocument = (
@@ -983,7 +972,7 @@ export function isMemoryFile(filePath: string): boolean {
     !EXCLUDED_CONSTITUTIONAL_BASENAMES.has(path.basename(normalizedPath).toLowerCase())
   );
 
-  return isSpecsMemory || isSpecDocument || isConstitutional;
+  return isSpecDocument || isConstitutional;
 }
 
 /** Set of recognized spec folder document filenames (lowercase) */
@@ -1106,108 +1095,3 @@ export function validateParsedMemory(parsed: ParsedMemory): ParsedMemoryValidati
   };
 }
 
-// ───────────────────────────────────────────────────────────────
-// 5. DIRECTORY SCANNING
-
-// ───────────────────────────────────────────────────────────────
-/** Options for findMemoryFiles */
-export interface FindMemoryFilesOptions {
-  specFolder?: string | null;
-}
-
-function normalizeSpecFolderFilter(value: string): string {
-  return value.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
-}
-
-function matchesSpecFolderFilter(extractedFolder: string, specFolderFilter: string): boolean {
-  const normalizedExtracted = normalizeSpecFolderFilter(extractedFolder);
-  const normalizedFilter = normalizeSpecFolderFilter(specFolderFilter);
-
-  if (!normalizedFilter) {
-    return true;
-  }
-
-  return normalizedExtracted === normalizedFilter || normalizedExtracted.startsWith(`${normalizedFilter}/`);
-}
-
-/** Find all memory files in a workspace */
-export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesOptions = {}): string[] {
-  const { specFolder = null } = options;
-  const results: string[] = [];
-  const seenCanonicalRoots = new Set<string>();
-  const seenCanonicalFiles = new Set<string>();
-
-  // Check both possible specs locations
-  const specsLocations: string[] = [
-    path.join(workspacePath, 'specs'),
-    path.join(workspacePath, '.opencode', 'specs')
-  ];
-
-  // Recursive directory walker
-  // BUG-027 FIX: Skip symbolic links to prevent infinite loops
-  function walkDir(dir: string, depth: number = 0): void {
-    if (depth > 10) {
-      return; // Prevent infinite recursion
-    }
-
-    let entries: fs.Dirent[];
-    try {
-      entries = fs.readdirSync(dir, { withFileTypes: true });
-    } catch {
-      return; // Skip unreadable directories
-    }
-
-    for (const entry of entries) {
-      // BUG-027 FIX: Skip symbolic links to prevent loops and duplicate scanning
-      if (entry.isSymbolicLink()) {
-        continue;
-      }
-
-      const fullPath = path.join(dir, entry.name);
-
-      if (entry.isDirectory()) {
-        // Skip hidden directories and node_modules
-        if (entry.name.startsWith('.') || entry.name === 'node_modules') {
-          continue;
-        }
-        walkDir(fullPath, depth + 1);
-      } else if (entry.isFile() && /\.(md|txt)$/i.test(entry.name)) {
-        // Check if it's in a memory folder
-        if (fullPath.includes('/memory/') || fullPath.includes('\\memory\\')) {
-          // Apply spec folder filter if specified
-          if (specFolder) {
-            const extractedFolder = extractSpecFolder(fullPath);
-            if (!matchesSpecFolderFilter(extractedFolder, specFolder)) {
-              continue;
-            }
-          }
-
-          const fileKey = getCanonicalPathKey(fullPath);
-          if (seenCanonicalFiles.has(fileKey)) {
-            continue;
-          }
-
-          seenCanonicalFiles.add(fileKey);
-          results.push(fullPath);
-        }
-      }
-    }
-  }
-
-  // Scan all existing specs locations
-  for (const specs_dir of specsLocations) {
-    if (!fs.existsSync(specs_dir)) {
-      continue;
-    }
-
-    const rootKey = getCanonicalPathKey(specs_dir);
-    if (seenCanonicalRoots.has(rootKey)) {
-      continue;
-    }
-
-    seenCanonicalRoots.add(rootKey);
-    walkDir(specs_dir);
-  }
-
-  return results;
-}

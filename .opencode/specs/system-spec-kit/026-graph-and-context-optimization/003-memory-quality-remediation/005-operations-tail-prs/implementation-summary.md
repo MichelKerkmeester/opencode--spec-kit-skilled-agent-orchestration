@@ -46,15 +46,15 @@ Phase 5 finished phase-local operational closeout without widening the packet; p
 
 You can now inspect the telemetry surface, alert thresholds, release framing, and PR-11 rationale directly inside this phase folder. The new docs keep the phase honest about what shipped versus what intentionally deferred.
 
-### Dry-Run Migration Utility
+### Legacy PR-10 Dry-Run Classifier
 
-You can now run `migrate-historical-json-mode-memories.js` in dry-run mode to classify historical JSON-mode memories into safe-subset, ambiguous, and unrecoverable buckets without mutating the corpus. The generated report is the Phase 5 PR-10 evidence artifact.
+Phase 5 originally shipped a dry-run-only classifier for historical JSON-mode memories so operators could bucket candidates into safe-subset, ambiguous, and unrecoverable outcomes without mutating the corpus. That legacy script has since been removed post-routing refactor, but the generated report remains the Phase 5 PR-10 evidence artifact.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/scripts/memory/migrate-historical-json-mode-memories.ts` | Created | Adds the dry-run-only PR-10 migration classifier and report writer. |
+| `Legacy PR-10 dry-run classifier (script removed post-routing refactor)` | Retired | Historical note: this phase originally added the dry-run-only PR-10 classifier and report writer. |
 | `telemetry-catalog.md` | Created | Documents the M1-M9 operator crosswalk and alert pointers. |
 | `memory-save-quality-alerts.yml` | Created | Captures the Phase 5 alert draft from iteration 24. |
 | `release-notes-draft.md` | Created | Records packet closeout framing and parity-safe release language. |
@@ -93,7 +93,7 @@ Delivery stayed inside the minimal closeout contract: build the scripts package,
 | Check | Result |
 |-------|--------|
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/migrate-historical-json-mode-memories.js --dry-run --report .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs/scratch/pr10-dry-run-report.json` | PASS |
+| `Historical verification: PR-10 dry-run classifier execution (script now removed post-routing refactor)` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/005-operations-tail-prs --strict` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation --strict` | FAIL / exit 2 (remaining parent validation blockers are outside the Phase 5 child scope and now live in packet-level plan/tasks/memory surfaces rather than this phase folder) |
 <!-- /ANCHOR:verification -->

@@ -212,7 +212,7 @@ All template files follow this consistent structure:
 | references/**/*.md                     | `sk-doc` | skill_reference_template.md |
 | assets/*.md                            | `sk-doc` | skill_asset_template.md     |
 | README.md (general)                    | `sk-doc` | readme_template.md          |
-| Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
+| Canonical continuity surfaces (`handover.md`, `_memory.continuity` YAML block inside `implementation-summary.md`, spec docs) | `system-spec-kit` | Source-of-truth continuity |
 | Install guides                         | `sk-doc` | install_guide_template.md   |
 | feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
 | manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |

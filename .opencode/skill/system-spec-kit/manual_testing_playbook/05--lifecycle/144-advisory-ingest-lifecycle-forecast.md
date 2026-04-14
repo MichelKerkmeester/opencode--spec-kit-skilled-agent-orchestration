@@ -16,7 +16,7 @@ This scenario validates Advisory ingest lifecycle forecast for `144`. It focuses
 Operators run the exact prompt and command sequence for `144` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress
-- Prompt: `As a lifecycle validation operator, validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] }). Verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a lifecycle validation operator, validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] }). Verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive
 - Pass/fail: PASS if forecast fields are always present, sparse states degrade safely, and progressing jobs update the advisory values without handler failure
 
@@ -27,12 +27,12 @@ Operators run the exact prompt and command sequence for `144` and confirm the ex
 ### Prompt
 
 ```
-As a lifecycle validation operator, verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress against memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] }). Verify status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a lifecycle validation operator, verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress against memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] }). Verify status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
-1. `memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] })` and capture `jobId`
+1. `memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] })` and capture `jobId`
 2. Immediately call `memory_ingest_status({ jobId:"<job-id>" })` and verify `forecast` contains `etaSeconds`, `etaConfidence`, `failureRisk`, `riskSignals`, and `caveat`
 3. Confirm early or queued states return a low-confidence caveat instead of throwing
 4. Poll until indexing progresses and verify forecast values update while staying advisory

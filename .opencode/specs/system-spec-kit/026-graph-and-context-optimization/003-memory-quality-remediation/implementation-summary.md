@@ -175,7 +175,7 @@ A 7-iteration `/spec_kit:deep-review` ran against this packet on 2026-04-08, del
 - **P2-005** parent `checklist.md` CHK-003/010/050/051 — relabeled as explicit parent-level assertions instead of pretending to be phase-backed
 - **P2-006** `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/plan.md` — alert artifact path normalized to shipped phase-local `memory-save-quality-alerts.yml` (no `monitoring/` prefix)
 - **P2-007** `scripts/core/workflow.ts:~1392` — predecessor discovery gate narrowed with `SaveMode.Json` check; manual saves no longer pay the directory-walk cost
-- **P2-008** `scripts/memory/migrate-historical-json-mode-memories.ts:703` — code comment added documenting fixture non-reproducibility (fixture-locked harness deferred); `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/plan.md` `--apply` wording cleaned to "dry-run only (apply mode deferred)"
+- **P2-008** Phase 5 legacy PR-10 dry-run classifier note retained as retired post-routing refactor; `005-operations-tail-prs/spec.md` + `005-operations-tail-prs/plan.md` `--apply` wording cleaned to "dry-run only (apply mode deferred)"
 - **P2-009** parent `checklist.md:106` — P0 count corrected from `5/6` to `6/6`
 
 ### Verification After Remediation

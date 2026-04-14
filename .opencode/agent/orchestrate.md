@@ -358,10 +358,10 @@ TASK #2: Implement Notification System
 **Action:** MUST dispatch `@speckit`. NEVER use `@general`, `@write`, or any other agent to create these files.
 **Scope:** ALL documentation (*.md) written inside spec folders (`specs/[###-name]/`). This includes but is not limited to: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md, and any other markdown documentation.
 **Exceptions:**
-- `memory/` subdirectory → generated via `generate-context.js` script (never manual Write)
 - `scratch/` subdirectory → temporary workspace, any agent may write
 - `handover.md` → `@handover` agent exclusively (session continuation documents)
 - `research/research.md` → `@deep-research` agent exclusively (iterative investigation findings)
+- `_memory.continuity` YAML block inside `implementation-summary.md` → may be edited directly by any implementing agent for lightweight session continuity updates
 - **Reading** spec docs is permitted by any agent
 - **Minor status updates** (e.g., checking task boxes) by implementing agents are acceptable
 **Logic:** `@speckit` enforces template structure, Level 1-3+ standards, and validation that other agents lack. Bypassing `@speckit` produces non-standard documentation that fails quality gates.

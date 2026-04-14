@@ -221,9 +221,9 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
     severity: 'low'
   },
   [ERROR_CODES.FILE_INVALID_PATH]: {
-    hint: 'Invalid file path. Memory files must be in valid spec folder locations.',
+    hint: 'Invalid file path. Indexable files must be spec documents under specs/**/ or constitutional memories.',
     actions: [
-      'Place memory files in specs/**/memory/ directories',
+      'Point at a canonical spec document (spec.md, plan.md, tasks.md, decision-record.md, implementation-summary.md, handover.md)',
       'Or use .opencode/skill/*/constitutional/ for constitutional memories',
       'Check path format (must be absolute)'
     ],

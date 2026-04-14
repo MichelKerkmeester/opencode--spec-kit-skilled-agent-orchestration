@@ -259,16 +259,15 @@ node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.
 
 Backfill refresh keeps the same parser contract as canonical saves: checklist-aware lowercase `status`, sanitized `key_files`, deduplicated entities, and a 12-item cap on derived `trigger_phrases`.
 
-### 4-Source Pipeline
+### 3-Source Pipeline
 
-The scan discovers memory-eligible files from four sources:
+The scan discovers indexable files from three sources:
 
 | #   | Source         | Key                 | Location                              |
 | --- | -------------- | ------------------- | ------------------------------------- |
-| 1   | Legacy Spec Memory Artifacts | specFiles | specs/*/memory/*.{md,txt} |
-| 2   | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
-| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md with `_memory.continuity` extraction from canonical docs |
-| 4   | Graph Metadata | graphMetadataFiles  | .opencode/specs/**/graph-metadata.json |
+| 1   | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
+| 2   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md with `_memory.continuity` extraction from canonical docs |
+| 3   | Graph Metadata | graphMetadataFiles  | .opencode/specs/**/graph-metadata.json |
 
 Graph metadata rows are generated from canonical packet docs. Derived `status` falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent, then stores the normalized lowercase value.
 

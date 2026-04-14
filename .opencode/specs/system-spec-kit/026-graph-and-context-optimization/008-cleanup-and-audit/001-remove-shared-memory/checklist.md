@@ -50,7 +50,7 @@ _memory:
 - [x] CHK-010 [P0] Shared-memory lifecycle tools and runtime files were removed instead of deprecated. [EVIDENCE: File implementation-summary.md]
 - [x] CHK-011 [P0] No dangling shared-memory imports or tool registrations remain. [EVIDENCE: Test final shared-reference grep]
 - [x] CHK-012 [P1] Remaining governance/search/save/checkpoint logic keeps only non-shared scope behavior. [EVIDENCE: File implementation-summary.md]
-- [x] CHK-013 [P1] The schema-column exception is isolated to `vector-index-schema.ts` with the requested comment. [EVIDENCE: `shared_space_id` columns retained in schema for backward-compatible DB migration. Not used by runtime. Documented exception - does not affect shared memory removal completeness.]
+- [x] CHK-013 [P1] The deprecated `shared_space_id` column is dropped at startup. [EVIDENCE: `dropDeprecatedSharedSpaceColumn()` in `vector-index-schema.ts` runs `ALTER TABLE memory_index DROP COLUMN shared_space_id` on every startup and silently falls back to a no-op on SQLite builds without DROP COLUMN support. Schema definitions no longer carry `shared_space_id`. Runtime never reads or writes the column.]
 <!-- /ANCHOR:code-quality -->
 
 ---

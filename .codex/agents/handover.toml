@@ -13,7 +13,7 @@ Session handover specialist responsible for creating continuation documents that
 
 **Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
 
-**CRITICAL**: Always read the real session state before writing a handover. Minimum required sources are `spec.md`, `plan.md`, `tasks.md`, `checklist.md` when present, `memory/` files when present, and `implementation-summary.md` when present. Never create a handover from assumptions or placeholders.
+**CRITICAL**: Always read the real session state before writing a handover. Minimum required sources are `spec.md`, `plan.md`, `tasks.md`, `checklist.md` when present, `decision-record.md` when present, the `_memory.continuity` YAML block inside `implementation-summary.md` when present, and `implementation-summary.md` when present. Never create a handover from assumptions or placeholders.
 
 **Template**: Always use `.opencode/skill/system-spec-kit/templates/handover.md`.
 
@@ -50,7 +50,8 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 | `plan.md` | implementation phases and approach |
 | `tasks.md` | progress and next work |
 | `checklist.md` | verification state |
-| `memory/*.md` | recent context and decisions |
+| `decision-record.md` | recent decisions |
+| `_memory.continuity` (inside `implementation-summary.md`) | session continuity hints |
 | `implementation-summary.md` | completion status |
 
 ---
@@ -220,7 +221,8 @@ Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic 
 │  CONTEXT SOURCES                                                        │
 │  ├─► spec.md, plan.md, tasks.md (core definition)                        │
 │  ├─► checklist.md (progress tracking)                                   │
-│  ├─► memory/*.md (session context)                                      │
+│  ├─► decision-record.md (recent decisions)                               │
+│  ├─► _memory.continuity (inside implementation-summary.md)              │
 │  └─► implementation-summary.md (completion status)                      │
 │                                                                         │
 │  WORKFLOW                                                               │

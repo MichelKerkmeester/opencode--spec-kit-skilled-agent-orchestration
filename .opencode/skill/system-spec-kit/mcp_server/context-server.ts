@@ -1260,7 +1260,7 @@ async function startupScan(basePath: string): Promise<void> {
     // T107: Recover any pending files from previous failed index operations
     await recoverPendingFiles(basePath);
 
-    console.error('[context-server] Starting background scan for new memory files...');
+    console.error('[context-server] Starting background scan for spec documents and constitutional memories...');
     const scanRoots = Array.from(
       new Set(
         [basePath, ...ALLOWED_BASE_PATHS]
@@ -1274,7 +1274,6 @@ async function startupScan(basePath: string): Promise<void> {
     for (const root of scanRoots) {
       try {
         const rootFiles = [
-          ...memoryParser.findMemoryFiles(root),
           ...memoryIndexDiscovery.findConstitutionalFiles(root),
           ...memoryIndexDiscovery.findSpecDocuments(root),
         ];
@@ -1292,11 +1291,11 @@ async function startupScan(basePath: string): Promise<void> {
     }
 
     if (allFiles.length === 0) {
-      console.error('[context-server] No memory files found in workspace');
+      console.error('[context-server] No spec documents or constitutional memories found in workspace');
       return;
     }
 
-    console.error(`[context-server] Found ${allFiles.length} memory files, checking for changes...`);
+    console.error(`[context-server] Found ${allFiles.length} indexable files, checking for changes...`);
     let indexed = 0, updated = 0, unchanged = 0, failed = 0;
 
     for (const filePath of allFiles) {

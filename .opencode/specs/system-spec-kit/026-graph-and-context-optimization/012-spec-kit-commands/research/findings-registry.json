@@ -1,0 +1,1194 @@
+{
+  "sessionId": "2026-04-14_spec-kit-commands-012_gen1",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [
+    {
+      "id": "question-1-q1-what-existing-interactive-interview-patterns-in-cli-tools-spec-driven-systems",
+      "text": "Q1. What existing interactive-interview patterns (in CLI tools, spec-driven systems, or prior speckit work) would `/spec_kit:start` reuse or avoid, and what failure modes have been documented?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-2-q2-how-do-other-spec-driven-systems-github-spec-kit-adr-tools-rfc-workflows-noti",
+      "text": "Q2. How do other spec-driven systems (GitHub spec-kit, ADR tools, RFC workflows, Notion/Obsidian AI) handle the \"intake-before-plan\" ritual, and what anti-patterns should we copy-proof against?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-3-q3-what-concrete-edge-cases-arise-when-a-research-tool-mutates-a-user-authored-s",
+      "text": "Q3. What concrete edge cases arise when a research tool mutates a user-authored `spec.md` (trust violations, idempotency, rollback, merge conflicts across parallel sessions)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-4-q4-is-the-smart-delegation-from-plan-and-complete-start-actually-orthogonal-or-d",
+      "text": "Q4. Is the \"smart delegation\" from `/plan` and `/complete` → `/start` actually orthogonal, or does it create hidden coupling, double round-trips, or surprise prompt ordering that breaks `:auto` flows?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-5-q5-do-the-10-requirements-req-001-req-010-in-spec-md-have-latent-contradictions-",
+      "text": "Q5. Do the 10 requirements (REQ-001..REQ-010) in spec.md have latent contradictions, missing acceptance criteria, or gaps when checked against concrete user scenarios (empty folder, partial folder, phase-child, repair mode)?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-6-q6-how-should-post-synthesis-write-back-to-spec-md-actually-work-anchor-bounded-",
+      "text": "Q6. How should post-synthesis write-back to `spec.md` actually work — anchor-bounded append-only, fenced research section, or full anchor rewriting? What patterns exist elsewhere and which are safest?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    },
+    {
+      "id": "question-7-q7-what-should-spec-kit-start-ask-minimum-viable-interview-vs-defer-and-what-s-t",
+      "text": "Q7. What should `/spec_kit:start` ask (minimum viable interview) vs. defer, and what's the right manual-graph-relationship capture shape (depends_on / related_to / supersedes) to avoid prompting fatigue?",
+      "addedAtIteration": 0,
+      "resolvedAtIteration": null
+    }
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [
+    {
+      "id": "finding-1-1-github-spec-kit-keeps-intake-and-planning-as-separate-phases-first-principles-th",
+      "text": "GitHub Spec Kit keeps intake and planning as separate phases: first principles, then a user-facing spec focused on \"what and why\", then a technical plan. The clarification loop belongs inside spec authoring, not inside a generic pre-plan wizard. Local packet `037-cmd-merge-spec-kit-phase` follows the same design instinct by merging extra setup only when a specific optional mode is requested, not by bloating the default plan path. This supports making `/start` a narrow artifact-creation ritual that hands off cleanly to `/plan`, rather than a replacement for planning. [SOURCE: https://github.com/github/spec-kit/blob/main/README.md] [SOURCE: .opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md:40-43] [SOURCE: .opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md:61-78]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-config.json`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md`",
+        "`.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`",
+        "`https://github.com/github/spec-kit/blob/main/README.md`",
+        "`https://github.com/npryce/adr-tools/blob/master/README.md`",
+        "`https://github.com/cargo-generate/cargo-generate/blob/main/README.md`",
+        "`https://www.ietf.org/process/wgs/`",
+        "`https://www.ietf.org/process/rfcs/`",
+        "`https://www.rfc-editor.org/pubprocess.html`"
+      ]
+    },
+    {
+      "id": "finding-1-3-rfc-style-processes-front-load-scope-legitimacy-and-review-state-rather-than-imp",
+      "text": "RFC-style processes front-load scope, legitimacy, and review state rather than implementation detail. The IETF works through charters, calls for adoption, working-group documents, and iterative revision before publication; the RFC Editor likewise treats publication as a staged process after Internet-Draft maturation. The useful analogy for `/start` is: create the scoped artifact early, make open questions explicit, and preserve an auditable progression into later phases. The wrong analogy would be to let research auto-rewrite the user's intent as though consensus had already been reached. [SOURCE: https://www.ietf.org/process/wgs/] [SOURCE: https://www.ietf.org/process/rfcs/] [SOURCE: https://www.rfc-editor.org/pubprocess.html]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-config.json`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md`",
+        "`.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`",
+        "`https://github.com/github/spec-kit/blob/main/README.md`",
+        "`https://github.com/npryce/adr-tools/blob/master/README.md`",
+        "`https://github.com/cargo-generate/cargo-generate/blob/main/README.md`",
+        "`https://www.ietf.org/process/wgs/`",
+        "`https://www.ietf.org/process/rfcs/`",
+        "`https://www.rfc-editor.org/pubprocess.html`"
+      ]
+    },
+    {
+      "id": "finding-1-5-the-highest-risk-copy-proofing-targets-are-silent-mutation-and-concurrent-state-",
+      "text": "The highest-risk copy-proofing targets are silent mutation and concurrent state corruption. Prior `sk-deep-research` refinement work already flagged self-referential looping, tool-budget discipline, and append-only/write-once state protection, then proposed explicit lock files to prevent concurrent JSONL and strategy races. GitHub Spec Kit's README also frames specification as a thing to clarify and review, not something to accept uncritically on the first pass. For this packet, that translates into visible delegation, anchor-bounded appends, idempotency checks, and no background full-rewrite behavior in `spec.md`. [SOURCE: .opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md:146-158] [SOURCE: .opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md:188-198] [SOURCE: https://github.com/github/spec-kit/blob/main/README.md]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-config.json`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md`",
+        "`.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`",
+        "`https://github.com/github/spec-kit/blob/main/README.md`",
+        "`https://github.com/npryce/adr-tools/blob/master/README.md`",
+        "`https://github.com/cargo-generate/cargo-generate/blob/main/README.md`",
+        "`https://www.ietf.org/process/wgs/`",
+        "`https://www.ietf.org/process/rfcs/`",
+        "`https://www.rfc-editor.org/pubprocess.html`"
+      ]
+    },
+    {
+      "id": "finding-1-2-thin-cli-intake-is-the-strongest-precedent-among-comparable-tooling-adr-tools-us",
+      "text": "Thin CLI intake is the strongest precedent among comparable tooling. `adr-tools` uses `adr init` to establish the decision log, then `adr new <title>` to create a numbered Markdown record and immediately hands detail capture to the user's editor. `cargo-generate` similarly scaffolds from a template source rather than conducting a long interview. In this repo, the only nearby \"intake\" phrasing is a lightweight checklist reference, not a conversational workflow. That combination suggests `/start` should ask only for irreducible inputs, then materialize them into `spec.md`, `description.json`, and `graph-metadata.json` where the richer thinking can continue. [SOURCE: https://github.com/npryce/adr-tools/blob/master/README.md] [SOURCE: https://github.com/cargo-generate/cargo-generate/blob/main/README.md] [SOURCE: .opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md:13]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-config.json`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md`",
+        "`.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`",
+        "`https://github.com/github/spec-kit/blob/main/README.md`",
+        "`https://github.com/npryce/adr-tools/blob/master/README.md`",
+        "`https://github.com/cargo-generate/cargo-generate/blob/main/README.md`",
+        "`https://www.ietf.org/process/wgs/`",
+        "`https://www.ietf.org/process/rfcs/`",
+        "`https://www.rfc-editor.org/pubprocess.html`"
+      ]
+    },
+    {
+      "id": "finding-1-4-this-repo-already-has-a-concrete-precedent-for-delegated-pre-workflows-with-stri",
+      "text": "This repo already has a concrete precedent for delegated pre-workflows with strict gating: the `037-cmd-merge-spec-kit-phase` packet absorbs phase setup into `plan` and `complete`, but only asks phase-specific questions when `:with-phases` is present and otherwise preserves the existing path. That is directly relevant to `/spec_kit:start`: delegation should trigger only on the empty-folder or unresolved-placeholder path, and the parent commands should stay quiet when `spec.md` already exists. The anti-pattern to avoid is always-on intake expansion that turns every `plan` or `complete` run into a surprise interview. [SOURCE: .opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md:52-75] [SOURCE: .opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md:92-114] [SOURCE: .opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md:126-126]",
+      "addedAtIteration": 1,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-config.json`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-state.jsonl`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/037-cmd-merge-spec-kit-phase/plan.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/spec.md`",
+        "`.opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md`",
+        "`.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`",
+        "`https://github.com/github/spec-kit/blob/main/README.md`",
+        "`https://github.com/npryce/adr-tools/blob/master/README.md`",
+        "`https://github.com/cargo-generate/cargo-generate/blob/main/README.md`",
+        "`https://www.ietf.org/process/wgs/`",
+        "`https://www.ietf.org/process/rfcs/`",
+        "`https://www.rfc-editor.org/pubprocess.html`"
+      ]
+    },
+    {
+      "id": "finding-2-4-constrained-anchor-updates-remain-useful-but-only-for-narrow-pre-init-insertions",
+      "text": "Constrained anchor updates remain useful, but only for narrow pre-init insertions, not as the main post-synthesis sink. The current spec already separates the two mutation shapes: pre-init adds the topic to Open Questions, while post-synthesis writes a research findings summary. That split matches document-mutator precedent from `remark`/`unified`: targeted insertions are good for single bullets or notes, but evolving synthesized output should replace its prior machine-owned summary rather than accumulate append-only text forever. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:143-145] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:158-160] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml:568-571] [SOURCE: pre-training knowledge - remark/unified targeted node insertion]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-1-full-anchor-rewriting-is-the-least-safe-option-in-this-repo-the-command-workflow",
+      "text": "Full anchor rewriting is the least safe option in this repo. The command workflow treats `spec.md` as a canonical template whose required anchors and headers must be preserved in order, with strict validation expected to stop on template drift. The current strategy file already marks wholesale rewriting of user-authored `spec.md` sections as an exhausted direction. Pre-training precedent from `remark`/`unified` and `mdast-util` supports the same conclusion: AST tooling is reliable for bounded node transforms, but not for semantically re-authoring mixed human and machine prose when no explicit ownership range exists. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml:544-571] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md:112-125] [SOURCE: pre-training knowledge - remark/unified and mdast-util bounded AST transforms]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-5-inference-the-concrete-safest-write-back-contract-for-q6-is-host-anchor-generate",
+      "text": "Inference: the concrete safest write-back contract for Q6 is `host anchor + generated fence + fail-closed replacement`. A practical shape would be a `### Research Findings Sync (generated)` subsection inside `<!-- ANCHOR:risks -->`, with only the subsection body wrapped in stable markers such as `<!-- BEGIN GENERATED: deep-research/spec-findings -->` and `<!-- END GENERATED: deep-research/spec-findings -->`, plus a backlink to `research/research.md`. On rerun, the workflow should replace only the exact fenced span after exact marker match; if markers are missing, duplicated, or manually altered, it should stop and emit the required `spec_mutation` audit record instead of diff-rewriting adjacent prose. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:158-160] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:172-176] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:355-372] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md:112-125]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-2-plain-anchor-bounded-append-is-safer-than-rewrite-but-it-is-not-sufficient-by-it",
+      "text": "Plain anchor-bounded append is safer than rewrite, but it is not sufficient by itself for post-synthesis summaries because anchors here are mainly retrieval and template boundaries, not machine-owned replacement ranges. `/memory:save` documents anchors as paired extraction markers, while the strongest local idempotent mutator contract (`review_mode_contract.yaml`) uses separate `BEGIN GENERATED` and `END GENERATED` sentinels plus explicit `idempotent: true`. Pre-training precedent from `markdown-it` token pipelines and marker-based note-generation patterns points the same way: section anchors help locate content, but deterministic re-generation needs a dedicated replaceable span. [SOURCE: .opencode/command/memory/save.md:146-148] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:9-13] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:172-176] [SOURCE: pre-training knowledge - markdown-it token streams and marker-based generated blocks]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-3-the-safest-post-synthesis-contract-is-a-fenced-generated-addendum-nested-inside-",
+      "text": "The safest post-synthesis contract is a fenced generated addendum nested inside a stable existing host anchor, not a free-floating append and not a whole-anchor rewrite. The packet spec already expects post-synthesis to add findings \"without overwriting user-authored content\" and explicitly calls for a \"clearly-fenced new section\" to mitigate trust violations. The review-mode contract is the closest local mutator precedent: generated content is bracketed by explicit begin/end markers, declared mixed-ownership, and regenerated idempotently from a source-of-truth contract. Inference: deep-research should reserve one machine-owned subsection inside the chosen `spec.md` anchor and replace only that fenced block on rerun. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:143-145] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:158-160] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:9-13] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:355-372]",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-3-5-req-001-through-req-010-still-encode-the-happy-path-more-clearly-than-the-failur",
+      "text": "`REQ-001` through `REQ-010` still encode the happy path more clearly than the failure path. The requirements table, success criteria, integrity NFRs, and edge-case/state-transition sections collectively imply the right direction, but they never convert marker conflicts, partial-write rollback, or second-writer contention into testable acceptance criteria. The concrete gaps are:",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-2-human-edits-inside-the-generated-span-need-explicit-mixed-ownership-conflict-han",
+      "text": "Human edits inside the generated span need explicit mixed-ownership conflict handling. Local precedent puts generated ranges inside mixed-ownership targets while simultaneously warning that generated sections are not for manual editing. The current packet spec promises that no user-authored `spec.md` content will be overwritten silently, but it does not define how the workflow should distinguish \"user edited outside the generated block\" from \"user edited inside the machine-owned block.\" Recommendation: the contract should treat the host anchor as mixed ownership, the fenced generated span as machine-owned, and any manual drift inside that span as a `spec_mutation_conflict` that requires confirm-mode approval or a recovery command instead of silent merge logic. [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:9-13] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:352-358] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:159-160] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:183-184]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-1-marker-missing-and-duplicate-marker-cases-need-explicit-fail-closed-semantics-no",
+      "text": "Marker-missing and duplicate-marker cases need explicit fail-closed semantics, not repair-in-place. The closest local mutator contract uses exact begin/end generated markers plus an `idempotent: true` replacement model, which only remains deterministic when there is exactly one replaceable span. The packet spec currently requires anchor-bounded post-synthesis edits and idempotency, but it does not say what happens when the fenced span is absent, duplicated, or mismatched. Recommendation: extend `REQ-004` and `REQ-010` so the mutation contract requires exactly one begin/end pair with matching labels and emits a blocking conflict/audit event rather than attempting heuristic repair. [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:9-12] [SOURCE: .opencode/skill/sk-deep-review/assets/review_mode_contract.yaml:172-176] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:124-135] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:183-184]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-4-parallel-sessions-writing-the-same-spec-md-need-single-writer-enforcement-before",
+      "text": "Parallel sessions writing the same `spec.md` need single-writer enforcement before any detection or mutation step. The live deep-research skill still treats same-lineage parallel fan-out as reference-only, and a prior deep-research refinement proposal already identified concurrent runs on one spec folder as a source of JSONL corruption and strategy races, with a concrete `scratch/.deep-research.lock` pattern plus stale-lock recovery. The current packet spec mentions audit logging and idempotency, but it does not say when the lock is acquired, how a second session behaves, or whether stale-lock override is auto or confirm only. Recommendation: require lock acquisition before `REQ-001` path detection, treat second-writer attempts as blocking errors, and allow stale-lock override only with explicit confirm/recovery semantics. [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:268-274] [SOURCE: .opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md:188-198] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:184-189] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:211-214]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-3-rollback-is-still-underspecified-at-the-file-operation-layer-the-deep-research-l",
+      "text": "Rollback is still underspecified at the file-operation layer. The deep-research loop protocol documents checkpoint commits only as a reference-only recovery pattern, and the packet's own state-transition section only covers the higher-level case where synthesis is interrupted before post-synthesis write-back completes. Neither source defines the runtime behavior when a generated-block replacement fails halfway through the `spec.md` write itself. Recommendation: add acceptance language requiring temp-sibling write plus atomic rename where available, plus explicit recovery output when rename/replace fails after temp creation; checkpoint commits can remain optional operator rollback, not the primary contract. [SOURCE: .opencode/skill/sk-deep-research/references/loop_protocol.md:253-272] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:188-189] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:211-214] [SOURCE: pre-training knowledge - temp-file plus atomic rename replacement semantics]",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-4-1-start-should-own-packet-creation-inputs-while-plan-and-complete-must-retain-work",
+      "text": "`/start` should own packet-creation inputs, while `/plan` and `/complete` must retain workflow-governing questions. Today both parent commands decide execution mode before YAML loading, ask for dispatch mode in the consolidated prompt, and keep phase decomposition wired to parent-only optional workflows that run before Step 1. That means moving execution mode, dispatch mode, or phase controls into `/start` would create hidden coupling to parent workflow semantics and make `/start` responsible for choices it cannot execute itself. Minimum parent-owned fields: execution mode, dispatch mode, phase decomposition, `:with-research`, and `:auto-debug`. Minimum `/start`-owned fields: feature/request text when missing, target folder or repair target, level confirm/override, and optional manual relationships. [SOURCE: .opencode/command/spec_kit/plan.md:46-55] [SOURCE: .opencode/command/spec_kit/plan.md:80-110] [SOURCE: .opencode/command/spec_kit/complete.md:47-58] [SOURCE: .opencode/command/spec_kit/complete.md:83-113] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml:22-62] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml:30-100] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:158-162]",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-4-qs0-request-title-only-when-missing",
+      "text": "`QS0` request/title only when missing",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-5-qs1-target-path-or-create-vs-repair-choice",
+      "text": "`QS1` target path or create-vs-repair choice",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-6-qs2-recommended-level-confirm-override",
+      "text": "`QS2` recommended level confirm/override",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-7-qs3-record-relationships-yes-no-gate",
+      "text": "`QS3` \"record relationships?\" yes/no gate",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-8-qs4-relation-details-only-if-qs3-yes",
+      "text": "`QS4+` relation details only if `QS3=yes`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-2-delegation-should-be-inline-absorption-not-a-chained-start-handoff-and-not-a-sec",
+      "text": "Delegation should be inline absorption, not a chained `/start` handoff and not a second prompt with surprise ordering. Both parent commands currently promise that the first response is a single consolidated prompt with no analysis or tool calls before the questions, and the packet spec already requires merged intake with at most one additional turn total when `spec.md` is missing. The least-coupled design is: when `spec.md` is absent or metadata repair is needed, `/plan` or `/complete` inject a compact \"start-intake block\" into their existing consolidated prompt, create the artifacts, then continue from their normal workflow with returned values (`spec_path`, `level`, `repair_mode`, `manual_relationships`). This preserves today's prompt ordering and avoids forcing the user to run a visibly separate command mid-flow. [SOURCE: .opencode/command/spec_kit/plan.md:41-45] [SOURCE: .opencode/command/spec_kit/plan.md:78-137] [SOURCE: .opencode/command/spec_kit/complete.md:40-45] [SOURCE: .opencode/command/spec_kit/complete.md:81-140] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:146-148] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:158-162] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:179-180] [SOURCE: https://yeoman.io/authoring/user-interactions:31-45]",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-9-manual-graph-relationship-capture-should-reuse-the-existing-manual-depends-on-ma",
+      "text": "Manual graph relationship capture should reuse the existing `manual.depends_on`, `manual.supersedes`, and `manual.related_to` arrays and fill them with small objects, not invent a new metadata layer. Current packet `graph-metadata.json` files already reserve those three arrays, and the packet spec only adds two provenance requirements: each captured relationship must retain `reason` and `source`. The smallest compatible object shape is therefore:",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-3-the-minimum-viable-start-interview-should-follow-generator-style-few-required-in",
+      "text": "The minimum viable `/start` interview should follow generator-style \"few required inputs, everything else via defaults or flags\" patterns. Cargo `new` and `init` both center on a path plus a small set of optional flags like `--name` and `--vcs`; Create React App similarly takes the app name first and treats template choice as optional; Cookiecutter explicitly separates human-readable prompts from default-driven `no_input` generation. That points to a very small confirm-mode intake:",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-5-3-spec-kit-start-needs-a-real-state-machine-not-just-a-list-of-edge-cases-because-",
+      "text": "`/spec_kit:start` needs a real state machine, not just a list of edge cases, because repair-mode and deep-research placeholder upgrade are entry states, not exceptions. The packet spec already distinguishes `repair mode`, `partial state`, `user aborts mid-interview`, and \"deep-research-authored placeholders\"; the missing piece is to define entry/exit conditions so `/plan` and `/complete` can reuse the same branch logic. The most important rule is that unresolved TODOs from a deep-research-seeded Level 1 spec must be treated as `repair-mode` re-entry, not as a healthy populated folder. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:159-160] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:200-214] [SOURCE: .opencode/command/spec_kit/complete.md:306-311]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-16-nfr-s04-structured-intake-audit-contract-start-plan-and-complete-emit-the-stable",
+      "text": "`NFR-S04` — Structured intake audit contract: `/start`, `/plan`, and `/complete` emit the stable event types listed above so delegation, relationship capture, and mode parity can be verified from machine-readable traces rather than final files only.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-14-q1-closes-without-introducing-a-new-risk-category-interview-driven-cli-tools-mai",
+      "text": "`Q1` closes without introducing a new risk category: interview-driven CLI tools mainly fail by leaving partial filesystem state, stale local config, or rerun collisions after an interrupted scaffold, which is the same failure family already present in this packet's edge cases. Cookiecutter-style prompt generators risk partial renders when cancelled mid-template, Yeoman-style generators risk stale generator state plus partially written config, and Create-React-App-style bootstraps risk half-created directories that block the next \"fresh\" run. That means the packet does not need a new UX philosophy; it needs the already-identified repair/resume rules promoted into requirements. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:205-214] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md] [SOURCE: pre-training knowledge - Cookiecutter, Yeoman, and Create React App generator failure modes]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-1-req-001-through-req-010-split-cleanly-into-state-machine-requirements-vs-one-sho",
+      "text": "`REQ-001` through `REQ-010` split cleanly into state-machine requirements vs one-shot functional checks, and the gaps are now specific enough to write acceptance-language deltas instead of broad \"add edge cases\" notes. The best local precedent for making stateful behavior explicit is the repo's YAML state/circuit-breaker pattern, while the packet spec already names the branch-heavy paths: empty folder, repair mode, interrupted synthesis, delegated `/start`, and deep-research placeholders. Recommendation: classify `REQ-001`, `REQ-002`, `REQ-003`, `REQ-004`, `REQ-006`, `REQ-007`, `REQ-009`, and `REQ-010` as STATE-MACHINE requirements; keep `REQ-005` and `REQ-008` as FUNCTIONAL requirements with transactional assertions. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:121-135] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:200-214] [SOURCE: .opencode/command/create/assets/create_sk_skill_auto.yaml:464-474]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-15-req-011-intake-resume-contract-standalone-and-delegated-start-runs-persist-enoug",
+      "text": "`REQ-011` — Intake resume contract: standalone and delegated `/start` runs persist enough state to resume after `aborted-mid-interview`, `partial-folder`, or `deep_research_placeholders` re-entry without replaying already-accepted answers.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-8-spec-check-result-spec-path-folder-state-spec-present-lock-status-run",
+      "text": "`spec_check_result`: `{ spec_path, folder_state, spec_present, lock_status, run }`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-11-spec-mutation-conflict-spec-path-phase-reason-anchors-touched-run",
+      "text": "`spec_mutation_conflict`: `{ spec_path, phase, reason, anchors_touched, run }`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-10-spec-preinit-context-added-spec-path-anchors-touched-normalized-topic-run",
+      "text": "`spec_preinit_context_added`: `{ spec_path, anchors_touched, normalized_topic, run }`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-9-spec-seed-created-spec-path-research-topic-placeholder-anchors-run",
+      "text": "`spec_seed_created`: `{ spec_path, research_topic, placeholder_anchors, run }`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-12-spec-synthesis-deferred-spec-path-reason-interrupted-before-post-synthesis-run",
+      "text": "`spec_synthesis_deferred`: `{ spec_path, reason: \"interrupted_before_post_synthesis\", run }`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-7-deep-research-s-spec-check-also-needs-an-explicit-state-machine-so-req-001-throu",
+      "text": "Deep-research's spec-check also needs an explicit state machine so `REQ-001` through `REQ-004` stop depending on informal phrasing like \"if spec_present\". The current command already normalizes `research_topic`, `spec_path`, and `execution_mode`, while the packet spec distinguishes empty-folder create, existing-spec append, synthesis interruption, and semantic conflict. Recommendation: model spec-check as four states with a single fail-closed branch: `no-spec`, `spec-present`, `spec-just-created-by-this-run`, and `conflict-detected`. [SOURCE: .opencode/command/spec_kit/deep-research.md:93-96] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:29-43] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:121-124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:208-214]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-6-exit-to-populated-folder-only-when-placeholder-sentinels-are-cleared-or-intentio",
+      "text": "Exit to `populated-folder` only when placeholder sentinels are cleared or intentionally replaced with `\"N/A - insufficient source context\"`; otherwise the parent command must keep treating the folder as re-entry-required. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:160] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:214] [SOURCE: .opencode/command/spec_kit/complete.md:306-311]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-4-if-spec-md-contains-the-deep-research-seed-markers-or-unresolved-todo-placeholde",
+      "text": "If `spec.md` contains the deep-research seed markers or unresolved TODO placeholders in Scope/Requirements, set `start_state=repair-mode`, `repair_mode=upgrade_placeholders`, and `reentry_reason=deep_research_placeholders`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-5-resume-at-resume-question-id-qs2-only-if-selected-level-is-still-unset-otherwise",
+      "text": "Resume at `resume_question_id=QS2` only if `selected_level` is still unset; otherwise resume at the first unresolved placeholder anchor rather than replaying `QS0` or parent workflow questions.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-13-the-exact-audit-events-needed-for-req-006-req-007-and-req-009-are-now-clear-the-",
+      "text": "The exact audit events needed for `REQ-006`, `REQ-007`, and `REQ-009` are now clear: the system needs to log delegation, mode resolution, re-entry, and relationship capture as separate typed events rather than burying them in prose. Without those events, tests can only assert final files, not whether the parent command took the correct inline `/start` branch or silently skipped required repair logic. Recommendation: add a structured intake audit contract, preferably as a new non-functional requirement, with these minimum event names and payloads. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:125-135] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:183-189] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-2-the-inline-start-intake-block-can-reuse-the-parent-command-vocabulary-if-it-retu",
+      "text": "The inline `/start` intake block can reuse the parent command vocabulary if it returns a narrow packet-creation schema instead of inventing a second command-local namespace. `plan.md` and `complete.md` already normalize `feature_description`, `spec_path`, `execution_mode`, and `dispatch_mode`, while iteration-004 already narrowed `/start` ownership to packet-creation inputs. Recommendation: the injected `/start` block should write into existing parent fields where they already exist and add only a small set of start-specific fields: `start_state`, `repair_mode`, `selected_level`, `manual_relationships`, `resume_question_id`, and `reentry_reason`. [SOURCE: .opencode/command/spec_kit/plan.md:117-121] [SOURCE: .opencode/command/spec_kit/plan.md:141-142] [SOURCE: .opencode/command/spec_kit/complete.md:120-124] [SOURCE: .opencode/command/spec_kit/complete.md:147-148] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md]",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-6-43-audit-events",
+      "text": "**Audit events**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-37-conflict-exits",
+      "text": "**Conflict exits**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-16-create-branch",
+      "text": "**Create branch**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-28-idempotency-guards",
+      "text": "**Idempotency guards**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-32-lock-file-semantics",
+      "text": "**Lock file semantics**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-12-preflight-detection",
+      "text": "**Preflight detection**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-20-update-branch",
+      "text": "**Update branch**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-24-write-back-contract",
+      "text": "**Write-back contract**",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-17-folder-state-no-spec",
+      "text": "`folder_state = no-spec`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-21-folder-state-spec-present",
+      "text": "`folder_state = spec-present`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-81-gate-init-approval-221-244",
+      "text": "`gate_init_approval` [221-244]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-90-gate-post-synthesis-656-674",
+      "text": "`gate_post_synthesis` [656-674]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-83-gate-pre-synthesis-592-613",
+      "text": "`gate_pre_synthesis` [592-613]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-79-gate-spec-preinit-approval-new-confirm-only",
+      "text": "`gate_spec_preinit_approval` [NEW, confirm-only]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-87-gate-spec-writeback-approval-new-confirm-only",
+      "text": "`gate_spec_writeback_approval` [NEW, confirm-only]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-66-phase-save-unchanged-starts-at-554-572",
+      "text": "`phase_save` unchanged starts at [554-572]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-91-phase-save-unchanged-starts-at-679-697",
+      "text": "`phase_save` unchanged starts at [679-697]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-50-step-acquire-deep-research-lock-new-insert-here",
+      "text": "`step_acquire_deep_research_lock` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-71-step-acquire-deep-research-lock-new-insert-here",
+      "text": "`step_acquire_deep_research_lock` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-51-step-classify-session-128-164",
+      "text": "`step_classify_session` [128-164]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-72-step-classify-session-128-171",
+      "text": "`step_classify_session` [128-171]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-62-step-compile-research-515-531",
+      "text": "`step_compile_research` [515-531]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-85-step-compile-research-620-636",
+      "text": "`step_compile_research` [620-636]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-63-step-convergence-report-533-545",
+      "text": "`step_convergence_report` [533-545]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-86-step-convergence-report-638-649",
+      "text": "`step_convergence_report` [638-649]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-52-step-create-config-165-183",
+      "text": "`step_create_config` [165-183]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-73-step-create-config-173-191",
+      "text": "`step_create_config` [173-191]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-48-step-create-directories-112-114",
+      "text": "`step_create_directories` [112-114]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-69-step-create-directories-112-114",
+      "text": "`step_create_directories` [112-114]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-55-step-create-registry-202-205",
+      "text": "`step_create_registry` [202-205]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-76-step-create-registry-210-213",
+      "text": "`step_create_registry` [210-213]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-53-step-create-state-log-185-188",
+      "text": "`step_create_state_log` [185-188]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-74-step-create-state-log-193-196",
+      "text": "`step_create_state_log` [193-196]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-54-step-create-strategy-190-200",
+      "text": "`step_create_strategy` [190-200]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-75-step-create-strategy-198-208",
+      "text": "`step_create_strategy` [198-208]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-57-step-detect-spec-present-new-insert-here",
+      "text": "`step_detect_spec_present` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-78-step-detect-spec-present-new-insert-here",
+      "text": "`step_detect_spec_present` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-1-step-detect-spec-present-should-be-inserted-late-in-phase-init-after-the-runtime",
+      "text": "`step_detect_spec_present` should be inserted late in `phase_init`, after the runtime packet exists and just before INIT hands off to the loop, not near preflight. The current auto workflow only has a durable audit sink after `step_create_state_log`, and confirm mode's existing `gate_init_approval` assumes `deep-research-config.json`, `deep-research-state.jsonl`, `deep-research-strategy.md`, and `findings-registry.json` already exist. That makes the clean insertion slot:",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-56-step-enrich-strategy-context-207-211",
+      "text": "`step_enrich_strategy_context` [207-211]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-77-step-enrich-strategy-context-215-219",
+      "text": "`step_enrich_strategy_context` [215-219]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-60-step-hydrate-summary-metrics-opencode-command-spec-kit-assets-spec-kit-deep-rese",
+      "text": "`step_hydrate_summary_metrics` [.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:489-508]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-82-step-hydrate-summary-metrics-opencode-command-spec-kit-assets-spec-kit-deep-rese",
+      "text": "`step_hydrate_summary_metrics` [.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:571-590]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-59-step-init-complete-213-215",
+      "text": "`step_init_complete` [213-215]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-47-step-preflight-contract-opencode-command-spec-kit-assets-spec-kit-deep-research-",
+      "text": "`step_preflight_contract` [.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:103-110]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-68-step-preflight-contract-opencode-command-spec-kit-assets-spec-kit-deep-research-",
+      "text": "`step_preflight_contract` [.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:103-110]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-61-step-read-all-iterations-510-513",
+      "text": "`step_read_all_iterations` [510-513]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-84-step-read-all-iterations-615-618",
+      "text": "`step_read_all_iterations` [615-618]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-67-step-release-deep-research-lock-new-append-after-step-verify-save",
+      "text": "`step_release_deep_research_lock` [NEW, append after `step_verify_save`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-92-step-release-deep-research-lock-new-append-after-step-verify-save",
+      "text": "`step_release_deep_research_lock` [NEW, append after `step_verify_save`]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-49-step-resolve-canonical-names-116-126",
+      "text": "`step_resolve_canonical_names` [116-126]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-70-step-resolve-canonical-names-116-126",
+      "text": "`step_resolve_canonical_names` [116-126]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-58-step-seed-spec-from-topic-or-step-append-spec-preinit-context-new",
+      "text": "`step_seed_spec_from_topic` or `step_append_spec_preinit_context` [NEW]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-80-step-seed-spec-from-topic-or-step-append-spec-preinit-context-new",
+      "text": "`step_seed_spec_from_topic` or `step_append_spec_preinit_context` [NEW]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-65-step-update-config-status-546-549",
+      "text": "`step_update_config_status` [546-549]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-89-step-update-config-status-651-654",
+      "text": "`step_update_config_status` [651-654]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-64-step-update-spec-writeback-new-insert-here",
+      "text": "`step_update_spec_writeback` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-88-step-update-spec-writeback-new-insert-here",
+      "text": "`step_update_spec_writeback` [NEW, insert here]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-10-step-update-spec-writeback-belongs-in-phase-synthesis-immediately-after-converge",
+      "text": "`step_update_spec_writeback` belongs in `phase_synthesis`, immediately after convergence reporting and before config completion, with confirm-mode approval inserted ahead of the write step. In auto mode, the current phase boundary is `step_convergence_report` -> `step_update_config_status` -> `phase_save`; the new write-back step should sit in the middle so the spec sync is treated as part of synthesis completion, not as a memory-save side effect. Confirm mode needs the same positional slot, but because the packet spec requires confirmation around every `spec.md` mutation, it also needs a dedicated `gate_spec_writeback_approval` between `step_convergence_report` and `step_update_spec_writeback`, leaving the existing `gate_post_synthesis` as the save-to-memory decision gate. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:533-572] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:638-697] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:121-125] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:143-145]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-34-acquire-before-step-classify-session",
+      "text": "Acquire before `step_classify_session`.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-42-all-conflict-paths-append-jsonl-audit-events-and-fail-closed",
+      "text": "All conflict paths append JSONL audit events and fail closed.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-22-append-only-the-pre-init-research-question-context-note",
+      "text": "Append only the pre-init research question/context note.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-2-auto-after-step-enrich-strategy-context-and-before-step-init-complete",
+      "text": "auto: after `step_enrich_strategy_context` and before `step_init_complete`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-3-confirm-after-step-enrich-strategy-context-and-before-gate-init-approval",
+      "text": "confirm: after `step_enrich_strategy_context` and before `gate_init_approval`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-13-define-inputs-research-topic-spec-folder-execution-mode-active-session-lineage",
+      "text": "Define inputs: `research_topic`, `spec_folder`, `execution_mode`, active session lineage.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-23-emit-spec-check-result-then-spec-preinit-context-added",
+      "text": "Emit `spec_check_result` then `spec_preinit_context_added`.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-19-emit-spec-check-result-then-spec-seed-created",
+      "text": "Emit `spec_check_result` then `spec_seed_created`.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-46-explicitly-note-that-start-plan-complete-delegation-events-are-sibling-command-c",
+      "text": "Explicitly note that `/start` / `/plan` / `/complete` delegation events are sibling command concerns, not owned by this deep-research protocol file.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-5-generated-block-conflicts-should-fail-closed-before-config-completion-and-before",
+      "text": "Generated-block conflicts should fail closed before config completion and before any memory save, and the authoritative audit sink is `research/deep-research-state.jsonl`. The packet spec already requires JSONL audit records for `spec.md` mutations, and both auto and confirm workflows already append lifecycle events to the JSONL log during init and synthesis. Combined with iteration-002's generated-block contract and iteration-003's fail-closed edge cases, the exact exit conditions are now clear:",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-35-hold-through-synthesis-write-back-and-release-after-phase-save-completion-cleanu",
+      "text": "Hold through synthesis write-back and release after `phase_save` / completion cleanup.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-25-host-anchor-existing-spec-md-anchor-only",
+      "text": "Host anchor: existing `spec.md` anchor only.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-8-human-edits-inside-the-machine-owned-block",
+      "text": "human edits inside the machine-owned block",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-33-live-file-spec-folder-research-deep-research-lock",
+      "text": "Live file: `{spec_folder}/research/.deep-research.lock`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-26-machine-owned-span-one-fenced-generated-subsection-for-research-findings",
+      "text": "Machine-owned span: one fenced generated subsection for research findings.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-39-marker-drift-or-human-edits-inside-generated-block",
+      "text": "Marker drift or human edits inside generated block",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-45-minimum-events-spec-check-result-spec-seed-created-spec-preinit-context-added-sp",
+      "text": "Minimum events: `spec_check_result`, `spec_seed_created`, `spec_preinit_context_added`, `spec_mutation`, `spec_mutation_conflict`, `spec_synthesis_deferred`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-38-missing-or-duplicate-anchor",
+      "text": "Missing or duplicate anchor",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-6-missing-or-duplicate-host-anchor",
+      "text": "missing or duplicate host anchor",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-7-missing-duplicate-or-mismatched-begin-generated-end-generated-markers",
+      "text": "missing, duplicate, or mismatched `BEGIN GENERATED` / `END GENERATED` markers",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-29-normalize-topic-before-pre-init-append",
+      "text": "Normalize topic before pre-init append.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-14-require-canonical-path-resolution-first-then-lock-acquisition-then-folder-sessio",
+      "text": "Require canonical path resolution first, then lock acquisition, then folder/session classification.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-30-require-exactly-one-findings-block-label",
+      "text": "Require exactly one findings block label.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-44-runtime-sink-research-deep-research-state-jsonl",
+      "text": "Runtime sink: `research/deep-research-state.jsonl`",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-31-same-normalized-topic-and-same-generated-block-content-resolve-to-no-op-not-dupl",
+      "text": "Same normalized topic and same generated block content resolve to no-op, not duplicate output.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-18-seed-level-1-spec-md-from-research-topic",
+      "text": "Seed Level 1 `spec.md` from research topic.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-9-semantic-purpose-conflict-detected-during-pre-init-append",
+      "text": "semantic-purpose conflict detected during pre-init append",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-40-semantic-purpose-conflict-during-pre-init-append",
+      "text": "Semantic-purpose conflict during pre-init append",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-27-source-of-truth-remains-research-research-md-write-back-is-abridged-sync-only",
+      "text": "Source of truth remains `research/research.md`; write-back is abridged sync only.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-36-stale-lock-override-is-confirm-recovery-only",
+      "text": "Stale-lock override is confirm/recovery only.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-15-state-that-step-detect-spec-present-runs-only-after-config-jsonl-strategy-and-re",
+      "text": "State that `step_detect_spec_present` runs only after config, JSONL, strategy, and registry exist.",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-41-temp-write-rename-failure-during-write-back",
+      "text": "Temp-write / rename failure during write-back",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-4-the-concrete-single-writer-contract-should-acquire-the-lock-before-session-class",
+      "text": "The concrete single-writer contract should acquire the lock before session classification, hold it through pre-init mutation plus post-synthesis write-back, and release it only after save/completion cleanup. Iteration-005 already made lock acquisition a precondition for folder-state detection, and the older refinement proposal only differed on where to store the lock. Because the live YAML already creates `{spec_folder}/research/iterations` and `{spec_folder}/research/archive` but does not provision `scratch/` during init, the concrete draft should place the live lock at `{spec_folder}/research/.deep-research.lock` and insert `step_acquire_deep_research_lock` between `step_resolve_canonical_names` and `step_classify_session`, then `step_release_deep_research_lock` after `step_verify_save` (plus the matching early-failure cleanup path). A second live writer exits blocked; stale-lock override remains confirm-only or explicit recovery. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:112-164] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:13-16] [SOURCE: .opencode/specs/skilled-agent-orchestration/024-sk-deep-research-refinement/scratch/improvement-proposals-v3.md:188-198]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-6-11-the-protocol-file-can-now-be-drafted-as-eight-sections-that-map-directly-onto-th",
+      "text": "The protocol file can now be drafted as eight sections that map directly onto the step ordering above and keep Q6 bounded to deep-research's own contract rather than bleeding into `/start` or parent-command setup behavior. The resulting outline below is concrete enough to hand to implementation without inventing new abstractions, and it matches the packet scope that already calls for a new `spec_check_protocol.md` reference under `sk-deep-research`. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:78-81] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:151-159]",
+      "addedAtIteration": 6,
+      "sources": []
+    },
+    {
+      "id": "finding-7-5-plan-md-and-complete-md-need-only-reservation-level-documentation-deltas-in-this",
+      "text": "`plan.md` and `complete.md` need only reservation-level documentation deltas in this iteration, not full delegated `/start` runtime wiring. The live setup prompts and parsed-field lists do not yet reserve any fields for inline `/start` outcomes, so the minimal change is to document the extra values that parent commands must carry once the actual `/start` YAML work lands. This supports `REQ-006` framing, but the full runtime behavior still depends on follow-on asset deltas in `spec_kit_plan_*.yaml`, `spec_kit_complete_*.yaml`, and the new `/spec_kit:start` files. [SOURCE: .opencode/command/spec_kit/plan.md:78-130] [SOURCE: .opencode/command/spec_kit/complete.md:81-134] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:125-135] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:24-35]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-3-post-synthesis-spec-md-write-back-belongs-in-synthesis-not-save-and-confirm-mode",
+      "text": "Post-synthesis `spec.md` write-back belongs in synthesis, not save, and confirm mode needs a distinct approval gate for it. The packet spec already treats post-synthesis write-back as part of the deep-research mutation contract, and the strategy's exhausted approaches explicitly rule out moving it into `phase_save`. The concrete consequence is: insert a `step_write_spec_findings` immediately after the research synthesis step and before config completion, then in confirm mode present a `gate_post_synthesis_spec_writeback` before the existing memory-save approval. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:123-125] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/deep-research-strategy.md:257-260] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:615-674] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-006.md:20-48]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-6-the-current-packet-can-now-distinguish-which-requirements-these-deltas-satisfy-d",
+      "text": "The current packet can now distinguish which requirements these deltas satisfy directly versus which remain blocked on `/start` implementation work. The deep-research lock, pre-init branch, and post-synthesis gate cover `REQ-001`, `REQ-002`, `REQ-003`, `REQ-004`, and `REQ-010` at the contract level, while `REQ-005`, `REQ-007`, `REQ-008`, and most of `REQ-009` still require `/spec_kit:start` markdown/YAML assets. `REQ-006` is only partially covered here because the parent command cards can reserve fields, but delegation cannot be proven until the plan/complete YAML assets are patched too. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:121-135] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:11-22] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-006.md:6-48]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-4-the-markdown-command-card-needs-only-a-small-contract-expansion-not-a-rewrite-to",
+      "text": "The markdown command card needs only a small contract expansion, not a rewrite. Today `deep-research.md` still describes outputs as `research/research.md` plus state files and says nothing about spec-bound mutation, lock ownership, or confirm-mode spec approvals. A minimal doc patch can update the phase table and \"After Completing\" guidance so the YAML changes are discoverable without inventing new sections or renaming the command lifecycle. [SOURCE: .opencode/command/spec_kit/deep-research.md:149-154] [SOURCE: .opencode/command/spec_kit/deep-research.md:170-173] [SOURCE: .opencode/command/spec_kit/deep-research.md:207-209] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:78-81]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-2-the-pre-init-spec-check-should-stay-late-in-phase-init-after-the-durable-researc",
+      "text": "The pre-init spec check should stay late in `phase_init`, after the durable research packet exists but before loop entry. That placement preserves the append-only JSONL sink and the existing init gate shape, while still satisfying the spec requirement that `spec.md` creation or update happens before any iteration dispatch. The exact slots remain the same as iteration 006: auto mode inserts the spec-check steps after `step_enrich_strategy_context` and before `step_init_complete`, while confirm mode inserts the same steps in that slot and then adds a dedicated approval gate before the existing `gate_init_approval`. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:207-215] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:215-244] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:121-124] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-006.md:6-19]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-1-the-smallest-safe-lock-delta-is-to-make-the-live-lock-path-explicit-in-the-comma",
+      "text": "The smallest safe lock delta is to make the live lock path explicit in the command assets and keep the lock advisory, exclusive, and fail-closed. The current deep-research assets already centralize research packet paths under `state_paths`, and macOS/BSD local man pages confirm both `flock()` and `fcntl()` record locking are advisory rather than mandatory. That means iteration-006's direction is sound: add `{spec_folder}/research/.deep-research.lock`, acquire it before session classification, fail with non-blocking lock contention, and reserve stale-lock override for explicit recovery or confirm-mode approval rather than attempting mandatory locking. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:79-89] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml:87-89] [SOURCE: local `man 2 flock` output captured in this iteration] [SOURCE: local `man 2 fcntl` output captured in this iteration]",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-8-3-spec-kit-start-confirm-yaml-should-preserve-the-same-state-output-contract-as-au",
+      "text": "`spec_kit_start_confirm.yaml` should preserve the same state/output contract as auto mode and add approval gates only around the places where the user might want to stop: detected folder state, summarized interview inputs, artifact emission, and save. That matches the existing confirm-mode style in `spec_kit_plan_confirm.yaml` and `spec_kit_complete_confirm.yaml`, where the workflow stays structurally parallel to auto mode but pauses at key checkpoints instead of changing the underlying outputs. The result is stronger parity for `REQ-009`: different gate density, same emitted artifacts and returned fields. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml:351-430] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:512-610] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:12-30] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/spec.md:129-135]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-4-the-empty-folder-delegation-branch-for-plan-belongs-inside-step-1-request-analys",
+      "text": "The empty-folder delegation branch for `plan` belongs inside `step_1_request_analysis`, between the existing \"verify/create spec folder\" activity list and the first confidence checkpoint, not in `step_3_specification` and not in a new optional pre-workflow. The live auto and confirm plan YAMLs both treat Step 1 as the place where folder state, artifact existence, and scope are normalized before any document authoring. Iterations 004-005 already established that delegated `/start` is inline absorption, not a visible chained workflow, so Step 1 is the only place that preserves the current setup contract without forcing a second pre-step system. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml:338-357] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml:352-371] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md:7-13] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:28-59]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-2-the-minimum-viable-spec-kit-start-auto-yaml-can-stay-intentionally-small-preflig",
+      "text": "The minimum viable `spec_kit_start_auto.yaml` can stay intentionally small: preflight, folder scan, create-dirs, start interview normalization, artifact emission, and save. The deep-research auto asset shows the repo's preferred YAML layout for role metadata, user inputs, and a single ordered workflow section, while iterations 005-007 already narrowed `/start` to packet-creation state rather than a full planning state machine. A quick step-id sweep returned no existing `step_start_*`, `step_scan_folder_state`, `step_emit_artifacts`, or `step_save_context` collisions in the current command assets, so those names are safe to propose. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:1-99] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-005.md:12-46] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-007.md:6-25] [SOURCE: rg sweep over `.opencode/command/spec_kit/assets/*.yaml` in this iteration]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-1-the-safest-spec-kit-start-command-card-is-a-thin-clone-of-the-existing-command-p",
+      "text": "The safest `/spec_kit:start` command card is a thin clone of the existing command pattern: markdown owns setup, YAML owns execution, and the setup round-trip stays consolidated. `deep-research.md` already uses the exact \"resolve setup in markdown, then load the correct YAML\" contract, while `plan.md` and `complete.md` prove that the repo expects one front-loaded question block instead of scattered follow-up prompts. That means `/start` should expose only start-owned packet-creation inputs at setup time and should not invent a different command shape. [SOURCE: .opencode/command/spec_kit/deep-research.md:1-36] [SOURCE: .opencode/command/spec_kit/plan.md:1-55] [SOURCE: .opencode/command/spec_kit/complete.md:1-58] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md:7-13]",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-5-the-same-delegation-branch-for-complete-must-sit-inside-step-1-request-analysis-",
+      "text": "The same delegation branch for `complete` must sit inside `step_1_request_analysis` after phase-predecessor validation but before the confidence checkpoint, so it does not interfere with the existing optional research or phase workflows. The auto and confirm complete YAMLs already reserve Step 1 for folder-state normalization and phase-child gating, while optional `:with-research` and `:with-phases` are wired elsewhere in the workflow. The clean contract is therefore: validate predecessor first when relevant, then run the embedded `/start` branch only if the canonical artifacts are missing or incomplete, then continue with the normal complete lifecycle. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml:468-495] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:513-538] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-004.md:7-13] [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands/research/iterations/iteration-007.md:92-124]",
+      "addedAtIteration": 8,
+      "sources": []
+    }
+  ],
+  "ruledOutDirections": [
+    {
+      "id": "ruled-out-1-1-rg-n-interview-intake-opencode-command-opencode-skill-produced-almost-no-direct-",
+      "text": "`rg -n \"interview|intake\" .opencode/command/ .opencode/skill/` produced almost no direct command-surface precedent, so local evidence was indirect rather than a ready-made pattern.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-2-a-quick-memory-md-keyword-pass-did-not-return-extra-hits-beyond-the-sibling-pack",
+      "text": "A quick `MEMORY.md` keyword pass did not return extra hits beyond the sibling packets already named in the strategy file.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-5-copying-adr-tools-literally-as-a-title-only-command-our-command-has-to-emit-thre",
+      "text": "Copying `adr-tools` literally as a title-only command. Our command has to emit three linked artifacts, so it needs slightly more structure than `adr new`.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-4-copying-github-spec-kit-s-current-phase-model-literally-its-precedent-is-useful-",
+      "text": "Copying GitHub Spec Kit's current phase model literally. Its precedent is useful, but it does not expose a standalone intake command analogous to `/spec_kit:start`.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-3-i-could-not-retrieve-a-reliable-primary-source-for-rfcs-rfcs-or-openrfc-within-t",
+      "text": "I could not retrieve a reliable primary source for `rfcs/rfcs` or \"OpenRFC\" within this iteration budget, so RFC evidence here leans on IETF and RFC Editor primary process pages instead.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-1-6-treating-deep-research-write-back-as-permission-to-rewrite-user-authored-spec-md",
+      "text": "Treating deep-research write-back as permission to rewrite user-authored `spec.md` sections wholesale.",
+      "addedAtIteration": 1
+    },
+    {
+      "id": "ruled-out-2-1-rg-n-anchor-opencode-skill-opencode-command-type-md-surfaced-many-anchor-example",
+      "text": "`rg -n \"ANCHOR:\" .opencode/skill/ .opencode/command/ --type md` surfaced many anchor examples, but most were retrieval or documentation patterns rather than direct write-back contracts.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-2-rg-n-spec-md-opencode-command-spec-kit-assets-yaml-mostly-exposed-template-loadi",
+      "text": "`rg -n \"spec.md\" .opencode/command/spec_kit/assets/*.yaml` mostly exposed template-loading and strict-validation constraints, not a ready-made `spec.md` mutation implementation.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-5-adding-a-new-primary-top-level-generated-section-ahead-of-canonical-anchored-sec",
+      "text": "Adding a new primary top-level generated section ahead of canonical anchored sections when the existing template/validator contract expects the required anchors and headers to stay in order.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-3-full-rewrite-of-any-existing-spec-md-anchor-body-during-post-synthesis",
+      "text": "Full rewrite of any existing `spec.md` anchor body during post-synthesis.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-2-4-pure-append-only-findings-inside-an-existing-anchor-without-machine-owned-genera",
+      "text": "Pure append-only findings inside an existing anchor without machine-owned generated markers.",
+      "addedAtIteration": 2
+    },
+    {
+      "id": "ruled-out-3-1-rg-n-lock-concurrent-parallel-race-opencode-skill-sk-deep-research-opencode-skil",
+      "text": "`rg -n \"lock|concurrent|parallel|race\" .opencode/skill/sk-deep-research/ .opencode/skill/system-spec-kit/ | head -30` did not reveal a live `spec.md` single-writer contract in the current command surfaces; most hits were adjacent or reference-only.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-4-auto-healing-duplicate-or-missing-generated-markers-by-scanning-nearby-prose-and",
+      "text": "Auto-healing duplicate or missing generated markers by scanning nearby prose and \"best guessing\" the intended replaceable span.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-2-cocoindex-semantic-search-was-attempted-twice-for-generated-block-rollback-lock-",
+      "text": "CocoIndex semantic search was attempted twice for generated-block/rollback/lock precedents, but both tool calls were cancelled before returning results, so this iteration relied on exact local evidence plus pre-training patterns.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-5-lock-free-concurrent-deep-research-writes-to-the-same-spec-folder-even-if-the-co",
+      "text": "Lock-free concurrent deep-research writes to the same spec folder, even if the content diff would appear idempotent.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-3-the-current-repo-exposes-strong-generated-marker-precedent-sk-deep-review-and-ro",
+      "text": "The current repo exposes strong generated-marker precedent (`sk-deep-review`) and rollback commentary (`loop_protocol.md`), but not a ready-made `spec.md` mutation implementation that could be copied directly.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-3-6-treating-optional-checkpoint-commits-as-the-primary-rollback-contract-for-spec-m",
+      "text": "Treating optional checkpoint commits as the primary rollback contract for `spec.md` mutation.",
+      "addedAtIteration": 3
+    },
+    {
+      "id": "ruled-out-4-6-a-second-free-form-metadata-interview-just-for-relationships-or-a-new-top-level-",
+      "text": "A second free-form metadata interview just for relationships, or a new top-level `relationships` object outside `manual.*`.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-4-a-visible-chained-command-ux-where-plan-or-complete-tells-the-user-to-stop-and-r",
+      "text": "A visible chained-command UX where `/plan` or `/complete` tells the user to stop and run `/start` separately before resuming.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-2-existing-packet-graph-metadata-json-examples-only-show-empty-manual-arrays-so-th",
+      "text": "Existing packet `graph-metadata.json` examples only show empty manual arrays, so the object-entry recommendation is spec-compatible but not yet runtime-proven by a populated packet example.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-3-external-generator-docs-are-strong-on-minimum-input-scaffolding-and-automation-d",
+      "text": "External generator docs are strong on minimum-input scaffolding and automation defaults, but they do not model this repo's repair-mode or deep-research placeholder-upgrade edge cases.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-5-moving-execution-mode-dispatch-mode-or-phase-decomposition-into-start",
+      "text": "Moving execution mode, dispatch mode, or phase decomposition into `/start`.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-4-1-the-repo-still-has-no-live-spec-kit-start-command-implementation-to-copy-so-the-",
+      "text": "The repo still has no live `/spec_kit:start` command implementation to copy, so the answer has to be inferred from adjacent command and YAML contracts rather than lifted from an existing command surface.",
+      "addedAtIteration": 4
+    },
+    {
+      "id": "ruled-out-5-1-rg-n-state-machine-transition-fsm-opencode-command-opencode-skill-system-spec-ki",
+      "text": "`rg -n \"state|machine|transition|FSM\" .opencode/command/ .opencode/skill/system-spec-kit/ | head -20` found only indirect precedent; the explicit state-machine wording still has to be synthesized from adjacent YAML state/circuit-breaker patterns plus packet-local edge cases.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-6-collapsing-auditability-into-a-single-generic-start-completed-event-that-would-n",
+      "text": "Collapsing auditability into a single generic \"start completed\" event; that would not prove whether relationship capture, re-entry, or mode pruning behaved correctly.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-5-creating-a-second-parallel-field-namespace-for-delegated-start-when-feature-desc",
+      "text": "Creating a second parallel field namespace for delegated `/start` when `feature_description` and `spec_path` already exist in the parent command contract.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-3-iteration-004-s-external-generator-evidence-is-strong-enough-to-close-q1-at-the-",
+      "text": "Iteration-004's external generator evidence is strong enough to close `Q1` at the risk-class level, but it does not answer storage details for the eventual intake audit log.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-2-the-repo-still-does-not-expose-a-live-spec-kit-start-implementation-so-the-state",
+      "text": "The repo still does not expose a live `/spec_kit:start` implementation, so the state graph and audit schema remain contract proposals rather than confirmed runtime behavior.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-5-4-treating-deep-research-seeded-todos-as-a-healthy-populated-folder-and-letting-pl",
+      "text": "Treating deep-research-seeded TODOs as a healthy `populated-folder` and letting `/plan` continue without re-entry.",
+      "addedAtIteration": 5
+    },
+    {
+      "id": "ruled-out-6-2-existing-parent-command-intake-delegation-audit-events-remain-a-sibling-concern-",
+      "text": "Existing parent-command intake/delegation audit events remain a sibling concern; this pass could only pin the deep-research-side runtime sink, not a finished `/start` or `/plan` logging surface.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-4-inserting-step-detect-spec-present-before-jsonl-creation-and-forcing-pre-init-mu",
+      "text": "Inserting `step_detect_spec_present` before JSONL creation and forcing pre-init mutation to run without a durable audit sink.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-5-keeping-the-older-scratch-deep-research-lock-location-as-is-when-the-live-init-w",
+      "text": "Keeping the older `scratch/.deep-research.lock` location as-is when the live init workflow now guarantees `research/` but not `scratch/`.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-3-older-lock-guidance-referenced-now-obsolete-step-initialize-step-finalize-names-",
+      "text": "Older lock guidance referenced now-obsolete `step_initialize` / `step_finalize` names, so it was useful for semantics but not for exact step IDs.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-1-the-live-repo-still-has-no-ready-made-spec-md-mutator-in-spec-kit-deep-research-",
+      "text": "The live repo still has no ready-made `spec.md` mutator in `/spec_kit:deep-research`, so the protocol shape had to be synthesized from the current YAML lifecycle plus prior packet findings rather than copied from an implementation.",
+      "addedAtIteration": 6
+    },
+    {
+      "id": "ruled-out-6-6-treating-post-synthesis-write-back-as-a-save-phase-side-effect-after-config-comp",
+      "text": "Treating post-synthesis write-back as a save-phase side effect after config completion instead of a synthesis-phase success criterion.",
+      "addedAtIteration": 6
+    }
+  ],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 10,
+    "openQuestions": 7,
+    "resolvedQuestions": 0,
+    "keyFindings": 143,
+    "convergenceScore": 0.08,
+    "coverageBySources": {
+      "code": 14,
+      "cookiecutter.readthedocs.io": 2,
+      "create-react-app.dev": 1,
+      "doc.rust-lang.org": 2,
+      "github.com": 3,
+      "other": 52,
+      "www.ietf.org": 2,
+      "www.rfc-editor.org": 1,
+      "yeoman.io": 1
+    }
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

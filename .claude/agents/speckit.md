@@ -27,7 +27,7 @@ Spec docs are the canonical continuity surface. Runtime recovery stays anchored 
 
 **Path Convention**: Use only `.claude/agents/*.md` as the canonical runtime path reference.
 
-> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research/research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
+> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research/research.md`, the `_memory.continuity` YAML block inside `implementation-summary.md` may be edited directly for lightweight continuity updates, and `scratch/` is open to any agent.
 
 **CRITICAL**: Always copy templates from `templates/level_N/` folders. NEVER create spec documentation from scratch or memory. Templates are the source of truth.
 

@@ -537,7 +537,6 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/spec_kit:resume`: Session recovery and continuation
-- `/memory:manage shared`: Shared-memory spaces
 - `/spec_kit:handover`: Full session handover document
 
 ---

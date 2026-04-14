@@ -1,0 +1,508 @@
+# ─────────────────────────────────────────────────────────────────
+# SPEC KIT START: CANONICAL SPEC-FOLDER INTAKE (AUTO MODE)
+# ─────────────────────────────────────────────────────────────────
+# SPEC KIT START: CANONICAL SPEC-FOLDER INTAKE (AUTO MODE)
+# ─────────────────────────────────────────────────────────────────
+role: Spec Kit Intake Manager
+purpose: Canonical spec-folder intake with staged trio publication and optional memory-save branching
+action: Run start-intake workflow from preflight through reporting
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING MODE
+# ─────────────────────────────────────────────────────────────────
+operating_mode:
+  workflow: intake_interview
+  workflow_compliance: MANDATORY
+  workflow_execution: autonomous
+  approvals: none
+  tracking: progressive_intake_state
+  validation: canonical_trio_first
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS (from setup phase)
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  feature_description: "[FEATURE_DESCRIPTION] - Feature or packet description. REQUIRED unless inherited by parent command."
+  spec_folder: "[SPEC_FOLDER] - Target spec folder path. REQUIRED."
+  execution_mode: "[EXECUTION_MODE] - AUTONOMOUS for this workflow."
+  start_state: "[START_STATE] - empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder."
+  repair_mode: "[REPAIR_MODE] - create | repair-metadata | resolve-placeholders | overwrite | abort."
+
+# ─────────────────────────────────────────────────────────────────
+# FIELD HANDLING
+# ─────────────────────────────────────────────────────────────────
+field_handling:
+  direct_fields:
+    - feature_description
+    - spec_folder
+    - execution_mode
+    - start_state
+    - repair_mode
+    - level_recommendation
+    - selected_level
+    - resume_question_id
+    - reentry_reason
+  derived_fields:
+    topic_normalized:
+      source: "Normalize feature_description by lowercasing, stripping punctuation, collapsing whitespace, and trimming before dedupe or re-entry checks."
+    level_recommendation:
+      source: "bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh"
+      note: "Store helper suggestion separately from operator override."
+    start_state:
+      source: "Folder inspection before any staged writes, including DR seed-marker detection in spec.md"
+      vocabulary: [empty-folder, partial-folder, repair-mode, placeholder-upgrade, populated-folder]
+    repair_mode:
+      source: "Derived from folder state unless explicitly confirmed by user or inherited parent context"
+  relationship_fields:
+    depends_on: "manual_relationships.depends_on[]"
+    related_to: "manual_relationships.related_to[]"
+    supersedes: "manual_relationships.supersedes[]"
+  returned_contract:
+    - feature_description
+    - spec_path
+    - selected_level
+    - level_recommendation
+    - start_state
+    - repair_mode
+    - manual_relationships
+    - resume_question_id
+    - reentry_reason
+
+# ─────────────────────────────────────────────────────────────────
+# PACKET GRAPH METADATA CONTRACT
+# ─────────────────────────────────────────────────────────────────
+packet_graph_metadata:
+  canonical_trio:
+    - "{spec_folder}/spec.md"
+    - "{spec_folder}/description.json"
+    - "{spec_folder}/graph-metadata.json"
+  manual_relationship_shape: "{ packet_id, reason, source, spec_folder?, title? }"
+  manual_arrays:
+    - graph-metadata.json.manual.depends_on
+    - graph-metadata.json.manual.related_to
+    - graph-metadata.json.manual.supersedes
+  dedupe_key: packet_id
+  events:
+    - intake_mode_resolved
+    - start_state_classified
+    - level_recommended
+    - level_selected
+    - relationship_captured
+    - relationship_deduped
+    - canonical_trio_staged
+    - canonical_trio_committed
+    - memory_save_branched
+    - reentry_registered
+    - intake_topic_deduped
+
+# ─────────────────────────────────────────────────────────────────
+# DOCUMENTATION LEVELS
+# ─────────────────────────────────────────────────────────────────
+documentation_levels:
+  level_1:
+    use_when: "Small scoped change or fresh packet with minimal documentation needs"
+    files: [spec.md, plan.md, tasks.md]
+  level_2:
+    use_when: "QA checklist or stronger verification evidence is expected"
+    files: [spec.md, plan.md, tasks.md, checklist.md]
+  level_3:
+    use_when: "Architecture-level work or multi-file command/runtime changes"
+    files: [spec.md, plan.md, tasks.md, checklist.md, decision-record.md]
+  level_3_plus:
+    use_when: "Enterprise governance or multi-agent protocol work"
+    files: [spec.md, plan.md, tasks.md, checklist.md, decision-record.md, addendum artifacts]
+
+# ─────────────────────────────────────────────────────────────────
+# AVAILABLE TEMPLATES
+# ─────────────────────────────────────────────────────────────────
+available_templates:
+  spec_level_1: ".opencode/skill/system-spec-kit/templates/level_1/spec.md"
+  spec_level_2: ".opencode/skill/system-spec-kit/templates/level_2/spec.md"
+  spec_level_3: ".opencode/skill/system-spec-kit/templates/level_3/spec.md"
+  description_generator: ".opencode/skill/system-spec-kit/scripts/dist/spec/generate-description.js"
+  level_recommender: ".opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh"
+  memory_generator: ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 1: PREFLIGHT
+  # ═══════════════════════════════════════════════════════════════
+  phase_preflight:
+    purpose: Validate bindings, acquire the intake advisory lock, and classify the target folder before prompting or writing
+    steps:
+
+      step_preflight_contract:
+        action: "Validate required setup bindings and executable workflow contract before any file writes"
+        verify:
+          - required_values_present: [spec_folder, execution_mode]
+          - spec_folder_is_within: "specs/ or .opencode/specs/ (canonicalize alias roots before validation)"
+          - unresolved_placeholders: "FAIL if user-facing template references unresolved bindings"
+          - tool_contract: "FAIL if executable steps reference tools outside the command allowlist"
+        on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"
+
+      step_create_directories:
+        action: "Create the target spec folder and staging directory if missing"
+        command: "mkdir -p {spec_folder} {spec_folder}/.start-staging"
+
+      step_acquire_advisory_lock:
+        action: "Acquire the start-intake advisory lock before folder-state classification"
+        lock_path: "{spec_folder}/.spec-kit-start.lock"
+        stale_lock_policy: "Auto mode halts with recovery guidance; confirm mode may offer override in the paired workflow"
+        on_lock_acquired:
+          audit:
+            append:
+              event: intake_mode_resolved
+              payload: '{"event":"intake_mode_resolved","executionMode":"auto","specFolder":"{spec_folder}","lockPath":"{spec_folder}/.spec-kit-start.lock","timestamp":"{ISO_8601_NOW}"}'
+        on_lock_conflict:
+          halt: true
+          message: "Spec Kit start lock is already held. Review or clear {spec_folder}/.spec-kit-start.lock before retrying."
+
+      step_classify_folder_state:
+        action: "Inspect canonical files and tracked seed markers, then normalize the target folder state"
+        inspect:
+          - "{spec_folder}/spec.md"
+          - "{spec_folder}/description.json"
+          - "{spec_folder}/graph-metadata.json"
+          - "{spec_folder}/research/"
+        seed_marker_scan:
+          spec_path: "{spec_folder}/spec.md"
+          marker_pattern: "<!-- DR-SEED:*-->"
+          classify_override: "Any detected DR seed marker forces placeholder-upgrade and REQ-011 re-entry."
+        classify:
+          empty-folder: "No canonical trio exists and the folder is otherwise empty or scratch-only"
+          partial-folder: "At least one canonical file is missing and no explicit repair markers are present"
+          repair-mode: "Canonical trio exists but metadata repair is required"
+          placeholder-upgrade: "Tracked seed markers or unresolved intake placeholders are present"
+          populated-folder: "Canonical trio exists and the folder appears healthy"
+        outputs:
+          - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+          - spec_path: "{spec_folder}/spec.md"
+          - detected_seed_markers: "List of <!-- DR-SEED:*--> markers already present in spec.md"
+        audit:
+          append:
+            event: start_state_classified
+            payload: '{"event":"start_state_classified","startState":"{start_state}","specPath":"{spec_path}","specFolder":"{spec_folder}","detectedSeedMarkers":{detected_seed_markers_json},"timestamp":"{ISO_8601_NOW}"}'
+
+      step_register_reentry:
+        action: "Derive resume_question_id and reentry_reason from unresolved intake state"
+        derive:
+          resume_question_id: "Q_seed_scope or Q_seed_requirements when detected_seed_markers remain, Q0 when feature_description missing, Q2 when level unresolved, Q4 when relationships requested but incomplete, else null"
+          reentry_reason: "incomplete-interview | placeholder-upgrade | metadata-repair | none"
+        on_reentry:
+          audit:
+            append:
+              event: reentry_registered
+              payload: '{"event":"reentry_registered","startState":"{start_state}","resumeQuestionId":"{resume_question_id}","reentryReason":"{reentry_reason}","specPath":"{spec_path}","detectedSeedMarkers":{detected_seed_markers_json},"timestamp":"{ISO_8601_NOW}"}'
+
+      step_bind_repair_mode:
+        action: "Resolve repair_mode from classified start_state unless the operator pre-bound a stronger mode"
+        defaults:
+          empty-folder: create
+          partial-folder: repair-metadata
+          repair-mode: repair-metadata
+          placeholder-upgrade: resolve-placeholders
+          populated-folder: abort
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 2: INTERVIEW
+  # ═══════════════════════════════════════════════════════════════
+  phase_interview:
+    purpose: Collect the minimal Q0-Q4 intake fields and normalize the returned contract
+    steps:
+
+      step_collect_feature_description:
+        action: "Resolve Q0 only when feature_description was not already supplied"
+        if_missing:
+          prompt: "Q0. What should this spec folder capture?"
+          store_as: feature_description
+        if_present:
+          proceed: true
+
+      step_normalize_feature_description:
+        action: "Normalize feature_description for idempotent spec.md writes and relationship/audit payload reuse"
+        normalize:
+          topic_normalized: "Lowercase, strip punctuation, collapse whitespace, and trim feature_description before comparing against existing spec.md Problem Statement or Purpose content."
+
+      step_recommend_level:
+        action: "Run recommend-level.sh before asking Q2 and capture the helper output separately"
+        command: "bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --path {spec_folder} --feature \"{feature_description}\""
+        outputs:
+          - level_recommendation: "Helper suggestion with rationale"
+        on_fail:
+          set:
+            level_recommendation: "Level 1 (fallback; recommender unavailable)"
+        audit:
+          append:
+            event: level_recommended
+            payload: '{"event":"level_recommended","specFolder":"{spec_folder}","recommendation":"{level_recommendation}","topicNormalized":"{topic_normalized}","timestamp":"{ISO_8601_NOW}"}'
+
+      step_bind_selected_level:
+        action: "Resolve Q2 using the helper recommendation unless the operator supplied an override"
+        default: "{level_recommendation}"
+        override_from_flag: true
+        outputs:
+          - selected_level: "Final level used for spec.md publication"
+        audit:
+          append:
+            event: level_selected
+            payload: '{"event":"level_selected","specFolder":"{spec_folder}","selectedLevel":"{selected_level}","levelRecommendation":"{level_recommendation}","timestamp":"{ISO_8601_NOW}"}'
+
+      step_collect_relationship_gate:
+        action: "Resolve Q3 before collecting any relationship entries"
+        default: false
+        override_from_flag: true
+        outputs:
+          - collect_relationships: "Boolean gate for Q4+"
+
+      step_collect_relationship_entries:
+        action: "Resolve Q4+ only when the relationship gate is open"
+        if_collect_relationships:
+          normalize:
+            depends_on: "Convert grouped entries into manual_relationships.depends_on[] objects"
+            related_to: "Convert grouped entries into manual_relationships.related_to[] objects"
+            supersedes: "Convert grouped entries into manual_relationships.supersedes[] objects"
+          dedupe: "packet_id within each relation type"
+          audit:
+            append_per_entry:
+              event: relationship_captured
+              payload: '{"event":"relationship_captured","specFolder":"{spec_folder}","relationType":"{relation_type}","packetId":"{packet_id}","reason":"{reason}","source":"{source}","timestamp":"{ISO_8601_NOW}"}'
+            append:
+              event: relationship_deduped
+              when: "count_relationship_deduped > 0"
+              payload: '{"event":"relationship_deduped","specFolder":"{spec_folder}","dedupedCount":{count_relationship_deduped},"packetIds":{deduped_packet_ids_json},"timestamp":"{ISO_8601_NOW}"}'
+        if_skip:
+          set:
+            manual_relationships.depends_on: []
+            manual_relationships.related_to: []
+            manual_relationships.supersedes: []
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 3: CANONICAL TRIO
+  # ═══════════════════════════════════════════════════════════════
+  phase_emit_canonical_trio:
+    purpose: Stage and commit spec.md, description.json, and graph-metadata.json as the canonical success condition
+    steps:
+
+      step_stage_spec_md:
+        action: "Write the chosen spec template to a temp sibling path"
+        temp_output: "{spec_folder}/.start-staging/spec.md.tmp"
+        template: "Select the spec template that matches {selected_level}"
+        idempotency_guard:
+          normalize_existing_sections:
+            spec_path: "{spec_path}"
+            anchors:
+              - "Problem Statement"
+              - "Purpose"
+            compare_with: "{topic_normalized}"
+          if_equivalent_phrase_exists:
+            skip_feature_description_write: true
+            stage_from_existing_spec: "{spec_path} -> {spec_folder}/.start-staging/spec.md.tmp"
+            audit:
+              append:
+                event: intake_topic_deduped
+                payload: '{"event":"intake_topic_deduped","specFolder":"{spec_folder}","specPath":"{spec_path}","topicNormalized":"{topic_normalized}","matchedSections":["Problem Statement","Purpose"],"timestamp":"{ISO_8601_NOW}"}'
+          if_no_equivalent_phrase:
+            proceed_with_template_population: true
+        populate:
+          feature_description: "{feature_description}"
+          selected_level: "{selected_level}"
+          level_recommendation: "{level_recommendation}"
+          repair_mode: "{repair_mode}"
+          start_state: "{start_state}"
+
+      step_stage_description_json:
+        action: "Stage description.json from the committed spec intent, not from memory-save output"
+        temp_output: "{spec_folder}/.start-staging/description.json.tmp"
+        backup_existing: "{spec_folder}/description.json -> {spec_folder}/.start-staging/preexisting/description.json.bak when present"
+        populate:
+          description: "Truncate to metadata-safe length while preserving the full text in spec.md"
+          source: "/spec_kit:start"
+          spec_folder: "{spec_folder}"
+
+      step_stage_graph_metadata:
+        action: "Retain the existing step id while preparing deduped relationship payloads and backups for graph-metadata.json"
+        backup_existing: "{spec_folder}/graph-metadata.json -> {spec_folder}/.start-staging/preexisting/graph-metadata.json.bak when present"
+        dedupe_manual_relationships:
+          key: packet_id
+          targets:
+            - manual_relationships.depends_on
+            - manual_relationships.related_to
+            - manual_relationships.supersedes
+        note: "Actual JSON staging is emitted by step_stage_graph_metadata_json to preserve the M6 staged-commit contract without renaming this existing step id."
+
+      step_stage_graph_metadata_json:
+        action: "Stage graph-metadata.json including deduped manual relationship arrays and parent-chain hints"
+        temp_output: "{spec_folder}/.start-staging/graph-metadata.json.tmp"
+        populate:
+          start_state: "{start_state}"
+          repair_mode: "{repair_mode}"
+          manual_relationships: "{manual_relationships_deduped}"
+
+      step_verify_staged_trio:
+        action: "Validate all staged files before any final rename"
+        verify:
+          - file_exists: "{spec_folder}/.start-staging/spec.md.tmp"
+          - file_exists: "{spec_folder}/.start-staging/description.json.tmp"
+          - file_exists: "{spec_folder}/.start-staging/graph-metadata.json.tmp"
+          - selected_level_bound: "{selected_level}"
+          - feature_description_present: "{feature_description}"
+        audit:
+          append:
+            event: canonical_trio_staged
+            payload: '{"event":"canonical_trio_staged","specFolder":"{spec_folder}","specPath":"{spec_path}","stagedPaths":["{spec_folder}/.start-staging/spec.md.tmp","{spec_folder}/.start-staging/description.json.tmp","{spec_folder}/.start-staging/graph-metadata.json.tmp"],"timestamp":"{ISO_8601_NOW}"}'
+
+      step_commit_canonical_trio:
+        action: "Rename staged files into place only after the full trio is ready"
+        commit_strategy: "staged sibling temp files plus explicit batch rename, with pre-existing backups restored on any failure step"
+        preserve_preexisting_on_failure: true
+        backup_existing:
+          - "{spec_folder}/spec.md -> {spec_folder}/.start-staging/preexisting/spec.md.bak when present"
+          - "{spec_folder}/description.json -> {spec_folder}/.start-staging/preexisting/description.json.bak when present"
+          - "{spec_folder}/graph-metadata.json -> {spec_folder}/.start-staging/preexisting/graph-metadata.json.bak when present"
+        rename:
+          - "{spec_folder}/.start-staging/spec.md.tmp -> {spec_folder}/spec.md"
+          - "{spec_folder}/.start-staging/description.json.tmp -> {spec_folder}/description.json"
+          - "{spec_folder}/.start-staging/graph-metadata.json.tmp -> {spec_folder}/graph-metadata.json"
+        on_success:
+          audit:
+            append:
+              event: canonical_trio_committed
+              payload: '{"event":"canonical_trio_committed","specFolder":"{spec_folder}","specPath":"{spec_path}","startState":"{start_state}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
+        on_fail:
+          proceed_to: step_recover_on_failure
+
+      step_recover_on_failure:
+        action: "Restore any pre-existing canonical files if a staged rename fails and keep temp files for inspection"
+        restore:
+          - "{spec_folder}/.start-staging/preexisting/spec.md.bak -> {spec_folder}/spec.md when backup exists"
+          - "{spec_folder}/.start-staging/preexisting/description.json.bak -> {spec_folder}/description.json when backup exists"
+          - "{spec_folder}/.start-staging/preexisting/graph-metadata.json.bak -> {spec_folder}/graph-metadata.json when backup exists"
+        cleanup_partial_targets:
+          - "{spec_folder}/spec.md when created only by failed commit step and no backup existed"
+          - "{spec_folder}/description.json when created only by failed commit step and no backup existed"
+          - "{spec_folder}/graph-metadata.json when created only by failed commit step and no backup existed"
+        halt: true
+        message: "Canonical trio commit failed. Pre-existing files were restored from {spec_folder}/.start-staging/preexisting/ and staged temp files were preserved for review."
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 4: OPTIONAL SAVE
+  # ═══════════════════════════════════════════════════════════════
+  phase_optional_save:
+    purpose: Branch into memory save only when structured context exists after trio success
+    steps:
+
+      step_evaluate_save_branch:
+        action: "Decide whether optional memory save should run"
+        criteria:
+          structured_context_required: "feature_description plus committed spec context exceeds bare scaffold metadata"
+          canonical_trio_required: true
+        outputs:
+          - run_memory_save: "true | false"
+
+      step_branch_memory_save:
+        action: "Run generate-context.js only when the save branch is justified"
+        if_run_memory_save:
+          command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_folder}"
+          audit:
+            append:
+              event: memory_save_branched
+              payload: '{"event":"memory_save_branched","branch":"executed","specFolder":"{spec_folder}","canonicalCommitStatus":"committed","timestamp":"{ISO_8601_NOW}"}'
+          on_fail:
+            audit:
+              append:
+                event: memory_save_branched
+                payload: '{"event":"memory_save_branched","branch":"failed","specFolder":"{spec_folder}","canonicalCommitStatus":"committed","reason":"generate-context-failed","timestamp":"{ISO_8601_NOW}"}'
+            note: "Optional memory save stays outside the canonical trio transaction and must not invalidate trio success."
+        if_skip_memory_save:
+          audit:
+            append:
+              event: memory_save_branched
+              payload: '{"event":"memory_save_branched","branch":"skipped","specFolder":"{spec_folder}","canonicalCommitStatus":"committed","reason":"insufficient-structured-context","timestamp":"{ISO_8601_NOW}"}'
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 5: REPORT
+  # ═══════════════════════════════════════════════════════════════
+  phase_report:
+    purpose: Return the stable contract for direct runs or delegated parent flows
+    steps:
+
+      step_emit_completion_report:
+        action: "Emit the final returned contract and completion status"
+        outputs:
+          - feature_description
+          - spec_path
+          - selected_level
+          - level_recommendation
+          - start_state
+          - repair_mode
+          - manual_relationships
+          - resume_question_id
+          - reentry_reason
+
+# ─────────────────────────────────────────────────────────────────
+# QUALITY GATES
+# ─────────────────────────────────────────────────────────────────
+quality_gates:
+  contract:
+    - "Both start YAMLs must share the same five-state folder model and returned-field contract"
+    - "Confirm-mode approvals may add pauses, but not new output fields"
+  canonical_trio:
+    - "Trio success means spec.md + description.json + graph-metadata.json committed"
+    - "Optional memory save never invalidates trio success"
+  integrity:
+    - "Do not overwrite a populated folder silently"
+    - "Preserve pre-existing files on staged-write failure"
+    - "Dedupe manual relationships by packet_id per relation type"
+
+# ─────────────────────────────────────────────────────────────────
+# COMPLETION REPORT
+# ─────────────────────────────────────────────────────────────────
+completion_report:
+  success_message: |
+    Spec Kit start complete.
+    State: {start_state} | Repair mode: {repair_mode}
+    Level: {selected_level} (recommended: {level_recommendation})
+    STATUS=OK PATH={spec_folder}
+  returned_fields:
+    - feature_description
+    - spec_path
+    - selected_level
+    - level_recommendation
+    - start_state
+    - repair_mode
+    - manual_relationships
+    - resume_question_id
+    - reentry_reason
+  next_steps:
+    - "/spec_kit:plan {feature_description}"
+    - "/spec_kit:deep-research {feature_description}"
+    - "/spec_kit:handover {spec_folder}"
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  populated_folder_default: "Abort and require explicit repair or overwrite choice."
+  advisory_lock_conflict: "Fail closed and show the lock path plus cleanup guidance."
+  template_failure: "Leave staged files in .start-staging and preserve committed files."
+  memory_save_failure: "Report save failure independently from canonical trio success."
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - follow_workflow_phases_in_order
+    - classify_folder_state_before_staging_files
+    - keep_level_recommendation_and_selected_level_separate
+    - publish_canonical_trio_before_optional_memory_save
+    - dedupe_manual_relationships_by_packet_id
+  NEVER:
+    - overwrite_populated_folder_silently
+    - treat_memory_save_as_the_success_condition
+    - discard_preexisting_files_on_stage_failure
+    - emit_a_different_contract_than_confirm_mode

@@ -359,19 +359,19 @@ function prepareParsedMemoryForIndexing(
   const templateContract = validateMemoryTemplateContract(parsed.content);
 
   // Non-blocking spec doc health annotation
-  // parsed.specFolder is a relative key (e.g., "system-spec-kit/100-feature"),
-  // so resolve the absolute spec folder by walking up from the memory file path.
+  // Canonical saves land directly in the spec folder (e.g. .../NNN-name/decision-record.md),
+  // so the immediate parent is usually the spec folder itself.
   let specDocHealth: SpecDocHealthResult | null = null;
   if (parsed.specFolder && parsed.filePath) {
     try {
       const absFilePath = path.resolve(parsed.filePath);
-      // Memory files live at .../NNN-name/memory/*.md — walk up to the spec folder
-      const memoryDir = path.dirname(absFilePath);
-      const parentDir = path.dirname(memoryDir);
-      // Verify this is actually a spec folder (has spec.md)
-      const specMdPath = path.join(parentDir, 'spec.md');
-      if (fs.existsSync(specMdPath)) {
-        specDocHealth = evaluateSpecDocHealth(parentDir);
+      const immediateParent = path.dirname(absFilePath);
+      const candidates = [immediateParent, path.dirname(immediateParent)];
+      for (const candidate of candidates) {
+        if (fs.existsSync(path.join(candidate, 'spec.md'))) {
+          specDocHealth = evaluateSpecDocHealth(candidate);
+          break;
+        }
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -2081,7 +2081,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   const database = requireDb();
 
   if (!memoryParser.isMemoryFile(validatedPath)) {
-    throw new Error('File must be a .md or .txt file in: specs/**/memory/, specs/**/ (spec docs), or .opencode/skill/*/constitutional/');
+    throw new Error('File must be a canonical spec document under specs/**/ (spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, handover.md, research.md, description.json, graph-metadata.json) or a constitutional memory under .opencode/skill/*/constitutional/');
   }
 
   if (typeof database.exec === 'function') {

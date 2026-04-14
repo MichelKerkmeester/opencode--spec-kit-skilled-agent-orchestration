@@ -262,8 +262,8 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
   });
 
   describe('T067: isMemoryFile() recognizes spec documents', () => {
-    it('Accepts standard memory files', () => {
-      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/notes.md')).toBe(true);
+    it('Rejects legacy memory/ paths (retired surface)', () => {
+      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/notes.md')).toBe(false);
     });
 
     it('Accepts spec.md in specs/ directory', () => {
@@ -282,9 +282,8 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
       expect(isMemoryFile('/p/.opencode/specs/003/100/decision-record.md')).toBe(true);
     });
 
-    it('Rejects spec.md in /memory/ directory', () => {
-      // Spec.md in memory/ should still be accepted as standard memory
-      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/spec.md')).toBe(true);
+    it('Rejects spec.md placed inside legacy /memory/ directory', () => {
+      expect(isMemoryFile('/p/.opencode/specs/003/100/memory/spec.md')).toBe(false);
     });
 
     it('Rejects spec.md in /scratch/ directory', () => {

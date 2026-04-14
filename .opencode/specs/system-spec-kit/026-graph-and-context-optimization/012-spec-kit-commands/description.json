@@ -1,0 +1,30 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
+  "description": "Introduce /spec_kit:start as canonical spec-folder intake interview and require deep-research to anchor every run to a real spec.md",
+  "keywords": [
+    "introduce",
+    "start",
+    "canonical",
+    "spec-folder",
+    "intake",
+    "interview",
+    "require",
+    "deep-research",
+    "anchor",
+    "every",
+    "run",
+    "real",
+    "spec"
+  ],
+  "lastUpdated": "2026-04-14T07:49:36.500Z",
+  "specId": "012",
+  "folderSlug": "spec-kit-commands",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "14-04-26_10-41__completed-10-iteration-spec-kit-deep-research.md"
+  ]
+}

@@ -866,8 +866,8 @@ workflow:
         note: "Use the actual file path returned by generate-context.js; memory_index_scan remains the bulk fallback"
 
       step_verify_save:
-        action: "Verify generated continuity support artifact was created"
-        check: "Does {spec_folder}/memory/*.md exist?"
+        action: "Verify canonical save routed content into the correct spec document"
+        check: "Does {spec_folder}/implementation-summary.md, {spec_folder}/decision-record.md, or {spec_folder}/handover.md carry the new continuity update?"
         on_fail: "Log warning but do not block completion"
 
   # ═══════════════════════════════════════════════════════════════

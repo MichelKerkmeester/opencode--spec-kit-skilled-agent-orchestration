@@ -1513,7 +1513,6 @@ function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
     { name: 'tenant_id', sql: 'ALTER TABLE memory_index ADD COLUMN tenant_id TEXT' },
     { name: 'user_id', sql: 'ALTER TABLE memory_index ADD COLUMN user_id TEXT' },
     { name: 'agent_id', sql: 'ALTER TABLE memory_index ADD COLUMN agent_id TEXT' },
-    { name: 'shared_space_id', sql: 'ALTER TABLE memory_index ADD COLUMN shared_space_id TEXT' }, // RETAINED: shared_space_id kept for backward-compatible DB migration. Not used by runtime. See 010-remove-shared-memory.
     { name: 'provenance_source', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_source TEXT' },
     { name: 'provenance_actor', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_actor TEXT' },
     { name: 'governed_at', sql: 'ALTER TABLE memory_index ADD COLUMN governed_at TEXT' },
@@ -1532,8 +1531,20 @@ function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
   }
 }
 
+function dropDeprecatedSharedSpaceColumn(database: Database.Database): void {
+  if (!hasTable(database, 'memory_index')) return;
+  const columnNames = getTableColumns(database, 'memory_index');
+  if (!columnNames.includes('shared_space_id')) return;
+  try {
+    database.exec('ALTER TABLE memory_index DROP COLUMN shared_space_id');
+  } catch {
+    // Older SQLite without DROP COLUMN support: leave the column in place. The runtime never reads or writes it.
+  }
+}
+
 export function ensureGovernanceTables(database: Database.Database): void {
   ensureMemoryIndexGovernanceColumns(database);
+  dropDeprecatedSharedSpaceColumn(database);
 
   database.exec(`
     CREATE TABLE IF NOT EXISTS governance_audit (
@@ -2367,7 +2378,6 @@ export function create_schema(
       user_id TEXT,
       agent_id TEXT,
       session_id TEXT,
-      shared_space_id TEXT, -- RETAINED: shared_space_id kept for backward-compatible DB migration. Not used by runtime. See 010-remove-shared-memory.
       context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'planning', 'general')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,

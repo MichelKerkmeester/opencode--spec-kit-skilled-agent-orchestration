@@ -130,6 +130,10 @@ field_handling:
     note: "[SPEC_FOLDER] may be a phase child path (e.g., specs/003-name/001-phase/). When Option E is selected or --phase-folder is provided, spec_id derives from the parent folder NNN, not the child NNN. Predecessor validation required for non-first phases."
     path_pattern: "specs/{NNN-parent}/{NNN-phase}/"
   scope_policy: { default: "specs/**", rule: "Limit file operations to scope when provided" }
+  start_delegation_contract:
+    trigger_states: [no-spec, partial-folder, repair-mode, placeholder-upgrade]
+    returned_fields: [feature_description, spec_path, selected_level, start_state, repair_mode, manual_relationships]
+    no_regression_rule: "When folder_state == populated, skip delegated `/start` intake and preserve the current Step 1 behavior."
 
 packet_graph_metadata:
   completion_contract:
@@ -465,6 +469,54 @@ context_loading:
 # WORKFLOW
 # ─────────────────────────────────────────────────────────────────
 workflow:
+  step_0.5_start_delegation_branch:
+    purpose: Detect non-healthy target folders before Step 1 so `/complete` can inline absorb `/start` intake without a visible chained handoff
+    action: "Run folder-state discovery using ls plus canonical file checks on the target spec path after any phase-predecessor validation"
+    inspect:
+      command: "ls -la {spec_folder} 2>/dev/null || true"
+      file_checks:
+        - "{spec_folder}/spec.md"
+        - "{spec_folder}/description.json"
+        - "{spec_folder}/graph-metadata.json"
+        - "{spec_folder}/research/"
+    classify:
+      no-spec: "spec.md is missing or the folder has no canonical spec artifacts yet"
+      partial-folder: "spec.md or metadata exists, but the canonical trio is incomplete"
+      repair-mode: "spec.md exists and the folder requires metadata repair or intake resume before completion"
+      placeholder-upgrade: "Tracked seed markers, persisted intake resume markers, or unresolved placeholders remain and block healthy-folder status"
+      populated: "spec.md, description.json, and graph-metadata.json are present with no unresolved placeholder markers"
+    map_to_start_state:
+      no-spec: empty-folder
+      partial-folder: partial-folder
+      repair-mode: repair-mode
+      placeholder-upgrade: placeholder-upgrade
+      populated: populated-folder
+    outputs:
+      - folder_state: "no-spec | partial-folder | repair-mode | placeholder-upgrade | populated"
+      - spec_path: "{spec_folder}"
+      - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+    on_trigger:
+      when: "folder_state != populated"
+      inline_start_intake:
+        execution_mode: "{execution_mode}"
+        prompt_mode: "single_consolidated_prompt"
+        questions:
+          - "/start Q0-Q3 plus optional Q4+ are absorbed inline into the parent setup prompt"
+        bind_fields:
+          - feature_description
+          - spec_path
+          - selected_level
+          - start_state
+          - repair_mode
+          - manual_relationships
+      emit_event: start_delegation_triggered
+      payload: '{"event":"start_delegation_triggered","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","timestamp":"{ISO_8601_NOW}"}'
+      emit_event_after_bind: start_delegation_completed
+      payload_after_bind: '{"event":"start_delegation_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
+    on_skip:
+      when: "folder_state == populated"
+      note: "Healthy folder detected. Skip delegated `/start` intake and keep the existing `/complete` setup behavior unchanged."
+
   step_1_request_analysis:
     purpose: Analyze inputs and define development scope
     spec_folder: "[SPEC_FOLDER] → auto-create if empty"
@@ -981,12 +1033,12 @@ workflow:
       enforcement: HARD_BLOCK
       method: "MUST use structured JSON input with generate-context.js"
       command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]"
-      forbidden: { tools: [Write, Edit], action: "NEVER manually author continuity support artifacts under memory/", paths: ["*/memory/*.md", "specs/*/memory/*"] }
-      violation_recovery: "DELETE the manually authored support artifact -> run generate-context.js -> verify ANCHORs -> index via memory_save"
+      forbidden: { tools: [Write, Edit], action: "NEVER manually author files under retired memory/ paths (the runtime rejects them)", paths: ["*/memory/*.md", "specs/*/memory/*"] }
+      violation_recovery: "DELETE the manually authored file -> run generate-context.js so the save routes into decision-record.md, implementation-summary.md, or handover.md -> verify ANCHORs -> index via memory_save"
     tool_invocation:
       command: 'Read(".opencode/skill/system-spec-kit/SKILL.md")'
     outputs:
-    - context_file: "Canonical continuity refreshed in spec docs + indexed support artifact under [SPEC_FOLDER]/memory/"
+    - context_file: "Canonical continuity refreshed in spec docs (decision-record.md / implementation-summary.md / handover.md) and indexed via memory_save"
     validation: context_saved_successfully
 
     post_save_indexing:

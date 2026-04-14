@@ -43,7 +43,7 @@ Gate E alignment: parsing now supports the canonical continuity stack directly. 
 <!-- ANCHOR:implemented-state -->
 ## 3. IMPLEMENTED STATE
 
-- `memory-parser.ts` exports `parseMemoryFile()`, `readFileWithEncoding()`, `extractDocumentType()`, `extractSpecFolder()`, `extractTitle()`, `extractTriggerPhrases()`, `extractContextType()`, `extractImportanceTier()`, `computeContentHash()`, `extractCausalLinks()`, `hasCausalLinks()`, `isMemoryFile()`, `validateAnchors()`, `extractAnchors()`, and `findMemoryFiles()`.
+- `memory-parser.ts` exports `parseMemoryFile()`, `readFileWithEncoding()`, `extractDocumentType()`, `extractSpecFolder()`, `extractTitle()`, `extractTriggerPhrases()`, `extractContextType()`, `extractImportanceTier()`, `computeContentHash()`, `extractCausalLinks()`, `hasCausalLinks()`, `isMemoryFile()`, `validateAnchors()`, and `extractAnchors()`. The retired legacy memory-file discovery surface (`findMemoryFiles()`, `MEMORY_FILE_PATTERN`) has been removed; spec-document and constitutional discovery now live in `handlers/memory-index-discovery.ts`.
 - Spec-document classification starts in the parser via `extractDocumentType()`, while spec-level detection now happens in discovery/indexing helpers instead of a parsing export.
 - `trigger-matcher.ts` owns the trigger cache, cache stats, memory lookups by phrase, and word-boundary-aware matching.
 - `content-normalizer.ts` is the shared normalization path for both embedding generation and BM25 token building.

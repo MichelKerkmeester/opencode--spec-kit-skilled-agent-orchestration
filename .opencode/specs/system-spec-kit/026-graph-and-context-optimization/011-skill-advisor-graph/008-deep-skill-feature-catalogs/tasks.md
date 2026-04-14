@@ -30,7 +30,7 @@ _memory:
 - [ ] T010: Create 04--severity-system/ per-feature files
 
 ## sk-improve-agent
-- [ ] T011: Create root feature_catalog.md with 3 categories
-- [ ] T012: Create 01--evaluation-loop/ per-feature files
-- [ ] T013: Create 02--integration-scanning/ per-feature files
-- [ ] T014: Create 03--scoring-system/ per-feature files
+- [x] T011: Create root feature_catalog.md with 3 categories
+- [x] T012: Create 01--evaluation-loop/ per-feature files
+- [x] T013: Create 02--integration-scanning/ per-feature files
+- [x] T014: Create 03--scoring-system/ per-feature files

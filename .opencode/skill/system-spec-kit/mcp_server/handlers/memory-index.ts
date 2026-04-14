@@ -210,7 +210,6 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
   const workspacePath: string = DEFAULT_BASE_PATH;
 
-  const specFiles: string[] = memoryParser.findMemoryFiles(workspacePath, { specFolder: spec_folder });
   const constitutionalFiles: string[] = include_constitutional ? findConstitutionalFiles(workspacePath) : [];
   const specDocFiles: string[] = include_spec_docs ? findSpecDocuments(workspacePath, { specFolder: spec_folder }) : [];
   const graphMetadataFiles: string[] = include_spec_docs ? findGraphMetadataFiles(workspacePath, { specFolder: spec_folder }) : [];
@@ -227,7 +226,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     return canonicalKey;
   };
 
-  const mergedFiles = [...specFiles, ...constitutionalFiles, ...specDocFiles, ...graphMetadataFiles];
+  const mergedFiles = [...constitutionalFiles, ...specDocFiles, ...graphMetadataFiles];
   const specDocKeySet = new Set(specDocFiles.map((f) => getCachedKey(f)));
   const seenCanonicalFiles = new Set<string>();
   const files: string[] = [];
@@ -325,7 +324,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       },
       hints: [
         ...(staleDeleted > 0 ? [`Removed ${staleDeleted} stale index record(s) for deleted files`] : []),
-        'Memory files should be in specs/**/memory/ directories',
+        'Indexable files are canonical spec documents under specs/**/ (spec.md, plan.md, decision-record.md, implementation-summary.md, handover.md, etc.)',
         'Constitutional files go in .opencode/skill/*/constitutional/'
       ]
     });
@@ -639,7 +638,6 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       ...(process.env.SPECKIT_DEBUG_INDEX_SCAN === 'true'
         ? {
             _debug_fileCounts: {
-              specFiles: specFiles.length,
               constitutionalFiles: constitutionalFiles.length,
               specDocFiles: specDocFiles.length,
               totalFiles: files.length,
