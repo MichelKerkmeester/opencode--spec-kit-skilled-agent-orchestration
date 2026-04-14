@@ -176,13 +176,6 @@ vi.mock('../renderers', () => ({
   ].join('\n')),
 }));
 
-vi.mock('../core/file-writer', () => ({
-  writeFilesAtomically: vi.fn(async (contextDir: string, files: Record<string, string>) => {
-    workflowHarness.writtenFiles.push({ contextDir, files });
-    return Object.keys(files);
-  }),
-}));
-
 vi.mock('../loaders/data-loader', () => ({
   loadCollectedData: vi.fn(async (options?: { dataFile?: string | null; specFolderArg?: string | null }) => {
     workflowHarness.loaderSnapshots.push({

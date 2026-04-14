@@ -64,7 +64,7 @@ describe('C1: ingest paths reject traversal sequences', () => {
 
   it('accepts valid absolute paths', () => {
     const result = validateToolArgs('memory_ingest_start', {
-      paths: ['/valid/specs/memory/file.md'],
+      paths: ['/valid/specs/001-test/implementation-summary.md'],
     });
     expect(result).toHaveProperty('paths');
     expect((result as { paths: string[] }).paths).toHaveLength(1);

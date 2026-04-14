@@ -16,7 +16,7 @@ describe('Contextual tree injection', () => {
       id: 1,
       score: 1,
       source: 'hybrid',
-      file_path: '/workspace/.opencode/specs/parent-seg/child-seg/memory/context.md',
+      file_path: '/workspace/.opencode/specs/parent-seg/child-seg/implementation-summary.md',
       content: 'Original content body',
     };
 
@@ -42,7 +42,7 @@ describe('Contextual tree injection', () => {
       id: 2,
       score: 1,
       source: 'hybrid',
-      file_path: '/workspace/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/memory/context.md',
+      file_path: '/workspace/.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/implementation-summary.md',
       content: undefined,
     };
 
@@ -61,21 +61,21 @@ describe('Contextual tree injection', () => {
         id: 11,
         score: 0.99,
         source: 'hybrid',
-        file_path: '/workspace/.opencode/specs/root/a/memory/a.md',
+        file_path: '/workspace/.opencode/specs/root/a/spec.md',
         content: 'A'.repeat(420),
       },
       {
         id: 22,
         score: 0.89,
         source: 'hybrid',
-        file_path: '/workspace/.opencode/specs/root/b/memory/b.md',
+        file_path: '/workspace/.opencode/specs/root/b/implementation-summary.md',
         content: 'B'.repeat(420),
       },
       {
         id: 33,
         score: 0.79,
         source: 'hybrid',
-        file_path: '/workspace/.opencode/specs/root/c/memory/c.md',
+        file_path: '/workspace/.opencode/specs/root/c/decision-record.md',
         content: 'C'.repeat(420),
       },
     ];
@@ -109,14 +109,14 @@ describe('Contextual tree injection', () => {
         id: 101,
         score: 0.9,
         source: 'hybrid',
-        file_path: '/workspace/.opencode/specs/core/alpha/memory/alpha.md',
+        file_path: '/workspace/.opencode/specs/core/alpha/implementation-summary.md',
         content: 'Alpha content '.repeat(90),
       },
       {
         id: 102,
         score: 0.8,
         source: 'hybrid',
-        file_path: '/workspace/.opencode/specs/core/beta/memory/beta.md',
+        file_path: '/workspace/.opencode/specs/core/beta/handover.md',
         content: 'Beta content '.repeat(90),
       },
     ];
@@ -148,7 +148,7 @@ describe('Contextual tree injection — edge cases', () => {
       id: 200,
       score: 0.95,
       source: 'hybrid',
-      file_path: '/workspace/.opencode/specs/feat-a/feat-b/memory/notes.md',
+      file_path: '/workspace/.opencode/specs/feat-a/feat-b/decision-record.md',
       content: 'Body text remains intact',
     };
 
@@ -188,7 +188,7 @@ describe('Contextual tree injection — edge cases', () => {
       id: 202,
       score: 0.91,
       source: 'hybrid',
-      file_path: '/workspace/.opencode/specs/module-x/sub-y/memory/log.md',
+      file_path: '/workspace/.opencode/specs/module-x/sub-y/handover.md',
       content: 'Content after header',
     };
 

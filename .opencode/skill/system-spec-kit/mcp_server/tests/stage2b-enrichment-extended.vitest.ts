@@ -53,7 +53,7 @@ describe('stage2b enrichment extended coverage', () => {
   });
 
   it('handles input with missing optional fields', () => {
-    const rows = [{ id: 21 }, { path: 'memory/example.md' }] as never;
+    const rows = [{ id: 21 }, { path: 'implementation-summary.md' }] as never;
 
     expect(executeStage2bEnrichment(rows)).toEqual(rows);
   });

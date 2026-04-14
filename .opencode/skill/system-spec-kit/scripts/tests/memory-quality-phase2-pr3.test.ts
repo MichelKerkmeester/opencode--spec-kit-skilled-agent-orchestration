@@ -92,7 +92,7 @@ describe('Phase 2 PR-3 importance-tier SSOT', () => {
       { templatesRoot: TEMPLATES_ROOT },
       path.join(
         REPO_ROOT,
-        '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata/memory/f-ac4-managed-rewrite.md'
+        '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-issues/002-single-owner-metadata/implementation-summary.md'
       )
     );
 
@@ -162,7 +162,7 @@ describe('Phase 2 PR-3 importance-tier SSOT', () => {
     const result = buildFrontmatterContent(
       input,
       { templatesRoot: TEMPLATES_ROOT },
-      path.join(REPO_ROOT, fixture.specFolder, 'memory', 'f-ac1-phase2-regression.md')
+      path.join(REPO_ROOT, fixture.specFolder, 'implementation-summary.md')
     );
 
     expect(extractFrontmatterImportanceTier(result.content)).toBe(sessionData.IMPORTANCE_TIER);

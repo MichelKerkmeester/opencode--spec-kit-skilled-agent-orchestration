@@ -60,7 +60,7 @@ describe('vector-index schema migration refinements', () => {
 
     const staleSpecFolder = 'current';
     const canonicalSpecFolder = '02--domain/010-feature';
-    const filePath = '/workspace/specs/02--domain/010-feature/memory/note.md';
+    const filePath = '/workspace/specs/02--domain/010-feature/implementation-summary.md';
     const now = '2026-03-28T12:00:00.000Z';
 
     database.exec(`
