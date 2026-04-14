@@ -196,6 +196,12 @@ sk-deep-review/
 │   ├── deep_review_strategy.md
 │   ├── deep_review_dashboard.md
 │   └── review_mode_contract.yaml
+├── feature_catalog/
+│   ├── feature_catalog.md
+│   ├── 01--loop-lifecycle/
+│   ├── 02--state-management/
+│   ├── 03--review-dimensions/
+│   └── 04--severity-system/
 └── manual_testing_playbook/
     ├── 01--entry-points-and-modes/
     ├── 02--initialization-and-state-setup/
@@ -390,9 +396,10 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 
 ### Skill-Local References
 
-| Document                 | Path                                                           | Purpose                                                    |
-| ------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------- |
-| Quick reference (review) | `.opencode/skill/sk-deep-review/references/quick_reference.md` | Review-only cheat sheet for commands, dimensions, verdicts |
+| Document                 | Path                                                                          | Purpose                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Quick reference (review) | `.opencode/skill/sk-deep-review/references/quick_reference.md`                | Review-only cheat sheet for commands, dimensions, verdicts                              |
+| Feature catalog          | `.opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md`           | Canonical feature inventory across loop lifecycle, state management, review dimensions, and severity system |
 
 ### Agent Definitions
 

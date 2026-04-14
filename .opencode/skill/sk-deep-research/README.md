@@ -113,6 +113,12 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
     deep_research_config.json
     deep_research_dashboard.md
     deep_research_strategy.md
+  feature_catalog/
+    feature_catalog.md
+    01--loop-lifecycle/
+    02--state-management/
+    03--convergence/
+    04--research-output/
 ```
 
 Runtime packet layout:
@@ -221,5 +227,6 @@ A: Use `sk-deep-review` and `/spec_kit:deep-review`.
 | `references/convergence.md` | Stop and recovery logic, including graph-aware legal-stop behavior |
 | `manual_testing_playbook/04--convergence-and-recovery/031-graph-convergence-signals.md` | Operator test case for graph stop guards and blocked-stop behavior |
 | `references/capability_matrix.md` | Runtime parity source of truth |
+| `feature_catalog/feature_catalog.md` | Canonical feature inventory across loop lifecycle, state management, convergence, and research output |
 | `sk-deep-review` | Dedicated iterative code review skill |
 <!-- /ANCHOR:related-documents -->

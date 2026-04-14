@@ -235,6 +235,11 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- promote-candidate.cjs         Guarded canonical promotion
 |   |-- rollback-candidate.cjs        Canonical rollback helper
 |   `-- check-mirror-drift.cjs        Mirror drift report
+|-- feature_catalog/
+|   |-- feature_catalog.md            Root catalog (subsection format)
+|   |-- 01--evaluation-loop/          Init, candidates, scoring, promotion, rollback
+|   |-- 02--integration-scanning/     Surface discovery, runtime mirrors, dispatch
+|   `-- 03--scoring-system/           5-dim rubric, dynamic profiling, plateau detection
 `-- manual_testing_playbook/
     |-- MANUAL_TESTING_PLAYBOOK.md     Test matrix root (21 scenarios)
     |-- 01--integration-scanner/       Scanner test scenarios
@@ -381,6 +386,7 @@ Each dimension score (0-100) is multiplied by its weight, then summed: `structur
 ### Core References
 
 - [SKILL.md](./SKILL.md) — Skill router and core instructions
+- [feature_catalog.md](./feature_catalog/feature_catalog.md) — Canonical feature inventory across evaluation loop, integration scanning, and scoring system
 - [quick_reference.md](./references/quick_reference.md) — Short command and dimension reminder
 - [loop_protocol.md](./references/loop_protocol.md) — End-to-end operator workflow
 - [evaluator_contract.md](./references/evaluator_contract.md) — 5-dimension scoring and benchmark contract
