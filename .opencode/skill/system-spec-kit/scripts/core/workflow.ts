@@ -18,8 +18,6 @@ import {
   enhanceFilesWithSemanticDescriptions,
 } from '../extractors';
 import { detectSpecFolder, ensureSpecFolderExists } from '../spec-folder';
-import { extractKeyTopics } from './topic-extractor';
-import type { DecisionForTopics } from './topic-extractor';
 import { generateContentSlug } from '../utils/slug-utils';
 import { pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import {
@@ -29,7 +27,6 @@ import {
 import { deriveMemoryDescription } from '../lib/memory-frontmatter';
 import {
   isAllowlistedShortProductName,
-  sanitizeTriggerPhrases,
 } from '../lib/trigger-phrase-sanitizer';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
@@ -60,8 +57,6 @@ import {
 } from '@spec-kit/shared/parsing/memory-sufficiency';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { evaluateSpecDocHealth } from '@spec-kit/shared/parsing/spec-doc-health';
-import { extractTriggerPhrases } from '../lib/trigger-extractor';
-import { type WorkflowIndexingStatus } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
@@ -77,27 +72,18 @@ import { resolveSaveMode, SaveMode } from '../types/save-mode';
 import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner';
 import {
   buildMemoryTitle,
-  buildMemoryDashboardTitle,
   extractSpecTitle,
 } from './title-builder';
 import {
   resolveTreeThinningContent,
-  buildKeyFiles,
 } from './workflow-path-utils';
 import {
-  buildMemoryClassificationContext,
-  buildSessionDedupContext,
-  buildCausalLinksContext,
   readExplicitMemoryText,
   resolveParentSpec,
-  buildWorkflowMemoryEvidenceSnapshot,
 } from './memory-metadata';
 import {
   injectQualityMetadata,
   injectSpecDocHealthMetadata,
-  renderTriggerPhrasesYaml,
-  ensureMinTriggerPhrases,
-  ensureMinSemanticTopics,
 } from './frontmatter-editor';
 import { shouldIndexMemory, formatSufficiencyAbort } from './quality-gates';
 import { summarizeAuditCounts } from './workflow-accessors';
@@ -1192,162 +1178,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
-  let ctxFilename: string = rawCtxFilename;
   const explicitMemoryText = readExplicitMemoryText(collectedData);
 
-  const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
-  const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
   const memoryTitle = explicitMemoryText.title
     ?? buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
-  // Keep dashboard titles stable across duplicate-save retries so content dedup
-  // compares the rendered memory itself, not a collision suffix.
-  const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, rawCtxFilename);
   const memoryDescription = explicitMemoryText.description
     ?? deriveMemoryDescription({
       summary: sessionData.SUMMARY,
       title: memoryTitle,
     });
 
-  // Pre-extract trigger phrases for template embedding AND later indexing
-  let preExtractedTriggers: string[] = [];
-  try {
-    // Build enriched text for trigger extraction from semantic session content only.
-    const triggerSourceParts: string[] = [];
-    if (sessionData.SUMMARY && sessionData.SUMMARY.length > 20) {
-      triggerSourceParts.push(sessionData.SUMMARY);
-    }
-    decisions.DECISIONS.forEach((d: DecisionForTopics & { CONTEXT?: string; CHOSEN?: string }) => {
-      if (d.TITLE) triggerSourceParts.push(d.TITLE);
-      if (d.RATIONALE) triggerSourceParts.push(d.RATIONALE);
-      if (d.CONTEXT) triggerSourceParts.push(d.CONTEXT);
-      if (d.CHOSEN) triggerSourceParts.push(d.CHOSEN);
-    });
-    effectiveFiles.forEach(f => {
-      if (f._synthetic) {
-        return;
-      }
-      if (f.DESCRIPTION && !f.DESCRIPTION.includes('pending')) triggerSourceParts.push(f.DESCRIPTION);
-    });
-    const normalizeTriggerComparisonKey = (value: string): string =>
-      value.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
-    const folderSegmentsForTriggers = specFolderName
-      .split('/')
-      .map((segment) => segment.replace(/^\d{1,3}-/, '').replace(/-/g, ' ').trim())
-      .filter(Boolean);
-    const triggerSource = triggerSourceParts.join('\n');
-    const autoExtractedTriggers = extractTriggerPhrases(triggerSource);
-    const mergedTriggers: string[] = [];
-    const seenMergedTriggers = new Set<string>();
-    const manualTriggerKeys = new Set<string>();
-    const titleTriggerKey = normalizeTriggerComparisonKey(memoryTitle);
-
-    // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
-    // Manual phrases stay prepended, but the merged set still goes through the
-    // same quality filter as auto-extracted phrases.
-    const manualTriggerPhrases = Array.isArray(collectedData?._manualTriggerPhrases)
-      ? sanitizeTriggerPhrases(collectedData._manualTriggerPhrases, { source: 'manual' })
-      : [];
-    if (manualTriggerPhrases.length > 0) {
-      for (const phrase of manualTriggerPhrases) {
-        if (typeof phrase !== 'string') {
-          continue;
-        }
-        const trimmedPhrase = phrase.trim();
-        if (trimmedPhrase.length === 0) {
-          continue;
-        }
-        const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
-        if (!seenMergedTriggers.has(loweredPhrase)) {
-          mergedTriggers.push(trimmedPhrase);
-          seenMergedTriggers.add(loweredPhrase);
-          manualTriggerKeys.add(loweredPhrase);
-        }
-      }
-    }
-
-    if (manualTriggerKeys.size === 0) {
-      const sanitizedAutoTriggers = sanitizeTriggerPhrases(autoExtractedTriggers, { source: 'extracted' });
-      for (const phrase of sanitizedAutoTriggers) {
-        const trimmedPhrase = phrase.trim();
-        if (trimmedPhrase.length === 0) {
-          continue;
-        }
-        const loweredPhrase = normalizeTriggerComparisonKey(trimmedPhrase);
-        if (
-          !isAllowlistedShortProductName(trimmedPhrase)
-          && titleTriggerKey.includes(loweredPhrase)
-        ) {
-          continue;
-        }
-        if (!seenMergedTriggers.has(loweredPhrase)) {
-          mergedTriggers.push(trimmedPhrase);
-          seenMergedTriggers.add(loweredPhrase);
-        }
-      }
-    }
-
-    preExtractedTriggers = filterTriggerPhrases(mergedTriggers, manualTriggerKeys);
-    for (const phrase of mergedTriggers) {
-      if (!isAllowlistedShortProductName(phrase)) {
-        continue;
-      }
-      if (!preExtractedTriggers.includes(phrase)) {
-        preExtractedTriggers.unshift(phrase);
-      }
-    }
-
-    // CG-04: Domain-specific stopwords for single-word trigger phrases from folder names
-    const FOLDER_STOPWORDS = new Set([
-      'system', 'spec', 'kit', 'hybrid', 'rag', 'fusion', 'agents', 'alignment',
-      'opencode', 'config', 'setup', 'init', 'core', 'main', 'base', 'common',
-      'shared', 'utils', 'helpers', 'tools', 'scripts', 'tests', 'docs', 'build',
-      'deploy', 'release', 'version', 'update', 'fix', 'feature', 'enhancement',
-      'refactor', 'cleanup', 'migration', 'integration', 'implementation',
-      'based', 'features', 'perfect', 'session', 'capturing', 'pipeline',
-      'quality', 'command', 'skill', 'memory', 'context', 'search', 'index',
-      'generation', 'epic', 'audit', 'enforcement', 'remediation',
-    ]);
-    const leafFolderAnchor = folderSegmentsForTriggers.length === 0
-      ? ''
-      : (() => {
-          const leafSegment = folderSegmentsForTriggers[folderSegmentsForTriggers.length - 1];
-          const leafWords = leafSegment.split(/\s+/).filter(Boolean);
-          if (leafWords.length !== 1) {
-            return leafSegment;
-          }
-          const parentSegment = folderSegmentsForTriggers[folderSegmentsForTriggers.length - 2] || '';
-          const parentLead = parentSegment.split(/\s+/).find((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token.toLowerCase()));
-          return parentLead ? `${leafSegment} ${parentLead}` : leafSegment;
-        })();
-    const leafFolderAnchorKey = normalizeTriggerComparisonKey(leafFolderAnchor);
-    const existingLower = new Set(preExtractedTriggers.map((phrase) => normalizeTriggerComparisonKey(phrase)));
-    const leafAnchorIsInformative = leafFolderAnchorKey.length > 0
-      && leafFolderAnchorKey.split(/\s+/).some((token) => !FOLDER_STOPWORDS.has(token));
-    const leafAnchorAlreadyCovered = isAllowlistedShortProductName(leafFolderAnchor)
-      || titleTriggerKey.includes(leafFolderAnchorKey)
-      || Array.from(manualTriggerKeys).some((manualKey) => (
-        manualKey.includes(leafFolderAnchorKey) || leafFolderAnchorKey.includes(manualKey)
-      ));
-    if (manualTriggerKeys.size === 0 && leafAnchorIsInformative && !leafAnchorAlreadyCovered && !existingLower.has(leafFolderAnchorKey)) {
-      const sanitizedLeafAnchor = sanitizeTriggerPhrases([leafFolderAnchor], { source: 'extracted' })[0];
-      if (sanitizedLeafAnchor) {
-        const sanitizedLeafAnchorKey = normalizeTriggerComparisonKey(sanitizedLeafAnchor);
-        if (!existingLower.has(sanitizedLeafAnchorKey)) {
-          preExtractedTriggers.push(sanitizedLeafAnchor);
-        }
-      }
-    }
-
-    preExtractedTriggers = ensureMinTriggerPhrases(preExtractedTriggers, specFolderName);
-    log(`   Pre-extracted ${preExtractedTriggers.length} trigger phrases`);
-  } catch (e: unknown) {
-    const errMsg = e instanceof Error ? e.message : String(e);
-    warn(`   Warning: Pre-extraction of trigger phrases failed: ${errMsg}`);
-  }
-
-  buildKeyFiles(enhancedFiles, specFolder);
-  const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
-  const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
   const currentSnakeCaseCausalLinks = (
     collectedData.causal_links
     && typeof collectedData.causal_links === 'object'
@@ -1407,7 +1247,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   if (duplicateExistingFilename) {
-    log(`   Legacy duplicate detection skipped for retired artifact ${ctxFilename}`);
+    log(`   Legacy duplicate detection skipped for retired artifact ${rawCtxFilename}`);
   }
   const writtenFiles: string[] = [];
   log('   Skipping legacy [spec]/memory/*.md writes');
@@ -1460,7 +1300,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           sequenceSnapshot.memorySequence = expectedSeq;
           sequenceSnapshot.memoryNameHistory = [
             ...(sequenceSnapshot.memoryNameHistory || []).slice(-19),
-            ctxFilename,
+            rawCtxFilename,
           ];
           savePFD(sequenceSnapshot, specFolderAbsolute);
 
@@ -1519,11 +1359,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 11: Indexing semantic memory...');
 
   let memoryId: number | null = null;
-  const indexingStatus: WorkflowIndexingStatus = {
-    status: 'skipped_index_policy',
-    memoryId,
-    reason: 'Legacy [spec]/memory/*.md indexing retired. Canonical spec-doc indexing continues in Step 11.5.',
-  };
   log('   Skipping retired legacy memory indexing');
 
   // Step 11.5: Auto-index touched canonical spec docs + graph-metadata.json in target folder.

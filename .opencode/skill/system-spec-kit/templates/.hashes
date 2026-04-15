@@ -3,12 +3,7 @@
 # SHA256 hashes for template integrity verification
 # Regenerate with: for f in *.md; do echo "$(shasum -a 256 "$f" | cut -d' ' -f1)  $f"; done
 
-042dc9d9752745eef85a6fbe78f5a1fc6d3377ef7927b6ac852bed5ca7e019ce  checklist.md
-ef4c0b1abd724b58a174f50512488f86ec560421d43a8642f84b4e5f9a760a6a  debug-delegation.md
-3b93fe9c5ad44bb54f6f81078fe571bf392b11bb24c2018e8a118c2c25fc128c  decision-record.md
-9d9d381e59ae4ea84f1b5313668eb92417cd6c286addeabd2e9796f56333e0b9  handover.md
-470e8569b396ff5648c9db6480e3867c1a12b41f4bc7478a225f375a2502d97e  implementation-summary.md
-e41e0d8ad3e2ba632ac4adf836ae0713adf905b6a9f515ebb59ccb18ab8c3480  plan.md
-f3be65585b11243ffda73c3a8ca1b69ab5dc83262124fdc4c2fb47a1400f6508  research.md
-d86dfb2d47d5ecb9d5d46f674704afffb42ab9a46f09143f6ce351e8c0cf0d5a  spec.md
-563f295ad69fe4a9840fc708d157a18359e9e2e28b17eb9f21e93d83064b8cc1  tasks.md
+f5066de4f2c218fe9272109e2369c68f3c46b80fe8d3ba82373397a6346d1544  README.md
+31b45e5375cbd7ea47fab4dc544133086ec74eaca2006ac2e352af2597b55a66  debug-delegation.md
+8e6cdc58ac7165edd44bd518f64075e3479a4f56457c61173a81429c373138c9  handover.md
+62fb4a47afa0decfff714beea3a2c99f72ce5a6ce344ae7f0f9ff13dab4a33ff  research.md

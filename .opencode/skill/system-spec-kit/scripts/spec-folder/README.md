@@ -93,7 +93,7 @@ console.log(`Alignment score: ${alignment.score}%`);
 // Within scripts workspace (relative import)
 import {
   filterArchiveFolders,
-  setupContextDirectory,
+  ensureSpecFolderExists,
   buildNestedChangelogData,
 } from '../spec-folder';
 
@@ -105,9 +105,13 @@ const activeFolders = filterArchiveFolders([
 ]);
 // Returns: ['042-feature', '043-new-feature']
 
-// Setup memory directory
-await setupContextDirectory('specs/<###-feature-name>');
-// Creates: specs/<###-feature-name>/memory/
+// Validate a canonical packet path before downstream work
+await ensureSpecFolderExists('specs/<###-feature-name>');
+// Returns: absolute path to specs/<###-feature-name>
+
+// Legacy compat note:
+// setupContextDirectory remains exported only as an alias for older tests and callers.
+// New code should use ensureSpecFolderExists and route saves into canonical packet docs.
 
 const nestedChangelog = buildNestedChangelogData(
   '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation',

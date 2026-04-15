@@ -5,6 +5,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { CollectedDataFull } from '../extractors/collect-session-data';
+import { filterTriggerPhrases } from '../core/workflow';
 
 const workflowHarness = vi.hoisted(() => ({
   specFolderPath: '',
@@ -22,32 +23,14 @@ vi.mock('@spec-kit/mcp-server/api/providers', () => ({
   },
 }));
 
-function parseFrontmatterTriggerPhrases(content: string): string[] {
-  const lines = content.split('\n');
-  const triggerIndex = lines.findIndex((line) => line.trim() === 'trigger_phrases:');
-  if (triggerIndex === -1) {
-    return [];
-  }
-
-  const phrases: string[] = [];
-  for (let index = triggerIndex + 1; index < lines.length; index++) {
-    const line = lines[index];
-    if (!line.startsWith('  - ')) {
-      break;
-    }
-    phrases.push(line.replace(/^  - /, '').replace(/^"|"$/g, '').toLowerCase());
-  }
-  return phrases;
-}
-
-describe('trigger phrase render fixes', () => {
+describe('trigger phrase workflow fixes', () => {
   afterEach(() => {
     vi.clearAllMocks();
     workflowHarness.specFolderPath = '';
     workflowHarness.contextDir = '';
   });
 
-  it('keeps authored trigger phrases and drops prose-derived bigram noise', async () => {
+  it('filters prose-derived bigram noise without exposing a legacy context filename', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-trigger-bigrams-'));
 
     try {
@@ -80,9 +63,19 @@ describe('trigger phrase render fixes', () => {
         silent: true,
       });
 
-      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf8');
-      const triggerPhrases = parseFrontmatterTriggerPhrases(rendered);
+      const triggerPhrases = filterTriggerPhrases([
+        '014 code graph upgrades runtime',
+        'render quality',
+        'canonical sources',
+        'memory save',
+        'taxonomy additive',
+        'additive edge',
+        'edge evidence',
+      ]);
 
+      expect(result.contextDir).toBe(specFolderPath);
+      expect(result).not.toHaveProperty('contextFilename');
+      expect(result.writtenFiles).toEqual([]);
       expect(triggerPhrases).toEqual(['014 code graph upgrades runtime', 'render quality', 'canonical sources', 'memory save']);
       expect(triggerPhrases).not.toContain('taxonomy additive');
       expect(triggerPhrases).not.toContain('additive edge');

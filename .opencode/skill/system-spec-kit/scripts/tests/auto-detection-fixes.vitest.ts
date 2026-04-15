@@ -393,19 +393,10 @@ describe.skip.sequential('phase 013 auto-detection fixes', () => {
       silent: true,
     });
 
-    const memoryPath = path.join(result.contextDir, result.contextFilename);
-    const content = fs.readFileSync(memoryPath, 'utf8');
-
-    expect(content).toContain('key_files:');
-    expect(content).toContain('  - "spec.md"');
-    expect(content).toContain('memory_classification:');
-    expect(content).toContain('memory_type: "semantic"');
-    expect(content).toContain('session_dedup:');
-    expect(content).toContain('dedup_savings_tokens: 144');
-    expect(content).toContain('fingerprint_hash: "phase-013-fingerprint"');
-    expect(content).toContain('causal_links:');
-    expect(content).toContain('  caused_by:');
-    expect(content).toContain('    - "memory-001"');
+    expect(result.contextDir).toBe(harness.specFolderPath);
+    expect(result.specFolderName).toBe('013-auto-detection-fixes');
+    expect(result).not.toHaveProperty('contextFilename');
+    expect(result.writtenFiles.some((filePath) => filePath.includes(`${path.sep}memory${path.sep}`))).toBe(false);
   }, 30_000);
 
   it('marks tied git-status candidates as low confidence (Priority 2.7 fall-through guard)', () => {

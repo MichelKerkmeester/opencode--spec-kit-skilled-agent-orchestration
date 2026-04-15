@@ -255,6 +255,8 @@ If that explicit CLI argument resolves to a phase folder, the command keeps that
 
 The Phase 018 save path is packet-first. Retired `[spec]/memory/*.md` writes are no longer part of the workflow. `generate-context.js` updates continuity inside the selected packet and reindexes the affected docs.
 
+After the save mutates indexed state, the MCP runtime touches `DB_UPDATED_FILE` so long-lived server processes can hot-rebind on the next `checkDatabaseUpdated()` pass instead of serving stale packet data.
+
 | Surface | Role |
 |---------|------|
 | `implementation-summary.md` | Primary continuity document carrying `_memory.continuity` in frontmatter |

@@ -926,7 +926,7 @@ describe('workflow seam guardrail', () => {
   });
 
   // TODO(003-006): re-enable after 003-memory-quality-issues/006-memory-duplication-reduction lands the compact wrapper template fixtures
-  it.skip('uses quick summary for file-backed root saves before falling back to the folder slug', async () => {
+  it.skip('does not expose a legacy context filename for file-backed workflow saves', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
     const contextDir = path.join(tempRoot, 'memory');
@@ -964,8 +964,9 @@ describe('workflow seam guardrail', () => {
         silent: true,
       });
 
-      expect(result.contextFilename).toContain('__hybrid-rag-fusion-recall-regression-audit.md');
-      expect(result.contextFilename).not.toBe('06-03-26_09-00__hybrid-rag-fusion.md');
+      expect(result.contextDir).toBe(specFolderPath);
+      expect(result).not.toHaveProperty('contextFilename');
+      expect(result.writtenFiles).toEqual([]);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -1022,7 +1023,7 @@ describe('workflow seam guardrail', () => {
   });
 
   // TODO(003-006): re-enable after 003-memory-quality-issues/006-memory-duplication-reduction lands the compact wrapper template fixtures
-  it.skip('persists source provenance fields and excludes raw path noise from trigger extraction', async () => {
+  it.skip('preserves source provenance inputs without reviving a legacy rendered memory file', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '011-session-source-validation');
     const contextDir = path.join(tempRoot, 'memory');
@@ -1075,20 +1076,16 @@ describe('workflow seam guardrail', () => {
         silent: true,
       });
 
-      const rendered = workflowHarness.writtenFiles[0].files[result.contextFilename];
-      expect(rendered).toContain('_sourceTranscriptPath: "/tmp/.claude/projects/spec-kit/session-abc.jsonl"');
-      expect(rendered).toContain('_sourceSessionId: "session-abc"');
-      expect(rendered).toContain('captured_file_count: 1');
-      expect(rendered).toContain('filesystem_file_count: 1');
-      expect(rendered).not.toContain('zorbiumsessionpath');
-      expect(rendered).not.toContain('synthnoisedesc');
+      expect(result.contextDir).toBe(specFolderPath);
+      expect(result).not.toHaveProperty('contextFilename');
+      expect(result.writtenFiles).toEqual([]);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
 
   // TODO(003-006): re-enable after 003-memory-quality-issues/006-memory-duplication-reduction lands the compact wrapper template fixtures
-  it.skip('allows stateless saves when captured files match code paths declared in the target spec', async () => {
+  it.skip('allows stateless saves when captured files match code paths declared in the target spec without returning a legacy filename', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
@@ -1139,8 +1136,9 @@ describe('workflow seam guardrail', () => {
         silent: true,
       });
 
-      expect(result.contextFilename).toContain('.md');
-      expect(workflowHarness.writtenFiles).toHaveLength(1);
+      expect(result.contextDir).toBe(specFolderPath);
+      expect(result).not.toHaveProperty('contextFilename');
+      expect(result.writtenFiles).toEqual([]);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -1385,7 +1383,7 @@ describe('workflow seam guardrail', () => {
   });
 
   // TODO(003-006): re-enable after 003-memory-quality-issues/006-memory-duplication-reduction lands the compact wrapper template fixtures
-  it.skip('does not let file-backed state leak into a later stateless workflow run', async () => {
+  it.skip('does not let file-backed state leak into a later stateless workflow run or expose legacy filenames', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '013-memory-search-bug-fixes');
     const contextDir = path.join(tempRoot, 'memory');
@@ -1433,8 +1431,10 @@ describe('workflow seam guardrail', () => {
       silent: true,
     });
 
-    expect(fileBackedResult.contextFilename).toContain('__memory-search-bug-fixes.md');
-    expect(statelessResult.contextFilename).toContain('__generic-memory-filename-fix-in-stateless-mode.md');
+    expect(fileBackedResult).not.toHaveProperty('contextFilename');
+    expect(statelessResult).not.toHaveProperty('contextFilename');
+    expect(fileBackedResult.writtenFiles).toEqual([]);
+    expect(statelessResult.writtenFiles).toEqual([]);
     expect(workflowHarness.loaderSnapshots).toEqual([
       { dataFile: null, specFolderArg: null },
     ]);
@@ -1525,7 +1525,7 @@ describe('workflow seam guardrail', () => {
   });
 
   // TODO(003-006): re-enable after 003-memory-quality-issues/006-memory-duplication-reduction lands the compact wrapper template fixtures
-  it.skip('uses collector-derived quick summary during direct preloaded workflow saves', async () => {
+  it.skip('keeps direct preloaded workflow saves off the retired contextFilename contract', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
     const contextDir = path.join(tempRoot, 'memory');
@@ -1572,8 +1572,9 @@ describe('workflow seam guardrail', () => {
         silent: true,
       });
 
-      expect(result.contextFilename).toContain('__direct-save-naming-fix-for-hybrid-rag-fusion.md');
-      expect(result.contextFilename).not.toContain('__hybrid-rag-fusion.md');
+      expect(result).not.toHaveProperty('contextFilename');
+      expect(result.contextDir).toContain(path.join('specs', 'system-spec-kit', '022-hybrid-rag-fusion'));
+      expect(result.writtenFiles).toEqual([]);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

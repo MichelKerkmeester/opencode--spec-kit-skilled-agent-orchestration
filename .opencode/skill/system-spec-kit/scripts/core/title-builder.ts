@@ -58,9 +58,9 @@ export function buildMemoryTitle(_implementationTask: string, _specFolderName: s
   return truncateMemoryTitle(fallback);
 }
 
-export function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: string, contextFilename: string): string {
+export function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: string, legacyFilename: string): string {
   void specFolderName;
-  void contextFilename;
+  void legacyFilename;
   return memoryTitle.trim();
 }
 

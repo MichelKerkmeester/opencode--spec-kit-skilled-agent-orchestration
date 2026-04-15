@@ -9,18 +9,18 @@ import { buildMemoryDashboardTitle } from '../core/title-builder';
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE_PATH = path.join(TEST_DIR, 'fixtures', 'post-save-render', 'title-fixture.json');
 
-describe('title builder render fix', () => {
-  it('keeps the dashboard title free of filename suffix garbage', () => {
+describe('title builder legacy-filename compatibility', () => {
+  it('keeps the dashboard title free of legacy filename suffix garbage', () => {
     const fixture = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8')) as {
       memoryTitle: string;
       specFolderName: string;
-      contextFilename: string;
+      legacyFilename: string;
     };
 
     const result = buildMemoryDashboardTitle(
       fixture.memoryTitle,
       fixture.specFolderName,
-      fixture.contextFilename,
+      fixture.legacyFilename,
     );
 
     expect(result).toBe(fixture.memoryTitle);

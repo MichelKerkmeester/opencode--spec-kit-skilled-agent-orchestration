@@ -947,12 +947,26 @@ export function serializeGraphMetadata(metadata: GraphMetadata): string {
  * @param metadata - Metadata payload to persist
  */
 export function writeGraphMetadataFile(filePath: string, metadata: GraphMetadata): void {
-  const content = serializeGraphMetadata(metadata);
-  const tempPath = `${filePath}.tmp-${process.pid}-${Date.now()}`;
+  const resolvedFilePath = path.resolve(filePath);
+  const parentDir = path.dirname(resolvedFilePath);
+  let canonicalParentDir: string;
+  try {
+    canonicalParentDir = fs.realpathSync(parentDir);
+  } catch {
+    throw new Error(`Graph metadata parent directory is invalid or contains a broken symlink: ${parentDir}`);
+  }
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  const canonicalFilePath = path.join(canonicalParentDir, path.basename(resolvedFilePath));
+  if (!canClassifyAsGraphMetadataPath(canonicalFilePath)) {
+    throw new Error(`Refusing to write graph metadata outside a supported specs root: ${canonicalFilePath}`);
+  }
+
+  const content = serializeGraphMetadata(metadata);
+  const tempPath = `${canonicalFilePath}.tmp-${process.pid}-${Date.now()}`;
+
+  fs.mkdirSync(path.dirname(canonicalFilePath), { recursive: true });
   fs.writeFileSync(tempPath, content, 'utf-8');
-  fs.renameSync(tempPath, filePath);
+  fs.renameSync(tempPath, canonicalFilePath);
 }
 
 /**
