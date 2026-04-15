@@ -1,0 +1,1 @@
+{"type":"event","event":"init","timestamp":"2026-04-15T10:57:04Z","sessionId":"dr-2026-04-15T105704Z","topic":"advisor-phrase-booster-tailoring","maxIterations":5,"convergenceThreshold":0.05,"researchDriver":"cli-copilot:gpt-5.4","executionMode":"auto"}

@@ -16,9 +16,7 @@
     "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
     "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
     "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
-    "system-spec-kit/026-graph-and-context-optimization/013-memory-folder-deprecation-audit",
-    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
-    "system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim"
+    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey"
   ],
   "manual": {
     "depends_on": [],

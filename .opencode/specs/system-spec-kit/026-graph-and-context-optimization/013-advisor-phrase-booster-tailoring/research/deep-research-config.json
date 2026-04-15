@@ -1,0 +1,25 @@
+{
+  "topic": "Advisor Phrase-Booster Tailoring: migrate 24 tokenizer-broken multi-word INTENT_BOOSTERS entries to PHRASE_INTENT_BOOSTERS, add phrase routes for under-covered Public identifiers, preserve regression top-1 ≥0.92 with zero P0 regressions",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
+  "createdAt": "2026-04-15T10:57:04Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "researchDriver": {
+    "type": "cli-copilot",
+    "model": "gpt-5.4",
+    "flags": "--allow-all-tools",
+    "note": "User-selected: cli-copilot gpt-5.4 high replaces the default @deep-research agent dispatch"
+  },
+  "lineage": {
+    "sessionId": "dr-2026-04-15T105704Z",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "generation": 1,
+    "continuedFromRun": null
+  }
+}
