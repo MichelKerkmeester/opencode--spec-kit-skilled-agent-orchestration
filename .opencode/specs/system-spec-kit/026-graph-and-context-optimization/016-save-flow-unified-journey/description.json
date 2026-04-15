@@ -1,0 +1,26 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey",
+  "description": "Feature Specification: Save-Flow Unified Journey - Audit -> Research -> Implementation -> Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "save-flow",
+    "unified",
+    "journey",
+    "audit",
+    "research",
+    "implementation",
+    "remediation"
+  ],
+  "lastUpdated": "2026-04-15T10:16:58.500Z",
+  "specId": "016",
+  "folderSlug": "save-flow-unified-journey",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

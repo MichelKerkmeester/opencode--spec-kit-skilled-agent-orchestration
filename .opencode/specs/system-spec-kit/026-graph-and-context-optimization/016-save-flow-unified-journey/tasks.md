@@ -1,0 +1,276 @@
+---
+title: "Tasks: Save-Flow Unified Journey"
+description: "Consolidated completed task ledger for packets 013, 014, and 015. Packet 016 adds no new runtime work."
+trigger_phrases:
+  - "tasks"
+  - "save-flow unified journey"
+  - "audit tasks"
+  - "research tasks"
+  - "implementation tasks"
+  - "remediation tasks"
+importance_tier: "important"
+contextType: "architecture"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey"
+    last_updated_at: "2026-04-15T10:00:01Z"
+    last_updated_by: "cli-copilot"
+    recent_action: "Consolidated the source packet work into a single completed task ledger"
+    next_safe_action: "Packet complete; no follow-on task remains inside packet 016"
+    blockers: []
+    key_files:
+      - "tasks.md"
+      - "research/013-audit-snapshot/review-report.md"
+      - "research/014-research-snapshot/research.md"
+      - "review/015-deep-review-snapshot/review-report.md"
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "016-save-flow-unified-journey-merge"
+      parent_session_id: "015-save-flow-planner-first-trim-seed"
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Packet 016 has no new implementation tasks. It only consolidates already-completed work."
+---
+# Tasks: Save-Flow Unified Journey
+
+<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+## Task Notation
+<!-- ANCHOR:notation -->
+
+| Prefix | Meaning |
+|--------|---------|
+| `[x]` | Completed in the source packet |
+| `P013-` | Packet 013 audit and retirement journey |
+| `P014-` | Packet 014 research journey |
+| `P015-` | Packet 015 implementation journey |
+| `P015-R` | Packet 015 remediation journey |
+| `P016-` | Packet 016 consolidation work only |
+
+**Packet 016 rule**: this packet records completed historical work. It does not claim new runtime work.
+
+---
+
+<!-- /ANCHOR:notation -->
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Packet 013 Audit and Retirement Carry-Over
+
+- [x] **P013-R001** Define the audit question, classification rule, and iteration plan. Evidence: `../013-memory-folder-deprecation-audit/spec.md`, `research/013-audit-snapshot/deep-review-strategy.md`
+- [x] **P013-R002** Confirm the runtime still created `[spec]/memory/` and wrote `memory/*.md` on save. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R003** Confirm the runtime still read legacy `memory/*.md` for dedup and causal-link behavior. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R004** Confirm the runtime still indexed legacy `memory/*.md` into the vector DB. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R005** Audit MCP-layer behavior and confirm the independent contradiction lived in the script workflow, not in a second hidden write path. Evidence: `research/013-audit-snapshot/deep-review-strategy.md`
+- [x] **P013-R006** Audit operator-facing docs for retirement-claim contradictions. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R007** Audit templates and worked examples for stale `memory/` guidance. Evidence: `research/013-audit-snapshot/iterations/iteration-007.md`, `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R008** Audit tests for retirement-violating expectations and stale fixtures. Evidence: `research/013-audit-snapshot/iterations/iteration-007.md`, `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R009** Identify the phantom save-side dedup contract and classify its defect family separately from the retirement contradiction. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R010** Produce the synthesis report with Path A, Path B, and Path C closure options. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-R011** Land the historical closure path reflected in v3.4.1.0 and carry the story forward into packet 014. Evidence: `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+
+### Packet 013 finding families preserved by packet 016
+
+- [x] **P013-F001-F007** Preserve the runtime write and read path contradiction. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-F008-F016** Preserve the document and reference contradiction family. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-F017-F021** Preserve the phantom dedup-contract family and its closure context. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-F022-F025** Preserve the defense-in-depth and template-drift tail. Evidence: `research/013-audit-snapshot/review-report.md`
+- [x] **P013-F026-F040** Preserve the post-cutover follow-up wave captured in r2 strategy and release alignment. Evidence: `research/013-audit-snapshot/deep-review-strategy.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+
+---
+
+<!-- /ANCHOR:phase-1 -->
+<!-- ANCHOR:phase-2 -->
+### Packet 014 Research Carry-Over
+
+### Packet 014 research questions
+
+- [x] **P014-Q1** Resolve which save-flow subsystems are truly load-bearing. Evidence: `research/014-research-snapshot/findings-registry.json`, `research/014-research-snapshot/research.md`
+- [x] **P014-Q2** Resolve whether planner-first `/memory:save` can replace default-path automation. Evidence: `research/014-research-snapshot/findings-registry.json`, `research/014-research-snapshot/research.md`
+- [x] **P014-Q3** Resolve which quality checks still prevent real defects. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q4** Resolve whether immediate reindex is a correctness requirement or a freshness concern. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q5** Resolve whether graph-metadata refresh must stay coupled to every save. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q6** Resolve whether entity extraction and cross-doc linking still earn save-time cost. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q7** Resolve whether reconsolidation-on-save remains proportionate. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q8** Resolve whether the router classifier stack is over-fitted. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q9** Resolve whether trigger harmonization must stay synchronous. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-Q10** Resolve whether continuity validation still matters more than save-flow ownership. Evidence: `research/014-research-snapshot/findings-registry.json`
+
+### Packet 014 iteration ledger
+
+- [x] **P014-ITER001** Establish the post-retirement wrapper and workflow call graph. Evidence: `research/014-research-snapshot/iterations/iteration-001.md`
+- [x] **P014-ITER002** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-002.md`
+- [x] **P014-ITER003** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-003.md`
+- [x] **P014-ITER004** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-004.md`
+- [x] **P014-ITER005** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-005.md`
+- [x] **P014-ITER006** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-006.md`
+- [x] **P014-ITER007** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-007.md`
+- [x] **P014-ITER008** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-008.md`
+- [x] **P014-ITER009** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-009.md`
+- [x] **P014-ITER010** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-010.md`
+- [x] **P014-ITER011** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-011.md`
+- [x] **P014-ITER012** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-012.md`
+- [x] **P014-ITER013** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-013.md`
+- [x] **P014-ITER014** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-014.md`
+- [x] **P014-ITER015** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-015.md`
+- [x] **P014-ITER016** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-016.md`
+- [x] **P014-ITER017** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-017.md`
+- [x] **P014-ITER018** Continue subsystem classification. Evidence: `research/014-research-snapshot/iterations/iteration-018.md`
+- [x] **P014-ITER019** Final synthesis preparation. Evidence: `research/014-research-snapshot/iterations/iteration-019.md`
+- [x] **P014-ITER020** Publish the trim-targeted synthesis report. Evidence: `research/014-research-snapshot/iterations/iteration-020.md`, `research/014-research-snapshot/research.md`
+
+### Packet 014 verdict carry-over
+
+- [x] **P014-V001** Keep the canonical atomic writer intact. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-V002** Keep routed record identity intact. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-V003** Keep the content-router category contract while trimming classifier scope. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-V004** Keep thin continuity validation and upsert logic. Evidence: `research/014-research-snapshot/findings-registry.json`
+- [x] **P014-V005** Trim Tier 3 routing from the default path. Evidence: `research/014-research-snapshot/research.md`
+- [x] **P014-V006** Trim quality-loop auto-fix from the default path while preserving hard checks. Evidence: `research/014-research-snapshot/research.md`
+- [x] **P014-V007** Defer reconsolidation-on-save from the default path. Evidence: `research/014-research-snapshot/research.md`
+- [x] **P014-V008** Defer post-insert enrichment from the default path. Evidence: `research/014-research-snapshot/research.md`
+- [x] **P014-V009** Move reindex and graph refresh to explicit follow-up work when possible. Evidence: `research/014-research-snapshot/research.md`
+
+---
+
+<!-- /ANCHOR:phase-2 -->
+<!-- ANCHOR:phase-3 -->
+## Phase 2: Implementation
+
+### Packet 015 implementation tasks
+
+- [x] **P015-T001** Add planner-default and fallback flag definitions. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T002** Document planner, fallback, and deferred follow-up flags. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T003** Add planner response interfaces and follow-up action types. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T004** Add planner response serialization helpers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T005** Add planner blocker and advisory response helpers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T006** Make `generate-context.ts` request planner-first behavior by default. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T007** Update `/memory:save` docs for planner-first default and fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T008** Make `memory-save.ts` return planner output by default with explicit fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T009** Update aggregate `memory-save` tests for planner-default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T010** Update handler tests for non-mutating default responses and blocker reporting. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T011** Update CLI target-authority tests for planner-default execution. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T012** Create focused planner-first regression coverage. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T013** Trim default Tier 3 participation while preserving category contract. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T014** Reduce the Tier 2 prototype library to the remaining useful coverage. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T015** Update content-router tests for deterministic Tier 1 or Tier 2 default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T016** Update runtime routing tests so low-confidence cases refuse or warn instead of invoking Tier 3. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T017** Update intent-routing tests so route overrides stay auditable after the trim. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T018** Retire default-path auto-fix retries while preserving advisory output. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T019** Preserve hard structural blockers while downgrading score-heavy quality layers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T020** Update quality-loop tests for advisory-default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T021** Update save-quality-gate tests for preserved hard blockers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T022** Update pipeline-enforcement tests so the planner path still surfaces legality blockers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T023** Gate reconsolidation-on-save behind explicit flags or fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T024** Move default-path enrichment into explicit follow-up behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T025** Preserve same-path lineage while reducing default PE work. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T026** Keep chunking as a size-driven fallback instead of a default dependency. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T027** Move unconditional graph refresh and spec-doc reindex out of planner-default saves. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T028** Expose explicit follow-up indexing entry points. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T029** Keep graph refresh callable as an explicit follow-up. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T030** Update reconsolidation-bridge tests for explicit opt-in behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T031** Update reconsolidation tests to prove the default path no longer triggers reconsolidation. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T032** Update assistive-reconsolidation tests so assistive recommendations remain deferred or fallback-only. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T033** Update chunking tests for size-driven fallback behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T034** Update graph-refresh tests for explicit follow-up behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T035** Update memory-save integration tests for planner-default plus fallback end-to-end behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T036** Update planner UX regression tests for readable, action-oriented output. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T037** Update thin-continuity tests to prove normalization and upsert parity. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T038** Prototype planner-first behavior against three real session transcripts. Evidence: `../015-save-flow-planner-first-trim/tasks.md`, `scratch/transcripts-snapshot/`
+- [x] **P015-T039** Run per-file doc validation for the packet docs. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T040** Run strict packet validation and capture follow-on defects. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T041** Review structural parity between `/memory:save`, `AGENTS.md`, and the system-spec-kit skill doc. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T042** Review fallback safety against `atomic-index-memory.ts` and `create-record.ts`. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T043** Review transcript mismatches and convert unresolved issues into follow-on tasks if needed. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+
+### Packet 015 milestone roll-up
+
+- [x] **P015-M1** Planner contract and flag plumbing complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-M2** Routing trim complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-M3** Quality-loop retirement with hard checks complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-M4** Reconsolidation, enrichment, and follow-up API extraction complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-M5** Regression sweep, transcript prototypes, and packet closeout complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+
+---
+
+### Packet 015 Remediation Carry-Over
+
+- [x] **P015-R001** Resolve the router-preservation contradiction by documenting the scoped `content-router.ts` exception. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/decision-record.md`
+- [x] **P015-R002** Restore full-auto safety parity by reinstating `POST_SAVE_FINGERPRINT`. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R003** Promote template-contract failures to planner blockers instead of advisories. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R004** Make deferred enrichment skip return explicit deferred status instead of success-shaped status. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R005** Mark `hybrid` as reserved and document that it still behaves like `plan-only`. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+- [x] **P015-R006** Add follow-up API execution-level coverage. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R007** Update packet docs to use the shipped follow-up tool names. Evidence: `review/015-deep-review-snapshot/review-report.md`
+- [x] **P015-R008** Update env references so `hybrid` is described honestly. Evidence: `review/015-deep-review-snapshot/review-report.md`
+- [x] **P015-R009** Update release notes so router scope and hybrid support are described honestly. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+
+---
+
+## Phase 3: Verification
+
+### Packet 016 Consolidation Work
+
+- [x] **P016-T001** Create the packet 016 directory structure and snapshot folders. Evidence: packet 016 tree
+- [x] **P016-T002** Copy packet 013 review artifacts into `research/013-audit-snapshot/`. Evidence: packet 016 tree
+- [x] **P016-T003** Copy packet 014 research artifacts into `research/014-research-snapshot/`. Evidence: packet 016 tree
+- [x] **P016-T004** Copy packet 015 review artifacts into `review/015-deep-review-snapshot/`. Evidence: packet 016 tree
+- [x] **P016-T005** Copy packet 015 transcript artifacts into `scratch/transcripts-snapshot/`. Evidence: packet 016 tree
+- [x] **P016-T006** Add snapshot headers to every copied Markdown file. Evidence: copied snapshot files
+- [x] **P016-T007** Author unified primary docs that tell the full journey without claiming new runtime work. Evidence: packet 016 primary docs
+- [x] **P016-T008** Generate metadata and packet-local changelog for packet 016. Evidence: `description.json`, `graph-metadata.json`, `changelog/**`
+- [x] **P016-T009** Validate packet 016 docs and strict packet compliance. Evidence: validator output
+
+---
+
+<!-- /ANCHOR:phase-3 -->
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] Source packet work preserved
+- [x] Source evidence copied into packet 016
+- [x] Unified primary docs authored
+- [x] Packet 016 claims no new runtime work
+- [x] Historical journey represented end to end
+
+---
+
+<!-- /ANCHOR:completion -->
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: `spec.md`
+- **Plan**: `plan.md`
+- **Checklist**: `checklist.md`
+- **Decisions**: `decision-record.md`
+- **Implementation Summary**: `implementation-summary.md`
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+
+- [x] Read the source packet artifacts before authoring packet 016
+- [x] Keep packet 016 additive only
+- [x] Point carry-over claims to source-backed evidence
+
+#### Execution Rules
+
+| Rule | Description |
+|------|-------------|
+| TASK-ORDER | Preserve audit -> research -> implementation -> remediation order |
+| TASK-EVIDENCE | Use snapshot or sibling packet references that resolve from packet 016 |
+| TASK-SCOPE | Never claim new runtime work in packet 016 |
+
+#### Status Reporting Format
+
+Report task state as `P013-R001 [x] - description` or the matching packet-prefixed ID.
+
+#### Blocked Task Protocol
+
+If a packet 016 task is blocked, record the blocker in packet 016 and fix only the merge packet surface. Source packets remain unchanged.
+<!-- /ANCHOR:cross-refs -->

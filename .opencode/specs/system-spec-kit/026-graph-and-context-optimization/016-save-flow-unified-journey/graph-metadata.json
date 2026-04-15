@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/013-memory-folder-deprecation-audit",
+        "reason": "Packet 016 preserves packet 013 as the audit starting point and copies its review artifacts into a packet-local snapshot.",
+        "source": "spec.md:Executive Summary"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
+        "reason": "Packet 016 preserves packet 014 as the research bridge and carries its trim-targeted findings into the unified narrative.",
+        "source": "spec.md:Executive Summary"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim",
+        "reason": "Packet 016 preserves packet 015 as the implementation and remediation packet and copies its review plus transcript artifacts.",
+        "source": "spec.md:Executive Summary"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "save-flow unified journey",
+      "audit to research to implementation to remediation",
+      "packet 013 014 015 merge",
+      "planner-first memory save journey",
+      "save flow consolidation packet",
+      "memory folder audit to planner-first implementation"
+    ],
+    "key_topics": [
+      "save-flow",
+      "unified",
+      "journey",
+      "audit",
+      "research",
+      "implementation",
+      "remediation",
+      "planner-first",
+      "memory",
+      "merge",
+      "packet",
+      "consolidation"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/013-audit-snapshot/review-report.md",
+      "research/014-research-snapshot/research.md",
+      "review/015-deep-review-snapshot/review-report.md",
+      "scratch/transcripts-snapshot/transcript-1.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "research/013-audit-snapshot/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/014-research-snapshot/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/015-deep-review-snapshot/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "transcript-1.md",
+        "kind": "doc",
+        "path": "scratch/transcripts-snapshot/transcript-1.md",
+        "source": "derived"
+      },
+      {
+        "name": "Save-Flow Unified Journey",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 016 consolidates the full save-flow journey across three source packets. Packet 013 proved the old memory-folder retirement was incomplete, packet 014 classified the remaining backend and recommended a trim-targeted path, and packet 015 shipped planner-first `/memory:save` plus a remediation pass that closed the final review findings. Packet 016 does not change runtime behavior. It preserves the end-to-end narrative and copies the most important audit, research, review, and transcript artifacts into one self-contained packet.",
+    "created_at": "2026-04-15T10:00:01Z",
+    "last_save_at": "2026-04-15T10:00:01Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}
