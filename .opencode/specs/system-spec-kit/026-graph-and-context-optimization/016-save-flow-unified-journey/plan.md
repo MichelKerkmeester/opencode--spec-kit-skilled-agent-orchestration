@@ -216,16 +216,16 @@ Packet 016 unified merge packet
 
 | Milestone | Phase | Description | Evidence Surface |
 |-----------|-------|-------------|------------------|
-| **M1** | Audit kickoff | Define packet 013 question, classification rules, and dimension plan | `../013-memory-folder-deprecation-audit/spec.md`, `research/013-audit-snapshot/deep-review-strategy.md` |
+| **M1** | Audit kickoff | Define packet 013 question, classification rules, and dimension plan | `research/013-audit-snapshot/primary-docs/spec.md`, `research/013-audit-snapshot/deep-review-strategy.md` |
 | **M2** | Audit convergence | Complete packet 013 review iterations and record the half-migrated state | `research/013-audit-snapshot/iterations/`, `research/013-audit-snapshot/review-report.md` |
 | **M3** | Retirement closure | Execute the Phase 013 cutover that retires the legacy memory-file write path and aligns docs | `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`, packet 013 release notes |
-| **M4** | Research kickoff | Open packet 014 and define the Q1-Q10 save-flow relevance questions | `../014-save-flow-backend-relevance-review/spec.md`, `research/014-research-snapshot/deep-research-strategy.md` |
+| **M4** | Research kickoff | Open packet 014 and define the Q1-Q10 save-flow relevance questions | `research/014-research-snapshot/primary-docs/spec.md`, `research/014-research-snapshot/deep-research-strategy.md` |
 | **M5** | Research convergence | Classify 15 save-flow subsystems and reach the trim-targeted verdict | `research/014-research-snapshot/research.md`, `research/014-research-snapshot/findings-registry.json` |
-| **M6** | Planner contract | Build packet 015 planner-first default, fallback flags, and contract wiring | `../015-save-flow-planner-first-trim/tasks.md` T001-T012 |
-| **M7** | Routing and quality trim | Trim Tier 3 routing, quality-loop auto-fix, and reconsolidation or enrichment hot-path work | `../015-save-flow-planner-first-trim/tasks.md` T013-T034 |
-| **M8** | Verification and transcripts | Run transcript prototypes, targeted tests, and packet validation | `../015-save-flow-planner-first-trim/tasks.md` T035-T043, `scratch/transcripts-snapshot/` |
-| **M9** | Release alignment | Capture the shipped contract in `v3.4.1.0` and packet 015 closeout docs | `../015-save-flow-planner-first-trim/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
-| **M10** | Remediation | Resolve deep-review findings F001-F009 and update docs, tests, and release claims honestly | `review/015-deep-review-snapshot/**`, `../015-save-flow-planner-first-trim/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
+| **M6** | Planner contract | Build packet 015 planner-first default, fallback flags, and contract wiring | `review/015-deep-review-snapshot/primary-docs/tasks.md` T001-T012 |
+| **M7** | Routing and quality trim | Trim Tier 3 routing, quality-loop auto-fix, and reconsolidation or enrichment hot-path work | `review/015-deep-review-snapshot/primary-docs/tasks.md` T013-T034 |
+| **M8** | Verification and transcripts | Run transcript prototypes, targeted tests, and packet validation | `review/015-deep-review-snapshot/primary-docs/tasks.md` T035-T043, `scratch/transcripts-snapshot/` |
+| **M9** | Release alignment | Capture the shipped contract in `v3.4.1.0` and packet 015 closeout docs | `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
+| **M10** | Remediation | Resolve deep-review findings F001-F009 and update docs, tests, and release claims honestly | `review/015-deep-review-snapshot/**`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
 
 ### Phase Descriptions
 
@@ -279,10 +279,10 @@ Deep review then forced the packet to close honesty and equivalence gaps. This m
 |-----------|-------|-------|-------------------|
 | Audit validation | Verify that packet 013 identified real runtime and doc contradictions | Deep-review iterations and synthesis report | `research/013-audit-snapshot/**` |
 | Research convergence | Verify that packet 014 answered Q1-Q10 and stabilized subsystem verdicts | Deep-research iterations and findings registry | `research/014-research-snapshot/**` |
-| Runtime contract tests | Verify planner-first default, fallback parity, router behavior, quality behavior, and follow-up APIs | Vitest suites and targeted sweeps | `../015-save-flow-planner-first-trim/tasks.md`, `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md` |
+| Runtime contract tests | Verify planner-first default, fallback parity, router behavior, quality behavior, and follow-up APIs | Vitest suites and targeted sweeps | `review/015-deep-review-snapshot/primary-docs/tasks.md`, `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md` |
 | Transcript validation | Verify planner-first behavior against real session examples | Transcript markdown, planner-output JSON, transcript reviews | `scratch/transcripts-snapshot/` |
 | Review convergence | Verify that packet 015 deep review isolated the real defect set | Review report, findings registry, and iteration ledger | `review/015-deep-review-snapshot/**` |
-| Remediation confirmation | Verify that all 9 packet 015 review findings were resolved | Remediated docs, tests, changelog, and implementation summary | `../015-save-flow-planner-first-trim/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
+| Remediation confirmation | Verify that all 9 packet 015 review findings were resolved | Remediated docs, tests, changelog, and implementation summary | `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md` |
 | Merge-packet validation | Verify that packet 016 docs are structurally sound | `validate_document.py`, `validate.sh --strict` | packet 016 |
 
 ### Packet 013 Testing and Review Approach

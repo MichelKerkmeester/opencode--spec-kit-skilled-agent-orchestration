@@ -63,21 +63,21 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] ✅ **CHK-CODE-001 [P1]** Packet 015 preserved hard blockers while removing default-path auto-fix. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-CODE-002 [P1]** Packet 015 remediation corrected the planner blocker contract and fallback parity. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] ✅ **CHK-CODE-001 [P1]** Packet 015 preserved hard blockers while removing default-path auto-fix. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-CODE-002 [P1]** Packet 015 remediation corrected the planner blocker contract and fallback parity. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 
 <!-- /ANCHOR:code-quality -->
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] ✅ **CHK-TEST-001 [P0]** Packet 015 test coverage included planner, fallback, router, quality, and continuity paths. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-TEST-002 [P1]** Packet 015 used transcript prototypes to ground operator-facing behavior. Evidence: `scratch/transcripts-snapshot/`, `../015-save-flow-planner-first-trim/checklist.md`
+- [x] ✅ **CHK-TEST-001 [P0]** Packet 015 test coverage included planner, fallback, router, quality, and continuity paths. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-TEST-002 [P1]** Packet 015 used transcript prototypes to ground operator-facing behavior. Evidence: `scratch/transcripts-snapshot/`, `review/015-deep-review-snapshot/primary-docs/checklist.md`
 
 <!-- /ANCHOR:testing -->
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] ✅ **CHK-SEC-001 [P0]** Packet 015 kept legality blockers active on canonical doc writes. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
+- [x] ✅ **CHK-SEC-001 [P0]** Packet 015 kept legality blockers active on canonical doc writes. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
 - [x] ✅ **CHK-SEC-002 [P1]** Packet 015 remediation restored fallback fingerprint parity. Evidence: `review/015-deep-review-snapshot/review-report.md`
 
 <!-- /ANCHOR:security -->
@@ -128,69 +128,69 @@ _memory:
 
 ### CHK-001 through CHK-045 roll-up
 
-- [x] ✅ **CHK-001 [P0]** Planner-first default and explicit fallback were defined in the packet docs. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/spec.md`
-- [x] ✅ **CHK-002 [P0]** The plan mapped M1 through M5 to the implementation work. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/plan.md`
-- [x] ✅ **CHK-003 [P0]** The task ledger tracked T001 through T043 with real paths and dependencies. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] ✅ **CHK-004 [P0]** Packet 014 was cited as the upstream `trim-targeted` research basis. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/spec.md`
-- [x] ✅ **CHK-005 [P0]** The load-bearing core was preserved in the packet design. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/spec.md`
-- [x] ✅ **CHK-006 [P0]** The four trim targets were named consistently across the packet docs. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-007 [P1]** The seven deferred or follow-up subsystems were named explicitly. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-008 [P1]** The packet required three real transcript prototypes. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-009 [P1]** The packet preserved the planner schema and follow-up guidance coherently across docs. Evidence: `../015-save-flow-planner-first-trim/spec.md`, `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] ✅ **CHK-010 [P0]** The planner-default path stayed non-mutating. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-011 [P0]** The explicit `full-auto` fallback preserved canonical atomic mutation and rollback. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-012 [P1]** Shared planner schema types existed and were reused. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] ✅ **CHK-013 [P1]** The eight canonical routing categories stayed intact. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-014 [P1]** Tier 3 routing was disabled or gated explicitly on the default path. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-015 [P1]** Quality-loop auto-fix left the default path. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-016 [P1]** Structural blockers stayed active in the save-quality gate. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-017 [P1]** Reconsolidation and enrichment became explicit opt-in or standalone paths. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-018 [P1]** Planner-default saves no longer ran unconditional reindex or graph refresh. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-019 [P1]** Planner output preserved blocker and advisory separation. Evidence: `../015-save-flow-planner-first-trim/tasks.md`, `../015-save-flow-planner-first-trim/decision-record.md`
-- [x] ✅ **CHK-020 [P0]** Focused `memory-save` tests passed for planner and fallback scenarios. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-021 [P0]** Integration tests passed for planner-default and fallback behavior. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-022 [P0]** Content-router tests passed with Tier 3 disabled by default. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-023 [P0]** Quality-loop tests passed for advisory-default behavior. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-024 [P0]** Save-quality-gate tests passed with hard blockers preserved. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-025 [P0]** Reconsolidation-bridge tests passed for explicit opt-in behavior. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-026 [P0]** Thin continuity tests passed unchanged expectations. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-027 [P1]** CLI authority tests passed with planner-default behavior. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-028 [P1]** Graph-refresh tests passed for explicit follow-up behavior. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-029 [P1]** Planner UX regression tests passed for readable operator-facing output. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-030 [P1]** Three transcript prototypes were reviewed before closeout. Evidence: `../015-save-flow-planner-first-trim/checklist.md`, `scratch/transcripts-snapshot/`
-- [x] ✅ **CHK-031 [P2]** Transcript prototypes showed no unexpected drop or wrong-anchor outcomes. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-032 [P2]** Follow-up actions for indexing and graph refresh were surfaced consistently. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-033 [P2]** No new network dependency was introduced on the default path. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-034 [P2]** Planner output did not expose unsafe file targets. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-035 [P2]** Fallback flags were documented without silently widening mutation scope. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-036 [P2]** Continuity upserts still relied on validated helpers. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-037 [P1]** Planner output preserved the same target authority as the fallback path. Evidence: `../015-save-flow-planner-first-trim/tasks.md`, `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-038 [P1]** Same-path identity stayed deterministic after the refactor. Evidence: `../015-save-flow-planner-first-trim/tasks.md`, `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-039 [P1]** The four trim targets stayed aligned across packet docs. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-040 [P1]** The packet docs used the correct packet structure and anchors. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-041 [P1]** `/memory:save` docs described planner-first default, fallback, and follow-up freshness actions. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-042 [P1]** Env references and command docs agreed on flag names and defaults. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-043 [P1]** Source citations pointed back to real packet 014 research and live save-flow files. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-044 [P2]** Transcript backlog, if any, was captured rather than lost. Evidence: `../015-save-flow-planner-first-trim/checklist.md`
-- [x] ✅ **CHK-045 [P1]** Packet closeout recorded no remaining blocker for the M1-M5 implementation packet. Evidence: `../015-save-flow-planner-first-trim/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+- [x] ✅ **CHK-001 [P0]** Planner-first default and explicit fallback were defined in the packet docs. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/spec.md`
+- [x] ✅ **CHK-002 [P0]** The plan mapped M1 through M5 to the implementation work. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/plan.md`
+- [x] ✅ **CHK-003 [P0]** The task ledger tracked T001 through T043 with real paths and dependencies. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] ✅ **CHK-004 [P0]** Packet 014 was cited as the upstream `trim-targeted` research basis. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/spec.md`
+- [x] ✅ **CHK-005 [P0]** The load-bearing core was preserved in the packet design. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/spec.md`
+- [x] ✅ **CHK-006 [P0]** The four trim targets were named consistently across the packet docs. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-007 [P1]** The seven deferred or follow-up subsystems were named explicitly. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-008 [P1]** The packet required three real transcript prototypes. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-009 [P1]** The packet preserved the planner schema and follow-up guidance coherently across docs. Evidence: `review/015-deep-review-snapshot/primary-docs/spec.md`, `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] ✅ **CHK-010 [P0]** The planner-default path stayed non-mutating. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-011 [P0]** The explicit `full-auto` fallback preserved canonical atomic mutation and rollback. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-012 [P1]** Shared planner schema types existed and were reused. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] ✅ **CHK-013 [P1]** The eight canonical routing categories stayed intact. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-014 [P1]** Tier 3 routing was disabled or gated explicitly on the default path. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-015 [P1]** Quality-loop auto-fix left the default path. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-016 [P1]** Structural blockers stayed active in the save-quality gate. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-017 [P1]** Reconsolidation and enrichment became explicit opt-in or standalone paths. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-018 [P1]** Planner-default saves no longer ran unconditional reindex or graph refresh. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-019 [P1]** Planner output preserved blocker and advisory separation. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`, `review/015-deep-review-snapshot/primary-docs/decision-record.md`
+- [x] ✅ **CHK-020 [P0]** Focused `memory-save` tests passed for planner and fallback scenarios. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-021 [P0]** Integration tests passed for planner-default and fallback behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-022 [P0]** Content-router tests passed with Tier 3 disabled by default. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-023 [P0]** Quality-loop tests passed for advisory-default behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-024 [P0]** Save-quality-gate tests passed with hard blockers preserved. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-025 [P0]** Reconsolidation-bridge tests passed for explicit opt-in behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-026 [P0]** Thin continuity tests passed unchanged expectations. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-027 [P1]** CLI authority tests passed with planner-default behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-028 [P1]** Graph-refresh tests passed for explicit follow-up behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-029 [P1]** Planner UX regression tests passed for readable operator-facing output. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-030 [P1]** Three transcript prototypes were reviewed before closeout. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`, `scratch/transcripts-snapshot/`
+- [x] ✅ **CHK-031 [P2]** Transcript prototypes showed no unexpected drop or wrong-anchor outcomes. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-032 [P2]** Follow-up actions for indexing and graph refresh were surfaced consistently. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-033 [P2]** No new network dependency was introduced on the default path. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-034 [P2]** Planner output did not expose unsafe file targets. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-035 [P2]** Fallback flags were documented without silently widening mutation scope. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-036 [P2]** Continuity upserts still relied on validated helpers. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-037 [P1]** Planner output preserved the same target authority as the fallback path. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`, `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-038 [P1]** Same-path identity stayed deterministic after the refactor. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`, `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-039 [P1]** The four trim targets stayed aligned across packet docs. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-040 [P1]** The packet docs used the correct packet structure and anchors. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-041 [P1]** `/memory:save` docs described planner-first default, fallback, and follow-up freshness actions. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-042 [P1]** Env references and command docs agreed on flag names and defaults. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-043 [P1]** Source citations pointed back to real packet 014 research and live save-flow files. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-044 [P2]** Transcript backlog, if any, was captured rather than lost. Evidence: `review/015-deep-review-snapshot/primary-docs/checklist.md`
+- [x] ✅ **CHK-045 [P1]** Packet closeout recorded no remaining blocker for the M1-M5 implementation packet. Evidence: `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
 
 ### Packet 015 release and packet completion carry-over
 
 - [x] ✅ **CHK-015-046 [P0]** Packet 015 completed 43 of 43 tasks. Evidence: `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
 - [x] ✅ **CHK-015-047 [P0]** Packet 015 recorded 0 blocked tasks. Evidence: `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
 - [x] ✅ **CHK-015-048 [P1]** Packet 015 recorded transcript validation artifacts under `scratch/`. Evidence: `scratch/transcripts-snapshot/`
-- [x] ✅ **CHK-015-049 [P1]** Packet 015 kept the explicit follow-up API names visible in its final state. Evidence: `../015-save-flow-planner-first-trim/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
+- [x] ✅ **CHK-015-049 [P1]** Packet 015 kept the explicit follow-up API names visible in its final state. Evidence: `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
 
 ---
 
 ### Packet 015 Remediation Carry-Over
 
-- [x] ✅ **CHK-R001 [P0]** F001 router-preservation contradiction resolved. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/decision-record.md`
-- [x] ✅ **CHK-R002 [P0]** F002 `POST_SAVE_FINGERPRINT` parity restored. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] ✅ **CHK-R003 [P0]** F003 template-contract failures promoted to planner blockers. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] ✅ **CHK-R001 [P0]** F001 router-preservation contradiction resolved. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/decision-record.md`
+- [x] ✅ **CHK-R002 [P0]** F002 `POST_SAVE_FINGERPRINT` parity restored. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] ✅ **CHK-R003 [P0]** F003 template-contract failures promoted to planner blockers. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 - [x] ✅ **CHK-R004 [P1]** F004 deferred enrichment status made explicit. Evidence: `review/015-deep-review-snapshot/review-report.md`
 - [x] ✅ **CHK-R005 [P2]** F005 `hybrid` marked reserved and honest. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
-- [x] ✅ **CHK-R006 [P1]** F006 follow-up API coverage added. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] ✅ **CHK-R006 [P1]** F006 follow-up API coverage added. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 - [x] ✅ **CHK-R007 [P1]** F007 follow-up tool names fixed in packet docs. Evidence: `review/015-deep-review-snapshot/review-report.md`
 - [x] ✅ **CHK-R008 [P1]** F008 env reference corrected. Evidence: `review/015-deep-review-snapshot/review-report.md`
 - [x] ✅ **CHK-R009 [P1]** F009 release-note honesty corrected. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`

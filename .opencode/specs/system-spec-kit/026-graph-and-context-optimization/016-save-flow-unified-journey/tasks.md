@@ -62,7 +62,7 @@ _memory:
 
 ### Packet 013 Audit and Retirement Carry-Over
 
-- [x] **P013-R001** Define the audit question, classification rule, and iteration plan. Evidence: `../013-memory-folder-deprecation-audit/spec.md`, `research/013-audit-snapshot/deep-review-strategy.md`
+- [x] **P013-R001** Define the audit question, classification rule, and iteration plan. Evidence: `research/013-audit-snapshot/primary-docs/spec.md`, `research/013-audit-snapshot/deep-review-strategy.md`
 - [x] **P013-R002** Confirm the runtime still created `[spec]/memory/` and wrote `memory/*.md` on save. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
 - [x] **P013-R003** Confirm the runtime still read legacy `memory/*.md` for dedup and causal-link behavior. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
 - [x] **P013-R004** Confirm the runtime still indexed legacy `memory/*.md` into the vector DB. Evidence: `research/013-audit-snapshot/iterations/iteration-001.md`, `research/013-audit-snapshot/review-report.md`
@@ -144,68 +144,68 @@ _memory:
 
 ### Packet 015 implementation tasks
 
-- [x] **P015-T001** Add planner-default and fallback flag definitions. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T002** Document planner, fallback, and deferred follow-up flags. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T003** Add planner response interfaces and follow-up action types. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T004** Add planner response serialization helpers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T005** Add planner blocker and advisory response helpers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T006** Make `generate-context.ts` request planner-first behavior by default. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T007** Update `/memory:save` docs for planner-first default and fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T008** Make `memory-save.ts` return planner output by default with explicit fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T009** Update aggregate `memory-save` tests for planner-default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T010** Update handler tests for non-mutating default responses and blocker reporting. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T011** Update CLI target-authority tests for planner-default execution. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T012** Create focused planner-first regression coverage. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T013** Trim default Tier 3 participation while preserving category contract. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T014** Reduce the Tier 2 prototype library to the remaining useful coverage. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T015** Update content-router tests for deterministic Tier 1 or Tier 2 default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T016** Update runtime routing tests so low-confidence cases refuse or warn instead of invoking Tier 3. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T017** Update intent-routing tests so route overrides stay auditable after the trim. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T018** Retire default-path auto-fix retries while preserving advisory output. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T019** Preserve hard structural blockers while downgrading score-heavy quality layers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T020** Update quality-loop tests for advisory-default behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T021** Update save-quality-gate tests for preserved hard blockers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T022** Update pipeline-enforcement tests so the planner path still surfaces legality blockers. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T023** Gate reconsolidation-on-save behind explicit flags or fallback. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T024** Move default-path enrichment into explicit follow-up behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T025** Preserve same-path lineage while reducing default PE work. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T026** Keep chunking as a size-driven fallback instead of a default dependency. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T027** Move unconditional graph refresh and spec-doc reindex out of planner-default saves. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T028** Expose explicit follow-up indexing entry points. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T029** Keep graph refresh callable as an explicit follow-up. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T030** Update reconsolidation-bridge tests for explicit opt-in behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T031** Update reconsolidation tests to prove the default path no longer triggers reconsolidation. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T032** Update assistive-reconsolidation tests so assistive recommendations remain deferred or fallback-only. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T033** Update chunking tests for size-driven fallback behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T034** Update graph-refresh tests for explicit follow-up behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T035** Update memory-save integration tests for planner-default plus fallback end-to-end behavior. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T036** Update planner UX regression tests for readable, action-oriented output. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T037** Update thin-continuity tests to prove normalization and upsert parity. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T038** Prototype planner-first behavior against three real session transcripts. Evidence: `../015-save-flow-planner-first-trim/tasks.md`, `scratch/transcripts-snapshot/`
-- [x] **P015-T039** Run per-file doc validation for the packet docs. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T040** Run strict packet validation and capture follow-on defects. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T041** Review structural parity between `/memory:save`, `AGENTS.md`, and the system-spec-kit skill doc. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T042** Review fallback safety against `atomic-index-memory.ts` and `create-record.ts`. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-T043** Review transcript mismatches and convert unresolved issues into follow-on tasks if needed. Evidence: `../015-save-flow-planner-first-trim/tasks.md`
+- [x] **P015-T001** Add planner-default and fallback flag definitions. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T002** Document planner, fallback, and deferred follow-up flags. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T003** Add planner response interfaces and follow-up action types. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T004** Add planner response serialization helpers. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T005** Add planner blocker and advisory response helpers. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T006** Make `generate-context.ts` request planner-first behavior by default. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T007** Update `/memory:save` docs for planner-first default and fallback. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T008** Make `memory-save.ts` return planner output by default with explicit fallback. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T009** Update aggregate `memory-save` tests for planner-default behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T010** Update handler tests for non-mutating default responses and blocker reporting. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T011** Update CLI target-authority tests for planner-default execution. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T012** Create focused planner-first regression coverage. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T013** Trim default Tier 3 participation while preserving category contract. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T014** Reduce the Tier 2 prototype library to the remaining useful coverage. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T015** Update content-router tests for deterministic Tier 1 or Tier 2 default behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T016** Update runtime routing tests so low-confidence cases refuse or warn instead of invoking Tier 3. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T017** Update intent-routing tests so route overrides stay auditable after the trim. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T018** Retire default-path auto-fix retries while preserving advisory output. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T019** Preserve hard structural blockers while downgrading score-heavy quality layers. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T020** Update quality-loop tests for advisory-default behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T021** Update save-quality-gate tests for preserved hard blockers. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T022** Update pipeline-enforcement tests so the planner path still surfaces legality blockers. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T023** Gate reconsolidation-on-save behind explicit flags or fallback. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T024** Move default-path enrichment into explicit follow-up behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T025** Preserve same-path lineage while reducing default PE work. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T026** Keep chunking as a size-driven fallback instead of a default dependency. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T027** Move unconditional graph refresh and spec-doc reindex out of planner-default saves. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T028** Expose explicit follow-up indexing entry points. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T029** Keep graph refresh callable as an explicit follow-up. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T030** Update reconsolidation-bridge tests for explicit opt-in behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T031** Update reconsolidation tests to prove the default path no longer triggers reconsolidation. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T032** Update assistive-reconsolidation tests so assistive recommendations remain deferred or fallback-only. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T033** Update chunking tests for size-driven fallback behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T034** Update graph-refresh tests for explicit follow-up behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T035** Update memory-save integration tests for planner-default plus fallback end-to-end behavior. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T036** Update planner UX regression tests for readable, action-oriented output. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T037** Update thin-continuity tests to prove normalization and upsert parity. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T038** Prototype planner-first behavior against three real session transcripts. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`, `scratch/transcripts-snapshot/`
+- [x] **P015-T039** Run per-file doc validation for the packet docs. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T040** Run strict packet validation and capture follow-on defects. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T041** Review structural parity between `/memory:save`, `AGENTS.md`, and the system-spec-kit skill doc. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T042** Review fallback safety against `atomic-index-memory.ts` and `create-record.ts`. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-T043** Review transcript mismatches and convert unresolved issues into follow-on tasks if needed. Evidence: `review/015-deep-review-snapshot/primary-docs/tasks.md`
 
 ### Packet 015 milestone roll-up
 
-- [x] **P015-M1** Planner contract and flag plumbing complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-M2** Routing trim complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-M3** Quality-loop retirement with hard checks complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-M4** Reconsolidation, enrichment, and follow-up API extraction complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/tasks.md`
-- [x] **P015-M5** Regression sweep, transcript prototypes, and packet closeout complete. Evidence: `../015-save-flow-planner-first-trim/plan.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-M1** Planner contract and flag plumbing complete. Evidence: `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-M2** Routing trim complete. Evidence: `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-M3** Quality-loop retirement with hard checks complete. Evidence: `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-M4** Reconsolidation, enrichment, and follow-up API extraction complete. Evidence: `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/tasks.md`
+- [x] **P015-M5** Regression sweep, transcript prototypes, and packet closeout complete. Evidence: `review/015-deep-review-snapshot/primary-docs/plan.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 
 ---
 
 ### Packet 015 Remediation Carry-Over
 
-- [x] **P015-R001** Resolve the router-preservation contradiction by documenting the scoped `content-router.ts` exception. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/decision-record.md`
-- [x] **P015-R002** Restore full-auto safety parity by reinstating `POST_SAVE_FINGERPRINT`. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] **P015-R003** Promote template-contract failures to planner blockers instead of advisories. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
-- [x] **P015-R004** Make deferred enrichment skip return explicit deferred status instead of success-shaped status. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R001** Resolve the router-preservation contradiction by documenting the scoped `content-router.ts` exception. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/decision-record.md`
+- [x] **P015-R002** Restore full-auto safety parity by reinstating `POST_SAVE_FINGERPRINT`. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] **P015-R003** Promote template-contract failures to planner blockers instead of advisories. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
+- [x] **P015-R004** Make deferred enrichment skip return explicit deferred status instead of success-shaped status. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 - [x] **P015-R005** Mark `hybrid` as reserved and document that it still behaves like `plan-only`. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
-- [x] **P015-R006** Add follow-up API execution-level coverage. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../015-save-flow-planner-first-trim/implementation-summary.md`
+- [x] **P015-R006** Add follow-up API execution-level coverage. Evidence: `review/015-deep-review-snapshot/review-report.md`, `review/015-deep-review-snapshot/primary-docs/implementation-summary.md`
 - [x] **P015-R007** Update packet docs to use the shipped follow-up tool names. Evidence: `review/015-deep-review-snapshot/review-report.md`
 - [x] **P015-R008** Update env references so `hybrid` is described honestly. Evidence: `review/015-deep-review-snapshot/review-report.md`
 - [x] **P015-R009** Update release notes so router scope and hybrid support are described honestly. Evidence: `review/015-deep-review-snapshot/review-report.md`, `../../../../changelog/01--system-spec-kit/v3.4.1.0.md`
