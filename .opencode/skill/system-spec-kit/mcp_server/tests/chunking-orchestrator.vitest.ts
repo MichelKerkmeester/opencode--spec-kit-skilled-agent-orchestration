@@ -142,7 +142,7 @@ vi.mock('../lib/search/search-flags', () => ({
   isEncodingIntentEnabled: vi.fn(() => false),
 }));
 
-import { indexChunkedMemoryFile } from '../handlers/chunking-orchestrator';
+import { indexChunkedMemoryFile, shouldUseChunkedIndexing } from '../handlers/chunking-orchestrator';
 import * as embeddings from '../lib/providers/embeddings';
 import { closeDb, initializeDb } from '../lib/search/vector-index';
 
@@ -209,6 +209,11 @@ afterEach(() => {
 });
 
 describe('chunking orchestrator deferred anchor identity', () => {
+  it('keeps chunking as a size-driven full-auto fallback only', () => {
+    expect(shouldUseChunkedIndexing('large content', 'plan-only')).toBe(false);
+    expect(shouldUseChunkedIndexing('large content', 'full-auto')).toBe(true);
+  });
+
   it('keeps separate active projection rows for mixed embedded and deferred chunk children', async () => {
     const filePath = path.join(tempDir ?? os.tmpdir(), 'mixed-chunks.md');
     fs.writeFileSync(filePath, '# Chunked content', 'utf8');

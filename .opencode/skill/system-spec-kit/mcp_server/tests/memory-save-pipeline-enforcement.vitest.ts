@@ -427,15 +427,15 @@ describe('Cat 1: Parser Validation', () => {
 // ───────────────────────────────────────────────────────────────
 
 describe('Cat 2: Quality Loop', () => {
-  it('rejects content with quality score below 0.6 when quality loop enabled', () => {
+  it('returns advisory-only failures for low-quality content on the planner-default path', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
     const content = 'Short content without any structure or anchors.';
     const metadata: Record<string, unknown> = { triggerPhrases: [] };
 
     const result = runQualityLoop(content, metadata, { threshold: 0.6 });
 
-    expect(result.rejected).toBe(true);
     expect(result.passed).toBe(false);
+    expect(result.rejected).toBe(false);
     expect(result.score.total).toBeLessThan(0.6);
   });
 
@@ -461,7 +461,7 @@ describe('Cat 2: Quality Loop', () => {
     const content = '# Gate Analysis\n\n## Review Process\n\n## Check Strategy\n\n## Validation Notes\n\nAnalysis of gate review process.';
     const metadata: Record<string, unknown> = { triggerPhrases: [], title: 'Gate Analysis' };
 
-    const result = runQualityLoop(content, metadata, { threshold: 0.6 });
+    const result = runQualityLoop(content, metadata, { threshold: 0.6, mode: 'full-auto' });
 
     expect(result.fixes.length).toBeGreaterThan(0);
     expect(result.fixes.some(f => /trigger phrase/i.test(f))).toBe(true);
@@ -476,13 +476,13 @@ describe('Cat 2: Quality Loop', () => {
     const content = 'no headings no anchors no structure';
     const metadata: Record<string, unknown> = { triggerPhrases: [] };
 
-    const result = runQualityLoop(content, metadata, { threshold: 0.6, maxRetries: 2 });
+    const result = runQualityLoop(content, metadata, { threshold: 0.6, maxRetries: 2, mode: 'full-auto' });
 
     expect(result.rejected).toBe(true);
     expect(result.passed).toBe(false);
   });
 
-  it('quality loop rejection blocks downstream sufficiency evaluation in pipeline', async () => {
+  it('full-auto quality loop rejection blocks downstream sufficiency evaluation in pipeline', async () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
     // Build content that would fail quality loop (no triggers, short, no structure)
     // but would pass sufficiency if it got there
@@ -493,7 +493,7 @@ describe('Cat 2: Quality Loop', () => {
     // indexMemoryFile throws on validation failure (content <5 chars), so use parseMemoryContent
     const parsed = memoryParser.parseMemoryContent(filePath, content);
     const metadata: Record<string, unknown> = { triggerPhrases: parsed.triggerPhrases };
-    const qlResult = runQualityLoop(content, metadata, { threshold: 0.6 });
+    const qlResult = runQualityLoop(content, metadata, { threshold: 0.6, mode: 'full-auto' });
 
     // Confirm quality loop rejects
     if (process.env.SPECKIT_QUALITY_LOOP === 'true') {
@@ -817,7 +817,8 @@ describe('Cat 5: Save Quality Gate', () => {
     expect(result.layers.semanticDedup).not.toBeNull();
     expect(result.layers.semanticDedup!.isDuplicate).toBe(true);
     if (!result.warnOnly) {
-      expect(result.pass).toBe(false);
+      expect(result.pass).toBe(true);
+      expect(result.wouldReject).toBe(true);
     }
   });
 
@@ -874,6 +875,34 @@ describe('Cat 5: Save Quality Gate', () => {
 
     expect(result.pass).toBe(false);
     expect(result.reasons.some(r => /spec folder/i.test(r))).toBe(true);
+  });
+
+  it('planner-default canonical saves surface structural legality blockers', async () => {
+    const filePath = path.join(FIXTURE_ROOT, 'implementation-summary.md');
+    fs.writeFileSync(filePath, buildValidPipelineMemory(), 'utf8');
+
+    const response = await handler.handleMemorySave({
+      filePath,
+      routeAs: 'task_update',
+      targetAnchorId: 'T013',
+    });
+
+    const payload = parseResponse(response);
+
+    expect(payload.data.status).toBe('blocked');
+    expect(payload.data.plannerMode).toBe('plan-only');
+    expect(payload.data.blockers.length).toBeGreaterThan(0);
+    expect(JSON.stringify(payload.data.blockers)).toMatch(/tasks\\.md|task|anchor|target/i);
+    expect(payload.data.followUpActions).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        action: 'apply',
+        args: expect.objectContaining({
+          plannerMode: 'full-auto',
+          routeAs: 'task_update',
+          targetAnchorId: 'T013',
+        }),
+      }),
+    ]));
   });
 });
 
@@ -961,7 +990,7 @@ describe('Cat 6: Cross-Gate Interactions', () => {
     }
   });
 
-  it('quality loop rejection blocks sufficiency evaluation (gate ordering proof)', async () => {
+  it('planner-default quality advisories do not preempt downstream sufficiency evaluation', async () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
 
     // Content that would fail quality loop (no triggers, short, no anchors)
@@ -969,11 +998,11 @@ describe('Cat 6: Cross-Gate Interactions', () => {
     const metadata: Record<string, unknown> = { triggerPhrases: [] };
 
     const qlResult = runQualityLoop(content, metadata, { threshold: 0.6 });
-    expect(qlResult.rejected).toBe(true);
+    expect(qlResult.rejected).toBe(false);
+    expect(qlResult.passed).toBe(false);
 
-    // In the actual pipeline (prepareParsedMemoryForIndexing), if quality loop rejects,
-    // processPreparedMemory returns rejected before reaching sufficiency
-    // We verify by checking that the pipeline result is 'rejected' with quality loop reason
+    // On the planner-default path the quality loop stays advisory, so downstream
+    // legality gates still decide the pipeline outcome.
     const filePath = path.join(FIXTURE_ROOT, 'memory', 'ql-ordering.md');
     // Need valid parse content (>= 5 chars)
     fs.writeFileSync(filePath, buildValidPipelineMemory({
@@ -984,7 +1013,7 @@ describe('Cat 6: Cross-Gate Interactions', () => {
     const result = await handler.indexMemoryFile(filePath, { force: true, asyncEmbedding: true });
 
     if (process.env.SPECKIT_QUALITY_LOOP === 'true') {
-      // The quality loop should have rejected before sufficiency was evaluated
+      // The pipeline still rejects, but not because the quality loop hard-blocked first.
       expect(result.status).toBe('rejected');
     }
   });

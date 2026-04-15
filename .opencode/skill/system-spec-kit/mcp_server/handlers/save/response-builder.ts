@@ -18,6 +18,12 @@ import type {
   AssistiveRecommendation,
   IndexResult,
   PeDecision,
+  PlannerAdvisory,
+  PlannerBlocker,
+  PlannerFollowUpAction,
+  PlannerResponseEnvelope,
+  PlannerRouteTarget,
+  PlannerProposedEdit,
   ReconWarningList,
 } from './types.js';
 import type { EnrichmentStatus } from './post-insert.js';
@@ -69,6 +75,10 @@ interface BuildSaveResponseParams {
   requestId: string;
 }
 
+interface BuildPlannerResponseParams {
+  planner: PlannerResponseEnvelope;
+}
+
 function buildAssistiveReviewDescription(
   recommendation: Pick<
     AssistiveRecommendation,
@@ -111,6 +121,57 @@ function finalizeAssistiveRecommendation(
       newerMemoryId,
       similarity: rawRecommendation.similarity,
     }),
+  };
+}
+
+export function serializePlannerRouteTarget(routeTarget: PlannerRouteTarget): PlannerRouteTarget {
+  return {
+    routeCategory: routeTarget.routeCategory,
+    targetDocPath: routeTarget.targetDocPath,
+    ...(routeTarget.canonicalFilePath ? { canonicalFilePath: routeTarget.canonicalFilePath } : {}),
+    ...(routeTarget.targetAnchorId !== undefined ? { targetAnchorId: routeTarget.targetAnchorId } : {}),
+    ...(routeTarget.mergeMode ? { mergeMode: routeTarget.mergeMode } : {}),
+  };
+}
+
+export function serializePlannerProposedEdit(proposedEdit: PlannerProposedEdit): PlannerProposedEdit {
+  return {
+    targetDocPath: proposedEdit.targetDocPath,
+    summary: proposedEdit.summary,
+    ...(proposedEdit.targetAnchorId !== undefined ? { targetAnchorId: proposedEdit.targetAnchorId } : {}),
+    ...(proposedEdit.mergeMode ? { mergeMode: proposedEdit.mergeMode } : {}),
+    ...(proposedEdit.routeCategory ? { routeCategory: proposedEdit.routeCategory } : {}),
+    ...(proposedEdit.contentPreview ? { contentPreview: proposedEdit.contentPreview } : {}),
+  };
+}
+
+export function serializePlannerBlocker(blocker: PlannerBlocker): PlannerBlocker {
+  return {
+    code: blocker.code,
+    message: blocker.message,
+    ...(blocker.targetDocPath ? { targetDocPath: blocker.targetDocPath } : {}),
+    ...(blocker.targetAnchorId !== undefined ? { targetAnchorId: blocker.targetAnchorId } : {}),
+    ...(blocker.routeCategory ? { routeCategory: blocker.routeCategory } : {}),
+  };
+}
+
+export function serializePlannerAdvisory(advisory: PlannerAdvisory): PlannerAdvisory {
+  return {
+    code: advisory.code,
+    message: advisory.message,
+    ...(advisory.targetDocPath ? { targetDocPath: advisory.targetDocPath } : {}),
+    ...(advisory.targetAnchorId !== undefined ? { targetAnchorId: advisory.targetAnchorId } : {}),
+    ...(advisory.routeCategory ? { routeCategory: advisory.routeCategory } : {}),
+  };
+}
+
+export function serializePlannerFollowUpAction(followUpAction: PlannerFollowUpAction): PlannerFollowUpAction {
+  return {
+    action: followUpAction.action,
+    title: followUpAction.title,
+    description: followUpAction.description,
+    ...(followUpAction.tool ? { tool: followUpAction.tool } : {}),
+    ...(followUpAction.args ? { args: followUpAction.args } : {}),
   };
 }
 
@@ -255,6 +316,48 @@ export function buildIndexResult({
   }
 
   return result;
+}
+
+export function buildPlannerResponse({ planner }: BuildPlannerResponseParams): MCPResponse {
+  const blockers = planner.blockers.map(serializePlannerBlocker);
+  const advisories = planner.advisories.map(serializePlannerAdvisory);
+  const followUpActions = planner.followUpActions.map(serializePlannerFollowUpAction);
+  const proposedEdits = planner.proposedEdits.map(serializePlannerProposedEdit);
+  const routeTarget = serializePlannerRouteTarget(planner.routeTarget);
+  const isBlocked = blockers.length > 0 || planner.status === 'blocked';
+
+  const hints: string[] = [];
+  if (proposedEdits.length > 0) {
+    hints.push(`Planner prepared ${proposedEdits.length} proposed edit(s) for ${routeTarget.targetDocPath}`);
+  }
+  if (followUpActions.length > 0) {
+    hints.push(`Available follow-up actions: ${followUpActions.map((action) => action.action).join(', ')}`);
+  }
+  if (advisories.length > 0) {
+    hints.push(`${advisories.length} advisory warning(s) remain after structural planning checks`);
+  }
+  if (isBlocked) {
+    hints.push('Resolve planner blockers before requesting full-auto apply mode');
+  }
+
+  return createMCPSuccessResponse({
+    tool: 'memory_save',
+    summary: planner.message,
+    data: {
+      status: planner.status,
+      filePath: planner.filePath,
+      specFolder: planner.specFolder,
+      title: planner.title,
+      plannerMode: planner.plannerMode,
+      routeTarget,
+      proposedEdits,
+      blockers,
+      advisories,
+      followUpActions,
+      message: planner.message,
+    },
+    hints,
+  });
 }
 
 export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId }: BuildSaveResponseParams): MCPResponse {

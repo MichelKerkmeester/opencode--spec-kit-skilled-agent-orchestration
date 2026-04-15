@@ -10,6 +10,8 @@ import {
   isAutoEntitiesEnabled,
   isMemorySummariesEnabled,
   isEntityLinkingEnabled,
+  isPostInsertEnrichmentEnabled,
+  type SavePlannerMode,
 } from '../../lib/search/search-flags.js';
 import {
   extractEntities,
@@ -45,6 +47,14 @@ export interface EnrichmentStatus {
 export interface PostInsertEnrichmentResult {
   causalLinksResult: CausalLinksResult | null;
   enrichmentStatus: EnrichmentStatus;
+}
+
+export interface PostInsertEnrichmentOptions {
+  plannerMode?: SavePlannerMode;
+}
+
+export function shouldRunPostInsertEnrichment(plannerMode: SavePlannerMode = 'plan-only'): boolean {
+  return plannerMode === 'full-auto' || isPostInsertEnrichmentEnabled();
 }
 
 /**
@@ -191,4 +201,26 @@ export async function runPostInsertEnrichment(
   }
 
   return { causalLinksResult, enrichmentStatus };
+}
+
+export async function runPostInsertEnrichmentIfEnabled(
+  database: BetterSqlite3.Database,
+  id: number,
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  options: PostInsertEnrichmentOptions = {},
+): Promise<PostInsertEnrichmentResult> {
+  if (!shouldRunPostInsertEnrichment(options.plannerMode)) {
+    return {
+      causalLinksResult: null,
+      enrichmentStatus: {
+        causalLinks: true,
+        entityExtraction: true,
+        summaries: true,
+        entityLinking: true,
+        graphLifecycle: true,
+      },
+    };
+  }
+
+  return runPostInsertEnrichment(database, id, parsed);
 }

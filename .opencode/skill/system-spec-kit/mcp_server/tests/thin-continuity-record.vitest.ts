@@ -169,4 +169,52 @@ describe('thin continuity record', () => {
       answered_questions: ['Q1', 'Q3'],
     });
   });
+
+  it('replaces an existing continuity block without duplicating frontmatter keys', () => {
+    const initial = upsertThinContinuityInMarkdown(makeFrontmatterMarkdown(), {
+      packet_pointer: 'specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim',
+      last_updated_at: '2026-04-15T07:15:00Z',
+      last_updated_by: 'worker-one',
+      recent_action: 'Prepared transcript prototype set',
+      next_safe_action: 'Run planner comparison',
+      blockers: [],
+      key_files: ['implementation-summary.md'],
+      completion_pct: 70,
+      open_questions: ['Q1'],
+      answered_questions: [],
+    });
+
+    expect(initial.ok).toBe(true);
+
+    const replaced = upsertThinContinuityInMarkdown(initial.markdown!, {
+      packet_pointer: 'specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim',
+      last_updated_at: '2026-04-15T08:05:00Z',
+      last_updated_by: 'worker-two',
+      recent_action: 'Reviewed transcript mismatches',
+      next_safe_action: 'Complete packet 015 closeout',
+      blockers: [],
+      key_files: ['implementation-summary.md', 'tasks.md'],
+      completion_pct: 95,
+      open_questions: [],
+      answered_questions: [],
+    });
+
+    expect(replaced.ok).toBe(true);
+    expect(replaced.markdown?.match(/continuity:/g)).toHaveLength(1);
+    expect(replaced.markdown).toContain('worker-two');
+    expect(replaced.markdown).not.toContain('worker-one');
+    expect(replaced.markdown).toContain('Body content that should survive frontmatter updates.');
+
+    const readBack = readThinContinuityRecord(replaced.markdown!);
+    expect(readBack.ok).toBe(true);
+    expect(readBack.record).toMatchObject({
+      last_updated_by: 'worker-two',
+      recent_action: 'Reviewed transcript mismatches',
+      next_safe_action: 'Complete packet 015 closeout',
+      key_files: ['implementation-summary.md', 'tasks.md'],
+      completion_pct: 95,
+      open_questions: [],
+      answered_questions: [],
+    });
+  });
 });

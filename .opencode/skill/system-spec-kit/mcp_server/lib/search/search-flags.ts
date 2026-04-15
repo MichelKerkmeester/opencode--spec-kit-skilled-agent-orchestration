@@ -16,6 +16,13 @@ import { isFeatureEnabled } from '../cognitive/rollout-policy.js';
 // Feature catalog: Verify-fix-verify memory quality loop
 // Feature catalog: Negative feedback confidence signal
 
+export type SavePlannerMode = 'plan-only' | 'full-auto' | 'hybrid';
+
+function isOptInEnabled(variableName: string): boolean {
+  const raw = process.env[variableName]?.trim().toLowerCase();
+  return raw === 'true' || raw === '1';
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. BOOST FLAGS (Graduated default-ON)
 ──────────────────────────────────────────────────────────────── */
@@ -110,6 +117,46 @@ export function isSearchFallbackEnabled(): boolean {
  */
 export function isFolderDiscoveryEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_FOLDER_DISCOVERY');
+}
+
+/**
+ * Planner-first save mode selection for canonical save flows.
+ * Default: 'plan-only'. Set SPECKIT_SAVE_PLANNER_MODE=full-auto to restore
+ * the legacy mutation-first behavior, or hybrid for future mixed flows.
+ */
+export function resolveSavePlannerMode(): SavePlannerMode {
+  const raw = process.env.SPECKIT_SAVE_PLANNER_MODE?.trim().toLowerCase();
+  if (raw === 'full-auto' || raw === 'full_auto') {
+    return 'full-auto';
+  }
+  if (raw === 'hybrid') {
+    return 'hybrid';
+  }
+  return 'plan-only';
+}
+
+/**
+ * Save-time reconsolidation gate for planner-first flows.
+ * Default: FALSE. Set SPECKIT_RECONSOLIDATION_ENABLED=true to enable.
+ */
+export function isSaveReconsolidationEnabled(): boolean {
+  return isOptInEnabled('SPECKIT_RECONSOLIDATION_ENABLED');
+}
+
+/**
+ * Save-time post-insert enrichment bundle gate for planner-first flows.
+ * Default: FALSE. Set SPECKIT_POST_INSERT_ENRICHMENT_ENABLED=true to enable.
+ */
+export function isPostInsertEnrichmentEnabled(): boolean {
+  return isOptInEnabled('SPECKIT_POST_INSERT_ENRICHMENT_ENABLED');
+}
+
+/**
+ * Save-time quality auto-fix retries gate for planner-first flows.
+ * Default: FALSE. Set SPECKIT_QUALITY_AUTO_FIX=true to enable.
+ */
+export function isQualityAutoFixEnabled(): boolean {
+  return isOptInEnabled('SPECKIT_QUALITY_AUTO_FIX');
 }
 
 // -- Hybrid RAG Fusion Refinement flags --

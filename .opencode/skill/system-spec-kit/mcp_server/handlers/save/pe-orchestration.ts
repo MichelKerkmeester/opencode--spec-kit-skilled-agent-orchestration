@@ -46,6 +46,8 @@ export function evaluateAndApplyPeDecision(
       userId: scope?.userId,
       agentId: scope?.agentId,
       sessionId: scope?.sessionId,
+      excludeFilePath: filePath,
+      excludeCanonicalFilePath: filePath,
     });
   }
 

@@ -270,6 +270,13 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(isReconsolidationEnabled()).toBe(false);
     });
 
+    it('RF4b: save-flow opt-in flag does not change the core reconsolidation default', () => {
+      delete process.env.SPECKIT_RECONSOLIDATION;
+      process.env.SPECKIT_RECONSOLIDATION_ENABLED = 'false';
+      expect(isReconsolidationEnabled()).toBe(true);
+      delete process.env.SPECKIT_RECONSOLIDATION_ENABLED;
+    });
+
     it('RF5: Flag OFF means reconsolidate returns null', async () => {
       process.env.SPECKIT_RECONSOLIDATION = 'false';
       const result = await reconsolidate(

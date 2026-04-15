@@ -1,8 +1,38 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Query-Intent Routing
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect } from 'vitest';
+import { createHash } from 'node:crypto';
+import { describe, it, expect, vi } from 'vitest';
 import { classifyQueryIntent } from '../lib/code-graph/query-intent-classifier.js';
+import { createContentRouter } from '../lib/routing/content-router.js';
+
+function makeEmbeddingFn() {
+  return (text: string): number[] => {
+    const buckets = Array.from({ length: 64 }, () => 0);
+    for (const token of text.toLowerCase().split(/[^a-z0-9_]+/).filter(Boolean)) {
+      const digest = createHash('sha256').update(token).digest();
+      const bucketIndex = digest[0] % buckets.length;
+      buckets[bucketIndex] += 1;
+    }
+    return buckets;
+  };
+}
+
+function makeRouterContext() {
+  return {
+    specFolder: '026-graph-and-context-optimization/015-save-flow-planner-first-trim',
+    packetLevel: 'L3+' as const,
+    existingAnchors: ['phase-1', 'phase-2', 'what-built', 'how-delivered'],
+    sessionMeta: {
+      packet_kind: 'phase' as const,
+      save_mode: 'auto' as const,
+      recent_docs_touched: ['implementation-summary.md'],
+      recent_anchors_touched: ['what-built'],
+      likely_phase_anchor: 'phase-2',
+      session_id: 'runtime-routing-test',
+    },
+  };
+}
 
 describe('query-intent routing', () => {
   describe('maps semantic queries to semantic intent', () => {
@@ -54,5 +84,32 @@ describe('agent routing validates classifier-backed intent mapping', () => {
     it('WHAT CALLS parseFile → structural', () => { expect(classifyQueryIntent('WHAT CALLS parseFile').intent).toBe('structural'); });
     it('Find Similar Code → semantic', () => { expect(classifyQueryIntent('Find Similar Code').intent).toBe('semantic'); });
     it('Resume My Session → hybrid', () => { expect(classifyQueryIntent('Resume My Session').intent).toBe('hybrid'); });
+  });
+});
+
+describe('runtime routing fallback guardrails', () => {
+  it('refuses ambiguous save chunks by default instead of invoking Tier 3', async () => {
+    const classifyWithTier3 = vi.fn(async () => ({
+      category: 'narrative_delivery',
+      confidence: 0.8,
+      target_doc: 'implementation-summary.md',
+      target_anchor: 'how-delivered',
+      merge_mode: 'append-as-paragraph',
+      reasoning: 'Tier 3 should stay opt-in on planner-first saves.',
+    }));
+    const router = createContentRouter({
+      embedText: makeEmbeddingFn(),
+      classifyWithTier3,
+    });
+
+    const decision = await router.classifyContent({
+      id: 'runtime-route-01',
+      text: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+      sourceField: 'unknown',
+    }, makeRouterContext());
+
+    expect(decision.refusal).toBe(true);
+    expect(decision.warningMessage).toContain('operator should specify routeAs');
+    expect(classifyWithTier3).not.toHaveBeenCalled();
   });
 });

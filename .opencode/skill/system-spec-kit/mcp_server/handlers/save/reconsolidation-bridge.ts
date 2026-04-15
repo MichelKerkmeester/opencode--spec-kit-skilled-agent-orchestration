@@ -14,9 +14,10 @@ import type { ReconsolidationResult } from '../../lib/storage/reconsolidation.js
 import { classifyEncodingIntent } from '../../lib/search/encoding-intent.js';
 import {
   isEncodingIntentEnabled,
-  isReconsolidationEnabled as isReconsolidationFlagEnabled,
+  isSaveReconsolidationEnabled,
   isAssistiveReconsolidationEnabled as _isAssistiveReconsolidationEnabled,
 } from '../../lib/search/search-flags.js';
+import type { SavePlannerMode } from '../../lib/search/search-flags.js';
 import type * as memoryParser from '../../lib/parsing/memory-parser.js';
 import { toErrorMessage } from '../../utils/index.js';
 
@@ -131,6 +132,10 @@ export interface ReconsolidationBridgeResult {
   assistiveRecommendation?: AssistiveRecommendation | null;
 }
 
+export interface ReconsolidationBridgeOptions {
+  plannerMode?: SavePlannerMode;
+}
+
 function repairBm25Document(args: {
   memoryId: number;
   title: string | null;
@@ -169,14 +174,17 @@ export async function runReconsolidationIfEnabled(
   force: boolean,
   embedding: Float32Array | null,
   scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null },
+  options: ReconsolidationBridgeOptions = {},
 ): Promise<ReconsolidationBridgeResult> {
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings = [] as ReconWarningList;
+  const plannerMode = options.plannerMode ?? 'plan-only';
+  const allowSaveTimeReconsolidation = plannerMode === 'full-auto' || isSaveReconsolidationEnabled();
 
   // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
   // Reconsolidation.ts keeps an internal guard as a defensive fallback for
   // Direct callers and future entry points.
-  if (!force && isReconsolidationFlagEnabled() && embedding) {
+  if (!force && allowSaveTimeReconsolidation && embedding) {
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
       if (!hasCheckpoint) {
@@ -369,7 +377,7 @@ export async function runReconsolidationIfEnabled(
   // ─────────────────────────────────────────────────────────────
   let assistiveRecommendation: AssistiveRecommendation | null = null;
 
-  if (!force && isAssistiveReconsolidationEnabled() && embedding) {
+  if (!force && allowSaveTimeReconsolidation && isAssistiveReconsolidationEnabled() && embedding) {
     try {
       // Find the top similar memory using the existing vector search
       const searchEmb = embedding instanceof Float32Array ? embedding : new Float32Array(embedding as number[]);

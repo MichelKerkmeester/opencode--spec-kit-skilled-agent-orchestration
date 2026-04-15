@@ -99,7 +99,7 @@ vi.mock('../lib/search/search-flags', () => ({
   isEncodingIntentEnabled: vi.fn(() => false),
 }));
 
-import { indexChunkedMemoryFile } from '../handlers/chunking-orchestrator';
+import { indexChunkedMemoryFile, shouldUseChunkedIndexing } from '../handlers/chunking-orchestrator';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as bm25Index from '../lib/search/bm25-index';
 import * as embeddings from '../lib/providers/embeddings';
@@ -322,6 +322,11 @@ function seedExistingParentWithChildren(filePath: string, oldChildCount: number)
 }
 
 describe('T013: staged swap regressions', () => {
+  it('does not treat planner-default saves as chunking candidates', () => {
+    expect(shouldUseChunkedIndexing('oversized content', 'plan-only')).toBe(false);
+    expect(shouldUseChunkedIndexing('oversized content', 'full-auto')).toBe(true);
+  });
+
   beforeEach(() => {
     vi.clearAllMocks();
     testDb = createTestDb();

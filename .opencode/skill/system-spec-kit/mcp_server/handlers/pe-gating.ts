@@ -11,6 +11,7 @@ import { isEncodingIntentEnabled } from '../lib/search/search-flags.js';
 import { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers.js';
 import { applyPostInsertMetadata } from '../lib/storage/post-insert-metadata.js';
 import { detectSpecLevelFromParsed } from '../lib/spec/spec-level.js';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 import { requireDb, toErrorMessage } from '../utils/index.js';
 
 // Feature catalog: Prediction-error save arbitration
@@ -61,8 +62,29 @@ interface IndexResult extends Record<string, unknown> {
 }
 
 /** Find memories with similar embeddings for PE gating deduplication */
-function findSimilarMemories(embedding: Float32Array | null, options: { limit?: number; specFolder?: string | null; tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null } = {}): SimilarMemory[] {
-  const { limit = 5, specFolder = null, tenantId = null, userId = null, agentId = null, sessionId = null } = options;
+function findSimilarMemories(
+  embedding: Float32Array | null,
+  options: {
+    limit?: number;
+    specFolder?: string | null;
+    tenantId?: string | null;
+    userId?: string | null;
+    agentId?: string | null;
+    sessionId?: string | null;
+    excludeFilePath?: string | null;
+    excludeCanonicalFilePath?: string | null;
+  } = {},
+): SimilarMemory[] {
+  const {
+    limit = 5,
+    specFolder = null,
+    tenantId = null,
+    userId = null,
+    agentId = null,
+    sessionId = null,
+    excludeFilePath = null,
+    excludeCanonicalFilePath = null,
+  } = options;
 
   if (!embedding) {
     return [];
@@ -74,6 +96,8 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
     }
     return typeof actual === 'string' && actual === expected;
   };
+  const excludedCanonicalPath = excludeCanonicalFilePath ? getCanonicalPathKey(excludeCanonicalFilePath) : null;
+  const excludedFilePath = excludeFilePath ? getCanonicalPathKey(excludeFilePath) : null;
 
   try {
     const scopedMatches: SimilarMemory[] = [];
@@ -100,6 +124,15 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
         if (!matchesScopedValue(agentId, r.agent_id)) continue;
         // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
         if (!matchesScopedValue(sessionId, r.session_id)) continue;
+        const candidateCanonicalPath = typeof r.canonical_file_path === 'string'
+          ? getCanonicalPathKey(r.canonical_file_path)
+          : null;
+        const candidateFilePath = typeof r.file_path === 'string'
+          ? getCanonicalPathKey(r.file_path)
+          : null;
+        if (excludedCanonicalPath && candidateCanonicalPath === excludedCanonicalPath) continue;
+        if (excludedCanonicalPath && candidateFilePath === excludedCanonicalPath) continue;
+        if (excludedFilePath && candidateFilePath === excludedFilePath) continue;
         if (typeof r.id === 'number' && seenScopedIds.has(r.id)) continue;
 
         const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;

@@ -774,7 +774,8 @@ describe('Save Quality Gate (TM-04)', () => {
         anchors: [],
       });
 
-      expect(result.pass).toBe(false);
+      expect(result.pass).toBe(true);
+      expect(result.wouldReject).toBe(true);
       expect(result.layers.contentQuality.pass).toBe(false);
     });
 
@@ -800,10 +801,28 @@ describe('Save Quality Gate (TM-04)', () => {
         ]),
       });
 
-      expect(result.pass).toBe(false);
+      expect(result.pass).toBe(true);
       expect(result.wouldReject).toBe(true);
       expect(result.layers.semanticDedup).not.toBeNull();
       expect(result.layers.semanticDedup!.pass).toBe(false);
+    });
+
+    it('UG5b: legacy mode still blocks semantic and score-heavy failures', () => {
+      process.env.SPECKIT_SAVE_QUALITY_GATE = 'true';
+      setActivationTimestamp(Date.now() - (15 * 24 * 60 * 60 * 1000));
+
+      const result = runQualityGate({
+        title: 'x',
+        content: makeContent(60),
+        specFolder: '003-memory',
+        triggerPhrases: [],
+        anchors: [],
+        mode: 'legacy',
+      });
+
+      expect(result.pass).toBe(false);
+      expect(result.wouldReject).toBe(true);
+      expect(result.layers.contentQuality.pass).toBe(false);
     });
 
     it('UG6: Gate ON, no embedding skips semantic dedup', () => {

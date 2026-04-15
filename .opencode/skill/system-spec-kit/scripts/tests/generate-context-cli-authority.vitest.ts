@@ -65,6 +65,7 @@ describe('generate-context CLI authority', () => {
     expect(workflowCall).toMatchObject({
       dataFile,
       specFolderArg: explicitSpecFolder,
+      plannerMode: 'plan-only',
       loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
       collectedData: undefined,
@@ -95,6 +96,7 @@ describe('generate-context CLI authority', () => {
       dataFile,
       specFolderArg: explicitSpecFolder,
       sessionId,
+      plannerMode: 'plan-only',
       loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
       collectedData: undefined,
@@ -118,6 +120,7 @@ describe('generate-context CLI authority', () => {
     expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
+      plannerMode: 'plan-only',
       collectedData: expect.objectContaining({
         specFolder: '.opencode/specs/00--anobel.com/036-hero-contact-success',
         sessionSummary: 'Structured stdin payload should not override an explicit CLI target.',
@@ -144,6 +147,7 @@ describe('generate-context CLI authority', () => {
     expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
+      plannerMode: 'plan-only',
       collectedData: expect.objectContaining({
         specFolder: payloadSpecFolder,
         sessionSummary: 'Inline JSON should resolve its own spec folder when no override exists.',
@@ -177,6 +181,7 @@ describe('generate-context CLI authority', () => {
     expect(stdinCall).toMatchObject({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
+      plannerMode: 'plan-only',
       collectedData: expect.objectContaining({
         specFolder: payloadSpecFolder,
         sessionSummary: 'Equivalent structured payloads should resolve identically across stdin and inline JSON modes.',
@@ -186,6 +191,7 @@ describe('generate-context CLI authority', () => {
     expect(jsonCall).toMatchObject({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
+      plannerMode: 'plan-only',
       collectedData: expect.objectContaining({
         specFolder: payloadSpecFolder,
         sessionSummary: 'Equivalent structured payloads should resolve identically across stdin and inline JSON modes.',
@@ -207,10 +213,37 @@ describe('generate-context CLI authority', () => {
     expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
+      plannerMode: 'plan-only',
       collectedData: { _source: 'file' },
       loadDataFn: undefined,
       collectSessionDataFn: harness.collectSessionData,
     }));
+  });
+
+  it('forwards explicit --full-auto to workflow without weakening CLI target authority', async () => {
+    const dataFile = '/tmp/save-context-data.json';
+    const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
+    process.argv = [
+      'node',
+      path.join('scripts', 'dist', 'memory', 'generate-context.js'),
+      '--full-auto',
+      dataFile,
+      explicitSpecFolder,
+    ];
+
+    const { main } = await import('../memory/generate-context');
+    await main();
+
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
+    expect(workflowCall).toMatchObject({
+      dataFile,
+      specFolderArg: explicitSpecFolder,
+      plannerMode: 'full-auto',
+      loadDataFn: expect.any(Function),
+      collectSessionDataFn: harness.collectSessionData,
+      collectedData: undefined,
+    });
   });
 
   it('exits non-zero on malformed inline JSON before calling runWorkflow', async () => {

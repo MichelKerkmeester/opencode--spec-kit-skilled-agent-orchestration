@@ -1099,7 +1099,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const filePath = createAtomicSaveTargetPath('retry-once.md');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# retry once' },
+        { file_path: filePath, content: '# retry once', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -1132,6 +1132,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.sourcePath,
           content: 'Implemented routed canonical writer integration in `mcp_server/handlers/memory-save.ts`.',
           routeAs: 'narrative_progress',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1152,6 +1153,81 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         expect.anything(),
         expect.anything(),
       );
+    });
+
+    it('returns a non-mutating planner result for routed canonical saves by default', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const targetBefore = fs.readFileSync(fixture.targetPath, 'utf8');
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 4443,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Implemented planner-first routed canonical writer integration in `mcp_server/handlers/memory-save.ts`.',
+          routeAs: 'narrative_progress',
+        },
+        { force: true }
+      );
+
+      expect(['planned', 'blocked']).toContain(result.status);
+      expect(result.plannerMode).toBe('plan-only');
+      expect(result.routeTarget).toEqual(expect.objectContaining({
+        routeCategory: 'narrative_progress',
+        targetDocPath: fixture.targetPath,
+      }));
+      expect(result.proposedEdits).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          targetDocPath: fixture.targetPath,
+          routeCategory: 'narrative_progress',
+        }),
+      ]));
+      expect(Array.isArray(result.blockers)).toBe(true);
+      expect(result.followUpActions).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          action: 'apply',
+          args: expect.objectContaining({
+            filePath: fixture.sourcePath,
+            plannerMode: 'full-auto',
+            routeAs: 'narrative_progress',
+          }),
+        }),
+        expect.objectContaining({
+          action: 'refresh-graph',
+          tool: 'refreshGraphMetadata',
+          args: expect.objectContaining({
+            specFolder: 'system-spec-kit/999-atomic-save-fi',
+          }),
+        }),
+        expect.objectContaining({
+          action: 'reindex',
+          tool: 'reindexSpecDocs',
+          args: expect.objectContaining({
+            specFolder: 'system-spec-kit/999-atomic-save-fi',
+          }),
+        }),
+        expect.objectContaining({
+          action: 'enrich',
+          tool: 'runEnrichmentBackfill',
+          args: expect.objectContaining({
+            specFolder: 'system-spec-kit/999-atomic-save-fi',
+          }),
+        }),
+      ]));
+      expect(fs.readFileSync(fixture.sourcePath, 'utf8')).toBe('# original memory source');
+      expect(fs.readFileSync(fixture.targetPath, 'utf8')).toBe(targetBefore);
+      expect(checkExistingRowMock).not.toHaveBeenCalled();
     });
 
     it('routes metadata-only saves into implementation-summary.md even when the current file is a spec doc', async () => {
@@ -1176,6 +1252,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.tasksPath,
           content: 'preflight: routed metadata should stay on the canonical implementation summary continuity block',
           routeAs: 'metadata_only',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1220,6 +1297,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.tasksPath,
           content: 'postflight: routed metadata should still persist when implementation summary is absent',
           routeAs: 'metadata_only',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1262,6 +1340,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.sourcePath,
           content: 'Phase 2 - [x] T002 Verify routed save behavior.',
           routeAs: 'task_update',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1305,6 +1384,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           content: '- [x] T003 Prepare the phase-aware regression coverage.',
           routeAs: 'task_update',
           targetAnchorId: 'phase-3',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1347,6 +1427,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.sourcePath,
           content: 'Phase 2 - [x] T999 Missing routed save behavior.',
           routeAs: 'task_update',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1386,6 +1467,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.sourcePath,
           content: 'Phase 2 - [x] T002 Verify routed save behavior.',
           routeAs: 'task_update',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1395,6 +1477,71 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.summary).toBe('Canonical anchor merge failed');
       expect(result.message).toBe('Ambiguous: 2 matching task lines for T002');
       expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toBe(tasksBefore);
+    });
+
+    it('returns planner blockers when routed canonical planning cannot resolve the requested anchor', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const tasksBefore = fs.readFileSync(fixture.tasksPath, 'utf8');
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 4481,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        specFolder: 'system-spec-kit/999-atomic-save-fi',
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: '- [x] T003 Prepare the phase-aware regression coverage.',
+          routeAs: 'task_update',
+          targetAnchorId: 'missing-phase',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('blocked');
+      expect(result.plannerMode).toBe('plan-only');
+      expect(result.routeTarget).toEqual(expect.objectContaining({
+        routeCategory: 'task_update',
+      }));
+      expect(result.blockers).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          code: 'PLANNER_BLOCKER',
+        }),
+      ]));
+      expect(result.followUpActions).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          action: 'apply',
+          args: expect.objectContaining({
+            filePath: fixture.sourcePath,
+            plannerMode: 'full-auto',
+            routeAs: 'task_update',
+            targetAnchorId: 'missing-phase',
+          }),
+        }),
+        expect.objectContaining({
+          action: 'refresh-graph',
+          tool: 'refreshGraphMetadata',
+        }),
+        expect.objectContaining({
+          action: 'reindex',
+          tool: 'reindexSpecDocs',
+        }),
+        expect.objectContaining({
+          action: 'enrich',
+          tool: 'runEnrichmentBackfill',
+        }),
+      ]));
+      expect(fs.readFileSync(fixture.tasksPath, 'utf8')).toBe(tasksBefore);
+      expect(checkExistingRowMock).not.toHaveBeenCalled();
     });
 
     it('uses natural routing to reach Tier 3 when no explicit routeAs is provided', async () => {
@@ -1439,6 +1586,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         {
           file_path: fixture.sourcePath,
           content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1494,6 +1642,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         {
           file_path: fixture.sourcePath,
           content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1548,6 +1697,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
           file_path: fixture.sourcePath,
           routeAs: 'narrative_progress',
           content: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1584,6 +1734,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         {
           file_path: fixture.sourcePath,
           content: 'Packet-local changelog generation derives final changelog structure from packet docs rather than hand-assembling markdown.',
+          plannerMode: 'full-auto',
         },
         { force: true }
       );
@@ -1605,7 +1756,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const filePath = createAtomicSaveTargetPath('throw-both.md');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# throw both attempts' },
+        { file_path: filePath, content: '# throw both attempts', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -1638,7 +1789,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const filePath = createAtomicSaveTargetPath('status-error-then-success.md');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# status error then success' },
+        { file_path: filePath, content: '# status error then success', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -1666,7 +1817,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const filePath = createAtomicSaveTargetPath('status-rejected.md');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# rejected outcome' },
+        { file_path: filePath, content: '# rejected outcome', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -1710,7 +1861,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const filePath = createAtomicSaveTargetPath('rejected-rollback-metadata.md');
       fs.writeFileSync(filePath, '# original on disk', 'utf8');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# rejected outcome' },
+        { file_path: filePath, content: '# rejected outcome', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -1748,7 +1899,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const filePath = createAtomicSaveTargetPath('rejected-rollback-delete-metadata.md');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# rejected outcome' },
+        { file_path: filePath, content: '# rejected outcome', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -2216,7 +2367,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const filePath = createAtomicSaveTargetPath('reject-no-prewrite.md');
       fs.writeFileSync(filePath, '# original on disk', 'utf8');
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# original atomic content' },
+        { file_path: filePath, content: '# original atomic content', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -2293,7 +2444,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       fs.writeFileSync(filePath, originalContent, 'utf8');
 
       const result = await harness.module.atomicSaveMemory(
-        { file_path: filePath, content: '# replacement content' },
+        { file_path: filePath, content: '# replacement content', plannerMode: 'full-auto' },
         { force: true }
       );
 
@@ -2370,14 +2521,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const secondContent = '# second serialized save';
 
       const firstSavePromise = harness.module.atomicSaveMemory(
-        { file_path: filePath, content: firstContent },
+        { file_path: filePath, content: firstContent, plannerMode: 'full-auto' },
         { force: true }
       );
       await firstLockedSectionReady;
       expect(fs.readFileSync(filePath, 'utf8')).toBe(firstContent);
 
       const secondSavePromise = harness.module.atomicSaveMemory(
-        { file_path: filePath, content: secondContent },
+        { file_path: filePath, content: secondContent, plannerMode: 'full-auto' },
         { force: true }
       );
 

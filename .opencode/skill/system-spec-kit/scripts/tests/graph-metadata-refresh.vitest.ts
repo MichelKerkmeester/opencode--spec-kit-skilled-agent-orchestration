@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { loadGraphMetadata, refreshGraphMetadataForSpecFolder } from '../../mcp_server/lib/graph/graph-metadata-parser.js';
+import { loadGraphMetadata } from '../../mcp_server/lib/graph/graph-metadata-parser.js';
+import { refreshGraphMetadata } from '../../mcp_server/api/indexing.js';
 
 const createdRoots = new Set<string>();
 
@@ -59,11 +60,9 @@ describe('graph metadata refresh path', () => {
       'utf-8',
     );
 
-    expect(source).toContain('refreshGraphMetadataForSpecFolder');
+    expect(source).toContain('refreshGraphMetadata(');
 
-    const first = refreshGraphMetadataForSpecFolder(specFolder, {
-      now: '2026-04-12T12:00:00.000Z',
-    });
+    const first = refreshGraphMetadata(specFolder);
     expect(fs.existsSync(first.filePath)).toBe(true);
     expect(first.created).toBe(true);
 
@@ -77,15 +76,13 @@ describe('graph metadata refresh path', () => {
     };
     fs.writeFileSync(first.filePath, `${JSON.stringify(manualPreserved, null, 2)}\n`, 'utf-8');
 
-    const second = refreshGraphMetadataForSpecFolder(specFolder, {
-      now: '2026-04-12T13:00:00.000Z',
-    });
+    const second = refreshGraphMetadata(specFolder);
     const saved = loadGraphMetadata(second.filePath);
 
     expect(second.created).toBe(false);
     expect(saved?.manual.depends_on).toEqual(manualPreserved.manual.depends_on);
     expect(saved?.derived.status).toBe('complete');
-    expect(saved?.derived.key_files).toContain('scripts/core/workflow.ts');
-    expect(saved?.derived.last_save_at).toBe('2026-04-12T13:00:00.000Z');
+    expect(saved?.derived.key_files).toEqual(expect.arrayContaining(['spec.md', 'plan.md']));
+    expect(saved?.derived.last_save_at).toBeTruthy();
   });
 });

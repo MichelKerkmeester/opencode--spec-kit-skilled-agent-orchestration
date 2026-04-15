@@ -33,6 +33,7 @@ interface ParsedCliArguments {
   specFolderArg: string | null;
   collectedData: StructuredCollectedData | null;
   sessionId: string | null;
+  plannerMode: 'plan-only' | 'full-auto' | 'hybrid';
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -60,6 +61,8 @@ Options:
   --stdin           Read structured JSON from stdin (preferred when a caller already has curated session data)
   --json <string>   Read structured JSON from an inline string (preferred when structured data is available)
   --session-id <uuid>  Explicit session ID to attach to the saved memory metadata
+  --planner-mode <mode>  Canonical save planner mode: plan-only (default), full-auto, or hybrid
+  --full-auto       Shortcut for --planner-mode full-auto
 
 Examples:
   node generate-context.js /tmp/context-data.json
@@ -72,6 +75,8 @@ Output:
   Creates the saved context artifact for the active spec folder and indexes it
   into the Spec Kit Memory system. Canonical saves also refresh the packet's
   root-level graph-metadata.json file as part of the same workflow.
+  Planner-first canonical saves are requested by default; use --full-auto for
+  the legacy mutation-first fallback.
 
 Preferred save path (JSON-PRIMARY):
   - ALWAYS use --stdin, --json, or a JSON temp file.
@@ -389,6 +394,7 @@ async function parseStructuredModeArguments(
       _source: 'file',
     },
     sessionId: null,
+    plannerMode: 'plan-only',
   };
 }
 
@@ -401,6 +407,7 @@ async function parseArguments(
 ): Promise<ParsedCliArguments> {
   // Extract --session-id <uuid> from argv before positional parsing
   let sessionId: string | null = null;
+  let plannerMode: 'plan-only' | 'full-auto' | 'hybrid' = 'plan-only';
   const filteredArgv: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--session-id') {
@@ -412,17 +419,30 @@ async function parseArguments(
       i++; // skip the value
       continue;
     }
+    if (argv[i] === '--planner-mode') {
+      const candidate = argv[i + 1]?.trim().toLowerCase();
+      if (!candidate || !['plan-only', 'full-auto', 'hybrid'].includes(candidate)) {
+        throw new Error('--planner-mode requires one of: plan-only, full-auto, hybrid');
+      }
+      plannerMode = candidate as 'plan-only' | 'full-auto' | 'hybrid';
+      i++;
+      continue;
+    }
+    if (argv[i] === '--full-auto') {
+      plannerMode = 'full-auto';
+      continue;
+    }
     filteredArgv.push(argv[i]);
   }
 
   const [primaryArg, secondaryArg] = filteredArgv;
   if (!primaryArg) {
-    return { dataFile: null, specFolderArg: null, collectedData: null, sessionId };
+    return { dataFile: null, specFolderArg: null, collectedData: null, sessionId, plannerMode };
   }
 
   if (primaryArg === '--stdin' || primaryArg === '--json') {
     const structured = await parseStructuredModeArguments(primaryArg, filteredArgv, stdinReader);
-    return { ...structured, sessionId };
+    return { ...structured, sessionId, plannerMode };
   }
 
   const resolvedSpecFolder = resolveCliSpecFolderReference(primaryArg);
@@ -438,6 +458,7 @@ async function parseArguments(
     specFolderArg: secondaryArg || null,
     collectedData: null,
     sessionId,
+    plannerMode,
   };
 }
 
@@ -573,6 +594,7 @@ async function main(
         : () => loadCollectedData({}),
       collectSessionDataFn: collectSessionData,
       sessionId: parsed.sessionId ?? undefined,
+      plannerMode: parsed.plannerMode,
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);

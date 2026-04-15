@@ -13,6 +13,14 @@ export type {
   PeDecision,
   IndexResult,
   CausalLinksResult,
+  PlannerRouteTarget,
+  PlannerProposedEdit,
+  PlannerBlocker,
+  PlannerAdvisory,
+  PlannerFollowUpAction,
+  PlannerFollowUpActionType,
+  PlannerResponsePayload,
+  PlannerResponseEnvelope,
   RouteCategory,
   MergeModeHint,
   AtomicIndexParams,
@@ -51,7 +59,16 @@ export { createMemoryRecord } from './create-record.js';
 export type { PostInsertEnrichmentResult } from './post-insert.js';
 export { runPostInsertEnrichment } from './post-insert.js';
 
-export { buildIndexResult, buildSaveResponse } from './response-builder.js';
+export {
+  buildIndexResult,
+  buildPlannerResponse,
+  buildSaveResponse,
+  serializePlannerRouteTarget,
+  serializePlannerProposedEdit,
+  serializePlannerBlocker,
+  serializePlannerAdvisory,
+  serializePlannerFollowUpAction,
+} from './response-builder.js';
 
 export { SPEC_FOLDER_LOCKS, withSpecFolderLock } from './spec-folder-mutex.js';
 
@@ -67,6 +84,8 @@ export {
 
 export {
   applyInsufficiencyMetadata,
+  buildPlannerAdvisory,
+  buildPlannerBlocker,
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,

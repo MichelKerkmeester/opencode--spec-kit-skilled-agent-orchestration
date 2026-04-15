@@ -54,13 +54,13 @@ IF $ARGUMENTS is empty, undefined, or contains only whitespace:
 
 ---
 
-## 0. INSTRUCTIONS
+## 1. INSTRUCTIONS
 
 Resolve the target spec folder first, build structured JSON from the session evidence, then run the save workflow below. Prefer canonical packet docs and `_memory.continuity` over any legacy supporting artifacts.
 
 ---
 
-## 1. PURPOSE
+## 2. PURPOSE
 
 Save the current conversation context, including session summary, key decisions, modified files, and trigger phrases, into the packet's canonical continuity surfaces so `/spec_kit:resume` and `/memory:search` read the same source of truth.
 
@@ -75,6 +75,8 @@ Save the current conversation context, including session summary, key decisions,
 - AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` when only those doc-local continuity hints need updating.
 - Canonical spec docs such as `implementation-summary.md` and `decision-record.md` receive the durable narrative content when the route applies.
 - `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, or anchor-managed compatibility output.
+- Canonical save requests now default to **planner-first** behavior: return the routed target, proposed edit summary, blockers, advisories, and follow-up actions before any mutation-first apply path is requested.
+- Explicit fallback remains available with `plannerMode: "full-auto"` or CLI `--full-auto` when an operator wants the legacy atomic writer behavior.
 - Standalone memory markdown is not the primary operator-facing destination for this command.
 
 ### Handover Document Maintenance
@@ -115,7 +117,7 @@ Override and context rules:
 
 ---
 
-## 2. CONTRACT
+## 3. CONTRACT
 
 | Field   | Value                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------- |
@@ -125,19 +127,25 @@ Override and context rules:
 | Primary | **JSON mode:** `generate-context.js <json-data-path>` (e.g. a path under `$TMPDIR` or `/tmp/save-context-data.json`) or `--json '<data>'` |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
+Planner behavior:
+- Default: `plan-only` for canonical save requests, with explicit follow-up actions such as `apply`, `refresh-graph`, and `reindex`
+- Fallback: `full-auto` restores the legacy mutation-first canonical writer
+- Deferred freshness actions: graph refresh and spec-doc reindex are surfaced as follow-ups instead of assumed default side effects
+
 ---
 
-## 3. QUICK REFERENCE
+## 4. QUICK REFERENCE
 
 | Usage                                                  | Behavior                                                |
 | ------------------------------------------------------ | ------------------------------------------------------- |
 | `/memory:save`                                         | Auto-detect the active packet, confirm if needed, then route into canonical continuity targets |
 | `/memory:save 011-memory`                              | Save to a specific spec folder                          |
 | `/memory:save specs/006-semantic-memory/003-debugging` | Save to a nested spec folder                            |
+| `node .../generate-context.js --full-auto ...`         | Opt back into the legacy full-auto canonical apply path |
 
 ---
 
-## 4. VALIDATION
+## 5. VALIDATION
 
 ### Pre-Flight Checks (Phase 0)
 
@@ -205,7 +213,7 @@ After Phase 1, validate the conversation topic matches the target folder:
 
 ---
 
-## 5. WORKFLOW
+## 6. WORKFLOW
 
 ### Step 1: Folder Detection
 
@@ -396,7 +404,7 @@ Display the completion report (see Section 6).
 
 ---
 
-## 6. COMPLETION REPORT
+## 7. COMPLETION REPORT
 
 ### Structured Response Envelope
 
@@ -491,7 +499,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ---
 
-## 7. ERROR HANDLING
+## 8. ERROR HANDLING
 
 | Condition               | Action                                          |
 | ----------------------- | ----------------------------------------------- |
@@ -506,7 +514,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ---
 
-## 8. NEXT STEPS
+## 9. NEXT STEPS
 
 | Condition                    | Suggested Command                          | Reason                        |
 | ---------------------------- | ------------------------------------------ | ----------------------------- |
@@ -519,7 +527,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ---
 
-## 9. RELATED COMMANDS
+## 10. RELATED COMMANDS
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:manage`: Database management, checkpoints, ingest

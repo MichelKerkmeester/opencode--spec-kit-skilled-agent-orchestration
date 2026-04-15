@@ -43,6 +43,12 @@ describe('Assistive Reconsolidation — Feature Flag', () => {
     vi.stubEnv('SPECKIT_ASSISTIVE_RECONSOLIDATION', '0');
     expect(isAssistiveReconsolidationEnabled()).toBe(false);
   });
+
+  it('keeps classifier helpers available for deferred follow-up decisions when save-time reconsolidation stays opt-in', () => {
+    vi.stubEnv('SPECKIT_RECONSOLIDATION_ENABLED', 'false');
+    expect(isAssistiveReconsolidationEnabled()).toBe(true);
+    expect(classifyAssistiveSimilarity(0.90)).toBe('review');
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

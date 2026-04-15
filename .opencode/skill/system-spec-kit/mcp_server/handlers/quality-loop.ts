@@ -2,7 +2,7 @@
 // MODULE: Quality Loop (T008)
 // ───────────────────────────────────────────────────────────────
 import { initEvalDb } from '../lib/eval/eval-db.js';
-import { isQualityLoopEnabled } from '../lib/search/search-flags.js';
+import { isQualityAutoFixEnabled, isQualityLoopEnabled } from '../lib/search/search-flags.js';
 
 // Feature catalog: Verify-fix-verify memory quality loop
 // Feature catalog: Pre-storage quality gate
@@ -52,6 +52,7 @@ interface QualityLoopOptions {
   maxRetries?: number;
   threshold?: number;
   emitEvalMetrics?: boolean;
+  mode?: 'advisory' | 'full-auto';
 }
 
 function triggerPhrasesChanged(
@@ -586,6 +587,8 @@ function runQualityLoop(
   const threshold = options?.threshold ?? 0.6;
   const maxRetries = options?.maxRetries ?? 2;
   const emitEvalMetrics = options?.emitEvalMetrics ?? true;
+  const mode = options?.mode ?? 'advisory';
+  const autoFixEnabled = mode === 'full-auto' || isQualityAutoFixEnabled();
 
   // Feature gate check
   if (!isQualityLoopEnabled()) {
@@ -612,6 +615,17 @@ function runQualityLoop(
     logQualityMetrics(score, 1, true, false, emitEvalMetrics);
     return {
       passed: true,
+      score,
+      attempts: 1,
+      fixes: [],
+      rejected: false,
+    };
+  }
+
+  if (!autoFixEnabled) {
+    logQualityMetrics(score, 1, false, false, emitEvalMetrics);
+    return {
+      passed: false,
       score,
       attempts: 1,
       fixes: [],

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const bridgeMocks = vi.hoisted(() => ({
   reconsolidate: vi.fn(),
   hasCheckpoint: vi.fn(() => true),
-  isReconsolidationEnabled: vi.fn(() => true),
+  isSaveReconsolidationEnabled: vi.fn(() => false),
   isAssistiveReconsolidationEnabled: vi.fn(() => false),
   isEncodingIntentEnabled: vi.fn(() => false),
   appendMutationLedgerSafe: vi.fn(() => true),
@@ -49,7 +49,7 @@ vi.mock('../lib/search/encoding-intent', () => ({
 
 vi.mock('../lib/search/search-flags', () => ({
   isEncodingIntentEnabled: bridgeMocks.isEncodingIntentEnabled,
-  isReconsolidationEnabled: bridgeMocks.isReconsolidationEnabled,
+  isSaveReconsolidationEnabled: bridgeMocks.isSaveReconsolidationEnabled,
   isAssistiveReconsolidationEnabled: bridgeMocks.isAssistiveReconsolidationEnabled,
 }));
 
@@ -87,8 +87,8 @@ describe('Reconsolidation Bridge', () => {
     bridgeMocks.reconsolidate.mockReset();
     bridgeMocks.hasCheckpoint.mockReset();
     bridgeMocks.hasCheckpoint.mockReturnValue(true);
-    bridgeMocks.isReconsolidationEnabled.mockReset();
-    bridgeMocks.isReconsolidationEnabled.mockReturnValue(true);
+    bridgeMocks.isSaveReconsolidationEnabled.mockReset();
+    bridgeMocks.isSaveReconsolidationEnabled.mockReturnValue(false);
     bridgeMocks.isAssistiveReconsolidationEnabled.mockReset();
     bridgeMocks.isAssistiveReconsolidationEnabled.mockReturnValue(false);
     bridgeMocks.isEncodingIntentEnabled.mockReset();
@@ -111,7 +111,36 @@ describe('Reconsolidation Bridge', () => {
     bridgeMocks.bm25Enabled.mockReturnValue(false);
   });
 
-  it('returns the merged survivor id instead of the archived predecessor id', async () => {
+  it('skips reconsolidation on planner-default saves until explicit follow-up is requested', async () => {
+    bridgeMocks.isAssistiveReconsolidationEnabled.mockReturnValue(true);
+
+    const result = await runReconsolidationIfEnabled(
+      {} as any,
+      {
+        title: 'Planner default memory',
+        content: 'Planner default memory body',
+        specFolder: 'test-spec',
+        triggerPhrases: ['planner'],
+        importanceTier: 'normal',
+        contentHash: 'hash-plan-default',
+        contextType: 'general',
+        memoryType: 'memory',
+        memoryTypeSource: 'test',
+        documentType: 'memory',
+        qualityScore: 1,
+        qualityFlags: [],
+      } as any,
+      '/tmp/test-memory.md',
+      false,
+      new Float32Array([0.1, 0.2, 0.3]),
+    );
+
+    expect(result.earlyReturn).toBeNull();
+    expect(bridgeMocks.reconsolidate).not.toHaveBeenCalled();
+    expect(bridgeMocks.vectorSearch).not.toHaveBeenCalled();
+  });
+
+  it('returns the merged survivor id instead of the archived predecessor id in full-auto mode', async () => {
     bridgeMocks.reconsolidate.mockResolvedValue({
       action: 'merge',
       existingMemoryId: 41,
@@ -140,6 +169,8 @@ describe('Reconsolidation Bridge', () => {
       '/tmp/test-memory.md',
       false,
       new Float32Array([0.1, 0.2, 0.3]),
+      undefined,
+      { plannerMode: 'full-auto' },
     );
 
     expect(result.earlyReturn).not.toBeNull();
@@ -149,13 +180,12 @@ describe('Reconsolidation Bridge', () => {
     expect(bridgeMocks.appendMutationLedgerSafe).toHaveBeenCalledOnce();
   });
 
-  it('keeps assistive auto-merge as a compatibility note without archived BM25 cleanup side effects', async () => {
+  it('keeps assistive auto-merge as a compatibility note in full-auto mode without archived BM25 cleanup side effects', async () => {
     const archiveRun = vi.fn();
     const database = {
       prepare: vi.fn(() => ({ run: archiveRun })),
     };
 
-    bridgeMocks.isReconsolidationEnabled.mockReturnValue(false);
     bridgeMocks.isAssistiveReconsolidationEnabled.mockReturnValue(true);
     bridgeMocks.bm25Enabled.mockReturnValue(true);
     bridgeMocks.vectorSearch.mockReturnValue([
@@ -185,6 +215,8 @@ describe('Reconsolidation Bridge', () => {
       '/tmp/test-memory.md',
       false,
       new Float32Array([0.1, 0.2, 0.3]),
+      undefined,
+      { plannerMode: 'full-auto' },
     );
 
     expect(result.earlyReturn).toBeNull();
@@ -193,7 +225,7 @@ describe('Reconsolidation Bridge', () => {
     expect(bridgeMocks.bm25RemoveDocument).not.toHaveBeenCalled();
   });
 
-  it('attempts BM25 repair for recon conflict stores and surfaces the warning when repair fails', async () => {
+  it('attempts BM25 repair for recon conflict stores in full-auto mode and surfaces the warning when repair fails', async () => {
     bridgeMocks.bm25Enabled.mockReturnValue(true);
     bridgeMocks.bm25AddDocument
       .mockImplementationOnce(() => {
@@ -242,6 +274,8 @@ describe('Reconsolidation Bridge', () => {
       '/tmp/test-memory.md',
       false,
       new Float32Array([0.1, 0.2, 0.3]),
+      undefined,
+      { plannerMode: 'full-auto' },
     );
 
     expect(bridgeMocks.bm25AddDocument).toHaveBeenCalledTimes(2);

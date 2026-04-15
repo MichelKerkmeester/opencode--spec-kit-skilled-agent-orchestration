@@ -216,6 +216,32 @@ describe('content-router tier 1 classification', () => {
 });
 
 describe('content-router tier 2 and tier 3 behavior', () => {
+  it('refuses low-confidence chunks by default instead of invoking Tier 3', async () => {
+    const classifyWithTier3 = vi.fn(async () => ({
+      category: 'narrative_delivery',
+      confidence: 0.83,
+      target_doc: 'implementation-summary.md',
+      target_anchor: 'how-delivered',
+      merge_mode: 'append-as-paragraph',
+      reasoning: 'Rollout and verification mechanics dominate.',
+    }));
+    const router = createContentRouter({
+      embedText: () => [0, 0, 0, 0, 0, 0, 0, 0],
+      classifyWithTier3,
+    });
+
+    const decision = await router.classifyContent({
+      id: 'chunk-10a',
+      text: 'This packet note blends status, routing ambiguity, and operator guidance without naming a clear canonical destination.',
+      sourceField: 'unknown',
+    }, makeContext());
+
+    expect(decision.refusal).toBe(true);
+    expect(decision.tierUsed).toBe(2);
+    expect(decision.warningMessage).toContain('operator should specify routeAs');
+    expect(classifyWithTier3).not.toHaveBeenCalled();
+  });
+
   it('uses Tier 2 when Tier 1 confidence is too weak', async () => {
     const router = createContentRouter({
       embedText: makeEmbeddingFn(),
@@ -252,6 +278,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
       classifyWithTier3,
       cache,
       now: () => 1_000,
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({
@@ -293,6 +320,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
       embedText: () => [0, 0, 0, 0, 0, 0, 0, 0],
       classifyWithTier3,
       cache,
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({
@@ -318,6 +346,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
         reasoning: 'Transcript-like wrapper content.',
         alternatives: [{ category: 'metadata_only', confidence: 0.2 }],
       }),
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({
@@ -342,6 +371,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
         reasoning: 'Signals remain mixed.',
         alternatives: [{ category: 'handover_state', confidence: 0.39 }],
       }),
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({
@@ -402,6 +432,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
       embedText,
       classifyWithTier3: async () => null,
       prototypes,
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({
@@ -461,6 +492,7 @@ describe('content-router tier 2 and tier 3 behavior', () => {
         throw new Error('simulated timeout');
       },
       prototypes,
+      tier3Enabled: true,
     });
 
     const decision = await router.classifyContent({

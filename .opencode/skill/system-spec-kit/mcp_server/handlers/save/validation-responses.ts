@@ -12,7 +12,13 @@ import type {
   MemoryTemplateContractResult,
 } from '@spec-kit/shared/parsing/memory-template-contract';
 import type { QualityLoopResult } from '../../handlers/quality-loop.js';
-import type { IndexResult, ParsedMemory } from './types.js';
+import type {
+  IndexResult,
+  ParsedMemory,
+  PlannerAdvisory,
+  PlannerBlocker,
+  RouteCategory,
+} from './types.js';
 import type { ParsedMemoryValidation } from '../../lib/parsing/memory-parser.js';
 
 // Feature catalog: Dry-run preflight for memory_save
@@ -94,9 +100,43 @@ function buildDryRunSummary(
   return 'Dry-run validation passed';
 }
 
+function buildPlannerBlocker(params: {
+  code: string;
+  message: string;
+  targetDocPath?: string;
+  targetAnchorId?: string | null;
+  routeCategory?: RouteCategory;
+}): PlannerBlocker {
+  return {
+    code: params.code,
+    message: params.message,
+    ...(params.targetDocPath ? { targetDocPath: params.targetDocPath } : {}),
+    ...(params.targetAnchorId !== undefined ? { targetAnchorId: params.targetAnchorId } : {}),
+    ...(params.routeCategory ? { routeCategory: params.routeCategory } : {}),
+  };
+}
+
+function buildPlannerAdvisory(params: {
+  code: string;
+  message: string;
+  targetDocPath?: string;
+  targetAnchorId?: string | null;
+  routeCategory?: RouteCategory;
+}): PlannerAdvisory {
+  return {
+    code: params.code,
+    message: params.message,
+    ...(params.targetDocPath ? { targetDocPath: params.targetDocPath } : {}),
+    ...(params.targetAnchorId !== undefined ? { targetAnchorId: params.targetAnchorId } : {}),
+    ...(params.routeCategory ? { routeCategory: params.routeCategory } : {}),
+  };
+}
+
 export {
   applyInsufficiencyMetadata,
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,
+  buildPlannerBlocker,
+  buildPlannerAdvisory,
 };

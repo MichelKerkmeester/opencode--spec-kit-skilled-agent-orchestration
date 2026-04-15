@@ -85,6 +85,7 @@ export interface QualityGateParams {
   findSimilar?: FindSimilarFn | null;
   /** REQ-D4-003: context_type for short-critical exception evaluation */
   contextType?: string | null;
+  mode?: 'planner-advisory' | 'legacy';
 }
 
 /** Callback for finding similar memories by embedding */
@@ -759,6 +760,7 @@ export function checkSemanticDedup(
  */
 export function runQualityGate(params: QualityGateParams): QualityGateResult {
   const gateEnabled = isQualityGateEnabled();
+  const mode = params.mode ?? 'planner-advisory';
 
   // Feature flag OFF: pass-through
   if (!gateEnabled) {
@@ -828,9 +830,10 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
   }
 
   // Determine pass/fail
-  const wouldReject = !structural.pass
-    || !contentQuality.pass
+  const structuralReject = !structural.pass;
+  const advisoryReject = !contentQuality.pass
     || (semanticDedup !== null && !semanticDedup.pass);
+  const wouldReject = structuralReject || advisoryReject;
 
   // In warn-only mode, log but allow through
   if (warnOnly && wouldReject) {
@@ -839,7 +842,9 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
     );
   }
 
-  const pass = warnOnly ? true : !wouldReject;
+  const pass = warnOnly
+    ? true
+    : (mode === 'legacy' ? !wouldReject : !structuralReject);
 
   return {
     pass,

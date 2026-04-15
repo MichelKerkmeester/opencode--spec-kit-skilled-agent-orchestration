@@ -5,6 +5,7 @@ import path from 'node:path';
 import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { refreshGraphMetadata } from '../api/indexing.js';
 import { processCausalLinks } from '../handlers/causal-links-processor.js';
 import { findGraphMetadataFiles } from '../handlers/memory-index-discovery.js';
 import { parseMemoryContent } from '../lib/parsing/memory-parser.js';
@@ -101,6 +102,14 @@ describe('graph metadata integration', () => {
     expect(parsed.causalLinks.blocks).toEqual(['system-spec-kit/100-dependency']);
     expect(parsed.causalLinks.supersedes).toEqual(['system-spec-kit/050-older']);
     expect(parsed.causalLinks.related_to).toEqual(['system-spec-kit/075-related']);
+  });
+
+  it('refreshes graph metadata through the explicit indexing follow-up API', () => {
+    const fixture = createGraphMetadataFixture();
+    const refreshed = refreshGraphMetadata(fixture.specFolder);
+
+    expect(fs.realpathSync(refreshed.filePath)).toBe(fs.realpathSync(fixture.graphPath));
+    expect(refreshed.metadata.spec_folder).toBe(fixture.metadata.spec_folder);
   });
 
   it('projects packet relationships into causal_edges using spec_folder resolution', () => {

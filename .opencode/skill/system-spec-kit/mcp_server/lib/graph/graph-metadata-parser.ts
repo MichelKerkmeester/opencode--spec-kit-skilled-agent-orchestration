@@ -1005,6 +1005,13 @@ export function refreshGraphMetadataForSpecFolder(
   };
 }
 
+export function refreshGraphMetadata(
+  specFolderPath: string,
+  options: GraphMetadataRefreshOptions = {},
+): GraphMetadataRefreshResult {
+  return refreshGraphMetadataForSpecFolder(specFolderPath, options);
+}
+
 /**
  * Convert graph metadata into a searchable text block for indexing.
  *

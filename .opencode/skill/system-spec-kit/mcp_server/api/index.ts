@@ -34,6 +34,9 @@ export {
   initializeIndexingRuntime,
   warmEmbeddingModel,
   runMemoryIndexScan,
+  refreshGraphMetadata,
+  reindexSpecDocs,
+  runEnrichmentBackfill,
   closeIndexingRuntime,
   type MemoryIndexScanArgs,
 } from './indexing.js';

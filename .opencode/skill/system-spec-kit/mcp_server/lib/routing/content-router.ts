@@ -251,6 +251,7 @@ export interface RouterDependencies {
   cache?: RouterCache;
   now?: () => number;
   prototypes?: PrototypeLibrary;
+  tier3Enabled?: boolean;
 }
 
 export interface ContentRouter {
@@ -470,6 +471,7 @@ export function createContentRouter(dependencies: RouterDependencies = {}): Cont
     embedText: dependencies.embedText ?? ((text: string): number[] => lexicalVectorize(text)),
     classifyWithTier3: dependencies.classifyWithTier3 ?? (async (): Promise<null> => null),
     cache: dependencies.cache,
+    tier3Enabled: dependencies.tier3Enabled ?? isTier3RoutingEnabled(),
   };
 
   const prototypeEmbeddingCache = new Map<string, Promise<PrototypeEmbeddingRecord[]>>();
@@ -496,6 +498,7 @@ export function createContentRouter(dependencies: RouterDependencies = {}): Cont
         tier1,
         tier2TopK,
         tier2Reason,
+        tier3Enabled: deps.tier3Enabled,
         classifyWithTier3: deps.classifyWithTier3,
         cache: deps.cache,
         now: deps.now,
@@ -512,6 +515,7 @@ export function createContentRouter(dependencies: RouterDependencies = {}): Cont
         confidence: clampConfidence(Math.max(naturalDecision.confidence, TIER3_THRESHOLD)),
         target: overrideTarget,
         overrideApplied: true,
+        refusal: false,
         overrideable: naturalDecision.overrideable,
         explanation: `Override applied: forced route to ${chunk.routeAs}; natural route was ${naturalDecision.category}.`,
         confidenceBand: confidenceBandFor(Math.max(naturalDecision.confidence, TIER3_THRESHOLD)),
@@ -537,11 +541,12 @@ async function resolveNaturalDecision(params: {
   tier1: Tier1Result | null;
   tier2TopK: Tier2Hit[];
   tier2Reason: Tier2TriggerReason;
+  tier3Enabled: boolean;
   classifyWithTier3: NonNullable<RouterDependencies['classifyWithTier3']>;
   cache?: RouterCache;
   now: () => number;
 }): Promise<RoutingDecision> {
-  const { chunk, normalizedText, chunkHash, context, tier1, tier2TopK, tier2Reason, classifyWithTier3, cache, now } = params;
+  const { chunk, normalizedText, chunkHash, context, tier1, tier2TopK, tier2Reason, tier3Enabled, classifyWithTier3, cache, now } = params;
 
   const tier1Top = tier1?.category
     ? makeDecisionFromCategory(tier1.category, tier1.confidence, 1, context, tier1, tier2TopK, null, chunkHash, tier2Reason)
@@ -564,6 +569,18 @@ async function resolveNaturalDecision(params: {
       chunkHash,
       tier2Reason,
     );
+  }
+
+  if (!tier3Enabled) {
+    return buildManualReviewDecision({
+      chunkId: chunk.id,
+      chunkHash,
+      tier1,
+      tier2TopK,
+      tier2Reason,
+      tier2Best,
+      tier3: null,
+    });
   }
 
   const tier3Input: Tier3ClassifierInput = {
@@ -605,25 +622,46 @@ async function resolveNaturalDecision(params: {
     }
   }
 
-  const refusalCategory = normalizeTier3Category(tier3Result?.decision.category ?? tier2Best?.category ?? tier1?.category ?? 'drop');
+  return buildManualReviewDecision({
+    chunkId: chunk.id,
+    chunkHash,
+    tier1,
+    tier2TopK,
+    tier2Reason,
+    tier2Best,
+    tier3: tier3Result,
+  });
+}
+
+function buildManualReviewDecision(params: {
+  chunkId: string;
+  chunkHash: string;
+  tier1: Tier1Result | null;
+  tier2TopK: Tier2Hit[];
+  tier2Reason: Tier2TriggerReason;
+  tier2Best: Tier2Hit | null;
+  tier3: Tier3Outcome | null;
+}): RoutingDecision {
+  const { chunkId, chunkHash, tier1, tier2TopK, tier2Reason, tier2Best, tier3 } = params;
+  const refusalCategory = normalizeTier3Category(tier3?.decision.category ?? tier2Best?.category ?? tier1?.category ?? 'drop');
   return {
     category: refusalCategory,
-    confidence: clampConfidence(tier3Result?.decision.confidence ?? tier2Best?.similarity ?? tier1?.confidence ?? 0),
+    confidence: clampConfidence(tier3?.decision.confidence ?? tier2Best?.similarity ?? tier1?.confidence ?? 0),
     target: refusalTarget(chunkHash),
-    tierUsed: tier3Result ? 3 : tier2Best ? 2 : 1,
-    explanation: tier3Result?.decision.reasoning ?? 'No routing category reached the 0.50 confidence floor; pending manual review.',
+    tierUsed: tier3 ? 3 : tier2Best ? 2 : 1,
+    explanation: tier3?.decision.reasoning ?? `Router uncertain for ${chunkId}; operator should specify routeAs.`,
     overrideable: refusalCategory !== 'drop',
     confidenceBand: 'refuse',
     shouldLogForReview: true,
-    warningMessage: 'Routing confidence below 0.50; manual review required before merge.',
+    warningMessage: `Router uncertain for ${chunkId}; operator should specify routeAs.`,
     refusal: true,
-    alternatives: collectAlternatives(refusalCategory, tier2TopK, tier3Result?.decision.alternatives ?? []),
+    alternatives: collectAlternatives(refusalCategory, tier2TopK, tier3?.decision.alternatives ?? []),
     overrideApplied: false,
-    cacheHit: tier3Result?.cacheScope != null,
+    cacheHit: tier3?.cacheScope != null,
     promptVersion: ROUTING_PROMPT_VERSION,
     tier1,
     tier2TopK,
-    tier3: tier3Result,
+    tier3,
     cacheKey: chunkHash,
     triggerReason: tier2Reason,
   };
@@ -1323,6 +1361,11 @@ export function createRoutingAuditEntry(
  */
 export function getDefaultPrototypeLibrary(): PrototypeLibrary {
   return DEFAULT_PROTOTYPES;
+}
+
+export function isTier3RoutingEnabled(): boolean {
+  const value = process.env.SPECKIT_ROUTER_TIER3_ENABLED?.trim().toLowerCase();
+  return value === 'true' || value === '1';
 }
 
 /**

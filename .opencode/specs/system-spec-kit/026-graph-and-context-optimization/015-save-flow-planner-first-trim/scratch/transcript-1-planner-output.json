@@ -1,0 +1,156 @@
+{
+  "success": true,
+  "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+  "status": "planned",
+  "summary": "Planner prepared canonical save plan",
+  "message": "Planner prepared a non-mutating canonical save plan.",
+  "plannerMode": "plan-only",
+  "routeCategory": "narrative_progress",
+  "mergeMode": "append-as-paragraph",
+  "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+  "targetAnchorId": "what-built",
+  "routeTarget": {
+    "routeCategory": "narrative_progress",
+    "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+    "canonicalFilePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+    "targetAnchorId": "what-built",
+    "mergeMode": "append-as-paragraph"
+  },
+  "proposedEdits": [
+    {
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "summary": "Apply the canonical narrative progress update to the routed document.",
+      "targetAnchorId": "what-built",
+      "mergeMode": "append-as-paragraph",
+      "routeCategory": "narrative_progress",
+      "contentPreview": "---\ntitle: \"Packet 012 Closeout Transcript Replay\"\ndescription: \"Transcript prototype derived from the Packet 012 implementation summary closeout.\"\ntrigger_phrases:\n  - \"packet-012-closeout\"\n  - \"planner-transcript\"\nimportance_tier: \"important\"\ncontextType: \"implementation\"\n---\n\n"
+    }
+  ],
+  "blockers": [],
+  "advisories": [
+    {
+      "code": "SPEC_DOC_WARNING",
+      "message": "SPEC_DOC_SUFFICIENCY:SPECDOC_SUFFICIENCY_002:checklist.md:verification is missing a concrete command or verification artifact",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "SPEC_DOC_WARNING",
+      "message": "SPEC_DOC_SUFFICIENCY:SPECDOC_SUFFICIENCY_002:implementation-summary.md:what-built is missing a concrete file, code, or artifact citation",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "SPEC_DOC_WARNING",
+      "message": "SPEC_DOC_SUFFICIENCY:SPECDOC_SUFFICIENCY_002:implementation-summary.md:verification is missing a concrete command or verification artifact",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "SPEC_DOC_WARNING",
+      "message": "CROSS_ANCHOR_CONTAMINATION:SPECDOC_CONTAM_001:routing payload looks like 'research_findings' but was routed as 'narrative_progress'",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "SPEC_DOC_WARNING",
+      "message": "CROSS_ANCHOR_CONTAMINATION:SPECDOC_CONTAM_001:route override accepted risk for 'narrative_progress'",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "QUALITY_LOOP_ADVISORY",
+      "message": "V-rule hard block: V8",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "SUFFICIENCY_ADVISORY",
+      "message": "V-rule hard block: V8",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "TEMPLATE_CONTRACT_ADVISORY",
+      "message": "",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "RECONSOLIDATION_DEFERRED",
+      "message": "Reconsolidation available as follow-up action. Planner-first saves do not run supersede, reinforce, or create-linked reconsolidation work by default.",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    },
+    {
+      "code": "ENRICHMENT_DEFERRED",
+      "message": "Post-insert enrichment is deferred by default. Run the enrichment backfill follow-up after applying the canonical save when immediate entities or graph links matter.",
+      "targetDocPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/implementation-summary.md",
+      "targetAnchorId": "what-built",
+      "routeCategory": "narrative_progress"
+    }
+  ],
+  "followUpActions": [
+    {
+      "action": "apply",
+      "title": "Apply canonical save",
+      "description": "Run the canonical atomic writer in explicit full-auto mode.",
+      "args": {
+        "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/memory/session.md",
+        "plannerMode": "full-auto",
+        "routeAs": "narrative_progress",
+        "mergeModeHint": "append-as-paragraph",
+        "targetAnchorId": "what-built"
+      }
+    },
+    {
+      "action": "refresh-graph",
+      "title": "Refresh graph metadata",
+      "description": "Refresh the packet graph metadata after applying the save.",
+      "tool": "refreshGraphMetadata",
+      "args": {
+        "specFolder": "system-spec-kit/transcript-prototypes/transcript-1"
+      }
+    },
+    {
+      "action": "reindex",
+      "title": "Reindex touched spec docs",
+      "description": "Run incremental spec-doc indexing so the save is immediately searchable.",
+      "tool": "reindexSpecDocs",
+      "args": {
+        "specFolder": "system-spec-kit/transcript-prototypes/transcript-1"
+      }
+    },
+    {
+      "action": "reconsolidate",
+      "title": "Run full-auto fallback with reconsolidation",
+      "description": "Use the backward-compatible full-auto save path when you explicitly want reconsolidation-on-save.",
+      "tool": "memory_save",
+      "args": {
+        "filePath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/tmp-test-fixtures/specs/system-spec-kit/transcript-prototypes/transcript-1/memory/session.md",
+        "plannerMode": "full-auto",
+        "routeAs": "narrative_progress",
+        "mergeModeHint": "append-as-paragraph",
+        "targetAnchorId": "what-built"
+      }
+    },
+    {
+      "action": "enrich",
+      "title": "Run enrichment backfill",
+      "description": "Backfill entity extraction, summaries, cross-doc linking, and graph lifecycle after the canonical save is applied.",
+      "tool": "runEnrichmentBackfill",
+      "args": {
+        "specFolder": "system-spec-kit/transcript-prototypes/transcript-1"
+      }
+    }
+  ]
+}

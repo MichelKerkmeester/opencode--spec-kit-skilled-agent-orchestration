@@ -37,13 +37,18 @@ import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/stora
 import * as causalEdges from '../lib/storage/causal-edges.js';
 
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate.js';
-import { isSaveQualityGateEnabled } from '../lib/search/search-flags.js';
+import {
+  isPostInsertEnrichmentEnabled,
+  isSaveQualityGateEnabled,
+  isSaveReconsolidationEnabled,
+  resolveSavePlannerMode,
+} from '../lib/search/search-flags.js';
 
 import { getCanonicalPathKey } from '../lib/utils/canonical-path.js';
 import { findSimilarMemories } from './pe-gating.js';
 import { runPostMutationHooks } from './mutation-hooks.js';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
-import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator.js';
+import { indexChunkedMemoryFile, shouldUseChunkedIndexing } from './chunking-orchestrator.js';
 import { applyPostInsertMetadata } from './save/db-helpers.js';
 import {
   createMemoryRecord,
@@ -80,19 +85,33 @@ import type {
   AtomicSaveParams,
   AtomicSaveOptions,
   AtomicSaveResult,
+  PlannerAdvisory,
+  PlannerBlocker,
+  PlannerFollowUpAction,
+  PlannerRouteTarget,
 } from './save/index.js';
 import { checkExistingRow, checkContentHashDedup } from './save/dedup.js';
 import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline.js';
 import { evaluateAndApplyPeDecision } from './save/pe-orchestration.js';
 import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge.js';
-import { runPostInsertEnrichment } from './save/post-insert.js';
-import { buildIndexResult, buildSaveResponse } from './save/response-builder.js';
+import { runPostInsertEnrichmentIfEnabled } from './save/post-insert.js';
+import {
+  buildIndexResult,
+  buildPlannerResponse,
+  buildSaveResponse,
+  serializePlannerAdvisory,
+  serializePlannerBlocker,
+  serializePlannerFollowUpAction,
+  serializePlannerProposedEdit,
+  serializePlannerRouteTarget,
+} from './save/response-builder.js';
 import { atomicIndexMemory } from './save/atomic-index-memory.js';
 import { createMCPErrorResponse } from '../lib/response/envelope.js';
 import {
   buildTier3Prompt,
   createContentRouter,
   getTier3Contract,
+  isTier3RoutingEnabled,
   InMemoryRouterCache,
   TIER2_FALLBACK_PENALTY,
   TIER3_THRESHOLD,
@@ -122,6 +141,8 @@ import {
   buildInsufficiencyRejectionResult,
   buildTemplateContractRejectionResult,
   buildDryRunSummary,
+  buildPlannerAdvisory,
+  buildPlannerBlocker,
 } from './save/validation-responses.js';
 
 import { markMemorySuperseded } from './pe-gating.js';
@@ -177,7 +198,7 @@ interface CanonicalAtomicValidatorPlan {
   level: string;
   mergePlan: MergePlan | null;
   contaminationPlan: ContaminationPlan | null;
-  postSavePlan: PostSavePlan;
+  postSavePlan: PostSavePlan | null;
 }
 
 interface CanonicalAtomicPrepared {
@@ -268,6 +289,7 @@ function prepareParsedMemoryForIndexing(
   database: ReturnType<typeof requireDb>,
   options: {
     emitEvalMetrics?: boolean;
+    qualityLoopMode?: 'advisory' | 'full-auto';
   } = {},
 ): PreparedParsedMemory {
   const validation = memoryParser.validateParsedMemory(parsed);
@@ -330,6 +352,7 @@ function prepareParsedMemoryForIndexing(
 
   const qualityLoopResult = runQualityLoop(parsed.content, buildQualityLoopMetadata(parsed, database), {
     emitEvalMetrics: options.emitEvalMetrics,
+    mode: options.qualityLoopMode ?? 'advisory',
   });
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = qualityLoopResult.score.issues;
@@ -1005,10 +1028,11 @@ async function classifyWithTier3Llm(input: Tier3ClassifierInput): Promise<Tier3R
   }
 }
 
-function buildCanonicalRouter() {
+function buildCanonicalRouter(options: { tier3Enabled?: boolean } = {}) {
   return createContentRouter({
     classifyWithTier3: classifyWithTier3Llm,
     cache: tier3RoutingCache,
+    tier3Enabled: options.tier3Enabled,
   });
 }
 
@@ -1227,6 +1251,9 @@ async function buildCanonicalAtomicPreparedSave(
   const preparedMemory = prepareParsedMemoryForIndexing(
     memoryParser.parseMemoryContent(params.file_path, params.content),
     database,
+    {
+      qualityLoopMode: params.plannerMode === 'full-auto' ? 'full-auto' : 'advisory',
+    },
   );
   if (!preparedMemory.validation.valid) {
     return {
@@ -1250,7 +1277,8 @@ async function buildCanonicalAtomicPreparedSave(
   const packetLevel = toCanonicalPacketLevel(detectSpecLevelFromParsed(path.join(specFolderAbsolute, 'spec.md')));
   const packetKind = deriveCanonicalPacketKind(specFolderAbsolute, preparedMemory.parsed.specFolder);
   const saveMode = params.routeAs ? 'route-as' : 'natural';
-  const router = buildCanonicalRouter();
+  const tier3Enabled = params.plannerMode === 'full-auto' || isTier3RoutingEnabled();
+  const router = buildCanonicalRouter({ tier3Enabled });
   const routingChunkText = normalizeRoutingChunkText(params.content);
   const likelyPhaseAnchor = deriveLikelyPhaseAnchorForCanonicalRouting({
     routingChunkText,
@@ -1503,12 +1531,14 @@ async function buildCanonicalAtomicPreparedSave(
           chunkText: routingChunkText,
           routeOverrideAccepted: effectiveDecision.overrideApplied,
         },
-        postSavePlan: {
-          file: relativeTargetFile,
-          expectedFingerprint: buildContinuityFingerprint(persistedContent),
-          snapshotContent: originalTargetContent,
-          expectedSize: Buffer.byteLength(persistedContent, 'utf8'),
-        },
+        postSavePlan: params.plannerMode === 'full-auto'
+          ? {
+              file: relativeTargetFile,
+              expectedFingerprint: buildContinuityFingerprint(persistedContent),
+              snapshotContent: originalTargetContent,
+              expectedSize: Buffer.byteLength(persistedContent, 'utf8'),
+            }
+          : null,
       },
     },
   };
@@ -1516,6 +1546,7 @@ async function buildCanonicalAtomicPreparedSave(
 
 function validateCanonicalPreparedSave(
   prepared: CanonicalAtomicPrepared,
+  options: { includePostSaveFingerprint?: boolean } = {},
 ): { ok: true; warnings: string[] } | { ok: false; rejection: IndexResult } {
   if (!prepared.validatorPlan) {
     return { ok: true, warnings: [] };
@@ -1532,8 +1563,11 @@ function validateCanonicalPreparedSave(
     { rule: 'MERGE_LEGALITY', mergePlan: prepared.validatorPlan.mergePlan },
     { rule: 'SPEC_DOC_SUFFICIENCY' },
     { rule: 'CROSS_ANCHOR_CONTAMINATION', contaminationPlan: prepared.validatorPlan.contaminationPlan },
-    { rule: 'POST_SAVE_FINGERPRINT', postSavePlan: prepared.validatorPlan.postSavePlan },
   ];
+
+  if (options.includePostSaveFingerprint && prepared.validatorPlan.postSavePlan) {
+    rules.push({ rule: 'POST_SAVE_FINGERPRINT', postSavePlan: prepared.validatorPlan.postSavePlan });
+  }
 
   for (const entry of rules) {
     const result = runSpecDocStructureRule({
@@ -1570,6 +1604,279 @@ function validateCanonicalPreparedSave(
   return { ok: true, warnings };
 }
 
+function buildAtomicPlannerRouteTarget(prepared: CanonicalAtomicPrepared): PlannerRouteTarget {
+  return serializePlannerRouteTarget({
+    routeCategory: prepared.routing.routeAs ?? 'drop',
+    targetDocPath: prepared.routing.targetDocPath ?? prepared.preparedMemory.parsed.filePath,
+    canonicalFilePath: prepared.routing.canonicalFilePath ?? undefined,
+    targetAnchorId: prepared.routing.targetAnchorId ?? null,
+    mergeMode: prepared.routing.mergeModeHint ?? undefined,
+  });
+}
+
+function buildAtomicPlannerFollowUpActions(
+  params: AtomicSaveParams,
+  prepared: CanonicalAtomicPrepared,
+): PlannerFollowUpAction[] {
+  const specFolder = prepared.preparedMemory.parsed.specFolder;
+  const applyArgs: Record<string, unknown> = {
+    filePath: params.file_path,
+    plannerMode: 'full-auto',
+    ...(params.routeAs ? { routeAs: params.routeAs } : {}),
+    ...(params.mergeModeHint ? { mergeModeHint: params.mergeModeHint } : {}),
+    ...(params.targetAnchorId ? { targetAnchorId: params.targetAnchorId } : {}),
+  };
+
+  const followUpActions: PlannerFollowUpAction[] = [
+    serializePlannerFollowUpAction({
+      action: 'apply',
+      title: 'Apply canonical save',
+      description: 'Run the canonical atomic writer in explicit full-auto mode.',
+      args: applyArgs,
+    }),
+    serializePlannerFollowUpAction({
+      action: 'refresh-graph',
+      title: 'Refresh graph metadata',
+      description: 'Refresh the packet graph metadata after applying the save.',
+      tool: 'refreshGraphMetadata',
+      args: {
+        specFolder,
+      },
+    }),
+    serializePlannerFollowUpAction({
+      action: 'reindex',
+      title: 'Reindex touched spec docs',
+      description: 'Run incremental spec-doc indexing so the save is immediately searchable.',
+      tool: 'reindexSpecDocs',
+      args: {
+        specFolder,
+      },
+    }),
+  ];
+
+  if (!isSaveReconsolidationEnabled()) {
+    followUpActions.push(serializePlannerFollowUpAction({
+      action: 'reconsolidate',
+      title: 'Run full-auto fallback with reconsolidation',
+      description: 'Use the backward-compatible full-auto save path when you explicitly want reconsolidation-on-save.',
+      tool: 'memory_save',
+      args: applyArgs,
+    }));
+  }
+
+  if (!isPostInsertEnrichmentEnabled()) {
+    followUpActions.push(serializePlannerFollowUpAction({
+      action: 'enrich',
+      title: 'Run enrichment backfill',
+      description: 'Backfill entity extraction, summaries, cross-doc linking, and graph lifecycle after the canonical save is applied.',
+      tool: 'runEnrichmentBackfill',
+      args: {
+        specFolder,
+      },
+    }));
+  }
+
+  return followUpActions;
+}
+
+function buildAtomicPlannerAdvisories(
+  prepared: CanonicalAtomicPrepared,
+  warnings: string[],
+): PlannerAdvisory[] {
+  const advisories: PlannerAdvisory[] = [];
+  const routeCategory = prepared.routing.routeAs ?? undefined;
+  const targetDocPath = prepared.routing.targetDocPath ?? undefined;
+  const targetAnchorId = prepared.routing.targetAnchorId ?? null;
+
+  for (const warning of warnings) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'SPEC_DOC_WARNING',
+      message: warning,
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  for (const warning of prepared.preparedMemory.validation.warnings) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'INPUT_WARNING',
+      message: warning,
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  if (!prepared.preparedMemory.qualityLoopResult.passed || prepared.preparedMemory.qualityLoopResult.fixes.length > 0) {
+    const qualityMessage = prepared.preparedMemory.qualityLoopResult.rejectionReason
+      ?? (prepared.preparedMemory.qualityLoopResult.fixes.length > 0
+        ? `Quality loop would apply ${prepared.preparedMemory.qualityLoopResult.fixes.length} fix(es) in full-auto mode.`
+        : 'Quality loop reported advisory issues for this save.');
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'QUALITY_LOOP_ADVISORY',
+      message: qualityMessage,
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  if (!prepared.preparedMemory.sufficiencyResult.pass) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'SUFFICIENCY_ADVISORY',
+      message: prepared.preparedMemory.sufficiencyResult.reasons.join(' '),
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  if (!prepared.preparedMemory.templateContract.valid) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'TEMPLATE_CONTRACT_ADVISORY',
+      message: prepared.preparedMemory.templateContract.violations
+        .map((violation) => violation.message || violation.code)
+        .join('; '),
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  if (!isSaveReconsolidationEnabled()) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'RECONSOLIDATION_DEFERRED',
+      message: 'Reconsolidation available as follow-up action. Planner-first saves do not run supersede, reinforce, or create-linked reconsolidation work by default.',
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  if (!isPostInsertEnrichmentEnabled()) {
+    advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
+      code: 'ENRICHMENT_DEFERRED',
+      message: 'Post-insert enrichment is deferred by default. Run the enrichment backfill follow-up after applying the canonical save when immediate entities or graph links matter.',
+      routeCategory,
+      targetDocPath,
+      targetAnchorId,
+    })));
+  }
+
+  return advisories;
+}
+
+function buildAtomicPlannerReadyResult(
+  params: AtomicSaveParams,
+  prepared: CanonicalAtomicPrepared,
+  validation: { ok: true; warnings: string[] } | { ok: false; rejection: IndexResult },
+): AtomicSaveResult {
+  const routeTarget = buildAtomicPlannerRouteTarget(prepared);
+  const blockers: PlannerBlocker[] = [];
+  if (!validation.ok) {
+    blockers.push(serializePlannerBlocker(buildPlannerBlocker({
+      code: 'SPEC_DOC_STRUCTURE_BLOCKER',
+      message: validation.rejection.message ?? validation.rejection.rejectionReason ?? 'Planner blocked canonical save.',
+      routeCategory: routeTarget.routeCategory,
+      targetDocPath: routeTarget.targetDocPath,
+      targetAnchorId: routeTarget.targetAnchorId ?? null,
+    })));
+  }
+
+  const advisories = buildAtomicPlannerAdvisories(
+    prepared,
+    validation.ok ? validation.warnings : (validation.rejection.warnings ?? []),
+  );
+  const status = blockers.length > 0 ? 'blocked' : 'planned';
+  const contentPreview = prepared.preparedMemory.finalizedFileContent
+    ?? prepared.preparedMemory.parsed.content
+    ?? params.content;
+
+  return {
+    success: blockers.length === 0,
+    filePath: routeTarget.targetDocPath,
+    status,
+    summary: blockers.length > 0
+      ? 'Planner blocked canonical save'
+      : 'Planner prepared canonical save plan',
+    message: blockers.length > 0
+      ? 'Planner found blocker(s) that must be resolved before the canonical save can run.'
+      : 'Planner prepared a non-mutating canonical save plan.',
+    plannerMode: 'plan-only',
+    routeCategory: routeTarget.routeCategory,
+    mergeMode: routeTarget.mergeMode,
+    targetDocPath: routeTarget.targetDocPath,
+    targetAnchorId: routeTarget.targetAnchorId ?? undefined,
+    routeTarget,
+    proposedEdits: [
+      serializePlannerProposedEdit({
+        targetDocPath: routeTarget.targetDocPath,
+        targetAnchorId: routeTarget.targetAnchorId ?? null,
+        mergeMode: routeTarget.mergeMode,
+        routeCategory: routeTarget.routeCategory,
+        summary: `Apply the canonical ${routeTarget.routeCategory.replace(/_/g, ' ')} update to the routed document.`,
+        contentPreview: contentPreview.slice(0, 280),
+      }),
+    ],
+    blockers,
+    advisories,
+    followUpActions: buildAtomicPlannerFollowUpActions(params, prepared),
+  };
+}
+
+function buildAtomicPlannerAbortResult(
+  params: AtomicSaveParams,
+  result: AtomicSaveResult,
+): AtomicSaveResult {
+  const routeCategory = result.routeCategory ?? params.routeAs ?? 'drop';
+  const routeTarget = serializePlannerRouteTarget({
+    routeCategory,
+    targetDocPath: result.targetDocPath ?? result.filePath,
+    targetAnchorId: result.targetAnchorId ?? params.targetAnchorId ?? null,
+    mergeMode: result.mergeMode ?? params.mergeModeHint,
+  });
+
+  return {
+    success: false,
+    filePath: routeTarget.targetDocPath,
+    status: 'blocked',
+    summary: result.summary ?? 'Planner blocked canonical save',
+    message: result.message ?? result.error ?? 'Planner could not prepare a canonical save.',
+    plannerMode: 'plan-only',
+    routeCategory: routeTarget.routeCategory,
+    mergeMode: routeTarget.mergeMode,
+    targetDocPath: routeTarget.targetDocPath,
+    targetAnchorId: routeTarget.targetAnchorId ?? undefined,
+    routeTarget,
+    proposedEdits: [],
+    blockers: [
+      serializePlannerBlocker(buildPlannerBlocker({
+        code: result.status === 'error' ? 'PLANNER_ERROR' : 'PLANNER_BLOCKER',
+        message: result.message ?? result.error ?? result.summary ?? 'Planner could not prepare a canonical save.',
+        routeCategory: routeTarget.routeCategory,
+        targetDocPath: routeTarget.targetDocPath,
+        targetAnchorId: routeTarget.targetAnchorId ?? null,
+      })),
+    ],
+    advisories: [],
+    followUpActions: [
+      serializePlannerFollowUpAction({
+        action: 'apply',
+        title: 'Retry in full-auto mode after resolving blockers',
+        description: 'Request explicit full-auto mode once the blocking issue is fixed.',
+        args: {
+          filePath: params.file_path,
+          plannerMode: 'full-auto',
+          ...(params.routeAs ? { routeAs: params.routeAs } : {}),
+          ...(params.mergeModeHint ? { mergeModeHint: params.mergeModeHint } : {}),
+          ...(params.targetAnchorId ? { targetAnchorId: params.targetAnchorId } : {}),
+        },
+      }),
+    ],
+  };
+}
+
 function isCanonicalAtomicPrepared(value: unknown): value is CanonicalAtomicPrepared {
   if (!value || typeof value !== 'object') {
     return false;
@@ -1588,6 +1895,7 @@ async function processPreparedMemory(
   options: {
     force?: boolean;
     asyncEmbedding?: boolean;
+    plannerMode?: AtomicSaveParams['plannerMode'];
     persistQualityLoopContent?: boolean;
     refreshFromDiskAfterLock?: boolean;
     specFolderLockAlreadyHeld?: boolean;
@@ -1599,6 +1907,7 @@ async function processPreparedMemory(
   const {
     force = false,
     asyncEmbedding = false,
+    plannerMode: requestedPlannerMode,
     persistQualityLoopContent = true,
     refreshFromDiskAfterLock = false,
     specFolderLockAlreadyHeld = false,
@@ -1606,6 +1915,7 @@ async function processPreparedMemory(
     qualityGateMode = 'enforce',
     routing = {},
   } = options;
+  const plannerMode = requestedPlannerMode ?? resolveSavePlannerMode();
 
   const evaluatePreparedMemory = (currentPrepared: PreparedParsedMemory): IndexResult | null => {
     const {
@@ -1674,7 +1984,9 @@ async function processPreparedMemory(
   const runWithinSpecFolderLock = async (): Promise<IndexResult> => {
     const database = requireDb();
     const activePrepared = refreshFromDiskAfterLock
-      ? prepareParsedMemoryForIndexing(memoryParser.parseMemoryFile(filePath), database)
+      ? prepareParsedMemoryForIndexing(memoryParser.parseMemoryFile(filePath), database, {
+          qualityLoopMode: 'full-auto',
+        })
       : prepared;
     const lockedResult = evaluatePreparedMemory(activePrepared);
     if (lockedResult) {
@@ -1710,7 +2022,7 @@ async function processPreparedMemory(
       scope,
       recordIdentity,
     );
-    const shouldChunkContent = needsChunking(routedParsed.content);
+    const shouldChunkContent = shouldUseChunkedIndexing(routedParsed.content, plannerMode);
     const shouldPersistFinalizedFile = persistQualityLoopContent && typeof finalizedFileContent === 'string';
     let finalizeWarning: string | null = null;
 
@@ -1748,6 +2060,7 @@ async function processPreparedMemory(
           specFolder: routedParsed.specFolder,
           triggerPhrases: routedParsed.triggerPhrases,
           contextType: routedParsed.contextType,
+          mode: 'legacy',
           embedding: embedding,
           findSimilar: embedding ? (emb, gateOptions) => {
             return findSimilarMemories(emb as Float32Array, {
@@ -1833,6 +2146,7 @@ async function processPreparedMemory(
       force,
       embedding,
       scope,
+      { plannerMode },
     );
     if (reconResult.earlyReturn) return reconResult.earlyReturn;
 
@@ -2025,7 +2339,12 @@ async function processPreparedMemory(
     }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
-    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichment(database, id, routedParsed);
+    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichmentIfEnabled(
+      database,
+      id,
+      routedParsed,
+      { plannerMode },
+    );
 
     // BUILD RESULT
     return appendResultWarning(buildIndexResult({
@@ -2065,6 +2384,7 @@ async function indexMemoryFile(
     force = false,
     parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null,
     asyncEmbedding = false,
+    plannerMode,
     scope = {} as MemoryScopeMatch,
     qualityGateMode = 'enforce' as 'enforce' | 'warn-only',
     routing,
@@ -2072,6 +2392,7 @@ async function indexMemoryFile(
     force?: boolean;
     parsedOverride?: ReturnType<typeof memoryParser.parseMemoryFile> | null;
     asyncEmbedding?: boolean;
+    plannerMode?: AtomicSaveParams['plannerMode'];
     scope?: MemoryScopeMatch;
     qualityGateMode?: 'enforce' | 'warn-only';
     routing?: RoutedSaveOptions;
@@ -2092,6 +2413,7 @@ async function indexMemoryFile(
   return processPreparedMemory(prepared, filePath, {
     force,
     asyncEmbedding,
+    plannerMode,
     persistQualityLoopContent: true,
     refreshFromDiskAfterLock: parsedOverride !== null,
     scope,
@@ -2128,6 +2450,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     filePath: file_path,
     force = false,
     dryRun = false,
+    plannerMode: requestedPlannerMode,
     skipPreflight = false,
     asyncEmbedding = false,
     routeAs,
@@ -2143,6 +2466,8 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     retentionPolicy,
     deleteAfter,
   } = args;
+  const plannerMode = requestedPlannerMode ?? resolveSavePlannerMode();
+  const shouldPlanCanonicalSave = !dryRun && plannerMode !== 'full-auto' && Boolean(routeAs || mergeModeHint || targetAnchorId);
 
   // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!file_path || typeof file_path !== 'string') {
@@ -2193,6 +2518,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
     const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
       emitEvalMetrics: false,
+      qualityLoopMode: 'advisory',
     });
     const templateContractPass = preparedDryRun.templateContract.valid
       || shouldBypassTemplateContract(
@@ -2305,6 +2631,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       try {
         preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database, {
           emitEvalMetrics: false,
+          qualityLoopMode: 'advisory',
         });
       } catch (error: unknown) {
         if (error instanceof VRuleUnavailableError) {
@@ -2398,6 +2725,58 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
 
     if (!preflightResult.pass) {
+      if (shouldPlanCanonicalSave) {
+        return buildPlannerResponse({
+          planner: {
+            filePath: validatedPath,
+            specFolder: parsedForPreflight.specFolder,
+            title: parsedForPreflight.title ?? path.basename(validatedPath),
+            status: 'blocked',
+            message: 'Planner found blocker(s) during pre-flight validation.',
+            plannerMode: 'plan-only',
+            routeTarget: serializePlannerRouteTarget({
+              routeCategory: routeAs ?? 'drop',
+              targetDocPath: validatedPath,
+              targetAnchorId: targetAnchorId ?? null,
+              mergeMode: mergeModeHint,
+            }),
+            proposedEdits: [],
+            blockers: preflightResult.errors.map((entry: string | { message: string; code?: string }) =>
+              serializePlannerBlocker(buildPlannerBlocker({
+                code: typeof entry === 'string' ? 'PREFLIGHT_BLOCKER' : (entry.code ?? 'PREFLIGHT_BLOCKER'),
+                message: typeof entry === 'string' ? entry : entry.message,
+                routeCategory: routeAs ?? undefined,
+                targetDocPath: validatedPath,
+                targetAnchorId: targetAnchorId ?? null,
+              }))
+            ),
+            advisories: preflightResult.warnings.map((entry: string | { message: string }) =>
+              serializePlannerAdvisory(buildPlannerAdvisory({
+                code: 'PREFLIGHT_WARNING',
+                message: typeof entry === 'string' ? entry : entry.message,
+                routeCategory: routeAs ?? undefined,
+                targetDocPath: validatedPath,
+                targetAnchorId: targetAnchorId ?? null,
+              }))
+            ),
+            followUpActions: [
+              serializePlannerFollowUpAction({
+                action: 'apply',
+                title: 'Retry with full-auto after fixing pre-flight blockers',
+                description: 'Fix the reported blockers, then request explicit full-auto mode.',
+                args: {
+                  filePath: validatedPath,
+                  plannerMode: 'full-auto',
+                  ...(routeAs ? { routeAs } : {}),
+                  ...(mergeModeHint ? { mergeModeHint } : {}),
+                  ...(targetAnchorId ? { targetAnchorId } : {}),
+                },
+              }),
+            ],
+          },
+        });
+      }
+
       const errorMessages = preflightResult.errors.map((e: string | { message: string }) =>
         typeof e === 'string' ? e : e.message
       ).join('; ');
@@ -2429,12 +2808,45 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
+  if (shouldPlanCanonicalSave) {
+    const plannerResult = await atomicSaveMemory({
+      file_path: validatedPath,
+      content: fs.readFileSync(validatedPath, 'utf8'),
+      plannerMode,
+      ...(routeAs ? { routeAs } : {}),
+      ...(mergeModeHint ? { mergeModeHint } : {}),
+      ...(targetAnchorId ? { targetAnchorId } : {}),
+    }, { force });
+
+    return buildPlannerResponse({
+      planner: {
+        filePath: validatedPath,
+        specFolder: (parsedForPreflight ?? memoryParser.parseMemoryFile(validatedPath)).specFolder,
+        title: (parsedForPreflight ?? memoryParser.parseMemoryFile(validatedPath)).title ?? path.basename(validatedPath),
+        status: plannerResult.status === 'blocked' ? 'blocked' : 'planned',
+        message: plannerResult.message ?? 'Planner prepared a non-mutating canonical save plan.',
+        plannerMode: 'plan-only',
+        routeTarget: plannerResult.routeTarget ?? serializePlannerRouteTarget({
+          routeCategory: routeAs ?? 'drop',
+          targetDocPath: plannerResult.targetDocPath ?? validatedPath,
+          targetAnchorId: plannerResult.targetAnchorId ?? targetAnchorId ?? null,
+          mergeMode: plannerResult.mergeMode ?? mergeModeHint,
+        }),
+        proposedEdits: plannerResult.proposedEdits ?? [],
+        blockers: plannerResult.blockers ?? [],
+        advisories: plannerResult.advisories ?? [],
+        followUpActions: plannerResult.followUpActions ?? [],
+      },
+    });
+  }
+
   let result: IndexResult;
   try {
     result = await indexMemoryFile(validatedPath, {
       force,
       parsedOverride: parsedForPreflight,
       asyncEmbedding,
+      plannerMode,
       scope: saveScope,
       routing: buildRoutedSaveOptions(validatedPath, routeAs, mergeModeHint, targetAnchorId),
     });
@@ -2502,6 +2914,20 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const { file_path, routeAs, mergeModeHint, targetAnchorId } = params;
   const database = requireDb();
   const routing = buildRoutedSaveOptions(file_path, routeAs, mergeModeHint, targetAnchorId);
+  const plannerMode = params.plannerMode ?? resolveSavePlannerMode();
+
+  if (shouldUseCanonicalRouting(params) && plannerMode !== 'full-auto') {
+    const canonicalPrepared = await buildCanonicalAtomicPreparedSave(params, database);
+    if (canonicalPrepared.status !== 'ready') {
+      return buildAtomicPlannerAbortResult(params, canonicalPrepared.result);
+    }
+
+    return buildAtomicPlannerReadyResult(
+      params,
+      canonicalPrepared.prepared,
+      validateCanonicalPreparedSave(canonicalPrepared.prepared),
+    );
+  }
 
   return atomicIndexMemory<PreparedParsedMemory | CanonicalAtomicPrepared>(params, options, {
     prepare: async (currentParams, _context) => {
@@ -2524,6 +2950,9 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       const prepared = prepareParsedMemoryForIndexing(
         memoryParser.parseMemoryContent(currentFilePath, currentContent),
         database,
+        {
+          qualityLoopMode: currentParams.plannerMode === 'full-auto' ? 'full-auto' : 'advisory',
+        },
       );
 
       if (!prepared.validation.valid) {
@@ -2568,8 +2997,10 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         return processPreparedMemory(routedPrepared.preparedMemory, effectiveFilePath, {
           force,
           asyncEmbedding: true,
+          plannerMode: currentParams.plannerMode,
           persistQualityLoopContent: false,
           specFolderLockAlreadyHeld: true,
+          qualityGateMode: 'warn-only',
           routing: routedPrepared.routing,
         }).then((result) => {
           for (const warning of validationResult.warnings) {
@@ -2582,6 +3013,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
       return processPreparedMemory(ready.prepared as PreparedParsedMemory, currentParams.file_path, {
         force,
         asyncEmbedding: true,
+        plannerMode: currentParams.plannerMode,
         persistQualityLoopContent: false,
         specFolderLockAlreadyHeld: true,
         routing: buildRoutedSaveOptions(currentParams.file_path, currentParams.routeAs, currentParams.mergeModeHint, currentParams.targetAnchorId),

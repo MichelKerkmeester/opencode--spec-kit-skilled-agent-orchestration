@@ -12,7 +12,7 @@ import * as incrementalIndex from '../lib/storage/incremental-index.js';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import * as toolCache from '../lib/cache/tool-cache.js';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent.js';
-import { isEncodingIntentEnabled } from '../lib/search/search-flags.js';
+import { isEncodingIntentEnabled, type SavePlannerMode } from '../lib/search/search-flags.js';
 import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache.js';
 import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer.js';
 import { needsChunking, chunkLargeFile } from '../lib/chunking/anchor-chunker.js';
@@ -135,6 +135,13 @@ function deleteMemoriesBulk(memoryIds: number[]): { deletedIds: number[]; failed
   }
 
   return { deletedIds, failedIds };
+}
+
+export function shouldUseChunkedIndexing(
+  content: string,
+  plannerMode: SavePlannerMode = 'plan-only',
+): boolean {
+  return plannerMode === 'full-auto' && needsChunking(content);
 }
 
 /**

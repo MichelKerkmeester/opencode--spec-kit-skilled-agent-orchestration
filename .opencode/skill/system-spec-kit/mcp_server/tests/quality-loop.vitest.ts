@@ -457,8 +457,10 @@ describe('runQualityLoop', () => {
   it('enforces quality loop when SPECKIT_QUALITY_LOOP is not set (graduated default-ON)', () => {
     delete process.env.SPECKIT_QUALITY_LOOP;
     const result = runQualityLoop(BAD_CONTENT, BAD_METADATA);
-    // Quality loop is now active by default — bad content is rejected
+    // Quality loop is now active by default, but planner-default mode stays advisory.
     expect(result.score.total).toBeLessThan(0.6);
+    expect(result.passed).toBe(false);
+    expect(result.rejected).toBe(false);
   });
 
   it('always passes when SPECKIT_QUALITY_LOOP is "false" (opt-out)', () => {
@@ -471,7 +473,7 @@ describe('runQualityLoop', () => {
   it('rejects after maxRetries for unfixable content when enabled', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
     // Truly terrible content that auto-fix cannot rescue
-    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 2 });
+    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 2, mode: 'full-auto' });
     expect(result.passed).toBe(false);
     expect(result.rejected).toBe(true);
     expect(result.rejectionReason).toBeTruthy();
@@ -481,11 +483,20 @@ describe('runQualityLoop', () => {
 
   it('reports actual attempts when early break stops further retries', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
-    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 5 });
+    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 5, mode: 'full-auto' });
     expect(result.passed).toBe(false);
     expect(result.rejected).toBe(true);
     expect(result.attempts).toBe(2);
     expect(result.rejectionReason).toContain('after 1 auto-fix attempt(s)');
+  });
+
+  it('stays advisory by default when content remains below threshold', () => {
+    process.env.SPECKIT_QUALITY_LOOP = 'true';
+    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 2 });
+    expect(result.passed).toBe(false);
+    expect(result.rejected).toBe(false);
+    expect(result.attempts).toBe(1);
+    expect(result.fixes).toHaveLength(0);
   });
 
   it('succeeds after auto-fix improves quality above threshold', () => {
@@ -511,7 +522,7 @@ describe('runQualityLoop', () => {
     ].join('\n');
     const fixableMetadata = { triggerPhrases: [], title: 'Important Sprint Documentation' };
 
-    const result = runQualityLoop(fixableContent, fixableMetadata, { threshold: 0.65 });
+    const result = runQualityLoop(fixableContent, fixableMetadata, { threshold: 0.65, mode: 'full-auto' });
     // After auto-fix extracts triggers from headings, score should improve above 0.65
     expect(result.passed).toBe(true);
     expect(result.attempts).toBeGreaterThan(1);
@@ -534,7 +545,7 @@ describe('runQualityLoop', () => {
 
   it('respects custom maxRetries', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
-    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 1 });
+    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 1, mode: 'full-auto' });
     expect(result.rejected).toBe(true);
     // With maxRetries=1, attempts should be at most 2 (1 initial + 1 retry)
     expect(result.attempts).toBeLessThanOrEqual(2);

@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
+import type { SavePlannerMode } from '../../lib/search/search-flags.js';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -14,6 +15,63 @@ export interface ValidationResult {
   valid: boolean;
   errors: string[];
   warnings: string[];
+}
+
+export type PlannerFollowUpActionType =
+  | 'apply'
+  | 'reconsolidate'
+  | 'enrich'
+  | 'refresh-graph'
+  | 'reindex';
+
+export interface PlannerRouteTarget {
+  routeCategory: RouteCategory;
+  targetDocPath: string;
+  canonicalFilePath?: string;
+  targetAnchorId?: string | null;
+  mergeMode?: MergeModeHint;
+}
+
+export interface PlannerProposedEdit {
+  targetDocPath: string;
+  targetAnchorId?: string | null;
+  mergeMode?: MergeModeHint;
+  routeCategory?: RouteCategory;
+  summary: string;
+  contentPreview?: string;
+}
+
+export interface PlannerBlocker {
+  code: string;
+  message: string;
+  targetDocPath?: string;
+  targetAnchorId?: string | null;
+  routeCategory?: RouteCategory;
+}
+
+export interface PlannerAdvisory {
+  code: string;
+  message: string;
+  targetDocPath?: string;
+  targetAnchorId?: string | null;
+  routeCategory?: RouteCategory;
+}
+
+export interface PlannerFollowUpAction {
+  action: PlannerFollowUpActionType;
+  title: string;
+  description: string;
+  tool?: 'memory_save' | 'memory_index_scan' | 'refreshGraphMetadata' | 'reindexSpecDocs' | 'runEnrichmentBackfill';
+  args?: Record<string, unknown>;
+}
+
+export interface PlannerResponsePayload {
+  plannerMode: Extract<SavePlannerMode, 'plan-only'>;
+  routeTarget: PlannerRouteTarget;
+  proposedEdits: PlannerProposedEdit[];
+  blockers: PlannerBlocker[];
+  advisories: PlannerAdvisory[];
+  followUpActions: PlannerFollowUpAction[];
 }
 
 export interface SimilarMemory {
@@ -120,6 +178,7 @@ export type MergeModeHint =
 export interface AtomicIndexParams {
   file_path: string;
   content: string;
+  plannerMode?: SavePlannerMode;
   routeAs?: RouteCategory;
   mergeModeHint?: MergeModeHint;
   targetAnchorId?: string;
@@ -148,6 +207,12 @@ export interface AtomicIndexResult {
   mergeMode?: MergeModeHint;
   targetDocPath?: string;
   targetAnchorId?: string;
+  plannerMode?: SavePlannerMode;
+  routeTarget?: PlannerRouteTarget;
+  proposedEdits?: PlannerProposedEdit[];
+  blockers?: PlannerBlocker[];
+  advisories?: PlannerAdvisory[];
+  followUpActions?: PlannerFollowUpAction[];
 }
 
 // Backward-compatible aliases retained while the writer path migrates.
@@ -159,6 +224,7 @@ export interface SaveArgs {
   filePath: string;
   force?: boolean;
   dryRun?: boolean;
+  plannerMode?: SavePlannerMode;
   skipPreflight?: boolean;
   asyncEmbedding?: boolean; // When true, embedding generation is deferred (non-blocking)
   routeAs?: RouteCategory;
@@ -203,6 +269,14 @@ export interface PostInsertMetadataFields {
   retention_policy?: string;
   delete_after?: string | null;
   governance_metadata?: string;
+}
+
+export interface PlannerResponseEnvelope extends PlannerResponsePayload {
+  filePath: string;
+  specFolder: string;
+  title: string;
+  status: 'planned' | 'blocked';
+  message: string;
 }
 
 export type { ParsedMemory };

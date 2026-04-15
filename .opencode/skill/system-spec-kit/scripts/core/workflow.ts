@@ -287,6 +287,8 @@ export interface WorkflowOptions {
   silent?: boolean;
   /** Optional session ID forwarded from CLI --session-id flag. */
   sessionId?: string;
+  /** Requested canonical save planner mode forwarded from the CLI wrapper. */
+  plannerMode?: 'plan-only' | 'full-auto' | 'hybrid';
 }
 
 /** Result object returned after a successful workflow execution. */
@@ -1328,21 +1330,26 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('   Context file was a duplicate — skipping description tracking');
   }
 
-  try {
-    const graphApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api');
-    if (!graphApiModule) {
-      throw new Error('MCP server API unavailable for graph-metadata refresh');
+  const shouldRunExplicitSaveFollowUps = options.plannerMode === 'full-auto';
+  if (shouldRunExplicitSaveFollowUps) {
+    try {
+      const graphApiModule = await tryImportMcpApi('@spec-kit/mcp-server/api/indexing');
+      if (!graphApiModule) {
+        throw new Error('MCP server indexing API unavailable for graph-metadata refresh');
+      }
+      const { refreshGraphMetadata } = graphApiModule as {
+        refreshGraphMetadata?: (specFolderPath: string) => { created: boolean; filePath: string };
+      };
+      if (typeof refreshGraphMetadata !== 'function') {
+        throw new Error('refreshGraphMetadata export unavailable');
+      }
+      const graphRefreshResult = refreshGraphMetadata(validatedSpecFolderPath);
+      log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
+    } catch (graphErr: unknown) {
+      throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);
     }
-    const { refreshGraphMetadataForSpecFolder: refreshGraphMetadata } = graphApiModule as {
-      refreshGraphMetadataForSpecFolder?: (specFolderPath: string, options?: Record<string, unknown>) => { created: boolean; filePath: string };
-    };
-    if (typeof refreshGraphMetadata !== 'function') {
-      throw new Error('refreshGraphMetadataForSpecFolder export unavailable');
-    }
-    const graphRefreshResult = refreshGraphMetadata(path.resolve(specFolder));
-    log(`   ${graphRefreshResult.created ? 'Created' : 'Refreshed'} ${path.basename(graphRefreshResult.filePath)}`);
-  } catch (graphErr: unknown) {
-    throw new Error(`[workflow] graph-metadata refresh failed: ${graphErr instanceof Error ? graphErr.message : String(graphErr)}`);
+  } else {
+    log('   Deferred graph metadata refresh to explicit follow-up');
   }
   log();
 
@@ -1376,9 +1383,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Guard on specFolderName only so canonical docs still re-index even though
   // the legacy memory artifact is no longer written by this workflow.
-  if (specFolderName && !autoIndexTouchedDisabled) {
+  if (specFolderName && !autoIndexTouchedDisabled && shouldRunExplicitSaveFollowUps) {
     try {
-      const { runMemoryIndexScan, initializeIndexingRuntime } = await import('@spec-kit/mcp-server/api/indexing');
+      const { initializeIndexingRuntime, reindexSpecDocs } = await import('@spec-kit/mcp-server/api/indexing');
       log('Step 11.5: Indexing touched canonical spec documents...');
       // Ensure indexing runtime is initialized. Idempotent: safe to call even if Step 11
       // Already initialized it via the vectorIndex module (different init path).
@@ -1391,13 +1398,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           warn(`   Step 11.5: indexing runtime init note: ${initMsg}`);
         }
       }
-      const scanResult = await runMemoryIndexScan({
-        specFolder: specFolderName,
-        includeSpecDocs: true,
-        includeConstitutional: false,
-        incremental: true,
-        force: false,
-      });
+      const scanResult = await reindexSpecDocs(specFolderName);
 
       // runMemoryIndexScan returns MCP-style { content: [{ type: "text", text: "<json>" }], isError }.
       // Parse the nested JSON envelope to extract scan counts.
@@ -1470,6 +1471,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const errMsg = e instanceof Error ? e.message : String(e);
       warn(`   Warning: Step 11.5 auto-index skipped: ${errMsg}`);
     }
+  } else if (specFolderName && !autoIndexTouchedDisabled) {
+    log('Step 11.5: deferred (planner-default save requires explicit reindex follow-up)');
   }
 
   // Step 12: Opportunistic retry processing
