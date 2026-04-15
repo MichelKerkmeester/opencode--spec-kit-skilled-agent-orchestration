@@ -73,33 +73,38 @@ async function testBug001() {
   try {
     const dbUpdatedFile = path.join(DB_PATH, '.db-updated');
     
-    // Test 1: Notification file mechanism exists
-    // NOTE: notifyDatabaseUpdated currently lives in core/memory-indexer.
-    const notifyCandidates = [
-      path.join(ROOT, 'scripts', 'dist', 'core', 'memory-indexer.js'),
-      path.join(ROOT, 'scripts', 'core', 'memory-indexer.ts'),
-      path.join(ROOT, 'scripts', 'dist', 'core', 'workflow.js'),
-      path.join(ROOT, 'scripts', 'dist', 'memory', 'generate-context.js'),
-    ].filter(p => fs.existsSync(p));
+    // Test 1: Notification file mechanism now lives in mcp_server/
+    // NOTE (v3.4.1.0 + r2 cleanup): scripts-side `notifyDatabaseUpdated` was
+    // retired with the [spec]/memory/*.md write path. Ownership of the
+    // `.db-updated` cross-connection notification marker moved to
+    // mcp_server/core (config.ts defines DB_UPDATED_FILE; index.ts imports
+    // and writes it). This test now asserts ownership lives in mcp_server/
+    // and the retired scripts-side wrapper stays deleted (negative assertion).
+    const mcpServerCoreConfig = path.join(ROOT, 'mcp_server', 'core', 'config.ts');
+    const mcpServerCoreIndex = path.join(ROOT, 'mcp_server', 'core', 'index.ts');
+    const scriptsMemoryIndexerTs = path.join(ROOT, 'scripts', 'core', 'memory-indexer.ts');
 
-    let notifyEvidence = null;
-    for (const candidate of notifyCandidates) {
-      const source = fs.readFileSync(candidate, 'utf8');
-      const hasNotifyFn = /\bnotifyDatabaseUpdated\b/.test(source);
-      const hasDbMarker = source.includes('DB_UPDATED_FILE') || source.includes('.db-updated');
-      const hasFileWrite = source.includes('writeFileSync') || source.includes('writeFile(');
-      if (hasNotifyFn && hasDbMarker && hasFileWrite) {
-        notifyEvidence = path.relative(ROOT, candidate);
-        break;
-      }
+    let mechanismInMcpServer = false;
+    if (fs.existsSync(mcpServerCoreConfig) && fs.existsSync(mcpServerCoreIndex)) {
+      const configSource = fs.readFileSync(mcpServerCoreConfig, 'utf8');
+      const indexSource = fs.readFileSync(mcpServerCoreIndex, 'utf8');
+      const configDefinesMarker = /\bDB_UPDATED_FILE\b/.test(configSource) && configSource.includes('.db-updated');
+      const indexImportsMarker = /\bDB_UPDATED_FILE\b/.test(indexSource);
+      mechanismInMcpServer = configDefinesMarker && indexImportsMarker;
     }
 
-    if (notifyEvidence) {
-      pass('T-005a: Notification mechanism in scripts/', 
-           `notifyDatabaseUpdated() + DB marker write found in ${notifyEvidence}`);
+    let scriptsSideRetired = true;
+    if (fs.existsSync(scriptsMemoryIndexerTs)) {
+      const memoryIndexerSource = fs.readFileSync(scriptsMemoryIndexerTs, 'utf8');
+      scriptsSideRetired = !/\bnotifyDatabaseUpdated\b/.test(memoryIndexerSource);
+    }
+
+    if (mechanismInMcpServer && scriptsSideRetired) {
+      pass('T-005a: Notification mechanism in mcp_server/ (post-v3.4.1.0)',
+           'DB_UPDATED_FILE defined in mcp_server/core/config.ts + imported in mcp_server/core/index.ts; scripts-side notifyDatabaseUpdated stays retired');
     } else {
-      fail('T-005a: Notification mechanism in scripts/', 
-           'notifyDatabaseUpdated() file-write marker not found');
+      fail('T-005a: Notification mechanism in mcp_server/ (post-v3.4.1.0)',
+           `mechanismInMcpServer=${mechanismInMcpServer}, scriptsSideRetired=${scriptsSideRetired}`);
     }
     
     // Test 2: Check detection in db-state.js (moved from context-server after modularization)
