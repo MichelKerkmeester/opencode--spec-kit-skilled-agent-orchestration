@@ -608,7 +608,7 @@ When subagents create child sessions, navigate between them:
 5. **For documentation tasks**: Type `@write` to invoke the documentation agent with template enforcement.
 6. **For complex multi-step tasks**: Type `@orchestrate` to decompose and delegate work.
 7. **For code reviews**: Type `@review` for quality scoring and security assessment.
-8. **For spec folder creation**: Use `/spec_kit:start` or `/spec_kit:plan` and let the main agent apply templates under distributed governance.
+8. **For spec folder creation**: Use `/spec_kit:plan --intake-only` or `/spec_kit:plan` and let the main agent apply templates under distributed governance.
 9. **For session continuity**: Use `/memory:save` to refresh packet continuity before ending the session.
 10. **For stuck debugging**: Dispatch `@debug` via the Task tool after 3+ failed attempts.
 

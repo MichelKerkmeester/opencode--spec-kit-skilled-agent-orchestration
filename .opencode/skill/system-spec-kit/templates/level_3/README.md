@@ -76,6 +76,20 @@ Use Level 3+ if governance and formal approvals are required.
 ## 4. QUICK START
 <!-- ANCHOR:quick-start -->
 
+### Primary Path — Canonical Intake
+
+Use `/spec_kit:plan --intake-only` to run the shared intake contract. It classifies the folder, emits the canonical trio (`spec.md` + `description.json` + `graph-metadata.json`) atomically, and auto-detects Level from architecture signals and scope. Override detection with `--level=3` when you know the level up front.
+
+```text
+/spec_kit:plan --intake-only --level=3
+```
+
+The intake contract ([`../../references/intake-contract.md`](../../references/intake-contract.md)) handles folder classification, trio publication, graph-metadata scaffolding, and continuity initialization — none of which the manual copy path performs. For Level 3 work, the intake additionally stages the `decision-record.md` slot so architecture decisions have a destination from the first write.
+
+### Manual Fallback (Advanced)
+
+Only use direct template copy when the canonical intake is unavailable or when explicitly repairing an existing packet. This path bypasses automated metadata generation, so you must backfill `description.json` and `graph-metadata.json` manually (see `scripts/memory/generate-description.js` and the graph-metadata backfill).
+
 ```bash
 mkdir -p specs/###-feature-name
 cp .opencode/skill/system-spec-kit/templates/level_3/spec.md specs/###-feature-name/
@@ -103,7 +117,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Phase decomposition is recommended for Level 3 tasks exceeding 500 LOC across multiple subsystems. Breaking large architectural work into ordered phases improves delivery control and risk management. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to `/spec_kit:start` before phase setup continues.
+Phase decomposition is recommended for Level 3 tasks exceeding 500 LOC across multiple subsystems. Breaking large architectural work into ordered phases improves delivery control and risk management. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to the shared intake contract in [`../../references/intake-contract.md`](../../references/intake-contract.md) before phase setup continues.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

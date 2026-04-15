@@ -409,9 +409,9 @@ Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` opera
 
 | Command                 | Steps | Purpose                                                                                                                          |
 | ----------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `/spec_kit:start`       | N/A   | Canonical intake interview that publishes `spec.md`, `description.json`, and `graph-metadata.json`                              |
-| `/spec_kit:complete`    | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout, with inline `/spec_kit:start` delegation when intake is still needed |
-| `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation, with smart `/spec_kit:start` delegation for `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade` packets |
+| `/spec_kit:plan --intake-only` | N/A   | Standalone intake interview that publishes `spec.md`, `description.json`, and `graph-metadata.json`                        |
+| `/spec_kit:complete`    | 14    | Full end-to-end workflow: spec through implementation, verification, and packet-local changelog closeout, with the shared intake contract from [intake-contract.md](./references/intake-contract.md) when intake is still needed |
+| `/spec_kit:plan`        | 7     | Planning only -- spec through plan, no implementation, with the shared intake contract from [intake-contract.md](./references/intake-contract.md) for `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade` packets |
 | `/spec_kit:implement`   | 9     | Execute pre-planned work. Requires existing `plan.md`; packet-aware targets also generate local changelog output during closeout |
 | `/spec_kit:resume`      | 4     | Resume a previous session on an existing spec folder                                                                             |
 | `/spec_kit:deep-research` | N/A | Autonomous research loop with convergence detection plus bounded `spec.md` anchoring under [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md) |
@@ -621,9 +621,9 @@ The **spec folder workflow** is the filing system. Every time you modify files, 
 
 The **memory system** is the librarian. When a session ends, `generate-context.js` updates the packet's canonical continuity surfaces so the next session can recover from packet-local sources first. The MCP server indexes those packet docs into vector, FTS5, and BM25 surfaces, while graph and degree signals are computed at retrieval time. When a new session starts, `/spec_kit:resume` rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs. If you need deeper retrieval after that, `session_bootstrap()` bundles resume context, health, and structural readiness into one follow-up recovery call before broader `memory_context` work begins.
 
-The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:start` owns canonical intake, `/spec_kit:plan` and `/spec_kit:complete` reuse that intake inline when `folder_state` requires delegation, and `/spec_kit:deep-research` anchors research to `spec.md` through [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md). `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
+The **commands** are the doors into the system. Each command opens access to the tools it needs. `/spec_kit:plan --intake-only` owns the standalone intake surface, `/spec_kit:plan` and `/spec_kit:complete` reuse the shared intake contract from [intake-contract.md](./references/intake-contract.md) when `folder_state` requires delegation, and `/spec_kit:deep-research` anchors research to `spec.md` through [spec_check_protocol.md](../sk-deep-research/references/spec_check_protocol.md). `/memory:save` updates packet continuity. `/spec_kit:resume` recovers or continues a previous session.
 
-The common packet lifecycle is now spec-first: `/spec_kit:start` establishes the canonical trio, `/spec_kit:deep-research` can enrich that packet under the bounded `spec_check_protocol.md` rules, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder without reopening intake unless `folder_state` still requires repair.
+The common packet lifecycle now uses `/spec_kit:plan --intake-only` for standalone trio creation or repair, `/spec_kit:deep-research` can enrich that packet under the bounded `spec_check_protocol.md` rules, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder without reopening intake unless `folder_state` still requires repair.
 
 ```text
 Session starts

@@ -199,7 +199,7 @@
     ],
     "causal_summary": "That coupling also made it harder to route users correctly. Review requests and research requests shared one command family even though the workflows, artifacts, and success criteria were different.",
     "created_at": "2026-04-12T09:02:50.180Z",
-    "last_save_at": "2026-04-15T08:26:16.451Z",
+    "last_save_at": "2026-04-15T11:50:28.202Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

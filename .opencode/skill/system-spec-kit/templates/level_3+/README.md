@@ -79,6 +79,20 @@ These are the same core files as Level 3 with additional approval, compliance an
 ## 4. QUICK START
 <!-- ANCHOR:quick-start -->
 
+### Primary Path — Canonical Intake
+
+Use `/spec_kit:plan --intake-only` to run the shared intake contract. It classifies the folder, emits the canonical trio (`spec.md` + `description.json` + `graph-metadata.json`) atomically, and auto-detects Level from governance, compliance, and multi-workstream signals. Override detection with `--level=3+` when you know the level up front.
+
+```text
+/spec_kit:plan --intake-only --level=3+
+```
+
+The intake contract ([`../../references/intake-contract.md`](../../references/intake-contract.md)) handles folder classification, trio publication, graph-metadata scaffolding, and continuity initialization — none of which the manual copy path performs. For Level 3+ work, the intake additionally stages approval-tracking, compliance, and stakeholder sections so governance checkpoints have a durable home from the first write.
+
+### Manual Fallback (Advanced)
+
+Only use direct template copy when the canonical intake is unavailable or when explicitly repairing an existing packet. This path bypasses automated metadata generation, so you must backfill `description.json` and `graph-metadata.json` manually (see `scripts/memory/generate-description.js` and the graph-metadata backfill) and re-initialize governance trackers by hand.
+
 ```bash
 mkdir -p specs/###-feature-name
 cp .opencode/skill/system-spec-kit/templates/level_3+/*.md specs/###-feature-name/
@@ -93,13 +107,16 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 - Keep approvals and compliance checks updated as work progresses.
 - Track checklist evidence continuously; do not batch at the end.
 - Finalize `implementation-summary.md` with delivered outcomes and open follow-ups.
+- Resume governance-heavy follow-up through `/spec_kit:resume`, using `handover.md -> _memory.continuity -> spec docs` as the canonical continuity order. Approval state and stakeholder sign-offs must be rehydrated from packet docs before work continues.
+- Save continuity with `/memory:save`, which routes updates into canonical packet docs such as `decision-record.md`, `implementation-summary.md`, `handover.md`, and the approval/compliance tracker sections. Never hand-author standalone continuity artifacts under `memory/`.
+- For multi-agent or AI-orchestrated workflows, ensure every spec-doc write uses templates from `.opencode/skill/system-spec-kit/templates/level_3+/`, runs `validate.sh --strict` after each write, and routes continuity updates through `/memory:save` — the distributed-governance rule applies regardless of which agent holds the pen.
 
 <!-- /ANCHOR:workflow-notes -->
 
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Phase decomposition is strongly recommended for Level 3+ complexity. High-complexity work benefits from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to `/spec_kit:start` before phase setup continues.
+Phase decomposition is strongly recommended for Level 3+ complexity. High-complexity work benefits from phased ordering, enabling approval checkpoints and compliance verification at each stage. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to the shared intake contract in [`../../references/intake-contract.md`](../../references/intake-contract.md) before phase setup continues.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

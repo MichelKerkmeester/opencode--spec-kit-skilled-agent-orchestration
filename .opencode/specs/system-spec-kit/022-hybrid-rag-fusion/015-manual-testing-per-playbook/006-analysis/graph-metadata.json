@@ -200,7 +200,7 @@
     ],
     "causal_summary": "The analysis category contains 7 manual test scenarios covering causal graph operations (create, stats, delete, trace), epistemic measurement (preflight, postflight), and learning history retrieval. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that analysis tools function correctly.",
     "created_at": "2026-04-12T09:02:50.293Z",
-    "last_save_at": "2026-04-15T08:26:16.904Z",
+    "last_save_at": "2026-04-15T11:50:28.955Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

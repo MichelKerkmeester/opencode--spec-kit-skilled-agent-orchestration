@@ -294,7 +294,7 @@ PLAN ARCHITECTURE    → @ultra-think (with --model claude-opus-4-6)
 RESEARCH A TOPIC     → @deep-research
 GENERATE DOCS        → @write
 COORDINATE AGENTS    → @orchestrate (with --permission-mode plan)
-SPEC PACKET WORK     → Main agent + `/spec_kit:start` or `/spec_kit:plan`
+SPEC PACKET WORK     → Main agent + `/spec_kit:plan --intake-only` or `/spec_kit:plan`
 SAVE CONTINUITY      → `/memory:save`
 ```
 

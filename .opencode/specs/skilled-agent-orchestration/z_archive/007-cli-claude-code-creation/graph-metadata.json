@@ -199,7 +199,7 @@
     ],
     "causal_summary": "No skill exists for external AI assistants (Gemini CLI, Codex CLI, Copilot, etc.) to delegate tasks to Claude Code CLI. The existing `cli-gemini` and `cli-codex` skills enable Claude Code to invoke *other* AIs, but the reverse direction — other AIs invoking Claude Code — has no structured skill. This leaves Claude Code's unique capabilities (extended thinking, `--json-schema`, `--permission-mode plan`, `--max-budget-usd`) inaccessible to external orchestrators.",
     "created_at": "2026-04-12T09:02:50.203Z",
-    "last_save_at": "2026-04-15T08:26:16.593Z",
+    "last_save_at": "2026-04-15T11:50:28.344Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

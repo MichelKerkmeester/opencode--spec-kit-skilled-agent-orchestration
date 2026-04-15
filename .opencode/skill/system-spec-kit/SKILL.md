@@ -118,7 +118,7 @@ Primary operational scripts:
 | CONDITIONAL | If intent signals match   | Intent-mapped references     |
 | ON_DEMAND   | Only on explicit request   | Deep-dive quality standards  |
 
-`references/workflows/quick_reference.md` is the primary first-touch command surface. Keep the compact `spec_kit` and `memory` command map there, including `/spec_kit:start` as the canonical intake entry, `/spec_kit:plan` and `/spec_kit:complete` smart delegation notes, and the pointer from `/spec_kit:deep-research` to `../sk-deep-research/references/spec_check_protocol.md`, and use this file only to point readers to it rather than duplicating the full matrix.
+`references/workflows/quick_reference.md` is the primary first-touch command surface. Keep the compact `spec_kit` and `memory` command map there, including `/spec_kit:plan --intake-only` as the standalone intake entry, `/spec_kit:plan` and `/spec_kit:complete` smart delegation notes, and the pointer from `/spec_kit:deep-research` to `../sk-deep-research/references/spec_check_protocol.md`, and use this file only to point readers to it rather than duplicating the full matrix.
 
 ### Smart Router Pseudocode
 
@@ -207,7 +207,6 @@ RESOURCE_MAP = {
 }
 
 COMMAND_BOOSTS = {
-    "/spec_kit:start": "PLAN",
     "/spec_kit:plan": "PLAN",
     "/spec_kit:implement": "IMPLEMENT",
     "/spec_kit:complete": "COMPLETE",
@@ -561,7 +560,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
-**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now starts with `/spec_kit:start` as the canonical intake workflow; `/spec_kit:plan` and `/spec_kit:complete` may delegate to it inline when packet `folder_state` requires repair or creation, and `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/start.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when packet `folder_state` requires repair or creation, and `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 47 total - see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -920,7 +919,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 
 | Command | Usage |
 | --- | --- |
-| Canonical intake | `/spec_kit:start "Description"` |
+| Canonical intake | `/spec_kit:plan --intake-only "Description"` |
 | Create spec folder | `./scripts/spec/create.sh "Description" --short-name name --level 2` |
 | Validate | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/007-feature/` |
 | Verify code alignment drift | `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
@@ -929,7 +928,7 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | Upgrade level | `bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/007-feature/ --to 2` |
 | Completeness | `.opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh specs/007-feature/` |
 
-Canonical command lifecycle: `/spec_kit:start` establishes the packet, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder with smart delegation only when `folder_state` still needs repair.
+Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repairs the packet when standalone intake is needed, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder while reusing the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) only when `folder_state` still needs repair.
 
 ---
 

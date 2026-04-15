@@ -45,7 +45,7 @@ Commands are organized into five groups:
 | **doctor** | `command/doctor/` | 2 | MCP server diagnostics, installation, and repair (mcp_debug, mcp_install) |
 | **improve** | `command/improve/` | 2 | Evaluate and improve AI agents and prompts with structured scoring |
 | **memory** | `command/memory/` | 4 | Memory system operations (search, save, learn, manage with shared lifecycle) |
-| **spec_kit** | `command/spec_kit/` | 7 | Spec folder workflows (plan, implement, deep-research, deep-review, start, resume, complete) |
+| **spec_kit** | `command/spec_kit/` | 6 | Spec folder workflows (plan, implement, deep-research, deep-review, resume, complete) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -161,7 +161,7 @@ Structured workflows for the spec folder development lifecycle.
 | Complete | `/spec_kit:complete <description>` | Full end-to-end workflow (14+ steps) |
 | Deep Research | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | Iterative technical investigation with convergence |
 | Deep Review | `/spec_kit:deep-review <target> [:auto\|:confirm]` | Iterative code review with severity-weighted findings |
-| Start | `/spec_kit:start [description] [:auto\|:confirm]` | Canonical intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
+| Plan (intake-only) | `/spec_kit:plan --intake-only [description] [:auto\|:confirm]` | Standalone intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
 | Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
 | Plan | `/spec_kit:plan <description> [:with-phases]` | Planning workflow (spec through plan only; `:with-phases` adds phase decomposition) |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |

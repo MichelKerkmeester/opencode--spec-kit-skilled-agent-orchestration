@@ -1241,10 +1241,10 @@ You have completed the installation. Here is your roadmap for getting started.
 | -------- | ------------------------------------------------------------------------------------------------------- |
 | Create   | `/create:agent`, `/create:changelog`, `/create:feature-catalog`, `/create:folder_readme`, `/create:prompt`, `/create:sk-skill`, `/create:testing-playbook` |
 | Memory   | `/memory:search`, `/memory:learn`, `/memory:manage`, `/memory:save` |
-| SpecKit  | `/spec_kit:complete`, `/spec_kit:deep-research`, `/spec_kit:deep-review`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:resume`, `/spec_kit:start` |
+| SpecKit  | `/spec_kit:complete`, `/spec_kit:deep-research`, `/spec_kit:deep-review`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:plan --intake-only`, `/spec_kit:resume` |
 | Utility  | `/agent_router` |
 
-For the SpecKit chain, `/spec_kit:start` is the canonical intake entry, `/spec_kit:plan` and `/spec_kit:complete` can delegate back to it when packet state still needs repair, and `/spec_kit:deep-research` now anchors each run to `spec.md` through `spec_check_protocol.md`.
+For the SpecKit chain, `/spec_kit:plan --intake-only` is the standalone intake entry, `/spec_kit:plan` and `/spec_kit:complete` reuse the shared intake contract in [`../skill/system-spec-kit/references/intake-contract.md`](../skill/system-spec-kit/references/intake-contract.md) when packet state still needs repair, and `/spec_kit:deep-research` now anchors each run to `spec.md` through `spec_check_protocol.md`.
 
 ### 16.4 Learning Resources
 

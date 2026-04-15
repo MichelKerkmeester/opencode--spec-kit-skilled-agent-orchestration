@@ -1,6 +1,6 @@
 ---
-description: Planning workflow (7 steps) - spec through plan only, no implementation. Supports :auto, :confirm, and :with-phases modes
-argument-hint: "<feature-description> [:auto|:confirm] [:with-phases] [--phases N] [--phase-names list] [--phase-folder=<path>]"
+description: Planning workflow (8 steps) - spec through plan only, no implementation. Supports :auto, :confirm, and :with-phases modes
+argument-hint: "<feature-description> [:auto|:confirm] [:with-phases] [--intake-only] [--phases N] [--phase-names list] [--phase-folder=<path>] [--spec-folder=PATH] [--level=1|2|3|3+] [--start-state=STATE] [--repair-mode=MODE] [--record-relationships=yes|no] [--depends-on=IDs] [--related-to=IDs] [--supersedes=IDs]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
@@ -37,7 +37,7 @@ This workflow gathers ALL inputs in ONE prompt. Round-trip: 1 user interaction.
 
 **FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No analysis, no tool calls — ask ALL questions immediately, then wait.
 
-Read-only discovery to classify delegated `/start` folder state is allowed when `spec_path` is explicit or can be inferred from the setup answers. Healthy folders keep the existing prompt shape; non-healthy folders inline-absorb `/start` intake inside the same consolidated prompt and MUST NOT open a second visible command flow.
+Read-only discovery to classify folder state is allowed when `spec_path` is explicit or can be inferred from the setup answers. Healthy folders keep the existing prompt shape; non-healthy folders run the intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline inside the same consolidated prompt and MUST NOT open a second visible command flow. When `--intake-only` is present, execution halts after the Emit phase without proceeding to planning Steps 2–8.
 
 **STATUS: BLOCKED**
 
@@ -54,6 +54,20 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │   Parse additional flags: --phases N (default 3), --phase-names "a,b,c" (optional)
    │   Include Q7 (Phase Count) and Q8 (Phase Names) if not provided via flags
    └─ Not present → phase_decomposition = "ASK" (include Q6)
+
+1a-b. CHECK --intake-only flag:
+   ├─ present → intake_only = TRUE; workflow halts after Emit phase, does not proceed to planning Steps 2–8
+   └─ absent → intake_only = FALSE
+
+1a-c. PARSE intake contract flags (see .opencode/skill/system-spec-kit/references/intake-contract.md §1):
+   ├─ --spec-folder=PATH → spec_path = PATH (bypass auto-discovery)
+   ├─ --level=N → selected_level = N
+   ├─ --start-state=STATE → requested_start_state = STATE
+   ├─ --repair-mode=MODE → repair_mode = MODE
+   ├─ --record-relationships=yes|no → collect_relationships = [true|false]
+   ├─ --depends-on=PACKET_ID[,...] → seed manual_relationships.depends_on[]
+   ├─ --related-to=PACKET_ID[,...] → seed manual_relationships.related_to[]
+   └─ --supersedes=PACKET_ID[,...] → seed manual_relationships.supersedes[]
 
 1b. CHECK --phase-folder flag:
    ├─ --phase-folder=<path> provided → auto-resolve spec_path to that child folder path
@@ -76,11 +90,12 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 5. Memory loading question needed ONLY if user selects A or C for spec folder AND memory/ has files.
 
-5a. CHECK delegated `/start` intake requirement when `spec_path` is explicit or can be derived from Q1 / `--phase-folder`:
-   ├─ Inspect `{spec_path}` for `spec.md`, `description.json`, `graph-metadata.json`, and tracked placeholder markers
-   ├─ Normalize `folder_state` to one of: `no-spec` | `partial-folder` | `repair-mode` | `placeholder-upgrade` | `populated`
-   ├─ `folder_state == populated` → `start_delegation_required = FALSE` and preserve the current prompt unchanged
-   └─ Otherwise → `start_delegation_required = TRUE`, inherit the parent `execution_mode`, and INLINE absorb `/start` intake before Step 1 continues
+5a. CHECK intake contract requirement when `spec_path` is explicit or can be derived from Q1 / `--phase-folder`:
+   ├─ Inspect `{spec_path}` for `spec.md`, `description.json`, `graph-metadata.json`, and tracked placeholder markers per intake-contract.md §3 Folder State Classification
+   ├─ Normalize `folder_state` to one of: `empty-folder` | `partial-folder` | `repair-mode` | `placeholder-upgrade` | `populated-folder`
+   ├─ `folder_state == populated-folder` AND `intake_only == FALSE` → `intake_required = FALSE` and preserve the current prompt unchanged
+   ├─ `folder_state == populated-folder` AND `intake_only == TRUE` → no-op exit with informational message
+   └─ Otherwise → `intake_required = TRUE`, inherit the parent `execution_mode`, and run the intake contract inline before Step 1 continues (or halt after Emit phase if `intake_only == TRUE`)
 
 6. ASK with SINGLE prompt (include only applicable questions):
 
@@ -92,7 +107,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      E) Phase folder — target a specific phase child (e.g., specs/NNN-name/001-phase/)
 
    Q2. Execution Mode (if no suffix):
-     A) Autonomous - all 7 steps without approval
+     A) Autonomous - all 8 steps without approval
      B) Interactive - pause at each step
 
    Q3. Dispatch Mode (required):
@@ -116,22 +131,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      Provide phase names? (Optional — auto-generated if skipped)
      Example: "data-model, api-layer, ui-components"
 
-   `/start` intake block (ONLY if `start_delegation_required = TRUE`; keep this inside the SAME prompt, not a second command flow):
-   `/start Q0.` Feature Description (if not already bound): What should this spec folder capture?
-   `/start Q1.` Target Folder State:
-     A) Empty / create canonical trio
-     B) Partial / resume unfinished folder
-     C) Repair existing folder metadata
-     D) Populated / review before overwrite or metadata-only repair
-     Note: tracked placeholder markers force `placeholder-upgrade` even if the folder otherwise looks populated.
-   `/start Q2.` Documentation Level:
-     Recommendation: [show `level_recommendation` and brief rationale]
-     Keep it, or override to Level 1 / 2 / 3 / 3+?
-   `/start Q3.` Record relationships now?
-     A) No
-     B) Yes
-   `/start Q4+.` Relationship entries (only if `/start Q3 = yes`):
-     Provide grouped `depends_on`, `related_to`, and/or `supersedes` entries using `packet_id` as the key.
+   **Intake contract block** (ONLY if `intake_required = TRUE`; keep this inside the SAME prompt, not a second command flow):
+
+   Execute the Q0–Q4+ consolidated intake interview per `.opencode/skill/system-spec-kit/references/intake-contract.md §5`. Questions cover: feature description, target folder state, documentation level, relationship capture, and relationship entries (grouped `depends_on` / `related_to` / `supersedes` by `packet_id`).
 
    Reply format: "B, A, A, C, A" or "Add auth, B, A, C, A"
 
@@ -145,14 +147,16 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - dispatch_mode = [single/multi_small/multi_large from Q3]
    - memory_choice = [A/B/C from Q4, or N/A]
    - research_intent = [add_feature/fix_bug/refactor/understand from Q5]
-   - IF `start_delegation_required = TRUE`: bind `selected_level`, `start_state`, `repair_mode`, and `manual_relationships` from the inline `/start` intake block
-   - IF delegated `/start` adjusts the target: update `feature_description` and `spec_path` from the returned contract before Step 1
+   - IF `intake_required = TRUE`: bind `selected_level`, `start_state`, `repair_mode`, and `manual_relationships` from the inline intake-contract block (see intake-contract.md §6 for trio-publication semantics)
+   - IF intake contract adjusts the target: update `feature_description` and `spec_path` from the returned contract before Step 1
+   - IF `intake_only = TRUE`: halt here with STATUS=OK after intake Emit phase completes; do not proceed to Step 1
 
 9. Execute background operations:
    - IF memory_choice == A: Load the most recent indexed canonical spec document
    - IF memory_choice == B: Load up to 3 recent indexed canonical spec documents or MCP context results
    - IF dispatch_mode is multi_*: Note parallel dispatch will be used
-   - IF `start_delegation_required = TRUE`: continue the existing 7-step workflow using the bound `feature_description`, `spec_path`, `selected_level`, `start_state`, `repair_mode`, and `manual_relationships`
+   - IF `intake_required = TRUE` AND `intake_only = FALSE`: continue the existing 8-step workflow using the bound `feature_description`, `spec_path`, `selected_level`, `start_state`, `repair_mode`, and `manual_relationships`
+   - IF `intake_only = TRUE`: skip Steps 2–8; workflow terminates after intake Emit phase
 
 10. SET STATUS: PASSED
 
@@ -168,7 +172,8 @@ STOP HERE - Wait for user answers before continuing.
 - `feature_description` | `spec_choice` | `spec_path`
 - `execution_mode` | `dispatch_mode` | `memory_loaded` | `research_intent`
 - `phase_decomposition` | `phase_count` | `phase_names` (if `:with-phases`)
-- `selected_level` | `start_state` | `repair_mode` | `manual_relationships` (when delegated `/start` intake runs)
+- `intake_only` (if `--intake-only`)
+- `selected_level` | `start_state` | `repair_mode` | `manual_relationships` (when intake contract runs)
 
 > **Cross-reference**: Implements AGENTS.md Section 2 "Gate 3: Spec Folder Question" and "First Message Protocol".
 
@@ -219,13 +224,14 @@ $ARGUMENTS
 
 | Step | Name             | Purpose                      | Outputs                  |
 | ---- | ---------------- | ---------------------------- | ------------------------ |
-| 1    | Request Analysis | Analyze inputs, define scope | requirement_summary      |
-| 2    | Pre-Work Review  | Review AGENTS.md, standards  | coding_standards_summary |
-| 3    | Specification    | Create spec.md               | spec.md                  |
-| 4    | Clarification    | Resolve ambiguities          | updated spec.md          |
-| 5    | Planning         | Create technical plan        | plan.md, checklist.md    |
-| 6    | Save Context     | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
-| 7    | Workflow Finish  | Close the planning pass after context refresh | planning_summary |
+| 1    | Intake           | Run intake contract (folder state, level, relationships) when required | intake_contract_output |
+| 2    | Request Analysis | Analyze inputs, define scope | requirement_summary      |
+| 3    | Pre-Work Review  | Review AGENTS.md, standards  | coding_standards_summary |
+| 4    | Specification    | Create spec.md               | spec.md                  |
+| 5    | Clarification    | Resolve ambiguities          | updated spec.md          |
+| 6    | Planning         | Create technical plan        | plan.md, checklist.md    |
+| 7    | Save Context     | Refresh continuity update in canonical spec docs | canonical spec doc updated via `generate-context.js` |
+| 8    | Workflow Finish  | Close the planning pass after context refresh | planning_summary |
 
 ### Packet Graph Metadata
 
@@ -250,7 +256,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 
 **Success:**
 ```
-✅ SpecKit Planning Complete — All 7 steps executed.
+✅ SpecKit Planning Complete — All 8 steps executed.
 Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), graph-metadata.json scaffolded, continuity update in canonical spec docs refreshed
 Ready for: /spec_kit:implement [spec-folder-path]
 STATUS=OK PATH=[spec-folder-path]
@@ -357,7 +363,7 @@ Use `/memory:search` with intent-aware retrieval:
 | -------------- | ---------------------- | --------- | -------------------------------- |
 | Pre-execution  | Before Step 1          | 70        | Inputs and prerequisites         |
 | Mid-execution  | After Step 3 (Spec)    | 70        | spec.md quality                  |
-| Post-execution | After Step 7 (Handover)| 70        | All artifacts complete           |
+| Post-execution | After Step 8 (Workflow Finish)| 70        | All artifacts complete           |
 
 **Pre-execution:** Feature description clear, spec path valid, no blocking prerequisites
 **Mid-execution:** spec.md has all sections, acceptance criteria measurable, no [NEEDS CLARIFICATION]
@@ -399,7 +405,7 @@ Record results in decision-record.md for architectural changes.
 
 ### Overview
 
-When `:with-phases` is present, a phase decomposition pre-workflow runs before the normal 7-step planning workflow. This creates a parent spec folder with N child phase folders, then continues planning on the first child phase.
+When `:with-phases` is present, a phase decomposition pre-workflow runs before the normal 8-step planning workflow. This creates a parent spec folder with N child phase folders, then continues planning on the first child phase.
 
 ### Trigger
 
@@ -420,7 +426,7 @@ Runs after setup, before Step 1:
 ### After Phase Creation
 
 - `spec_path` automatically updates to first child phase folder
-- Normal Steps 1-7 execute targeting that first child
+- Normal Steps 1-8 execute targeting that first child
 - Subsequent children: invoke `/spec_kit:plan --phase-folder=<child-path>` per child
 
 ### Checkpoint

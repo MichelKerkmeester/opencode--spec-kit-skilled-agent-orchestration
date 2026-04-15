@@ -206,7 +206,7 @@
     ],
     "causal_summary": "Phase 2 is the P1 child packet for the two metadata defects that the parent research grouped into the same rollout band: D4 importance-tier mismatch and D7 empty git provenance. The phase exists to land PR-3 and PR-4 without pulling in the broader heuristic or refactor work reserved for later phases. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-memory-quality-remediation/research/research.md:1156-1157]",
     "created_at": "2026-04-12T09:02:53.457Z",
-    "last_save_at": "2026-04-15T08:26:20.863Z",
+    "last_save_at": "2026-04-15T11:50:34.503Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

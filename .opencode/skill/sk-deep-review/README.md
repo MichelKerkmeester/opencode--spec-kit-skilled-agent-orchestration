@@ -415,7 +415,7 @@ A: Raise `--max-iterations` above the number of completed iterations and re-invo
 | Command                 | Purpose                                                            |
 | ----------------------- | ------------------------------------------------------------------ |
 | `/spec_kit:deep-review` | Primary invocation point for review-only mode                      |
-| `/spec_kit:plan`        | Next step when review verdict is FAIL or CONDITIONAL; if the remediation packet still needs intake, planning can smart-delegate to `/spec_kit:start` first |
+| `/spec_kit:plan`        | Next step when review verdict is FAIL or CONDITIONAL; if the remediation packet still needs intake, planning can run the shared intake contract from [`../system-spec-kit/references/intake-contract.md`](../system-spec-kit/references/intake-contract.md) first |
 | `/memory:save`          | Manual context preservation (deep review auto-saves on completion) |
 
 ### Related Skills

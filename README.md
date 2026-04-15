@@ -866,20 +866,20 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 #### SPEC KIT
 
-**Start**
-- Canonical intake workflow that publishes `spec.md`, `description.json`, and `graph-metadata.json`
-- Used directly for new packet setup and reused inline by `/spec_kit:plan` and `/spec_kit:complete` when `folder_state` is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
+**Plan --intake-only**
+- Standalone intake workflow that publishes `spec.md`, `description.json`, and `graph-metadata.json`
+- Used directly for new packet setup and paired with `/spec_kit:plan` or `/spec_kit:complete` when `folder_state` is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
 - Modes: `:auto`, `:confirm`
 
 **Complete**
 - End-to-end workflow: intake/delegate → research → plan → implement → verify → save memory
-- Smart-detects missing or unhealthy packet state and delegates canonical intake to `/spec_kit:start`; healthy folders continue without extra setup prompts
+- Smart-detects missing or unhealthy packet state and reuses the shared intake contract from `/spec_kit:plan --intake-only`; healthy folders continue without extra setup prompts
 - Modes: `:auto` (fully autonomous), `:confirm` (pause at each step), `:with-research` (adds deep research)
 - After 3 failed implementation attempts, surface diagnostics and let the user dispatch `@debug` via the Task tool
 
 **Plan**
 - Planning-only workflow that authors `spec.md`, `plan.md`, and `tasks.md` without implementing
-- Smart-delegates to `/spec_kit:start` when the packet is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
+- Reuses the shared intake contract from `/spec_kit:plan --intake-only` when the packet is `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`
 - Dispatches up to 4 parallel context agents for codebase exploration during planning
 - Use when you need stakeholder review before coding. Modes: `:auto`, `:confirm`
 
@@ -924,11 +924,11 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 **Spec-first command chains**
 
 ```text
-/spec_kit:start
+/spec_kit:plan --intake-only
   ├─► /spec_kit:plan -> /spec_kit:implement
   ├─► /spec_kit:deep-research -> /spec_kit:plan
   └─► /spec_kit:complete
-       └─► delegates back to /spec_kit:start when folder_state still needs intake
+       └─► reuses the shared intake contract from /spec_kit:plan --intake-only when folder_state still needs intake
 ```
 
 `/spec_kit:deep-research` only enters that chain after a real `spec.md` exists; it follows `spec_check_protocol.md` for advisory-lock handling, `folder_state` classification, and bounded generated-fence sync.

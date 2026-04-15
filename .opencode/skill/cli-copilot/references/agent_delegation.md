@@ -180,6 +180,8 @@ UNDERSTAND CODE       → @Explore
 IMPLEMENT/FIX        → @Task
 COMPLEX REASONING    → Cloud Delegation (/delegate or &)
 SPECIALIZED EXPERTISE → [Custom Agent] (e.g., @SecurityExpert)
+SPEC PACKET WORK     → Main agent + `/spec_kit:plan --intake-only` or `/spec_kit:plan`
+SAVE CONTINUITY      → `/memory:save`
 ```
 
 ### Model + Agent Combinations
@@ -195,7 +197,44 @@ GitHub Copilot CLI supports multiple models (Anthropic, OpenAI, Google). The con
 
 ---
 
-## 6. BEST PRACTICES
+## 6. SPEC-PACKET GOVERNANCE
+
+When a Copilot delegation targets spec folder documentation (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`), the conductor must propagate the distributed-governance guardrails to GPT-5.4 / autopilot before invoking `@Task`, `@copilot` cloud, or any custom profile. Copilot has no exclusive `@speckit` agent — any agent writing spec docs inherits the same contract as every other runtime.
+
+### Distributed-Governance Rule
+
+The calling AI must ensure **three guardrails ride with every spec-doc write**, regardless of which Copilot agent holds the pen:
+
+1. **Template-first** — All spec-doc writes use canonical templates under `.opencode/skill/system-spec-kit/templates/level_N/`. The conductor cites the target template in the prompt and forbids freehand rewrites of frontmatter, anchors, or table-of-contents scaffolding.
+2. **Validate each write** — Immediately after any spec-doc write, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict`. Treat non-zero exit as a blocker; Copilot must fix the underlying issue (no `--no-verify`, no skip flags) before the conductor integrates the output.
+3. **Continuity via `/memory:save`** — Route all continuity updates through `/memory:save` (or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`). Never let Copilot hand-author standalone continuity artifacts under `memory/`. `_memory.continuity` frontmatter blocks inside `implementation-summary.md` may be edited directly for doc-local continuity hints; everything else goes through the save script for DB indexing and embedding generation.
+
+### Intake Lane
+
+For fresh or repair-mode spec folders, route Copilot through the canonical intake instead of bespoke template copy:
+
+```bash
+# Conductor delegates only after main agent runs intake
+copilot -p "As @Task: Fill plan.md sections 4-7 in specs/###-feature-name/ using the level_3 plan template. Do not touch frontmatter, TOC, or anchors. After write, run validate.sh --strict." --allow-all-tools 2>&1
+```
+
+The main agent (calling AI) runs `/spec_kit:plan --intake-only` to publish the canonical trio (`spec.md` + `description.json` + `graph-metadata.json`) via the shared intake contract at `.opencode/skill/system-spec-kit/references/intake-contract.md`. Only after the trio exists should Copilot agents be delegated doc-fill or doc-update work.
+
+### Delegation Prompt Pattern
+
+Every Copilot spec-doc delegation must embed the governance trio explicitly:
+
+```bash
+copilot -p "As @Task in <spec-folder>: [scope]. Rules: (1) use templates from .opencode/skill/system-spec-kit/templates/level_N/; (2) run validate.sh --strict after each file write and abort on non-zero exit; (3) do not author memory/ artifacts — continuity flows through /memory:save. Stay inside listed files only." --allow-all-tools 2>&1
+```
+
+### Cloud Delegation Caveat
+
+`/delegate` and `&` cloud invocations must carry the same trio in the prompt body. The cloud agent has no implicit access to runtime CLAUDE.md, GEMINI.md, or .codex/ configs — explicit governance restatement is mandatory.
+
+---
+
+## 7. BEST PRACTICES
 
 ### Do
 

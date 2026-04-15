@@ -206,7 +206,7 @@
     ],
     "causal_summary": "Two interrelated defects undermine memory quality in the generate-context.js pipeline. First, the extractors quality scorer applies up to +0.20 in bonuses for normal session activity, ensuring that five simultaneous soft failures still produce a score above 0.95 — making quality_score effectively binary and useless for discriminating good saves from bad ones. Second, the contamination filter is applied only to `observations` and `SUMMARY`, leaving `_JSON_SESSION_SUMMARY`, `_manualDecisions`, `recentContext`, and `technicalContext` completely uncleaned. This phase recalibrates the scorer and extends the filter to close both gaps.",
     "created_at": "2026-04-12T09:02:50.278Z",
-    "last_save_at": "2026-04-15T08:26:16.842Z",
+    "last_save_at": "2026-04-15T11:50:28.867Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

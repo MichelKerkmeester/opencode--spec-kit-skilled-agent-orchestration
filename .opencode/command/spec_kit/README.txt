@@ -58,7 +58,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 | **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **deep-review** | `/spec_kit:deep-review <target> [:auto\|:confirm]` | iterative | Autonomous code review loop with severity-weighted findings |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume or recover work on an existing spec folder |
-| **start** | `/spec_kit:start [description] [:auto\|:confirm]` | varies | Canonical intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
+| **plan --intake-only** | `/spec_kit:plan --intake-only [description] [:auto\|:confirm]` | intake-only | Standalone intake that publishes `spec.md`, `description.json`, and `graph-metadata.json` |
 | **complete** | `/spec_kit:complete <description> [:auto\|:confirm] [:with-research] [:with-phases]` | 14+ | Full end-to-end workflow combining all phases. `:with-phases` adds phase decomposition pre-workflow |
 
 ### Command Dependencies
@@ -81,14 +81,13 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 
 ```text
 spec_kit/
-├── README.txt        # This file, 7-command index and workflow guide
+├── README.txt        # This file, 6-command index and workflow guide
 ├── complete.md       # /spec_kit:complete - Full end-to-end workflow
 ├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
 ├── deep-review.md    # /spec_kit:deep-review - Autonomous code review loop
 ├── implement.md      # /spec_kit:implement - Execute planned work
-├── plan.md           # /spec_kit:plan - Planning only
+├── plan.md           # /spec_kit:plan - Planning only (+ `--intake-only` standalone intake)
 ├── resume.md         # /spec_kit:resume - Resume existing work
-├── start.md          # /spec_kit:start - Canonical spec intake
 └── assets/           # YAML workflow definitions
     ├── spec_kit_complete_auto.yaml
     ├── spec_kit_complete_confirm.yaml
@@ -135,14 +134,13 @@ The `complete` command combines deep-research, plan, and implement into a single
 
 | Command | Delegates To |
 |---------|-------------|
-| plan | Main agent owns planning and may reuse `/spec_kit:start`; @deep-research optional |
+| plan | Main agent owns planning and may reuse the shared intake contract (`../../skill/system-spec-kit/references/intake-contract.md`); @deep-research optional |
 | implement | @general (code changes), distributed governance for packet docs |
 | deep-research | @deep-research (iterative investigation) |
 | deep-review | @deep-review (iterative code audit) |
 | resume | Loads memory context, continues from last state |
 | phase | Main agent creates packet folders, @general runs scripts as needed |
-| start | Main agent performs canonical intake and publishes the trio |
-| complete | @deep-research and @general as needed, with `/spec_kit:start` delegation when packet state requires repair |
+| complete | @deep-research and @general as needed, with the shared intake contract (`../../skill/system-spec-kit/references/intake-contract.md`) when packet state requires repair |
 
 <!-- /ANCHOR:workflow-progression -->
 

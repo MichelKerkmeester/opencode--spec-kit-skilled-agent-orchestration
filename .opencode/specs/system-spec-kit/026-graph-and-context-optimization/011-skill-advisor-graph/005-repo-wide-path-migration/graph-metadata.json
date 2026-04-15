@@ -213,7 +213,7 @@
     ],
     "causal_summary": "Phase 005 exists to close the documentation gap left after the skill-advisor path migration already shipped in the repo. The runtime, playbooks, READMEs, changelog note, packet metadata, and validation commands now use the live `skill-advisor/scripts/*` layout, but this packet still described the migration with outdated structure and stale literal legacy path tokens.",
     "created_at": "2026-04-13T00:00:00.000Z",
-    "last_save_at": "2026-04-15T08:26:20.989Z",
+    "last_save_at": "2026-04-15T11:50:34.657Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

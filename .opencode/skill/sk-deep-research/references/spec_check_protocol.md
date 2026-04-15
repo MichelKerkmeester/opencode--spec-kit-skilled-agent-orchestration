@@ -24,7 +24,7 @@ This protocol applies only to deep-research-owned `spec.md` mutations:
 - Anchor-bounded pre-init context updates to an existing `spec.md`
 - One generated findings block written after synthesis
 
-This protocol does not own `/spec_kit:start`, `/spec_kit:plan`, or `/spec_kit:complete` delegation behavior.
+This protocol does not own the shared intake contract in `.opencode/skill/system-spec-kit/references/intake-contract.md`, nor `/spec_kit:plan` or `/spec_kit:complete` delegation behavior.
 
 ### Relation to the Deep-Research Loop
 The workflow remains four-phase:
@@ -193,12 +193,12 @@ Every audit payload is typed. At minimum, emit:
 ### Topic Dedupe
 - Lowercase, strip punctuation, collapse whitespace, and trim before comparing research topics.
 - Re-running with the same `normalized_topic` must no-op instead of appending another pre-init note.
-- `/spec_kit:start` applies the same normalization before writing `feature_description` into `spec.md` Problem Statement or Purpose; equivalent normalized phrases emit `intake_topic_deduped` instead of overwriting the existing prose.
+- The shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md` §5-§6) applies the same normalization before writing `feature_description` into `spec.md` Problem Statement or Purpose; equivalent normalized phrases emit `intake_topic_deduped` instead of overwriting the existing prose.
 
 ### Marker-Based Placeholder Detection
 - Seed behavior depends on deterministic `<!-- DR-SEED:... -->` markers, not fuzzy prose matching.
 - If the required seed markers already exist, treat the seed path as already satisfied.
-- `/spec_kit:start`, `/spec_kit:plan`, and `/spec_kit:complete` classify any retained DR seed marker as `placeholder-upgrade` and persist `resume_question_id` plus `reentry_reason` for REQ-011 re-entry.
+- The shared intake contract used by `/spec_kit:plan --intake-only`, `/spec_kit:plan`, and `/spec_kit:complete` classifies any retained DR seed marker as `placeholder-upgrade` and persists `resume_question_id` plus `reentry_reason` for REQ-011 re-entry.
 
 ### Relation-Object Dedupe
 - Manual relationship arrays dedupe by `packet_id` within each relation type (`depends_on`, `related_to`, `supersedes`) before emitting `graph-metadata.json`.

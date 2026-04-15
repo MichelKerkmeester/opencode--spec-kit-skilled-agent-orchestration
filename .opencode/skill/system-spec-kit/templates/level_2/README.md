@@ -75,6 +75,20 @@ Escalate to Level 3 for architecture-heavy decisions.
 ## 4. QUICK START
 <!-- ANCHOR:quick-start -->
 
+### Primary Path — Canonical Intake
+
+Use `/spec_kit:plan --intake-only` to run the shared intake contract. It classifies the folder, emits the canonical trio (`spec.md` + `description.json` + `graph-metadata.json`) atomically, and auto-detects the appropriate Level from scope signals. Override detection with `--level=2` when you know the level up front.
+
+```text
+/spec_kit:plan --intake-only --level=2
+```
+
+The intake contract ([`../../references/intake-contract.md`](../../references/intake-contract.md)) handles folder classification, trio publication, graph-metadata scaffolding, and continuity initialization — none of which the manual copy path performs.
+
+### Manual Fallback (Advanced)
+
+Only use direct template copy when the canonical intake is unavailable or when explicitly repairing an existing packet. This path bypasses automated metadata generation, so you must backfill `description.json` and `graph-metadata.json` manually (see `scripts/memory/generate-description.js` and the graph-metadata backfill).
+
 ```bash
 mkdir -p specs/###-feature-name
 cp .opencode/skill/system-spec-kit/templates/level_2/*.md specs/###-feature-name/
@@ -97,7 +111,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/###-feature-
 ## 6. PHASE DECOMPOSITION
 <!-- ANCHOR:phase -->
 
-Consider phase decomposition for multi-sprint Level 2 tasks where work naturally divides into ordered stages. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to `/spec_kit:start` before phase setup continues.
+Consider phase decomposition for multi-sprint Level 2 tasks where work naturally divides into ordered stages. Use Gate 3 Option E to target a specific phase child and `/spec_kit:plan :with-phases` to create the phase structure. If that target phase packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, `/spec_kit:plan` delegates to the shared intake contract in [`../../references/intake-contract.md`](../../references/intake-contract.md) before phase setup continues.
 
 See the Phase System in the [main templates README](../README.md#phase-system) for full details.
 

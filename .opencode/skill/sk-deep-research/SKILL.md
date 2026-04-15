@@ -442,7 +442,7 @@ After research:
 
 | Command | Purpose |
 |---------|---------|
-| `/spec_kit:start` | Optional upfront intake when a packet still needs a canonical `spec.md` before research begins |
+| `/spec_kit:plan --intake-only` | Optional upfront intake when a packet still needs a canonical `spec.md` before research begins |
 | `/spec_kit:deep-research` | Full loop workflow with bounded `spec.md` anchoring under `spec_check_protocol.md` |
 | `/memory:save` | Manual context preservation |
 

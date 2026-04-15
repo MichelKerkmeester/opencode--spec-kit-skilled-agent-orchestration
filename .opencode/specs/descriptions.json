@@ -4806,7 +4806,7 @@
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
-      "description": "Introduce /spec_kit:start as canonical spec-folder intake interview and require deep-research to anchor every run to a real spec.md",
+      "description": "Introduce /spec_kit\u003astart as canonical spec-folder intake interview and require deep-research to anchor every run to a real spec.md (deliverable superseded by 015-start-into-plan-merger)",
       "keywords": [
         "introduce",
         "start",

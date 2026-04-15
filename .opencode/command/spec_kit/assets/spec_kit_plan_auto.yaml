@@ -92,10 +92,10 @@ field_handling:
     note: "[SPEC_FOLDER] may be a phase child path (e.g., specs/003-name/001-phase/). When Option E is selected or --phase-folder is provided, spec_id derives from the parent folder NNN, not the child NNN."
     path_pattern: "specs/{NNN-parent}/{NNN-phase}/"
   scope_policy: { default: "specs/**", rule: "Limit file operations to scope when provided" }
-  start_delegation_contract:
+  intake_contract:
     trigger_states: [no-spec, partial-folder, repair-mode, placeholder-upgrade]
     returned_fields: [feature_description, spec_path, selected_level, start_state, repair_mode, manual_relationships]
-    no_regression_rule: "When folder_state == populated, skip delegated `/start` intake and preserve the current Step 1 behavior."
+    no_regression_rule: "When folder_state == populated, skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and preserve the current Step 1 behavior."
 
 packet_graph_metadata:
   creation_contract:
@@ -324,8 +324,8 @@ workflow_enforcement:
 # WORKFLOW
 # ─────────────────────────────────────────────────────────────────
 workflow:
-  step_0.5_start_delegation_branch:
-    purpose: Detect non-healthy target folders before Step 1 so `/plan` can inline absorb `/start` intake without a visible chained handoff
+  step_0.5_intake_branch:
+    purpose: Detect non-healthy target folders before Step 1 so `/plan` can inline absorb the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md` §5) without a visible chained handoff
     action: "Run folder-state discovery using ls plus canonical file checks on the target spec path"
     inspect:
       command: "ls -la {spec_folder} 2>/dev/null || true"
@@ -356,7 +356,7 @@ workflow:
         execution_mode: "{execution_mode}"
         prompt_mode: "single_consolidated_prompt"
         questions:
-          - "/start Q0-Q3 plus optional Q4+ are absorbed inline into the parent setup prompt"
+          - "Questions from `.opencode/skill/system-spec-kit/references/intake-contract.md` §5 (Q0-Q4+) are absorbed inline into the parent setup prompt"
         bind_fields:
           - feature_description
           - spec_path
@@ -364,13 +364,32 @@ workflow:
           - start_state
           - repair_mode
           - manual_relationships
-      emit_event: start_delegation_triggered
-      payload: '{"event":"start_delegation_triggered","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","timestamp":"{ISO_8601_NOW}"}'
-      emit_event_after_bind: start_delegation_completed
-      payload_after_bind: '{"event":"start_delegation_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
+      emit_event: intake_triggered
+      payload: '{"event":"intake_triggered","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","timestamp":"{ISO_8601_NOW}"}'
+      emit_event_after_bind: intake_completed
+      payload_after_bind: '{"event":"intake_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
     on_skip:
       when: "folder_state == populated"
-      note: "Healthy folder detected. Skip delegated `/start` intake and keep the existing `/plan` setup behavior unchanged."
+      note: "Healthy folder detected. Skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and keep the existing `/plan` setup behavior unchanged."
+
+  step_0.6_intake_only_gate:
+    purpose: Terminate the workflow successfully after intake Emit phase when the user passed `--intake-only`, bypassing planning Steps 1-7.
+    trigger_flag: "--intake-only"
+    bound_variable: intake_only
+    halt_condition:
+      when: "intake_only == TRUE"
+      behavior: "Emit success summary, set STATUS=OK, and STOP the workflow before step_1_request_analysis is reached. Steps 1-7 MUST NOT execute."
+      success_summary_fields:
+        - spec_path
+        - folder_state
+        - start_state
+        - published_trio: ["spec.md", "description.json", "graph-metadata.json"]
+        - intake_emit_complete: true
+      message: "Intake-only mode complete. Published trio at {spec_path}: spec.md, description.json, graph-metadata.json. Planning Steps 1-7 bypassed. Run /spec_kit:plan (without --intake-only) to resume planning."
+      exit_status: OK
+    continue_condition:
+      when: "intake_only == FALSE"
+      behavior: "Proceed to step_1_request_analysis and execute the normal 7-step planning workflow."
 
   step_1_request_analysis:
     purpose: Analyze inputs and define planning scope

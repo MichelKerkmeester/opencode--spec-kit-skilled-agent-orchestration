@@ -16,7 +16,9 @@
     "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
     "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
     "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
-    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey"
+    "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
+    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey",
+    "system-spec-kit/026-graph-and-context-optimization/015-start-into-plan-merger"
   ],
   "manual": {
     "depends_on": [],
@@ -210,7 +212,7 @@
     ],
     "causal_summary": "Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It now coordinates an 11-phase child train after the former `006-canonical-continuity-refactor` lane was split into five focused phases, keeping the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later graph and continuity branches aligned to one dependency-aware execution map instead of relying on numeric slug order alone.",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-15T08:26:20.807Z",
+    "last_save_at": "2026-04-15T11:50:34.450Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

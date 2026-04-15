@@ -317,7 +317,7 @@ codex exec -p write -s workspace-write \
 | Architecture planning    | @ultra-think           | @deep-research       | Multi-lens analysis, no file changes |
 | Bug investigation        | @debug                 | @context             | Fresh perspective methodology        |
 | Documentation generation | @write                 | (none)               | Non-spec documentation and guides    |
-| Spec folder docs         | Main agent + `/spec_kit:start` | `/spec_kit:plan` | Distributed governance for packet docs |
+| Spec folder docs         | Main agent + `/spec_kit:plan --intake-only` | `/spec_kit:plan` | Distributed governance for packet docs |
 | Session continuity       | `/memory:save`         | `/spec_kit:resume`   | Refresh continuity before pause      |
 | Complex multi-agent task | @orchestrate           | (decompose manually) | Codex-internal coordination          |
 

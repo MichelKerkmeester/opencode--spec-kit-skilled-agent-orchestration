@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Packet `010-memory-save-heuristic-calibration` closes the defects that remained after `009-post-save-render-fixes`: structured JSON saves still reject explicit `title`, `description`, and `causalLinks`; manual DR finding IDs can still be dropped by the trigger sanitizer; V8 and V12 validators still misclassify real saves; D5 continuation logic still drifts between linker and reviewer; and `decision-extractor.ts` still contains raw truncation callsites that research marked for shared-helper migration. The packet owns the full end-to-end remediation: runtime source, regression tests, `dist/` rebuild, strict packet validation, and a real wild save against the `026-graph-and-context-optimization` parent folder. [SOURCE: ../../scratch/codex-root-cause-memory-quality-gates.md:5-18] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:25-41] [SOURCE: ../../scratch/codex-skipped-research-recommendations.md:69-136]",
     "created_at": "2026-04-12T09:02:53.464Z",
-    "last_save_at": "2026-04-15T08:26:20.885Z",
+    "last_save_at": "2026-04-15T11:50:34.530Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
