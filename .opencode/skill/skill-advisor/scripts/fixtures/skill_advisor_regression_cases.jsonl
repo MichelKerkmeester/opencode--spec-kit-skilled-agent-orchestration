@@ -42,3 +42,11 @@
 {"id":"P1-GRAPH-001","priority":"P1","prompt":"use figma to export designs","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-figma"],"expect_kind":"skill","allow_command_bridge":false,"non_slash":true}
 {"id":"P1-GRAPH-002","priority":"P1","prompt":"review opencode typescript module","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-review","sk-code-opencode"],"expect_kind":"skill","allow_command_bridge":false,"non_slash":true}
 {"id":"P1-GRAPH-003","priority":"P1","prompt":"clickup create task via mcp","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-clickup"],"expect_kind":"skill","allow_command_bridge":false,"non_slash":true}
+{"id":"P1-PHRASE-001","priority":"P1","prompt":"code audit","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-review"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-002","priority":"P1","prompt":"5d scoring","confidence_only":false,"expect_result":true,"expected_top_any":["sk-improve-agent"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-003","priority":"P1","prompt":"5-dimension agent scoring","confidence_only":false,"expect_result":true,"expected_top_any":["sk-improve-agent"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-004","priority":"P1","prompt":"integration scan","confidence_only":false,"expect_result":true,"expected_top_any":["sk-improve-agent"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-005","priority":"P1","prompt":"dynamic profile","confidence_only":false,"expect_result":true,"expected_top_any":["sk-improve-agent"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-006","priority":"P1","prompt":"vector search","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-coco-index"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-007","priority":"P1","prompt":"concept search","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-coco-index"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-PHRASE-008","priority":"P1","prompt":"browser verification checklist","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-web"],"expect_kind":"skill","allow_command_bridge":false}

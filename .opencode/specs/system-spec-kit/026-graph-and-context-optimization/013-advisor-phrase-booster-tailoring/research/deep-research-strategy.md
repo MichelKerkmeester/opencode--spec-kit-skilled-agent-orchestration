@@ -42,3 +42,58 @@ Iteration 1 — Inventory + disposition classification. Use the copilot CLI with
 ## Findings So Far
 
 (Populated as iterations complete.)
+
+## Iteration 1 Findings (INTENT_BOOSTERS inventory)
+
+- **24** whitespace-containing keys in INTENT_BOOSTERS (confirmed)
+- **0** multi-word keys in MULTI_SKILL_BOOSTERS
+- Classifications: 6 `migrate-with-same-weight`, 17 `migrate-with-phrase-weight-kept`, 0 `duplicate-remove`, **1 schema-violation**
+- **Schema violation**: `"code audit"` — INTENT_BOOSTERS targets `sk-deep-review` (weight 1.0) but PHRASE_INTENT_BOOSTERS targets `sk-code-review` (weight 2.2). This is NOT a weight mismatch — different routing decisions. Must be resolved before migration.
+- See `research/iterations/iteration-001.md` for the complete inventory table with line-accurate citations.
+
+## Revised Next Focus (Iteration 2)
+
+Map the 44 fixture cases to the 24 migrating entries — identify which cases currently pass through the broken INTENT_BOOSTERS path vs. the PHRASE path vs. pure token matching. Specifically flag any case whose expected_top_any depends on the `code audit` routing decision, since that will change regardless of migration choice.
+
+
+## Iteration 2 Findings (regression dependency map)
+
+- **Baseline metrics**: top1_accuracy=1.0, p0_pass_rate=1.0, 44/44 cases passing (zero failures pre-migration)
+- **Only 1/44 fixture** (`P1-REVIEW-003`) contains a migrating multi-word key; it already hits matching same-skill PHRASE entries — **low regression risk**
+- **Coverage gap**: 0/44 fixtures contain the literal phrase "code audit", even though the runtime already routes "code audit" to `sk-code-review` via PHRASE_INTENT_BOOSTERS. The schema violation is invisible to the regression harness.
+- **Migration is regression-safe** from the fixture-suite perspective; the real work is expanding fixtures for new phrase coverage.
+- See `research/iterations/iteration-002.md` for the complete 44-row dependency table.
+
+## Revised Next Focus (Iteration 3)
+
+Identify multi-word identifiers in the Public repo that currently have no phrase route — candidates for new PHRASE_INTENT_BOOSTERS entries. Target the 21 Public skills and their domain-specific phrases. Propose ≥5 concrete additions with skill + weight + rationale. Prioritize `sk-code-web`/`sk-code-opencode`/`sk-code-full-stack` overlay skills (per spec Q-B lean), spec-kit phrases, and cross-cutting identifiers that likely appear in natural-language queries.
+
+
+## Iteration 3 Findings (under-covered identifiers)
+
+- Current PHRASE_INTENT_BOOSTERS: **167** entries
+- Post-migration (6 migrate-with-same-weight adds): **173** entries
+- **15 new phrase candidates proposed** covering system-spec-kit, sk-code-opencode, sk-code-full-stack, sk-code-web, mcp-code-mode, sk-code-review
+- Full adoption target: **188** entries
+- Each proposal includes: phrase, target skill, weight, rationale, false-positive risk note
+- See `research/iterations/iteration-003.md` for per-phrase table
+
+## Revised Next Focus (Iteration 4)
+
+Design the migration mechanics concretely: resolve the `code audit` schema violation (choose target), specify weight-preservation rules, define multi-skill phrase conversion format (`[(skill, weight)]` list), document anti-patterns to prevent re-regression. Produce a complete, ordered migration script outline that Phase 2 implementation can follow task-by-task.
+
+
+## Iteration 4 Findings (migration design)
+
+- **Schema-violation resolution**: `code audit` → `sk-code-review` (Option A). PHRASE path fires first for "code audit", so runtime behavior is already sk-code-review; INTENT_BOOSTERS entry is pure dead code. Delete INTENT entry; keep PHRASE at weight 2.2.
+- **23 non-violation migration rules** specified (6 migrate-same-weight + 17 migrate-keep-phrase-weight)
+- **Tuple → list rewrap rule**: INTENT `(skill, weight)` → PHRASE `[(skill, weight)]` (single-element list)
+- **Anti-regression inline comment block** drafted for placement near PHRASE_INTENT_BOOSTERS
+- **11-step ordered Phase 2 edit script** specified, including the 15 new PHRASE additions from iteration 3
+- **No hidden callsites**: single scoring loop consumes both dicts; no other code paths depend on INTENT_BOOSTERS content for multi-word keys
+- See `research/iterations/iteration-004.md` (476 lines) for the complete implementation-ready design
+
+## Revised Next Focus (Iteration 5)
+
+Design regression coverage gain: 5-10 new P1 fixture cases targeting the code-audit gap + newly-routed phrases. Specify confidence uplift targets for REQ-010 representative queries. Document rollback triggers + risk mitigation beyond what's already in spec.md. Close the loop with explicit acceptance evidence for each spec.md requirement.
+

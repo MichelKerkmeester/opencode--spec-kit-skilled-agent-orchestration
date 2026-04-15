@@ -534,31 +534,7 @@ INTENT_BOOSTERS = {
     # SK-AUTORESEARCH: Autonomous deep research loop
     # ─────────────────────────────────────────────────────────────────
     "autoresearch": ("sk-deep-research", 2.0),
-    "deep research": ("sk-deep-research", 1.5),
-    "research loop": ("sk-deep-research", 1.5),
-    "iterative research": ("sk-deep-research", 1.2),
     "convergence": ("sk-deep-research", 0.8),
-    "autonomous research": ("sk-deep-research", 1.5),
-    "agent improvement": ("sk-improve-agent", 1.8),
-    "recursive agent": ("sk-improve-agent", 1.8),
-    "improvement loop": ("sk-improve-agent", 1.8),
-    "proposal-only": ("sk-improve-agent", 1.4),
-    "proposal only": ("sk-improve-agent", 1.4),
-    "evaluator-first": ("sk-improve-agent", 1.5),
-    "candidate scoring": ("sk-improve-agent", 1.6),
-    "promotion gate": ("sk-improve-agent", 1.4),
-    "5-dimension": ("sk-improve-agent", 1.8),
-    "5d scoring": ("sk-improve-agent", 1.8),
-    "integration scan": ("sk-improve-agent", 1.6),
-    "dynamic profile": ("sk-improve-agent", 1.6),
-    "evaluate agent": ("sk-improve-agent", 1.6),
-    "score agent": ("sk-improve-agent", 1.6),
-    "agent evaluation": ("sk-improve-agent", 1.6),
-    "deep review": ("sk-deep-review", 1.5),
-    "review mode": ("sk-deep-review", 1.2),
-    "iterative review": ("sk-deep-review", 1.2),
-    "code audit": ("sk-deep-review", 1.0),
-    "review loop": ("sk-deep-review", 1.2),
 
     # ─────────────────────────────────────────────────────────────────
     # WORKFLOWS-GIT: Version control operations
@@ -678,30 +654,22 @@ INTENT_BOOSTERS = {
     # CLI-CODEX: Cross-AI orchestration via OpenAI Codex CLI
     # ─────────────────────────────────────────────────────────────────────────────────
     "codex": ("cli-codex", 2.0),
-    "openai-cli": ("cli-codex", 1.5),
 
     # ─────────────────────────────────────────────────────────────────────────────────
     # CLI-CLAUDE-CODE: Cross-AI orchestration via Anthropic Claude Code CLI
     # ─────────────────────────────────────────────────────────────────────────────────
-    "claude-code": ("cli-claude-code", 2.0),
-    "claude-cli": ("cli-claude-code", 1.5),
-    "extended-thinking": ("cli-claude-code", 1.0),
 
     # ─────────────────────────────────────────────────────────────────────────────────
     # CLI-COPILOT: Cross-AI orchestration via GitHub Copilot CLI
     # ─────────────────────────────────────────────────────────────────────────────────
     "copilot": ("cli-copilot", 2.0),
-    "copilot-cli": ("cli-copilot", 1.5),
-    "cloud-delegation": ("cli-copilot", 1.0),
 
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
     # ─────────────────────────────────────────────────────────────────
     "clickup": ("mcp-clickup", 2.5),
-    "clickup-cli": ("mcp-clickup", 1.5),
     "cu": ("mcp-clickup", 2.0),
     "sprint": ("mcp-clickup", 1.0),
-    "task-management": ("mcp-clickup", 1.0),
     "standup": ("mcp-clickup", 1.0),
     "cms": ("mcp-code-mode", 0.5),
     "component": ("mcp-code-mode", 0.4),
@@ -725,7 +693,6 @@ INTENT_BOOSTERS = {
     "enhance": ("sk-improve-prompt", 1.2),
     "rcaf": ("sk-improve-prompt", 2.0),
     "costar": ("sk-improve-prompt", 2.0),
-    "tidd-ec": ("sk-improve-prompt", 2.0),
     "crispe": ("sk-improve-prompt", 2.0),
     "craft": ("sk-improve-prompt", 1.5),
     "depth": ("sk-improve-prompt", 1.5),
@@ -739,9 +706,6 @@ INTENT_BOOSTERS = {
     "coco": ("mcp-coco-index", 1.5),
     "ccc": ("mcp-coco-index", 2.0),
     "semantic": ("mcp-coco-index", 1.5),
-    "vector search": ("mcp-coco-index", 2.0),
-    "similar code": ("mcp-coco-index", 1.8),
-    "concept search": ("mcp-coco-index", 2.0),
     "discover": ("mcp-coco-index", 0.6),
     "implementation": ("mcp-coco-index", 0.5),
 }
@@ -785,6 +749,14 @@ MULTI_SKILL_BOOSTERS = {
 
 # Phrase-level intent boosters for high-signal multi-token requests
 # Format: phrase -> list of (skill_name, boost_amount)
+# NOTE: INTENT_BOOSTERS only matches single-word tokens after
+# `all_tokens = re.findall(r'\b\w+\b', prompt_lower)` tokenizes the raw prompt.
+# PHRASE_INTENT_BOOSTERS matches multi-word phrases against the raw prompt text
+# before tokenization via `if phrase in prompt_lower`.
+# NEVER add keys containing spaces or hyphens to INTENT_BOOSTERS - the tokenizer
+# splits them, making those keys unreachable at runtime.
+# When in doubt, if the key has any whitespace OR hyphen, use
+# PHRASE_INTENT_BOOSTERS.
 PHRASE_INTENT_BOOSTERS = {
     "create documentation": [("sk-doc", 1.0)],
     "write documentation": [("sk-doc", 1.5)],
@@ -794,6 +766,7 @@ PHRASE_INTENT_BOOSTERS = {
     "save memory": [("system-spec-kit", 1.0)],
     "save this context": [("system-spec-kit", 1.0)],
     "save conversation": [("system-spec-kit", 1.0)],
+    "save conversation context": [("system-spec-kit", 1.0)],
     "save this conversation context": [("system-spec-kit", 1.0)],
     "code review": [("sk-code-review", 2.4)],
     "pr review": [("sk-code-review", 2.3), ("sk-git", 0.4)],
@@ -801,6 +774,7 @@ PHRASE_INTENT_BOOSTERS = {
     "review this pr": [("sk-code-review", 2.4)],
     "review this diff": [("sk-code-review", 2.2)],
     "quality gate": [("sk-code-review", 2.0)],
+    "quality gate validation": [("sk-code-review", 1.8)],
     "request changes": [("sk-code-review", 2.0)],
     "race conditions": [("sk-code-review", 1.5)],
     "auth bugs": [("sk-code-review", 1.5)],
@@ -817,9 +791,16 @@ PHRASE_INTENT_BOOSTERS = {
     "responsive css layout": [("sk-code-web", 1.4)],
     "responsive css layout fix": [("sk-code-web", 2.2)],
     "layout fix": [("sk-code-web", 1.0)],
+    "browser verification checklist": [("sk-code-web", 1.6)],
     "css animation": [("sk-code-web", 0.8)],
     "api network": [("sk-code-web", 0.7), ("mcp-chrome-devtools", 0.4)],
+    "webflow deployment guidance": [("sk-code-web", 1.8)],
+    "external tool integration via code mode": [("mcp-code-mode", 2.0)],
     "template level validation": [("system-spec-kit", 0.8)],
+    "spec folder workflow": [("system-spec-kit", 1.8)],
+    "resume prior session context": [("system-spec-kit", 1.8)],
+    "validate spec packet": [("system-spec-kit", 1.6)],
+    "constitutional memory": [("system-spec-kit", 1.7)],
     # --- Autoresearch deep research loop ---
     "deep research": [("sk-deep-research", 2.5)],
     "research loop": [("sk-deep-research", 2.5)],
@@ -837,6 +818,7 @@ PHRASE_INTENT_BOOSTERS = {
     "agent improvement loop": [("sk-improve-agent", 3.2)],
     "proposal-only improvement": [("sk-improve-agent", 2.6)],
     "proposal only improvement": [("sk-improve-agent", 2.6)],
+    "proposal only": [("sk-improve-agent", 1.4)],
     "evaluator-first": [("sk-improve-agent", 2.4)],
     "bounded mutator": [("sk-improve-agent", 2.2)],
     "candidate scoring": [("sk-improve-agent", 2.3)],
@@ -846,10 +828,15 @@ PHRASE_INTENT_BOOSTERS = {
     "/sk-improve-agent": [("sk-improve-agent", 3.2)],
     "sk-agent-improvement-loop": [("sk-improve-agent", 3.0)],
     "/sk-agent-improvement-loop": [("sk-improve-agent", 3.0)],
+    "5-dimension": [("sk-improve-agent", 1.8)],
+    "5-dimension agent scoring": [("sk-improve-agent", 2.8)],
     "5-dimension evaluation": [("sk-improve-agent", 2.8)],
     "5d agent scoring": [("sk-improve-agent", 2.8)],
+    "5d scoring": [("sk-improve-agent", 1.8)],
     "integration scanning": [("sk-improve-agent", 2.6)],
+    "integration scan": [("sk-improve-agent", 1.6)],
     "dynamic profiling": [("sk-improve-agent", 2.6)],
+    "dynamic profile": [("sk-improve-agent", 1.6)],
     "evaluate agent quality": [("sk-improve-agent", 2.8)],
     "score agent dimensions": [("sk-improve-agent", 2.8)],
     "agent integration surface": [("sk-improve-agent", 2.6)],
@@ -862,6 +849,8 @@ PHRASE_INTENT_BOOSTERS = {
     # --- CocoIndex semantic code search ---
     "semantic search": [("mcp-coco-index", 2.5)],
     "code search": [("mcp-coco-index", 2.0)],
+    "vector search": [("mcp-coco-index", 2.0)],
+    "concept search": [("mcp-coco-index", 2.0)],
     "cocoindex search": [("mcp-coco-index", 2.8)],
     "coco index": [("mcp-coco-index", 2.5)],
     "find implementation": [("mcp-coco-index", 1.5)],
@@ -897,6 +886,12 @@ PHRASE_INTENT_BOOSTERS = {
     ":review:auto": [("sk-deep-review", 3.0)],
     ":review:confirm": [("sk-deep-review", 3.0)],
     "figma css": [("mcp-figma", 0.8), ("sk-code-web", 0.4)],
+    "mcp server code": [("sk-code-opencode", 1.8)],
+    "system code style guidance": [("sk-code-opencode", 1.7)],
+    "python shell json standards": [("sk-code-opencode", 1.9)],
+    "full stack development workflow": [("sk-code-full-stack", 2.1)],
+    "implementation testing verification flow": [("sk-code-full-stack", 1.8)],
+    "detect project stack automatically": [("sk-code-full-stack", 1.6)],
     "full stack typescript": [("sk-code-opencode", 0.8)],
     "sk-code-review": [("sk-code-review", 2.8)],
     "/sk-code-review": [("sk-code-review", 2.8)],
@@ -962,6 +957,21 @@ PHRASE_INTENT_BOOSTERS = {
     "sk-improve-prompt": [("sk-improve-prompt", 2.8)],
     "/sk-improve-prompt": [("sk-improve-prompt", 2.8)],
     ".opencode/skill/sk-improve-prompt": [("sk-improve-prompt", 3.0)],
+
+    # ─────────────────────────────────────────────────────────────────
+    # FOLLOW-UP: Hyphenated-token migrations from INTENT_BOOSTERS
+    # (tokenizer splits on hyphen via \b\w+\b — same bug as whitespace keys)
+    # ─────────────────────────────────────────────────────────────────
+    "proposal-only": [("sk-improve-agent", 1.4)],
+    "openai-cli": [("cli-codex", 1.5)],
+    "claude-code": [("cli-claude-code", 2.0)],
+    "claude-cli": [("cli-claude-code", 1.5)],
+    "extended-thinking": [("cli-claude-code", 1.0)],
+    "copilot-cli": [("cli-copilot", 1.5)],
+    "cloud-delegation": [("cli-copilot", 1.0)],
+    "clickup-cli": [("mcp-clickup", 1.5)],
+    "task-management": [("mcp-clickup", 1.0)],
+    "tidd-ec": [("sk-improve-prompt", 2.0)],
 }
 
 DEFAULT_CONFIDENCE_THRESHOLD = 0.8

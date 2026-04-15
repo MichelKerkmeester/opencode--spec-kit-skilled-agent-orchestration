@@ -1,0 +1,33 @@
+{
+  "dataset": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+  "mode": "both",
+  "thresholds": {
+    "confidence": 0.8,
+    "uncertainty": 0.35,
+    "min_top1_accuracy": 0.92,
+    "max_command_bridge_fp_rate": 0.05,
+    "min_p0_pass_rate": 1.0
+  },
+  "metrics": {
+    "total_cases": 52,
+    "passed_cases": 52,
+    "failed_cases": 0,
+    "pass_rate": 1.0,
+    "p0_total": 12,
+    "p0_passed": 12,
+    "p0_pass_rate": 1.0,
+    "top1_cases": 48,
+    "top1_accuracy": 1.0,
+    "command_bridge_eval_cases": 45,
+    "command_bridge_fp": 0,
+    "command_bridge_fp_rate": 0.0
+  },
+  "gates": {
+    "top1_accuracy": true,
+    "command_bridge_fp_rate": true,
+    "p0_pass_rate": true,
+    "all_cases_passed": true
+  },
+  "overall_pass": true,
+  "failures": []
+}
