@@ -12,7 +12,7 @@ contextType: "architecture"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey"
     last_updated_at: "2026-04-15T10:00:01Z"
     last_updated_by: "cli-copilot"
     recent_action: "Mapped the unified packet architecture and phase flow"
@@ -27,7 +27,7 @@ _memory:
       - "implementation-summary.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "016-save-flow-unified-journey-merge"
+      session_id: "014-save-flow-unified-journey-merge"
       parent_session_id: "015-save-flow-planner-first-trim-seed"
     completion_pct: 100
     open_questions: []

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "packet_id": "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey",
-  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey",
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "manual": {

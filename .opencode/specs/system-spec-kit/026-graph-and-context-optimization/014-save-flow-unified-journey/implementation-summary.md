@@ -11,7 +11,7 @@ contextType: "architecture"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey"
     last_updated_at: "2026-04-15T10:00:01Z"
     last_updated_by: "cli-copilot"
     recent_action: "Completed the unified merge packet for packets 013, 014, and 015"
@@ -24,7 +24,7 @@ _memory:
       - "decision-record.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "016-save-flow-unified-journey-merge"
+      session_id: "014-save-flow-unified-journey-merge"
       parent_session_id: "015-save-flow-planner-first-trim-seed"
     completion_pct: 100
     open_questions: []
@@ -43,7 +43,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 016-save-flow-unified-journey |
+| **Spec Folder** | 014-save-flow-unified-journey |
 | **Status** | Complete |
 | **Completed** | 2026-04-15 |
 | **Level** | 3+ |
@@ -140,7 +140,7 @@ The runtime split is part of the packet truth because it explains why packet 015
 | Packet 016 per-file doc validation | PASS - all six primary docs validated on 2026-04-15 |
 | Packet 016 strict packet validation | PASS - `validate.sh --strict` passed on 2026-04-15 |
 | Packet 016 metadata generation | PASS - `description.json` and `graph-metadata.json` present |
-| Packet 016 packet-local changelog generation | PASS - `changelog/changelog-026-016-save-flow-unified-journey.md` present |
+| Packet 016 packet-local changelog generation | PASS - `changelog/changelog-026-014-save-flow-unified-journey.md` present |
 
 ---
 

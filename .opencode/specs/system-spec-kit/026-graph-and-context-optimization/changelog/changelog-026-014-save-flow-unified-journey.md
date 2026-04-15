@@ -1,5 +1,5 @@
 ---
-title: "Changelog: Save-Flow Unified Journey - Audit -> Research -> Implementation -> Remediation [026-graph-and-context-optimization/016-save-flow-unified-journey]"
+title: "Changelog: Save-Flow Unified Journey - Audit -> Research -> Implementation -> Remediation [026-graph-and-context-optimization/014-save-flow-unified-journey]"
 description: "Chronological changelog for the Save-Flow Unified Journey - Audit -> Research -> Implementation -> Remediation phase."
 trigger_phrases:
   - "phase changelog"
@@ -14,7 +14,7 @@ contextType: "implementation"
 
 ## 2026-04-15
 
-> Spec folder: `specs/system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey` (Level 3+)
+> Spec folder: `specs/system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey` (Level 3+)
 > Parent packet: `specs/system-spec-kit/026-graph-and-context-optimization`
 
 ### Summary

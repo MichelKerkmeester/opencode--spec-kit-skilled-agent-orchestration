@@ -2,7 +2,7 @@
 title: "Feature Specification: Save-Flow Unified Journey - Audit -> Research -> Implementation -> Remediation"
 description: "Unified merge packet that consolidates packet 013 audit evidence, packet 014 save-flow research, and packet 015 implementation plus remediation into one self-contained narrative and evidence surface."
 trigger_phrases:
-  - "016-save-flow-unified-journey"
+  - "014-save-flow-unified-journey"
   - "save-flow unified journey"
   - "memory folder deprecation audit"
   - "save-flow backend relevance review"
@@ -19,7 +19,7 @@ contextType: "architecture"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-gov | v2.2 -->"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-save-flow-unified-journey"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey"
     last_updated_at: "2026-04-15T10:00:01Z"
     last_updated_by: "cli-copilot"
     recent_action: "Merged 013, 014, and 015 into packet 016"
@@ -37,7 +37,7 @@ _memory:
       - "review/015-deep-review-snapshot/review-report.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "016-save-flow-unified-journey-merge"
+      session_id: "014-save-flow-unified-journey-merge"
       parent_session_id: "015-save-flow-planner-first-trim-seed"
     completion_pct: 100
     open_questions: []
@@ -75,7 +75,7 @@ Deep review then forced one final pass from "shipped" to "honest and equivalent"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-04-15 |
-| **Branch** | `026-016-save-flow-unified-journey` |
+| **Branch** | `026-014-save-flow-unified-journey` |
 | **Parent Packet** | `026-graph-and-context-optimization` |
 | **Predecessors** | `013-memory-folder-deprecation-audit`, `014-save-flow-backend-relevance-review`, `015-save-flow-planner-first-trim` |
 | **Packet Type** | Unified merge packet |
@@ -102,7 +102,7 @@ Packet 016 solves the documentation problem, not a runtime defect. It consolidat
 
 ### Purpose
 
-Create a self-contained Level 3+ merge packet that lets a maintainer stay inside `016-save-flow-unified-journey/` and still understand the full save-flow journey from audit through remediation, with copied artifact snapshots and unified primary docs that point back to the original packet evidence.
+Create a self-contained Level 3+ merge packet that lets a maintainer stay inside `014-save-flow-unified-journey/` and still understand the full save-flow journey from audit through remediation, with copied artifact snapshots and unified primary docs that point back to the original packet evidence.
 
 ---
 
@@ -152,7 +152,7 @@ Create a self-contained Level 3+ merge packet that lets a maintainer stay inside
 | Packet 016 | `scratch/transcripts-snapshot/**` | Copy | Self-contained planner transcript evidence inside the merge packet |
 | Packet 016 | `description.json` | Generate | Packet discovery and memory indexing metadata |
 | Packet 016 | `graph-metadata.json` | Generate or author | Packet graph visibility and packet relationships |
-| Packet 016 | `changelog/changelog-026-016-save-flow-unified-journey.md` | Generate | Packet-local nested changelog |
+| Packet 016 | `changelog/changelog-026-014-save-flow-unified-journey.md` | Generate | Packet-local nested changelog |
 
 ### Aggregate Historical File Surface
 
