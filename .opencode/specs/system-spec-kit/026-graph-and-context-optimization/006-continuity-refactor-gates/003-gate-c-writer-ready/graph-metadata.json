@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Gate C is the code-critical path of phase 018. It replaces standalone memory-file writes with canonical spec-doc writes by delivering the five-rule validator bridge, the 3-tier `contentRouter`, the five-mode `anchorMergeOperation`, the `atomicIndexMemory` drop-in for `atomicSaveMemory`, and the XL `memory-save.ts` rewrite that keeps `withSpecFolderLock` unchanged. Grounding: `../implementation-design.md`; resource-map F-4/F-5/F-6/F-7; rows B1, C1, C10, C11, D1-D30; iterations 001-005, 021-024, 029, 031-034, 038.",
     "created_at": "2026-04-12T09:02:53.479Z",
-    "last_save_at": "2026-04-14T17:11:44.478Z",
+    "last_save_at": "2026-04-15T08:26:20.899Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

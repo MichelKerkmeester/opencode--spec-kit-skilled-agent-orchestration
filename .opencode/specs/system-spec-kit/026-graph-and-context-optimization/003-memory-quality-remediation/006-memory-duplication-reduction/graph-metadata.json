@@ -51,16 +51,16 @@
       ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
       ".opencode/skill/system-spec-kit/scripts/core/memory-metadata.ts",
       ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
-      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-template.test.ts",
-      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
-      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-migration.test.ts",
       "research/research.md",
       "research/findings-registry.json",
       "spec.md",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "scratch/pr13-dry-run-sample.json"
     ],
     "entities": [
       {
@@ -124,33 +124,9 @@
         "source": "derived"
       },
       {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
-        "source": "derived"
-      },
-      {
         "name": "migrate-trigger-phrase-residual.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/scripts/memory/migrate-trigger-phrase-residual.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase6-template.test.ts",
-        "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-template.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase6-extractors.test.ts",
-        "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-extractors.test.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase6-trigger.test.ts",
-        "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase6-trigger.test.ts",
         "source": "derived"
       },
       {
@@ -184,6 +160,30 @@
         "source": "derived"
       },
       {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "pr13-dry-run-sample.json",
+        "kind": "config",
+        "path": "scratch/pr13-dry-run-sample.json",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Phase 6 is the first post-closeout follow-on phase for `003-memory-quality-remediation`. It no longer starts from a broad residual-dedup charter. The sibling `001/.../006-research-memory-redundancy` packet has already completed that research and concluded that the real implementation home is a narrower wrapper-and-ownership contract: generated memory saves should become compact retrieval wrappers that point at canonical packet docs instead of replaying them.",
     "created_at": "2026-04-12T09:02:53.461Z",
-    "last_save_at": "2026-04-14T17:11:44.463Z",
+    "last_save_at": "2026-04-15T08:26:20.876Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

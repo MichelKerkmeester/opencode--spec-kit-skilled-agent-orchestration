@@ -26,7 +26,7 @@ import type {
   PlannerProposedEdit,
   ReconWarningList,
 } from './types.js';
-import type { EnrichmentStatus } from './post-insert.js';
+import type { EnrichmentStatus, PostInsertExecutionStatus } from './post-insert.js';
 import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Mutation response UX payload exposure
@@ -61,6 +61,7 @@ interface BuildIndexResultParams {
   asyncEmbedding: boolean;
   causalLinksResult: CausalLinksResult | null;
   enrichmentStatus?: EnrichmentStatus;
+  enrichmentExecutionStatus?: PostInsertExecutionStatus;
   filePath: string;
   routeCategory?: IndexResult['routeCategory'];
   mergeMode?: IndexResult['mergeMode'];
@@ -188,6 +189,7 @@ export function buildIndexResult({
   asyncEmbedding,
   causalLinksResult,
   enrichmentStatus,
+  enrichmentExecutionStatus,
   filePath,
   routeCategory,
   mergeMode,
@@ -304,6 +306,10 @@ export function buildIndexResult({
     if (causalLinksResult.errors.length > 0) {
       (result.causalLinks as Record<string, unknown>).errors = causalLinksResult.errors;
     }
+  }
+
+  if (enrichmentExecutionStatus) {
+    result.postInsertEnrichment = enrichmentExecutionStatus;
   }
 
   // C5-6: Surface enrichment gaps when any step failed
@@ -557,6 +563,13 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     }
     if ((result.causalLinks as Record<string, unknown>).unresolved_count as number > 0) {
       hints.push(`${(result.causalLinks as Record<string, unknown>).unresolved_count} causal link reference(s) could not be resolved`);
+    }
+  }
+
+  if (result.postInsertEnrichment) {
+    response.postInsertEnrichment = result.postInsertEnrichment;
+    if (result.postInsertEnrichment.status === 'deferred') {
+      hints.push('Post-insert enrichment was deferred; runEnrichmentBackfill when immediate graph/search freshness matters');
     }
   }
 

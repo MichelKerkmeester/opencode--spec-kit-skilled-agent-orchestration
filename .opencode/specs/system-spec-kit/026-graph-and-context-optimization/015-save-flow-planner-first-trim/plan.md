@@ -60,7 +60,7 @@ The plan keeps the canonical write core intact while changing the default operat
 
 ### Definition of Ready
 - [x] Packet 014 research verdict, findings registry, and seed spec have been read and translated into explicit implementation requirements.
-- [x] The load-bearing core is named and protected: canonical atomic writer, routed record identity, content-router category contract, and thin continuity validation.
+- [x] The load-bearing core is named and protected: canonical atomic writer, routed record identity, content-router category contract, and thin continuity validation, with ADR-006 documenting the scoped Tier 3/default-manual-review exception inside `content-router.ts`.
 - [x] Over-engineered trim targets are named and bounded: routing classifier stack, quality loop, reconsolidation bridge, and post-insert enrichment.
 - [x] Partial-value follow-up systems are named and bounded: CLI wrapper, workflow orchestrator, quality-gate hard checks, reindex, graph refresh, PE gating, and chunking.
 - [x] Packet docs, tests, and command contract updates are all included in the implementation scope.
@@ -117,7 +117,7 @@ Planner-first orchestration with canonical atomic fallback
 ### Key Components
 - **Planner response surface**: `memory-save.ts`, `handlers/save/types.ts`, `response-builder.ts`, and `validation-responses.ts` expose route, legality, continuity, and follow-up actions without mutating files.
 - **Canonical atomic fallback**: `buildCanonicalAtomicPreparedSave()`, `resolveCreateRecordIdentity()`, and `atomicIndexMemory()` remain the durable mutation path. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223-1265] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:89-118] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270-360]
-- **Routing trim boundary**: `content-router.ts` keeps category-to-target mapping while Tier 3 and oversized prototype machinery stop participating by default. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22-31] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:554-629]
+- **Routing trim boundary**: `content-router.ts` keeps the eight-category switch plus Tier 1 and Tier 2 dispatch intact, while ADR-006 documents the scoped in-file Tier 3 default-disable/manual-review guard that keeps oversized prototype machinery out of the default path. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22-31] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:554-629]
 - **Advisory-quality trim boundary**: `quality-loop.ts` and `save-quality-gate.ts` keep hard structural safety but stop mutating content automatically on the default path. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:423-470] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:398-430]
 - **Deferred follow-up surfaces**: `workflow.ts`, `api/indexing.ts`, `graph-metadata-parser.ts`, `reconsolidation-bridge.ts`, `post-insert.ts`, `pe-gating.ts`, and `chunking-orchestrator.ts` become explicit follow-up or fallback-only concerns. [SOURCE: .opencode/skill/system-spec-kit/scripts/core/workflow.ts:1364-1400] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:979-1005] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:165-188] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:50-56]
 
@@ -125,7 +125,7 @@ Planner-first orchestration with canonical atomic fallback
 1. `generate-context.ts` or the MCP handler receives a save request and resolves planner-first mode as the default.
 2. `memory-save.ts` parses content, evaluates route and legality using the same canonical prep information the fallback path uses, then returns a planner payload instead of writing files.
 3. The AI applies canonical-doc edits directly using the planner output.
-4. The planner payload surfaces explicit follow-up actions such as `memory_index_scan` or `refreshGraphMetadataForSpecFolder` when freshness matters.
+4. The planner payload surfaces explicit follow-up actions such as `refreshGraphMetadata`, `reindexSpecDocs`, or `runEnrichmentBackfill` when freshness matters.
 5. If the operator explicitly requests full-auto fallback, the request flows through canonical preparation, same-path identity resolution, thin continuity validation, per-folder locking, atomic promotion, and rollback-aware indexing. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2276-2365] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2493-2512]
 
 ### File-Level Change Map
@@ -152,7 +152,7 @@ Planner-first orchestration with canonical atomic fallback
 
 ### M2: Routing Classifier Stack Trim
 - Keep the eight-category contract and Tier 1 or Tier 2 deterministic behavior.
-- Remove default-path Tier 3 participation.
+- Remove default-path Tier 3 participation via the scoped `content-router.ts` guard documented in ADR-006.
 - Reduce prototype-library reliance to the remaining Tier 2 behavior still needed.
 
 ### M3: Quality Loop Retirement with Hard-Check Preservation

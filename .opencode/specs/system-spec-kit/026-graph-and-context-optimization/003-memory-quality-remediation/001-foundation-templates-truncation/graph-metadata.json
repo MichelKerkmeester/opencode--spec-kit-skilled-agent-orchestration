@@ -39,37 +39,31 @@
     "status": "complete",
     "key_files": [
       "mcp_server/lib/parsing/memory-parser.ts",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       ".opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
       ".opencode/skill/system-spec-kit/scripts/lib/truncate-on-word-boundary.ts",
       ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
       ".opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts",
       ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC1-truncation.json",
-      ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json",
       ".opencode/skill/system-spec-kit/scripts/tests/truncate-on-word-boundary.vitest.ts",
-      ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts",
       "tests/truncate-on-word-boundary.vitest.ts",
-      "tests/memory-quality-phase1.vitest.ts",
       "tests/input-normalizer-unit.vitest.ts",
       "tests/collect-session-data.vitest.ts",
       "scripts/extractors/decision-extractor.ts",
       ".opencode/skill/system-spec-kit/shared/mcp_server/database/.db-updated",
       "implementation-summary.md",
       "core/workflow.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts"
+      ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      "scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/package.json",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json"
     ],
     "entities": [
       {
         "name": "memory-parser.ts",
         "kind": "code",
         "path": "mcp_server/lib/parsing/memory-parser.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
         "source": "derived"
       },
       {
@@ -103,21 +97,9 @@
         "source": "derived"
       },
       {
-        "name": "F-AC7-anchor.json",
-        "kind": "config",
-        "path": ".opencode/skill/system-spec-kit/scripts/tests/fixtures/memory-quality/F-AC7-anchor.json",
-        "source": "derived"
-      },
-      {
         "name": "truncate-on-word-boundary.vitest.ts",
         "kind": "test",
         "path": ".opencode/skill/system-spec-kit/scripts/tests/truncate-on-word-boundary.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-quality-phase1.vitest.ts",
-        "kind": "test",
-        "path": ".opencode/skill/system-spec-kit/scripts/tests/memory-quality-phase1.vitest.ts",
         "source": "derived"
       },
       {
@@ -160,6 +142,24 @@
         "name": "vitest.config.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/package.json",
         "source": "derived"
       },
       {
@@ -207,7 +207,7 @@
     ],
     "causal_summary": "This child folder implements the same phase identity the parent packet already published in its phase map: foundation work lands first because later phases either depend directly on the new helper or assume the anchor/template baseline is already stable. [SOURCE: ../spec.md:179-183]",
     "created_at": "2026-04-12T09:02:53.456Z",
-    "last_save_at": "2026-04-14T17:11:44.454Z",
+    "last_save_at": "2026-04-15T08:26:20.860Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

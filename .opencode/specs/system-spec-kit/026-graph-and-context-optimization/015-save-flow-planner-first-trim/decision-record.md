@@ -511,6 +511,97 @@ The current save path mixes two concerns: hard legality checks that prevent malf
 
 ---
 
+### ADR-006: Record the scoped `content-router.ts` preservation exception
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-15 |
+| **Deciders** | Packet 015 remediation pass |
+
+---
+
+### Context
+
+Packet 015 documentation said the four load-bearing files stayed bit-for-bit preserved, but `content-router.ts` now contains two real control-flow additions: an explicit Tier 3 enable check and the manual-review return that fires when Tier 3 stays disabled. The eight-category switch, route-category mapping, and Tier 1 or Tier 2 dispatch logic still match the preserved contract, so the contradiction lives in documentation scope rather than in the router goal itself.
+
+### Constraints
+
+- The router must keep owning the eight-category decision and target-selection contract.
+- Tier 3 must remain default-off per ADR-004 without duplicating routing decisions elsewhere.
+
+---
+
+### Decision
+
+**We chose**: Keep the Tier 3 default-disable/manual-review guard inside `content-router.ts` and document it as a scoped preservation exception instead of claiming the whole file stayed bit-for-bit unchanged.
+
+**How it works**: The file still owns the eight-category switch, Tier 1 logic, Tier 2 prototype matching, and the final route target selection. The only acknowledged in-file change is the guard that stops default-path Tier 3 invocation unless the explicit Tier 3 flag is enabled.
+
+---
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Document the scoped exception in ADR-006** | Honest, minimal-risk, and keeps routing authority in one place | Requires doc and changelog updates | 9/10 |
+| Move the Tier 3 guard outside `content-router.ts` | Restores the file-level preservation claim | Duplicates routing control flow and adds new coordination points | 5/10 |
+| Ignore the contradiction | No runtime changes | Leaves packet docs and changelog inaccurate | 1/10 |
+
+**Why this one**: The in-file guard is the surgical location for the Tier 3 default-off rule, and documenting that exception fixes the contradiction without widening the runtime change.
+
+---
+
+### Consequences
+
+**Pros**:
+- Packet docs and changelog can describe the preserved contract honestly.
+- The router keeps all route-selection authority in one file.
+
+**Cons**:
+- The load-bearing preservation story is now "core preserved with one scoped exception" instead of "bit-for-bit preserved." Mitigation: update the packet docs and changelog in the same remediation pass.
+
+**Neutral**:
+- The atomic writer, record identity, and thin continuity files remain unchanged.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Future docs drift back to the stronger claim | M | Cite ADR-006 anywhere Phase 015 describes router preservation |
+| A later refactor broadens router edits without updating the exception scope | M | Keep `content-router.vitest.ts` plus changelog wording aligned on Tier 1/Tier 2 preservation vs Tier 3 gating |
+
+---
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Deep-review F001 showed the previous preservation claim was false |
+| 2 | **Beyond Local Maxima?** | PASS | Compared doc-only, refactor-outside-router, and ignore-it options |
+| 3 | **Sufficient?** | PASS | Fixes the contradiction without changing runtime ownership |
+| 4 | **Fits Goal?** | PASS | Preserves the routing contract while keeping Tier 3 default-off |
+| 5 | **Open Horizons?** | PASS | Leaves room for future router work to extend or retire the exception deliberately |
+
+**Checks Summary**: 5/5 PASS
+
+---
+
+### Implementation
+
+**What changes**:
+- `decision-record.md`
+- packet 015 `spec.md` and `plan.md`
+- `.opencode/changelog/01--system-spec-kit/v3.4.1.0.md`
+
+**Related ADRs**: ADR-004, ADR-005
+
+**How to roll back**: Either move the Tier 3 guard out of `content-router.ts`, or keep the runtime shape and preserve ADR-006 as the honest contract record.
+
+---
+
 <!--
 Level 3 Decision Record (Addendum): One ADR per major decision.
 Write in human voice: active, direct, specific. No em dashes, no hedging.

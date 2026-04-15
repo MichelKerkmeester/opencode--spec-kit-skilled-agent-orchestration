@@ -60,7 +60,7 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      ".opencode/agent/speckit.md"
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/004-doc-surface-alignment/spec.md"
     ],
     "entities": [
       {
@@ -144,7 +144,7 @@
       {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/004-doc-surface-alignment/spec.md",
         "source": "derived"
       },
       {
@@ -169,12 +169,6 @@
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
@@ -206,11 +200,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement Several",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Several user-facing documentation surfaces still describe an older canonical save-routing contract. Before this phase, the docs could misstate the routing category count, present Tier 3 as dormant instead of live behind an env flag, blur delivery cues with narrative progress, blur handover with hard-drop cases, omit `routeAs` override semantics, or describe `packet_kind` too heavily as a path-driven heuristic.",
     "created_at": "2026-04-13T08:18:57.065Z",
-    "last_save_at": "2026-04-14T17:11:44.506Z",
+    "last_save_at": "2026-04-15T08:26:20.951Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

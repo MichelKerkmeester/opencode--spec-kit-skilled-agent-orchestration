@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Global architecture, bug fix, and alignment deep dive across the entire `009-perfect-session-capturing` subsystem. This phase deployed 15 parallel analysis agents across 3 waves (5 GPT 5.4 via Codex CLI + 5 Claude Opus Wave 1/2 analysis, plus 5 Claude Opus Wave 3 synthesis) to produce a comprehensive findings report covering:",
     "created_at": "2026-04-12T09:02:50.282Z",
-    "last_save_at": "2026-04-14T17:11:40.906Z",
+    "last_save_at": "2026-04-15T08:26:16.862Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

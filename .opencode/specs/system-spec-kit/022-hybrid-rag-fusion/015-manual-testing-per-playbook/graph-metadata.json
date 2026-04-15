@@ -80,10 +80,10 @@
       ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md",
       ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md",
       ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md",
-      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md",
       ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md",
       ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md",
-      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md"
+      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md"
     ],
     "entities": [
       {
@@ -183,12 +183,6 @@
         "source": "derived"
       },
       {
-        "name": "12-generation-time-duplicate-and-empty-content-prevention.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md",
-        "source": "derived"
-      },
-      {
         "name": "16-backend-storage-adapter-abstraction.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md",
@@ -204,6 +198,12 @@
         "name": "19-embedding-retry-orchestrator.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md",
+        "source": "derived"
+      },
+      {
+        "name": "20-7-layer-tool-architecture-metadata.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md",
         "source": "derived"
       },
       {
@@ -233,7 +233,7 @@
     ],
     "causal_summary": "The live manual-testing tree now contains **290** scenario files across **21** numbered categories, but this wrapper packet still mixes older `231 scenario files / 272 exact IDs / 19 categories` language with current phase folders `021` and `022` plus a retained duplicate `020-feature-flag-reference` wrapper. That makes the root packet materially stale and self-contradictory for release-control use.",
     "created_at": "2026-04-12T09:02:50.288Z",
-    "last_save_at": "2026-04-14T17:11:40.919Z",
+    "last_save_at": "2026-04-15T08:26:16.887Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

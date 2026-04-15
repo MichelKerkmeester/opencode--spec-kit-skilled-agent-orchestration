@@ -43,10 +43,6 @@
     "key_files": [
       ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md",
       ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
-      ".claude/agents/speckit.md",
-      ".opencode/agent/speckit.md",
-      ".codex/agents/speckit.toml",
-      ".gemini/agents/speckit.md",
       "scripts/utils/template-structure.js",
       "mcp_server/api/index.ts",
       "scripts/spec/check-completion.sh",
@@ -60,7 +56,11 @@
       "scripts/spec/progressive-validate.sh",
       "mcp_server/lib/ops/file-watcher.ts",
       "mcp_server/cli.ts",
-      "scripts/evals/check-source-dist-alignment.ts"
+      "scripts/evals/check-source-dist-alignment.ts",
+      "scripts/memory/generate-context.ts",
+      "scripts/core/workflow.ts",
+      "plan.md",
+      "tasks.md"
     ],
     "entities": [
       {
@@ -73,18 +73,6 @@
         "name": "template_compliance_contract.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".claude/agents/speckit.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.toml",
-        "kind": "file",
-        "path": ".codex/agents/speckit.toml",
         "source": "derived"
       },
       {
@@ -172,6 +160,30 @@
         "source": "derived"
       },
       {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -194,23 +206,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Key Decisions",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Critical Dependencies",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "This packet audits the 17 Tooling and Scripts catalog entries that support Spec Kit build workflows, validation rules, admin operations, checkpointing, and source-dist hygiene. The verified result is 16 MATCH and 1 PARTIAL, with the remaining drift concentrated in the code-standards-alignment entry rather than runtime behavior.",
     "created_at": "2026-04-12T09:02:50.253Z",
-    "last_save_at": "2026-04-14T17:11:40.845Z",
+    "last_save_at": "2026-04-15T08:26:16.749Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

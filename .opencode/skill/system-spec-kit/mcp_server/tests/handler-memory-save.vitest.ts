@@ -546,7 +546,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const postInsertModule = await import('../handlers/save/post-insert');
       const runPostInsertEnrichmentSpy = vi.spyOn(postInsertModule, 'runPostInsertEnrichment').mockResolvedValue({
         causalLinksResult: null,
-        enrichmentStatus: 'skipped',
+        enrichmentStatus: {
+          causalLinks: true,
+          entityExtraction: true,
+          summaries: true,
+          entityLinking: true,
+          graphLifecycle: true,
+        },
+        executionStatus: { status: 'ran' },
       });
 
       const responseBuilderModule = await import('../handlers/save/response-builder');
@@ -1226,6 +1233,52 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         }),
       ]));
       expect(fs.readFileSync(fixture.sourcePath, 'utf8')).toBe('# original memory source');
+      expect(fs.readFileSync(fixture.targetPath, 'utf8')).toBe(targetBefore);
+      expect(checkExistingRowMock).not.toHaveBeenCalled();
+    });
+
+    it('promotes template-contract violations to planner blockers for routed canonical saves', async () => {
+      const fixture = createCanonicalRoutingFixture();
+      const targetBefore = fs.readFileSync(fixture.targetPath, 'utf8');
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({
+        id: 4444,
+        specFolder: '999-atomic-save-fi',
+      }));
+      const parseMemoryContentMock = vi.fn((targetPath: string) => {
+        const parsed = buildParsedMemory(targetPath);
+        return {
+          ...parsed,
+          specFolder: 'system-spec-kit/999-atomic-save-fi',
+          content: parsed.content.replace(/^---[\s\S]*?---\n\n/, ''),
+        };
+      });
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryContentMock,
+        checkExistingRowMock,
+      });
+
+      const result = await harness.module.atomicSaveMemory(
+        {
+          file_path: fixture.sourcePath,
+          content: 'Implemented planner-first blocker classification in `mcp_server/handlers/memory-save.ts`.',
+          routeAs: 'narrative_progress',
+        },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('blocked');
+      expect(result.blockers).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          code: 'TEMPLATE_CONTRACT_BLOCKER',
+          targetDocPath: fixture.targetPath,
+          routeCategory: 'narrative_progress',
+        }),
+      ]));
+      expect(result.advisories ?? []).not.toEqual(expect.arrayContaining([
+        expect.objectContaining({ code: 'TEMPLATE_CONTRACT_ADVISORY' }),
+      ]));
       expect(fs.readFileSync(fixture.targetPath, 'utf8')).toBe(targetBefore);
       expect(checkExistingRowMock).not.toHaveBeenCalled();
     });
@@ -2110,6 +2163,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         }),
         postInsertModuleFactory: () => ({
           runPostInsertEnrichment: runPostInsertEnrichmentMock,
+          runPostInsertEnrichmentIfEnabled: runPostInsertEnrichmentMock,
         }),
         responseBuilderModuleFactory: async () => {
           const actual = await vi.importActual<typeof import('../handlers/save/response-builder')>('../handlers/save/response-builder');
@@ -2232,7 +2286,25 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         postInsertModuleFactory: () => ({
           runPostInsertEnrichment: vi.fn(async () => ({
             causalLinksResult: null,
-            enrichmentStatus: 'skipped',
+            enrichmentStatus: {
+              causalLinks: true,
+              entityExtraction: true,
+              summaries: true,
+              entityLinking: true,
+              graphLifecycle: true,
+            },
+            executionStatus: { status: 'ran' },
+          })),
+          runPostInsertEnrichmentIfEnabled: vi.fn(async () => ({
+            causalLinksResult: null,
+            enrichmentStatus: {
+              causalLinks: true,
+              entityExtraction: true,
+              summaries: true,
+              entityLinking: true,
+              graphLifecycle: true,
+            },
+            executionStatus: { status: 'ran' },
           })),
         }),
       });
@@ -2299,7 +2371,25 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         postInsertModuleFactory: () => ({
           runPostInsertEnrichment: vi.fn(async () => ({
             causalLinksResult: null,
-            enrichmentStatus: 'skipped',
+            enrichmentStatus: {
+              causalLinks: true,
+              entityExtraction: true,
+              summaries: true,
+              entityLinking: true,
+              graphLifecycle: true,
+            },
+            executionStatus: { status: 'ran' },
+          })),
+          runPostInsertEnrichmentIfEnabled: vi.fn(async () => ({
+            causalLinksResult: null,
+            enrichmentStatus: {
+              causalLinks: true,
+              entityExtraction: true,
+              summaries: true,
+              entityLinking: true,
+              graphLifecycle: true,
+            },
+            executionStatus: { status: 'ran' },
           })),
         }),
       });
@@ -2499,12 +2589,21 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         },
         postInsertModuleFactory: async () => {
           const actual = await vi.importActual<typeof import('../handlers/save/post-insert')>('../handlers/save/post-insert');
+          const postInsertResult = {
+            causalLinksResult: null,
+            enrichmentStatus: {
+              causalLinks: true,
+              entityExtraction: true,
+              summaries: true,
+              entityLinking: true,
+              graphLifecycle: true,
+            },
+            executionStatus: { status: 'ran' as const },
+          };
           return {
             ...actual,
-            runPostInsertEnrichment: vi.fn(async () => ({
-              causalLinksResult: null,
-              enrichmentStatus: 'skipped',
-            })),
+            runPostInsertEnrichment: vi.fn(async () => postInsertResult),
+            runPostInsertEnrichmentIfEnabled: vi.fn(async () => postInsertResult),
           };
         },
         nodeFsModuleFactory: async () => {

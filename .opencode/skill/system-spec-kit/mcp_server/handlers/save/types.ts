@@ -4,6 +4,7 @@
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
 import type { SavePlannerMode } from '../../lib/search/search-flags.js';
+import type { PostInsertExecutionStatus } from './post-insert.js';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -130,6 +131,7 @@ export interface IndexResult extends Record<string, unknown> {
   newStability?: number;
   retrievability?: number;
   causalLinks?: Record<string, unknown>;
+  postInsertEnrichment?: PostInsertExecutionStatus;
   message?: string;
   success?: boolean;
   error?: string;

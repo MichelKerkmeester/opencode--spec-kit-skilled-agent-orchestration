@@ -218,7 +218,7 @@
     ],
     "causal_summary": "The shipped `skill-advisor` package now uses a clean root layout with `../../../../../skill/skill-advisor/README.md`, the package setup guide, `feature_catalog/`, `manual_testing_playbook/`, `scripts/`, and `graph-metadata.json` under `../../../../../skill/skill-advisor/`. This remediation pass updates the packet so it describes that live layout accurately, replaces loose metadata placeholders with concrete file evidence, and restores the Level 3 headers and anchors required by strict validation.",
     "created_at": "2026-04-13T00:00:00.000Z",
-    "last_save_at": "2026-04-14T17:11:44.522Z",
+    "last_save_at": "2026-04-15T08:26:20.982Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

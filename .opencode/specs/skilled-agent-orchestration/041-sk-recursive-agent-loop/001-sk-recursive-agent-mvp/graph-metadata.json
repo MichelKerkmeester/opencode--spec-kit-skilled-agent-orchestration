@@ -41,7 +41,6 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/agent/handover.md",
       "improvement/mirror-drift-report.md",
       ".opencode/skill/sk-improve-agent/assets/target_manifest.jsonc",
       ".opencode/skill/sk-improve-agent/assets/improvement_config.json",
@@ -60,7 +59,8 @@
       ".opencode/skill/sk-improve-agent/assets/improvement_strategy.md",
       "improvement/agent-improvement-config.json",
       "improvement/agent-improvement-state.jsonl",
-      "improvement/agent-improvement-dashboard.md"
+      "improvement/agent-improvement-dashboard.md",
+      "improvement/experiment-registry.json"
     ],
     "entities": [
       {
@@ -178,6 +178,12 @@
         "source": "derived"
       },
       {
+        "name": "experiment-registry.json",
+        "kind": "config",
+        "path": "improvement/experiment-registry.json",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -200,17 +206,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Parent Spec",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Create a repo-native `sk-improve-agent` system that borrows the good parts of `autoagent-main` without copying its trust boundary. The MVP is evaluator-first and proposal-only: it runs bounded experiments against one canonical source surface, scores candidates independently, records every attempt in an append-only ledger, and blocks canonical file mutation until the scorer and promotion contract are proven.",
     "created_at": "2026-04-12T09:02:50.185Z",
-    "last_save_at": "2026-04-14T17:11:40.710Z",
+    "last_save_at": "2026-04-15T08:26:16.480Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

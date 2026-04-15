@@ -208,7 +208,7 @@
     ],
     "causal_summary": "The retrieval enhancements category (15--retrieval-enhancements) contains 9 features covering dual-scope surfacing, constitutional memory injection, spec folder hierarchy retrieval, lightweight consolidation, memory summary channel, cross-document entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.",
     "created_at": "2026-04-12T09:02:50.302Z",
-    "last_save_at": "2026-04-14T17:11:40.940Z",
+    "last_save_at": "2026-04-15T08:26:16.927Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

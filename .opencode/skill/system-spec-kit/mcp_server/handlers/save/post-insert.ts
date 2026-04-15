@@ -44,9 +44,16 @@ export interface EnrichmentStatus {
   graphLifecycle: boolean;
 }
 
+export interface PostInsertExecutionStatus {
+  status: 'ran' | 'deferred';
+  reason?: 'planner-first-mode';
+  followUpAction?: 'runEnrichmentBackfill';
+}
+
 export interface PostInsertEnrichmentResult {
   causalLinksResult: CausalLinksResult | null;
   enrichmentStatus: EnrichmentStatus;
+  executionStatus: PostInsertExecutionStatus;
 }
 
 export interface PostInsertEnrichmentOptions {
@@ -200,7 +207,11 @@ export async function runPostInsertEnrichment(
     enrichmentStatus.graphLifecycle = true;
   }
 
-  return { causalLinksResult, enrichmentStatus };
+  return {
+    causalLinksResult,
+    enrichmentStatus,
+    executionStatus: { status: 'ran' },
+  };
 }
 
 export async function runPostInsertEnrichmentIfEnabled(
@@ -218,6 +229,11 @@ export async function runPostInsertEnrichmentIfEnabled(
         summaries: true,
         entityLinking: true,
         graphLifecycle: true,
+      },
+      executionStatus: {
+        status: 'deferred',
+        reason: 'planner-first-mode',
+        followUpAction: 'runEnrichmentBackfill',
       },
     };
   }

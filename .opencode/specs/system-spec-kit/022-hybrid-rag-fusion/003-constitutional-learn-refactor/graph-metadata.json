@@ -42,10 +42,8 @@
     "status": "complete",
     "key_files": [
       ".opencode/command/README.txt",
-      ".opencode/command/spec_kit/debug.md",
       ".opencode/command/spec_kit/complete.md",
       ".opencode/README.md",
-      ".opencode/agent/speckit.md",
       ".opencode/command/memory/learn.md",
       ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md",
       ".opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts",
@@ -65,12 +63,6 @@
         "source": "derived"
       },
       {
-        "name": "debug.md",
-        "kind": "doc",
-        "path": ".opencode/command/spec_kit/debug.md",
-        "source": "derived"
-      },
-      {
         "name": "complete.md",
         "kind": "doc",
         "path": ".opencode/command/spec_kit/complete.md",
@@ -80,12 +72,6 @@
         "name": "README.md",
         "kind": "doc",
         "path": ".opencode/README.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
@@ -201,11 +187,23 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The current `/memory:learn` command (620 lines) is a generic learning capture tool that classifies inputs into 5 types (pattern, mistake, insight, optimization, constraint) and saves them to spec folder `memory/` directories via `generate-context.js`. This provides negligible value over the existing `/memory:save` command.",
     "created_at": "2026-04-12T09:02:50.238Z",
-    "last_save_at": "2026-04-14T17:11:40.813Z",
+    "last_save_at": "2026-04-15T08:26:16.695Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -50,7 +50,6 @@
       "scripts/tests/phase-classification.vitest.ts",
       "scripts/tests/test-scripts-modules.js",
       "scripts/lib/flowchart-generator.ts",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       "scripts/tests/test-extractors-loaders.js",
       "spec.md",
       "plan.md",
@@ -111,12 +110,6 @@
         "name": "flowchart-generator.ts",
         "kind": "code",
         "path": "scripts/lib/flowchart-generator.ts",
-        "source": "derived"
-      },
-      {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
         "source": "derived"
       },
       {
@@ -202,11 +195,17 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.271Z",
-    "last_save_at": "2026-04-14T17:11:40.882Z",
+    "last_save_at": "2026-04-15T08:26:16.816Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

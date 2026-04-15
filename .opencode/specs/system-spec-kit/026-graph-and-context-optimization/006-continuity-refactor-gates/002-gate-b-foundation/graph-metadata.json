@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Gate B is the one-way-door foundation step for phase 018. It is where phase 018 proves the migration on a copy, updates `causal_edges` for anchor-aware continuity, and executes the rebaselined archive flip for the `183` legacy memory-path rows while preserving the `1` pre-existing archived non-memory baseline row.",
     "created_at": "2026-04-12T09:02:53.478Z",
-    "last_save_at": "2026-04-14T17:11:44.476Z",
+    "last_save_at": "2026-04-15T08:26:20.897Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

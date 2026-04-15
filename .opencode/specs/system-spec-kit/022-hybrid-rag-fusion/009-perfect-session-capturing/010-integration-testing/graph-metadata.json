@@ -42,11 +42,9 @@
     "status": "complete",
     "key_files": [
       "tests/fixtures/session-data-factory.ts",
-      "scripts/tests/workflow-e2e.vitest.ts",
       "scripts/tests/fixtures/session-data-factory.ts",
       "scripts/tests/test-integration.vitest.ts",
       "scripts/tests/task-enrichment.vitest.ts",
-      "scripts/tests/memory-render-fixture.vitest.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
@@ -61,12 +59,6 @@
         "source": "derived"
       },
       {
-        "name": "workflow-e2e.vitest.ts",
-        "kind": "test",
-        "path": "scripts/tests/workflow-e2e.vitest.ts",
-        "source": "derived"
-      },
-      {
         "name": "test-integration.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/test-integration.vitest.ts",
@@ -76,12 +68,6 @@
         "name": "task-enrichment.vitest.ts",
         "kind": "test",
         "path": "scripts/tests/task-enrichment.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-render-fixture.vitest.ts",
-        "kind": "test",
-        "path": "scripts/tests/memory-render-fixture.vitest.ts",
         "source": "derived"
       },
       {
@@ -197,11 +183,23 @@
         "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "1. TASK NOTATION",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.272Z",
-    "last_save_at": "2026-04-14T17:11:40.886Z",
+    "last_save_at": "2026-04-15T08:26:16.824Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

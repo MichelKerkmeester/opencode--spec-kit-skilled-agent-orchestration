@@ -54,13 +54,13 @@
       "scripts/types/session-types.ts",
       "scripts/extractors/collect-session-data.ts",
       "scripts/lib/simulation-factory.ts",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       "scripts/extractors/decision-extractor.ts",
-      "scripts/tests/workflow-e2e.vitest.ts",
       "scripts/tests/task-enrichment.vitest.ts",
       "tasks.md",
       "implementation-summary.md",
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -142,21 +142,9 @@
         "source": "derived"
       },
       {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
-        "source": "derived"
-      },
-      {
         "name": "decision-extractor.ts",
         "kind": "code",
         "path": "scripts/extractors/decision-extractor.ts",
-        "source": "derived"
-      },
-      {
-        "name": "workflow-e2e.vitest.ts",
-        "kind": "test",
-        "path": "scripts/tests/workflow-e2e.vitest.ts",
         "source": "derived"
       },
       {
@@ -206,11 +194,23 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.266Z",
-    "last_save_at": "2026-04-14T17:11:40.870Z",
+    "last_save_at": "2026-04-15T08:26:16.796Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

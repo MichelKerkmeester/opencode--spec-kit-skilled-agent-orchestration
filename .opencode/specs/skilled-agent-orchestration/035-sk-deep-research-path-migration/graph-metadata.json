@@ -47,8 +47,6 @@
       ".opencode/skill/sk-deep-research/references/loop_protocol.md",
       ".opencode/skill/sk-deep-research/references/state_format.md",
       ".opencode/skill/sk-deep-research/references/quick_reference.md",
-      ".opencode/agent/speckit.md",
-      ".claude/agents/speckit.md",
       ".opencode/changelog/12--sk-deep-research/v1.2.2.0.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
@@ -60,7 +58,9 @@
       ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
       ".codex/agents/deep-research.toml",
       ".codex/agents/deep-review.toml",
-      "plan.md"
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
     ],
     "entities": [
       {
@@ -97,12 +97,6 @@
         "name": "quick_reference.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-deep-research/references/quick_reference.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
@@ -178,6 +172,18 @@
         "source": "derived"
       },
       {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -200,17 +206,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Problem Statement Deep",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "The deep-research contract is now split across a former root research document, `research/iterations/iteration-*`, and a newer review packet that still has to normalize legacy `review/iterations/iteration-*` layouts. The migration defined here makes `research/` the canonical research packet, keeps `review/` as the canonical review packet, and standardizes iteration artifacts into dedicated `iterations/` folders with no `output/` folder. [SOURCE: .opencode/command/spec_kit/deep-research.md:211-242] [SOURCE: .opencode/skill/sk-deep-research/SKILL.md:187-201]",
     "created_at": "2026-04-12T09:02:50.179Z",
-    "last_save_at": "2026-04-14T17:11:40.696Z",
+    "last_save_at": "2026-04-15T08:26:16.439Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

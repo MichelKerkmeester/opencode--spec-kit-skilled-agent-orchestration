@@ -203,7 +203,7 @@
     ],
     "causal_summary": "The feedback signal pipeline is implemented in the current repo, but this packet no longer matched the shipped code or the available verification evidence. The markdown still described a planned `memory-context.ts` hook and a `0.6` reformulation threshold, while the live implementation uses a dispatcher-level sticky-session fallback in `context-server.ts` and Jaccard thresholds of `0.3 <= similarity < 0.8` for `query_reformulated` and `>= 0.8` for `same_topic_requery`.",
     "created_at": "2026-04-12T09:02:50.340Z",
-    "last_save_at": "2026-04-14T17:11:40.999Z",
+    "last_save_at": "2026-04-15T08:26:17.040Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

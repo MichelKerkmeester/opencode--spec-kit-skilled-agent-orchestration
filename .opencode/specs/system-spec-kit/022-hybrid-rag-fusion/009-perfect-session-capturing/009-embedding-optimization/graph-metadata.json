@@ -46,7 +46,6 @@
       "scripts/core/workflow.ts",
       "scripts/core/memory-indexer.ts",
       "mcp_server/handlers/save/embedding-pipeline.ts",
-      "scripts/tests/memory-indexer-weighting.vitest.ts",
       "mcp_server/tests/embedding-weighting.vitest.ts",
       "mcp_server/tests/embedding-pipeline-weighting.vitest.ts",
       "scripts/tests/test-embeddings-behavioral.js",
@@ -90,12 +89,6 @@
         "name": "embedding-pipeline.ts",
         "kind": "code",
         "path": "mcp_server/handlers/save/embedding-pipeline.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-indexer-weighting.vitest.ts",
-        "kind": "test",
-        "path": "scripts/tests/memory-indexer-weighting.vitest.ts",
         "source": "derived"
       },
       {
@@ -205,11 +198,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.",
     "created_at": "2026-04-12T09:02:50.272Z",
-    "last_save_at": "2026-04-14T17:11:40.885Z",
+    "last_save_at": "2026-04-15T08:26:16.822Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

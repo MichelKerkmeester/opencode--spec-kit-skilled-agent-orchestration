@@ -209,7 +209,7 @@
     ],
     "causal_summary": "After the Sprint 1 pipeline hardening landed, a `/memory:save` run still produced a memory file that scored 88/100 while carrying 10 structural quality issues. Manual review traced those defects to eight backend bugs across the `generate-context.js` extraction, normalization, and rendering pipeline: duplicated decision fields, wrong completion status, false blocker detection, generic pattern filler, noisy trigger phrases, contaminated file paths, over-aggressive tree thinning, and missing synthesized conversation messages.",
     "created_at": "2026-04-12T09:02:50.281Z",
-    "last_save_at": "2026-04-14T17:11:40.905Z",
+    "last_save_at": "2026-04-15T08:26:16.858Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

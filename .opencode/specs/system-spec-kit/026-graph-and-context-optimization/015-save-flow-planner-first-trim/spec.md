@@ -41,7 +41,7 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Packet 015 turns packet 014's `trim-targeted` research verdict into an implementation-ready refactor plan: make `/memory:save` planner-first by default, keep the canonical atomic writer as an explicit fallback, and move score-heavy or advisory save-time automation out of the hot path. The research is clear that canonical preparation, routed identity, content-router contract, and thin continuity validation remain load-bearing, while Tier 3 routing, quality-loop auto-fix, reconsolidation-on-save, and post-insert enrichment no longer earn default-path cost. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review/research/research.md:29-31] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852]
+Packet 015 turns packet 014's `trim-targeted` research verdict into an implementation-ready refactor plan: make `/memory:save` planner-first by default, keep the canonical atomic writer as an explicit fallback, and move score-heavy or advisory save-time automation out of the hot path. The research is clear that canonical preparation, routed identity, the eight-category content-router contract, and thin continuity validation remain load-bearing, while Tier 3 routing, quality-loop auto-fix, reconsolidation-on-save, and post-insert enrichment no longer earn default-path cost. ADR-006 records the one scoped preservation exception: `content-router.ts` keeps the category switch plus Tier 1 and Tier 2 dispatch intact, but now contains the in-file Tier 3 default-disable/manual-review guard. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review/research/research.md:29-31] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852]
 
 **Key Decisions**: Default to structured planner output, preserve full-auto atomic save behind explicit fallback, and defer seven freshness or enrichment concerns out of the default save path. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review/research/findings-registry.json:6-17] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2191]
 
@@ -152,7 +152,7 @@ Deliver a planner-first save flow that returns structured route, target, legalit
 | REQ-007 | The router keeps the eight canonical categories and deterministic Tier 1 or Tier 2 behavior on the default path. | `content-router.vitest.ts` proves all canonical categories remain routable without default Tier 3 participation. |
 | REQ-008 | Quality scoring survives as advisory signal or explicit opt-in path, but default-path auto-fix retries are retired. | `quality-loop.vitest.ts` proves planner output can surface issues without mutating content automatically. |
 | REQ-009 | Reconsolidation and post-insert enrichment remain available through explicit flags or dedicated follow-up actions rather than disappearing outright. | `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md`, command docs, and regression tests document and verify the new opt-in behavior. |
-| REQ-010 | Graph refresh and spec-doc reindex are represented as explicit follow-up actions when immediate freshness matters. | Planner responses include `memory_index_scan` and `refreshGraphMetadataForSpecFolder` follow-up hints when relevant. |
+| REQ-010 | Graph refresh and spec-doc reindex are represented as explicit follow-up actions when immediate freshness matters. | Planner responses include `refreshGraphMetadata`, `reindexSpecDocs`, and `runEnrichmentBackfill` follow-up hints when relevant. |
 | REQ-011 | The planner-first path is prototyped against three real session transcripts before implementation starts. | Verification notes capture three transcript runs, expected canonical targets, and any mismatch backlog before code changes begin. |
 
 ### P2 - Nice-to-have (ship if low-risk)
@@ -267,7 +267,7 @@ Deliver a planner-first save flow that returns structured route, target, legalit
 | R-001 | Planner output omits a field the AI needs to make a canonical edit safely | H | M | Lock the planner schema in shared types and transcript prototype tests. |
 | R-002 | Default-path trim breaks atomic fallback guarantees | H | L | Keep fallback routed through existing canonical preparation and atomic writer helpers. |
 | R-003 | Router simplification increases manual-review or refusal rates too sharply | M | M | Keep Tier 2 deterministic coverage and compare against three real transcripts before rollout. |
-| R-004 | Follow-up freshness actions become invisible to operators | M | M | Surface `memory_index_scan` and graph refresh explicitly in planner responses and docs. |
+| R-004 | Follow-up freshness actions become invisible to operators | M | M | Surface `refreshGraphMetadata`, `reindexSpecDocs`, and `runEnrichmentBackfill` explicitly in planner responses and docs. |
 | R-005 | Flag proliferation creates doc or runtime drift | M | M | Centralize flags in `search-flags.ts`, `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md`, and regression tests. |
 
 ---
@@ -338,7 +338,7 @@ Deliver a planner-first save flow that returns structured route, target, legalit
 
 ### Resolved Questions
 - The implementation packet will not replace the canonical atomic writer; it keeps that path as the explicit fallback because atomic promotion and rollback remain load-bearing. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270]
-- The eight-category content-router contract stays intact; only Tier 2 and Tier 3 scope is being trimmed. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22]
+- The eight-category content-router contract stays intact. ADR-006 records the scoped in-file exception: Tier 3 default-disable/manual-review control flow changed, but the category switch plus Tier 1 and Tier 2 dispatch stayed intact. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22]
 - `_memory.continuity` remains part of the save contract, but ownership of simple continuity-only updates does not require the heavyweight default save path. [SOURCE: .opencode/command/memory/save.md:73-77] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:979]
 <!-- /ANCHOR:questions -->
 

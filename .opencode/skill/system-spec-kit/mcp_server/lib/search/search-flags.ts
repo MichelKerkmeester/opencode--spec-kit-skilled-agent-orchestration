@@ -122,7 +122,8 @@ export function isFolderDiscoveryEnabled(): boolean {
 /**
  * Planner-first save mode selection for canonical save flows.
  * Default: 'plan-only'. Set SPECKIT_SAVE_PLANNER_MODE=full-auto to restore
- * the legacy mutation-first behavior, or hybrid for future mixed flows.
+ * the legacy mutation-first behavior. `hybrid` is reserved for future mixed
+ * flows and currently behaves the same as `plan-only`.
  */
 export function resolveSavePlannerMode(): SavePlannerMode {
   const raw = process.env.SPECKIT_SAVE_PLANNER_MODE?.trim().toLowerCase();

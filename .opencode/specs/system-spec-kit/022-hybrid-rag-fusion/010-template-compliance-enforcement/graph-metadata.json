@@ -42,10 +42,6 @@
     "status": "in_progress",
     "key_files": [
       ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
-      ".claude/agents/speckit.md",
-      ".opencode/agent/speckit.md",
-      ".codex/agents/speckit.toml",
-      ".gemini/agents/speckit.md",
       "research/research.md",
       "spec.md",
       "plan.md",
@@ -63,18 +59,6 @@
         "name": "template_compliance_contract.md",
         "kind": "doc",
         "path": ".opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".claude/agents/speckit.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.toml",
-        "kind": "file",
-        "path": ".codex/agents/speckit.toml",
         "source": "derived"
       },
       {
@@ -202,11 +186,23 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Template Compliance",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Agents across all 4 CLI surfaces (Claude Code, Copilot, ChatGPT, Codex) produce structurally non-compliant spec folder documents. A clean-slate rewrite of 20 spec folders (commit b88c07f82) revealed 637 header/anchor structural changes across 54 errors, requiring approximately 270 fix edits. The three dominant failure modes are TEMPLATE_HEADERS (wrong section names, numbering, or order), ANCHORS_VALID (missing, misspelled, or unclosed anchor tags), and SPEC_DOC_INTEGRITY (broken cross-file references). The current validation system runs only after files are written.",
     "created_at": "2026-04-12T09:02:50.283Z",
-    "last_save_at": "2026-04-14T17:11:40.909Z",
+    "last_save_at": "2026-04-15T08:26:16.868Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

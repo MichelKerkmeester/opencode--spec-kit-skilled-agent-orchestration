@@ -1546,7 +1546,6 @@ async function buildCanonicalAtomicPreparedSave(
 
 function validateCanonicalPreparedSave(
   prepared: CanonicalAtomicPrepared,
-  options: { includePostSaveFingerprint?: boolean } = {},
 ): { ok: true; warnings: string[] } | { ok: false; rejection: IndexResult } {
   if (!prepared.validatorPlan) {
     return { ok: true, warnings: [] };
@@ -1565,7 +1564,7 @@ function validateCanonicalPreparedSave(
     { rule: 'CROSS_ANCHOR_CONTAMINATION', contaminationPlan: prepared.validatorPlan.contaminationPlan },
   ];
 
-  if (options.includePostSaveFingerprint && prepared.validatorPlan.postSavePlan) {
+  if (prepared.validatorPlan.postSavePlan) {
     rules.push({ rule: 'POST_SAVE_FINGERPRINT', postSavePlan: prepared.validatorPlan.postSavePlan });
   }
 
@@ -1687,6 +1686,11 @@ function buildAtomicPlannerAdvisories(
   const routeCategory = prepared.routing.routeAs ?? undefined;
   const targetDocPath = prepared.routing.targetDocPath ?? undefined;
   const targetAnchorId = prepared.routing.targetAnchorId ?? null;
+  const templateContractBypassed = shouldBypassTemplateContract(
+    prepared.preparedMemory.sourceClassification,
+    prepared.preparedMemory.sufficiencyResult,
+    prepared.preparedMemory.templateContract,
+  );
 
   for (const warning of warnings) {
     advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
@@ -1732,7 +1736,7 @@ function buildAtomicPlannerAdvisories(
     })));
   }
 
-  if (!prepared.preparedMemory.templateContract.valid) {
+  if (!prepared.preparedMemory.templateContract.valid && templateContractBypassed) {
     advisories.push(serializePlannerAdvisory(buildPlannerAdvisory({
       code: 'TEMPLATE_CONTRACT_ADVISORY',
       message: prepared.preparedMemory.templateContract.violations
@@ -1774,10 +1778,26 @@ function buildAtomicPlannerReadyResult(
 ): AtomicSaveResult {
   const routeTarget = buildAtomicPlannerRouteTarget(prepared);
   const blockers: PlannerBlocker[] = [];
+  const templateContractBypassed = shouldBypassTemplateContract(
+    prepared.preparedMemory.sourceClassification,
+    prepared.preparedMemory.sufficiencyResult,
+    prepared.preparedMemory.templateContract,
+  );
   if (!validation.ok) {
     blockers.push(serializePlannerBlocker(buildPlannerBlocker({
       code: 'SPEC_DOC_STRUCTURE_BLOCKER',
       message: validation.rejection.message ?? validation.rejection.rejectionReason ?? 'Planner blocked canonical save.',
+      routeCategory: routeTarget.routeCategory,
+      targetDocPath: routeTarget.targetDocPath,
+      targetAnchorId: routeTarget.targetAnchorId ?? null,
+    })));
+  }
+  if (!prepared.preparedMemory.templateContract.valid && !templateContractBypassed) {
+    blockers.push(serializePlannerBlocker(buildPlannerBlocker({
+      code: 'TEMPLATE_CONTRACT_BLOCKER',
+      message: prepared.preparedMemory.templateContract.violations
+        .map((violation) => violation.message || violation.code)
+        .join('; '),
       routeCategory: routeTarget.routeCategory,
       targetDocPath: routeTarget.targetDocPath,
       targetAnchorId: routeTarget.targetAnchorId ?? null,
@@ -2339,12 +2359,12 @@ async function processPreparedMemory(
     }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
-    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichmentIfEnabled(
-      database,
-      id,
-      routedParsed,
-      { plannerMode },
-    );
+  const { causalLinksResult, enrichmentStatus, executionStatus } = await runPostInsertEnrichmentIfEnabled(
+    database,
+    id,
+    routedParsed,
+    { plannerMode },
+  );
 
     // BUILD RESULT
     return appendResultWarning(buildIndexResult({
@@ -2360,6 +2380,7 @@ async function processPreparedMemory(
       asyncEmbedding,
       causalLinksResult,
       enrichmentStatus,
+      enrichmentExecutionStatus: executionStatus,
       filePath: routedFilePath,
       routeCategory: routing.routeAs ?? recordIdentity.routeAs ?? undefined,
       mergeMode: routing.mergeModeHint,

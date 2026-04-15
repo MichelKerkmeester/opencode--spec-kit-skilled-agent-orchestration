@@ -197,7 +197,7 @@
     ],
     "causal_summary": "The phase creation workflow breaks when the parent folder lives inside a nested spec tree such as `system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion`. Today there is no `--phase-parent` flag, `--parent` is the only supported flag in phase mode, `resolve_and_validate_spec_path()` validates only the basename against `^[0-9]{3}-[A-Za-z0-9._-]+$`, and `SPECS_DIR` always points to `$REPO_ROOT/specs`. That combination makes append behavior fragile or wrong for `.opencode/specs` phase work.",
     "created_at": "2026-04-12T09:02:50.337Z",
-    "last_save_at": "2026-04-14T17:11:40.992Z",
+    "last_save_at": "2026-04-15T08:26:17.028Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
