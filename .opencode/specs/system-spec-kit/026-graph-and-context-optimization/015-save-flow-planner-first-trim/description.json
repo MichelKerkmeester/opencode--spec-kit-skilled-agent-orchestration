@@ -1,0 +1,23 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim",
+  "description": "Feature Specification: Save Flow Planner-First Trim",
+  "keywords": [
+    "feature",
+    "specification",
+    "save",
+    "flow",
+    "planner-first",
+    "trim"
+  ],
+  "lastUpdated": "2026-04-15T06:01:24.873Z",
+  "specId": "015",
+  "folderSlug": "save-flow-planner-first-trim",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

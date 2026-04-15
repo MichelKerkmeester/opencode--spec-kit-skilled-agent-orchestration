@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/015-save-flow-planner-first-trim",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "015-save-flow-planner-first-trim",
+      "planner-first memory save",
+      "save flow trim",
+      "canonical save fallback",
+      "026-graph-and-context-optimization",
+      "implementation plan",
+      "planner-first save flow",
+      "save path trim",
+      "memory save fallback",
+      "tasks",
+      "planner-first save",
+      "verification checklist"
+    ],
+    "key_topics": [
+      "015-save-flow-planner-first-trim",
+      "planner-first",
+      "memory",
+      "save",
+      "flow",
+      "trim",
+      "canonical",
+      "fallback",
+      "026-graph-and-context-optimization",
+      "implementation",
+      "plan",
+      "path"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/validation-responses.ts",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/pe-gating.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts",
+      ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/api/indexing.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-integration.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "response-builder.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validation-responses.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/validation-responses.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "content-router.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
+        "source": "derived"
+      },
+      {
+        "name": "routing-prototypes.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json",
+        "source": "derived"
+      },
+      {
+        "name": "quality-loop.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts",
+        "source": "derived"
+      },
+      {
+        "name": "save-quality-gate.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "reconsolidation-bridge.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-insert.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pe-gating.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/pe-gating.ts",
+        "source": "derived"
+      },
+      {
+        "name": "chunking-orchestrator.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts",
+        "source": "derived"
+      },
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "indexing.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/api/indexing.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata-parser.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-integration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "content-router.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Save Flow Planner",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "First Trim",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Authored Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 015 turns packet 014's `trim-targeted` research verdict into an implementation-ready refactor plan: make `/memory:save` planner-first by default, keep the canonical atomic writer as an explicit fallback, and move score-heavy or advisory save-time automation out of the hot path. The research is clear that canonical preparation, routed identity, content-router contract, and thin continuity validation remain load-bearing, while Tier 3 routing, quality-loop auto-fix, reconsolidation-on-save, and post-insert enrichment no longer earn default-path cost. [SOURCE: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review/research/research.md:29-31] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852]",
+    "created_at": "2026-04-15T06:00:50.834Z",
+    "last_save_at": "2026-04-15T06:00:50.834Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}
