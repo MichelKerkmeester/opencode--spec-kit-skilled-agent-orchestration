@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-save-flow-backend-relevance-review",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "save flow relevance",
+      "generate-context relevance",
+      "backend proportionality",
+      "save path audit",
+      "memory save simplification",
+      "canonical save backend",
+      "save-flow trim recommendation",
+      "post-retirement save architecture"
+    ],
+    "key_topics": [
+      "save",
+      "flow",
+      "relevance",
+      "generate-context",
+      "backend",
+      "proportionality",
+      "path",
+      "audit",
+      "memory",
+      "simplification",
+      "canonical",
+      "save-flow"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "core/workflow.ts",
+      ".opencode/changelog/01--system-spec-kit/v3.4.1.0.md",
+      ".opencode/command/memory/save.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "spec.md",
+      "research/research.md"
+    ],
+    "entities": [
+      {
+        "name": "workflow.ts",
+        "kind": "code",
+        "path": "core/workflow.ts",
+        "source": "derived"
+      },
+      {
+        "name": "v3.4.1.0.md",
+        "kind": "doc",
+        "path": ".opencode/changelog/01--system-spec-kit/v3.4.1.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "save.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/save.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Seed",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Flow Backend Relevance Review Post",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Folder Retirement",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "less",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli-codex",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "better",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Flow Backend Relevance Review",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Executive Summary The",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Subsystem Analysis",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Proposed Minimal Replacement Design Recommendation",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Hypothesis (to test in this research, not asserted as truth): maybe an operator-visible command with better output could let the AI manually update canonical docs with less machinery, and some of the save-flow code is now dead weight.",
+    "created_at": "2026-04-15T05:20:08.483Z",
+    "last_save_at": "2026-04-15T05:20:08.483Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "research/research.md"
+    ]
+  }
+}

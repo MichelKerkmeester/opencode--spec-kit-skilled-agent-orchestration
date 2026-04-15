@@ -1,0 +1,408 @@
+{
+  "schemaVersion": "1.0",
+  "topic": "Save-flow backend relevance post-memory-folder retirement",
+  "lastUpdatedAt": "2026-04-15T09:54:00Z",
+  "topLineRecommendation": {
+    "verdict": "trim-targeted",
+    "summary": "Keep the canonical atomic writer, routed identity, and thin continuity contract; trim or defer Tier 3 routing, reconsolidation, save-time enrichment, and score-heavy quality layers from the default save path."
+  },
+  "openQuestions": [],
+  "answeredQuestions": [
+    {
+      "id": "Q1",
+      "text": "Load-bearingness per subsystem (what breaks if removed?)",
+      "answer": "Only canonical routing, atomic promotion/rollback, routed record identity, and thin continuity validation are strictly load-bearing. Most other save-time features are optional or deferable.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:176",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852"
+      ]
+    },
+    {
+      "id": "Q2",
+      "text": "Command substitution feasibility (can a redesigned /memory:save replace the automation?)",
+      "answer": "Yes. A planner-first /memory:save can reuse the existing dry-run/preflight surface, let the AI apply canonical-doc edits, and reserve auto-writer/index refresh behavior for optional follow-up steps.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2191",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2276",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2501"
+      ]
+    },
+    {
+      "id": "Q3",
+      "text": "Quality gate value (which gates prevent real defects today?)",
+      "answer": "Hard structural and canonical-doc legality checks still prevent malformed saves. Weighted scoring, trigger quotas, and semantic dedup are helpful but oversized for the remaining contract.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1517",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:398",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:86"
+      ]
+    },
+    {
+      "id": "Q4",
+      "text": "Semantic indexing dependency (save-side vs retrieval-side concerns)",
+      "answer": "Immediate reindexing matters for freshness, but canonical-doc mutation does not depend on it and it can be separated from the write core.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1247",
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1382"
+      ]
+    },
+    {
+      "id": "Q5",
+      "text": "Graph-metadata refresh necessity (tied to save vs standalone?)",
+      "answer": "Graph-metadata refresh is derived-value and can be run separately because the refresh API derives from canonical docs and preserves manual fields.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:870",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:979",
+        ".opencode/skill/system-spec-kit/scripts/tests/graph-metadata-refresh.vitest.ts:55"
+      ]
+    },
+    {
+      "id": "Q6",
+      "text": "Entity extraction + cross-doc linking value (does it earn its cost?)",
+      "answer": "These features add retrieval-side metadata, but because they are optional and non-blocking they are better deferred to indexing/backfill than kept on the hot save path.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:98",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts:67",
+        ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:191"
+      ]
+    },
+    {
+      "id": "Q7",
+      "text": "Reconsolidation-bridge scope (supersede / reinforce / create-linked proportionality)",
+      "answer": "Reconsolidation-on-save is disproportionate because it requires flags, embeddings, and checkpoints, then degrades to warnings instead of guarding correctness.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:165",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:181"
+      ]
+    },
+    {
+      "id": "Q8",
+      "text": "Routing-prototypes classifier scope (is the 3-tier design over-fitted?)",
+      "answer": "Yes. The 8-category contract still earns its keep, but the current Tier 2 library size and optional Tier 3 model path are over-fitted for the simplified canonical routing problem.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:554",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:569"
+      ]
+    },
+    {
+      "id": "Q9",
+      "text": "Trigger-phrase harmonization value (at-save vs at-indexing)",
+      "answer": "Trigger normalization still has value, but the save path does not need hard synchronous enforcement when indexing can harmonize lazily.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:442",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1245"
+      ]
+    },
+    {
+      "id": "Q10",
+      "text": "Continuity sync behaviour (save flow vs direct Edit by AI)",
+      "answer": "The continuity block is important, but repo governance explicitly allows direct AI edits for continuity-only updates, so universal save-flow ownership is not required.",
+      "evidence": [
+        "AGENTS.md:52",
+        "AGENTS.md:208",
+        ".opencode/command/memory/save.md:75",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:979"
+      ]
+    }
+  ],
+  "keyFindings": [
+    {
+      "id": "KF-001",
+      "title": "The script wrapper no longer owns legacy memory-file writes",
+      "verdict": "workflow-side trim already happened",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1253",
+        ".opencode/changelog/01--system-spec-kit/v3.4.1.0.md:29"
+      ]
+    },
+    {
+      "id": "KF-002",
+      "title": "Canonical atomic preparation plus routed identity are the true write core",
+      "verdict": "load-bearing",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:89",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270"
+      ]
+    },
+    {
+      "id": "KF-003",
+      "title": "The router contract remains useful but the classifier stack is oversized",
+      "verdict": "keep categories, trim classifier layers",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:598"
+      ]
+    },
+    {
+      "id": "KF-004",
+      "title": "Save-time quality enforcement mixes real guards with ceremonial scoring",
+      "verdict": "trim targeted layers",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:398",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:602",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:566"
+      ]
+    },
+    {
+      "id": "KF-005",
+      "title": "Indexing and graph refresh are separable freshness features",
+      "verdict": "partial-value",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1382",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:979"
+      ]
+    },
+    {
+      "id": "KF-006",
+      "title": "Continuity contract matters more than save-flow ownership",
+      "verdict": "keep validator, relax ownership",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852",
+        "AGENTS.md:52",
+        ".opencode/command/memory/save.md:75"
+      ]
+    },
+    {
+      "id": "KF-007",
+      "title": "Post-insert enrichment is optional by construction",
+      "verdict": "defer by default",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:55",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:181"
+      ]
+    },
+    {
+      "id": "KF-008",
+      "title": "A planner-first /memory:save is achievable without rebuilding the stack",
+      "verdict": "recommended direction",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2191",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2346"
+      ]
+    }
+  ],
+  "ruledOut": [
+    {
+      "id": "RO-001",
+      "text": "Full redesign of the canonical writer",
+      "reason": "Atomic promotion, rollback, and routed identity are already strong and should be preserved.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:176"
+      ]
+    },
+    {
+      "id": "RO-002",
+      "text": "Treat generate-context.js as dead",
+      "reason": "The wrapper still enforces explicit target authority and structured-input validation.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js:86",
+        ".opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts:106"
+      ]
+    },
+    {
+      "id": "RO-003",
+      "text": "Keep graph refresh synchronously bound to every save",
+      "reason": "Graph metadata is derived from canonical docs and has a standalone refresh API.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:870",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:979"
+      ]
+    },
+    {
+      "id": "RO-004",
+      "text": "Drop continuity entirely in a minimal flow",
+      "reason": "Resume and packet-local stop-state still depend on `_memory.continuity`.",
+      "evidence": [
+        ".opencode/command/memory/save.md:74",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:877"
+      ]
+    }
+  ],
+  "subsystemVerdicts": {
+    "generate_context_cli": {
+      "verdict": "partial-value",
+      "recommendation": "keep trimmed",
+      "rationale": "Useful for explicit target authority and structured-input normalization, but not the canonical write engine.",
+      "risks": [
+        "Losing explicit CLI target precedence would make operator intent ambiguous."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js:48",
+        ".opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts:55"
+      ]
+    },
+    "workflow_orchestrator": {
+      "verdict": "partial-value",
+      "recommendation": "trim",
+      "rationale": "The workflow still refreshes graph metadata and reindexes canonical docs, but no longer owns legacy artifact writes.",
+      "risks": [
+        "If trimmed too far, save-time freshness for graph metadata and index visibility will lag."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1253",
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1382"
+      ]
+    },
+    "canonical_atomic_writer": {
+      "verdict": "load-bearing",
+      "recommendation": "keep",
+      "rationale": "Canonical route planning, anchor merge, validation, promotion, rollback, and post-write record creation are the save core.",
+      "risks": [
+        "Removing it would risk corrupted docs and non-atomic failures."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1223",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/atomic-index-memory.ts:270"
+      ]
+    },
+    "routed_record_identity": {
+      "verdict": "load-bearing",
+      "recommendation": "keep",
+      "rationale": "Canonical file path plus anchor-aware identity prevents append-only versioning and dedup from collapsing across targets.",
+      "risks": [
+        "Dropping identity hints would create same-path collisions and lineage errors."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:89",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:176"
+      ]
+    },
+    "content_router_core": {
+      "verdict": "load-bearing",
+      "recommendation": "keep",
+      "rationale": "The save path still needs category, target doc, anchor, and merge-mode planning.",
+      "risks": [
+        "Over-simplifying route planning would misplace durable content."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:22",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1260"
+      ]
+    },
+    "routing_classifier_stack": {
+      "verdict": "over-engineered",
+      "recommendation": "trim",
+      "rationale": "Tier 2 prototype breadth plus optional Tier 3 model calls exceed the now-stable 8-category routing problem.",
+      "risks": [
+        "Trimming too aggressively could increase manual-review cases if Tier 1 rules are not expanded appropriately."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:554",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:569"
+      ]
+    },
+    "quality_loop": {
+      "verdict": "over-engineered",
+      "recommendation": "replace",
+      "rationale": "Auto-fix retries, trigger quotas, and token-budget trimming are heavier than the remaining canonical-doc contract needs.",
+      "risks": [
+        "If removed entirely without a lighter replacement, trigger quality may drift."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:86",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:566"
+      ]
+    },
+    "save_quality_gate": {
+      "verdict": "partial-value",
+      "recommendation": "trim",
+      "rationale": "Structural and legality checks matter, but weighted content scoring and semantic dedup can be softened or moved out of the default hot path.",
+      "risks": [
+        "Weakening structural rules would allow malformed canonical saves."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:398",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts:817"
+      ]
+    },
+    "semantic_indexing_reindex": {
+      "verdict": "partial-value",
+      "recommendation": "keep decouplable",
+      "rationale": "Important for immediate retrieval freshness, but canonical mutation can succeed without it.",
+      "risks": [
+        "Decoupling without a visible follow-up step could leave operators thinking a save is searchable when it is not yet indexed."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/scripts/core/workflow.ts:1364",
+        ".opencode/command/memory/save.md:123"
+      ]
+    },
+    "graph_metadata_refresh": {
+      "verdict": "partial-value",
+      "recommendation": "keep decouplable",
+      "rationale": "Derived packet metadata is useful, but the refresh can run explicitly because it recomputes from canonical docs.",
+      "risks": [
+        "Delayed refresh can briefly stale packet graph surfaces."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:870",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts:979"
+      ]
+    },
+    "thin_continuity_sync": {
+      "verdict": "load-bearing",
+      "recommendation": "keep",
+      "rationale": "The continuity schema and markdown upsert path are still central to resume-safe packet state.",
+      "risks": [
+        "Relaxing validation would degrade packet recovery quality."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:852",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/continuity/thin-continuity-record.ts:979"
+      ]
+    },
+    "pe_gating": {
+      "verdict": "partial-value",
+      "recommendation": "trim",
+      "rationale": "Useful for row-level duplicate arbitration and lineage, but not required to write correct canonical docs.",
+      "risks": [
+        "Dropping it without preserving same-path lineage could grow duplicate indexed rows."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/pe-gating.ts:63",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1815"
+      ]
+    },
+    "reconsolidation_bridge": {
+      "verdict": "over-engineered",
+      "recommendation": "replace",
+      "rationale": "Checkpoint-gated reconsolidation and assistive logging add cost without guarding canonical correctness.",
+      "risks": [
+        "Removing it may reduce automatic near-duplicate cleanup for indexed rows."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:165",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:181"
+      ]
+    },
+    "chunking_orchestrator": {
+      "verdict": "partial-value",
+      "recommendation": "keep niche",
+      "rationale": "Needed only for oversized content; it should stay as a fallback instead of shaping the default path.",
+      "risks": [
+        "Removing it would leave no safe path for very large saves."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts:140",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1839"
+      ]
+    },
+    "post_insert_enrichment": {
+      "verdict": "over-engineered",
+      "recommendation": "defer",
+      "rationale": "Entities, summaries, entity linking, and graph lifecycle are already optional best-effort steps and do not need to block the default save path.",
+      "risks": [
+        "Deferring all enrichment without a background or explicit follow-up path would reduce immediate graph/search richness."
+      ],
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:55",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts:166"
+      ]
+    }
+  }
+}
