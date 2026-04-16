@@ -222,8 +222,6 @@ Codex CLI note: if the MCP server runs in a restricted or read-only repo context
 
 ### 3.1 SPEC FOLDER WORKFLOWS
 
-&nbsp;
-
 #### What Spec Folders Are
 
 A spec folder is a numbered directory (like `specs/042-my-feature/`) that holds the documentation for a single unit of work. Think of it as a project folder for an AI conversation -- it keeps the specification, plan, task list and implementation summary together so the reasoning behind every change is preserved. For packet roots and direct child phases, closeout can also produce packet-local changelog entries that live beside the packet instead of only in the global release stream.
