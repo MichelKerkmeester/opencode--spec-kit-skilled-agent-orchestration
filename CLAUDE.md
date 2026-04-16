@@ -134,6 +134,26 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 - **Session persistence:** Once the user answers Gate 3 in a conversation, that answer applies for the ENTIRE session. Do NOT re-ask on subsequent messages unless the user explicitly starts a completely different task/feature. Follow-up messages, implementation steps, and phase transitions within the same task reuse the original answer.
 - **Re-ask ONLY when:** the user says "new task" / "different feature" / explicitly names a different spec folder, OR the user asks you to re-ask.
 
+#### GATE 4: SKILL-OWNED WORKFLOW ENFORCEMENT [HARD] BLOCK
+Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "convergence", "autoresearch", "research loop", "review loop", iterative investigation/audit at scale (>5 iterations).
+
+**RULE:** Iterative investigation or review loops MUST use the canonical skill-owned command surface:
+- Deep research → `/spec_kit:deep-research :auto`
+- Deep review → `/spec_kit:deep-review :auto`
+
+**FORBIDDEN** (these lose skill-owned state, convergence detection, delta tracking, and auditability):
+- Custom bash dispatchers or parallel drivers for iterations
+- Direct cli-copilot / cli-codex / cli-gemini / cli-claude-code invocation inside a loop
+- Manually managing iteration state in `/tmp` or anywhere outside the skill's `research/` or `review/` folder
+- Skipping the state machine: `deep-research-state.jsonl`, `deep-research-config.json`, `deltas/`, `prompts/`, `logs/`
+- Using the `@deep-research` or `@deep-review` agent directly via Task tool for iteration loops — only the command-owned YAML workflow may dispatch these
+
+**Rationale:** `sk-deep-research` and `sk-deep-review` own append-only state, convergence detectors, per-iteration deltas, dispatch invariants (iteration+delta both required), and the reducer (`reduce-state.cjs`). Bypassing them loses: audit trail, convergence signals, deduplication, dispatcher accountability, lifecycle events (new/resume/restart).
+
+**If the user specifies the executor CLI** (e.g. "use cli-copilot gpt-5.4 high"), that is the HOW — it still runs INSIDE the skill's workflow. Never let the executor name override the skill-owned route.
+
+**Tiebreaker for skill advisor ambiguity:** When `command-spec-kit` matches alongside `cli-*` for iteration phrases, `command-spec-kit` wins. The CLI executor is a tool inside the command's workflow, not a replacement for it.
+
 #### CONSOLIDATED QUESTION PROTOCOL
 When multiple inputs are needed, consolidate into a SINGLE prompt - never split across messages. Include only applicable questions; omit when pre-determined.
 - **Round-trip optimization** - Only 1 user interaction needed for setup

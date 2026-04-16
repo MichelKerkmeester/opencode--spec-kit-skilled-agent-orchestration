@@ -1622,6 +1622,60 @@ def filter_recommendations(
     return filtered
 
 
+# Iteration-loop phrases that imply skill-owned workflow (deep-research / deep-review)
+# When these match AND command-spec-kit is a candidate alongside cli-*, promote the command.
+# See CLAUDE.md / AGENTS.md Gate 4: SKILL-OWNED WORKFLOW ENFORCEMENT.
+ITERATION_LOOP_PHRASES = (
+    "deep-research", "deep research", "deep-review", "deep review",
+    "autoresearch", "auto research", "research loop", "review loop",
+    "iterative research", "iterative review", "autonomous research", "autonomous review",
+    "iterations of", ":auto", "convergence detection",
+    "/spec_kit:deep-research", "/spec_kit:deep-review",
+    "spec_kit:deep-research", "spec_kit:deep-review",
+)
+
+
+def _apply_iteration_loop_tiebreaker(
+    recommendations: List[Dict[str, Any]],
+    prompt_lower: str,
+) -> None:
+    """Promote command-spec-kit over cli-* when iteration-loop phrases are present.
+
+    Background: when a user asks to run iterations of deep-research or deep-review with
+    a specific CLI executor (e.g. "use cli-copilot for 50 iterations"), the skill advisor
+    previously returned command-spec-kit and cli-copilot with similar confidence. Picking
+    cli-copilot as the primary route bypasses the skill's state machine, convergence
+    detection, and deltas — see the post-mortem in Phase 016 FINAL synthesis.
+
+    Rule: if the prompt contains iteration-loop phrases AND both a command-spec-kit
+    recommendation and a cli-* skill recommendation are present, penalize the cli-*
+    confidence so the command wins the primary slot. The CLI executor is still a valid
+    tool INSIDE the command's YAML workflow — it just can't BE the workflow.
+    """
+    if not prompt_lower:
+        return
+
+    has_iteration_phrase = any(phrase in prompt_lower for phrase in ITERATION_LOOP_PHRASES)
+    if not has_iteration_phrase:
+        return
+
+    has_command = any(r.get("skill") == "command-spec-kit" for r in recommendations)
+    cli_recs = [r for r in recommendations if r.get("skill", "").startswith("cli-")]
+    if not has_command or not cli_recs:
+        return
+
+    # Penalize cli-* confidence by 0.20 (capped at 0.60 floor) so command-spec-kit
+    # ranks ahead. This preserves the cli-* as an available tool for the command's
+    # internal use but removes it as a competing primary route.
+    for rec in cli_recs:
+        current = rec.get("confidence", 0.0)
+        penalized = max(0.60, current - 0.20)
+        if penalized < current:
+            rec["confidence"] = round(penalized, 2)
+            reason = rec.get("reason", "")
+            rec["reason"] = f"{reason} [iteration-loop tiebreaker: -0.20; command-spec-kit owns loop, cli-* is tool inside it]"
+
+
 # ───────────────────────────────────────────────────────────────
 # 4. ANALYSIS
 # ───────────────────────────────────────────────────────────────
@@ -1788,6 +1842,13 @@ def analyze_request(
         total_matches = recommendation.get("_num_matches", 1)
         if total_matches > 0 and graph_boost_count / total_matches > 0.5:
             recommendation["confidence"] = round(recommendation["confidence"] * 0.90, 2)
+
+    # Iteration-loop tiebreaker: when the query mentions iterative investigation/review
+    # phrases AND command-spec-kit matches alongside a cli-* executor skill, promote
+    # command-spec-kit. The CLI executor is a tool INSIDE the command's workflow, not
+    # a replacement for it. Prevents custom bash dispatchers bypassing skill-owned state.
+    # See CLAUDE.md / AGENTS.md Gate 4: SKILL-OWNED WORKFLOW ENFORCEMENT.
+    _apply_iteration_loop_tiebreaker(recommendations, prompt_lower)
 
     for recommendation in recommendations:
         recommendation["passes_threshold"] = passes_dual_threshold(

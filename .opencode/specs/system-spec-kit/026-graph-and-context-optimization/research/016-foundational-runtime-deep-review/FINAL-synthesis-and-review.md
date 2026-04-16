@@ -260,7 +260,53 @@ Phase 017 should treat the four P0 candidates as **anchor workstreams** (one per
 | R50-001 | `AGENTS.md:182-186`; `spec_kit_deep-research_auto.yaml:159-167,521-526`; `deep-research-reducer.vitest.ts:53-58,145-146,264-270,286-295` | P1 | Gate 3 hard-block trigger list has false-negative for deep-research `resume` write path; `resume` is a tested write flow producing `iteration-NNN.md` + JSONL appends | Packet writes without matching trigger words; spec-folder setup may be skipped |
 | R50-002 | `097-async-ingestion-job-lifecycle-p0-3.md:35-37`; `144-advisory-ingest-lifecycle-forecast.md:35-36`; `manual-playbook-runner.ts:438-445,544-548,612-616`; `manual_testing_playbook.md:194-199`; `002-full-playbook-execution/spec.md:131-134` | P2 | Live corpus contains two incompatible argument dialects for the same tool family (`memory_ingest_status({jobId})` vs `memory_ingest_status({ jobId:"<job-id>" })`); shorthand form depends on undefined JS scoping | Runner can crash or silently skip lifecycle checks on documentation-quality edits |
 
-### 2.3 Deduplication clusters (canonical view, cumulative through iteration 50)
+### 2.3 Per-file root-cause analysis — top 10 files
+
+For the 10 files with the most distinct issues (from §9.3), the dominant failure pattern and its root cause:
+
+**1. `hooks/claude/session-stop.ts` (10 distinct issues).** Split-brain autosave + success-shaped durability signals.
+
+Root cause: `processStopHook()` captures `stateBeforeStop = loadState(sessionId)` once, then makes three independent `recordStateUpdate()` calls for different fields (transcriptOffset, producerMetadata, sessionSummary/specFolder), then hands off to `runContextAutosave()` which re-reads state from disk. Every interleaved writer can change the composition of what autosave actually saves. On top of this, the result type `SessionStopProcessResult` exports `producerMetadataWritten` and `touchedPaths` as machine-readable fields, but both are attempted-write flags with no durability re-verification. Combined with `runContextAutosave()` silently skipping when inputs are missing (R13-001), proceeding after `saveState()` failure (R33-003), and never exposing autosave outcome (R39-001), this is the single most concentrated node of distinct issues in the codebase. Fix: S2 (HookState + session-stop overhaul), 2 weeks.
+
+**2. `hooks/claude/hook-state.ts` (9 distinct issues).** Unlocked RMW + TOCTOU + unvalidated parse.
+
+Root cause: Three structurally distinct race classes converge in one file. (a) Writer races: `filePath + '.tmp'` deterministic temp path means two writers for the same session swap bytes before rename (R31-001). (b) Reader races: `loadMostRecentState()` captures mtime from `statSync()` before reading JSON payload, so a concurrent rename mates freshness from one generation with content from another (R36-001). (c) Cleanup races: `cleanStaleStates()` stats an old file, a live writer renames a new generation onto the same path, and `unlinkSync()` deletes the fresh generation (R40-001). Additionally, `JSON.parse(raw) as HookState` has no runtime validation (R21-002), `clearCompactPrime()` clears by session ID not payload identity (R33-001), and the directory scan aborts on one bad sibling (R38-001). Fix: S2 overhaul unifies all of these.
+
+**3. `handlers/save/reconsolidation-bridge.ts` (8 distinct issues).** Pre-transaction snapshots driving conflict/complement/assistive.
+
+Root cause: `runReconsolidationIfEnabled()` runs `vectorSearch()` + scope filtering before the SQLite writer transaction begins. The result set is treated as authoritative when `executeConflict()` / `executeComplement()` / assistive recommendation runs inside the transaction, even though the underlying rows could have changed. Specifically: (a) conflict has no predecessor CAS (R31-003, R35-001); (b) complement has no duplicate re-check (R34-002); (c) assistive computes recommendations from a second independent pre-transaction search (R36-002, R37-003); (d) per-candidate `readStoredScope()` runs fresh per candidate with no batching or transactional guard (R39-002, R40-002). Merge is the counter-example: it DOES have predecessor `updated_at` + `content_hash` CAS. Fix: S1 (transactional reconsolidation), 2 weeks.
+
+**4. `handlers/save/post-insert.ts` (6 distinct issues).** `enrichmentStatus` boolean collapse.
+
+Root cause: Every `enrichmentStatus` field is set via `true` literal rather than by inspecting the helper's return value. Five different helper results (success, feature-disabled, "nothing to do," deferred, failed) all collapse to `true`. The response builder (R21-001) then flattens any `false` booleans to a single generic warning string. Downstream callers and automation cannot mechanically distinguish "re-run work" from "accept legitimate no-op." Fix: M13 (enum-valued status map), 1 week; test migration ~2 days.
+
+**5. `handlers/code-graph/query.ts` (6 distinct issues).** Readiness fail-open + vocabulary divergence.
+
+Root cause: `ensureCodeGraphReady()` exceptions are swallowed at the handler boundary (R3-002); unsupported `edgeType` values return ok with empty result (R12-002); subject resolution fallback silently degrades unresolved subjects to raw paths (R11-003); transitive traversal bypasses the one-hop operation validator (R16-001); dangling edges surface as normal relationships (R17-001); readiness vocabulary diverges from bootstrap (query says `empty`, bootstrap says `missing`, R23-001); and `detectorProvenance` is DB-global (R18-001), so empty results advertise `structured`. The file is a concentration point for Domain 1 silent-fail-open + Domain 2 state-promotion. Fix: Quick wins #8, #13, #14, #16, #17 plus M13 propagation; ~1 week.
+
+**6. `skill_advisor.py` (5 distinct issues).** Invisible-discard + prefix collapse + disambiguation gap.
+
+Root cause: The routing toolchain is fully wired but terminates before scoring (R43-001, R44-001). `intent_signals` are compiled from `graph-metadata.json`, stored in SQLite, deserialized at load time into an in-RAM `signals` map — and then no consumer reads the map in `analyze_request()`. Scoring uses only hard-coded `INTENT_BOOSTERS`, `MULTI_SKILL_BOOSTERS`, and `PHRASE_INTENT_BOOSTERS` tables plus graph topology boosts. On top of this, `COMMAND_BRIDGES` registers only generic prefixes (`/spec_kit`, `spec_kit:`), so all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority = 2` (R46-001). Ranking stability is absent (R45-002: deep-research and review prompts tied within 0.02). Unilateral `conflicts_with` silently promotes to bilateral penalty (R46-002). Fix: S4 (skill routing trust chain), ~1 week.
+
+**7. `manual-playbook-runner.ts` (4 distinct issues).** `Function(...)` eval + silent drop + inconsistent argument dialects.
+
+Root cause: `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`, which calls `Function(\`return (${replaced});\`)()` with no parser or escaping layer (R41-004). `substitutePlaceholders()` injects `runtimeState.lastJobId` — extracted from prior handler payloads — into the raw string before evaluation (R46-003). So the code string is repository markdown + live API return values. Additionally, `parseScenarioDefinition()` returns null on parse failure and `main()` filters nulls before coverage computation; 10/291 active scenarios were unparseable on 2026-04-16 (R45-004). The live corpus has two incompatible argument dialects (`{ jobId:"<job-id>" }` vs `{jobId}`, R50-002). Fix: S6 (typed step executor + schema-validated fixtures), ~1.5 weeks.
+
+**8. `skill_graph_compiler.py` (4 distinct issues).** Advisory validation + warning amnesia + 2-node-only cycle check + silent `conflicts_with` promotion.
+
+Root cause: `validate_edge_symmetry()` covers `depends_on`/`prerequisite_for`/`siblings` but never inspects `conflicts_with` (R46-002). `validate_dependency_cycles()` only detects two-node reciprocal edges (R49-003; `a → b → c → a` passes `--validate-only`). Topology warnings (symmetry, weight-band, weight-parity, orphan-skill) are printed during compilation but dropped from the serialized graph (R45-003). `health_check()` reports `status: "ok"` whenever one real skill is discovered and the graph loads, regardless of warning state. The CLI returns success exit code when only warnings are present (R41-003). Fix: Quick wins #4, #5, #6 + S4 promotion to hard errors; ~3 days.
+
+**9. `lib/graph/graph-metadata-parser.ts` (4 distinct issues).** Legacy laundering + temp-path collision.
+
+Root cause: `validateGraphMetadataContent()` retries primary-parse failure through `parseLegacyGraphMetadataContent()` and returns `{ ok: true, metadata, errors: [] }` when legacy validates (R11-002). No migration marker is carried forward. Downstream, `refreshGraphMetadataForSpecFolder()` loads this as authoritative existing metadata, merges with freshly-derived metadata, and rewrites as canonical current JSON (R21-003). `readDoc()` collapses I/O failure into `null`; `deriveStatus()` then reinterprets missing docs as `planned`/`complete` (R13-002). Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()` (R20-002). Temp-file path uses `${canonicalFilePath}.tmp-${process.pid}-${Date.now()}`, which collides at millisecond precision (R31-004). Fix: S3 (migration propagation), 1 week; plus quick-win #15 for temp path.
+
+**10. `spec_kit_plan_auto.yaml` / `_confirm.yaml` (4 distinct issues).** `when:` overload + untyped boolean DSL + vocabulary fragmentation.
+
+Root cause: Three independent fragmentation points coexist in the plan workflow. (a) Vocabulary token drift: local `folder_state` includes `populated`, canonical `intake-contract.md` uses `populated-folder` (R41-001). (b) Untyped boolean DSL: `when: "intake_only == TRUE"` with no pinned grammar for uppercase literals (R42-001, R43-002, R44-003). (c) Two-layer state machine flattened in top-level docs: `folder_state` local classifier maps to canonical `start_state` via YAML emission; both fields emit on `intake_triggered`/`intake_completed`; `SKILL.md` and `README.md` reference only `folder_state` (R47-002). Additionally, the `when:` key is overloaded for both executable predicates AND prose timing notes (R48-002, R49-002). Fix: S7 (YAML predicate grammar + vocabulary alignment), 1.5 weeks.
+
+---
+
+### 2.4 Deduplication clusters (canonical view, cumulative through iteration 50)
 
 The 129 raw findings compress to approximately **63 distinct issues** after merging. The cluster table below preserves all prior clusters and adds the Domain 4 additions from iterations 48–50.
 
@@ -455,6 +501,71 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 
 ---
 
+### 3.7 Reinforcement chains — why each P0 candidate's component findings compound
+
+The P0 composites are not simple unions of constituent findings. Each is an **interaction effect** where one finding unmasks another or amplifies its blast radius. The full reinforcement map:
+
+**P0-A Chain.** R21-002 (unvalidated hook-state parse) is the gateway. If it stood alone, one corrupt file would produce degraded prompt replay — annoying but not systemic. But:
+- R25-004 extends R21-002 across five hook entrypoints, so one corrupt file reaches Claude session-prime + Claude session-stop + Gemini session-prime + Gemini compact-inject + Claude compact-cache.
+- R28-001 ensures that when R21-002's null return fires, the stop hook re-parses the transcript from offset 0.
+- R29-001 proves the supposed `schemaVersion` guard cannot catch R21-002's drift because the persisted `HookState` has no version field.
+- R33-001 adds a second independent path to corruption: even a clean hook-state file can be silently deleted by `clearCompactPrime()` when overlap occurs.
+- R36-001 adds a third path: even a clean file on disk can produce torn reads if rename happens between `statSync()` and `readFileSync()`.
+- R31-001 and R33-003 add a fourth: even a clean read can produce corrupted writes because `updateState()` has no persistence check.
+- R38-001 and R38-002 close the recovery and cleanup lanes: a single transient failure aborts the whole sibling scan or cleanup sweep.
+
+The interaction: **ten independent mechanisms all produce the same silent failure signal.** Fix any one in isolation and the other nine continue to produce the failure. This is why the remediation plan (A1–A8) addresses them as one coherent overhaul, not individually.
+
+**P0-B Chain.** R31-003 (conflict without CAS) is the core corruption engine. Alone it would allow lost updates on conflict — bad but bounded. But:
+- R35-001 extends this into *forked lineage*: `insertSupersedesEdge()` deduplicates only by `(source_id, target_id, relation)`, so two saves with different new memory IDs can both supersede the same predecessor, producing two "current successors" that violate the memory graph's core invariant.
+- R32-003 adds a governance-scope dimension: if the predecessor has been retagged out of scope between search and commit, the conflict proceeds anyway.
+- R34-002 adds the complement path: even without conflict, two saves can both proceed as complement when they should have merged, producing near-duplicate rows.
+- R36-002 and R37-003 add the assistive-recommendation path: advisory output can target already-superseded memories.
+- R39-002 and R40-002 add the per-candidate scope-read path: the candidate universe itself is mixed-snapshot because `readStoredScope()` runs outside the writer transaction.
+
+The interaction: **the conflict path, complement path, and assistive path all make pre-transaction decisions that are authoritative post-transaction.** Merge is the lone well-designed path; the other three all share the same root flaw. B1 adds the missing CAS to conflict; B2–B4 propagate the transactional protection to the other paths.
+
+**P0-C Chain.** R11-002 (legacy-as-success) is the entry point. Alone it would produce "silent legacy acceptance" — a documentation gap at worst. But:
+- R20-002 stamps the legacy-recovered content with freshly-minted `created_at`/`last_save_at`, erasing the original timestamp evidence. Now the recovered file looks new.
+- R13-002 adds a separate path: transient I/O failures produce `status: 'planned'`/`'complete'` rather than `'unknown'`, so consumers cannot distinguish "no doc" from "I/O failed." Combined with R11-002, corrupted files that trigger both paths look like freshly-authored clean packets.
+- R21-003 rewrites the recovered content as canonical current JSON at the persistence layer via `refreshGraphMetadataForSpecFolder()`. The corruption evidence is erased from disk.
+- R22-002 assigns `qualityScore: 1` and empty `qualityFlags: []` through the `memory-parser` fallback path, making the recovered content indistinguishable from real high-quality content.
+- R23-002 completes the pipeline by applying +0.12 boost in stage-1 candidate generation, so the recovered content outranks legitimate spec docs.
+
+The interaction: **six independent layers erase the corruption signal AND upgrade retrieval priority**. This is why "laundering" is the accurate term — the corrupt input gets laundered through the pipeline into a stronger contract than the input justified. C1 propagates a `migrated: true` marker through the entire chain so the boost can be reversed at the ranking layer.
+
+**P0-D Chain.** R40-001 (TOCTOU cleanup) is the trigger. Alone it produces "sometimes cleanup deletes a fresh file" — noticeable but recoverable. But:
+- R38-001 ensures that after R40-001 deletes the fresh state, the next `loadMostRecentState()` likely returns `null` because the all-or-nothing try block aborts on the first sibling failure (and the freshly-deleted file produces such a failure).
+- R37-001 ensures that when `loadState()` returns null, the `storeTokenSnapshot()` path writes a transient `lastTranscriptOffset: 0` sentinel. If a second stop hook is concurrent, it reads the zero and re-parses the entire transcript.
+- R33-002 ensures that without a `Math.max()` monotonicity guard, the re-parsed offset can stick — a later stop hook with the correct offset can still lose to the "zero-read" stop hook under ordering.
+
+The interaction: **a routine `--finalize` cleanup + one concurrent stop hook + one bad sibling file + one subsequent stop hook = continuity loss + inflated token counts + indistinguishability from cold start**. None of the four constituent findings is independently P0-worthy; together they are a systemic failure triggered by normal maintenance.
+
+---
+
+### 3.8 Why only four P0 candidates (and not more)
+
+Twelve additional composite candidates were considered but did not meet the P0 bar after review:
+
+| Candidate | Constituent findings | Why not P0 |
+| --------- | -------------------- | ---------- |
+| Stop-hook success-flag durability overstatement | R34-001, R35-002, R33-003, R33-002, R37-001 | Overlaps with P0-A and P0-D; folded into both remediation plans. The overstatement is consumer-visible but recoverable by re-reading hook-state. |
+| Domain 4 routing misdirection | R46-001, R43-001, R44-001, R42-002, R41-003, R46-002 | Watch-priority-1; upgrade when `command-spec-kit` Gate-3 semantics are resolved. |
+| Playbook runner `Function(...)` eval expansion | R41-004, R45-004, R46-003, R50-002 | Watch-priority-2; dev/CI isolation contains blast radius. Upgrade if external payload influence is introduced. |
+| Trust-state vocabulary collapse | R9-001, R30-001, R30-002, R26-002 | Structural but not data-integrity. Fixed via M8; impacts operator visibility more than correctness. |
+| `post-insert.ts` enrichmentStatus boolean collapse | R8-001 (+ 10 related) | Structural refactor (M13) resolves; not data-integrity. Affects recovery semantics more than correctness. |
+| Response-builder step-detail erasure | R21-001, R24-001 | Operator-visible only; recoverable by other means. |
+| `session_bootstrap`/`session_resume` self-contradictory payload | R30-001 | Included in Trust-state vocabulary group; not independently P0. |
+| Test fixtures canonize degraded contracts | R25-001 through R25-004, R26-001 | Testing concern; no direct runtime effect. Required countermeasure during structural refactors. |
+| `/tmp/save-context-data.json` cross-runtime collision | R31-005, R32-005, R35-003, R36-003 | Documented hazard at four surfaces; operators already know to avoid it. Quick-win remediation resolves without structural change. |
+| Graph-metadata temp-path collision | R31-004, R32-004 | Byte-level collision only; atomic rename protects final state. Quick-win (unique temp paths) resolves. |
+| `spec_kit_plan_auto.yaml` vocabulary fragmentation | R41-001, R42-001, R43-002, R44-003, R47-002, R48-002, R49-002 | Structural but not data-integrity. Fixed via S7 (YAML predicate grammar). |
+| `/spec_kit:plan` intake classification drift | R41-001, R47-002 | Subset of vocabulary fragmentation; not independently P0. |
+
+The four that remain as P0 share a property the 12 rejected candidates do not: **they all produce permanent state changes or erasure under normal or routine conditions with no available signal to the operator that the failure occurred.**
+
+---
+
 ## 4. Per-Domain Deep Synthesis
 
 ### 4.1 Foundational Seams (iterations 1–10)
@@ -474,6 +585,18 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 **Novel insights.**
 - The foundational pass pre-announced themes that Domains 1–4 confirmed. Every subsequent domain pattern has a foundational-seam ancestor: Domain 1 silent fail-open is a deepening of R5-002 (partial persistence as success); Domain 2 state laundering is a deepening of R11-002 (legacy as success); Domain 3 concurrency is a deepening of R9-001 (collapsed vocabulary); Domain 4 governance drift is a deepening of R10-002 (unescaped prompt interpolation).
 - The foundational layer contains the only finding where **runtime asymmetry is by design** (R10-001, R10-002): Gemini and Claude intentionally have different compact-replay logic. This is structurally distinct from the other asymmetries (R1-001) which are bugs.
+
+**Exemplar findings (full file:line, for cross-reference):**
+
+| Finding | File:lines | Severity | One-liner |
+| ------- | ---------- | -------- | --------- |
+| R1-001 | `mcp_server/lib/code-graph/startup-brief.ts:179-192` | P1 | `buildSessionContinuity()` calls `loadMostRecentState()` with no scope; hook-state rejects scope-less calls; Gemini startup loses continuity |
+| R2-002 | `mcp_server/hooks/claude/hook-state.ts:131-166` | P1 | Single-try directory scan; one malformed file aborts entire lookup |
+| R5-001 | `mcp_server/lib/code-graph/ensure-ready.ts:283-317` | P1 | Inline reindex completes while reporting `freshness: 'stale'` |
+| R5-002 | `mcp_server/lib/code-graph/ensure-ready.ts:183-217` | P1 | Partial persistence writes `file_mtime_ms` before node/edge failure; failed files look fresh on next scan |
+| R9-001 | `mcp_server/lib/context/shared-payload.ts:592-601` | P1 | `missing` and `empty` collapse to `stale` in two trust-state functions |
+| R10-001 | `mcp_server/hooks/gemini/session-prime.ts:55-68` | P1 | Gemini compact-recovery drops provenance; Claude preserves it |
+| R10-002 | `mcp_server/hooks/claude/shared.ts:109-123` | P2 | Provenance interpolated unescaped into `[PROVENANCE:]` prompt line |
 
 ### 4.2 Domain 1 — Silent Fail-Open Patterns (iterations 11–20)
 
@@ -495,6 +618,19 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 - Domain 1's deepest pattern is **flag-based success without helper-result inspection** (R8-001, R11-005, R12-004, R12-005). Every `enrichmentStatus` boolean is set via `true` literal rather than by inspecting the helper's return value. This is a single structural fix that resolves ~10 findings at once.
 - The canonical counter-example to fail-open is the merge CAS. One extracted refactoring hypothesis: every production path in the save pipeline should have a merge-style `{ ok, reason, attempted_writes, persisted_writes }` return shape.
 
+**Exemplar findings (full file:line):**
+
+| Finding | File:lines | Severity | One-liner |
+| ------- | ---------- | -------- | --------- |
+| R8-001 | `handlers/save/post-insert.ts:86-213,223-238` | P1 | `enrichmentStatus = true` for success / feature-disabled skip / "nothing to do" skip / deferral |
+| R11-003 | `handlers/code-graph/query.ts:367-385` | P1 | `blast_radius` silently degrades unresolved subjects via `resolveSubjectFilePath(candidate) ?? candidate` |
+| R13-002 | `lib/graph/graph-metadata-parser.ts:280-285,457-475,849-860` | P1 | `readDoc()` collapses I/O failure into `null`; `deriveStatus()` misreads as `planned`/`complete` |
+| R13-004 | `handlers/save/reconsolidation-bridge.ts:261-270,438-442` | P1 | Any thrown error (checkpoint, reconsolidate, similarity, conflict store) caught; falls through to normal create |
+| R14-001 | `hooks/claude/session-stop.ts:175-193,257-268,274-276` | P1 | `storeTokenSnapshot` writes `lastTranscriptOffset: 0` before producer metadata builds; catch swallows later failure |
+| R15-001 | `hooks/claude/session-stop.ts:61-77,281-309` | P1 | Transcript-driven retargeting silently rewrites autosave destination |
+| R16-001 | `handlers/code-graph/query.ts:417-436,547-548` | P1 | `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS |
+| R20-001 | `hooks/claude/session-stop.ts:199-218,248-268` | P1 | `buildProducerMetadata()` re-stats transcript; metadata describes later state than parsed one |
+
 ### 4.3 Domain 2 — State Contract Honesty (iterations 21–30)
 
 **Thesis.** Collapsed producer state becomes harder to recover from once a downstream layer re-emits it as a stronger contract. The system now contains multiple places where ambiguous or recovered state is strengthened into authoritative-looking signals.
@@ -515,6 +651,21 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 **Novel insights.**
 - Domain 2's deepest pattern is **state laundering** (R21-003 + R22-002): corruption signal erased at persistence AND consumer layers simultaneously, then boosted by search ranking. This is the mechanism behind P0-candidate-C.
 - The self-contradictory payload (R30-001) is structurally the most alarming Domain 2 finding. A single response advertises two mutually-exclusive trust states. Consumers see whichever field they read; there is no canonical truth. This is a direct argument for vocabulary alignment as a P1 structural refactor.
+
+**Exemplar findings (full file:line):**
+
+| Finding | File:lines | Severity | One-liner |
+| ------- | ---------- | -------- | --------- |
+| R21-001 | `handlers/save/response-builder.ts:311-322,569-573` | P1 | `memory_save` response collapses post-insert truth further than `post-insert.ts` does |
+| R21-002 | `hooks/claude/hook-state.ts:83-87` | P1 | `JSON.parse(raw) as HookState` with no validation; feeds prompt replay + autosave routing |
+| R21-003 | `lib/graph/graph-metadata-parser.ts:223-233,264-275,1015-1019` | P1 | `refreshGraphMetadataForSpecFolder()` launders malformed modern JSON into canonical refreshed artifact |
+| R22-002 | `lib/parsing/memory-parser.ts:293-330` | P1 | Fallback-recovered `graph-metadata` gets `qualityScore: 1`, +0.12 packet boost |
+| R23-002 | `lib/graph/graph-metadata-parser.ts:223-233` | P1 | Schema-invalid-as-legacy → first-class `graph_metadata` indexing → retrieval priority upgrade |
+| R24-002 | `handlers/session-resume.ts:174-188,415-429,560-563` | P1 | Cached scope drives `fallbackSpecFolder` but OpenCode transport uses `args.specFolder ?? null` |
+| R28-001 | `hooks/claude/session-stop.ts:244-275` | P1 | `loadState()` returning `null` on parse failure indistinguishable from cold start; `startOffset = 0` re-parses |
+| R29-001 | `handlers/session-resume.ts:174-208` | P1 | Cached-summary `schemaVersion` check fabricated; `HookState` has no version field |
+| R30-001 | `handlers/session-bootstrap.ts:321-347` + `session-resume.ts:530-551` | P1 | Same payload carries `trustState=stale` AND `graphOps.readiness.canonical=empty` |
+| R30-002 | `lib/context/opencode-transport.ts:64-71,98-149` | P1 | Transport drops richer structural truth; renders only collapsed provenance label |
 
 ### 4.4 Domain 3 — Concurrency and Write Coordination (iterations 31–40)
 
@@ -540,6 +691,25 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 - **Atomic rename is not enough.** The dominant failure mode is NOT "two writers overwrite each other." It is "one writer reads, decides, then writes — and the decision was already stale at read time." Seven of nine pattern groups are about decision staleness, not write-time torn bytes.
 - **Cleanup races are structurally distinct from writer races.** P0-candidate-D (TOCTOU cleanup) is the most operationally common scenario because it fires on routine `--finalize` rather than abnormal concurrent writes. The iteration 40 pivot to TOCTOU-as-separate-class is a key synthesis insight.
 
+**Exemplar findings (full file:line):**
+
+| Finding | File:lines | Severity | One-liner |
+| ------- | ---------- | -------- | --------- |
+| R31-001 | `hooks/claude/hook-state.ts:169-176,221-240` | P1 | Deterministic `filePath + '.tmp'` means two writers swap bytes before rename |
+| R31-002 | `hooks/claude/session-stop.ts:60-67,119-125,261-268,283-309` | P1 | Multiple `recordStateUpdate()` + final disk reload by `runContextAutosave()` create torn-state autosave window |
+| R31-003 | `handlers/save/reconsolidation-bridge.ts:282-295` + `lib/storage/reconsolidation.ts:467-508` | P1 | `executeConflict()` has no predecessor-version or scope recheck; merge defends, conflict does not |
+| R33-001 | `hooks/claude/hook-state.ts:184-205`; `session-prime.ts:43-46,281-287` | P1 | `clearCompactPrime()` clears by session ID, not payload identity |
+| R34-002 | `handlers/save/reconsolidation-bridge.ts:261-306`; `reconsolidation.ts:599-694`; `memory-save.ts:2159-2171,2250-2304` | P1 | Complement path: stale-search duplicate window between `runReconsolidationIfEnabled` and `writeTransaction` |
+| R35-001 | `handlers/save/reconsolidation-bridge.ts:270-295`; `reconsolidation.ts:467-508,610-658,952-993` | P1 | Conflict lane not single-winner; two concurrent saves can both supersede same predecessor |
+| R36-001 | `hooks/claude/hook-state.ts:140-155,170-176` | P2 | `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime read and JSON read |
+| R37-001 | `hooks/claude/session-stop.ts:175-190,244-252,257-268` | P1 | Transient `lastTranscriptOffset: 0` sentinel; second stop hook can re-parse from zero |
+| R37-002 | `hooks/claude/session-stop.ts:128-145,244-246,281-296,340-369` | P1 | Stale `currentSpecFolder` preference suppresses legitimate packet retarget |
+| R38-001 | `hooks/claude/hook-state.ts:131-165`; `session-resume.ts:348-366` | P2 | `loadMostRecentState` all-or-nothing `try` block; one bad sibling aborts scan |
+| R39-001 | `hooks/claude/session-stop.ts:60-67,108-117,299-318` | P1 | Autosave outcome never surfaced in `SessionStopProcessResult` |
+| R39-002 | `handlers/save/reconsolidation-bridge.ts:203-237,282-306` | P1 | Governed scope filter reads each candidate row individually outside any transaction |
+| R40-001 | `hooks/claude/hook-state.ts:170-176,247-255`; `session-stop.ts:321-328` | P2 | `cleanStaleStates` TOCTOU: stat-then-unlink can delete fresh state |
+| R40-002 | `handlers/save/reconsolidation-bridge.ts:203-236,282-295,453-465` | P1 | Per-candidate scope read confirmed in both TM-06 and assistive paths |
+
 ### 4.5 Domain 4 — Stringly-Typed Governance (iterations 41–50)
 
 **Thesis (sharpened through iteration 50).** Governance is expressed as manually synchronized string tables across docs, YAML assets, Python dictionaries, and markdown playbooks. The failure modes form **four distinct layers**:
@@ -562,6 +732,22 @@ All four confirmed P0 candidates satisfy criteria 1, 3, 4, and 5. They differ al
 - **`Function(...)` eval trust boundary has expanded.** (R46-003.) The original R41-004 documented that the playbook runner evaluates markdown fragments. Iteration 46 extends this: `substitutePlaceholders()` now injects `runtimeState.lastJobId` from prior handler payloads. The code string `Function(...)()` evaluates is now a composition of repository-authored markdown + live API return values. Threat model: any handler payload copied to `lastJobId` can influence the evaluated code.
 - **Two-vocabulary state machine with top-level collapse.** (R47-002.) `/spec_kit:plan` maintains a local `folder_state` classifier that maps to a canonical `start_state`; events emit both fields. But `SKILL.md` and `README.md` reference only the generic `folder_state` label, collapsing the vocabulary distinction for downstream consumers. Three vocabulary fragmentation points coexist in `/spec_kit:plan` alone (R41-001 + R42-001/R43-002/R44-003 + R47-002).
 - **False negative confirmed for memory-save and deep-research resume.** (R48-001, R49-001, R50-001.) Prior iterations established Gate 3 false positives; iterations 48–50 confirmed the opposite failure: Gate 3's trigger list does NOT include `save context`, `save memory`, `/memory:save`, or `resume` — even though all three are real write-producing flows. `resume deep research` can produce `iteration-NNN.md` + JSONL writes without matching any Gate 3 trigger word.
+
+**Exemplar findings (full file:line):**
+
+| Finding | File:lines | Severity | One-liner |
+| ------- | ---------- | -------- | --------- |
+| R41-003 | `skill_graph_compiler.py:272-353,630-663`; `skill_advisor.py:203-265` | P1 | Topology checks advisory-only; `--validate-only` returns success for graphs that violate routing invariants |
+| R41-004 | `manual-playbook-runner.ts:224-246,251-317,438-445` | P1 | Markdown → `Function(...)()` eval with no sandbox |
+| R43-001 | `skill_advisor_runtime.py:111-141,165-203`; `skill_advisor.py:105-116,140-152,180-187,1669-1694` | P1 | Live router does not consume per-skill `intent_signals`; `signals` map populated but discarded at scoring |
+| R44-002 | `skill_advisor_runtime.py:161-203`; SKILL.md keyword comment blocks | P2 | `parse_frontmatter_fast()` strips `<!-- Keywords: ... -->` comment blocks |
+| R45-003 | `skill_graph_compiler.py:559-568,630-663`; `skill_advisor.py:1841-1888` | P1 | Topology warning state non-durable: ZERO-EDGE WARNINGS dropped from serialized graph |
+| R45-004 | `manual-playbook-runner.ts:245-271,1203-1217` | P1 | 10/291 active scenario files unparseable; `null`s filtered before coverage count |
+| R46-001 | `skill_advisor.py:980-1021,1404-1410,1647,1741-1768` | P1 | All `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` |
+| R46-002 | `skill_graph_compiler.py:272-319,501-568,630-663`; `skill_advisor.py:141-187,321-339` | P1 | Unilateral `conflicts_with` silently promoted to bilateral runtime penalty |
+| R46-003 | `manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117` | P1 | `Function(...)()` runs with live `lastJobId` from tool-return payloads |
+| R49-003 | `skill_graph_compiler.py:437-472,623-663` | P1 | `validate_dependency_cycles()` only detects 2-node cycles; `a → b → c → a` passes |
+| R50-001 | `AGENTS.md:182-186`; `spec_kit_deep-research_auto.yaml:159-167,521-526` | P1 | Gate 3 hard-block trigger list has false-negative for deep-research `resume` write path |
 
 ---
 
@@ -652,7 +838,54 @@ Migrate `trustStateFromGraphState`, `trustStateFromStructuralStatus`, the transp
 
 Implementation is iterative: Chains A, B, C, and D below address specific rows of the table. The full refactor is ~4 weeks.
 
-### 5.5 Deterministic / shared temp path under concurrency
+### 5.5 Cross-file anti-pattern roster
+
+Consolidated from the 10 interim-synthesis anti-pattern clusters. Each row lists the anti-pattern, files exhibiting it (≥3 required to enter this roster), and representative findings. This roster is the clearest view of how the ~63 distinct findings distribute across recurring structural motifs.
+
+| Anti-pattern | Files affected | Representative findings | Domains |
+| ------------ | -------------- | ----------------------- | ------- |
+| Success-shaped envelope masking skip/defer/partial/failed | `post-insert.ts`, `session-stop.ts`, `code-graph/query.ts`, `reconsolidation-bridge.ts`, `response-builder.ts`, `graph-metadata-parser.ts` | R8-001, R12-001, R13-004, R17-002, R21-001, R11-002 | D1, D2 |
+| Unvalidated `JSON.parse` feeding both write-target and prompt-visible text | `hook-state.ts`, `shared-payload.ts`, `graph-metadata-parser.ts` | R21-002, R9-002, R11-002 | D1, D2 |
+| Collapsed state vocabulary across trust/readiness/freshness axes | `shared-payload.ts`, `code-graph/query.ts`, `session-bootstrap.ts`, `session-resume.ts`, `session-health.ts`, `opencode-transport.ts` | R9-001, R22-001, R23-001, R26-001, R30-001, R30-002 | D2 |
+| Pre-transaction read-then-mutate (snapshot before lock, no re-read at commit) | `hook-state.ts` + `session-stop.ts`, `reconsolidation-bridge.ts` + `reconsolidation.ts`, `graph-metadata-parser.ts` | R31-001, R31-002, R31-003, R31-004, R34-002, R35-001, R37-003 | D3 |
+| Deterministic / shared temp path under concurrency | `hook-state.ts` (`.tmp`), `graph-metadata-parser.ts` (ms-precision), command YAMLs + runtime root docs + `data-loader.ts` error contract | R31-001, R31-004, R31-005, R35-003, R36-003 | D3 |
+| Test fixture canonizes degraded contract | `post-insert-deferred.vitest.ts`, `code-graph-query-handler.vitest.ts`, `structural-contract.vitest.ts`, `graph-metadata-schema.vitest.ts`, `hook-session-stop-replay.vitest.ts`, `reconsolidation.vitest.ts` | R25-001 through R25-004, R26-001, R35-001, R35-002 | All |
+| Flag-based success without helper-result inspection | `post-insert.ts` (4 fields), `session-stop.ts` (`producerMetadataWritten`, `touchedPaths`) | R8-001, R11-005, R12-004, R12-005, R34-001, R35-002 | D1, D3 |
+| TOCTOU identity race (stat vs act on same pathname) | `hook-state.ts` (`loadMostRecentState` stat-then-read, `cleanStaleStates` stat-then-unlink, `clearCompactPrime` read-then-clear) | R33-001, R36-001, R40-001 | D3 |
+| Success-shaped governance (string-defined contracts that accept violations) | `spec_kit_plan_auto.yaml`, `spec_kit_plan_confirm.yaml`, `AGENTS.md`, `skill_graph_compiler.py`, `manual-playbook-runner.ts`, `skill_advisor_runtime.py` | R41-001, R41-002, R41-003, R41-004, R42-001, R42-002, R42-003, R49-003 | D4 |
+| Invisible signal discard (signals loaded end-to-end but silently dropped at scoring boundary) | `skill_advisor.py`, `skill_graph_compiler.py`, `skill_advisor_runtime.py`, `graph-metadata.json`, SKILL.md files | R43-001, R44-001, R44-002 | D4 |
+
+### 5.6 Reinforcement chains — where findings compound rather than sum
+
+The 10 most significant reinforcement chains, consolidated across all interim syntheses. Each chain is a case where two or more findings produce a systemic failure that neither would cause alone.
+
+| # | Constituent findings | Joint effect |
+| - | -------------------- | ------------ |
+| 1 | R13-002 + R11-002 | Packet with transient read failures indexed as freshly-saved `planned` packet with +0.12 search boost |
+| 2 | R21-002 + R28-001 + R33-002 | Corrupt tempdir file produces re-parsed transcripts, duplicate token counting, cross-session state bleed in same event |
+| 3 | R9-001 + R30-001 + R30-002 | Runtime has richer state internally than it exposes; dishonest label is the one that reaches hookless OpenCode consumers |
+| 4 | R8-001 + R21-001 + R24-001 | Save-path consumers cannot tell "skipped vs failed vs deferred" and cannot mechanically recover from runtime degradation |
+| 5 | R31-001 + R31-002 + R33-003 | Claude stop-hook continuity is multiply vulnerable: concurrent writers corrupt state, stop hook reads torn state, failed persist does not stop autosave |
+| 6 | R33-001 + R36-001 + R38-001 | Compact-recovery lane vulnerable on three axes simultaneously: fresh payload erased, freshness mate-with-content mismatch, one bad sibling aborts recovery |
+| 7 | R34-001 + R35-002 + R33-003 | `SessionStopProcessResult` exports multiple fields overstating durability while autosave proceeds after persist failure |
+| 8 | R31-003 + R35-001 + R34-002 | Reconsolidation has coordination gaps on every non-merge path: merge has CAS, conflict has neither, complement doesn't even check for duplicate between plan and commit |
+| 9 | R33-002 + R37-001 + R14-001 | Transcript-offset surface has three distinct regression mechanisms: overlapping stop hook, transient zero-offset sentinel, metadata-failure-induced zero |
+| 10 | R35-003 + R36-003 + R31-005/R32-005 | `/tmp/save-context-data.json` hazard at four surfaces; fixing one leaves three to re-propagate |
+
+From Domain 4 iterations 43–50 specifically:
+
+| # | Constituent findings | Joint effect |
+| - | -------------------- | ------------ |
+| 11 | R45-003 + R43-001/R44-001 + R42-002 | Three layers produce success-shaped output simultaneously: topology warnings dropped, intent_signals discarded, health reports ok despite mismatch |
+| 12 | R46-001 + R44-001 + R41-003 | Routing-confidence failure chain: subcommands collapse to generic bridge; `intent_signals` that should distinguish subcommands are inert; topology validation is advisory |
+| 13 | R46-002 + R41-003 + R42-002 | Unilateral `conflicts_with` edit creates bilateral consequences; not caught by `validate_edge_symmetry`, not visible in `health_check`, not logged at scoring |
+| 14 | R46-003 + R45-004 + R41-004 | Playbook runner trust-boundary compounding: silent scenario drop + live-data eval + markdown-as-code; three ways the runner lies about coverage |
+| 15 | R47-002 + R41-001 + R42-001/R43-002 | `/spec_kit:plan` has three vocabulary fragmentation points; any one misfires independently; all three can misfire simultaneously |
+| 16 | R45-001 + R47-001 + R45-002 + R41-002 | Gate 3 + Gate 2 governance brittleness: false positives from prose triggers + routing drift from audit vocabulary + both controlled by prose |
+
+---
+
+### 5.7 Deterministic / shared temp path under concurrency
 
 **Files affected.** `hook-state.ts` (`.tmp` deterministic), `graph-metadata-parser.ts` (pid+Date.now ms precision), command YAMLs, runtime root docs, `data-loader.ts` error contract.
 
@@ -785,6 +1018,90 @@ STRUCTURAL REFACTORS
 | `assistive-reconsolidation.vitest.ts:17-234` | Helper thresholds | Competing candidate insert between recommendation and commit | S1 |
 | `skill-graph-schema.vitest.ts:1-156` | Dispatcher routing | Compiler invariants: symmetry, weight-band, orphans, cycle length >2 | S4 |
 
+**Test migration effort breakdown:**
+
+| Test file | LOC affected (est.) | Migration complexity | Depends on |
+| --------- | ------------------- | -------------------- | ---------- |
+| `post-insert-deferred.vitest.ts` | ~80 | Low (enum replacement) | M13 |
+| `structural-contract.vitest.ts` | ~120 | Medium (assertions split across axes) | M8 |
+| `graph-metadata-schema.vitest.ts` | ~150 | Medium (migration marker threaded) | S3 |
+| `code-graph-query-handler.vitest.ts` | ~50 | Low (hoist removal) | QW #14 |
+| `handler-memory-save.vitest.ts` | ~200 | High (entire stub shape changes) | M13 |
+| `hook-session-stop-replay.vitest.ts` | ~150 | High (enable autosave + inject failures) | S2 |
+| `opencode-transport.vitest.ts` | ~80 | Low (add `missing`/`absent` cases) | M8 |
+| `hook-state.vitest.ts` | ~180 | Medium (add TOCTOU + all-or-nothing cases) | S2 |
+| `reconsolidation.vitest.ts` | ~300 | High (two-concurrent-writer infrastructure) | S1 |
+| `reconsolidation-bridge.vitest.ts` | ~200 | High (governed-scope mutation infra) | S1 |
+| `test_skill_advisor.py` | ~250 | Medium (routing-specificity + intent_signals assertions) | S4 |
+| `transcript-planner-export.vitest.ts` | ~100 | Low–medium (YAML predicate cases) | S7 |
+| `assistive-reconsolidation.vitest.ts` | ~150 | High (competing-candidate insert) | S1 |
+| `skill-graph-schema.vitest.ts` | ~150 | Medium (compiler invariant coverage) | S4 |
+
+**Total test migration effort: ~2100 LOC.** At ~300 LOC/day for quality test work, this is ~7 engineer-days of pure test work. In the week-by-week plan, test migration is distributed across weeks 4–9 and consumes ~15% of total effort (matches the estimate in the Section 1 executive summary).
+
+**Code-level exemplar for M13 (enum status refactor):**
+
+Before:
+```ts
+type EnrichmentStatus = Record<string, boolean>;
+const status: EnrichmentStatus = {
+  summaries: true,       // true when: success, disabled, nothing-to-do, deferred
+  graphLifecycle: true,  // true when: success, skipped (onIndex returns skipped:true)
+  causalLinks: true,     // true when: success OR partial-unresolved OR disabled
+  entityLinking: true,   // true when: success OR density-guarded OR feature-off
+};
+```
+
+After:
+```ts
+type OperationStatus = 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial';
+type OperationResult = {
+  status: OperationStatus;
+  reason?: string;
+  warnings?: string[];
+};
+type EnrichmentStatus = Record<string, OperationResult>;
+const status: EnrichmentStatus = {
+  summaries: { status: 'ran' },
+  graphLifecycle: { status: 'skipped', reason: 'indexer_disabled_for_file' },
+  causalLinks: { status: 'partial', reason: 'unresolved_references', warnings: ['ref_A not found'] },
+  entityLinking: { status: 'skipped', reason: 'density_guard_triggered' },
+};
+```
+
+This structural change resolves R8-001, R11-005, R12-004, R12-005, R14-003, R14-004, R17-002, R25-001, R13-005. The downstream changes in `response-builder.ts`, `memory-save.ts`, and tests are mechanical once the type is in place.
+
+**Code-level exemplar for B1 (predecessor CAS):**
+
+Before:
+```ts
+// lib/storage/reconsolidation.ts executeConflict()
+await db.run(
+  `UPDATE memory_index SET is_deprecated = TRUE, deprecated_at = ? WHERE id = ?`,
+  [nowIso, predecessor.id]
+);
+```
+
+After:
+```ts
+const updated = await db.run(
+  `UPDATE memory_index SET is_deprecated = TRUE, deprecated_at = ?
+   WHERE id = ?
+     AND content_hash = ?
+     AND is_deprecated = FALSE`,
+  [nowIso, predecessor.id, predecessor.content_hash]
+);
+if (updated.changes === 0) {
+  return {
+    outcome: 'conflict_stale_predecessor',
+    reason: predecessor.is_deprecated ? 'already_superseded' : 'content_hash_mismatch',
+    abortInsert: true,
+  };
+}
+```
+
+This change alone resolves R31-003 and R35-001; the caller must then handle the stale-predecessor outcome by either aborting the save or re-planning against a fresh snapshot.
+
 **New tests required** (no current coverage; should be added before declaring fix "done"):
 
 - Two-concurrent-conflict save against same predecessor (R35-001, P0-B)
@@ -873,6 +1190,34 @@ Note: Quick wins (§6.1) can be opportunistically picked up by anyone between st
 4. **What is the actual concurrent-writer surface at runtime?** Seven distinct interleavings characterized by iteration 38; real-load measurement still missing. A 2-day measurement pass before S1/S2 would size the actual blast radius.
 5. **Which `/spec_kit:*` subcommands currently exist and need bridge entries?** (Determines scope of A0.) Enumerate: `plan`, `complete`, `implement`, `deep-research`, `deep-review`, `resume`. Additional subcommands may exist in less-trafficked assets.
 
+### 7.5 Week-by-week Phase 017 plan detail
+
+| Week | P0-A (Eng 1) | P0-B (Eng 2) | P0-C (Eng 3) | P0-D + Watch | Support |
+| ---- | ------------ | ------------ | ------------ | ------------ | ------- |
+| 1 | M1 (Zod HookStateSchema) | M5 (predecessor CAS) | M7 (`migrated` flag propagation) | D1–D5 (2 days solo), then start S4/A0 (subcommand bridges) | Domain 5 pass begins (1 engineer part-time) |
+| 2 | M2 (schemaVersion) + quick wins #12, #20 | M6 (per-candidate batched scope read) | M7 complete + S3 (indexing penalty for migrated) | S4/A1–A2 (keyword comments + intent_signals wiring) | Resolve open question #1 (Gate 3 in bridge) |
+| 3 | M3 (collapse stop-hook updates) | B2 (complement inside tx) | S3 complete | S4/A2b–A3 (disambiguation + tests) | Domain 5 pass: new tests staged |
+| 4 | M4 (refresh lastSpecFolder) + S2 completion | B4 (assistive inside tx or stale-flag) | Test migration for graph-metadata suite | S4/A4–A5 (topology hard + health compare) | P0-C declared done |
+| 5 | Test migration for hook-state + session-stop suites | S1 completion + test migration | S5 begins (Gate 3 classifier) — Eng 3 moves to S5 | S4 complete | Run full regression; review coverage |
+| 6 | P0-A declared done | Test migration ongoing | S5 typed triggers + read-only disqualifiers | S6 begins (playbook runner) | M8 begins (trust-state vocabulary) |
+| 7 | M13 begins (enum status refactor) | P0-B declared done (test migration complete) | S5 completion | S6/C1-C2 (typed step + automatable field) | M8 (vocabulary) continues |
+| 8 | M13 propagation through response-builder | S7 begins (YAML predicate grammar) | S7 continues | S6 completion | M8 complete |
+| 9 | M13 test migration | S7 completion + test suite | Regression pass | Closing-pass review (11 untouched files §8.2) | Final integration |
+| 10 | Final integration + regression | Final integration + regression | Phase 017 closeout | Phase 017 closeout | Phase 017 closeout |
+
+**Wall-clock = 10 weeks.** Engineers 1, 2, 3 run roughly parallel tracks. Support track handles Domain 5 catch-up, open-question resolution, and test-coverage backfill. The plan is tight but feasible; it assumes no major refactors beyond those in §6.
+
+### 7.6 What this plan does NOT fix (parked for Phase 018+)
+
+- **Gemini lane cross-audit.** Only spot-checked in Phase 016; Phase 018 should do a dedicated Gemini parity audit.
+- **Context handler readiness fail-open.** `handlers/code-graph/context.ts` hinted at same pattern as `query.ts` but not fully audited.
+- **Entity-linker cross-memory blast radius.** R7-002 flagged stale-row linking after soft-fail; cross-memory scope not investigated.
+- **Shared payload marker sanitization.** R10-002 identified prompt-injection risk via unescaped `[PROVENANCE:]` interpolation; exploitability not confirmed. If the fix is bounded, add to Phase 017 as quick-win; otherwise park.
+- **Handover-state routing enum.** Prose-defined `handover_state` vocabulary never audited.
+- **`opencode.json` + `.utcp_config.json` naming contracts.** Stringly-typed MCP namespace pattern (`{manual_name}.{manual_name}_{tool_name}`) never audited.
+- **`generate-context.js` trigger-phrase surface.** Memory category / triggers / scope fields feed semantic search; never audited for schema validation.
+- **Real-load concurrency measurement.** Seven interleavings characterized; actual production frequencies not measured. Phase 017 structural fixes work regardless of frequency, but Phase 018 measurement would refine test harness priorities.
+
 ---
 
 ## 8. Research Quality Review
@@ -945,6 +1290,43 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 
 **Partially for the closing pass.** ~2 additional iterations focused on the 11 untouched files (§8.2) would likely surface 3–5 additional P1/P2 findings. Not enough to change the remediation plan materially but sufficient to close the "we might find something new during fixing" risk.
 
+### 8.6 Signal density by iteration range
+
+| Iteration range | Raw findings | Distinct additions | Novel patterns | Commentary |
+| --------------- | ------------ | ------------------ | -------------- | ---------- |
+| 1–10 (Foundational) | 23 | 10 | 4 | Reconnaissance pass establishing baseline; all 4 patterns (scope split, freshness asymmetry, trust collapse, compact asymmetry) later reinforced |
+| 11–20 (Domain 1) | 28 | 14 | 6 | Deepest density; produced the 6 patterns that made "silent fail-open" into a coherent framework |
+| 21–30 (Domain 2) | 24 | 11 | 7 | State-laundering was the key novel insight; self-contradictory payloads surfaced at iteration 30 |
+| 31–34 (Domain 3 early) | 16 | 8 | 5 | Unlocked RMW, split-brain, conflict, shared temp path all surfaced within 4 iterations |
+| 35–38 (Domain 3 middle) | 10 | 6 | 4 | Conflict fork (R35-001) was the single most impactful Domain 3 finding; all-or-nothing scans deepened the pattern |
+| 39–40 (Domain 3 late) | 4 | 2 | 1 | TOCTOU identity emerged as distinct class from RMW; R40-001/R40-002 closed the domain |
+| 41–44 (Domain 4 early) | 13 | 8 | 4 | Initial governance mapping; `intent_signals` invisible-discard was the breakthrough at iteration 43 |
+| 45–47 (Domain 4 middle) | 10 | 6 | 3 | Bridge collapse, warning amnesia, scenario drop all surfaced; signal-amnesia pattern unified the domain |
+| 48–50 (Domain 4 late) | 6 | 4 | 2 | Gate 3 false-negatives confirmed (save/resume); YAML `when:` overload established; dependency cycle gap |
+
+**Convergence markers:**
+- Iteration 47 was the first iteration where a finding reinforced 3+ existing clusters without adding a new cluster. This is a classic convergence signal.
+- Iterations 48, 49, 50 each added only 1–2 new findings with 0 novel patterns. The marginal value of iterations 51+ would be very low for the same domain scope.
+- **Alternative stopping point: iteration 40 with Domain 5 starting at iteration 41.** This would have produced a 10-iteration dedicated test-coverage pass. The 10 Domain-4 iterations (41–50) are complete and valuable, but Domain 5's structural test-regression inventory was never produced and remains the largest gap.
+
+### 8.7 Investigator behavior — what worked
+
+Across 50 iterations, three investigator patterns consistently produced high-signal findings:
+
+1. **"What happens if the opposite is true?"** — flipping an assumption (the cache is fresh, the file parse succeeds, the scope has not moved, the metadata is valid) consistently surfaced new fail-open paths. Iterations 13 (R13-002 `readDoc` I/O fail), 28 (R28-001 `loadState` null), 33 (R33-001 compact cache identity), and 46 (R46-001 bridge prefix) all used this flip.
+
+2. **"Who else reads this?"** — tracing producer-side findings into consumers consistently found state laundering. R9-001 + R30-001 + R30-002 chain was discovered by asking "where does the collapsed `trustState` label actually reach?" — the answer (OpenCode transport) revealed that the richer internal state never reached hookless consumers.
+
+3. **"Can the test fail?"** — examining every test fixture for whether it could actually catch the bug surfaced R25-001 through R25-004 plus R35-001 / R35-002 / R45-003 regression gaps. Tests that hoist happy-path mocks or assert collapsed state cannot catch the underlying bug even under CI.
+
+### 8.8 Investigator behavior — what didn't
+
+Two patterns were underutilized:
+
+1. **Live adversarial repro construction.** Only iterations 43, 45, 49, 50 constructed adversarial live repros (`a → b → c → a` cycle, ZERO-EDGE warning, playbook `{jobId}` shorthand, scenario-count mismatch). Earlier iterations relied on code reading. For P0-candidate remediation, ~10 additional adversarial repros are still needed — see §8.3.
+
+2. **Cross-runtime parallel audit.** The Claude hook lane was exhaustively audited; the Gemini hook lane was touched only at R1-001, R10-001, R38-002, R50-001 — approximately 1/5 the coverage of Claude. Gemini may have distinct coordination issues around its compact-cache path that were never surfaced. Phase 017 should either extend audit coverage or confirm Gemini's equivalence with Claude for the already-found issues.
+
 ---
 
 ## 9. Appendix — Severity Distribution
@@ -983,7 +1365,84 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 | 9 | `lib/graph/graph-metadata-parser.ts` | 4 | D1, D2, D3 | Legacy laundering + temp-path collision |
 | 10 | `spec_kit_plan_auto.yaml` / `_confirm.yaml` | 4 | D4 | `when:` overload + untyped boolean DSL + vocabulary fragmentation |
 
-### 9.4 Signal-amnesia pattern layers (from §5.4)
+### 9.4 Finding ID → Fix chain cross-reference (cumulative)
+
+*Format: `RN-NNN` | Severity | Workstream | Dependency.*
+
+| Finding | Severity | Fix | Dependency |
+| ------- | -------- | --- | ---------- |
+| R1-001 / R2-001 / R4-001 | P1 | S2 (HookState) — scope the continuity call, or fix `loadMostRecentState` to not reject scope-less | Independent |
+| R1-002 | P1 | S2 — reject or quarantine missing `session_id` payloads | Independent |
+| R2-002 / R4-002 | P1 | S2 — per-file isolation in directory scan | Independent |
+| R3-001 | P1 | Quick-win — return `ambiguous_subject` on multi-row match | Independent |
+| R3-002 | P1 | Quick-win #14 — surface `ensureCodeGraphReady` exceptions as errors | Independent |
+| R3-003 | P2 | Quick-win — aggregate edge trust, not first edge | Independent |
+| R5-001 | P1 | Medium — refresh readiness/freshness reports after inline reindex completes | Independent |
+| R5-002 | P1 | Medium — don't write mtime until nodes+edges persist | Independent |
+| R6-001 | P1 | Medium — align assistive-default docs with runtime switch | Independent |
+| R6-002 | P1 | Quick-win — rename threshold or implement auto-merge | Independent |
+| R7-001 | P1 | Medium — `runEnrichmentBackfill` honors `force=true` recovery | Independent |
+| R7-002 | P1 | Medium — gate entity linking on successful extraction (ties to M13) | After M13 |
+| R8-001 | P1 | M13 (enum status) | Independent, largest win |
+| R8-002 | P1 | After M13 — gate on extraction success | After M13 |
+| R9-001 | P1 | M8 (vocabulary expansion) | Independent |
+| R9-002 | P2 | Quick-win #18 — runtime `SharedPayloadKind`/`producer` validation | Independent |
+| R10-001 | P1 | Medium — Gemini wrapper forwards `payloadContract.provenance` | Independent |
+| R10-002 | P2 | Medium — escape provenance fields in `[PROVENANCE:]` wrapper | After HookState schema validation (M1) |
+| R11-001 | P1 | M13 — surface transcript/metadata failure as machine-readable outcome | After M13 |
+| R11-002 / R11-003 / R11-004 / R11-005 | P1/P2 | S3 (migration propagation) / M13 / quick wins | After M7 / after M13 |
+| R12-001 / R13-001 | P1 | Quick-win #22 — `autosaveOutcome` field | Independent |
+| R12-002 / R14-002 | P2 | Quick-win #8 — reject invalid `edgeType` | Independent |
+| R12-003 | P2 | Medium — scope filter before window cap | Independent |
+| R12-004 / R12-005 / R13-005 / R14-003 / R14-004 / R17-002 | P1/P2 | M13 | After M13 |
+| R13-002 | P1 | C3 (distinguish I/O failure from missing) | Independent |
+| R13-003 | P2 | Quick-win #13 — validate outline subject | Independent |
+| R13-004 | P1 | M13 + structured warning on thrown errors | After M13 |
+| R14-001 | P1 | M3 (collapse stop-hook writes) + D4 (eliminate zero-offset sentinel) | After M3 + D4 |
+| R15-001 / R15-002 / R15-003 | P1/P2 | Medium — retarget reason field, configure tail window, distinguish I/O vs ambiguity | Independent |
+| R16-001 | P1 | Quick-win — validate operation before transitive branch | Independent |
+| R16-002 | P2 | Medium — reject malformed rows in `reconsolidation-bridge` | Independent |
+| R17-001 | P2 | Quick-win #17 — flag dangling edges | Independent |
+| R18-001 / R18-002 / R20-002 / R20-003 | P1/P2 | S3 (migration propagation) | After M7 |
+| R19-001 / R19-002 | P2 | Medium — surface dangling nodes + assistive failure as corruption | Independent |
+| R20-001 | P1 | Medium — snapshot transcript stat before producer metadata builds | Independent |
+| R21-001 | P1 | M13 | Independent |
+| R21-002 | P1 | S2 (HookState overhaul) | Prereq for R25-004, R28-001, R29-001 |
+| R21-003 | P1 | S3 (migration propagation) | After M7 |
+| R22-001 / R23-001 | P1 | S4 / Quick-win #14 (code-graph/query.ts readiness) | Independent |
+| R22-002 / R23-002 / R25-003 | P1 | S3 | After M7 |
+| R23-003 | P2 | S2 (distinguish expiry from absence) | After M1/M2 |
+| R24-001 | P1 | M13 — typed recovery action for all degradation branches | Independent |
+| R24-002 | P1 | Quick-win — `handleSessionResume` forwards fallback scope | Independent |
+| R25-001 / R25-002 / R25-004 / R26-001 | P1/P2 | S2/M8/M13 test-migration | Tied to structural fixes |
+| R26-002 | P2 | Quick-win #19 — health surface structural trust | Independent |
+| R27-001 / R27-002 | P1 | M13 + code-graph/query readiness fix | After M13 |
+| R28-001 / R28-002 | P1 | S2 | After M1 |
+| R29-001 / R29-002 | P1/P2 | S2 (schema versioning) | After M1/M2 |
+| R30-001 / R30-002 | P1 | M8 | Independent |
+| R31-001 / R31-002 / R32-001 / R32-002 / R33-002 / R33-003 / R34-001 / R35-002 | P1/P2 | S2 (HookState + session-stop overhaul) | Structural |
+| R31-003 / R32-003 / R35-001 | P1 | S1 (transactional reconsolidation, B1) | Structural |
+| R31-004 / R32-004 | P2 | Quick-win #15 — unique temp filenames | Independent |
+| R31-005 / R32-005 / R35-003 / R36-003 | P2 | Quick-wins #10 + #11 — remove shared path from 4 surfaces | Independent |
+| R33-001 | P1 | S2 (identity-based clearCompactPrime) | After M1 |
+| R34-002 / R36-002 / R37-003 | P1/P2 | S1 (B2, B4) | After B1 |
+| R36-001 | P2 | S2 (re-read mtime after read) | After M1 |
+| R37-001 / R37-002 | P1 | S2 (D4 eliminate sentinel, M4 refresh lastSpecFolder) | After M1 |
+| R38-001 / R38-002 / R40-001 | P2 | S2 (per-file isolation + TOCTOU check) | Independent, quick |
+| R39-001 | P1 | Quick-win #22 — `autosaveOutcome` field | Independent |
+| R39-002 / R40-002 | P1 | S1 (B3) | After B1 |
+| R41-001 / R47-002 | P2 | S7 (vocabulary alignment + event field emission) | Independent |
+| R41-002 / R45-001 / R47-001 / R48-001 / R49-001 / R50-001 | P1/P2 | S5 (Gate 3 typed classifier) | Independent |
+| R41-003 / R45-003 / R46-002 / R49-003 | P1 | S4 (skill routing / compiler invariants) | Independent |
+| R41-004 / R45-004 / R46-003 / R50-002 | P1/P2 | S6 (playbook runner isolation) | Independent |
+| R42-001 / R43-002 / R44-003 / R48-002 / R49-002 | P2 | S7 (YAML predicate grammar) | Independent |
+| R42-002 | P2 | S4 (health check inventory compare) | After A3 |
+| R42-003 | P2 | S6 (automatable field) | Independent |
+| R43-001 / R44-001 / R44-002 | P1/P2 | S4 (A1 + A2 wiring) | Independent |
+| R45-002 | P2 | S4 (A2b disambiguation) | After A2 |
+| R46-001 | P1 | S4 (A0 per-subcommand bridges) | Independent, prereq for A2 on subcommand surface |
+
+### 9.5 Signal-amnesia pattern layers (from §5.4)
 
 | Layer count | Finding(s) | Type |
 | ----------- | ---------- | ---- |
@@ -1000,6 +1459,42 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 | Validator | R49-003 | Only 2-node cycles checked |
 
 **Total layers with signal amnesia: 11.** Each requires an explicit "forward or log-drop" assertion at its transition. None currently have it.
+
+### 9.6 Effort breakdown by workstream and finding count
+
+| Workstream | Effort | Distinct findings addressed | Leverage (findings/week) |
+| ---------- | ------ | --------------------------- | ----------------------- |
+| Quick wins (§6.1, 29 items) | 1w | ~25 | 25.0 |
+| M13 (enum status refactor) | 1w | ~10 | 10.0 |
+| S2 (HookState overhaul) | 2w | ~12 | 6.0 |
+| S1 (transactional reconsolidation) | 2w | ~8 | 4.0 |
+| S3 (migration propagation) | 1w | ~7 | 7.0 |
+| S4 (skill routing trust chain) | 1w | ~8 | 8.0 |
+| S5 (Gate 3 classifier) | 1.5w | ~6 | 4.0 |
+| S6 (playbook runner isolation) | 1.5w | ~4 | 2.7 |
+| S7 (YAML predicate grammar) | 1.5w | ~5 | 3.3 |
+| M8 (vocabulary expansion) | 1.5w | ~4 | 2.7 |
+
+**Leverage-ranked remediation priority:**
+1. **Quick wins first.** 25 findings for 1 week. Highest ROI by a 2.5× margin. Most have no dependencies.
+2. **M13 next.** 10 findings for 1 week. Enables S1 dependency chain.
+3. **S4 + S3.** 15 findings for 2 weeks parallel. Independent of M13 and of each other. Can start Week 1.
+4. **S2 + S1.** 20 findings for 4 weeks parallel. Structural anchor; can start Week 2 after M13.
+5. **S5 + S6 + S7 + M8.** 19 findings for 5.5 weeks. Finish out remaining P1/P2 work.
+
+### 9.7 Domain chronological arc
+
+**Foundational (iterations 1–10).** The investigation opened with a reconnaissance pass across session-lifecycle, code-graph, save, and hook paths. Key insights crystallized by iteration 5: the runtime has asymmetric contract enforcement between producers (rich internal state) and consumers (collapsed external state). Iteration 10's cross-runtime compact-cache finding (R10-001: Gemini drops provenance; R10-002: Claude interpolates unescaped) reframed the whole foundational layer as a contract-split issue rather than individual bug list.
+
+**Domain 1 (iterations 11–20).** Silent fail-open patterns. Iteration 11 established the "blast_radius silent degrade" as a cross-cutting motif. Iteration 13 was the pivotal moment: five findings in a single iteration, spanning autosave skip (R13-001), I/O → `null` collapse (R13-002), outline subject misclassification (R13-003), reconsolidation catch-and-swallow (R13-004), and causal-link partial-success (R13-005). After iteration 13, the domain's central thesis was clear: success-shaped payload masking skip/defer/partial/failed state. Iterations 14–20 deepened this with R17-002 (five failure types unified under `ran`), R20-001 (producer metadata describes later transcript state than parsed), and R20-002 (timestamp fabrication in legacy fallback).
+
+**Domain 2 (iterations 21–30).** State contract honesty. Iteration 21 opened the domain with the most important finding of the phase: R21-003, `refreshGraphMetadataForSpecFolder()` launders malformed JSON into canonical. This single finding established "state laundering" as a distinct class from "state collapse." Iterations 22–24 traced laundering into consumer layers (memory-parser `qualityScore: 1`, stage-1 candidate +0.12 boost). Iteration 25 audited regression tests and found four fixtures codifying the degraded contract (R25-001 through R25-004) — a test-migration concern that changed the Phase 017 effort estimate. Iteration 29's R29-001 ("theatrical schema-drift vocabulary") revealed that persisted `HookState` has no version field even though the consumer checks for one — a finding that required deep familiarity with multiple files to surface. Iteration 30's R30-001/R30-002 (self-contradictory payload + transport collapse) closed the domain by showing that richer internal state exists but is never rendered.
+
+**Domain 3 (iterations 31–40).** Concurrency and write coordination. This was the densest domain. Iteration 31 opened with R31-001 (unlocked RMW) and R31-003 (conflict without CAS). Iteration 33 added R33-001 (compact cache identity-free cleanup) as a distinct failure class from writer races. Iteration 35's R35-001 (conflict fork → multi-successor fan-out) was the single most impactful Domain 3 finding: it showed that the memory graph's "one current successor per predecessor" invariant was silently broken. Iterations 36–38 deepened the snapshot-coherence pattern across complement, assistive, per-candidate, and directory-scan paths. Iteration 40 closed the domain with R40-001 (TOCTOU cleanup stat-then-unlink) and R40-002 (per-candidate scope mixed snapshot). By end of Domain 3, nine distinct coordination sub-patterns were characterized.
+
+**Domain 4 (iterations 41–50).** Stringly-typed governance. Iteration 41 surveyed the landscape (YAML assets, AGENTS.md, skill graph, playbook runner). Iteration 43 produced the phase's most unexpected finding: R43-001, the routing toolchain is fully wired but the wire terminates before scoring. Iterations 44–46 deepened this into a systemic signal-amnesia pattern spanning SKILL.md keyword comments, topology warnings, bridge prefix collapse, and `conflicts_with` asymmetry. Iteration 46 added the live-data eval expansion (R46-003). Iterations 47–50 completed the vocabulary mapping and Gate 3 classifier gaps, confirming both false-positives (read-only research triggers Gate 3) and false-negatives (save/resume bypass Gate 3) coexist.
+
+**Domain 5 (never formally started).** Subsidiary evidence was catalogued across all 50 iterations. The dedicated test-coverage pass is deferred to Phase 017 Week 1.
 
 ---
 

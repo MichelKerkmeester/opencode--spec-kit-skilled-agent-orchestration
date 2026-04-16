@@ -39,6 +39,27 @@ Use this skill when:
 - Quick codebase searches (use `@context` or direct Grep/Glob)
 - Fewer than 3 sources needed (single-pass research suffices)
 
+### FORBIDDEN INVOCATION PATTERNS
+
+This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-research` command. The command's YAML workflow owns state, dispatch, and convergence.
+
+**NEVER:**
+- Write a custom bash/shell dispatcher to parallelize iterations
+- Invoke cli-copilot / cli-codex / cli-gemini / cli-claude-code directly in a loop to simulate iterations
+- Manually write iteration prompts to `/tmp` and dispatch them via `copilot -p`
+- Dispatch the `@deep-research` LEAF agent via the Task tool for iteration loops (the agent is LEAF — a single iteration — and MUST be driven by the command's workflow)
+- Skip the state machine: `deep-research-state.jsonl`, `deep-research-config.json`, `deltas/`, `prompts/`, `logs/`
+- Manage iteration state outside `{spec_folder}/research/` or `{spec_tree_root}/research/{phase_subfolder}/`
+
+**ALWAYS:**
+- Invoke via `/spec_kit:deep-research :auto` or `/spec_kit:deep-research :confirm`
+- Let the command's YAML workflow own dispatch (auto: `assets/spec_kit_deep-research_auto.yaml`)
+- Let `scripts/reduce-state.cjs` be the SINGLE state writer
+- Require every iteration to produce BOTH the markdown narrative AND the JSONL delta (dispatch scripts must fail if either is missing)
+- Use `resolveArtifactRoot(specFolder, 'research')` from `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs` to locate the canonical research root
+
+**If the user specifies an executor CLI** ("use cli-copilot gpt-5.4 high"), that selects the HOW — the executor still runs INSIDE the command's workflow. The CLI executor is a tool inside the command, not a replacement for the command.
+
 ### Keyword Triggers
 
 `autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`
