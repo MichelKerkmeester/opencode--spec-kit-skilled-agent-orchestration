@@ -31,7 +31,7 @@ type StartupBrief = {
 };
 
 // Dynamic import for startup brief builder — may not be available
-let buildStartupBrief: (() => StartupBrief) | null = null;
+let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
 try {
   const mod = await import('../../lib/code-graph/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
@@ -116,7 +116,12 @@ export function handleStartup(
   const requestedSpecFolder = typeof input.specFolder === 'string' ? input.specFolder : undefined;
   let startupBrief: StartupBrief | null = null;
   try {
-    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+    startupBrief = buildStartupBrief
+      ? buildStartupBrief(undefined, {
+        claudeSessionId: sessionId,
+        specFolder: requestedSpecFolder,
+      })
+      : null;
   } catch (err: unknown) {
     hookLog('error', 'session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
   }

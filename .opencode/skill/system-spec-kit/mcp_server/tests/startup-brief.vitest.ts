@@ -57,7 +57,7 @@ describe('startup-brief', () => {
   });
 
   it('builds graph outline and session continuity when data exists', () => {
-    const brief = buildStartupBrief();
+    const brief = buildStartupBrief(undefined, { claudeSessionId: 'recent-session' });
 
     expect(brief.graphState).toBe('ready');
     expect(brief.graphOutline).toContain('12 files, 64 nodes, 48 edges.');
@@ -74,6 +74,19 @@ describe('startup-brief', () => {
     expect(brief.sharedPayload?.kind).toBe('startup');
     expect(brief.sharedPayload?.provenance.producer).toBe('startup_brief');
     expect(brief.sharedPayload?.sections.length).toBeGreaterThan(0);
+    expect(hookState.loadMostRecentState).toHaveBeenCalledWith({
+      scope: {
+        claudeSessionId: 'recent-session',
+      },
+    });
+  });
+
+  it('fails closed for continuity when no scope is provided', () => {
+    const brief = buildStartupBrief();
+
+    expect(brief.sessionContinuity).toBeNull();
+    expect(brief.startupSurface).toContain('- Memory: startup summary only (resume on demand)');
+    expect(hookState.loadMostRecentState).not.toHaveBeenCalled();
   });
 
   it('returns empty graph state with summary but no outline for empty indexes', () => {
@@ -90,7 +103,7 @@ describe('startup-brief', () => {
       schemaVersion: 3,
     });
 
-    const brief = buildStartupBrief();
+    const brief = buildStartupBrief(undefined, { claudeSessionId: 'recent-session' });
     expect(brief.graphState).toBe('empty');
     expect(brief.graphSummary).toMatchObject({ files: 0, nodes: 0, edges: 0, lastScan: null });
     expect(brief.graphOutline).toBeNull();

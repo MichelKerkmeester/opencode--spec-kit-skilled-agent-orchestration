@@ -6,7 +6,7 @@
 
 import { getStats, queryStartupHighlights, type StartupHighlight } from './code-graph-db.js';
 import { getGraphFreshness } from './ensure-ready.js';
-import { loadMostRecentState } from '../../hooks/claude/hook-state.js';
+import { loadMostRecentState, type HookStateScope } from '../../hooks/claude/hook-state.js';
 import { isCocoIndexAvailable } from '../utils/cocoindex-path.js';
 import {
   createSharedPayloadEnvelope,
@@ -176,8 +176,12 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
   }
 }
 
-function buildSessionContinuity(): string | null {
-  const state = loadMostRecentState();
+function buildSessionContinuity(stateScope?: HookStateScope): string | null {
+  if (!stateScope?.specFolder && !stateScope?.claudeSessionId) {
+    return null;
+  }
+
+  const state = loadMostRecentState({ scope: stateScope });
   if (!state) {
     return null;
   }
@@ -193,9 +197,9 @@ function buildSessionContinuity(): string | null {
 }
 
 /** Build the startup brief used by runtime hooks and transport startup digests. */
-export function buildStartupBrief(highlightCount?: number): StartupBriefResult {
+export function buildStartupBrief(highlightCount?: number, stateScope?: HookStateScope): StartupBriefResult {
   const graph = buildGraphOutline(highlightCount);
-  const sessionContinuity = buildSessionContinuity();
+  const sessionContinuity = buildSessionContinuity(stateScope);
   const cocoIndexAvailable = isCocoIndexAvailable();
   const sections: SharedPayloadSection[] = [];
   if (graph.graphOutline) {

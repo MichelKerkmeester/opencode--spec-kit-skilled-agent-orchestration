@@ -37,7 +37,7 @@ type StartupBrief = {
   startupSurface: string;
 };
 
-let buildStartupBrief: (() => StartupBrief) | null = null;
+let buildStartupBrief: ((highlightCount?: number, stateScope?: { specFolder?: string; claudeSessionId?: string }) => StartupBrief) | null = null;
 try {
   const mod = await import('../../lib/code-graph/startup-brief.js');
   buildStartupBrief = mod.buildStartupBrief;
@@ -94,10 +94,12 @@ export function handleCompact(sessionId: string): OutputSection[] {
 }
 
 /** Handle source=startup: prime new session with tool overview */
-function handleStartup(): OutputSection[] {
+function handleStartup(sessionId?: string): OutputSection[] {
   let startupBrief: StartupBrief | null = null;
   try {
-    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+    startupBrief = buildStartupBrief
+      ? buildStartupBrief(undefined, sessionId ? { claudeSessionId: sessionId } : undefined)
+      : null;
   } catch (err: unknown) {
     hookLog('error', 'gemini:session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -209,7 +211,7 @@ async function main(): Promise<void> {
       budget = COMPACTION_TOKEN_BUDGET;
       break;
     case 'startup':
-      sections = handleStartup();
+      sections = handleStartup(sessionId);
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     case 'resume':
@@ -221,7 +223,7 @@ async function main(): Promise<void> {
       budget = SESSION_PRIME_TOKEN_BUDGET;
       break;
     default:
-      sections = handleStartup();
+      sections = handleStartup(sessionId);
       budget = SESSION_PRIME_TOKEN_BUDGET;
   }
 
