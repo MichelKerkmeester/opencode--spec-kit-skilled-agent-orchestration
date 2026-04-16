@@ -734,7 +734,7 @@ function buildRoutedSaveOptions(
   };
 }
 
-function shouldUseCanonicalRouting(params: Pick<AtomicSaveParams, 'routeAs' | 'mergeModeHint' | 'targetAnchorId'>): boolean {
+function shouldUseCanonicalRouting(_params: Pick<AtomicSaveParams, 'routeAs' | 'mergeModeHint' | 'targetAnchorId'>): boolean {
   return true; // Canonical routing is always enabled (Tier 3 LLM routing on by default)
 }
 
@@ -2539,7 +2539,13 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   async function buildDryRunResponse(
     preparedDryRun: PreparedParsedMemory,
     parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
-    preflightValidation: { skipped: boolean; errors: string[]; warnings: string[]; details: Record<string, unknown>; wouldPass: boolean },
+    preflightValidation: {
+      skipped: boolean;
+      errors: preflight.PreflightIssue[];
+      warnings: preflight.PreflightResult['warnings'];
+      details: Record<string, unknown>;
+      wouldPass: boolean;
+    },
   ) {
     const templateContractPass = preparedDryRun.templateContract.valid
       || shouldBypassTemplateContract(
@@ -2693,7 +2699,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         errors: preflightResult.errors,
         warnings: preflightResult.warnings,
         details: preflightResult.details,
-        wouldPass: preflightResult.dry_run_would_pass,
+        wouldPass: preflightResult.dry_run_would_pass ?? preflightResult.pass,
       });
     }
 

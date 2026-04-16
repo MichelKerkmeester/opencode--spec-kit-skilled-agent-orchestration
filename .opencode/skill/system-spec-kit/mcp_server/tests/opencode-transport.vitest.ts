@@ -3,9 +3,14 @@ import {
   buildOpenCodeTransportPlan,
   coerceSharedPayloadEnvelope,
 } from '../lib/context/opencode-transport.js';
+import type { CodeGraphOpsContract } from '../lib/code-graph/ops-hardening.js';
 import type { SharedPayloadEnvelope } from '../lib/context/shared-payload.js';
 
-function makePayload(kind: SharedPayloadEnvelope['kind'], summary: string): SharedPayloadEnvelope {
+function makePayload(
+  kind: SharedPayloadEnvelope['kind'],
+  summary: string,
+  overrides: Partial<SharedPayloadEnvelope> = {},
+): SharedPayloadEnvelope {
   return {
     kind,
     summary,
@@ -26,6 +31,44 @@ function makePayload(kind: SharedPayloadEnvelope['kind'], summary: string): Shar
       generatedAt: new Date().toISOString(),
       lastUpdated: null,
       sourceRefs: [kind],
+    },
+    ...overrides,
+  };
+}
+
+function makeGraphOps(graphFreshness: CodeGraphOpsContract['readiness']['graphFreshness']): CodeGraphOpsContract {
+  return {
+    readiness: {
+      canonical: graphFreshness === 'fresh'
+        ? 'ready'
+        : graphFreshness === 'stale'
+          ? 'stale'
+          : 'missing',
+      graphFreshness,
+      sourceSurface: 'session_resume',
+      summary: 'graph summary',
+      recommendedAction: 'graph action',
+    },
+    doctor: {
+      supported: true,
+      surface: 'memory_health',
+      checks: ['fts_consistency'],
+      repairModes: ['confirmation-gated autoRepair'],
+      recommendedAction: 'repair',
+    },
+    exportImport: {
+      rawDbDumpAllowed: false,
+      portableIdentityRequired: true,
+      postImportRepairRequired: true,
+      workspaceBoundRelativePaths: true,
+      absolutePaths: 'allowed-for-import-only',
+      recommendedAction: 'export',
+    },
+    previewPolicy: {
+      mode: 'metadata-only',
+      rawBinaryAllowed: false,
+      recommendedFields: ['path'],
+      recommendedAction: 'preview',
     },
   };
 }
@@ -51,6 +94,58 @@ describe('opencode transport adapter', () => {
     expect(plan.systemTransform?.content).toContain('later structural reads may differ if the repo state changed');
     expect(plan.messagesTransform).toHaveLength(2);
     expect(plan.compaction?.hook).toBe('experimental.session.compacting');
+  });
+
+  it('renders structural context with absent/unavailable readiness instead of only envelope trust state', () => {
+    const resume = makePayload('resume', 'resume summary', {
+      sections: [
+        {
+          key: 'memory-resume',
+          title: 'Memory Resume',
+          content: 'memory summary',
+          source: 'memory',
+        },
+        {
+          key: 'code-graph-status',
+          title: 'Code Graph Status',
+          content: 'status=empty; files=0; nodes=0; edges=0; lastScan=unknown',
+          source: 'code-graph',
+        },
+        {
+          key: 'structural-context',
+          title: 'Structural Context',
+          content: 'No structural context available — code graph is empty or unavailable',
+          source: 'code-graph',
+          structuralTrust: {
+            parserProvenance: 'unknown',
+            evidenceStatus: 'unverified',
+            freshnessAuthority: 'unknown',
+          },
+        },
+      ],
+      provenance: {
+        ...makePayload('resume', 'resume summary').provenance,
+        trustState: 'stale',
+      },
+    });
+
+    const absentPlan = buildOpenCodeTransportPlan({
+      resumePayload: resume,
+      graphOps: makeGraphOps('empty'),
+    });
+    const unavailablePlan = buildOpenCodeTransportPlan({
+      resumePayload: resume,
+      graphOps: makeGraphOps('error'),
+    });
+
+    expect(absentPlan.messagesTransform[0]?.content).toContain('### Structural Context');
+    expect(absentPlan.messagesTransform[0]?.content).toContain('Structural availability: absent; canonical=missing; graphFreshness=empty');
+    expect(absentPlan.messagesTransform[0]?.content).toContain(
+      'Structural trust axes: parserProvenance=unknown; evidenceStatus=unverified; freshnessAuthority=unknown',
+    );
+    expect(unavailablePlan.messagesTransform[0]?.content).toContain(
+      'Structural availability: unavailable; canonical=missing; graphFreshness=error',
+    );
   });
 
   it('coerces plain JSON payload objects safely', () => {

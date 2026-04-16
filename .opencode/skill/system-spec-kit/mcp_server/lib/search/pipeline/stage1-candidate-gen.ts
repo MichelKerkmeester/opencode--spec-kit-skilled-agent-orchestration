@@ -637,7 +637,6 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       minSimilarity: MULTI_CONCEPT_MIN_SIMILARITY,
       limit,
       specFolder,
-      includeArchived,
     }) as PipelineRow[];
   }
 

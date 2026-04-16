@@ -561,6 +561,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     payloadContract,
     opencodeTransport: buildOpenCodeTransportPlan({
       resumePayload: payloadContract,
+      graphOps,
       specFolder: resolvedSpecFolder,
     }),
     graphOps,

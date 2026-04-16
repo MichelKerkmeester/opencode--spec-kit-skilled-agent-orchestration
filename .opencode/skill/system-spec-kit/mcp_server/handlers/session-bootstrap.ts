@@ -357,6 +357,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
       bootstrapPayload: payloadContract,
       resumePayload,
       healthPayload,
+      graphOps,
       specFolder: args.specFolder ?? null,
     }),
     graphOps,
