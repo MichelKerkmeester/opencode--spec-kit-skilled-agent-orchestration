@@ -332,7 +332,7 @@ Your preference? (A or B)
 |---|---|
 | No prompt provided | "I need a prompt or request to enhance. What would you like me to improve?" |
 | Ambiguous intent | "Are you looking to improve an existing prompt, or create a new one from scratch?" |
-| Invalid command | "Available commands: $improve, $refine, $short, $deep, $raw, $text" |
+| Invalid command | "Available commands: $text, $improve, $refine, $short, $json, $yaml, $raw" |
 | Pasted content, no context | "What should I do with this? Improve clarity, restructure, change format, or full enhancement?" |
 | Conflicting signals | "You mentioned both [A] and [B]. Which mode should I use?" |
 

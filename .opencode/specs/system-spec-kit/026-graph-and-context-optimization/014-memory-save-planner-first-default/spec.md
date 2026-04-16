@@ -214,7 +214,7 @@ The packet carries packet-local snapshots of the audit report, research synthesi
 - **SC-013**: 43 of 43 implementation tasks completed; 0 blocked tasks at closeout.
 - **SC-014**: Deep-review findings F001-F009 (3 P0, 5 P1, 1 P2) are resolved.
 - **SC-015**: Canonical atomic writer, routed record identity, content-router category contract, and thin continuity validation are unchanged outside the documented Tier 3 guard.
-- **SC-016**: Packet 016 primary docs pass `validate_document.py`.
+- **SC-016**: Packet 014 primary docs pass `validate_document.py`.
 - **SC-017**: Packet passes `validate.sh --strict`.
 - **SC-018**: `description.json`, `graph-metadata.json`, and packet-local changelog exist.
 - **SC-019**: Three real session transcripts validate planner-first behavior with no wrong-anchor or unsafe-target outcomes.
@@ -286,6 +286,11 @@ The packet carries packet-local snapshots of the audit report, research synthesi
 - **NFR-R01**: The default path must not introduce any new network dependency.
 - **NFR-R02**: Known limitations carried from the release and remediation pass must be preserved in packet docs.
 - **NFR-R03**: Packet metadata must support packet discovery and graph traversal.
+
+### Transcript Snapshot Hygiene
+
+- **NFR-TH01**: Transcript snapshots retained in packet-local `scratch/` or `review/` directories must not contain raw API keys, bearer tokens, or user credentials. The planner and fallback paths must strip or redact credential-shaped strings before writing any transcript artifact to disk.
+- **NFR-TH02**: Transcript artifacts exceeding 500 KB must be truncated or chunked with a deterministic hash pointer so the full content can be reconstructed from the source session without bloating the packet.
 
 ---
 

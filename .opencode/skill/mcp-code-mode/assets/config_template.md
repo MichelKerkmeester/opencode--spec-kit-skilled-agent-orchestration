@@ -259,7 +259,7 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 ```
 
 **Features**: 20+ tools for tasks, lists, workspaces
-**Authentication**: Requires `CLICKUP_API_KEY` and `CLICKUP_TEAM_ID` in .env
+**Authentication**: Requires `clickup_CLICKUP_API_KEY` and `clickup_CLICKUP_TEAM_ID` in .env (prefixed with the manual name)
 **Package**: `@taazkareem/clickup-mcp-server` (installed on-demand via npx)
 
 ### Figma
@@ -284,7 +284,7 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 ```
 
 **Features**: 18 tools for files, comments, images, components, styles
-**Authentication**: Requires `FIGMA_API_KEY` in .env
+**Authentication**: Requires `figma_FIGMA_API_KEY` in .env (prefixed with the manual name)
 **Package**: `figma-developer-mcp` (Framelink third-party)
 
 ### Notion
@@ -309,7 +309,7 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 ```
 
 **Features**: 20+ tools for pages, databases, blocks
-**Authentication**: Requires `NOTION_TOKEN` in .env
+**Authentication**: Requires `notion_NOTION_TOKEN` in .env (prefixed with the manual name)
 **Package**: `@modelcontextprotocol/server-notion` (official MCP server)
 
 ### Chrome DevTools (Multiple Instances)

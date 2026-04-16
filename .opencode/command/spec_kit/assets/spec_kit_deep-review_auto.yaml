@@ -862,7 +862,7 @@ workflow:
       step_index_memory:
         action: "Index the routed canonical spec document with memory_save when immediate MCP visibility is required"
         mcp_tool: memory_save
-        invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
+        invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
         note: "Use the actual canonical spec-doc path returned by generate-context.js (decision-record.md, implementation-summary.md, or handover.md); memory_index_scan remains the bulk fallback"
 
       step_verify_save:

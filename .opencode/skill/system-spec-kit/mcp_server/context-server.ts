@@ -628,6 +628,8 @@ async function resolveDispatchGraphContext(
   const startedAt = Date.now();
   let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
 
+  let aborted = false;
+
   const buildPromise = new Promise<DispatchGraphContextMeta>((resolve) => {
     queueMicrotask(() => {
       try {
@@ -636,7 +638,7 @@ async function resolveDispatchGraphContext(
           startedAt + GRAPH_ENRICHMENT_TIMEOUT_MS,
         );
 
-        if (Date.now() - startedAt >= GRAPH_ENRICHMENT_TIMEOUT_MS) {
+        if (aborted || Date.now() - startedAt >= GRAPH_ENRICHMENT_TIMEOUT_MS) {
           return;
         }
 
@@ -645,6 +647,7 @@ async function resolveDispatchGraphContext(
           latencyMs: Date.now() - startedAt,
         });
       } catch (error: unknown) {
+        if (aborted) return;
         resolve({
           status: 'unavailable',
           source: 'tool-dispatch',
@@ -659,6 +662,7 @@ async function resolveDispatchGraphContext(
 
   const timeoutPromise = new Promise<DispatchGraphContextMeta>((resolve) => {
     timeoutHandle = setTimeout(() => {
+      aborted = true;
       resolve({
         status: 'timeout',
         source: 'tool-dispatch',

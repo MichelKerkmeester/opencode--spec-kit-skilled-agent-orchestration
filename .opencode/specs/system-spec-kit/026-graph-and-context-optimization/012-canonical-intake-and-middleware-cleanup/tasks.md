@@ -49,6 +49,7 @@ _memory:
 |--------|---------|
 | `[ ]` | Pending |
 | `[x]` | Completed |
+| `[D]` | Deferred |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
@@ -223,11 +224,11 @@ _memory:
 - [x] T087 Run sk-doc DQI validator on all canonical docs. Depends on: T086. Evidence: PASS.
 - [x] T088 Grep `/spec_kit:start` repo-wide; expect zero hits in forward-looking paths. Depends on: T082-T085. Evidence: PASS — zero active hits.
 - [x] T089 Verify M1-M9 state preservation: `git diff` on M1-M9 surfaces is scoped to merger updates only. Depends on: T086. Evidence: M1-M9 evidence preserved verbatim in the packet.
-- [x] T090 Manual integration test: `/spec_kit:plan --intake-only` on scratch empty folder. Depends on: T089. Evidence: DEFERRED — user-driven manual test.
-- [x] T091 Manual integration test: `/spec_kit:plan` full workflow on scratch populated folder (intake bypass). Depends on: T089. Evidence: DEFERRED — user-driven manual test.
-- [x] T092 Manual integration test: `/spec_kit:complete` on scratch empty folder. Depends on: T089. Evidence: DEFERRED — user-driven manual test.
-- [x] T093 Manual integration test: `/spec_kit:resume` with `reentry_reason: incomplete-interview`. Depends on: T089. Evidence: DEFERRED — user-driven manual test.
-- [x] T094 Idempotence test: `/spec_kit:plan --intake-only` twice on same folder. Depends on: T089. Evidence: DEFERRED — user-driven manual test.
+- [D] T090 Manual integration test: `/spec_kit:plan --intake-only` on scratch empty folder. Depends on: T089. Deferred: requires manual integration testing on live harness.
+- [D] T091 Manual integration test: `/spec_kit:plan` full workflow on scratch populated folder (intake bypass). Depends on: T089. Deferred: requires manual integration testing on live harness.
+- [D] T092 Manual integration test: `/spec_kit:complete` on scratch empty folder. Depends on: T089. Deferred: requires manual integration testing on live harness.
+- [D] T093 Manual integration test: `/spec_kit:resume` with `reentry_reason: incomplete-interview`. Depends on: T089. Deferred: requires manual integration testing on live harness.
+- [D] T094 Idempotence test: `/spec_kit:plan --intake-only` twice on same folder. Depends on: T089. Deferred: requires manual integration testing on live harness.
 - [x] T095 Author changelog entry at `.opencode/changelog/01--system-spec-kit/v3.4.0.0.md` (migration note: `/spec_kit:start → /spec_kit:plan --intake-only`). Depends on: T086. Evidence: PASS — `v3.4.0.0.md` authored.
 - [x] T096 Execute M15 deep-review remediation: 5 parallel Opus agents fix 12 findings (4 P0 / 4 P1 / 4 P2). Depends on: T086. Evidence: `review/review-report.md` documents all findings resolved.
 - [x] T097 Populate implementation-summary.md with verification evidence; run `/memory:save` on packet (packet closeout). Depends on: T096. Evidence: implementation-summary.md populated post-remediation.
@@ -238,7 +239,7 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks T001-T097 marked `[x]` with evidence
+- [x] All tasks T001-T097 resolved: 92 completed `[x]`, 5 deferred `[D]` (T090-T094 require manual integration testing)
 - [x] No `[B]` blocked tasks remaining
 - [x] Packet-local regression and strict validation evidence captured (sk-doc validator PASS; packet strict validation PASSED)
 - [x] 26-file downstream sweep delivered via cli-copilot delegation; 4 hard-deletions executed; skill registry cleaned

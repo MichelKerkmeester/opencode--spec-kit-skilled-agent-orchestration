@@ -167,7 +167,12 @@ def get_cached_skill_records(
     stop_words: Set[str],
     force_refresh: bool = False,
 ) -> Dict[str, Dict[str, Any]]:
-    """Return cached skill records with mtime invalidation."""
+    """Return cached skill records with mtime invalidation.
+
+    Tracks SKILL.md files that were discovered but could not be parsed,
+    exposing them via ``get_cache_status()`` so callers can detect
+    degraded state instead of assuming a healthy cache.
+    """
     skill_files = _discover_skill_files(skills_dir)
     signature = _compute_signature(skill_files)
 
@@ -175,15 +180,25 @@ def get_cached_skill_records(
         return _clone_records(_CACHE["records"])
 
     records: Dict[str, Dict[str, Any]] = {}
+    skipped: list[str] = []
     for file_path in skill_files:
         built = _build_skill_record(file_path, stop_words)
         if built is None:
+            skipped.append(file_path)
             continue
         name, record = built
         records[name] = record
 
     _CACHE["signature"] = signature
     _CACHE["records"] = records
+    _CACHE["skipped"] = skipped
+
+    if skipped:
+        print(
+            f"WARNING: {len(skipped)} SKILL.md file(s) could not be parsed "
+            f"and were dropped: {', '.join(skipped)}",
+            file=__import__('sys').stderr,
+        )
 
     return _clone_records(records)
 
@@ -191,7 +206,10 @@ def get_cached_skill_records(
 def get_cache_status() -> Dict[str, Any]:
     """Expose cache diagnostics for health output."""
     records = _CACHE.get("records") or {}
+    skipped = _CACHE.get("skipped") or []
     return {
         "cached": bool(records),
         "cached_records": len(records),
+        "skipped_files": len(skipped),
+        "healthy": len(skipped) == 0,
     }

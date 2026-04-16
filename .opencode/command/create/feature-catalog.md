@@ -257,11 +257,11 @@ Behavior summary:
 
 | Operation | Purpose | Target Must Exist | Output Scope |
 | --- | --- | --- | --- |
-| `create` | Create a new rooted feature catalog package | No (warn if it already exists) | `FEATURE_CATALOG.md` + category folders + per-feature files |
+| `create` | Create a new rooted feature catalog package | No (warn if it already exists) | `feature_catalog.md` + category folders + per-feature files |
 | `update` | Update an existing rooted feature catalog package | Yes | existing root catalog + existing/new per-feature files |
 
 The command must always scaffold or preserve:
-- `feature_catalog/FEATURE_CATALOG.md`
+- `feature_catalog/feature_catalog.md`
 - numbered root-level category folders
 - per-feature files using the feature catalog snippet template
 - frontmatter on root and per-feature files
@@ -289,7 +289,7 @@ Routing rule:
 
 The generated catalog must match the current shipped `sk-doc` contract:
 
-- Root file: `feature_catalog/FEATURE_CATALOG.md`
+- Root file: `feature_catalog/feature_catalog.md`
 - Category directories: `NN--category-name`
 - Per-feature files: `NN-feature-name.md`
 - Root structure:
@@ -334,7 +334,7 @@ Hard gates:
 - H4: root document validates and link checks pass
 
 Required validation pipeline:
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py <FEATURE_CATALOG.md>`
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py <feature_catalog.md>`
 - local link/path checks for per-feature file references
 - category-folder and per-feature count verification
 

@@ -80,7 +80,7 @@ One-page cheat sheet for the autonomous deep research loop.
 | Iterations | `research/iterations/iteration-NNN.md` | Markdown | Per-iteration findings |
 | Output | `research/research.md` | Markdown | Workflow-owned progressive synthesis output |
 
-> **Live lifecycle branches:** `resume`, `restart`, `fork`, `completed-continue`. `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
+> **Live lifecycle branches:** `resume`, `restart`. (`fork` and `completed-continue` are deferred and not runtime-wired.) `progressiveSynthesis` defaults to `true`, so `research/research.md` is updated during the loop and finalized at synthesis.
 
 > **Canonical pause sentinel:** `research/.deep-research-pause`
 

@@ -47,7 +47,11 @@ def load_advisor_module() -> Any:
 
 
 def load_jsonl(path: str) -> List[Dict[str, Any]]:
-    """Load a JSONL dataset and surface line-numbered parse failures."""
+    """Load a JSONL dataset and surface line-numbered parse failures.
+
+    Validates that each row is an object with a non-empty ``prompt``
+    field, matching the same contract enforced by the bench harness.
+    """
     rows: List[Dict[str, Any]] = []
     with open(path, "r", encoding="utf-8") as handle:
         for line_number, raw in enumerate(handle, start=1):
@@ -55,9 +59,15 @@ def load_jsonl(path: str) -> List[Dict[str, Any]]:
             if not stripped:
                 continue
             try:
-                rows.append(json.loads(stripped))
+                row = json.loads(stripped)
             except json.JSONDecodeError as exc:
                 raise ValueError(f"Invalid JSONL at line {line_number}: {exc}") from exc
+            if not isinstance(row, dict):
+                raise ValueError(f"JSONL line {line_number}: expected object, got {type(row).__name__}")
+            prompt = row.get("prompt", "").strip() if isinstance(row.get("prompt"), str) else ""
+            if not prompt:
+                raise ValueError(f"JSONL line {line_number}: missing or empty 'prompt' field")
+            rows.append(row)
     return rows
 
 

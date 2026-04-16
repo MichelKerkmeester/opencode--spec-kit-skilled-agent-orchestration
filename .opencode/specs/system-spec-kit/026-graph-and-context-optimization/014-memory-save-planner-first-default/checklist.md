@@ -196,16 +196,16 @@ _memory:
 
 ### Packet Verification
 
-- [x] ✅ **CHK-016-001 [P0]** Packet created the requested snapshot structure. Evidence: packet tree
-- [x] ✅ **CHK-016-002 [P0]** Packet copied the audit artifacts. Evidence: `research/013-audit-snapshot/`
-- [x] ✅ **CHK-016-003 [P0]** Packet copied the research artifacts. Evidence: `research/014-research-snapshot/`
-- [x] ✅ **CHK-016-004 [P0]** Packet copied the deep-review artifacts. Evidence: `review/015-deep-review-snapshot/`
-- [x] ✅ **CHK-016-005 [P0]** Packet copied the transcript artifacts. Evidence: `scratch/transcripts-snapshot/`
-- [x] ✅ **CHK-016-006 [P1]** Copied Markdown files include the required snapshot note. Evidence: copied snapshot files
-- [x] ✅ **CHK-016-007 [P1]** Packet primary docs describe the runtime contract accurately (planner default, fallback, follow-up APIs, reserved `hybrid`, scoped router exception). Evidence: packet primary docs
-- [x] ✅ **CHK-016-008 [P1]** Packet primary docs pass `validate_document.py`. [EVIDENCE: all six primary docs validated on 2026-04-15]
-- [x] ✅ **CHK-016-009 [P1]** Packet passes `validate.sh --strict`. [EVIDENCE: strict validation passed on 2026-04-15]
-- [x] ✅ **CHK-016-010 [P1]** Packet metadata and packet-local changelog exist. [EVIDENCE: `description.json`, `graph-metadata.json`, and `changelog/changelog-026-014-memory-save-planner-first-default.md`]
+- [x] ✅ **CHK-014-001 [P0]** Packet created the requested snapshot structure. Evidence: packet tree
+- [x] ✅ **CHK-014-002 [P0]** Packet copied the audit artifacts. Evidence: `research/013-audit-snapshot/`
+- [x] ✅ **CHK-014-003 [P0]** Packet copied the research artifacts. Evidence: `research/014-research-snapshot/`
+- [x] ✅ **CHK-014-004 [P0]** Packet copied the deep-review artifacts. Evidence: `review/015-deep-review-snapshot/`
+- [x] ✅ **CHK-014-005 [P0]** Packet copied the transcript artifacts. Evidence: `scratch/transcripts-snapshot/`
+- [x] ✅ **CHK-014-006 [P1]** Copied Markdown files include the required snapshot note. Evidence: copied snapshot files
+- [x] ✅ **CHK-014-007 [P1]** Packet primary docs describe the runtime contract accurately (planner default, fallback, follow-up APIs, reserved `hybrid`, scoped router exception). Evidence: packet primary docs
+- [x] ✅ **CHK-014-008 [P1]** Packet primary docs pass `validate_document.py`. [EVIDENCE: all six primary docs validated on 2026-04-15]
+- [x] ✅ **CHK-014-009 [P1]** Packet passes `validate.sh --strict`. [EVIDENCE: strict validation passed on 2026-04-15]
+- [x] ✅ **CHK-014-010 [P1]** Packet metadata and packet-local changelog exist. [EVIDENCE: `description.json`, `graph-metadata.json`, and `changelog/changelog-026-014-memory-save-planner-first-default.md`]
 
 ---
 

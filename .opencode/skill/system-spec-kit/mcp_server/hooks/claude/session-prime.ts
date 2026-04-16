@@ -203,6 +203,19 @@ function handleClear(): OutputSection[] {
   ];
 }
 
+function writeHookOutput(output: string): Promise<void> {
+  return new Promise<void>((resolvePromise, rejectPromise) => {
+    process.stdout.write(output, (error) => {
+      if (error) {
+        rejectPromise(error);
+        return;
+      }
+
+      resolvePromise();
+    });
+  });
+}
+
 async function main(): Promise<void> {
   ensureStateDir();
 
@@ -254,9 +267,9 @@ async function main(): Promise<void> {
   const output = truncateToTokenBudget(formatHookOutput(sections), adjustedBudget);
 
   // Write to stdout for Claude Code to inject into conversation.
-  // Clear compact payload only AFTER stdout write succeeds to prevent
-  // data loss if the process crashes between clear and write.
-  process.stdout.write(output);
+  // Clear compact payload only after the write callback confirms the
+  // output was handed off, so compact recovery cannot be dropped early.
+  await writeHookOutput(output);
   if (source === 'compact') {
     clearCompactPrime(sessionId);
   }

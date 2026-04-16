@@ -88,7 +88,6 @@ function buildAdjacencyList(graph, sessionId) {
 
   for (const edge of getFilteredEdges(graph, sessionId)) {
     if (!adjacency.has(edge.source) || !adjacency.has(edge.target)) continue;
-    if (!adjacency.has(edge.source)) adjacency.set(edge.source, []);
     adjacency.get(edge.source).push(edge.target);
 
     inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);

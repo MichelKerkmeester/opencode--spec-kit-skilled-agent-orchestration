@@ -515,6 +515,11 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
   const requestedSpecFolder = normalizeSpecFolder(options.specFolder);
   const fallbackSpecFolder = normalizeSpecFolder(options.fallbackSpecFolder);
 
+  const allowedRoots = [
+    path.join(workspacePath, '.opencode', 'specs'),
+    path.join(workspacePath, 'specs'),
+  ];
+
   const resolveExistingFolder = (candidate: string | null): { folderPath: string; specFolder: string } | null => {
     if (!candidate) {
       return null;
@@ -528,6 +533,12 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
       ];
 
     for (const candidatePath of rawCandidates) {
+      // Path-safety: reject absolute paths that escape known packet roots
+      const resolved = path.resolve(candidatePath);
+      if (!allowedRoots.some((root) => resolved === root || resolved.startsWith(`${root}/`))) {
+        continue;
+      }
+
       if (!fs.existsSync(candidatePath) || !fs.statSync(candidatePath).isDirectory()) {
         continue;
       }

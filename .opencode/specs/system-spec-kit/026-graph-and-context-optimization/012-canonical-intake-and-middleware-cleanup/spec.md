@@ -383,7 +383,7 @@ Tell the command-graph evolution as one coherent story:
 - **NFR-S02**: Deep-research auto mode writes a JSONL audit record to `research/deep-research-state.jsonl` for every `spec.md` mutation (`type: "spec_mutation"`, `anchors_touched: [...]`, `diff_summary: "..."`)
 - **NFR-S03**: Interview answers populating `graph-metadata.json.manual.*` must be objects containing `packet_id`, `reason`, and `source`, with optional `spec_folder` / `title` hints preserved only as denormalized metadata
 - **NFR-S04**: Delegated intake, mode resolution, re-entry, relationship capture, canonical artifact commit, and optional memory-save branching must emit typed audit events
-- **NFR-S05**: Intake lock prevents concurrent trio publication under same `spec_folder` path (fail-closed semantics)
+- **NFR-S05**: Intake lock prevents concurrent trio publication under same `spec_folder` path (fail-closed semantics). Implementation: `withSpecFolderLock()` in `mcp_server/handlers/save/spec-folder-mutex.ts` serializes per-folder saves via a promise-chain map (`SPEC_FOLDER_LOCKS`); on prior-save failure the chain `.catch()`-continues into the next caller, and the map entry is cleaned up in `finally` only when the current chain is still the tail — ensuring no concurrent publish can slip through. Callers: `memory-save.ts:2396` and `atomic-index-memory.ts:324`.
 
 ### Reliability
 

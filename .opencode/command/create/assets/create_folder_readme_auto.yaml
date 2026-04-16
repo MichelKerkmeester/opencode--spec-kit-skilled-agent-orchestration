@@ -657,7 +657,7 @@ readme_workflow:
       purpose: "Index the canonical spec document immediately for search availability"
       mcp_tool: memory_save
       invocation: |
-        spec_kit_memory_memory_save({
+        memory_save({
           filePath: "[SPEC_FOLDER]/implementation-summary.md"
         })
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode. The save target is a canonical spec document; standalone memory/*.md files are retired and the runtime rejects them."
@@ -1113,7 +1113,7 @@ install_guide_workflow:
       purpose: "Index the canonical spec document immediately for search availability"
       mcp_tool: memory_save
       invocation: |
-        spec_kit_memory_memory_save({
+        memory_save({
           filePath: "[SPEC_FOLDER]/implementation-summary.md"
         })
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode. The save target is a canonical spec document; standalone memory/*.md files are retired and the runtime rejects them."

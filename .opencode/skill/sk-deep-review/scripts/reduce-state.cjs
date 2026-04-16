@@ -45,7 +45,12 @@ function slugify(value) {
 }
 
 function normalizeText(value) {
-  return String(value || '').replace(/\s+/g, ' ').trim();
+  if (value === null || value === undefined) return '';
+  if (typeof value !== 'string') {
+    try { return String(value).replace(/\s+/g, ' ').trim(); }
+    catch { return ''; }
+  }
+  return value.replace(/\s+/g, ' ').trim();
 }
 
 function escapeRegExp(value) {
@@ -209,16 +214,20 @@ function parseIterationFile(iterationPath) {
   const runMatch = iterationPath.match(/iteration-(\d+)\.md$/);
   const headingMatch = markdown.match(/^#\s+Iteration\s+\d+:\s+(.+)$/m);
 
-  const focusSection = extractSection(markdown, 'Focus');
-  const findingsSection = extractSection(markdown, 'Findings');
-  const ruledOutSection = extractSection(markdown, 'Ruled Out');
-  const deadEndsSection = extractSection(markdown, 'Dead Ends');
-  const nextFocusSection = extractSection(markdown, 'Recommended Next Focus');
+  // Support both old schema (Focus/Findings/Ruled Out/Dead Ends/Assessment)
+  // and live schema (Dispatcher/Files Reviewed/Findings - New/Traceability Checks/
+  // Confirmed-Clean/Next Focus).
+  const focusSection = extractSection(markdown, 'Focus') || extractSection(markdown, 'Dispatcher');
+  const findingsSection = extractSection(markdown, 'Findings') || extractSection(markdown, 'Findings - New');
+  const ruledOutSection = extractSection(markdown, 'Ruled Out') || extractSection(markdown, 'Confirmed-Clean Surfaces') || extractSection(markdown, 'Confirmed-Clean');
+  const deadEndsSection = extractSection(markdown, 'Dead Ends') || extractSection(markdown, 'Traceability Checks');
+  const nextFocusSection = extractSection(markdown, 'Recommended Next Focus') || extractSection(markdown, 'Next Focus (recommendation)') || extractSection(markdown, 'Next Focus');
   const assessmentSection = extractSection(markdown, 'Assessment');
+  const filesReviewedSection = extractSection(markdown, 'Files Reviewed');
 
-  const p0Block = extractSubsection(findingsSection, 'P0');
-  const p1Block = extractSubsection(findingsSection, 'P1');
-  const p2Block = extractSubsection(findingsSection, 'P2');
+  const p0Block = extractSubsection(findingsSection, 'P0') || extractSubsection(findingsSection, 'P0 Findings');
+  const p1Block = extractSubsection(findingsSection, 'P1') || extractSubsection(findingsSection, 'P1 Findings');
+  const p2Block = extractSubsection(findingsSection, 'P2') || extractSubsection(findingsSection, 'P2 Findings');
 
   const findings = [
     ...parseFindingsBlock(p0Block, 'P0'),

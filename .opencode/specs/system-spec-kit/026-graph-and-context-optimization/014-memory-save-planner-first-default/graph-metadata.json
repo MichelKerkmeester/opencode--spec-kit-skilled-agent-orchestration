@@ -121,7 +121,7 @@
     ],
     "causal_summary": "This packet ships the planner-first default for /memory:save while preserving full-auto as an explicit fallback. The default path now computes route + legality + advisory data and returns structured planner output without mutating files; SPECKIT_SAVE_PLANNER_MODE=full-auto activates the canonical atomic writer with POST_SAVE_FINGERPRINT parity, promotion, rollback, and same-path identity intact. The legacy [spec]/memory/*.md write path is retired runtime-wide. Tier 3 routing, quality-loop auto-fix, reconsolidation-on-save, and post-insert enrichment are gated behind per-subsystem env flags (default OFF). Three explicit follow-up APIs (refreshGraphMetadata, reindexSpecDocs, runEnrichmentBackfill) move freshness work out of the hot path. The content-router eight-category contract is preserved with one honest scoped exception: a Tier 3 default-disable + manual-review guard documented in ADR-007. hybrid is reserved and currently behaves like plan-only. 43 implementation tasks shipped under v3.4.1.0; deep review surfaced 9 findings (3 P0, 5 P1, 1 P2) which were all resolved before closeout. Delivery spanned M1-M10: audit + retirement, 20-iteration relevance research, planner contract + trim, verification with transcript prototypes, release alignment, and deep-review remediation.",
     "created_at": "2026-04-15T10:00:01Z",
-    "last_save_at": "2026-04-15T10:00:01Z",
+    "last_save_at": "2026-04-15T16:45:28Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1510,7 +1510,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,
           diagramCount: diagrams.DIAGRAMS.length,
-          qualityScore: 100,
+          qualityScore: filterStats.qualityScore,
           isSimulation
         }
       };

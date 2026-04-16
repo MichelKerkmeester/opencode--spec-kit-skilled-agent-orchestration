@@ -104,7 +104,7 @@ Framework: TIDD-EC
 
 ```bash
 copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complexity issues, and memory leaks. Suggest optimizations." \
-  --agent review--model claude-opus-4.6 --allow-all-tools 2>&1
+  --agent review --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:code_review -->
@@ -254,7 +254,7 @@ Framework: CRAFT
 
 ```bash
 copilot -p "Map all internal dependencies for @./[dir]. Output as a JSON object showing import relationships." \
-  --output-format json--model gemini-3.1-pro-preview --allow-all-tools 2>&1
+  --output-format json --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### API Surface Analysis
@@ -263,7 +263,7 @@ Framework: CRAFT
 
 ```bash
 copilot -p "Extract all public API methods from @./[dir]. Include types, descriptions, and deprecation status." \
-  --output-format json--model claude-sonnet-4.6 --allow-all-tools 2>&1
+  --output-format json --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:structured_analysis -->

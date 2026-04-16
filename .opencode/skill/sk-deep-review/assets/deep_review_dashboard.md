@@ -15,7 +15,7 @@ Auto-generated from JSONL state log and strategy file. Regenerated after every i
 Provides a compact, human-readable summary of the current review session. Serves three roles:
 1. **Observability** — quick status check during long autonomous review runs
 2. **Recovery surface** — second recovery channel alongside JSONL after context compaction
-3. **Resume decision** — in confirm mode, shown to user before resume/restart/fork choice
+3. **Resume decision** — in confirm mode, shown to user before resume/restart choice
 
 ### Usage
 

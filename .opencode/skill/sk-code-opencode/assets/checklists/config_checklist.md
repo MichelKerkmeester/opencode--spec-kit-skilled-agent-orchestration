@@ -47,8 +47,8 @@ These items MUST be fixed before any commit.
 # Pure JSON
 python -m json.tool config.json
 
-# JSONC (strip comments first)
-grep -v '^\s*//' config.jsonc | python -m json.tool
+# JSONC (strip single-line // comments AND inline // comments safely)
+sed 's|^\s*//.*||; s|\s*//[^"]*$||' config.jsonc | python -m json.tool
 ```
 
 ### String Quoting
@@ -324,8 +324,8 @@ python -m json.tool config.json > /dev/null && echo "Valid"
 # Check with jq (if available)
 jq empty config.json && echo "Valid"
 
-# Validate JSONC (strip comments, then validate)
-sed 's|//.*||' config.jsonc | python -m json.tool
+# Validate JSONC (strip single-line // and inline // comments safely)
+sed 's|^\s*//.*||; s|\s*//[^"]*$||' config.jsonc | python -m json.tool
 
 # VSCode: Open file - syntax highlighting shows errors
 ```

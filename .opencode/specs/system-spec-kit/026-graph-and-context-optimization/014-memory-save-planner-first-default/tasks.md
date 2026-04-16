@@ -51,7 +51,7 @@ _memory:
 | `P014-` | Relevance research evidence |
 | `P015-` | Planner + trim implementation |
 | `P015-R` | Deep-review remediation |
-| `P016-` | Packet documentation consolidation work |
+| `P014-` | Packet documentation consolidation work |
 
 Task IDs preserve source-artifact lineage so every line of evidence cites the right artifact in `research/013-audit-snapshot/`, `research/014-research-snapshot/`, or `review/015-deep-review-snapshot/`.
 
@@ -217,15 +217,15 @@ Task IDs preserve source-artifact lineage so every line of evidence cites the ri
 
 ### Packet Consolidation Work
 
-- [x] **P016-T001** Create the packet directory structure and snapshot folders. Evidence: packet tree
-- [x] **P016-T002** Copy audit artifacts into `research/013-audit-snapshot/`. Evidence: packet tree
-- [x] **P016-T003** Copy research artifacts into `research/014-research-snapshot/`. Evidence: packet tree
-- [x] **P016-T004** Copy deep-review artifacts into `review/015-deep-review-snapshot/`. Evidence: packet tree
-- [x] **P016-T005** Copy transcript artifacts into `scratch/transcripts-snapshot/`. Evidence: packet tree
-- [x] **P016-T006** Add snapshot headers to every copied Markdown file. Evidence: copied snapshot files
-- [x] **P016-T007** Author unified primary docs that tell the full delivery sequence. Evidence: packet primary docs
-- [x] **P016-T008** Generate metadata and packet-local changelog. Evidence: `description.json`, `graph-metadata.json`, `changelog/**`
-- [x] **P016-T009** Validate packet docs and strict packet compliance. Evidence: validator output
+- [x] **P014-T001** Create the packet directory structure and snapshot folders. Evidence: packet tree
+- [x] **P014-T002** Copy audit artifacts into `research/013-audit-snapshot/`. Evidence: packet tree
+- [x] **P014-T003** Copy research artifacts into `research/014-research-snapshot/`. Evidence: packet tree
+- [x] **P014-T004** Copy deep-review artifacts into `review/015-deep-review-snapshot/`. Evidence: packet tree
+- [x] **P014-T005** Copy transcript artifacts into `scratch/transcripts-snapshot/`. Evidence: packet tree
+- [x] **P014-T006** Add snapshot headers to every copied Markdown file. Evidence: copied snapshot files
+- [x] **P014-T007** Author unified primary docs that tell the full delivery sequence. Evidence: packet primary docs
+- [x] **P014-T008** Generate metadata and packet-local changelog. Evidence: `description.json`, `graph-metadata.json`, `changelog/**`
+- [x] **P014-T009** Validate packet docs and strict packet compliance. Evidence: validator output
 
 ---
 

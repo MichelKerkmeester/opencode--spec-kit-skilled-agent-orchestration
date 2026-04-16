@@ -120,7 +120,8 @@ _memory:
 - [x] CHK-043 [P0] `--intake-only` flag halts `/spec_kit:plan` after Step 1 with explicit YAML gate (M11 + M15 remediation). Evidence: `spec_kit_plan_auto.yaml` contains `intake_only` gate that terminates after Emit; P003-COR-001 deep-review finding FIXED.
 - [x] CHK-044 [P0] `resume.md` routes intake re-entry reasons to `/spec_kit:plan --intake-only` (M13). Evidence: `resume.md` had zero `/spec_kit:start` refs already; forward-looking prose sweep documents routing.
 - [x] CHK-045 [P1] `:with-phases` pre-workflow unaffected by `plan.md` Step 1 changes (M11). Evidence: pre-workflow preserved unchanged; regression test T064 PASS.
-- [x] CHK-046 [P1] `/spec_kit:plan --intake-only` is idempotent (M11). Evidence: staged trio publication via temp + rename preserves NFR-R03; test T094 DEFERRED for user-driven manual verification.
+- [x] CHK-046 [P1] `/spec_kit:plan --intake-only` is idempotent (M11). Evidence: source-contract analysis confirms staged trio publication via temp + rename preserves NFR-R03. Note: runtime manual verification (T094) deferred to user-driven testing.
+- [x] CHK-099 [P2] `/complete` YAML assets (`spec_kit_complete_auto.yaml`, `spec_kit_complete_confirm.yaml`) reference shared intake module consistent with `plan.md` YAML assets (M12). Evidence: deep-review iterations 003 and 008 reviewed both `/complete` YAML assets; T069 and T070 recorded line-level edits; CHK-042 verifies `complete.md` Section 0 references shared module.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -216,9 +217,9 @@ _memory:
 |----------|---------|---------|-------|----------|
 | P0 Items | 10 | 10 | 20 | 20/20 |
 | P1 Items | 7 | 5 | 12 | 12/12 |
-| P2 Items | 29 | 6 | 35 | 35/35 |
+| P2 Items | 29 | 7 | 36 | 36/36 |
 
-**Total**: 67/67 items verified
+**Total**: 68/68 items verified
 
 **Verification Date**: 2026-04-15
 <!-- /ANCHOR:summary -->

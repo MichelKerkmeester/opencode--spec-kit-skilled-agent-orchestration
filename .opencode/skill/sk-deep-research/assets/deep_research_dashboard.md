@@ -15,7 +15,7 @@ Auto-generated from JSONL state log and strategy file. Regenerated after every i
 Provides a compact, human-readable summary of the current research session. Serves three roles:
 1. **Observability** — quick status check during long autonomous runs
 2. **Recovery surface** — second recovery channel alongside JSONL after context compaction
-3. **Lifecycle decision** — in confirm mode, shown before `resume`, `restart`, `fork`, or `completed-continue`
+3. **Lifecycle decision** — in confirm mode, shown before `resume` or `restart`
 
 ### Usage
 
@@ -35,7 +35,7 @@ Provides a compact, human-readable summary of the current research session. Serv
 - Iteration: [N] of [maxIterations]
 - Session ID: [from config.lineage.sessionId]
 - Parent Session: [from config.lineage.parentSessionId or none]
-- Lifecycle Mode: [new | resume | restart | fork | completed-continue]
+- Lifecycle Mode: [new | resume | restart]
 - Generation: [from config.lineage.generation]
 
 ---

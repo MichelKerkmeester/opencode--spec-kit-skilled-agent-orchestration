@@ -315,7 +315,7 @@ export function get_constitutional_memories_public(
  */
 export function multi_concept_search(
   concept_embeddings: EmbeddingInput[],
-  options: { limit?: number; specFolder?: string | null; minSimilarity?: number; includeArchived?: boolean } = {}
+  options: { limit?: number; specFolder?: string | null; minSimilarity?: number } = {}
 ): MemoryRow[] {
   const sqlite_vec = get_sqlite_vec_available();
   if (!sqlite_vec) {
@@ -340,8 +340,7 @@ export function multi_concept_search(
     }
   }
 
-  const { limit = 10, specFolder = null, minSimilarity = 50, includeArchived = false } = options;
-  void includeArchived;
+  const { limit = 10, specFolder = null, minSimilarity = 50 } = options;
 
   const concept_buffers = concepts.map(c => to_embedding_buffer(c));
   const max_distance = 2 * (1 - minSimilarity / 100);
@@ -610,11 +609,10 @@ export async function generate_query_embedding(query: string): Promise<Float32Ar
  */
 export function keyword_search(
   query: string,
-  options: { limit?: number; specFolder?: string | null; includeArchived?: boolean } = {},
+  options: { limit?: number; specFolder?: string | null } = {},
   database: Database.Database = initialize_db(),
 ): MemoryRow[] {
-  const { limit = 20, specFolder = null, includeArchived = false } = options;
-  void includeArchived;
+  const { limit = 20, specFolder = null } = options;
 
   if (!query || typeof query !== 'string') {
     console.warn('[vector-index] keyword_search: invalid query, expected non-empty string');

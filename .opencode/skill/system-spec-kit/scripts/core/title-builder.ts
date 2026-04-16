@@ -65,18 +65,19 @@ export function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: s
 }
 
 export function extractSpecTitle(specFolderPath: string): string {
+  const specPath = path.join(specFolderPath, 'spec.md');
+
+  let content: string;
   try {
-    const specPath = path.join(specFolderPath, 'spec.md');
-    const content = fsSync.readFileSync(specPath, 'utf-8');
-    const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
-    if (!fmMatch) return '';
-    const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
-    if (!titleMatch || !titleMatch[1]) return '';
-    return normalizeSpecTitleForMemory(titleMatch[1]);
-  } catch (_error: unknown) {
-    if (_error instanceof Error) {
-      void _error.message;
-    }
-    return '';
+    content = fsSync.readFileSync(specPath, 'utf-8');
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`extractSpecTitle: failed to read ${specPath}: ${message}`);
   }
+
+  const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!fmMatch) return '';
+  const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
+  if (!titleMatch || !titleMatch[1]) return '';
+  return normalizeSpecTitleForMemory(titleMatch[1]);
 }
