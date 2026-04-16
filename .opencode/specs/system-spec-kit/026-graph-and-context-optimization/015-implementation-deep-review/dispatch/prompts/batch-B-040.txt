@@ -1,0 +1,58 @@
+You are an IMPLEMENTATION agent for batch B-040 (Phase 2).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-040
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 2 — Packet 014 identity fix: 016->014 references
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+149:- [ ] T060 [P1] [P] Replace `SC-016` with `SC-014` in 014/spec.md:217 (S3.4#1 iter 5)
+150:- [ ] T061 [P1] [P] Replace `CHK-016-*` with `CHK-014-*` in 014/checklist.md:199 (S3.4#3 iter 7)
+151:- [ ] T062 [P1] [P] Fix 014 traceability surfaces carrying `016` lineage (014/tasks.md:47, tasks.md:54) (S3.4#2 iter 33, S3.4#4 iter 43)
+152:- [ ] T063 [P2] [P] Fix 014 changelog carrying `016` identity (S3.4#5 iter 49)
+153:- [ ] T064 [P2] Verify no cross-contamination with actual 016 packet if it exists (S3.4)
+154:- [ ] T065 [P1] **Verify**: `grep -r "016" 014-memory-save-planner-first-default/` returns zero hits after fixes (S3.4)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.4#1
+S3.4#2
+S3.4#3
+S3.4#4
+S3.4#5
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/changelog
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-025
+CHK-026
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-040-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

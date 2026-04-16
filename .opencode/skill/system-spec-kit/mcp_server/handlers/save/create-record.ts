@@ -57,6 +57,13 @@ interface LineageRoutingDecision {
   causalSupersedesMemoryId: number | null;
 }
 
+type ScopePostInsertMetadata = Partial<{
+  tenant_id: string;
+  user_id: string;
+  agent_id: string;
+  session_id: string;
+}>;
+
 function normalizeOptionalString(value: unknown): string | null {
   if (typeof value !== 'string') {
     return null;
@@ -145,6 +152,22 @@ export function resolveCreateRecordLineage(
     predecessorMemoryId: null,
     transitionEvent: 'CREATE',
     causalSupersedesMemoryId: null,
+  };
+}
+
+export function buildScopePostInsertMetadata(
+  scope: MemoryScopeMatch = {},
+): ScopePostInsertMetadata {
+  const tenantId = normalizeScopeMatchValue(scope.tenantId);
+  const userId = normalizeScopeMatchValue(scope.userId);
+  const agentId = normalizeScopeMatchValue(scope.agentId);
+  const sessionId = normalizeScopeMatchValue(scope.sessionId);
+
+  return {
+    ...(tenantId ? { tenant_id: tenantId } : {}),
+    ...(userId ? { user_id: userId } : {}),
+    ...(agentId ? { agent_id: agentId } : {}),
+    ...(sessionId ? { session_id: sessionId } : {}),
   };
 }
 
@@ -335,6 +358,7 @@ export function createMemoryRecord(
       spec_level: specLevel,
       quality_score: parsed.qualityScore ?? 0,
       quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+      ...buildScopePostInsertMetadata(scope),
     });
 
     if (embedding && peDecision.action === predictionErrorGate.ACTION.CREATE_LINKED && peDecision.existingMemoryId != null) {

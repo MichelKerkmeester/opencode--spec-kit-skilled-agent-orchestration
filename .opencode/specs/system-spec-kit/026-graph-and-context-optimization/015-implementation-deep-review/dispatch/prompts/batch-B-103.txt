@@ -1,0 +1,83 @@
+You are an IMPLEMENTATION agent for batch B-103 (Phase 8).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-103
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 8 — P2 missing coverage additions
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+389:- [ ] T233 [P2] [P] Fix test coverage skewed toward helpers, not shipped wrapping path (S3.6#14 iter 3)
+390:- [ ] T234 [P2] [P] Fix `handleCoverageGraphStatus` fail-open on signal computation errors (S3.6#15 iter 5)
+391:- [ ] T235 [P2] [P] Fix `search-archival.vitest.ts` signature-only checks (S3.6#16 iter 7)
+392:- [ ] T236 [P2] [P] Fix `getRelatedMemories` no positive-path coverage (S3.6#17 iter 7)
+393:- [ ] T237 [P2] [P] Fix whitespace-only trigger phrases counting as coverage (S3.6#18 iter 8)
+394:- [ ] T238 [P2] [P] Fix `test-template-comprehensive.js` using local stub instead of production renderer (S3.6#19 iter 10)
+395:- [ ] T239 [P2] [P] Fix frontmatter regression coverage missing exact failure modes (S3.6#20 iter 12)
+396:- [ ] T240 [P2] [P] Fix missing edge-case coverage for astral Unicode and grapheme inputs (S3.6#22 iter 13)
+397:- [ ] T241 [P2] [P] Fix missing coverage for parseable schema corruption (S3.6#24 iter 14)
+398:- [ ] T242 [P2] [P] Fix `test-phase-command-workflows.js` string-presence-only checks (S3.6#26 iter 16)
+399:- [ ] T243 [P2] [P] Fix skill-advisor harnesses lacking direct automated coverage (S3.6#27 iter 17)
+400:- [ ] T244 [P2] [P] Add dedicated schema/dispatcher coverage for `skill_graph_*` (S3.6#30 iter 23)
+401:- [ ] T245 [P2] [P] Fix handler-memory-list-edge/triggers tests missing filter interaction (S3.6#31 iter 26)
+402:- [ ] T246 [P2] [P] Add automated test files for `skill_advisor` scripts (S3.6#32 iter 27)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.6#14
+S3.6#15
+S3.6#16
+S3.6#17
+S3.6#18
+S3.6#19
+S3.6#20
+S3.6#22
+S3.6#24
+S3.6#26
+S3.6#27
+S3.6#30
+S3.6#31
+S3.6#32
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-status.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/search-archival.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/related-memories.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/trigger-phrase-sanitizer.vitest.ts
+.opencode/skill/system-spec-kit/scripts/tests/test-template-comprehensive.js
+.opencode/skill/system-spec-kit/scripts/tests/test-frontmatter-backfill.js
+.opencode/skill/system-spec-kit/mcp_server/tests/schema-corruption.vitest.ts
+.opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js
+.opencode/skill/skill-advisor/tests/skill_advisor.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-schema.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-list-edge.vitest.ts
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-078
+CHK-079
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+2. npx vitest run /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-status.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-archival.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-phrase-sanitizer.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-schema.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-list-edge.vitest.ts
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-103-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

@@ -1,0 +1,58 @@
+You are an IMPLEMENTATION agent for batch B-000 (Phase 0).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-000
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 0 — P0 Reconsolidation scope-boundary fix
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+58:- [ ] T001 [P0] Add scope-field validation (`tenant_id`, `user_id`, `agent_id`, `session_id`) before merge in `reconsolidation-bridge.ts:208` (S2, S3.2#1)
+59:- [ ] T002 [P0] Abort reconsolidation and preserve both records on scope mismatch (S2)
+60:- [ ] T003 [P0] Add regression test: cross-scope merge attempt must be rejected (`reconsolidation-bridge.vitest.ts`) (S2)
+61:- [ ] T004 [P0] Audit all callers of reconsolidation-bridge for scope-boundary assumptions (S2)
+62:- [ ] T005 [P0] **Verify**: existing reconsolidation tests still pass after fix (S2)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S2
+S3.2#1
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts
+.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation-bridge.vitest.ts
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-001
+CHK-002
+CHK-003
+CHK-004
+CHK-005
+CHK-006
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+2. npx vitest run /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation-bridge.vitest.ts
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-000-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.
