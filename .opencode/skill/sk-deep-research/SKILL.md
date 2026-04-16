@@ -17,6 +17,7 @@ Runtime path resolution:
 - OpenCode/Copilot runtime: `.opencode/agent/*.md`
 - Claude runtime: `.claude/agents/*.md`
 - Codex runtime: `.codex/agents/*.toml`
+- Gemini runtime: `.gemini/agents/*.md`
 
 <!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE

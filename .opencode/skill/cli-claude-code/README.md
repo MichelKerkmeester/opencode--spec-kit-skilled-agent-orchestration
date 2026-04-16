@@ -329,7 +329,7 @@ A: It activates extended thinking, a processing mode where the model generates i
 A: Match the task type to the agent roster in Section 3.2. For read-only exploration, use `context` with `--permission-mode plan`. For code review, use `review`. When unsure, skip the `--agent` flag and let Claude Code handle the task with its general capabilities.
 
 **Q: Can I create custom agents?**
-A: Yes. Add markdown files to `.opencode/agent/` (for Claude Code) or `.claude/agents/` (for Claude-specific definitions). See `agent_delegation.md` for the agent definition format.
+A: Yes. Add markdown files to `.claude/agents/` for Claude Code agent definitions. See `agent_delegation.md` for the agent definition format.
 
 <!-- /ANCHOR:faq -->
 

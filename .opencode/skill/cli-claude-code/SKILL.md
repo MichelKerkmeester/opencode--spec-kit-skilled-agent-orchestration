@@ -45,7 +45,7 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 - Quality gate verification before merge
 
 **Agent-Delegated Tasks** - Use when:
-- Task matches a specialized Claude Code agent's expertise (`.opencode/agent/*.md`)
+- Task matches a specialized Claude Code agent's expertise (`.claude/agents/*.md`)
 - Read-only exploration needed via `--permission-mode plan`
 - Multi-strategy planning via `@ultra-think` agent
 - Session continuity needed (`--continue`, `--resume`)
@@ -305,7 +305,7 @@ claude -p "prompt" --output-format text 2>&1
 
 ### Claude Code Agent Delegation
 
-The calling AI acts as the **conductor** that delegates tasks to Claude Code CLI. Claude Code has specialized agents defined in `.opencode/agent/*.md` that provide domain expertise.
+The calling AI acts as the **conductor** that delegates tasks to Claude Code CLI. Claude Code has specialized agents defined in `.claude/agents/*.md` that provide domain expertise.
 
 **Agent Routing Table:**
 
@@ -333,7 +333,7 @@ These capabilities are exclusive to Claude Code CLI or provide meaningfully diff
 |------------|---------|------------|
 | Extended Thinking | Deep chain-of-thought reasoning | `claude -p "..." --effort high --model claude-opus-4-6` |
 | Edit Tool | Surgical diff-based code editing | Built-in — Claude Code edits files directly |
-| Agent Tool | Spawn focused subagents within a session | Built-in — agents defined in `.opencode/agent/` |
+| Agent Tool | Spawn focused subagents within a session | Built-in — agents defined in `.claude/agents/` |
 | `--json-schema` | Schema-validated structured output | `claude -p "..." --json-schema '{"type":"object",...}'` |
 | `--permission-mode plan` | Read-only safe exploration | `claude -p "..." --permission-mode plan` |
 | `--max-budget-usd` | Cost-controlled execution | `claude -p "..." --max-budget-usd 1.00` |
