@@ -342,17 +342,21 @@
     ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/z_archive/016-release-alignment/005-memory-deep-quality-investigation/scratch/deep-audit.mjs"
   ],
   "severityThreshold": "P2",
-  "maxIterations": 70,
+  "maxIterations": 120,
   "convergenceThreshold": 0.1,
   "stuckThreshold": 2,
   "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review",
   "createdAt": "2026-04-16T05:18:04Z",
-  "status": "initialized",
+  "status": "complete",
   "executionMode": "auto",
   "dispatcher": {
     "kind": "cli-copilot",
     "model": "gpt-5.4",
     "effort": "high",
     "concurrency": 3
-  }
+  },
+  "mergedFrom": [
+    "015-combined-deep-review-four-specs (50 doc-layer iters)",
+    "016-implementation-deep-review (70 code+ops iters)"
+  ]
 }
