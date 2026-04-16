@@ -2,6 +2,7 @@
 // MODULE: Graph Metadata Parser
 // ───────────────────────────────────────────────────────────────
 
+import * as crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -59,6 +60,7 @@ const BARE_RUNTIME_ENTITY_NAMES = new Set([
   'jest',
   'tsc',
 ]);
+let tempCounter = 0;
 
 interface ParsedSpecDoc {
   relativePath: string;
@@ -982,7 +984,8 @@ export function writeGraphMetadataFile(filePath: string, metadata: GraphMetadata
   }
 
   const content = serializeGraphMetadata(metadata);
-  const tempPath = `${canonicalFilePath}.tmp-${process.pid}-${Date.now()}`;
+  // Counter + random suffix avoids same-process temp-path collisions during overlapping writes.
+  const tempPath = `${canonicalFilePath}.tmp-${process.pid}-${tempCounter++}-${crypto.randomBytes(4).toString('hex')}`;
 
   fs.mkdirSync(path.dirname(canonicalFilePath), { recursive: true });
   fs.writeFileSync(tempPath, content, 'utf-8');
@@ -1097,4 +1100,5 @@ export const __testables = {
   evaluateChecklistCompletion,
   resolveKeyFileCandidate,
   shouldKeepEntityName,
+  writeGraphMetadataFile,
 };

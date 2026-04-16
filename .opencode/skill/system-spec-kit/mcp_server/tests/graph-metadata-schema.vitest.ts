@@ -2,13 +2,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   createEmptyGraphMetadataManual,
   deriveGraphMetadata,
   GRAPH_METADATA_SCHEMA_VERSION,
   mergeGraphMetadata,
+  serializeGraphMetadata,
   type GraphMetadata,
   validateGraphMetadataContent,
 } from '../api';
@@ -156,6 +157,7 @@ function createSpecFolder(options: GraphMetadataFixtureOptions = {}): string {
 }
 
 afterEach(() => {
+  vi.restoreAllMocks();
   for (const root of createdRoots) {
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -483,5 +485,49 @@ describe('graph metadata schema and parser', () => {
     expect(metadata.derived.trigger_phrases).toHaveLength(12);
     expect(metadata.derived.trigger_phrases[0]).toBe('graph phrase 1');
     expect(metadata.derived.trigger_phrases[11]).toBe('graph phrase 12');
+  });
+
+  it('uses distinct temp files for interleaved graph-metadata writes in the same process', () => {
+    const specFolder = createSpecFolder();
+    const graphPath = path.join(specFolder, 'graph-metadata.json');
+    const metadataA = deriveGraphMetadata(specFolder, null, { now: '2026-04-12T12:00:00.000Z' });
+    const metadataB: GraphMetadata = {
+      ...metadataA,
+      derived: {
+        ...metadataA.derived,
+        causal_summary: 'Nested writer payload',
+        last_save_at: '2026-04-12T12:00:01.000Z',
+      },
+    };
+    const tempPaths: string[] = [];
+    let nestedWriteTriggered = false;
+    const originalWriteFileSync = fs.writeFileSync.bind(fs) as typeof fs.writeFileSync;
+
+    vi.spyOn(Date, 'now').mockReturnValue(1_713_251_200_000);
+    vi.spyOn(fs, 'writeFileSync').mockImplementation((...args: Parameters<typeof fs.writeFileSync>) => {
+      const [filePath] = args;
+
+      if (typeof filePath === 'string' && filePath.includes('.tmp-')) {
+        tempPaths.push(filePath);
+        originalWriteFileSync(...args);
+        if (!nestedWriteTriggered) {
+          nestedWriteTriggered = true;
+          graphMetadataParserTestables.writeGraphMetadataFile(graphPath, metadataB);
+        }
+        return;
+      }
+
+      originalWriteFileSync(...args);
+    });
+
+    expect(() => graphMetadataParserTestables.writeGraphMetadataFile(graphPath, metadataA)).not.toThrow();
+    expect(tempPaths).toHaveLength(2);
+    expect(new Set(tempPaths).size).toBe(2);
+    const counterMatches = tempPaths.map((tempPath) => tempPath.match(new RegExp(`\\.tmp-${process.pid}-(\\d+)-([0-9a-f]{8})$`)));
+
+    expect(counterMatches[0]).not.toBeNull();
+    expect(counterMatches[1]).not.toBeNull();
+    expect(new Set(counterMatches.map((match) => match?.[1])).size).toBe(2);
+    expect(fs.readFileSync(graphPath, 'utf-8')).toBe(serializeGraphMetadata(metadataA));
   });
 });
