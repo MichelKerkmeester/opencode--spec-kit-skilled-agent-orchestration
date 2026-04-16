@@ -1,7 +1,17 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
 import { afterEach, describe, expect, it } from 'vitest';
 
 import type { FixtureToolContext } from './fixtures/manual-playbook-fixture';
-import { parseObjectLiteralArgs } from './manual-playbook-runner';
+import {
+  discoverScenarioDefinitions,
+  formatScenarioParseWarning,
+  parseObjectLiteralArgs,
+} from './manual-playbook-runner';
+
+const tempPaths: string[] = [];
 
 function createFixture(): FixtureToolContext {
   return {
@@ -47,6 +57,9 @@ function createRuntimeState() {
 
 afterEach(() => {
   Reflect.deleteProperty(globalThis, '__manualPlaybookInjected');
+  for (const tempPath of tempPaths.splice(0)) {
+    fs.rmSync(tempPath, { recursive: true, force: true });
+  }
 });
 
 describe('parseObjectLiteralArgs', () => {
@@ -89,5 +102,55 @@ describe('parseObjectLiteralArgs', () => {
 
     expect(() => parseObjectLiteralArgs('{ jobId }', fixture, runtimeState))
       .toThrow('Shorthand object properties are not supported in playbook args: "jobId"');
+  });
+});
+
+describe('discoverScenarioDefinitions', () => {
+  it('keeps active scenario counts aligned with parse failures and names dropped files', () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manual-playbook-runner-'));
+    tempPaths.push(tempDir);
+
+    const validScenarioPath = path.join(tempDir, '001-valid-scenario.md');
+    const invalidScenarioPath = path.join(tempDir, '002-invalid-scenario.md');
+
+    fs.writeFileSync(validScenarioPath, [
+      '# Valid scenario',
+      '',
+      '- Playbook ID: MPR-001',
+      '',
+      '## 3. TEST EXECUTION',
+      '',
+      '- Prompt: `Check current runner coverage`',
+      '',
+      '- Commands: memory_search({ query:"runner coverage" })',
+      '',
+      '- Expected signals: coverage metrics present',
+      '- Evidence: direct handler coverage observed',
+      '',
+      '## 4. PASS / FAIL',
+    ].join('\n'));
+    fs.writeFileSync(invalidScenarioPath, [
+      '# Invalid scenario',
+      '',
+      '- Playbook ID: MPR-002',
+      '',
+      '## 3. TEST EXECUTION',
+      '',
+      '- Prompt: `This scenario is missing the expected block`',
+      '- Commands: memory_search({ query:"missing expected block" })',
+      '',
+      '## 4. PASS / FAIL',
+    ].join('\n'));
+
+    const discovery = discoverScenarioDefinitions([validScenarioPath, invalidScenarioPath]);
+    const warningLines = formatScenarioParseWarning(discovery.parseFailures);
+
+    expect(discovery.activeScenarioCount).toBe(2);
+    expect(discovery.parsedScenarioCount).toBe(1);
+    expect(discovery.definitions).toHaveLength(1);
+    expect(discovery.parseFailures).toHaveLength(1);
+    expect(warningLines[0]).toContain('Gate I runner WARNING [R45-004]');
+    expect(warningLines[0]).toContain('1 active scenario file(s) failed to parse');
+    expect(warningLines.join('\n')).toContain('002-invalid-scenario.md');
   });
 });

@@ -24,6 +24,30 @@ type ScenarioDefinition = {
   expectedSignals: string;
 };
 
+type ScenarioParseFailure = {
+  filePath: string;
+  category: string;
+  scenarioId: string;
+  reason: string;
+};
+
+type ScenarioParseResult =
+  | {
+    kind: 'parsed';
+    definition: ScenarioDefinition;
+  }
+  | {
+    kind: 'failed';
+    failure: ScenarioParseFailure;
+  };
+
+type ScenarioDiscovery = {
+  activeScenarioCount: number;
+  parsedScenarioCount: number;
+  definitions: ScenarioDefinition[];
+  parseFailures: ScenarioParseFailure[];
+};
+
 type HandlerInvocation = {
   name: string;
   args: Record<string, unknown>;
@@ -249,13 +273,55 @@ function readScenarioFiles(): string[] {
   return files.sort();
 }
 
-function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
+function matchesScenarioFilter(
+  filterPattern: string,
+  scenario: Pick<ScenarioDefinition, 'scenarioId' | 'filePath' | 'category'>,
+): boolean {
+  return scenario.scenarioId.includes(filterPattern)
+    || scenario.filePath.includes(filterPattern)
+    || scenario.category.includes(filterPattern);
+}
+
+function parsedScenario(
+  definition: ScenarioDefinition,
+): ScenarioParseResult {
+  return {
+    kind: 'parsed',
+    definition,
+  };
+}
+
+function failedScenario(
+  failure: ScenarioParseFailure,
+): ScenarioParseResult {
+  return {
+    kind: 'failed',
+    failure,
+  };
+}
+
+function isParsedScenario(result: ScenarioParseResult): result is Extract<ScenarioParseResult, { kind: 'parsed' }> {
+  return result.kind === 'parsed';
+}
+
+function createParseFailureReason(text: string, missingParts: string[]): string {
+  const scope = /## 3\. TEST EXECUTION/.test(text)
+    ? 'TEST EXECUTION section'
+    : 'scenario file';
+  return `Missing ${missingParts.join(' and ')} in ${scope}.`;
+}
+
+export function parseScenarioDefinition(filePath: string): ScenarioParseResult {
   const text = fs.readFileSync(filePath, 'utf8');
   const match = text.match(/## 3\. TEST EXECUTION[\s\S]*?\n\|[^\n]+\n\|[-| :]+\n(\|.+\|)\n/);
   const relative = path.relative(PLAYBOOK_ROOT, filePath);
   const category = relative.split(path.sep)[0] ?? 'unknown';
+  const scenarioIdMatch = text.match(/- Playbook ID:\s*([A-Z]+-\d+[A-Za-z0-9-]*|\d+[A-Za-z0-9-]*)/);
+  const titleMatch = text.match(/^#\s+(.+)$/m);
+  const scenarioId = scenarioIdMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
+  const featureName = titleMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
 
-  const parseProseDefinition = (): ScenarioDefinition | null => {
+  const parseProseDefinition = (): ScenarioParseResult => {
     const executionMatch = text.match(/## 3\. TEST EXECUTION\s*([\s\S]*?)(?:\n---\s*\n|\n## 4\.)/);
     const executionBlock = executionMatch?.[1] ?? text;
     const promptMatches = [
@@ -271,11 +337,21 @@ function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
       ...executionBlock.matchAll(/### Expected\s*([\s\S]*?)(?=\n### Evidence|\n### Pass \/ Fail|\n### Failure Triage|\n---\s*\n|\n## 4\.)/g),
       ...executionBlock.matchAll(/- Expected(?: signals)?:\s*([\s\S]*?)\n- (?:Evidence|Pass\/fail):/g),
     ];
-    const scenarioIdMatch = text.match(/- Playbook ID:\s*([A-Z]+-\d+[A-Za-z0-9-]*|\d+[A-Za-z0-9-]*)/);
-    const titleMatch = text.match(/^#\s+(.+)$/m);
 
     if (promptMatches.length === 0 || expectedMatches.length === 0) {
-      return null;
+      const missingParts: string[] = [];
+      if (promptMatches.length === 0) {
+        missingParts.push('Prompt block');
+      }
+      if (expectedMatches.length === 0) {
+        missingParts.push('Expected block');
+      }
+      return failedScenario({
+        filePath: relative,
+        category,
+        scenarioId,
+        reason: createParseFailureReason(text, missingParts),
+      });
     }
 
     const prompt = promptMatches
@@ -291,15 +367,15 @@ function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
       .filter(Boolean)
       .join('; ');
 
-    return {
+    return parsedScenario({
       filePath: relative,
       category,
-      scenarioId: scenarioIdMatch?.[1]?.trim() ?? path.basename(filePath, '.md'),
-      featureName: titleMatch?.[1]?.trim() ?? path.basename(filePath, '.md'),
+      scenarioId,
+      featureName,
       exactPrompt: prompt,
       commandSequence: commands,
       expectedSignals: expected,
-    };
+    });
   };
 
   if (!match) {
@@ -312,7 +388,7 @@ function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
     return parseProseDefinition();
   }
 
-  return {
+  return parsedScenario({
     filePath: relative,
     category,
     scenarioId: columns[0],
@@ -320,6 +396,59 @@ function parseScenarioDefinition(filePath: string): ScenarioDefinition | null {
     exactPrompt: columns[3].replace(/^`|`$/g, ''),
     commandSequence: columns[4],
     expectedSignals: columns[5],
+  });
+}
+
+export function discoverScenarioDefinitions(
+  filePaths: string[],
+  filterPattern?: string,
+): ScenarioDiscovery {
+  const parseResults = filePaths.map(parseScenarioDefinition);
+  const scopedResults = filterPattern
+    ? parseResults.filter((result) => matchesScenarioFilter(
+      filterPattern,
+      isParsedScenario(result) ? result.definition : result.failure,
+    ))
+    : parseResults;
+  const definitions = scopedResults
+    .filter(isParsedScenario)
+    .map((result) => result.definition);
+  const parseFailures = scopedResults
+    .filter((result): result is Extract<ScenarioParseResult, { kind: 'failed' }> => result.kind === 'failed')
+    .map((result) => result.failure);
+
+  return {
+    activeScenarioCount: scopedResults.length,
+    parsedScenarioCount: definitions.length,
+    definitions,
+    parseFailures,
+  };
+}
+
+export function formatScenarioParseWarning(parseFailures: ScenarioParseFailure[]): string[] {
+  if (parseFailures.length === 0) {
+    return [];
+  }
+  return [
+    `Gate I runner WARNING [R45-004]: ${parseFailures.length} active scenario file(s) failed to parse and will count as FAIL for coverage.`,
+    ...parseFailures.map((failure) => ` - ${failure.filePath}: ${failure.reason}`),
+  ];
+}
+
+function scenarioResultFromParseFailure(failure: ScenarioParseFailure): ScenarioResult {
+  return {
+    scenarioId: failure.scenarioId,
+    category: failure.category,
+    status: 'FAIL',
+    filePath: failure.filePath,
+    prompt: '',
+    expectedSignals: [],
+    matchedSignals: [],
+    unmatchedSignals: [],
+    handlerCalls: [],
+    evidence: [failure.reason],
+    steps: [],
+    reason: `Scenario definition parse failed: ${failure.reason}`,
   };
 }
 
@@ -1394,26 +1523,23 @@ function writeResults(results: ScenarioResult[]): void {
 
 async function main(): Promise<void> {
   const scenarioFiles = readScenarioFiles();
-  const allDefinitions = scenarioFiles
-    .map(parseScenarioDefinition)
-    .filter((value): value is ScenarioDefinition => value !== null);
   const filterPattern = process.env.MANUAL_PLAYBOOK_FILTER;
-  const definitions = filterPattern
-    ? allDefinitions.filter((definition) => (
-      definition.scenarioId.includes(filterPattern)
-      || definition.filePath.includes(filterPattern)
-      || definition.category.includes(filterPattern)
-    ))
-    : allDefinitions;
+  const discovery = discoverScenarioDefinitions(scenarioFiles, filterPattern);
+  const definitions = discovery.definitions;
 
   logProgress(
-    `Gate I runner: discovered ${definitions.length} active scenario files.`
+    `Gate I runner: discovered ${discovery.activeScenarioCount} active scenario files; parsed ${discovery.parsedScenarioCount}.`
     + (filterPattern ? ` Filter=${filterPattern}` : ''),
   );
+  if (discovery.activeScenarioCount !== discovery.parsedScenarioCount) {
+    for (const warningLine of formatScenarioParseWarning(discovery.parseFailures)) {
+      logProgress(warningLine);
+    }
+  }
 
   const fixture = await createManualPlaybookFixture('gate-i-manual-playbook');
   const handlers = await import('../../mcp_server/dist/handlers/index.js') as HandlerModule;
-  const results: ScenarioResult[] = [];
+  const results: ScenarioResult[] = discovery.parseFailures.map(scenarioResultFromParseFailure);
   try {
     for (const definition of definitions) {
       await fixture.reset();
