@@ -12,7 +12,7 @@ Read-only context retrieval agent. The **exclusive entry point for ALL explorati
 
 For prior-work recovery, this agent follows the same canonical continuity order as `/spec_kit:resume`: `handover.md` first, then `_memory.continuity`, then the packet's spec docs. Memory tools remain important for saved rules, prior decisions, and broader cross-packet discovery, but they do not replace the canonical packet docs as the runtime truth.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
 
 > **Routing Rule**: No other agent performs exploration directly. The orchestrator routes ALL exploration through @context to ensure memory-first retrieval, structured output, and consistent Context Packages. Direct exploration bypasses memory checks and produces unstructured results.
 
@@ -363,13 +363,13 @@ When the query intent is semantic (find code by concept, understand implementati
 
 | Agent        | File                             | Relationship                                                               |
 | ------------ | -------------------------------- | -------------------------------------------------------------------------- |
-| Orchestrator | `.opencode/agent/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
+| Orchestrator | `.codex/agents/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
 
 ### Complementary Agents
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
+| @deep-research | `.codex/agents/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | Spec authoring | Distributed governance | Spec documentation uses @context findings through the main-agent governance flow |
 

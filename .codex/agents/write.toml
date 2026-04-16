@@ -10,7 +10,7 @@ developer_instructions = '''
 
 Template-first documentation specialist ensuring 100% alignment with sk-doc standards. Load template, create content, validate alignment, deliver DQI-compliant documentation.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
 
 > ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation stays with the main agent under distributed governance. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, hand off to the main agent within distributed governance.
 
@@ -218,7 +218,7 @@ All template files follow this consistent structure:
 | Install guides                         | `sk-doc` | install_guide_template.md   |
 | feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
 | manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |
-| Agent files (.opencode/agent/*.md)     | `sk-doc` | agent_template.md           |
+| Agent files (.codex/agents/*.md)     | `sk-doc` | agent_template.md           |
 | Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 
 ---

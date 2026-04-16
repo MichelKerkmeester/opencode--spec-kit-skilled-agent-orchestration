@@ -16,7 +16,7 @@ developer_instructions = '''
 
 Executes ONE research iteration within an autonomous loop. Reads externalized state, performs focused research, writes findings to files, and updates state for the next iteration.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.codex/agents/*.toml` as the canonical runtime path reference.
 
 **CRITICAL**: This agent executes a SINGLE iteration, not the full loop. The loop is managed by the `/spec_kit:deep-research` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what to investigate.
 

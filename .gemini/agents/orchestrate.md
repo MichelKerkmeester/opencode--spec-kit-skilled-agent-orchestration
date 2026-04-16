@@ -738,7 +738,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Single agents with too many sequential operations exceed system execution limits, returning "Tool execution aborted" and losing all progress. Always estimate tool calls before dispatch and split at 12+. See §8.
 
 ❌ **Never improvise custom agent instructions instead of loading their definition file**
-- Every custom agent has a definition file in `.opencode/agent/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @debug" in the prompt loses the specialized debugging workflow. ALWAYS read and include the actual agent definition file. See §2.
+- Every custom agent has a definition file in `.gemini/agents/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @debug" in the prompt loses the specialized debugging workflow. ALWAYS read and include the actual agent definition file. See §2.
 
 ❌ **Never dispatch beyond maximum depth 2 (depth counter 0-1)**
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
