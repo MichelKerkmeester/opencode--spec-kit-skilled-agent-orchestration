@@ -1,0 +1,29 @@
+# Iteration 34 — Domain 3: Concurrency and Write Coordination (4/10)
+
+## Investigation Thread
+I stayed on the unlocked read-modify-write seams from Iterations 031-032, but filtered out the already-written temp-path and generic split-brain findings. This pass focused on two additive questions: whether `session-stop.ts` reports producer-metadata durability more strongly than the write contract allows, and whether save-time reconsolidation can miss a newly-arrived duplicate because the complement decision is made before the normal writer transaction begins.
+
+## Findings
+
+### Finding R34-001
+- **File:** `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts`; `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts`
+- **Lines:** `session-stop.ts:119-125, 261-269, 302-318`; `hook-state.ts:221-240`
+- **Severity:** P1
+- **Description:** `producerMetadataWritten` is an attempted-write flag, not a durable postcondition. The stop hook flips it to `true` immediately after the producer-metadata patch is issued, but it never re-reads state to prove that `producerMetadata` survived the later unlocked writes in the same stop flow or any interleaving writer for the same session.
+- **Evidence:** `recordStateUpdate()` is only `updateState(sessionId, patch)` plus touched-path bookkeeping (`session-stop.ts:119-125`). Inside the transcript path, `processStopHook()` sets `producerMetadataWritten = true` immediately after `recordStateUpdate(... producerMetadata ...)` (`session-stop.ts:261-269`), then continues with separate `lastSpecFolder` and `sessionSummary` writes before returning the final result (`session-stop.ts:283-309,312-318`). The underlying `updateState()` implementation is the same unlocked read-modify-write seam already identified in this domain: it loads the current JSON, overlays the patch, and returns the in-memory object even if persistence fails or another writer wins later (`hook-state.ts:221-240`). Current coverage only proves the sequential happy path: the replay harness asserts `producerMetadataWritten === true` and then reads back matching state from an isolated sandbox, but it does not introduce overlapping writers or validate that the final on-disk state still contains the producer metadata that the result flag claims was written (`tests/hook-session-stop-replay.vitest.ts:14-56`).
+- **Downstream Impact:** Stop-hook callers can treat `producerMetadataWritten === true` as proof that resume/autosave consumers will see producer metadata, even though the final state file can already have been overwritten by another stop/compact writer. That turns a coordination race into a false success signal for continuity freshness and transcript provenance.
+
+### Finding R34-002
+- **File:** `.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts`; `.opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`
+- **Lines:** `reconsolidation-bridge.ts:261-306`; `reconsolidation.ts:599-694`; `memory-save.ts:2159-2171, 2250-2304`
+- **Severity:** P1
+- **Description:** The complement path has a stale-search duplicate window. Reconsolidation planning performs vector search and scope filtering before the save path takes its writer transaction; if another save inserts or upgrades a near-duplicate after that search but before the later `writeTransaction`, the current save still proceeds as a normal complement and creates a second memory without re-running similarity search.
+- **Evidence:** `runReconsolidationIfEnabled()` does all candidate discovery up front: it calls `vectorSearch(...)`, scope-filters the results, and passes that precomputed list into `reconsolidate()` before the normal save flow acquires any writer lock (`reconsolidation-bridge.ts:261-306`). In `reconsolidate()`, the orchestrator makes the action decision from that one snapshot; when it lands on `complement`, it explicitly returns `newMemoryId: 0` and leaves persistence to the caller's normal create flow (`reconsolidation.ts:617-694`). `memory-save.ts` confirms the timing: reconsolidation planning finishes before chunking or "taking the SQLite writer lock" (`memory-save.ts:2159-2161`), and only later does the handler open `writeTransaction` and call `createMemoryRecord()` / `createAppendOnlyMemoryRecord()` (`memory-save.ts:2250-2304`). Existing tests cover static thresholding and static mocked search results, not a concurrent insert between planning and commit (`tests/reconsolidation-bridge.vitest.ts:255-330`; `tests/reconsolidation.vitest.ts:316-389`).
+- **Downstream Impact:** Two near-simultaneous saves can both miss each other and persist as separate complements even though one should have merged or conflicted with the other. That leaves duplicate or stale-lineage rows in `memory_index`, plus extra vector/BM25 entries, without any surfaced indication that reconsolidation's decision input had gone stale.
+
+## Novel Insights
+- The next concurrency problem after "no lock" is **success reported before durability is re-verified**. `session-stop.ts` now has a user-visible result flag (`producerMetadataWritten`) that is stronger than the underlying write contract.
+- The save stack's best transactional protection starts too late for complement decisions. Merge and conflict at least enter dedicated mutation paths, but complement remains a routing decision derived from a pre-transaction search snapshot.
+
+## Next Investigation Angle
+Stress these exact gaps with adversarial harnesses: one stop-hook test that interleaves a second `updateState()` after `producerMetadataWritten` flips to `true`, and one save-path test that inserts a near-duplicate after `runReconsolidationIfEnabled()` returns `earlyReturn: null` but before `writeTransaction` begins.
