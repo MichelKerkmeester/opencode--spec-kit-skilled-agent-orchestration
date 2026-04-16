@@ -1425,7 +1425,7 @@
 | Setting | Value |
 |---|---|
 | Doc-layer iterations | 50 (015-combined-deep-review-four-specs) |
-| Code+ops iterations | 70 (016-implementation-deep-review) |
+| Code+ops iterations | 70 (015-implementation-deep-review) |
 | Total iterations | 120 |
 | Dispatcher | cli-copilot gpt-5.4, effort=high |
 | Concurrency | 3 (capped due to GitHub API throttling) |
