@@ -154,6 +154,56 @@ function buildGraphQueryPayload<T extends Record<string, unknown>>(
     : withTrust;
 }
 
+type OutboundEdgeEntry = ReturnType<typeof graphDb.queryEdgesFrom>[number];
+type InboundEdgeEntry = ReturnType<typeof graphDb.queryEdgesTo>[number];
+
+interface DanglingEdgeWarning {
+  code: 'dangling_edge';
+  operation: QueryArgs['operation'];
+  missingEndpoint: 'source' | 'target';
+  count: number;
+  danglingSymbolIds: string[];
+  message: string;
+}
+
+function excludeDanglingEdges<TEntry>(
+  entries: TEntry[],
+  limit: number,
+  operation: QueryArgs['operation'],
+  missingEndpoint: DanglingEdgeWarning['missingEndpoint'],
+  isResolved: (entry: TEntry) => boolean,
+  getDanglingId: (entry: TEntry) => string,
+): { resolvedEntries: TEntry[]; warnings?: DanglingEdgeWarning[] } {
+  const resolvedEntries: TEntry[] = [];
+  const danglingSymbolIds: string[] = [];
+
+  for (const entry of entries) {
+    if (!isResolved(entry)) {
+      danglingSymbolIds.push(getDanglingId(entry));
+      continue;
+    }
+    if (resolvedEntries.length < limit) {
+      resolvedEntries.push(entry);
+    }
+  }
+
+  if (danglingSymbolIds.length === 0) {
+    return { resolvedEntries };
+  }
+
+  return {
+    resolvedEntries,
+    warnings: [{
+      code: 'dangling_edge',
+      operation,
+      missingEndpoint,
+      count: danglingSymbolIds.length,
+      danglingSymbolIds: [...new Set(danglingSymbolIds)],
+      message: `Excluded ${danglingSymbolIds.length} dangling ${operation} edge(s) because the ${missingEndpoint} node could not be resolved. Reindex the code graph to repair the missing node references.`,
+    }],
+  };
+}
+
 /** BFS transitive traversal from a symbolId via the given edge type */
 function transitiveTraversal(
   startId: string,
@@ -534,12 +584,19 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   let result;
   switch (operation) {
     case 'calls_from': {
-      const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
+      const { resolvedEntries, warnings } = excludeDanglingEdges(
+        graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
+        limit,
+        operation,
+        'target',
+        (entry: OutboundEdgeEntry) => entry.targetNode != null,
+        (entry: OutboundEdgeEntry) => entry.edge.targetId,
+      );
       result = {
         operation,
         symbolId,
         edgeType: requestedEdgeType,
-        edges: edges.map((entry) => ({
+        edges: resolvedEntries.map((entry) => ({
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
           file: entry.targetNode?.filePath,
           line: entry.targetNode?.startLine,
@@ -552,8 +609,9 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             entry.edge.metadata as Record<string, unknown> | undefined,
           ),
         })),
+        ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          edges
+          resolvedEntries
             .map((entry) => entry.targetNode?.filePath)
             .filter((value): value is string => typeof value === 'string'),
         ),
@@ -561,12 +619,19 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       break;
     }
     case 'calls_to': {
-      const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
+      const { resolvedEntries, warnings } = excludeDanglingEdges(
+        graphDb.queryEdgesTo(symbolId, requestedEdgeType),
+        limit,
+        operation,
+        'source',
+        (entry: InboundEdgeEntry) => entry.sourceNode != null,
+        (entry: InboundEdgeEntry) => entry.edge.sourceId,
+      );
       result = {
         operation,
         symbolId,
         edgeType: requestedEdgeType,
-        edges: edges.map((entry) => ({
+        edges: resolvedEntries.map((entry) => ({
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
           file: entry.sourceNode?.filePath,
           line: entry.sourceNode?.startLine,
@@ -579,8 +644,9 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             entry.edge.metadata as Record<string, unknown> | undefined,
           ),
         })),
+        ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          edges
+          resolvedEntries
             .map((entry) => entry.sourceNode?.filePath)
             .filter((value): value is string => typeof value === 'string'),
         ),
@@ -588,12 +654,19 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       break;
     }
     case 'imports_from': {
-      const edges = graphDb.queryEdgesFrom(symbolId, requestedEdgeType).slice(0, limit);
+      const { resolvedEntries, warnings } = excludeDanglingEdges(
+        graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
+        limit,
+        operation,
+        'target',
+        (entry: OutboundEdgeEntry) => entry.targetNode != null,
+        (entry: OutboundEdgeEntry) => entry.edge.targetId,
+      );
       result = {
         operation,
         symbolId,
         edgeType: requestedEdgeType,
-        edges: edges.map((entry) => ({
+        edges: resolvedEntries.map((entry) => ({
           target: entry.targetNode?.fqName ?? entry.edge.targetId,
           file: entry.targetNode?.filePath,
           confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
@@ -605,8 +678,9 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             entry.edge.metadata as Record<string, unknown> | undefined,
           ),
         })),
+        ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          edges
+          resolvedEntries
             .map((entry) => entry.targetNode?.filePath)
             .filter((value): value is string => typeof value === 'string'),
         ),
@@ -614,12 +688,19 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       break;
     }
     case 'imports_to': {
-      const edges = graphDb.queryEdgesTo(symbolId, requestedEdgeType).slice(0, limit);
+      const { resolvedEntries, warnings } = excludeDanglingEdges(
+        graphDb.queryEdgesTo(symbolId, requestedEdgeType),
+        limit,
+        operation,
+        'source',
+        (entry: InboundEdgeEntry) => entry.sourceNode != null,
+        (entry: InboundEdgeEntry) => entry.edge.sourceId,
+      );
       result = {
         operation,
         symbolId,
         edgeType: requestedEdgeType,
-        edges: edges.map((entry) => ({
+        edges: resolvedEntries.map((entry) => ({
           source: entry.sourceNode?.fqName ?? entry.edge.sourceId,
           file: entry.sourceNode?.filePath,
           confidence: clampNumericConfidence(entry.edge.metadata?.confidence ?? entry.edge.weight),
@@ -631,8 +712,9 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             entry.edge.metadata as Record<string, unknown> | undefined,
           ),
         })),
+        ...(warnings ? { warnings } : {}),
         hotFileBreadcrumbs: buildHotFileBreadcrumbs(
-          edges
+          resolvedEntries
             .map((entry) => entry.sourceNode?.filePath)
             .filter((value): value is string => typeof value === 'string'),
         ),

@@ -212,6 +212,63 @@ describe('code-graph-query handler', () => {
     expect(parsed.data).not.toHaveProperty('confidence');
   });
 
+  it('excludes dangling edges and reports corruption warnings instead of returning raw symbol IDs', async () => {
+    mocks.queryEdgesFrom.mockReturnValue([
+      {
+        edge: {
+          targetId: 'dangling-symbol',
+          edgeType: 'CALLS',
+          metadata: {
+            confidence: 0.2,
+          },
+        },
+        targetNode: null,
+      },
+      {
+        edge: {
+          targetId: 'symbol-2',
+          edgeType: 'CALLS',
+          metadata: {
+            confidence: 0.7,
+            detectorProvenance: 'heuristic',
+            evidenceClass: 'INFERRED',
+          },
+        },
+        targetNode: { fqName: 'ResolvedTarget', filePath: 'src/resolved.ts', startLine: 44 },
+      },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+      limit: 1,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.edges).toHaveLength(1);
+    expect(parsed.data.edges[0]).toMatchObject({
+      target: 'ResolvedTarget',
+      file: 'src/resolved.ts',
+      line: 44,
+      confidence: 0.7,
+      numericConfidence: 0.7,
+      detectorProvenance: 'heuristic',
+      evidenceClass: 'INFERRED',
+      edgeEvidenceClass: 'inferred_heuristic',
+    });
+    expect(parsed.data.edges).not.toContainEqual(expect.objectContaining({ target: 'dangling-symbol' }));
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'dangling_edge',
+        operation: 'calls_from',
+        missingEndpoint: 'target',
+        count: 1,
+        danglingSymbolIds: ['dangling-symbol'],
+      }),
+    ]);
+    expect(parsed.data.warnings[0].message).toContain('Excluded 1 dangling calls_from edge(s)');
+  });
+
   it('enforces blast-radius depth before inclusion and unions multiple source files', async () => {
     mocks.queryFileImportDependents.mockReturnValue([
       { importedFilePath: 'src/a.ts', importerFilePath: 'src/b.ts' },
