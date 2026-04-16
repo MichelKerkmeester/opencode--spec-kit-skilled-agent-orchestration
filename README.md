@@ -60,10 +60,7 @@ The framework adds three layers on top of the base platform:
 | **🔧 56 MCP Tools** | 47 spec_kit_memory + 7 code mode + 1 semantic search + 1 sequential thinking |
 | **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing integration in search pipeline |
-| **🔒 3 Gates** | Understanding, Skill Routing, Spec Folder |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
-| **📄 Template Set** | CORE + ADDENDUM v2.2 |
-| **📦 291 Features** | Across 22 categories |
 
 &nbsp;
 ### How It All Connects
