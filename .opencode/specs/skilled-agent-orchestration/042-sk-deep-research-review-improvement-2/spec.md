@@ -100,6 +100,8 @@ Define the parent coordination layer for Packet 042: summarize the eight-phase s
 | **Phase 6** | Graph testing and playbook alignment | Coverage-graph test suites, playbook cross-references, README discovery surfaces |
 | **Phase 7** | Graph-aware stop gate | Graph convergence workflow wiring, fail-closed reducer reconciliation, runtime-truth state-log alignment |
 | **Phase 8** | Further deep-loop improvements | Research/review/improve-agent release packaging, phase-008 fixes, post-audit reconciliation inputs |
+| **Phase 9** | Round 3 review remediation | 54 findings (37 P1, 17 P2) from Copilot deep-review closing audit |
+| **Phase 10** | Root-level review/research convention | Shared path resolver, review/research always at spec root with phase subfolders |
 
 ### Phase Documentation Map
 
@@ -113,6 +115,8 @@ Define the parent coordination layer for Packet 042: summarize the eight-phase s
 | **6** | [./006-graph-testing-and-playbook-alignment/](./006-graph-testing-and-playbook-alignment/) | Coverage-graph test coverage plus operator playbook alignment | Implemented | Phases 2, 5 |
 | **7** | [./007-graph-aware-stop-gate/](./007-graph-aware-stop-gate/) | Graph convergence workflow wiring and fail-closed runtime-truth reconciliation | Implemented | Phases 1-6 |
 | **8** | [./008-further-deep-loop-improvements/](./008-further-deep-loop-improvements/) | Follow-on runtime hardening, release packaging, and closing-audit pre-reconciliation | Implemented | Phases 1-7 |
+| **9** | [./009-round3-review-remediation/](./009-round3-review-remediation/) | 54-finding remediation from Copilot deep-review closing audit (37 P1, 17 P2) | Implemented | Phases 1-8 |
+| **10** | [./010-root-level-review-research-convention/](./010-root-level-review-research-convention/) | Shared `resolveArtifactRoot` resolver, reducers, command YAMLs, agent definitions, SKILL/README docs | Implemented | Phases 1-9 |
 <!-- /ANCHOR:scope -->
 
 ---

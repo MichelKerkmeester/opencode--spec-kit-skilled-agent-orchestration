@@ -1,7 +1,7 @@
 ---
 title: "Implementation Plan: Root-Level Review/Research Folder Convention"
 description: "3-phase plan: shared resolver, consumer updates, documentation alignment"
-status: planned
+status: complete
 ---
 
 # Implementation Plan
