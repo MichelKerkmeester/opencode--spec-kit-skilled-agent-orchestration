@@ -4,6 +4,12 @@
 // Phase 030 / Phase 2: transport-only mapping from shared payload
 // contracts to OpenCode-oriented startup, message, and compaction blocks.
 
+import {
+  isSharedPayloadKind,
+  isSharedPayloadProducer,
+  SHARED_PAYLOAD_KIND_VALUES,
+  SHARED_PAYLOAD_PRODUCER_VALUES,
+} from './shared-payload.js';
 import type { SharedPayloadEnvelope, SharedPayloadSection } from './shared-payload.js';
 
 /** Hook names emitted by the OpenCode transport adapter. */
@@ -37,7 +43,14 @@ export interface OpenCodeTransportPlan {
   compaction?: OpenCodeTransportBlock;
 }
 
-function isSharedPayloadEnvelope(value: unknown): value is SharedPayloadEnvelope {
+type SharedPayloadEnvelopeShape = {
+  kind: string;
+  summary: string;
+  sections: SharedPayloadSection[];
+  provenance: SharedPayloadEnvelope['provenance'];
+};
+
+function isSharedPayloadEnvelopeShape(value: unknown): value is SharedPayloadEnvelopeShape {
   if (!value || typeof value !== 'object') {
     return false;
   }
@@ -49,9 +62,37 @@ function isSharedPayloadEnvelope(value: unknown): value is SharedPayloadEnvelope
     && typeof record.provenance === 'object';
 }
 
+function formatAllowedValues(values: readonly string[]): string {
+  return values.join(', ');
+}
+
 /** Narrow an unknown runtime payload to the shared transport envelope contract. */
 export function coerceSharedPayloadEnvelope(value: unknown): SharedPayloadEnvelope | null {
-  return isSharedPayloadEnvelope(value) ? value : null;
+  if (!isSharedPayloadEnvelopeShape(value)) {
+    return null;
+  }
+
+  if (!isSharedPayloadKind(value.kind)) {
+    throw new Error(
+      `Invalid shared payload envelope kind "${String(value.kind)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_KIND_VALUES)}.`,
+    );
+  }
+  if (!isSharedPayloadProducer(value.provenance.producer)) {
+    throw new Error(
+      `Invalid shared payload envelope provenance.producer "${String(value.provenance.producer)}"; expected one of ${formatAllowedValues(SHARED_PAYLOAD_PRODUCER_VALUES)}.`,
+    );
+  }
+
+  const kind = value.kind;
+  const producer = value.provenance.producer;
+  return {
+    ...value,
+    kind,
+    provenance: {
+      ...value.provenance,
+      producer,
+    },
+  };
 }
 
 function renderSections(sections: SharedPayloadSection[], maxSections: number = 2): string {

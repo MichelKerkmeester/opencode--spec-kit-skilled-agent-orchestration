@@ -4,12 +4,15 @@
 // Phase 030 / Phase 1: common payload and provenance envelope
 // shared by startup, recovery, and compaction surfaces.
 
-export type SharedPayloadKind =
-  | 'startup'
-  | 'resume'
-  | 'health'
-  | 'bootstrap'
-  | 'compaction';
+export const SHARED_PAYLOAD_KIND_VALUES = [
+  'startup',
+  'resume',
+  'health',
+  'bootstrap',
+  'compaction',
+] as const;
+
+export type SharedPayloadKind = (typeof SHARED_PAYLOAD_KIND_VALUES)[number];
 
 export type SharedPayloadTrustState =
   | 'live'
@@ -150,15 +153,20 @@ export interface SharedPayloadSection {
   hotFileBreadcrumb?: HotFileBreadcrumb;
 }
 
+export const SHARED_PAYLOAD_PRODUCER_VALUES = [
+  'startup_brief',
+  'session_snapshot',
+  'session_resume',
+  'session_health',
+  'session_bootstrap',
+  'compact_merger',
+  'hook_cache',
+] as const;
+
+export type SharedPayloadProducer = (typeof SHARED_PAYLOAD_PRODUCER_VALUES)[number];
+
 export interface SharedPayloadProvenance {
-  producer:
-    | 'startup_brief'
-    | 'session_snapshot'
-    | 'session_resume'
-    | 'session_health'
-    | 'session_bootstrap'
-    | 'compact_merger'
-    | 'hook_cache';
+  producer: SharedPayloadProducer;
   sourceSurface: string;
   trustState: SharedPayloadTrustState;
   generatedAt: string;
@@ -211,9 +219,19 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+export function isSharedPayloadKind(value: unknown): value is SharedPayloadKind {
+  return typeof value === 'string'
+    && SHARED_PAYLOAD_KIND_VALUES.includes(value as SharedPayloadKind);
+}
+
 export function isSharedPayloadCertainty(value: unknown): value is SharedPayloadCertainty {
   return typeof value === 'string'
     && SHARED_PAYLOAD_CERTAINTY_VALUES.includes(value as SharedPayloadCertainty);
+}
+
+export function isSharedPayloadProducer(value: unknown): value is SharedPayloadProducer {
+  return typeof value === 'string'
+    && SHARED_PAYLOAD_PRODUCER_VALUES.includes(value as SharedPayloadProducer);
 }
 
 export function isParserProvenance(value: unknown): value is ParserProvenance {

@@ -58,4 +58,29 @@ describe('opencode transport adapter', () => {
     expect(coerceSharedPayloadEnvelope(payload)?.kind).toBe('resume');
     expect(coerceSharedPayloadEnvelope({ nope: true })).toBeNull();
   });
+
+  it('rejects invalid shared payload kinds during coercion', () => {
+    const payload = {
+      ...makePayload('resume', 'resume summary'),
+      kind: 'resume-ish',
+    };
+
+    expect(() => coerceSharedPayloadEnvelope(payload)).toThrow(
+      'Invalid shared payload envelope kind "resume-ish"',
+    );
+  });
+
+  it('rejects invalid shared payload producers during coercion', () => {
+    const payload = {
+      ...makePayload('resume', 'resume summary'),
+      provenance: {
+        ...makePayload('resume', 'resume summary').provenance,
+        producer: 'resume_cache',
+      },
+    };
+
+    expect(() => coerceSharedPayloadEnvelope(payload)).toThrow(
+      'Invalid shared payload envelope provenance.producer "resume_cache"',
+    );
+  });
 });

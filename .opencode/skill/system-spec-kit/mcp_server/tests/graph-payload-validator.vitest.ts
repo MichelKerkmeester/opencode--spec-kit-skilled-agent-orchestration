@@ -1,7 +1,30 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { coerceSharedPayloadEnvelope } from '../lib/context/opencode-transport.js';
 import {
+  type SharedPayloadEnvelope,
   validateStructuralTrustPayload,
 } from '../lib/context/shared-payload.js';
+
+function makeSharedPayloadEnvelope(): SharedPayloadEnvelope {
+  return {
+    kind: 'resume',
+    summary: 'resume summary',
+    sections: [{
+      key: 'resume-surface',
+      title: 'Resume Surface',
+      content: 'resume content',
+      source: 'session',
+    }],
+    provenance: {
+      producer: 'session_resume',
+      sourceSurface: 'session_resume',
+      trustState: 'live',
+      generatedAt: '2026-04-16T00:00:00.000Z',
+      lastUpdated: null,
+      sourceRefs: ['session_resume'],
+    },
+  };
+}
 
 describe('graph payload validator contract', () => {
   it('rejects collapsed trust payloads', () => {
@@ -29,6 +52,33 @@ describe('graph payload validator contract', () => {
       evidenceStatus: 'confirmed',
       freshnessAuthority: 'live',
     });
+  });
+});
+
+describe('shared payload envelope coercion', () => {
+  it('rejects invalid kind unions', () => {
+    const payload = {
+      ...makeSharedPayloadEnvelope(),
+      kind: 'startupish',
+    };
+
+    expect(() => coerceSharedPayloadEnvelope(payload)).toThrow(
+      'Invalid shared payload envelope kind "startupish"',
+    );
+  });
+
+  it('rejects invalid producer unions', () => {
+    const payload = {
+      ...makeSharedPayloadEnvelope(),
+      provenance: {
+        ...makeSharedPayloadEnvelope().provenance,
+        producer: 'session_cache',
+      },
+    };
+
+    expect(() => coerceSharedPayloadEnvelope(payload)).toThrow(
+      'Invalid shared payload envelope provenance.producer "session_cache"',
+    );
   });
 });
 
