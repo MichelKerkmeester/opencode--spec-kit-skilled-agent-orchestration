@@ -1,11 +1,11 @@
 ---
-title: Systematic Debugging Checklist
-description: Universal step-by-step checklist for investigating technical issues across all stacks.
+title: React Native Debugging Checklist
+description: Step-by-step checklist for investigating React Native mobile issues.
 ---
 
-# 🔍 Debugging Checklist
+# 🔍 React Native Debugging Checklist
 
-Universal step-by-step checklist for investigating technical issues systematically across TypeScript/JavaScript, Go, and Swift.
+Step-by-step checklist for investigating React Native mobile issues systematically.
 
 ---
 
@@ -24,9 +24,7 @@ Use this checklist for ANY technical issue. Complete all applicable phases seque
 
 | Language | Primary Debugging Environment |
 |----------|------------------------------|
-| TypeScript/JavaScript | Browser DevTools, Node.js debugger |
-| Go | Delve debugger, pprof |
-| Swift | Xcode Debugger, LLDB, Instruments |
+| TypeScript/JavaScript | React Native Debugger, Flipper, Chrome DevTools |
 
 ---
 

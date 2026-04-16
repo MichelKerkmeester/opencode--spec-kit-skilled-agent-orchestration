@@ -1,11 +1,11 @@
 ---
-title: Verification Checklist
-description: Universal checklist for verifying work before claiming completion across all stacks.
+title: React Native Verification Checklist
+description: Checklist for verifying React Native mobile work before claiming completion.
 ---
 
-# ✓ Verification Checklist
+# ✓ React Native Verification Checklist
 
-Universal checklist for verifying work before claiming completion across TypeScript/JavaScript, Go, and Swift.
+Checklist for verifying React Native mobile work before claiming completion.
 
 ---
 
@@ -24,9 +24,7 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 | Language | Primary Testing Environment |
 |----------|---------------------------|
-| TypeScript/JavaScript | Browser, Node.js, Jest/Vitest |
-| Go | go test, benchmarks |
-| Swift | XCTest, Xcode, Simulator/Device |
+| TypeScript/JavaScript | Jest, Detox, React Native Testing Library |
 
 ---
 

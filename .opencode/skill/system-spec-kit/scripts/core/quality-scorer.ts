@@ -83,8 +83,8 @@ function getDescriptionQualityScore(file: FileWithDescription): number {
 }
 
 function extractFrontmatterTitle(content: string): string {
-  const titleMatch = content.match(/^title:\s*"([^"]+)"$/m);
-  return titleMatch?.[1]?.trim() || '';
+  const titleMatch = content.match(/^title:\s*(?:"([^"]+)"|'([^']+)'|(.+))$/m);
+  return (titleMatch?.[1] ?? titleMatch?.[2] ?? titleMatch?.[3])?.trim() || '';
 }
 
 function extractHeadingTitle(content: string): string {

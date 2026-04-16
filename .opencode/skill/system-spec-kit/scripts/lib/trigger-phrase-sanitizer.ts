@@ -36,24 +36,36 @@ const CONTROL_CHARACTER_PATTERN = /[\x00-\x1F\x7F-\x9F]/;
 const CONTAMINATION_PATTERN = /<[^>]+>|\b(?:ignore previous|system prompt|developer message|tool state|tool output|assistant:|user:)\b/i;
 const MAX_TRIGGER_PHRASE_LENGTH = 200;
 
+// Aligned with BASE_VALID_SHORT_TERMS in topic-keywords.ts — keep in sync.
 const SHORT_PRODUCT_ALLOWLIST = new Set([
   'ai',
   'api',
   'cd',
   'ci',
   'cli',
+  'css',
   'db',
+  'dom',
+  'go',
+  'id',
+  'io',
+  'ip',
   'js',
   'llm',
   'mcp',
+  'ml',
+  'os',
   'pr',
   'qa',
   'rag',
+  'rx',
   'sdk',
   'sql',
   'ts',
   'ui',
   'ux',
+  'vm',
+  'wp',
 ]);
 
 const STANDALONE_STOPWORD_BLOCKLIST = new Set([

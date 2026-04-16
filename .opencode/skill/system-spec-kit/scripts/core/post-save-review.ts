@@ -52,6 +52,7 @@ export type ReviewCheckId =
   | 'DUP3'
   | 'DUP4'
   | 'DUP5'
+  | 'DUP5b'
   | 'DUP6'
   | 'DUP7';
 
@@ -789,7 +790,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
     const normalizedMetadataTriggers = Array.from(new Set(metadataTriggers.map((trigger) => trigger.trim().toLowerCase()).filter(Boolean))).sort();
     if (metadataHasTriggerPhrases && JSON.stringify(normalizedSavedTriggers) !== JSON.stringify(normalizedMetadataTriggers)) {
       issues.push({
-        checkId: 'DUP5',
+        checkId: 'DUP5b',
         severity: 'HIGH',
         field: 'trigger_phrases',
         message: `frontmatter trigger_phrases ${JSON.stringify(normalizedSavedTriggers)} drift from MEMORY METADATA ${JSON.stringify(normalizedMetadataTriggers)}`,

@@ -36,14 +36,13 @@ ADVISOR_PATH = os.path.join(SCRIPT_DIR, "skill_advisor.py")
 # ───────────────────────────────────────────────────────────────
 
 def load_advisor_module() -> Any:
-    """Load the advisor module from disk for regression checks."""
-    spec = importlib.util.spec_from_file_location("skill_advisor", ADVISOR_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Failed to load advisor module from {ADVISOR_PATH}")
+    """Load the advisor module from disk for regression checks.
 
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    Delegates to the canonical implementation in skill_advisor_bench to
+    avoid duplicating the same importlib loading logic in two harnesses.
+    """
+    from skill_advisor_bench import load_advisor_module as _load
+    return _load()
 
 
 def load_jsonl(path: str) -> List[Dict[str, Any]]:

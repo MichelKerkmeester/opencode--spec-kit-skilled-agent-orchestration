@@ -15,9 +15,10 @@
 // ───────────────────────────────────────────────────────────────
 // Shared lexical helpers for topic extraction across script extractors.
 
+// Aligned with SHORT_PRODUCT_ALLOWLIST in trigger-phrase-sanitizer.ts — keep in sync.
 const BASE_VALID_SHORT_TERMS = [
-  'ai', 'api', 'cd', 'ci', 'css', 'db', 'dom', 'go', 'id', 'io', 'ip', 'js',
-  'mcp', 'ml', 'os', 'qa', 'rx', 'sql', 'ts', 'ui', 'ux', 'vm', 'wp',
+  'ai', 'api', 'cd', 'ci', 'cli', 'css', 'db', 'dom', 'go', 'id', 'io', 'ip', 'js',
+  'llm', 'mcp', 'ml', 'os', 'pr', 'qa', 'rag', 'rx', 'sdk', 'sql', 'ts', 'ui', 'ux', 'vm', 'wp',
 ];
 
 /** Create valid short terms. */

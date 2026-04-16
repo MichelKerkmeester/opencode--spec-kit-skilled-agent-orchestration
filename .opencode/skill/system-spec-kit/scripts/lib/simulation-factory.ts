@@ -511,6 +511,7 @@ function createSimulationPhases(): PhaseEntry[] {
 // ───────────────────────────────────────────────────────────────
 // 8. FULL SIMULATION AND DETECTION
 // ───────────────────────────────────────────────────────────────
+/** @deprecated Orphaned — no callers in the tree. Scheduled for removal. */
 export function createFullSimulation(config: SessionConfig = {}): FullSimulation {
   return {
     session: createSessionData(config),
@@ -535,11 +536,13 @@ function requiresSimulation(collectedData: SimCollectedData | null): boolean {
 // ───────────────────────────────────────────────────────────────
 // 9. SIMULATION WARNING UTILITIES
 // ───────────────────────────────────────────────────────────────
+/** @deprecated Orphaned — no callers in the tree. Scheduled for removal. */
 export function addSimulationWarning(content: string): string {
   const warning: string = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
   return warning + content;
 }
 
+/** @deprecated Orphaned — no callers in the tree. Scheduled for removal. */
 export function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
   return {
     ...metadata,
