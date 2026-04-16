@@ -219,7 +219,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 
 - [x] T-CGQ-01 [P1] R3-001: `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal → return `ambiguous_subject` on multi-row match (`code-graph/query.ts:42-58`) [QW]
 - [x] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
-- [ ] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
+- [x] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
 - [x] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
 - [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
 - [x] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
@@ -332,7 +332,7 @@ Primary workstream: M13 + S1.
 
 - [ ] T-MSV-01 [P1] R24-001: `runEnrichmentBackfill` advertised before enrichment runs; only deferred case gets typed recovery → all runtime-degradation branches get typed recovery via `OperationResult<T>` (`memory-save.ts:1616-1678,2362-2384`) [B:T-PIN-02]
 - [ ] T-MSV-02 [P1] R34-002 orchestrator side: Complement duplicate window orchestrated at memory-save; paired with T-RCB-06 (`memory-save.ts:2159-2171,2250-2304`) — Phase 1d / B2 [B:T-RCB-06]
-- [ ] T-RBD-01 [P1] R21-001: `memory_save` response collapses post-insert truth further than `post-insert.ts` does → propagate typed `OperationResult<T>` through response (`response-builder.ts:311-322,569-573`) — Phase 3 M13 [B:T-PIN-02]
+- [x] T-RBD-01 [P1] R21-001: `memory_save` response collapses post-insert truth further than `post-insert.ts` does → propagate typed `OperationResult<T>` through response (`response-builder.ts:311-322,569-573`) — Phase 3 M13 [B:T-PIN-02]
 <!-- /ANCHOR:group-msv-rbd -->
 
 ---
@@ -391,7 +391,7 @@ Top-8 file by distinct-issue count. Primary workstream: S4.
 
 Top-7 file by distinct-issue count. Primary workstream: S6.
 
-- [ ] T-MPR-RUN-01 [P1] R41-004: Markdown → `Function(...)()` eval with no sandbox; documentation drift can become arbitrary Node-side execution → typed step executor replacing `Function(...)()` (M9 from S6) (`manual-playbook-runner.ts:224-246,251-317,438-445`) — Phase 2 S6
+- [x] T-MPR-RUN-01 [P1] R41-004: Markdown → `Function(...)()` eval with no sandbox; documentation drift can become arbitrary Node-side execution → typed step executor replacing `Function(...)()` (M9 from S6) (`manual-playbook-runner.ts:224-246,251-317,438-445`) — Phase 2 S6
 - [ ] T-MPR-RUN-02 [P2] R42-003: Automation eligibility governed by filename substrings + prose-shaped command parsing → explicit `automatable: boolean` field on scenario metadata (S6/C1) (`manual-playbook-runner.ts:319-375,983-1016`)
 - [ ] T-MPR-RUN-03 [P1] R45-004: `parseScenarioDefinition()` returns null on parse failure; `main()` filters nulls before coverage count; 10/291 active scenario files unparseable 2026-04-16 → `parsedCount == filteredCount` assertion; emit named warning on drop (`manual-playbook-runner.ts:245-271,1203-1217`) [QW #7]
 - [ ] T-MPR-RUN-04 [P1] R46-003: `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`; `substitutePlaceholders()` injects `runtimeState.lastJobId` from prior handler payloads into `Function(...)` string → typed schema-validated arg parser (paired with T-MPR-RUN-01) (`manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117`) — Phase 2 S6
