@@ -1,0 +1,38 @@
+# Iteration 46 — Domain 4: Stringly Typed Governance (6/10)
+
+## Investigation Thread
+I revisited the remaining unclaimed string-governance seams after iterations 41-44 had already covered Gate 3 prose delegation, `folder_state`/`intake_only` DSL drift, inert `intent_signals`, and ignored SKILL keyword comments. This pass focused on second-order runtime effects: slash-command prefix collapse in `skill_advisor.py`, unilateral `conflicts_with` metadata turning into bilateral runtime penalties, and the manual playbook runner's promotion of live placeholder values into executable code.
+
+## Findings
+
+### Finding R46-001
+- **File:** `.opencode/skill/skill-advisor/scripts/skill_advisor.py`; `.opencode/skill/skill-advisor/tests/test_skill_advisor.py`
+- **Lines:** `skill_advisor.py:980-1021,1404-1410,1647,1741-1768`; `test_skill_advisor.py:73-186`
+- **Severity:** P1
+- **Description:** Explicit slash-command routing for the entire `/spec_kit:*` family is governed by one broad string prefix. `COMMAND_BRIDGES` registers the generic markers `"/spec_kit"` and `"spec_kit:"` for `command-spec-kit`, `detect_explicit_command_intent()` returns the first marker hit, and the ranking phase then penalizes every other command bridge while giving the matched bridge highest command priority. That means subcommands with their own semantics, such as `/spec_kit:deep-research` or `/spec_kit:resume`, are mechanically collapsed into the generic `command-spec-kit` command surface.
+- **Evidence:** The bridge table defines only the generic `/spec_kit` markers (`skill_advisor.py:980-1021`), the detector stops at the first string containment match (`skill_advisor.py:1404-1410`), and later ranking gives the matched command `kind_priority = 2` while penalizing other commands (`skill_advisor.py:1647,1741-1768`). A live probe against the current source returned `command-spec-kit` at `0.95` confidence for both `/spec_kit:deep-research "foo"` and `/spec_kit:resume`, above `sk-deep-research` (`0.70`) and `system-spec-kit` (`0.31`). Existing tests exercise only generic `analyze_prompt()`, `analyze_batch()`, `health_check()`, and `get_skills()` shape/health; they never assert slash-marker specificity or `/spec_kit:*` subcommand disambiguation (`test_skill_advisor.py:73-186`).
+- **Downstream Impact:** Operators can explicitly request a more specific `/spec_kit` command and still get a generic planner-oriented routing result. Because the contract is just prefix matching on raw strings, adding or renaming subcommands can silently change routing priority without any schema failure or test break.
+
+### Finding R46-002
+- **File:** `.opencode/skill/skill-advisor/scripts/skill_graph_compiler.py`; `.opencode/skill/skill-advisor/scripts/skill_advisor.py`; `.opencode/skill/skill-advisor/tests/test_skill_advisor.py`
+- **Lines:** `skill_graph_compiler.py:272-319,501-568,630-663`; `skill_advisor.py:141-187,321-339`; `test_skill_advisor.py:73-186`
+- **Severity:** P1
+- **Description:** One-sided `conflicts_with` metadata is silently promoted into a bilateral runtime conflict penalty. The compiler's only symmetry checks cover `depends_on`/`prerequisite_for` and `siblings`; it never validates reciprocal `conflicts_with` edges. But both the compiler and the SQLite loader normalize any declared conflict into a sorted two-skill pair, and `_apply_graph_conflict_penalty()` later raises uncertainty for both skills whenever that pair co-appears above threshold.
+- **Evidence:** `validate_edge_symmetry()` never inspects `conflicts_with` edges (`skill_graph_compiler.py:272-319`), and the CLI still returns success when only warnings are present (`skill_graph_compiler.py:630-663`). During compilation, any `conflicts_with` edge is converted to `tuple(sorted([skill_id, target]))` and stored once in the shared `conflicts` list (`skill_graph_compiler.py:501-568`). The runtime SQLite loader performs the same pair normalization (`skill_advisor.py:141-187`), and `_apply_graph_conflict_penalty()` then bumps uncertainty for both members of any passing pair (`skill_advisor.py:321-339`). The existing advisor tests never assert conflict semantics at all; they stop at generic prompt/result shape checks (`test_skill_advisor.py:73-186`).
+- **Downstream Impact:** A maintainer can declare `A conflicts_with B` in only one metadata file and still cause both `A` and `B` to be uncertainty-penalized at runtime. Because the bilateral effect is created by string-normalization during compile/load rather than by a validated reciprocal contract, routing behavior can change from a unilateral metadata edit with no failing validation gate.
+
+### Finding R46-003
+- **File:** `.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts`
+- **Lines:** `manual-playbook-runner.ts:181-194,427-445,930-943,1112-1117`
+- **Severity:** P1
+- **Description:** The manual playbook runner's markdown-to-code path now trusts live runtime values, not just repository-authored markdown. When a parsed step argument starts with `{`, the runner first substitutes fixture placeholders plus `runtimeState.lastJobId` into the raw markdown string and then executes the result with `Function(...)`. Because `lastJobId` is captured from prior handler payloads, tool output becomes part of the code string that gets evaluated.
+- **Evidence:** `parsedStepArgs()` routes brace-prefixed argument text to `evaluateObjectLiteral()` (`manual-playbook-runner.ts:181-194`). `substitutePlaceholders()` splices both fixture placeholders and `<job-id>` using `runtimeState.lastJobId` into the raw string, then `evaluateObjectLiteral()` executes `Function(\`return (${replaced});\`)()` with no parser or escaping layer (`manual-playbook-runner.ts:427-445`). The runtime state feeding that substitution is mutated from prior steps, including `jobId` extracted out of tool payloads after `memory_ingest_start` succeeds (`manual-playbook-runner.ts:930-943,1112-1117`).
+- **Downstream Impact:** The trust boundary is wider than "repository-owned markdown": any handler output copied into `lastJobId` can alter the JavaScript executed during playbook validation. That turns documentation-plus-runtime-data into an executable contract, so malformed scenario text or unexpected payload content can change runner behavior without any typed schema or dedicated automated test catching it first.
+
+## Novel Insights
+- The remaining Domain 4 risk is not just drift between prose and code; it is **string collapse at translation boundaries**. Generic prefixes collapse command families, one-sided metadata collapses into bilateral routing penalties, and markdown argument strings collapse into executable JavaScript after runtime substitution.
+- Two of the three seams are especially dangerous because they look more validated than they are: `skill_graph_compiler.py` prints "VALIDATION PASSED" while still permitting unilateral conflict penalties, and `manual-playbook-runner.ts` comments that it evaluates "repository-owned content" even after it has injected live tool-returned values into that content.
+- The unifying pattern is that governance strings are being normalized into stronger runtime authority than the source artifacts promise, but no adjacent automated test suite pins those promotion rules.
+
+## Next Investigation Angle
+Return to the still-open AGENTS/command-asset seam from iteration 43: build concrete false-positive and false-negative prompt cases for the Gate 3 trigger-word list (`analyze`, `decompose`, `phase`) and trace whether the mixed `folderState` / `startState` vocabularies emitted by `/spec_kit:plan` and `/spec_kit:complete` are consumed anywhere as if they were a single normalized enum.
