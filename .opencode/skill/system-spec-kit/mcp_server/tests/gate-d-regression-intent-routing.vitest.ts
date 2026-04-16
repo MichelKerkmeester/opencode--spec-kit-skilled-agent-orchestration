@@ -406,4 +406,70 @@ describe('Gate D intent routing regression', () => {
       }
     }
   });
+
+  it('search handler is called with includeArchived explicitly unset (canonical-filtering contract)', async () => {
+    const response = await handleMemoryContext({
+      input: CANONICAL_QUERY,
+      mode: 'auto',
+      intent: 'find_decision',
+      specFolder: GATE_D_SPEC_FOLDER,
+      anchors: CANONICAL_ANCHORS,
+    });
+
+    expect(mocks.handleMemorySearch).toHaveBeenCalledTimes(1);
+    const searchArgs = mocks.handleMemorySearch.mock.calls[0]?.[0] as Record<string, unknown>;
+
+    // The canonical-filtering contract requires:
+    // 1. includeArchived must NOT be passed (undefined), ensuring archived
+    //    memories are excluded by default downstream.
+    // 2. autoDetectIntent must be false to prevent the handler from
+    //    overriding the already-classified intent.
+    // 3. includeConstitutional must be true for canonical context.
+    expect(searchArgs.includeArchived).toBeUndefined();
+    expect(searchArgs.autoDetectIntent).toBe(false);
+    expect(searchArgs.includeConstitutional).toBe(true);
+  });
+
+  it('resume handler does not fall back to legacy memory when spec-docs resolve', async () => {
+    const response = await handleMemoryContext({
+      input: CANONICAL_QUERY,
+      mode: 'resume',
+      specFolder: GATE_D_SPEC_FOLDER,
+      anchors: CANONICAL_ANCHORS,
+    });
+
+    expect(mocks.buildResumeLadder).toHaveBeenCalledTimes(1);
+    expect(mocks.handleMemorySearch).not.toHaveBeenCalled();
+    expect(mocks.handleMemoryMatchTriggers).not.toHaveBeenCalled();
+
+    const envelope = parseEnvelope(response);
+    const outerData = envelope.data as Record<string, unknown>;
+    const nested = parseNestedPayload(envelope);
+    const nestedData = nested.data as Record<string, unknown>;
+    const resumeLadder = nestedData.resumeLadder as Record<string, unknown>;
+
+    // Resume must never fall through to legacy memory when spec-doc source resolves
+    expect(resumeLadder.legacyMemoryFallback).toBe(false);
+    expect(resumeLadder.archivedTierEnabled).toBe(false);
+    expect(resumeLadder.source).toBe('spec_docs');
+  });
+});
+
+describe('Gate D canonical-filtering contract assertions', () => {
+  // TODO(S3.5 #13): Add integration tests that exercise the live canonical-
+  // filtering code path (the real handleMemorySearch with an in-memory DB
+  // fixture) to verify that:
+  //
+  // 1. Archived memories are excluded when includeArchived is undefined
+  // 2. The preferredDocumentTypes filter drops non-spec_doc/non-continuity rows
+  // 3. legacyFallbackEnabled: false actually prevents legacy memory fallback
+  // 4. droppedNonCanonicalResults correctly counts filtered rows
+  //
+  // These cannot be covered by mock-based tests because the mocks return
+  // pre-constructed rows that bypass the filtering pipeline entirely.
+
+  it.todo('excludes archived memories when includeArchived is undefined (requires DB fixture)');
+  it.todo('applies preferredDocumentTypes filter to drop non-canonical rows (requires DB fixture)');
+  it.todo('legacyFallbackEnabled: false prevents legacy memory fallback (requires DB fixture)');
+  it.todo('droppedNonCanonicalResults reflects actual filter counts (requires DB fixture)');
 });

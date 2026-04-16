@@ -18,6 +18,7 @@ const path = require('node:path');
 const REQUIRED_DIMENSIONS = ['correctness', 'security', 'traceability', 'maintainability'];
 const SEVERITY_KEYS = ['P0', 'P1', 'P2'];
 const SEVERITY_WEIGHTS = { P0: 10.0, P1: 5.0, P2: 1.0 };
+const LIVE_LINEAGE_MODES = new Set(['new', 'resume', 'restart']);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. HELPERS
@@ -67,6 +68,11 @@ function isFiniteNumber(value) {
 
 function normalizeSeverity(value) {
   return SEVERITY_KEYS.includes(value) ? value : null;
+}
+
+function normalizeLineageMode(value) {
+  const normalized = normalizeText(value).toLowerCase();
+  return LIVE_LINEAGE_MODES.has(normalized) ? normalized : null;
 }
 
 function getNestedField(record, fieldName) {
@@ -346,32 +352,39 @@ function buildClaimAdjudicationByFinding(records) {
   return adjudicationByFinding;
 }
 
-function buildLineageState(config, records) {
+function buildLineageState(config, records, terminalStop = null) {
   const latestLifecycleEvent = records
     .filter((record) => record?.type === 'event' && (record?.event === 'resumed' || record?.event === 'restarted'))
     .at(-1);
   const eventContinuedFromRun = latestLifecycleEvent
     ? getNestedField(latestLifecycleEvent, 'continuedFromRun') ?? getNestedField(latestLifecycleEvent, 'fromIteration')
     : undefined;
+  const latestLifecycleMode = normalizeLineageMode(getNestedField(latestLifecycleEvent, 'lineageMode') || '');
+  const configLineageMode = normalizeLineageMode(config.lineageMode || '');
+  const lineageMode = latestLifecycleMode || configLineageMode || 'new';
+  const configContinuedFromRun = isFiniteNumber(config.continuedFromRun)
+    ? config.continuedFromRun
+    : null;
+  const continuedFromRun = terminalStop
+    ? null
+    : isFiniteNumber(eventContinuedFromRun)
+      ? eventContinuedFromRun
+      : lineageMode !== 'new'
+        ? configContinuedFromRun
+        : null;
 
   return {
     sessionId: normalizeText(getNestedField(latestLifecycleEvent, 'sessionId') || '') || normalizeText(config.sessionId || '') || '',
     parentSessionId: normalizeText(getNestedField(latestLifecycleEvent, 'parentSessionId') || '')
       || normalizeText(config.parentSessionId || '')
       || null,
-    lineageMode: normalizeText(getNestedField(latestLifecycleEvent, 'lineageMode') || '')
-      || normalizeText(config.lineageMode || '')
-      || 'new',
+    lineageMode,
     generation: isFiniteNumber(getNestedField(latestLifecycleEvent, 'generation'))
       ? getNestedField(latestLifecycleEvent, 'generation')
       : isFiniteNumber(config.generation)
         ? config.generation
         : 1,
-    continuedFromRun: isFiniteNumber(eventContinuedFromRun)
-      ? eventContinuedFromRun
-      : isFiniteNumber(config.continuedFromRun)
-        ? config.continuedFromRun
-        : null,
+    continuedFromRun,
   };
 }
 
@@ -712,8 +725,8 @@ function buildBlockedStopHistory(records) {
 }
 
 function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config, corruptionWarnings = []) {
-  const lineage = buildLineageState(config, iterationRecords);
   const terminalStop = buildTerminalStopState(iterationRecords);
+  const lineage = buildLineageState(config, iterationRecords, terminalStop);
   const { openFindings, resolvedFindings } = buildFindingRegistry(iterationFiles, iterationRecords);
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
@@ -1132,8 +1145,8 @@ function reduceReviewState(specFolder, options = {}) {
 
   const config = readJson(configPath);
   const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
-  const lineage = buildLineageState(config, records);
   const terminalStop = buildTerminalStopState(records);
+  const lineage = buildLineageState(config, records, terminalStop);
   config.sessionId = lineage.sessionId || config.sessionId || '';
   config.parentSessionId = lineage.parentSessionId;
   config.lineageMode = lineage.lineageMode;

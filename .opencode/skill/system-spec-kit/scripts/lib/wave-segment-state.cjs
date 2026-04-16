@@ -287,15 +287,19 @@ function parseJsonl(jsonlString) {
     try {
       const record = JSON.parse(lines[i]);
 
-      // Validate that all 5 merge keys exist
+      // Validate that all 5 merge keys exist and are non-empty
       const missingKeys = MERGE_KEYS.filter(key => !(key in record));
-      if (missingKeys.length > 0) {
+      const emptyKeys = MERGE_KEYS.filter(key => (key in record) && record[key] === '');
+      if (missingKeys.length > 0 || emptyKeys.length > 0) {
+        const parts = [];
+        if (missingKeys.length > 0) parts.push(`Missing merge keys: ${missingKeys.join(', ')}`);
+        if (emptyKeys.length > 0) parts.push(`Empty merge keys: ${emptyKeys.join(', ')}`);
         validationErrors.push({
           line: i + 1,
-          error: `Missing merge keys: ${missingKeys.join(', ')}`,
-          missingKeys,
+          error: parts.join('; '),
+          missingKeys: [...missingKeys, ...emptyKeys],
         });
-        continue; // Skip records with missing merge keys
+        continue; // Skip records with missing or empty merge keys
       }
 
       records.push(record);
@@ -318,7 +322,7 @@ function validateMergeKeys(record) {
     return { valid: false, missingKeys: [...MERGE_KEYS] };
   }
 
-  const missingKeys = MERGE_KEYS.filter(key => !(key in record));
+  const missingKeys = MERGE_KEYS.filter(key => !(key in record) || record[key] === '');
 
   return {
     valid: missingKeys.length === 0,

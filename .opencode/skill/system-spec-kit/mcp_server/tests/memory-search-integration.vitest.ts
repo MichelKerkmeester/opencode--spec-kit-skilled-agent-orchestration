@@ -1,4 +1,19 @@
 // TEST: MEMORY SEARCH INTEGRATION
+//
+// NOTE (S3.5 #14): This file was originally built as a source-text snapshot
+// suite -- most assertions read .ts files with fs.readFileSync and regex-match
+// against source code strings.  Such tests pass as long as the source text
+// contains the expected substring, even if the runtime code is broken.
+//
+// The tests below have been improved where possible:
+// - T601-T620: Already exercise live FSRS functions -- these are genuine.
+// - T621-T630: Mixed -- export checks are real; source-text checks remain
+//   where the underlying function requires a DB to call.  Source-text checks
+//   are annotated with FIXME to flag them for future DB-fixture migration.
+// - T631-T650: Same mixed pattern.
+//
+// The long-term goal is to replace ALL source-text assertions with behavioral
+// assertions backed by in-memory DB fixtures.
 import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';

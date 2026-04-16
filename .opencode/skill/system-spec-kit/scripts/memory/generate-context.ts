@@ -475,8 +475,13 @@ function validateArguments(): void {
   if (validation.valid) return;
 
   // --- Subfolder support: before failing, try to find the folder as a child ---
+  // T114 FIX: Only use basename-based child resolution when the input is a single
+  // segment (no '/' separators). Multi-segment paths like "003-parent/121-child"
+  // must NOT be silently retargeted by basename alone, because stripping the parent
+  // could resolve to a different parent's child with the same leaf name.
   const inputBaseName = path.basename(specFolderArg);
-  if (SPEC_FOLDER_PATTERN.test(inputBaseName)) {
+  const isMultiSegment = specFolderArg.includes('/');
+  if (!isMultiSegment && SPEC_FOLDER_PATTERN.test(inputBaseName)) {
     // Input looks like a valid spec folder name but wasn't found at top level.
     // Try finding it as a child folder inside any parent.
     const resolved = findChildFolderSync(inputBaseName);

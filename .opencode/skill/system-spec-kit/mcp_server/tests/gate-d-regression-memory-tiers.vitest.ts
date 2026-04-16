@@ -90,4 +90,33 @@ describe('Gate D regression 7 — memory tiers', () => {
     expect(ranked[1].composite_score).toBeGreaterThan(ranked[2].composite_score);
     expect(ranked.some((row) => row.id === 704)).toBe(false);
   });
+
+  it('ranks deprecated rows below non-deprecated when pre-filtering is skipped', () => {
+    const allRows: SearchableRow[] = [
+      buildCanonicalRow({
+        id: 801,
+        title: 'Normal row',
+        importance_tier: 'normal',
+        importance_weight: 0.4,
+        similarity: 80,
+      }),
+      buildCanonicalRow({
+        id: 802,
+        title: 'Deprecated row with high similarity',
+        importance_tier: 'deprecated',
+        importance_weight: 1,
+        similarity: 99,
+      }),
+    ];
+
+    // Pass all rows (including deprecated) directly to composite scoring
+    // to verify the scorer itself demotes deprecated rows
+    const ranked = applyCompositeScoring(allRows, {
+      query: 'reader ready canonical continuity contract',
+    });
+
+    expect(ranked).toHaveLength(2);
+    expect(ranked[0].id).toBe(801);
+    expect(ranked[0].importance_tier).toBe('normal');
+  });
 });
