@@ -356,8 +356,17 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       allowInlineIndex: true,
       allowInlineFullScan: false,
     });
-  } catch {
-    // Non-blocking: continue with potentially stale data
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'error',
+          message: `code_graph_not_ready: ${reason}`,
+        }),
+      }],
+    };
   }
 
   const { operation, subject, limit = 50 } = args;

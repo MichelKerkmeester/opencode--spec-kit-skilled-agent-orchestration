@@ -84,6 +84,25 @@ describe('code-graph-query handler', () => {
     });
   });
 
+  it('surfaces readiness failures as errors and does not continue querying', async () => {
+    mocks.ensureCodeGraphReady.mockRejectedValueOnce(new Error('graph database unavailable'));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'outline',
+      subject: 'src/file.ts',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed).toEqual({
+      status: 'error',
+      message: 'code_graph_not_ready: graph database unavailable',
+    });
+    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledTimes(1);
+    expect(mocks.queryOutline).not.toHaveBeenCalled();
+    expect(mocks.queryEdgesFrom).not.toHaveBeenCalled();
+    expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
+  });
+
   it('rejects unsupported edgeType values with a clear error', async () => {
     const result = await handleCodeGraphQuery({
       operation: 'calls_from',
