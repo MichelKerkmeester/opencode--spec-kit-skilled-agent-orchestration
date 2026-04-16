@@ -346,7 +346,7 @@ For direct memory saves, prefer an explicit CLI target:
 
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  /tmp/save-context-data.json \
+  /tmp/save-context-data-<session-id>.json \
   .opencode/specs/system-spec-kit/022-hybrid-rag-fusion
 ```
 

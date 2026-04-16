@@ -381,7 +381,7 @@ Top-8 file by distinct-issue count. Primary workstream: S4.
 - [x] T-SGC-01 [P1] R41-003 counterpart in compiler: topology check exit code → hard-error on violations (paired with T-SAP-05) (`skill_graph_compiler.py:272-353,630-663`) [QW #27]
 - [ ] T-SGC-02 [P1] R45-003: Topology warning state non-durable: ZERO-EDGE WARNINGS emitted then dropped from serialized graph; `health_check()` returns `status: ok` after warnings → serialize warning payloads into compiled graph; expose in `health_check()` (A5 from S4) (`skill_graph_compiler.py:559-568,630-663`) — Phase 2 S4 / QW #4
 - [x] T-SGC-03 [P1] R46-002 counterpart in compiler: `validate_edge_symmetry()` must inspect `conflicts_with` edges → reciprocity check (paired with T-SAP-04) (`skill_graph_compiler.py:272-319,501-568,630-663`) [QW #5]
-- [ ] T-SGC-04 [P1] R49-003: `validate_dependency_cycles()` only detects two-node reciprocal cycles; longer `depends_on` loops pass `--validate-only` → arbitrary-length cycle detection (Tarjan SCC or DFS color-marking) (`skill_graph_compiler.py:437-472,623-663`) [QW #6]
+- [x] T-SGC-04 [P1] R49-003: `validate_dependency_cycles()` only detects two-node reciprocal cycles; longer `depends_on` loops pass `--validate-only` → arbitrary-length cycle detection (Tarjan SCC or DFS color-marking) (`skill_graph_compiler.py:437-472,623-663`) [QW #6]
 <!-- /ANCHOR:group-sgc -->
 
 ---
@@ -405,7 +405,7 @@ Top-7 file by distinct-issue count. Primary workstream: S6.
 
 Primary workstream: QW #10, #11.
 
-- [ ] T-DLS-01 [P2] R31-005 + R32-005 (dedup): `/tmp/save-context-data.json` documented shared handoff path; parallel runtime sessions overwrite each other → remove from 4 command surfaces + 4 runtime root docs + `data-loader.ts` `NO_DATA_FILE` error text (`data-loader.ts:59-111` + `command/memory/save.md`, `spec_kit/deep-research.md`, `spec_kit/deep-review.md` + `generate-context.ts:61-82`) [QW #10, #11]
+- [x] T-DLS-01 [P2] R31-005 + R32-005 (dedup): `/tmp/save-context-data.json` documented shared handoff path; parallel runtime sessions overwrite each other → remove from 4 command surfaces + 4 runtime root docs + `data-loader.ts` `NO_DATA_FILE` error text (`data-loader.ts:59-111` + `command/memory/save.md`, `spec_kit/deep-research.md`, `spec_kit/deep-review.md` + `generate-context.ts:61-82`) [QW #10, #11]
 <!-- /ANCHOR:group-dls -->
 
 ---
@@ -415,7 +415,7 @@ Primary workstream: QW #10, #11.
 
 Primary workstream: QW #10 + S5.
 
-- [ ] T-DOC-01 [P2] R35-003: All four runtime root docs prescribe shared `/tmp/save-context-data.json` → remove (paired with T-DLS-01) (`AGENTS.md:205-207`; `CLAUDE.md:152-155`; `CODEX.md:205-207`; `GEMINI.md:205-207`) [QW #10]
+- [x] T-DOC-01 [P2] R35-003: All four runtime root docs prescribe shared `/tmp/save-context-data.json` → remove (paired with T-DLS-01) (`AGENTS.md:205-207`; `CLAUDE.md:152-155`; `CODEX.md:205-207`; `GEMINI.md:205-207`) [QW #10]
 - [ ] T-DOC-02 [P2] R41-002 + R45-001 + R47-001 (dedup): Gate 3 trigger list is prose English word list; different runtimes can classify same request differently; trigger list includes `analyze`, `decompose`, `phase` tokens that false-positive on read-only review prompts → extract into shared module / JSON schema; read-only disqualifier tokens (S5 core) (`AGENTS.md:182-186`; `plan.md:86-89`; `complete.md:74-77`; `002-confirm-mode-checkpointed-review.md:26-32`) — Phase 2 S5 / M10
 - [ ] T-DOC-03 [P2] R48-001 + R49-001 + R50-001 (dedup): Gate 3 trigger list false-negatives for `save context`, `save memory`, `/memory:save`, `resume` even though same file declares `MEMORY SAVE RULE` and deep-research `resume` produces writes → add save/resume/continue trigger phrases (S5) (`AGENTS.md:138-145,182-204`) — Phase 2 S5
 <!-- /ANCHOR:group-doc-rt -->
@@ -429,7 +429,7 @@ Top-10 file by distinct-issue count. Primary workstream: S7.
 
 - [x] T-YML-PLN-01 [P2] R41-001: Autonomous plan workflow uses `populated` while canonical contract uses `populated-folder`; interpreter-dependent string comparison → align vocabulary (`spec_kit_plan_auto.yaml:338-355,371-372`; `intake-contract.md:66-77,217-222`) [QW #26]
 - [ ] T-YML-PLN-02 [P2] R42-001 + R43-002 + R44-003 (dedup): `intake_only == TRUE` / `folder_state == populated` as quoted string expressions; no mechanical grammar contract → `BooleanExpr` typed schema (M11 from S7) (`spec_kit_plan_auto.yaml:375-392`; `spec_kit_plan_confirm.yaml:400-416`) — Phase 2 S7 / M11
-- [ ] T-YML-PLN-03 [P2] R47-002: `/spec_kit:plan` maintains two-vocabulary state machine: local `folder_state` classifier → canonical `start_state`; top-level docs collapse → mark boundary with explicit comments; emit both fields (S7) (`spec_kit_plan_auto.yaml:337-373`; `spec_kit_plan_confirm.yaml:360-398`; `intake-contract.md:39-49,56-76`; `SKILL.md:563,931`; `README.md:624-626`) [QW #28]
+- [x] T-YML-PLN-03 [P2] R47-002: `/spec_kit:plan` maintains two-vocabulary state machine: local `folder_state` classifier → canonical `start_state`; top-level docs collapse → mark boundary with explicit comments; emit both fields (S7) (`spec_kit_plan_auto.yaml:337-373`; `spec_kit_plan_confirm.yaml:360-398`; `intake-contract.md:39-49,56-76`; `SKILL.md:563,931`; `README.md:624-626`) [QW #28]
 - [ ] T-YML-PLN-04 [P2] R48-002 + R49-002 (dedup): `when:` field overloaded as executable predicate AND prose timing note within same asset → separate `when:` (predicate) from `after:` (prose timing) (S7) (`spec_kit_plan_auto.yaml:354-391,548-555`; `spec_kit_plan_confirm.yaml:372-416,606-612`) — Phase 2 S7
 <!-- /ANCHOR:group-yml-pln -->
 

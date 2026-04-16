@@ -81,7 +81,7 @@ Updates the target packet's canonical continuity surfaces from conversation cont
 **Usage:**
 ```bash
 # JSON file mode (preferred) - pass structured JSON data file
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context-data.json specs/001-feature/
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/001-feature/
 
 # Inline JSON mode - pass structured JSON directly
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature","sessionSummary":"..."}' specs/001-feature/

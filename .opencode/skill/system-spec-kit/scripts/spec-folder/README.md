@@ -202,9 +202,9 @@ scripts/dist/spec-folder/
 ls -la specs/
 
 # Use structured JSON for routine saves
-node scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-feature-name>/
+node scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-feature-name>/
 # Direct positional mode is no longer supported; use structured JSON instead
-node scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/<###-feature-name>/
+node scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json .opencode/specs/<###-feature-name>/
 ```
 
 #### Alignment score is low despite correct folder

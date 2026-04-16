@@ -12,6 +12,8 @@
 // ───────────────────────────────────────────────────────────────
 import readline from 'readline';
 
+import { getSessionScopedSaveContextExample } from '../core';
+
 // ───────────────────────────────────────────────────────────────
 // 3. INTERACTIVE MODE DETECTION
 // ───────────────────────────────────────────────────────────────
@@ -20,7 +22,7 @@ function requireInteractiveMode(operation: string): never {
   console.error(`Operation: ${operation}`);
   console.error('');
   console.error('Please specify structured JSON for saves:');
-  console.error('  node generate-context.js /tmp/save-context-data.json <spec-folder-path>');
+  console.error(`  node generate-context.js ${getSessionScopedSaveContextExample()} <spec-folder-path>`);
   console.error('');
   console.error('Example:');
   console.error('  node generate-context.js --json \'{"specFolder":"specs/003-memory-and-spec-kit/054-remaining-bugs-remediation"}\' specs/003-memory-and-spec-kit/054-remaining-bugs-remedation');

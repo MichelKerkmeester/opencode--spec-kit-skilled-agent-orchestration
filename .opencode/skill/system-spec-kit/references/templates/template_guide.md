@@ -606,7 +606,7 @@ When that save updates indexed state, the runtime also touches `DB_UPDATED_FILE`
 
 **Example creation:**
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/007-feature
 ```
 
 **Typical continuity fields:**

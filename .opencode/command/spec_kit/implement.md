@@ -195,7 +195,7 @@ When reviewing plan.md references to codebase patterns, use CocoIndex semantic s
 
 **MANDATORY** via structured `generate-context.js` input (per AGENTS.md Memory Save Rule):
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder-path]
 ```
 DO NOT use Write/Edit to author continuity update in canonical spec docss directly. After the script runs, call `memory_save({ filePath })` for MCP availability.
 

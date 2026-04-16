@@ -4,6 +4,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { buildSessionScopedSaveContextPath } from '../core/save-context-path';
+
 const harness = vi.hoisted(() => ({
   runWorkflow: vi.fn(async () => undefined),
   loadCollectedData: vi.fn(async () => ({ _source: 'file' })),
@@ -53,7 +55,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('passes JSON-mode data and explicit CLI spec-folder override through main()', async () => {
-    const dataFile = '/tmp/save-context-data.json';
+    const dataFile = buildSessionScopedSaveContextPath('cli-authority-main');
     const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), dataFile, explicitSpecFolder];
 
@@ -75,7 +77,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('forwards explicit --session-id to workflow', async () => {
-    const dataFile = '/tmp/save-context-data.json';
+    const dataFile = buildSessionScopedSaveContextPath('test-session-123');
     const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     const sessionId = 'test-session-123';
     process.argv = [
@@ -221,7 +223,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('forwards explicit --full-auto to workflow without weakening CLI target authority', async () => {
-    const dataFile = '/tmp/save-context-data.json';
+    const dataFile = buildSessionScopedSaveContextPath('cli-authority-full-auto');
     const explicitSpecFolder = '.opencode/specs/system-spec-kit/022-hybrid-rag-fusion';
     process.argv = [
       'node',

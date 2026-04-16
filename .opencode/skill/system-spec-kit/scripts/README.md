@@ -105,7 +105,7 @@ npm run build
 Memory save entrypoint (required by Memory Save Rule):
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-spec-name>
 ```
 
 Canonical saves now refresh the root `graph-metadata.json` packet contract as part of the same workflow run. For repo-wide coverage and rollout backfill, use:
@@ -122,7 +122,7 @@ Direct positional saves are not supported; use structured JSON. Explicit CLI tar
 JSON mode is also supported:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-spec-name>
 ```
 
 Direct positional mode now exits non-zero with migration guidance to `--json`, `--stdin`, or a JSON temp file.

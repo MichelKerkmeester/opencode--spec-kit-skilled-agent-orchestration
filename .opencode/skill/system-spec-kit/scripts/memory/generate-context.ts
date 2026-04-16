@@ -15,6 +15,7 @@ import * as fsSync from 'fs';
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import {
   CONFIG,
+  getSessionScopedSaveContextExample,
   findActiveSpecsDir,
   getSpecsDirectories,
   SPEC_FOLDER_PATTERN,
@@ -46,6 +47,8 @@ export interface SpecFolderValidation {
   warning?: string;
 }
 
+const SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE = getSessionScopedSaveContextExample();
+
 // ───────────────────────────────────────────────────────────────
 // 3. HELP TEXT
 // ───────────────────────────────────────────────────────────────
@@ -65,9 +68,9 @@ Options:
   --full-auto       Shortcut for --planner-mode full-auto
 
 Examples:
-  node generate-context.js /tmp/context-data.json
-  node generate-context.js /tmp/context-data.json specs/001-feature/
-  node generate-context.js /tmp/context-data.json .opencode/specs/001-feature/
+  node generate-context.js ${SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE}
+  node generate-context.js ${SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE} specs/001-feature/
+  node generate-context.js ${SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE} .opencode/specs/001-feature/
   echo '{"specFolder":"specs/001-feature/"}' | node generate-context.js --stdin
   node generate-context.js --json '{"specFolder":"specs/001-feature/"}'
 
@@ -80,6 +83,8 @@ Output:
 
 Preferred save path (JSON-PRIMARY):
   - ALWAYS use --stdin, --json, or a JSON temp file.
+  - If file mode is required, use a session-scoped temp path such as ${SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE}.
+  - The legacy shared path /tmp/save-context-data.json is rejected.
   - The AI has strictly better information about its own session than any DB query can reconstruct.
   - Explicit CLI targets still outrank payload specFolder values in every structured-input mode.
 

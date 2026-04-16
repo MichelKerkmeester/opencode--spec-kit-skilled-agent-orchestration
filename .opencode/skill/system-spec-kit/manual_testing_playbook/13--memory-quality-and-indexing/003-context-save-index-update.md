@@ -16,14 +16,14 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
 
-- Prompt: `As a memory-quality validation operator, validate Context Save + Index Update against node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>. Verify saved context artifacts are discoverable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a memory-quality validation operator, validate Context Save + Index Update against node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<target-spec>. Verify saved context artifacts are discoverable. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 ---
 
 ## 3. TEST EXECUTION
 
 ### Commands
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<target-spec>`
   - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
 ### Expected
 

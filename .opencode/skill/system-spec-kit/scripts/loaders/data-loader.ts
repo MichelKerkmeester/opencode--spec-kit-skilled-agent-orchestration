@@ -15,6 +15,7 @@ import path from 'node:path';
 import os from 'node:os';
 
 import { CONFIG } from '../core';
+import { getSessionScopedSaveContextExample, isLegacySharedSaveContextPath } from '../core';
 import { structuredLog, sanitizePath } from '../utils';
 
 import {
@@ -63,12 +64,19 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
   if (!dataFile) {
     throw new Error(
       'NO_DATA_FILE: Structured JSON input is required via --stdin, --json, or a JSON file path. ' +
-      'External CLI agents must provide data via JSON mode: ' +
-      'write session data to /tmp/save-context-data.json, then run: node generate-context.js /tmp/save-context-data.json [spec-folder]'
+      'External CLI agents must provide data via JSON mode with --stdin, --json, or a session-scoped JSON file path such as ' +
+      `${getSessionScopedSaveContextExample()}.`
     );
   }
 
   try {
+    if (isLegacySharedSaveContextPath(dataFile)) {
+      throw new Error(
+        `LEGACY_SHARED_DATA_FILE: ${dataFile} is a shared handoff path and is no longer supported. ` +
+        `Use --stdin, --json, or a session-scoped JSON file such as ${getSessionScopedSaveContextExample()}.`
+      );
+    }
+
     // SEC-001: Path traversal mitigation (CWE-22)
     // Use os.tmpdir() for cross-platform temp directory support
     // Also include /tmp for macOS where /tmp symlinks to /private/tmp
@@ -129,6 +137,12 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
         position: error.message.match(/position (\d+)/)?.[1] || 'unknown'
       });
       throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file ${dataFile}: ${error.message}`);
+    } else if (error instanceof Error && error.message.startsWith('LEGACY_SHARED_DATA_FILE:')) {
+      structuredLog('error', 'Rejected legacy shared save-context path', {
+        filePath: dataFile,
+        error: error.message,
+      });
+      throw error;
     } else {
       const errMsg = error instanceof Error ? error.message : String(error);
       structuredLog('error', 'Failed to load data file', {

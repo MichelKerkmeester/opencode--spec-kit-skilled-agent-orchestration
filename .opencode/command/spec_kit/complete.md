@@ -329,7 +329,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
-**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity update in canonical spec docss directly; the script refreshes the indexed canonical spec document and the packet's `graph-metadata.json` while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
+**Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity update in canonical spec docss directly; the script refreshes the indexed canonical spec document and the packet's `graph-metadata.json` while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
 
 **Step 14 (Workflow Finish):** Present the final closeout checkpoint. If the user wants to pause or refresh continuity again, use `/memory:save` before marking the workflow complete.
 

@@ -17,6 +17,12 @@ export {
 } from './config';
 
 export {
+  buildSessionScopedSaveContextPath,
+  getSessionScopedSaveContextExample,
+  isLegacySharedSaveContextPath,
+} from './save-context-path';
+
+export {
   SPEC_FOLDER_PATTERN,
   SPEC_FOLDER_BASIC_PATTERN,
   CATEGORY_FOLDER_PATTERN,
@@ -24,4 +30,3 @@ export {
   findChildFolderSync,
   findChildFolderAsync,
 } from './subfolder-utils';
-

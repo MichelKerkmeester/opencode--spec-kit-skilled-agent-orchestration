@@ -124,7 +124,7 @@ Override and context rules:
 | Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
 | Output  | Canonical spec-doc continuity updates + indexed continuity data. Also refreshes `graph-metadata.json` derived fields in the spec folder: `trigger_phrases` are deduplicated and capped at 12, `key_files` are sanitized before storage, `entities` are deduplicated with canonical-path preference, and `status` is checklist-aware and normalized to lowercase. |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
-| Primary | **JSON mode:** `generate-context.js <json-data-path>` (e.g. a path under `$TMPDIR` or `/tmp/save-context-data.json`) or `--json '<data>'` |
+| Primary | **JSON mode:** `generate-context.js <json-data-path>` (e.g. a path under `$TMPDIR` or `/tmp/save-context-data-<session-id>.json`) or `--json '<data>'` |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
 Planner behavior:
@@ -356,9 +356,9 @@ Content...
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
-> SECURITY: When using heredoc or --stdin, ensure JSON content is properly escaped. Prefer --json flag with single-quoted inline JSON or write to /tmp/save-context-data.json via Write tool first (exception to the Write tool exclusion: writing the intermediate JSON data file is permitted).
+> SECURITY: When using heredoc or --stdin, ensure JSON content is properly escaped. Prefer --json flag with single-quoted inline JSON or write to /tmp/save-context-data-<session-id>.json via Write tool first (exception to the Write tool exclusion: writing the intermediate JSON data file is permitted).
 
-Write to `/tmp/save-context-data.json` (Write tool exception: intermediate JSON data file only) or use `--json`/`--stdin`, then execute:
+Write to `/tmp/save-context-data-<session-id>.json` (Write tool exception: intermediate JSON data file only) or use `--json`/`--stdin`, then execute:
 ```bash
 TEMP_FILE="${TMPDIR:-/tmp}/save-context-data.json"
 

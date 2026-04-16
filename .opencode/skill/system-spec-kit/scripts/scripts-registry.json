@@ -13,7 +13,7 @@
       "calledBy": ["AI Assistant", "Command YAML"],
       "essential": true,
       "inputs": {
-        "mode1": "JSON data file path (e.g., /tmp/context-data.json)",
+        "mode1": "JSON data file path (e.g., /tmp/save-context-data-<session-id>.json)",
         "mode2": "Spec folder path (e.g., 007-feature/)"
       },
       "outputs": ["memory/*.md", "metadata.json"],

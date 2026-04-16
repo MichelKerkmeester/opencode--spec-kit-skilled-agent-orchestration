@@ -241,7 +241,7 @@ STATUS=FAIL ERROR="[message]"
 - Inject discovered code patterns into strategy.md "Known Context" section alongside memory findings
 
 ### After Completing
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]`
 - Verify that `{spec_folder}/memory/` contains the generated memory artifact
 
 ### Anchor Tags (Automatic)

@@ -50,13 +50,13 @@ Status: Implemented. Spec folder `015-outsourced-agent-handback` is complete and
 | File | Focus |
 |------|-------|
 | .opencode/skill/cli-codex/SKILL.md | Caller-side handback flow, redact/scrub guidance, post-010 rejection codes, and minimum payload guidance |
-| .opencode/skill/cli-codex/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-codex/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data-<session-id>.json` save flow |
 | .opencode/skill/cli-copilot/SKILL.md | Caller-side handback flow, redact/scrub guidance, post-010 rejection codes, and minimum payload guidance |
-| .opencode/skill/cli-copilot/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-copilot/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data-<session-id>.json` save flow |
 | .opencode/skill/cli-claude-code/SKILL.md | Caller-side handback flow, redact/scrub guidance, post-010 rejection codes, and minimum payload guidance |
-| .opencode/skill/cli-claude-code/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-claude-code/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data-<session-id>.json` save flow |
 | .opencode/skill/cli-gemini/SKILL.md | Caller-side handback flow, redact/scrub guidance, post-010 rejection codes, and minimum payload guidance |
-| .opencode/skill/cli-gemini/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-gemini/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction, richer `FILES` payloads, and `/tmp/save-context-data-<session-id>.json` save flow |
 
 ---
 

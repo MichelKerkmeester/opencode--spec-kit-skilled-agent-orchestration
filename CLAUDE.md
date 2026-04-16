@@ -33,7 +33,7 @@
 
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work. Memory saves use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` for DB indexing, embedding generation, and `description.json` refresh. AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` for session continuity updates, but must NEVER manually author standalone packet continuity artifacts under `memory/`.
-  - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
+  - AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data-<session-id>.json` and passes as first arg.
 - **Code Search Decision Tree** (MANDATORY):
   - Semantic/concept search → `mcp__cocoindex_code__search` (CocoIndex). Skill: `.opencode/skill/mcp-coco-index/`
   - Structural queries (callers, imports, deps) → `code_graph_query` (Code Graph)
@@ -171,7 +171,7 @@ Trigger: "save context", "save memory", `/memory:save`, continuity support artif
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
 - **Script:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
   - Use this for DB indexing, embedding generation, and `description.json` refresh. AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` when only the doc-local continuity hints need updating.
-  - AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`. The AI has strictly better information about its own session than any DB extraction.
+  - AI composes structured JSON with session context, writes to `/tmp/save-context-data-<session-id>.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`. The AI has strictly better information about its own session than any DB extraction.
   - Subfolder: `003-parent/121-child` or bare `121-child` (auto-searches parents)
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
 - **Violation:** Manually authored standalone continuity support artifact under `memory/` → DELETE and re-run via script

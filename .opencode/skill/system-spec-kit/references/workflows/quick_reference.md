@@ -177,7 +177,7 @@ Say: "save context" or "save conversation"
 
 **Required Inputs:** Structured JSON is mandatory for routine saves, and the target spec folder is still required
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/007-feature/
 ```
 
 ❌ DO NOT use Write/Edit tools to author continuity surfaces directly.
@@ -499,7 +499,7 @@ Before presenting documentation to user:
 
 **MANDATORY:** Use generate-context.js for memory save:
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/###-folder/
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/###-folder/
 ```
 
 ❌ DO NOT use Write/Edit tools to author continuity surfaces directly.

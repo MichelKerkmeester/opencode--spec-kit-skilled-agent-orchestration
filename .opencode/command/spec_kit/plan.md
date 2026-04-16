@@ -347,11 +347,11 @@ Use `/memory:search` with intent-aware retrieval:
 | Before Step 1 | `/memory:search --intent:{intent} "topic"`            | Find prior related work     |
 | During Step 3 | `memory_search({ query: "architecture patterns", anchors: ['architecture'] })`          | Existing patterns/decisions |
 | During Step 5 | `memory_search({ query: "planning decisions rationale", anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
-| After Step 6  | `generate-context.js /tmp/save-context-data.json [spec-folder]` | Refresh the indexed canonical spec document   |
+| After Step 6  | `generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]` | Refresh the indexed canonical spec document   |
 
 ### After Planning
 
-1. **Generate:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+1. **Generate:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]`
 2. **Anchors auto-extracted:** planning-[feature], decisions, architecture, next-steps
 3. **Verify:** Confirm the routed canonical spec document (`decision-record.md`, `implementation-summary.md`, or `handover.md`) was updated and indexed; the canonical continuity path lives in those spec docs and the `_memory.continuity` YAML block inside `implementation-summary.md`
 

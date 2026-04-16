@@ -494,15 +494,15 @@ printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "$JSON_PAYLOAD" [spec-folder]
 
 # Also valid for larger payloads that are easier to stage on disk
-printf '%s\n' "$JSON_PAYLOAD" > /tmp/save-context-data.json
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
+printf '%s\n' "$JSON_PAYLOAD" > /tmp/save-context-data-<session-id>.json
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]
 ```
 
 The structured contract prefers `specFolder`, `user_prompts`, `observations`, `recent_context`, and optional `toolCalls`, `exchanges`, `preflight`, and `postflight`. Convenience fields such as `sessionSummary`, `filesModified`, `keyDecisions`, `triggerPhrases`, and `nextSteps` are still accepted and normalized. Documented snake_case equivalents such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps` also work. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
 
 If both the payload and the CLI specify a spec folder, the explicit CLI target wins.
 
-If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Surface the error and fix the path or payload before retrying.
+If `/tmp/save-context-data-<session-id>.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Surface the error and fix the path or payload before retrying.
 
 Valid JSON can still be rejected after normalization. Thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT`, and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
 

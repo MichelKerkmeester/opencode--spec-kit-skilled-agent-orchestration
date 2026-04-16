@@ -541,7 +541,7 @@ Then constructs structured JSON and saves via:
 ```bash
 # Redact or scrub secrets before writing the JSON payload
 # Write extracted data to JSON
-cat > /tmp/save-context-data.json << 'JSONEOF'
+cat > /tmp/save-context-data-<session-id>.json << 'JSONEOF'
 {
   "specFolder": "<extracted or provided by calling AI>",
   "user_prompts": [
@@ -601,14 +601,14 @@ cat > /tmp/save-context-data.json << 'JSONEOF'
 JSONEOF
 
 # Save via generate-context.js JSON mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]
 ```
 
 Structured JSON is the required save path. You can pass the payload via temp file, `--stdin`, or `--json`; do not call `generate-context.js` with only a spec folder. If `[spec-folder]` is passed on the CLI, that explicit target overrides any payload `specFolder`.
 
 Accepted field names still include documented compatibility aliases such as `sessionSummary` / `session_summary`, `nextSteps` / `next_steps`, `userPrompts` / `user_prompts`, and `recentContext` / `recent_context`. Use the canonical field names shown above for new payloads. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
 
-If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
+If `/tmp/save-context-data-<session-id>.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
 
 Valid JSON can still be rejected after normalization. File-backed handbacks skip stateless alignment and `QUALITY_GATE_ABORT`, but thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT` and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
 

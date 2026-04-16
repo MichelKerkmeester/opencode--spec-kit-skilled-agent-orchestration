@@ -67,7 +67,7 @@ JSON input mode:
 
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  /tmp/save-context-data.json \
+  /tmp/save-context-data-<session-id>.json \
   specs/NNN-name
 ```
 

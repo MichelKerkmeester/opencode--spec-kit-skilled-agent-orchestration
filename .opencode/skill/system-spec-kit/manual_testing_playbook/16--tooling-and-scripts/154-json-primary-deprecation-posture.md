@@ -42,7 +42,7 @@ Test the generate-context.js save paths: (1) --json with valid structured payloa
 
 1. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0
 2. `printf '{"specFolder":"test","sessionSummary":"test"}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin <spec-folder>` → expect exit 0
-3. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json <spec-folder>` → expect exit 0
+3. `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json <spec-folder>` → expect exit 0
 
 ### Expected
 

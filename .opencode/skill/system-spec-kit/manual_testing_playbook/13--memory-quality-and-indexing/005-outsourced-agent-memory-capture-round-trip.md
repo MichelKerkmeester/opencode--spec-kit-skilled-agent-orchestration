@@ -26,8 +26,8 @@ This scenario remains prose-first because it carries compound operator logic, su
 ### Commands
 - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
   - Extract structured memory section from agent stdout
-  - Write JSON to `/tmp/save-context-data.json`
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
+  - Write JSON to `/tmp/save-context-data-<session-id>.json`
+  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<target-spec>`
   - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
   - `memory_search({ query: "<key term from agent session>", specFolder: "specs/<target-spec>" })`
 ### Expected
@@ -44,12 +44,12 @@ Saved memory from outsourced agent session is searchable and contains session su
 Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
 
 #### M-005a: JSON-mode hard-fail (REQ-001)
-1. Create an invalid JSON file: `echo "not json" > /tmp/save-context-data.json`
-2. Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
+1. Create an invalid JSON file: `echo "not json" > /tmp/save-context-data-<session-id>.json`
+2. Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<target-spec>`
 3. Verify: Command exits with error containing `EXPLICIT_DATA_FILE_LOAD_FAILED`
 
 #### M-005b: nextSteps persistence (REQ-002)
-1. Create valid JSON with nextSteps: `echo '{"nextSteps":["Fix bug X","Deploy Y"]}' > /tmp/save-context-data.json`
+1. Create valid JSON with nextSteps: `echo '{"nextSteps":["Fix bug X","Deploy Y"]}' > /tmp/save-context-data-<session-id>.json`
 2. Run generate-context.js with the JSON file
 3. Verify: Output memory contains `Next:` or `NEXT_ACTION` observations derived from the nextSteps array
 
