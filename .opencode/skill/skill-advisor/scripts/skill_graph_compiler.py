@@ -274,8 +274,13 @@ def validate_edge_symmetry(
 ) -> List[str]:
     """Cross-validate edge symmetry across all skills.
 
-    Checks: if A depends_on B, B should have prerequisite_for A.
-    Returns list of warnings (soft validation).
+    Checks:
+    - if A depends_on B, B should have prerequisite_for A
+    - if A has sibling B, B should have sibling A
+    - if A conflicts_with B, B should have conflicts_with A
+
+    Returns list of warning-shaped messages. These are emitted as symmetry
+    warnings, and the CLI treats them as topology violations.
     """
     warnings = []
 
@@ -314,6 +319,21 @@ def validate_edge_symmetry(
                 warnings.append(
                     f"SYMMETRY: {skill_id} has sibling {target}, "
                     f"but {target} missing sibling {skill_id}"
+                )
+
+    # Check conflicts_with symmetry
+    for skill_id, edges in skill_edges.items():
+        for edge in edges.get("conflicts_with", []):
+            target = edge.get("target")
+            if not target or target not in skill_edges:
+                continue
+            target_conflicts = {
+                e.get("target") for e in skill_edges[target].get("conflicts_with", [])
+            }
+            if skill_id not in target_conflicts:
+                warnings.append(
+                    f"SYMMETRY: {skill_id} conflicts_with {target}, "
+                    f"but {target} missing conflicts_with {skill_id}"
                 )
 
     return warnings

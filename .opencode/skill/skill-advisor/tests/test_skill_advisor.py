@@ -713,6 +713,22 @@ def test_graph_compiler():
     except Exception as exc:
         fail_test("T246-GC-004: dependency cycles still exit non-zero", str(exc))
 
+    # T246-GC-005: Missing conflict reciprocity now fails validation.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(conflicts_with=[edge("beta", 0.9, "one-sided conflict")]),
+            "beta": make_edges(enhances=[edge("alpha", 0.5, "keeps beta non-orphan")]),
+        })
+        if exit_code == 2 and "SYMMETRY WARNINGS (1):" in stderr_text and "missing conflicts_with alpha" in stderr_text:
+            ok("T246-GC-005: conflict symmetry topology violation exits non-zero", "exit=2")
+        else:
+            fail_test(
+                "T246-GC-005: conflict symmetry topology violation exits non-zero",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-005: conflict symmetry topology violation exits non-zero", str(exc))
+
 
 # ───────────────────────────────────────────────────────────────
 # 6. MAIN
