@@ -619,7 +619,7 @@ Apply this shape to `enrichmentStatus`, `autosaveOutcome`, `responseBuilder.post
 
 This refactoring is the core of P0-candidate-B remediation (Chain B / S1) and is ~3 weeks. It also resolves parts of P0-candidate-A (HookState `updateState` needs a CAS pattern).
 
-### 4.3 Collapsed state vocabulary (missing / empty / stale / degraded)
+### 5.3 Collapsed state vocabulary (missing / empty / stale / degraded)
 
 **Files affected.** `shared-payload.ts`, `code-graph/query.ts`, `session-bootstrap.ts`, `session-resume.ts`, `session-health.ts`, `opencode-transport.ts`.
 
@@ -635,7 +635,7 @@ This refactoring is the core of P0-candidate-B remediation (Chain B / S1) and is
 
 Migrate `trustStateFromGraphState`, `trustStateFromStructuralStatus`, the transport renderer, bootstrap/resume/health consumers, and test fixtures. Medium-to-large effort (~1.5 weeks; M8). Unblocks R26-001, R30-001, R30-002, R26-002 in one coherent change.
 
-### 4.4 Governance signal amnesia
+### 5.4 Governance signal amnesia
 
 **Files affected (unified pattern).** `skill_advisor.py`, `skill_advisor_runtime.py`, `skill_graph_compiler.py`, SKILL.md files, `graph-metadata.json` files, `manual-playbook-runner.ts`, `AGENTS.md`, `/spec_kit:*` YAML assets.
 
@@ -652,7 +652,7 @@ Migrate `trustStateFromGraphState`, `trustStateFromStructuralStatus`, the transp
 
 Implementation is iterative: S4, S5, S6, S7 address specific rows of the table. The full refactor is ~4 weeks.
 
-### 4.5 Deterministic / shared temp path under concurrency
+### 5.5 Deterministic / shared temp path under concurrency
 
 **Files affected.** `hook-state.ts` (`.tmp` deterministic), `graph-metadata-parser.ts` (pid+Date.now ms precision), command YAMLs, runtime root docs, `data-loader.ts` error contract.
 
@@ -666,7 +666,7 @@ Implementation is iterative: S4, S5, S6, S7 address specific rows of the table. 
 
 ---
 
-## 5. Deduplication clusters
+## 6. Deduplication clusters
 
 The 137 raw findings compress to approximately **63 distinct issues** after merging. Each cluster below represents a canonical issue; the iteration IDs show where the issue was independently discovered.
 
@@ -704,9 +704,9 @@ Full registry with file-level hit counts and dedup metadata is in `findings-regi
 
 ---
 
-## 6. Remediation backlog
+## 7. Remediation backlog
 
-### 6.1 Quick wins (Small effort, <1 day each, <=3 file edits, <100 LOC)
+### 7.1 Quick wins (Small effort, <1 day each, <=3 file edits, <100 LOC)
 
 Ordered by findings-addressed leverage:
 
@@ -744,7 +744,7 @@ Ordered by findings-addressed leverage:
 
 **Total quick-win effort: ~50h = ~1 engineer-week** for 29 isolated fixes that address ~40 of the ~63 distinct findings.
 
-### 6.2 Medium refactors (1-5 days each)
+### 7.2 Medium refactors (1-5 days each)
 
 | # | Change | Findings | Est. |
 | - | ------ | -------- | ---- |
@@ -764,7 +764,7 @@ Ordered by findings-addressed leverage:
 
 **Total medium-refactor effort: ~40d = ~8 engineer-weeks.**
 
-### 6.3 Structural refactors (1-2 weeks each)
+### 7.3 Structural refactors (1-2 weeks each)
 
 | # | Change | Findings | Est. |
 | - | ------ | -------- | ---- |
@@ -778,7 +778,7 @@ Ordered by findings-addressed leverage:
 
 **Total structural-refactor effort: ~10.5w = ~2.5 engineer-months.** S1 and S2 can run in parallel (different files). S4 can run in parallel with S1/S2 (skill-advisor vs mcp_server). S5, S6, S7 are independent.
 
-### 6.4 Dependency graph
+### 7.4 Dependency graph
 
 ```
 QUICK WINS (29 items, 1 engineer-week, parallel)
@@ -804,9 +804,9 @@ STRUCTURAL REFACTORS
 
 ---
 
-## 7. Phase 017 kickoff plan
+## 8. Phase 017 kickoff plan
 
-### 7.1 Recommended P0 fix order
+### 8.1 Recommended P0 fix order
 
 **Month 1 (Week 1-4): P0-candidates D, A, C (parallel).**
 
@@ -826,7 +826,7 @@ STRUCTURAL REFACTORS
 - **Week 10-11 (1 engineer):** M8 trust-state vocabulary expansion (`absent`/`unavailable` distinct from `stale`).
 - **Week 11-12 (1 engineer):** M13 enum status refactor. Last structural piece.
 
-### 7.2 Effort budget summary
+### 8.2 Effort budget summary
 
 | Workstream | Engineers | Duration | Total engineer-weeks |
 | ---------- | --------- | -------- | -------------------- |
@@ -844,7 +844,7 @@ STRUCTURAL REFACTORS
 
 **Total effort estimate: ~24.5 engineer-weeks (6 engineer-months). Parallelizable to ~12 weeks wall clock with 3 engineers.**
 
-### 7.3 Risks and open questions for Phase 017 planning
+### 8.3 Risks and open questions for Phase 017 planning
 
 1. **Does `command-spec-kit` enforce Gate 3 independently of skill routing?** (Determines whether Watch-priority-1 becomes P0-candidate-E.) Resolve in Phase 017 Week 1.
 2. **Are the existing regression tests that encode degraded contracts intentionally protecting compatibility, or are they oversights?** Resolve before starting S1 / S2 / S3.
@@ -854,15 +854,15 @@ STRUCTURAL REFACTORS
 
 ---
 
-## 8. Research quality review
+## 9. Research quality review
 
-### 8.1 Was 50 iterations the right stopping point?
+### 9.1 Was 50 iterations the right stopping point?
 
 **Yes, with caveats.** Signal density dropped after iteration 47, and the novel-finding rate collapsed in the last three iterations: iterations 48-50 together surfaced 4-5 additional findings compared to ~11 findings between iterations 44-47. This matches the research-loop convergence pattern.
 
 However, Domain 5 was never run as a dedicated pass. The subsidiary Domain-5 evidence in every iteration is extensive, but a targeted pass on test-coverage gaps would have produced a more structured coverage-regression inventory. Recommendation: Phase 017 should do a 5-iteration Domain-5 pass in parallel with P0-candidate-A remediation to codify the new tests before they are needed.
 
-### 8.2 Coverage gaps
+### 9.2 Coverage gaps
 
 Surface-level coverage. The following files were touched but not deeply audited:
 
@@ -881,7 +881,7 @@ Surface-level coverage. The following files were touched but not deeply audited:
 
 **Recommended follow-up.** Phase 017 Week 1 should do a 2-day "closing pass" on these 11 files before structural refactors start, to avoid discovering additional P1/P2 findings mid-refactor.
 
-### 8.3 Weaker findings that need verification before acting on them
+### 9.3 Weaker findings that need verification before acting on them
 
 - **R34-002 (complement duplicate window).** Hypothesized but not stress-tested. Construct a two-concurrent-save regression.
 - **R35-001 (conflict fork).** Hypothesized multi-successor fan-out. Construct a two-concurrent-conflict regression.
@@ -891,7 +891,7 @@ Surface-level coverage. The following files were touched but not deeply audited:
 
 For each: a ~30-minute test-harness construction should convert hypothesis into confirmed exploit before committing a structural fix.
 
-### 8.4 Would more iterations have added value?
+### 9.4 Would more iterations have added value?
 
 **Not to the Domain-1 through Domain-4 findings.** Signal density dropped after iteration 47; iterations 48-50 mostly refined or consolidated existing findings. 50 was near the right stopping point for those domains.
 
@@ -901,9 +901,9 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 
 ---
 
-## 9. Severity distribution
+## 10. Severity distribution
 
-### 9.1 By domain (raw findings)
+### 10.1 By domain (raw findings)
 
 | Domain | P1 raw | P2 raw | Total raw | Distinct | Peak iter | Signal trajectory |
 | ------ | ------ | ------ | --------- | -------- | --------- | ----------------- |
@@ -913,7 +913,7 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 | D3 (31-40) | 17 | 13 | 30 | 14 | Iter 33, 35, 37, 40 | Layered: byte, snapshot, TOCTOU |
 | D4 (41-50) | 11 | 17 | 28 | ~14 | Iter 43, 45, 46 | Invisible-discard breakthrough |
 
-### 9.2 By severity (distinct after dedup)
+### 10.2 By severity (distinct after dedup)
 
 | Severity | Count | % of ~63 distinct |
 | -------- | ----- | ----------------- |
@@ -922,7 +922,7 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 | P1 (distinct) | ~33 | ~52% |
 | P2 (distinct) | ~30 | ~48% |
 
-### 9.3 By file (top 10 by distinct-issue count)
+### 10.3 By file (top 10 by distinct-issue count)
 
 | Rank | File | Distinct | Domains | Dominant pattern |
 | ---- | ---- | -------- | ------- | ---------------- |
@@ -939,7 +939,178 @@ For each: a ~30-minute test-harness construction should convert hypothesis into 
 
 ---
 
-## 10. Closing thesis
+## 11. Per-file deep dives
+
+This section provides a file-by-file walk through the 10 most-cited surfaces, integrating the iteration-level findings into a single story per file. For each file: the top-level thesis, 2-3 anchor findings with quoted line numbers, the downstream consumers affected, and the recommended remediation entry point.
+
+### 11.1 `mcp_server/hooks/claude/session-stop.ts` (10 distinct issues)
+
+**File thesis.** `session-stop.ts` is the highest-leverage continuity-capture surface in the runtime. It runs at every Claude session stop; it must persist transcript fingerprints, producer metadata, spec-folder detection, and session summary to hook-state; it must trigger `runContextAutosave()` to commit the session summary to a spec-folder packet. Phase 016 found 10 distinct issues spanning fail-open patterns (D1), state contract honesty (D2), and concurrency (D3). The dominant pattern is **split-brain state** -- the stop hook makes three independent `recordStateUpdate()` calls plus a final disk reload, so the in-memory result flags can disagree with the persisted state.
+
+**Anchor findings.**
+
+1. **R1-002 -- `'unknown'` sessionId collision** (`session-stop.ts:60-105, 240-309`). `input.session_id ?? 'unknown'` collapses missing values onto a shared `'unknown'` bucket, and `hook-state.ts` derives the state filename solely from sessionId (`hook-state.ts:68-70`). A malformed or partial hook payload therefore reads and writes the same shared bucket, allowing one session's `lastSpecFolder` or `sessionSummary` to bleed into another session's resume/startup flow or autosave target. Test coverage (`tests/hook-state.vitest.ts`, `tests/hook-session-stop.vitest.ts`, `tests/hook-session-stop-replay.vitest.ts`) only covers named-session paths and never exercises the shared `'unknown'` bucket.
+2. **R14-001 -- Transient zero-offset sentinel** (`session-stop.ts:175-193, 257-268, 274-276`). `storeTokenSnapshot` writes `lastTranscriptOffset: 0` before producer metadata builds; any later catch block swallows failure. Committed offset can remain at 0; next stop hook re-parses full transcript; duplicate token accounting. This is one of three independent mechanisms that produce duplicate token accounting (the others are R37-001 overlap re-parse and R33-002 monotonicity gap).
+3. **R15-001 -- Transcript retargeting silently rewrites autosave destination** (`session-stop.ts:61-77, 281-309`). Transcript-driven retargeting reads the final 50 KB of the transcript to detect `@spec-folder` mentions; if the mention is drifted or false, autosave writes to the wrong packet. I/O failure collapses into same "ambiguous" path as normal ambiguity (R15-003).
+4. **R31-002, R32-002 -- Split-brain autosave window** (`session-stop.ts:60-67, 119-125, 261-268, 283-309`). Three independent `recordStateUpdate()` calls plus final disk reload by `runContextAutosave()` create a torn-state autosave window. Autosave can persist mix of fields from different stop events.
+5. **R34-001 -- Attempted-write flag as truth** (`session-stop.ts:119-125, 261-269, 302-318`; `hook-state.ts:221-240`). `producerMetadataWritten` is an attempted-write flag, not a durable postcondition. Stop-hook callers can treat it as proof that resume/autosave consumers will see producer metadata, even though the final state file can already be overwritten by another stop/compact writer.
+6. **R37-002 -- Stale `currentSpecFolder` preference** (`session-stop.ts:128-145, 244-246, 281-296, 340-369`). `detectSpecFolder()` prefers `stateBeforeStop.lastSpecFolder` over transcript-driven retargeting. If another stop hook or autosave has advanced the target, the current stop hook suppresses the legitimate retarget.
+7. **R39-001 -- Autosave outcome never surfaced** (`session-stop.ts:60-67, 108-117, 299-318`). `runContextAutosave` returns void; no `autosaveOutcome` field in `SessionStopProcessResult`. Callers cannot distinguish success from silent skip.
+
+**Downstream consumers.** Claude `session-prime.ts`, Gemini `session-prime.ts`, `session-resume.ts`, `startup-brief.ts`, `runContextAutosave`, spec-folder detection pipeline, transcript-planner-export, token analytics.
+
+**Recommended remediation entry point.** Structural refactor S2 (HookState overhaul). S2 includes: M1 (Zod schema validation), M2 (schemaVersion), M3 (collapse three `recordStateUpdate()` calls into one atomic patch), M4 (refresh `stateBeforeStop.lastSpecFolder` before `detectSpecFolder()`), + quick wins #9 (offset monotonicity), #21 (eliminate zero-offset sentinel), #22 (add autosaveOutcome field).
+
+### 11.2 `mcp_server/hooks/claude/hook-state.ts` (9 distinct issues)
+
+**File thesis.** `hook-state.ts` is the persisted temp-state substrate that binds Claude, Gemini, and OpenCode runtime hooks together. Any corruption, drift, or race here propagates through all three runtimes via session-prime, session-stop, and compact-inject. Phase 016 found 9 distinct issues, most concentrated in D2 (state contract honesty) and D3 (concurrency). The dominant pattern is **unvalidated parse + unlocked read-modify-write**.
+
+**Anchor findings.**
+
+1. **R21-002, R25-004 -- Unvalidated `JSON.parse` as HookState across 5 entrypoints** (`hook-state.ts:83-87`). `JSON.parse(raw) as HookState` with no runtime validation. The same persisted state file is consumed by Claude session-prime/session-stop, Gemini session-prime, Gemini compact-inject, and Claude compact-cache. A syntactically valid but schema-drifted state blob can misstate the active spec folder, inject stale or malformed compact payloads, or suppress recovery context across runtimes with no additional validation layer.
+2. **R31-001, R31-004 -- Deterministic .tmp collision** (`hook-state.ts:169-176, 221-240`; `graph-metadata-parser.ts:969-989`). `filePath + '.tmp'` in saveState() means two writers for the same session swap bytes before rename. `process.pid + Date.now()` temp path in graph-metadata-parser collides at millisecond precision.
+3. **R32-001 -- `updateState` returns merged after failed persist** (`hook-state.ts:170-176, 221-241`). `updateState` loads current JSON, overlays the patch, and returns the in-memory object even if persistence fails or another writer wins later. Consumer sees an "updated" object that is not on disk.
+4. **R33-001 -- `clearCompactPrime` identity-free cleanup** (`hook-state.ts:184-205`; `session-prime.ts:43-46, 281-287`). Clears by session ID only, not payload identity; newer payload erased on overlap. Fresh precompact write deleted silently.
+5. **R36-001 -- Torn read across generations** (`hook-state.ts:140-155, 170-176`). `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime read and JSON read. Freshness from one generation, content from another.
+6. **R38-001 -- All-or-nothing directory scan** (`hook-state.ts:131-165`; `session-resume.ts:348-366`). Single `try` block wraps the whole directory loop; one bad sibling file aborts entire scan and returns null. One poison-pill file suppresses all sibling recovery.
+7. **R38-002 -- All-or-nothing `cleanStaleStates`** (`hook-state.ts:243-263`; `session-stop.ts:321-328`). Same single-try pattern; partial removed count returned with no indication of skipped files.
+8. **R40-001 -- TOCTOU stat-then-unlink** (`hook-state.ts:170-176, 247-255`; `session-stop.ts:321-328`). `cleanStaleStates` TOCTOU: stat-then-unlink can delete fresh state written between those two calls. Cleanup can erase live state; `removed` count reports normal.
+
+**Downstream consumers.** Every hook entrypoint: Claude session-prime, session-stop, compact-inject; Gemini session-prime, session-stop; `startup-brief.ts`; `session-resume.ts`; `session-bootstrap.ts`; `session-health.ts`.
+
+**Recommended remediation entry point.** S2 HookState overhaul (see 11.1). The unique-temp-path and per-file-error-isolation parts are quick wins (1-2h each); the Zod validation and schemaVersion are medium refactors (2-3d each).
+
+### 11.3 `mcp_server/handlers/save/reconsolidation-bridge.ts` (8 distinct issues)
+
+**File thesis.** `reconsolidation-bridge.ts` is the pre-transaction planning layer between `memory_save` and the SQLite writer transaction. It runs vector search, scope filtering, similarity scoring, and action classification (merge / conflict / complement) before the writer lock is acquired. The central failure mode: **decisions made from pre-transaction snapshots are authoritative post-transaction**, so concurrent saves can fork lineage, double-insert complements, or admit candidates based on stale scope.
+
+**Anchor findings.**
+
+1. **R11-004 -- Silent scope-filter drop** (`reconsolidation-bridge.ts:283-295`). `findSimilar` intentionally over-fetches search results, then applies `results.filter(...candidateMatchesRequestedScope...)` and returns only the sliced `scopeFiltered` set. If that array is empty, the bridge emits no warning before reconsolidation falls through to the normal create path. Test `tests/reconsolidation-bridge.vitest.ts:255-330` codifies the silent behavior.
+2. **R13-004 -- All thrown errors fall through to normal create** (`reconsolidation-bridge.ts:261-270, 438-442`). Any thrown error (checkpoint failure, reconsolidate failure, similarity failure, conflict store failure) caught and falls through to normal create without structured warning. Four different failure modes collapse into one success-shaped path.
+3. **R31-003 -- Conflict without predecessor CAS** (`reconsolidation-bridge.ts:282-295`; `reconsolidation.ts:467-508`). `executeConflict()` runs a pure `UPDATE ... WHERE id = ?` with no predecessor-version or scope recheck. Two concurrent saves can both deprecate the same predecessor.
+4. **R34-002 -- Complement stale-search duplicate window** (`reconsolidation-bridge.ts:261-306`; `reconsolidation.ts:599-694`; `memory-save.ts:2159-2171, 2250-2304`). Reconsolidation planning performs vector search and scope filtering before the save path takes its writer transaction. If another save inserts or upgrades a near-duplicate after that search but before the later `writeTransaction`, the current save still proceeds as a normal complement and creates a second memory without re-running similarity search.
+5. **R35-001 -- Conflict lane not single-winner** (`reconsolidation-bridge.ts:270-295`; `reconsolidation.ts:467-508, 610-658, 952-993`). `insertSupersedesEdge()` deduplicates only by `(source_id, target_id, relation)`. Two concurrent saves with different new memory IDs can both create `supersedes` edges to the same predecessor. Violates the memory graph's "single active successor per predecessor" invariant.
+6. **R39-002, R40-002 -- Mixed-snapshot per-candidate scope read** (`reconsolidation-bridge.ts:203-237, 282-306`). Governed scope filter reads each candidate's row individually outside any transaction. Similarity/content from one snapshot; scope from another. Confirmed in both TM-06 and assistive paths.
+
+**Downstream consumers.** `memory-save.ts`, `response-builder.ts`, memory graph (lineage edges, supersedes edges, complement rows), vector search index.
+
+**Recommended remediation entry point.** Structural refactor S1 (Transactional reconsolidation). S1 includes: M5 (predecessor CAS in `executeConflict()`), M6 (same-transaction scope read), B2 (complement inside writer transaction), B4 (assistive inside writer transaction), B5 (structured warnings on scope-filter drops).
+
+### 11.4 `mcp_server/handlers/save/post-insert.ts` (6 distinct issues)
+
+**File thesis.** `post-insert.ts` runs after a new memory is inserted. It coordinates causal-link resolution, entity extraction, summary generation, entity linking, and graph-lifecycle indexing. All five enrichment steps are tracked in an `enrichmentStatus` boolean record. The dominant pattern: **a single `true` flag conflates four different outcomes (ran / skipped / deferred / failed)**, which `response-builder.ts` then amplifies by surfacing at most one generic warning.
+
+**Anchor findings.**
+
+1. **R8-001 -- `enrichmentStatus = true` for four outcomes** (`post-insert.ts:86-213, 223-238`). Every enrichment step sets the boolean `true` unconditionally after the await; no inspection of the helper's return value. Success, feature-disabled skip, "nothing to do" skip, and deferral all produce `true`. Callers cannot distinguish outcomes; cannot recover without re-running.
+2. **R8-002 -- Entity linking gated only by feature flags, not successful extraction** (`post-insert.ts:116-129, 157-181`). If extraction fails, linking still runs against empty/stale entities.
+3. **R11-005 -- Helper no-ops normalized to success** (`post-insert.ts:136-147, 187-200`). `generateAndStoreSummary(...)` can return `stored: false`, but `enrichmentStatus.summaries = true` is set unconditionally. `onIndex(...)` can return `{skipped: true}`, but `enrichmentStatus.graphLifecycle = true` is set unconditionally. `response-builder.ts:315-321` only warns when an enrichment flag is `false`, so these helper no-op states suppress the only generic partial-enrichment warning.
+4. **R17-002 -- Five failure types unified under `ran`** (`post-insert.ts:106-109, 126-129, 148-151, 174-177, 201-214`). Exception-driven enrichment failures still report `executionStatus=ran`. Five different failure types unified under one label.
+5. **R25-001 -- All-true booleans codified by tests** (`post-insert.ts:223-237`). Deferred-enrichment branch returns all five `enrichmentStatus` booleans as `true`. `tests/post-insert-deferred.vitest.ts:11-48` explicitly asserts this shape; `tests/handler-memory-save.vitest.ts:2590-2607` reuses it as the default post-insert stub. Fixing the runtime requires fixing the tests.
+6. **R27-001 -- `graphLifecycle=true` when `onIndex` returns skipped** (`post-insert.ts:187-200`). `runEnrichmentBackfill` cannot unblock because the flag is set even for `skipped:true`.
+
+**Downstream consumers.** `memory-save.ts`, `response-builder.ts`, `runEnrichmentBackfill`, follow-up-action API, MCP client (sees the response).
+
+**Recommended remediation entry point.** Medium refactor M13 (enum-valued `OperationResult<T>`). This is a single structural fix that resolves ~10 findings at once but requires migrating 4+ test files.
+
+### 11.5 `mcp_server/handlers/code-graph/query.ts` (6 distinct issues)
+
+**File thesis.** `code-graph/query.ts` is the entrypoint for `code_graph_query` MCP tool -- the primary structural-query tool that skill routing recommends. It accepts operations (`callers`, `imports`, `deps`, `blast_radius`, `outline`), performs `ensureCodeGraphReady()`, resolves the subject via `resolveSubject()`, and returns a payload with readiness, detector provenance, and result trust. Phase 016 found that **nearly every failure mode produces success-shaped output**.
+
+**Anchor findings.**
+
+1. **R3-001 -- Ambiguous subject silently resolves to first match** (`code-graph/query.ts:42-58`). `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal. Two overloaded methods collapse silently to the first row; downstream edge/outline queries operate on the wrong node.
+2. **R3-002 -- Readiness gate fails open** (`code-graph/query.ts:319-334`). `ensureCodeGraphReady()` exceptions swallowed. Agents get empty query results during graph-build failure, indistinguishable from genuine absence.
+3. **R11-003 -- `blast_radius` degrades unresolved subjects** (`code-graph/query.ts:367-385`). `resolveSubjectFilePath(candidate) ?? candidate`. Any non-empty unresolved string survives as a seed. Refactor workflows get false-negative dependency sets.
+4. **R12-002 -- Unsupported `edgeType` returns ok with empty** (`code-graph/query.ts:26-29, 441-549`). Agent typos produce silent empty results.
+5. **R16-001 -- `includeTransitive: true` defaults to CALLS** (`code-graph/query.ts:417-436, 547-548`). Runs before switch-level validation; unsupported ops default to CALLS traversal.
+6. **R22-001 -- Self-contradictory success payload** (`code-graph/query.ts:61-83, 94-99, 319-364, 551-564`). Readiness `empty` + `detectorProvenance: structured` in one response. Consumer reads one field or the other.
+7. **R23-001 -- `empty` vs `missing` vocabulary divergence** (`code-graph/query.ts:319-361`). Query exposes `empty` readiness; bootstrap canonicalizes same condition as `missing`. Readiness vocabulary diverges across surfaces.
+
+**Downstream consumers.** MCP agents, `context_server.ts` routing recommendations, refactor workflows, change-impact analysis.
+
+**Recommended remediation entry point.** Quick wins #8 (reject invalid `edgeType`), #13 (validate outline subject), #14 (stop swallowing readiness exceptions), #16 (guard `blast_radius`), #17 (flag dangling edges). Plus M8 vocabulary expansion to distinguish `empty` / `missing` / `absent` / `unavailable`.
+
+### 11.6 `mcp_server/lib/graph/graph-metadata-parser.ts` (4 distinct issues)
+
+**File thesis.** `graph-metadata-parser.ts` parses `graph-metadata.json` files from spec-folder packets and feeds downstream indexing, search ranking, and memory-parser quality assignment. It has a modern schema + a legacy fallback. The legacy fallback is the **root of P0-C graph-metadata laundering** -- malformed modern JSON gets accepted as legacy with no migration marker, then downstream consumers treat it as first-class canonical metadata with +0.12 retrieval boost.
+
+**Anchor findings.**
+
+1. **R11-002 -- Legacy fallback as clean success** (`graph-metadata-parser.ts:223-233`). On primary-parse failure, `parseLegacyGraphMetadataContent(content)` is called; if it succeeds, returns `{ ok: true, metadata, errors: [] }` with no `migrated` or `legacy` marker. Test `tests/graph-metadata-schema.vitest.ts:223-245` explicitly asserts this contract.
+2. **R13-002 -- I/O failure becomes `planned`/`complete`** (`graph-metadata-parser.ts:280-285, 457-475, 849-860`). `readDoc()` collapses I/O failure into `null`; `deriveStatus()` misreads as `planned` or `complete`. Transient read failure indexed as freshly-saved packet with no error signal.
+3. **R20-002 -- Timestamp fabrication** (`graph-metadata-parser.ts:167-205, 223-233`). Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()`. Corrupted file gets freshly-minted timestamps; laundering signal.
+4. **R21-003 -- Refresh rewrites legacy as canonical** (`graph-metadata-parser.ts:223-233, 264-275, 1015-1019`). `refreshGraphMetadataForSpecFolder()` launders malformed modern JSON into canonical refreshed artifact. Corruption signal erased at persistence layer.
+
+**Downstream consumers.** `memory-parser.ts` (assigns `qualityScore: 1` to fallback-recovered entries), stage-1 candidate generation (+0.12 packet boost), `refreshGraphMetadataForSpecFolder()`.
+
+**Recommended remediation entry point.** Structural refactor S3 (Graph-metadata migration propagation). Start with C1: `validateGraphMetadataContent()` returns `{ ok, metadata, migrated, migrationSource? }`. Propagate `migrated` flag through `memory-parser.ts` and stage-1 ranking. Either drop the +0.12 boost for `migrated=true` rows or reverse it to a penalty until human review.
+
+### 11.7 `skill/skill-advisor/scripts/skill_advisor.py` (5 distinct issues)
+
+**File thesis.** `skill_advisor.py` is the routing engine for Gate 2 skill selection. It loads a compiled skill graph from `graph-metadata.json` files, parses SKILL.md frontmatter, applies hard-coded `INTENT_BOOSTERS` / `MULTI_SKILL_BOOSTERS` / `PHRASE_INTENT_BOOSTERS` tables, and emits confidence-scored recommendations. Phase 016 found the critical D4 pattern: **the infrastructure for graph-driven routing exists end-to-end, but the scoring step never consumes the graph-derived signals**.
+
+**Anchor findings.**
+
+1. **R41-003 -- Advisory validation returns success on invariant violations** (`skill_graph_compiler.py:272-353, 630-663`; `skill_advisor.py:203-265`). `--validate-only` returns success for graphs that violate routing invariants. "VALIDATION PASSED" lies about contract satisfaction.
+2. **R43-001 -- `intent_signals` discarded at scoring** (`skill_advisor_runtime.py:111-141, 165-203`; `skill_advisor.py:105-116, 140-152, 180-187, 1669-1694`; `mcp-coco-index/graph-metadata.json:31-50`). Live skill router does not consume per-skill `intent_signals` / `derived.trigger_phrases`. `signals` map populated but has no consumer in `analyze_request()`. Live repro on 2026-04-16: `skill_advisor.py "natural language code retrieval" --threshold 0.8` returned top-1 `sk-code-opencode` with `_graph_boost_count: 0`.
+3. **R44-001 -- Consolidates R43-001 + keyword comments discarded** (`skill_advisor_runtime.py:111-152`; `skill_advisor.py:165-190, 1669-1725`). `intent_signals` silently discarded at scoring boundary; SKILL.md `<!-- Keywords: ... -->` comment blocks stripped before routing by `parse_frontmatter_fast()`.
+4. **R45-002 -- Ranking stability not asserted** (`skill_advisor.py:568-577, 771-813, 1669-1694`; `test_skill_advisor.py:73-186`). Deep-research prompts containing `audit`/`review` tokens score within 0.02 of `sk-code-review`; no ranking-stability test.
+5. **R46-001 -- `COMMAND_BRIDGES` prefix collapse** (`skill_advisor.py:980-1021, 1404-1410, 1647, 1741-1768`; `test_skill_advisor.py:73-186`). `COMMAND_BRIDGES` registers only `/spec_kit` and `spec_kit:` prefix markers. `detect_explicit_command_intent()` stops at first containment match. All `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2`. Live consequence: `/spec_kit:deep-research` -> `command-spec-kit` 0.95, `sk-deep-research` 0.70.
+
+**Downstream consumers.** Gate 2 skill routing, all `/spec_kit:*` command dispatch, `analyze_request()` result consumers, routing playbooks.
+
+**Recommended remediation entry point.** Structural refactor S4 (Skill routing trust chain). Quick wins #1 (wire `intent_signals` into scoring, 2h), #2 (per-subcommand COMMAND_BRIDGES, 2h), #3 (capture keyword comments, 2h), #5 (conflicts_with reciprocity, 1h). Medium refactor M12 (disambiguation tier for audit-vocabulary prompts).
+
+### 11.8 `skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts` (4 distinct issues)
+
+**File thesis.** `manual-playbook-runner.ts` is a development/CI harness that parses playbook markdown scenarios, extracts tool invocations, and executes them. It uses `Function(...)()` eval to turn object-literal fragments into runnable JavaScript. This expands the trust boundary from **repository-owned markdown** to **repository markdown + live tool-return values** because `substitutePlaceholders()` injects `runtimeState.lastJobId` into the `Function(...)` string.
+
+**Anchor findings.**
+
+1. **R41-004 -- `Function(...)` eval with no sandbox** (`manual-playbook-runner.ts:224-246, 251-317, 438-445`). Markdown -> `Function(...)()` evaluation. Documentation drift can become arbitrary Node-side execution.
+2. **R45-004 -- Null scenario parse results filtered before coverage** (`manual-playbook-runner.ts:245-271, 1203-1217`; `manual_testing_playbook.md:196-230`; `spec.md:131-134`). `parseScenarioDefinition()` returns null on parse failure; `main()` filters nulls before coverage count. 10/291 active scenario files unparseable on 2026-04-16. Coverage reports understate active scenario tree.
+3. **R46-003 -- `runtimeState.lastJobId` injection** (`manual-playbook-runner.ts:181-194, 427-445, 930-943, 1112-1117`). `parsedStepArgs()` routes brace-prefixed text to `evaluateObjectLiteral()`. `substitutePlaceholders()` injects `runtimeState.lastJobId` from prior handler payloads into `Function(...)` string. Tool output is now part of the evaluated code string; trust boundary wider than repository-owned markdown.
+4. **R50-002 -- Dialect drift in live corpus** (`097-async-ingestion-job-lifecycle-p0-3.md:35-37`; `144-advisory-ingest-lifecycle-forecast.md:35-36`; `manual-playbook-runner.ts:438-445, 544-548, 612-616`). Checked-in lifecycle scenarios use two incompatible argument dialects: `memory_ingest_status({jobId})` shorthand (depends on undefined JS scoping) vs `memory_ingest_status({ jobId:"<job-id>" })` explicit form. Shorthand form returns `ReferenceError: jobId is not defined` on direct Node repro.
+
+**Downstream consumers.** Manual testing playbook coverage accounting, CI runs, `runtimeState` from prior handler payloads.
+
+**Recommended remediation entry point.** Structural refactor S6 (Playbook runner isolation). Replace `Function(...)()` + `substitutePlaceholders()` with a typed step executor + schema-validated fixtures. Add `automatable: boolean` field on scenario metadata. Assert `parsedCount == filteredCount` before coverage computation.
+
+### 11.9 `skill/skill-advisor/scripts/skill_graph_compiler.py` (4 distinct issues)
+
+**File thesis.** `skill_graph_compiler.py` compiles the skill graph from `graph-metadata.json` files, applying validators (edge symmetry, weight parity, dependency-cycle detection, topology warnings). The central pattern: **"VALIDATION PASSED" + "health ok" both advertise success while graph violates invariants**.
+
+**Anchor findings.**
+
+1. **R41-003 -- Advisory-only topology checks** (`skill_graph_compiler.py:272-353, 630-663`). Topology checks are warnings, not errors. `--validate-only` returns success even when graphs violate routing invariants.
+2. **R45-003 -- Topology warnings non-durable** (`skill_graph_compiler.py:559-568, 630-663`; `skill_advisor.py:1841-1888`; `test_skill_advisor.py:141-165`). ZERO-EDGE WARNINGS emitted then dropped from serialized graph. `health_check()` returns `status: ok` with `skill_graph_loaded: true` after warnings.
+3. **R46-002 -- `conflicts_with` reciprocity never checked** (`skill_graph_compiler.py:272-319, 501-568, 630-663`; `skill_advisor.py:141-187, 321-339`; `test_skill_advisor.py:73-186`). `validate_edge_symmetry()` never inspects `conflicts_with` edges. Unilateral metadata edit silently creates bilateral runtime penalty.
+4. **R49-003 -- Only 2-node cycles detected** (`skill_graph_compiler.py:437-472, 623-663`). `validate_dependency_cycles()` only detects two-node reciprocal cycles. Longer `depends_on` loops pass `--validate-only`. Live repro 2026-04-16: `a -> b -> c -> a` returns empty `three_node` array.
+
+**Downstream consumers.** Skill router (reads compiled graph), `health_check()` endpoint, `--validate-only` CI gate.
+
+**Recommended remediation entry point.** Quick wins #4 (serialize topology warnings into compiled graph, 2h), #5 (conflicts_with reciprocity check, 1h), #6 (arbitrary-length cycle detection via Tarjan's SCC, 3h), #27 (promote topology checks to hard errors, 2h).
+
+### 11.10 `command/spec_kit/assets/spec_kit_plan_auto.yaml` (4 distinct issues)
+
+**File thesis.** `spec_kit_plan_auto.yaml` is the autonomous `/spec_kit:plan` workflow asset. It uses a **mixed-vocabulary state machine** (local `folder_state` classifier mapping to canonical `start_state`) governed by an **untyped boolean DSL** (`intake_only == TRUE`, `folder_state != populated`). The same `when:` key carries both executable predicates and prose timing notes.
+
+**Anchor findings.**
+
+1. **R41-001 -- Vocabulary drift with canonical contract** (`spec_kit_plan_auto.yaml:338-355, 371-372`; `plan.md:93-99`; `intake-contract.md:66-77, 217-222`). Autonomous plan workflow uses `populated` while canonical contract uses `populated-folder`. Interpreter-dependent string comparison.
+2. **R42-001 -- Unsigned boolean DSL in YAML strings** (`spec_kit_plan_auto.yaml:375-392`; `spec_kit_plan_confirm.yaml:400-416`; `plan.md:96-98`). `intake_only == TRUE` / `folder_state == populated` as quoted string expressions. No mechanical grammar contract. A runner change in expression evaluation can invert branch silently.
+3. **R47-002 -- Two-vocabulary state machine collapsed in top-level docs** (`spec_kit_plan_auto.yaml:337-373`; `spec_kit_plan_confirm.yaml:360-398`; `intake-contract.md:39-49, 56-76`; `SKILL.md:563, 931`; `README.md:624-626`). Local `folder_state` classifier -> canonical `start_state`; top-level docs collapse both into one label. Downstream consumers may treat wrong enum as canonical.
+4. **R48-002, R49-002 -- `when:` key overloaded** (`spec_kit_plan_auto.yaml:354-391, 548-555`; `spec_kit_plan_confirm.yaml:372-416, 606-612`; `spec_kit_complete_auto.yaml:465-483, 1008-1012`). Same key carries both boolean-like predicates and free-form narrative timing prose. Schema cannot be mechanically validated without interpreter-specific conventions.
+
+**Downstream consumers.** Autonomous `/spec_kit:plan` workflow, confirm-mode equivalent, all `/spec_kit:*` assets sharing the `when:` key pattern.
+
+**Recommended remediation entry point.** Structural refactor S7 (Typed YAML predicate grammar). Define `BooleanExpr` schema. Replace string literals with typed boolean conditions. Separate `when:` (predicate) from `after:`/`trigger:` (prose timing). Add asset-predicate test suite covering Step 0 branch inputs.
+
+---
+
+## 12. Closing thesis
 
 Phase 016's 50 iterations reveal a runtime where **every failure is silent**. There are no crashes, no thrown exceptions that stop the pipeline, no compile errors, no test failures. The system looks healthy by every observable metric -- health checks return `ok`, validations print `VALIDATION PASSED`, `memory_save` returns `status: "success"`, skill routing reports `0.95` confidence -- while operating with reduced fidelity across at least 37 surfaces.
 
