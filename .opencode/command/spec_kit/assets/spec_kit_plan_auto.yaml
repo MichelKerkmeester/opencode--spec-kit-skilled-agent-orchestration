@@ -340,6 +340,10 @@ workflow:
       repair-mode: "spec.md exists and the folder requires metadata repair or intake resume before planning"
       placeholder-upgrade: "Tracked seed markers or unresolved placeholders remain and block healthy-folder status"
       populated-folder: "spec.md, description.json, and graph-metadata.json are present with no unresolved placeholder markers"
+    # Vocabulary boundary:
+    # - folder_state is the local Step 0 classifier used by this asset's branch logic.
+    # - start_state is the canonical intake-contract enum that downstream callers consume.
+    # - Preserve T-YML-PLN-01 alignment: populated-folder stays shared across both vocabularies.
     map_to_start_state:
       no-spec: empty-folder
       partial-folder: partial-folder
@@ -347,9 +351,9 @@ workflow:
       placeholder-upgrade: placeholder-upgrade
       populated-folder: populated-folder
     outputs:
-      - folder_state: "no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+      - folder_state: "local workflow classifier: no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
       - spec_path: "{spec_folder}"
-      - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+      - start_state: "canonical intake-contract state: empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
     on_trigger:
       when: "folder_state != populated-folder"
       inline_start_intake:
@@ -364,6 +368,9 @@ workflow:
           - start_state
           - repair_mode
           - manual_relationships
+      # Emit both fields on intake events:
+      # - folderState preserves the local classifier that triggered the branch.
+      # - startState exposes the canonical intake-contract enum for downstream consumers.
       emit_event: intake_triggered
       payload: '{"event":"intake_triggered","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","timestamp":"{ISO_8601_NOW}"}'
       emit_event_after_bind: intake_completed
@@ -547,7 +554,7 @@ workflow:
     validation: context_saved_successfully
     post_save_indexing:
       pre_index_instruction:
-        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_path}"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json {spec_path}"
         note: "First compose structured JSON, then run generate-context.js before MCP indexing"
       mcp_tool: memory_save
       invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'

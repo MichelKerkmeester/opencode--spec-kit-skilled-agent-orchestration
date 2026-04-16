@@ -560,7 +560,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 47 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
-**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when packet `folder_state` requires repair or creation, and `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 47 total - see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -923,12 +923,12 @@ Automated context preservation starts with runtime-specific startup surfaces. Cl
 | Create spec folder | `./scripts/spec/create.sh "Description" --short-name name --level 2` |
 | Validate | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/007-feature/` |
 | Verify code alignment drift | `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
-| Save context | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/` |
+| Save context | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/007-feature/` |
 | Next spec number | `ls -d specs/[0-9]*/ \| sed 's/.*\/\([0-9]*\)-.*/\1/' \| sort -n \| tail -1` |
 | Upgrade level | `bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/007-feature/ --to 2` |
 | Completeness | `.opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh specs/007-feature/` |
 
-Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repairs the packet when standalone intake is needed, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder while reusing the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) only when `folder_state` still needs repair.
+Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repairs the packet when standalone intake is needed, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder while reusing the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) only when the local `folder_state` still needs repair. When intake runs, the returned `start_state` is the canonical downstream field.
 
 ---
 

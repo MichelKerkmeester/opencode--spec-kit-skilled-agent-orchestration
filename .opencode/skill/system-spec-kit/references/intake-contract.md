@@ -22,7 +22,9 @@ This reference module defines the single canonical intake contract used by any S
 
 ---
 
-## 1. CONTRACT
+## 1. OVERVIEW
+
+### Contract Interface
 
 **Inputs** (resolved by caller before entering the intake workflow):
 - `$ARGUMENTS` — optional feature description plus pre-binding flags
@@ -36,10 +38,11 @@ This reference module defines the single canonical intake contract used by any S
 - `--supersedes=PACKET_ID[,PACKET_ID...]` — seed supersedes
 - `--intake-only` — (plan.md only) halt after Emit phase
 
-**Outputs** (returned to caller, bind into parent workflow):
+**Outputs** (returned to caller, or surfaced alongside caller-local preflight state when the invoking workflow emits both):
 - `feature_description` — free-text description
 - `spec_path` — resolved target folder path
-- `start_state` — classified state (see §3)
+- `folder_state` — caller-local Step 0 classifier used by the invoking YAML asset (`no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder`); surface for diagnostics and event parity only
+- `start_state` — canonical intake-contract state mapped from `folder_state` and consumed downstream (see §3)
 - `repair_mode` — selected mode (see §4)
 - `execution_mode` — AUTONOMOUS | INTERACTIVE
 - `level_recommendation` — output of `recommend-level.sh`
@@ -55,7 +58,7 @@ This reference module defines the single canonical intake contract used by any S
 
 | Phase | Purpose | Outputs |
 |-------|---------|---------|
-| Preflight | Inspect + classify folder; acquire advisory intake lock | `spec_path`, `start_state`, `repair_mode`, `resume_question_id`, `reentry_reason` |
+| Preflight | Inspect + classify folder; acquire advisory intake lock | `spec_path`, `folder_state` (caller-local), `start_state` (canonical), `repair_mode`, `resume_question_id`, `reentry_reason` |
 | Interview | Consolidated single-prompt Q0–Q4+ for missing fields | `feature_description`, `level_recommendation`, `selected_level`, `manual_relationships` |
 | Emit | Stage + rename canonical trio (`spec.md`, `description.json`, `graph-metadata.json`) | Canonical trio published or fail-closed recovery output |
 | Save | Optional memory-save branch (only when structured context exists) | Independent memory-save result |
@@ -65,7 +68,17 @@ This reference module defines the single canonical intake contract used by any S
 
 ## 3. FOLDER STATE CLASSIFICATION
 
-Every preflight classifies the target folder into exactly one state:
+Invoking YAML assets first classify a local `folder_state`, then map it to the canonical `start_state` enum before returning contract outputs or emitting intake events. After T-YML-PLN-01, four of the five tokens align 1:1; only the empty-folder case keeps a local-vs-canonical rename.
+
+| Local `folder_state` | Canonical `start_state` | Consumption |
+|----------------------|-------------------------|-------------|
+| `no-spec` | `empty-folder` | Local branch token only; downstream callers should consume `start_state=empty-folder` |
+| `partial-folder` | `partial-folder` | Shared across local branching and canonical intake contract |
+| `repair-mode` | `repair-mode` | Shared across local branching and canonical intake contract |
+| `placeholder-upgrade` | `placeholder-upgrade` | Shared across local branching and canonical intake contract |
+| `populated-folder` | `populated-folder` | Shared across local branching and canonical intake contract |
+
+The canonical `start_state` values are:
 
 | State | Detection | Default repair_mode |
 |-------|-----------|---------------------|
@@ -192,7 +205,7 @@ Memory save runs AFTER Emit success, only when:
 
 Invocation:
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json <spec-folder>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json <spec-folder>
 ```
 
 Report save result independently from trio success — a failed save never invalidates a successful trio.

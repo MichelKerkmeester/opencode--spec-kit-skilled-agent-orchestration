@@ -360,10 +360,14 @@ workflow:
       repair-mode: repair-mode
       placeholder-upgrade: placeholder-upgrade
       populated-folder: populated-folder
+    # Vocabulary boundary:
+    # - folder_state is the local Step 0 classifier used by this asset's branch logic.
+    # - start_state is the canonical intake-contract enum that downstream callers consume.
+    # - Preserve T-YML-PLN-01 alignment: populated-folder stays shared across both vocabularies.
     outputs:
-      - folder_state: "no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+      - folder_state: "local workflow classifier: no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
       - spec_path: "{spec_folder}"
-      - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
+      - start_state: "canonical intake-contract state: empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
     checkpoint:
       type: "inline_setup_gate"
       merge_with_setup_prompt: true
@@ -372,7 +376,7 @@ workflow:
       when: "folder_state != populated-folder"
       options:
         - { label: "Continue - Inline intake contract", description: "Absorb `.opencode/skill/system-spec-kit/references/intake-contract.md` §5 Q0-Q4+ inside the current setup prompt" }
-        - { label: "Review State", description: "Show the detected folder_state, start_state, and target path before continuing" }
+        - { label: "Review State", description: "Show the detected local folder_state, canonical start_state, and target path before continuing" }
         - { label: "Cancel", description: "Stop instead of opening inline start delegation" }
     on_trigger:
       when: "folder_state != populated-folder"
@@ -389,6 +393,9 @@ workflow:
           - start_state
           - repair_mode
           - manual_relationships
+      # Emit both fields on intake events:
+      # - folderState preserves the local classifier that triggered the branch.
+      # - startState exposes the canonical intake-contract enum for downstream consumers.
       emit_event: intake_triggered
       payload: '{"event":"intake_triggered","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","timestamp":"{ISO_8601_NOW}"}'
       emit_event_after_bind: intake_completed
@@ -604,7 +611,7 @@ workflow:
       - { label: "View Summary", description: "Show planning summary" }
     post_save_indexing:
       pre_index_instruction:
-        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json {spec_path}"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json {spec_path}"
         note: "First compose structured JSON, then run generate-context.js before MCP indexing"
       mcp_tool: memory_save
       invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
