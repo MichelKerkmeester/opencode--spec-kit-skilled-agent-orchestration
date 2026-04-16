@@ -248,10 +248,13 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T635: Hybrid search uses fusion-based ranking', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test
+      // that verifies hybridSearch output uses fuseResultsMulti ranking.
       expect(HYBRID_SEARCH_SOURCE).toContain('fuseResultsMulti');
     });
 
     it('T636: Hybrid combines vector + FTS', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test.
       expect(HYBRID_SEARCH_SOURCE).toContain('combinedLexicalSearch');
       expect(HYBRID_SEARCH_SOURCE).toContain('hybridSearchEnhanced');
     });

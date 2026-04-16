@@ -69,24 +69,6 @@
       "hookBootstrap": true,
       "schemaAdaptation": "high",
       "fallbackBridgeEligible": true
-    },
-    {
-      "id": "agents",
-      "label": "Legacy .agents wrapper",
-      "mirrorPath": ".agents/agents/deep-review.md",
-      "commandWrapperPath": ".agents/commands/spec_kit/deep-review.toml",
-      "toolSurface": [
-        "read_file",
-        "write_file",
-        "replace",
-        "run_shell_command",
-        "grep_search",
-        "list_directory"
-      ],
-      "hookBootstrap": true,
-      "schemaAdaptation": "high",
-      "fallbackBridgeEligible": true,
-      "compatibilityWrapper": true
     }
   ]
 }
