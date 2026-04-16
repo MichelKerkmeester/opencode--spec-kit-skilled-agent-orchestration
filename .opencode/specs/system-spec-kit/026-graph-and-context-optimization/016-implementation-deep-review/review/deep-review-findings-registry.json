@@ -1,14 +1,22 @@
 {
   "sessionId": "2026-04-16T05:18:04Z",
+  "parentSessionId": null,
   "generation": 1,
   "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "status": "INITIALIZED",
   "openFindings": [],
   "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
   "dimensionCoverage": {
-    "correctness": false,
-    "security": false,
-    "traceability": false,
-    "maintainability": false
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
   },
   "findingsBySeverity": {
     "P0": 0,
@@ -16,5 +24,10 @@
     "P2": 0
   },
   "openFindingsCount": 0,
-  "convergenceScore": 0.0
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
 }
