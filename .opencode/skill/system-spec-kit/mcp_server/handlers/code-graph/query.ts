@@ -394,6 +394,46 @@ function clampNumericConfidence(value: unknown): number {
   return Math.max(0, Math.min(1, value));
 }
 
+const EDGE_EVIDENCE_CLASS_WEAKNESS: Record<EdgeEvidenceClass, number> = {
+  inferred_heuristic: 0,
+  test_coverage: 1,
+  type_reference: 2,
+  import: 3,
+  direct_call: 4,
+};
+
+function summarizeWeakestGraphEdgeEnrichment(
+  edges: Array<{
+    edgeEvidenceClass: EdgeEvidenceClass;
+    numericConfidence: number;
+  }>,
+): {
+  edgeEvidenceClass: EdgeEvidenceClass;
+  numericConfidence: number;
+} | null {
+  let weakest: {
+    edgeEvidenceClass: EdgeEvidenceClass;
+    numericConfidence: number;
+  } | null = null;
+
+  for (const edge of edges) {
+    if (weakest == null || edge.numericConfidence < weakest.numericConfidence) {
+      weakest = edge;
+      continue;
+    }
+
+    if (
+      edge.numericConfidence === weakest.numericConfidence
+      && EDGE_EVIDENCE_CLASS_WEAKNESS[edge.edgeEvidenceClass]
+        < EDGE_EVIDENCE_CLASS_WEAKNESS[weakest.edgeEvidenceClass]
+    ) {
+      weakest = edge;
+    }
+  }
+
+  return weakest;
+}
+
 function buildHotFileBreadcrumbs(filePaths: string[]): Array<{
   filePath: string;
   hotFileBreadcrumb: HotFileBreadcrumb;
@@ -829,12 +869,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             ...result,
             ...(warnings ? { warnings } : {}),
             readiness,
-          }, readiness, `code_graph_query ${operation} payload`, result.edges[0]
-            ? {
-              edgeEvidenceClass: result.edges[0].edgeEvidenceClass,
-              numericConfidence: result.edges[0].numericConfidence,
-            }
-            : null),
+          }, readiness, `code_graph_query ${operation} payload`, summarizeWeakestGraphEdgeEnrichment(result.edges)),
       }, null, 2),
     }],
   };

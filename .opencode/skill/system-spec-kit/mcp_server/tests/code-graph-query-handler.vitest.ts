@@ -276,6 +276,54 @@ describe('code-graph-query handler', () => {
     expect(parsed.data).not.toHaveProperty('confidence');
   });
 
+  it('aggregates payload-level edge trust from the weakest returned edge', async () => {
+    mocks.queryEdgesFrom.mockReturnValue([
+      {
+        edge: {
+          targetId: 'symbol-2',
+          metadata: {
+            confidence: 0.9,
+            detectorProvenance: 'structured',
+            evidenceClass: 'EXTRACTED',
+          },
+        },
+        targetNode: { fqName: 'DirectTarget', filePath: 'src/direct.ts', startLine: 12 },
+      },
+      {
+        edge: {
+          targetId: 'symbol-3',
+          metadata: {
+            confidence: 0.2,
+            detectorProvenance: 'heuristic',
+            evidenceClass: 'INFERRED',
+          },
+        },
+        targetNode: { fqName: 'HeuristicTarget', filePath: 'src/heuristic.ts', startLine: 28 },
+      },
+    ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.data.edges).toMatchObject([
+      {
+        target: 'DirectTarget',
+        numericConfidence: 0.9,
+        edgeEvidenceClass: 'direct_call',
+      },
+      {
+        target: 'HeuristicTarget',
+        numericConfidence: 0.2,
+        edgeEvidenceClass: 'inferred_heuristic',
+      },
+    ]);
+    expect(parsed.data.edgeEvidenceClass).toBe('inferred_heuristic');
+    expect(parsed.data.numericConfidence).toBe(0.2);
+  });
+
   it('excludes dangling edges and reports corruption warnings instead of returning raw symbol IDs', async () => {
     mocks.queryEdgesFrom.mockReturnValue([
       {
