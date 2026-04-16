@@ -1,8 +1,8 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Hook State Management
 // ───────────────────────────────────────────────────────────────
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdirSync, rmSync, existsSync, statSync, utimesSync } from 'node:fs';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import fs, { mkdirSync, rmSync, existsSync, statSync, utimesSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -22,6 +22,7 @@ describe('hook state management', () => {
   const testSessionId = 'test-session-123';
 
   afterEach(() => {
+    vi.restoreAllMocks();
     // Clean up test state files
     try {
       const statePath = getStatePath(testSessionId);
@@ -108,6 +109,62 @@ describe('hook state management', () => {
       expect(loaded!.speckitSessionId).toBe('sk-123');
       expect(loaded!.lastSpecFolder).toBe('specs/test');
       expect(statSync(getStatePath(testSessionId)).mode & 0o777).toBe(0o600);
+    });
+
+    it('uses unique temp paths for overlapping writes to the same session', () => {
+      ensureStateDir();
+      const concurrentSessionId = `concurrent-session-${Date.now()}`;
+      const stateA: HookState = {
+        claudeSessionId: concurrentSessionId,
+        speckitSessionId: 'sk-a',
+        lastSpecFolder: 'specs/a',
+        sessionSummary: null,
+        pendingCompactPrime: null,
+        producerMetadata: null,
+        metrics: { estimatedPromptTokens: 1, estimatedCompletionTokens: 2, lastTranscriptOffset: 3 },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      const stateB: HookState = {
+        ...stateA,
+        speckitSessionId: 'sk-b',
+        lastSpecFolder: 'specs/b',
+      };
+      const tempPaths: string[] = [];
+      let nestedWriteTriggered = false;
+      const originalWriteFileSync = fs.writeFileSync.bind(fs) as typeof fs.writeFileSync;
+
+      vi.spyOn(fs, 'writeFileSync').mockImplementation((...args: Parameters<typeof fs.writeFileSync>) => {
+        const [filePath] = args;
+
+        if (typeof filePath === 'string' && filePath.includes('.tmp-')) {
+          tempPaths.push(filePath);
+          originalWriteFileSync(...args);
+          if (!nestedWriteTriggered) {
+            nestedWriteTriggered = true;
+            expect(saveState(concurrentSessionId, stateB)).toBe(true);
+          }
+          return;
+        }
+
+        originalWriteFileSync(...args);
+      });
+
+      expect(saveState(concurrentSessionId, stateA)).toBe(true);
+      expect(tempPaths).toHaveLength(2);
+      expect(new Set(tempPaths).size).toBe(2);
+      const counterMatches = tempPaths.map((tempPath) => tempPath.match(new RegExp(`\\.tmp-${process.pid}-(\\d+)-([0-9a-f]{8})$`)));
+
+      expect(counterMatches[0]).not.toBeNull();
+      expect(counterMatches[1]).not.toBeNull();
+      expect(new Set(counterMatches.map((match) => match?.[1])).size).toBe(2);
+      expect(loadState(concurrentSessionId)?.lastSpecFolder).toBe('specs/a');
+
+      try {
+        rmSync(getStatePath(concurrentSessionId));
+      } catch {
+        // ok
+      }
     });
   });
 

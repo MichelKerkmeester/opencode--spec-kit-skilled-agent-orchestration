@@ -2,11 +2,12 @@
 // MODULE: Hook State Management
 // ───────────────────────────────────────────────────────────────
 // Per-session state at ${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-hash>.json
-import { createHash } from 'node:crypto';
+import * as crypto from 'node:crypto';
+import fs from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
-  mkdirSync, readFileSync, writeFileSync, renameSync,
+  mkdirSync, readFileSync,
   readdirSync, statSync, unlinkSync,
 } from 'node:fs';
 import { hookLog } from './shared.js';
@@ -48,6 +49,7 @@ export interface HookState {
 }
 
 const MAX_RECENT_STATE_AGE_MS = 24 * 60 * 60 * 1000;
+let tempCounter = 0;
 
 export interface HookStateScope {
   specFolder?: string;
@@ -56,7 +58,7 @@ export interface HookStateScope {
 
 /** SHA-256 hash of cwd, first 12 chars */
 export function getProjectHash(): string {
-  return createHash('sha256').update(process.cwd()).digest('hex').slice(0, 12);
+  return crypto.createHash('sha256').update(process.cwd()).digest('hex').slice(0, 12);
 }
 
 /** Get the state directory path */
@@ -66,7 +68,7 @@ function getStateDir(): string {
 
 /** Get the state file path for a session */
 export function getStatePath(sessionId: string): string {
-  const safe = createHash('sha256').update(sessionId).digest('hex').slice(0, 16);
+  const safe = crypto.createHash('sha256').update(sessionId).digest('hex').slice(0, 16);
   return join(getStateDir(), `${safe}.json`);
 }
 
@@ -169,11 +171,11 @@ export function loadMostRecentState(
 /** Save state atomically (write to .tmp then rename) */
 export function saveState(sessionId: string, state: HookState): boolean {
   const filePath = getStatePath(sessionId);
-  const tmpPath = filePath + '.tmp';
+  const tmpPath = `${filePath}.tmp-${process.pid}-${tempCounter++}-${crypto.randomBytes(4).toString('hex')}`;
   try {
     state.updatedAt = new Date().toISOString();
-    writeFileSync(tmpPath, JSON.stringify(state, null, 2), { encoding: 'utf-8', mode: 0o600 });
-    renameSync(tmpPath, filePath);
+    fs.writeFileSync(tmpPath, JSON.stringify(state, null, 2), { encoding: 'utf-8', mode: 0o600 });
+    fs.renameSync(tmpPath, filePath);
     return true;
   } catch (err: unknown) {
     hookLog('error', 'state', `Failed to save state: ${err instanceof Error ? err.message : String(err)}`);
