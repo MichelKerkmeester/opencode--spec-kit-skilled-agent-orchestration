@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 describe('post-insert deferred enrichment reporting', () => {
   afterEach(() => {
+    vi.doUnmock('../handlers/memory-crud-utils');
+    vi.doUnmock('../handlers/memory-crud-utils.js');
     vi.doUnmock('../lib/search/search-flags');
     vi.doUnmock('../lib/search/search-flags.js');
     vi.resetModules();
@@ -78,6 +80,66 @@ describe('post-insert deferred enrichment reporting', () => {
     });
     expect(payload.hints).toEqual(expect.arrayContaining([
       'Post-insert enrichment was deferred; runEnrichmentBackfill when immediate graph/search freshness matters',
+    ]));
+  });
+
+  it('preserves lane-level enrichment state in buildIndexResult output', async () => {
+    vi.doMock('../handlers/memory-crud-utils', () => ({
+      appendMutationLedgerSafe: vi.fn(() => true),
+    }));
+    vi.doMock('../handlers/memory-crud-utils.js', () => ({
+      appendMutationLedgerSafe: vi.fn(() => true),
+    }));
+
+    const { buildIndexResult } = await import('../handlers/save/response-builder.js');
+    const result = buildIndexResult({
+      database: {} as never,
+      existing: undefined,
+      embeddingStatus: 'success',
+      id: 19,
+      parsed: {
+        specFolder: 'system-spec-kit/015-save-flow-planner-first-trim',
+        title: 'Planner-first partial enrichment',
+        triggerPhrases: ['planner-first', 'partial'],
+        content: 'Partial enrichment save.',
+        contextType: 'implementation',
+        importanceTier: 'important',
+        memoryType: 'memory',
+        memoryTypeSource: 'parser',
+        qualityScore: 0.73,
+        qualityFlags: [],
+        documentType: 'memory',
+      } as never,
+      validation: { valid: true, errors: [], warnings: [] },
+      reconWarnings: [] as never,
+      peDecision: { action: 'CREATE', similarity: 0 } as never,
+      embeddingFailureReason: null,
+      asyncEmbedding: false,
+      causalLinksResult: null,
+      enrichmentStatus: {
+        causalLinks: true,
+        entityExtraction: false,
+        summaries: true,
+        entityLinking: true,
+        graphLifecycle: false,
+      },
+      enrichmentExecutionStatus: { status: 'ran' },
+      filePath: '/tmp/partial-memory.md',
+    });
+
+    expect(result.postInsertEnrichment).toEqual({
+      status: 'partial',
+      persistedState: {
+        causalLinks: true,
+        entityExtraction: false,
+        summaries: true,
+        entityLinking: true,
+        graphLifecycle: false,
+      },
+      warnings: ['Partial enrichment: entityExtraction, graphLifecycle failed'],
+    });
+    expect(result.warnings).toEqual(expect.arrayContaining([
+      'Partial enrichment: entityExtraction, graphLifecycle failed',
     ]));
   });
 });

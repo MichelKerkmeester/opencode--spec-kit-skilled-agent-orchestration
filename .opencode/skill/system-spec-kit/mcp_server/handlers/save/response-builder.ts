@@ -17,6 +17,7 @@ import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
 import type {
   AssistiveRecommendation,
   IndexResult,
+  PostInsertOperationResult,
   PeDecision,
   PlannerAdvisory,
   PlannerBlocker,
@@ -122,6 +123,37 @@ function finalizeAssistiveRecommendation(
       newerMemoryId,
       similarity: rawRecommendation.similarity,
     }),
+  };
+}
+
+function buildPostInsertEnrichmentResult(
+  enrichmentStatus?: EnrichmentStatus,
+  enrichmentExecutionStatus?: PostInsertExecutionStatus,
+): PostInsertOperationResult | undefined {
+  if (!enrichmentStatus && !enrichmentExecutionStatus) {
+    return undefined;
+  }
+
+  const failedEnrichmentSteps = enrichmentStatus
+    ? Object.entries(enrichmentStatus)
+      .filter(([, wasSuccessful]) => !wasSuccessful)
+      .map(([step]) => step)
+    : [];
+  const warnings = failedEnrichmentSteps.length > 0
+    ? [`Partial enrichment: ${failedEnrichmentSteps.join(', ')} failed`]
+    : undefined;
+  const status = enrichmentExecutionStatus?.status === 'deferred'
+    ? 'deferred'
+    : failedEnrichmentSteps.length > 0
+      ? 'partial'
+      : enrichmentExecutionStatus?.status ?? 'ran';
+
+  return {
+    status,
+    ...(enrichmentExecutionStatus?.reason ? { reason: enrichmentExecutionStatus.reason } : {}),
+    ...(enrichmentExecutionStatus?.followUpAction ? { followUpAction: enrichmentExecutionStatus.followUpAction } : {}),
+    ...(enrichmentStatus ? { persistedState: enrichmentStatus } : {}),
+    ...(warnings ? { warnings } : {}),
   };
 }
 
@@ -308,17 +340,17 @@ export function buildIndexResult({
     }
   }
 
-  if (enrichmentExecutionStatus) {
-    result.postInsertEnrichment = enrichmentExecutionStatus;
+  const postInsertEnrichment = buildPostInsertEnrichmentResult(
+    enrichmentStatus,
+    enrichmentExecutionStatus,
+  );
+  if (postInsertEnrichment) {
+    result.postInsertEnrichment = postInsertEnrichment;
   }
 
-  // C5-6: Surface enrichment gaps when any step failed
-  if (enrichmentStatus && Object.values(enrichmentStatus).some(v => !v)) {
-    const failed = Object.entries(enrichmentStatus)
-      .filter(([, v]) => !v)
-      .map(([k]) => k);
+  if (postInsertEnrichment?.warnings?.length) {
     result.warnings = result.warnings || [];
-    result.warnings.push(`Partial enrichment: ${failed.join(', ')} failed`);
+    result.warnings.push(...postInsertEnrichment.warnings);
   }
 
   return result;

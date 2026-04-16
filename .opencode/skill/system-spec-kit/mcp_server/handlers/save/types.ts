@@ -4,7 +4,7 @@
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback.js';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser.js';
 import type { SavePlannerMode } from '../../lib/search/search-flags.js';
-import type { PostInsertExecutionStatus } from './post-insert.js';
+import type { EnrichmentStatus, PostInsertExecutionStatus } from './post-insert.js';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -110,6 +110,19 @@ export type ReconWarningList = string[] & {
   assistiveRecommendation?: AssistiveRecommendation | null;
 };
 
+export type OperationStatus = 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial';
+
+export interface OperationResult<TState> {
+  status: OperationStatus;
+  warnings?: string[];
+  persistedState?: TState;
+}
+
+export interface PostInsertOperationResult extends OperationResult<EnrichmentStatus> {
+  reason?: PostInsertExecutionStatus['reason'];
+  followUpAction?: PostInsertExecutionStatus['followUpAction'];
+}
+
 export interface IndexResult extends Record<string, unknown> {
   status: string;
   id: number;
@@ -131,7 +144,7 @@ export interface IndexResult extends Record<string, unknown> {
   newStability?: number;
   retrievability?: number;
   causalLinks?: Record<string, unknown>;
-  postInsertEnrichment?: PostInsertExecutionStatus;
+  postInsertEnrichment?: PostInsertOperationResult;
   message?: string;
   success?: boolean;
   error?: string;
