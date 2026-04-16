@@ -133,7 +133,7 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 - [ ] T-SST-05 [P0-D] [P] R37-001: Transient `lastTranscriptOffset: 0` sentinel between two writes; second concurrent stop hook can re-parse from zero; carry final offset through to `recordStateUpdate()` (`session-stop.ts:175-190,244-252,257-268`) — Phase 1a / QW #21
 - [ ] T-SST-06 [P0-D] [P] R33-002: Overlapping stop hooks can regress `lastTranscriptOffset` backwards; `Math.max()` monotonicity guard in `updateState()` (also lands in T-HST group) (`session-stop.ts:119-125,244-268`) — Phase 1a / QW #9
 - [x] T-SST-07 [P1] R39-001: Autosave outcome (ran/skipped/failed) never surfaced in `SessionStopProcessResult`; add `autosaveOutcome` field (`session-stop.ts:60-67,108-117,299-318`) — Phase 1a / QW #22
-- [ ] T-SST-08 [P1] R15-001, R15-002, R15-003: Transcript-driven retargeting silently rewrites autosave destination; 50 KB tail window can hide real active packet; transcript I/O failure collapsed into "ambiguous" → emit retarget-reason field; configurable tail window; distinguish I/O vs ambiguity (`session-stop.ts:61-77,281-309,294-295,340-378`) [Phase 3 Med-F]
+- [x] T-SST-08 [P1] R15-001, R15-002, R15-003: Transcript-driven retargeting silently rewrites autosave destination; 50 KB tail window can hide real active packet; transcript I/O failure collapsed into "ambiguous" → emit retarget-reason field; configurable tail window; distinguish I/O vs ambiguity (`session-stop.ts:61-77,281-309,294-295,340-378`) [Phase 3 Med-F]
 - [ ] T-SST-09 [P1] R20-001: `buildProducerMetadata()` re-stats live transcript; metadata describes later state than parsed one → snapshot transcript stat before producer metadata builds (`session-stop.ts:199-218,248-268`) [Phase 3 Med-E]
 - [ ] T-SST-10 [P1] R31-002 + R32-002 (dedup): Multiple `recordStateUpdate()` + final disk reload in `runContextAutosave()` create torn-state autosave window → collapse three writes into single atomic patch (M3 from S2) (`session-stop.ts:60-67,119-125,244-246,261-268,281-289,302-309`) — Phase 1b / M3
 - [ ] T-SST-11 [P1] R37-002: Stale `currentSpecFolder` preference suppresses legitimate packet retarget when another writer advanced target → refresh `stateBeforeStop.lastSpecFolder` before `detectSpecFolder()` OR change "prefer currentSpecFolder" rule (M4 from S2) (`session-stop.ts:128-145,244-246,281-296,340-369`) — Phase 1b / M4
@@ -224,7 +224,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
 - [x] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
 - [x] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
-- [ ] T-CGQ-08 [P2] R17-001: Dangling edges returned as successful relationships with raw `edge.targetId` → flag dangling edges as corruption (`code-graph/query.ts:442-559`) [QW #17]
+- [x] T-CGQ-08 [P2] R17-001: Dangling edges returned as successful relationships with raw `edge.targetId` → flag dangling edges as corruption (`code-graph/query.ts:442-559`) [QW #17]
 - [ ] T-CGQ-09 [P2] R18-001 + R20-003 (dedup): Query-level `detectorProvenance` silently degrades to global last-index snapshot → compute query-level provenance or omit field (`code-graph/query.ts:94-99,551-565`)
 - [ ] T-CGQ-10 [P2] R19-001: Transitive traversal silently degrades dangling nodes into ok with null metadata → surface as corruption (paired with T-CGQ-08) (`code-graph/query.ts:127-166,417-436`) [Phase 3 Med-H]
 - [ ] T-CGQ-11 [P1] R22-001 + R23-001 (dedup): Self-contradictory success payload (readiness `empty` + `detectorProvenance: structured`); query exposes `empty` readiness while bootstrap canonicalizes same condition as `missing` → align vocabulary via M8 (`code-graph/query.ts:61-83,94-99,319-364,551-564`) [B:T-SHP-01]
@@ -294,7 +294,7 @@ Primary workstream: M8.
 
 Primary workstream: S2 (P0-A).
 
-- [ ] T-SBR-01 [P1] R1-001 (+ R2-001 + R4-001 dedup): `buildSessionContinuity()` calls `loadMostRecentState()` with no scope; hook-state rejects scope-less calls → scope the continuity call, or fix `loadMostRecentState` to not reject scope-less (`startup-brief.ts:179-192`) — Phase 1b / S2
+- [x] T-SBR-01 [P1] R1-001 (+ R2-001 + R4-001 dedup): `buildSessionContinuity()` calls `loadMostRecentState()` with no scope; hook-state rejects scope-less calls → scope the continuity call, or fix `loadMostRecentState` to not reject scope-less (`startup-brief.ts:179-192`) — Phase 1b / S2
 <!-- /ANCHOR:group-sbr -->
 
 ---
