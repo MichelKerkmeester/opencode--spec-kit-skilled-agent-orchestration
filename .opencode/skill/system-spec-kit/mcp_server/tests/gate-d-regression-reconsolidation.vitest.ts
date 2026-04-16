@@ -9,6 +9,7 @@ const bridgeMocks = vi.hoisted(() => ({
   isAssistiveReconsolidationEnabled: vi.fn(() => true),
   isEncodingIntentEnabled: vi.fn(() => false),
   isReconsolidationEnabled: vi.fn(() => false),
+  isSaveReconsolidationEnabled: vi.fn(() => false),
   reconsolidate: vi.fn(),
   vectorSearch: vi.fn(),
 }));
@@ -49,6 +50,7 @@ vi.mock('../lib/search/search-flags', () => ({
   isEncodingIntentEnabled: bridgeMocks.isEncodingIntentEnabled,
   isReconsolidationEnabled: bridgeMocks.isReconsolidationEnabled,
   isAssistiveReconsolidationEnabled: bridgeMocks.isAssistiveReconsolidationEnabled,
+  isSaveReconsolidationEnabled: bridgeMocks.isSaveReconsolidationEnabled,
 }));
 
 vi.mock('../handlers/save/db-helpers', () => ({
@@ -112,6 +114,8 @@ describe('Gate D regression reconsolidation', () => {
     bridgeMocks.isEncodingIntentEnabled.mockReturnValue(false);
     bridgeMocks.isReconsolidationEnabled.mockClear();
     bridgeMocks.isReconsolidationEnabled.mockReturnValue(false);
+    bridgeMocks.isSaveReconsolidationEnabled.mockClear();
+    bridgeMocks.isSaveReconsolidationEnabled.mockReturnValue(true);
     bridgeMocks.reconsolidate.mockClear();
     bridgeMocks.vectorSearch.mockClear();
   });
@@ -120,7 +124,7 @@ describe('Gate D regression reconsolidation', () => {
     vi.restoreAllMocks();
   });
 
-  it('keeps >0.96 in the auto-merge tier and preserves review-band recommendations for canonical doc writes', async () => {
+  it('keeps >0.96 in the high-similarity note tier and preserves review-band recommendations for canonical doc writes', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const database = {} as any;
 
@@ -155,7 +159,7 @@ describe('Gate D regression reconsolidation', () => {
       }),
     );
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('assistive auto-merge compatibility note'),
+      expect.stringContaining('assistive high-similarity compatibility note'),
     );
 
     warnSpy.mockClear();

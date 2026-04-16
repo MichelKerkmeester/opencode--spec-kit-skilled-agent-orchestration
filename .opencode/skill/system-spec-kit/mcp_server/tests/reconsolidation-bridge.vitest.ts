@@ -207,7 +207,7 @@ describe('Reconsolidation Bridge', () => {
     expect(bridgeMocks.appendMutationLedgerSafe).toHaveBeenCalledOnce();
   });
 
-  it('keeps assistive auto-merge as a compatibility note in full-auto mode without archived BM25 cleanup side effects', async () => {
+  it('keeps assistive high-similarity matches as a compatibility note in full-auto mode without archived BM25 cleanup side effects', async () => {
     const archiveRun = vi.fn();
     const database = {
       prepare: vi.fn(() => ({ run: archiveRun })),

@@ -53,10 +53,11 @@ type RequestedScope = Record<RequestedScopeKey, string | null>;
 // ───────────────────────────────────────────────────────────────
 
 /**
- * Similarity threshold above which two memories are considered near-duplicates
- * and auto-merged.  Requires SPECKIT_ASSISTIVE_RECONSOLIDATION=true.
+ * Similarity threshold above which assistive reconsolidation emits a
+ * high-similarity compatibility note for near-duplicate memories.
+ * No merge or archival side effects occur at this threshold.
  */
-export const ASSISTIVE_AUTO_MERGE_THRESHOLD = 0.96;
+export const ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD = 0.96;
 
 /**
  * Similarity threshold above which two memories are considered borderline
@@ -78,7 +79,7 @@ export function isAssistiveReconsolidationEnabled(): boolean {
  * based on their similarity score.
  *
  * Tiers:
- *   similarity >= 0.96  → auto-merge (near-duplicate)
+ *   similarity >= 0.96  → high-similarity compatibility note (internal auto_merge tier)
  *   0.88 <= sim < 0.96  → review (supersede or complement recommendation)
  *   sim < 0.88          → keep separate (complement)
  *
@@ -88,7 +89,7 @@ export function isAssistiveReconsolidationEnabled(): boolean {
 export function classifyAssistiveSimilarity(
   similarity: number
 ): 'auto_merge' | 'review' | 'keep_separate' {
-  if (similarity >= ASSISTIVE_AUTO_MERGE_THRESHOLD) return 'auto_merge';
+  if (similarity >= ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD) return 'auto_merge';
   if (similarity >= ASSISTIVE_REVIEW_THRESHOLD)     return 'review';
   return 'keep_separate';
 }
@@ -477,7 +478,7 @@ export async function runReconsolidationIfEnabled(
 
         if (tier === 'auto_merge') {
           console.warn(
-            `[reconsolidation-bridge] assistive auto-merge compatibility note: ` +
+            `[reconsolidation-bridge] assistive high-similarity compatibility note: ` +
             `older=${topId} similarity=${similarity.toFixed(3)}; archived-tier side effects are disabled`
           );
         } else if (tier === 'review') {

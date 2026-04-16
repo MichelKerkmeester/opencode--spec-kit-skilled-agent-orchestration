@@ -5,7 +5,7 @@ import {
   classifyAssistiveSimilarity,
   classifySupersededOrComplement,
   logAssistiveRecommendation,
-  ASSISTIVE_AUTO_MERGE_THRESHOLD,
+  ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD,
   ASSISTIVE_REVIEW_THRESHOLD,
 } from '../handlers/save/reconsolidation-bridge';
 import type { AssistiveRecommendation } from '../handlers/save/reconsolidation-bridge';
@@ -56,16 +56,16 @@ describe('Assistive Reconsolidation — Feature Flag', () => {
 ----------------------------------------------------------------*/
 
 describe('Assistive Reconsolidation — Constants', () => {
-  it('ASSISTIVE_AUTO_MERGE_THRESHOLD is 0.96', () => {
-    expect(ASSISTIVE_AUTO_MERGE_THRESHOLD).toBeCloseTo(0.96);
+  it('ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD is 0.96', () => {
+    expect(ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD).toBeCloseTo(0.96);
   });
 
   it('ASSISTIVE_REVIEW_THRESHOLD is 0.88', () => {
     expect(ASSISTIVE_REVIEW_THRESHOLD).toBeCloseTo(0.88);
   });
 
-  it('auto-merge threshold is above review threshold', () => {
-    expect(ASSISTIVE_AUTO_MERGE_THRESHOLD).toBeGreaterThan(ASSISTIVE_REVIEW_THRESHOLD);
+  it('compatibility-note threshold is above review threshold', () => {
+    expect(ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD).toBeGreaterThan(ASSISTIVE_REVIEW_THRESHOLD);
   });
 });
 
@@ -223,12 +223,12 @@ describe('Assistive Reconsolidation — Threshold Tier Integration', () => {
     expect(tier).toBe('keep_separate');
   });
 
-  it('auto-merge only fires at >= 0.96', () => {
-    // Similarity of 0.9599 must not trigger auto-merge
-    const tier = classifyAssistiveSimilarity(ASSISTIVE_AUTO_MERGE_THRESHOLD - 0.001);
+  it('high-similarity compatibility note tier only fires at >= 0.96', () => {
+    // Similarity of 0.9599 must not trigger the high-similarity compatibility note tier.
+    const tier = classifyAssistiveSimilarity(ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD - 0.001);
     expect(tier).toBe('review');
-    // Similarity of 0.96 must trigger auto-merge
-    const mergeTier = classifyAssistiveSimilarity(ASSISTIVE_AUTO_MERGE_THRESHOLD);
+    // Similarity of 0.96 must trigger the high-similarity compatibility note tier.
+    const mergeTier = classifyAssistiveSimilarity(ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD);
     expect(mergeTier).toBe('auto_merge');
   });
 });

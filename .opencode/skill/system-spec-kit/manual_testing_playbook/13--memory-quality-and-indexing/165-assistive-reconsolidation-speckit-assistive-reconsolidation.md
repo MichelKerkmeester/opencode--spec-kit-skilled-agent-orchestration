@@ -1,6 +1,6 @@
 ---
 title: "165 -- Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION)"
-description: "This scenario validates assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) for `165`. It focuses on enabling the flag, saving a near-duplicate, and verifying merge/recommend behavior."
+description: "This scenario validates assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) for `165`. It focuses on enabling the flag, saving a near-duplicate, and verifying advisory-note/recommend behavior."
 audited_post_018: true
 ---
 
@@ -16,10 +16,10 @@ This scenario validates assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDA
 
 Operators run the exact prompt and command sequence for `165` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify near-duplicate auto-merge and borderline recommendation behavior plus companion predecessor validation
-- Prompt: `As a memory-quality validation operator, validate Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify near-duplicate auto-merge and borderline recommendation behavior plus companion predecessor validation. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: similarity >= 0.96 returns 'auto_merge' and archives the older row; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action; companion merge guard aborts stale merge attempts with `predecessor_changed` or `predecessor_gone`
-- Pass/fail: PASS if auto-merge triggers at >= 0.96, recommendation logs for review tier, no destructive action occurs for borderline pairs, and predecessor-change detection blocks stale companion merges; FAIL if tier classification is wrong, review tier mutates state, or stale predecessor changes still commit a merge
+- Objective: Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation
+- Prompt: `As a memory-quality validation operator, validate Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected signals: similarity >= 0.96 returns the internal 'auto_merge' classifier and emits a high-similarity compatibility note without archiving the older row; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action; companion merge guard aborts stale merge attempts with `predecessor_changed` or `predecessor_gone`
+- Pass/fail: PASS if the high-similarity compatibility note triggers at >= 0.96, recommendation logs for review tier, no destructive action occurs for assistive tiers, and predecessor-change detection blocks stale companion merges; FAIL if tier classification is wrong, assistive tiers mutate state, or stale predecessor changes still commit a merge
 
 ---
 
@@ -28,21 +28,21 @@ Operators run the exact prompt and command sequence for `165` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, verify merge/recommend behavior against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a memory-quality validation operator, verify merge/recommend behavior against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify the high-similarity compatibility note at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for assistive tiers. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
 
 1. `SPECKIT_ASSISTIVE_RECONSOLIDATION=true`
 2. Save memory A, then save near-duplicate B (sim >= 0.96)
-3. Verify auto-merge
+3. Verify the high-similarity compatibility note
 4. Save memory C (0.88 <= sim < 0.96 vs A)
 5. Verify AssistiveRecommendation logged
 6. `npx vitest run tests/assistive-reconsolidation.vitest.ts`
 
 ### Expected
 
-auto_merge at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for review tier
+High-similarity compatibility note at >= 0.96; review with recommendation at >= 0.88; keep_separate below 0.88; no destructive action for assistive tiers
 
 ### Evidence
 
@@ -55,7 +55,7 @@ classifyAssistiveSimilarity() output + AssistiveRecommendation log + test transc
 
 ### Failure Triage
 
-Verify isAssistiveReconsolidationEnabled() → Check ASSISTIVE_AUTO_MERGE_THRESHOLD (0.96) → Check ASSISTIVE_REVIEW_THRESHOLD (0.88) → Inspect classifyBorderlinePair() logic → Verify recommendation persistence
+Verify isAssistiveReconsolidationEnabled() → Check ASSISTIVE_COMPATIBILITY_NOTE_THRESHOLD (0.96) → Check ASSISTIVE_REVIEW_THRESHOLD (0.88) → Inspect classifyBorderlinePair() logic → Verify recommendation persistence
 
 ---
 

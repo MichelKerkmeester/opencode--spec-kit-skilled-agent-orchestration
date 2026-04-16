@@ -2914,11 +2914,11 @@ See [`13--memory-quality-and-indexing/_deprecated/20-weekly-batch-feedback-learn
 
 #### Description
 
-Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into an auto-merge compatibility note, review, or keep-separate tiers, keeping the assistive layer advisory-only (updated 2026-04-12 per catalog cleanup).
+Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into a high-similarity compatibility note, review, or keep-separate tiers, keeping the assistive layer advisory-only (updated 2026-04-12 per catalog cleanup).
 
 #### Current Reality
 
-The assistive reconsolidation module operates in three tiers: auto-merge compatibility note (similarity >= 0.96, the internal `auto_merge` tier now logs that archived-tier side effects are disabled), review (similarity >= 0.88, recommendation logged but no destructive action), and keep-separate (similarity < 0.88). Review-tier classification uses a heuristic: if the newer memory content is longer by > 20%, it is classified as complement; otherwise as supersede. Default ON (graduated), set `SPECKIT_ASSISTIVE_RECONSOLIDATION=false` to disable (updated 2026-04-12 per catalog cleanup).
+The assistive reconsolidation module operates in three tiers: high-similarity compatibility note (similarity >= 0.96, the internal `auto_merge` tier now logs that archived-tier side effects are disabled), review (similarity >= 0.88, recommendation logged but no destructive action), and keep-separate (similarity < 0.88). Review-tier classification uses a heuristic: if the newer memory content is longer by > 20%, it is classified as complement; otherwise as supersede. Default ON (graduated), set `SPECKIT_ASSISTIVE_RECONSOLIDATION=false` to disable (updated 2026-04-12 per catalog cleanup).
 
 #### Source Files
 
@@ -4368,7 +4368,7 @@ These flags are the main control panel for how search works. They turn major ret
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/ablation-framework.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
-| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | `handlers/save/reconsolidation-bridge.ts` | **Default ON (graduated).** Three-tier assistive reconsolidation. Classifies memory pairs by cosine similarity into an auto-merge compatibility note (>=0.96; archived-tier side effects are disabled), review (>=0.88), or keep-separate (<0.88). Review-tier pairs receive a logged recommendation (supersede or complement), and the assistive layer stays advisory-only. |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | `handlers/save/reconsolidation-bridge.ts` | **Default ON (graduated).** Three-tier assistive reconsolidation. Classifies memory pairs by cosine similarity into a high-similarity compatibility note (>=0.96; archived-tier side effects are disabled), review (>=0.88), or keep-separate (<0.88). Review-tier pairs receive a logged recommendation (supersede or complement), and the assistive layer stays advisory-only. |
 | `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
 | `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
 | `SPECKIT_BATCH_LEARNED_FEEDBACK` | `true` | boolean | `lib/feedback/batch-learning.ts` | **Default ON (graduated).** Weekly batch feedback learning pipeline. Aggregates implicit feedback events, computes confidence-weighted signal scores (strong=1.0, medium=0.5, weak=0.1), enforces min-support (3 sessions) and boost-cap (0.10) guards. Shadow-only: records would-have-been shadow rank deltas. |
