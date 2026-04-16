@@ -289,11 +289,13 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
 
+      const refreshedState = detectState(rootDir);
       lastCheckResult = {
-        freshness: state.freshness,
-        action: 'full_scan',
+        freshness: refreshedState.freshness,
+        action: refreshedState.action,
+        ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
-        reason: appendCleanupReason(state.reason, removedDeletedCount),
+        reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
       };
       return lastCheckResult;
     }
@@ -308,12 +310,13 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
 
+      const refreshedState = detectState(rootDir);
       lastCheckResult = {
-        freshness: state.freshness,
-        action: 'selective_reindex',
-        files: state.staleFiles,
+        freshness: refreshedState.freshness,
+        action: refreshedState.action,
+        ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
-        reason: appendCleanupReason(state.reason, removedDeletedCount),
+        reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
       };
       return lastCheckResult;
     }

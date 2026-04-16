@@ -127,15 +127,21 @@ describe('ensure-ready', () => {
   });
 
   describe('ensureCodeGraphReady', () => {
-    it('returns a ReadyResult with full_scan when graph is empty', async () => {
+    it('returns refreshed readiness after a successful inline full scan', async () => {
+      mocks.getDbMock
+        .mockReturnValueOnce(createDbWithNodeCount(0))
+        .mockReturnValue(createDbWithNodeCount(1));
+      mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
+      mocks.ensureFreshFilesMock.mockReturnValue({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
+
       const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root');
 
-      expect(result).toBeDefined();
-      expect(result.freshness).toBeDefined();
-      expect(result.action).toBeDefined();
-      expect(typeof result.inlineIndexPerformed).toBe('boolean');
-      expect(typeof result.reason).toBe('string');
+      expect(result.freshness).toBe('fresh');
+      expect(result.action).toBe('none');
+      expect(result.inlineIndexPerformed).toBe(true);
+      expect(result.reason).toBe('all tracked files are up-to-date');
+      expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
     });
 
     it('removes deleted tracked files even when no reindex is needed', async () => {
@@ -173,7 +179,9 @@ describe('ensure-ready', () => {
     it('performs selective inline reindex for small stale sets when allowed', async () => {
       mocks.getDbMock.mockReturnValue(createDbWithNodeCount(1));
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
-      mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: ['/tmp/test-root/stale.ts'] });
+      mocks.ensureFreshFilesMock
+        .mockReturnValueOnce({ fresh: [], stale: ['/tmp/test-root/stale.ts'] })
+        .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
 
       const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
@@ -181,10 +189,11 @@ describe('ensure-ready', () => {
         allowInlineFullScan: false,
       });
 
-      expect(result.action).toBe('selective_reindex');
-      expect(result.freshness).toBe('stale');
+      expect(result.action).toBe('none');
+      expect(result.freshness).toBe('fresh');
       expect(result.inlineIndexPerformed).toBe(true);
-      expect(result.files).toEqual(['/tmp/test-root/stale.ts']);
+      expect(result.files).toBeUndefined();
+      expect(result.reason).toBe('all tracked files are up-to-date');
       expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
       expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
     });
@@ -192,10 +201,14 @@ describe('ensure-ready', () => {
     it('allows selective inline reindex after git HEAD changes when the stale set is small', async () => {
       const newHead = 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
       mocks.getDbMock.mockReturnValue(createDbWithNodeCount(1));
-      mocks.getLastGitHeadMock.mockReturnValue('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+      mocks.getLastGitHeadMock
+        .mockReturnValueOnce('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        .mockReturnValue(newHead);
       mocks.execSyncMock.mockReturnValue(`${newHead}\n`);
       mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
-      mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: ['/tmp/test-root/stale.ts'] });
+      mocks.ensureFreshFilesMock
+        .mockReturnValueOnce({ fresh: [], stale: ['/tmp/test-root/stale.ts'] })
+        .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
 
       const { ensureCodeGraphReady } = await import('../lib/code-graph/ensure-ready.js');
       const result = await ensureCodeGraphReady('/tmp/test-root', {
@@ -203,12 +216,11 @@ describe('ensure-ready', () => {
         allowInlineFullScan: false,
       });
 
-      expect(result.action).toBe('selective_reindex');
-      expect(result.freshness).toBe('stale');
+      expect(result.action).toBe('none');
+      expect(result.freshness).toBe('fresh');
       expect(result.inlineIndexPerformed).toBe(true);
-      expect(result.files).toEqual(['/tmp/test-root/stale.ts']);
-      expect(result.reason).toContain('git HEAD changed: aaaaaaaa -> bbbbbbbb');
-      expect(result.reason).toContain('1 file(s) have newer mtime than indexed_at');
+      expect(result.files).toBeUndefined();
+      expect(result.reason).toBe('all tracked files are up-to-date');
       expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
       expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
       expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith(newHead);
