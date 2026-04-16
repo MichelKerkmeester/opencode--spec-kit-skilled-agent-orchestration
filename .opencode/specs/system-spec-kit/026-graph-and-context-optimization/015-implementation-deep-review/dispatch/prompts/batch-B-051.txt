@@ -1,0 +1,77 @@
+You are an IMPLEMENTATION agent for batch B-051 (Phase 3).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-051
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 3 — Command integrity: workflow.ts, context-server, doctor YAML, YAML tool refs
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+169:- [ ] T075 [P1] Fix `runWorkflow()` quality score override bug (`workflow.ts:1082`) (S3.1#6 iter 31)
+170:- [ ] T076 [P1] Fix 250ms dispatch graph-context timeout not actually capping latency (`context-server.ts:631`) (S3.1#7 iter 36)
+171:- [ ] T077 [P1] Fix `/create:feature-catalog` root filename disagreement (S3.1#8 iter 51)
+172:- [ ] T078 [P1] Fix `doctor_mcp_install.yaml` stale `guide_section` labels (S3.1#9 iter 52)
+173:- [ ] T079 [P1] Fix 10 YAML files referencing `spec_kit_memory_memory_save(...)` instead of `memory_save` (S3.1#10 iter 53)
+177:- [ ] T080 [P1] Fix `config_checklist.md` JSONC validation commands unsafe for real JSONC (S3.1#11 iter 66)
+178:- [ ] T081 [P1] Fix `sk-doc` command scaffolding teaching multiline `description` (S3.1#12 iter 67)
+179:- [ ] T082 [P1] Fix Gate 3 carry-over rule drift across root runtime docs (S3.1#13 iter 70)
+180:- [ ] T083 [P1] Fix root docs pointing at non-existent `generate-context.js` entrypoint (S3.1#14 iter 70)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.1#6
+S3.1#7
+S3.1#8
+S3.1#9
+S3.1#10
+S3.1#11
+S3.1#12
+S3.1#13
+S3.1#14
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/system-spec-kit/scripts/core/workflow.ts
+.opencode/skill/system-spec-kit/mcp_server/lib/context/context-server.ts
+.opencode/command/doctor/assets/doctor_mcp_install.yaml
+.opencode/command/create/feature-catalog.md
+.opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml
+.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml
+.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml
+.opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml
+.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml
+.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml
+.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml
+.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml
+CLAUDE.md
+AGENTS.md
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-030
+CHK-031
+CHK-032
+CHK-033
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-051-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

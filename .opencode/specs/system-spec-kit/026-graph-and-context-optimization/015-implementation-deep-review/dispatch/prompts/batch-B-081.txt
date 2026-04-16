@@ -1,0 +1,85 @@
+You are an IMPLEMENTATION agent for batch B-081 (Phase 6).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-081
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 6 — Placeholder residue + stale refs P2
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+272:- [ ] T148 [P1] [P] Fix malformed copy-paste commands in Copilot prompt templates (`prompt_templates.md:105,255`) (S3.10#1 iter 65)
+273:- [ ] T149 [P1] [P] Fix Code Mode env-var contract contradiction with unprefixed onboarding examples (`config_template.md:347`) (S3.10#2 iter 65)
+274:- [ ] T150 [P1] [P] Fix feature-catalog templates generating `FEATURE_CATALOG.md` vs live `feature_catalog.md` (S3.10#3 iter 67)
+275:- [ ] T151 [P1] Fix broken Level 1 copy command in `template_mapping.md` (S3.10#4 iter 68)
+279:- [ ] T152 [P2] [P] Fix 014 machine-readable freshness stale against canonical metadata pair (S3.7#9 iter 7)
+280:- [ ] T153 [P2] [P] Fix post-save-review coverage too shallow to catch dead wiring (S3.7#10 iter 11)
+281:- [ ] T154 [P2] [P] Fix 009/001 checklist deferring CHK-052 to deprecated `memory/` path (S3.7#11 iter 26)
+282:- [ ] T155 [P2] [P] Fix dead branch in adjacency construction (`coverage-graph-signals.cjs:89`) (S3.7#12 iter 40)
+283:- [ ] T156 [P2] [P] Fix `gate-d-regression-memory-tiers.vitest.ts` pre-filtering failure case (S3.7#13 iter 47)
+284:- [ ] T157 [P2] [P] Fix 010/003 stale lineage aliases in checklist (S3.7#14 iter 49)
+285:- [ ] T158 [P2] [P] Fix stale runtime note about `.agents/agents` symlink in create commands (S3.7#15 iter 51)
+286:- [ ] T159 [P2] [P] Fix changelog workflow stale `370+` scale claim (S3.7#16 iter 52)
+287:- [ ] T160 [P2] [P] Fix mcp-chrome-devtools broad `pkill` recipe in troubleshooting (S3.7#17 iter 60)
+288:- [ ] T161 [P2] [P] Fix Copilot CLI stale default-model statement (`cli_reference.md:132`) (S3.7#18 iter 64)
+289:- [ ] T162 [P2] [P] Fix dead sibling `../prompt_templates.md` reference across 4 prompt quality cards (S3.7#19 iter 65)
+290:- [ ] T163 [P2] [P] Fix stale `sk-code-web` parent-skill label in sk-code-full-stack checklists (S3.7#20 iter 66)
+291:- [ ] T164 [P2] Fix stale continuity contract in `level_decision_matrix.md` referencing `memory/` folders (S3.7#21 iter 68)
+295:- [ ] T165 [P2] Fix sk-doc skill-template assets self-contradictory anchor convention examples (S3.10#5 iter 68)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.10#1
+S3.10#2
+S3.10#3
+S3.10#4
+S3.10#5
+S3.7#9
+S3.7#10
+S3.7#11
+S3.7#12
+S3.7#13
+S3.7#14
+S3.7#15
+S3.7#16
+S3.7#17
+S3.7#18
+S3.7#19
+S3.7#20
+S3.7#21
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/cli-copilot/references/prompt_templates.md
+.opencode/skill/mcp-code-mode/references/config_template.md
+.opencode/skill/sk-doc/references/template_mapping.md
+.opencode/skill/system-spec-kit/templates/level_1/feature_catalog.md
+.opencode/skill/system-spec-kit/references/level_decision_matrix.md
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-053
+CHK-054
+CHK-055
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-081-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

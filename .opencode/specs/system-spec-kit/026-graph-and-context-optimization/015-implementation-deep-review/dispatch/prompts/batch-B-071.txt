@@ -1,0 +1,81 @@
+You are an IMPLEMENTATION agent for batch B-071 (Phase 5).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-071
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 5 — Traceability: doc evidence, test gaps, templates, P2 items
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+234:- [ ] T120 [P1] Fix 010/003/007 expanded runtime-name rejection list beyond requirement surface (S3.5#12 iter 36)
+235:- [ ] T121 [P1] Fix `gate-d-regression-intent-routing.vitest.ts` not exercising live canonical-filtering (S3.5#13 iter 47)
+236:- [ ] T122 [P1] Fix `memory-search-integration.vitest.ts` being source-text snapshot instead of integration suite (S3.5#14 iter 49)
+237:- [ ] T123 [P1] Fix `sk-code-full-stack` Node.js/React Native/Swift templates still being browser-web (S3.5#15 iter 66)
+238:- [ ] T124 [P1] **Verify**: every checklist item has traceable file:line evidence (S3.5)
+242:- [ ] T125 [P2] [P] Fix 014 machine-readable evidence indexing only exposing 1 of 3 transcript proofs (S3.5#16 iter 31)
+243:- [ ] T126 [P2] [P] Fix pipeline tests leaving traceability regressions unguarded (S3.5#17 iter 31)
+244:- [ ] T127 [P2] [P] Fix 014 packet-verification evidence not self-locating (S3.5#18 iter 37)
+245:- [ ] T128 [P2] [P] Fix 009/001 checklist evidence using shorthand placeholders (S3.5#19 iter 38)
+246:- [ ] T129 [P2] [P] Fix 010 graph metadata carrying heading-shaped/stopword entities (S3.5#20 iter 39)
+247:- [ ] T130 [P2] [P] Fix canonical packet truth depending on excluded review artifact (S3.5#21 iter 40)
+248:- [ ] T131 [P2] [P] Fix description.json noisy `memoryNameHistory` (S3.5#22 iter 40)
+249:- [ ] T132 [P2] [P] Fix line-for-line duplicate runtime-capabilities resolver (S3.5#23 iter 41)
+250:- [ ] T133 [P2] [P] Fix deep-review parity suite not exercising resolver module (S3.5#24 iter 41)
+251:- [ ] T134 [P2] Fix wrong follow-up command name `/doctor:mcp_install` -> `/doctor:mcp_debug` (S3.5#25 iter 51)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.5#12
+S3.5#13
+S3.5#14
+S3.5#15
+S3.5#16
+S3.5#17
+S3.5#18
+S3.5#19
+S3.5#20
+S3.5#21
+S3.5#22
+S3.5#23
+S3.5#24
+S3.5#25
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements/spec.md
+.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-intent-routing.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts
+.opencode/skill/sk-code-full-stack/references/templates
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-045
+CHK-046
+CHK-047
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+2. npx vitest run /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-intent-routing.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-071-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

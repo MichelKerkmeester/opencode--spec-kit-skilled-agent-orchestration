@@ -26,12 +26,23 @@ import { appendMutationLedgerSafe } from '../memory-crud-utils.js';
 import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating.js';
 import { detectSpecLevelFromParsed } from '../handler-utils.js';
 import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers.js';
+import { buildScopePostInsertMetadata } from './create-record.js';
 import type {
   AssistiveRecommendation,
   IndexResult,
   ReconWarningList,
 } from './types.js';
 export type { AssistiveClassification, AssistiveRecommendation } from './types.js';
+
+const RECONSOLIDATION_SCOPE_FIELDS = [
+  ['tenant_id', 'tenantId'],
+  ['user_id', 'userId'],
+  ['agent_id', 'agentId'],
+  ['session_id', 'sessionId'],
+] as const;
+
+type RequestedScopeKey = typeof RECONSOLIDATION_SCOPE_FIELDS[number][1];
+type RequestedScope = Record<RequestedScopeKey, string | null>;
 
 // Feature catalog: Reconsolidation-on-save
 // Feature catalog: Memory indexing (memory_save)
@@ -163,6 +174,68 @@ function repairBm25Document(args: {
   }
 }
 
+function normalizeScopeValue(value: unknown): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function getRequestedScope(scope?: {
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
+  sessionId?: string | null;
+}): RequestedScope {
+  return {
+    tenantId: normalizeScopeValue(scope?.tenantId),
+    userId: normalizeScopeValue(scope?.userId),
+    agentId: normalizeScopeValue(scope?.agentId),
+    sessionId: normalizeScopeValue(scope?.sessionId),
+  };
+}
+
+function hasGovernedScope(requestedScope: RequestedScope): boolean {
+  return Object.values(requestedScope).some((value) => value !== null);
+}
+
+function readStoredScope(
+  database: BetterSqlite3.Database,
+  memoryId: number,
+): Record<string, unknown> | null {
+  if (memoryId <= 0 || typeof database.prepare !== 'function') {
+    return null;
+  }
+
+  const storedScope = database.prepare(`
+    SELECT tenant_id, user_id, agent_id, session_id
+    FROM memory_index
+    WHERE id = ?
+  `).get(memoryId) as Record<string, unknown> | undefined;
+  return storedScope ?? null;
+}
+
+function candidateMatchesRequestedScope(
+  database: BetterSqlite3.Database,
+  candidate: Record<string, unknown>,
+  requestedScope: RequestedScope,
+): boolean {
+  const requiresGovernedLookup = hasGovernedScope(requestedScope);
+  const candidateId = typeof candidate.id === 'number' ? candidate.id : 0;
+  const scopeSource = requiresGovernedLookup
+    ? readStoredScope(database, candidateId)
+    : candidate;
+
+  if (!scopeSource) {
+    return false;
+  }
+
+  return RECONSOLIDATION_SCOPE_FIELDS.every(([column, key]) => (
+    normalizeScopeValue(scopeSource[column]) === requestedScope[key]
+  ));
+}
+
 /**
  * Runs reconsolidation when enabled and returns either an early tool response
  * or a signal to continue the standard create-record path.
@@ -180,6 +253,7 @@ export async function runReconsolidationIfEnabled(
   const reconWarnings = [] as ReconWarningList;
   const plannerMode = options.plannerMode ?? 'plan-only';
   const allowSaveTimeReconsolidation = plannerMode === 'full-auto' || isSaveReconsolidationEnabled();
+  const requestedScope = getRequestedScope(scope);
 
   // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
   // Reconsolidation.ts keeps an internal guard as a defensive fallback for
@@ -213,13 +287,11 @@ export async function runReconsolidationIfEnabled(
                 minSimilarity: 50,
                 includeConstitutional: false,
               });
-              // Post-filter by governance scope to prevent cross-tenant reconsolidation
-              const scopeFiltered = results.filter((r: Record<string, unknown>) => {
-                if (scope?.tenantId && r.tenant_id && r.tenant_id !== scope.tenantId) return false;
-                if (scope?.userId && r.user_id && r.user_id !== scope.userId) return false;
-                if (scope?.agentId && r.agent_id && r.agent_id !== scope.agentId) return false;
-                return true;
-              }).slice(0, opts.limit ?? 3);
+              // Fail closed: reconsolidation can only consider candidates whose
+              // stored governance scope exactly matches the incoming save scope.
+              const scopeFiltered = results.filter((r: Record<string, unknown>) => (
+                candidateMatchesRequestedScope(database, r, requestedScope)
+              )).slice(0, opts.limit ?? 3);
               return scopeFiltered.map((r: Record<string, unknown>) => ({
                 id: typeof r.id === 'number' ? r.id : 0,
                 file_path: typeof r.file_path === 'string' ? r.file_path : '',
@@ -277,6 +349,7 @@ export async function runReconsolidationIfEnabled(
                   spec_level: callbackSpecLevel,
                   quality_score: parsed.qualityScore ?? 0,
                   quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+                  ...buildScopePostInsertMetadata(scope),
                 });
 
                 if (bm25Index.isBm25Enabled()) {
@@ -387,9 +460,12 @@ export async function runReconsolidationIfEnabled(
         minSimilarity: Math.round(ASSISTIVE_REVIEW_THRESHOLD * 100), // convert to 0-100 scale
         includeConstitutional: false,
       });
+      const scopedCandidates = candidateResults.filter((candidate: Record<string, unknown>) => (
+        candidateMatchesRequestedScope(database, candidate, requestedScope)
+      ));
 
-      if (candidateResults.length > 0) {
-        const top = candidateResults[0] as Record<string, unknown>;
+      if (scopedCandidates.length > 0) {
+        const top = scopedCandidates[0] as Record<string, unknown>;
         // vectorSearch returns similarity in [0, 100], normalise to [0, 1]
         const rawSimilarity = typeof top.similarity === 'number' ? top.similarity : 0;
         const similarity = rawSimilarity > 1 ? rawSimilarity / 100 : rawSimilarity;
