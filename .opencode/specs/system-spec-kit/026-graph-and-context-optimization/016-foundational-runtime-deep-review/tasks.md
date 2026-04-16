@@ -170,7 +170,7 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 
 - [ ] T-RCB-01 [P1] R6-001: Assistive reconsolidation gated by planner/full-auto switch; default OFF despite docs "default ON" → align assistive-default docs with runtime switch (`reconsolidation-bridge.ts:66-73,243-255,446-454`) [Phase 3 Med-C]
-- [ ] T-RCB-02 [P1] R6-002: `ASSISTIVE_AUTO_MERGE_THRESHOLD` promises auto-merge; runtime only logs and falls through → rename threshold OR implement auto-merge [Phase 3 Med-C, QW-equivalent]
+- [x] T-RCB-02 [P1] R6-002: `ASSISTIVE_AUTO_MERGE_THRESHOLD` promises auto-merge; runtime only logs and falls through → rename threshold OR implement auto-merge [Phase 3 Med-C, QW-equivalent]
 - [ ] T-RCB-03 [P1] R13-004: Any thrown error (checkpoint, reconsolidate, similarity, conflict store) caught and falls through to normal create without structured warning → emit typed `OperationResult` with `failed` status + reason (`reconsolidation-bridge.ts:261-270,438-442`) [B:T-PIN-M13]
 - [ ] T-RCB-04 [P1] R31-003 + R35-001 (dedup): `executeConflict()` has no predecessor-version or scope recheck; merge defends, conflict does not; two concurrent saves can both supersede same predecessor, forking lineage → predecessor CAS (B1 from S1) (`reconsolidation-bridge.ts:282-295` + `reconsolidation.ts:467-508`) — Phase 1d / B1
 - [ ] T-RCB-05 [P1] R32-003: Scope-retag between filter and commit not re-checked at conflict/merge → re-check scope inside writer transaction (part of B1/B3) (`reconsolidation-bridge.ts:270-306`) — Phase 1d
@@ -220,7 +220,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [ ] T-CGQ-01 [P1] R3-001: `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal → return `ambiguous_subject` on multi-row match (`code-graph/query.ts:42-58`) [QW]
 - [ ] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
 - [ ] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
-- [ ] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
+- [x] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
 - [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
 - [ ] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
 - [ ] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
@@ -368,7 +368,7 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 Primary workstream: S4.
 
 - [ ] T-SAR-01 [P2] R42-002: Skill-routing authority split across two unsynchronized inventories: SKILL.md discovery vs compiled graph; `health_check()` returns ok even when inventories disagree → inventory comparison in health_check (A5 cascade) (`skill_advisor_runtime.py:93-97,165-203`) — Phase 2 S4
-- [ ] T-SAR-02 [P2] R44-002: `parse_frontmatter_fast()` stores only `key: value` scalar lines; `<!-- Keywords: ... -->` comment blocks stripped before routing → capture comment blocks (A1 from S4) (`skill_advisor_runtime.py:161-203`) — Phase 2 S4 / QW #3
+- [x] T-SAR-02 [P2] R44-002: `parse_frontmatter_fast()` stores only `key: value` scalar lines; `<!-- Keywords: ... -->` comment blocks stripped before routing → capture comment blocks (A1 from S4) (`skill_advisor_runtime.py:161-203`) — Phase 2 S4 / QW #3
 <!-- /ANCHOR:group-sar -->
 
 ---
