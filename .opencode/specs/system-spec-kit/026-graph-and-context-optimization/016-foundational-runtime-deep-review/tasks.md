@@ -132,7 +132,7 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 - [ ] T-SST-04 [P1] R14-001: `storeTokenSnapshot` writes `lastTranscriptOffset: 0` before producer metadata builds; catch swallows later failure → eliminate intermediate zero-offset write (`session-stop.ts:175-193,257-268,274-276`) [B:T-SST-06 (D4)]
 - [ ] T-SST-05 [P0-D] [P] R37-001: Transient `lastTranscriptOffset: 0` sentinel between two writes; second concurrent stop hook can re-parse from zero; carry final offset through to `recordStateUpdate()` (`session-stop.ts:175-190,244-252,257-268`) — Phase 1a / QW #21
 - [ ] T-SST-06 [P0-D] [P] R33-002: Overlapping stop hooks can regress `lastTranscriptOffset` backwards; `Math.max()` monotonicity guard in `updateState()` (also lands in T-HST group) (`session-stop.ts:119-125,244-268`) — Phase 1a / QW #9
-- [ ] T-SST-07 [P1] R39-001: Autosave outcome (ran/skipped/failed) never surfaced in `SessionStopProcessResult`; add `autosaveOutcome` field (`session-stop.ts:60-67,108-117,299-318`) — Phase 1a / QW #22
+- [x] T-SST-07 [P1] R39-001: Autosave outcome (ran/skipped/failed) never surfaced in `SessionStopProcessResult`; add `autosaveOutcome` field (`session-stop.ts:60-67,108-117,299-318`) — Phase 1a / QW #22
 - [ ] T-SST-08 [P1] R15-001, R15-002, R15-003: Transcript-driven retargeting silently rewrites autosave destination; 50 KB tail window can hide real active packet; transcript I/O failure collapsed into "ambiguous" → emit retarget-reason field; configurable tail window; distinguish I/O vs ambiguity (`session-stop.ts:61-77,281-309,294-295,340-378`) [Phase 3 Med-F]
 - [ ] T-SST-09 [P1] R20-001: `buildProducerMetadata()` re-stats live transcript; metadata describes later state than parsed one → snapshot transcript stat before producer metadata builds (`session-stop.ts:199-218,248-268`) [Phase 3 Med-E]
 - [ ] T-SST-10 [P1] R31-002 + R32-002 (dedup): Multiple `recordStateUpdate()` + final disk reload in `runContextAutosave()` create torn-state autosave window → collapse three writes into single atomic patch (M3 from S2) (`session-stop.ts:60-67,119-125,244-246,261-268,281-289,302-309`) — Phase 1b / M3
@@ -316,10 +316,10 @@ Primary workstream: Phase 3 Med-A, Med-B.
 Primary workstream: S2 (P0-A) + M8.
 
 - [ ] T-SBS-01 [P1] R30-001: Same payload carries `trustState=stale` AND `graphOps.readiness.canonical=empty` → align vocabulary to M8 expansion (`session-bootstrap.ts:321-347` + `session-resume.ts:530-551`) — Phase 3 M8 [B:T-SHP-01]
-- [ ] T-SRS-01 [P1] R24-002: Cached scope drives `fallbackSpecFolder` but OpenCode transport uses `args.specFolder ?? null` → `handleSessionResume` forwards fallback scope (`session-resume.ts:174-188,415-429,560-563`) [QW]
+- [x] T-SRS-01 [P1] R24-002: Cached scope drives `fallbackSpecFolder` but OpenCode transport uses `args.specFolder ?? null` → `handleSessionResume` forwards fallback scope (`session-resume.ts:174-188,415-429,560-563`) [QW]
 - [ ] T-SRS-02 [P1] R29-001 consumer side: schema-version rejection path unreachable → paired with T-HST-02 to enable it (`session-resume.ts:174-208`) [B:T-HST-02]
 - [ ] T-SRS-03 [P2] R38-001 extension: `session-resume.ts:348-366` has same all-or-nothing scan; inherits T-HST-03 fix [B:T-HST-03]
-- [ ] T-SHS-01 [P2] R26-002: `session_health` doesn't attach section-level `structuralTrust` axes → add structural-trust section (QW #19) (`session-health.ts:136-166`) [QW #19]
+- [x] T-SHS-01 [P2] R26-002: `session_health` doesn't attach section-level `structuralTrust` axes → add structural-trust section (QW #19) (`session-health.ts:136-166`) [QW #19]
 - [ ] T-SRS-04 [P2] R29-002: Claude startup collapses all rejection reasons into same "no cached continuity" state → distinct reason codes per M1/M2 (`session-prime.ts:130-143`) [B:T-HST-01, T-HST-02]
 <!-- /ANCHOR:group-sbs-srs-shs -->
 
