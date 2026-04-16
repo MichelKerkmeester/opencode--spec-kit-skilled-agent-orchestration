@@ -19,6 +19,7 @@ import contextlib
 import io
 import json
 import os
+import sqlite3
 import sys
 import tempfile
 
@@ -245,6 +246,140 @@ description: Runtime cache fixture
             ok("T243-SA-009: analyze_prompt returns valid list (may be empty)", f"len={len(result) if isinstance(result, list) else 'N/A'}")
     except Exception as exc:
         fail_test("T243-SA-009: Result item has 'skill' field", str(exc))
+
+    # T243-SA-010: graph intent_signals + derived.trigger_phrases affect routing
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            for skill_name in ("alpha-skill", "beta-skill"):
+                skill_dir = os.path.join(tmpdir, skill_name)
+                os.makedirs(skill_dir, exist_ok=True)
+                with open(os.path.join(skill_dir, "SKILL.md"), "w", encoding="utf-8") as handle:
+                    handle.write(
+                        f"""---
+name: {skill_name}
+description: Fixture helper for routing tests
+---
+# {skill_name}
+"""
+                    )
+
+            sqlite_path = os.path.join(tmpdir, "skill-graph.sqlite")
+            with sqlite3.connect(sqlite_path) as connection:
+                connection.executescript(
+                    """
+                    CREATE TABLE skill_nodes (
+                        id TEXT PRIMARY KEY,
+                        family TEXT NOT NULL,
+                        category TEXT NOT NULL,
+                        schema_version INTEGER NOT NULL,
+                        domains TEXT,
+                        intent_signals TEXT,
+                        derived TEXT,
+                        source_path TEXT NOT NULL UNIQUE,
+                        content_hash TEXT NOT NULL,
+                        indexed_at TEXT
+                    );
+                    CREATE TABLE skill_edges (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        source_id TEXT NOT NULL,
+                        target_id TEXT NOT NULL,
+                        edge_type TEXT NOT NULL,
+                        weight REAL NOT NULL,
+                        context TEXT NOT NULL
+                    );
+                    CREATE TABLE schema_version (version INTEGER NOT NULL);
+                    CREATE TABLE skill_graph_metadata (
+                        key TEXT PRIMARY KEY,
+                        value TEXT,
+                        updated_at TEXT
+                    );
+                    """
+                )
+                connection.execute("INSERT INTO schema_version (version) VALUES (1)")
+                connection.execute(
+                    """
+                    INSERT INTO skill_nodes (
+                        id, family, category, schema_version, domains, intent_signals, derived,
+                        source_path, content_hash, indexed_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+                    """,
+                    (
+                        "alpha-skill",
+                        "system",
+                        "system",
+                        2,
+                        json.dumps(["testing"]),
+                        json.dumps(["uncommon routing"]),
+                        json.dumps({"trigger_phrases": ["latent signal phrase"]}),
+                        os.path.join(tmpdir, "alpha-skill", "graph-metadata.json"),
+                        "alpha-hash",
+                    ),
+                )
+                connection.execute(
+                    """
+                    INSERT INTO skill_nodes (
+                        id, family, category, schema_version, domains, intent_signals, derived,
+                        source_path, content_hash, indexed_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+                    """,
+                    (
+                        "beta-skill",
+                        "system",
+                        "system",
+                        2,
+                        json.dumps(["testing"]),
+                        json.dumps(["different phrase"]),
+                        json.dumps({"trigger_phrases": ["other trigger"]}),
+                        os.path.join(tmpdir, "beta-skill", "graph-metadata.json"),
+                        "beta-hash",
+                    ),
+                )
+                connection.commit()
+
+            original_skills_dir = advisor.SKILLS_DIR
+            original_sqlite_path = advisor.SKILL_GRAPH_SQLITE_PATH
+            original_skill_graph = advisor._SKILL_GRAPH
+            original_skill_graph_source = advisor._SKILL_GRAPH_SOURCE
+            original_command_bridges = advisor.COMMAND_BRIDGES
+
+            try:
+                advisor.SKILLS_DIR = tmpdir
+                advisor.SKILL_GRAPH_SQLITE_PATH = sqlite_path
+                advisor._SKILL_GRAPH = None
+                advisor._SKILL_GRAPH_SOURCE = None
+                advisor.COMMAND_BRIDGES = {}
+                advisor.get_skills(force_refresh=True)
+
+                result = advisor.analyze_prompt(
+                    prompt="latent signal phrase uncommon routing",
+                    confidence_threshold=0.8,
+                    uncertainty_threshold=0.35,
+                    confidence_only=True,
+                    show_rejections=True,
+                )
+                top = result[0] if isinstance(result, list) and result else None
+
+                if (
+                    isinstance(top, dict)
+                    and top.get("skill") == "alpha-skill"
+                    and top.get("confidence", 0.0) >= 0.8
+                    and "(signal)" in top.get("reason", "")
+                ):
+                    ok("T243-SA-010: graph signals and trigger phrases boost routing", top["reason"])
+                else:
+                    fail_test(
+                        "T243-SA-010: graph signals and trigger phrases boost routing",
+                        f"top={top}, result_len={len(result) if isinstance(result, list) else 'N/A'}",
+                    )
+            finally:
+                advisor.SKILLS_DIR = original_skills_dir
+                advisor.SKILL_GRAPH_SQLITE_PATH = original_sqlite_path
+                advisor._SKILL_GRAPH = original_skill_graph
+                advisor._SKILL_GRAPH_SOURCE = original_skill_graph_source
+                advisor.COMMAND_BRIDGES = original_command_bridges
+                advisor.get_skills(force_refresh=True)
+    except Exception as exc:
+        fail_test("T243-SA-010: graph signals and trigger phrases boost routing", str(exc))
 
 # ───────────────────────────────────────────────────────────────
 # 3. BENCH HARNESS TESTS

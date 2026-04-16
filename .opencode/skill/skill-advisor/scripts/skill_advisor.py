@@ -108,6 +108,80 @@ def _compute_hub_skills(adjacency: Dict[str, Dict[str, Dict[str, float]]]) -> Li
     return sorted(skill for skill, count in inbound_counts.items() if count > median)
 
 
+def _normalize_signal_phrase(signal: str) -> str:
+    """Normalize graph-declared signal phrases for stable matching."""
+    return " ".join(signal.strip().lower().split())
+
+
+def _expand_signal_variants(signal: str) -> Set[str]:
+    """Build phrase variants from graph metadata signals and trigger phrases."""
+    normalized = _normalize_signal_phrase(signal)
+    if not normalized:
+        return set()
+    return {
+        normalized,
+        normalized.replace("-", " "),
+        normalized.replace("_", " "),
+        normalized.replace("-", "_"),
+    }
+
+
+def _extend_signal_map(
+    signal_map: Dict[str, List[str]],
+    skill_id: str,
+    raw_signals: Any,
+) -> None:
+    """Merge normalized signal variants into a per-skill routing map."""
+    if not isinstance(raw_signals, list) or not raw_signals:
+        return
+
+    existing = signal_map.setdefault(skill_id, [])
+    seen = set(existing)
+    for raw_signal in raw_signals:
+        if not isinstance(raw_signal, str):
+            continue
+        for variant in sorted(_expand_signal_variants(raw_signal)):
+            if variant and variant not in seen:
+                existing.append(variant)
+                seen.add(variant)
+
+
+def _load_source_graph_signal_map() -> Dict[str, List[str]]:
+    """Load intent signals and derived trigger phrases from source metadata files."""
+    signal_map: Dict[str, List[str]] = {}
+
+    try:
+        skill_entries = sorted(os.scandir(SKILLS_DIR), key=lambda entry: entry.name)
+    except OSError:
+        return signal_map
+
+    for entry in skill_entries:
+        if not entry.is_dir():
+            continue
+
+        graph_metadata_path = os.path.join(entry.path, "graph-metadata.json")
+        if not os.path.exists(graph_metadata_path):
+            continue
+
+        try:
+            with open(graph_metadata_path, "r", encoding="utf-8") as handle:
+                graph_metadata = json.load(handle)
+        except (OSError, ValueError, json.JSONDecodeError):
+            continue
+
+        if not isinstance(graph_metadata, dict):
+            continue
+
+        skill_id = str(graph_metadata.get("skill_id") or entry.name)
+        _extend_signal_map(signal_map, skill_id, graph_metadata.get("intent_signals"))
+
+        derived = graph_metadata.get("derived")
+        if isinstance(derived, dict):
+            _extend_signal_map(signal_map, skill_id, derived.get("trigger_phrases"))
+
+    return signal_map
+
+
 def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
     """Load compiled-equivalent skill graph data from SQLite."""
     if not os.path.exists(SKILL_GRAPH_SQLITE_PATH):
@@ -118,7 +192,7 @@ def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
             connection.row_factory = sqlite3.Row
 
             node_rows = connection.execute(
-                "SELECT id, family, intent_signals FROM skill_nodes ORDER BY id ASC"
+                "SELECT id, family, intent_signals, derived FROM skill_nodes ORDER BY id ASC"
             ).fetchall()
             if not node_rows:
                 return None
@@ -153,9 +227,13 @@ def _load_skill_graph_sqlite() -> Optional[Dict[str, Any]]:
 
             raw_signals = node_row["intent_signals"]
             if raw_signals:
-                parsed_signals = json.loads(raw_signals)
-                if isinstance(parsed_signals, list) and parsed_signals:
-                    signals[skill_id] = [str(signal) for signal in parsed_signals]
+                _extend_signal_map(signals, skill_id, json.loads(raw_signals))
+
+            raw_derived = node_row["derived"]
+            if raw_derived:
+                parsed_derived = json.loads(raw_derived)
+                if isinstance(parsed_derived, dict):
+                    _extend_signal_map(signals, skill_id, parsed_derived.get("trigger_phrases"))
 
         for edge_row in edge_rows:
             source_id = str(edge_row["source_id"])
@@ -201,9 +279,24 @@ def _load_skill_graph_json() -> Optional[Dict[str, Any]]:
     """Load the legacy compiled JSON graph."""
     try:
         with open(SKILL_GRAPH_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
+            graph = json.load(f)
     except (OSError, json.JSONDecodeError):
         return None
+
+    if not isinstance(graph, dict):
+        return None
+
+    signal_map: Dict[str, List[str]] = {}
+    for skill_id, raw_signals in (graph.get("signals") or {}).items():
+        if isinstance(skill_id, str):
+            _extend_signal_map(signal_map, skill_id, raw_signals)
+
+    source_signal_map = _load_source_graph_signal_map()
+    for skill_id, raw_signals in source_signal_map.items():
+        _extend_signal_map(signal_map, skill_id, raw_signals)
+
+    graph["signals"] = dict(sorted(signal_map.items()))
+    return graph
 
 
 def _load_skill_graph() -> Optional[Dict[str, Any]]:
@@ -394,6 +487,49 @@ def _apply_family_affinity(
                 if affinity >= 0.1:
                     skill_boosts[member] = skill_boosts.get(member, 0) + affinity
                     boost_reasons.setdefault(member, []).append(f"!graph:family({family_name})")
+
+
+def _signal_match_boost(signal_phrase: str) -> float:
+    """Weight exact graph-signal matches by phrase specificity."""
+    token_count = max(1, len(re.findall(r'\b\w+\b', signal_phrase)))
+    return min(0.9 + 0.35 * (token_count - 1), 1.8)
+
+
+def _apply_signal_boosts(
+    prompt_lower: str,
+    skill_boosts: Dict[str, float],
+    boost_reasons: Dict[str, List[str]],
+) -> None:
+    """Apply routing boosts from graph intent signals and trigger phrases."""
+    graph = _load_skill_graph()
+    if not graph:
+        return
+
+    for skill_name, signal_phrases in (graph.get("signals") or {}).items():
+        if not isinstance(signal_phrases, list):
+            continue
+
+        matched_signals: List[str] = []
+        total_boost = 0.0
+        for signal_phrase in signal_phrases:
+            if not isinstance(signal_phrase, str):
+                continue
+            normalized = _normalize_signal_phrase(signal_phrase)
+            if not normalized or normalized in matched_signals:
+                continue
+            if not _matches_phrase_boundary(prompt_lower, normalized):
+                continue
+
+            total_boost += max(_signal_match_boost(normalized) - 0.15 * len(matched_signals), 0.2)
+            matched_signals.append(normalized)
+
+        if not matched_signals:
+            continue
+
+        skill_boosts[skill_name] = skill_boosts.get(skill_name, 0.0) + min(total_boost, 3.0)
+        reasons = boost_reasons.setdefault(skill_name, [])
+        for matched_signal in matched_signals:
+            reasons.append(f"!{matched_signal}(signal)")
 
 
 def _apply_graph_conflict_penalty(recommendations: List[Dict[str, Any]]) -> None:
@@ -1828,6 +1964,8 @@ def analyze_request(
                 if skill not in boost_reasons:
                     boost_reasons[skill] = []
                 boost_reasons[skill].append(f"!{phrase}(phrase)")
+
+    _apply_signal_boosts(prompt_lower, skill_boosts, boost_reasons)
 
     # Graph-derived boosts: transitive relationships and family affinity
     _apply_graph_boosts(skill_boosts, boost_reasons)
