@@ -15,9 +15,9 @@
 | Raw findings | 260 |
 | After dedup | 242 |
 | **P0 (Blockers)** | **1** |
-| **P1 (Required)** | **108** |
+| **P1 (Required)** | **111** |
 | **P2 (Suggestions)** | **133** |
-| Verdict | **CONDITIONAL** — 1 P0 + 108 P1 must be triaged before release |
+| Verdict | **CONDITIONAL** — 1 P0 + 111 P1 must be triaged before release |
 
 ### Per-Packet Breakdown
 
@@ -27,13 +27,13 @@
 | 010 | 0 | 10 | 10 | 20 |
 | 012 | 0 | 2 | 5 | 7 |
 | 014 | 0 | 5 | 10 | 15 |
-| cross-cutting | 1 | 84 | 98 | 183 |
+| cross-cutting | 1 | 87 | 98 | 186 |
 
 ### Per-Layer Breakdown
 
 | Layer | P0 | P1 | P2 |
 |---|---|---|---|
-| code-layer | 1 | 86 | 99 |
+| code-layer | 1 | 89 | 99 |
 | doc-layer | 0 | 22 | 34 |
 
 ---
@@ -1316,9 +1316,72 @@
   - **`CLAUDE.md` points recovery readers at a runtime-doc path that is not present in this repo.** The recovery checklist says to re-read `.claude/CLAUDE.md` if runtime-specific instructions exist (`CL
 
 
+### 3.14. Published Contract vs Live Runtime Drift (cross-cutting pattern)
+
+*Recurring pattern where published tool schemas, README entrypoints, agent directories, and MCP tool inventories do not match the actual runtime. Found scattered across multiple sections but never named as a systemic pattern.*
+
+**1. [P1] [cross-cutting] `deep_loop_graph_status` missing promised `schemaVersion` / DB-size fields**
+  - Layer: code-layer | Iter: 1
+  - Evidence: `iteration-001.md:45-80`
+  - The MCP tool `deep_loop_graph_status` promises `schemaVersion` and database-size fields in its schema but the handler does not return them. Consumers relying on the published contract get undefined values.
+
+**2. [P1] [cross-cutting] Compact recovery hook can clear cached state before stdout flush**
+  - Layer: code-layer | Iter: 15
+  - Evidence: `iteration-015.md:24-40`, `session-prime.ts`
+  - The `session-prime` hook clears `pendingCompactPrime` and exits before the recovered payload is durably written to stdout, risking loss of post-compaction recovery context.
+
+**3. [P1] [cross-cutting] Folder-scoped validators accept arbitrary absolute paths**
+  - Layer: code-layer | Iter: 8
+  - Evidence: `iteration-008.md:41-58`
+  - `validateMergeLegality()` and `validatePostSaveFingerprint()` can be steered at unrelated absolute paths outside the spec folder, causing folder-scoped validation to succeed or fail on the wrong file entirely.
+
+*Additional examples from iterations: wrong Claude custom-agent runtime directory in cli-claude-code (iter 60), overstated Code Mode inventory (iter 60), root docs' non-existent generate-context.js entrypoint (iter 70).*
+
+### 3.15. Path / Scope-Boundary Hardening (cross-cutting pattern)
+
+*Same class of bug recurring across different surfaces: out-of-folder absolute-path validation, symlink-based DB-directory escape, cross-root path handling. Related to the P0 reconsolidation scope-crossing but manifests more broadly.*
+
+*Examples: folder-scoped validator absolute-path escape (iter 8), symlink-based DB-directory escape in `resolveDatabasePaths()` (iter 15), `skill_graph_scan` traversing outside workspace (iter 23). These should be treated as one systemic boundary-validation gap.*
+
 ---
 
 ## 4. Recommendations & Remediation Workstreams
+
+### Workstream 0: P0 Reconsolidation Scope-Boundary Fix (P0, 1 finding) — BLOCKER
+
+**Problem:** The sole P0 blocker: governed save-time reconsolidation in `reconsolidation-bridge.ts:208-250` can cross scope boundaries (`tenant_id`, `user_id`, `agent_id`, `session_id`) and persist the merged survivor without governance metadata. This is a data-integrity and security issue.
+
+**Action:**
+- Add scope-boundary validation before reconsolidation merge: verify `tenant_id`, `user_id`, `agent_id` match between candidate and survivor
+- If scope mismatch, abort reconsolidation and preserve both records
+- Add regression test covering cross-scope reconsolidation attempt
+- Audit all callers of `reconsolidation-bridge` for similar boundary assumptions
+
+**Estimated effort:** Medium (4-8 hours — critical path, blocks release)
+
+### Workstream 0b: Path-Boundary Hardening (P1, ~5 findings)
+
+**Problem:** Multiple surfaces accept absolute paths or symlinks that escape the intended scope: folder-scoped validators, DB-directory resolution, skill-graph scan. Same bug class as the P0 but in different components.
+
+**Action:**
+- Add `path.resolve()` + `startsWith(allowedRoot)` guard to all folder-scoped validators
+- Reject symlinks in `resolveDatabasePaths()` or resolve them and re-validate
+- Add workspace-root boundary check to `skill_graph_scan` dispatch
+- Add regression tests for path-escape attempts
+
+**Estimated effort:** Medium (4-6 hours)
+
+### Workstream 0c: Public-Contract Verification Pass (P1, ~8 findings)
+
+**Problem:** Published tool schemas, README entrypoints, agent directories, and MCP tool inventories do not match actual runtime behavior. Consumers relying on published contracts get undefined values or wrong paths.
+
+**Action:**
+- Diff every MCP tool-schema field list against the actual handler response
+- Verify every README/SKILL.md entrypoint path exists on disk
+- Cross-check agent runtime directories across all 4 runtimes
+- Fix or remove dead tool registrations
+
+**Estimated effort:** Medium (4-8 hours)
 
 ### Workstream 1: Status Drift Cleanup (P1, ~28 findings)
 
@@ -1393,13 +1456,16 @@
 
 **Estimated effort:** Medium (4-8 hours)
 
-### Workstream 8: Stale Reference & Placeholder Cleanup (P2, ~26 findings)
+### Workstream 8: Stale Reference & Placeholder Cleanup (P1/P2, ~26 findings — includes 12 P1s)
 
-**Problem:** References to removed features, renamed files, deprecated patterns, and template placeholders still present in shipped code and docs.
+**Problem:** References to removed features, renamed files, deprecated patterns, and template placeholders still present in shipped code and docs. Contrary to prior labeling, this bucket contains ~12 P1-severity items including wrong agent directories, malformed copy-paste commands, and bad entrypoints that affect runtime behavior — not just cosmetic staleness.
 
-**Action:** Grep-and-fix pass across the codebase for known stale patterns. Low priority but improves maintainability.
+**Action:**
+- Grep-and-fix pass for known stale patterns (file renames, deprecated tool names)
+- Prioritize the 12 P1 items (wrong paths, broken commands) over cosmetic P2s
+- Verify all entrypoint references resolve to existing files
 
-**Estimated effort:** Low (2-4 hours)
+**Estimated effort:** Medium (4-6 hours — elevated from Low due to P1 content)
 
 ---
 
@@ -1407,14 +1473,17 @@
 
 | Priority | Workstream | Findings | Effort | Impact |
 |---|---|---|---|---|
-| **1** | Packet 014 identity fix | 5 | Low | Blocks clean changelog |
-| **2** | Status drift cleanup | 28 | Low | Blocks clean changelog |
-| **3** | Command & workflow integrity | 16 | Medium | Runtime correctness |
-| **4** | Error handling & security | 12 | Medium | Production safety |
-| **5** | Traceability & evidence | 25 | Medium | Audit compliance |
-| **6** | Agent & skill doc refresh | 37 | Medium-High | Cross-runtime correctness |
-| **7** | Test quality | 47 | High | Regression prevention |
-| **8** | Stale refs & placeholders | 26 | Low | Maintainability |
+| **0** | **P0 Reconsolidation scope-boundary fix** | **1** | **Medium** | **BLOCKER — data integrity + security** |
+| **0b** | Path-boundary hardening | 5 | Medium | Production safety — scope escapes |
+| **0c** | Public-contract verification | 8 | Medium | Runtime correctness — schema/entrypoint drift |
+| **1** | Command & workflow integrity | 16 | Medium | Runtime correctness |
+| **2** | Error handling & security | 12 | Medium | Production safety |
+| **3** | Stale refs & placeholders (incl. 12 P1s) | 26 | Medium | Runtime correctness + maintainability |
+| **4** | Packet 014 identity fix | 5 | Low | Blocks clean changelog |
+| **5** | Status drift cleanup | 28 | Low | Blocks clean changelog |
+| **6** | Traceability & evidence | 25 | Medium | Audit compliance |
+| **7** | Agent & skill doc refresh | 37 | Medium-High | Cross-runtime correctness |
+| **8** | Test quality | 47 | High | Regression prevention |
 
 ---
 
