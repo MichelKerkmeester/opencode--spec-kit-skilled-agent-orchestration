@@ -84,6 +84,22 @@ describe('code-graph-query handler', () => {
     });
   });
 
+  it('rejects unsupported edgeType values with a clear error', async () => {
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+      edgeType: 'misspelled-edge',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed).toEqual({
+      status: 'error',
+      error: 'Unsupported edgeType "misspelled-edge". Supported edge types: CALLS, CONTAINS, DECORATES, EXPORTS, EXTENDS, IMPLEMENTS, IMPORTS, OVERRIDES, TESTED_BY, TYPE_OF',
+    });
+    expect(mocks.queryEdgesFrom).not.toHaveBeenCalled();
+    expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
+  });
+
   it('includes the normalized edgeType in transitive responses', async () => {
     mocks.queryEdgesFrom.mockReturnValue([
       {

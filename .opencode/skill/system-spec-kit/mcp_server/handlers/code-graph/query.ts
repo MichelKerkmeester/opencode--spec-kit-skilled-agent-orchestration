@@ -5,6 +5,7 @@
 
 import * as graphDb from '../../lib/code-graph/code-graph-db.js';
 import { ensureCodeGraphReady, type ReadyResult } from '../../lib/code-graph/ensure-ready.js';
+import type { EdgeType } from '../../lib/code-graph/indexer-types.js';
 import {
   attachGraphEdgeEnrichment,
   attachStructuralTrustFields,
@@ -23,20 +24,46 @@ export interface QueryArgs {
   unionMode?: 'single' | 'multi';
 }
 
-function resolveRequestedEdgeType(args: QueryArgs): string | undefined {
+const SUPPORTED_EDGE_TYPES = [
+  'CALLS',
+  'CONTAINS',
+  'DECORATES',
+  'EXPORTS',
+  'EXTENDS',
+  'IMPLEMENTS',
+  'IMPORTS',
+  'OVERRIDES',
+  'TESTED_BY',
+  'TYPE_OF',
+] as const satisfies readonly EdgeType[];
+
+const SUPPORTED_EDGE_TYPE_SET = new Set<string>(SUPPORTED_EDGE_TYPES);
+
+function isSupportedEdgeType(edgeType: string): edgeType is EdgeType {
+  return SUPPORTED_EDGE_TYPE_SET.has(edgeType);
+}
+
+function resolveRequestedEdgeType(args: QueryArgs): { edgeType?: EdgeType; error?: string } {
   if (typeof args.edgeType === 'string' && args.edgeType.trim().length > 0) {
-    return args.edgeType.trim().toUpperCase();
+    const normalizedEdgeType = args.edgeType.trim().toUpperCase();
+    // Reject typoed filters so empty results never masquerade as valid absence.
+    if (!isSupportedEdgeType(normalizedEdgeType)) {
+      return {
+        error: `Unsupported edgeType "${args.edgeType}". Supported edge types: ${SUPPORTED_EDGE_TYPES.join(', ')}`,
+      };
+    }
+    return { edgeType: normalizedEdgeType };
   }
 
   if (args.operation.startsWith('calls')) {
-    return 'CALLS';
+    return { edgeType: 'CALLS' };
   }
 
   if (args.operation.startsWith('imports')) {
-    return 'IMPORTS';
+    return { edgeType: 'IMPORTS' };
   }
 
-  return undefined;
+  return {};
 }
 
 /** Resolve a subject string to a symbolId */
@@ -334,8 +361,17 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   }
 
   const { operation, subject, limit = 50 } = args;
-  const requestedEdgeType = resolveRequestedEdgeType(args);
+  const { edgeType: requestedEdgeType, error: edgeTypeError } = resolveRequestedEdgeType(args);
   const maxDepth = args.maxDepth ?? 3;
+
+  if (edgeTypeError) {
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({ status: 'error', error: edgeTypeError }),
+      }],
+    };
+  }
 
   if (operation === 'outline') {
     const nodes = graphDb.queryOutline(subject);
