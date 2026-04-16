@@ -57,19 +57,21 @@ function resolveGenerateContextScriptPath(): string | null {
   return null;
 }
 
-function runContextAutosave(sessionId: string): void {
+export type SessionStopAutosaveOutcome = 'ran' | 'skipped' | 'failed' | 'deferred';
+
+function runContextAutosave(sessionId: string): SessionStopAutosaveOutcome {
   const state = loadState(sessionId);
   const specFolder = state?.lastSpecFolder?.trim();
   const summary = state?.sessionSummary?.text?.trim();
 
   if (!specFolder || !summary) {
-    return;
+    return 'skipped';
   }
 
   const scriptPath = resolveGenerateContextScriptPath();
   if (!scriptPath) {
     hookLog('warn', 'session-stop', 'Auto-save skipped: generate-context.js not found');
-    return;
+    return 'skipped';
   }
 
   const payload = {
@@ -96,13 +98,14 @@ function runContextAutosave(sessionId: string): void {
 
   if (typeof result.status === 'number' && result.status === 0) {
     hookLog('info', 'session-stop', `Context auto-save completed for ${specFolder}`);
-    return;
+    return 'ran';
   }
 
   const stderr = (result.stderr ?? '').trim();
   const stdout = (result.stdout ?? '').trim();
   const errorText = stderr || stdout || result.error?.message || `exit=${String(result.status)}`;
   hookLog('warn', 'session-stop', `Context auto-save failed: ${errorText}`);
+  return 'failed';
 }
 
 export interface SessionStopProcessOptions {
@@ -113,6 +116,7 @@ export interface SessionStopProcessResult {
   touchedPaths: string[];
   parsedMessageCount: number;
   autosaveMode: 'enabled' | 'disabled';
+  autosaveOutcome: SessionStopAutosaveOutcome;
   producerMetadataWritten: boolean;
 }
 
@@ -225,6 +229,7 @@ export async function processStopHook(
   const touchedPaths = new Set<string>();
   let parsedMessageCount = 0;
   let producerMetadataWritten = false;
+  let autosaveOutcome: SessionStopAutosaveOutcome = 'skipped';
 
   // Guard: only run if stop hook is actively being processed
   if (input.stop_hook_active === false) {
@@ -233,6 +238,7 @@ export async function processStopHook(
       touchedPaths: [],
       parsedMessageCount,
       autosaveMode,
+      autosaveOutcome,
       producerMetadataWritten,
     };
   }
@@ -306,7 +312,7 @@ export async function processStopHook(
   }
 
   if (autosaveMode === 'enabled') {
-    runContextAutosave(sessionId);
+    autosaveOutcome = runContextAutosave(sessionId);
   }
 
   hookLog('info', 'session-stop', `Session ${sessionId} stop processing complete`);
@@ -314,6 +320,7 @@ export async function processStopHook(
     touchedPaths: [...touchedPaths],
     parsedMessageCount,
     autosaveMode,
+    autosaveOutcome,
     producerMetadataWritten,
   };
 }
