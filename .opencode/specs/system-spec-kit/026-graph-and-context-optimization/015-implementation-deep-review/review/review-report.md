@@ -15,9 +15,9 @@
 | Raw findings | 260 |
 | After dedup | 242 |
 | **P0 (Blockers)** | **1** |
-| **P1 (Required)** | **111** |
+| **P1 (Required)** | **114** |
 | **P2 (Suggestions)** | **133** |
-| Verdict | **CONDITIONAL** — 1 P0 + 111 P1 must be triaged before release |
+| Verdict | **CONDITIONAL** — 1 P0 + 114 P1 must be triaged before release |
 
 ### Per-Packet Breakdown
 
@@ -27,13 +27,13 @@
 | 010 | 0 | 10 | 10 | 20 |
 | 012 | 0 | 2 | 5 | 7 |
 | 014 | 0 | 5 | 10 | 15 |
-| cross-cutting | 1 | 87 | 98 | 186 |
+| cross-cutting | 1 | 90 | 98 | 189 |
 
 ### Per-Layer Breakdown
 
 | Layer | P0 | P1 | P2 |
 |---|---|---|---|
-| code-layer | 1 | 89 | 99 |
+| code-layer | 1 | 92 | 99 |
 | doc-layer | 0 | 22 | 34 |
 
 ---
@@ -134,9 +134,19 @@
   - **P2** - The M13 change trace overstates `resume.md` as a modified file: the spec's file-change map still lists `.opencode/command/spec_kit/resume.md` as a `Modify` surface, and T071 is phrased as a
 
 
-### 3.2. Agent & Skill Document Issues (37 findings: 1 P0, 18 P1, 18 P2)
+### 3.2. Agent & Skill Document Issues (39 findings: 1 P0, 20 P1, 18 P2)
 
 *Agent definitions, SKILL.md accuracy, cross-runtime alignment, reference staleness*
+
+**[ADDED by Opus audit] [P1] [cross-cutting] Deep-review agent docs and reducer encode stale iteration schema**
+  - Layer: code-layer | Iter: 56
+  - Evidence: `.claude/agents/deep-review.md:148`, `.gemini/agents/deep-review.md:148`, `reduce-state.cjs:202`
+  - Agent definitions and the reducer still describe the old iteration section schema (`Focus / Findings / Ruled Out / Dead Ends / Recommended Next Focus / Assessment`), but the live operational-review loop emits iterations with a different layout (`Dispatcher / Files Reviewed / Findings - New / Traceability Checks / Confirmed-Clean Surfaces / Next Focus`). The reducer at `reduce-state.cjs:202` would not recover structured findings from the newer artifacts.
+
+**[ADDED by Opus audit] [P1] [cross-cutting] Root docs under-specify `@context` agent LEAF-only guardrail**
+  - Layer: code-layer | Iter: 69
+  - Evidence: `AGENTS.md:296-299`, `CODEX.md:296-299`, `GEMINI.md:296-299`, `.opencode/agent/context.md:25-40`
+  - Three of four root docs (`AGENTS.md`, `CODEX.md`, `GEMINI.md`) summarize `@context` as a generic exploration helper, omitting the hard LEAF-only / exclusive-routing guardrail that all four shipped agent definitions enforce. `CLAUDE.md` is the only root doc that gets closer. This is a cross-runtime contract mismatch at the root-doc layer.
 
 **1. [P0] [cross-cutting] Governed save-time reconsolidation can cross scope boundaries and then persist the survivor without governance metadata.**
   - Layer: code-layer | Iter: 19
@@ -628,9 +638,14 @@
   - **Wrong follow-up command name:** `/doctor:mcp_install` tells users to run ``mcp_doctor:debug`` instead of the actual `/doctor:mcp_debug` command surface. Evidence: `.opencode/command/doctor/mcp_ins
 
 
-### 3.6. Test Quality Issues (47 findings: 0 P0, 10 P1, 37 P2)
+### 3.6. Test Quality Issues (48 findings: 0 P0, 11 P1, 37 P2)
 
 *False-positive tests, missing edge cases, brittle assertions, coverage gaps*
+
+**[ADDED by Opus audit] [P1] [cross-cutting] Adaptive-fusion tests do not verify enabled-mode result ordering**
+  - Layer: code-layer | Iter: 45
+  - Evidence: `.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts:169-177,215-229,322-332`, `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts:356-418`
+  - The flag-on adaptive-fusion tests only validate weight metadata, never verifying that enabling adaptive mode actually changes the returned ranking. A no-op regression that returned `standardFuse()` results while preserving weight bookkeeping would leave the main flag-on suite green.
 
 **1. [P1] [cross-cutting] P1-002 [P1] `coverage_gaps` reports the wrong thing for review graphs**
   - Layer: code-layer | Iter: 2
