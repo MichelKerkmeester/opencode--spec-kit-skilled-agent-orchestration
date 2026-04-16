@@ -122,6 +122,47 @@ describe('session-prime hook', () => {
       const parsed = JSON.parse(loaded) as HookState;
       expect(parsed.pendingCompactPrime).toBeNull();
     });
+
+    it('gemini compact handling preserves cached provenance markers', async () => {
+      const now = new Date().toISOString();
+      const state: HookState = {
+        claudeSessionId: testSessionId,
+        speckitSessionId: null,
+        lastSpecFolder: null,
+        sessionSummary: null,
+        pendingCompactPrime: {
+          payload: '## Active Files\n- /test.ts',
+          cachedAt: now,
+          payloadContract: {
+            kind: 'compaction',
+            summary: 'Recovered compact brief',
+            sections: [],
+            provenance: {
+              producer: 'hook_cache',
+              sourceSurface: 'gemini-compact-cache',
+              trustState: 'cached',
+              generatedAt: now,
+              lastUpdated: null,
+              sourceRefs: ['gemini-compact-cache', 'hook-state'],
+            },
+          },
+        },
+        producerMetadata: null,
+        metrics: { estimatedPromptTokens: 0, estimatedCompletionTokens: 0, lastTranscriptOffset: 0 },
+        createdAt: now,
+        updatedAt: now,
+      };
+      saveState(testSessionId, state);
+
+      const { handleCompact: handleGeminiCompact } = await import('../hooks/gemini/session-prime.js');
+      const sections = handleGeminiCompact(testSessionId);
+
+      expect(sections[0]?.title).toBe('Recovered Context (Post-Compression)');
+      expect(sections[0]?.content).toContain(
+        '[PROVENANCE: producer=hook_cache; trustState=cached; sourceSurface=gemini-compact-cache]',
+      );
+      expect(sections[0]?.content).toContain('## Active Files');
+    });
   });
 
   describe('output formatting', () => {

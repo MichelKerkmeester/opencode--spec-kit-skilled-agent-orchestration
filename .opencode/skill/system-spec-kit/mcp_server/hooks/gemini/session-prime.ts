@@ -13,6 +13,8 @@
 //   Plain text → systemMessage (stderr-like)
 //   JSON with hookSpecificOutput.additionalContext → injected into conversation
 
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   hookLog, formatHookOutput, truncateToTokenBudget,
   wrapRecoveredCompactPayload,
@@ -23,6 +25,9 @@ import { ensureStateDir, loadState, readCompactPrime, clearCompactPrime } from '
 import { parseGeminiStdin, formatGeminiOutput } from './shared.js';
 
 const CACHE_TTL_MS = 30 * 60 * 1000;
+const IS_CLI_ENTRY = process.argv[1]
+  ? resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  : false;
 type StartupBrief = {
   graphOutline: string | null;
   sessionContinuity: string | null;
@@ -41,7 +46,7 @@ try {
 }
 
 /** Handle source=compact (post-compress): inject cached PreCompress payload */
-function handleCompact(sessionId: string): OutputSection[] {
+export function handleCompact(sessionId: string): OutputSection[] {
   const state = loadState(sessionId);
   const pendingCompactPrime = readCompactPrime(sessionId);
   if (!pendingCompactPrime) {
@@ -65,7 +70,11 @@ function handleCompact(sessionId: string): OutputSection[] {
 
   hookLog('info', 'gemini:session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
 
-  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt);
+  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+  });
   const sections: OutputSection[] = [
     { title: 'Recovered Context (Post-Compression)', content: wrappedPayload },
     {
@@ -229,8 +238,10 @@ async function main(): Promise<void> {
 }
 
 // Run — exit cleanly even on error
-main().catch((err: unknown) => {
-  hookLog('error', 'gemini:session-prime', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
-}).finally(() => {
-  process.exit(0);
-});
+if (IS_CLI_ENTRY) {
+  main().catch((err: unknown) => {
+    hookLog('error', 'gemini:session-prime', `Unhandled error: ${err instanceof Error ? err.message : String(err)}`);
+  }).finally(() => {
+    process.exit(0);
+  });
+}
