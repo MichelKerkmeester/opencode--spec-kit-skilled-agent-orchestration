@@ -12,7 +12,7 @@
 
 <!-- ANCHOR:table-of-contents -->
 
----
+&nbsp;
 
 ## TABLE OF CONTENTS
 
@@ -36,7 +36,7 @@
 
 <!-- ANCHOR:overview -->
 
----
+&nbsp;
 
 ## 1. OVERVIEW
 
@@ -121,8 +121,7 @@ The framework adds three layers on top of the base platform:
 
 <!-- ANCHOR:quick-start -->
 
----
-
+&nbsp;
 ## 2. QUICK START
 
 ### Installation
@@ -183,8 +182,7 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 <!-- ANCHOR:features -->
 
----
-
+&nbsp;
 ## 3. FEATURES
 
 ### 📋 Spec Kit Documentation
@@ -340,8 +338,7 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2), gate definitions, and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
 
 
----
-
+&nbsp;
 ### 🧠 Memory Engine
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
@@ -497,8 +494,8 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **OpenAI** - Set `OPENAI_API_KEY` env var. Strong alternative.
 - **HuggingFace Local** - No setup needed. Free, auto-detected fallback.
 
----
 
+&nbsp;
 ### 🔍 CocoIndex + Code Graph
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
@@ -547,8 +544,8 @@ This split avoids forcing one search system to do everything poorly. Semantic se
 
 For the full tool and architecture reference, see [`mcp_server/README.md`](.opencode/skill/system-spec-kit/mcp_server/README.md) and the system skill docs in [`.opencode/skill/system-spec-kit/README.md`](.opencode/skill/system-spec-kit/README.md).
 
----
 
+&nbsp;
 ### 🎯 Skill Advisor
 
 The Skill Advisor is an intelligent routing system that automatically matches user requests to the right skill. It powers Gate 2 in the gate system, analyzing every request against 21 skills using a multi-stage scoring pipeline with a SQLite-backed relationship graph. Average routing time: **0.5ms per query**.
@@ -635,8 +632,8 @@ Family affinity gives an additional 8% boost to same-family members when one has
 
 For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README.md).
 
----
 
+&nbsp;
 ### 🎯 Skills Library
 
 21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
@@ -769,8 +766,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
 - Legal-stop events, session-boundary gate, `plateau` stop reason, dashboard sections for journal/lineage/coverage
 
----
 
+&nbsp;
 ### 🤖 Agent Network
 
 12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
@@ -868,10 +865,9 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Returns a structured prompt package with `FRAMEWORK`, `CLEAR_SCORE`, `RATIONALE`, `ENHANCED_PROMPT`, and `ESCALATION_NOTES`
 - Used by the CLI mirror-card pipeline and `/improve:prompt` agent mode when complexity, compliance, or stakeholder spread makes inline prompting too weak
 
----
 
+&nbsp;
 ### ⌨️ Commands
-
 
 21 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
@@ -1048,8 +1044,7 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Use for cross-AI delegation where the target AI needs to behave as itself
 
 
----
-
+&nbsp;
 ### 🔌 Code Mode MCP
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) - a 98.7% reduction.
@@ -1106,8 +1101,7 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 
 <!-- ANCHOR:configuration -->
 
----
-
+&nbsp;
 ## 4. CONFIGURATION
 
 ### Core Configuration Files
@@ -1194,63 +1188,46 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 <!-- ANCHOR:faq -->
 
----
 
+&nbsp;
 ## 5. FAQ
 
 **Q: Do I need all 21 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -`system-spec-kit` and `sk-doc` - cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
-
----
-
+&nbsp;
 **Q: Is this only for OpenCode, or does it work with other runtimes?**
 
 A: It works with OpenCode, Codex CLI, Claude Code, and Gemini CLI, and the repo also includes Copilot-oriented MCP/startup integration surfaces. Agent definitions are mirrored in the checked-in Claude, Codex, and Gemini runtime directories; OpenCode and Copilot use runtime-specific MCP/startup integration rather than a dedicated agent mirror.
-
----
-
+&nbsp;
 **Q: What happens if I do not use a spec folder?**
 
 A: Gate 3 blocks file modifications until a spec folder answer is provided. You can skip it with option D, but skipped sessions are undocumented and will not be recoverable via memory search. For trivial changes under 5 characters in a single file, Gate 3 does not trigger.
-
----
-
+&nbsp;
 **Q: How does the memory system know what is relevant to my current task?**
 
 A: Packet continuity and any supporting generated context artifacts use structured frontmatter and anchored markdown so the memory engine can classify, index, and retrieve them reliably. For recovery, start with `/spec_kit:resume` and the packet-local continuity ladder `handover.md` -> `_memory.continuity` -> canonical spec docs. After that, `memory_match_triggers()` can do a fast trigger/cognitive pass, while `memory_context()` and `memory_search()` handle deeper retrieval with intent routing, reranking, and filtering.
-
----
-
+&nbsp;
 **Q: Can I use this framework without the cognitive memory features?**
 
 A: Yes. The Spec Kit documentation workflow (Gate 3, spec folders, templates) works independently of the memory MCP server. You will not have cross-session memory retrieval, but you will still get structured documentation, agent routing and skill loading.
-
----
-
+&nbsp;
 **Q: How do I add a new skill to the framework?**
 
 A: Use `/create:sk-skill` to scaffold the skill structure. The command creates the `SKILL.md`, references and assets directories following the `sk-doc` template. Then register the skill in `.opencode/skill/README.md`.
-
----
-
+&nbsp;
 **Q: What does "local-first" mean for the memory system?**
 
 A: The memory database is a SQLite file on your local machine. No session data, code or context is sent to any external service unless you configure a cloud embedding provider (Voyage AI or OpenAI). HuggingFace Local embeddings run entirely on-device.
-
----
-
+&nbsp;
 **Q: How do I contribute a new agent definition?**
 
 A: Define the agent in `.opencode/agent/` (the source of truth), then copy the adapter to `.agents/agents/`, `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`. Use `/create:agent` to scaffold the file from the agent template.
-
----
-
+&nbsp;
 **Q: How many MCP tools are there and where are they defined?**
 
 A: 56 total across 4 native MCP servers: 47 `spec_kit_memory` tools (21 memory + 4 checkpoint + 2 task + 2 eval + 4 code_graph + 4 skill_graph + 3 ccc + 3 session + 4 deep_loop_graph), 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`. The 47 `spec_kit_memory` tool definitions live in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`.
-
----
+&nbsp;
 
 **Q: What is the feature catalog?**
 
@@ -1261,8 +1238,8 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 
 <!-- ANCHOR:related-documents -->
 
----
 
+&nbsp;
 ## 6. RELATED DOCUMENTS
 
 **Internal Documentation:**
