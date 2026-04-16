@@ -1,18 +1,11 @@
 ---
-title: "Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 017 Charter)"
-description: "Remediation charter for 63 distinct findings surfaced by the 50-iteration Phase 016 deep-research pass across the MCP runtime, skill-advisor governance, and spec-kit asset surfaces. Defines scope, requirements, and success criteria for four P0-composite eliminations, seven structural refactors, thirteen medium refactors, twenty-nine quick wins, and test-suite migration."
+title: "Feature Specification: Foundational Runtime Remediation"
+description: "Remediation charter for 63 distinct findings from the 50-iteration Phase 016 deep-research. Covers 4 P0-composite eliminations, 7 structural refactors, 13 medium refactors, 29 quick wins, and 7 test-suite migrations."
 trigger_phrases:
-  - "foundational runtime deep review"
   - "foundational runtime remediation"
   - "016 remediation charter"
-  - "phase 016 remediation"
   - "phase 017 kickoff"
   - "p0 composite elimination"
-  - "hook-state overhaul"
-  - "transactional reconsolidation"
-  - "graph-metadata laundering"
-  - "skill routing trust chain"
-  - "gate 3 typed classifier"
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -20,37 +13,14 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-16T21:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Stage 2 rewrite — spec.md now reflects 50-iteration deep-research outcome with 63 distinct findings, 4 P0 composite candidates, and 24.5 engineer-week remediation backlog"
-    next_safe_action: "Stage 3 implementation — begin Phase 1 P0 composite eliminations (D first, then A + C in parallel, then B)"
+    recent_action: "Stage 2 rewrite — remediation charter"
+    next_safe_action: "Phase 1 P0-D solo sprint"
     blockers: []
-    key_files:
-      - "spec.md"
-      - "plan.md"
-      - "tasks.md"
-      - "checklist.md"
-      - "description.json"
-      - "graph-metadata.json"
-      - "../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md"
-      - "../research/016-foundational-runtime-deep-review/findings-registry.json"
-      - "../research/016-foundational-runtime-deep-review/research.md"
-    session_dedup:
-      fingerprint: "sha256:016-remediation-charter-2026-04-16"
-      session_id: "016-remediation-rewrite-session"
-      parent_session_id: "016-deep-research-session"
-    completion_pct: 30
-    open_questions:
-      - "Does command-spec-kit enforce Gate 3 independently of skill routing? (Upgrades Watch-P1 to P0-E if yes.)"
-      - "Are regression tests that encode degraded contracts intentional compatibility shims or oversights? (Resolve before starting S1/S2/S3.)"
-      - "Can HookState gain schemaVersion without breaking already-quiesced state files? (Determines whether A3 needs migration step.)"
-    answered_questions:
-      - "Is the runtime broken in obvious ways? — No. Every failure mode is silent, success-shaped, and layered."
-      - "Is remediation a patchwork job or structural? — Structural. P0 candidates are interaction effects across ≥3 files each."
-      - "Do existing tests need migration? — Yes. At least 7 test files codify the degraded contract and must be rewritten."
 ---
-# Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 017 Charter)
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+# Feature Specification: Foundational Runtime Remediation (Phase 016 → Phase 017 Charter)
 
 ---
 
