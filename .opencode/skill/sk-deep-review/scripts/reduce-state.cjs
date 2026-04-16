@@ -218,7 +218,7 @@ function parseFindingsBlock(sectionText, severity) {
 function parseIterationFile(iterationPath) {
   const markdown = readUtf8(iterationPath);
   const runMatch = iterationPath.match(/iteration-(\d+)\.md$/);
-  const headingMatch = markdown.match(/^#\s+Iteration\s+\d+:\s+(.+)$/m);
+  const headingMatch = markdown.match(/^#\s+Iteration\s+\d+\s*[-:]\s+(.+)$/m);
 
   // Support both old schema (Focus/Findings/Ruled Out/Dead Ends/Assessment)
   // and live schema (Dispatcher/Files Reviewed/Findings - New/Traceability Checks/

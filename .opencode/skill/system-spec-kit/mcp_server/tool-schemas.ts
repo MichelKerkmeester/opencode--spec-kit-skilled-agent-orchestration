@@ -628,7 +628,7 @@ const skillGraphScan: ToolDefinition = {
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
-      skillsRoot: { type: 'string', description: 'Optional skills root to scan (default: .opencode/skill)' },
+      skillsRoot: { type: 'string', description: 'Optional skills root to scan (default: .opencode/skill). Must resolve to a path under the current workspace; paths escaping the workspace are rejected.' },
     },
     required: [],
   },

@@ -2534,50 +2534,75 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
   }
 
-  // DryRun must remain non-mutating even when preflight is explicitly skipped.
-  if (dryRun && skipPreflight) {
-    const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
-    const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
-      emitEvalMetrics: false,
-      qualityLoopMode: 'advisory',
-    });
+  // Shared dry-run response builder — both the skipPreflight and post-preflight
+  // dry-run branches delegate here to prevent near-duplicate envelope drift.
+  async function buildDryRunResponse(
+    preparedDryRun: PreparedParsedMemory,
+    parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+    preflightValidation: { skipped: boolean; errors: string[]; warnings: string[]; details: Record<string, unknown>; wouldPass: boolean },
+  ) {
     const templateContractPass = preparedDryRun.templateContract.valid
       || shouldBypassTemplateContract(
         preparedDryRun.sourceClassification,
         preparedDryRun.sufficiencyResult,
         preparedDryRun.templateContract,
       );
-    const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
-    const dryRunSummary = shouldBypassTemplateContract(
+    const bypassMode = shouldBypassTemplateContract(
       preparedDryRun.sourceClassification,
       preparedDryRun.sufficiencyResult,
       preparedDryRun.templateContract,
-    )
-      ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
-      : buildDryRunSummary(
-          preparedDryRun.sufficiencyResult,
-          preparedDryRun.qualityLoopResult,
-          preparedDryRun.templateContract,
-        );
+    );
+    const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
+    const dryRunSummary = !preflightValidation.wouldPass
+      ? `Pre-flight validation failed: ${preflightValidation.errors.length} error(s)`
+      : bypassMode
+        ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
+        : buildDryRunSummary(
+            preparedDryRun.sufficiencyResult,
+            preparedDryRun.qualityLoopResult,
+            preparedDryRun.templateContract,
+          );
+
+    const wouldPass = preflightValidation.wouldPass
+      && preparedDryRun.validation.valid
+      && preparedDryRun.qualityLoopResult.rejected !== true
+      && templateContractPass
+      && preparedDryRun.sufficiencyResult.pass;
+
+    const hints: string[] = !preflightValidation.wouldPass
+      ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
+      : templateContractPass && preparedDryRun.sufficiencyResult.pass
+        ? [
+            'Dry-run complete - no changes made',
+            ...(preflightValidation.skipped ? ['Pre-flight checks were skipped because skipPreflight=true'] : []),
+            ...(bypassMode
+              ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
+              : []),
+          ]
+        : [
+            'Dry-run complete - no changes made',
+            ...(preflightValidation.skipped ? ['Pre-flight checks were skipped because skipPreflight=true'] : []),
+            ...(!preparedDryRun.templateContract.valid
+              ? ['Rendered content must match the memory template contract before indexing']
+              : []),
+            'Not enough context was available to save a durable memory',
+            ...(!preflightValidation.skipped
+              ? ['Add concrete file, tool, decision, blocker, next action, or outcome evidence and retry']
+              : []),
+          ];
 
     return createMCPSuccessResponse({
       tool: 'memory_save',
       summary: dryRunSummary,
       data: {
         status: 'dry_run',
-        would_pass: preparedDryRun.validation.valid
-          && preparedDryRun.qualityLoopResult.rejected !== true
-          && templateContractPass
-          && preparedDryRun.sufficiencyResult.pass,
+        would_pass: wouldPass,
         file_path: validatedPath,
-        spec_folder: parsedForDryRun.specFolder,
-        title: parsedForDryRun.title,
-        validation: {
-          skipped: true,
-          errors: [],
-          warnings: [],
-          details: { skipped: true },
-        },
+        spec_folder: parsed.specFolder,
+        title: parsed.title,
+        validation: preflightValidation.skipped
+          ? { skipped: true, errors: [], warnings: [], details: { skipped: true } }
+          : { errors: preflightValidation.errors, warnings: preflightValidation.warnings, details: preflightValidation.details },
         qualityLoop: {
           passed: preparedDryRun.qualityLoopResult.passed,
           rejected: preparedDryRun.qualityLoopResult.rejected,
@@ -2590,26 +2615,19 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
-      hints: templateContractPass && preparedDryRun.sufficiencyResult.pass
-        ? [
-            'Dry-run complete - no changes made',
-            'Pre-flight checks were skipped because skipPreflight=true',
-            ...(shouldBypassTemplateContract(
-              preparedDryRun.sourceClassification,
-              preparedDryRun.sufficiencyResult,
-              preparedDryRun.templateContract,
-            )
-              ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
-              : []),
-          ]
-        : [
-            'Dry-run complete - no changes made',
-            'Pre-flight checks were skipped because skipPreflight=true',
-            ...(!preparedDryRun.templateContract.valid
-              ? ['Rendered content must match the memory template contract before indexing']
-              : []),
-            'Not enough context was available to save a durable memory',
-          ],
+      hints,
+    });
+  }
+
+  // DryRun must remain non-mutating even when preflight is explicitly skipped.
+  if (dryRun && skipPreflight) {
+    const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
+    const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database, {
+      emitEvalMetrics: false,
+      qualityLoopMode: 'advisory',
+    });
+    return buildDryRunResponse(preparedDryRun, parsedForDryRun, {
+      skipped: true, errors: [], warnings: [], details: {}, wouldPass: true,
     });
   }
 
@@ -2670,78 +2688,12 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         }
         throw error;
       }
-      const templateContractPass = preparedDryRun.templateContract.valid
-        || shouldBypassTemplateContract(
-          preparedDryRun.sourceClassification,
-          preparedDryRun.sufficiencyResult,
-          preparedDryRun.templateContract,
-        );
-      const { createMCPSuccessResponse } = await import('../lib/response/envelope.js');
-      const dryRunSummary = !preflightResult.dry_run_would_pass
-        ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
-        : shouldBypassTemplateContract(
-            preparedDryRun.sourceClassification,
-            preparedDryRun.sufficiencyResult,
-            preparedDryRun.templateContract,
-          )
-          ? 'Dry-run would pass in manual-fallback mode with deferred indexing.'
-          : buildDryRunSummary(
-              preparedDryRun.sufficiencyResult,
-              preparedDryRun.qualityLoopResult,
-              preparedDryRun.templateContract,
-            );
-
-      return createMCPSuccessResponse({
-        tool: 'memory_save',
-        summary: dryRunSummary,
-        data: {
-          status: 'dry_run',
-          would_pass: preflightResult.dry_run_would_pass
-            && preparedDryRun.validation.valid
-            && preparedDryRun.qualityLoopResult.rejected !== true
-            && templateContractPass
-            && preparedDryRun.sufficiencyResult.pass,
-          file_path: validatedPath,
-          spec_folder: parsedForPreflight.specFolder,
-          title: parsedForPreflight.title,
-          validation: {
-            errors: preflightResult.errors,
-            warnings: preflightResult.warnings,
-            details: preflightResult.details,
-          },
-          qualityLoop: {
-            passed: preparedDryRun.qualityLoopResult.passed,
-            rejected: preparedDryRun.qualityLoopResult.rejected,
-            fixes: preparedDryRun.qualityLoopResult.fixes,
-            rejectionReason: preparedDryRun.qualityLoopResult.rejectionReason,
-          },
-          templateContract: preparedDryRun.templateContract,
-          sufficiency: preparedDryRun.sufficiencyResult,
-          specDocHealth: preparedDryRun.specDocHealth,
-          rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
-          message: dryRunSummary,
-        },
-        hints: !preflightResult.dry_run_would_pass
-          ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
-          : templateContractPass && preparedDryRun.sufficiencyResult.pass
-            ? [
-                'Dry-run complete - no changes made',
-                ...(shouldBypassTemplateContract(
-                  preparedDryRun.sourceClassification,
-                  preparedDryRun.sufficiencyResult,
-                  preparedDryRun.templateContract,
-                )
-                  ? ['Manual-fallback mode would bypass the strict memory template contract for this save']
-                  : []),
-              ]
-            : [
-                'Dry-run complete - no changes made',
-                ...(!preparedDryRun.templateContract.valid
-                  ? ['Rendered content must match the memory template contract before indexing']
-                  : []),
-                'Not enough context was available to save a durable memory',
-                'Add concrete file, tool, decision, blocker, next action, or outcome evidence and retry',
-              ],
+      return buildDryRunResponse(preparedDryRun, parsedForPreflight, {
+        skipped: false,
+        errors: preflightResult.errors,
+        warnings: preflightResult.warnings,
+        details: preflightResult.details,
+        wouldPass: preflightResult.dry_run_would_pass,
       });
     }
 

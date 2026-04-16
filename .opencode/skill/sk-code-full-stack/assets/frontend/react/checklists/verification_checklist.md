@@ -463,5 +463,5 @@ VERIFICATION COMPLETE:
 
 ### Parent Skill
 
-- [SKILL.md](../../../../SKILL.md) - sk-code-web skill (Phase 3: Verification)
+- [SKILL.md](../../../../SKILL.md) - sk-code-full-stack skill (Phase 3: Verification)
 <!-- /ANCHOR:related-resources -->

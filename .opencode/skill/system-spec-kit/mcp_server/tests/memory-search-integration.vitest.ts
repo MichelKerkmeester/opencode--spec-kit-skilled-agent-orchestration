@@ -275,17 +275,26 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T639: searchWithFallback falls back to FTS after empty hybrid results', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test
+      // that verifies the actual fallback chain with a DB fixture.
       expect(HYBRID_SEARCH_SOURCE).toContain('const ftsResults = ftsSearch(query, options);');
       expect(HYBRID_SEARCH_SOURCE).toContain('if (ftsResults.length > 0) return ftsResults;');
     });
 
     it('T640: searchWithFallback falls back to BM25 after empty FTS results', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test.
       expect(HYBRID_SEARCH_SOURCE).toContain('const bm25Results = bm25Search(query, options);');
       expect(HYBRID_SEARCH_SOURCE).toContain('if (bm25Results.length > 0) return bm25Results;');
     });
   });
 
   describe('T641-T650 - Review Count & Timestamp', () => {
+    // FIXME(S3.5 #14): T641-T648 are all source-text assertions that check
+    // schema DDL strings and SQL statement text.  They verify that the source
+    // code *mentions* the right column names but do not prove the runtime DB
+    // actually creates and increments those columns.  Replace with DB-fixture
+    // tests that run the schema migration then INSERT/UPDATE and SELECT.
+
     it('T641: review_count column exists in schema', () => {
       expect(VECTOR_INDEX_SCHEMA_SOURCE).toContain('review_count INTEGER DEFAULT 0');
     });
@@ -324,12 +333,17 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T650: last_accessed stores epoch timestamp', () => {
+      // FIXME(S3.5 #14): Source-text assertion.
       expect(ACCESS_TRACKER_SOURCE).toContain('const now = Date.now();');
       expect(ACCESS_TRACKER_SOURCE).toContain('last_accessed = ?');
     });
   });
 
   describe('Review and access update pipeline', () => {
+    // FIXME(S3.5 #14): All three tests below are source-text assertions.
+    // Replace with DB-fixture integration tests that exercise the actual
+    // pipeline through a real in-memory SQLite DB.
+
     it('updates stability, review_count, access_count, and last_accessed together', () => {
       expect(STAGE2_SOURCE).toContain('SET stability = ?,');
       expect(STAGE2_SOURCE).toContain('review_count = review_count + 1');
@@ -351,6 +365,8 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
   });
 
   describe('Pipeline support', () => {
+    // FIXME(S3.5 #14): Source-text assertions -- replace with behavioral tests.
+
     it('generates one embedding per concept in stage 1 candidate generation', () => {
       expect(STAGE1_SOURCE).toContain('for (const concept of concepts)');
       expect(STAGE1_SOURCE).toContain('generateQueryEmbedding(concept)');
@@ -363,5 +379,16 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     it('persists direct access tracking with its own update path', () => {
       expect(ACCESS_TRACKER_SOURCE).toContain('SET access_count = access_count + 1');
     });
+  });
+
+  describe('Integration coverage gaps (S3.5 #14)', () => {
+    // These tests document the integration test debt identified by the deep review.
+    // They must be implemented when a DB test fixture infrastructure is available.
+
+    it.todo('multi-concept search returns ranked results from DB (requires DB fixture)');
+    it.todo('hybrid search fallback chain works end-to-end (requires DB fixture)');
+    it.todo('review_count increments after processReview pipeline run (requires DB fixture)');
+    it.todo('access_count increments after direct access tracking (requires DB fixture)');
+    it.todo('searchWithFallback cascades through vector -> FTS -> BM25 (requires DB fixture)');
   });
 });
