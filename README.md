@@ -6,7 +6,7 @@
 
 > Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 56 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
-> Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
+> Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
 **🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 10 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
 
@@ -108,7 +108,8 @@ The framework adds three layers on top of the base platform:
 
 <!-- ANCHOR:quick-start -->
 
-&nbsp;
+---
+
 ## 2. QUICK START
 
 ### Installation
@@ -169,7 +170,8 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 <!-- ANCHOR:features -->
 
-&nbsp;
+---
+
 ## 3. FEATURES
 
 ### 📋 Spec Kit Documentation
@@ -324,8 +326,8 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 
 For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2), gate definitions, and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
 
+---
 
-&nbsp;
 ### 🧠 Memory Engine
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
@@ -481,8 +483,8 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **OpenAI** - Set `OPENAI_API_KEY` env var. Strong alternative.
 - **HuggingFace Local** - No setup needed. Free, auto-detected fallback.
 
+---
 
-&nbsp;
 ### 🔍 CocoIndex + Code Graph
 
 The framework uses two different code-understanding systems on purpose. **CocoIndex** handles semantic discovery, so the assistant can answer "find code that does X" or "how is Y implemented?" without knowing exact symbols first. The **Code Graph** handles structural expansion, so the assistant can answer questions like "what calls this?", "what imports this?", or "what breaks if we change it?" using an indexed relationship graph.
@@ -531,8 +533,8 @@ This split avoids forcing one search system to do everything poorly. Semantic se
 
 For the full tool and architecture reference, see [`mcp_server/README.md`](.opencode/skill/system-spec-kit/mcp_server/README.md) and the system skill docs in [`.opencode/skill/system-spec-kit/README.md`](.opencode/skill/system-spec-kit/README.md).
 
+---
 
-&nbsp;
 ### 🎯 Skill Advisor
 
 The Skill Advisor is an intelligent routing system that automatically matches user requests to the right skill. It powers Gate 2 in the gate system, analyzing every request against 21 skills using a multi-stage scoring pipeline with a SQLite-backed relationship graph. Average routing time: **0.5ms per query**.
@@ -619,8 +621,8 @@ Family affinity gives an additional 8% boost to same-family members when one has
 
 For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README.md).
 
+---
 
-&nbsp;
 ### 🎯 Skills Library
 
 21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
@@ -753,8 +755,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
 - Legal-stop events, session-boundary gate, `plateau` stop reason, dashboard sections for journal/lineage/coverage
 
+---
 
-&nbsp;
 ### 🤖 Agent Network
 
 12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
@@ -852,8 +854,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Returns a structured prompt package with `FRAMEWORK`, `CLEAR_SCORE`, `RATIONALE`, `ENHANCED_PROMPT`, and `ESCALATION_NOTES`
 - Used by the CLI mirror-card pipeline and `/improve:prompt` agent mode when complexity, compliance, or stakeholder spread makes inline prompting too weak
 
+---
 
-&nbsp;
 ### ⌨️ Commands
 
 21 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
@@ -1030,8 +1032,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - The receiving AI operates under its own system prompt - full identity adoption
 - Use for cross-AI delegation where the target AI needs to behave as itself
 
+---
 
-&nbsp;
 ### 🔌 Code Mode MCP
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) - a 98.7% reduction.
@@ -1088,7 +1090,8 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 
 <!-- ANCHOR:configuration -->
 
-&nbsp;
+---
+
 ## 4. CONFIGURATION
 
 ### Core Configuration Files
@@ -1175,8 +1178,8 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 <!-- ANCHOR:faq -->
 
+---
 
-&nbsp;
 ## 5. FAQ
 
 **Q: Do I need all 21 skills installed to use the framework?**
@@ -1225,8 +1228,8 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 
 <!-- ANCHOR:related-documents -->
 
+---
 
-&nbsp;
 ## 6. RELATED DOCUMENTS
 
 **Internal Documentation:**
