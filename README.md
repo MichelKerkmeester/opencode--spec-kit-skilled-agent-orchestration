@@ -207,7 +207,6 @@ The LOC ranges are guidance, not hard rules. Risk, complexity and the number of 
 **Implementation-summary.md** is required at all levels but created **after** implementation completes, not at spec folder creation time.
 
 &nbsp;
-
 #### Spec Folder Structure
 
 ```text
@@ -224,7 +223,6 @@ specs/<###-feature-name>/
 ```
 
 &nbsp;
-
 #### Checklist Priority System
 
 Checklists use a priority system so reviewers know what blocks shipping and what can wait:
@@ -234,7 +232,6 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 - **P2** - Optional. Nice to have. Can defer without approval.
 
 &nbsp;
-
 #### Phase Decomposition
 
 Phase decomposition splits large features into a parent spec folder (overall specification) and child folders (one per phase).
@@ -256,7 +253,6 @@ specs/022-big-feature/             # Parent spec folder
 Use `create.sh --phase` to create a parent with its first child in one step. Run `validate.sh --recursive` to validate the parent and all children together.
 
 &nbsp;
-
 #### Validation
 
 The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency.
@@ -268,7 +264,6 @@ The `validate.sh` script runs 20 rules against a spec folder and reports what pa
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
 
 &nbsp;
-
 #### Scripts and Validation
 
 **Spec Management Scripts** (in `scripts/spec/`):
@@ -293,7 +288,6 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
 
 &nbsp;
-
 #### Gate System
 
 3 mandatory gates run before any file change. Every request passes through the same sequence.
@@ -357,7 +351,6 @@ The memory engine now includes the packet-024 compact code graph and session lif
 The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 &nbsp;
-
 #### Layered MCP Surface
 
 The MCP tools are organized into a layered architecture. Each layer has a token budget that controls how much context it consumes:
@@ -376,7 +369,6 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
 &nbsp;
-
 #### Hybrid Search
 
 Every search checks five core channels at once, with CocoIndex available as a semantic code search bridge:
@@ -390,7 +382,6 @@ Every search checks five core channels at once, with CocoIndex available as a se
 **Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. **Graph-first routing** dispatches structural queries to the Code Graph first, then CocoIndex for semantic code discovery, then the memory pipeline. A **3-tier FTS fallback** activates when graph and semantic channels miss: FTS5 full-text, BM25 keyword scoring, then Grep/Glob filesystem search. The system truncates weak results and ensures every active channel is represented.
 
 &nbsp;
-
 #### Search Pipeline
 
 Every search passes through 4 stages:
@@ -401,7 +392,6 @@ Every search passes through 4 stages:
 - **Filtering** - State/quality filtering, confidence annotation, token-budget enforcement, and final response shaping without mutating post-rerank scores.
 
 &nbsp;
-
 #### Query Intelligence
 
 - **Complexity routing** - Simple (2 channels), moderate (4), complex (all 5)
@@ -413,7 +403,6 @@ Every search passes through 4 stages:
 Four response modes: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
 
 &nbsp;
-
 #### Memory Lifecycle
 
 Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed varies by content type and importance tier - critical decisions never fade; temporary debugging notes fade within days.
@@ -426,7 +415,6 @@ Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed var
 Four active cognitive states drive normal retrieval weighting: **HOT** >> **WARM** >> **COLD** >> **DORMANT**.
 
 &nbsp;
-
 #### Causal Graph
 
 Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from`, `supports`
@@ -439,7 +427,6 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 - **LLM backfill** - Background discovery of missed causal links
 
 &nbsp;
-
 #### Save Intelligence
 
 When you save new knowledge, **Prediction Error gating** compares it against existing memories and picks one of four outcomes:
@@ -459,7 +446,6 @@ Additional save-time processing:
 - **Correction tracking** - Records how knowledge evolves across versions
 
 &nbsp;
-
 #### Session Awareness
 
 - **Working memory** - Tracks current session findings with attention decay
@@ -467,7 +453,6 @@ Additional save-time processing:
 - **Context pressure** - Downgrades search mode as the context window fills
 
 &nbsp;
-
 #### Quality Gates
 
 Three layered checks before storage:
@@ -479,7 +464,6 @@ Three layered checks before storage:
 Preview all checks without saving using `dryRun: true`. Learned relevance feedback boosts helpful results with safeguards against noise. Two-tier explainability shows plain-language reasons or exact channel contributions.
 
 &nbsp;
-
 #### Retrieval Enhancements
 
 - **Constitutional injection** - Always-surfaced rules appear without asking
@@ -490,7 +474,6 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Provenance traces** - Shows exactly how each result was found
 
 &nbsp;
-
 #### Indexing and Infrastructure
 
 - **Real-time watching** - Filesystem monitoring via chokidar
@@ -500,7 +483,6 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Atomic writes** - Crash-safe with pending-file recovery on startup
 
 &nbsp;
-
 #### Evaluation
 
 - **12-metric computation** - MRR, NDCG, MAP and more
@@ -509,7 +491,6 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Offline scoring checks** - Test ranking changes before deployment
 
 &nbsp;
-
 #### Embedding Providers
 
 - **Voyage AI** - Set `VOYAGE_API_KEY` env var. Best quality, recommended.
@@ -525,7 +506,6 @@ The framework uses two different code-understanding systems on purpose. **CocoIn
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
 &nbsp;
-
 #### How the Code Graph Works
 
 The Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
@@ -540,7 +520,6 @@ The Code Graph is a SQLite-backed structural index that ships as part of the Spe
 The indexer uses tree-sitter to parse source files and extract functions, classes, imports, and call relationships. It tracks per-file content hashes to skip unchanged files, making incremental scans fast.
 
 &nbsp;
-
 #### What Each System Does
 
 | System | Best for | Primary surface |
@@ -551,7 +530,6 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 | **CCC utilities** | CocoIndex availability, reindexing, result feedback | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
 
 &nbsp;
-
 #### How Query Routing Works (Graph-First)
 
 The default routing order is: **Code Graph** (structural) -> **CocoIndex** (semantic code) -> **Memory** (session/decision context). This graph-first approach tries structural resolution before semantic similarity, with a 3-tier FTS fallback when earlier stages miss.
@@ -563,7 +541,6 @@ The default routing order is: **Code Graph** (structural) -> **CocoIndex** (sema
 - Use **Memory** after those packet-local sources when the question is about prior decisions, spec history, handovers, or task continuity that still needs deeper retrieval.
 
 &nbsp;
-
 #### Why It Matters
 
 This split avoids forcing one search system to do everything poorly. Semantic search is good at resemblance. Structural search is good at relationships. Keeping both lets the framework move from "this code looks relevant" to "this is how it connects" without collapsing those concerns into a single noisy result set.
@@ -621,7 +598,6 @@ The Skill Advisor is an intelligent routing system that automatically matches us
 ```
 
 &nbsp;
-
 #### Skill Graph (SQLite-Backed)
 
 Every skill folder contains a `graph-metadata.json` declaring typed relationships to other skills. The graph is stored in `skill-graph.sqlite` (alongside `code-graph.sqlite` and `deep-loop-graph.sqlite`) and auto-indexed on MCP server startup and on file changes via a Chokidar watcher. The advisor reads SQLite first, falling back to the compiled JSON if SQLite is unavailable.
@@ -636,7 +612,6 @@ Every skill folder contains a `graph-metadata.json` declaring typed relationship
 | `skill_graph_validate` | Weight band, symmetry, and schema validation |
 
 &nbsp;
-
 #### Relationship Types
 
 | Edge Type | Semantics | Damping | Example |
@@ -650,7 +625,6 @@ Every skill folder contains a `graph-metadata.json` declaring typed relationship
 Family affinity gives an additional 8% boost to same-family members when one has a strong signal. A ghost candidate guard prevents the graph from creating brand-new winners -- graph boosts only apply to candidates that already have positive evidence.
 
 &nbsp;
-
 #### Validation and Testing
 
 - `skill_graph_compiler.py --validate-only` validates all 21 metadata files with schema, weight band, and edge symmetry checks
@@ -681,7 +655,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Handles README templates, frontmatter validation, feature catalog authoring, install guide generation
 
 &nbsp;
-
 #### CODE WORKFLOW
 
 **sk-code-full-stack**
@@ -728,7 +701,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
 
 &nbsp;
-
 #### MCP INTEGRATION
 
 **mcp-code-mode**
@@ -757,7 +729,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
 
 &nbsp;
-
 #### CROSS-AI CLI
 
 **cli-gemini**
@@ -781,7 +752,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Autopilot autonomous execution mode, MCP server integration, native GitHub ecosystem perspective
 
 &nbsp;
-
 #### OTHER
 
 **sk-improve-prompt**
@@ -906,7 +876,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 21 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
 &nbsp;
-
 #### SPEC KIT
 
 **Plan --intake-only**
@@ -977,7 +946,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 `/spec_kit:deep-research` only enters that chain after a real `spec.md` exists; it follows `spec_check_protocol.md` for advisory-lock handling, `folder_state` classification, and bounded generated-fence sync.
 
 &nbsp;
-
 #### MEMORY
 
 **Save**
@@ -1001,7 +969,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Bulk operations and ingestion (start/status/cancel)
 
 &nbsp;
-
 #### CREATE
 
 **Skill**
@@ -1039,7 +1006,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Validates against established playbook format
 
 &nbsp;
-
 #### IMPROVE
 
 **Improve Agent**
@@ -1061,7 +1027,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Used when the target already exists and needs structured improvement rather than new scaffolding
 
 &nbsp;
-
 #### DOCTOR
 
 **MCP Debug**
@@ -1075,7 +1040,6 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Handles old-install-conflicting-with-new scenarios (clean reinstall with venv/node_modules removal)
 
 &nbsp;
-
 #### UTILITY
 
 **Agent Router**
@@ -1103,7 +1067,6 @@ Defined in `opencode.json`:
 | **Total** | **56** | |
 
 &nbsp;
-
 #### Code Mode Tools (7)
 
 - **`search_tools`** - Discover relevant tools by task description
@@ -1115,7 +1078,6 @@ Defined in `opencode.json`:
 - **`get_required_keys_for_tool`** - Check required environment variables for a tool
 
 &nbsp;
-
 #### External Integrations (via `.utcp_config.json`)
 
 - **`chrome_devtools_1`** (MCP/stdio) - Browser automation (instance 1). No env var needed.
@@ -1126,7 +1088,6 @@ Defined in `opencode.json`:
 - **`webflow`** (MCP/remote) - Sites, CMS collections. Requires Webflow auth.
 
 &nbsp;
-
 #### Performance
 
 | Metric | Without Code Mode | With Code Mode |
@@ -1161,7 +1122,6 @@ For more on the `mcp-code-mode` skill and TypeScript execution patterns, see the
 - **`.vscode/mcp.json`** - VS Code / Copilot MCP configuration wrapper.
 
 &nbsp;
-
 ### Memory Engine Configuration
 
 The memory server reads configuration from environment variables:
@@ -1177,7 +1137,6 @@ Default repo-local database path: `.opencode/skill/system-spec-kit/mcp_server/da
 
 
 &nbsp;
-
 ### Memory Feature Flags
 
 Feature flags control search channels, scoring signals, save-time enforcement, and evaluation behavior. The important retrieval/runtime flags are resolved at call time, so long-lived MCP processes do not depend on frozen import-time snapshots.
@@ -1191,7 +1150,6 @@ Feature flags control search channels, scoring signals, save-time enforcement, a
 For the complete flag reference with per-flag defaults, see [MCP Server README Section 5](.opencode/skill/system-spec-kit/mcp_server/README.md#5-configuration).
 
 &nbsp;
-
 ### Database Schema
 
 The runtime centers on a SQLite `memory_index` table with 56 columns plus companion FTS5/vector, lineage, checkpoint, working-memory, and eval tables.
@@ -1203,7 +1161,6 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 - **Paths** - The checked-in configs default to `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite`. If a runtime cannot write inside the repo, override `MEMORY_DB_PATH` (and, when relevant, `SPEC_KIT_DB_DIR`) to a writable location.
 
 &nbsp;
-
 ### opencode.json Structure
 
 ```json
