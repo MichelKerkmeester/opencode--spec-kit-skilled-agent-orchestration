@@ -223,7 +223,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [x] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
 - [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
 - [ ] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
-- [ ] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
+- [x] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
 - [ ] T-CGQ-08 [P2] R17-001: Dangling edges returned as successful relationships with raw `edge.targetId` → flag dangling edges as corruption (`code-graph/query.ts:442-559`) [QW #17]
 - [ ] T-CGQ-09 [P2] R18-001 + R20-003 (dedup): Query-level `detectorProvenance` silently degrades to global last-index snapshot → compute query-level provenance or omit field (`code-graph/query.ts:94-99,551-565`)
 - [ ] T-CGQ-10 [P2] R19-001: Transitive traversal silently degrades dangling nodes into ok with null metadata → surface as corruption (paired with T-CGQ-08) (`code-graph/query.ts:127-166,417-436`) [Phase 3 Med-H]
@@ -304,7 +304,7 @@ Primary workstream: S2 (P0-A).
 
 Primary workstream: Phase 3 Med-A, Med-B.
 
-- [ ] T-ENR-01 [P1] R5-001: Successful inline refresh still reports pre-refresh freshness → refresh readiness/freshness reports after inline reindex completes (`ensure-ready.ts:283-317`) [Phase 3 Med-A]
+- [x] T-ENR-01 [P1] R5-001: Successful inline refresh still reports pre-refresh freshness → refresh readiness/freshness reports after inline reindex completes (`ensure-ready.ts:283-317`) [Phase 3 Med-A]
 - [ ] T-ENR-02 [P1] R5-002: Partial persistence failures silently treated as successful refresh (file_mtime_ms written before node/edge failure) → don't write mtime until nodes+edges persist (`ensure-ready.ts:183-217`) [Phase 3 Med-B]
 <!-- /ANCHOR:group-enr -->
 
@@ -342,7 +342,7 @@ Primary workstream: M13 + S1.
 
 Primary workstream: Phase 3 Med.
 
-- [ ] T-GSH-01 [P2] R10-002: Wrapper interpolates provenance directly into `[PROVENANCE:]` without escaping → escape provenance fields; adversarial test for `]`/newline in `producer` (`hooks/claude/shared.ts:109-123`) [Phase 3 Med-J; REQ-013] [B:T-HST-01]
+- [x] T-GSH-01 [P2] R10-002: Wrapper interpolates provenance directly into `[PROVENANCE:]` without escaping → escape provenance fields; adversarial test for `]`/newline in `producer` (`hooks/claude/shared.ts:109-123`) [Phase 3 Med-J; REQ-013] [B:T-HST-01]
 - [ ] T-GSP-01 [P1] R10-001: Gemini compact-recovery drops cached provenance entirely; Claude preserves it → Gemini wrapper forwards `payloadContract.provenance` (`hooks/gemini/session-prime.ts:55-68`) [Phase 3 Med-I; REQ-014]
 <!-- /ANCHOR:group-gsh-gsp -->
 
