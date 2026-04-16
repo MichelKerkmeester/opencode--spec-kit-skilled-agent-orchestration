@@ -165,40 +165,48 @@ describe('session-resume handler', () => {
     workspacesToRemove.push(workspacePath);
     const specFolder = 'system-spec-kit/026-root/004-gate-d';
     const transcriptPath = path.join(workspacePath, 'transcript.jsonl');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      writeDoc(workspacePath, specFolder, 'implementation-summary.md', buildImplementationSummary(specFolder, 'Recovered from cached scope'));
+      fs.writeFileSync(transcriptPath, '{"role":"assistant","content":"resume"}\n', 'utf8');
+      const transcriptIdentity = buildTranscriptFingerprint(transcriptPath);
+      process.chdir(workspacePath);
 
-    writeDoc(workspacePath, specFolder, 'implementation-summary.md', buildImplementationSummary(specFolder, 'Recovered from cached scope'));
-    fs.writeFileSync(transcriptPath, '{"role":"assistant","content":"resume"}\n', 'utf8');
-    const transcriptIdentity = buildTranscriptFingerprint(transcriptPath);
-    process.chdir(workspacePath);
-
-    loadMostRecentStateMock.mockReturnValue({
-      lastSpecFolder: specFolder,
-      updatedAt: '2026-04-11T12:30:00Z',
-      sessionSummary: {
-        text: 'Gate D work is active',
-        extractedAt: new Date().toISOString(),
-      },
-      producerMetadata: {
-        lastClaudeTurnAt: '2026-04-11T12:00:00Z',
-        transcript: {
-          path: transcriptPath,
-          fingerprint: transcriptIdentity.fingerprint,
-          sizeBytes: transcriptIdentity.sizeBytes,
-          modifiedAt: transcriptIdentity.modifiedAt,
+      loadMostRecentStateMock.mockReturnValue({
+        lastSpecFolder: specFolder,
+        updatedAt: '2026-04-11T12:30:00Z',
+        sessionSummary: {
+          text: 'Gate D work is active',
+          extractedAt: new Date().toISOString(),
         },
-        cacheTokens: {
-          cacheCreationInputTokens: 12,
-          cacheReadInputTokens: 6,
+        producerMetadata: {
+          lastClaudeTurnAt: '2026-04-11T12:00:00Z',
+          transcript: {
+            path: transcriptPath,
+            fingerprint: transcriptIdentity.fingerprint,
+            sizeBytes: transcriptIdentity.sizeBytes,
+            modifiedAt: transcriptIdentity.modifiedAt,
+          },
+          cacheTokens: {
+            cacheCreationInputTokens: 12,
+            cacheReadInputTokens: 6,
+          },
         },
-      },
-    });
+      });
 
-    const result = await handleSessionResume({});
-    const parsed = JSON.parse(result.content[0].text);
+      const result = await handleSessionResume({});
+      const parsed = JSON.parse(result.content[0].text);
 
-    expect(parsed.data.memory.resolution.kind).toBe('cached');
-    expect(parsed.data.memory.specFolder).toBe(specFolder);
-    expect(parsed.data.hints).toContain('Using the cached session scope to resolve the resume target. Pass specFolder explicitly to override it.');
+      expect(parsed.data.memory.resolution.kind).toBe('cached');
+      expect(parsed.data.memory.specFolder).toBe(specFolder);
+      expect(parsed.data.hints).toContain('Using the cached session scope to resolve the resume target. Pass specFolder explicitly to override it.');
+      expect(parsed.data.opencodeTransport.event.summary).toContain(specFolder);
+      expect(warnSpy).toHaveBeenCalledWith(
+        `[session_resume] Using cached fallback specFolder for OpenCode transport: ${specFolder}`,
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it('still returns ladder-backed memory in minimal mode while adding session quality', async () => {

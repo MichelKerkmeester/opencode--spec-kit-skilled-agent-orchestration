@@ -415,8 +415,10 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
   const scopeFallback = !args.specFolder && cachedSummaryDecision.status === 'accepted'
     ? cachedSummaryDecision.cachedSummary?.lastSpecFolder ?? null
     : null;
+  const resolvedSpecFolder = args.specFolder ?? scopeFallback ?? null;
   if (cachedSummaryDecision.status === 'accepted' && scopeFallback) {
     hints.push('Using the cached session scope to resolve the resume target. Pass specFolder explicitly to override it.');
+    console.warn(`[session_resume] Using cached fallback specFolder for OpenCode transport: ${scopeFallback}`);
   } else if (cachedSummaryDecision.status !== 'accepted') {
     logCachedSummaryDecision('session_resume', cachedSummaryDecision);
   }
@@ -559,7 +561,7 @@ export async function handleSessionResume(args: SessionResumeArgs): Promise<MCPR
     payloadContract,
     opencodeTransport: buildOpenCodeTransportPlan({
       resumePayload: payloadContract,
-      specFolder: args.specFolder ?? null,
+      specFolder: resolvedSpecFolder,
     }),
     graphOps,
     ...(sessionQuality ? { sessionQuality } : {}),
