@@ -75,4 +75,40 @@ describe('trigger-phrase sanitizer', () => {
 
     expect(falsePositives).toEqual([]);
   });
+
+  // ─── T237: Whitespace-only trigger phrases ──────────────────
+
+  it('T237: whitespace-only strings should not count as valid trigger phrases', () => {
+    // Finding #18: scoreTriggerQuality() uses raw array length with no
+    // trim/filter step, so whitespace-only phrases inflate the count.
+    // The sanitizer wrapper should reject or strip these.
+    const result = sanitizeTriggerPhrases(['   ', '\t', '\n', '  \t  ']);
+    expect(result).toEqual([]);
+  });
+
+  it('T237: mixed whitespace and valid phrases preserves only valid ones', () => {
+    const result = sanitizeTriggerPhrases([
+      'semantic search',
+      '   ',
+      'mcp',
+      '\t',
+      '',
+    ]);
+    expect(result).toEqual(['semantic search', 'mcp']);
+  });
+
+  it('T237: single whitespace character is rejected', () => {
+    const result = sanitizeTriggerPhrase(' ');
+    expect(result.keep).toBe(false);
+  });
+
+  it('T237: tab-only string is rejected', () => {
+    const result = sanitizeTriggerPhrase('\t');
+    expect(result.keep).toBe(false);
+  });
+
+  it('T237: empty string is rejected', () => {
+    const result = sanitizeTriggerPhrase('');
+    expect(result.keep).toBe(false);
+  });
 });

@@ -214,3 +214,97 @@ describe('Search Feature Flags', () => {
     expect(isGraphWalkRuntimeEnabled()).toBe(true);
   });
 });
+
+// T254: Add coverage for planner/save flags that have outgrown dedicated parser coverage
+import {
+  resolveSavePlannerMode,
+  isSaveReconsolidationEnabled,
+  isPostInsertEnrichmentEnabled,
+  isQualityAutoFixEnabled,
+  isDocscoreAggregationEnabled,
+  isSaveQualityGateEnabled,
+  isDynamicTokenBudgetEnabled,
+  isConfidenceTruncationEnabled,
+  isSearchFallbackEnabled,
+  isFolderDiscoveryEnabled,
+  isSessionBoostEnabled,
+  isCausalBoostEnabled,
+} from '../lib/search/search-flags';
+
+describe('Search Flags: Planner and Save Flags (T254)', () => {
+  const PLANNER_FLAGS = [
+    'SPECKIT_SAVE_PLANNER_MODE',
+    'SPECKIT_RECONSOLIDATION_ENABLED',
+    'SPECKIT_POST_INSERT_ENRICHMENT_ENABLED',
+    'SPECKIT_QUALITY_AUTO_FIX',
+  ] as const;
+
+  const originals: Partial<Record<string, string | undefined>> = {};
+
+  beforeEach(() => {
+    for (const flag of PLANNER_FLAGS) {
+      originals[flag] = process.env[flag];
+      delete process.env[flag];
+    }
+  });
+
+  afterEach(() => {
+    for (const flag of PLANNER_FLAGS) {
+      if (originals[flag] === undefined) {
+        delete process.env[flag];
+      } else {
+        process.env[flag] = originals[flag];
+      }
+    }
+  });
+
+  it('resolveSavePlannerMode defaults to plan-only', () => {
+    expect(resolveSavePlannerMode()).toBe('plan-only');
+  });
+
+  it('resolveSavePlannerMode accepts full-auto', () => {
+    process.env.SPECKIT_SAVE_PLANNER_MODE = 'full-auto';
+    expect(resolveSavePlannerMode()).toBe('full-auto');
+  });
+
+  it('resolveSavePlannerMode accepts full_auto (underscore variant)', () => {
+    process.env.SPECKIT_SAVE_PLANNER_MODE = 'full_auto';
+    expect(resolveSavePlannerMode()).toBe('full-auto');
+  });
+
+  it('resolveSavePlannerMode accepts hybrid', () => {
+    process.env.SPECKIT_SAVE_PLANNER_MODE = 'hybrid';
+    expect(resolveSavePlannerMode()).toBe('hybrid');
+  });
+
+  it('resolveSavePlannerMode falls back to plan-only for unknown values', () => {
+    process.env.SPECKIT_SAVE_PLANNER_MODE = 'unknown-mode';
+    expect(resolveSavePlannerMode()).toBe('plan-only');
+  });
+
+  it('save reconsolidation, post-insert enrichment, quality auto-fix default to false (opt-in)', () => {
+    expect(isSaveReconsolidationEnabled()).toBe(false);
+    expect(isPostInsertEnrichmentEnabled()).toBe(false);
+    expect(isQualityAutoFixEnabled()).toBe(false);
+  });
+
+  it('opt-in flags enable only when explicitly set to true', () => {
+    process.env.SPECKIT_RECONSOLIDATION_ENABLED = 'true';
+    process.env.SPECKIT_POST_INSERT_ENRICHMENT_ENABLED = 'true';
+    process.env.SPECKIT_QUALITY_AUTO_FIX = 'true';
+    expect(isSaveReconsolidationEnabled()).toBe(true);
+    expect(isPostInsertEnrichmentEnabled()).toBe(true);
+    expect(isQualityAutoFixEnabled()).toBe(true);
+  });
+
+  it('graduated default-on flags are enabled without env vars', () => {
+    expect(isDocscoreAggregationEnabled()).toBe(true);
+    expect(isSaveQualityGateEnabled()).toBe(true);
+    expect(isDynamicTokenBudgetEnabled()).toBe(true);
+    expect(isConfidenceTruncationEnabled()).toBe(true);
+    expect(isSearchFallbackEnabled()).toBe(true);
+    expect(isFolderDiscoveryEnabled()).toBe(true);
+    expect(isSessionBoostEnabled()).toBe(true);
+    expect(isCausalBoostEnabled()).toBe(true);
+  });
+});

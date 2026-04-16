@@ -1,15 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildErrorResponse, wrapForMCP, createMCPErrorResponse } from '../lib/errors/error-envelope.js';
+import { buildErrorResponse } from '../lib/errors/core.js';
+import { wrapForMCP, createMCPErrorResponse } from '../lib/response/envelope.js';
 
 describe('context-server error envelope handling', () => {
-  it('buildErrorResponse produces a structured error object with name and details', () => {
+  it('buildErrorResponse produces a structured error object with data.error and hints', () => {
     const err = new Error('something broke');
     const response = buildErrorResponse('memory_search', err, { input: 'test' });
 
     expect(response).toBeDefined();
     expect(typeof response).toBe('object');
-    expect(response).toHaveProperty('error');
+    expect(response).toHaveProperty('summary');
+    expect(response).toHaveProperty('data');
+    expect(response.data).toHaveProperty('error');
+    expect(response.data.error).toContain('something broke');
+    expect(response).toHaveProperty('hints');
+    expect(Array.isArray(response.hints)).toBe(true);
   });
 
   it('wrapForMCP wraps an error response into MCP content format', () => {
