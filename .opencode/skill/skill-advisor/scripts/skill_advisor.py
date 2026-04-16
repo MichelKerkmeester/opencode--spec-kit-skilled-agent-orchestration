@@ -1157,6 +1157,14 @@ def _build_variants(skill_name: str) -> Set[str]:
     }
 
 
+def _matches_phrase_boundary(text: str, phrase: str) -> bool:
+    """Return True when a keyword phrase appears on token boundaries."""
+    if not phrase:
+        return False
+    pattern = re.compile(rf"(?<!\w){re.escape(phrase)}(?!\w)")
+    return pattern.search(text) is not None
+
+
 def _build_inline_record(
     name: str,
     description: str,
@@ -1761,6 +1769,23 @@ def analyze_request(
             boost_reasons[skill_name] = []
         for variant in matched_variants:
             boost_reasons[skill_name].append(f"!{variant}(explicit)")
+
+    for skill_name, config in skills.items():
+        keyword_variants = set(config.get("keyword_variants", set()))
+        matched_keywords = sorted({
+            variant
+            for variant in keyword_variants
+            if _matches_phrase_boundary(prompt_lower, variant)
+        })
+        if not matched_keywords:
+            continue
+
+        keyword_boost = 1.0 + 0.2 * (len(matched_keywords) - 1)
+        skill_boosts[skill_name] = skill_boosts.get(skill_name, 0) + keyword_boost
+        if skill_name not in boost_reasons:
+            boost_reasons[skill_name] = []
+        for keyword in matched_keywords:
+            boost_reasons[skill_name].append(f"!{keyword}(keyword)")
 
     # Stop words filtered for corpus matching only
     tokens = [t for t in all_tokens if t not in STOP_WORDS and len(t) > 2]

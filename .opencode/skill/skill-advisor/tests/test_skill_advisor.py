@@ -164,7 +164,66 @@ def test_advisor_module():
     except Exception as exc:
         fail_test("T243-SA-006: get_skills returns populated dict", str(exc))
 
-    # T243-SA-007: analyze_prompt result shape has expected fields
+    # T243-SA-007: parse_frontmatter captures Keywords HTML comments
+    try:
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
+            f.write(
+                """---
+name: demo-skill
+description: Demo parser fixture
+keywords: existing-term
+---
+<!-- Keywords: alpha, beta phrase, existing-term -->
+# Demo Skill
+"""
+            )
+            tmppath = f.name
+
+        metadata = advisor.parse_frontmatter(tmppath)
+        os.unlink(tmppath)
+
+        if isinstance(metadata, dict) and metadata.get("keywords") == "existing-term, alpha, beta phrase":
+            ok("T243-SA-007: parse_frontmatter captures Keywords HTML comments", metadata["keywords"])
+        else:
+            fail_test(
+                "T243-SA-007: parse_frontmatter captures Keywords HTML comments",
+                f"metadata={metadata}",
+            )
+    except Exception as exc:
+        fail_test("T243-SA-007: parse_frontmatter captures Keywords HTML comments", str(exc))
+
+    # T243-SA-008: cached skill records include Keywords HTML comment variants
+    try:
+        runtime = load_module("skill_advisor_runtime", "skill_advisor_runtime.py")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skill_dir = os.path.join(tmpdir, "demo-skill")
+            os.makedirs(skill_dir, exist_ok=True)
+            skill_file = os.path.join(skill_dir, "SKILL.md")
+            with open(skill_file, "w", encoding="utf-8") as handle:
+                handle.write(
+                    """---
+name: demo-skill
+description: Runtime cache fixture
+---
+<!-- Keywords: autoresearch, packet anchor -->
+# Demo Skill
+"""
+                )
+
+            records = runtime.get_cached_skill_records(tmpdir, set(), force_refresh=True)
+            record = records.get("demo-skill", {})
+            keyword_variants = set(record.get("keyword_variants", set()))
+            if {"autoresearch", "packet anchor"}.issubset(keyword_variants):
+                ok("T243-SA-008: cached skill records include Keywords HTML comment variants")
+            else:
+                fail_test(
+                    "T243-SA-008: cached skill records include Keywords HTML comment variants",
+                    f"keyword_variants={sorted(keyword_variants)}",
+                )
+    except Exception as exc:
+        fail_test("T243-SA-008: cached skill records include Keywords HTML comment variants", str(exc))
+
+    # T243-SA-009: analyze_prompt result shape has expected fields
     try:
         result = advisor.analyze_prompt(
             prompt="review code changes in PR",
@@ -176,14 +235,14 @@ def test_advisor_module():
         if isinstance(result, list) and len(result) > 0:
             first = result[0]
             if isinstance(first, dict) and "skill" in first:
-                ok("T243-SA-007: Result item has 'skill' field", f"skill={first['skill']}")
+                ok("T243-SA-009: Result item has 'skill' field", f"skill={first['skill']}")
             else:
-                fail_test("T243-SA-007: Result item has 'skill' field", f"keys={list(first.keys()) if isinstance(first, dict) else 'not dict'}")
+                fail_test("T243-SA-009: Result item has 'skill' field", f"keys={list(first.keys()) if isinstance(first, dict) else 'not dict'}")
         else:
             # No results at low threshold is also valid
-            ok("T243-SA-007: analyze_prompt returns valid list (may be empty)", f"len={len(result) if isinstance(result, list) else 'N/A'}")
+            ok("T243-SA-009: analyze_prompt returns valid list (may be empty)", f"len={len(result) if isinstance(result, list) else 'N/A'}")
     except Exception as exc:
-        fail_test("T243-SA-007: Result item has 'skill' field", str(exc))
+        fail_test("T243-SA-009: Result item has 'skill' field", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────

@@ -30,6 +30,20 @@ _CACHE: Dict[str, Any] = {
     "records": None,
 }
 
+KEYWORDS_COMMENT_RE = re.compile(
+    r"^\s*<!--\s*Keywords\s*:\s*(.*?)\s*-->\s*$",
+    re.IGNORECASE,
+)
+
+
+def _split_keywords(raw_value: str) -> list[str]:
+    """Split comma-separated keyword metadata while trimming blanks."""
+    return [
+        keyword.strip()
+        for keyword in raw_value.split(",")
+        if keyword.strip()
+    ]
+
 
 # ───────────────────────────────────────────────────────────────
 # 3. FRONTMATTER PARSING
@@ -47,7 +61,7 @@ def parse_frontmatter_fast(file_path: str) -> Optional[Dict[str, str]]:
             for line in handle:
                 stripped = line.rstrip("\n")
                 if stripped.strip() == "---":
-                    return data
+                    break
 
                 if ":" not in stripped:
                     continue
@@ -57,6 +71,37 @@ def parse_frontmatter_fast(file_path: str) -> Optional[Dict[str, str]]:
                 if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
                     value = value[1:-1]
                 data[key.strip()] = value
+            else:
+                return None
+
+            for line in handle:
+                stripped = line.strip()
+                if not stripped:
+                    continue
+
+                keyword_match = KEYWORDS_COMMENT_RE.match(stripped)
+                if keyword_match:
+                    discovered_keywords = _split_keywords(keyword_match.group(1))
+                    if discovered_keywords:
+                        existing_keywords = _split_keywords(data.get("keywords", ""))
+                        merged_keywords: list[str] = []
+                        seen_keywords: Set[str] = set()
+                        for keyword in existing_keywords + discovered_keywords:
+                            normalized = keyword.lower()
+                            if normalized in seen_keywords:
+                                continue
+                            seen_keywords.add(normalized)
+                            merged_keywords.append(keyword)
+                        if merged_keywords:
+                            data["keywords"] = ", ".join(merged_keywords)
+                    continue
+
+                if stripped.startswith("<!--") and stripped.endswith("-->"):
+                    continue
+
+                return data
+
+            return data
 
     except (OSError, UnicodeDecodeError, ValueError):
         return None
@@ -84,6 +129,20 @@ def _build_variants(skill_name: str) -> Set[str]:
         lowered.replace("-", " "),
         lowered.replace("-", "_"),
     }
+
+
+def _build_keyword_variants(keywords: str) -> Set[str]:
+    """Build normalized phrase variants from keyword metadata."""
+    variants: Set[str] = set()
+    for keyword in _split_keywords(keywords):
+        lowered = keyword.lower()
+        variants.update({
+            lowered,
+            lowered.replace("-", " "),
+            lowered.replace("_", " "),
+            lowered.replace("-", "_"),
+        })
+    return {variant for variant in variants if variant}
 
 
 # ───────────────────────────────────────────────────────────────
@@ -122,15 +181,19 @@ def _build_skill_record(
         return None
 
     description = meta.get("description", "")
+    keywords = meta.get("keywords", "")
     name_terms = _normalize_terms(name.replace("-", " "), stop_words)
     corpus_terms = _normalize_terms(description, stop_words)
     variants = _build_variants(name)
+    keyword_variants = _build_keyword_variants(keywords)
 
     return (
         name,
         {
             "name": name,
             "description": description,
+            "keywords": keywords,
+            "keyword_variants": keyword_variants,
             "kind": "skill",
             "source": "skill",
             "path": file_path,
@@ -148,6 +211,8 @@ def _clone_records(records: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, An
         cloned[name] = {
             "name": record.get("name", name),
             "description": record.get("description", ""),
+            "keywords": record.get("keywords", ""),
+            "keyword_variants": set(record.get("keyword_variants", set())),
             "kind": record.get("kind", "skill"),
             "source": record.get("source", "skill"),
             "path": record.get("path"),
