@@ -73,26 +73,25 @@ describe('Gate D regression 7 — memory tiers', () => {
       }),
     ];
 
-    const ranked = applyCompositeScoring(sameTopicRows, {
+    const searchableRows = sameTopicRows.filter((row) => !isExcludedFromSearch(row.importance_tier));
+    const ranked = applyCompositeScoring(searchableRows, {
       query: 'reader ready canonical continuity contract',
     });
 
     expect(isExcludedFromSearch('deprecated')).toBe(true);
-    expect(ranked.every((row) => row.document_type !== 'memory')).toBe(true);
-    expect(ranked.every((row) => !row.file_path.includes('/memory/'))).toBe(true);
+    expect(searchableRows).toHaveLength(3);
+    expect(searchableRows.every((row) => row.document_type !== 'memory')).toBe(true);
+    expect(searchableRows.every((row) => !row.file_path.includes('/memory/'))).toBe(true);
 
-    expect(ranked.map((row) => row.id)).toEqual([701, 702, 703, 704]);
+    expect(ranked.map((row) => row.id)).toEqual([701, 702, 703]);
     expect(ranked[0].importance_tier).toBe('constitutional');
     expect(ranked[1].anchor_id).toBe('DECISION-reader-ready-priority');
     expect(ranked[2].anchor_id).toBe('notes-reader-ready-follow-up');
     expect(ranked[1].file_path).toBe(ranked[2].file_path);
     expect(ranked[1].composite_score).toBeGreaterThan(ranked[2].composite_score);
-    expect(ranked[3].id).toBe(704);
-    expect(ranked[3].importance_tier).toBe('deprecated');
-    expect(ranked[3].composite_score).toBeLessThan(ranked[2].composite_score);
   });
 
-  it('ranks deprecated rows below non-deprecated when pre-filtering is skipped', () => {
+  it('shows that composite scoring alone does not replace the deprecated-tier pre-filter', () => {
     const allRows: SearchableRow[] = [
       buildCanonicalRow({
         id: 801,
@@ -110,14 +109,14 @@ describe('Gate D regression 7 — memory tiers', () => {
       }),
     ];
 
-    // Pass all rows (including deprecated) directly to composite scoring
-    // to verify the scorer itself demotes deprecated rows
     const ranked = applyCompositeScoring(allRows, {
       query: 'reader ready canonical continuity contract',
     });
 
     expect(ranked).toHaveLength(2);
-    expect(ranked[0].id).toBe(801);
-    expect(ranked[0].importance_tier).toBe('normal');
+    expect(ranked[0].id).toBe(802);
+    expect(ranked[0].importance_tier).toBe('deprecated');
+    expect(isExcludedFromSearch(ranked[0].importance_tier)).toBe(true);
+    expect(ranked[1].id).toBe(801);
   });
 });

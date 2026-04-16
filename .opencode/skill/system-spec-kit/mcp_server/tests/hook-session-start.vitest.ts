@@ -125,6 +125,16 @@ describe('session-prime hook', () => {
   });
 
   describe('startup entry surface', () => {
+    beforeEach(() => {
+      vi.resetModules();
+      vi.clearAllMocks();
+    });
+
+    afterEach(() => {
+      vi.resetModules();
+      vi.clearAllMocks();
+    });
+
     it('rewrites the startup memory line and appends accepted continuity hints', async () => {
       vi.doMock('../hooks/claude/hook-state.js', async () => vi.importActual('../hooks/claude/hook-state.js'));
       vi.doMock('../handlers/session-resume.js', () => ({
@@ -170,7 +180,7 @@ describe('session-prime hook', () => {
     it('falls back to the static startup surface when the startup brief module is unavailable', async () => {
       vi.doMock('../hooks/claude/hook-state.js', async () => vi.importActual('../hooks/claude/hook-state.js'));
       vi.doMock('../handlers/session-resume.js', () => ({
-        getCachedSessionSummaryDecision: vi.fn(() => ({ status: 'rejected' })),
+        getCachedSessionSummaryDecision: vi.fn(() => ({ status: 'rejected', reason: 'no cached summary' })),
         logCachedSummaryDecision: vi.fn(),
       }));
       vi.doMock('../lib/code-graph/startup-brief.js', () => {

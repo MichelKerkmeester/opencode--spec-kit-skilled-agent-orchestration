@@ -35,6 +35,11 @@ vi.mock('../core/config', () => {
     DEFAULT_BASE_PATH:        process.env.MEMORY_BASE_PATH || process.cwd(),
     ALLOWED_BASE_PATHS:       [path.join(os.homedir(), '.claude'), process.cwd()].map((b: string) => path.resolve(b)),
     CONSTITUTIONAL_CACHE_TTL: 60000,
+    resolveDatabasePaths:     () => ({
+      databaseDir: dbDir,
+      databasePath: path.join(dbDir, 'context-index.sqlite'),
+      dbUpdatedFile: path.join(dbDir, '.db-updated'),
+    }),
   };
 });
 
