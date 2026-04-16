@@ -96,6 +96,10 @@ const RECOVERED_TRANSCRIPT_STRIP_PATTERNS = [
   /^\s*<(?:\/)?(?:system|developer|assistant|user|instructions?)\b/i,
 ];
 
+function escapeProvenanceField(value: unknown, fallback: string): string {
+  return encodeURIComponent(typeof value === 'string' ? value : fallback);
+}
+
 /** Remove obvious system-instruction lines from recovered transcript text */
 export function sanitizeRecoveredPayload(payload: string): string {
   return payload
@@ -113,7 +117,7 @@ export function wrapRecoveredCompactPayload(
 ): string {
   const sanitizedPayload = sanitizeRecoveredPayload(payload);
   const provenanceLine = metadata
-    ? `[PROVENANCE: producer=${metadata.producer ?? 'hook-cache'}; trustState=${metadata.trustState ?? 'cached'}; sourceSurface=${metadata.sourceSurface ?? 'compact'}]`
+    ? `[PROVENANCE: producer=${escapeProvenanceField(metadata.producer, 'hook-cache')}; trustState=${escapeProvenanceField(metadata.trustState, 'cached')}; sourceSurface=${escapeProvenanceField(metadata.sourceSurface, 'compact')}]`
     : null;
   return [
     `[SOURCE: hook-cache, cachedAt: ${cachedAt}]`,
