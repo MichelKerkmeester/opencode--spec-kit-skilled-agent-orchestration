@@ -443,11 +443,11 @@ Every completed loop produces a convergence report (embedded in `review-report.m
 
 ### Framework Integration
 
-This skill operates within the behavioral framework defined in CLAUDE.md.
+This skill operates within the behavioral framework defined in the active runtime's root doc (CLAUDE.md, AGENTS.md, CODEX.md, or GEMINI.md).
 
 Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py` (keywords: deep review, code audit, iterative review)
-- **Gate 3**: File modifications require spec folder question per CLAUDE.md Gate 3; the spec folder determines the `{spec_folder}/review/` state packet location
+- **Gate 3**: File modifications require spec folder question per the root doc Gate 3; the spec folder determines the `{spec_folder}/review/` state packet location
 - **Continuity**: `/spec_kit:resume` is the operator-facing recovery surface; canonical packet continuity is written via `generate-context.js`
 - **Command**: `/spec_kit:deep-review` is the primary invocation point
 

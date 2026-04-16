@@ -351,11 +351,11 @@ Every completed loop produces a convergence report:
 
 ### Framework Integration
 
-This skill operates within the behavioral framework defined in CLAUDE.md.
+This skill operates within the behavioral framework defined in the active runtime's root doc (CLAUDE.md, AGENTS.md, CODEX.md, or GEMINI.md).
 
 Key integrations:
 - **Gate 2**: Skill routing via `skill_advisor.py` (keywords: autoresearch, deep research)
-- **Gate 3**: File modifications require spec folder question per CLAUDE.md Gate 3
+- **Gate 3**: File modifications require spec folder question per the root doc Gate 3
 - **Continuity**: `/spec_kit:resume` is the operator-facing recovery surface; canonical packet continuity is written via `generate-context.js`
 - **Orchestrator**: @orchestrate dispatches @deep-research as LEAF agent
 

@@ -108,8 +108,11 @@ command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 ### 2. Authenticate
 
 ```bash
-# GitHub auth (if GH_TOKEN not set)
-gh auth login
+# OAuth flow
+copilot login
+
+# Non-interactive (CI/CD or automation)
+export GH_TOKEN=your-github-pat
 ```
 
 ### 3. Run a Simple Task
@@ -225,7 +228,7 @@ cli-copilot/
 | Method | Setup | Best For |
 |--------|-------|----------|
 | **GH_TOKEN** | `export GH_TOKEN=your-token` | Programmatic use, CI/CD |
-| **gh auth** | `gh auth login` | Interactive browser flow |
+| **copilot login** | `copilot login` | Interactive OAuth flow |
 
 ### Config File
 

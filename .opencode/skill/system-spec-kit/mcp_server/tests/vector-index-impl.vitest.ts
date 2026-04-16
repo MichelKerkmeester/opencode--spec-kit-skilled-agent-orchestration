@@ -132,8 +132,12 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(missingExports).toEqual([]);
     });
 
-    it('has correct constants EMBEDDING_DIM=1024 and DEFAULT_DB_PATH', () => {
-      expect(mod.EMBEDDING_DIM).toBe(1024);
+    it('has correct constants EMBEDDING_DIM matching runtime provider and DEFAULT_DB_PATH', () => {
+      // T252: EMBEDDING_DIM must match the runtime-resolved dimension, not a hard-coded 1024.
+      // The implementation resolves dimensions from the active provider (vector-index-store.ts:121-129).
+      const runtimeDim = mod.getEmbeddingDim();
+      expect(mod.EMBEDDING_DIM).toBe(runtimeDim);
+      expect([768, 1024, 1536]).toContain(mod.EMBEDDING_DIM);
       expect(typeof mod.DEFAULT_DB_PATH).toBe('string');
       expect(mod.DEFAULT_DB_PATH.length).toBeGreaterThan(0);
     });

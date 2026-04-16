@@ -17,7 +17,7 @@ _memory:
 ## Architecture <!-- ANCHOR:architecture -->Resolve and prune candidates before `normalizeUnique(...).slice(0, 20)` so better paths win the limited slots.<!-- /ANCHOR:architecture -->
 ## Phases <!-- ANCHOR:phases -->This plan separates parser remediation from hit-rate verification.<!-- /ANCHOR:phases -->
 ## Phase 1
-Add cross-track lookup, stale-deletion pruning, and explicit `memory/metadata.json` rejection inside `graph-metadata-parser.ts`.
+Add cross-track lookup, disk-existence pruning, and explicit `memory/metadata.json` rejection inside `graph-metadata-parser.ts`.
 ## Phase 2
 Add focused tests, re-run the key-file quality measurement, and confirm the resolved-hit rate moves toward the high-`90s` target.
 ## Testing <!-- ANCHOR:testing -->Run `npx tsc --noEmit` plus `npx vitest run tests/graph-metadata-integration.vitest.ts tests/graph-metadata-schema.vitest.ts`.<!-- /ANCHOR:testing -->

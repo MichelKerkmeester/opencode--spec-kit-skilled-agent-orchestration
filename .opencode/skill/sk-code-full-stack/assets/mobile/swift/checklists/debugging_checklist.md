@@ -1,11 +1,11 @@
 ---
-title: Systematic Debugging Checklist
-description: Universal step-by-step checklist for investigating technical issues across all stacks.
+title: Swift/iOS Debugging Checklist
+description: Step-by-step checklist for investigating Swift and iOS/macOS issues.
 ---
 
-# 🔍 Debugging Checklist
+# 🔍 Swift/iOS Debugging Checklist
 
-Universal step-by-step checklist for investigating technical issues systematically across TypeScript/JavaScript, Go, and Swift.
+Step-by-step checklist for investigating Swift and iOS/macOS issues systematically.
 
 ---
 
@@ -24,8 +24,6 @@ Use this checklist for ANY technical issue. Complete all applicable phases seque
 
 | Language | Primary Debugging Environment |
 |----------|------------------------------|
-| TypeScript/JavaScript | Browser DevTools, Node.js debugger |
-| Go | Delve debugger, pprof |
 | Swift | Xcode Debugger, LLDB, Instruments |
 
 ---
