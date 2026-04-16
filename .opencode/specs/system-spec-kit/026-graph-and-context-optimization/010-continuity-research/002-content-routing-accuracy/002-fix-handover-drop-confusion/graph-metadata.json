@@ -29,7 +29,7 @@
       "language"
     ],
     "importance_tier": "critical",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/routing/routing-prototypes.json",

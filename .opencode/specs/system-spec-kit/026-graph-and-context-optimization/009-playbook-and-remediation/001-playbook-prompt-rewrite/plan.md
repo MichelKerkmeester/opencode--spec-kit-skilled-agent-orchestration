@@ -5,7 +5,7 @@ trigger_phrases: ["implementation plan", "phase 014 plan", "manual testing playb
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "complete"
+status: "in_progress"
 parent: "009-playbook-and-remediation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 _memory:
@@ -13,8 +13,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "speckit"
-    recent_action: "Plan scaffold repaired"
-    next_safe_action: "Validate packet"
+    recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
+    next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -37,6 +37,8 @@ _memory:
 
 ### Overview
 The underlying phase implementation already rewrote prompt fields across the manual testing playbook corpus. This plan focuses on restoring the Phase 014 packet to the required Level 2 structure, accurately pointing at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and validating the packet without modifying the playbook content itself.
+
+Packet closeout remains open because `CHK-023` still defers the required manual prompt spot-check for the rewritten playbook scenarios.
 <!-- /ANCHOR:summary -->
 
 ---

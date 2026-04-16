@@ -9,7 +9,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "verification"
 status: complete
-closed_by_commit: TBD
+closed_by_commit: 254461c386
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment"

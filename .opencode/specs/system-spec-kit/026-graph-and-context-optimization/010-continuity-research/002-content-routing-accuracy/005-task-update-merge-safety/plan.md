@@ -1,15 +1,15 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
 title: "Add Task Update Merge Safety Guard - Execution Plan"
-status: planned
+status: complete
 parent_spec: 005-task-update-merge-safety/spec.md
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Planned the task-update pre-merge validation work"
-    next_safe_action: "Implement validation in Phase 1, then surface errors and tests in Phase 2"
+    recent_action: "Closed the task-update merge-safety phase"
+    next_safe_action: "Reuse this phase if task-update matching drifts again"
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Add an exact-match guard for `task_update` before canonical writes reach the merge transform.<!-- /ANCHOR:summary -->

@@ -1,15 +1,15 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
 title: "Improve Graph Metadata Entity Quality - Execution Plan"
-status: planned
+status: complete
 parent_spec: 007-entity-quality-improvements/spec.md
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Planned the entity quality improvements"
-    next_safe_action: "Implement local parser fixes in Phase 1, then verify leak closure in Phase 2"
+    recent_action: "Closed the entity-quality phase"
+    next_safe_action: "Reuse this phase if entity scope leakage or runtime-name noise returns"
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Refine `deriveEntities()` without changing the surrounding graph-metadata schema or key-file pipeline.<!-- /ANCHOR:summary -->

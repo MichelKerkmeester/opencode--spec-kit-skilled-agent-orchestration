@@ -1,6 +1,6 @@
 ---
 title: "Fix Handover vs Drop Routing Confusion - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)

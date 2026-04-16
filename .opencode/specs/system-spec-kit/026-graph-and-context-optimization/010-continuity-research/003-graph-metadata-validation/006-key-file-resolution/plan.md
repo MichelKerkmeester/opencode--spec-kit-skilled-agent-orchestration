@@ -1,15 +1,15 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | level2-verify | compact -->
 ---
 title: "Improve Graph Metadata Key File Resolution - Execution Plan"
-status: planned
+status: complete
 parent_spec: 006-key-file-resolution/spec.md
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Planned the key-file resolution improvements"
-    next_safe_action: "Implement parser fixes in Phase 1, then measure and verify in Phase 2"
+    recent_action: "Closed the key-file resolution phase"
+    next_safe_action: "Reuse this phase if key-file hit-rate or stale-path drift returns"
 ---
 # Execution Plan
 ## Summary <!-- ANCHOR:summary -->Improve `deriveKeyFiles()` without changing its external 20-slot contract.<!-- /ANCHOR:summary -->

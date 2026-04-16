@@ -1,6 +1,6 @@
 ---
 title: "Fix Handover vs Drop Routing Confusion - Execution Plan"
-status: planned
+status: complete
 parent_spec: 002-fix-handover-drop-confusion/spec.md
 ---
 # Execution Plan

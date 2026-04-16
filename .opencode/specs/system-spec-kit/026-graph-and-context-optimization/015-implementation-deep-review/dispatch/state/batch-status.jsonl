@@ -2,3 +2,5 @@
 {"batch":"B-010","event":"completed","ts":"2026-04-16T10:43:12Z","rc":0}
 {"batch":"B-010","event":"verified","ts":"2026-04-16T10:43:12Z"}
 {"batch":"B-010","event":"merged","ts":"2026-04-16T10:47:19Z"}
+{"batch":"B-020","event":"completed","ts":"2026-04-16T10:50:55Z","rc":0}
+{"batch":"B-020","event":"merged","ts":"2026-04-16T10:52:30Z"}

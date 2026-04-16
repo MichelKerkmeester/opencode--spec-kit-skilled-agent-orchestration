@@ -1,6 +1,6 @@
 ---
 title: "Fix Delivery vs Progress Routing Confusion"
-status: planned
+status: complete
 level: 2
 type: implementation
 parent: 002-content-routing-accuracy

@@ -5,7 +5,7 @@ trigger_phrases: ["playbook prompt rewrite", "manual testing prompt cleanup", "p
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "complete"
+status: "in_progress"
 parent: "009-playbook-and-remediation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
@@ -13,8 +13,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "speckit"
-    recent_action: "Spec scaffold repaired"
-    next_safe_action: "Validate packet"
+    recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
+    next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -30,7 +30,7 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-04-12 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Parent Metadata** | `../graph-metadata.json` |
@@ -49,6 +49,8 @@ Phase 014 already rewrote prompt fields across the manual testing playbook, but 
 
 ### Purpose
 Restore the Phase 014 packet so it truthfully documents the prompt rewrite work, references the real playbook index at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and validates cleanly as a Level 2 packet.
+
+This packet remains in progress until the required manual prompt spot-check in `CHK-023` is either completed or explicitly re-scoped.
 <!-- /ANCHOR:problem -->
 
 ---

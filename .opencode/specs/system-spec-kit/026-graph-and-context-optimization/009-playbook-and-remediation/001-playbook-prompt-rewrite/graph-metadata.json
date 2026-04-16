@@ -39,7 +39,7 @@
       "plan"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "in_progress",
     "key_files": [
       ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
       "spec.md",
