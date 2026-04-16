@@ -38,6 +38,7 @@ const SUPPORTED_EDGE_TYPES = [
 ] as const satisfies readonly EdgeType[];
 
 const SUPPORTED_EDGE_TYPE_SET = new Set<string>(SUPPORTED_EDGE_TYPES);
+const RESOLVE_SUBJECT_CANDIDATE_LIMIT = 10;
 const SUPPORTED_RELATIONSHIP_OPERATIONS = [
   'calls_from',
   'calls_to',
@@ -88,23 +89,106 @@ function resolveRequestedEdgeType(args: QueryArgs): { edgeType?: EdgeType; error
   return {};
 }
 
+interface AmbiguousSubjectWarning {
+  code: 'ambiguous_subject';
+  subject: string;
+  matchField: 'fq_name' | 'name';
+  count: number;
+  candidates: string[];
+  message: string;
+}
+
+interface ResolvedSubject {
+  symbolId: string | null;
+  warnings?: AmbiguousSubjectWarning[];
+}
+
+interface SubjectMatchResult {
+  candidates: string[];
+  count: number;
+}
+
+function querySubjectMatches(
+  field: 'fq_name' | 'name',
+  subject: string,
+): SubjectMatchResult {
+  const d = graphDb.getDb();
+  const candidates = d.prepare(`
+    SELECT symbol_id
+    FROM code_nodes
+    WHERE ${field} = ?
+    ORDER BY file_path, start_line, symbol_id
+    LIMIT ?
+  `).all(subject, RESOLVE_SUBJECT_CANDIDATE_LIMIT) as Array<{ symbol_id: string }>;
+
+  if (candidates.length === 0) {
+    return { candidates: [], count: 0 };
+  }
+
+  const count = (d.prepare(`
+    SELECT COUNT(*) as count
+    FROM code_nodes
+    WHERE ${field} = ?
+  `).get(subject) as { count: number }).count;
+
+  return {
+    candidates: candidates.map((candidate) => candidate.symbol_id),
+    count,
+  };
+}
+
+function buildAmbiguousSubjectWarning(
+  subject: string,
+  matchField: 'fq_name' | 'name',
+  matchResult: SubjectMatchResult,
+): AmbiguousSubjectWarning {
+  const truncated = matchResult.count > matchResult.candidates.length;
+  const shownCount = matchResult.candidates.length;
+  const countLabel = truncated
+    ? `${matchResult.count} total; showing first ${shownCount}`
+    : `${matchResult.count}`;
+
+  return {
+    code: 'ambiguous_subject',
+    subject,
+    matchField,
+    count: matchResult.count,
+    candidates: matchResult.candidates,
+    message: `Multiple code graph nodes matched subject "${subject}" by ${matchField} (${countLabel}). Use a symbolId to disambiguate the query.`,
+  };
+}
+
 /** Resolve a subject string to a symbolId */
-function resolveSubject(subject: string): string | null {
+function resolveSubject(subject: string): ResolvedSubject {
   const d = graphDb.getDb();
 
   // Try as symbolId first
   const byId = d.prepare('SELECT symbol_id FROM code_nodes WHERE symbol_id = ?').get(subject) as { symbol_id: string } | undefined;
-  if (byId) return byId.symbol_id;
+  if (byId) return { symbolId: byId.symbol_id };
 
   // Try as fqName
-  const byFq = d.prepare('SELECT symbol_id FROM code_nodes WHERE fq_name = ? LIMIT 1').get(subject) as { symbol_id: string } | undefined;
-  if (byFq) return byFq.symbol_id;
+  const byFq = querySubjectMatches('fq_name', subject);
+  if (byFq.count > 0) {
+    return {
+      symbolId: byFq.candidates[0] ?? null,
+      ...(byFq.count > 1
+        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'fq_name', byFq)] }
+        : {}),
+    };
+  }
 
   // Try as name
-  const byName = d.prepare('SELECT symbol_id FROM code_nodes WHERE name = ? LIMIT 1').get(subject) as { symbol_id: string } | undefined;
-  if (byName) return byName.symbol_id;
+  const byName = querySubjectMatches('name', subject);
+  if (byName.count > 0) {
+    return {
+      symbolId: byName.candidates[0] ?? null,
+      ...(byName.count > 1
+        ? { warnings: [buildAmbiguousSubjectWarning(subject, 'name', byName)] }
+        : {}),
+    };
+  }
 
-  return null;
+  return { symbolId: null };
 }
 
 function buildQueryStructuralTrust(readiness: ReadyResult) {
@@ -164,6 +248,13 @@ interface DanglingEdgeWarning {
   count: number;
   danglingSymbolIds: string[];
   message: string;
+}
+
+type QueryWarning = AmbiguousSubjectWarning | DanglingEdgeWarning;
+
+function mergeWarnings(...warningSets: Array<QueryWarning[] | undefined>): QueryWarning[] | undefined {
+  const warnings = warningSets.flatMap((warningSet) => warningSet ?? []);
+  return warnings.length > 0 ? warnings : undefined;
 }
 
 function excludeDanglingEdges<TEntry>(
@@ -548,7 +639,8 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     return buildUnknownOperationResponse(operation);
   }
 
-  const symbolId = resolveSubject(subject);
+  const resolvedSubject = resolveSubject(subject);
+  const symbolId = resolvedSubject.symbolId;
   if (!symbolId) {
     return {
       content: [{
@@ -573,6 +665,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             edgeType: requestedEdgeType,
             transitive: true,
             maxDepth,
+            ...(resolvedSubject.warnings ? { warnings: resolvedSubject.warnings } : {}),
             readiness,
             nodes: transitive,
           }, readiness, `code_graph_query ${operation} payload`),
@@ -725,6 +818,8 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       return buildUnknownOperationResponse(operation);
   }
 
+  const warnings = mergeWarnings(resolvedSubject.warnings, result.warnings);
+
   return {
     content: [{
       type: 'text',
@@ -732,6 +827,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           status: 'ok',
           data: buildGraphQueryPayload({
             ...result,
+            ...(warnings ? { warnings } : {}),
             readiness,
           }, readiness, `code_graph_query ${operation} payload`, result.edges[0]
             ? {

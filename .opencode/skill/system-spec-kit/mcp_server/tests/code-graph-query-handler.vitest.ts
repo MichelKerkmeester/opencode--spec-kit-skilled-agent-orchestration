@@ -34,15 +34,35 @@ vi.mock('../lib/code-graph/ensure-ready.js', () => ({
 
 import { handleCodeGraphQuery } from '../handlers/code-graph/query.js';
 
-function createDb(symbolId = 'symbol-1') {
+function createDb({
+  byId,
+  byFq = ['symbol-1'],
+  byName = ['symbol-1'],
+}: {
+  byId?: string;
+  byFq?: string[];
+  byName?: string[];
+} = {}) {
   return {
     prepare: vi.fn((sql: string) => ({
-      get: vi.fn(() => {
-        if (sql.includes('symbol_id = ?')) {
-          return undefined;
+      all: vi.fn(() => {
+        if (sql.includes('fq_name = ?')) {
+          return byFq.map((symbolId) => ({ symbol_id: symbolId }));
         }
-        if (sql.includes('fq_name = ?') || sql.includes('name = ?')) {
-          return { symbol_id: symbolId };
+        if (sql.includes('name = ?')) {
+          return byName.map((symbolId) => ({ symbol_id: symbolId }));
+        }
+        return [];
+      }),
+      get: vi.fn(() => {
+        if (sql.includes('symbol_id = ?') && !sql.includes('COUNT(*)')) {
+          return byId ? { symbol_id: byId } : undefined;
+        }
+        if (sql.includes('COUNT(*) as count') && sql.includes('fq_name = ?')) {
+          return { count: byFq.length };
+        }
+        if (sql.includes('COUNT(*) as count') && sql.includes('name = ?')) {
+          return { count: byName.length };
         }
         return undefined;
       }),
@@ -171,6 +191,50 @@ describe('code-graph-query handler', () => {
     });
     expect(mocks.queryEdgesFrom).not.toHaveBeenCalled();
     expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
+  });
+
+  it('warns when fq_name resolution is ambiguous and queries the first candidate deterministically', async () => {
+    mocks.getDb.mockReturnValue(createDb({ byFq: ['symbol-1', 'symbol-2'] }));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'CALLS');
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'ambiguous_subject',
+        subject: 'SomeSymbol',
+        matchField: 'fq_name',
+        count: 2,
+        candidates: ['symbol-1', 'symbol-2'],
+      }),
+    ]);
+    expect(parsed.data.warnings[0].message).toContain('Use a symbolId to disambiguate the query.');
+  });
+
+  it('warns when name resolution is ambiguous after fq_name misses', async () => {
+    mocks.getDb.mockReturnValue(createDb({ byFq: [], byName: ['symbol-3', 'symbol-4'] }));
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_to',
+      subject: 'CommonName',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(mocks.queryEdgesTo).toHaveBeenCalledWith('symbol-3', 'CALLS');
+    expect(parsed.data.warnings).toEqual([
+      expect.objectContaining({
+        code: 'ambiguous_subject',
+        subject: 'CommonName',
+        matchField: 'name',
+        count: 2,
+        candidates: ['symbol-3', 'symbol-4'],
+      }),
+    ]);
   });
 
   it('adds nested edge evidence metadata without collapsing trust axes', async () => {
