@@ -334,8 +334,6 @@ triggerPhrases:
 
 ### Step-by-Step Guide
 
-&nbsp;
-
 #### Step 1: Identify the Rule
 
 Ask yourself:
@@ -345,16 +343,12 @@ Ask yourself:
 
 If yes to all, constitutional tier is appropriate.
 
-&nbsp;
-
 #### Step 2: Create the File
 
 ```bash
 # Create file in constitutional directory
 touch .opencode/skill/system-spec-kit/constitutional/<rule-name>.md
 ```
-
-&nbsp;
 
 #### Step 3: Add Frontmatter
 
@@ -369,8 +363,6 @@ triggerPhrases:
   - here
 ---
 ```
-
-&nbsp;
 
 #### Step 4: Add Content
 
@@ -390,8 +382,6 @@ Your rule content here...
 | ... | ... |
 ```
 
-&nbsp;
-
 #### Step 5: Index the Memory
 
 ```bash
@@ -402,8 +392,6 @@ memory_index_scan({ force: true })
 # Option 3: Index single file
 memory_save({ filePath: ".opencode/skill/system-spec-kit/constitutional/<rule-name>.md" })
 ```
-
-&nbsp;
 
 #### Step 6: Verify
 
@@ -668,8 +656,6 @@ triggerPhrases:
 
 ### Common Issues
 
-&nbsp;
-
 #### Constitutional Memory Not Surfacing
 
 **Symptom:** Your constitutional memory doesn't appear in search results
@@ -683,8 +669,6 @@ triggerPhrases:
 | Invalid ANCHOR format | Check opening/closing ANCHOR tags match |
 | MCP server not restarted | Restart the MCP server |
 
-&nbsp;
-
 #### Trigger Phrases Not Matching
 
 **Symptom:** `memory_match_triggers()` doesn't return your memory
@@ -696,8 +680,6 @@ triggerPhrases:
 | Phrases not indexed | Re-index with `force: true` |
 | Case sensitivity | Triggers are case-insensitive, but check spelling |
 | Phrase too long | Keep triggers to 1-3 words |
-
-&nbsp;
 
 #### Token Budget Exceeded
 

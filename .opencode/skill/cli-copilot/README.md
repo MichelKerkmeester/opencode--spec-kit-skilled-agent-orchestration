@@ -148,8 +148,6 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 
 ### 3.2 FEATURE REFERENCE
 
-&nbsp;
-
 #### Models
 
 | Model | ID | Provider | Best For |
@@ -160,8 +158,6 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 | **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding and speed (default) |
 | **Gemini 3.1 Pro** | `gemini-3.1-pro-preview` | Google | Large context analysis |
 
-&nbsp;
-
 #### Core Flags
 
 | Flag | Short | Purpose | Example |
@@ -170,8 +166,6 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 | `--model` | `-m` | Model selection | `--model gpt-5.4` |
 | `--allow-all-tools` | | Autopilot mode | `--allow-all-tools` |
 | `--agent` | | Agent routing | `--agent explore` |
-
-&nbsp;
 
 #### Reasoning Effort (GPT-5.x Models)
 
@@ -184,8 +178,6 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 
 Set via `~/.copilot/config.json` under `"reasoning_effort"`. No CLI flag exists.
 
-&nbsp;
-
 #### Agent Types
 
 | Agent | Purpose | Invocation |
@@ -193,8 +185,6 @@ Set via `~/.copilot/config.json` under `"reasoning_effort"`. No CLI flag exists.
 | **Explore** | Read-only codebase analysis | `copilot -p "Explain src/ data flow" --agent explore 2>&1` |
 | **Task** | Full execution with file access | `copilot -p "Refactor login" --agent task --allow-all-tools 2>&1` |
 | **Cloud** | Remote GitHub coding agents | `copilot -p "/delegate Analyze security" 2>&1` |
-
-&nbsp;
 
 #### Unique Capabilities
 

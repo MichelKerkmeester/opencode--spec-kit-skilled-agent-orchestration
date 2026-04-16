@@ -211,8 +211,6 @@ checkpointSession(sessionId, {
 
 ### Common Issues
 
-&nbsp;
-
 #### Memories Being Filtered When They Shouldn't Be
 
 **Symptom**: Expected memories not returned in search results.
@@ -230,8 +228,6 @@ console.log(`Total sent: ${stats.totalSent}`);
 // Clear session to reset
 clearSession(sessionId);
 ```
-
-&nbsp;
 
 #### Session State Not Persisting
 

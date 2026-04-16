@@ -148,16 +148,12 @@ The reasoning effort system adds another dimension. GPT-5.4 supports six effort 
 
 ### 3.2 FEATURE REFERENCE
 
-&nbsp;
-
 #### Models
 
 | Model | ID | Best For | Default Effort |
 |-------|----|----------|---------------|
 | **GPT-5.4** | `gpt-5.4` | Reasoning, architecture, security audits, deep review | high (configurable) |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, implementation, documentation, tests | xhigh (fixed) |
-
-&nbsp;
 
 #### Core Flags
 
@@ -174,8 +170,6 @@ The reasoning effort system adds another dimension. GPT-5.4 supports six effort 
 
 > **Common flag mistakes:** `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist in Codex CLI. Use `-c model_reasoning_effort="high"` for reasoning effort (or set it in `config.toml`). There is no quiet flag.
 
-&nbsp;
-
 #### Sandbox Modes
 
 | Mode | Allows | Use Case |
@@ -183,8 +177,6 @@ The reasoning effort system adds another dimension. GPT-5.4 supports six effort 
 | `read-only` | File reads only | Safe analysis and exploration |
 | `workspace-write` | File reads + writes in project | Standard code generation |
 | `danger-full-access` | Full shell access | Running tests, installing deps |
-
-&nbsp;
 
 #### Agent Profiles
 

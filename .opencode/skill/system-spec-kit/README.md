@@ -228,8 +228,6 @@ A spec folder is a numbered directory (like `specs/042-my-feature/`) that holds 
 
 Every conversation that modifies files gets a spec folder. This is enforced by Gate 3 in the project's AGENTS.md -- the AI assistant asks "Which spec folder?" before any file modification begins. The only exemptions are single-file fixes under 5 characters (typo or whitespace corrections).
 
-&nbsp;
-
 #### Documentation Levels
 
 Not every change needs the same amount of paperwork. A one-line bug fix does not need an architecture decision record. A multi-system refactor does. Spec Kit uses four levels to match documentation depth to task complexity.
@@ -246,8 +244,6 @@ The LOC ranges are guidance, not hard rules. Risk, complexity and the number of 
 **Implementation-summary.md** is required at all levels but created **after** implementation completes, not at spec folder creation time.
 
 Packet-local changelogs are additive, not a replacement for `implementation-summary.md`. When the target is a packet root or direct child phase, `/spec_kit:implement`, `/spec_kit:complete`, and the nested changelog workflow can write packet history into a local `changelog/` directory using the canonical root/phase naming rules.
-
-&nbsp;
 
 #### Spec Folder Structure
 
@@ -269,8 +265,6 @@ specs/<###-feature-name>/
 
 `generate-context.js` updates the packet's continuity state for `/spec_kit:resume`; recovery then rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs.
 
-&nbsp;
-
 #### Checklist Priority System (Level 2+)
 
 Checklists use a priority system so reviewers know what blocks shipping and what can wait:
@@ -280,8 +274,6 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 | **P0**   | Hard blocker -- cannot ship without this                | Cannot defer                    |
 | **P1**   | Required -- must complete or get user approval to defer | Needs explicit approval to skip |
 | **P2**   | Optional -- nice to have                                | Can defer without approval      |
-
-&nbsp;
 
 #### Phase Decomposition
 
@@ -302,8 +294,6 @@ specs/022-big-feature/             # Parent spec folder
 ```
 
 Use `create.sh --phase` to create a parent with its first child in one step. Run `validate.sh --recursive` to validate the parent and all children together.
-
-&nbsp;
 
 #### Validation
 
@@ -329,8 +319,6 @@ Think of it like a personal librarian that keeps notes on every conversation, fi
 
 For full architecture details, the 51-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
-&nbsp;
-
 #### Hybrid Search
 
 When you search, the system checks five sources at once -- like a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet, the recommendation board and the "related topics" corkboard all at the same time.
@@ -345,8 +333,6 @@ When you search, the system checks five sources at once -- like a librarian who 
 
 Results from all channels are combined using Reciprocal Rank Fusion (RRF) with a K parameter tuned per query intent. A memory that scores well in multiple channels rises to the top.
 
-&nbsp;
-
 #### Search Pipeline
 
 Every search goes through four stages, like an assembly line where each station has one clear job:
@@ -356,8 +342,6 @@ Every search goes through four stages, like an assembly line where each station 
 3. **Rerank** -- run a local cross-encoder model to re-check ranking accuracy. Chunks are collapsed back to parent memories. If your machine lacks VRAM, the reranker gracefully skips.
 4. **Filter** -- enforce score immutability, apply state filtering, annotate with confidence labels (high/medium/low) and truncate at the confidence gap.
 
-&nbsp;
-
 #### Query Intelligence
 
 Before any search runs, the system figures out what kind of help you need -- like a triage nurse who reads your symptoms and routes you to the right specialist.
@@ -366,8 +350,6 @@ Before any search runs, the system figures out what kind of help you need -- lik
 - **Intent classification** maps your query to one of 7 task types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision), each with its own channel weight profile
 - **Query decomposition** splits multi-topic questions into focused sub-queries without needing an LLM call
 - **HyDE fallback** writes a hypothetical answer to your question, then searches for real documents matching it -- surfaces content your original wording missed
-
-&nbsp;
 
 #### Memory Lifecycle
 
@@ -386,15 +368,11 @@ Decay speed is also controlled by content type (decisions decay slower than gene
 
 Four active cognitive states track access patterns: **HOT** (just used), **WARM**, **COLD**, and **DORMANT**. Hot memories get full content in results. Warm ones appear as summaries. Cold and dormant content only surfaces if it still scores well enough.
 
-&nbsp;
-
 #### Causal Graph
 
 The system tracks how decisions relate to each other -- like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
 
 Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from`, `supports`. Community detection (Louvain algorithm) automatically clusters related memories so finding one surfaces its neighbors.
-
-&nbsp;
 
 #### Save Intelligence
 
@@ -409,8 +387,6 @@ When you save new content, the system runs an arbitration process before storing
 
 Three quality gates run before storage: structure check (required format and metadata), semantic sufficiency check (enough real content to be useful), and duplicate detection.
 Short decision-type memories can bypass the content-length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals (title, specFolder, or anchor) are present.
-
-&nbsp;
 
 #### Evaluation Infrastructure
 
@@ -428,8 +404,6 @@ The memory system includes built-in tools for measuring search quality:
 ### 3.3 COMMANDS
 
 Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` operations. Repository-wide command entry points total 22 when combined with 6 `create` commands, 2 `improve` commands, and 1 `agent_router` utility. Each command opens access to a specific set of tools.
-
-&nbsp;
 
 #### Spec Kit Commands (9)
 
@@ -454,8 +428,6 @@ Spec Kit exposes 13 top-level workflow commands: 9 `spec_kit` + 4 `memory` opera
 
 **Command source files**: `.opencode/command/spec_kit/`
 
-&nbsp;
-
 #### Memory Commands (4)
 
 | Command          | Tool Count | Purpose                                                                                                                                 |
@@ -477,8 +449,6 @@ Some commands own their tools (they are the primary home) while others borrow to
 
 ### 3.4 TEMPLATES
 
-&nbsp;
-
 #### CORE + ADDENDUM Architecture (v2.2)
 
 Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each level inherits from the level below and adds what it needs -- like building blocks that stack.
@@ -489,8 +459,6 @@ Level 2:  CORE + L2-VERIFY        → 6 files, ~875 LOC  (adds checklist.md)
 Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.md)
 Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds approval workflow, compliance, stakeholders)
 ```
-
-&nbsp;
 
 #### Core Templates
 
@@ -505,8 +473,6 @@ The four foundation templates appear at every level:
 
 **Location**: `templates/core/`
 
-&nbsp;
-
 #### Addendum Layers
 
 Each addendum adds sections and files for its level:
@@ -520,15 +486,11 @@ Each addendum adds sections and files for its level:
 
 **Location**: `templates/addendum/`
 
-&nbsp;
-
 #### Pre-Merged Templates
 
 For convenience, pre-merged templates for each level live in `templates/level_1/` through `templates/level_3+/`. These are the templates that `create.sh` copies into new spec folders.
 
 After editing core or addendum templates, run `templates/compose.sh` to regenerate the pre-merged directories.
-
-&nbsp;
 
 #### Special Templates
 
@@ -537,8 +499,6 @@ After editing core or addendum templates, run `templates/compose.sh` to regenera
 | `research/research.md` (~20K) | Deep research template for autonomous investigation             |
 | `handover.md`                 | Session continuity template for handing off to the next AI      |
 | `debug-delegation.md`         | Debug delegation template for fresh-perspective troubleshooting |
-
-&nbsp;
 
 #### Template Compliance
 
@@ -549,8 +509,6 @@ Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section 
 <!-- divider:4.5 -->
 
 ### 3.5 SCRIPTS AND VALIDATION
-
-&nbsp;
 
 #### Spec Management Scripts
 
@@ -571,8 +529,6 @@ The `scripts/spec/` directory contains 12 scripts that manage the full lifecycle
 | `archive.sh`                  | Archive completed spec folders                                                                 |
 | `test-validation.sh`          | Test the validation rules themselves                                                           |
 
-&nbsp;
-
 #### Memory Scripts
 
 The `scripts/memory/` directory contains 10 scripts for the memory system:
@@ -590,8 +546,6 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 | `fix-memory-h1.mjs`           | Fix heading levels in older generated context artifacts     |
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
-
-&nbsp;
 
 #### Template Composition
 

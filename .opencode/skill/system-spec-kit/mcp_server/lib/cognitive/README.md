@@ -811,8 +811,6 @@ for (const memory of activeMemories) {
 
 ### Common Issues
 
-&nbsp;
-
 #### Memories Not Decaying
 
 **Symptom**: Attention scores stay at 1.0 after multiple turns
@@ -833,8 +831,6 @@ console.log('Decay rates:', decay.DECAY_CONFIG.decayRateByTier);
 // normal: 0.80 = 80% retention per turn
 ```
 
-&nbsp;
-
 #### High Memory Usage
 
 **Symptom**: Memory consumption grows over time
@@ -848,8 +844,6 @@ import * as workingMemory from './working-memory';
 // Remove expired sessions from the in-memory working set
 workingMemory.cleanupOldSessions();
 ```
-
-&nbsp;
 
 #### Duplicate Memories
 
@@ -874,8 +868,6 @@ if (decision.action === 'REINFORCE') {
 const recent = gate.getRecentConflicts(20);
 console.log('Recent conflict decisions:', recent);
 ```
-
-&nbsp;
 
 #### Incorrect State Classification
 

@@ -115,8 +115,6 @@ The transparency report at the end of every delivery is intentional. It shows th
 
 ### 3.2 FEATURE REFERENCE
 
-&nbsp;
-
 #### Operating Modes
 
 | Mode | Command | DEPTH Rounds | Scoring | Use Case |
@@ -130,8 +128,6 @@ The transparency report at the end of every delivery is intentional. It shows th
 | YAML | `$yaml` | 10 | CLEAR | Configuration-style structured output |
 | Raw | `$raw` | 0 | None | Pass-through with no enhancement |
 
-&nbsp;
-
 #### Framework Selection Matrix
 
 | Complexity | Primary Need | Framework | Success Rate |
@@ -144,8 +140,6 @@ The transparency report at the end of every delivery is intentional. It shows th
 | 6-8 | Precision | TIDD-EC | 93% |
 | 7-10 | Full-scope | CRAFT | 91% |
 
-&nbsp;
-
 #### CLEAR Scoring Dimensions
 
 | Dimension | Max Points | Weight | Floor | Measures |
@@ -157,8 +151,6 @@ The transparency report at the end of every delivery is intentional. It shows th
 | Reusability (R) | 5 | 10% | 3 | Adaptability, parameterization, template potential |
 | **Total** | **50** | | **40 to pass** | |
 
-&nbsp;
-
 #### DEPTH Phases
 
 | Phase | Purpose | Key Output |
@@ -168,8 +160,6 @@ The transparency report at the end of every delivery is intentional. It shows th
 | Prototype | Build structured draft with mechanism-first ordering | Draft complete, format applied |
 | Test | Apply CLEAR scoring, check per-dimension floors | Score validated (40+/50 required) |
 | Harmonize | Final polish, confirm perspectives, prepare metadata | Transparency report complete, deliverable ready |
-
-&nbsp;
 
 #### Framework Fusion Options
 

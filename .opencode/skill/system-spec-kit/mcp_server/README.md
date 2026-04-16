@@ -220,8 +220,6 @@ This section explains the main ideas behind the memory system in plain language.
 
 ---
 
-&nbsp;
-
 #### 3.1.1 HYBRID SEARCH
 
 When you search for something, the system checks several sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
@@ -261,8 +259,6 @@ When you search for something, the system checks several sources at once. Think 
 
 ---
 
-&nbsp;
-
 #### 3.1.2 SEARCH PIPELINE
 
 Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
@@ -289,8 +285,6 @@ All channel scores are normalized to 0-1 before fusion so no single channel wins
 **Stage 4 -- Filter and annotate**. Enforces score immutability (no score changes after Stage 2). Applies state filtering by minimum state parameter. Annotates results with confidence labels (high/medium/low) and feature flag states.
 
 ---
-
-&nbsp;
 
 #### 3.1.3 QUERY INTELLIGENCE
 
@@ -320,8 +314,6 @@ For low-confidence deep searches, the system has two additional fallback strateg
 - **HyDE (Hypothetical Document Embeddings)** -- writes a hypothetical answer to your question, then searches for real documents matching that imaginary answer. Surfaces content your original wording missed
 
 ---
-
-&nbsp;
 
 #### 3.1.4 MEMORY LIFECYCLE AND SCORING
 
@@ -356,8 +348,6 @@ The active continuity and recovery ladder uses only the four live states above.
 When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
 
 ---
-
-&nbsp;
 
 #### 3.1.5 CAUSAL GRAPH
 
@@ -396,8 +386,6 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 ---
 
-&nbsp;
-
 #### 3.1.6 SAVE INTELLIGENCE
 
 When you save new knowledge, the system runs an arbitration process before storing anything. It runs a sophisticated arbitration process to decide what to do with incoming content.
@@ -431,8 +419,6 @@ This is session-scoped to prevent cross-session interference.
 
 ---
 
-&nbsp;
-
 #### 3.1.7 SESSION AWARENESS
 
 The system keeps track of what happened during your current conversation so it does not repeat itself or lose context mid-session.
@@ -444,8 +430,6 @@ The system keeps track of what happened during your current conversation so it d
 **Context pressure monitoring** -- watches how full your AI's context window is getting. Above 60% usage: downgrades to focused mode. Above 80%: switches to quick mode. Prevents memory retrieval from overwhelming the conversation.
 
 ---
-
-&nbsp;
 
 #### 3.1.8 QUALITY GATES AND LEARNING
 
@@ -471,8 +455,6 @@ The system also learns from how you use search results:
 
 ---
 
-&nbsp;
-
 #### 3.1.10 RETRIEVAL ENHANCEMENTS
 
 Beyond the core search pipeline, several enhancements make retrieval smarter at finding what you actually need.
@@ -495,8 +477,6 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 ---
 
-&nbsp;
-
 #### 3.1.11 INDEXING AND INFRASTRUCTURE
 
 The system keeps the index accurate and performant as your project evolves.
@@ -517,8 +497,6 @@ The system keeps the index accurate and performant as your project evolves.
 
 ---
 
-&nbsp;
-
 #### 3.1.12 EVALUATION INFRASTRUCTURE
 
 Research-grade infrastructure for measuring and improving search quality over time.
@@ -536,8 +514,6 @@ Research-grade infrastructure for measuring and improving search quality over ti
 **Scoring observability** -- randomly samples scoring events and saves before-and-after snapshots for debugging.
 
 ---
-
-&nbsp;
 
 #### 3.1.13 CODE GRAPH
 
@@ -568,8 +544,6 @@ All 51 tools listed by architecture layer. Each entry has a plain-language descr
 **Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
 
 ---
-
-&nbsp;
 
 #### L1: Orchestration (3 tools)
 
@@ -628,8 +602,6 @@ Complete session bootstrap in one call. This is the canonical first-call recover
 | `specFolder` | string | Scope bootstrap to a specific spec folder |
 
 ---
-
-&nbsp;
 
 #### L2: Core (4 tools)
 
@@ -741,8 +713,6 @@ This is how you add new knowledge to the system. Point it at a markdown file and
 
 ---
 
-&nbsp;
-
 #### L3: Discovery (4 tools)
 
 ##### `memory_list`
@@ -796,8 +766,6 @@ Check session readiness: priming status, code graph freshness and time since las
 | _(none required)_ |  | Returns health status with hints |
 
 ---
-
-&nbsp;
 
 #### L4: Mutation (4 tools)
 
@@ -856,8 +824,6 @@ The cleanup tool for large-scale housekeeping. Delete all outdated or temporary 
 
 ---
 
-&nbsp;
-
 #### L5: Lifecycle (8 tools)
 
 ##### `checkpoint_create`
@@ -904,8 +870,6 @@ Delete a checkpoint. Requires you to type the name twice as a safety measure so 
 | `confirmName` | string | **Required.** Must exactly match `name` |
 
 ---
-
-&nbsp;
 
 #### L6: Analysis (8 tools)
 
@@ -1052,8 +1016,6 @@ Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results a
 
 ---
 
-&nbsp;
-
 #### L7: Maintenance (5 tools)
 
 ##### `memory_index_scan`
@@ -1171,7 +1133,6 @@ Submit quality feedback on CocoIndex search results to improve future searches.
 
 <!-- /ANCHOR:features -->
 <!-- /ANCHOR:name -->
-
 
 ---
 

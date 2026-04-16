@@ -190,8 +190,6 @@ scripts/dist/spec-folder/
 
 ### Common Issues
 
-&nbsp;
-
 #### Spec folder detection fails
 
 **Symptom**: `Error: Spec folder not found: 042-feature`
@@ -208,8 +206,6 @@ node scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<
 # Direct positional mode is no longer supported; use structured JSON instead
 node scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/<###-feature-name>/
 ```
-
-&nbsp;
 
 #### Alignment score is low despite correct folder
 
@@ -228,8 +224,6 @@ node scripts/dist/memory/generate-context.js 003-parent/001-child
 # Phase-folder paths stay authoritative and save into that selected phase folder
 node scripts/dist/memory/generate-context.js .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation
 ```
-
-&nbsp;
 
 #### Multiple specs directories warning
 
