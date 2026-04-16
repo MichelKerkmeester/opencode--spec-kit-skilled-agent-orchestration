@@ -703,7 +703,11 @@ def test_graph_compiler():
                 prerequisite_for=[edge("alpha", 0.9, "cycle reciprocal")],
             ),
         })
-        if exit_code == 2 and "DEPENDENCY CYCLE ERRORS (1):" in stderr_text:
+        if (
+            exit_code == 2
+            and "DEPENDENCY CYCLE ERRORS (1):" in stderr_text
+            and "depends_on cycle detected: alpha -> beta -> alpha" in stderr_text
+        ):
             ok("T246-GC-004: dependency cycles still exit non-zero", "exit=2")
         else:
             fail_test(
@@ -728,6 +732,56 @@ def test_graph_compiler():
             )
     except Exception as exc:
         fail_test("T246-GC-005: conflict symmetry topology violation exits non-zero", str(exc))
+
+    # T246-GC-006: Three-node dependency cycles now fail validation with a path.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(
+                depends_on=[edge("beta", 0.9, "cycle part 1")],
+                prerequisite_for=[edge("gamma", 0.9, "cycle reciprocal")],
+            ),
+            "beta": make_edges(
+                depends_on=[edge("gamma", 0.9, "cycle part 2")],
+                prerequisite_for=[edge("alpha", 0.9, "cycle reciprocal")],
+            ),
+            "gamma": make_edges(
+                depends_on=[edge("alpha", 0.9, "cycle part 3")],
+                prerequisite_for=[edge("beta", 0.9, "cycle reciprocal")],
+            ),
+        })
+        if (
+            exit_code == 2
+            and "DEPENDENCY CYCLE ERRORS (1):" in stderr_text
+            and "depends_on cycle detected: alpha -> beta -> gamma -> alpha" in stderr_text
+        ):
+            ok("T246-GC-006: three-node dependency cycles exit non-zero with path", "exit=2")
+        else:
+            fail_test(
+                "T246-GC-006: three-node dependency cycles exit non-zero with path",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-006: three-node dependency cycles exit non-zero with path", str(exc))
+
+    # T246-GC-007: Acyclic dependency graphs still pass validation.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(depends_on=[edge("beta", 0.9, "acyclic dependency")]),
+            "beta": make_edges(prerequisite_for=[edge("alpha", 0.9, "acyclic prerequisite")]),
+        })
+        if (
+            exit_code == 0
+            and "DEPENDENCY CYCLE ERRORS" not in stderr_text
+            and "VALIDATION PASSED: all metadata files are valid" in stdout_text
+        ):
+            ok("T246-GC-007: acyclic dependency graph passes validation", "exit=0")
+        else:
+            fail_test(
+                "T246-GC-007: acyclic dependency graph passes validation",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-007: acyclic dependency graph passes validation", str(exc))
 
 
 # ───────────────────────────────────────────────────────────────

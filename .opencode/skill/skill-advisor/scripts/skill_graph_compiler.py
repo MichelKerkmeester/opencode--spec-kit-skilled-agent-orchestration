@@ -457,10 +457,11 @@ def validate_zero_edge_skills(
 def validate_dependency_cycles(
     all_metadata: List[Tuple[str, str, dict]],
 ) -> List[str]:
-    """Detect simple two-node depends_on cycles (A -> B -> A)."""
+    """Detect arbitrary-length depends_on cycles via DFS color marking."""
     errors = []
     depends_on_lookup: Dict[str, Set[str]] = {}
-    seen_cycles: Set[Tuple[str, str]] = set()
+    seen_cycles: Set[Tuple[str, ...]] = set()
+    white, gray, black = 0, 1, 2
 
     for folder_name, _, data in all_metadata:
         skill_id = data.get("skill_id", folder_name)
@@ -477,17 +478,52 @@ def validate_dependency_cycles(
 
         depends_on_lookup[skill_id] = targets
 
-    for skill_id, targets in depends_on_lookup.items():
-        for target in targets:
-            if skill_id not in depends_on_lookup.get(target, set()):
+    node_colors = {
+        skill_id: white
+        for skill_id in depends_on_lookup
+    }
+    stack: List[str] = []
+    stack_positions: Dict[str, int] = {}
+
+    def canonicalize_cycle(cycle_nodes: List[str]) -> Tuple[str, ...]:
+        open_cycle = cycle_nodes[:-1]
+        rotations = [
+            tuple(open_cycle[index:] + open_cycle[:index])
+            for index in range(len(open_cycle))
+        ]
+        return min(rotations)
+
+    def visit(skill_id: str) -> None:
+        node_colors[skill_id] = gray
+        stack_positions[skill_id] = len(stack)
+        stack.append(skill_id)
+
+        for target in sorted(depends_on_lookup.get(skill_id, set())):
+            if target not in node_colors:
                 continue
 
-            cycle = tuple(sorted((skill_id, target)))
+            if node_colors[target] == white:
+                visit(target)
+                continue
+
+            if node_colors[target] != gray:
+                continue
+
+            cycle = canonicalize_cycle(stack[stack_positions[target]:] + [target])
             if cycle in seen_cycles:
                 continue
 
             seen_cycles.add(cycle)
-            errors.append(f"depends_on cycle detected: {skill_id} -> {target} -> {skill_id}")
+            cycle_path = " -> ".join((*cycle, cycle[0]))
+            errors.append(f"depends_on cycle detected: {cycle_path}")
+
+        stack.pop()
+        stack_positions.pop(skill_id, None)
+        node_colors[skill_id] = black
+
+    for skill_id in sorted(depends_on_lookup):
+        if node_colors[skill_id] == white:
+            visit(skill_id)
 
     return errors
 
