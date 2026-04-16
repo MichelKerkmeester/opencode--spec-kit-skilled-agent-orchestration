@@ -2,7 +2,7 @@
 // 1. SEARCH LIMITS SCORING VITEST
 // ───────────────────────────────────────────────────────────────
 // TEST: SEARCH LIMITS SCORING
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import { TIER_CONFIG, PER_TIER_LIMITS, TIER_PRIORITY, filterAndLimitByState } from '../lib/cognitive/tier-classifier';
 import * as crossEncoder from '../lib/search/cross-encoder';
 
@@ -145,6 +145,13 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       originalLocal = process.env.RERANKER_LOCAL;
     });
 
+    beforeEach(() => {
+      delete process.env.VOYAGE_API_KEY;
+      delete process.env.COHERE_API_KEY;
+      delete process.env.RERANKER_LOCAL;
+      crossEncoder.resetProvider();
+    });
+
     afterAll(() => {
       if (originalVoyage) process.env.VOYAGE_API_KEY = originalVoyage;
       if (originalCohere) process.env.COHERE_API_KEY = originalCohere;
@@ -152,13 +159,6 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     });
 
     it('T211-CE1: rerankResults accepts applyLengthPenalty option', async () => {
-      if (!crossEncoder?.rerankResults) return;
-
-      delete process.env.VOYAGE_API_KEY;
-      delete process.env.COHERE_API_KEY;
-      delete process.env.RERANKER_LOCAL;
-      crossEncoder.resetProvider();
-
       const docs = [
         { id: 1, content: 'short' },
         { id: 2, content: 'a'.repeat(3000) },
@@ -166,34 +166,28 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
 
       const results = await crossEncoder.rerankResults('test', docs, { applyLengthPenalty: false });
       expect(results).toHaveLength(2);
+      expect(results.map((result) => result.scoringMethod)).toEqual(['fallback', 'fallback']);
+      expect(results.map((result) => result.provider)).toEqual(['none', 'none']);
     });
   });
 
   describe('T211 - Length Penalty Scoring Effects', () => {
     it('T211-LP1: Long content (5000 chars) now keeps a no-op penalty', () => {
-      if (!crossEncoder?.calculateLengthPenalty) return;
-
       const longPenalty = crossEncoder.calculateLengthPenalty(5000);
       expect(longPenalty).toBe(1.0);
     });
 
     it('T211-LP2: Medium content (500 chars) no penalty', () => {
-      if (!crossEncoder?.calculateLengthPenalty) return;
-
       const midPenalty = crossEncoder.calculateLengthPenalty(500);
       expect(midPenalty).toBe(1.0);
     });
 
     it('T211-LP3: Short content (10 chars) now keeps a no-op penalty', () => {
-      if (!crossEncoder?.calculateLengthPenalty) return;
-
       const shortPenalty = crossEncoder.calculateLengthPenalty(10);
       expect(shortPenalty).toBe(1.0);
     });
 
     it('T211-LP4: Content length no longer changes rerankerScore', () => {
-      if (!crossEncoder?.applyLengthPenalty) return;
-
       type PenalizedDocument = Parameters<typeof crossEncoder.applyLengthPenalty>[0][number];
       const docs: PenalizedDocument[] = [
         {
@@ -219,29 +213,78 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
 
       expect(penalized[0].rerankerScore).toBe(0.9);
       expect(penalized[1].rerankerScore).toBe(0.9);
+      expect(penalized.map((doc) => doc.id)).toEqual([1, 2]);
     });
   });
 
   describe('T211 - Handler Integration (runtime exports)', () => {
-    it('T211-HI1: cross-encoder exports calculateLengthPenalty as a callable function', () => {
-      // T251: Replace source-grep with runtime export verification
-      expect(typeof crossEncoder.calculateLengthPenalty).toBe('function');
+    it('T211-HI1: rerankResults respects the caller limit in fallback mode', async () => {
+      const docs = [
+        { id: 1, content: 'alpha' },
+        { id: 2, content: 'beta' },
+        { id: 3, content: 'gamma' },
+      ];
+
+      const results = await crossEncoder.rerankResults('alpha', docs, { limit: 2 });
+
+      expect(results).toHaveLength(2);
+      expect(results.map((result) => result.id)).toEqual([1, 2]);
     });
 
-    it('T211-HI2: cross-encoder exports applyLengthPenalty as a callable function', () => {
-      expect(typeof crossEncoder.applyLengthPenalty).toBe('function');
+    it('T211-HI2: fallback reranking preserves positional ordering and fallback metadata', async () => {
+      const docs = [
+        { id: 1, content: 'alpha' },
+        { id: 2, content: 'beta' },
+      ];
+
+      const results = await crossEncoder.rerankResults('alpha', docs, { limit: 2 });
+
+      expect(results[0]?.score).toBeGreaterThan(results[1]?.score ?? 0);
+      expect(results.every((result) => result.scoringMethod === 'fallback')).toBe(true);
+      expect(results.every((result) => result.provider === 'none')).toBe(true);
     });
 
-    it('T211-HI3: cross-encoder exports rerankResults as a callable function', () => {
-      expect(typeof crossEncoder.rerankResults).toBe('function');
+    it('T211-HI3: applyLengthPenalty keeps mixed-length fallback scores unchanged', () => {
+      const baseResults = [
+        {
+          id: 1,
+          content: 'alpha',
+          score: 0.5,
+          originalRank: 0,
+          rerankerScore: 0.5,
+          provider: 'none',
+          scoringMethod: 'fallback' as const,
+        },
+        {
+          id: 2,
+          content: 'b'.repeat(5000),
+          score: 0.25,
+          originalRank: 1,
+          rerankerScore: 0.25,
+          provider: 'none',
+          scoringMethod: 'fallback' as const,
+        },
+      ];
+
+      const penalized = crossEncoder.applyLengthPenalty(baseResults);
+
+      expect(penalized.map((result) => result.rerankerScore)).toEqual([0.5, 0.25]);
+      expect(penalized.map((result) => result.score)).toEqual([0.5, 0.25]);
     });
 
-    it('T211-HI4: calculateLengthPenalty returns 1.0 (no-op) for any content length', () => {
-      // Verify runtime behavior: the penalty is always 1.0 (no-op) after 017-refinement-phase-6
-      if (!crossEncoder?.calculateLengthPenalty) return;
-      expect(crossEncoder.calculateLengthPenalty(100)).toBe(1.0);
-      expect(crossEncoder.calculateLengthPenalty(5000)).toBe(1.0);
-      expect(crossEncoder.calculateLengthPenalty(0)).toBe(1.0);
+    it('T211-HI4: rerankResults produces the same fallback scores with or without applyLengthPenalty', async () => {
+      const docs = [
+        { id: 1, content: 'alpha' },
+        { id: 2, content: 'b'.repeat(5000) },
+      ];
+
+      const withoutPenalty = await crossEncoder.rerankResults('alpha', docs, { applyLengthPenalty: false });
+      const withPenalty = await crossEncoder.rerankResults('alpha', docs, { applyLengthPenalty: true });
+
+      expect(withPenalty.map((result) => result.score)).toEqual(withoutPenalty.map((result) => result.score));
+      expect(withPenalty.map((result) => result.rerankerScore)).toEqual(
+        withoutPenalty.map((result) => result.rerankerScore)
+      );
     });
   });
 });

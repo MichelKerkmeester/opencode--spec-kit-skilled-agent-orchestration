@@ -61,36 +61,45 @@ let handlerUtils: HandlerUtilsModule | null = null;
 let BetterSqlite3Impl: BetterSqlite3Constructor | null = null;
 
 beforeAll(async () => {
-  try {
-    peGating = await import('../handlers/pe-gating');
-  } catch {
-    peGating = null;
+  const importErrors: string[] = [];
+  const loadModule = async <T>(label: string, importer: () => Promise<T>): Promise<T | null> => {
+    try {
+      return await importer();
+    } catch (error: unknown) {
+      importErrors.push(`${label}: ${error instanceof Error ? error.message : String(error)}`);
+      return null;
+    }
+  };
+
+  peGating = await loadModule('handlers/pe-gating', () => import('../handlers/pe-gating'));
+  memoryContext = await loadModule('handlers/memory-context', () => import('../handlers/memory-context'));
+  causalEdges = await loadModule('lib/storage/causal-edges', () => import('../lib/storage/causal-edges'));
+  causalLinksProcessor = await loadModule('handlers/causal-links-processor', () => import('../handlers/causal-links-processor'));
+  handlerUtils = await loadModule('handlers/handler-utils', () => import('../handlers/handler-utils'));
+  const bs3 = await loadModule('better-sqlite3', () => import('better-sqlite3'));
+  BetterSqlite3Impl = bs3 ? (bs3.default || bs3) : null;
+
+  if (importErrors.length > 0) {
+    throw new Error(`handler-helpers imports failed:\n${importErrors.join('\n')}`);
   }
-  try {
-    memoryContext = await import('../handlers/memory-context');
-  } catch {
-    memoryContext = null;
-  }
-  try {
-    causalEdges = await import('../lib/storage/causal-edges');
-  } catch {
-    causalEdges = null;
-  }
-  try {
-    causalLinksProcessor = await import('../handlers/causal-links-processor');
-  } catch {
-    causalLinksProcessor = null;
-  }
-  try {
-    handlerUtils = await import('../handlers/handler-utils');
-  } catch {
-    handlerUtils = null;
-  }
-  try {
-    const bs3 = await import('better-sqlite3');
-    BetterSqlite3Impl = bs3.default || bs3;
-  } catch {
-    BetterSqlite3Impl = null;
+
+  const exportErrors: string[] = [];
+  if (!handlerUtils?.escapeLikePattern) exportErrors.push('handlers/handler-utils.escapeLikePattern');
+  if (!memoryContext?.CONTEXT_MODES) exportErrors.push('handlers/memory-context.CONTEXT_MODES');
+  if (!memoryContext?.INTENT_TO_MODE) exportErrors.push('handlers/memory-context.INTENT_TO_MODE');
+  if (!causalEdges?.RELATION_TYPES) exportErrors.push('lib/storage/causal-edges.RELATION_TYPES');
+  if (!causalLinksProcessor?.CAUSAL_LINK_MAPPINGS) exportErrors.push('handlers/causal-links-processor.CAUSAL_LINK_MAPPINGS');
+  if (!causalLinksProcessor?.resolveMemoryReference) exportErrors.push('handlers/causal-links-processor.resolveMemoryReference');
+  if (!causalLinksProcessor?.processCausalLinks) exportErrors.push('handlers/causal-links-processor.processCausalLinks');
+  if (!peGating?.findSimilarMemories) exportErrors.push('handlers/pe-gating.findSimilarMemories');
+  if (!peGating?.reinforceExistingMemory) exportErrors.push('handlers/pe-gating.reinforceExistingMemory');
+  if (!peGating?.markMemorySuperseded) exportErrors.push('handlers/pe-gating.markMemorySuperseded');
+  if (!peGating?.updateExistingMemory) exportErrors.push('handlers/pe-gating.updateExistingMemory');
+  if (!peGating?.logPeDecision) exportErrors.push('handlers/pe-gating.logPeDecision');
+  if (!BetterSqlite3Impl) exportErrors.push('better-sqlite3 default export');
+
+  if (exportErrors.length > 0) {
+    throw new Error(`handler-helpers required exports unavailable:\n${exportErrors.join('\n')}`);
   }
 });
 

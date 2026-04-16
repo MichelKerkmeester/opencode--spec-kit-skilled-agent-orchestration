@@ -95,10 +95,14 @@ function seedMemories(db: Database.Database, count: number): void {
 
 function seedContradictingMemories(db: Database.Database): void {
   db.prepare("INSERT INTO memory_index (id, title, content_text) VALUES (?, ?, ?)").run(
-    100, 'Auth config', 'Always use JWT tokens for authentication. Sessions must be stateless.'
+    100,
+    'Graph session guidance',
+    'Always use shared session continuity evidence for coverage graph review workflows when gathering contradiction details from canonical source records.',
   );
   db.prepare("INSERT INTO memory_index (id, title, content_text) VALUES (?, ?, ?)").run(
-    101, 'Auth config updated', 'Never use JWT tokens for authentication. Use session cookies instead. JWT is not recommended.'
+    101,
+    'Graph session guidance update',
+    'Never use shared session continuity evidence for coverage graph review workflows when gathering contradiction details from canonical source records.',
   );
 }
 
@@ -146,11 +150,13 @@ describe('T002a: Contradiction scan', () => {
     initCausalEdges(db);
 
     const pairs = scanContradictions(db);
-    // The seeded memories have "Always use JWT" vs "Never use JWT"
-    // But word overlap may or may not meet the 0.85 threshold
-    // (heuristic overlap is conservative). The key test is that the
-    // Function runs without error.
-    expect(Array.isArray(pairs)).toBe(true);
+    expect(pairs).toHaveLength(1);
+    expect(pairs[0]).toMatchObject({
+      memoryA: { id: 100 },
+      memoryB: { id: 101 },
+      conflictType: 'keyword_negation',
+    });
+    expect(pairs[0]?.similarity).toBeGreaterThanOrEqual(CONTRADICTION_SIMILARITY_THRESHOLD);
   });
 
   it('T-N3-07: scanContradictions returns empty on no data', () => {
