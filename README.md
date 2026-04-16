@@ -12,8 +12,6 @@
 
 <!-- ANCHOR:table-of-contents -->
 
-&nbsp;
-
 ## TABLE OF CONTENTS
 
 - [OVERVIEW](#1--overview)
