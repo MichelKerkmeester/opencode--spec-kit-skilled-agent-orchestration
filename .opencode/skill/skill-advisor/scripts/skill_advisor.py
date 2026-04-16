@@ -12,6 +12,7 @@ Output: JSON array of skill recommendations with confidence scores
 
 Options:
     --health      Run health check diagnostics
+    --validate-only  Run strict skill-graph validation
     --threshold   Confidence threshold used by default dual-threshold filtering (default: 0.8)
     --confidence-only  Explicitly bypass uncertainty filtering
 """
@@ -76,6 +77,11 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
     'skill-graph.sqlite',
 ))
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
+STRICT_TOPOLOGY_HEADERS = (
+    ("DEPENDENCY CYCLE ERRORS", "dependency cycles"),
+    ("SYMMETRY WARNINGS", "asymmetric edges"),
+    ("ZERO-EDGE WARNINGS", "orphan skills"),
+)
 _SKILL_GRAPH: Optional[Dict[str, Any]] = None
 _SKILL_GRAPH_SOURCE: Optional[str] = None
 
@@ -245,6 +251,78 @@ def _load_skill_graph() -> Optional[Dict[str, Any]]:
 
     _SKILL_GRAPH_SOURCE = None
     return None
+
+
+def _collect_strict_topology_violations(output: str) -> Dict[str, List[str]]:
+    """Extract topology issues that strict validation must treat as fatal."""
+    collected: Dict[str, List[str]] = {}
+    active_category: Optional[str] = None
+    header_to_category = dict(STRICT_TOPOLOGY_HEADERS)
+    reset_headers = {
+        "WEIGHT-BAND WARNINGS",
+        "WEIGHT-PARITY WARNINGS",
+        "VALIDATION PASSED",
+        "VALIDATION FAILED",
+    }
+
+    for raw_line in output.splitlines():
+        line = raw_line.rstrip()
+        matched_header = next(
+            (header for header in header_to_category if line.startswith(header)),
+            None,
+        )
+        if matched_header is not None:
+            active_category = header_to_category[matched_header]
+            collected.setdefault(active_category, [])
+            continue
+
+        if any(line.startswith(header) for header in reset_headers):
+            active_category = None
+            continue
+
+        if active_category and line.startswith("  - "):
+            collected[active_category].append(line[4:])
+            continue
+
+        if line and not line.startswith(" "):
+            active_category = None
+
+    return {category: issues for category, issues in collected.items() if issues}
+
+
+def run_skill_graph_validation(strict_topology: bool = False) -> int:
+    """Run compiler validation and optionally fail hard on topology issues."""
+    try:
+        result = subprocess.run(
+            [sys.executable, SKILL_GRAPH_COMPILER_PATH, "--validate-only"],
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        print(f"Failed to run skill graph validator: {exc}", file=sys.stderr)
+        return 2
+
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.stderr:
+        print(result.stderr, end="", file=sys.stderr)
+
+    if strict_topology:
+        combined_output = "\n".join(part for part in (result.stdout, result.stderr) if part)
+        topology_violations = _collect_strict_topology_violations(combined_output)
+        if topology_violations:
+            summary = ", ".join(
+                f"{category}={len(topology_violations[category])}"
+                for _, category in STRICT_TOPOLOGY_HEADERS
+                if topology_violations.get(category)
+            )
+            print(
+                f"STRICT TOPOLOGY VALIDATION FAILED: {summary}",
+                file=sys.stderr,
+            )
+            return 2
+
+    return result.returncode
 
 
 def _apply_graph_boosts(
@@ -2045,6 +2123,7 @@ Examples:
   python skill_advisor.py --batch-file prompts.txt
   cat prompts.txt | python skill_advisor.py --batch-stdin
   python skill_advisor.py --health
+  python skill_advisor.py --validate-only
 
   # CocoIndex semantic search (built-in, requires ccc daemon):
   python skill_advisor.py "deploy to production" --semantic
@@ -2059,6 +2138,8 @@ Examples:
                         help='User request to analyze')
     parser.add_argument('--health', action='store_true',
                         help='Run health check diagnostics')
+    parser.add_argument('--validate-only', action='store_true',
+                        help='Run strict skill-graph validation and fail on topology issues.')
     parser.add_argument('--threshold', type=float, default=DEFAULT_CONFIDENCE_THRESHOLD,
                         help='Confidence threshold for recommendations (default: 0.8).')
     parser.add_argument('--uncertainty', type=float, default=DEFAULT_UNCERTAINTY_THRESHOLD,
@@ -2090,6 +2171,9 @@ Examples:
         health["cocoindex_binary"] = cocoindex_binary or ""
         print(json.dumps(health, indent=2))
         return 0
+
+    if args.validate_only:
+        return run_skill_graph_validation(strict_topology=True)
 
     if args.batch_file and args.batch_stdin:
         print(json.dumps({"error": "Use either --batch-file or --batch-stdin, not both."}, indent=2))

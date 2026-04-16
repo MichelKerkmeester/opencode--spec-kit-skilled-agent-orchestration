@@ -15,6 +15,8 @@ This test suite provides direct automated coverage for:
 """
 
 import importlib.util
+import contextlib
+import io
 import json
 import os
 import sys
@@ -244,7 +246,6 @@ description: Runtime cache fixture
     except Exception as exc:
         fail_test("T243-SA-009: Result item has 'skill' field", str(exc))
 
-
 # ───────────────────────────────────────────────────────────────
 # 3. BENCH HARNESS TESTS
 # ───────────────────────────────────────────────────────────────
@@ -448,7 +449,138 @@ def test_regression_harness():
 
 
 # ───────────────────────────────────────────────────────────────
-# 5. MAIN
+# 5. GRAPH COMPILER TESTS
+# ───────────────────────────────────────────────────────────────
+
+def test_graph_compiler():
+    """Test skill_graph_compiler.py validation exit behavior."""
+    print("\n--- skill_graph_compiler.py ---")
+
+    try:
+        compiler = load_module("skill_graph_compiler", "skill_graph_compiler.py")
+    except Exception as exc:
+        fail_test("T246-GC-LOAD: skill_graph_compiler.py loads", str(exc))
+        return
+
+    ok("T246-GC-LOAD: skill_graph_compiler.py loads")
+
+    def make_edges(**overrides):
+        edges = {edge_type: [] for edge_type in compiler.EDGE_TYPES}
+        edges.update(overrides)
+        return edges
+
+    def edge(target, weight, context="fixture"):
+        return {"target": target, "weight": weight, "context": context}
+
+    def write_graph_metadata(skills_root, skill_id, edges):
+        skill_dir = os.path.join(skills_root, skill_id)
+        os.makedirs(skill_dir, exist_ok=True)
+        payload = {
+            "schema_version": 1,
+            "skill_id": skill_id,
+            "family": "system",
+            "category": "system",
+            "edges": edges,
+            "domains": ["testing"],
+            "intent_signals": ["fixture"],
+        }
+        with open(os.path.join(skill_dir, "graph-metadata.json"), "w", encoding="utf-8") as handle:
+            json.dump(payload, handle)
+
+    def run_compiler(fixtures):
+        stdout_buffer = io.StringIO()
+        stderr_buffer = io.StringIO()
+        original_argv = sys.argv[:]
+        original_skills_dir = compiler.SKILLS_DIR
+
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                for skill_id, edges in fixtures.items():
+                    write_graph_metadata(tmpdir, skill_id, edges)
+
+                compiler.SKILLS_DIR = tmpdir
+                sys.argv = ["skill_graph_compiler.py", "--validate-only"]
+
+                with contextlib.redirect_stdout(stdout_buffer), contextlib.redirect_stderr(stderr_buffer):
+                    exit_code = compiler.main()
+        finally:
+            compiler.SKILLS_DIR = original_skills_dir
+            sys.argv = original_argv
+
+        return exit_code, stdout_buffer.getvalue(), stderr_buffer.getvalue()
+
+    # T246-GC-001: Orphan skills now fail validation.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "orphan-skill": make_edges(),
+        })
+        if exit_code == 2 and "ZERO-EDGE WARNINGS (1):" in stderr_text and "orphan-skill: skill has zero edges (orphan)" in stderr_text:
+            ok("T246-GC-001: orphan topology violation exits non-zero", "exit=2")
+        else:
+            fail_test(
+                "T246-GC-001: orphan topology violation exits non-zero",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-001: orphan topology violation exits non-zero", str(exc))
+
+    # T246-GC-002: Missing prerequisite symmetry now fails validation.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(depends_on=[edge("beta", 0.9, "requires beta")]),
+            "beta": make_edges(enhances=[edge("alpha", 0.5, "keeps beta non-orphan")]),
+        })
+        if exit_code == 2 and "SYMMETRY WARNINGS (1):" in stderr_text and "missing prerequisite_for alpha" in stderr_text:
+            ok("T246-GC-002: symmetry topology violation exits non-zero", "exit=2")
+        else:
+            fail_test(
+                "T246-GC-002: symmetry topology violation exits non-zero",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-002: symmetry topology violation exits non-zero", str(exc))
+
+    # T246-GC-003: Weight-band warnings remain advisory-only.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(depends_on=[edge("beta", 0.2, "out-of-band dependency")]),
+            "beta": make_edges(prerequisite_for=[edge("alpha", 0.2, "out-of-band prerequisite")]),
+        })
+        if exit_code == 0 and "WEIGHT-BAND WARNINGS (2):" in stderr_text and "VALIDATION PASSED: all metadata files are valid" in stdout_text:
+            ok("T246-GC-003: weight-band warnings stay advisory", "exit=0")
+        else:
+            fail_test(
+                "T246-GC-003: weight-band warnings stay advisory",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-003: weight-band warnings stay advisory", str(exc))
+
+    # T246-GC-004: Existing dependency-cycle errors still fail validation.
+    try:
+        exit_code, stdout_text, stderr_text = run_compiler({
+            "alpha": make_edges(
+                depends_on=[edge("beta", 0.9, "cycle part 1")],
+                prerequisite_for=[edge("beta", 0.9, "cycle reciprocal")],
+            ),
+            "beta": make_edges(
+                depends_on=[edge("alpha", 0.9, "cycle part 2")],
+                prerequisite_for=[edge("alpha", 0.9, "cycle reciprocal")],
+            ),
+        })
+        if exit_code == 2 and "DEPENDENCY CYCLE ERRORS (1):" in stderr_text:
+            ok("T246-GC-004: dependency cycles still exit non-zero", "exit=2")
+        else:
+            fail_test(
+                "T246-GC-004: dependency cycles still exit non-zero",
+                f"exit={exit_code}, stdout={stdout_text!r}, stderr={stderr_text!r}",
+            )
+    except Exception as exc:
+        fail_test("T246-GC-004: dependency cycles still exit non-zero", str(exc))
+
+
+# ───────────────────────────────────────────────────────────────
+# 6. MAIN
 # ───────────────────────────────────────────────────────────────
 
 def main():
@@ -459,6 +591,7 @@ def main():
     test_advisor_module()
     test_bench_harness()
     test_regression_harness()
+    test_graph_compiler()
 
     print(f"\nSummary: pass={passed}, fail={failed}")
     return 0 if failed == 0 else 1
