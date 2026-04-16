@@ -4,7 +4,7 @@ import * as intentClassifier from '../lib/search/intent-classifier';
 import { INTENT_LAMBDA_MAP } from '../lib/search/intent-classifier';
 import type { IntentType, IntentWeights } from '../lib/search/intent-classifier';
 
-type ClassifiableIntent = Exclude<IntentType, 'find_spec' | 'find_decision'>;
+type ClassifiableIntent = IntentType;
 
 /* ───────────────────────────────────────────────────────────────
    TEST CONFIGURATION
@@ -50,6 +50,22 @@ const TEST_QUERIES: Record<ClassifiableIntent, string[]> = {
     'explain the authentication flow',
     'understand the database schema',
     'what is the context for this feature',
+  ],
+  find_spec: [
+    'show the requirements for the cache rewrite',
+    'what did the plan say for phase 8',
+    'get the specification for packet 015',
+    'show the checklist for this feature',
+    'what is the scope for the remediation batch',
+    'show the plan and tasks for this packet',
+  ],
+  find_decision: [
+    'why did we choose the planner-first default',
+    'show the decision record for the cache contract',
+    'find the rationale for this approach',
+    'get the ADR for the graph query design',
+    'what was the final decision on archived filtering',
+    'what was the decision rationale for reconsolidation',
   ],
 };
 
@@ -391,6 +407,52 @@ describe('T055: Intent Classification for understand Queries', () => {
   });
 });
 
+describe('T055b: Intent Classification for find_spec Queries', () => {
+  it('T055b: find_spec queries are correctly classified', () => {
+    const findSpecQueries = [
+      'show the requirements for the cache rewrite',
+      'what did the plan say for phase 8',
+      'get the specification for packet 015',
+      'show the checklist for this feature',
+      'what is the scope for the remediation batch',
+      'show the plan and tasks for this packet',
+    ];
+
+    let correct = 0;
+    for (const query of findSpecQueries) {
+      const result = intentClassifier.classifyIntent(query);
+      if (result.intent === 'find_spec') {
+        correct++;
+      }
+    }
+    const accuracy = correct / findSpecQueries.length;
+    expect(accuracy).toBeGreaterThanOrEqual(0.8);
+  });
+});
+
+describe('T055c: Intent Classification for find_decision Queries', () => {
+  it('T055c: find_decision queries are correctly classified', () => {
+    const findDecisionQueries = [
+      'why did we choose the planner-first default',
+      'show the decision record for the cache contract',
+      'find the rationale for this approach',
+      'get the ADR for the graph query design',
+      'what was the final decision on archived filtering',
+      'what was the decision rationale for reconsolidation',
+    ];
+
+    let correct = 0;
+    for (const query of findDecisionQueries) {
+      const result = intentClassifier.classifyIntent(query);
+      if (result.intent === 'find_decision') {
+        correct++;
+      }
+    }
+    const accuracy = correct / findDecisionQueries.length;
+    expect(accuracy).toBeGreaterThanOrEqual(0.8);
+  });
+});
+
 describe('T056: Keyword Scoring', () => {
   it('T056: Keywords produce positive score for matching query', () => {
     const result = intentClassifier.calculateKeywordScore('implement something new', 'add_feature');
@@ -554,6 +616,26 @@ describe('T060: 80% Overall Detection Accuracy Target', () => {
         'documentation overview for the API',
         'background on the system architecture',
       ],
+      find_spec: [
+        'show the requirements for the cache rewrite',
+        'what did the plan say for phase 8',
+        'get the specification for packet 015',
+        'show the checklist for this feature',
+        'what is the scope for the remediation batch',
+        'show the plan and tasks for this packet',
+        'what did the spec say for this feature',
+        'find the feature implementation plan',
+      ],
+      find_decision: [
+        'why did we choose the planner-first default',
+        'show the decision record for the cache contract',
+        'find the rationale for this approach',
+        'get the ADR for the graph query design',
+        'what was the final decision on archived filtering',
+        'what was the decision rationale for reconsolidation',
+        'show the alternatives for this decision',
+        'find the decision history for this packet',
+      ],
     };
 
     let totalCorrect = 0;
@@ -580,6 +662,8 @@ describe('T060: 80% Overall Detection Accuracy Target', () => {
       refactor: ['refactor code', 'clean up codebase', 'restructure project', 'improve quality', 'reduce debt'],
       security_audit: ['security audit', 'vulnerability check', 'xss review', 'penetration test', 'audit permissions'],
       understand: ['how does work', 'what is purpose', 'why decision', 'explain flow', 'understand context'],
+      find_spec: ['find the spec', 'show requirements', 'what is the scope plan', 'get the specification', 'show the checklist'],
+      find_decision: ['show the decision record', 'why did we choose this', 'find the rationale', 'get the ADR', 'what was the final decision'],
     };
 
     for (const [expected_intent, queries] of Object.entries(categoryQueries)) {

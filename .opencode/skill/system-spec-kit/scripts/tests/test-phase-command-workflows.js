@@ -172,11 +172,146 @@ function testTemplateCompliancePromptContracts() {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   T242: Semantic assertions — beyond string-presence
+   Finding #26: test-phase-command-workflows.js is a string-presence
+   check only; it never asserts implementation scope semantics or
+   PREFLIGHT/POSTFLIGHT score contracts.
+────────────────────────────────────────────────────────────── */
+
+function testPhaseYamlStructuralContracts() {
+  const yamlAssets = [
+    'spec_kit_plan_auto.yaml',
+    'spec_kit_plan_confirm.yaml',
+    'spec_kit_implement_auto.yaml',
+    'spec_kit_implement_confirm.yaml',
+    'spec_kit_complete_auto.yaml',
+    'spec_kit_complete_confirm.yaml',
+  ];
+
+  for (const yaml of yamlAssets) {
+    const filePath = path.join(ASSETS_ROOT, yaml);
+    if (!exists(filePath)) continue;
+    const text = readFile(filePath);
+
+    // T242-SS1: YAML assets must define numbered steps (step_N or step N)
+    const hasNumberedSteps = /step[_\s]?\d+/i.test(text) || /^\s*\d+\.\s/m.test(text);
+    assertTrue(
+      hasNumberedSteps,
+      `T242-SS1: ${yaml} defines numbered workflow steps`
+    );
+
+    // T242-SS2: Validate.sh invocation must include --strict flag
+    if (text.includes('validate.sh')) {
+      assertTrue(
+        text.includes('--strict'),
+        `T242-SS2: ${yaml} validate.sh call uses --strict flag`
+      );
+    }
+
+    // T242-SS3: Template compliance must define both inline_scaffolds AND
+    // a validation step — not just mention the words
+    if (text.includes('template_compliance:')) {
+      assertTrue(
+        text.includes('inline_scaffolds:') && text.includes('validate'),
+        `T242-SS3: ${yaml} template_compliance includes scaffolds + validation`
+      );
+    }
+  }
+}
+
+function testImplementScopeContracts() {
+  const implementAssets = [
+    'spec_kit_implement_auto.yaml',
+    'spec_kit_implement_confirm.yaml',
+  ];
+
+  for (const yaml of implementAssets) {
+    const filePath = path.join(ASSETS_ROOT, yaml);
+    if (!exists(filePath)) continue;
+    const text = readFile(filePath);
+
+    // T242-IS1: Implement assets must reference plan.md as input
+    assertTrue(
+      text.includes('plan.md') || text.includes('plan_path'),
+      `T242-IS1: ${yaml} references plan.md as prerequisite`
+    );
+
+    // T242-IS2: Implement assets must reference tasks.md for tracking
+    assertTrue(
+      text.includes('tasks.md') || text.includes('task_tracker'),
+      `T242-IS2: ${yaml} references tasks.md for progress tracking`
+    );
+
+    // T242-IS3: Implement assets must reference checklist or verification
+    assertTrue(
+      text.includes('checklist') || text.includes('verification') || text.includes('validate'),
+      `T242-IS3: ${yaml} references verification/checklist step`
+    );
+  }
+}
+
+function testCompleteYamlContracts() {
+  const completeAssets = [
+    'spec_kit_complete_auto.yaml',
+    'spec_kit_complete_confirm.yaml',
+  ];
+
+  for (const yaml of completeAssets) {
+    const filePath = path.join(ASSETS_ROOT, yaml);
+    if (!exists(filePath)) continue;
+    const text = readFile(filePath);
+
+    // T242-CS1: Complete assets must reference implementation-summary.md
+    assertTrue(
+      text.includes('implementation-summary') || text.includes('implementation_summary'),
+      `T242-CS1: ${yaml} references implementation-summary.md`
+    );
+
+    // T242-CS2: Complete assets should mention completion verification
+    assertTrue(
+      text.includes('complete') || text.includes('finish') || text.includes('done'),
+      `T242-CS2: ${yaml} references completion state`
+    );
+  }
+}
+
+function testPhaseAssetsMutualConsistency() {
+  // T242-MC1: All auto/confirm pairs should have matching step counts
+  const pairs = [
+    ['spec_kit_plan_auto.yaml', 'spec_kit_plan_confirm.yaml'],
+    ['spec_kit_implement_auto.yaml', 'spec_kit_implement_confirm.yaml'],
+    ['spec_kit_complete_auto.yaml', 'spec_kit_complete_confirm.yaml'],
+  ];
+
+  for (const [autoYaml, confirmYaml] of pairs) {
+    const autoPath = path.join(ASSETS_ROOT, autoYaml);
+    const confirmPath = path.join(ASSETS_ROOT, confirmYaml);
+    if (!exists(autoPath) || !exists(confirmPath)) continue;
+
+    const autoText = readFile(autoPath);
+    const confirmText = readFile(confirmPath);
+
+    // Both should reference the same phase-folder contract
+    const autoHasPhase = autoText.includes('phase-folder') || autoText.includes('phase child');
+    const confirmHasPhase = confirmText.includes('phase-folder') || confirmText.includes('phase child');
+
+    assertTrue(
+      autoHasPhase === confirmHasPhase,
+      `T242-MC1: ${autoYaml} and ${confirmYaml} agree on phase-folder contract`
+    );
+  }
+}
+
 function main() {
   testPhaseCommandContracts();
   testPhaseFolderContracts();
   testAssetPhaseFolderNotes();
   testTemplateCompliancePromptContracts();
+  testPhaseYamlStructuralContracts();
+  testImplementScopeContracts();
+  testCompleteYamlContracts();
+  testPhaseAssetsMutualConsistency();
 
   console.log(`\nResult: passed=${passed} failed=${failed}`);
   process.exit(failed > 0 ? 1 : 0);

@@ -172,9 +172,13 @@ describe('C136-10 Adaptive Fusion', () => {
     const keyword = makeItems(3, 'kw');
 
     const result = hybridAdaptiveFuse(semantic, keyword, 'understand');
+    const standard = standardFuse(semantic, keyword);
+    const adaptive = adaptiveFuse(semantic, keyword, getAdaptiveWeights('understand'));
     // Weights should reflect understand intent
     expect(result.weights.semanticWeight).toBeCloseTo(0.7 / 1.15, 9);
     expect(result.weights.keywordWeight).toBeCloseTo(0.2 / 1.15, 9);
+    expect(result.results.map(r => r.id)).toEqual(adaptive.map(r => r.id));
+    expect(result.results.map(r => r.id)).not.toEqual(standard.map(r => r.id));
   });
 
   it('T10b: partial rollout without identity fails closed to standard fusion', () => {
@@ -214,14 +218,14 @@ describe('C136-10 Adaptive Fusion', () => {
   // ---- T11: Dark-run mode computes diff ----
   it('T11: dark-run mode returns standard results with diff', () => {
     setEnv(FEATURE_FLAG, 'false');
-    const semantic = makeItems(5, 'sem');
-    const keyword = makeItems(5, 'kw');
+    const semantic = makeItems(3, 'sem');
+    const keyword = makeItems(3, 'kw');
 
-    const result = hybridAdaptiveFuse(semantic, keyword, 'fix_bug', { darkRun: true });
+    const result = hybridAdaptiveFuse(semantic, keyword, 'understand', { darkRun: true });
     expect(result.darkRunDiff).toBeDefined();
     expect(result.darkRunDiff!.standardCount).toBeGreaterThan(0);
     expect(result.darkRunDiff!.adaptiveCount).toBeGreaterThan(0);
-    expect(typeof result.darkRunDiff!.orderDifferences).toBe('number');
+    expect(result.darkRunDiff!.orderDifferences).toBeGreaterThan(0);
     expect(typeof result.darkRunDiff!.topResultChanged).toBe('boolean');
 
     // Should still return standard results
@@ -321,14 +325,17 @@ describe('C136-10 Adaptive Fusion', () => {
 
     it('C138-T3: hybridAdaptiveFuse produces different rankings per intent', () => {
       setEnv(FEATURE_FLAG, 'true');
-      const semantic = makeItems(5, 'sem');
-      const keyword = makeItems(5, 'kw');
+      const semantic = makeItems(3, 'sem');
+      const keyword = makeItems(3, 'kw');
 
       const understandResult = hybridAdaptiveFuse(semantic, keyword, 'understand');
       const fixBugResult = hybridAdaptiveFuse(semantic, keyword, 'fix_bug');
+      const standard = standardFuse(semantic, keyword);
 
       // Different intents → different weight distributions
       expect(understandResult.weights.semanticWeight).not.toBe(fixBugResult.weights.semanticWeight);
+      expect(understandResult.results.map(r => r.id)).not.toEqual(fixBugResult.results.map(r => r.id));
+      expect(fixBugResult.results.map(r => r.id)).toEqual(standard.map(r => r.id));
     });
 
     it('C138-T4: all 7 intent types produce valid weight profiles', () => {

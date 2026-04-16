@@ -610,7 +610,9 @@ function computeGraphConvergenceScore(signals) {
     return 0;
   }
 
-  const namedScore = signals.score
+  const namedScore = signals.blendedScore
+    ?? signals.graphScore
+    ?? signals.score
     ?? signals.convergenceScore
     ?? signals.compositeScore
     ?? signals.stopScore

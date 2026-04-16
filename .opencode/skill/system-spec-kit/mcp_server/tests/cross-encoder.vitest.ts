@@ -3,6 +3,21 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import * as crossEncoder from '../lib/search/cross-encoder';
 
 describe('Cross-Encoder Reranking (T040-T051)', () => {
+  describe('Public API Contract', () => {
+    it('exports the required reranker surface', () => {
+      expect(crossEncoder).toEqual(expect.objectContaining({
+        PROVIDER_CONFIG: expect.any(Object),
+        LENGTH_PENALTY: expect.any(Object),
+        resolveProvider: expect.any(Function),
+        rerankResults: expect.any(Function),
+        isRerankerAvailable: expect.any(Function),
+        getRerankerStatus: expect.any(Function),
+        resetProvider: expect.any(Function),
+        resetSession: expect.any(Function),
+      }));
+    });
+  });
+
   // SUITE: Configuration Tests
   describe('Configuration Tests', () => {
     it('LENGTH_PENALTY has shortThreshold of 50', () => {
@@ -149,11 +164,13 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
   // SUITE: Reranker Status Tests
   describe('Reranker Status Tests', () => {
     it('isRerankerAvailable returns boolean', () => {
+      expect(typeof crossEncoder.isRerankerAvailable).toBe('function');
       const result = crossEncoder.isRerankerAvailable();
       expect(typeof result).toBe('boolean');
     });
 
     it('getRerankerStatus returns complete status object', () => {
+      expect(typeof crossEncoder.getRerankerStatus).toBe('function');
       const status = crossEncoder.getRerankerStatus();
 
       expect(typeof status.available).toBe('boolean');
@@ -187,6 +204,7 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
   // SUITE: Rerank Function Tests (T050)
   describe('Rerank Function Tests (T050)', () => {
     it('rerankResults returns array for valid input', async () => {
+      expect(typeof crossEncoder.rerankResults).toBe('function');
       const results = [
         { id: 1, content: 'test content', title: 'Test' },
         { id: 2, content: 'another content', title: 'Another' },

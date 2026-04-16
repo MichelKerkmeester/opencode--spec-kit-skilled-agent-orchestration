@@ -113,33 +113,58 @@ describe('Reconsolidation Bridge', () => {
     bridgeMocks.bm25Enabled.mockReturnValue(false);
   });
 
-  it('skips reconsolidation on planner-default saves until explicit follow-up is requested', async () => {
+  it('defaults plannerMode to plan-only until explicit full-auto follow-up is requested', async () => {
     bridgeMocks.isAssistiveReconsolidationEnabled.mockReturnValue(true);
+    bridgeMocks.reconsolidate.mockResolvedValue({
+      action: 'merge',
+      existingMemoryId: 41,
+      newMemoryId: 84,
+      importanceWeight: 0.6,
+      mergedContentLength: 128,
+      similarity: 0.93,
+    });
 
-    const result = await runReconsolidationIfEnabled(
+    const parsed = {
+      title: 'Planner default memory',
+      content: 'Planner default memory body',
+      specFolder: 'test-spec',
+      triggerPhrases: ['planner'],
+      importanceTier: 'normal',
+      contentHash: 'hash-plan-default',
+      contextType: 'general',
+      memoryType: 'memory',
+      memoryTypeSource: 'test',
+      documentType: 'memory',
+      qualityScore: 1,
+      qualityFlags: [],
+    } as any;
+    const embedding = new Float32Array([0.1, 0.2, 0.3]);
+
+    const planOnlyResult = await runReconsolidationIfEnabled(
       {} as any,
-      {
-        title: 'Planner default memory',
-        content: 'Planner default memory body',
-        specFolder: 'test-spec',
-        triggerPhrases: ['planner'],
-        importanceTier: 'normal',
-        contentHash: 'hash-plan-default',
-        contextType: 'general',
-        memoryType: 'memory',
-        memoryTypeSource: 'test',
-        documentType: 'memory',
-        qualityScore: 1,
-        qualityFlags: [],
-      } as any,
+      parsed,
       '/tmp/test-memory.md',
       false,
-      new Float32Array([0.1, 0.2, 0.3]),
+      embedding,
     );
 
-    expect(result.earlyReturn).toBeNull();
+    expect(planOnlyResult.earlyReturn).toBeNull();
     expect(bridgeMocks.reconsolidate).not.toHaveBeenCalled();
     expect(bridgeMocks.vectorSearch).not.toHaveBeenCalled();
+
+    const fullAutoResult = await runReconsolidationIfEnabled(
+      {} as any,
+      parsed,
+      '/tmp/test-memory.md',
+      false,
+      embedding,
+      undefined,
+      { plannerMode: 'full-auto' },
+    );
+
+    expect(bridgeMocks.reconsolidate).toHaveBeenCalledOnce();
+    expect(fullAutoResult.earlyReturn?.status).toBe('merged');
+    expect(fullAutoResult.earlyReturn?.id).toBe(84);
   });
 
   it('returns the merged survivor id instead of the archived predecessor id in full-auto mode', async () => {

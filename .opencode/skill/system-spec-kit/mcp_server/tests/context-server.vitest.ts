@@ -10,6 +10,7 @@ import {
   syncEnvelopeTokenCount as actualSyncEnvelopeTokenCount,
   serializeEnvelopeWithTokenCount as actualSerializeEnvelopeWithTokenCount,
 } from '../hooks/response-hints'
+import { parseArgs as actualParseArgs } from '../tools/types'
 
 const SERVER_DIR = path.resolve(__dirname, '..')
 const SOURCE_FILE = path.join(SERVER_DIR, 'context-server.ts')
@@ -75,11 +76,6 @@ describe('Context Server', () => {
   // GROUP 1: parseArgs<T>() Function Tests
   // =================================================================
   describe('Group 1: parseArgs<T>()', () => {
-    // Local replica of parseArgs for behavioral tests
-    function parseArgs<T>(args: Record<string, unknown>): T {
-      return args as unknown as T
-    }
-
     // T1: parseArgs exists in source (T303: moved to tools/types.ts)
     it('T1: parseArgs<T>() defined in source', () => {
       expect(toolTypesCode).toMatch(/function\s+parseArgs\s*<\s*T\s*>\s*\(/)
@@ -97,24 +93,30 @@ describe('Context Server', () => {
       expect(toolTypesCode).toMatch(/parseArgs<T>\(args:\s*Record<string,\s*unknown>\)/)
     })
 
-    // T4: Replicate parseArgs behavior locally to verify cast semantics
+    // T4: Verify cast semantics against the shipped parser
     it('T4: parseArgs preserves object identity', () => {
       const input = { query: 'test', limit: 10 }
-      const result = parseArgs<{ query: string; limit: number }>(input)
+      const result = actualParseArgs<{ query: string; limit: number }>(input)
       expect(result.query).toBe('test')
       expect(result.limit).toBe(10)
     })
 
     // T5: parseArgs with empty object
     it('T5: parseArgs handles empty args', () => {
-      const emptyResult = parseArgs<{ optional?: string }>({})
+      const emptyResult = actualParseArgs<{ optional?: string }>({})
       expect(emptyResult.optional).toBeUndefined()
+    })
+
+    it('T5b: parseArgs returns an empty object for nullish protocol args', () => {
+      const nullishResult = actualParseArgs<{ optional?: string }>(null as unknown as Record<string, unknown>)
+      expect(nullishResult.optional).toBeUndefined()
+      expect(Object.keys(nullishResult)).toHaveLength(0)
     })
 
     // T6: parseArgs with extra fields (MCP may pass unexpected args)
     it('T6: parseArgs passes through extra fields', () => {
       const extraInput = { query: 'hello', unexpectedField: true, anotherExtra: 42 }
-      const extraResult = parseArgs<{ query: string }>(extraInput)
+      const extraResult = actualParseArgs<{ query: string }>(extraInput)
       expect(extraResult.query).toBe('hello')
       expect((extraResult as unknown as { unexpectedField: boolean }).unexpectedField).toBe(true)
     })
@@ -122,7 +124,7 @@ describe('Context Server', () => {
     // T7: parseArgs with type coercion edge cases (number as string)
     it('T7: parseArgs does NOT coerce types', () => {
       const coercionInput = { id: '42' }
-      const coercionResult = parseArgs<{ id: number }>(coercionInput)
+      const coercionResult = actualParseArgs<{ id: number }>(coercionInput)
       // Cast only, no conversion — string "42" remains string
       expect(coercionResult.id).toBe('42')
     })
@@ -130,7 +132,7 @@ describe('Context Server', () => {
     // T8: parseArgs with null values
     it('T8: parseArgs preserves null values', () => {
       const nullInput = { query: null, limit: null }
-      const nullResult = parseArgs<{ query: string | null; limit: number | null }>(nullInput)
+      const nullResult = actualParseArgs<{ query: string | null; limit: number | null }>(nullInput)
       expect(nullResult.query).toBeNull()
       expect(nullResult.limit).toBeNull()
     })
@@ -138,7 +140,7 @@ describe('Context Server', () => {
     // T9: parseArgs with nested objects
     it('T9: parseArgs preserves nested structures', () => {
       const nestedInput = { metadata: { key: 'value' }, tags: ['a', 'b'] }
-      const nestedResult = parseArgs<{ metadata: { key: string }; tags: string[] }>(nestedInput)
+      const nestedResult = actualParseArgs<{ metadata: { key: string }; tags: string[] }>(nestedInput)
       expect(nestedResult.metadata.key).toBe('value')
       expect(nestedResult.tags).toHaveLength(2)
     })
@@ -146,7 +148,7 @@ describe('Context Server', () => {
     // T10: parseArgs returns same reference (no clone)
     it('T10: parseArgs returns same reference (no copy)', () => {
       const refInput = { test: 'ref' }
-      const refResult = parseArgs<{ test: string }>(refInput)
+      const refResult = actualParseArgs<{ test: string }>(refInput)
       expect(refResult).toBe(refInput)
     })
   })
@@ -2564,7 +2566,7 @@ describe('Context Server', () => {
 
     // T56: Startup scan runs in background
     it('T56: Startup scan runs via setImmediate', () => {
-      expect(sourceCode).toMatch(/setImmediate\(\(\)\s*=>\s*startupScan/)
+      expect(sourceCode).toMatch(/setImmediate\(\(\)\s*=>\s*\{[\s\S]*?void startupScan\(DEFAULT_BASE_PATH\)/)
     })
 
     // T57: startupScanInProgress guard
