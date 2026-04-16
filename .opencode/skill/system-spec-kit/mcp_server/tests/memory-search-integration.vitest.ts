@@ -174,15 +174,22 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T622: Concepts array validation exists', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test
+      // that calls handleMemorySearch({ concepts: 'not-array' }) and checks error.
       expect(MEMORY_SEARCH_SOURCE).toContain('Array.isArray(concepts)');
     });
 
     it('T623: Maximum 5 concepts enforced', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test
+      // that calls handleMemorySearch({ concepts: ['a','b','c','d','e','f'] })
+      // and checks the 2-5 validation error response.
       expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('concepts.length > 5');
       expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('Multi-concept search requires 2-5 concepts');
     });
 
     it('T624: Each concept generates embedding', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- needs DB-backed test to verify
+      // that each concept actually generates a separate embedding query.
       expect(STAGE1_SOURCE).toContain('generateQueryEmbedding(concept)');
     });
 
@@ -191,6 +198,9 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T626: Multi-concept requests are labeled as multi_concept search type', () => {
+      // FIXME(S3.5 #14): Source-text assertion -- replace with behavioral test
+      // that calls handleMemorySearch({ concepts: ['a','b'] }) against a DB
+      // fixture and checks the response metadata contains searchType = 'multi-concept'.
       expect(MEMORY_SEARCH_SOURCE).toContain("searchType: (hasValidConcepts && concepts!.length >= 2)");
       expect(MEMORY_SEARCH_SOURCE).toContain("'multi-concept'");
     });
