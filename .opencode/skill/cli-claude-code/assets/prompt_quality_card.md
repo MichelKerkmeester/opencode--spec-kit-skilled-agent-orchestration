@@ -91,7 +91,7 @@ Claude-specific example: if the task would otherwise need a long `claude -p` pro
 ## 7. Related Resources
 
 - `../../sk-improve-prompt/assets/cli_prompt_quality_card.md`
-- `../prompt_templates.md`
+- `./prompt_templates.md`
 - `../SKILL.md`
 
 <!-- /ANCHOR:related-resources -->

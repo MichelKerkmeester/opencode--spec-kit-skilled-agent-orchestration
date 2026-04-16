@@ -1,6 +1,6 @@
 ---
 title: "Raise Minimum Rerank Candidate Threshold - Execution Plan"
-status: planned
+status: complete
 parent_spec: 004-raise-rerank-minimum/spec.md
 ---
 # Execution Plan

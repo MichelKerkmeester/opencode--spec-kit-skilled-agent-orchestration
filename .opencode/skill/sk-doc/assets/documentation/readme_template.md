@@ -236,7 +236,23 @@ These patterns appear in mature project READMEs:
 
 Newcomers read the narrative. Power users jump to the reference. Both tiers live in the same Features section.
 
-**Subsection Numbering**: Use `#### 3.1.1 TOPIC NAME` (ALL CAPS) for sub-subsections within a Feature subsection. Add `---` horizontal rules between subsections for visual separation. All numbered headings (H3 and H4) use ALL CAPS to match H2 section headings.
+**Subsection Numbering**: Use `#### 3.1.1 TOPIC NAME` (ALL CAPS) for sub-subsections within a Feature subsection. All numbered headings (H3 and H4) use ALL CAPS to match H2 section headings.
+
+**H4 Sub-Section Spacing**: Add a `&nbsp;` spacer line between consecutive `####` sub-sections for visual breathing room (same pattern as changelogs). Place it on its own line with a blank line before and after:
+
+```markdown
+#### 3.1.1 FIRST TOPIC
+
+Content for first topic...
+
+&nbsp;
+
+#### 3.1.2 SECOND TOPIC
+
+Content for second topic...
+```
+
+This applies to ALL `####` sub-sections throughout the document, not just Features. The `&nbsp;` creates a visible gap in rendered markdown that separates logical groups without using heavy `---` dividers (which are reserved for H2/H3 section breaks).
 
 **Writing Tips**:
 - Each subsection should open with 1-2 sentences explaining what this capability does in plain language
@@ -959,13 +975,13 @@ description: "[Brief description]"
 
 **[Key concept name]** -- [short explanation of how it works and why it matters].
 
----
+&nbsp;
 
 #### 3.1.2 [TOPIC NAME]
 
 [Next capability explained in simple terms.]
 
----
+&nbsp;
 
 ### 3.2 [REFERENCE SUBSECTION: TECHNICAL REFERENCE]
 
@@ -1092,7 +1108,7 @@ description: "[Brief description]"
 [fix command]
 ```
 
----
+&nbsp;
 
 #### [Issue 2: Descriptive Name]
 

@@ -1,6 +1,6 @@
 ---
 title: "Research: Search Fusion & Reranking Configuration Tuning"
-status: planned
+status: complete
 level: 3
 type: research
 parent: 010-continuity-research
@@ -48,6 +48,10 @@ Generate synthetic queries from current spec docs (titles, summaries, entity nam
 ## Design Note
 
 `/spec_kit:resume` intentionally stays on the canonical file-based recovery ladder instead of routing through `handleMemorySearch()`. The live resume path calls `memory_context(mode='resume', profile='resume')`, which reads `handover.md -> _memory.continuity -> spec docs` directly, and the resume regression suite fails if `handleMemorySearch()` is invoked. The continuity-aware Stage 3 MMR behavior fixed in this packet therefore applies to search-style resume-profile retrieval, not to the operator-facing `/spec_kit:resume` ladder itself.
+
+## Closeout Note
+
+This packet is closed on the shipped 001-006 research phases. Cross-runtime Codex mirror synchronization is now tracked as downstream mirror maintenance instead of a blocker for packet completion.
 
 ## Exit Criteria
 

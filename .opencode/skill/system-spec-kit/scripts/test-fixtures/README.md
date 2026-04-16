@@ -338,6 +338,8 @@ cd .opencode/skill/system-spec-kit/scripts
 
 ### Common Issues
 
+&nbsp;
+
 #### Test suite reports failures
 
 **Symptom**: `.opencode/skill/system-spec-kit/scripts/tests/test-validation.sh` shows failed tests
@@ -353,6 +355,8 @@ cd .opencode/skill/system-spec-kit/scripts
 # Update fixture or fix validation logic as needed
 ```
 
+&nbsp;
+
 #### Fixture structure unclear
 
 **Symptom**: Don't understand what a fixture is testing
@@ -367,6 +371,8 @@ cd test-fixtures/[fixture-name]
 ls -la
 cat spec.md
 ```
+
+&nbsp;
 
 #### Validation passes when it should fail
 
@@ -384,6 +390,8 @@ grep -r "P3" .           # Check for invalid priorities
 # Run with verbose output to see validation logic
 .opencode/skill/system-spec-kit/scripts/spec/validate.sh test-fixtures/[fixture-name] --verbose
 ```
+
+&nbsp;
 
 #### Need to add new test case
 

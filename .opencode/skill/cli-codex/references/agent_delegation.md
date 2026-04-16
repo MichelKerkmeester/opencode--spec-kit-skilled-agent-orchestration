@@ -1,6 +1,6 @@
 ---
 title: "Codex Agent Delegation Reference"
-description: "Reference for delegating tasks to 9 specialized Codex agents via the conductor/executor orchestration model."
+description: "Reference for delegating tasks to 10 specialized Codex agents via the conductor/executor orchestration model."
 ---
 
 # Codex Agent Delegation Reference

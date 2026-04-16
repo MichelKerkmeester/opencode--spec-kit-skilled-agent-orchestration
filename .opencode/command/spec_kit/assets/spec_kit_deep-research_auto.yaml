@@ -85,7 +85,7 @@ state_paths:
   dashboard: "{spec_folder}/research/deep-research-dashboard.md"
   pause_sentinel: "{spec_folder}/research/.deep-research-pause"
   lock_file: "{spec_folder}/research/.deep-research.lock"
-  archive_root: "{spec_folder}/research/archive"
+  archive_root: "{spec_folder}/research_archive"
   synthesis_snapshot_pattern: "{spec_folder}/research/synthesis-v{generation}.md"
   iteration_pattern: "{spec_folder}/research/iterations/iteration-{NNN}.md"
   research_output: "{spec_folder}/research/research.md"
@@ -113,7 +113,7 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
-        command: "mkdir -p {spec_folder}/research/iterations {spec_folder}/research/archive"
+        command: "mkdir -p {spec_folder}/research/iterations {spec_folder}/research_archive"
 
       step_resolve_canonical_names:
         action: "Resolve canonical research packet artifact names before classification"
@@ -643,7 +643,7 @@ workflow:
       step_index_memory:
         action: "Index the routed canonical spec document with memory_save when immediate MCP visibility is required"
         mcp_tool: memory_save
-        invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
+        invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
         note: "Use the actual canonical spec-doc path returned by generate-context.js (decision-record.md, implementation-summary.md, or handover.md); memory_index_scan remains the bulk fallback"
 
       step_verify_save:

@@ -276,6 +276,8 @@ All scripts support these standard options:
 
 ### Common Issues
 
+&nbsp;
+
 #### Node.js not found
 
 **Symptom**: `command not found: node`
@@ -290,6 +292,8 @@ nvm install 18
 nvm use 18
 ```
 
+&nbsp;
+
 #### Permission denied
 
 **Symptom**: `Permission denied` when running script
@@ -300,6 +304,8 @@ nvm use 18
 ```bash
 chmod +x .opencode/install_guides/install_scripts/*.sh
 ```
+
+&nbsp;
 
 #### opencode.json not found
 
@@ -313,6 +319,8 @@ chmod +x .opencode/install_guides/install_scripts/*.sh
 cd /path/to/your/project
 ./install-<component>.sh
 ```
+
+&nbsp;
 
 #### JSON validation failed
 

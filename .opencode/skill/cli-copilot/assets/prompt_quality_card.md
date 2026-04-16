@@ -91,7 +91,7 @@ Copilot-specific example: if the task needs a large `copilot -p` prompt plus `--
 ## 7. Related Resources
 
 - `../../sk-improve-prompt/assets/cli_prompt_quality_card.md`
-- `../prompt_templates.md`
+- `./prompt_templates.md`
 - `../SKILL.md`
 
 <!-- /ANCHOR:related-resources -->

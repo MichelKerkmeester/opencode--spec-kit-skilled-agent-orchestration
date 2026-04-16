@@ -1,7 +1,7 @@
 // TEST: Adaptive Fusion (C136-10)
 // 15 tests: weight profiles, sum<=1, deterministic output,
 // Flag ON/OFF, dark-run, degraded contract, fallback, intent impact
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   getAdaptiveWeights,
   adaptiveFuse,
@@ -12,7 +12,7 @@ import {
   DEFAULT_WEIGHTS,
   FEATURE_FLAG,
 } from '@spec-kit/shared/algorithms/adaptive-fusion';
-import type { FusionWeights, DegradedModeContract, AdaptiveFusionResult } from '@spec-kit/shared/algorithms/adaptive-fusion';
+import type { FusionWeights } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import type { RrfItem } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 /* ───────────────────────────────────────────────────────────────
@@ -60,6 +60,8 @@ describe('C136-10 Adaptive Fusion', () => {
 
   afterEach(() => {
     restoreEnv();
+    vi.doUnmock('../../shared/algorithms/rrf-fusion.js');
+    vi.resetModules();
   });
 
   // ---- T1: Weight profiles per intent ----
@@ -172,9 +174,13 @@ describe('C136-10 Adaptive Fusion', () => {
     const keyword = makeItems(3, 'kw');
 
     const result = hybridAdaptiveFuse(semantic, keyword, 'understand');
+    const standard = standardFuse(semantic, keyword);
+    const adaptive = adaptiveFuse(semantic, keyword, getAdaptiveWeights('understand'));
     // Weights should reflect understand intent
     expect(result.weights.semanticWeight).toBeCloseTo(0.7 / 1.15, 9);
     expect(result.weights.keywordWeight).toBeCloseTo(0.2 / 1.15, 9);
+    expect(result.results.map(r => r.id)).toEqual(adaptive.map(r => r.id));
+    expect(result.results.map(r => r.id)).not.toEqual(standard.map(r => r.id));
   });
 
   it('T10b: partial rollout without identity fails closed to standard fusion', () => {
@@ -214,14 +220,14 @@ describe('C136-10 Adaptive Fusion', () => {
   // ---- T11: Dark-run mode computes diff ----
   it('T11: dark-run mode returns standard results with diff', () => {
     setEnv(FEATURE_FLAG, 'false');
-    const semantic = makeItems(5, 'sem');
-    const keyword = makeItems(5, 'kw');
+    const semantic = makeItems(3, 'sem');
+    const keyword = makeItems(3, 'kw');
 
-    const result = hybridAdaptiveFuse(semantic, keyword, 'fix_bug', { darkRun: true });
+    const result = hybridAdaptiveFuse(semantic, keyword, 'understand', { darkRun: true });
     expect(result.darkRunDiff).toBeDefined();
     expect(result.darkRunDiff!.standardCount).toBeGreaterThan(0);
     expect(result.darkRunDiff!.adaptiveCount).toBeGreaterThan(0);
-    expect(typeof result.darkRunDiff!.orderDifferences).toBe('number');
+    expect(result.darkRunDiff!.orderDifferences).toBeGreaterThan(0);
     expect(typeof result.darkRunDiff!.topResultChanged).toBe('boolean');
 
     // Should still return standard results
@@ -229,44 +235,44 @@ describe('C136-10 Adaptive Fusion', () => {
     expect(result.results.map(r => r.id)).toEqual(standard.map(r => r.id));
   });
 
-  // ---- T12: DegradedModeContract shape and typed contract validation ----
-  it('T12: degraded contract has correct typed shape', () => {
-    // Validate the DegradedModeContract interface shape directly.
-    // The contract is returned by hybridAdaptiveFuse when adaptive fusion fails.
-    const contract: DegradedModeContract = {
-      failureMode: 'adaptive_fusion_error: simulated failure',
+  // ---- T12: degraded contract is emitted by the real adaptive failure branch ----
+  it('T12: degraded contract is assembled by hybridAdaptiveFuse when adaptive fusion throws', async () => {
+    vi.resetModules();
+    vi.doMock('../../shared/algorithms/rrf-fusion.js', async () => {
+      const actual = await vi.importActual<typeof import('../../shared/algorithms/rrf-fusion.js')>(
+        '../../shared/algorithms/rrf-fusion.js'
+      );
+      let invocationCount = 0;
+      return {
+        ...actual,
+        fuseResultsMulti: vi.fn((lists) => {
+          invocationCount += 1;
+          if (invocationCount === 1) {
+            throw new Error('simulated adaptive failure');
+          }
+          return actual.fuseResultsMulti(lists);
+        }),
+      };
+    });
+
+    const dynamicFusion = await import('../../shared/algorithms/adaptive-fusion.js');
+    setEnv(dynamicFusion.FEATURE_FLAG, 'true');
+    setEnv('SPECKIT_ROLLOUT_PERCENT', '100');
+    const semantic = makeItems(3, 'sem');
+    const keyword = makeItems(3, 'kw');
+
+    const result = dynamicFusion.hybridAdaptiveFuse(semantic, keyword, 'understand');
+    const standard = standardFuse(semantic, keyword);
+
+    expect(result.results.map(r => r.id)).toEqual(standard.map(r => r.id));
+    expect(result.degraded).toMatchObject({
+      failureMode: 'adaptive_fusion_error: simulated adaptive failure',
       fallbackMode: 'standard_rrf',
       confidenceImpact: 0.3,
       retryRecommendation: 'none',
-    };
-
-    // Validate contract field types and constraints
-    expect(typeof contract.failureMode).toBe('string');
-    expect(contract.failureMode).toContain('adaptive_fusion_error');
-    expect(contract.fallbackMode).toBe('standard_rrf');
-    expect(contract.confidenceImpact).toBeGreaterThan(0);
-    expect(contract.confidenceImpact).toBeLessThanOrEqual(1.0);
-    expect(contract.retryRecommendation).toBe('none');
-
-    // Verify empty_results degraded contract (total failure)
-    const totalFailure: DegradedModeContract = {
-      failureMode: 'standard_fusion_error: catastrophic',
-      fallbackMode: 'empty_results',
-      confidenceImpact: 1.0,
-      retryRecommendation: 'immediate',
-    };
-
-    expect(totalFailure.confidenceImpact).toBe(1.0);
-    expect(totalFailure.retryRecommendation).toBe('immediate');
-    expect(totalFailure.fallbackMode).toBe('empty_results');
-
-    // Also verify that when flag is ON and results exist, no degraded contract is set
-    setEnv(FEATURE_FLAG, 'true');
-    const semantic = makeItems(3, 'sem');
-    const keyword = makeItems(3, 'kw');
-    const result = hybridAdaptiveFuse(semantic, keyword, 'understand');
-    expect(result.degraded).toBeUndefined();
-    expect(result.results.length).toBeGreaterThan(0);
+    });
+    expect(result.weights.semanticWeight).toBeCloseTo(0.7 / 1.15, 9);
+    expect(result.weights.keywordWeight).toBeCloseTo(0.2 / 1.15, 9);
   });
 
   // ---- T13: Empty inputs return empty ----
@@ -321,14 +327,17 @@ describe('C136-10 Adaptive Fusion', () => {
 
     it('C138-T3: hybridAdaptiveFuse produces different rankings per intent', () => {
       setEnv(FEATURE_FLAG, 'true');
-      const semantic = makeItems(5, 'sem');
-      const keyword = makeItems(5, 'kw');
+      const semantic = makeItems(3, 'sem');
+      const keyword = makeItems(3, 'kw');
 
       const understandResult = hybridAdaptiveFuse(semantic, keyword, 'understand');
       const fixBugResult = hybridAdaptiveFuse(semantic, keyword, 'fix_bug');
+      const standard = standardFuse(semantic, keyword);
 
       // Different intents → different weight distributions
       expect(understandResult.weights.semanticWeight).not.toBe(fixBugResult.weights.semanticWeight);
+      expect(understandResult.results.map(r => r.id)).not.toEqual(fixBugResult.results.map(r => r.id));
+      expect(fixBugResult.results.map(r => r.id)).toEqual(standard.map(r => r.id));
     });
 
     it('C138-T4: all 7 intent types produce valid weight profiles', () => {

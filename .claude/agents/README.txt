@@ -8,14 +8,13 @@ and behavioral instructions.
 Mirrored to: .claude/agents/, .gemini/agents/, .codex/agents/
 
 Agents:
-  context       — Retrieval-first codebase exploration
-  debug         — Fresh-perspective debugging
-  deep-research — Autonomous research iterations
-  deep-review   — Autonomous code review iterations
-  handover      — Session continuation
-  orchestrate   — Multi-agent coordination
-  review        — Code review (read-only)
-  speckit       — Spec folder documentation
-  ultra-think   — Multi-strategy planning
-  write         — Documentation generation
+  context        — Retrieval-first codebase exploration
+  debug          — Fresh-perspective debugging
+  deep-research  — Autonomous research iterations
+  deep-review    — Autonomous code review iterations
+  improve-agent  — Agent evaluation and improvement
   improve-prompt — Prompt engineering
+  orchestrate    — Multi-agent coordination
+  review         — Code review (read-only)
+  ultra-think    — Multi-strategy planning
+  write          — Documentation generation

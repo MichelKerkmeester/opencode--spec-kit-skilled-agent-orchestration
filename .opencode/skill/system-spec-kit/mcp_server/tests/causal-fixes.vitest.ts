@@ -1,7 +1,9 @@
 // TEST: CAUSAL FIXES
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import * as causalEdges from '../lib/storage/causal-edges';
 import * as causalGraphHandler from '../handlers/causal-graph';
+import * as vectorIndex from '../lib/search/vector-index';
+import * as coreIndex from '../core/index';
 import BetterSqlite3 from 'better-sqlite3';
 import type { CausalChainNode } from '../lib/storage/causal-edges';
 
@@ -13,6 +15,33 @@ function expectDefined<T>(value: T | null | undefined): T {
     throw new Error('Expected value to be defined');
   }
   return value;
+}
+
+function parseMcpEnvelope(response: Awaited<ReturnType<typeof causalGraphHandler.handleMemoryDriftWhy>>) {
+  const textEntry = response.content.find(
+    (entry): entry is { type: 'text'; text: string } =>
+      entry.type === 'text' && typeof entry.text === 'string'
+  );
+  expect(textEntry).toBeDefined();
+  return JSON.parse(expectDefined(textEntry).text) as {
+    summary: string;
+    data: {
+      outgoing: {
+        caused: Array<{ relation: string }>;
+        enabled: Array<{ relation: string }>;
+        supports: Array<{ relation: string }>;
+        contradicts: Array<{ relation: string }>;
+        allEdges: Array<{ relation: string }>;
+      };
+      allEdges: Array<{ relation: string }>;
+      totalEdges: number;
+      totalOutgoingEdges: number;
+      traversalOptions: {
+        direction: string;
+        maxDepth: number;
+      };
+    };
+  };
 }
 
 describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB test fixtures]', () => {
@@ -74,6 +103,10 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
     stmt.run(5, 'test-spec', '/mem/5.md', 'Memory 5');
 
     causalEdges.init(testDb);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   function resetEdges() {
@@ -185,8 +218,35 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
       expect(noneFilter.length).toBe(0);
     });
 
-    it('T203-7: Handler drift_why is callable', () => {
-      expect(typeof causalGraphHandler.handleMemoryDriftWhy).toBe('function');
+    it('T203-7: memory_drift_why applies the production relations filter path', async () => {
+      vi.spyOn(coreIndex, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(() => testDb);
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue(testDb);
+
+      const response = await causalGraphHandler.handleMemoryDriftWhy({
+        memoryId: '1',
+        maxDepth: 3,
+        direction: 'outgoing',
+        relations: ['caused', 'enabled'],
+        includeMemoryDetails: false,
+      });
+
+      expect(response.isError).not.toBe(true);
+
+      const envelope = parseMcpEnvelope(response);
+      expect(envelope.summary).toContain('2 causal relationships');
+      expect(envelope.data.totalEdges).toBe(2);
+      expect(envelope.data.totalOutgoingEdges).toBe(2);
+      expect(envelope.data.traversalOptions).toEqual({
+        direction: 'forward',
+        maxDepth: 3,
+      });
+      expect(envelope.data.outgoing.caused).toHaveLength(1);
+      expect(envelope.data.outgoing.enabled).toHaveLength(1);
+      expect(envelope.data.outgoing.supports).toEqual([]);
+      expect(envelope.data.outgoing.contradicts).toEqual([]);
+      expect(envelope.data.outgoing.allEdges.map((edge) => edge.relation)).toEqual(['caused', 'enabled']);
+      expect(envelope.data.allEdges.map((edge) => edge.relation)).toEqual(['caused', 'enabled']);
     });
   });
 

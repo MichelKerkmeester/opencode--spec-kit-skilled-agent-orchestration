@@ -105,7 +105,7 @@ Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder t
 
 **Level 1 Copy Commands (Baseline):**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
+cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/###-name/spec.md
 cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
 cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md

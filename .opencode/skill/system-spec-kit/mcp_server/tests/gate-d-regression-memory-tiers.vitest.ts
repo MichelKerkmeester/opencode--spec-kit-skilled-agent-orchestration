@@ -78,6 +78,7 @@ describe('Gate D regression 7 — memory tiers', () => {
       query: 'reader ready canonical continuity contract',
     });
 
+    expect(isExcludedFromSearch('deprecated')).toBe(true);
     expect(searchableRows).toHaveLength(3);
     expect(searchableRows.every((row) => row.document_type !== 'memory')).toBe(true);
     expect(searchableRows.every((row) => !row.file_path.includes('/memory/'))).toBe(true);
@@ -88,6 +89,34 @@ describe('Gate D regression 7 — memory tiers', () => {
     expect(ranked[2].anchor_id).toBe('notes-reader-ready-follow-up');
     expect(ranked[1].file_path).toBe(ranked[2].file_path);
     expect(ranked[1].composite_score).toBeGreaterThan(ranked[2].composite_score);
-    expect(ranked.some((row) => row.id === 704)).toBe(false);
+  });
+
+  it('shows that composite scoring alone does not replace the deprecated-tier pre-filter', () => {
+    const allRows: SearchableRow[] = [
+      buildCanonicalRow({
+        id: 801,
+        title: 'Normal row',
+        importance_tier: 'normal',
+        importance_weight: 0.4,
+        similarity: 80,
+      }),
+      buildCanonicalRow({
+        id: 802,
+        title: 'Deprecated row with high similarity',
+        importance_tier: 'deprecated',
+        importance_weight: 1,
+        similarity: 99,
+      }),
+    ];
+
+    const ranked = applyCompositeScoring(allRows, {
+      query: 'reader ready canonical continuity contract',
+    });
+
+    expect(ranked).toHaveLength(2);
+    expect(ranked[0].id).toBe(802);
+    expect(ranked[0].importance_tier).toBe('deprecated');
+    expect(isExcludedFromSearch(ranked[0].importance_tier)).toBe(true);
+    expect(ranked[1].id).toBe(801);
   });
 });

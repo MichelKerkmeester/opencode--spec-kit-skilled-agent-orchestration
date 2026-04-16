@@ -1,0 +1,69 @@
+You are an IMPLEMENTATION agent for batch B-080 (Phase 6).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-080
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 6 — Stale refs P1: dead tools, stale metadata, cross-anchor contamination
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+261:- [ ] T140 [P1] Fix dead `deep_loop_graph_*` MCP tool surface — registered in schemas but never in tools/index.ts (S3.7#1 iter 1)
+262:- [ ] T141 [P1] [P] Fix 009/001 stale `Phase 014` / `014-playbook-prompt-rewrite` references (S3.7#2 iter 2)
+263:- [ ] T142 [P1] Fix `MEMORY METADATA` inline comments overriding real tier with stale defaults (`frontmatter-migration.ts:1032`) (S3.7#3 iter 12)
+264:- [ ] T143 [P1] Fix cross-anchor contamination validating against stale route names (`spec-doc-structure.ts:138`) (S3.7#4 iter 30)
+265:- [ ] T144 [P1] Fix `includeArchived` dead code in keyword/multi-concept search (`vector-index-queries.ts:343`) (S3.7#5 iter 34)
+266:- [ ] T145 [P1] Fix stale canonical plan link in 009/003 pointing at nonexistent 016 packet (S3.7#6 iter 42)
+267:- [ ] T146 [P1] Fix Claude agent-delegation reference advertising removed agent IDs `speckit`/`research` (S3.7#7 iter 64)
+268:- [ ] T147 [P1] Fix stale Gate 3 phase-boundary rule in CLAUDE.md conflicting with shared contract (S3.7#8 iter 69)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.7#1
+S3.7#2
+S3.7#3
+S3.7#4
+S3.7#5
+S3.7#6
+S3.7#7
+S3.7#8
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/system-spec-kit/mcp_server/tools/index.ts
+.opencode/skill/system-spec-kit/scripts/lib/frontmatter-migration.ts
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/spec-doc-structure.ts
+.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md
+CLAUDE.md
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-048
+CHK-049
+CHK-050
+CHK-051
+CHK-052
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-080-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

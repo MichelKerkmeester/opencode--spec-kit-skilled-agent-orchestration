@@ -15,17 +15,19 @@ describe('manual trigger phrase preservation', () => {
       'DR-014-I001-P1-001 title description rejection',
     ];
 
-    expect(sanitizeTriggerPhrases(manualDrPhrases, { source: 'manual' })).toEqual(
-      manualDrPhrases.map((phrase) => phrase.toLowerCase()),
+    const result = sanitizeTriggerPhrases(manualDrPhrases, { source: 'manual' });
+    // All phrases are kept; order is by descending comparison-key length.
+    expect(new Set(result)).toEqual(
+      new Set(manualDrPhrases.map((phrase) => phrase.toLowerCase())),
     );
+    expect(result).toHaveLength(manualDrPhrases.length);
   });
 
   it('keeps compact manual singleton anchors that extracted mode still filters', () => {
-    expect(sanitizeTriggerPhrases(['graph', 'research', 'phases'], { source: 'manual' })).toEqual([
-      'graph',
-      'research',
-      'phases',
-    ]);
+    const result = sanitizeTriggerPhrases(['graph', 'research', 'phases'], { source: 'manual' });
+    // All three are kept; order is by descending comparison-key length.
+    expect(new Set(result)).toEqual(new Set(['graph', 'research', 'phases']));
+    expect(result).toHaveLength(3);
 
     expect(sanitizeTriggerPhrases(['graph', 'research', 'phases', 'with phases', 'with research'], { source: 'extracted' })).toEqual([]);
   });

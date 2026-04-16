@@ -61,10 +61,13 @@ Use retrieval anchors for every H2 section so section-level loading can target s
 **Example**:
 
 ```markdown
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 [Section content]
 
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:when-to-create-reference-files -->
 ## 3. WHEN TO CREATE REFERENCE FILES
 ```
 

@@ -622,3 +622,56 @@ describe('content-router helper contracts', () => {
     });
   });
 });
+
+// T248: Add non-progress route category coverage
+describe('content-router non-progress route categories', () => {
+  const router = createContentRouter({
+    embedText: makeEmbeddingFn(),
+  });
+
+  it('routes decision content to the correct category and doc target', async () => {
+    const decision = await router.classifyContent({
+      id: 'np-decision-1',
+      text: 'We decided to use a single-table design over normalized schemas because query simplicity outweighs storage overhead.',
+      sourceField: 'decisions',
+      structuredType: 'decision',
+    }, makeContext());
+
+    expect(decision.category).toBe('decision');
+    expect(decision.target.docPath).toMatch(/decision-record\.md|implementation-summary\.md/);
+  });
+
+  it('routes research finding text to the research doc', async () => {
+    const decision = await router.classifyContent({
+      id: 'np-research-1',
+      text: 'Research finding: the upstream vector store library uses cosine similarity by default and does not support inner-product distance without a configuration change.',
+      sourceField: 'observations',
+    }, makeContext());
+
+    expect(decision.category).toBe('research_finding');
+    expect(decision.target.docPath).toBe('research/research.md');
+  });
+
+  it('routes metadata-only preflight content to the continuity target', async () => {
+    const decision = await router.classifyContent({
+      id: 'np-metadata-1',
+      text: 'preflight knowledgeScore 55 uncertaintyScore 40 contextScore 62 knowledgeGaps graph traversal caching',
+      sourceField: 'preflight',
+    }, makeContext());
+
+    expect(decision.category).toBe('metadata_only');
+    expect(decision.target.docPath).toBe('spec-frontmatter');
+    expect(decision.target.anchorId).toBe('_memory.continuity');
+  });
+
+  it('routes drop content and refuses to persist transcript-like text', async () => {
+    const decision = await router.classifyContent({
+      id: 'np-drop-1',
+      text: '2026-04-12 user: ok proceed. 2026-04-12 assistant: running the fix now. 2026-04-12 tool: npm test.',
+      sourceField: 'unknown',
+    }, makeContext());
+
+    expect(decision.category).toBe('drop');
+    expect(decision.target.mergeMode).toBe('refuse-to-route');
+  });
+});

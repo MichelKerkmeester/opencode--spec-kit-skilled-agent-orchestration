@@ -18,6 +18,7 @@ const path = require('node:path');
 const REQUIRED_DIMENSIONS = ['correctness', 'security', 'traceability', 'maintainability'];
 const SEVERITY_KEYS = ['P0', 'P1', 'P2'];
 const SEVERITY_WEIGHTS = { P0: 10.0, P1: 5.0, P2: 1.0 };
+const LIVE_LINEAGE_MODES = new Set(['new', 'resume', 'restart']);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. HELPERS
@@ -45,7 +46,12 @@ function slugify(value) {
 }
 
 function normalizeText(value) {
-  return String(value || '').replace(/\s+/g, ' ').trim();
+  if (value === null || value === undefined) return '';
+  if (typeof value !== 'string') {
+    try { return String(value).replace(/\s+/g, ' ').trim(); }
+    catch { return ''; }
+  }
+  return value.replace(/\s+/g, ' ').trim();
 }
 
 function escapeRegExp(value) {
@@ -62,6 +68,11 @@ function isFiniteNumber(value) {
 
 function normalizeSeverity(value) {
   return SEVERITY_KEYS.includes(value) ? value : null;
+}
+
+function normalizeLineageMode(value) {
+  const normalized = normalizeText(value).toLowerCase();
+  return LIVE_LINEAGE_MODES.has(normalized) ? normalized : null;
 }
 
 function getNestedField(record, fieldName) {
@@ -207,18 +218,22 @@ function parseFindingsBlock(sectionText, severity) {
 function parseIterationFile(iterationPath) {
   const markdown = readUtf8(iterationPath);
   const runMatch = iterationPath.match(/iteration-(\d+)\.md$/);
-  const headingMatch = markdown.match(/^#\s+Iteration\s+\d+:\s+(.+)$/m);
+  const headingMatch = markdown.match(/^#\s+Iteration\s+\d+\s*[-:]\s+(.+)$/m);
 
-  const focusSection = extractSection(markdown, 'Focus');
-  const findingsSection = extractSection(markdown, 'Findings');
-  const ruledOutSection = extractSection(markdown, 'Ruled Out');
-  const deadEndsSection = extractSection(markdown, 'Dead Ends');
-  const nextFocusSection = extractSection(markdown, 'Recommended Next Focus');
+  // Support both old schema (Focus/Findings/Ruled Out/Dead Ends/Assessment)
+  // and live schema (Dispatcher/Files Reviewed/Findings - New/Traceability Checks/
+  // Confirmed-Clean/Next Focus).
+  const focusSection = extractSection(markdown, 'Focus') || extractSection(markdown, 'Dispatcher');
+  const findingsSection = extractSection(markdown, 'Findings') || extractSection(markdown, 'Findings - New');
+  const ruledOutSection = extractSection(markdown, 'Ruled Out') || extractSection(markdown, 'Confirmed-Clean Surfaces') || extractSection(markdown, 'Confirmed-Clean');
+  const deadEndsSection = extractSection(markdown, 'Dead Ends') || extractSection(markdown, 'Traceability Checks');
+  const nextFocusSection = extractSection(markdown, 'Recommended Next Focus') || extractSection(markdown, 'Next Focus (recommendation)') || extractSection(markdown, 'Next Focus');
   const assessmentSection = extractSection(markdown, 'Assessment');
+  const filesReviewedSection = extractSection(markdown, 'Files Reviewed');
 
-  const p0Block = extractSubsection(findingsSection, 'P0');
-  const p1Block = extractSubsection(findingsSection, 'P1');
-  const p2Block = extractSubsection(findingsSection, 'P2');
+  const p0Block = extractSubsection(findingsSection, 'P0') || extractSubsection(findingsSection, 'P0 Findings');
+  const p1Block = extractSubsection(findingsSection, 'P1') || extractSubsection(findingsSection, 'P1 Findings');
+  const p2Block = extractSubsection(findingsSection, 'P2') || extractSubsection(findingsSection, 'P2 Findings');
 
   const findings = [
     ...parseFindingsBlock(p0Block, 'P0'),
@@ -337,32 +352,39 @@ function buildClaimAdjudicationByFinding(records) {
   return adjudicationByFinding;
 }
 
-function buildLineageState(config, records) {
+function buildLineageState(config, records, terminalStop = null) {
   const latestLifecycleEvent = records
     .filter((record) => record?.type === 'event' && (record?.event === 'resumed' || record?.event === 'restarted'))
     .at(-1);
   const eventContinuedFromRun = latestLifecycleEvent
     ? getNestedField(latestLifecycleEvent, 'continuedFromRun') ?? getNestedField(latestLifecycleEvent, 'fromIteration')
     : undefined;
+  const latestLifecycleMode = normalizeLineageMode(getNestedField(latestLifecycleEvent, 'lineageMode') || '');
+  const configLineageMode = normalizeLineageMode(config.lineageMode || '');
+  const lineageMode = latestLifecycleMode || configLineageMode || 'new';
+  const configContinuedFromRun = isFiniteNumber(config.continuedFromRun)
+    ? config.continuedFromRun
+    : null;
+  const continuedFromRun = terminalStop
+    ? null
+    : isFiniteNumber(eventContinuedFromRun)
+      ? eventContinuedFromRun
+      : lineageMode !== 'new'
+        ? configContinuedFromRun
+        : null;
 
   return {
     sessionId: normalizeText(getNestedField(latestLifecycleEvent, 'sessionId') || '') || normalizeText(config.sessionId || '') || '',
     parentSessionId: normalizeText(getNestedField(latestLifecycleEvent, 'parentSessionId') || '')
       || normalizeText(config.parentSessionId || '')
       || null,
-    lineageMode: normalizeText(getNestedField(latestLifecycleEvent, 'lineageMode') || '')
-      || normalizeText(config.lineageMode || '')
-      || 'new',
+    lineageMode,
     generation: isFiniteNumber(getNestedField(latestLifecycleEvent, 'generation'))
       ? getNestedField(latestLifecycleEvent, 'generation')
       : isFiniteNumber(config.generation)
         ? config.generation
         : 1,
-    continuedFromRun: isFiniteNumber(eventContinuedFromRun)
-      ? eventContinuedFromRun
-      : isFiniteNumber(config.continuedFromRun)
-        ? config.continuedFromRun
-        : null,
+    continuedFromRun,
   };
 }
 
@@ -588,7 +610,9 @@ function computeGraphConvergenceScore(signals) {
     return 0;
   }
 
-  const namedScore = signals.score
+  const namedScore = signals.blendedScore
+    ?? signals.graphScore
+    ?? signals.score
     ?? signals.convergenceScore
     ?? signals.compositeScore
     ?? signals.stopScore
@@ -703,8 +727,8 @@ function buildBlockedStopHistory(records) {
 }
 
 function buildRegistry(strategyDimensions, iterationFiles, iterationRecords, config, corruptionWarnings = []) {
-  const lineage = buildLineageState(config, iterationRecords);
   const terminalStop = buildTerminalStopState(iterationRecords);
+  const lineage = buildLineageState(config, iterationRecords, terminalStop);
   const { openFindings, resolvedFindings } = buildFindingRegistry(iterationFiles, iterationRecords);
   const dimensionCoverage = buildDimensionCoverage(iterationRecords, strategyDimensions);
   const findingsBySeverity = buildFindingsBySeverity(openFindings);
@@ -1123,8 +1147,8 @@ function reduceReviewState(specFolder, options = {}) {
 
   const config = readJson(configPath);
   const { records, corruptionWarnings } = parseJsonlDetailed(readUtf8(stateLogPath));
-  const lineage = buildLineageState(config, records);
   const terminalStop = buildTerminalStopState(records);
+  const lineage = buildLineageState(config, records, terminalStop);
   config.sessionId = lineage.sessionId || config.sessionId || '';
   config.parentSessionId = lineage.parentSessionId;
   config.lineageMode = lineage.lineageMode;

@@ -213,6 +213,50 @@ describe('resume-ladder', () => {
     expect(result.keyFiles).toContain('mcp_server/tests/session-resume.vitest.ts');
   });
 
+  // T256: Add absolute and out-of-root specFolder rejection tests
+  it('rejects absolute specFolder values that escape the workspace root', () => {
+    const workspacePath = createWorkspace();
+    workspacesToRemove.push(workspacePath);
+
+    // Attempt to use an absolute path that does not resolve under workspacePath
+    const result = buildResumeLadder({
+      specFolder: '/etc/passwd',
+      workspacePath,
+    });
+
+    // The ladder should return a none/error recovery since the path is invalid
+    expect(['none', 'error']).toContain(result.source);
+  });
+
+  it('rejects specFolder with path traversal that escapes the workspace', () => {
+    const workspacePath = createWorkspace();
+    workspacesToRemove.push(workspacePath);
+
+    const result = buildResumeLadder({
+      specFolder: '../../../../etc/passwd',
+      workspacePath,
+    });
+
+    expect(['none', 'error']).toContain(result.source);
+  });
+
+  it('handles Unicode characters in specFolder names gracefully', () => {
+    const workspacePath = createWorkspace();
+    workspacesToRemove.push(workspacePath);
+    const specFolder = 'system-spec-kit/026-root/004-\u00e4\u00f6\u00fc-gate';
+
+    writeDoc(workspacePath, specFolder, 'implementation-summary.md', buildImplementationSummary({
+      packetPointer: specFolder,
+      recentAction: 'Unicode folder name test',
+      nextSafeAction: 'Verify Unicode path handling',
+    }));
+
+    const result = buildResumeLadder({ specFolder, workspacePath });
+
+    expect(result.source).toBe('continuity');
+    expect(result.recentAction).toBe('Unicode folder name test');
+  });
+
   // Deep-review regression coverage for explicit specFolder priority over cached scope.
   it('keeps explicit specFolder overrides ahead of cached scope fallbacks', () => {
     const workspacePath = createWorkspace();

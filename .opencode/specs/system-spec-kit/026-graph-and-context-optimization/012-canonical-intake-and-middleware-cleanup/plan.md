@@ -611,7 +611,7 @@ M10-M15 Consolidation:
 | M10 Audit + Shared Module | M9 | `intake-contract.md` + 46-ref touch-point list | M11, M12, M13 |
 | M11 plan.md | M10 | Expanded `plan.md` + 2 YAMLs + `--intake-only` | M14 |
 | M12 complete.md | M10 | Refactored `complete.md` + 2 YAMLs | M14 |
-| M13 resume.md | M10 | Zero edits (already clean) | M14 |
+| M13 resume.md | M10 | Verification only — zero file edits needed (already clean) | M14 |
 | M14 Sweep + Deletion | M11, M12, M13 | 26 updated docs + 4 deleted files + registry entry removed | M15 |
 | M15 Deep Review Remediation | M14 | 12 findings fixed (4 P0 / 4 P1 / 4 P2) | Closeout |
 <!-- /ANCHOR:dependency-graph -->

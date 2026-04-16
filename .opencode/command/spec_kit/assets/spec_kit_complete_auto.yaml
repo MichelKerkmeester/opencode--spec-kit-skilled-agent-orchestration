@@ -880,10 +880,9 @@ workflow:
           A) Dispatch @debug via Task tool
           B) Continue debugging manually
           C) Skip task - Move to next task
-          D) Pause workflow
-            D) Pause - Stop workflow and review
+          D) Pause - Stop workflow and review
       debug_dispatch:
-        subagent_type: "general-purpose"
+        subagent_type: "debug"
         timeout_ms: 120000
         context_includes: [error_message, affected_files, previous_attempts, current_task_id]
         on_complete: "show_checkpoint"
@@ -1008,7 +1007,7 @@ workflow:
 
     post_save_indexing:
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
+      invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the canonical spec document is refreshed on disk"
 

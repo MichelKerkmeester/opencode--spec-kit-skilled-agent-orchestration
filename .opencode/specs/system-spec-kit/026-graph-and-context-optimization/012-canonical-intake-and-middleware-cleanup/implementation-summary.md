@@ -118,7 +118,7 @@ Four files hard-deleted atomically:
 - `.opencode/command/spec_kit/assets/spec_kit_start_confirm.yaml` (585 lines)
 - `.gemini/commands/spec_kit/start.toml`
 
-The `COMMAND_BOOSTS` dictionary entry at `.opencode/skill/system-spec-kit/SKILL.md:210` is removed so the skill advisor no longer surfaces the deleted command. The 26-file downstream prose sweep (YAML assets, skill docs, template READMEs, CLI agent-delegation refs, install guides, root docs, command READMEs, `descriptions.json`) was **delegated to `cli-copilot` with GPT-5.4 reasoning=high, `--allow-all-tools`, via an `@improve-prompt`-prepared CRAFT package**. Copilot completed **56 edits across 26 files in one pass with zero drift and zero ambiguous-semantics flags**, plus caught and fixed one stray reference inside `intake-contract.md` itself.
+The `COMMAND_BOOSTS` dictionary entry at `.opencode/skill/system-spec-kit/SKILL.md:210` is removed so the skill advisor no longer surfaces the deleted command. The 26-file downstream prose sweep (YAML assets, skill docs, template READMEs, CLI agent-delegation refs, install guides, root docs, command READMEs, `descriptions.json`) was **delegated to `cli-copilot` with GPT-5.4 reasoning=high via an `@improve-prompt`-prepared CRAFT package**. Copilot completed **56 edits across 26 files in one pass with zero drift and zero ambiguous-semantics flags**, plus caught and fixed one stray reference inside `intake-contract.md` itself.
 
 ### Deep-Review Remediation (M15)
 

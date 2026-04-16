@@ -330,6 +330,137 @@ triggerPhrases: ["alpha, beta", "gamma"] # keep this comment ignored
     fail('T-FMB-010: Inline arrays support trailing comments', error.message);
   }
 
+  // ─── T239: Exact frontmatter failure mode coverage ───────────
+
+  // T-FMB-T239-001: Nested YAML objects in frontmatter are preserved
+  try {
+    const input = `---
+title: "Nested Object Test"
+trigger_phrases:
+  - "alpha"
+  - "beta"
+custom_nested:
+  key1: "value1"
+  key2: 42
+---
+
+# Nested Object Test
+`;
+    const result = migration.buildFrontmatterContent(
+      input,
+      { templatesRoot: path.join(ROOT, 'templates') },
+      path.join(ROOT, 'specs', '007-nested-obj', 'spec.md')
+    );
+
+    const hasNested = result.content.includes('key1:') && result.content.includes('key2:');
+    if (hasNested) {
+      pass('T-FMB-T239-001: Nested YAML objects preserved', 'custom_nested sub-keys retained');
+    } else {
+      fail('T-FMB-T239-001: Nested YAML objects preserved', 'nested keys missing after merge');
+    }
+  } catch (error) {
+    fail('T-FMB-T239-001: Nested YAML objects preserved', error.message);
+  }
+
+  // T-FMB-T239-002: Empty trigger_phrases array handled correctly
+  try {
+    const input = `---
+title: "Empty Triggers"
+trigger_phrases: []
+---
+
+# Empty Triggers Test
+`;
+    const result = migration.buildFrontmatterContent(
+      input,
+      { templatesRoot: path.join(ROOT, 'templates') },
+      path.join(ROOT, 'specs', '007-empty-triggers', 'spec.md')
+    );
+
+    // Should not crash and should retain or produce valid frontmatter
+    const hasFrontmatter = result.content.startsWith('---');
+    if (hasFrontmatter) {
+      pass('T-FMB-T239-002: Empty trigger_phrases array handled', 'frontmatter output valid');
+    } else {
+      fail('T-FMB-T239-002: Empty trigger_phrases array handled', 'no frontmatter in output');
+    }
+  } catch (error) {
+    fail('T-FMB-T239-002: Empty trigger_phrases array handled', error.message);
+  }
+
+  // T-FMB-T239-003: Duplicate managed key casing does not double entries
+  try {
+    const input = `---
+title: "Duplicate Casing"
+triggerPhrases: ["alpha"]
+trigger_phrases:
+  - "beta"
+---
+
+# Duplicate Casing Test
+`;
+    const result = migration.buildFrontmatterContent(
+      input,
+      { templatesRoot: path.join(ROOT, 'templates') },
+      path.join(ROOT, 'specs', '007-dupe-case', 'spec.md')
+    );
+
+    // After normalization, there should be exactly one trigger_phrases key
+    const triggerMatches = result.content.match(/^trigger_phrases:/gm) || [];
+    if (triggerMatches.length <= 1) {
+      pass('T-FMB-T239-003: Duplicate casing collapses to one key', `trigger_phrases count=${triggerMatches.length}`);
+    } else {
+      fail('T-FMB-T239-003: Duplicate casing collapses to one key', `found ${triggerMatches.length} trigger_phrases keys`);
+    }
+  } catch (error) {
+    fail('T-FMB-T239-003: Duplicate casing collapses to one key', error.message);
+  }
+
+  // T-FMB-T239-004: Frontmatter with only closing delimiter (no opening)
+  try {
+    const input = `
+---
+
+# No Opening Delimiter
+Content body.
+`;
+    const detection = migration.detectFrontmatter(input);
+    if (!detection.found) {
+      pass('T-FMB-T239-004: No opening delimiter is not frontmatter', 'detectFrontmatter().found=false');
+    } else {
+      fail('T-FMB-T239-004: No opening delimiter is not frontmatter', 'incorrectly detected as frontmatter');
+    }
+  } catch (error) {
+    fail('T-FMB-T239-004: No opening delimiter is not frontmatter', error.message);
+  }
+
+  // T-FMB-T239-005: Unicode content in frontmatter values
+  try {
+    const input = `---
+title: "Caf\u00e9 latt\u00e9 design \u2014 spec"
+trigger_phrases:
+  - "\u00e9migration"
+  - "r\u00e9sum\u00e9"
+---
+
+# Unicode Content
+`;
+    const result = migration.buildFrontmatterContent(
+      input,
+      { templatesRoot: path.join(ROOT, 'templates') },
+      path.join(ROOT, 'specs', '007-unicode', 'spec.md')
+    );
+
+    const hasUnicode = result.content.includes('Caf\u00e9') || result.content.includes('\u00e9migration');
+    if (hasUnicode) {
+      pass('T-FMB-T239-005: Unicode content preserved in frontmatter', 'Unicode chars retained');
+    } else {
+      fail('T-FMB-T239-005: Unicode content preserved in frontmatter', 'Unicode content lost');
+    }
+  } catch (error) {
+    fail('T-FMB-T239-005: Unicode content preserved in frontmatter', error.message);
+  }
+
   console.log('');
   console.log(`Summary: pass=${passed}, fail=${failed}`);
 

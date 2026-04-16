@@ -1,6 +1,6 @@
 ---
 title: "Remove Cross-Encoder Length Penalty - Execution Plan"
-status: planned
+status: complete
 parent_spec: 001-remove-length-penalty/spec.md
 ---
 # Execution Plan

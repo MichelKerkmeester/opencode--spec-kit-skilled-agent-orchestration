@@ -1,6 +1,6 @@
 ---
 title: "Add Reranker Cache Telemetry - Execution Plan"
-status: planned
+status: complete
 parent_spec: 002-add-reranker-telemetry/spec.md
 ---
 # Execution Plan

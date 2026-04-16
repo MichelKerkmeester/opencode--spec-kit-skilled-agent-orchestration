@@ -144,6 +144,8 @@ The agent system adds specialization on top of these foundations. Nine agents co
 
 ### 3.2 FEATURE REFERENCE
 
+&nbsp;
+
 #### Models
 
 | Model | ID | Best For | Cost |
@@ -151,6 +153,8 @@ The agent system adds specialization on top of these foundations. Nine agents co
 | **Opus** | `claude-opus-4-6` | Deep reasoning, architecture decisions, extended thinking | Highest |
 | **Sonnet** | `claude-sonnet-4-6` | General tasks, code generation, reviews (default) | Medium |
 | **Haiku** | `claude-haiku-4-5-20251001` | Classification, formatting, simple queries, batch ops | Lowest |
+
+&nbsp;
 
 #### Core Flags
 
@@ -166,6 +170,8 @@ The agent system adds specialization on top of these foundations. Nine agents co
 | `--max-budget-usd` | | Cost cap | `--max-budget-usd 1.00` |
 | `--continue` | | Resume latest session | `--continue` |
 | `--resume` | | Resume specific session | `--resume SESSION_ID` |
+
+&nbsp;
 
 #### Agent Roster
 
@@ -329,7 +335,7 @@ A: It activates extended thinking, a processing mode where the model generates i
 A: Match the task type to the agent roster in Section 3.2. For read-only exploration, use `context` with `--permission-mode plan`. For code review, use `review`. When unsure, skip the `--agent` flag and let Claude Code handle the task with its general capabilities.
 
 **Q: Can I create custom agents?**
-A: Yes. Add markdown files to `.opencode/agent/` (for Claude Code) or `.claude/agents/` (for Claude-specific definitions). See `agent_delegation.md` for the agent definition format.
+A: Yes. Add markdown files to `.claude/agents/` for Claude Code agent definitions. See `agent_delegation.md` for the agent definition format.
 
 <!-- /ANCHOR:faq -->
 

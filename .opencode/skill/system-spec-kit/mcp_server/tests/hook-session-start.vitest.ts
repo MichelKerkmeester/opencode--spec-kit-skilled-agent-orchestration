@@ -124,15 +124,76 @@ describe('session-prime hook', () => {
     });
   });
 
-  describe('source routing', () => {
-    it('routes startup correctly', () => {
-      const source = 'startup';
-      expect(['startup', 'resume', 'compact', 'clear']).toContain(source);
+  describe('startup entry surface', () => {
+    beforeEach(() => {
+      vi.resetModules();
+      vi.clearAllMocks();
     });
 
-    it('routes compact correctly', () => {
-      const source = 'compact';
-      expect(source).toBe('compact');
+    afterEach(() => {
+      vi.resetModules();
+      vi.clearAllMocks();
+    });
+
+    it('rewrites the startup memory line and appends accepted continuity hints', async () => {
+      vi.doMock('../hooks/claude/hook-state.js', async () => vi.importActual('../hooks/claude/hook-state.js'));
+      vi.doMock('../handlers/session-resume.js', () => ({
+        getCachedSessionSummaryDecision: vi.fn(() => ({
+          status: 'accepted',
+          cachedSummary: {
+            startupHint: 'Resume the active packet before running deeper graph scans.',
+          },
+        })),
+        logCachedSummaryDecision: vi.fn(),
+      }));
+      vi.doMock('../lib/code-graph/startup-brief.js', () => ({
+        buildStartupBrief: vi.fn(() => ({
+          graphOutline: '- handlers/session-bootstrap.ts',
+          sessionContinuity: null,
+          graphSummary: { files: 1, nodes: 2, edges: 3, lastScan: '2026-04-09T10:00:00.000Z' },
+          graphState: 'ready',
+          cocoIndexAvailable: true,
+          startupSurface: [
+            'Session context received. Current state:',
+            '',
+            '- Memory: stale placeholder',
+            '- Code Graph: ready',
+            '- CocoIndex: available',
+          ].join('\n'),
+        })),
+      }));
+
+      const { handleStartup } = await import('../hooks/claude/session-prime.js');
+      const sections = handleStartup({ session_id: testSessionId, specFolder: 'specs/015-demo' });
+
+      expect(sections[0]?.title).toBe('Session Context');
+      expect(sections[0]?.content).toContain('- Memory: session continuity available');
+      expect(sections[0]?.content).toContain('- Code Graph: ready');
+      expect(sections.map((section) => section.title)).toContain('Recovery Tools');
+      expect(sections.map((section) => section.title)).toContain('Structural Context');
+      expect(sections.map((section) => section.title)).toContain('Session Continuity');
+      expect(sections.find((section) => section.title === 'Session Continuity')?.content).toContain(
+        'Resume the active packet before running deeper graph scans.',
+      );
+    });
+
+    it('falls back to the static startup surface when the startup brief module is unavailable', async () => {
+      vi.doMock('../hooks/claude/hook-state.js', async () => vi.importActual('../hooks/claude/hook-state.js'));
+      vi.doMock('../handlers/session-resume.js', () => ({
+        getCachedSessionSummaryDecision: vi.fn(() => ({ status: 'rejected', reason: 'no cached summary' })),
+        logCachedSummaryDecision: vi.fn(),
+      }));
+      vi.doMock('../lib/code-graph/startup-brief.js', () => {
+        throw new Error('synthetic startup brief import failure');
+      });
+
+      const { handleStartup } = await import('../hooks/claude/session-prime.js');
+      const sections = handleStartup({ session_id: testSessionId });
+
+      expect(sections[0]?.title).toBe('Session Context');
+      expect(sections[0]?.content).toContain('startup summary only (resume on demand)');
+      expect(sections[0]?.content).toContain('- Code Graph: unavailable');
+      expect(sections.map((section) => section.title)).not.toContain('Session Continuity');
     });
   });
 });

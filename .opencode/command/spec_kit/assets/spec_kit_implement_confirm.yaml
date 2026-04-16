@@ -58,7 +58,7 @@ field_handling:
   phase_folder_awareness:
     note: "[SPEC_FOLDER] may be a phase child path (e.g., specs/003-name/001-phase/). When Option E is selected or --phase-folder is provided, spec_id derives from the parent folder NNN, not the child NNN. Also load parent spec.md for cross-reference context."
     path_pattern: "specs/{NNN-parent}/{NNN-phase}/"
-  scope_policy: { default: "specs/**", rule: "Limit file operations to scope when provided" }
+  scope_policy: { default: "**", rule: "Implementation may edit any workspace file. Narrow to [FILES] scope when explicitly provided by the user." }
 
 # ─────────────────────────────────────────────────────────────────
 # REQUEST HANDLING
@@ -490,8 +490,8 @@ workflow:
 
   step_7_completion:
     purpose: Generate implementation summary and packet-local nested changelog when applicable
-    level_requirement: "Level 2+ (MANDATORY - do not skip)"
-    enforcement_note: "MANDATORY for Level 2+. implementation-summary.md is a required file. Strongly recommended for Level 1."
+    level_requirement: "All levels (MANDATORY - do not skip)"
+    enforcement_note: "MANDATORY for all levels. implementation-summary.md is a required file created after implementation completes."
     activities: [Run validation on spec folder, Verify all tasks completed, Validate tests pass, Confirm plan followed, Generate implementation-summary.md, Generate packet-local nested changelog when the target is a spec root or phase child, Update all task status]
     pre_completion_validation:
       enforcement: MANDATORY
@@ -577,7 +577,7 @@ workflow:
       violation_recovery: "DELETE the manually authored file, then re-run generate-context.js so the save routes into decision-record.md, implementation-summary.md, or handover.md"
     post_save_indexing:
       mcp_tool: memory_save
-      invocation: 'spec_kit_memory_memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
+      invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after the generated continuity artifact is written to disk"
     anchor_requirements:

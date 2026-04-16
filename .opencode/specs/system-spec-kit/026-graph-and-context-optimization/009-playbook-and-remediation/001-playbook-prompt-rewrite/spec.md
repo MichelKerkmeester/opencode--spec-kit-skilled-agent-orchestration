@@ -1,11 +1,11 @@
 ---
-title: "Feature Specification: Phase 014 — Manual Testing Playbook Prompt Rewrite [template:level_2/spec.md]"
+title: "Feature Specification: Playbook Prompt Rewrite [template:level_2/spec.md]"
 description: "Document the completed prompt-field rewrite for the manual testing playbook and restore this phase packet to the active Level 2 scaffold."
-trigger_phrases: ["playbook prompt rewrite", "manual testing prompt cleanup", "phase 014 spec repair"]
+trigger_phrases: ["playbook prompt rewrite", "manual testing prompt cleanup", "playbook spec repair"]
 importance_tier: "important"
 contextType: "implementation"
 level: 2
-status: "complete"
+status: "in_progress"
 parent: "009-playbook-and-remediation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 _memory:
@@ -13,13 +13,13 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite"
     last_updated_at: "2026-04-12T00:00:00Z"
     last_updated_by: "speckit"
-    recent_action: "Spec scaffold repaired"
-    next_safe_action: "Validate packet"
+    recent_action: "Reopened packet closeout after the required manual prompt spot-check stayed deferred"
+    next_safe_action: "Complete or explicitly re-scope CHK-023 before closing the packet"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-# Feature Specification: Phase 014 — Manual Testing Playbook Prompt Rewrite
+# Feature Specification: Playbook Prompt Rewrite
 
 ---
 
@@ -30,13 +30,13 @@ _memory:
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-04-12 |
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Parent Metadata** | `../graph-metadata.json` |
 | **Parent Description** | `../description.json` |
-| **Predecessor** | `013-dead-code-and-architecture-audit` |
-| **Successor** | `015-full-playbook-execution` |
+| **Predecessor** | (none — first child of 009) |
+| **Successor** | `003-deep-review-remediation` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -45,10 +45,12 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Phase 014 already rewrote prompt fields across the manual testing playbook, but this spec packet drifted away from the active Level 2 template. The packet was missing required anchors, the `_memory` continuity block, `tasks.md`, `checklist.md`, and a valid reference to the playbook index.
+The playbook prompt rewrite already rewrote prompt fields across the manual testing playbook, but this spec packet drifted away from the active Level 2 template. The packet was missing required anchors, the `_memory` continuity block, `tasks.md`, `checklist.md`, and a valid reference to the playbook index.
 
 ### Purpose
-Restore the Phase 014 packet so it truthfully documents the prompt rewrite work, references the real playbook index at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and validates cleanly as a Level 2 packet.
+Restore this packet so it truthfully documents the prompt rewrite work, references the real playbook index at `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, and validates cleanly as a Level 2 packet.
+
+This packet remains in progress until the required manual prompt spot-check in `CHK-023` is either completed or explicitly re-scoped.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -64,7 +66,7 @@ Restore the Phase 014 packet so it truthfully documents the prompt rewrite work,
 ### Out of Scope
 - Further edits to `.opencode/skill/system-spec-kit/manual_testing_playbook/**/*.md` during this repair.
 - Feature catalog changes.
-- Spec work outside `014-playbook-prompt-rewrite/`.
+- Spec work outside `001-playbook-prompt-rewrite/`.
 
 ### Files to Change
 
@@ -162,7 +164,7 @@ Restore the Phase 014 packet so it truthfully documents the prompt rewrite work,
 
 ### State Transitions
 - If the phase moves from review to complete, the packet can be updated without changing the documented implementation scope.
-- If future work expands into feature-catalog maintenance, track that in a separate spec packet rather than Phase 014.
+- If future work expands into feature-catalog maintenance, track that in a separate spec packet.
 <!-- /ANCHOR:edge-cases -->
 
 ---

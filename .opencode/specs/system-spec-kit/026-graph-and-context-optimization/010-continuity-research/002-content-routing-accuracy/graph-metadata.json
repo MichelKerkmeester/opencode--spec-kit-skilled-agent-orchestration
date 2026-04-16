@@ -42,6 +42,7 @@
       "mcp_server/lib/validation/spec-doc-structure.ts",
       "mcp_server/tests/content-router.vitest.ts",
       "spec.md",
+      "plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts",
       "tasks.md",
       "checklist.md",
@@ -199,6 +200,7 @@
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
+      "plan.md",
       "tasks.md",
       "checklist.md",
       "research/research.md"

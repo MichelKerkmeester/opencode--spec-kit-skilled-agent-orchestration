@@ -23,4 +23,4 @@ This packet is closed with all five review findings addressed. The parser now re
 ## Notes
 
 - The full-corpus backfill initially failed on two unrelated schema-invalid manual relationship arrays under `011-skill-advisor-graph`; both generated artifacts were normalized to packet-reference objects so the requested backfill could complete.
-- Root `019` and phases `001` through `004` now reflect the final repaired state of this packet train.
+- Root `003` and phases `001` through `007` now reflect the final repaired state of this packet train.

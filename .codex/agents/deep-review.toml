@@ -137,74 +137,50 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 - **P2** --> No self-check needed (severity too low to warrant overhead)
 
 #### Step 5: Write Findings
-Create `review/iterations/iteration-NNN.md` with this structure:
+Create `review/iterations/iteration-NNN.md`. The reducer reads both legacy and live section names. Use the live format below. Inside findings, use `### P0 Findings`, `### P1 Findings`, and `### P2 Findings` subsections. Findings use numbered bullets of the form `N. **Title** — file:line — Description`, each followed by a claim-adjudication JSON block for P0/P1.
 
 ```markdown
-# Review Iteration [N]: [Dimension] - [Focus Area]
+# Iteration [N] - [dimension] - [focus area]
 
-## Focus
-[What dimension and specific area was reviewed]
+## Dispatcher
+- iteration: [N] of [max]
+- dispatcher: [runtime identity]
+- timestamp: [ISO-8601]
 
-## Scope
-- Review target: [files reviewed]
-- Spec refs: [if applicable]
-- Dimension: [dimension name]
+## Files Reviewed
+- [path/to/file1]
+- [path/to/file2]
 
-## Scorecard
-| File | Corr | Sec | Trace | Maint |
-|------|------|-----|-------|-------|
-[per-file scores for files reviewed this iteration]
+## Findings - New
+### P0 Findings
+- None.
 
-## Findings
-### P0-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Cross-reference: [SOURCE: spec/checklist if applicable]
-- Impact: [description]
-- Hunter: [finding assessment]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P0
-
-### P1-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Skeptic: [challenge]
-- Referee: [verdict]
-- Final severity: P1
+### P1 Findings
+1. **[Title]** — `file:line`, `file2:line` — [Description with evidence and impact]
 
 ```json
-{"type":"claim-adjudication","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0|P1","confidence":0.90,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
+{
+  "claim": "One-sentence statement of the finding being adjudicated.",
+  "evidenceRefs": ["path/to/file:line"],
+  "counterevidenceSought": "What contradictory evidence was checked.",
+  "alternativeExplanation": "Plausible non-bug explanation considered.",
+  "finalSeverity": "P1",
+  "confidence": 0.90,
+  "downgradeTrigger": "What evidence would justify downgrading."
+}
 ```
 
-### P2-NNN: [Title]
-- Dimension: [dimension]
-- Evidence: [SOURCE: file:line]
-- Impact: [description]
-- Final severity: P2
+### P2 Findings
+- None.
 
-## Cross-Reference Results
-- Confirmed: [alignment checks that passed]
-- Contradictions: [misalignments found]
-- Unknowns: [could not verify]
+## Traceability Checks
+- [Protocol]: [pass|partial|fail] — [evidence]
 
-## Ruled Out
-[Investigated but not an issue, with reasoning]
+## Confirmed-Clean Surfaces
+- [File or area confirmed clean with reasoning]
 
-## Sources Reviewed
-[All files read this iteration with SOURCE: file:line]
-
-## Assessment
-- Confirmed findings: [N]
-- New findings ratio: [0.XX]
-- noveltyJustification: [1 sentence]
-- Dimensions addressed: [list]
-
-## Reflection
-- What worked: [effective approach]
-- What did not work: [ineffective approach]
-- Next adjustment: [suggestion for next iteration]
+## Next Focus
+[What the next iteration should investigate. Rotate dimensions unless the current dimension is still incomplete.]
 ```
 
 #### Step 6: Update Strategy

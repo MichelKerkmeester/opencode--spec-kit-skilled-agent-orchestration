@@ -79,7 +79,7 @@ Iterations 1 and 2 completed before the crash. Iteration 3 wrote both JSONL and 
 - Per-iteration budget: 6 tool calls, 15 minutes
 - Progressive synthesis: true
 - research/research.md ownership: workflow-owned canonical synthesis output
-- Lifecycle branches: `resume`, `restart`, `fork`, `completed-continue`
+- Lifecycle branches: `resume`, `restart` (live); `fork`, `completed-continue` (deferred, not runtime-wired)
 - Machine-owned sections: reducer controls Sections 3, 6, 7-11
 - Canonical pause sentinel: `research/.deep-research-pause`
 - Capability matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`

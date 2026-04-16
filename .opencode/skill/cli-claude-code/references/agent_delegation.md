@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Agent Delegation Reference"
-description: "Reference for delegating tasks to 9 specialized Claude Code agents via the conductor/executor orchestration model."
+description: "Reference for delegating tasks to 10 specialized Claude Code agents via the conductor/executor orchestration model."
 ---
 
 # Claude Code Agent Delegation Reference
@@ -108,7 +108,7 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 
 ## 3. CLAUDE CODE AGENT CATALOG
 
-### Agent Roster (9 Agents)
+### Agent Roster (10 Agents)
 
 | Agent | Permission Mode | Purpose | Use When |
 |-------|-----------------|---------|----------|

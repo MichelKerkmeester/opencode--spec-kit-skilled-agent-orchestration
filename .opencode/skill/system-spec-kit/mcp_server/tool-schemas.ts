@@ -582,7 +582,7 @@ const codeGraphQuery: ToolDefinition = {
 
 const codeGraphStatus: ToolDefinition = {
   name: 'code_graph_status',
-  description: '[L7:Maintenance] Report code graph index health: file count, node/edge counts by type, parse health summary, last scan timestamp, DB file size, schema version. Token Budget: 500.',
+  description: '[L7:Maintenance] Report code graph index health. Returns totalFiles, totalNodes, totalEdges, freshness, lastScanAt, lastGitHead, dbFileSize, schemaVersion, nodesByKind, edgesByType, and parseHealth. Token Budget: 500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
@@ -628,7 +628,7 @@ const skillGraphScan: ToolDefinition = {
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {
-      skillsRoot: { type: 'string', description: 'Optional skills root to scan (default: .opencode/skill)' },
+      skillsRoot: { type: 'string', description: 'Optional skills root to scan (default: .opencode/skill). Must resolve to a path under the current workspace; paths escaping the workspace are rejected.' },
     },
     required: [],
   },
@@ -655,7 +655,7 @@ const skillGraphQuery: ToolDefinition = {
 
 const skillGraphStatus: ToolDefinition = {
   name: 'skill_graph_status',
-  description: '[L7:Maintenance] Report skill graph health: node/edge counts, family/category distribution, source staleness, and validation summary from the live SQLite graph. Token Budget: 500.',
+  description: '[L7:Maintenance] Report skill graph health. Returns totalSkills, totalEdges, lastIndexedAt, families, categories, schemaVersions, staleness, validation, and dbStatus from the live SQLite graph. Token Budget: 500.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
@@ -667,7 +667,7 @@ const skillGraphValidate: ToolDefinition = {
 
 const cccStatus: ToolDefinition = {
   name: 'ccc_status',
-  description: '[L7:Maintenance] Check CocoIndex availability, binary path, and index status.',
+  description: '[L7:Maintenance] Check CocoIndex availability. Returns available, binaryPath, indexExists, indexSize, and recommendation.',
   inputSchema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
 };
 
@@ -813,7 +813,7 @@ const deepLoopGraphQuery: ToolDefinition = {
 
 const deepLoopGraphStatus: ToolDefinition = {
   name: 'deep_loop_graph_status',
-  description: '[L9:CoverageGraph] Report deep-loop coverage graph health: node/edge counts grouped by kind and relation, current convergence signal values, momentum (signal deltas between snapshots), last iteration, schema version, and DB file size. Suitable for dashboards and synthesis surfaces.',
+  description: '[L9:CoverageGraph] Report deep-loop coverage graph health. Returns totalNodes, totalEdges, nodesByKind, edgesByRelation, lastIteration, schemaVersion, dbFileSize, signals, and momentum for the requested session-scoped subgraph. Suitable for dashboards and synthesis surfaces.',
   inputSchema: {
     type: 'object', additionalProperties: false,
     properties: {

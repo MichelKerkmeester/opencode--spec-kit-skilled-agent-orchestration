@@ -320,6 +320,8 @@ OPENAI_API_KEY=sk-... node scripts/tests/test-embeddings-factory.js
 
 ### Common Issues
 
+&nbsp;
+
 #### Dimension Mismatch
 
 **Symptom**: `Error: dimension mismatch`
@@ -329,6 +331,8 @@ OPENAI_API_KEY=sk-... node scripts/tests/test-embeddings-factory.js
 **Solution**: Should no longer occur with per-profile DBs. If you see this error, verify you're not forcing `MEMORY_DB_PATH` to a shared sqlite file across multiple providers.
 
 ---
+
+&nbsp;
 
 #### OpenAI Provider Requires Key
 
@@ -343,6 +347,8 @@ export EMBEDDINGS_PROVIDER=hf-local
 ```
 
 ---
+
+&nbsp;
 
 #### Model Not Loaded
 

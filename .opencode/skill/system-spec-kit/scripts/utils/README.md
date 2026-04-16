@@ -211,6 +211,8 @@ utils/template-structure.js    # Source-only helper (not emitted to dist/)
 
 ### Common Issues
 
+&nbsp;
+
 #### Path sanitization blocks valid paths
 
 **Symptom**: `Error: Path outside allowed directories: /some/path`
@@ -229,6 +231,8 @@ const safePath = sanitizePath(inputPath, [
 const safePath = sanitizePath('./specs/001-test');
 ```
 
+&nbsp;
+
 #### File read returns undefined
 
 **Symptom**: `readJsonFile()` returns undefined instead of throwing error
@@ -245,6 +249,8 @@ if (!data) {
   process.exit(1);
 }
 ```
+
+&nbsp;
 
 #### Input normalization doesn't match expected format
 
@@ -265,6 +271,8 @@ const normalized = normalizeInputData({
 
 console.log(normalized);
 ```
+
+&nbsp;
 
 #### Structured logs not appearing
 

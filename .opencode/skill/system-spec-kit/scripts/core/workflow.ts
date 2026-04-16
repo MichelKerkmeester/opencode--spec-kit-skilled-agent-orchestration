@@ -1475,6 +1475,24 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('Step 11.5: deferred (planner-default save requires explicit reindex follow-up)');
   }
 
+  // Step 11.75: Post-save quality review (T115 FIX — wire into production pipeline)
+  // Runs the post-save reviewer against the canonical spec-doc save artifacts.
+  // Non-blocking: review failures are logged but do not abort the workflow.
+  if (shouldRunExplicitSaveFollowUps) {
+    try {
+      const { reviewPostSaveQuality, printPostSaveReview } = await import('./post-save-review');
+      const reviewResult = reviewPostSaveQuality({
+        savedFilePath: validatedSpecFolderPath,
+        collectedData: collectedData as Parameters<typeof reviewPostSaveQuality>[0]['collectedData'],
+        inputMode: options.plannerMode,
+      });
+      printPostSaveReview(reviewResult);
+    } catch (reviewErr: unknown) {
+      const reviewErrMsg = reviewErr instanceof Error ? reviewErr.message : String(reviewErr);
+      warn(`   Warning: Post-save review skipped: ${reviewErrMsg}`);
+    }
+  }
+
   // Step 12: Opportunistic retry processing
   try {
     const retryManager = await loadWorkflowRetryManager();
@@ -1510,7 +1528,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,
           diagramCount: diagrams.DIAGRAMS.length,
-          qualityScore: 100,
+          qualityScore: filterStats.qualityScore,
           isSimulation
         }
       };

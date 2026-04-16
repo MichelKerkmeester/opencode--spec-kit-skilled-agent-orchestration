@@ -1,6 +1,6 @@
 ---
 title: "Gemini Agent Delegation Reference"
-description: "Reference for delegating tasks to 9 specialized Gemini agents via the conductor/executor orchestration model."
+description: "Reference for delegating tasks to 10 specialized Gemini agents via the conductor/executor orchestration model."
 ---
 
 # Gemini Agent Delegation Reference

@@ -71,12 +71,24 @@ const RESUME_LADDER_SUMMARY =
 function extractData(response: MCPResponse): Record<string, unknown> {
   try {
     const text = response?.content?.[0]?.text;
-    if (typeof text === 'string') {
-      const parsed = JSON.parse(text);
-      return parsed?.data ?? parsed ?? {};
+    if (typeof text !== 'string') {
+      return { error: 'Child payload missing text content', _extractionFailed: true };
     }
-  } catch { /* parse failed */ }
-  return {};
+
+    const parsed = JSON.parse(text);
+    if (parsed?.data && typeof parsed.data === 'object') {
+      return parsed.data as Record<string, unknown>;
+    }
+
+    if (parsed && typeof parsed === 'object') {
+      return parsed as Record<string, unknown>;
+    }
+
+    return { error: 'Child payload parsed but contained no usable data', _extractionFailed: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return { error: `Child payload parse failed: ${message}`, _extractionFailed: true };
+  }
 }
 
 function extractHints(data: Record<string, unknown>): string[] {
@@ -227,7 +239,7 @@ export async function handleSessionBootstrap(args: SessionBootstrapArgs): Promis
 
   // Record bootstrap telemetry once for the composite call.
   const durationMs = Date.now() - startMs;
-  const completeness = resumeData.error || healthData.error ? 'partial' : 'full';
+  const completeness = resumeData.error || healthData.error || resumeData._extractionFailed || healthData._extractionFailed ? 'partial' : 'full';
   recordBootstrapEvent('tool', durationMs, completeness);
 
   const resumeCertainty: SharedPayloadCertainty = resumeData.error ? 'unknown' : 'estimated';

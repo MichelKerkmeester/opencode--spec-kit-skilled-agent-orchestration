@@ -307,13 +307,11 @@ These names identify section types. Use EXACTLY as shown:
 
 ```yaml
 ---
-description: |
-  Clear, action-oriented description.
-  Start with action verb (Create, Search, Delete, Start, Stop).
-  One to two sentences maximum.
-  Shown in /help output.
+description: Clear, action-oriented single-line description shown in /help output. Start with action verb (Create, Search, Delete, Start, Stop).
 ---
 ```
+
+> **Important:** The `description` field MUST be a single-line string, not a YAML block scalar (`|` or `>`). Multi-line descriptions break `/help` output rendering.
 
 ### Recommended Fields
 

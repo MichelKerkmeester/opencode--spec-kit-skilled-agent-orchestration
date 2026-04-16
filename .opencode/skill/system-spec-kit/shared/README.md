@@ -462,6 +462,8 @@ console.log(result);
 
 ### Common Issues
 
+&nbsp;
+
 #### Provider Not Loading
 
 **Symptom**: `Error: Provider not initialized`
@@ -477,6 +479,8 @@ await preWarmModel();
 
 ---
 
+&nbsp;
+
 #### Dimension Mismatch
 
 **Symptom**: `Error: dimension mismatch (expected 768, got 1024)`
@@ -490,6 +494,8 @@ rm .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
 ```
 
 ---
+
+&nbsp;
 
 #### Slow First Embedding
 

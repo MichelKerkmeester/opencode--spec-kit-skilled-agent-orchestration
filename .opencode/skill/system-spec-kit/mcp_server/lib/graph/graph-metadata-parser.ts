@@ -262,15 +262,16 @@ export function validateGraphMetadataContent(content: string): GraphMetadataVali
  * @throws Error when the file exists but fails schema validation
  */
 export function loadGraphMetadata(filePath: string): GraphMetadata | null {
-  if (!fs.existsSync(filePath)) {
+  const resolvedPath = path.resolve(filePath);
+  if (!fs.existsSync(resolvedPath)) {
     return null;
   }
 
-  const content = fs.readFileSync(filePath, 'utf-8');
+  const content = fs.readFileSync(resolvedPath, 'utf-8');
   const validation = validateGraphMetadataContent(content);
   if (!validation.ok || !validation.metadata) {
     const detail = validation.errors.join('; ') || 'unknown validation error';
-    throw new Error(`Invalid graph metadata at ${filePath}: ${detail}`);
+    throw new Error(`Invalid graph metadata at ${resolvedPath}: ${detail}`);
   }
 
   return validation.metadata;
@@ -392,9 +393,25 @@ function extractReferencedFilePaths(content: string): string[] {
   return Array.from(referenced);
 }
 
+function isAbsolutePathCandidate(candidate: string): boolean {
+  const trimmed = candidate.trim();
+  if (!trimmed) {
+    return false;
+  }
+
+  const normalized = trimmed.replace(/\\/g, '/');
+  return path.isAbsolute(trimmed)
+    || path.posix.isAbsolute(normalized)
+    || path.win32.isAbsolute(trimmed)
+    || path.win32.isAbsolute(normalized);
+}
+
 function keepKeyFile(candidate: string): boolean {
   const normalized = candidate.trim().replace(/\\/g, '/');
   if (!normalized) {
+    return false;
+  }
+  if (isAbsolutePathCandidate(candidate)) {
     return false;
   }
   const normalizedLower = normalized.toLowerCase();
@@ -565,38 +582,38 @@ function buildKeyFileLookupPaths(
   specsRoot: string | null,
   repoRoot: string | null,
 ): string[] {
+  if (isAbsolutePathCandidate(candidate)) {
+    return [];
+  }
+
   const normalized = candidate.replace(/\\/g, '/').replace(/^\.\//, '');
   const lookups = new Set<string>();
 
-  if (path.isAbsolute(candidate)) {
-    lookups.add(path.resolve(candidate));
-  } else {
-    lookups.add(path.resolve(specFolderPath, normalized));
-    if (repoRoot) {
+  lookups.add(path.resolve(specFolderPath, normalized));
+  if (repoRoot) {
+    lookups.add(path.resolve(repoRoot, normalized));
+    if (normalized.startsWith('.opencode/')) {
       lookups.add(path.resolve(repoRoot, normalized));
-      if (normalized.startsWith('.opencode/')) {
-        lookups.add(path.resolve(repoRoot, normalized));
-      }
-      if (normalized.startsWith('specs/')) {
-        lookups.add(path.resolve(repoRoot, '.opencode', normalized));
-      }
+    }
+    if (normalized.startsWith('specs/')) {
+      lookups.add(path.resolve(repoRoot, '.opencode', normalized));
+    }
 
-      const systemSpecKitRoot = path.join(repoRoot, '.opencode', 'skill', 'system-spec-kit');
-      const workspaceRoots = [
-        systemSpecKitRoot,
-        path.join(systemSpecKitRoot, 'mcp_server'),
-        path.join(systemSpecKitRoot, 'scripts'),
-      ];
-      for (const root of workspaceRoots) {
-        lookups.add(path.resolve(root, normalized));
-      }
+    const systemSpecKitRoot = path.join(repoRoot, '.opencode', 'skill', 'system-spec-kit');
+    const workspaceRoots = [
+      systemSpecKitRoot,
+      path.join(systemSpecKitRoot, 'mcp_server'),
+      path.join(systemSpecKitRoot, 'scripts'),
+    ];
+    for (const root of workspaceRoots) {
+      lookups.add(path.resolve(root, normalized));
     }
-    if (
-      specsRoot
-      && CROSS_TRACK_SPEC_FOLDERS.some((track) => normalized === track || normalized.startsWith(`${track}/`))
-    ) {
-      lookups.add(path.resolve(specsRoot, normalized));
-    }
+  }
+  if (
+    specsRoot
+    && CROSS_TRACK_SPEC_FOLDERS.some((track) => normalized === track || normalized.startsWith(`${track}/`))
+  ) {
+    lookups.add(path.resolve(specsRoot, normalized));
   }
 
   return Array.from(lookups);
@@ -609,6 +626,9 @@ function resolveKeyFileCandidate(
 ): string | null {
   const normalized = candidate.trim().replace(/\\/g, '/').replace(/^\.\//, '');
   if (!normalized) {
+    return null;
+  }
+  if (isAbsolutePathCandidate(candidate)) {
     return null;
   }
 

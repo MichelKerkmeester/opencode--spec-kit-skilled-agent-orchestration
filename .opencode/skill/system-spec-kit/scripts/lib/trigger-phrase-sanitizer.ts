@@ -36,24 +36,36 @@ const CONTROL_CHARACTER_PATTERN = /[\x00-\x1F\x7F-\x9F]/;
 const CONTAMINATION_PATTERN = /<[^>]+>|\b(?:ignore previous|system prompt|developer message|tool state|tool output|assistant:|user:)\b/i;
 const MAX_TRIGGER_PHRASE_LENGTH = 200;
 
+// Aligned with BASE_VALID_SHORT_TERMS in topic-keywords.ts — keep in sync.
 const SHORT_PRODUCT_ALLOWLIST = new Set([
   'ai',
   'api',
   'cd',
   'ci',
   'cli',
+  'css',
   'db',
+  'dom',
+  'go',
+  'id',
+  'io',
+  'ip',
   'js',
   'llm',
   'mcp',
+  'ml',
+  'os',
   'pr',
   'qa',
   'rag',
+  'rx',
   'sdk',
   'sql',
   'ts',
   'ui',
   'ux',
+  'vm',
+  'wp',
 ]);
 
 const STANDALONE_STOPWORD_BLOCKLIST = new Set([
@@ -174,21 +186,35 @@ export function sanitizeTriggerPhrases(
   phrases: string[],
   options: TriggerPhraseSanitizeOptions = {},
 ): string[] {
-  const sanitized: string[] = [];
-  const seen = new Set<string>();
-
+  // Pre-filter: keep only valid string phrases that pass individual sanitization.
+  const candidates: Array<{ normalized: string; comparisonKey: string }> = [];
   for (const phrase of phrases) {
     if (typeof phrase !== 'string') {
       continue;
     }
-
     const verdict = sanitizeTriggerPhrase(phrase, options);
     if (!verdict.keep) {
       continue;
     }
-
     const normalized = normalizePhrase(phrase);
     const comparisonKey = normalizeComparisonKey(normalized);
+    candidates.push({ normalized, comparisonKey });
+  }
+
+  // Sort by comparison-key length descending so longer (more specific) phrases
+  // are processed first.  This makes shadow removal order-independent: a short
+  // phrase that is a substring of an already-accepted longer phrase is
+  // consistently removed regardless of the original input order.
+  candidates.sort((a, b) => b.comparisonKey.length - a.comparisonKey.length);
+
+  const sanitized: string[] = [];
+  const seen = new Set<string>();
+
+  for (const { normalized, comparisonKey } of candidates) {
+    if (seen.has(comparisonKey)) {
+      continue;
+    }
+
     const shadowedByExistingPhrase = !isAllowlistedShortProductName(normalized) && sanitized.some((existingPhrase) => {
       if (isAllowlistedShortProductName(existingPhrase)) {
         return false;
@@ -196,7 +222,7 @@ export function sanitizeTriggerPhrases(
       const existingKey = normalizeComparisonKey(existingPhrase);
       return existingKey.length >= comparisonKey.length && existingKey.includes(comparisonKey);
     });
-    if (seen.has(comparisonKey) || shadowedByExistingPhrase) {
+    if (shadowedByExistingPhrase) {
       continue;
     }
 

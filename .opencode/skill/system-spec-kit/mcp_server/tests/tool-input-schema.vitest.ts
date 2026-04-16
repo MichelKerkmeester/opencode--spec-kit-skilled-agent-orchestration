@@ -15,6 +15,14 @@ import { validateToolInputSchema } from '../utils/tool-input-schema';
 
 const ORIGINAL_STRICT_SCHEMAS_ENV = process.env.SPECKIT_STRICT_SCHEMAS;
 
+type ToolArgs = Record<string, unknown>;
+
+interface ToolSchemaCase {
+  name: string;
+  toolName: string;
+  args: ToolArgs;
+}
+
 afterEach(() => {
   vi.restoreAllMocks();
   mockRequireDb.mockReset();
@@ -25,6 +33,24 @@ afterEach(() => {
     process.env.SPECKIT_STRICT_SCHEMAS = ORIGINAL_STRICT_SCHEMAS_ENV;
   }
 });
+
+function expectPublicAndRuntimeAccept(toolName: string, args: ToolArgs): void {
+  expect(() => {
+    validateToolInputSchema(toolName, args, TOOL_DEFINITIONS);
+  }).not.toThrow();
+  expect(() => {
+    validateToolArgs(toolName, args);
+  }).not.toThrow();
+}
+
+function expectPublicAndRuntimeReject(toolName: string, args: ToolArgs): void {
+  expect(() => {
+    validateToolInputSchema(toolName, args, TOOL_DEFINITIONS);
+  }).toThrow();
+  expect(() => {
+    validateToolArgs(toolName, args);
+  }).toThrow();
+}
 
 /* ───────────────────────────────────────────────────────────────
    1. SCHEMA STRUCTURAL INTEGRITY
@@ -459,6 +485,234 @@ describe('checkpoint_delete schema', () => {
       validateToolInputSchema('checkpoint_delete', { name: 'danger-zone', confirmName: 'danger-zone' }, TOOL_DEFINITIONS);
     }).not.toThrow();
   });
+});
+
+describe('code_graph schema coverage', () => {
+  const acceptanceCases: ToolSchemaCase[] = [
+    {
+      name: 'code_graph_scan accepts optional scan controls',
+      toolName: 'code_graph_scan',
+      args: {
+        rootDir: '.opencode/skill/system-spec-kit/mcp_server',
+        includeGlobs: ['**/*.ts'],
+        excludeGlobs: ['**/*.test.ts'],
+        incremental: true,
+      },
+    },
+    {
+      name: 'code_graph_query accepts structural traversal options',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'calls_from',
+        subject: 'context-server.ts',
+        subjects: ['tool-schemas.ts'],
+        edgeType: 'CALLS',
+        limit: 25,
+        includeTransitive: true,
+        maxDepth: 3,
+      },
+    },
+    {
+      name: 'code_graph_status accepts empty input',
+      toolName: 'code_graph_status',
+      args: {},
+    },
+    {
+      name: 'code_graph_context accepts seed payloads',
+      toolName: 'code_graph_context',
+      args: {
+        input: 'graph neighborhood',
+        queryMode: 'outline',
+        subject: 'context-server.ts',
+        seeds: [
+          {
+            provider: 'manual',
+            symbolName: 'handleToolCall',
+            filePath: 'context-server.ts',
+            startLine: 10,
+            endLine: 40,
+          },
+        ],
+        budgetTokens: 1200,
+        profile: 'quick',
+        includeTrace: true,
+      },
+    },
+  ];
+
+  const rejectionCases: ToolSchemaCase[] = [
+    {
+      name: 'code_graph_query rejects unknown operations',
+      toolName: 'code_graph_query',
+      args: {
+        operation: 'walk_everything',
+        subject: 'context-server.ts',
+      },
+    },
+    {
+      name: 'code_graph_status rejects unexpected parameters',
+      toolName: 'code_graph_status',
+      args: {
+        unexpected: true,
+      },
+    },
+    {
+      name: 'code_graph_context rejects unsupported profiles',
+      toolName: 'code_graph_context',
+      args: {
+        profile: 'verbose',
+      },
+    },
+  ];
+
+  for (const testCase of acceptanceCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeAccept(testCase.toolName, testCase.args);
+    });
+  }
+
+  for (const testCase of rejectionCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeReject(testCase.toolName, testCase.args);
+    });
+  }
+});
+
+describe('skill_graph schema coverage', () => {
+  const acceptanceCases: ToolSchemaCase[] = [
+    {
+      name: 'skill_graph_scan accepts optional root override',
+      toolName: 'skill_graph_scan',
+      args: {
+        skillsRoot: '.opencode/skill',
+      },
+    },
+    {
+      name: 'skill_graph_query accepts traversal filters',
+      toolName: 'skill_graph_query',
+      args: {
+        queryType: 'subgraph',
+        skillId: 'system-spec-kit',
+        sourceSkillId: 'system-spec-kit',
+        targetSkillId: 'sk-code-opencode',
+        family: 'system',
+        minInbound: 2,
+        depth: 2,
+        limit: 25,
+      },
+    },
+    {
+      name: 'skill_graph_status accepts empty input',
+      toolName: 'skill_graph_status',
+      args: {},
+    },
+    {
+      name: 'skill_graph_validate accepts empty input',
+      toolName: 'skill_graph_validate',
+      args: {},
+    },
+  ];
+
+  const rejectionCases: ToolSchemaCase[] = [
+    {
+      name: 'skill_graph_query rejects unsupported families',
+      toolName: 'skill_graph_query',
+      args: {
+        queryType: 'family_members',
+        family: 'runtime',
+      },
+    },
+    {
+      name: 'skill_graph_status rejects unexpected parameters',
+      toolName: 'skill_graph_status',
+      args: {
+        unexpected: true,
+      },
+    },
+    {
+      name: 'skill_graph_validate rejects unexpected parameters',
+      toolName: 'skill_graph_validate',
+      args: {
+        unexpected: true,
+      },
+    },
+  ];
+
+  for (const testCase of acceptanceCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeAccept(testCase.toolName, testCase.args);
+    });
+  }
+
+  for (const testCase of rejectionCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeReject(testCase.toolName, testCase.args);
+    });
+  }
+});
+
+describe('ccc schema coverage', () => {
+  const acceptanceCases: ToolSchemaCase[] = [
+    {
+      name: 'ccc_status accepts empty input',
+      toolName: 'ccc_status',
+      args: {},
+    },
+    {
+      name: 'ccc_reindex accepts the full toggle',
+      toolName: 'ccc_reindex',
+      args: {
+        full: true,
+      },
+    },
+    {
+      name: 'ccc_feedback accepts rating payloads',
+      toolName: 'ccc_feedback',
+      args: {
+        query: 'code graph status',
+        resultFile: '.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts',
+        rating: 'helpful',
+        comment: 'Matches the expected entrypoint.',
+      },
+    },
+  ];
+
+  const rejectionCases: ToolSchemaCase[] = [
+    {
+      name: 'ccc_status rejects unexpected parameters',
+      toolName: 'ccc_status',
+      args: {
+        unexpected: true,
+      },
+    },
+    {
+      name: 'ccc_reindex rejects non-boolean full values',
+      toolName: 'ccc_reindex',
+      args: {
+        full: 'yes',
+      },
+    },
+    {
+      name: 'ccc_feedback rejects unsupported ratings',
+      toolName: 'ccc_feedback',
+      args: {
+        query: 'code graph status',
+        rating: 'mixed',
+      },
+    },
+  ];
+
+  for (const testCase of acceptanceCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeAccept(testCase.toolName, testCase.args);
+    });
+  }
+
+  for (const testCase of rejectionCases) {
+    it(testCase.name, () => {
+      expectPublicAndRuntimeReject(testCase.toolName, testCase.args);
+    });
+  }
 });
 
 // CHK-024: Schema validation overhead <5ms benchmark

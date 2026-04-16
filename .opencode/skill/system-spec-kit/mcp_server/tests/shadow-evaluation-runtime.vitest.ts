@@ -590,4 +590,43 @@ describe('shadow-evaluation-runtime', () => {
     expect(report).not.toBeNull();
     expect(report?.comparisons).toHaveLength(1);
   });
+
+  // T255: Add concurrency/singleton guard tests
+  it('prevents concurrent scheduler starts (singleton guard)', async () => {
+    vi.useFakeTimers();
+    insertSearchEvent(db, 1101, 'singleton query', new Date().toISOString());
+    insertQueryFeedbackLabels(db, 'singleton query', [82, 81]);
+
+    vi.mocked(executePipeline).mockResolvedValue({
+      results: [{ id: 81, score: 0.7 }, { id: 82, score: 0.5 }],
+    } as unknown as Awaited<ReturnType<typeof executePipeline>>);
+
+    vi.mocked(buildAdaptiveShadowProposal).mockReturnValue({
+      mode: 'shadow',
+      bounded: true,
+      maxDeltaApplied: 0.08,
+      query: 'singleton query',
+      promotedIds: [],
+      demotedIds: [],
+      rows: [],
+    });
+
+    const intervalMs = EVALUATION_WINDOW_MS + 1_000;
+    const firstStart = startShadowEvaluationScheduler(db, { intervalMs, holdoutPercent: 1 });
+    expect(firstStart).toBe(true);
+    expect(isShadowEvaluationSchedulerRunning()).toBe(true);
+
+    // Second start should be rejected (singleton)
+    const secondStart = startShadowEvaluationScheduler(db, { intervalMs, holdoutPercent: 1 });
+    expect(secondStart).toBe(false);
+    expect(isShadowEvaluationSchedulerRunning()).toBe(true);
+
+    stopShadowEvaluationScheduler();
+  });
+
+  it('returns false when stopping an already-stopped scheduler', () => {
+    expect(isShadowEvaluationSchedulerRunning()).toBe(false);
+    const stopped = stopShadowEvaluationScheduler();
+    expect(stopped).toBe(false);
+  });
 });

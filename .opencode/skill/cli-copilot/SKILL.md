@@ -267,7 +267,7 @@ copilot -p "prompt" --allow-all-tools 2>&1
 | Flag / Option | Purpose |
 |---------------|---------|
 | `-p "prompt"` | Non-interactive mode — send prompt and get response |
-| `--allow-all-tools` | Enable Autopilot/Autonomous mode (no approval prompts) |
+| `--allow-all-tools` | Enable Autopilot/Autonomous mode (no approval prompts). **Required** for full autonomy — not enabled by default |
 | `--model <id>` | Select AI model (e.g., `--model gpt-5.4`) |
 | `--no-ask-user` | Autonomous mode — no interactive questions |
 | `/model <id>` | Mid-session or initial model selection (interactive) |

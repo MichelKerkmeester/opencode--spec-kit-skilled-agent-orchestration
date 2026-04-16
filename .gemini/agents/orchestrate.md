@@ -163,12 +163,12 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 | Agent     | File                          | Notes                                                                                  |
 | --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
-| @context  | `.opencode/agent/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
-| @deep-research | `.opencode/agent/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
-| @ultra-think | `.opencode/agent/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
-| @review   | `.opencode/agent/review.md`   | Codebase-agnostic quality scoring                                                      |
-| @write    | `.opencode/agent/write.md`    | DQI standards enforcement                                                              |
-| @debug    | `.opencode/agent/debug.md`    | Isolated by design (no conversation context)                                           |
+| @context  | `.gemini/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
+| @deep-research | `.gemini/agents/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
+| @ultra-think | `.gemini/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
+| @review   | `.gemini/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
+| @write    | `.gemini/agents/write.md`    | DQI standards enforcement                                                              |
+| @debug    | `.gemini/agents/debug.md`    | Isolated by design (no conversation context)                                           |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -188,7 +188,7 @@ TASK #N: [Descriptive Title]
 ├─ Boundary: [What this agent MUST NOT do]
 ├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
-├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
+├─ Agent Definition: [.gemini/agents/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
 ├─ Output Format: [Structured format with example]
 ├─ Output Size: [full | summary-only (30 lines) | minimal (3 lines)] ← CWB §8
@@ -210,7 +210,7 @@ PRE-DELEGATION REASONING [Task #N]:
 ├─ Intent: [What does this task accomplish?]
 ├─ Complexity: [low/medium/high] → Because: [cite criteria below]
 ├─ Agent: @[agent] → Because: [cite §2 (Agent Routing)]
-├─ Agent Def: [loaded | built-in | prior-session] → [.opencode/agent/<name>.md]
+├─ Agent Def: [loaded | built-in | prior-session] → [.gemini/agents/<name>.md]
 ├─ Depth: [N] → Tier: [ORCHESTRATOR|LEAF] (§2 NDP)
 ├─ Parallel: [Yes/No] → Because: [data dependency]
 ├─ Risk: [Low/Medium/High] → [If High: fallback agent]

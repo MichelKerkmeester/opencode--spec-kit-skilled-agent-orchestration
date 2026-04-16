@@ -120,7 +120,7 @@ config_files:
     path: ".claude/mcp.json"
     format: "json-mcpServers"
     label: "Claude Code"
-    guide_section: "Option B: Claude Code CLI"
+    guide_section: "Option E: Claude CLI"
   codex:
     path: ".codex/config.toml"
     format: "toml"
@@ -135,7 +135,7 @@ config_files:
     path: ".vscode/mcp.json"
     format: "json-mcpServers"
     label: "VS Code / Copilot"
-    guide_section: "Option A: Claude Code / Option B"
+    guide_section: "Option A: Claude Code"
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW

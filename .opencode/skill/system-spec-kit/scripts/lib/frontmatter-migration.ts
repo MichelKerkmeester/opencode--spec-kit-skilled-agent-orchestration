@@ -179,6 +179,20 @@ function escapeYamlString(value: string): string {
   return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
+/**
+ * Quote a scalar value for YAML output.
+ * If the value contains double quotes, use single-quote wrapping (doubling
+ * any embedded single quotes per the YAML spec).  Otherwise use the standard
+ * double-quote + backslash-escape path.
+ */
+function quoteYamlScalar(value: string): string {
+  if (value.includes('"')) {
+    // YAML single-quoted scalars escape a literal ' by doubling it: ''
+    return "'" + value.replace(/'/g, "''") + "'";
+  }
+  return '"' + escapeYamlString(value) + '"';
+}
+
 function normalizeTitleCandidate(raw: string): string | null {
   if (!raw) {
     return null;
@@ -614,7 +628,7 @@ export function parseSectionValue(section: FrontmatterSection): FrontmatterValue
       break;
     }
 
-    listValues.push(stripWrappingQuotes(listMatch[1].trim()));
+    listValues.push(stripWrappingQuotes(stripTrailingYamlComment(listMatch[1].trim())));
   }
 
   if (allList && listValues.length > 0) {
@@ -632,11 +646,11 @@ function sectionToLines(key: string, value: FrontmatterValue): string[] {
 
     return [
       `${key}:`,
-      ...value.map((entry) => `  - "${escapeYamlString(entry)}"`),
+      ...value.map((entry) => `  - ${quoteYamlScalar(entry)}`),
     ];
   }
 
-  return [`${key}: "${escapeYamlString(value)}"`];
+  return [`${key}: ${quoteYamlScalar(value)}`];
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -1048,7 +1062,8 @@ function extractMemoryMetadataScalar(content: string, fieldNames: string[]): str
       continue;
     }
 
-    return line.substring(colonIndex + 1).trim().replace(/^['"]|['"]$/g, '');
+    const rawValue = stripTrailingYamlComment(line.substring(colonIndex + 1)).trim().replace(/^['"]|['"]$/g, '');
+    return rawValue;
   }
 
   return null;
@@ -1172,7 +1187,7 @@ function syncMemoryMetadataTriggerPhrases(content: string, triggerPhrases: strin
     ? triggerPhrases
     : extractMemoryMetadataStringArray(content, 'trigger_phrases');
   const replacementLines = resolvedTriggerPhrases.length > 0
-    ? ['trigger_phrases:', ...resolvedTriggerPhrases.map((triggerPhrase) => `  - "${triggerPhrase}"`)]
+    ? ['trigger_phrases:', ...resolvedTriggerPhrases.map((triggerPhrase) => `  - ${quoteYamlScalar(triggerPhrase)}`)]
     : ['trigger_phrases: []'];
 
   return mutateMemoryMetadataBlock(content, (yamlBody) => (

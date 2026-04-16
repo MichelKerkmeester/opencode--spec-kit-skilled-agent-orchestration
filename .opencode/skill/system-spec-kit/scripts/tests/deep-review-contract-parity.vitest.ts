@@ -1,11 +1,23 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const WORKSPACE_ROOT = path.resolve(TEST_DIR, '../../../../../');
+const require = createRequire(import.meta.url);
+
+// T247: Import deep-review runtime-capabilities resolver for executable coverage
+const reviewCapabilityModule = require(path.join(
+  WORKSPACE_ROOT,
+  '.opencode/skill/sk-deep-review/scripts/runtime-capabilities.cjs',
+)) as {
+  listRuntimeCapabilityIds: () => string[];
+  loadRuntimeCapabilities: () => { matrix: { runtimes: Array<{ id: string; mirrorPath: string }> } };
+  resolveRuntimeCapability: (id: string) => { capabilityPath: string; runtime: { id: string; mirrorPath: string } };
+};
 
 function readWorkspaceFile(relativePath: string): string {
   return fs.readFileSync(path.join(WORKSPACE_ROOT, relativePath), 'utf8');
@@ -154,5 +166,29 @@ describe('deep-review contract parity', () => {
         ).toContain(`"${dim}":false`);
       }
     }
+  });
+
+  // T247: Add executable coverage for deep-review runtime-capabilities.cjs
+  it('exposes a machine-readable capability matrix for every supported deep-review runtime', () => {
+    const runtimeIds = reviewCapabilityModule.listRuntimeCapabilityIds();
+    expect(runtimeIds).toEqual(['opencode', 'claude', 'codex', 'gemini']);
+
+    const matrix = reviewCapabilityModule.loadRuntimeCapabilities().matrix;
+    for (const runtime of matrix.runtimes) {
+      expect(
+        fs.existsSync(path.join(WORKSPACE_ROOT, runtime.mirrorPath)),
+        `${runtime.id} mirror should exist at ${runtime.mirrorPath}`,
+      ).toBe(true);
+    }
+  });
+
+  it('resolves individual deep-review runtime capabilities by ID', () => {
+    const { runtime } = reviewCapabilityModule.resolveRuntimeCapability('claude');
+    expect(runtime.id).toBe('claude');
+    expect(runtime.mirrorPath).toContain('.claude/agents/deep-review');
+  });
+
+  it('throws for unknown deep-review runtime IDs', () => {
+    expect(() => reviewCapabilityModule.resolveRuntimeCapability('nonexistent')).toThrow(/Unknown deep-review runtime/);
   });
 });

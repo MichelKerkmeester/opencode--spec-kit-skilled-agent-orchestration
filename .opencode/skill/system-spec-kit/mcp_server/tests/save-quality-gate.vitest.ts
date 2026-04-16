@@ -416,6 +416,35 @@ describe('Save Quality Gate (TM-04)', () => {
       it('TR5: Five triggers score 1.0', () => {
         expect(scoreTriggerQuality(['a', 'b', 'c', 'd', 'e'])).toBe(1.0);
       });
+
+      // ─── T237: Whitespace-only trigger phrases ────────────────
+
+      it('TR-T237-1: Whitespace-only phrases inflate count — three whitespace entries score 1.0 (BUG)', () => {
+        // Finding #18: scoreTriggerQuality uses raw array length with no
+        // trim/filter step. Whitespace-only strings are counted as real
+        // trigger phrases. This test documents the current (buggy) behavior.
+        const score = scoreTriggerQuality(['   ', '\t', '\n']);
+        // Current behavior: count=3, so score=1.0 even though all are whitespace
+        expect(score).toBe(1.0);
+      });
+
+      it('TR-T237-2: Single whitespace phrase counts as 1 trigger (BUG)', () => {
+        // A single whitespace string should ideally score 0, but the
+        // implementation counts it as a valid trigger.
+        const score = scoreTriggerQuality(['   ']);
+        expect(score).toBe(0.5); // count=1, so 0.5
+      });
+
+      it('TR-T237-3: Mixed valid and whitespace phrases — all counted equally (BUG)', () => {
+        // Two real phrases + one whitespace = 3 total, scoring 1.0
+        const score = scoreTriggerQuality(['save memory', '   ', 'quality gate']);
+        expect(score).toBe(1.0);
+      });
+
+      it('TR-T237-4: Empty strings also inflate count (BUG)', () => {
+        const score = scoreTriggerQuality(['', '', '']);
+        expect(score).toBe(1.0); // 3 empty strings = count 3 = 1.0
+      });
     });
 
     describe('Length Quality', () => {

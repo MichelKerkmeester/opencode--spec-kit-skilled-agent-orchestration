@@ -121,13 +121,53 @@ describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]'
   });
 
   describe('Parameter Validation', () => {
-    it('T517-7: Handler accepts args with limit parameter', () => {
-      expect(typeof handler.handleMemoryMatchTriggers).toBe('function');
-      expect(handler.handleMemoryMatchTriggers.length).toBeGreaterThanOrEqual(0);
+    it('T517-7: invalid limit values fall back to the default match cap', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      const matcherSpy = vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+        buildTriggerMatchResult([])
+      );
+
+      const response = await handler.handleMemoryMatchTriggers({
+        prompt: 'test',
+        limit: 0,
+        include_cognitive: false,
+      });
+      const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
+
+      expect(matcherSpy).toHaveBeenCalledWith('test', 6);
+      expect(data.matchType).toBe('trigger-phrase');
+      expect(data.count).toBe(0);
     });
 
-    it('T517-8: Handler supports turnNumber parameter', () => {
-      expect(typeof handler.handleMemoryMatchTriggers).toBe('function');
+    it('T517-8: turnNumber is normalized before cognitive stats are emitted', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+      vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+        buildTriggerMatchResult([])
+      );
+      vi.spyOn(workingMemory, 'isEnabled').mockReturnValue(true);
+      vi.spyOn(workingMemory, 'batchUpdateScores').mockReturnValue(0);
+      vi.spyOn(attentionDecay, 'getDb').mockReturnValue({
+        prepare: vi.fn(() => ({ get: vi.fn(() => undefined) })),
+      } as unknown as AttentionDb);
+      vi.spyOn(sessionManager, 'resolveTrustedSession').mockReturnValue({
+        requestedSessionId: 'session-1',
+        effectiveSessionId: 'session-1',
+        trusted: true,
+      });
+
+      const response = await handler.handleMemoryMatchTriggers({
+        prompt: 'test',
+        session_id: 'session-1',
+        turnNumber: 4.8,
+      });
+      const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
+      const cognitive = getRecord(data.cognitive) ?? {};
+
+      expect(data.matchType).toBe('trigger-phrase-cognitive');
+      expect(cognitive.turnNumber).toBe(4);
+      expect(cognitive.sessionId).toBe('session-1');
     });
   });
 });

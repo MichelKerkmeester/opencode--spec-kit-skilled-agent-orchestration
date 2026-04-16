@@ -52,7 +52,12 @@ def load_advisor_module() -> Any:
 
 
 def load_prompts_from_dataset(path: str) -> List[str]:
-    """Read prompt strings from a JSONL benchmark dataset."""
+    """Read prompt strings from a JSONL benchmark dataset.
+
+    Raises ValueError when any row is malformed or missing a non-empty
+    ``prompt`` field so that bench and regression scripts share the same
+    validation contract.
+    """
     prompts: List[str] = []
     with open(path, "r", encoding="utf-8") as handle:
         for line_number, raw in enumerate(handle, start=1):
@@ -63,9 +68,12 @@ def load_prompts_from_dataset(path: str) -> List[str]:
                 row = json.loads(stripped)
             except (ValueError, json.JSONDecodeError) as exc:
                 raise ValueError(f"Invalid JSONL at line {line_number}: {exc}") from exc
+            if not isinstance(row, dict):
+                raise ValueError(f"JSONL line {line_number}: expected object, got {type(row).__name__}")
             prompt = row.get("prompt", "").strip()
-            if prompt:
-                prompts.append(prompt)
+            if not prompt:
+                raise ValueError(f"JSONL line {line_number}: missing or empty 'prompt' field")
+            prompts.append(prompt)
     return prompts
 
 
@@ -107,11 +115,12 @@ def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncert
                 [
                     "python3",
                     ADVISOR_PATH,
-                    prompt,
                     "--threshold",
                     str(threshold),
                     "--uncertainty",
                     str(uncertainty),
+                    "--",
+                    prompt,
                 ],
                 check=True,
                 stdout=subprocess.DEVNULL,

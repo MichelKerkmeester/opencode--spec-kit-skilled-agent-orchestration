@@ -134,10 +134,13 @@ Use retrieval anchors for every H2 section so sections can be loaded by anchor I
 **Example**:
 
 ```markdown
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 [Section content]
 
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:asset-file-types -->
 ## 2. ASSET FILE TYPES
 ```
 

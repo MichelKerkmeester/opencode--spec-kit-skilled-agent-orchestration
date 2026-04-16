@@ -25,7 +25,16 @@ export async function handleSkillGraphScan(
   args: ScanArgs,
 ): Promise<HandlerResponse> {
   try {
-    const skillsRoot = resolve(process.cwd(), args.skillsRoot ?? '.opencode/skill');
+    const cwd = process.cwd();
+    const skillsRoot = resolve(cwd, args.skillsRoot ?? '.opencode/skill');
+
+    // Workspace escape guard: resolved path must stay under cwd
+    if (!skillsRoot.startsWith(cwd + '/') && skillsRoot !== cwd) {
+      return errorResponse(
+        `Refusing to scan outside workspace: ${skillsRoot} is not under ${cwd}`,
+      );
+    }
+
     const scanResult = indexSkillMetadata(skillsRoot);
 
     return okResponse({

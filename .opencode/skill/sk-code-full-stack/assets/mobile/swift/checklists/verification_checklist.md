@@ -1,11 +1,11 @@
 ---
-title: Verification Checklist
-description: Universal checklist for verifying work before claiming completion across all stacks.
+title: Swift/iOS Verification Checklist
+description: Checklist for verifying Swift and iOS/macOS work before claiming completion.
 ---
 
-# ✓ Verification Checklist
+# ✓ Swift/iOS Verification Checklist
 
-Universal checklist for verifying work before claiming completion across TypeScript/JavaScript, Go, and Swift.
+Checklist for verifying Swift and iOS/macOS work before claiming completion.
 
 ---
 
@@ -24,8 +24,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 | Language | Primary Testing Environment |
 |----------|---------------------------|
-| TypeScript/JavaScript | Browser, Node.js, Jest/Vitest |
-| Go | go test, benchmarks |
 | Swift | XCTest, Xcode, Simulator/Device |
 
 ---
@@ -463,5 +461,5 @@ VERIFICATION COMPLETE:
 
 ### Parent Skill
 
-- [SKILL.md](../../../../SKILL.md) - sk-code-web skill (Phase 3: Verification)
+- [SKILL.md](../../../../SKILL.md) - sk-code-full-stack skill (Phase 3: Verification)
 <!-- /ANCHOR:related-resources -->

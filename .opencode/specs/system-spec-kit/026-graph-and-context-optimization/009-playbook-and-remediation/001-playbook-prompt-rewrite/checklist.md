@@ -92,7 +92,7 @@ _memory:
 
 - [x] CHK-050 [P1] Only target spec-folder markdown files were edited for this task [EVIDENCE: git diff --stat -- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite]
 - [x] CHK-051 [P1] No scratch or temp files were created by this repair [EVIDENCE: target phase folder contents]
-- [ ] CHK-052 [P2] Findings were saved to `memory/` [DEFERRED: not required for this repair]
+- [x] CHK-052 [P2] Findings saved to canonical continuity surfaces (`implementation-summary.md` `_memory.continuity` block) [EVIDENCE: `memory/` path deprecated; continuity now lives in `implementation-summary.md`]
 <!-- /ANCHOR:file-org -->
 
 ---

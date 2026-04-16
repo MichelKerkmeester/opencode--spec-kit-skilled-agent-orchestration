@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | level2-verify | compact -->
 ---
 title: "Add Task Update Merge Safety Guard"
-status: planned
+status: complete
 level: 2
 type: implementation
 parent: 002-content-routing-accuracy
@@ -11,11 +11,11 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety"
     last_updated_at: "2026-04-13T00:00:00Z"
     last_updated_by: "codex"
-    recent_action: "Created Level 2 planning docs for task update merge safety"
-    next_safe_action: "Implement the exact-match guard and rejection messaging"
+    recent_action: "Closed the phase after the exact-match guard and refusal coverage landed"
+    next_safe_action: "Reuse this phase if task-update ambiguity reappears in save routing"
 ---
 # Add Task Update Merge Safety Guard
-## Metadata <!-- ANCHOR:metadata -->Parent `002-content-routing-accuracy`; Level 2; status planned; created 2026-04-13.<!-- /ANCHOR:metadata -->
+## Metadata <!-- ANCHOR:metadata -->Parent `002-content-routing-accuracy`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->
 ## Problem <!-- ANCHOR:problem -->`task_update` routing can still risk ambiguous checklist matching, and the failure path is not explicit enough for operators.<!-- /ANCHOR:problem -->
 ## Scope <!-- ANCHOR:scope -->In scope: exact structured-line validation and loud user-facing rejections in `anchor-merge-operation.ts` and `memory-save.ts`. Out of scope: non-`task_update` merge modes and Tier 3 classifier redesign.<!-- /ANCHOR:scope -->
 ## Requirements <!-- ANCHOR:requirements -->
@@ -33,4 +33,4 @@ _memory:
 - **Given** non-task routes, **when** this phase lands, **then** their merge behavior is unchanged.
 <!-- /ANCHOR:success-criteria -->
 ## Risks <!-- ANCHOR:risks -->A loose regex or post-mutation check would preserve the ambiguity bug, and unclear rejection text would leave operators guessing how to repair the input.<!-- /ANCHOR:risks -->
-## Questions <!-- ANCHOR:questions -->Open question: whether the pre-merge check should live in the merge module, the save handler, or a shared helper invoked by both.<!-- /ANCHOR:questions -->
+## Questions <!-- ANCHOR:questions -->No open questions remain. The shipped guard lives at the merge/save seam and is covered by the focused merge plus handler tests cited in the implementation summary.<!-- /ANCHOR:questions -->

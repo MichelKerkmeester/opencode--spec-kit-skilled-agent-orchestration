@@ -115,10 +115,13 @@ Use retrieval anchors for every H2 section so section-level loading can target s
 **Example**:
 
 ```markdown
+<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 [Section content]
 
+<!-- /ANCHOR:when-to-use -->
+<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 ```
 

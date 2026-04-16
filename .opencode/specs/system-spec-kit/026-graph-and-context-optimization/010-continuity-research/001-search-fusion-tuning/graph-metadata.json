@@ -33,7 +33,7 @@
       "save"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "configs/search-weights.json",
       "mcp_server/lib/search/cross-encoder.ts",
@@ -43,8 +43,7 @@
       ".opencode/command/memory/search.md",
       "mcp_server/configs/README.md",
       "checklist.md",
-      ".codex/agents/deep-review.toml",
-      ".codex/agents/context.toml",
+      "plan.md",
       "configs/README.md",
       "tasks.md",
       "research/research.md"
@@ -93,15 +92,9 @@
         "source": "derived"
       },
       {
-        "name": "deep-review.toml",
-        "kind": "file",
-        "path": ".codex/agents/deep-review.toml",
-        "source": "derived"
-      },
-      {
-        "name": "context.toml",
-        "kind": "file",
-        "path": ".codex/agents/context.toml",
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
         "source": "derived"
       },
       {
@@ -201,6 +194,7 @@
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
+      "plan.md",
       "tasks.md",
       "checklist.md",
       "research/research.md"

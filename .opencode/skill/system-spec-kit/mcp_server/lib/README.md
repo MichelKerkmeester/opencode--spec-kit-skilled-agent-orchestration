@@ -623,6 +623,8 @@ const results = await processBatches(
 
 ### Common Issues
 
+&nbsp;
+
 #### Module not found
 
 **Symptom**: `Error: Cannot find module './search/vector-index'`
@@ -635,6 +637,8 @@ const results = await processBatches(
 import { SQLiteVectorStore } from './search/vector-index';
 import * as attentionDecay from './cognitive/attention-decay';
 ```
+
+&nbsp;
 
 #### Database not initialized
 
@@ -651,6 +655,8 @@ const db = new Database('context-index.sqlite');
 import * as attentionDecay from './cognitive/attention-decay';
 attentionDecay.init(db);
 ```
+
+&nbsp;
 
 #### Embedding API errors
 

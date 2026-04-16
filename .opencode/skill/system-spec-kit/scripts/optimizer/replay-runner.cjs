@@ -199,8 +199,9 @@ function replayRun(corpusEntry, config) {
     state.totalFindings += findingsCount;
 
     // Relevant findings: those with significant new info ratio
+    const relevanceThreshold = config.noProgressThreshold ?? DEFAULT_CONFIG.noProgressThreshold;
     const newInfoRatio = iteration.newInfoRatio ?? 0;
-    if (newInfoRatio > 0.1) {
+    if (newInfoRatio > relevanceThreshold) {
       state.relevantFindings += findingsCount;
     }
 

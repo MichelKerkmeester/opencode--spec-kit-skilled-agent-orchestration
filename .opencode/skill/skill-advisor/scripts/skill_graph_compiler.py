@@ -52,8 +52,14 @@ def discover_graph_metadata(skills_dir: str) -> List[Tuple[str, str, dict]]:
 
     Returns list of (skill_folder_name, file_path, parsed_json) tuples.
     Skills without graph-metadata.json are silently skipped.
+
+    Raises:
+        RuntimeError: If any graph-metadata.json file is corrupt or unreadable,
+            to prevent downstream consumers from operating on an incomplete graph.
     """
     results = []
+    corrupt: List[Tuple[str, str]] = []
+
     if not os.path.isdir(skills_dir):
         return results
 
@@ -71,7 +77,14 @@ def discover_graph_metadata(skills_dir: str) -> List[Tuple[str, str, dict]]:
                 data = json.load(f)
             results.append((entry, meta_path, data))
         except (json.JSONDecodeError, OSError) as exc:
-            print(f"WARNING: Failed to parse {meta_path}: {exc}", file=sys.stderr)
+            corrupt.append((meta_path, str(exc)))
+
+    if corrupt:
+        details = "; ".join(f"{path}: {err}" for path, err in corrupt)
+        raise RuntimeError(
+            f"Corrupt or unreadable graph-metadata.json files detected "
+            f"({len(corrupt)} file(s)): {details}"
+        )
 
     return results
 

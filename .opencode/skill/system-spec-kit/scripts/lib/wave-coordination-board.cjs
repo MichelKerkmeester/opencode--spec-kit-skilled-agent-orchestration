@@ -487,6 +487,14 @@ function deriveBoardStatus(board) {
 function renderDashboard(board) {
   if (!board) return '# Wave Execution Dashboard\n\nNo board data available.\n';
 
+  // T117 FIX: Escape metadata values before injecting into markdown table cells.
+  // Unescaped pipe characters or backticks in board metadata can break table
+  // structure or inject arbitrary markdown content.
+  function esc(value) {
+    if (value == null) return '';
+    return String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+  }
+
   const lines = [];
 
   lines.push('# Wave Execution Dashboard');
@@ -499,12 +507,12 @@ function renderDashboard(board) {
   lines.push('');
   lines.push(`| Field | Value |`);
   lines.push(`|-------|-------|`);
-  lines.push(`| Session | ${board.sessionId || 'N/A'} |`);
-  lines.push(`| Generation | ${board.generation || 1} |`);
-  lines.push(`| Loop Type | ${board.loopType || 'N/A'} |`);
-  lines.push(`| Status | ${board.status || 'unknown'} |`);
-  lines.push(`| Target | ${board.target || 'N/A'} |`);
-  lines.push(`| Updated | ${board.updatedAt || 'N/A'} |`);
+  lines.push(`| Session | ${esc(board.sessionId) || 'N/A'} |`);
+  lines.push(`| Generation | ${esc(board.generation) || 1} |`);
+  lines.push(`| Loop Type | ${esc(board.loopType) || 'N/A'} |`);
+  lines.push(`| Status | ${esc(board.status) || 'unknown'} |`);
+  lines.push(`| Target | ${esc(board.target) || 'N/A'} |`);
+  lines.push(`| Updated | ${esc(board.updatedAt) || 'N/A'} |`);
   lines.push('');
 
   // Stats section
@@ -530,7 +538,7 @@ function renderDashboard(board) {
     lines.push(`| Segment | Status | Findings | Wave |`);
     lines.push(`|---------|--------|---------|------|`);
     for (const seg of board.segments) {
-      lines.push(`| ${seg.segmentId} | ${seg.status} | ${seg.findingCount || 0} | ${seg.waveId || '-'} |`);
+      lines.push(`| ${esc(seg.segmentId)} | ${esc(seg.status)} | ${seg.findingCount || 0} | ${esc(seg.waveId) || '-'} |`);
     }
     lines.push('');
   }
@@ -542,7 +550,7 @@ function renderDashboard(board) {
     lines.push(`| Finding | Segments | Severities | Resolution |`);
     lines.push(`|---------|----------|------------|------------|`);
     for (const conflict of board.conflicts) {
-      lines.push(`| ${conflict.findingId} | ${conflict.existingSegment} vs ${conflict.newSegment} | ${conflict.existingSeverity} vs ${conflict.newSeverity} | ${conflict.resolution} |`);
+      lines.push(`| ${esc(conflict.findingId)} | ${esc(conflict.existingSegment)} vs ${esc(conflict.newSegment)} | ${esc(conflict.existingSeverity)} vs ${esc(conflict.newSeverity)} | ${esc(conflict.resolution)} |`);
     }
     lines.push('');
   }
@@ -554,7 +562,7 @@ function renderDashboard(board) {
     lines.push(`| Finding | From | To | Segment |`);
     lines.push(`|---------|------|----|---------|`);
     for (const promo of board.promotions) {
-      lines.push(`| ${promo.findingId} | ${promo.fromSeverity} | ${promo.toSeverity} | ${promo.toSegment} |`);
+      lines.push(`| ${esc(promo.findingId)} | ${esc(promo.fromSeverity)} | ${esc(promo.toSeverity)} | ${esc(promo.toSegment)} |`);
     }
     lines.push('');
   }

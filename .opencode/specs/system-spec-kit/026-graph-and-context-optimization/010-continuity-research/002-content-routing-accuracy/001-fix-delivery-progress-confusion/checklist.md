@@ -1,6 +1,6 @@
 ---
 title: "Fix Delivery vs Progress Routing Confusion - Checklist"
-status: planned
+status: complete
 ---
 # Verification Checklist
 ## P0 (Blocking)

@@ -7,7 +7,7 @@ status: complete
 
 ## Approach
 
-Close the five review findings in the graph-metadata parser and backfill lane, then re-run the workspace typechecks, focused regression suites, full-corpus backfill, and packet-closeout updates for phases `001` through `004`.
+Close the five review findings in the graph-metadata parser and backfill lane, then re-run the workspace typechecks, focused regression suites, full-corpus backfill, and packet-closeout updates for phases `001` through `007`.
 
 ## Steps
 
@@ -15,7 +15,7 @@ Close the five review findings in the graph-metadata parser and backfill lane, t
 2. Update the backfill regression suite to the inclusive-default traversal behavior.
 3. Rebuild the `mcp_server` and `scripts` workspaces, then run the focused Vitest coverage and the full `node scripts/dist/graph/backfill-graph-metadata.js` regeneration pass.
 4. Confirm the final corpus returns `command-shaped key_files = 0`, `status outliers = 0`, `duplicateEntityNameGroups = 0`, and `legacyGraphMetadataFiles = 0`.
-5. Refresh root `019` and phases `001` through `004` so their packet status and completed-item evidence match the repaired runtime state.
+5. Refresh root `003` and phases `001` through `007` so their packet status and completed-item evidence match the repaired runtime state.
 
 ## Verification
 

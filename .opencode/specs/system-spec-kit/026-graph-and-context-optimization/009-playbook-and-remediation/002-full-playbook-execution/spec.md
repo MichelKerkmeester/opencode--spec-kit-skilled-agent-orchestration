@@ -149,6 +149,20 @@ Produce an execution-backed coverage report for the full playbook surface and th
 ---
 
 <!-- ANCHOR:questions -->
+---
+
+<!-- ANCHOR:nfr -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Execution-Artifact Sanitization
+
+- **NFR-AS01**: JSON/JSONL execution artifacts written to `scratch/manual-playbook-results/` must not contain raw API keys, bearer tokens, session cookies, or user credentials. The manual-playbook runner must strip or redact credential-shaped strings from handler response payloads before serializing results to disk.
+- **NFR-AS02**: Execution artifacts must not embed absolute host-local filesystem paths outside the repository root. Paths must be either repo-relative or anonymized.
+- **NFR-AS03**: Retained execution artifacts must be treated as untrusted input by downstream consumers (review reports, coverage dashboards). Parsers must validate JSON structure before extracting fields, and must not eval or template-interpolate raw artifact content.
+<!-- /ANCHOR:nfr -->
+
+---
+
 ## 10. OPEN QUESTIONS
 
 - None for the execution pass itself. Follow-on work belongs to remediation packets for the automated failures and the large manual `UNAUTOMATABLE` surface.

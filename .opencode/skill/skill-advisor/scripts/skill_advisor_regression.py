@@ -36,18 +36,21 @@ ADVISOR_PATH = os.path.join(SCRIPT_DIR, "skill_advisor.py")
 # ───────────────────────────────────────────────────────────────
 
 def load_advisor_module() -> Any:
-    """Load the advisor module from disk for regression checks."""
-    spec = importlib.util.spec_from_file_location("skill_advisor", ADVISOR_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Failed to load advisor module from {ADVISOR_PATH}")
+    """Load the advisor module from disk for regression checks.
 
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    Delegates to the canonical implementation in skill_advisor_bench to
+    avoid duplicating the same importlib loading logic in two harnesses.
+    """
+    from skill_advisor_bench import load_advisor_module as _load
+    return _load()
 
 
 def load_jsonl(path: str) -> List[Dict[str, Any]]:
-    """Load a JSONL dataset and surface line-numbered parse failures."""
+    """Load a JSONL dataset and surface line-numbered parse failures.
+
+    Validates that each row is an object with a non-empty ``prompt``
+    field, matching the same contract enforced by the bench harness.
+    """
     rows: List[Dict[str, Any]] = []
     with open(path, "r", encoding="utf-8") as handle:
         for line_number, raw in enumerate(handle, start=1):
@@ -55,9 +58,15 @@ def load_jsonl(path: str) -> List[Dict[str, Any]]:
             if not stripped:
                 continue
             try:
-                rows.append(json.loads(stripped))
+                row = json.loads(stripped)
             except json.JSONDecodeError as exc:
                 raise ValueError(f"Invalid JSONL at line {line_number}: {exc}") from exc
+            if not isinstance(row, dict):
+                raise ValueError(f"JSONL line {line_number}: expected object, got {type(row).__name__}")
+            prompt = row.get("prompt", "").strip() if isinstance(row.get("prompt"), str) else ""
+            if not prompt:
+                raise ValueError(f"JSONL line {line_number}: missing or empty 'prompt' field")
+            rows.append(row)
     return rows
 
 
@@ -127,7 +136,6 @@ def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         for item in results
         if item["expect_result"]
         and item["expected_top_any"]
-        and item["top"] is not None
     ]
     top1_correct = sum(1 for item in top1_cases if item["checks"]["top_ok"]) if top1_cases else 0
 

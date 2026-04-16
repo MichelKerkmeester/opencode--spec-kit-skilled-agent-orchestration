@@ -10,9 +10,9 @@ status: complete
 
 ## P1 (Should Fix)
 
-- [x] Command-shaped `key_files` entries = 0 after tightened filter. [EVIDENCE: post-backfill corpus scan across `.opencode/specs/**/*.json` returned `0` command-shaped `derived.key_files` values]
-- [x] Backfill test passes 3/3. [EVIDENCE: `NODE_PATH=./mcp_server/node_modules ./mcp_server/node_modules/.bin/vitest run scripts/tests/graph-metadata-backfill.vitest.ts`]
-- [x] Root 019 + sub-phases 001-004 status and closeout docs refreshed to match the repaired parser/runtime state. [EVIDENCE: root 019 closeout docs plus refreshed 001-004 packet statuses, completed checklist items, and new 004 retirement docs]
+- [x] Command-shaped `key_files` entries = 0 after tightened filter. [EVIDENCE: corpus scan across `.opencode/specs/**/*.json` returned `0` command-shaped `derived.key_files` values (validated during 010/003 implementation)]
+- [x] Graph-metadata validation test passes 3/3. [EVIDENCE: `NODE_PATH=./mcp_server/node_modules ./mcp_server/node_modules/.bin/vitest run scripts/tests/graph-metadata-backfill.vitest.ts` (test file retains backfill-era name)]
+- [x] Root 003 + sub-phases 001-007 status and closeout docs refreshed to match the repaired parser/runtime state. [EVIDENCE: root 003 closeout docs plus refreshed 001-007 packet statuses, completed checklist items, and the retired 004 closeout docs]
 
 ## P2 (Advisory)
 

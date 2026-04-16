@@ -41,7 +41,7 @@ MCP Code Mode is the mandatory execution layer for all external MCP tool calls. 
 
 Code Mode applies to tools configured in `.utcp_config.json`: ClickUp, Figma, Webflow, Notion, Chrome DevTools, and any other external MCP servers. It does not apply to native MCP tools such as Spec Kit Memory, Sequential Thinking, or CocoIndex Code, which are called directly. This boundary is strict: using Code Mode for native tools wastes overhead, and bypassing Code Mode for external tools causes context exhaustion.
 
-The skill covers four native tools exposed by the Code Mode MCP server: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns all registered tool names, and `tool_info` returns the TypeScript interface for a specific tool. Together these four tools replace what would otherwise be 200+ individual tool definitions loaded upfront.
+The skill covers seven native tools exposed by the Code Mode MCP server: `call_tool_chain` executes arbitrary TypeScript with tool access, `search_tools` finds relevant tools by description, `list_tools` returns all registered tool names, `tool_info` returns the TypeScript interface for a specific tool, `get_required_keys_for_tool` checks required environment variables, `register_manual` adds a server at runtime, and `deregister_manual` removes one. Together these seven tools replace what would otherwise be 200+ individual tool definitions loaded upfront.
 
 When Code Mode work hands back into a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, while generated memory artifacts stay supporting only.
 
@@ -149,7 +149,7 @@ Environment variable handling has one non-obvious rule. Code Mode prefixes all e
 
 ### 3.2 FEATURE REFERENCE
 
-**Native Tools (4 total)**
+**Native Tools (7 total)**
 
 | Tool | Purpose | Typical Response Time |
 |------|---------|----------------------|
@@ -157,6 +157,9 @@ Environment variable handling has one non-obvious rule. Code Mode prefixes all e
 | `search_tools` | Find tools by natural language description | Under 100ms |
 | `list_tools` | Return all registered tool names | Under 50ms |
 | `tool_info` | Return TypeScript interface for a tool | Under 50ms |
+| `get_required_keys_for_tool` | Check required environment variables for a tool | Under 50ms |
+| `register_manual` | Register an MCP server at runtime | Under 100ms |
+| `deregister_manual` | Remove a registered MCP server | Under 50ms |
 
 **call_tool_chain Parameters**
 

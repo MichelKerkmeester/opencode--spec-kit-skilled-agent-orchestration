@@ -379,13 +379,13 @@ When the query intent is semantic (find code by concept, understand implementati
 
 | Agent        | File                             | Relationship                                                               |
 | ------------ | -------------------------------- | -------------------------------------------------------------------------- |
-| Orchestrator | `.opencode/agent/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
+| Orchestrator | `.claude/agents/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
 
 ### Complementary Agents
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
+| @deep-research | `.claude/agents/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | Spec authoring | Distributed governance | Spec documentation uses @context findings through the main-agent governance flow |
 

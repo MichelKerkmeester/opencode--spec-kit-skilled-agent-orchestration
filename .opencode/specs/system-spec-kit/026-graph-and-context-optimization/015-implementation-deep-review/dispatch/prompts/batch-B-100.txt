@@ -1,0 +1,64 @@
+You are an IMPLEMENTATION agent for batch B-100 (Phase 8).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-100
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 8 — P1 test fixes: coverage_gaps, reducer, content-router, intent-classifier, reconsolidation
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+360:- [ ] T210 [P1] Fix `coverage_gaps` reporting wrong thing for review graphs (S3.6#1 iter 2)
+361:- [ ] T211 [P1] Fix deep-review reducer dropping `blendedScore` from convergence (S3.6#2 iter 3)
+362:- [ ] T212 [P1] Fix content-router cache test not varying context fields (S3.6#3 iter 9)
+363:- [ ] T213 [P1] Fix intent-classifier accuracy gate excluding 2 of 7 intents (S3.6#4 iter 32, S3.6#9 iter 48)
+364:- [ ] T214 [P1] Fix `reconsolidation-bridge.vitest.ts` not testing planner-default safety branch (S3.6#5 iter 33)
+365:- [ ] T215 [P1] Fix archived constitutional filtering test hard-coding broken behavior (S3.6#6 iter 34)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.6#1
+S3.6#2
+S3.6#3
+S3.6#4
+S3.6#5
+S3.6#6
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-signals.vitest.ts
+.opencode/skill/sk-deep-review/scripts/reduce-state.cjs
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router-cache.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation-bridge.vitest.ts
+.opencode/skill/system-spec-kit/mcp_server/tests/constitutional-filtering.vitest.ts
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-069
+CHK-070
+CHK-071
+CHK-072
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+2. npx vitest run /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/coverage-graph-signals.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-router-cache.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation-bridge.vitest.ts /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/constitutional-filtering.vitest.ts
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-100-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.

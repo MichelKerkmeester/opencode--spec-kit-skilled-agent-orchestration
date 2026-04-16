@@ -295,4 +295,73 @@ describe('deep-research reducer', () => {
     expect(dashboard).toContain('- continuedFromRun: 2');
     expect(dashboard).toContain('- stopReason: plateau');
   });
+
+  // ─── T241: Parseable schema corruption ──────────────────────
+
+  it('T241: handles JSONL with parseable but schema-corrupt iteration entries', () => {
+    // Finding #24: The existing tests only cover completely invalid JSON
+    // (unparseable lines). They never exercise entries that are valid JSON
+    // but violate the expected iteration schema (missing required fields,
+    // wrong types, null where numbers expected).
+    const specFolder = makeFixtureSpecFolder();
+    writeFile(
+      path.join(specFolder, 'research', 'deep-research-state.jsonl'),
+      [
+        '{"type":"config","topic":"Corruption test","maxIterations":5,"convergenceThreshold":0.05,"createdAt":"2026-04-03T00:00:00Z","specFolder":"fixture"}',
+        // Schema-corrupt iteration: missing 'focus', 'findingsCount' is string not number,
+        // answeredQuestions is null instead of array, missing sourcesQueried
+        '{"type":"iteration","run":1,"status":"complete","findingsCount":"not-a-number","newInfoRatio":0.8,"answeredQuestions":null,"keyQuestions":["Q1"],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:05:00Z","durationMs":1000}',
+        // Iteration with run=null
+        '{"type":"iteration","run":null,"status":"complete","focus":"Null run","findingsCount":1,"newInfoRatio":0.5,"answeredQuestions":[],"keyQuestions":["Q2"],"sourcesQueried":[],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:10:00Z","durationMs":500}',
+        // Valid iteration to ensure at least one processes correctly
+        '{"type":"iteration","run":2,"status":"complete","focus":"Valid pass","findingsCount":1,"newInfoRatio":0.3,"answeredQuestions":["Q1"],"keyQuestions":["Q1"],"sourcesQueried":["src/a.ts"],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:15:00Z","durationMs":800}',
+        '',
+      ].join('\n'),
+    );
+
+    // The reducer should not crash on schema-corrupt entries
+    const result = reducerModule.reduceResearchState(specFolder, { write: true });
+    expect(result).toBeTruthy();
+    expect(result.registry).toBeTruthy();
+    // At least the valid iteration should be counted
+    expect(result.registry.metrics.iterationsCompleted).toBeGreaterThanOrEqual(1);
+  });
+
+  it('T241: handles iteration with convergenceSignals as corrupt object', () => {
+    const specFolder = makeFixtureSpecFolder();
+    writeFile(
+      path.join(specFolder, 'research', 'deep-research-state.jsonl'),
+      [
+        '{"type":"config","topic":"Signal corruption test","maxIterations":5,"convergenceThreshold":0.05,"createdAt":"2026-04-03T00:00:00Z","specFolder":"fixture"}',
+        // convergenceSignals.compositeStop is a string instead of number
+        '{"type":"iteration","run":1,"status":"complete","focus":"First","findingsCount":1,"newInfoRatio":0.5,"answeredQuestions":["Q1"],"keyQuestions":["Q1"],"sourcesQueried":["a.ts"],"toolsUsed":["Read"],"convergenceSignals":{"compositeStop":"not-a-number"},"timestamp":"2026-04-03T00:05:00Z","durationMs":1000}',
+        '',
+      ].join('\n'),
+    );
+
+    // Should not crash
+    const result = reducerModule.reduceResearchState(specFolder, { write: true });
+    expect(result).toBeTruthy();
+    expect(result.registry.metrics.iterationsCompleted).toBeGreaterThanOrEqual(1);
+  });
+
+  it('T241: handles empty type field in JSONL entry', () => {
+    const specFolder = makeFixtureSpecFolder();
+    writeFile(
+      path.join(specFolder, 'research', 'deep-research-state.jsonl'),
+      [
+        '{"type":"config","topic":"Empty type test","maxIterations":5,"convergenceThreshold":0.05,"createdAt":"2026-04-03T00:00:00Z","specFolder":"fixture"}',
+        // Entry with empty type string
+        '{"type":"","run":1,"status":"complete"}',
+        // Entry with unknown type
+        '{"type":"unknown_event_type","data":"ignored"}',
+        '{"type":"iteration","run":1,"status":"complete","focus":"Valid","findingsCount":1,"newInfoRatio":0.5,"answeredQuestions":[],"keyQuestions":["Q1"],"sourcesQueried":["a.ts"],"toolsUsed":["Read"],"timestamp":"2026-04-03T00:05:00Z","durationMs":800}',
+        '',
+      ].join('\n'),
+    );
+
+    const result = reducerModule.reduceResearchState(specFolder, { write: true });
+    expect(result).toBeTruthy();
+    expect(result.registry.metrics.iterationsCompleted).toBeGreaterThanOrEqual(1);
+  });
 });

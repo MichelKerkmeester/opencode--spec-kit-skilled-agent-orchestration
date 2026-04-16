@@ -259,7 +259,7 @@ When CLI is unavailable or enterprise features needed.
 
 1. Code Mode configured in `.utcp_config.json`
 2. ClickUp MCP server registered: `@taazkareem/clickup-mcp-server`
-3. Environment variables: `CLICKUP_API_KEY`, `CLICKUP_TEAM_ID`
+3. Environment variables: `CODEMODE_CLICKUP_API_KEY`, `CODEMODE_CLICKUP_TEAM_ID` (Code Mode prefixed)
 
 #### Invocation Pattern
 

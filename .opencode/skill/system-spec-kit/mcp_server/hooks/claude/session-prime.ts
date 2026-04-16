@@ -114,7 +114,19 @@ export function handleStartup(
 ): OutputSection[] {
   const sessionId = typeof input.session_id === 'string' ? input.session_id : undefined;
   const requestedSpecFolder = typeof input.specFolder === 'string' ? input.specFolder : undefined;
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  let startupBrief: StartupBrief | null = null;
+  try {
+    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  } catch (err: unknown) {
+    hookLog('error', 'session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  if (!buildStartupBrief) {
+    hookLog('warn', 'session-prime', 'Startup brief module unavailable — using fallback surface');
+  } else if (!startupBrief) {
+    hookLog('warn', 'session-prime', 'buildStartupBrief returned null — possible startup-brief regression');
+  } else if (!startupBrief.startupSurface) {
+    hookLog('warn', 'session-prime', 'startupBrief.startupSurface is empty — possible startup-brief regression');
+  }
   const cachedSummaryDecision = getCachedSessionSummaryDecision({
     specFolder: requestedSpecFolder,
     claudeSessionId: sessionId,
@@ -203,6 +215,19 @@ function handleClear(): OutputSection[] {
   ];
 }
 
+function writeHookOutput(output: string): Promise<void> {
+  return new Promise<void>((resolvePromise, rejectPromise) => {
+    process.stdout.write(output, (error) => {
+      if (error) {
+        rejectPromise(error);
+        return;
+      }
+
+      resolvePromise();
+    });
+  });
+}
+
 async function main(): Promise<void> {
   ensureStateDir();
 
@@ -254,9 +279,9 @@ async function main(): Promise<void> {
   const output = truncateToTokenBudget(formatHookOutput(sections), adjustedBudget);
 
   // Write to stdout for Claude Code to inject into conversation.
-  // Clear compact payload only AFTER stdout write succeeds to prevent
-  // data loss if the process crashes between clear and write.
-  process.stdout.write(output);
+  // Clear compact payload only after the write callback confirms the
+  // output was handed off, so compact recovery cannot be dropped early.
+  await writeHookOutput(output);
   if (source === 'compact') {
     clearCompactPrime(sessionId);
   }

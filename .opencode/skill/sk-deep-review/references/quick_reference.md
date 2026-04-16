@@ -86,8 +86,8 @@ Review mode stores its packet under `{spec_folder}/review/`:
 |------|--------|
 | `resume` | Continue the current review lineage without resetting generation |
 | `restart` | Archive current review state and start a new generation |
-| `fork` | Start a sibling lineage branch with explicit parent linkage |
-| `completed-continue` | Snapshot the completed review and reopen it for amendment-only review deltas |
+| `fork` (deferred) | Reserved. Start a sibling lineage branch with explicit parent linkage. Not runtime-wired. |
+| `completed-continue` (deferred) | Reserved. Snapshot the completed review and reopen it for amendment-only review deltas. Not runtime-wired. |
 
 ---
 

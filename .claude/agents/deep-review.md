@@ -145,45 +145,50 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 
 #### Step 5: Write Findings
 
-Create `review/iterations/iteration-NNN.md`. Use exactly one canonical template. The reducer at `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs:202` reads only the heading plus these exact sections: `## Focus`, `## Findings`, `## Ruled Out`, `## Dead Ends`, `## Recommended Next Focus`, and `## Assessment`. Inside `## Findings`, use only `### P0`, `### P1`, and `### P2`, with bullets of the form `- **FNNN**: Title — file:line — Description`. Do not add alternate skeletons or rename sections.
+Create `review/iterations/iteration-NNN.md`. Use exactly one canonical template. The reducer at `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs` reads both the legacy section names (`## Focus`, `## Findings`, `## Ruled Out`, `## Dead Ends`, `## Recommended Next Focus`, `## Assessment`) and the live section names below. Inside findings, use `### P0 Findings`, `### P1 Findings`, and `### P2 Findings` subsections. Findings use numbered bullets of the form `N. **Title** — file:line — Description`, each followed by a claim-adjudication JSON block for P0/P1.
 
 ```markdown
-# Iteration [N]: [Focus label, e.g. "Correctness contracts on review loop runtime"]
+# Iteration [N] - [dimension] - [focus area]
 
-## Focus
-[1–3 sentences describing the dimension, files, and scope investigated this iteration.]
+## Dispatcher
+- iteration: [N] of [max]
+- dispatcher: [runtime identity]
+- timestamp: [ISO-8601]
 
-## Findings
+## Files Reviewed
+- [path/to/file1]
+- [path/to/file2]
 
-### P0
-- **F001**: [Title] — `file:line` — [Description with file:line evidence and why it blocks release]
+## Findings - New
+### P0 Findings
+- None.
 
-### P1
-- **F002**: [Title] — `file:line` — [Description]
-
-### P2
-- **F003**: [Title] — `file:line` — [Description]
-
-> Use sequential finding IDs across the whole session (iteration 2 starts at F00K where K = last F-id used in iteration 1). The reducer deduplicates on the `FNNN` prefix, so collisions are silent.
-> For every P0/P1 finding, also emit a typed claim-adjudication packet (schema in state_format.md §9 and loop_protocol.md Step 4a) so `step_post_iteration_claim_adjudication` can validate it. A missing or malformed packet vetoes STOP via the `claimAdjudicationGate` on the next convergence check.
+### P1 Findings
+1. **[Title]** — `file:line`, `file2:line` — [Description with evidence and impact]
 
 ```json
-{"type":"claim-adjudication","findingId":"F002","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0","confidence":0.9,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
+{
+  "claim": "One-sentence statement of the finding being adjudicated.",
+  "evidenceRefs": ["path/to/file:line"],
+  "counterevidenceSought": "What contradictory evidence was checked.",
+  "alternativeExplanation": "Plausible non-bug explanation considered.",
+  "finalSeverity": "P1",
+  "confidence": 0.90,
+  "downgradeTrigger": "What evidence would justify downgrading."
+}
 ```
 
-## Ruled Out
-- [Approach]: [Why] — [file:line evidence]
+### P2 Findings
+- None.
 
-## Dead Ends
-- [Direction]: [Why the current evidence does not justify escalation]
+## Traceability Checks
+- [Protocol]: [pass|partial|fail] — [evidence]
 
-## Recommended Next Focus
+## Confirmed-Clean Surfaces
+- [File or area confirmed clean with reasoning]
+
+## Next Focus
 [What the next iteration should investigate. Rotate dimensions unless the current dimension is still incomplete.]
-
-## Assessment
-- New findings ratio: [0.XX]
-- Dimensions addressed: [list]
-- Novelty justification: [1 sentence]
 ```
 
 #### Step 6: Update Strategy

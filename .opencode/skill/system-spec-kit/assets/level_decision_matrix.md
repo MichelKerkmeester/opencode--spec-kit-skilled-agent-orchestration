@@ -234,9 +234,9 @@ The spec validation system (`validate.sh`) checks documentation quality using th
 
 **ANCHORS_VALID**
 - Purpose: Validates that generated continuity artifacts have balanced ANCHOR open/close pairs
-- Applies to: All levels with `memory/` folders
+- Applies to: All levels (anchors in `implementation-summary.md` and other spec docs)
 - Severity: warning (default)
-- Details: Each `<!-- ANCHOR: id -->` must have matching `<!-- /ANCHOR: id -->`. Unbalanced anchors break semantic memory indexing.
+- Details: Each `<!-- ANCHOR: id -->` must have matching `<!-- /ANCHOR: id -->`. Unbalanced anchors break semantic indexing of canonical spec docs.
 
 **CHECKLIST_HAS_ITEMS**
 - Purpose: Ensures checklist.md contains actual checklist items, not just template structure

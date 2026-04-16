@@ -123,3 +123,105 @@ describe('handleMemoryList Edge Cases (T006)', () => {
     expect(typeof getDetails(parsed)?.requestId).toBe('string');
   });
 });
+
+/* ───────────────────────────────────────────────────────────────
+   T245: Filter interaction coverage for handleMemoryList
+   Finding #31: handler-memory-list-edge.vitest.ts only exercises
+   sort/limit/offset/specFolder behavior, missing filter interactions
+   like combined specFolder + sortBy, specFolder + limit, and
+   specFolder filtering actually reducing the result set.
+──────────────────────────────────────────────────────────────── */
+
+describe('handleMemoryList Filter Interactions (T245)', () => {
+  beforeEach(async () => {
+    // Seed the in-memory DB with records from two different spec folders
+    vectorIndex.indexMemoryDeferred({
+      specFolder: 'specs/001-auth',
+      filePath: 'auth-design.md',
+      title: 'Auth Design',
+      encodingIntent: 'document',
+    });
+    vectorIndex.indexMemoryDeferred({
+      specFolder: 'specs/001-auth',
+      filePath: 'auth-impl.md',
+      title: 'Auth Implementation',
+      encodingIntent: 'document',
+    });
+    vectorIndex.indexMemoryDeferred({
+      specFolder: 'specs/002-billing',
+      filePath: 'billing-design.md',
+      title: 'Billing Design',
+      encodingIntent: 'document',
+    });
+  });
+
+  it('T245-FI1: specFolder filter reduces results to matching folder only', async () => {
+    const allResults = parseResponse(await handler.handleMemoryList({ limit: 100 }));
+    const authResults = parseResponse(
+      await handler.handleMemoryList({ specFolder: 'specs/001-auth', limit: 100 }),
+    );
+
+    expect(allResults.data.total).toBeGreaterThan(authResults.data.total);
+    // All returned results should be from the auth spec folder
+    for (const row of authResults.data.results as Array<{ specFolder?: string }>) {
+      if (row.specFolder) {
+        expect(row.specFolder).toBe('specs/001-auth');
+      }
+    }
+  });
+
+  it('T245-FI2: specFolder + limit combined respects both constraints', async () => {
+    const result = parseResponse(
+      await handler.handleMemoryList({ specFolder: 'specs/001-auth', limit: 1 }),
+    );
+
+    expect(result.data.limit).toBe(1);
+    expect(result.data.results.length).toBeLessThanOrEqual(1);
+  });
+
+  it('T245-FI3: specFolder + sortBy updated_at returns ordered results', async () => {
+    const result = parseResponse(
+      await handler.handleMemoryList({
+        specFolder: 'specs/001-auth',
+        sortBy: 'updated_at',
+      }),
+    );
+
+    expect(result.data.sortBy).toBe('updated_at');
+    expect(Array.isArray(result.data.results)).toBe(true);
+  });
+
+  it('T245-FI4: specFolder + offset skips records correctly', async () => {
+    const page1 = parseResponse(
+      await handler.handleMemoryList({ specFolder: 'specs/001-auth', limit: 1, offset: 0 }),
+    );
+    const page2 = parseResponse(
+      await handler.handleMemoryList({ specFolder: 'specs/001-auth', limit: 1, offset: 1 }),
+    );
+
+    if (page1.data.total > 1) {
+      // If there are multiple records, pages should differ
+      const page1Files = (page1.data.results as Array<{ filePath: string }>).map(r => r.filePath);
+      const page2Files = (page2.data.results as Array<{ filePath: string }>).map(r => r.filePath);
+      expect(page1Files).not.toEqual(page2Files);
+    }
+  });
+
+  it('T245-FI5: non-existent specFolder returns zero results', async () => {
+    const result = parseResponse(
+      await handler.handleMemoryList({ specFolder: 'specs/999-nonexistent' }),
+    );
+
+    expect(result.data.total).toBe(0);
+    expect(result.data.results).toEqual([]);
+  });
+
+  it('T245-FI6: sortBy importance_weight is a valid sort column', async () => {
+    const result = parseResponse(
+      await handler.handleMemoryList({ sortBy: 'importance_weight' }),
+    );
+
+    expect(result.data.sortBy).toBe('importance_weight');
+    expect(Array.isArray(result.data.results)).toBe(true);
+  });
+});

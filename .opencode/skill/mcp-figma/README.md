@@ -150,6 +150,8 @@ The collaboration tools cover the full comment lifecycle. You can read all comme
 
 ### 3.2 FEATURE REFERENCE
 
+&nbsp;
+
 #### Tool Categories
 
 | Category | Tools | Priority |
@@ -161,6 +163,8 @@ The collaboration tools cover the full comment lifecycle. You can read all comme
 | Team and Projects | `get_team_projects`, `get_project_files` | MEDIUM |
 | Comments | `get_comments`, `post_comment`, `delete_comment` | MEDIUM / LOW |
 
+&nbsp;
+
 #### High-Priority Tools (5 tools)
 
 | Tool | Purpose | Required Parameters |
@@ -171,6 +175,8 @@ The collaboration tools cover the full comment lifecycle. You can read all comme
 | `figma_get_file_components` | All components in file | `fileKey` |
 | `figma_get_file_styles` | All styles in file | `fileKey` |
 
+&nbsp;
+
 #### Export Format Options
 
 | Format | Use Case | Notes |
@@ -179,6 +185,8 @@ The collaboration tools cover the full comment lifecycle. You can read all comme
 | `jpg` | Photos, large backgrounds | Smaller file size than PNG |
 | `svg` | Icons, vector assets | Supports `svg_include_id` option |
 | `pdf` | Print-ready exports | Full page layout |
+
+&nbsp;
 
 #### Pagination Parameters (team tools)
 

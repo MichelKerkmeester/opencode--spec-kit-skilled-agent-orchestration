@@ -1,0 +1,88 @@
+You are an IMPLEMENTATION agent for batch B-030 (Phase 1).
+
+REPO: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+BRANCH: remedy/B-030
+MODE: WRITE — you MUST modify code and documents to fix the findings below.
+CONTEXT: This batch is part of the remediation of 243 findings from a 120-iteration deep review of the OpenCode SpecKit system. You are fixing real bugs, stale references, and quality gaps found by GPT-5.4 and Claude Opus 4.6 reviewers.
+
+WORKSTREAM: Phase 1 — Status drift cleanup: packets 009 + 010 docs
+
+=== CRITICAL RULES ===
+1. Read each target file BEFORE modifying it
+2. ONLY modify files listed in TARGET FILES below
+3. Do NOT create new files unless a task explicitly requires it (e.g., new test files)
+4. Do NOT run git commit — the orchestrator handles commits
+5. Do NOT modify any files under dispatch/ or review/
+6. After ALL changes, run the verification commands below
+7. Fix ALL tasks listed — do not skip any
+
+=== TASKS ===
+102:- [ ] T030 [P1] [P] Fix 009/003 contradictory completion status across spec.md, plan.md, graph-metadata.json (S3.3#1 iter 1)
+103:- [ ] T031 [P1] [P] Fix 009/001 closed-as-complete while required checklist item still open (S3.3#9 iter 32)
+104:- [ ] T032 [P2] [P] Fix 009/003 fragmented closeout evidence across task/checklist surfaces (S3.3#16 iter 34)
+105:- [ ] T033 [P2] [P] Fix 009/003 missing single closeout narrative surface (S3.3#18 iter 38)
+109:- [ ] T034 [P1] [P] Fix 010/002 child phases 001-003 `planned` status after delivery (S3.3#2 iter 3)
+110:- [ ] T035 [P1] [P] Fix 010/003 closeout docs pointing at wrong root packet (S3.3#3 iter 6)
+111:- [ ] T036 [P1] [P] Fix 010/003 child packets 006/007 `planned` after closure (S3.3#4 iter 11)
+112:- [ ] T037 [P1] [P] Fix 010/001 child packets leaving plan.md in `planned` after closeout (S3.3#5 iter 13)
+113:- [ ] T038 [P1] [P] Fix 010/002 phases 005/006 still advertising `planned` (S3.3#6 iter 27, S3.3#10 iter 35)
+114:- [ ] T039 [P2] [P] Fix 010/002/005 resolved security-boundary questions still phrased as open (S3.3#14 iter 23)
+115:- [ ] T040 [P2] [P] Fix 010/003 root closeout evidence not tracing full child set (S3.3#15 iter 33)
+116:- [ ] T041 [P2] [P] Fix sampled complete 010 child summaries with template placeholders (S3.3#21 iter 42)
+117:- [ ] T042 [P2] [P] Fix 010/001 `planned` status due to bundled Codex mirror sync (S3.3#19 iter 39)
+118:- [ ] T043 [P2] [P] Fix placeholder closeout metadata (`closed_by_commit: TBD`) across 010 phases (S3.3#26 iter 47)
+
+
+=== FINDING REFERENCES ===
+Tasks reference findings from the review report using S3.X#Y notation:
+S3.3#1
+S3.3#2
+S3.3#3
+S3.3#4
+S3.3#5
+S3.3#6
+S3.3#9
+S3.3#10
+S3.3#14
+S3.3#15
+S3.3#16
+S3.3#18
+S3.3#19
+S3.3#21
+S3.3#26
+
+For full finding details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/review/review-report.md
+Search for the S3.X section headers (e.g., "### 3.1." for S3.1) and find the numbered findings.
+
+=== TARGET FILES (ONLY modify these) ===
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/plan.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/graph-metadata.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/graph-metadata.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/plan.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/graph-metadata.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/plan.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/graph-metadata.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/plan.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/graph-metadata.json
+
+=== CHECKLIST ITEMS TO SATISFY ===
+CHK-018
+CHK-019
+CHK-020
+
+For checklist details, read: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/checklist.md
+
+=== VERIFICATION ===
+After making ALL changes, run these verification commands:
+1. cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit
+3. Report pass/fail for each step in your final output.
+
+=== OUTPUT ===
+When done, create a brief summary at: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review/dispatch/logs/batch-B-030-summary.md
+Include: tasks attempted, tasks completed, files modified, verification results.
