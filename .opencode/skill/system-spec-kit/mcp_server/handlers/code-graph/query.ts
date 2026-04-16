@@ -38,9 +38,31 @@ const SUPPORTED_EDGE_TYPES = [
 ] as const satisfies readonly EdgeType[];
 
 const SUPPORTED_EDGE_TYPE_SET = new Set<string>(SUPPORTED_EDGE_TYPES);
+const SUPPORTED_RELATIONSHIP_OPERATIONS = [
+  'calls_from',
+  'calls_to',
+  'imports_from',
+  'imports_to',
+] as const;
+const SUPPORTED_RELATIONSHIP_OPERATION_SET = new Set<string>(SUPPORTED_RELATIONSHIP_OPERATIONS);
 
 function isSupportedEdgeType(edgeType: string): edgeType is EdgeType {
   return SUPPORTED_EDGE_TYPE_SET.has(edgeType);
+}
+
+function isSupportedRelationshipOperation(
+  operation: string,
+): operation is (typeof SUPPORTED_RELATIONSHIP_OPERATIONS)[number] {
+  return SUPPORTED_RELATIONSHIP_OPERATION_SET.has(operation);
+}
+
+function buildUnknownOperationResponse(operation: string) {
+  return {
+    content: [{
+      type: 'text' as const,
+      text: JSON.stringify({ status: 'error', error: `Unknown operation: ${operation}` }),
+    }],
+  };
 }
 
 function resolveRequestedEdgeType(args: QueryArgs): { edgeType?: EdgeType; error?: string } {
@@ -459,6 +481,10 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     };
   }
 
+  if (!isSupportedRelationshipOperation(operation)) {
+    return buildUnknownOperationResponse(operation);
+  }
+
   const symbolId = resolveSubject(subject);
   if (!symbolId) {
     return {
@@ -601,7 +627,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
       break;
     }
     default:
-      return { content: [{ type: 'text', text: JSON.stringify({ status: 'error', error: `Unknown operation: ${operation}` }) }] };
+      return buildUnknownOperationResponse(operation);
   }
 
   return {

@@ -141,6 +141,22 @@ describe('code-graph-query handler', () => {
     expect(mocks.queryEdgesFrom).toHaveBeenCalledWith('symbol-1', 'OVERRIDES');
   });
 
+  it('rejects unsupported operations before transitive traversal begins', async () => {
+    const result = await handleCodeGraphQuery({
+      operation: 'unknown_operation' as never,
+      subject: 'SomeSymbol',
+      includeTransitive: true,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed).toEqual({
+      status: 'error',
+      error: 'Unknown operation: unknown_operation',
+    });
+    expect(mocks.queryEdgesFrom).not.toHaveBeenCalled();
+    expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
+  });
+
   it('adds nested edge evidence metadata without collapsing trust axes', async () => {
     mocks.queryEdgesFrom.mockReturnValue([
       {
