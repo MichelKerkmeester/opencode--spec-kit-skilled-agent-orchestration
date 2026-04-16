@@ -16,9 +16,12 @@ import { buildStructuralBootstrapContract } from '../lib/session/session-snapsho
 import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 import type { QualityScore } from '../lib/session/context-metrics.js';
 import {
+  buildStructuralContextTrust,
   createSharedPayloadEnvelope,
   trustStateFromStructuralStatus,
   type SharedPayloadEnvelope,
+  type SharedPayloadSection,
+  type SharedPayloadTrustState,
 } from '../lib/context/shared-payload.js';
 import {
   buildCodeGraphOpsContract,
@@ -31,6 +34,7 @@ import type { MCPResponse } from '@spec-kit/shared/types';
 ──────────────────────────────────────────────────────────────── */
 
 type SessionStatus = 'ok' | 'warning' | 'stale';
+type SessionHealthSectionTrustState = Extract<SharedPayloadTrustState, 'live' | 'stale'> | 'absent' | 'unavailable';
 
 interface SessionHealthDetails {
   sessionAgeMs: number;
@@ -40,10 +44,24 @@ interface SessionHealthDetails {
   primingStatus: 'primed' | 'not_primed';
 }
 
+interface SessionHealthSectionStructuralTrust {
+  state: SessionHealthSectionTrustState;
+  trustedAt: string;
+}
+
+interface SessionHealthSection {
+  key: string;
+  title: string;
+  content: string;
+  source: SharedPayloadSection['source'];
+  structuralTrust: SessionHealthSectionStructuralTrust;
+}
+
 interface SessionHealthResult {
   status: SessionStatus;
   details: SessionHealthDetails;
   qualityScore: QualityScore;
+  sections: SessionHealthSection[];
   structuralContext?: StructuralBootstrapContract;
   payloadContract?: SharedPayloadEnvelope;
   graphOps?: CodeGraphOpsContract;
@@ -57,6 +75,36 @@ interface SessionHealthResult {
 const FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
 const SIXTY_MINUTES_MS = 60 * 60 * 1000;
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+
+function getSessionSectionTrustState(status: SessionStatus): SessionHealthSectionTrustState {
+  return status === 'ok' ? 'live' : 'stale';
+}
+
+function getGraphSectionTrustState(
+  graphFreshness: SessionHealthDetails['graphFreshness'],
+): SessionHealthSectionTrustState {
+  if (graphFreshness === 'fresh') {
+    return 'live';
+  }
+  if (graphFreshness === 'stale') {
+    return 'stale';
+  }
+  if (graphFreshness === 'empty') {
+    return 'absent';
+  }
+  return 'unavailable';
+}
+
+function createSectionStructuralTrust(
+  state: SessionHealthSectionTrustState,
+  trustedAt: string | null | undefined,
+  observedAt: string,
+): SessionHealthSectionStructuralTrust {
+  return {
+    state,
+    trustedAt: trustedAt ?? observedAt,
+  };
+}
 
 /* ───────────────────────────────────────────────────────────────
    3. HANDLER
@@ -103,6 +151,7 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
 
   const sessionAgeMs = now - serverStartedAt;
   const lastToolCallAgoMs = now - lastToolCallAt;
+  const observedAt = new Date(now).toISOString();
 
   // Status determination logic
   let status: SessionStatus;
@@ -132,6 +181,9 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
 
   // Phase 023: Compute quality score from context metrics
   const qualityScore = computeQualityScore();
+  const payloadStructuralTrust = buildStructuralContextTrust(structuralContext);
+  const sessionHealthContent = `status=${status}; priming=${primed ? 'primed' : 'not_primed'}; graph=${graphFreshness}; specFolder=${specFolder ?? 'none'}`;
+  const qualityScoreContent = `level=${qualityScore.level}; score=${qualityScore.score}`;
 
   const payloadContract = createSharedPayloadEnvelope({
     kind: 'health',
@@ -139,13 +191,13 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
       {
         key: 'session-health',
         title: 'Session Health',
-        content: `status=${status}; priming=${primed ? 'primed' : 'not_primed'}; graph=${graphFreshness}; specFolder=${specFolder ?? 'none'}`,
+        content: sessionHealthContent,
         source: 'session',
       },
       {
         key: 'quality-score',
         title: 'Quality Score',
-        content: `level=${qualityScore.level}; score=${qualityScore.score}`,
+        content: qualityScoreContent,
         source: 'operational',
       },
       {
@@ -153,6 +205,7 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
         title: 'Structural Context',
         content: structuralContext.summary,
         source: 'code-graph',
+        structuralTrust: payloadStructuralTrust,
       },
     ],
     summary: `Session health is ${status}; graph freshness is ${graphFreshness}; structural status is ${structuralContext.status}`,
@@ -169,6 +222,51 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
     graphFreshness,
     sourceSurface: 'session_health',
   });
+  const sessionTrustedAt = new Date(lastToolCallAt).toISOString();
+  const graphTrustedAt = structuralContext.provenance?.lastUpdated ?? observedAt;
+  const graphSectionTrustState = getGraphSectionTrustState(graphFreshness);
+  const sections: SessionHealthSection[] = [
+    {
+      key: 'session-health',
+      title: 'Session Health',
+      content: sessionHealthContent,
+      source: 'session',
+      structuralTrust: createSectionStructuralTrust(
+        getSessionSectionTrustState(status),
+        sessionTrustedAt,
+        observedAt,
+      ),
+    },
+    {
+      key: 'quality-score',
+      title: 'Quality Score',
+      content: qualityScoreContent,
+      source: 'operational',
+      structuralTrust: createSectionStructuralTrust('live', observedAt, observedAt),
+    },
+    {
+      key: 'structural-context',
+      title: 'Structural Context',
+      content: structuralContext.summary,
+      source: 'code-graph',
+      structuralTrust: createSectionStructuralTrust(
+        graphSectionTrustState,
+        graphTrustedAt,
+        observedAt,
+      ),
+    },
+    {
+      key: 'code-graph-readiness',
+      title: 'Code Graph Readiness',
+      content: `canonical=${graphOps.readiness.canonical}; graphFreshness=${graphOps.readiness.graphFreshness}; summary=${graphOps.readiness.summary}`,
+      source: 'code-graph',
+      structuralTrust: createSectionStructuralTrust(
+        graphSectionTrustState,
+        graphTrustedAt,
+        observedAt,
+      ),
+    },
+  ];
 
   const result: SessionHealthResult = {
     status,
@@ -180,6 +278,7 @@ export async function handleSessionHealth(): Promise<MCPResponse> {
       primingStatus: primed ? 'primed' : 'not_primed',
     },
     qualityScore,
+    sections,
     structuralContext,
     payloadContract,
     graphOps,
