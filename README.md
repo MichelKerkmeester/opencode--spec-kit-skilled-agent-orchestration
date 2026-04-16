@@ -191,6 +191,10 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 
 The Spec Kit enforces structured spec folders for every file-modifying conversation. Gate 3 requires a spec folder answer before any file modification begins (only typo/whitespace fixes under 5 characters are exempt).
 
+&nbsp;
+
+
+&nbsp;
 
 #### Documentation Levels
 
@@ -207,6 +211,10 @@ The LOC ranges are guidance, not hard rules. Risk, complexity and the number of 
 
 **Implementation-summary.md** is required at all levels but created **after** implementation completes, not at spec folder creation time.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Spec Folder Structure
 
@@ -223,6 +231,8 @@ specs/<###-feature-name>/
 └── scratch/                     # Temporary workspace files
 ```
 
+&nbsp;
+
 #### Checklist Priority System
 
 Checklists use a priority system so reviewers know what blocks shipping and what can wait:
@@ -231,6 +241,10 @@ Checklists use a priority system so reviewers know what blocks shipping and what
 - **P1** - Required. Must complete or get explicit user approval to defer.
 - **P2** - Optional. Nice to have. Can defer without approval.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Phase Decomposition
 
@@ -252,6 +266,8 @@ specs/022-big-feature/             # Parent spec folder
 
 Use `create.sh --phase` to create a parent with its first child in one step. Run `validate.sh --recursive` to validate the parent and all children together.
 
+&nbsp;
+
 #### Validation
 
 The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency.
@@ -262,6 +278,10 @@ The `validate.sh` script runs 20 rules against a spec folder and reports what pa
 
 Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Scripts and Validation
 
@@ -286,6 +306,10 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 
 TypeScript sources compile to `scripts/dist/`. The runtime entry point for memory saves is `scripts/dist/memory/generate-context.js`.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Gate System
 
@@ -349,6 +373,8 @@ The memory engine now includes the packet-024 compact code graph and session lif
 
 The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
+&nbsp;
+
 #### Layered MCP Surface
 
 The MCP tools are organized into a layered architecture. Each layer has a token budget that controls how much context it consumes:
@@ -366,6 +392,10 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
+&nbsp;
+
+
+&nbsp;
 
 #### HYBRID SEARCH
 
@@ -379,6 +409,10 @@ Every search checks five core channels at once, with CocoIndex available as a se
 
 **Reciprocal Rank Fusion (RRF)** combines results across channels so memories scoring well in multiple channels rise to the top. **Graph-first routing** dispatches structural queries to the Code Graph first, then CocoIndex for semantic code discovery, then the memory pipeline. A **3-tier FTS fallback** activates when graph and semantic channels miss: FTS5 full-text, BM25 keyword scoring, then Grep/Glob filesystem search. The system truncates weak results and ensures every active channel is represented.
 
+&nbsp;
+
+
+&nbsp;
 
 #### SEARCH PIPELINE
 
@@ -389,6 +423,10 @@ Every search passes through 4 stages:
 - **Rerank** - Cross-encoder reranking with chunk reassembly, a minimum Stage 3 gate of 4 candidates, and compatibility-only length-penalty wiring that now resolves to a neutral `1.0` multiplier. `getRerankerStatus()` exposes latency plus cache hits, misses, stale hits, and evictions; if the reranker is unavailable, Stage 2 order is preserved with degraded metadata.
 - **Filtering** - State/quality filtering, confidence annotation, token-budget enforcement, and final response shaping without mutating post-rerank scores.
 
+&nbsp;
+
+
+&nbsp;
 
 #### QUERY INTELLIGENCE
 
@@ -400,6 +438,10 @@ Every search passes through 4 stages:
 
 Four response modes: **quick** (top answer only), **focused** (one-topic), **deep** (full evidence trails), **resume** (state summary + next-steps).
 
+&nbsp;
+
+
+&nbsp;
 
 #### MEMORY LIFECYCLE AND SCORING
 
@@ -412,6 +454,10 @@ Memories fade using **FSRS** (Free Spaced Repetition Scheduler). Decay speed var
 
 Four active cognitive states drive normal retrieval weighting: **HOT** >> **WARM** >> **COLD** >> **DORMANT**.
 
+&nbsp;
+
+
+&nbsp;
 
 #### CAUSAL GRAPH
 
@@ -425,6 +471,10 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 - **Graph momentum** - Trending knowledge surfaces higher
 - **LLM backfill** - Background discovery of missed causal links
 
+&nbsp;
+
+
+&nbsp;
 
 #### SAVE INTELLIGENCE
 
@@ -444,6 +494,10 @@ Additional save-time processing:
 - **SHA-256 deduplication** - Skips unchanged files instantly
 - **Correction tracking** - Records how knowledge evolves across versions
 
+&nbsp;
+
+
+&nbsp;
 
 #### SESSION AWARENESS
 
@@ -451,6 +505,10 @@ Additional save-time processing:
 - **Session deduplication** - Suppresses already-seen results in follow-up queries
 - **Context pressure** - Downgrades search mode as the context window fills
 
+&nbsp;
+
+
+&nbsp;
 
 #### QUALITY GATES AND LEARNING
 
@@ -462,6 +520,10 @@ Three layered checks before storage:
 
 Preview all checks without saving using `dryRun: true`. Learned relevance feedback boosts helpful results with safeguards against noise. Two-tier explainability shows plain-language reasons or exact channel contributions.
 
+&nbsp;
+
+
+&nbsp;
 
 #### RETRIEVAL ENHANCEMENTS
 
@@ -472,6 +534,10 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Auto-surfacing** - Triggers on tool use and context compression events
 - **Provenance traces** - Shows exactly how each result was found
 
+&nbsp;
+
+
+&nbsp;
 
 #### INDEXING AND INFRASTRUCTURE
 
@@ -481,6 +547,10 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Lexical fallback** - Text-searchable when embedding services are down
 - **Atomic writes** - Crash-safe with pending-file recovery on startup
 
+&nbsp;
+
+
+&nbsp;
 
 #### EVALUATION INFRASTRUCTURE
 
@@ -489,6 +559,10 @@ Preview all checks without saving using `dryRun: true`. Learned relevance feedba
 - **Ablation studies** - Per-channel quality impact measurement
 - **Offline scoring checks** - Test ranking changes before deployment
 
+&nbsp;
+
+
+&nbsp;
 
 #### Embedding Providers
 
@@ -504,6 +578,8 @@ The framework uses two different code-understanding systems on purpose. **CocoIn
 
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
+&nbsp;
+
 #### How the Code Graph Works
 
 The Code Graph is a SQLite-backed structural index that ships as part of the Spec Kit MCP server (`context-server.ts`). It is available to **every supported CLI** - Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot - because each runtime connects to the same MCP server via its own config (`.claude/mcp.json`, `.mcp.json`, `.codex/config.toml`, `.agents/mcp.json`).
@@ -517,6 +593,8 @@ The Code Graph is a SQLite-backed structural index that ships as part of the Spe
 
 The indexer uses tree-sitter to parse source files and extract functions, classes, imports, and call relationships. It tracks per-file content hashes to skip unchanged files, making incremental scans fast.
 
+&nbsp;
+
 #### What Each System Does
 
 | System | Best for | Primary surface |
@@ -525,6 +603,8 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 | **Code Graph** | Callers, imports, symbol outlines, impact analysis, neighborhood expansion | `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context` |
 | **Session bridge tools** | Session bootstrap, resume, and health checks around graph availability | `session_bootstrap`, `session_resume`, `session_health` |
 | **CCC utilities** | CocoIndex availability, reindexing, result feedback | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
+
+&nbsp;
 
 #### How Query Routing Works (Graph-First)
 
@@ -535,6 +615,8 @@ The default routing order is: **Code Graph** (structural) -> **CocoIndex** (sema
 - Use **session tools** when recovering or checking environment readiness, but treat `/spec_kit:resume` as the canonical operator-facing recovery surface.
 - Rebuild task continuity in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs.
 - Use **Memory** after those packet-local sources when the question is about prior decisions, spec history, handovers, or task continuity that still needs deeper retrieval.
+
+&nbsp;
 
 #### Why It Matters
 
@@ -547,6 +629,8 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 ### 🎯 Skill Advisor
 
 The Skill Advisor is an intelligent routing system that automatically matches user requests to the right skill. It powers Gate 2 in the gate system, analyzing every request against 21 skills using a multi-stage scoring pipeline with a SQLite-backed relationship graph. Average routing time: **0.5ms per query**.
+
+&nbsp;
 
 #### How It Works
 
@@ -592,6 +676,10 @@ The Skill Advisor is an intelligent routing system that automatically matches us
            mcp-clickup    0.55  fail  <- below threshold
 ```
 
+&nbsp;
+
+
+&nbsp;
 
 #### Skill Graph (SQLite-Backed)
 
@@ -606,6 +694,10 @@ Every skill folder contains a `graph-metadata.json` declaring typed relationship
 | `skill_graph_status` | Health: node/edge counts, staleness, family distribution |
 | `skill_graph_validate` | Weight band, symmetry, and schema validation |
 
+&nbsp;
+
+
+&nbsp;
 
 #### Relationship Types
 
@@ -619,6 +711,10 @@ Every skill folder contains a `graph-metadata.json` declaring typed relationship
 
 Family affinity gives an additional 8% boost to same-family members when one has a strong signal. A ghost candidate guard prevents the graph from creating brand-new winners -- graph boosts only apply to candidates that already have positive evidence.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Validation and Testing
 
@@ -636,6 +732,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
+&nbsp;
+
 #### DOCUMENTATION
 
 **system-spec-kit**
@@ -648,6 +746,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
 - HVR v0.210 compliance checking and component creation workflows (skills, agents, commands)
 - Handles README templates, frontmatter validation, feature catalog authoring, install guide generation
+
+&nbsp;
 
 #### CODE WORKFLOW
 
@@ -694,6 +794,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Fail-closed corruption, claim-adjudication `finalSeverity`, stale STOP veto auto-clearing
 - Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
 
+&nbsp;
+
 #### MCP INTEGRATION
 
 **mcp-code-mode**
@@ -721,6 +823,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed
 - MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
 
+&nbsp;
+
 #### CROSS-AI CLI
 
 **cli-gemini**
@@ -742,6 +846,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - GitHub Copilot CLI orchestrator with 5 models across 3 providers
 - Explore/Task agents for architecture mapping, `/delegate` for cloud-hosted coding agents
 - Autopilot autonomous execution mode, MCP server integration, native GitHub ecosystem perspective
+
+&nbsp;
 
 #### OTHER
 
@@ -866,6 +972,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 24 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
+&nbsp;
+
 #### SPEC KIT
 
 **Plan --intake-only**
@@ -935,6 +1043,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 `/spec_kit:deep-research` only enters that chain after a real `spec.md` exists; it follows `spec_check_protocol.md` for advisory-lock handling, `folder_state` classification, and bounded generated-fence sync.
 
+&nbsp;
+
 #### MEMORY
 
 **Save**
@@ -956,6 +1066,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Database admin: stats (memory counts, index health), health checks, cleanup (orphaned vectors)
 - Checkpoint management: create, list, restore, delete
 - Bulk operations and ingestion (start/status/cancel)
+
+&nbsp;
 
 #### CREATE
 
@@ -993,6 +1105,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
 
+&nbsp;
+
 #### IMPROVE
 
 **Improve Agent**
@@ -1013,6 +1127,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Applies DEPTH thinking methodology with CLEAR quality scoring
 - Used when the target already exists and needs structured improvement rather than new scaffolding
 
+&nbsp;
+
 #### DOCTOR
 
 **MCP Debug**
@@ -1024,6 +1140,8 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 - Fresh install or reinstall all 4 MCP servers from their install guides
 - Assesses current state (INSTALLED/STALE/MISSING), runs install scripts, configures runtime wiring, verifies health
 - Handles old-install-conflicting-with-new scenarios (clean reinstall with venv/node_modules removal)
+
+&nbsp;
 
 #### UTILITY
 
@@ -1039,6 +1157,10 @@ For details, see the [Skill Advisor README](.opencode/skill/skill-advisor/README
 
 Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) - a 98.7% reduction.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Native MCP Servers
 
@@ -1052,6 +1174,8 @@ Defined in `opencode.json`:
 | `sequential_thinking` | 1 | Structured multi-step reasoning for complex problems |
 | **Total** | **60** | |
 
+&nbsp;
+
 #### Code Mode Tools (7)
 
 - **`search_tools`** - Discover relevant tools by task description
@@ -1062,6 +1186,8 @@ Defined in `opencode.json`:
 - **`deregister_manual`** - Remove a tool provider
 - **`get_required_keys_for_tool`** - Check required environment variables for a tool
 
+&nbsp;
+
 #### External Integrations (via `.utcp_config.json`)
 
 - **`chrome_devtools_1`** (MCP/stdio) - Browser automation (instance 1). No env var needed.
@@ -1071,6 +1197,10 @@ Defined in `opencode.json`:
 - **`github`** (MCP/stdio) - Issues, pull requests, commits. Requires `GITHUB_PERSONAL_ACCESS_TOKEN`.
 - **`webflow`** (MCP/remote) - Sites, CMS collections. Requires Webflow auth.
 
+&nbsp;
+
+
+&nbsp;
 
 #### Performance
 
