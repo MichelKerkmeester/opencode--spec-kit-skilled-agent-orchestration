@@ -1,12 +1,7 @@
 ---
 title: "Verification Checklist: Foundational Runtime Remediation"
-description: "Verification checklist for Phase 017 remediation of 63 distinct findings. Every item includes acceptance evidence (test file / grep / type-check / manual repro). P0 items block completion; P1 items must complete or get user-approved deferral; P2 items can defer with documented reason."
-trigger_phrases:
-  - "016 remediation checklist"
-  - "foundational runtime remediation verification"
-  - "phase 017 checklist"
-  - "p0 composite verification"
-  - "remediation acceptance criteria"
+description: "Phase 017 verification for 63 findings. Every item includes acceptance evidence. P0 blocks; P1 must complete or defer; P2 optional."
+trigger_phrases: ["016 remediation checklist", "phase 017 checklist"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -14,27 +9,14 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-16T21:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Stage 2 rewrite — checklist.md now enumerates P0/P1/P2 verification items for every remediation + 7 test migrations + post-remediation verification"
-    next_safe_action: "Preflight: resolve OQ1-OQ4 and run closing-pass audit of 11 untouched files"
+    recent_action: "Stage 2 rewrite"
+    next_safe_action: "Preflight OQ1-OQ4 + closing-pass"
     blockers: []
-    key_files:
-      - "checklist.md"
-      - "tasks.md"
-      - "plan.md"
-      - "spec.md"
-    session_dedup:
-      fingerprint: "sha256:016-remediation-checklist-2026-04-16"
-      session_id: "016-remediation-rewrite-session"
-      parent_session_id: "016-deep-research-session"
-    completion_pct: 0
-    open_questions: []
-    answered_questions:
-      - "Checklist target: ~70+ items covering P0/P1/P2 findings plus test migration and post-remediation verification"
 ---
-# Verification Checklist: Foundational Runtime Remediation
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+# Verification Checklist: Foundational Runtime Remediation
 
 ---
 
@@ -52,8 +34,10 @@ _memory:
 
 ---
 
-<!-- ANCHOR:preflight -->
-## Preflight (Week 1)
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+Preflight verification items (Week 1 of Phase 017).
 
 - [x] CHK-PRE-001 [P0] Phase 016 research complete (50 iterations) — verified by inspection of `FINAL-synthesis-and-review.md` and 50 iteration files
 - [x] CHK-PRE-002 [P0] Findings registry structured — verified by `findings-registry.json` existence + JSON schema validation
@@ -64,12 +48,19 @@ _memory:
 - [ ] CHK-PRE-007 [P0] OQ3 resolved: HookState `schemaVersion` migration path decided — verified by decision in `../../decision-record.md` or equivalent
 - [ ] CHK-PRE-008 [P0] OQ4 resolved: `/spec_kit:*` subcommand enumeration — verified by list in `tasks.md` T-SAP-03
 - [ ] CHK-PRE-009 [P1] Adversarial repros constructed for R33-001, R40-001, R46-003, R34-002, R35-001 — verified by test fixtures under `tests/adversarial/`
-<!-- /ANCHOR:preflight -->
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+P0 Composite + P1/P2 Finding Closure verification.
+
+All items below constitute code-quality verification: every finding closure is verified with concrete evidence (test file / grep / type-check / manual repro / inspection). The structure is P0-composite first, then per-finding P1/P2 closures.
+
 <!-- ANCHOR:p0-composite -->
-## P0 Composite Candidates — Elimination Verification
+### P0 Composite Candidates — Elimination Verification
 
 ### P0-A: Cross-runtime tempdir control-plane poisoning
 
@@ -111,7 +102,7 @@ _memory:
 ---
 
 <!-- ANCHOR:p1-findings -->
-## P1 Findings — Closure Verification (~37 items)
+### P1 Findings — Closure Verification (~37 items)
 
 Each P1 finding must be individually closed with evidence. Organized by source file:
 
@@ -198,7 +189,7 @@ Each P1 finding must be individually closed with evidence. Organized by source f
 ---
 
 <!-- ANCHOR:p2-findings -->
-## P2 Findings — Closure Verification (~30 items)
+### P2 Findings — Closure Verification (~30 items)
 
 P2 findings may be deferred with documented reason. Default expectation is closure within the 10-week schedule.
 
@@ -282,8 +273,19 @@ P2 findings may be deferred with documented reason. Default expectation is closu
 
 ---
 
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+Test migration + new adversarial tests verification.
+
+Test-related verification items. Every code change in the Code Quality section must be paired with a test commit; the canonical 7 test files plus 20 new adversarial tests live here.
+
 <!-- ANCHOR:test-migration-checklist -->
-## Test Migration Verification (7 canonical + supporting)
+### Test Migration Verification (7 canonical + supporting)
 
 - [ ] CHK-TEST-01 [P0] `post-insert-deferred.vitest.ts` migrated from all-true booleans to enum `'deferred'` — verified by diff review + tests pass
 - [ ] CHK-TEST-02 [P0] `structural-contract.vitest.ts` migrated from collapsed vocabulary to distinct labels — verified by diff review + tests pass
@@ -323,6 +325,26 @@ P2 findings may be deferred with documented reason. Default expectation is closu
 - [ ] CHK-TEST-NEW-19 [P1] YAML `when:` grammar rejects untyped string literals — verified by asset-predicate suite
 - [ ] CHK-TEST-NEW-20 [P1] Gate 3 true-positive `implement`/`rename` regardless of context — verified by `gate3-classifier.test.ts::test_implement_rename`
 <!-- /ANCHOR:test-migration-checklist -->
+
+---
+
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+Trust-boundary + injection prevention verification.
+
+Items establishing that the remediation closes known trust-boundary and injection surfaces. The Function(...) eval replacement (REQ-011), provenance wrapper sanitization (REQ-013), and HookState schema validation (REQ-001) are the load-bearing security fixes.
+
+- [ ] CHK-SEC-01 [P0] NFR-S01: `grep -R 'new Function(' .opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts` returns zero — verified by repo-wide grep (also see CHK-VERIFY-06)
+- [ ] CHK-SEC-02 [P0] R46-003: Typed step executor replaces `substitutePlaceholders()` injection of `runtimeState.lastJobId` into `Function(...)` — verified by `T-TEST-NEW-07` adversarial test
+- [ ] CHK-SEC-03 [P1] R10-002: Provenance fields escaped in `[PROVENANCE:]` wrapper — verified by adversarial test with `]` / newline / bracket in `producer` (REQ-013)
+- [ ] CHK-SEC-04 [P0] R21-002: HookState runtime validation blocks drifted/malicious state from reaching prompt text — verified by Zod schema + quarantine test (CHK-P0-A-01)
+- [ ] CHK-SEC-05 [P1] R41-004: Markdown-sourced `Function(...)()` eval surface eliminated — verified by CHK-SEC-01 grep
+<!-- /ANCHOR:security -->
 
 ---
 

@@ -1,12 +1,7 @@
 ---
 title: "Tasks: Foundational Runtime Remediation"
-description: "One task per distinct finding from the 50-iteration Phase 016 deep-research (63 canonical tasks), grouped by source file with dependency markers. Tasks cite finding IDs (R??-???) with file:line for traceability back to the findings registry and FINAL synthesis."
-trigger_phrases:
-  - "016 remediation tasks"
-  - "foundational runtime remediation tasks"
-  - "phase 017 tasks"
-  - "p0 composite tasks"
-  - "remediation task breakdown"
+description: "One task per distinct finding (63 canonical tasks) grouped by source file with dependency markers. Cites finding IDs (R??-???) for traceability."
+trigger_phrases: ["016 remediation tasks", "phase 017 tasks"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -14,29 +9,14 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-16T21:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Stage 2 rewrite — tasks.md now enumerates 63 canonical tasks matching distinct findings count, grouped by file, ordered by severity within group, with dependency markers and Phase-Progress mapping"
-    next_safe_action: "Start Phase 1a (T-SST-D4, T-SST-D5, T-HST-D1..D3) in one solo 2-day sprint, plus Week 1 Quick Wins"
+    recent_action: "Stage 2 rewrite"
+    next_safe_action: "Phase 1a P0-D sprint + QW"
     blockers: []
-    key_files:
-      - "tasks.md"
-      - "plan.md"
-      - "spec.md"
-      - "checklist.md"
-    session_dedup:
-      fingerprint: "sha256:016-remediation-tasks-2026-04-16"
-      session_id: "016-remediation-rewrite-session"
-      parent_session_id: "016-deep-research-session"
-    completion_pct: 0
-    open_questions:
-      - "Final subcommand enumeration for T-SAP-005 (QW #2)"
-      - "Schema-upgrade migration step shape for T-HST-M2"
-    answered_questions:
-      - "Task count target: 63 canonical tasks matching distinct findings count"
 ---
-# Tasks: Foundational Runtime Remediation
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+# Tasks: Foundational Runtime Remediation
 
 ---
 
@@ -136,8 +116,13 @@ Every task below maps to a phase in `plan.md` §4. The mapping is:
 
 ---
 
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+**P0 Composite Eliminations — file-grouped tasks.** This phase covers all P0 composite candidate eliminations. Tasks are grouped by source file for clarity, but all groups within this section collectively constitute Phase 1 of `plan.md` §4.
+
 <!-- ANCHOR:group-sst -->
-## Group: `mcp_server/hooks/claude/session-stop.ts` (10 distinct findings)
+### Group: `mcp_server/hooks/claude/session-stop.ts` (10 distinct findings)
 
 Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5).
 
@@ -159,7 +144,7 @@ Top-1 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D4, D5
 ---
 
 <!-- ANCHOR:group-hst -->
-## Group: `mcp_server/hooks/claude/hook-state.ts` (9 distinct findings)
+### Group: `mcp_server/hooks/claude/hook-state.ts` (9 distinct findings)
 
 Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2, D3, D5).
 
@@ -180,7 +165,7 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 ---
 
 <!-- ANCHOR:group-rcb -->
-## Group: `mcp_server/handlers/save/reconsolidation-bridge.ts` (8 distinct findings)
+### Group: `mcp_server/handlers/save/reconsolidation-bridge.ts` (8 distinct findings)
 
 Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 
@@ -200,7 +185,7 @@ Top-3 file by distinct-issue count. Primary workstream: S1 (P0-B).
 ---
 
 <!-- ANCHOR:group-rcn -->
-## Group: `mcp_server/lib/storage/reconsolidation.ts` (3 distinct findings, coupled to RCB)
+### Group: `mcp_server/lib/storage/reconsolidation.ts` (3 distinct findings, coupled to RCB)
 
 Primary workstream: S1 (P0-B). Paired with T-RCB-04, T-RCB-05, T-RCB-06.
 
@@ -211,7 +196,7 @@ Primary workstream: S1 (P0-B). Paired with T-RCB-04, T-RCB-05, T-RCB-06.
 ---
 
 <!-- ANCHOR:group-pin -->
-## Group: `mcp_server/handlers/save/post-insert.ts` (6 distinct findings)
+### Group: `mcp_server/handlers/save/post-insert.ts` (6 distinct findings)
 
 Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refactor).
 
@@ -228,7 +213,7 @@ Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refacto
 ---
 
 <!-- ANCHOR:group-cgq -->
-## Group: `mcp_server/handlers/code-graph/query.ts` (6 distinct findings)
+### Group: `mcp_server/handlers/code-graph/query.ts` (6 distinct findings)
 
 Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades.
 
@@ -236,7 +221,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 - [ ] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
 - [ ] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
 - [ ] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
-- [ ] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
+- [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
 - [ ] T-CGQ-06 [P2] R13-003: Outline queries degrade unknown/path-mismatched files into ok with `nodeCount: 0` → validate outline subject path first (`code-graph/query.ts:340-364`) [QW #13]
 - [ ] T-CGQ-07 [P1] R16-001: `includeTransitive: true` runs before switch-level validation; unsupported ops default to CALLS → validate operation before transitive branch (`code-graph/query.ts:417-436,547-548`) [QW]
 - [ ] T-CGQ-08 [P2] R17-001: Dangling edges returned as successful relationships with raw `edge.targetId` → flag dangling edges as corruption (`code-graph/query.ts:442-559`) [QW #17]
@@ -249,7 +234,7 @@ Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades
 ---
 
 <!-- ANCHOR:group-gmp -->
-## Group: `mcp_server/lib/graph/graph-metadata-parser.ts` (4 distinct findings)
+### Group: `mcp_server/lib/graph/graph-metadata-parser.ts` (4 distinct findings)
 
 Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
 
@@ -257,34 +242,45 @@ Top-9 file by distinct-issue count. Primary workstream: S3 (P0-C).
 - [ ] T-GMP-02 [P1] R13-002: `readDoc()` collapses I/O failure to `null`; `deriveStatus()` misreads as `planned`/`complete` → distinguish I/O failure from "file does not exist"; propagate as `status: 'unknown'` (C3 from S3) (`graph-metadata-parser.ts:280-285,457-475,831-860`) — Phase 1c / C3
 - [ ] T-GMP-03 [P2] R18-002: Legacy fallback discards original current-schema validation errors → preserve original validation errors in diagnostic set (C2 from S3) (`graph-metadata-parser.ts:228-242`) — Phase 1c / C2
 - [ ] T-GMP-04 [P2] R20-002: Legacy fallback fabricates `created_at`/`last_save_at` via `new Date().toISOString()` → preserve original timestamps when available; emit migrated marker when fabricating (paired with T-GMP-01) (`graph-metadata-parser.ts:167-205,223-233`) — Phase 1c
-- [ ] T-GMP-05 [P2] R31-004 + R32-004 (dedup): `process.pid + Date.now()` temp path collides at ms precision → unique temp filenames via `.tmp-<pid>-<counter>-<random>` (`graph-metadata-parser.ts:969-989`) [QW #15]
+- [x] T-GMP-05 [P2] R31-004 + R32-004 (dedup): `process.pid + Date.now()` temp path collides at ms precision → unique temp filenames via `.tmp-<pid>-<counter>-<random>` (`graph-metadata-parser.ts:969-989`) [QW #15]
 <!-- /ANCHOR:group-gmp -->
 
 ---
 
 <!-- ANCHOR:group-mpr -->
-## Group: `mcp_server/lib/parsing/memory-parser.ts` (1 distinct finding)
+### Group: `mcp_server/lib/parsing/memory-parser.ts` (1 distinct finding)
 
 Primary workstream: S3 (P0-C).
 
 - [ ] T-MPR-01 [P1] R22-002: Fallback-recovered `graph-metadata` gets `qualityScore: 1`, +0.12 packet boost → propagate `migrated` flag; penalize (not boost) `migrated=true` rows in stage-1 ranking (C5 from S3) (`memory-parser.ts:293-330`) — Phase 1c / C5 [B:T-GMP-01]
 <!-- /ANCHOR:group-mpr -->
 
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+**Structural Refactors — S4 Skill Routing + S5 Gate 3 + S6 Playbook + S7 YAML.**
+
+Structural workstreams addressing governance-layer findings. Runs in parallel with Phase 1 where possible.
+
 ---
 
 <!-- ANCHOR:group-shp -->
-## Group: `mcp_server/lib/context/shared-payload.ts` (2 distinct findings)
+### Group: `mcp_server/lib/context/shared-payload.ts` (2 distinct findings)
 
 Primary workstream: M8 (trust-state vocabulary).
 
 - [ ] T-SHP-01 [P1] R9-001: `trustStateFromGraphState()` / `trustStateFromStructuralStatus()` collapse `missing` + `empty` into `stale` → introduce `absent`/`unavailable` distinct from `stale`; migrate producers (M8) (`shared-payload.ts:592-601`) — Phase 3 M8
-- [ ] T-SHP-02 [P2] R9-002: `coerceSharedPayloadEnvelope()` is shape-only, not contract-level → runtime validation of `SharedPayloadKind`/`producer` (`shared-payload.ts:598-601`) [QW #18]
+- [x] T-SHP-02 [P2] R9-002: `coerceSharedPayloadEnvelope()` is shape-only, not contract-level → runtime validation of `SharedPayloadKind`/`producer` (`shared-payload.ts:598-601`) [QW #18]
 <!-- /ANCHOR:group-shp -->
 
 ---
 
 <!-- ANCHOR:group-oct -->
-## Group: `mcp_server/lib/context/opencode-transport.ts` (1 distinct finding, coupled to SHP)
+### Group: `mcp_server/lib/context/opencode-transport.ts` (1 distinct finding, coupled to SHP)
 
 Primary workstream: M8.
 
@@ -294,7 +290,7 @@ Primary workstream: M8.
 ---
 
 <!-- ANCHOR:group-sbr -->
-## Group: `mcp_server/lib/code-graph/startup-brief.ts` (1 distinct finding after dedup)
+### Group: `mcp_server/lib/code-graph/startup-brief.ts` (1 distinct finding after dedup)
 
 Primary workstream: S2 (P0-A).
 
@@ -304,7 +300,7 @@ Primary workstream: S2 (P0-A).
 ---
 
 <!-- ANCHOR:group-enr -->
-## Group: `mcp_server/lib/code-graph/ensure-ready.ts` (2 distinct findings)
+### Group: `mcp_server/lib/code-graph/ensure-ready.ts` (2 distinct findings)
 
 Primary workstream: Phase 3 Med-A, Med-B.
 
@@ -315,7 +311,7 @@ Primary workstream: Phase 3 Med-A, Med-B.
 ---
 
 <!-- ANCHOR:group-sbs-srs-shs -->
-## Group: `session-bootstrap.ts` / `session-resume.ts` / `session-health.ts` (4 distinct findings)
+### Group: `session-bootstrap.ts` / `session-resume.ts` / `session-health.ts` (4 distinct findings)
 
 Primary workstream: S2 (P0-A) + M8.
 
@@ -330,7 +326,7 @@ Primary workstream: S2 (P0-A) + M8.
 ---
 
 <!-- ANCHOR:group-msv-rbd -->
-## Group: `mcp_server/handlers/memory-save.ts` + `response-builder.ts` (2 distinct findings)
+### Group: `mcp_server/handlers/memory-save.ts` + `response-builder.ts` (2 distinct findings)
 
 Primary workstream: M13 + S1.
 
@@ -342,7 +338,7 @@ Primary workstream: M13 + S1.
 ---
 
 <!-- ANCHOR:group-gsh-gsp -->
-## Group: `hooks/claude/shared.ts` + `hooks/gemini/session-prime.ts` (2 distinct findings)
+### Group: `hooks/claude/shared.ts` + `hooks/gemini/session-prime.ts` (2 distinct findings)
 
 Primary workstream: Phase 3 Med.
 
@@ -353,7 +349,7 @@ Primary workstream: Phase 3 Med.
 ---
 
 <!-- ANCHOR:group-sap -->
-## Group: `skill/skill-advisor/scripts/skill_advisor.py` (5 distinct findings)
+### Group: `skill/skill-advisor/scripts/skill_advisor.py` (5 distinct findings)
 
 Top-6 file by distinct-issue count. Primary workstream: S4.
 
@@ -367,7 +363,7 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 ---
 
 <!-- ANCHOR:group-sar -->
-## Group: `skill_advisor_runtime.py` (3 distinct findings)
+### Group: `skill_advisor_runtime.py` (3 distinct findings)
 
 Primary workstream: S4.
 
@@ -378,7 +374,7 @@ Primary workstream: S4.
 ---
 
 <!-- ANCHOR:group-sgc -->
-## Group: `skill_graph_compiler.py` (4 distinct findings)
+### Group: `skill_graph_compiler.py` (4 distinct findings)
 
 Top-8 file by distinct-issue count. Primary workstream: S4.
 
@@ -391,7 +387,7 @@ Top-8 file by distinct-issue count. Primary workstream: S4.
 ---
 
 <!-- ANCHOR:group-mpr-run -->
-## Group: `manual-playbook-runner.ts` (4 distinct findings)
+### Group: `manual-playbook-runner.ts` (4 distinct findings)
 
 Top-7 file by distinct-issue count. Primary workstream: S6.
 
@@ -405,7 +401,7 @@ Top-7 file by distinct-issue count. Primary workstream: S6.
 ---
 
 <!-- ANCHOR:group-dls -->
-## Group: `data-loader.ts` + command YAMLs + runtime root docs (shared-path hazard)
+### Group: `data-loader.ts` + command YAMLs + runtime root docs (shared-path hazard)
 
 Primary workstream: QW #10, #11.
 
@@ -415,7 +411,7 @@ Primary workstream: QW #10, #11.
 ---
 
 <!-- ANCHOR:group-doc-rt -->
-## Group: runtime root docs `AGENTS.md` / `CLAUDE.md` / `CODEX.md` / `GEMINI.md` (3 distinct findings across root docs)
+### Group: runtime root docs `AGENTS.md` / `CLAUDE.md` / `CODEX.md` / `GEMINI.md` (3 distinct findings across root docs)
 
 Primary workstream: QW #10 + S5.
 
@@ -427,7 +423,7 @@ Primary workstream: QW #10 + S5.
 ---
 
 <!-- ANCHOR:group-yml-pln -->
-## Group: `command/spec_kit/assets/spec_kit_plan_{auto,confirm}.yaml` (4 distinct findings)
+### Group: `command/spec_kit/assets/spec_kit_plan_{auto,confirm}.yaml` (4 distinct findings)
 
 Top-10 file by distinct-issue count. Primary workstream: S7.
 
@@ -440,13 +436,25 @@ Top-10 file by distinct-issue count. Primary workstream: S7.
 ---
 
 <!-- ANCHOR:group-yml-cmp-dpr -->
-## Group: other command YAMLs (2 distinct findings)
+### Group: other command YAMLs (2 distinct findings)
 
 Primary workstream: S5 + S7.
 
 - [ ] T-YML-CMP-01 [P2] R48-002 extension in `spec_kit_complete_auto.yaml:465-483,1008-1012` — paired with T-YML-PLN-04 (S7)
 - [ ] T-YML-DPR-01 [P1] R50-001 orchestrator side: `spec_kit_deep-research_auto.yaml:159-167,521-526` — `resume` is a tested write flow producing `iteration-NNN.md` + JSONL appends; paired with T-DOC-03 Gate 3 trigger addition (S5)
 <!-- /ANCHOR:group-yml-cmp-dpr -->
+
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+**Medium Refactors + Test Migration + Completion — M8 Trust-State + M13 Enum Status + Med-A through Med-J.**
+
+Medium-track refactors for trust-state vocabulary expansion, enum status propagation, and discrete medium items scattered across files. Runs Weeks 6-9. Individual medium items are inlined in the groups above (SHP, OCT, SBR, ENR, SBS-SRS-SHS, MSV-RBD, GSH-GSP) and cross-referenced by their "[Phase 3 Med-*]" tags. No new tasks are introduced here; the anchor exists as an organizational pointer.
+<!-- /ANCHOR:phase-3 -->
 
 ---
 

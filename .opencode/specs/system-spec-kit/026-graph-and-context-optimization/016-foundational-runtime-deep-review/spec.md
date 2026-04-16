@@ -1,11 +1,7 @@
 ---
 title: "Feature Specification: Foundational Runtime Remediation"
-description: "Remediation charter for 63 distinct findings from the 50-iteration Phase 016 deep-research. Covers 4 P0-composite eliminations, 7 structural refactors, 13 medium refactors, 29 quick wins, and 7 test-suite migrations."
-trigger_phrases:
-  - "foundational runtime remediation"
-  - "016 remediation charter"
-  - "phase 017 kickoff"
-  - "p0 composite elimination"
+description: "Charter for 63 distinct findings from 50-iter Phase 016 deep-research: 4 P0 composites, 7 structural refactors, 13 medium, 29 quick wins, 7 test migrations."
+trigger_phrases: ["foundational runtime remediation", "016 remediation charter"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -13,7 +9,7 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-16T21:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Stage 2 rewrite — remediation charter"
+    recent_action: "Stage 2 rewrite"
     next_safe_action: "Phase 1 P0-D solo sprint"
     blockers: []
 ---

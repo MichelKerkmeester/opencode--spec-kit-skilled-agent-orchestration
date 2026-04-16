@@ -1,15 +1,7 @@
 ---
 title: "Implementation Plan: Foundational Runtime Remediation"
-description: "Five-phase remediation execution plan for 63 distinct findings: (1) P0 composite eliminations — 4 candidates, (2) structural refactors — 7 items, (3) medium refactors — 13 items, (4) quick wins — 29 items, (5) test-suite migration — 7 files. Dependency graph, effort budget 24.5 engineer-weeks, parallelization schedule for 3 engineers over 10–12 weeks wall clock."
-trigger_phrases:
-  - "016 remediation plan"
-  - "foundational runtime remediation plan"
-  - "phase 017 plan"
-  - "p0 composite elimination plan"
-  - "structural refactor plan"
-  - "test migration plan"
-  - "hook-state overhaul plan"
-  - "transactional reconsolidation plan"
+description: "5-phase execution plan for 63 findings: P0 composites, structural, medium, quick wins, test migration. 24.5 engineer-weeks, 3 engineers, 10-12 weeks wall clock."
+trigger_phrases: ["016 remediation plan", "phase 017 plan"]
 importance_tier: "critical"
 contextType: "implementation"
 _memory:
@@ -17,31 +9,14 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review"
     last_updated_at: "2026-04-16T21:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Stage 2 rewrite — plan.md now defines 5-phase remediation with dependency graph, parallelization, and test-migration callouts"
-    next_safe_action: "Begin Phase 1 Week 1: P0-D (TOCTOU cleanup) solo 2-day sprint; in parallel start P0-A M1 (Zod HookStateSchema)"
+    recent_action: "Stage 2 rewrite"
+    next_safe_action: "Phase 1 Week 1 preflight + P0-D"
     blockers: []
-    key_files:
-      - "plan.md"
-      - "spec.md"
-      - "tasks.md"
-      - "checklist.md"
-      - "../research/016-foundational-runtime-deep-review/FINAL-synthesis-and-review.md"
-    session_dedup:
-      fingerprint: "sha256:016-remediation-plan-2026-04-16"
-      session_id: "016-remediation-rewrite-session"
-      parent_session_id: "016-deep-research-session"
-    completion_pct: 0
-    open_questions:
-      - "Phase 017 Week 1 closing-pass: surface any new P1/P2 findings in 11 untouched files?"
-      - "Test-migration compatibility-shim vs clean-replace decision per file"
-    answered_questions:
-      - "Parallelization strategy — 3 engineers, 10 weeks wall clock at parallel tracks"
-      - "Dependency ordering — quick wins first, then M13 → S1 chain, parallel with S2/S3/S4"
 ---
-# Implementation Plan: Foundational Runtime Remediation
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+# Implementation Plan: Foundational Runtime Remediation
 
 ---
 
