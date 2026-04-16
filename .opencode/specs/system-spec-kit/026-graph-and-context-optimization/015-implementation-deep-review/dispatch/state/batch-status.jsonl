@@ -1,1 +1,4 @@
 {"batch":"B-000","event":"dispatched","ts":"2026-04-16T10:21:35Z","pid":31988}
+{"batch":"B-010","event":"completed","ts":"2026-04-16T10:43:12Z","rc":0}
+{"batch":"B-010","event":"verified","ts":"2026-04-16T10:43:12Z"}
+{"batch":"B-010","event":"merged","ts":"2026-04-16T10:47:19Z"}

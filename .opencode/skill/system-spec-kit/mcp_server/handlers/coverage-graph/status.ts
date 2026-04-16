@@ -21,6 +21,11 @@ export interface StatusArgs {
   sessionId: string;
 }
 
+type CoverageStatusStats = ReturnType<typeof computeScopedStats> & {
+  schemaVersion: number;
+  dbFileSize: number | null;
+};
+
 // ───────────────────────────────────────────────────────────────
 // 2. HANDLER
 // ───────────────────────────────────────────────────────────────
@@ -45,7 +50,7 @@ export async function handleCoverageGraphStatus(
       loopType: args.loopType,
       sessionId: args.sessionId,
     };
-    const stats = computeScopedStats(ns);
+    const stats = computeScopedStats(ns) as CoverageStatusStats;
 
     // Compute current signals (safe for empty graphs)
     let signals = null;
@@ -78,6 +83,8 @@ export async function handleCoverageGraphStatus(
             nodesByKind: stats.nodesByKind,
             edgesByRelation: stats.edgesByRelation,
             lastIteration: stats.lastIteration,
+            schemaVersion: stats.schemaVersion,
+            dbFileSize: stats.dbFileSize,
             signals,
             momentum,
           },

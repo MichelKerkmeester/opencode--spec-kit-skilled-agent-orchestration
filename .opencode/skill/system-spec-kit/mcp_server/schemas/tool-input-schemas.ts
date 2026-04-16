@@ -44,8 +44,9 @@ const safeNumericPreprocess = z.preprocess((val) => {
   return val;
 }, z.number());
 
+const intRange = (min: number, max: number) => safeNumericPreprocess.pipe(z.number().int().min(min).max(max));
 const positiveInt = safeNumericPreprocess.pipe(z.number().int().positive());
-const positiveIntMax = (max: number) => safeNumericPreprocess.pipe(z.number().int().min(1).max(max));
+const positiveIntMax = (max: number) => intRange(1, max);
 const boundedNumber = (min: number, max: number) => safeNumericPreprocess.pipe(z.number().min(min).max(max));
 const optionalStringArray = z.array(z.string()).optional();
 
@@ -110,6 +111,45 @@ const mergeModeHintEnum = z.enum([
   'update-in-place',
   'append-section',
 ]);
+
+const codeGraphOperationEnum = z.enum([
+  'outline',
+  'calls_from',
+  'calls_to',
+  'imports_from',
+  'imports_to',
+  'blast_radius',
+]);
+
+const codeGraphQueryModeEnum = z.enum(['neighborhood', 'outline', 'impact']);
+
+const skillGraphQueryTypeEnum = z.enum([
+  'depends_on',
+  'dependents',
+  'enhances',
+  'enhanced_by',
+  'family_members',
+  'conflicts',
+  'transitive_path',
+  'hub_skills',
+  'orphans',
+  'subgraph',
+]);
+
+const skillFamilyEnum = z.enum(['cli', 'mcp', 'sk-code', 'sk-deep', 'sk-util', 'system']);
+
+const coverageGraphLoopTypeEnum = z.enum(['research', 'review']);
+
+const deepLoopGraphQueryTypeEnum = z.enum([
+  'uncovered_questions',
+  'unverified_claims',
+  'contradictions',
+  'provenance_chain',
+  'coverage_gaps',
+  'hot_nodes',
+]);
+
+const cccFeedbackRatingEnum = z.enum(['helpful', 'not_helpful', 'partial']);
 
 /* ───────────────────────────────────────────────────────────────
    5. SCHEMA DEFINITIONS
@@ -401,6 +441,131 @@ const memoryIngestCancelSchema = getSchema({
   jobId: z.string().min(1),
 });
 
+const codeGraphScanSchema = getSchema({
+  rootDir: optionalPathString(),
+  includeGlobs: optionalStringArray,
+  excludeGlobs: optionalStringArray,
+  incremental: z.boolean().optional(),
+});
+
+const codeGraphQuerySchema = getSchema({
+  operation: codeGraphOperationEnum,
+  subject: z.string().min(1),
+  subjects: optionalStringArray,
+  edgeType: z.string().optional(),
+  limit: positiveIntMax(200).optional(),
+  includeTransitive: z.boolean().optional(),
+  maxDepth: positiveIntMax(10).optional(),
+});
+
+const codeGraphSeedSchema = z.object({
+  filePath: z.string().optional(),
+  startLine: safeNumericPreprocess.pipe(z.number()).optional(),
+  endLine: safeNumericPreprocess.pipe(z.number()).optional(),
+  query: z.string().optional(),
+  provider: z.enum(['cocoindex', 'manual', 'graph']).optional(),
+  file: z.string().optional(),
+  range: z.object({
+    start: safeNumericPreprocess.pipe(z.number()).optional(),
+    end: safeNumericPreprocess.pipe(z.number()).optional(),
+  }).optional(),
+  score: safeNumericPreprocess.pipe(z.number()).optional(),
+  symbolName: z.string().optional(),
+  symbolId: z.string().optional(),
+});
+
+const codeGraphContextSchema = getSchema({
+  input: z.string().optional(),
+  queryMode: codeGraphQueryModeEnum.optional(),
+  subject: z.string().optional(),
+  seeds: z.array(codeGraphSeedSchema).optional(),
+  budgetTokens: boundedNumber(100, 4000).optional(),
+  profile: z.enum(['quick', 'research', 'debug']).optional(),
+  includeTrace: z.boolean().optional(),
+});
+
+const skillGraphScanSchema = getSchema({
+  skillsRoot: optionalPathString(),
+});
+
+const skillGraphQuerySchema = getSchema({
+  queryType: skillGraphQueryTypeEnum,
+  skillId: z.string().optional(),
+  sourceSkillId: z.string().optional(),
+  targetSkillId: z.string().optional(),
+  family: skillFamilyEnum.optional(),
+  minInbound: intRange(0, 200).optional(),
+  depth: positiveIntMax(10).optional(),
+  limit: positiveIntMax(200).optional(),
+});
+
+const skillGraphStatusSchema = getSchema({});
+
+const skillGraphValidateSchema = getSchema({});
+
+const cccStatusSchema = getSchema({});
+
+const cccReindexSchema = getSchema({
+  full: z.boolean().optional(),
+});
+
+const cccFeedbackSchema = getSchema({
+  query: z.string().min(1),
+  resultFile: z.string().optional(),
+  rating: cccFeedbackRatingEnum,
+  comment: z.string().optional(),
+});
+
+const deepLoopGraphNodeSchema = z.object({
+  id: z.string().min(1),
+  kind: z.string(),
+  name: z.string().min(1),
+  contentHash: z.string().optional(),
+  iteration: safeNumericPreprocess.pipe(z.number().int()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+
+const deepLoopGraphEdgeSchema = z.object({
+  id: z.string().min(1),
+  sourceId: z.string().min(1),
+  targetId: z.string().min(1),
+  relation: z.string(),
+  weight: boundedNumber(0, 2).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+
+const deepLoopGraphUpsertSchema = getSchema({
+  specFolder: pathString(1),
+  loopType: coverageGraphLoopTypeEnum,
+  sessionId: z.string().min(1),
+  nodes: z.array(deepLoopGraphNodeSchema).optional(),
+  edges: z.array(deepLoopGraphEdgeSchema).optional(),
+});
+
+const deepLoopGraphQuerySchema = getSchema({
+  specFolder: pathString(1),
+  loopType: coverageGraphLoopTypeEnum,
+  queryType: deepLoopGraphQueryTypeEnum,
+  nodeId: z.string().optional(),
+  sessionId: z.string().min(1),
+  limit: positiveIntMax(200).optional(),
+  maxDepth: positiveIntMax(20).optional(),
+});
+
+const deepLoopGraphStatusSchema = getSchema({
+  specFolder: pathString(1),
+  loopType: coverageGraphLoopTypeEnum,
+  sessionId: z.string().min(1),
+});
+
+const deepLoopGraphConvergenceSchema = getSchema({
+  specFolder: pathString(1),
+  loopType: coverageGraphLoopTypeEnum,
+  sessionId: z.string().min(1),
+  iteration: safeNumericPreprocess.pipe(z.number().int()).optional(),
+  persistSnapshot: z.boolean().optional(),
+});
+
 /* ───────────────────────────────────────────────────────────────
    6. EXPORTS
 ──────────────────────────────────────────────────────────────── */
@@ -435,6 +600,21 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_ingest_start: memoryIngestStartSchema as unknown as ToolInputSchema,
   memory_ingest_status: memoryIngestStatusSchema as unknown as ToolInputSchema,
   memory_ingest_cancel: memoryIngestCancelSchema as unknown as ToolInputSchema,
+  code_graph_scan: codeGraphScanSchema as unknown as ToolInputSchema,
+  code_graph_query: codeGraphQuerySchema as unknown as ToolInputSchema,
+  code_graph_status: getSchema({}) as unknown as ToolInputSchema,
+  code_graph_context: codeGraphContextSchema as unknown as ToolInputSchema,
+  skill_graph_scan: skillGraphScanSchema as unknown as ToolInputSchema,
+  skill_graph_query: skillGraphQuerySchema as unknown as ToolInputSchema,
+  skill_graph_status: skillGraphStatusSchema as unknown as ToolInputSchema,
+  skill_graph_validate: skillGraphValidateSchema as unknown as ToolInputSchema,
+  ccc_status: cccStatusSchema as unknown as ToolInputSchema,
+  ccc_reindex: cccReindexSchema as unknown as ToolInputSchema,
+  ccc_feedback: cccFeedbackSchema as unknown as ToolInputSchema,
+  deep_loop_graph_upsert: deepLoopGraphUpsertSchema as unknown as ToolInputSchema,
+  deep_loop_graph_query: deepLoopGraphQuerySchema as unknown as ToolInputSchema,
+  deep_loop_graph_status: deepLoopGraphStatusSchema as unknown as ToolInputSchema,
+  deep_loop_graph_convergence: deepLoopGraphConvergenceSchema as unknown as ToolInputSchema,
   session_bootstrap: getSchema({
     specFolder: optionalPathString(),
   }) as unknown as ToolInputSchema,
@@ -476,6 +656,21 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_start: ['paths', 'specFolder'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
+  code_graph_scan: ['rootDir', 'includeGlobs', 'excludeGlobs', 'incremental'],
+  code_graph_query: ['operation', 'subject', 'subjects', 'edgeType', 'limit', 'includeTransitive', 'maxDepth'],
+  code_graph_status: [],
+  code_graph_context: ['input', 'queryMode', 'subject', 'seeds', 'budgetTokens', 'profile', 'includeTrace'],
+  skill_graph_scan: ['skillsRoot'],
+  skill_graph_query: ['queryType', 'skillId', 'sourceSkillId', 'targetSkillId', 'family', 'minInbound', 'depth', 'limit'],
+  skill_graph_status: [],
+  skill_graph_validate: [],
+  ccc_status: [],
+  ccc_reindex: ['full'],
+  ccc_feedback: ['query', 'resultFile', 'rating', 'comment'],
+  deep_loop_graph_upsert: ['specFolder', 'loopType', 'sessionId', 'nodes', 'edges'],
+  deep_loop_graph_query: ['specFolder', 'loopType', 'queryType', 'nodeId', 'sessionId', 'limit', 'maxDepth'],
+  deep_loop_graph_status: ['specFolder', 'loopType', 'sessionId'],
+  deep_loop_graph_convergence: ['specFolder', 'loopType', 'sessionId', 'iteration', 'persistSnapshot'],
   session_bootstrap: ['specFolder'],
   session_health: [],
   session_resume: ['specFolder', 'sessionId', 'minimal'],
