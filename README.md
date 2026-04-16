@@ -52,9 +52,6 @@ The framework adds three layers on top of the base platform:
 
 **Who it is for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
-### At a Glance
-
-| | |
 |---|---|
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
