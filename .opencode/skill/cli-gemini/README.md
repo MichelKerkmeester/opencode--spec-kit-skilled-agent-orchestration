@@ -144,11 +144,15 @@ The free tier removes the cost barrier for exploratory use. Google OAuth gives y
 
 ### 3.2 FEATURE REFERENCE
 
+&nbsp;
+
 #### Model
 
 | Model | ID | Use Case |
 |-------|----|----------|
 | **Gemini 3.1 Pro Preview** | `gemini-3.1-pro-preview` | All tasks (only supported model) |
+
+&nbsp;
 
 #### Core Flags
 
@@ -159,6 +163,8 @@ The free tier removes the cost barrier for exploratory use. Google OAuth gives y
 | `-m` | | Model selection | `-m gemini-3.1-pro-preview` |
 | `--yolo` | `-y` | Auto-approve all tool calls | `--yolo` |
 
+&nbsp;
+
 #### Built-in Tools
 
 | Tool | Purpose | How to Invoke |
@@ -167,6 +173,8 @@ The free tier removes the cost barrier for exploratory use. Google OAuth gives y
 | **codebase_investigator** | Deep architecture and dependency analysis | "Use codebase_investigator to..." |
 | **save_memory** | Persistent cross-session context | "Remember that..." |
 
+&nbsp;
+
 #### Authentication Methods
 
 | Method | Setup | Rate Limits |
@@ -174,6 +182,8 @@ The free tier removes the cost barrier for exploratory use. Google OAuth gives y
 | **Google OAuth** | `gemini` (interactive first run) | 60 req/min, 1000 req/day |
 | **API Key** | `export GEMINI_API_KEY=your-key` | Per API plan |
 | **Vertex AI** | Enterprise config | Per enterprise plan |
+
+&nbsp;
 
 #### Agent Routing
 

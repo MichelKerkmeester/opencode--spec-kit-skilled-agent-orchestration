@@ -169,6 +169,8 @@ All rules implement a standardized interface:
 
 ### Rule Catalog
 
+&nbsp;
+
 #### FILE_EXISTS (check-files.sh)
 
 **Purpose**: Validates required files exist for documentation level
@@ -185,6 +187,8 @@ All rules implement a standardized interface:
 
 ---
 
+&nbsp;
+
 #### PRIORITY_TAGS (check-priority-tags.sh)
 
 **Purpose**: Validates checklist items have priority context (P0/P1/P2)
@@ -196,6 +200,8 @@ All rules implement a standardized interface:
 **Severity**: warn (advisory)
 
 ---
+
+&nbsp;
 
 #### EVIDENCE_CITED (check-evidence.sh)
 
@@ -212,6 +218,8 @@ All rules implement a standardized interface:
 
 ---
 
+&nbsp;
+
 #### PLACEHOLDER_FILLED (check-placeholders.sh)
 
 **Purpose**: Detects unfilled placeholders in spec files
@@ -225,6 +233,8 @@ All rules implement a standardized interface:
 
 ---
 
+&nbsp;
+
 #### ANCHORS_VALID (check-anchors.sh)
 
 **Purpose**: Validates anchor pairs in packet docs and continuity support artifacts are properly matched
@@ -237,6 +247,8 @@ All rules implement a standardized interface:
 **Severity**: fail (blocks validation)
 
 ---
+
+&nbsp;
 
 #### COMPLEXITY_MATCH (check-complexity.sh)
 
@@ -262,6 +274,8 @@ Score = User Stories x 10 + Phases x 5 + Tasks x 2 + Requirements x 1
 
 ---
 
+&nbsp;
+
 #### LEVEL_MATCH (check-level-match.sh)
 
 **Purpose**: Validates that required files match declared documentation level
@@ -275,6 +289,8 @@ Score = User Stories x 10 + Phases x 5 + Tasks x 2 + Requirements x 1
 **Severity**: error (blocks validation)
 
 ---
+
+&nbsp;
 
 #### SECTION_COUNTS (check-section-counts.sh)
 
@@ -298,6 +314,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 
 ---
 
+&nbsp;
+
 #### TOC_POLICY (check-toc-policy.sh)
 
 **Purpose**: Enforces SpecKit ToC policy for spec artifacts
@@ -312,6 +330,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 **Severity**: error (blocks validation)
 
 ---
+
+&nbsp;
 
 #### AI_PROTOCOL (check-ai-protocols.sh)
 
@@ -332,6 +352,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 
 ---
 
+&nbsp;
+
 #### SECTIONS_PRESENT (check-sections.sh)
 
 **Purpose**: Checks for required markdown sections in spec files
@@ -347,6 +369,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 
 ---
 
+&nbsp;
+
 #### LEVEL_DECLARED (check-level.sh)
 
 **Purpose**: Checks if documentation level was explicitly declared vs inferred
@@ -356,6 +380,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 **Severity**: info (informational only)
 
 ---
+
+&nbsp;
 
 #### FOLDER_NAMING (check-folder-naming.sh)
 
@@ -374,6 +400,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 
 ---
 
+&nbsp;
+
 #### FRONTMATTER_VALID (check-frontmatter.sh)
 
 **Purpose**: Validates YAML frontmatter structure in markdown files
@@ -387,6 +415,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 **Severity**: warn (advisory)
 
 ---
+
+&nbsp;
 
 #### SPEC_DOC_INTEGRITY (check-spec-doc-integrity.sh)
 
@@ -454,6 +484,8 @@ L3+: 10+ major sections, detailed acceptance scenarios
 
 ### Common Issues
 
+&nbsp;
+
 #### Rule Not Found
 
 **Symptom**: `source: rules/check-*.sh: No such file or directory`
@@ -469,6 +501,8 @@ cd /path/to/project
 ls .opencode/skill/system-spec-kit/scripts/rules/
 ```
 
+&nbsp;
+
 #### Permission Denied
 
 **Symptom**: `bash: ./check-files.sh: Permission denied`
@@ -479,6 +513,8 @@ ls .opencode/skill/system-spec-kit/scripts/rules/
 ```bash
 chmod +x .opencode/skill/system-spec-kit/scripts/rules/*.sh
 ```
+
+&nbsp;
 
 #### False Positive on Placeholders
 

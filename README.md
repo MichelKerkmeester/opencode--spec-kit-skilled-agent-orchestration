@@ -102,7 +102,7 @@ The framework adds three layers on top of the base platform:
          │       MEMORY ENGINE (60 MCP tools)       │
          │  5 core + CocoIndex bridge: Vector,      │
          │  BM25, FTS5, Causal Graph, Degree        │
-         │  Graph-first routing ─ 3-tier fallback   │
+         │  Graph-first routing ─ 3-tier fallback    │
          │  FSRS decay ─ RRF fusion ─ query intel   │
          │  runtime flags ─ eval guardrails          │
          │  Voyage │ OpenAI │ HuggingFace Local     │
@@ -111,8 +111,8 @@ The framework adds three layers on top of the base platform:
                                 ▼
          ┌──────────────────────────────────────────┐
          │     SPEC KIT (documentation framework)   │
-         │  specs/###-feature/ - scratch/            │
-         │  4 levels - template set - 20 rules     │
+         │  specs/###-feature/ - scratch/           │
+         │  4 levels - template set - 20 rules      │
          └──────────────────────────────────────────┘
 ```
 
@@ -223,7 +223,7 @@ specs/<###-feature-name>/
 └── scratch/                     # Temporary workspace files
 ```
 
-#### Checklist Priority System (Level 2+)
+#### Checklist Priority System
 
 Checklists use a priority system so reviewers know what blocks shipping and what can wait:
 
@@ -345,7 +345,9 @@ For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2),
 
 The Memory Engine is a local-first cognitive memory system built as an MCP server. `generate-context.js` updates canonical packet continuity and may emit supporting generated context artifacts inside the spec folder. Canonical continuity lives in the spec packet itself: use `/spec_kit:resume` as the recovery surface, then rebuild context in this order: `handover.md` -> `_memory.continuity` -> canonical spec docs. The MCP server indexes those packet-local sources with vector embeddings, BM25 and FTS5 full-text search, and `memory_match_triggers()` can still surface relevant prior context automatically when deeper retrieval is needed.
 
-The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+The memory engine now includes the packet-024 compact code graph and session lifecycle surfaces alongside hybrid retrieval. 
+
+The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 #### Layered MCP Surface
 

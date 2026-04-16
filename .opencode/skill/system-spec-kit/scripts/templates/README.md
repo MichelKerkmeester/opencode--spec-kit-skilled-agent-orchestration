@@ -282,6 +282,8 @@ cd .opencode/skill/system-spec-kit/scripts/templates
 
 ### Common Issues
 
+&nbsp;
+
 #### Verification fails after editing templates
 
 **Symptom**: `./compose.sh --verify` exits with error, shows "Templates need recomposition"
@@ -297,6 +299,8 @@ cd .opencode/skill/system-spec-kit/scripts/templates
 ./compose.sh --verify
 ```
 
+&nbsp;
+
 #### Script not executable
 
 **Symptom**: `bash: ./compose.sh: Permission denied`
@@ -308,6 +312,8 @@ cd .opencode/skill/system-spec-kit/scripts/templates
 chmod +x compose.sh
 ./compose.sh
 ```
+
+&nbsp;
 
 #### Unexpected merge results
 
