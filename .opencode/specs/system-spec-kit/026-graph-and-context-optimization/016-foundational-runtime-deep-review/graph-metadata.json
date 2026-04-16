@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+  "status": "planning",
+  "kind": "deep-review",
+  "level": 2,
+  "lastUpdated": "2026-04-16T00:00:00Z",
+  "priority": "P1",
+  "blockers": [],
+  "candidates": [
+    { "id": "H1", "priority": "HIGH", "phase": "002", "file": "mcp_server/hooks/claude/session-stop.ts", "status": "not-started" },
+    { "id": "H2", "priority": "HIGH", "phase": "002", "file": "mcp_server/hooks/claude/hook-state.ts", "status": "not-started" },
+    { "id": "H3", "priority": "HIGH", "phase": "005", "file": "mcp_server/lib/context/shared-payload.ts", "status": "not-started" },
+    { "id": "H4", "priority": "HIGH", "phase": "008", "file": "mcp_server/lib/graph/graph-metadata-parser.ts", "status": "not-started" },
+    { "id": "H5", "priority": "HIGH", "phase": "010", "file": "shared/algorithms/adaptive-fusion.ts", "status": "not-started" },
+    { "id": "H6", "priority": "HIGH", "phase": "014", "file": "mcp_server/handlers/save/reconsolidation-bridge.ts", "status": "not-started" },
+    { "id": "H7", "priority": "HIGH", "phase": "014", "file": "mcp_server/handlers/save/post-insert.ts", "status": "not-started" },
+    { "id": "M1", "priority": "MEDIUM", "phase": "003", "file": "scripts/core/post-save-review.ts", "status": "not-started" },
+    { "id": "M2", "priority": "MEDIUM", "phase": "003", "file": "scripts/lib/trigger-phrase-sanitizer.ts", "status": "not-started" },
+    { "id": "M3", "priority": "MEDIUM", "phase": "005", "file": "mcp_server/handlers/code-graph/query.ts", "status": "not-started" },
+    { "id": "M4", "priority": "MEDIUM", "phase": "008", "file": "scripts/graph/backfill-graph-metadata.ts", "status": "not-started" },
+    { "id": "M5", "priority": "MEDIUM", "phase": "011", "file": "skill-advisor/scripts/skill_advisor.py", "status": "not-started" },
+    { "id": "M6", "priority": "MEDIUM", "phase": "011", "file": "skill-advisor/scripts/skill_graph_compiler.py", "status": "not-started" },
+    { "id": "M7", "priority": "MEDIUM", "phase": "012", "file": "command/spec_kit/assets/spec_kit_plan_auto.yaml", "status": "not-started" },
+    { "id": "M8", "priority": "MEDIUM", "phase": "015", "file": "015-implementation-deep-review/implementation-summary.md", "status": "not-started" }
+  ]
+}

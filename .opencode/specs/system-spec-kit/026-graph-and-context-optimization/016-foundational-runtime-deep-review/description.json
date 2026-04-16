@@ -1,0 +1,38 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime-deep-review",
+  "description": "Deep review of 19 foundational runtime candidates (7 HIGH, 8 MEDIUM, 4 LOW) concentrated in earlier phases (002, 003, 005, 008, 010, 014) that carry high leverage with less scrutiny from the 015 audit. Targets contract drift, hidden semantics, and soft governance in producer-side continuity seams, trust vocabulary, graph metadata, adaptive fusion, and save-time governance.",
+  "keywords": [
+    "deep-review",
+    "foundational-runtime",
+    "contract-drift",
+    "hidden-semantics",
+    "hook-state",
+    "session-stop",
+    "shared-payload",
+    "graph-metadata-parser",
+    "adaptive-fusion",
+    "reconsolidation-bridge",
+    "post-insert",
+    "trigger-sanitizer",
+    "skill-advisor",
+    "backfill",
+    "coverage-gap"
+  ],
+  "lastUpdated": "2026-04-16T00:00:00Z",
+  "specId": "016",
+  "folderSlug": "foundational-runtime-deep-review",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "kind": "deep-review",
+  "level": 2,
+  "status": "planning",
+  "candidateCounts": {
+    "HIGH": 7,
+    "MEDIUM": 8,
+    "LOW": 4,
+    "total": 19
+  },
+  "targetPhases": ["002", "003", "005", "008", "010", "011", "012", "014", "015"]
+}
