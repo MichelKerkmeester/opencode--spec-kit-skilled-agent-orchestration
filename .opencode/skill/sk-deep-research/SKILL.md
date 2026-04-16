@@ -182,6 +182,25 @@ User invokes: /spec_kit:deep-research "topic"
     └─────────────────────────────────┘
 ```
 
+### State Packet Location
+
+The research state packet always lives in the spec tree root's `research/` folder. Root-spec targets use `{spec_folder}/research/`. Child-phase targets resolve `{spec_tree_root}/research/{phase-subfolder}/`, where `{phase-subfolder}` is the child phase path joined with hyphens.
+
+```text
+research/
+  [phase-subfolder/]                 # Present only when the target spec is a nested child phase
+    deep-research-config.json        # Immutable after init: loop parameters
+    deep-research-state.jsonl        # Append-only research iteration log
+    deep-research-strategy.md        # Reducer-synchronized investigation plan
+    findings-registry.json           # Reducer-owned registry of open and resolved questions
+    deep-research-dashboard.md       # Auto-generated loop dashboard
+    .deep-research-pause             # Pause sentinel checked between lifecycle turns
+    .deep-research.lock              # Advisory lock held from late INIT through cleanup
+    research.md                      # Workflow-owned final synthesis output
+    iterations/
+      iteration-NNN.md               # Write-once per-iteration findings
+```
+
 ### Core Innovation: Fresh Context Per Iteration
 
 Each agent dispatch gets a fresh context window. State continuity comes from files, not memory. This solves context degradation in long research sessions.
@@ -370,9 +389,9 @@ Before research:
   --> Use memory_context() or memory_search() only after those canonical packet sources are exhausted
 
 During research (each iteration):
-  Agent writes research/iterations/iteration-NNN.md
-  Agent appends research/deep-research-state.jsonl
-  Workflow reducer updates research/deep-research-strategy.md, research/findings-registry.json, and research/deep-research-dashboard.md
+  Agent writes resolved_research_packet/iterations/iteration-NNN.md
+  Agent appends resolved_research_packet/deep-research-state.jsonl
+  Workflow reducer updates resolved_research_packet/deep-research-strategy.md, resolved_research_packet/findings-registry.json, and resolved_research_packet/deep-research-dashboard.md
   Runtime capability lookups resolve through assets/runtime_capabilities.json plus scripts/runtime-capabilities.cjs
 
 After research:

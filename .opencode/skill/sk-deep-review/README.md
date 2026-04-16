@@ -213,21 +213,20 @@ sk-deep-review/
 
 ### Review Runtime State
 
-Created in `{spec_folder}/review/` during initialization. All files are scoped to this packet; the review target is never written to.
+Created in the spec tree root's `review/` folder during initialization. Root-spec targets write directly to `{spec_folder}/review/`. Child-phase targets write to `{spec_tree_root}/review/{phase-subfolder}/`, where `{phase-subfolder}` joins the child phase path with hyphens. All files are scoped to this packet; the review target is never written to.
 
-```
-{spec_folder}/review/
-├── deep-review-config.json         # Immutable after init: loop parameters + lineage metadata
-├── deep-review-state.jsonl         # Append-only structured log of all iterations
-├── deep-review-findings-registry.json  # Reducer-owned canonical findings state
-├── deep-review-strategy.md         # Mutable: dimensions, findings, next focus
-├── deep-review-dashboard.md        # Auto-generated after each iteration
-├── .deep-review-pause              # Pause sentinel: create to halt, delete to resume
-├── review-report.md                # 9-section findings-first synthesis with verdict
-# `review-report-v{generation}.md` is reserved for the deferred completed-continue
-# lifecycle mode and is not written by the current runtime.
-└── iterations/
-    └── iteration-NNN.md            # Write-once per-iteration detailed findings
+```text
+{spec_tree_root}/review/
+└── [phase-subfolder/]                  # Present only for nested child-phase targets
+    ├── deep-review-config.json         # Immutable after init: loop parameters + lineage metadata
+    ├── deep-review-state.jsonl         # Append-only structured log of all iterations
+    ├── deep-review-findings-registry.json  # Reducer-owned canonical findings state
+    ├── deep-review-strategy.md         # Mutable: dimensions, findings, next focus
+    ├── deep-review-dashboard.md        # Auto-generated after each iteration
+    ├── .deep-review-pause              # Pause sentinel: create to halt, delete to resume
+    ├── review-report.md                # 9-section findings-first synthesis with verdict
+    └── iterations/
+        └── iteration-NNN.md            # Write-once per-iteration detailed findings
 ```
 
 ### Agent Definitions

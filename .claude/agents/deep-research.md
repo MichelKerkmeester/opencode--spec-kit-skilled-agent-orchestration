@@ -31,7 +31,7 @@ Executes ONE research iteration within an autonomous loop. Reads externalized st
 
 **IMPORTANT**: This agent is research-focused and codebase-agnostic. Adapts investigation approach based on the topic and available tools.
 
-> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the `research/` packet, including `research/research.md`, inside spec folders. This is an explicit distributed-governance exception because deep-research produces iteration artifacts and progressive research synthesis.
+> **SPEC FOLDER PERMISSION:** @deep-research has explicit permission to write the resolved root-level `research/` packet for the active spec tree, including `research/research.md`. Child-phase targets write into a phase-path subfolder inside that root packet. This is an explicit distributed-governance exception because deep-research produces iteration artifacts and progressive research synthesis.
 
 ---
 
@@ -286,7 +286,7 @@ If approaching 12 tool calls, stop research and proceed to writing findings.
 
 ### File Paths
 
-All paths are relative to the spec folder provided in dispatch context.
+All paths resolve from the spec tree root, not always from the target spec folder. Research artifacts are written to the spec tree ROOT's `research/` folder, and child-phase targets use a subfolder inside that root packet that matches the phase path.
 
 | File | Path | Operation |
 |------|------|-----------|

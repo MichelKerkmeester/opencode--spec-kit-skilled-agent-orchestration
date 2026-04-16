@@ -78,22 +78,38 @@ agent_config:
 # STATE FILE PATHS
 # ─────────────────────────────────────────────────────────────────
 state_paths:
-  config: "{spec_folder}/research/deep-research-config.json"
-  state_log: "{spec_folder}/research/deep-research-state.jsonl"
-  strategy: "{spec_folder}/research/deep-research-strategy.md"
-  registry: "{spec_folder}/research/findings-registry.json"
-  dashboard: "{spec_folder}/research/deep-research-dashboard.md"
-  pause_sentinel: "{spec_folder}/research/.deep-research-pause"
-  lock_file: "{spec_folder}/research/.deep-research.lock"
-  archive_root: "{spec_folder}/research_archive"
-  synthesis_snapshot_pattern: "{spec_folder}/research/synthesis-v{generation}.md"
-  iteration_pattern: "{spec_folder}/research/iterations/iteration-{NNN}.md"
-  research_output: "{spec_folder}/research/research.md"
+  # Template paths document the canonical packet layout. Runtime resolution happens via
+  # step_resolve_artifact_root plus the shared resolver, so child phases write into the
+  # spec tree root's research/ folder with a phase-path subfolder when needed.
+  packet_dir: "{artifact_dir}"
+  config: "{artifact_dir}/deep-research-config.json"
+  state_log: "{artifact_dir}/deep-research-state.jsonl"
+  strategy: "{artifact_dir}/deep-research-strategy.md"
+  registry: "{artifact_dir}/findings-registry.json"
+  dashboard: "{artifact_dir}/deep-research-dashboard.md"
+  pause_sentinel: "{artifact_dir}/.deep-research-pause"
+  lock_file: "{artifact_dir}/.deep-research.lock"
+  iteration_dir: "{artifact_dir}/iterations"
+  iteration_pattern: "{artifact_dir}/iterations/iteration-{NNN}.md"
+  research_output: "{artifact_dir}/research.md"
+  archive_root: "{artifact_archive_root}"
+  synthesis_snapshot_pattern: "{artifact_dir}/synthesis-v{generation}.md"
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW
 # ─────────────────────────────────────────────────────────────────
 workflow:
+
+  step_resolve_artifact_root:
+    description: "Resolve the root-level artifact directory for this spec tree"
+    note: "research/ folders are always resolved at the spec tree root, not inside nested child phases. If the target spec is a child phase, artifacts go to {root}/research/{phase-subfolder}/ and archives go to {root}/research_archive/{phase-subfolder}/. Runtime also exposes the legacy child-local research directory for migration-only reads."
+    command: "node -e \"const path = require('node:path'); const { resolveArtifactRoot } = require('.opencode/skill/system-spec-kit/shared/review-research-paths.cjs'); const resolved = resolveArtifactRoot('{spec_folder}', 'research'); const artifactDir = resolved.subfolder ? path.join(resolved.rootDir, resolved.subfolder) : resolved.rootDir; const artifactArchiveRoot = resolved.subfolder ? path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive', resolved.subfolder) : path.join(path.dirname(resolved.rootDir), path.basename(resolved.rootDir) + '_archive'); console.log(JSON.stringify({ ...resolved, artifactDir, artifactArchiveRoot, legacyLocalArtifactDir: '{spec_folder}/research' }));\""
+    outputs:
+      - artifact_root_dir: "Resolved spec-tree root research directory"
+      - artifact_subfolder: "Hyphen-joined child phase path, else null"
+      - artifact_dir: "Resolved research packet directory for this target"
+      - artifact_archive_root: "Resolved root-level research archive directory for this target"
+      - legacy_local_artifact_dir: "Legacy child-local research directory under {spec_folder}"
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 1: INITIALIZATION
@@ -113,16 +129,16 @@ workflow:
 
       step_create_directories:
         action: "Create spec folder and research packet directories if they don't exist"
-        command: "mkdir -p {spec_folder}/research/iterations {spec_folder}/research_archive"
+        command: "mkdir -p {state_paths.iteration_dir} {state_paths.archive_root}"
 
       step_resolve_canonical_names:
         action: "Resolve canonical research packet artifact names before classification"
         inspect_legacy:
-          - "{spec_folder}/research/config.json"
-          - "{spec_folder}/research/state.jsonl"
-          - "{spec_folder}/research/strategy.md"
-          - "{spec_folder}/research/dashboard.md"
-          - "{spec_folder}/research/.pause"
+          - "{state_paths.packet_dir}/config.json"
+          - "{state_paths.packet_dir}/state.jsonl"
+          - "{state_paths.packet_dir}/strategy.md"
+          - "{state_paths.packet_dir}/dashboard.md"
+          - "{state_paths.packet_dir}/.pause"
         migration_policy: "dual-read / single-write for 4 weeks"
         on_legacy_read:
           append_jsonl: '{"type":"event","event":"migration","legacyPath":"{legacy_path}","canonicalPath":"{canonical_path}","timestamp":"{ISO_8601_NOW}"}'
@@ -135,9 +151,9 @@ workflow:
       step_classify_session:
         action: "Classify the session before writing files"
         inspect:
-          - "{spec_folder}/research/deep-research-config.json"
-          - "{spec_folder}/research/deep-research-state.jsonl"
-          - "{spec_folder}/research/deep-research-strategy.md"
+          - "{state_paths.config}"
+          - "{state_paths.state_log}"
+          - "{state_paths.strategy}"
         classify:
           fresh: "None of the three state artifacts exist"
           resume: "Config, JSONL, and strategy all exist and agree on topic/spec folder"
@@ -150,13 +166,13 @@ workflow:
           append_jsonl: '{"type":"event","event":"resumed","mode":"research","sessionId":"{session_id}","parentSessionId":"{session_id}","lineageMode":"resume","continuedFromRun":{iteration_count},"generation":{generation},"archivedPath":null,"timestamp":"{ISO_8601_NOW}"}'
           skip_to: phase_loop
         on_restart:
-          action: "Archive the current research/ tree under research_archive/{timestamp}/ and start a new lineage segment with a fresh sessionId and generation+1."
-          archive: "{spec_folder}/research -> {spec_folder}/research_archive/{timestamp_slug}"
+          action: "Archive the current research packet under the root-level research_archive/ tree and start a new lineage segment with a fresh sessionId and generation+1."
+          archive: "{state_paths.packet_dir} -> {state_paths.archive_root}/{timestamp_slug}"
           set:
             lineage_mode: "restart"
             parent_session_id: "{prior_session_id}"
             generation: "{prior_generation + 1}"
-          append_jsonl: '{"type":"event","event":"restarted","mode":"research","sessionId":"{session_id}","parentSessionId":"{prior_session_id}","lineageMode":"restart","generation":{generation},"archivedPath":"{spec_folder}/research_archive/{timestamp_slug}","timestamp":"{ISO_8601_NOW}"}'
+          append_jsonl: '{"type":"event","event":"restarted","mode":"research","sessionId":"{session_id}","parentSessionId":"{prior_session_id}","lineageMode":"restart","generation":{generation},"archivedPath":"{state_paths.archive_root}/{timestamp_slug}","timestamp":"{ISO_8601_NOW}"}'
           skip_to: step_create_config
         note_deferred_branches: "fork and completed-continue are deferred and no longer runtime-supported in this release. The reducer still reads `lineageMode` from config for dashboards and analysis, but only `new`, `resume`, and `restart` are live. See sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract for the one-session contract."
         on_completed_session:
@@ -187,12 +203,12 @@ workflow:
           lineage.lineageMode: "new"
           lineage.generation: 1
           lineage.continuedFromRun: null
-        output: "{spec_folder}/research/deep-research-config.json"
+        output: "{state_paths.config}"
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record"
         content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
-        output: "{spec_folder}/research/deep-research-state.jsonl"
+        output: "{state_paths.state_log}"
 
       step_create_strategy:
         action: "Create strategy file from template with initial questions"
@@ -204,17 +220,17 @@ workflow:
           known_context_summary: "None"
           max_iterations: "{max_iterations}"
           convergence_threshold: "{convergence_threshold}"
-        output: "{spec_folder}/research/deep-research-strategy.md"
+        output: "{state_paths.strategy}"
 
       step_create_registry:
         action: "Initialize reducer-owned findings registry"
         content: '{"openQuestions":[],"resolvedQuestions":[],"keyFindings":[],"ruledOutDirections":[],"metrics":{"iterationsCompleted":0,"openQuestions":0,"resolvedQuestions":0,"keyFindings":0,"convergenceScore":0,"coverageBySources":{}}}'
-        output: "{spec_folder}/research/findings-registry.json"
+        output: "{state_paths.registry}"
 
       step_enrich_strategy_context:
         action: "Ensure Known Context is written only after strategy.md exists"
         condition: "prior_context_found"
-        edit: "{spec_folder}/research/deep-research-strategy.md"
+        edit: "{state_paths.strategy}"
         note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
 
       step_detect_spec_present:
@@ -286,8 +302,8 @@ workflow:
       step_read_state:
         action: "Read current state from JSONL and strategy"
         read:
-          - "{spec_folder}/research/deep-research-state.jsonl"
-          - "{spec_folder}/research/deep-research-strategy.md"
+          - "{state_paths.state_log}"
+          - "{state_paths.strategy}"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
           - current_iteration: "iteration_count + 1"
@@ -307,9 +323,9 @@ workflow:
 
       step_check_pause_sentinel:
         action: "Check for pause sentinel file"
-        check: "Does {spec_folder}/research/.deep-research-pause exist?"
+        check: "Does {state_paths.pause_sentinel} exist?"
         if_exists:
-          log_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+          log_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{state_paths.pause_sentinel}","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
           message: "Research paused. Delete research/.deep-research-pause to resume."
           halt: true
         if_not_exists:
@@ -423,7 +439,7 @@ workflow:
         stop_reasons_enum: [converged, maxIterationsReached, blockedStop, stuckRecovery, error, manualStop, userPaused]
         rule_pause_sentinel:
           raw_event_forbidden: '{"type":"event","event":"paused"}'
-          canonical_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{spec_folder}/research/.deep-research-pause","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+          canonical_event: '{"type":"event","event":"userPaused","mode":"research","run":{current_iteration},"stopReason":"userPaused","sentinelPath":"{state_paths.pause_sentinel}","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
         rule_stuck_recovery:
           raw_event_forbidden: '{"type":"event","event":"stuck_recovery"}'
           canonical_event: '{"type":"event","event":"stuckRecovery","mode":"research","run":{current_iteration},"stopReason":"stuckRecovery","fromIteration":{current_iteration},"outcome":"recovered","timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
@@ -450,11 +466,11 @@ workflow:
             Last 3 Iterations Summary: {last_3_summaries}
 
             State Files (ALL paths relative to repo root):
-              Config: {spec_folder}/research/deep-research-config.json
-              State Log: {spec_folder}/research/deep-research-state.jsonl
-              Strategy: {spec_folder}/research/deep-research-strategy.md
-              Registry: {spec_folder}/research/findings-registry.json
-              Write findings to: {spec_folder}/research/iterations/iteration-{NNN}.md
+              Config: {state_paths.config}
+              State Log: {state_paths.state_log}
+              Strategy: {state_paths.strategy}
+              Registry: {state_paths.registry}
+              Write findings to: {state_paths.iteration_pattern}
 
             CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
             CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
@@ -468,12 +484,12 @@ workflow:
         command: "node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs {spec_folder}"
         inputs:
           latestJSONLDelta: "Latest JSONL records written since the previous iteration"
-          newIterationFile: "{spec_folder}/research/iterations/iteration-{NNN}.md"
-          priorReducedState: "{spec_folder}/research/findings-registry.json"
+          newIterationFile: "{state_paths.iteration_pattern}"
+          priorReducedState: "{state_paths.registry}"
         outputs:
-          - "{spec_folder}/research/findings-registry.json"
-          - "{spec_folder}/research/deep-research-dashboard.md"
-          - "{spec_folder}/research/deep-research-strategy.md"
+          - "{state_paths.registry}"
+          - "{state_paths.dashboard}"
+          - "{state_paths.strategy}"
         failure_modes:
           malformed_delta: "skip + warn"
           missing_iteration_file: "no-op + error"
@@ -483,7 +499,7 @@ workflow:
       step_graph_upsert:
         action: "Persist the latest iteration graph delta after the reducer refresh and after the iteration file exists"
         read:
-          - "{spec_folder}/research/deep-research-state.jsonl"
+          - "{state_paths.state_log}"
         extract:
           - latest_graph_events: "Read graphEvents from the latest iteration record, else []"
           - graph_upsert_nodes_json: "Map latest_graph_events where type == 'node' to node payloads with label -> name and preserve remaining node fields"
@@ -505,7 +521,7 @@ workflow:
       step_evaluate_results:
         action: "Verify iteration outputs and extract metrics"
         verify:
-          - file_exists: "{spec_folder}/research/iterations/iteration-{NNN}.md"
+          - file_exists: "{state_paths.iteration_pattern}"
           - jsonl_appended: "New iteration record in state.jsonl"
           - strategy_updated: "Reducer refreshed strategy machine-owned sections"
           - registry_updated: "Reducer refreshed findings-registry.json"
@@ -521,11 +537,11 @@ workflow:
       step_generate_dashboard:
         action: "Generate or refresh the human-readable dashboard"
         read:
-          - "{spec_folder}/research/deep-research-state.jsonl"
-          - "{spec_folder}/research/findings-registry.json"
-          - "{spec_folder}/research/deep-research-strategy.md"
+          - "{state_paths.state_log}"
+          - "{state_paths.registry}"
+          - "{state_paths.strategy}"
         template: .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
-        output: "{spec_folder}/research/deep-research-dashboard.md"
+        output: "{state_paths.dashboard}"
         note: "Auto-generated from JSONL + reducer registry + strategy. Never manually edited."
 
       step_update_tracking:
@@ -549,10 +565,10 @@ workflow:
       step_hydrate_summary_metrics:
         action: "Hydrate summary metrics before synthesis"
         read:
-          - "{spec_folder}/research/deep-research-config.json"
-          - "{spec_folder}/research/deep-research-state.jsonl"
-          - "{spec_folder}/research/findings-registry.json"
-          - "{spec_folder}/research/deep-research-strategy.md"
+          - "{state_paths.config}"
+          - "{state_paths.state_log}"
+          - "{state_paths.registry}"
+          - "{state_paths.strategy}"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
           - current_iteration: "iteration_count + 1"
@@ -569,8 +585,8 @@ workflow:
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
-        read_pattern: "{spec_folder}/research/iterations/iteration-*.md"
-        read_also: "{spec_folder}/research/deep-research-strategy.md"
+        read_pattern: "{state_paths.iteration_dir}/iteration-*.md"
+        read_also: "{state_paths.strategy}"
 
       step_compile_research:
         action: "Compile or finalize research/research.md"
@@ -588,7 +604,7 @@ workflow:
             3. Add citations from original sources
             4. Note unanswered questions in Open Questions section
           Preserve machine-owned markers so the reducer-owned registry, dashboard, and strategy anchors can be refreshed on re-run without mutating prior synthesis. (Note: `completed-continue` lineage branch is deferred — see `sk-deep-research/references/loop_protocol.md §Lifecycle Branch Contract`.)
-        output: "{spec_folder}/research/research.md"
+        output: "{state_paths.research_output}"
 
       step_convergence_report:
         action: "Generate and append convergence report"
@@ -625,7 +641,7 @@ workflow:
 
       step_update_config_status:
         action: "Mark config as complete"
-        edit: "{spec_folder}/research/deep-research-config.json"
+        edit: "{state_paths.config}"
         set_field: { status: "complete" }
 
   # ═══════════════════════════════════════════════════════════════
@@ -712,7 +728,7 @@ reference_only_appendix:
   checkpoint_commit:
     note: "Checkpoint commits are intentionally excluded from workflow.steps."
     commands:
-      - "git add {spec_folder}/research/iterations/iteration-{NNN}.md {spec_folder}/research/deep-research-state.jsonl {spec_folder}/research/deep-research-strategy.md {spec_folder}/research/research.md"
+      - "git add {state_paths.iteration_pattern} {state_paths.state_log} {state_paths.strategy} {state_paths.research_output}"
       - 'git commit -m "chore(deep-research): iteration {NNN} complete"'
   wave_orchestration:
     note: "Wave execution is intentionally excluded from workflow.steps."

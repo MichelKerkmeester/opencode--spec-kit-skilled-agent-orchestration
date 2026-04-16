@@ -10,6 +10,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { resolveArtifactRoot } = require('../../system-spec-kit/shared/review-research-paths.cjs');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. HELPERS
@@ -810,7 +811,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
  * Reduce JSONL state, iteration files, and strategy into synchronized registry,
  * strategy, and dashboard outputs. Idempotent: repeated calls produce identical results.
  *
- * @param {string} specFolder - Path to the spec folder containing a research/ directory
+ * @param {string} specFolder - Path to the target spec folder for the research packet
  * @param {Object} [options] - Reducer options
  * @param {boolean} [options.write=true] - Write outputs to disk when true
  * @returns {Object} Paths and content for registry, strategy, and dashboard
@@ -819,7 +820,8 @@ function reduceResearchState(specFolder, options = {}) {
   const write = options.write !== false;
   const lenient = Boolean(options.lenient);
   const resolvedSpecFolder = path.resolve(specFolder);
-  const researchDir = path.join(resolvedSpecFolder, 'research');
+  const { rootDir: researchRootDir, subfolder: researchSubfolder } = resolveArtifactRoot(resolvedSpecFolder, 'research');
+  const researchDir = researchSubfolder ? path.join(researchRootDir, researchSubfolder) : researchRootDir;
   const configPath = path.join(researchDir, 'deep-research-config.json');
   const stateLogPath = path.join(researchDir, 'deep-research-state.jsonl');
   const strategyPath = path.join(researchDir, 'deep-research-strategy.md');

@@ -60,7 +60,7 @@ For iterative code review, use `sk-deep-review`.
 /spec_kit:deep-research:auto "API backpressure patterns" --max-iterations 6 --convergence 0.03
 ```
 
-What the workflow creates under `{spec_folder}/research/`:
+What the workflow creates under the resolved root-level research packet:
 
 - `deep-research-config.json`
 - `deep-research-state.jsonl`
@@ -70,7 +70,7 @@ What the workflow creates under `{spec_folder}/research/`:
 - `iterations/iteration-NNN.md`
 - `research.md`
 
-Pause a running loop by creating `research/.deep-research-pause`. Delete that file to let the workflow continue from the next lifecycle check.
+The packet always lives in the spec tree root's `research/` folder. Root-spec targets use `{spec_folder}/research/`. Child-phase targets use `{spec_tree_root}/research/{phase-subfolder}/`, where `{phase-subfolder}` joins the child phase path with hyphens. Pause a running loop by creating `.deep-research-pause` inside that resolved packet, then delete it to let the workflow continue from the next lifecycle check.
 <!-- /ANCHOR:quick-start -->
 
 ---
@@ -131,19 +131,20 @@ Pause a running loop by creating `research/.deep-research-pause`. Delete that fi
 Runtime packet layout:
 
 ```text
-{spec_folder}/research/
-  deep-research-config.json
-  deep-research-state.jsonl
-  deep-research-strategy.md
-  findings-registry.json
-  deep-research-dashboard.md
-  .deep-research-pause
-  research.md
-  archive/
-    {sessionId}/
-  iterations/
-    iteration-001.md
-    iteration-002.md
+{spec_tree_root}/research/
+  [phase-subfolder/]                 # Present only for nested child-phase targets
+    deep-research-config.json
+    deep-research-state.jsonl
+    deep-research-strategy.md
+    findings-registry.json
+    deep-research-dashboard.md
+    .deep-research-pause
+    research.md
+    archive/
+      {sessionId}/
+    iterations/
+      iteration-001.md
+      iteration-002.md
 ```
 
 Ownership model:

@@ -10,6 +10,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { resolveArtifactRoot } = require('../../system-spec-kit/shared/review-research-paths.cjs');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. CONSTANTS
@@ -1127,7 +1128,7 @@ function renderDashboard(config, registry, iterationRecords, iterationFiles) {
  * Reduce JSONL state, iteration files, and strategy into synchronized registry,
  * strategy, and dashboard outputs. Idempotent: repeated calls produce identical results.
  *
- * @param {string} specFolder - Path to the spec folder containing a review/ directory
+ * @param {string} specFolder - Path to the target spec folder for the review packet
  * @param {Object} [options] - Reducer options
  * @param {boolean} [options.write=true] - Write outputs to disk when true
  * @returns {Object} Paths and content for registry, strategy, and dashboard
@@ -1137,7 +1138,8 @@ function reduceReviewState(specFolder, options = {}) {
   const lenient = Boolean(options.lenient);
   const createMissingAnchors = Boolean(options.createMissingAnchors);
   const resolvedSpecFolder = path.resolve(specFolder);
-  const reviewDir = path.join(resolvedSpecFolder, 'review');
+  const { rootDir: reviewRootDir, subfolder: reviewSubfolder } = resolveArtifactRoot(resolvedSpecFolder, 'review');
+  const reviewDir = reviewSubfolder ? path.join(reviewRootDir, reviewSubfolder) : reviewRootDir;
   const configPath = path.join(reviewDir, 'deep-review-config.json');
   const stateLogPath = path.join(reviewDir, 'deep-review-state.jsonl');
   const strategyPath = path.join(reviewDir, 'deep-review-strategy.md');

@@ -23,7 +23,7 @@ Executes ONE review iteration within an autonomous review loop. Reads externaliz
 
 **IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and the deep-review loop contract (state protocol, JSONL, lifecycle continuity). It reviews code but does NOT modify it.
 
-> **SPEC FOLDER PERMISSION:** @deep-review has explicit permission to write `review/` files (iteration artifacts, strategy, JSONL, dashboard, report) inside spec folders. Review target files are strictly READ-ONLY.
+> **SPEC FOLDER PERMISSION:** @deep-review has explicit permission to write the resolved root-level `review/` packet for the active spec tree (iteration artifacts, strategy, JSONL, dashboard, report). Child-phase targets write into a phase-path subfolder inside that root packet. Review target files are strictly READ-ONLY.
 
 ---
 
@@ -310,7 +310,7 @@ This agent loads shared review doctrine from .opencode/skill/sk-code-review/refe
 Runtime-supported lifecycle modes (current release):
 - `new`: First run against the spec folder; no prior state.
 - `resume`: Continue the active review session; same `sessionId`, no archive. The workflow appends a typed `resumed` JSONL event before dispatch.
-- `restart`: Archive the existing `review/` tree under `review_archive/{timestamp}/`, mint a fresh `sessionId`, increment `generation`. The workflow appends a typed `restarted` JSONL event with a non-null `archivedPath`.
+- `restart`: Archive the existing resolved `review/` packet under the spec tree root's `review_archive/{phase-subfolder-or-root}/{timestamp}/`, mint a fresh `sessionId`, increment `generation`. The workflow appends a typed `restarted` JSONL event with a non-null `archivedPath`.
 
 Deferred (reserved, not runtime-supported):
 - `fork`: Earlier drafts described this as a child review session from an earlier lineage point. Not emitted today.
@@ -337,7 +337,7 @@ Reducer boundary:
 
 ### File Paths
 
-All paths are relative to the spec folder provided in dispatch context.
+All paths resolve from the spec tree root, not always from the target spec folder. Review artifacts are written to the spec tree ROOT's `review/` folder, and child-phase targets use a subfolder inside that root packet that matches the phase path.
 
 | File | Path | Operation |
 |------|------|-----------|

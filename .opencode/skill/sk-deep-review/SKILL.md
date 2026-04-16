@@ -199,18 +199,19 @@ User invokes: /spec_kit:deep-review "target"
 
 ### State Packet Location
 
-The review state packet lives under `{spec_folder}/review/`:
+The review state packet always lives in the spec tree root's `review/` folder. Root-spec targets use `{spec_folder}/review/`. Child-phase targets resolve `{spec_tree_root}/review/{phase-subfolder}/`, where `{phase-subfolder}` is the child phase path joined with hyphens.
 
 ```text
 review/
-  deep-review-config.json            # Immutable after init: review parameters
-  deep-review-state.jsonl            # Append-only review iteration log
-  deep-review-strategy.md            # Review dimensions, findings, next focus
-  deep-review-dashboard.md           # Auto-generated review dashboard
-  .deep-review-pause                 # Pause sentinel checked between iterations
-  review-report.md                   # Final review report (synthesis output)
-  iterations/
-    iteration-NNN.md                 # Write-once review findings per iteration
+  [phase-subfolder/]                 # Present only when the target spec is a nested child phase
+    deep-review-config.json          # Immutable after init: review parameters
+    deep-review-state.jsonl          # Append-only review iteration log
+    deep-review-strategy.md          # Review dimensions, findings, next focus
+    deep-review-dashboard.md         # Auto-generated review dashboard
+    .deep-review-pause               # Pause sentinel checked between iterations
+    review-report.md                 # Final review report (synthesis output)
+    iterations/
+      iteration-NNN.md               # Write-once review findings per iteration
 ```
 
 ### Core Innovation: Fresh Context Per Iteration
@@ -461,9 +462,9 @@ Before review:
   --> Use memory_context() or memory_search() only after those canonical packet sources are exhausted
 
 During review (each iteration):
-  Agent writes {spec_folder}/review/iterations/iteration-NNN.md
-  Agent updates {spec_folder}/review/deep-review-strategy.md
-  Agent appends {spec_folder}/review/deep-review-state.jsonl
+  Agent writes resolved_review_packet/iterations/iteration-NNN.md
+  Agent updates resolved_review_packet/deep-review-strategy.md
+  Agent appends resolved_review_packet/deep-review-state.jsonl
 
 After review:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
