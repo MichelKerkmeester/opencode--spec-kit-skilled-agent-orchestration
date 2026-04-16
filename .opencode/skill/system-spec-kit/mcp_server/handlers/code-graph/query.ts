@@ -405,7 +405,20 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   }
 
   if (operation === 'outline') {
-    const nodes = graphDb.queryOutline(subject);
+    const resolvedSubject = graphDb.resolveSubjectFilePath(subject);
+    if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
+      return {
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            status: 'error',
+            error: `Could not resolve outline subject: ${subject}`,
+          }),
+        }],
+      };
+    }
+
+    const nodes = graphDb.queryOutline(resolvedSubject);
     const limited = nodes.slice(0, limit);
     return {
       content: [{
@@ -414,7 +427,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           status: 'ok',
           data: buildGraphQueryPayload({
             operation: 'outline',
-            filePath: subject,
+            filePath: resolvedSubject,
             readiness,
             nodeCount: limited.length,
             nodes: limited.map(n => ({

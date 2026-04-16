@@ -103,6 +103,22 @@ describe('code-graph-query handler', () => {
     expect(mocks.queryEdgesTo).not.toHaveBeenCalled();
   });
 
+  it('rejects outline subjects that are not tracked in the graph', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce(null);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'outline',
+      subject: 'src/missing.ts',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed).toEqual({
+      status: 'error',
+      error: 'Could not resolve outline subject: src/missing.ts',
+    });
+    expect(mocks.queryOutline).not.toHaveBeenCalled();
+  });
+
   it('rejects unsupported edgeType values with a clear error', async () => {
     const result = await handleCodeGraphQuery({
       operation: 'calls_from',
