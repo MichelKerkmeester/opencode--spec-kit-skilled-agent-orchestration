@@ -64,6 +64,13 @@ type RuntimeState = {
 };
 
 type HandlerModule = Record<string, unknown>;
+type ParsedArgumentValue =
+  | string
+  | number
+  | boolean
+  | null
+  | ParsedArgumentValue[]
+  | { [key: string]: ParsedArgumentValue };
 
 const cwd = process.cwd();
 const SKILL_ROOT = cwd.endsWith(path.join('.opencode', 'skill', 'system-spec-kit'))
@@ -190,7 +197,7 @@ function parsedStepArgs(
 
   const trimmed = step.argSource.trim();
   if (trimmed.startsWith('{')) {
-    return evaluateObjectLiteral(trimmed, fixture, runtimeState);
+    return parseObjectLiteralArgs(trimmed, fixture, runtimeState);
   }
 
   const parsed: Record<string, unknown> = {};
@@ -435,14 +442,200 @@ function substitutePlaceholders(value: string, fixture: FixtureToolContext, runt
   return next;
 }
 
-function evaluateObjectLiteral(
+function readEscapedCharacter(source: string, indexRef: { value: number }): string {
+  if (indexRef.value >= source.length) {
+    throw new Error('Unterminated escape sequence in playbook object literal');
+  }
+  const char = source[indexRef.value];
+  indexRef.value += 1;
+  switch (char) {
+    case '"':
+    case "'":
+    case '\\':
+    case '/':
+      return char;
+    case 'b':
+      return '\b';
+    case 'f':
+      return '\f';
+    case 'n':
+      return '\n';
+    case 'r':
+      return '\r';
+    case 't':
+      return '\t';
+    case 'u': {
+      const hex = source.slice(indexRef.value, indexRef.value + 4);
+      if (!/^[0-9a-fA-F]{4}$/.test(hex)) {
+        throw new Error(`Invalid unicode escape "\\u${hex}" in playbook object literal`);
+      }
+      indexRef.value += 4;
+      return String.fromCharCode(Number.parseInt(hex, 16));
+    }
+    default:
+      return char;
+  }
+}
+
+function parseStringLiteral(source: string, indexRef: { value: number }): string {
+  const quote = source[indexRef.value];
+  indexRef.value += 1;
+  let parsed = '';
+  while (indexRef.value < source.length) {
+    const char = source[indexRef.value];
+    indexRef.value += 1;
+    if (char === quote) {
+      return parsed;
+    }
+    if (char === '\\') {
+      parsed += readEscapedCharacter(source, indexRef);
+      continue;
+    }
+    parsed += char;
+  }
+  throw new Error('Unterminated string in playbook object literal');
+}
+
+function skipObjectWhitespace(source: string, indexRef: { value: number }): void {
+  while (indexRef.value < source.length && /\s/.test(source[indexRef.value])) {
+    indexRef.value += 1;
+  }
+}
+
+function parseIdentifierToken(source: string, indexRef: { value: number }): string {
+  const start = indexRef.value;
+  while (indexRef.value < source.length && /[A-Za-z0-9_$-]/.test(source[indexRef.value])) {
+    indexRef.value += 1;
+  }
+  if (indexRef.value === start) {
+    const nextChar = source[indexRef.value] ?? 'EOF';
+    throw new Error(`Unexpected token "${nextChar}" in playbook object literal`);
+  }
+  return source.slice(start, indexRef.value);
+}
+
+function parseNumberLiteral(source: string, indexRef: { value: number }): number {
+  const start = indexRef.value;
+  while (indexRef.value < source.length && /[-+0-9.eE]/.test(source[indexRef.value])) {
+    indexRef.value += 1;
+  }
+  const raw = source.slice(start, indexRef.value);
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) {
+    throw new Error(`Invalid numeric literal "${raw}" in playbook object literal`);
+  }
+  return parsed;
+}
+
+function parseObjectValue(source: string, indexRef: { value: number }): ParsedArgumentValue {
+  skipObjectWhitespace(source, indexRef);
+  const nextChar = source[indexRef.value];
+  if (!nextChar) {
+    throw new Error('Unexpected end of playbook object literal');
+  }
+  if (nextChar === '{') {
+    return parseObjectEntries(source, indexRef);
+  }
+  if (nextChar === '[') {
+    indexRef.value += 1;
+    const items: ParsedArgumentValue[] = [];
+    skipObjectWhitespace(source, indexRef);
+    if (source[indexRef.value] === ']') {
+      indexRef.value += 1;
+      return items;
+    }
+    while (indexRef.value < source.length) {
+      items.push(parseObjectValue(source, indexRef));
+      skipObjectWhitespace(source, indexRef);
+      const delimiter = source[indexRef.value];
+      if (delimiter === ',') {
+        indexRef.value += 1;
+        skipObjectWhitespace(source, indexRef);
+        if (source[indexRef.value] === ']') {
+          indexRef.value += 1;
+          return items;
+        }
+        continue;
+      }
+      if (delimiter === ']') {
+        indexRef.value += 1;
+        return items;
+      }
+      throw new Error(`Expected "," or "]" in playbook array literal, received "${delimiter ?? 'EOF'}"`);
+    }
+    throw new Error('Unterminated array in playbook object literal');
+  }
+  if (nextChar === '"' || nextChar === "'") {
+    return parseStringLiteral(source, indexRef);
+  }
+  if (/[0-9-]/.test(nextChar)) {
+    return parseNumberLiteral(source, indexRef);
+  }
+
+  const identifier = parseIdentifierToken(source, indexRef);
+  if (identifier === 'true') return true;
+  if (identifier === 'false') return false;
+  if (identifier === 'null') return null;
+  return identifier;
+}
+
+function parseObjectEntries(source: string, indexRef: { value: number }): Record<string, ParsedArgumentValue> {
+  if (source[indexRef.value] !== '{') {
+    throw new Error('Object-literal parsing must begin with "{"');
+  }
+  indexRef.value += 1;
+  const parsed: Record<string, ParsedArgumentValue> = {};
+  skipObjectWhitespace(source, indexRef);
+  if (source[indexRef.value] === '}') {
+    indexRef.value += 1;
+    return parsed;
+  }
+
+  while (indexRef.value < source.length) {
+    skipObjectWhitespace(source, indexRef);
+    const key = source[indexRef.value] === '"' || source[indexRef.value] === "'"
+      ? parseStringLiteral(source, indexRef)
+      : parseIdentifierToken(source, indexRef);
+    skipObjectWhitespace(source, indexRef);
+    if (source[indexRef.value] !== ':') {
+      throw new Error(`Shorthand object properties are not supported in playbook args: "${key}"`);
+    }
+    indexRef.value += 1;
+    parsed[key] = parseObjectValue(source, indexRef);
+    skipObjectWhitespace(source, indexRef);
+    const delimiter = source[indexRef.value];
+    if (delimiter === ',') {
+      indexRef.value += 1;
+      skipObjectWhitespace(source, indexRef);
+      if (source[indexRef.value] === '}') {
+        indexRef.value += 1;
+        return parsed;
+      }
+      continue;
+    }
+    if (delimiter === '}') {
+      indexRef.value += 1;
+      return parsed;
+    }
+    throw new Error(`Expected "," or "}" in playbook object literal, received "${delimiter ?? 'EOF'}"`);
+  }
+
+  throw new Error('Unterminated object in playbook literal');
+}
+
+export function parseObjectLiteralArgs(
   source: string,
   fixture: FixtureToolContext,
   runtimeState: RuntimeState,
 ): Record<string, unknown> {
   const replaced = substitutePlaceholders(source, fixture, runtimeState);
-  // The playbook is repository-owned content. Evaluate object literals only.
-  return Function(`return (${replaced});`)() as Record<string, unknown>;
+  const indexRef = { value: 0 };
+  const parsed = parseObjectEntries(replaced, indexRef);
+  skipObjectWhitespace(replaced, indexRef);
+  if (indexRef.value !== replaced.length) {
+    throw new Error(`Unexpected trailing content in playbook object literal: ${replaced.slice(indexRef.value)}`);
+  }
+  return parsed;
 }
 
 function defaultArgsForTool(
@@ -1266,8 +1459,10 @@ async function main(): Promise<void> {
   logProgress(`Results written to ${RESULTS_JSON}`);
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? `${error.message}\n${error.stack ?? ''}` : String(error);
-  process.stderr.write(`${message}\n`);
-  process.exitCode = 1;
-});
+if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) {
+  main().catch((error: unknown) => {
+    const message = error instanceof Error ? `${error.message}\n${error.stack ?? ''}` : String(error);
+    process.stderr.write(`${message}\n`);
+    process.exitCode = 1;
+  });
+}
