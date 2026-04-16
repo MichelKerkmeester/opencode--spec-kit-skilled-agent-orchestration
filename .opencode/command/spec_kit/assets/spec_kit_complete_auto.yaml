@@ -113,7 +113,7 @@ field_handling:
   intake_contract:
     trigger_states: [no-spec, partial-folder, repair-mode, placeholder-upgrade]
     returned_fields: [feature_description, spec_path, selected_level, start_state, repair_mode, manual_relationships]
-    no_regression_rule: "When folder_state == populated, skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and preserve the current Step 1 behavior."
+    no_regression_rule: "When folder_state == populated-folder, skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and preserve the current Step 1 behavior."
 
 packet_graph_metadata:
   completion_contract:
@@ -450,19 +450,19 @@ workflow:
       partial-folder: "spec.md or metadata exists, but the canonical trio is incomplete"
       repair-mode: "spec.md exists and the folder requires metadata repair or intake resume before completion"
       placeholder-upgrade: "Tracked seed markers, persisted intake resume markers, or unresolved placeholders remain and block healthy-folder status"
-      populated: "spec.md, description.json, and graph-metadata.json are present with no unresolved placeholder markers"
+      populated-folder: "spec.md, description.json, and graph-metadata.json are present with no unresolved placeholder markers"
     map_to_start_state:
       no-spec: empty-folder
       partial-folder: partial-folder
       repair-mode: repair-mode
       placeholder-upgrade: placeholder-upgrade
-      populated: populated-folder
+      populated-folder: populated-folder
     outputs:
-      - folder_state: "no-spec | partial-folder | repair-mode | placeholder-upgrade | populated"
+      - folder_state: "no-spec | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
       - spec_path: "{spec_folder}"
       - start_state: "empty-folder | partial-folder | repair-mode | placeholder-upgrade | populated-folder"
     on_trigger:
-      when: "folder_state != populated"
+      when: "folder_state != populated-folder"
       inline_start_intake:
         execution_mode: "{execution_mode}"
         prompt_mode: "single_consolidated_prompt"
@@ -480,7 +480,7 @@ workflow:
       emit_event_after_bind: intake_completed
       payload_after_bind: '{"event":"intake_completed","folderState":"{folder_state}","startState":"{start_state}","specPath":"{spec_path}","selectedLevel":"{selected_level}","repairMode":"{repair_mode}","timestamp":"{ISO_8601_NOW}"}'
     on_skip:
-      when: "folder_state == populated"
+      when: "folder_state == populated-folder"
       note: "Healthy folder detected. Skip shared intake-contract execution (`.opencode/skill/system-spec-kit/references/intake-contract.md` §2-§5) and keep the existing `/complete` setup behavior unchanged."
 
   step_1_request_analysis:
