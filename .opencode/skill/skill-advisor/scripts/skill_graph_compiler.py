@@ -472,6 +472,24 @@ def validate_dependency_cycles(
     return errors
 
 
+def emit_validation_messages(
+    title: str,
+    messages: List[str],
+    *,
+    stream: Optional[Any] = None,
+) -> None:
+    """Emit a formatted validation block to the selected stream."""
+    if not messages:
+        return
+
+    if stream is None:
+        stream = sys.stderr
+
+    print(f"\n{title} ({len(messages)}):", file=stream)
+    for message in messages:
+        print(f"  - {message}", file=stream)
+
+
 # ───────────────────────────────────────────────────────────────
 # 4. COMPILATION
 # ───────────────────────────────────────────────────────────────
@@ -612,48 +630,37 @@ def main() -> int:
 
     # Validate
     total_errors = 0
+    topology_violations = 0
     for folder_name, file_path, data in all_metadata:
         errors = validate_skill_metadata(folder_name, data, all_skill_ids)
         if errors:
-            print(f"\nERRORS in {folder_name}:")
-            for err in errors:
-                print(f"  - {err}")
+            emit_validation_messages(f"ERRORS in {folder_name}", errors)
             total_errors += len(errors)
 
     dependency_cycle_errors = validate_dependency_cycles(all_metadata)
     if dependency_cycle_errors:
-        print(f"\nDEPENDENCY CYCLE ERRORS ({len(dependency_cycle_errors)}):")
-        for err in dependency_cycle_errors:
-            print(f"  - {err}")
+        emit_validation_messages("DEPENDENCY CYCLE ERRORS", dependency_cycle_errors)
         total_errors += len(dependency_cycle_errors)
 
-    # Symmetry warnings
+    # Symmetry and zero-edge warnings remain warning-shaped output, but they now
+    # fail validation because the compiled graph is used as routing authority.
     symmetry_warnings = validate_edge_symmetry(all_metadata)
-    if symmetry_warnings:
-        print(f"\nSYMMETRY WARNINGS ({len(symmetry_warnings)}):")
-        for warn in symmetry_warnings:
-            print(f"  - {warn}")
+    emit_validation_messages("SYMMETRY WARNINGS", symmetry_warnings)
+    topology_violations += len(symmetry_warnings)
 
     weight_band_warnings = validate_weight_bands(all_metadata)
-    if weight_band_warnings:
-        print(f"\nWEIGHT-BAND WARNINGS ({len(weight_band_warnings)}):")
-        for warn in weight_band_warnings:
-            print(f"  - {warn}")
+    emit_validation_messages("WEIGHT-BAND WARNINGS", weight_band_warnings)
 
     weight_parity_warnings = validate_weight_parity(all_metadata)
-    if weight_parity_warnings:
-        print(f"\nWEIGHT-PARITY WARNINGS ({len(weight_parity_warnings)}):")
-        for warn in weight_parity_warnings:
-            print(f"  - {warn}")
+    emit_validation_messages("WEIGHT-PARITY WARNINGS", weight_parity_warnings)
 
     zero_edge_warnings = validate_zero_edge_skills(all_metadata)
-    if zero_edge_warnings:
-        print(f"\nZERO-EDGE WARNINGS ({len(zero_edge_warnings)}):")
-        for warn in zero_edge_warnings:
-            print(f"  - {warn}")
+    emit_validation_messages("ZERO-EDGE WARNINGS", zero_edge_warnings)
+    topology_violations += len(zero_edge_warnings)
 
-    if total_errors > 0:
-        print(f"\nVALIDATION FAILED: {total_errors} error(s)")
+    if total_errors > 0 or topology_violations > 0:
+        total_failures = total_errors + topology_violations
+        print(f"\nVALIDATION FAILED: {total_failures} error(s)", file=sys.stderr)
         return 2
 
     print("VALIDATION PASSED: all metadata files are valid")
