@@ -1,24 +1,39 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-implementation-deep-review",
-  "description": "Merged Deep Review: 120 iterations (50 doc-layer + 70 code+ops-layer) across 920 files for packets 009/010/012/014. Verdict: CONDITIONAL (1 P0, 108 P1, 133 P2).",
+  "description": "Remediation of 243 deduplicated findings (1 P0, 114 P1, 133 P2) from merged 120-iteration deep review of 920 files across packets 009/010/012/014. 11 workstreams covering reconsolidation P0 blocker, path hardening, contract verification, status drift, identity fix, command integrity, error handling, traceability, stale refs, agent docs, and test quality.",
   "keywords": [
-    "review",
-    "implementation",
-    "code",
+    "remediation",
     "deep-review",
-    "cli-copilot",
-    "gpt-5.4",
+    "P0-blocker",
+    "reconsolidation",
+    "path-hardening",
+    "contract-verification",
+    "status-drift",
+    "test-quality",
+    "agent-docs",
+    "stale-refs",
+    "traceability",
+    "error-handling",
     "mcp-server",
-    "generate-context",
-    "reducer"
+    "cross-runtime"
   ],
-  "lastUpdated": "2026-04-16T05:17:52Z",
+  "lastUpdated": "2026-04-16T12:00:00Z",
   "specId": "015",
   "folderSlug": "implementation-deep-review",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "kind": "review-only",
-  "mergedFrom": "015-combined-deep-review-four-specs"
+  "kind": "remediation",
+  "mergedFrom": "015-combined-deep-review-four-specs",
+  "level": 2,
+  "status": "in-progress",
+  "findingCounts": {
+    "P0": 1,
+    "P1": 114,
+    "P2": 133,
+    "total": 243
+  },
+  "workstreamCount": 11,
+  "estimatedEffort": "54-95 hours"
 }
