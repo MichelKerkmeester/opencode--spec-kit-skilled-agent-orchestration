@@ -153,7 +153,7 @@ Top-2 file by distinct-issue count. Primary workstream: S2 (P0-A) + P0-D (D1, D2
 - [ ] T-HST-03 [P0-D] [P] R38-001: `loadMostRecentState` all-or-nothing `try` block; one bad sibling aborts entire scan → per-file error isolation; return `{ states, errors }` (`hook-state.ts:131-165`) — Phase 1a / QW #24
 - [ ] T-HST-04 [P0-D] [P] R38-002: `cleanStaleStates` all-or-nothing `try` block; partial removed count returned with no indication of skipped files → per-file isolation; return `{ removed, skipped, errors }` (`hook-state.ts:243-263`) — Phase 1a / QW #24
 - [ ] T-HST-05 [P0-D] [P] R40-001: `cleanStaleStates` TOCTOU stat-then-unlink can delete fresh state → identity check (re-stat or open+fstat) before `unlinkSync()` (`hook-state.ts:170-176,247-255`) — Phase 1a / QW #25
-- [ ] T-HST-06 [P1] R31-001: Deterministic `filePath + '.tmp'` means two writers for same session swap bytes before rename → `.tmp-<pid>-<counter>-<random>` + retry loop (A2 from S2) (`hook-state.ts:169-176,221-240`) — Phase 1b / QW #12
+- [x] T-HST-06 [P1] R31-001: Deterministic `filePath + '.tmp'` means two writers for same session swap bytes before rename → `.tmp-<pid>-<counter>-<random>` + retry loop (A2 from S2) (`hook-state.ts:169-176,221-240`) — Phase 1b / QW #12
 - [ ] T-HST-07 [P1] R33-001: `clearCompactPrime()` clears by session ID only, not payload identity; newer payload erased on overlap → identity-based clear (check `cachedAt` or `opaqueId`) (A4 from S2) (`hook-state.ts:184-205`; also `session-prime.ts:43-46,281-287`) — Phase 1b / QW #20
 - [ ] T-HST-08 [P2] R36-001: `loadMostRecentState` stat-then-read race: concurrent rename can swap generation between mtime and content → re-read mtime after `readFileSync()` and discard candidate if changed (A5 from S2) (`hook-state.ts:140-155,170-176`) — Phase 1b
 - [ ] T-HST-09 [P1] R32-001 + R33-003 (producer side): `updateState` returns merged after failed persist → return `{ ok, merged, persisted }`; consumers surface persistence failures (A8 from S2) (`hook-state.ts:170-176,221-241`) — Phase 1b
@@ -217,7 +217,7 @@ Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refacto
 
 Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades.
 
-- [ ] T-CGQ-01 [P1] R3-001: `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal → return `ambiguous_subject` on multi-row match (`code-graph/query.ts:42-58`) [QW]
+- [x] T-CGQ-01 [P1] R3-001: `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal → return `ambiguous_subject` on multi-row match (`code-graph/query.ts:42-58`) [QW]
 - [x] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
 - [ ] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
 - [x] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
@@ -284,7 +284,7 @@ Primary workstream: M8 (trust-state vocabulary).
 
 Primary workstream: M8.
 
-- [ ] T-OCT-01 [P1] R30-002: OpenCode transport drops richer structural truth; renders only collapsed provenance label → migrate to `absent`/`unavailable` vocabulary; render distinct axes (M8 consumer side) (`opencode-transport.ts:64-71,98-149`) — Phase 3 M8 [B:T-SHP-01]
+- [x] T-OCT-01 [P1] R30-002: OpenCode transport drops richer structural truth; renders only collapsed provenance label → migrate to `absent`/`unavailable` vocabulary; render distinct axes (M8 consumer side) (`opencode-transport.ts:64-71,98-149`) — Phase 3 M8 [B:T-SHP-01]
 <!-- /ANCHOR:group-oct -->
 
 ---
