@@ -18,6 +18,7 @@ describe.sequential('Claude session-stop replay harness', () => {
 
     expect(run.process.autosaveMode).toBe('disabled');
     expect(run.process.autosaveOutcome).toBe('skipped');
+    expect(run.process.retargetReason).toBe('no_previous_packet');
     expect(run.process.parsedMessageCount).toBe(2);
     expect(run.process.producerMetadataWritten).toBe(true);
     expect(run.process.touchedPaths).toHaveLength(1);
@@ -48,8 +49,10 @@ describe.sequential('Claude session-stop replay harness', () => {
 
     expect(firstRun.process.parsedMessageCount).toBe(2);
     expect(firstRun.process.autosaveOutcome).toBe('skipped');
+    expect(firstRun.process.retargetReason).toBe('no_previous_packet');
     expect(secondRun.process.parsedMessageCount).toBe(0);
     expect(secondRun.process.autosaveOutcome).toBe('skipped');
+    expect(secondRun.process.retargetReason).toBeNull();
     expect(secondRun.stateFileCount).toBe(1);
     expect(secondRun.state).not.toBeNull();
     expect(secondRun.state!.metrics).toEqual(firstRun.state!.metrics);

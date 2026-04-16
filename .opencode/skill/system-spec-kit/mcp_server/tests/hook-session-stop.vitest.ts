@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { ensureStateDir, updateState } from '../hooks/claude/hook-state.js';
+import { ensureStateDir, loadState, updateState } from '../hooks/claude/hook-state.js';
 import { detectSpecFolder, processStopHook } from '../hooks/claude/session-stop.js';
 
 describe('Claude session-stop spec folder detection', () => {
@@ -87,6 +87,25 @@ describe('Claude session-stop spec folder detection', () => {
       ),
     ).toBe('specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity');
   });
+
+  it('allows the transcript tail window to be configured for packet validation', () => {
+    tempDir = mkdtempSync(join(tmpdir(), 'speckit-stop-hook-'));
+    const transcriptPath = join(tempDir, 'transcript.jsonl');
+    const currentSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/029-review-remediation';
+    const nextSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity';
+    writeFileSync(
+      transcriptPath,
+      [
+        `${currentSpecFolder}/tasks.md`,
+        'x'.repeat(256),
+        `${nextSpecFolder}/implementation-summary.md`,
+      ].join('\n'),
+      'utf-8',
+    );
+
+    expect(detectSpecFolder(transcriptPath, currentSpecFolder, { tailBytes: 192 })).toBe(nextSpecFolder);
+    expect(detectSpecFolder(transcriptPath, currentSpecFolder, { tailBytes: 512 })).toBe(currentSpecFolder);
+  });
 });
 
 describe.sequential('Claude session-stop autosave outcomes', () => {
@@ -144,6 +163,7 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
 
     expect(result.autosaveMode).toBe('enabled');
     expect(result.autosaveOutcome).toBe('skipped');
+    expect(result.retargetReason).toBeNull();
     expect(result.touchedPaths).toEqual([]);
     expect(result.producerMetadataWritten).toBe(false);
   });
@@ -174,7 +194,76 @@ describe.sequential('Claude session-stop autosave outcomes', () => {
 
     expect(result.autosaveMode).toBe('enabled');
     expect(result.autosaveOutcome).toBe('failed');
+    expect(result.retargetReason).toBeNull();
     expect(result.touchedPaths).toEqual([]);
     expect(result.producerMetadataWritten).toBe(false);
+  });
+
+  it('surfaces the retarget reason when transcript evidence points to a different packet', async () => {
+    const transcriptPath = join(sandboxRoot!, 'retarget-transcript.jsonl');
+    const previousSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/029-review-remediation';
+    const nextSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity';
+    writeFileSync(
+      transcriptPath,
+      [
+        `${nextSpecFolder}/spec.md`,
+        `${nextSpecFolder}/implementation-summary.md`,
+      ].join('\n'),
+      'utf-8',
+    );
+    updateState('retarget-different-packet', { lastSpecFolder: previousSpecFolder });
+
+    const result = await processStopHook(
+      {
+        session_id: 'retarget-different-packet',
+        stop_hook_active: true,
+        transcript_path: transcriptPath,
+      },
+      { autosaveMode: 'disabled' },
+    );
+
+    expect(result.autosaveMode).toBe('disabled');
+    expect(result.autosaveOutcome).toBe('skipped');
+    expect(result.retargetReason).toBe('detected_different_packet');
+    expect(loadState('retarget-different-packet')?.lastSpecFolder).toBe(nextSpecFolder);
+  });
+
+  it('distinguishes ambiguous transcript evidence from transcript I/O failures', async () => {
+    const ambiguousTranscriptPath = join(sandboxRoot!, 'ambiguous-transcript.jsonl');
+    const currentSpecFolder = 'specs/system-spec-kit/024-compact-code-graph/029-review-remediation';
+    writeFileSync(
+      ambiguousTranscriptPath,
+      [
+        'specs/system-spec-kit/024-compact-code-graph/021-cross-runtime-instruction-parity/spec.md',
+        'specs/system-spec-kit/024-compact-code-graph/030-review-playbook/tasks.md',
+      ].join('\n'),
+      'utf-8',
+    );
+
+    updateState('ambiguous-retarget', { lastSpecFolder: currentSpecFolder });
+    const ambiguousResult = await processStopHook(
+      {
+        session_id: 'ambiguous-retarget',
+        stop_hook_active: true,
+        transcript_path: ambiguousTranscriptPath,
+      },
+      { autosaveMode: 'disabled' },
+    );
+
+    expect(ambiguousResult.retargetReason).toBe('ambiguous_transcript');
+    expect(loadState('ambiguous-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
+
+    updateState('io-failed-retarget', { lastSpecFolder: currentSpecFolder });
+    const ioFailedResult = await processStopHook(
+      {
+        session_id: 'io-failed-retarget',
+        stop_hook_active: true,
+        transcript_path: join(sandboxRoot!, 'missing-transcript.jsonl'),
+      },
+      { autosaveMode: 'disabled' },
+    );
+
+    expect(ioFailedResult.retargetReason).toBe('transcript_io_failed');
+    expect(loadState('io-failed-retarget')?.lastSpecFolder).toBe(currentSpecFolder);
   });
 });

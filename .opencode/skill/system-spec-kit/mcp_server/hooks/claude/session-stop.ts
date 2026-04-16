@@ -24,7 +24,8 @@ import { parseTranscript, estimateCost, type TranscriptUsage } from './claude-tr
 const FINALIZE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /** Limit spec-folder detection to the transcript tail where recent messages live. */
-const SPEC_FOLDER_TAIL_BYTES = 50 * 1024;
+const DEFAULT_SPEC_FOLDER_TAIL_BYTES = 50 * 1024;
+const SPEC_FOLDER_TAIL_BYTES_ENV = 'SPECKIT_STOP_HOOK_SPEC_TAIL_BYTES';
 const SPEC_FOLDER_PATH_RE = /(?:\.opencode\/)?specs\/[^\s"'`]+/g;
 const SPEC_FOLDER_PREFIXES = ['.opencode/specs/', 'specs/'] as const;
 const SPEC_FOLDER_CANONICAL_PREFIX = 'specs/';
@@ -58,6 +59,28 @@ function resolveGenerateContextScriptPath(): string | null {
 }
 
 export type SessionStopAutosaveOutcome = 'ran' | 'skipped' | 'failed' | 'deferred';
+export type SessionStopRetargetReason =
+  | 'detected_different_packet'
+  | 'no_previous_packet'
+  | 'ambiguous_transcript'
+  | 'transcript_io_failed'
+  | null;
+
+type SpecFolderDetectionReason =
+  | 'current_packet'
+  | 'detected_single_packet'
+  | 'ambiguous_transcript'
+  | 'transcript_io_failed'
+  | 'no_match';
+
+interface DetectSpecFolderOptions {
+  tailBytes?: number;
+}
+
+interface SpecFolderDetectionResult {
+  specFolder: string | null;
+  reason: SpecFolderDetectionReason;
+}
 
 function runContextAutosave(sessionId: string): SessionStopAutosaveOutcome {
   const state = loadState(sessionId);
@@ -117,6 +140,7 @@ export interface SessionStopProcessResult {
   parsedMessageCount: number;
   autosaveMode: 'enabled' | 'disabled';
   autosaveOutcome: SessionStopAutosaveOutcome;
+  retargetReason: SessionStopRetargetReason;
   producerMetadataWritten: boolean;
 }
 
@@ -147,6 +171,19 @@ function selectDetectedSpecFolder(
   }
 
   return null;
+}
+
+function resolveSpecFolderTailBytes(explicitTailBytes?: number): number {
+  if (Number.isInteger(explicitTailBytes) && explicitTailBytes && explicitTailBytes > 0) {
+    return explicitTailBytes;
+  }
+
+  const configuredTailBytes = Number.parseInt(process.env[SPEC_FOLDER_TAIL_BYTES_ENV] ?? '', 10);
+  if (Number.isInteger(configuredTailBytes) && configuredTailBytes > 0) {
+    return configuredTailBytes;
+  }
+
+  return DEFAULT_SPEC_FOLDER_TAIL_BYTES;
 }
 
 /**
@@ -230,6 +267,7 @@ export async function processStopHook(
   let parsedMessageCount = 0;
   let producerMetadataWritten = false;
   let autosaveOutcome: SessionStopAutosaveOutcome = 'skipped';
+  let retargetReason: SessionStopRetargetReason = null;
 
   // Guard: only run if stop hook is actively being processed
   if (input.stop_hook_active === false) {
@@ -239,6 +277,7 @@ export async function processStopHook(
       parsedMessageCount,
       autosaveMode,
       autosaveOutcome,
+      retargetReason,
       producerMetadataWritten,
     };
   }
@@ -284,21 +323,34 @@ export async function processStopHook(
 
   // Auto-detect spec folder from transcript paths
   if (input.transcript_path) {
-    const detectedSpec = detectSpecFolder(input.transcript_path as string, stateBeforeStop?.lastSpecFolder ?? null);
-    if (!stateBeforeStop?.lastSpecFolder && detectedSpec) {
-      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec }, touchedPaths);
-      hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec}`);
-    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec === stateBeforeStop.lastSpecFolder) {
-      hookLog('info', 'session-stop', `Validated active spec folder from transcript: ${detectedSpec}`);
-    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec && detectedSpec !== stateBeforeStop.lastSpecFolder) {
-      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec }, touchedPaths);
+    const detectedSpec = detectSpecFolderResult(
+      input.transcript_path as string,
+      stateBeforeStop?.lastSpecFolder ?? null,
+    );
+    if (!stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder) {
+      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
+      retargetReason = 'no_previous_packet';
+      hookLog('info', 'session-stop', `Auto-detected spec folder: ${detectedSpec.specFolder}`);
+    } else if (stateBeforeStop?.lastSpecFolder && detectedSpec.specFolder === stateBeforeStop.lastSpecFolder) {
+      hookLog('info', 'session-stop', `Validated active spec folder from transcript: ${detectedSpec.specFolder}`);
+    } else if (
+      stateBeforeStop?.lastSpecFolder
+      && detectedSpec.specFolder
+      && detectedSpec.specFolder !== stateBeforeStop.lastSpecFolder
+    ) {
+      retargetReason = 'detected_different_packet';
+      recordStateUpdate(sessionId, { lastSpecFolder: detectedSpec.specFolder }, touchedPaths);
       hookLog(
         'info',
         'session-stop',
-        `Retargeted autosave spec folder from ${stateBeforeStop.lastSpecFolder} to ${detectedSpec}`,
+        `Retargeted autosave spec folder from ${stateBeforeStop.lastSpecFolder} to ${detectedSpec.specFolder}`,
       );
-    } else if (!detectedSpec) {
+    } else if (detectedSpec.reason === 'ambiguous_transcript') {
+      retargetReason = 'ambiguous_transcript';
       hookLog('warn', 'session-stop', 'Spec folder detection was ambiguous; preserving existing autosave target.');
+    } else if (detectedSpec.reason === 'transcript_io_failed') {
+      retargetReason = 'transcript_io_failed';
+      hookLog('warn', 'session-stop', 'Spec folder detection skipped: transcript I/O failed; preserving existing autosave target.');
     }
   }
 
@@ -321,6 +373,7 @@ export async function processStopHook(
     parsedMessageCount,
     autosaveMode,
     autosaveOutcome,
+    retargetReason,
     producerMetadataWritten,
   };
 }
@@ -344,24 +397,29 @@ async function main(): Promise<void> {
 }
 
 /** Detect active spec folder from transcript content */
-export function detectSpecFolder(transcriptPath: string, currentSpecFolder: string | null = null): string | null {
+function detectSpecFolderResult(
+  transcriptPath: string,
+  currentSpecFolder: string | null = null,
+  options: DetectSpecFolderOptions = {},
+): SpecFolderDetectionResult {
   let fileDescriptor: number | undefined;
+  const tailBytes = resolveSpecFolderTailBytes(options.tailBytes);
 
   try {
     fileDescriptor = openSync(transcriptPath, 'r');
     const { size } = fstatSync(fileDescriptor);
     if (size === 0) {
-      return null;
+      return { specFolder: null, reason: 'no_match' };
     }
 
-    const bytesToRead = Math.min(size, SPEC_FOLDER_TAIL_BYTES);
+    const bytesToRead = Math.min(size, tailBytes);
     const startPosition = Math.max(0, size - bytesToRead);
     const buffer = Buffer.alloc(bytesToRead);
     const bytesRead = readSync(fileDescriptor, buffer, 0, bytesToRead, startPosition);
     const content = buffer.toString('utf-8', 0, bytesRead);
     const specMatches = content.match(SPEC_FOLDER_PATH_RE) ?? [];
     if (specMatches.length === 0) {
-      return null;
+      return { specFolder: null, reason: 'no_match' };
     }
 
     const normalizedMatches: string[] = [];
@@ -372,17 +430,35 @@ export function detectSpecFolder(transcriptPath: string, currentSpecFolder: stri
       }
       normalizedMatches.push(normalizedPath);
     }
+    if (normalizedMatches.length === 0) {
+      return { specFolder: null, reason: 'no_match' };
+    }
 
-    return selectDetectedSpecFolder(normalizedMatches, currentSpecFolder);
+    const detectedSpecFolder = selectDetectedSpecFolder(normalizedMatches, currentSpecFolder);
+    if (detectedSpecFolder) {
+      return {
+        specFolder: detectedSpecFolder,
+        reason: detectedSpecFolder === currentSpecFolder ? 'current_packet' : 'detected_single_packet',
+      };
+    }
+
+    return { specFolder: null, reason: 'ambiguous_transcript' };
   } catch {
-    /* transcript not readable */
+    return { specFolder: null, reason: 'transcript_io_failed' };
   } finally {
     if (fileDescriptor !== undefined) {
       closeSync(fileDescriptor);
     }
   }
+}
 
-  return null;
+/** Detect active spec folder from transcript content */
+export function detectSpecFolder(
+  transcriptPath: string,
+  currentSpecFolder: string | null = null,
+  options: DetectSpecFolderOptions = {},
+): string | null {
+  return detectSpecFolderResult(transcriptPath, currentSpecFolder, options).specFolder;
 }
 
 function normalizeSpecFolderPath(rawPath: string): string | null {
