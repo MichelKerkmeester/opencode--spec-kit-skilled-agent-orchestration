@@ -1,0 +1,83 @@
+You are acting as a CODE REVIEW agent for iteration 10 of 50.
+
+SPEC FOLDER: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review (pre-approved, skip Gate 3)
+MODE: code review (READ THE ACTUAL SOURCE CODE, NOT SPEC DOCS)
+SKIP: skill routing, CLAUDE.md gates, skill_advisor - you are a parallel subprocess.
+
+CRITICAL: This is a CODE review, not a documentation review. The spec docs were already audited in a prior 50-iteration run (015-combined-deep-review-four-specs). This run reviews the IMPLEMENTATION:
+- Read .js/.cjs/.ts/.py/.sh/.yaml SOURCE FILES
+- Look for BUGS, EDGE CASES, SECURITY HOLES, MISSING ERROR HANDLING
+- Check if the code ACTUALLY DOES what the spec says it should
+- Examine test files for coverage gaps and false-positive tests
+
+PARALLELISM CONTRACT:
+  Write ONLY these two files:
+    (a) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/iterations/iteration-010.md
+    (b) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deltas/iter-010.jsonl
+  Do NOT modify state.jsonl, strategy.md, findings-registry.json, or any reviewed file.
+
+STATE FILES (read-only snapshots):
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deep-review-config.json (has reviewScopeFiles list)
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deep-review-state.jsonl
+
+ITERATION 10 FOCUS:
+  Dimension: correctness
+  Category: pipeline
+  Suggested files to review this iteration:
+  - .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts
+  - .opencode/skill/system-spec-kit/scripts/memory/rank-memories.ts
+  - .opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts
+  - .opencode/skill/system-spec-kit/scripts/setup/install.sh
+  - .opencode/skill/system-spec-kit/scripts/spec-folder/directory-setup.ts
+  - .opencode/skill/system-spec-kit/scripts/spec-folder/index.ts
+  - .opencode/skill/system-spec-kit/scripts/spec/create.sh
+  - .opencode/skill/system-spec-kit/scripts/spec/validate.sh
+
+REVIEW GUIDANCE by dimension:
+  correctness: Logic bugs, off-by-one, null/undefined guards, wrong return types, race conditions, broken invariants, unhandled promise rejections, incorrect regex, silent failures
+  security: Command injection in shell scripts, path traversal in file operations, eval/exec of untrusted input, unvalidated user input passed to DB queries, secrets in code, unsafe deserialization, missing auth checks
+  traceability: Does the code match what the spec promises? Are there dead code paths? Unreachable branches? Features spec'd but not implemented? Implemented but not spec'd?
+  maintainability: Naming clarity, code duplication, error message quality, comment accuracy, dead imports, unused variables, overly complex conditionals, missing JSDoc on public APIs
+  test-quality: Are tests testing the right thing? Are there false-positive tests (tests that pass even when code is broken)? Missing edge case coverage? Brittle test assumptions?
+
+SEVERITY: P0 = causes incorrectness/security breach in production; P1 = breaks contract/acceptance criteria; P2 = style/maintainability/nit.
+
+CLAIM ADJUDICATION (for P0/P1): embed a fenced json block with: claim, evidenceRefs[], counterevidenceSought, alternativeExplanation, finalSeverity, confidence (0..1), downgradeTrigger.
+
+DELIVERABLES:
+
+(1) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/iterations/iteration-010.md:
+
+# Iteration 10 - correctness - pipeline
+
+## Dispatcher
+- iteration: 10 of 50
+- dispatcher: cli-copilot gpt-5.4 high (code review v1)
+- timestamp: <ISO-8601>
+
+## Files Reviewed
+- <paths you actually read>
+
+## Findings - New
+### P0 Findings
+[with file:line:function evidence + claim-adjudication block]
+### P1 Findings
+[same]
+### P2 Findings
+[bullets]
+
+## Traceability Checks
+[at least one: does code match spec intent?]
+
+## Confirmed-Clean Surfaces
+[files verified clean with rationale]
+
+## Next Focus
+[hint for iteration 11]
+
+(2) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deltas/iter-010.jsonl - single JSON line:
+{"type":"iteration","run":10,"mode":"review","status":"insight","focus":"correctness","subset":"pipeline","dimensions":["correctness"],"filesReviewed":[...],"findingsCount":N,"findingsSummary":{"P0":N,"P1":N,"P2":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"newFindingsRatio":0.0,"dispatcher":{"kind":"cli-copilot","model":"gpt-5.4","effort":"high"},"timestamp":"<ISO-8601>","sessionId":"placeholder","generation":1}
+
+CONSTRAINTS: LEAF agent, target 9 tool calls (soft max 12, hard max 13), READ-ONLY on reviewed files.
+
+BEGIN ITERATION 10.

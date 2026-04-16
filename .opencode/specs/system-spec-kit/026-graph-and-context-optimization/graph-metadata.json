@@ -15,10 +15,9 @@
     "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
     "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
     "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
-    "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
+    "system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
     "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-    "system-spec-kit/026-graph-and-context-optimization/014-save-flow-unified-journey",
-    "system-spec-kit/026-graph-and-context-optimization/015-start-into-plan-merger"
+    "system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default"
   ],
   "manual": {
     "depends_on": [],

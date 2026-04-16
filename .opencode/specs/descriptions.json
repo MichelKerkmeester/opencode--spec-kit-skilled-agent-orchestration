@@ -4805,22 +4805,22 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-spec-kit-commands",
-      "description": "Introduce /spec_kit\u003astart as canonical spec-folder intake interview and require deep-research to anchor every run to a real spec.md (deliverable superseded by 015-start-into-plan-merger)",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
+      "description": "Canonical Intake and Middleware Cleanup. Single canonical intake contract at .opencode/skill/system-spec-kit/references/intake-contract.md referenced by /spec_kit:plan and /spec_kit:complete; /spec_kit:plan --intake-only provides standalone invocation with explicit YAML gate; /spec_kit:deep-research anchored to real spec.md via spec_check_protocol.md; deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtimes each) hard-deleted with distributed governance replacing @speckit exclusivity.",
       "keywords": [
-        "introduce",
-        "start",
         "canonical",
-        "spec-folder",
         "intake",
-        "interview",
-        "require",
+        "middleware",
+        "cleanup",
+        "contract",
+        "module",
+        "spec-folder",
         "deep-research",
         "anchor",
-        "every",
-        "run",
-        "real",
-        "spec"
+        "distributed",
+        "governance",
+        "handover",
+        "debug"
       ],
       "lastUpdated": "2026-04-14T07:49:36.500Z"
     },

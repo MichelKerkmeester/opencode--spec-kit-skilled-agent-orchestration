@@ -263,8 +263,8 @@ Reads `handover.md` and `_memory.continuity` for `reentry_reason` and `resume_qu
 
 ## 15. SUPERSEDES
 
-This module supersedes the deleted standalone intake command surface that packet `015-start-into-plan-merger` removed from `026-graph-and-context-optimization`. The legacy 340-line intake workflow was inlined into plan.md and complete.md independently, creating three parallel surfaces. Consolidation into this single reference eliminates drift risk and simplifies the command graph.
+This module supersedes the deleted standalone intake command surface that packet `012-canonical-intake-and-middleware-cleanup` removed from `026-graph-and-context-optimization`. The former standalone intake surface duplicated the same logic that `/spec_kit:plan` and `/spec_kit:complete` carried inline, producing three parallel copies that drifted independently. Consolidation into this single reference eliminates drift risk and simplifies the command graph.
 
-**Packet reference:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-start-into-plan-merger/`
+**Packet reference:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/`
 
-**Prior art:** `012-spec-kit-commands` established the inline-absorption pattern and proved the coupled-intake model works end-to-end. 015 completes the consolidation by collapsing the three surfaces into one.
+**Delivery note:** The packet delivered 15 milestones (M1-M9 on 2026-04-14, M10-M15 on 2026-04-15). `/spec_kit:plan` and `/spec_kit:complete` reference this module in place of inline intake blocks; `/spec_kit:plan --intake-only` provides the standalone invocation path with an explicit YAML gate. See the packet's `decision-record.md` for the architectural rationale (ADR-002 through ADR-010).

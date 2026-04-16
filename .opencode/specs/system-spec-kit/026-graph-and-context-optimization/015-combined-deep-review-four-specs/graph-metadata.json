@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs",
+  "status": "in-progress",
+  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization"],
+  "kind": "review-only",
+  "reviewTargets": [
+    "009-playbook-and-remediation",
+    "010-continuity-research",
+    "012-canonical-intake-and-middleware-cleanup",
+    "014-memory-save-planner-first-default"
+  ],
+  "entities": [
+    {"type": "spec-folder", "name": "015-combined-deep-review-four-specs"},
+    {"type": "review-target", "name": "009-playbook-and-remediation"},
+    {"type": "review-target", "name": "010-continuity-research"},
+    {"type": "review-target", "name": "012-canonical-intake-and-middleware-cleanup"},
+    {"type": "review-target", "name": "014-memory-save-planner-first-default"}
+  ],
+  "keyFiles": [
+    "spec.md",
+    "plan.md",
+    "tasks.md",
+    "review/deep-review-config.json",
+    "review/deep-review-strategy.md",
+    "review/review-report.md"
+  ],
+  "lastUpdated": "2026-04-15T18:56:00Z"
+}

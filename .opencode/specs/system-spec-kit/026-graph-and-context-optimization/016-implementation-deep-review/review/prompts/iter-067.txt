@@ -1,0 +1,89 @@
+You are a REVIEW agent for iteration 67 of 70 in a combined implementation + operational-doc review.
+
+SPEC FOLDER: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review (pre-approved, skip Gate 3)
+MODE: operational doc review (READ command MDs, command YAMLs, agent definitions, SKILL.md files, skill references, skill assets, root docs)
+SKIP: skill routing, CLAUDE.md gates, skill_advisor.
+
+THIS ITERATION reviews OPERATIONAL DOCUMENTS — command entry points, agent definitions, skill contracts, reference docs. These are NOT spec docs (those were reviewed in 015). These are the files that AI agents and commands actually LOAD at runtime. Check them for:
+- Accuracy: do they correctly describe what the code does?
+- Consistency: do agent definitions match across runtimes (.claude/ vs .opencode/ vs .codex/ vs .gemini/)?
+- Security: do they expose unsafe patterns, overly broad permissions, or missing guardrails?
+- Completeness: are referenced files, tools, or capabilities actually present?
+- Staleness: do they reference removed features, renamed files, or deprecated patterns?
+
+PARALLELISM CONTRACT:
+  Write ONLY:
+    (a) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/iterations/iteration-067.md
+    (b) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deltas/iter-067.jsonl
+  Do NOT modify state.jsonl, strategy.md, findings-registry.json, or any reviewed file.
+
+STATE FILES (read-only):
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deep-review-config.json
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deep-review-state.jsonl
+
+ITERATION 67 FOCUS:
+  Dimension: correctness
+  Category: skill-assets-part3
+  Files to review:
+  - .opencode/skill/sk-code-opencode/assets/checklists/python_checklist.md
+  - .opencode/skill/sk-code-opencode/assets/checklists/shell_checklist.md
+  - .opencode/skill/sk-code-opencode/assets/checklists/typescript_checklist.md
+  - .opencode/skill/sk-code-opencode/assets/checklists/universal_checklist.md
+  - .opencode/skill/sk-code-web/assets/checklists/code_quality_checklist.md
+  - .opencode/skill/sk-code-web/assets/checklists/debugging_checklist.md
+  - .opencode/skill/sk-code-web/assets/checklists/performance_loading_checklist.md
+  - .opencode/skill/sk-code-web/assets/checklists/verification_checklist.md
+  - .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
+  - .opencode/skill/sk-deep-research/assets/deep_research_strategy.md
+  - .opencode/skill/sk-deep-review/assets/deep_review_dashboard.md
+  - .opencode/skill/sk-deep-review/assets/deep_review_strategy.md
+  - .opencode/skill/sk-doc/assets/agents/agent_template.md
+  - .opencode/skill/sk-doc/assets/agents/command_template.md
+  - .opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_snippet_template.md
+  - .opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md
+  - .opencode/skill/sk-doc/assets/documentation/frontmatter_templates.md
+  - .opencode/skill/sk-doc/assets/documentation/install_guide_template.md
+  - .opencode/skill/sk-doc/assets/documentation/llmstxt_templates.md
+  - .opencode/skill/sk-doc/assets/documentation/readme_template.md
+
+SEVERITY: P0 = causes runtime failure or security breach; P1 = breaks agent/command contract or cross-runtime inconsistency; P2 = stale reference, naming nit, documentation gap.
+
+CLAIM ADJUDICATION (P0/P1): fenced json with claim, evidenceRefs[], counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger.
+
+DELIVERABLES:
+
+(1) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/iterations/iteration-067.md:
+
+# Iteration 67 - correctness - skill-assets-part3
+
+## Dispatcher
+- iteration: 67 of 70
+- dispatcher: cli-copilot gpt-5.4 high (operational doc review)
+- timestamp: <ISO-8601>
+
+## Files Reviewed
+- <paths>
+
+## Findings - New
+### P0 Findings
+[with file:line evidence + claim-adjudication]
+### P1 Findings
+[same]
+### P2 Findings
+[bullets]
+
+## Traceability Checks
+[cross-runtime consistency, skill↔code alignment, command↔implementation alignment]
+
+## Confirmed-Clean Surfaces
+[files verified accurate]
+
+## Next Focus
+[hint for iteration 68]
+
+(2) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/016-implementation-deep-review/review/deltas/iter-067.jsonl - single JSON line:
+{"type":"iteration","run":67,"mode":"review","status":"insight","focus":"correctness","subset":"skill-assets-part3","dimensions":["correctness"],"filesReviewed":[...],"findingsCount":N,"findingsSummary":{"P0":N,"P1":N,"P2":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"newFindingsRatio":0.0,"dispatcher":{"kind":"cli-copilot","model":"gpt-5.4","effort":"high"},"timestamp":"<ISO-8601>","sessionId":"placeholder","generation":1}
+
+CONSTRAINTS: LEAF agent, target 9 tool calls (soft max 12, hard max 13), READ-ONLY.
+
+BEGIN ITERATION 67.

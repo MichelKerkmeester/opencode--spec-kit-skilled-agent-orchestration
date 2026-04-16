@@ -1,0 +1,93 @@
+You are acting as the @deep-review LEAF agent for iteration 40 of 50 in a combined deep review.
+
+SPEC FOLDER: .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs (pre-approved, skip Gate 3 - do NOT ask about spec folders)
+MODE: review (READ-ONLY on reviewed files; you may only write the 2 files listed below)
+SKIP: skill routing, skill_advisor, CLAUDE.md gates - you are a parallel subprocess, just execute the iteration.
+
+PARALLELISM CONTRACT - IMPORTANT:
+  - Other copilot iterations may be running in parallel at this very moment.
+  - You MUST write ONLY these two files this iteration:
+      (a) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/iterations/iteration-040.md  (markdown findings)
+      (b) .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deltas/iter-040.jsonl        (ONE JSON line, nothing else)
+  - You MUST NOT write or edit:
+      - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl       (driver consolidates deltas after the batch)
+      - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md        (driver rebuilds)
+      - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-findings-registry.json (reducer owns this)
+      - any file under any of the four REVIEW TARGETS
+  - If you accidentally touch shared state, stop immediately and note the error.
+
+READ these state files (do NOT modify them):
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md (snapshot; may be slightly stale in parallel)
+  - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl (snapshot)
+
+REVIEW TARGETS (all four; iteration subset hint: 012):
+  1. .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation (coordination parent w/ 3 phase children)
+  2. .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research (coordination parent w/ 3 phase children w/ sub-phases)
+  3. .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup (standard spec folder)
+  4. .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default (standard spec folder)
+
+EXCLUDED: scratch/, memory/, review/, research/, prompts/, changelog/, z_archive/, z_future/ AND all sibling packets (001-008, 011, 013, 015).
+
+ITERATION 40 FOCUS:
+  Dimension: maintainability
+  Target subset: 012
+  Severity threshold: P2 (report P0 blockers, P1 required, P2 suggestions)
+
+DOCTRINE: Load .agents/skills/sk-code-review/references/review_core.md if present. Otherwise: P0 = causes incorrectness/security breach; P1 = breaks contract/acceptance criteria; P2 = style/maintainability/nit.
+
+TRACEABILITY PROTOCOLS (at least 1 core per iteration; overlays when applicable):
+  Core:    spec_code, checklist_evidence
+  Overlay: skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability
+
+QUALITY GATES: Evidence (file:line on P0/P1); Scope (findings cite files within the four targets, not 015).
+
+CLAIM ADJUDICATION (for every new P0/P1): embed a fenced json code block with: claim, evidenceRefs[], counterevidenceSought, alternativeExplanation, finalSeverity, confidence (0..1), downgradeTrigger.
+
+YOUR DELIVERABLES - exactly two files:
+
+(1) WRITE .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/iterations/iteration-040.md with this structure:
+
+# Iteration 40 - Dimension: maintainability - Subset: 012
+
+## Dispatcher
+- iteration: 40 of 50
+- dispatcher: cli-copilot (model gpt-5.4, effort high, parallel v2)
+- timestamp: <ISO-8601 now>
+
+## Files Reviewed
+- <relative repo paths>
+
+## Findings - New This Iteration
+### P0 Findings
+[per P0 with file:line + claim-adjudication JSON block]
+### P1 Findings
+[per P1]
+### P2 Findings
+[bullets OK]
+
+## Findings - Confirming / Re-validating Prior
+[optional]
+
+## Traceability Checks
+[at least one core protocol with status + rationale]
+
+## Confirmed-Clean Surfaces
+[files/dimensions verified clean]
+
+## Next Focus (recommendation)
+[one-line hint for iteration 41]
+
+(2) WRITE .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deltas/iter-040.jsonl - single JSON line, no trailing content:
+
+{"type":"iteration","run":40,"mode":"review","status":"insight|thought|error","focus":"maintainability","subset":"012","dimensions":["maintainability"],"filesReviewed":[...],"findingsCount":N,"findingsSummary":{"P0":N,"P1":N,"P2":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"traceabilityChecks":{"summary":{"required":N,"executed":N,"pass":N,"partial":N,"fail":N,"blocked":N,"notApplicable":N,"gatingFailures":N},"results":[{"protocol":"<name>","level":"core|overlay","status":"pass|partial|fail|blocked|notApplicable","evidence":"<short>"}]},"newFindingsRatio":0.0,"dispatcher":{"kind":"cli-copilot","model":"gpt-5.4","effort":"high","parallel":true},"timestamp":"<ISO-8601>","sessionId":"2026-04-15T16:59:49Z","generation":1}
+
+findingsCount = total this iteration; findingsNew = new; newFindingsRatio = new / max(1, files reviewed).
+
+CONSTRAINTS:
+- LEAF agent; no sub-agents, no skills, no /spec_kit commands
+- Target 9 tool calls; soft max 12; hard max 13
+- READ-ONLY on everything outside your two deliverables
+- Do NOT touch state.jsonl, strategy.md, or findings-registry.json
+
+BEGIN ITERATION 40 NOW.

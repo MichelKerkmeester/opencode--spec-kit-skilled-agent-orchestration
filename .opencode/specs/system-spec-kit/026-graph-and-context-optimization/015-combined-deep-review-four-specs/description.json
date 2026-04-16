@@ -1,0 +1,30 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs",
+  "description": "Combined Deep Review: 009 + 010 + 012 + 014 — 50-iteration multi-target audit dispatched via cli-copilot (gpt-5.4, effort high)",
+  "keywords": [
+    "review",
+    "deep-review",
+    "combined",
+    "four-specs",
+    "cli-copilot",
+    "gpt-5.4",
+    "high-effort",
+    "026-graph-and-context-optimization"
+  ],
+  "lastUpdated": "2026-04-15T18:56:00Z",
+  "specId": "015",
+  "folderSlug": "combined-deep-review-four-specs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "reviewTargets": [
+    "026-graph-and-context-optimization/009-playbook-and-remediation",
+    "026-graph-and-context-optimization/010-continuity-research",
+    "026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
+    "026-graph-and-context-optimization/014-memory-save-planner-first-default"
+  ],
+  "kind": "review-only"
+}
