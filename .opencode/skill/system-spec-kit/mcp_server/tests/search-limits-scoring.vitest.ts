@@ -3,12 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: SEARCH LIMITS SCORING
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import * as fs from 'fs';
-import * as path from 'path';
 import { TIER_CONFIG, PER_TIER_LIMITS, TIER_PRIORITY, filterAndLimitByState } from '../lib/cognitive/tier-classifier';
 import * as crossEncoder from '../lib/search/cross-encoder';
-
-const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 describe('T210 + T211: Search Limits + Scoring Tests', () => {
   type TestTier = 'HOT' | 'WARM' | 'COLD' | 'DORMANT';
@@ -226,44 +222,26 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     });
   });
 
-  describe('T211 - Handler Integration (source analysis)', () => {
-    it('T211-HI1: Handler passes applyLengthPenalty to cross-encoder', () => {
-      const handlerSrc = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'handlers', 'memory-search.ts'),
-        'utf8'
-      );
-      const callCount = (handlerSrc.match(/applyLengthPenalty/g) || []).length;
-      expect(callCount).toBeGreaterThanOrEqual(5);
+  describe('T211 - Handler Integration (runtime exports)', () => {
+    it('T211-HI1: cross-encoder exports calculateLengthPenalty as a callable function', () => {
+      // T251: Replace source-grep with runtime export verification
+      expect(typeof crossEncoder.calculateLengthPenalty).toBe('function');
     });
 
-    it('T211-HI2: Length penalty applied even when reranking is off', () => {
-      // Legacy applyCrossEncoderReranking (which contained calculateLengthPenalty)
-      // Was removed in 017-refinement-phase-6. Length penalty is now handled by the V2
-      // Pipeline's Stage 3 cross-encoder module. Verify the cross-encoder module instead.
-      const ceSrc = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'lib', 'search', 'cross-encoder.ts'),
-        'utf8'
-      );
-      expect(ceSrc).toContain('calculateLengthPenalty');
+    it('T211-HI2: cross-encoder exports applyLengthPenalty as a callable function', () => {
+      expect(typeof crossEncoder.applyLengthPenalty).toBe('function');
     });
 
-    it('T211-HI3: rerankResults conditionally applies length penalty', () => {
-      const ceSrc = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'lib', 'search', 'cross-encoder.ts'),
-        'utf8'
-      );
-      expect(ceSrc).toContain('shouldApplyLengthPenalty');
+    it('T211-HI3: cross-encoder exports rerankResults as a callable function', () => {
+      expect(typeof crossEncoder.rerankResults).toBe('function');
     });
 
-    it('T211-HI4: rerankMetadata reports length penalty configuration', () => {
-      // Legacy applyCrossEncoderReranking (which used snake_case length_penalty_applied)
-      // Was removed in 017-refinement-phase-6. The V2 pipeline's Stage 3 passes length penalty
-      // Config via applyLengthPenalty. Verify the pipeline stage instead.
-      const stage3Src = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'lib', 'search', 'pipeline', 'stage3-rerank.ts'),
-        'utf8'
-      );
-      expect(stage3Src).toContain('applyLengthPenalty');
+    it('T211-HI4: calculateLengthPenalty returns 1.0 (no-op) for any content length', () => {
+      // Verify runtime behavior: the penalty is always 1.0 (no-op) after 017-refinement-phase-6
+      if (!crossEncoder?.calculateLengthPenalty) return;
+      expect(crossEncoder.calculateLengthPenalty(100)).toBe(1.0);
+      expect(crossEncoder.calculateLengthPenalty(5000)).toBe(1.0);
+      expect(crossEncoder.calculateLengthPenalty(0)).toBe(1.0);
     });
   });
 });

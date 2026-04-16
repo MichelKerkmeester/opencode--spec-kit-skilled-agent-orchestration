@@ -39,9 +39,9 @@ Use the priority tables to select appropriate tools. HIGH priority tools should 
 | Priority | Count | Percentage |
 |----------|-------|------------|
 | HIGH | 8 | 17% |
-| MEDIUM | 19 | 41% |
-| LOW | 19 | 41% |
-| **Total** | **46** | **100%** |
+| MEDIUM | 19 | 40% |
+| LOW | 20 | 43% |
+| **Total** | **47** | **100%** |
 
 ---
 
@@ -112,7 +112,7 @@ Useful but situational - use when specific need arises.
 
 <!-- /ANCHOR:medium-priority-tools -->
 <!-- ANCHOR:low-priority-tools -->
-## 5. LOW PRIORITY TOOLS (19)
+## 5. LOW PRIORITY TOOLS (20)
 
 Rarely needed or enterprise-only - use sparingly.
 
