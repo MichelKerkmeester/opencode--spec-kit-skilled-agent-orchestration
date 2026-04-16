@@ -218,7 +218,7 @@ Top-4 file by distinct-issue count. Primary workstream: M13 (enum status refacto
 Top-5 file by distinct-issue count. Primary workstream: Quick wins + M8 cascades.
 
 - [ ] T-CGQ-01 [P1] R3-001: `resolveSubject()` picks first `fq_name`/`name` match with `LIMIT 1`; no `ambiguous_subject` signal → return `ambiguous_subject` on multi-row match (`code-graph/query.ts:42-58`) [QW]
-- [ ] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
+- [x] T-CGQ-02 [P1] R3-002: Readiness gate fails open; `ensureCodeGraphReady()` exceptions swallowed → surface as `status: "error"` (`code-graph/query.ts:319-334`) [QW #14]
 - [ ] T-CGQ-03 [P2] R3-003: Response-level edge trust derived from `result.edges[0]` only → aggregate edge trust, not first edge (`code-graph/query.ts:551-564`) [QW]
 - [x] T-CGQ-04 [P1] R11-003: `blast_radius` silently degrades unresolved subjects into seed file paths → return `status: "error"` if resolution fails (`code-graph/query.ts:367-385`) [QW #16]
 - [x] T-CGQ-05 [P2] R12-002 + R14-002 (dedup): Unsupported/misspelled `edgeType` returns ok with empty result → reject with `status: "error"` (`code-graph/query.ts:26-29,441-549`) [QW #8]
@@ -357,7 +357,7 @@ Top-6 file by distinct-issue count. Primary workstream: S4.
 - [ ] T-SAP-02 [P2] R45-002: Deep-research prompts containing `audit`/`review` tokens score within 0.02 of `sk-code-review`; no ranking-stability test → disambiguation tier for deep-research vs review (A2b from S4) (`skill_advisor.py:568-577,771-813,1669-1694`) [B:T-SAP-01]
 - [ ] T-SAP-03 [P1] R46-001: `COMMAND_BRIDGES` registers only `/spec_kit` prefix; all `/spec_kit:*` subcommands collapse to `command-spec-kit` at `kind_priority=2` → per-subcommand bridges (A0 from S4) (`skill_advisor.py:980-1021,1404-1410,1647,1741-1768`) — Phase 2 S4 / QW #2 [B:T-PRE-08]
 - [ ] T-SAP-04 [P1] R46-002: `validate_edge_symmetry()` never inspects `conflicts_with` edges; unilateral metadata edit silently creates bilateral runtime penalty → reciprocity check (paired with T-SGC-03) (A4 from S4) (`skill_advisor.py:141-187,321-339`) — Phase 2 S4
-- [ ] T-SAP-05 [P1] R41-003: Skill-graph topology checks advisory-only; `--validate-only` returns success for graphs violating routing invariants → promote to hard errors (paired with T-SGC-02) (`skill_advisor.py:203-265`) [QW #27]
+- [x] T-SAP-05 [P1] R41-003: Skill-graph topology checks advisory-only; `--validate-only` returns success for graphs violating routing invariants → promote to hard errors (paired with T-SGC-02) (`skill_advisor.py:203-265`) [QW #27]
 <!-- /ANCHOR:group-sap -->
 
 ---
@@ -378,7 +378,7 @@ Primary workstream: S4.
 
 Top-8 file by distinct-issue count. Primary workstream: S4.
 
-- [ ] T-SGC-01 [P1] R41-003 counterpart in compiler: topology check exit code → hard-error on violations (paired with T-SAP-05) (`skill_graph_compiler.py:272-353,630-663`) [QW #27]
+- [x] T-SGC-01 [P1] R41-003 counterpart in compiler: topology check exit code → hard-error on violations (paired with T-SAP-05) (`skill_graph_compiler.py:272-353,630-663`) [QW #27]
 - [ ] T-SGC-02 [P1] R45-003: Topology warning state non-durable: ZERO-EDGE WARNINGS emitted then dropped from serialized graph; `health_check()` returns `status: ok` after warnings → serialize warning payloads into compiled graph; expose in `health_check()` (A5 from S4) (`skill_graph_compiler.py:559-568,630-663`) — Phase 2 S4 / QW #4
 - [ ] T-SGC-03 [P1] R46-002 counterpart in compiler: `validate_edge_symmetry()` must inspect `conflicts_with` edges → reciprocity check (paired with T-SAP-04) (`skill_graph_compiler.py:272-319,501-568,630-663`) [QW #5]
 - [ ] T-SGC-04 [P1] R49-003: `validate_dependency_cycles()` only detects two-node reciprocal cycles; longer `depends_on` loops pass `--validate-only` → arbitrary-length cycle detection (Tarjan SCC or DFS color-marking) (`skill_graph_compiler.py:437-472,623-663`) [QW #6]
