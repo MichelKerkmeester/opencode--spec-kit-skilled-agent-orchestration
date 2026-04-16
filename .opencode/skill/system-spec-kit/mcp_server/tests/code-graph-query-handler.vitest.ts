@@ -232,6 +232,22 @@ describe('code-graph-query handler', () => {
     ]);
   });
 
+  it('returns an error when blast-radius cannot resolve a subject', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce(null);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'MissingSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed).toEqual({
+      status: 'error',
+      error: 'unresolved_subject: MissingSymbol',
+    });
+    expect(mocks.queryFileImportDependents).not.toHaveBeenCalled();
+  });
+
   it('returns only the seed node when blast-radius maxDepth is zero', async () => {
     mocks.queryFileImportDependents.mockReturnValue([
       { importedFilePath: 'src/a.ts', importerFilePath: 'src/b.ts' },

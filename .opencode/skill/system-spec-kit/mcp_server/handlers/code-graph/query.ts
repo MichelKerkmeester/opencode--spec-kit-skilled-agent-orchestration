@@ -404,9 +404,20 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     const rawSubjects = args.unionMode === 'multi'
       ? [subject, ...(args.subjects ?? [])]
       : [subject];
-    const sourceFiles = rawSubjects
-      .map((candidate) => graphDb.resolveSubjectFilePath(candidate) ?? candidate)
-      .filter((candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0);
+    const sourceFiles: string[] = [];
+
+    for (const candidate of rawSubjects) {
+      const resolvedSubject = graphDb.resolveSubjectFilePath(candidate);
+      if (typeof resolvedSubject !== 'string' || resolvedSubject.length === 0) {
+        return {
+          content: [{
+            type: 'text',
+            text: JSON.stringify({ status: 'error', error: `unresolved_subject: ${candidate}` }),
+          }],
+        };
+      }
+      sourceFiles.push(resolvedSubject);
+    }
 
     if (sourceFiles.length === 0) {
       return {
