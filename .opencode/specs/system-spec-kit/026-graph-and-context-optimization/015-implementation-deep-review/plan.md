@@ -253,10 +253,10 @@ Packet 014 (memory-save-planner-first-default) still references `Packet 016`, `S
 
 ### Key Files
 
-- `.opencode/specs/.../014-memory-save-planner-first-default/spec.md` (line 217)
-- `.opencode/specs/.../014-memory-save-planner-first-default/checklist.md` (lines 143, 199)
-- `.opencode/specs/.../014-memory-save-planner-first-default/tasks.md` (lines 47, 54)
-- `.opencode/specs/.../014-memory-save-planner-first-default/changelog/`
+- `.opencode/specs/.../014-memory-save-rewrite/spec.md` (line 217)
+- `.opencode/specs/.../014-memory-save-rewrite/checklist.md` (lines 143, 199)
+- `.opencode/specs/.../014-memory-save-rewrite/tasks.md` (lines 47, 54)
+- `.opencode/specs/.../014-memory-save-rewrite/changelog/`
 
 ### Definition of Ready
 

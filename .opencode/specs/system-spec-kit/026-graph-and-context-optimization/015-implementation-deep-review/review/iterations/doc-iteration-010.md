@@ -18,10 +18,10 @@
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/tasks.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json
 
 ## Findings — New This Iteration
 ### P0 Findings
@@ -36,7 +36,7 @@ None.
 ## Findings — Confirming / Re-validating Prior
 - Revalidated the prior `009/001` packet-identity drift: `001-playbook-prompt-rewrite/spec.md:2` and `plan.md:2` still present the packet as `Phase 014`, while `001-playbook-prompt-rewrite/graph-metadata.json:3-4` identifies the live packet as `001-playbook-prompt-rewrite`. No severity change.
 - Revalidated the prior `009/003` status drift: `003-deep-review-remediation/spec.md:3` and `plan.md:3` still say `planned`, while `checklist.md:3,23`, `tasks.md:3`, and `graph-metadata.json:29` still close the packet as `complete`. No severity change.
-- Revalidated the prior `014` packet-identity drift: `014-memory-save-planner-first-default/spec.md:217` still says `Packet 016`, and `checklist.md:143,199-208` still uses `CHK-016*` verification labels, while `graph-metadata.json:3-4,40` and `description.json:12-14` identify the live packet as `014`. No severity change.
+- Revalidated the prior `014` packet-identity drift: `014-memory-save-rewrite/spec.md:217` still says `Packet 016`, and `checklist.md:143,199-208` still uses `CHK-016*` verification labels, while `graph-metadata.json:3-4,40` and `description.json:12-14` identify the live packet as `014`. No severity change.
 
 ## Traceability Checks
 - `spec_code` (core): **fail** — 009 and 014 still publish stale packet/status strings in primary docs despite current metadata naming the live packets correctly.
@@ -46,7 +46,7 @@ None.
 ## Confirmed-Clean Surfaces
 - `009-playbook-and-remediation/001-playbook-prompt-rewrite/graph-metadata.json` consistently identifies the live packet as `001-playbook-prompt-rewrite`; no new generated-metadata drift appeared in that child packet.
 - `009-playbook-and-remediation/003-deep-review-remediation/checklist.md`, `tasks.md`, and `graph-metadata.json` still agree the remediation packet is complete; no new regression appeared beyond the already-logged stale `planned` frontmatter in `spec.md` and `plan.md`.
-- `014-memory-save-planner-first-default/graph-metadata.json` and `description.json` consistently identify packet `014` as complete; no new metadata drift appeared in the 014 subset.
+- `014-memory-save-rewrite/graph-metadata.json` and `description.json` consistently identify packet `014` as complete; no new metadata drift appeared in the 014 subset.
 
 ## Next Focus (recommendation)
 Security on 010+012, especially save-flow authority boundaries and any doc claims about guarded write/follow-up paths.

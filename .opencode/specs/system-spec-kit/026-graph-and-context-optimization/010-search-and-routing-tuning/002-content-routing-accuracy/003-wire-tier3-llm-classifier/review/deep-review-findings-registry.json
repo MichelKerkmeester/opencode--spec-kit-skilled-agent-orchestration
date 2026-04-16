@@ -1,0 +1,94 @@
+{
+  "sessionId": "2026-04-13T08:22:00Z-003-wire-tier3-llm-classifier-deep-review",
+  "parentSessionId": "2026-04-13T08:19:00Z-018-content-routing-review-wave",
+  "generation": 1,
+  "lineageMode": "new",
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "status": "INITIALIZED",
+  "openFindings": [
+    {
+      "findingId": "F001",
+      "severity": "P1",
+      "title": "Tier3 prompt hardcodes phase context for non-phase packets",
+      "file": "mcp_server/handlers/memory-save.ts",
+      "line": 1165,
+      "description": "The handler derives `packet_kind` from `parsed.specFolder.includes('/')`, so root research/remediation packets lose their real kind before `buildTier3Prompt()` forwards `PACKET_KIND` at `mcp_server/lib/routing/content-router.ts:1222-1224`; the 018 parent packet is explicitly `type: research` in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md:5`.",
+      "dimension": "correctness",
+      "firstSeen": 1,
+      "lastSeen": 1,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 1,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F002",
+      "severity": "P1",
+      "title": "Natural Tier3 saves are sent with SAVE_MODE route-as",
+      "file": "mcp_server/handlers/memory-save.ts",
+      "line": 1166,
+      "description": "The natural routing path sets `save_mode: `route-as`` even when `routeAs` is absent, so `buildTier3Prompt()` advertises `SAVE_MODE` as an override-style mode at `mcp_server/lib/routing/content-router.ts:1223-1224`; the natural Tier3 handler test at `mcp_server/tests/handler-memory-save.vitest.ts:1246-1257` proves this branch runs without ever supplying an explicit override.",
+      "dimension": "traceability",
+      "firstSeen": 2,
+      "lastSeen": 2,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P1",
+          "reason": "Initial discovery"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P2",
+      "title": "Focused Tier3 handler tests never inspect the prompt body",
+      "file": "mcp_server/tests/handler-memory-save.vitest.ts",
+      "line": 1246,
+      "description": "The natural-routing and fail-open tests prove that `fetch()` is called and the routed write succeeds, but they never decode the request JSON to assert `PACKET_KIND` or `SAVE_MODE`, which is why the prompt-metadata regressions above can pass green.",
+      "dimension": "traceability",
+      "firstSeen": 2,
+      "lastSeen": 2,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P2",
+          "reason": "Initial discovery"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 1
+  },
+  "openFindingsCount": 3,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 1,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "corruptionWarnings": []
+}

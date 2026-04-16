@@ -149,7 +149,7 @@ The former `006-canonical-continuity-refactor` packet had grown to 19 sub-phases
 
 **We chose**: split `006-canonical-continuity-refactor` into five focused phases.
 
-**How it works**: The former 006 scope is now distributed across `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-continuity-research`. The former top-level `007` scope is now tracked as `011-skill-advisor-graph`.
+**How it works**: The former 006 scope is now distributed across `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-search-and-routing-tuning`. The former top-level `007` scope is now tracked as `011-skill-advisor-graph`.
 
 ---
 

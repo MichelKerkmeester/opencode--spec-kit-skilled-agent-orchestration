@@ -11,11 +11,11 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md}`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-derived-status-checklist-alignment/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-active-only-backfill/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-derived-status-checklist-alignment/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-active-only-backfill/{spec.md,plan.md,tasks.md,checklist.md,graph-metadata.json}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/{spec.md,plan.md,tasks.md,checklist.md,description.json,graph-metadata.json,implementation-summary.md,decision-record.md}`
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -37,9 +37,9 @@ None.
 - **playbook_capability (overlay): notApplicable** — this final sweep stayed on packet truthfulness and closeout traceability, not runtime/manual-playbook capability claims.
 
 ## Confirmed-Clean Surfaces
-- `010-continuity-research/003-graph-metadata-validation` root packet plus child packets `006-derived-status-checklist-alignment` and `007-active-only-backfill`: targeted stale-string/status sweeps did not reproduce the earlier `root 019` or planned-vs-complete drift.
-- `012-canonical-intake-and-middleware-cleanup`: targeted root-packet sweeps did not reproduce stale planned-state, identity, or metadata-recency drift.
-- `014-memory-save-planner-first-default`: targeted root-packet sweeps did not reproduce stale `Packet 016` or `CHK-016` identity strings; packet closeout surfaces remain aligned.
+- `010-search-and-routing-tuning/003-graph-metadata-validation` root packet plus child packets `006-derived-status-checklist-alignment` and `007-active-only-backfill`: targeted stale-string/status sweeps did not reproduce the earlier `root 019` or planned-vs-complete drift.
+- `012-command-graph-consolidation`: targeted root-packet sweeps did not reproduce stale planned-state, identity, or metadata-recency drift.
+- `014-memory-save-rewrite`: targeted root-packet sweeps did not reproduce stale `Packet 016` or `CHK-016` identity strings; packet closeout surfaces remain aligned.
 
 ## Next Focus (recommendation)
 Carry only the two remaining 009 drifts (001 identity, 003 status) into synthesis/remediation; the final-sweep pass did not surface new issues in 010, 012, or 014.

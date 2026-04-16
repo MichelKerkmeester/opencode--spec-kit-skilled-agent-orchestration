@@ -15,7 +15,7 @@ Reducer-generated observability surface for the active review packet.
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
 ## 2. STATUS
-- Review Target: Combined: 009-playbook-and-remediation + 010-continuity-research + 012-canonical-intake-and-middleware-cleanup + 014-memory-save-planner-first-default (track)
+- Review Target: Combined: 009-playbook-and-remediation + 010-search-and-routing-tuning + 012-command-graph-consolidation + 014-memory-save-rewrite (track)
 - Started: 2026-04-15T16:59:49Z
 - Status: INITIALIZED
 - Iteration: 50 of 50

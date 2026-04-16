@@ -142,20 +142,20 @@
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md",
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md",
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/graph-metadata.json",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/plan.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/graph-metadata.json",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/plan.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/graph-metadata.json",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/plan.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/graph-metadata.json"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/plan.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/graph-metadata.json",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/plan.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/graph-metadata.json",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/plan.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json"
       ],
       "testFiles": [],
       "packets": [
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning"
       ],
       "checklistItems": ["CHK-018", "CHK-019", "CHK-020"],
       "findingRefs": ["S3.3#1", "S3.3#2", "S3.3#3", "S3.3#4", "S3.3#5", "S3.3#6", "S3.3#9", "S3.3#10", "S3.3#14", "S3.3#15", "S3.3#16", "S3.3#18", "S3.3#19", "S3.3#21", "S3.3#26"]
@@ -165,15 +165,15 @@
       "description": "Status drift cleanup: packet 012 + cross-cutting status docs",
       "tasks": ["T044", "T045", "T046", "T052", "T053", "T054", "T055", "T056", "T057"],
       "targetFiles": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/plan.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/tasks.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/graph-metadata.json",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/plan.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json",
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/implementation-summary.md"
       ],
       "testFiles": [],
       "packets": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation"
       ],
       "checklistItems": ["CHK-021", "CHK-022"],
       "findingRefs": ["S3.3#7", "S3.3#13", "S3.3#20", "S3.3#22", "S3.3#24", "S3.3#25", "S3.3#27", "S3.3#28"]
@@ -197,14 +197,14 @@
       "description": "Packet 014 identity fix: 016->014 references",
       "tasks": ["T060", "T061", "T062", "T063", "T064", "T065"],
       "targetFiles": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/changelog"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/changelog"
       ],
       "testFiles": [],
       "packets": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default"
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite"
       ],
       "checklistItems": ["CHK-025", "CHK-026"],
       "findingRefs": ["S3.4#1", "S3.4#2", "S3.4#3", "S3.4#4", "S3.4#5"]
@@ -284,7 +284,7 @@
       "tasks": ["T097", "T098", "T099", "T100", "T101"],
       "targetFiles": [
         ".opencode/skill/system-spec-kit/mcp_server/lib/validation/trigger-phrase-sanitizer.ts",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md",
         ".opencode/skill/cli-copilot/SKILL.md"
       ],
       "testFiles": [],
@@ -315,12 +315,12 @@
       "description": "Traceability: doc evidence, test gaps, templates, P2 items",
       "tasks": ["T120", "T121", "T122", "T123", "T124", "T125", "T126", "T127", "T128", "T129", "T130", "T131", "T132", "T133", "T134"],
       "targetFiles": [
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/spec.md",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/spec.md",
         ".opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-intent-routing.vitest.ts",
         ".opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts",
         ".opencode/skill/sk-code-full-stack/references/templates",
-        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md",
         ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/001-playbook-prompt-rewrite/checklist.md"
       ],
       "testFiles": [

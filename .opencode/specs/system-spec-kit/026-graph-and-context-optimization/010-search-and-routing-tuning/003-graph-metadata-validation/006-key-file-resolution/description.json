@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution",
+  "description": "Improve Graph Metadata Key File Resolution",
+  "keywords": [
+    "improve",
+    "graph",
+    "metadata",
+    "key",
+    "file",
+    "resolution"
+  ],
+  "lastUpdated": "2026-04-14T08:02:29.439Z",
+  "specId": "006",
+  "folderSlug": "key-file-resolution",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-search-and-routing-tuning",
+    "003-graph-metadata-validation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

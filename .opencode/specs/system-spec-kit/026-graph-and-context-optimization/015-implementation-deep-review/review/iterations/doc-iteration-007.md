@@ -10,22 +10,22 @@
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-findings-registry.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/decision-record.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/plan.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/decision-record.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/decision-record.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/plan.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/decision-record.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json
 
 ## Findings — New This Iteration
 ### P0 Findings

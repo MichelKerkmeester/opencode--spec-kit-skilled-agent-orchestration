@@ -13,11 +13,11 @@
     "system-spec-kit/026-graph-and-context-optimization/007-release-alignment-revisits",
     "system-spec-kit/026-graph-and-context-optimization/008-cleanup-and-audit",
     "system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/010-continuity-research",
+    "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning",
     "system-spec-kit/026-graph-and-context-optimization/011-skill-advisor-graph",
-    "system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
+    "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
     "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-    "system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default"
+    "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite"
   ],
   "manual": {
     "depends_on": [],

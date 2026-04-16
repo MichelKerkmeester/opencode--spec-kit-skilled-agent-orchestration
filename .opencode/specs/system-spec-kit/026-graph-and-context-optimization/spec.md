@@ -28,11 +28,11 @@ _memory:
 
 ## EXECUTIVE SUMMARY
 
-Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It now coordinates an 11-phase child train after the former `006-canonical-continuity-refactor` lane was split into five focused phases, keeping the runtime train, the memory-quality remediation lane, the AGENTS guardrail lane, and the later graph and continuity branches aligned to one dependency-aware execution map instead of relying on numeric slug order alone.
+Packet `026-graph-and-context-optimization` is the parent program for the graph-first context work that followed the research track in `001-research-graph-context-systems`. It coordinates a 14-phase child train covering the runtime pipeline, memory-quality remediation, AGENTS guardrails, continuity refactoring, search/routing tuning, command-graph consolidation, advisor tuning, and the memory-save rewrite -- all aligned to one dependency-aware execution map.
 
-**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through an 11-phase map plus packet-local strict validation.
+**Key Decisions**: Keep the runtime phases ordered by prerequisite relationships, treat `003-memory-quality-remediation` and `004-agent-execution-guardrails` as orthogonal support lanes, and track child-packet completion through a 14-phase map plus packet-local strict validation.
 
-**Critical Dependencies**: The eleven active child packets `001` through `011` remain the implementation and research authorities for their own scopes. The former `006-canonical-continuity-refactor` scope now lands across `006` through `010`, and the former top-level `007` scope now lives at `011-skill-advisor-graph`. This root packet owns coordination, sequencing, and completion truth only.
+**Critical Dependencies**: The fourteen active child packets `001` through `014` remain the implementation and research authorities for their own scopes. Packet `015-implementation-deep-review` is a cross-cutting review and remediation packet that audited packets 009/010/012/014 and produced 243 finding fixes. This root packet owns coordination, sequencing, and completion truth only.
 
 ---
 
@@ -70,7 +70,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 
 ### In Scope
 
-- Record the dependency-aware execution order for the eleven active child packets `001` through `011`.
+- Record the dependency-aware execution order for the fourteen active child packets `001` through `014`.
 - Track the parent packet's coordination contract, success criteria, and packet-level risks.
 - Maintain the phase documentation map and child handoff rules for strict validation.
 - Keep the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the shipped child packet set.
@@ -99,7 +99,7 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 ## PHASE DOCUMENTATION MAP
 
 > This spec uses phased decomposition. Each phase is an independently executable child spec folder.
-> Active children are `001` through `011`. The former `006-canonical-continuity-refactor` line was reorganized into `006` through `010`, and the former top-level `007` scope now lives at `011-skill-advisor-graph`.
+> Active children are `001` through `014`. Packets 012-014 were added after the initial 011 train shipped, covering command-graph consolidation, advisor tuning, and the memory-save rewrite. Packet `015` is a cross-cutting deep review.
 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
@@ -112,8 +112,11 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | 7 | `007-release-alignment-revisits/` | Release-alignment revisit passes | Complete |
 | 8 | `008-cleanup-and-audit/` | Removal, config alignment, and dead-code audit lane | Complete |
 | 9 | `009-playbook-and-remediation/` | Verification playbook and deep-review remediation lane | Complete |
-| 10 | `010-continuity-research/` | Post-refactor continuity investigations | Complete |
+| 10 | `010-search-and-routing-tuning/` | Search fusion tuning, content routing accuracy, graph metadata validation | Complete |
 | 11 | `011-skill-advisor-graph/` | Skill advisor graph implementation lane | Complete |
+| 12 | `012-command-graph-consolidation/` | Folded `/start` into `/plan`, extracted intake contract, removed redundant commands/agents | Complete |
+| 13 | `013-advisor-phrase-booster-tailoring/` | Migrated 36 dead INTENT keys to PHRASE boosters in skill advisor | Complete |
+| 14 | `014-memory-save-rewrite/` | Planner-first `/memory:save` default, retired legacy `memory/*.md`, opt-in mutation flags | Complete |
 
 ### Phase Transition Rules
 
@@ -134,8 +137,17 @@ Provide one canonical root packet that maps the 026 phase train, documents the o
 | `006-continuity-refactor-gates` | `007-release-alignment-revisits` | Gate delivery outputs are revisited for release alignment before cleanup and remediation work fans out | Child packets `006` and `007` validate cleanly |
 | `007-release-alignment-revisits` | `008-cleanup-and-audit` | Revisit findings define the cleanup, config, and dead-code audit backlog | Child packets `007` and `008` validate cleanly |
 | `008-cleanup-and-audit` | `009-playbook-and-remediation` | Cleanup outputs establish the stable surface for the playbook pass and deep-review remediation follow-up | Child packets `008` and `009` validate cleanly |
-| `006-continuity-refactor-gates` | `010-continuity-research` | Post-refactor investigations begin once the gate split lands and the continuity surface is stable enough to study | Child packets `006` and `010` validate cleanly |
-| `005-code-graph-upgrades` + `010-continuity-research` | `011-skill-advisor-graph` | The skill-advisor graph lane depends on graph upgrades plus the post-refactor continuity findings | Child packets `005`, `010`, and `011` validate cleanly |
+| `006-continuity-refactor-gates` | `010-search-and-routing-tuning` | Post-refactor investigations begin once the gate split lands and the continuity surface is stable enough to study | Child packets `006` and `010` validate cleanly |
+| `005-code-graph-upgrades` + `010-search-and-routing-tuning` | `011-skill-advisor-graph` | The skill-advisor graph lane depends on graph upgrades plus the post-refactor continuity findings | Child packets `005`, `010`, and `011` validate cleanly |
+| `008-cleanup-and-audit` + `011-skill-advisor-graph` | `012-command-graph-consolidation` | Command-graph consolidation follows after cleanup and advisor graph are stable | Child packets `008`, `011`, and `012` validate cleanly |
+| `011-skill-advisor-graph` | `013-advisor-phrase-booster-tailoring` | Phrase booster migration depends on the skill advisor graph being in place | Child packets `011` and `013` validate cleanly |
+| `012-command-graph-consolidation` + `010-search-and-routing-tuning` | `014-memory-save-rewrite` | Memory save rewrite depends on the consolidated command graph and search tuning outcomes | Child packets `012`, `010`, and `014` validate cleanly |
+
+### Cross-Cutting Review
+
+| Packet | Focus | Scope | Status |
+|--------|-------|-------|--------|
+| `015-implementation-deep-review/` | 120-iteration deep review of packets 009, 010, 012, 014 | 243 findings (1 P0, 114 P1, 133 P2), 28-batch remediation | Complete |
 <!-- /ANCHOR:phase-map -->
 
 ---

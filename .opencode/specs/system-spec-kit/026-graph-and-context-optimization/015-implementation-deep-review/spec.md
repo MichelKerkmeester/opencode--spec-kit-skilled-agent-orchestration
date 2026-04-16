@@ -58,7 +58,7 @@ _memory:
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM STATEMENT
 
-A merged 120-iteration deep review (50 doc-layer + 70 code+ops-layer) of 920 files across four packets (009-playbook-and-remediation, 010-continuity-research, 012-canonical-intake-and-middleware-cleanup, 014-memory-save-planner-first-default) produced **243 deduplicated findings**:
+A merged 120-iteration deep review (50 doc-layer + 70 code+ops-layer) of 920 files across four packets (009-playbook-and-remediation, 010-search-and-routing-tuning, 012-command-graph-consolidation, 014-memory-save-rewrite) produced **243 deduplicated findings**:
 
 | Severity | Count | Action Required |
 |----------|-------|-----------------|

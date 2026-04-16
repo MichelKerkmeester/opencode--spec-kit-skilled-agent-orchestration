@@ -19,12 +19,12 @@
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md
 - .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -52,20 +52,20 @@
 }
 ```
 
-2. **012 records deferred manual integration tests as verified, so the closeout evidence is overstated.** The packet's checklist marks `CHK-046 [P1]` complete even though it cites deferred manual verification, reports `67/67 items verified`, and the implementation summary still says manual tests `T090-T094` are deferred and should later be upgraded from `DEFERRED` to `PASS`. This is a traceability failure because the verification ledger claims completed evidence that the packet's own summary says does not yet exist. Evidence: `012-canonical-intake-and-middleware-cleanup/checklist.md:123,221`, `.../tasks.md:226-230`, `.../implementation-summary.md:58-63,230,251,268`.
+2. **012 records deferred manual integration tests as verified, so the closeout evidence is overstated.** The packet's checklist marks `CHK-046 [P1]` complete even though it cites deferred manual verification, reports `67/67 items verified`, and the implementation summary still says manual tests `T090-T094` are deferred and should later be upgraded from `DEFERRED` to `PASS`. This is a traceability failure because the verification ledger claims completed evidence that the packet's own summary says does not yet exist. Evidence: `012-command-graph-consolidation/checklist.md:123,221`, `.../tasks.md:226-230`, `.../implementation-summary.md:58-63,230,251,268`.
 
 ```json
 {
   "claim": "012's verification surfaces treat deferred manual tests as completed evidence, overstating packet closeout.",
   "evidenceRefs": [
-    "012-canonical-intake-and-middleware-cleanup/checklist.md:123",
-    "012-canonical-intake-and-middleware-cleanup/checklist.md:221",
-    "012-canonical-intake-and-middleware-cleanup/tasks.md:226",
-    "012-canonical-intake-and-middleware-cleanup/tasks.md:230",
-    "012-canonical-intake-and-middleware-cleanup/implementation-summary.md:58",
-    "012-canonical-intake-and-middleware-cleanup/implementation-summary.md:230",
-    "012-canonical-intake-and-middleware-cleanup/implementation-summary.md:251",
-    "012-canonical-intake-and-middleware-cleanup/implementation-summary.md:268"
+    "012-command-graph-consolidation/checklist.md:123",
+    "012-command-graph-consolidation/checklist.md:221",
+    "012-command-graph-consolidation/tasks.md:226",
+    "012-command-graph-consolidation/tasks.md:230",
+    "012-command-graph-consolidation/implementation-summary.md:58",
+    "012-command-graph-consolidation/implementation-summary.md:230",
+    "012-command-graph-consolidation/implementation-summary.md:251",
+    "012-command-graph-consolidation/implementation-summary.md:268"
   ],
   "counterevidenceSought": "Checked for a packet-local note converting these manual tests into non-gating advisory items or documenting user approval for completion despite deferment; the implementation summary instead says the tests remain deferred.",
   "alternativeExplanation": "Authors may have intended structural/documentary verification to be sufficient for closeout, but the task and checklist rows still label the manual tests as completed rather than explicitly deferred.",

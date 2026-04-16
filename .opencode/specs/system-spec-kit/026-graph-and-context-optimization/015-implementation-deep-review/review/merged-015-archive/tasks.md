@@ -100,5 +100,5 @@ _memory:
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Review targets**: `009-playbook-and-remediation/`, `010-continuity-research/`, `012-canonical-intake-and-middleware-cleanup/`, `014-memory-save-planner-first-default/`
+- **Review targets**: `009-playbook-and-remediation/`, `010-search-and-routing-tuning/`, `012-command-graph-consolidation/`, `014-memory-save-rewrite/`
 <!-- /ANCHOR:cross-refs -->

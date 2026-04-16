@@ -10,15 +10,15 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json`
 
 ## Findings — New This Iteration
 ### P0 Findings
@@ -48,15 +48,15 @@
 
 ## Findings — Confirming / Re-validating Prior
 - **Reproduced prior `009/003` status drift**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md:3` and `plan.md:3` still say `planned`, while `checklist.md:3,10-24`, `tasks.md:3`, and `graph-metadata.json:29` still say `complete`.
-- **Reproduced prior `010/003` root-lineage drift**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/checklist.md:15` still says `Root 019`, while `tasks.md:13` closes out `root 003`.
-- **Reproduced prior `010/003/006` and `010/003/007` status splits**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/spec.md:4` and `007-entity-quality-improvements/spec.md:4` still say `planned`, while their corresponding `tasks.md:4` files say `complete`.
+- **Reproduced prior `010/003` root-lineage drift**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md:15` still says `Root 019`, while `tasks.md:13` closes out `root 003`.
+- **Reproduced prior `010/003/006` and `010/003/007` status splits**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/spec.md:4` and `007-entity-quality-improvements/spec.md:4` still say `planned`, while their corresponding `tasks.md:4` files say `complete`.
 
 ## Traceability Checks
 - **spec_code (core) — fail**: `009/003/plan.md:4` contradicts `009/003/spec.md:6` and `009/003/graph-metadata.json:3-5`, so packet-local lineage is still incorrect.
 - **checklist_evidence (core) — partial**: `009/003/checklist.md:10-24` still corroborates shipped completion, but `010/003/checklist.md:15` repeats the stale `Root 019` identity, so checklist evidence cannot independently clear every lineage claim in the 010 subset.
 
 ## Confirmed-Clean Surfaces
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md:18-22`, `checklist.md:16-20`, and `graph-metadata.json:268-270` remain mutually consistent with a completed packet; this iteration found no new correctness drift in 012.
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md:18-22`, `checklist.md:16-20`, and `graph-metadata.json:268-270` remain mutually consistent with a completed packet; this iteration found no new correctness drift in 012.
 
 ## Next Focus (recommendation)
 Inspect 010 parent/child packet identity fields outside `003-graph-metadata-validation` to see whether additional stale lineage pointers remain beyond the already-known root-019 cluster.

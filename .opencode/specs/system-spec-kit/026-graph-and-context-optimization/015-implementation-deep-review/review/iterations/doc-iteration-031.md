@@ -6,19 +6,19 @@
 - timestamp: 2026-04-15T18:45:33Z
 
 ## Files Reviewed
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup/description.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/implementation-summary.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/decision-record.md
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/graph-metadata.json
-- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation/description.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/decision-record.md
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json
+- .opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -48,7 +48,7 @@
 - **P2 - machine-readable evidence indexing only exposes one of the three transcript proofs.** `014/spec.md:220` says the packet is validated by three real session transcripts, and `014/implementation-summary.md:69` repeats that all three were exercised before closeout, but `014/graph-metadata.json:41-52` only advertises `scratch/transcripts-snapshot/transcript-1.md` in `derived.key_files`. Discovery/review tooling that relies on metadata will miss transcript-2 and transcript-3 unless the metadata is widened or the claim is narrowed.
 
 ## Findings - Confirming / Re-validating Prior
-- **Prior P1 still reproduces:** `014/spec.md:217` still says `SC-016: Packet 016 primary docs pass validate_document.py`, while `014/tasks.md:54,220-228` and `014/checklist.md:199-208` still use `P016-*` / `CHK-016-*` lineage inside the live `014-memory-save-planner-first-default` packet. This remains the previously reported packet-identity drift, not a new finding from this iteration.
+- **Prior P1 still reproduces:** `014/spec.md:217` still says `SC-016: Packet 016 primary docs pass validate_document.py`, while `014/tasks.md:54,220-228` and `014/checklist.md:199-208` still use `P016-*` / `CHK-016-*` lineage inside the live `014-memory-save-rewrite` packet. This remains the previously reported packet-identity drift, not a new finding from this iteration.
 
 ## Traceability Checks
 - **core / spec_code: partial** - `012` remains internally aligned across spec/tasks/checklist/summary, but `014` still carries stale `016` packet lineage in success criteria and packet-verification ledgers (`014/spec.md:217`, `014/tasks.md:54,220-228`, `014/checklist.md:199-208`).

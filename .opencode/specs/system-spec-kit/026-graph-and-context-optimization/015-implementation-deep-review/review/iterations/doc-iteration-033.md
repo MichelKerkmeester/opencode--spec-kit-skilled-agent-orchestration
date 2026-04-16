@@ -9,38 +9,38 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/changelog/changelog-026-014-memory-save-planner-first-default.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/description.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/graph-metadata.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/005-doc-surface-alignment/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements/implementation-summary.md`
 
 ## Findings - New This Iteration
 ### P0 Findings
 - None.
 
 ### P1 Findings
-- **014 packet-level traceability still points at a fictitious `016` namespace instead of the live `014` packet.** The authoritative packet identity surfaces still say `014` (`description.json:2-14`, `graph-metadata.json:3-5`), but the evidence ledgers that a reviewer would use to trace work now route through `P016-*`, `CHK-016-*`, and repeated `Packet 016` wording (`tasks.md:54-56,220-228`, `checklist.md:199-208`, `changelog/changelog-026-014-memory-save-planner-first-default.md:22,53-60,68-71`). That breaks packet-to-evidence traceability: a reader following task IDs or checklist IDs is sent to a packet lineage that does not exist in packet metadata, so the packet cannot be audited cleanly from its own primary docs.
+- **014 packet-level traceability still points at a fictitious `016` namespace instead of the live `014` packet.** The authoritative packet identity surfaces still say `014` (`description.json:2-14`, `graph-metadata.json:3-5`), but the evidence ledgers that a reviewer would use to trace work now route through `P016-*`, `CHK-016-*`, and repeated `Packet 016` wording (`tasks.md:54-56,220-228`, `checklist.md:199-208`, `changelog/changelog-026-014-memory-save-rewrite.md:22,53-60,68-71`). That breaks packet-to-evidence traceability: a reader following task IDs or checklist IDs is sent to a packet lineage that does not exist in packet metadata, so the packet cannot be audited cleanly from its own primary docs.
 
 ```json
 {
   "claim": "014's packet-local evidence ledger is not traceable because primary-doc IDs and changelog copy still identify the work as packet 016 while authoritative metadata identifies the packet as 014.",
   "evidenceRefs": [
-    "014-memory-save-planner-first-default/tasks.md:54-56",
-    "014-memory-save-planner-first-default/tasks.md:220-228",
-    "014-memory-save-planner-first-default/checklist.md:199-208",
-    "014-memory-save-planner-first-default/changelog/changelog-026-014-memory-save-planner-first-default.md:22",
-    "014-memory-save-planner-first-default/changelog/changelog-026-014-memory-save-planner-first-default.md:53-60",
-    "014-memory-save-planner-first-default/changelog/changelog-026-014-memory-save-planner-first-default.md:68-71",
-    "014-memory-save-planner-first-default/description.json:2-14",
-    "014-memory-save-planner-first-default/graph-metadata.json:3-5"
+    "014-memory-save-rewrite/tasks.md:54-56",
+    "014-memory-save-rewrite/tasks.md:220-228",
+    "014-memory-save-rewrite/checklist.md:199-208",
+    "014-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md:22",
+    "014-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md:53-60",
+    "014-memory-save-rewrite/changelog/changelog-026-014-memory-save-rewrite.md:68-71",
+    "014-memory-save-rewrite/description.json:2-14",
+    "014-memory-save-rewrite/graph-metadata.json:3-5"
   ],
   "counterevidenceSought": "Looked for a packet-local alias, ADR, or metadata field that intentionally reserves P016/CHK-016 as a separate lineage namespace.",
   "alternativeExplanation": "The P016/CHK-016 labels might have been intended as consolidation-work lineage rather than packet identity, but the changelog text and checklist headings present them as the packet's own identity rather than as a clearly scoped alias.",

@@ -5,16 +5,16 @@
   "kind": "review-only",
   "reviewTargets": [
     "009-playbook-and-remediation",
-    "010-continuity-research",
-    "012-canonical-intake-and-middleware-cleanup",
-    "014-memory-save-planner-first-default"
+    "010-search-and-routing-tuning",
+    "012-command-graph-consolidation",
+    "014-memory-save-rewrite"
   ],
   "entities": [
     {"type": "spec-folder", "name": "015-combined-deep-review-four-specs"},
     {"type": "review-target", "name": "009-playbook-and-remediation"},
-    {"type": "review-target", "name": "010-continuity-research"},
-    {"type": "review-target", "name": "012-canonical-intake-and-middleware-cleanup"},
-    {"type": "review-target", "name": "014-memory-save-planner-first-default"}
+    {"type": "review-target", "name": "010-search-and-routing-tuning"},
+    {"type": "review-target", "name": "012-command-graph-consolidation"},
+    {"type": "review-target", "name": "014-memory-save-rewrite"}
   ],
   "keyFiles": [
     "spec.md",

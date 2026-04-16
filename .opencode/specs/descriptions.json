@@ -4416,7 +4416,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning",
       "description": "Research: Search Fusion & Reranking Configuration Tuning",
       "keywords": [
         "research",
@@ -4429,7 +4429,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/001-remove-length-penalty",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/001-remove-length-penalty",
       "description": "Remove Cross-Encoder Length Penalty",
       "keywords": [
         "remove",
@@ -4440,7 +4440,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/002-add-reranker-telemetry",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/002-add-reranker-telemetry",
       "description": "Add Reranker Cache Telemetry",
       "keywords": [
         "add",
@@ -4451,7 +4451,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/003-continuity-search-profile",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/003-continuity-search-profile",
       "description": "Add Continuity Search Intent Profile",
       "keywords": [
         "add",
@@ -4463,7 +4463,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/004-raise-rerank-minimum",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/004-raise-rerank-minimum",
       "description": "Raise Minimum Rerank Candidate Threshold",
       "keywords": [
         "raise",
@@ -4475,7 +4475,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/005-doc-surface-alignment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/005-doc-surface-alignment",
       "description": "Feature Specification: Doc Surface Alignment: Search Fusion Changes",
       "keywords": [
         "feature",
@@ -4490,7 +4490,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/006-continuity-profile-validation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/006-continuity-profile-validation",
       "description": "Feature Specification: Validate Continuity Profile Weights",
       "keywords": [
         "feature",
@@ -4503,7 +4503,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy",
       "description": "Research: Content Routing Classification Accuracy",
       "keywords": [
         "research",
@@ -4515,7 +4515,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/001-fix-delivery-progress-confusion",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/001-fix-delivery-progress-confusion",
       "description": "Fix Delivery vs Progress Routing Confusion",
       "keywords": [
         "fix",
@@ -4527,7 +4527,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/002-fix-handover-drop-confusion",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/002-fix-handover-drop-confusion",
       "description": "Fix Handover vs Drop Routing Confusion",
       "keywords": [
         "fix",
@@ -4539,7 +4539,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier",
       "description": "Wire Tier3 LLM Classifier into Save Handler",
       "keywords": [
         "wire",
@@ -4552,7 +4552,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/004-doc-surface-alignment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/004-doc-surface-alignment",
       "description": "Feature Specification: Doc Surface Alignment for Research Content Routing Accuracy",
       "keywords": [
         "feature",
@@ -4568,7 +4568,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety",
       "description": "Add Task Update Merge Safety Guard",
       "keywords": [
         "add",
@@ -4581,7 +4581,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/006-tier3-prompt-enrichment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/006-tier3-prompt-enrichment",
       "description": "Enrich Tier3 Prompt with Continuity Model Context",
       "keywords": [
         "enrich",
@@ -4594,7 +4594,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation",
       "description": "Research: Graph Metadata Quality & Relationship Validation",
       "keywords": [
         "research",
@@ -4607,7 +4607,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/001-fix-status-derivation",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/001-fix-status-derivation",
       "description": "Fix Graph Metadata Status Derivation",
       "keywords": [
         "fix",
@@ -4619,7 +4619,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/002-sanitize-key-files",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/002-sanitize-key-files",
       "description": "Sanitize Key Files in Graph Metadata",
       "keywords": [
         "sanitize",
@@ -4631,7 +4631,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/003-deduplicate-entities",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/003-deduplicate-entities",
       "description": "Deduplicate Graph Metadata Entities",
       "keywords": [
         "deduplicate",
@@ -4642,7 +4642,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/004-normalize-legacy-files",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/004-normalize-legacy-files",
       "description": "Normalize Legacy Graph Metadata Files",
       "keywords": [
         "normalize",
@@ -4654,7 +4654,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/005-doc-surface-alignment",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/005-doc-surface-alignment",
       "description": "Feature Specification: Doc Surface Alignment: Graph Metadata Changes",
       "keywords": [
         "feature",
@@ -4669,7 +4669,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/006-key-file-resolution",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/006-key-file-resolution",
       "description": "Improve Graph Metadata Key File Resolution",
       "keywords": [
         "improve",
@@ -4682,7 +4682,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/007-entity-quality-improvements",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/007-entity-quality-improvements",
       "description": "Improve Graph Metadata Entity Quality",
       "keywords": [
         "improve",
@@ -4805,7 +4805,7 @@
       "lastUpdated": "2026-04-14T08:02:29.035Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-command-graph-consolidation",
       "description": "Canonical Intake and Middleware Cleanup. Single canonical intake contract at .opencode/skill/system-spec-kit/references/intake-contract.md referenced by /spec_kit:plan and /spec_kit:complete; /spec_kit:plan --intake-only provides standalone invocation with explicit YAML gate; /spec_kit:deep-research anchored to real spec.md via spec_check_protocol.md; deprecated middleware (/spec_kit:handover, /spec_kit:debug, @handover, @speckit × 4 runtimes each) hard-deleted with distributed governance replacing @speckit exclusivity.",
       "keywords": [
         "canonical",

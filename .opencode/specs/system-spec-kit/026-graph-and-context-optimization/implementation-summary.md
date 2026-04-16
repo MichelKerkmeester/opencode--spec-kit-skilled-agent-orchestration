@@ -60,7 +60,7 @@ This pass started from the strict-validator baseline for the root `026` folder, 
 
 ### Phase Reorganization
 
-The root docs now reflect the April 2026 reorganization that split `006-canonical-continuity-refactor` into five focused top-level phases: `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-continuity-research`. The former top-level `007` scope is now represented by `011-skill-advisor-graph`.
+The root docs now reflect the April 2026 reorganization that split `006-canonical-continuity-refactor` into five focused top-level phases: `006-continuity-refactor-gates`, `007-release-alignment-revisits`, `008-cleanup-and-audit`, `009-playbook-and-remediation`, and `010-search-and-routing-tuning`. The former top-level `007` scope is now represented by `011-skill-advisor-graph`.
 <!-- /ANCHOR:how-delivered -->
 
 ---

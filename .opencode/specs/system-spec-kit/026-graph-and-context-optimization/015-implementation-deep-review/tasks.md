@@ -151,7 +151,7 @@ _memory:
 - [ ] T062 [P1] [P] Fix 014 traceability surfaces carrying `016` lineage (014/tasks.md:47, tasks.md:54) (S3.4#2 iter 33, S3.4#4 iter 43)
 - [ ] T063 [P2] [P] Fix 014 changelog carrying `016` identity (S3.4#5 iter 49)
 - [ ] T064 [P2] Verify no cross-contamination with actual 016 packet if it exists (S3.4)
-- [ ] T065 [P1] **Verify**: `grep -r "016" 014-memory-save-planner-first-default/` returns zero hits after fixes (S3.4)
+- [ ] T065 [P1] **Verify**: `grep -r "016" 014-memory-save-rewrite/` returns zero hits after fixes (S3.4)
 <!-- /ANCHOR:ws-2 -->
 
 ---

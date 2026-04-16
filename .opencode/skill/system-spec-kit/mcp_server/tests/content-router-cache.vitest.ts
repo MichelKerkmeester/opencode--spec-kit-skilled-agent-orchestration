@@ -87,7 +87,7 @@ describe('content router cache context contract', () => {
       sourceField: 'exchanges',
       metadata: { phase_anchor: 'phase-3' },
     }, makeContext({
-      specFolder: '026-graph-and-context-optimization/014-memory-save-planner-first-default',
+      specFolder: '026-graph-and-context-optimization/014-memory-save-rewrite',
       packetLevel: 'L2',
       sessionMeta: {
         packet_kind: 'packet',

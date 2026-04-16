@@ -22,9 +22,9 @@
   "memoryNameHistory": [],
   "reviewTargets": [
     "026-graph-and-context-optimization/009-playbook-and-remediation",
-    "026-graph-and-context-optimization/010-continuity-research",
-    "026-graph-and-context-optimization/012-canonical-intake-and-middleware-cleanup",
-    "026-graph-and-context-optimization/014-memory-save-planner-first-default"
+    "026-graph-and-context-optimization/010-search-and-routing-tuning",
+    "026-graph-and-context-optimization/012-command-graph-consolidation",
+    "026-graph-and-context-optimization/014-memory-save-rewrite"
   ],
   "kind": "review-only"
 }

@@ -9,14 +9,14 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-config.json`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-strategy.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/015-combined-deep-review-four-specs/review/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/tasks.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/implementation-summary.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/decision-record.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/description.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-planner-first-default/graph-metadata.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/tasks.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/implementation-summary.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/decision-record.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/description.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite/graph-metadata.json`
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -32,7 +32,7 @@ None.
 - **P1 (prior, still reproducible):** packet-identity drift remains open in the live 014 packet: `spec.md:217` still says `Packet 016`, while `checklist.md:199-208` and `tasks.md:220-228` still use `CHK-016-*` / `P016-*` verification lineage inside packet 014. This was already captured in earlier iterations and is not counted as new here.
 
 ## Traceability Checks
-- **core / spec_code — fail:** `spec.md:217` still names `Packet 016`, while `description.json:13` and `graph-metadata.json:3` identify the packet as `014-memory-save-planner-first-default`; the packet still has an unresolved canonical-identity drift.
+- **core / spec_code — fail:** `spec.md:217` still names `Packet 016`, while `description.json:13` and `graph-metadata.json:3` identify the packet as `014-memory-save-rewrite`; the packet still has an unresolved canonical-identity drift.
 - **core / checklist_evidence — partial:** `checklist.md:199-208` still reuses `CHK-016-*` IDs, so the checklist cannot independently clear packet identity; however, `implementation-summary.md:145-159` still provides coherent closeout evidence that doc validation, strict validation, and metadata generation completed.
 
 ## Confirmed-Clean Surfaces

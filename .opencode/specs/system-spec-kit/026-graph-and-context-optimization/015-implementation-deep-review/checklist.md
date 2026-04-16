@@ -128,11 +128,11 @@ _memory:
 ## Workstream 2: Packet 014 Identity Fix
 
 - [ ] CHK-040 [P1] Zero `SC-016` references in 014 packet
-  - Evidence: `grep -r "SC-016" 014-memory-save-planner-first-default/` returns empty
+  - Evidence: `grep -r "SC-016" 014-memory-save-rewrite/` returns empty
 - [ ] CHK-041 [P1] Zero `CHK-016` references in 014 packet
-  - Evidence: `grep -r "CHK-016" 014-memory-save-planner-first-default/` returns empty
+  - Evidence: `grep -r "CHK-016" 014-memory-save-rewrite/` returns empty
 - [ ] CHK-042 [P1] Zero `Packet 016` / `packet-016` references in 014 packet
-  - Evidence: `grep -ri "packet.016" 014-memory-save-planner-first-default/` returns empty
+  - Evidence: `grep -ri "packet.016" 014-memory-save-rewrite/` returns empty
 - [ ] CHK-043 [P1] `validate.sh --strict` passes for 014 after identity fix
   - Evidence: Exit 0
 <!-- /ANCHOR:ws-2-verify -->

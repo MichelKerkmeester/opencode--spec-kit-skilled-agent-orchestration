@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+  "description": "Feature Specification: /memory:save Planner-First Default",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "save",
+    "planner-first",
+    "default"
+  ],
+  "lastUpdated": "2026-04-15T16:45:28.858Z",
+  "specId": "014",
+  "folderSlug": "memory-save-planner-first-default",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

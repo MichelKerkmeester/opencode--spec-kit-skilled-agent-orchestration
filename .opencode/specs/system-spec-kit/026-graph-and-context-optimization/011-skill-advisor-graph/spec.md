@@ -44,7 +44,7 @@ Add a `graph-metadata.json` to each of the 21 skill folders (20 routable + skill
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Predecessor** | `010-continuity-research` |
+| **Predecessor** | `010-search-and-routing-tuning` |
 <!-- /ANCHOR:metadata -->
 
 ---

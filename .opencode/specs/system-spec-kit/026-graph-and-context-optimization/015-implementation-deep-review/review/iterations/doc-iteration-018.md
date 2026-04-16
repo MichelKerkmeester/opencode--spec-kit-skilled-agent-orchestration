@@ -19,18 +19,18 @@
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/spec.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/plan.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-playbook-and-remediation/003-deep-review-remediation/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/001-search-fusion-tuning/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/003-wire-tier3-llm-classifier/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/003-wire-tier3-llm-classifier/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety/plan.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-continuity-research/003-graph-metadata-validation/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/001-search-fusion-tuning/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/003-wire-tier3-llm-classifier/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/plan.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/002-content-routing-accuracy/005-task-update-merge-safety/checklist.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-search-and-routing-tuning/003-graph-metadata-validation/checklist.md`
 
 ## Findings - New This Iteration
 ### P0 Findings
@@ -54,9 +54,9 @@
 - `009-playbook-and-remediation/001-playbook-prompt-rewrite` security language remained scoped to packet-local markdown updates.
 - `009-playbook-and-remediation/002-full-playbook-execution` reviewed docs did not introduce credential, secret, or broad-permission requirements.
 - `009-playbook-and-remediation/003-deep-review-remediation` reviewed docs stayed in documentation/remediation scope and did not weaken approval boundaries.
-- `010-continuity-research/001-search-fusion-tuning` reviewed parent surfaces did not expose new security-sensitive handling requirements.
-- `010-continuity-research/002-content-routing-accuracy` reviewed classifier and merge-safety packet surfaces did not add unsafe prompt, secret, or authority-bypass guidance.
-- `010-continuity-research/003-graph-metadata-validation` reviewed parent surfaces remained documentation/validation scoped.
+- `010-search-and-routing-tuning/001-search-fusion-tuning` reviewed parent surfaces did not expose new security-sensitive handling requirements.
+- `010-search-and-routing-tuning/002-content-routing-accuracy` reviewed classifier and merge-safety packet surfaces did not add unsafe prompt, secret, or authority-bypass guidance.
+- `010-search-and-routing-tuning/003-graph-metadata-validation` reviewed parent surfaces remained documentation/validation scoped.
 
 ## Next Focus (recommendation)
 - Re-run security on 012+014, especially any surfaces that describe save/index flows or widened tool authority.

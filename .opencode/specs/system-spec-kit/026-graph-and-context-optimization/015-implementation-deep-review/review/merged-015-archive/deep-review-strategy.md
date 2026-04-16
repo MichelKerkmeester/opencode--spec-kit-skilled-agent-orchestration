@@ -21,7 +21,7 @@ Persistent brain for the combined deep review. Loop manager (Claude Opus 4.6 1M)
 <!-- ANCHOR:topic -->
 ## 2. TOPIC
 
-Combined Deep Review: 009-playbook-and-remediation + 010-continuity-research + 012-canonical-intake-and-middleware-cleanup + 014-memory-save-planner-first-default — audit release-readiness risk before cutting any of the four for changelog.
+Combined Deep Review: 009-playbook-and-remediation + 010-search-and-routing-tuning + 012-command-graph-consolidation + 014-memory-save-rewrite — audit release-readiness risk before cutting any of the four for changelog.
 
 <!-- /ANCHOR:topic -->
 
