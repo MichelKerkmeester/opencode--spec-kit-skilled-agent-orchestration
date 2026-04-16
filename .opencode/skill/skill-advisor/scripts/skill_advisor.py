@@ -2016,9 +2016,10 @@ Examples:
             pre_computed_hits = json.loads(args.semantic_hits)
             if not isinstance(pre_computed_hits, list):
                 print(json.dumps({"error": "--semantic-hits/--cocoindex-hits must be a JSON array"}), file=sys.stderr)
-                pre_computed_hits = None
+                return 2
         except json.JSONDecodeError as exc:
             print(json.dumps({"error": f"Invalid --semantic-hits/--cocoindex-hits JSON: {exc}"}), file=sys.stderr)
+            return 2
 
     if args.batch_file:
         try:

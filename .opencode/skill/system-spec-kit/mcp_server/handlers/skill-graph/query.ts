@@ -180,7 +180,17 @@ function clamp(
 }
 
 function sliceResults<T>(results: T, limit: number): T {
-  return Array.isArray(results) ? results.slice(0, limit) as T : results;
+  if (!Array.isArray(results)) return results;
+  return results.slice(0, limit).map(stripInternalFields) as T;
+}
+
+/** Remove internal implementation fields (sourcePath, contentHash) from query output. */
+function stripInternalFields<T extends Record<string, unknown>>(item: T): T {
+  if (item && typeof item === 'object') {
+    const { sourcePath, contentHash, ...rest } = item;
+    return rest as T;
+  }
+  return item;
 }
 
 function okResponse(data: Record<string, unknown>): HandlerResponse {

@@ -134,7 +134,7 @@ Copilot CLI supports 5 recommended models across 3 providers.
 | **GPT-5.4** | `gpt-5.4` | OpenAI | Frontier reasoning with effort levels |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI | Advanced code generation |
 | **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic | Architecture & complex logic |
-| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding & speed (Default) |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding & speed |
 | **Gemini 3.1 Pro Preview** | `gemini-3.1-pro-preview` | Google | Large context analysis |
 
 ### Reasoning Effort (GPT-5.x models)

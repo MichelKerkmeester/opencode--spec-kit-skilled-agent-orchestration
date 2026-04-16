@@ -35,8 +35,8 @@ _memory:
 | **Branch** | `system-speckit/026-graph-and-context-optimization` |
 | **Parent Metadata** | `../graph-metadata.json` |
 | **Parent Description** | `../description.json` |
-| **Predecessor** | `013-dead-code-and-architecture-audit` |
-| **Successor** | `015-full-playbook-execution` |
+| **Predecessor** | (none — first child of 009) |
+| **Successor** | `003-deep-review-remediation` |
 <!-- /ANCHOR:metadata -->
 
 ---

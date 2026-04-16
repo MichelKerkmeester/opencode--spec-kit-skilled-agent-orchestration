@@ -38,7 +38,7 @@ operating_mode:
 development_philosophy:
   principle: "Detect accurately, format consistently"
   approach: "Analyze -> Resolve -> Calculate -> Generate -> Validate -> Write"
-  mandate: "Dynamic detection with human-quality output matching 370+ existing changelogs"
+  mandate: "Dynamic detection with human-quality output matching 400+ existing changelogs"
 
 runtime_agent_path_resolution:
   default: .opencode/agent
@@ -706,7 +706,7 @@ rules:
   ALWAYS:
     - "Follow the 7-step workflow in sequence"
     - "Validate version is sequential before writing"
-    - "Match the established changelog format (370+ existing files)"
+    - "Match the established changelog format (400+ existing files)"
     - "Include all required sections: title, backlink, version+date, summary, highlights"
     - "Use the component mapping table for resolution"
     - "Report STATUS=OK or STATUS=FAIL at completion"

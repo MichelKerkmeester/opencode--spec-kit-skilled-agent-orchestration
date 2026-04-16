@@ -55,6 +55,42 @@ decision_count: 2
 
     expect(result).toMatchObject({ status: 'PASSED', issues: [] });
   });
+
+  it('detects title mismatch and missing trigger phrases as HIGH issues', async () => {
+    const savedFilePath = await writeTempMemoryFile(`---
+title: Generic session
+description: Generic session
+importance_tier: normal
+context_type: implementation
+trigger_phrases: []
+---
+
+# Generic session
+
+## MEMORY METADATA
+
+\`\`\`yaml
+decision_count: 0
+\`\`\`
+`);
+
+    const result = reviewPostSaveQuality({
+      savedFilePath,
+      inputMode: 'file',
+      collectedData: {
+        _source: 'file',
+        sessionSummary: 'Specific auth refactor session',
+        _manualTriggerPhrases: ['auth refactor', 'token refresh'],
+        importanceTier: 'important',
+        contextType: 'implementation',
+        keyDecisions: ['Decision A'],
+      },
+    });
+
+    expect(result.status).not.toBe('PASSED');
+    expect(result.issues.length).toBeGreaterThan(0);
+    expect(result.issues.some((i: { severity: string }) => i.severity === 'HIGH')).toBe(true);
+  });
 });
 
 describe('computeReviewScorePenalty', () => {

@@ -114,7 +114,19 @@ export function handleStartup(
 ): OutputSection[] {
   const sessionId = typeof input.session_id === 'string' ? input.session_id : undefined;
   const requestedSpecFolder = typeof input.specFolder === 'string' ? input.specFolder : undefined;
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  let startupBrief: StartupBrief | null = null;
+  try {
+    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  } catch (err: unknown) {
+    hookLog('error', 'session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  if (!buildStartupBrief) {
+    hookLog('warn', 'session-prime', 'Startup brief module unavailable — using fallback surface');
+  } else if (!startupBrief) {
+    hookLog('warn', 'session-prime', 'buildStartupBrief returned null — possible startup-brief regression');
+  } else if (!startupBrief.startupSurface) {
+    hookLog('warn', 'session-prime', 'startupBrief.startupSurface is empty — possible startup-brief regression');
+  }
   const cachedSummaryDecision = getCachedSessionSummaryDecision({
     specFolder: requestedSpecFolder,
     claudeSessionId: sessionId,

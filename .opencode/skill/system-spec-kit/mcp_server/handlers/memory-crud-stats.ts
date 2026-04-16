@@ -78,7 +78,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   if (excludePatterns && !Array.isArray(excludePatterns)) {
     return createMCPErrorResponse({
       tool: 'memory_stats',
-      error: 'excludePatterns must be an array of regex pattern strings',
+      error: 'excludePatterns must be an array of substring pattern strings',
       code: 'E_INVALID_INPUT',
       details: { requestId },
       startTime,

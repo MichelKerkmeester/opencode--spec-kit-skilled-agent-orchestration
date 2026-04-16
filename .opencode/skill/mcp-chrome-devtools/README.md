@@ -467,8 +467,8 @@ Fix:
 # Stop the existing session
 bdg stop 2>&1
 
-# If bdg stop does not work, kill orphaned Chrome processes
-pkill -f browser-debugger-cli
+# If bdg stop does not work, kill the specific bdg process
+kill "$(pgrep -f 'node.*browser-debugger-cli')" 2>/dev/null
 
 # For future scripts, always register a trap
 trap "bdg stop 2>&1" EXIT INT TERM

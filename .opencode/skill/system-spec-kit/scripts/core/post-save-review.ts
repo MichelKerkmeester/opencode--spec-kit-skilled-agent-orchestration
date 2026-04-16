@@ -453,7 +453,7 @@ function countGuardrailSeverities(issues: ReviewIssue[]): {
   dupMedium: number;
 } {
   return issues.reduce((counts, issue) => {
-    if (!issue.checkId || (!issue.checkId.startsWith('D') && !issue.checkId.startsWith('DUP'))) {
+    if (!issue.checkId || (!issue.checkId.startsWith('D') && !issue.checkId.startsWith('DUP') && !issue.checkId.startsWith('PSR'))) {
       return counts;
     }
 

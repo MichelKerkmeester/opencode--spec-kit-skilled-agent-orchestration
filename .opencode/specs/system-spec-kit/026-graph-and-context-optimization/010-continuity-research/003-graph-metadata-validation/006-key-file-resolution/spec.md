@@ -17,10 +17,10 @@ _memory:
 # Improve Graph Metadata Key File Resolution
 ## Metadata <!-- ANCHOR:metadata -->Parent `003-graph-metadata-validation`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->
 ## Problem <!-- ANCHOR:problem -->`deriveKeyFiles()` still misses too many valid paths because cross-track references, stale deletions, and `memory/metadata.json` noise survive into the final capped list.<!-- /ANCHOR:problem -->
-## Scope <!-- ANCHOR:scope -->In scope: cross-track resolution, pruning files deleted more than 30 days ago, and rejecting `memory/metadata.json` in `mcp_server/lib/graph/graph-metadata-parser.ts`. Out of scope: schema changes or entity derivation work.<!-- /ANCHOR:scope -->
+## Scope <!-- ANCHOR:scope -->In scope: cross-track resolution, pruning candidates whose resolved file does not exist on disk, and rejecting `memory/metadata.json` in `mcp_server/lib/graph/graph-metadata-parser.ts`. Out of scope: schema changes or entity derivation work.<!-- /ANCHOR:scope -->
 ## Requirements <!-- ANCHOR:requirements -->
 - REQ-001: Resolve packet-relative key-file paths across `system-spec-kit/` and `skilled-agent-orchestration/`.
-- REQ-002: Drop candidates for files deleted more than 30 days ago before truncation.
+- REQ-002: Prune file-shaped candidates whose resolved file does not exist on disk before the final cap.
 - REQ-003: Reject all `memory/metadata.json` references from derived `key_files`.
 - REQ-004: Preserve the final `normalizeUnique(...).slice(0, 20)` contract.
 - REQ-005: Add focused graph-metadata coverage for all three fixes.
@@ -28,7 +28,7 @@ _memory:
 ## Success Criteria <!-- ANCHOR:success-criteria -->
 - SC-001: Key-file resolution improves materially from the current roughly `82%` baseline.
 - **Given** a cross-track packet reference, **when** `deriveKeyFiles()` runs, **then** it resolves to the correct track.
-- **Given** a path deleted more than 30 days ago, **when** candidates are filtered, **then** it is pruned before the cap.
+- **Given** a candidate whose resolved file does not exist on disk, **when** candidates are filtered, **then** it is pruned before the cap.
 - **Given** `memory/metadata.json`, **when** key files are derived, **then** it never survives into output.
 - **Given** the final candidate set, **when** truncation runs, **then** it still uses the existing 20-slot contract.
 <!-- /ANCHOR:success-criteria -->

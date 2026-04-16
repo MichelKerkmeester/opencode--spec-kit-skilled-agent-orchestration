@@ -42,16 +42,19 @@ describe('trigger-phrase sanitizer', () => {
   });
 
   it('deduplicates and preserves only kept phrases in wrapper output', () => {
-    expect(sanitizeTriggerPhrases([
+    const result = sanitizeTriggerPhrases([
       'MCP',
       'mcp',
       'kit/026',
       'semantic search',
       'semantic search',
       'graph',
-    ])).toEqual([
-      'mcp',
+    ]);
+    // Order is by descending comparison-key length (deterministic),
+    // so 'semantic search' (15 chars) comes before 'mcp' (3 chars).
+    expect(result).toEqual([
       'semantic search',
+      'mcp',
     ]);
   });
 

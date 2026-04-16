@@ -115,11 +115,12 @@ def benchmark_subprocess(prompts: List[str], runs: int, threshold: float, uncert
                 [
                     "python3",
                     ADVISOR_PATH,
-                    prompt,
                     "--threshold",
                     str(threshold),
                     "--uncertainty",
                     str(uncertainty),
+                    "--",
+                    prompt,
                 ],
                 check=True,
                 stdout=subprocess.DEVNULL,

@@ -493,19 +493,29 @@ function buildNoRecoveryResult(
   };
 }
 
+function isPathWithinRoot(candidatePath: string, rootPath: string): boolean {
+  const relativePath = path.relative(rootPath, candidatePath);
+  return relativePath === ''
+    || (
+      !relativePath.startsWith(`..${path.sep}`)
+      && relativePath !== '..'
+      && !path.isAbsolute(relativePath)
+    );
+}
+
 function resolveFromFolderPath(workspacePath: string, folderPath: string): string | null {
-  const normalized = path.resolve(folderPath).replace(/\\/g, '/');
+  const normalized = path.resolve(folderPath);
   const candidates = [
-    path.join(workspacePath, '.opencode', 'specs').replace(/\\/g, '/'),
-    path.join(workspacePath, 'specs').replace(/\\/g, '/'),
+    path.join(workspacePath, '.opencode', 'specs'),
+    path.join(workspacePath, 'specs'),
   ];
 
   for (const root of candidates) {
-    if (normalized === root || !normalized.startsWith(`${root}/`)) {
+    if (normalized === root || !isPathWithinRoot(normalized, root)) {
       continue;
     }
 
-    return normalized.slice(root.length + 1).replace(/\/+$/u, '');
+    return path.relative(root, normalized).replace(/\\/g, '/').replace(/\/+$/u, '');
   }
 
   return null;
@@ -518,7 +528,7 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
   const allowedRoots = [
     path.join(workspacePath, '.opencode', 'specs'),
     path.join(workspacePath, 'specs'),
-  ];
+  ].map((root) => path.resolve(root));
 
   const resolveExistingFolder = (candidate: string | null): { folderPath: string; specFolder: string } | null => {
     if (!candidate) {
@@ -533,23 +543,22 @@ function resolveSpecFolder(options: ResumeLadderOptions, workspacePath: string):
       ];
 
     for (const candidatePath of rawCandidates) {
-      // Path-safety: reject absolute paths that escape known packet roots
       const resolved = path.resolve(candidatePath);
-      if (!allowedRoots.some((root) => resolved === root || resolved.startsWith(`${root}/`))) {
+      if (!allowedRoots.some((root) => resolved !== root && isPathWithinRoot(resolved, root))) {
         continue;
       }
 
-      if (!fs.existsSync(candidatePath) || !fs.statSync(candidatePath).isDirectory()) {
+      if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) {
         continue;
       }
 
-      const resolvedFolder = resolveFromFolderPath(workspacePath, candidatePath) ?? normalizeSpecFolder(candidatePath);
+      const resolvedFolder = resolveFromFolderPath(workspacePath, resolved);
       if (!resolvedFolder) {
         continue;
       }
 
       return {
-        folderPath: candidatePath,
+        folderPath: resolved,
         specFolder: resolvedFolder,
       };
     }

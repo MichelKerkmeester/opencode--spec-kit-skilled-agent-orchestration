@@ -137,7 +137,8 @@ const SPEC_DOC_BASENAMES = [
 
 const ROUTE_CATEGORY_ALIASES: Record<string, string> = {
   what_built: 'narrative_progress',
-  how_delivered: 'delivery_log',
+  how_delivered: 'narrative_progress',
+  narrative_progress: 'narrative_progress',
   task_update: 'task_update',
   decisions: 'decision_log',
   decision_log: 'decision_log',
@@ -745,6 +746,21 @@ function validateSpecDocSufficiency(folder: string): RuleResult {
 
   for (const document of collectDocuments(folder)) {
     const parsed = parseAnchors(document.content);
+
+    // T113 FIX: Anchor-parse failures must cause SPEC_DOC_SUFFICIENCY to fail.
+    // Previously, parse errors were silently ignored and the function would
+    // continue checking whatever anchors were partially parsed, letting
+    // documents with corrupt anchor structure pass sufficiency validation.
+    if (parsed.errors.length > 0) {
+      for (const error of parsed.errors) {
+        diagnostics.push({
+          code: 'SPECDOC_SUFFICIENCY_001',
+          severity: 'error',
+          detail: `${document.basename}: anchor parse failure: ${error}`,
+        });
+      }
+    }
+
     const anchorMap = new Map(parsed.anchors.map((anchor) => [anchor.id, anchor]));
 
     for (const anchor of parsed.anchors) {

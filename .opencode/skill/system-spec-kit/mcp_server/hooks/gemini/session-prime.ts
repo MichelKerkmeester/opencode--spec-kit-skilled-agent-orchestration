@@ -86,7 +86,19 @@ function handleCompact(sessionId: string): OutputSection[] {
 
 /** Handle source=startup: prime new session with tool overview */
 function handleStartup(): OutputSection[] {
-  const startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  let startupBrief: StartupBrief | null = null;
+  try {
+    startupBrief = buildStartupBrief ? buildStartupBrief() : null;
+  } catch (err: unknown) {
+    hookLog('error', 'gemini:session-prime', `buildStartupBrief threw: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  if (!buildStartupBrief) {
+    hookLog('warn', 'gemini:session-prime', 'Startup brief module unavailable — using fallback surface');
+  } else if (!startupBrief) {
+    hookLog('warn', 'gemini:session-prime', 'buildStartupBrief returned null — possible startup-brief regression');
+  } else if (!startupBrief.startupSurface) {
+    hookLog('warn', 'gemini:session-prime', 'startupBrief.startupSurface is empty — possible startup-brief regression');
+  }
   const sections: OutputSection[] = [
     {
       title: 'Session Context',

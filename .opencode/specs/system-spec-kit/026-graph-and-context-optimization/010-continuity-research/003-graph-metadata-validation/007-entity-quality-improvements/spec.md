@@ -17,11 +17,11 @@ _memory:
 # Improve Graph Metadata Entity Quality
 ## Metadata <!-- ANCHOR:metadata -->Parent `003-graph-metadata-validation`; Level 2; status complete; created 2026-04-13.<!-- /ANCHOR:metadata -->
 ## Problem <!-- ANCHOR:problem -->`deriveEntities()` still truncates too early, leaks a small set of cross-spec paths, and accepts bare runtime words that are not useful entities.<!-- /ANCHOR:problem -->
-## Scope <!-- ANCHOR:scope -->In scope: raise the entity cap to `24`, require current-folder path scope, and reject `python`, `node`, `bash`, and `sh` in `mcp_server/lib/graph/graph-metadata-parser.ts`. Out of scope: key-file logic or schema changes.<!-- /ANCHOR:scope -->
+## Scope <!-- ANCHOR:scope -->In scope: raise the entity cap to `24`, require current-folder path scope, and reject bare runtime-name entities (`python`, `node`, `bash`, `sh`, `npm`, `npx`, `vitest`, `jest`, `tsc`) in `mcp_server/lib/graph/graph-metadata-parser.ts`. Out of scope: key-file logic or schema changes.<!-- /ANCHOR:scope -->
 ## Requirements <!-- ANCHOR:requirements -->
 - REQ-001: Raise the final entity cap from `16` to `24`.
 - REQ-002: Reject entity paths outside the current packet scope unless they are valid canonical doc paths.
-- REQ-003: Add `python`, `node`, `bash`, and `sh` to the bare-name rejection list.
+- REQ-003: Reject bare runtime-name entities: `python`, `node`, `bash`, `sh`, `npm`, `npx`, `vitest`, `jest`, and `tsc`.
 - REQ-004: Preserve current local deduplication semantics inside `deriveEntities()`.
 - REQ-005: Add focused graph-metadata coverage for the cap, scope, and rejection fixes.
 <!-- /ANCHOR:requirements -->

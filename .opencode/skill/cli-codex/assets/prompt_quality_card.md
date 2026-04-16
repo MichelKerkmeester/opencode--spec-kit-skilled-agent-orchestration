@@ -91,7 +91,7 @@ Codex-specific example: if the task needs a crowded `codex exec` prompt plus exp
 ## 7. Related Resources
 
 - `../../sk-improve-prompt/assets/cli_prompt_quality_card.md`
-- `../prompt_templates.md`
+- `./prompt_templates.md`
 - `../SKILL.md`
 
 <!-- /ANCHOR:related-resources -->

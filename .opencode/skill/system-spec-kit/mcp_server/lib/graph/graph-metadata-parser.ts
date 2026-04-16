@@ -397,6 +397,10 @@ function keepKeyFile(candidate: string): boolean {
   if (!normalized) {
     return false;
   }
+  // T110 FIX: Reject absolute paths — they are host-specific and non-portable.
+  if (path.isAbsolute(normalized)) {
+    return false;
+  }
   const normalizedLower = normalized.toLowerCase();
   if (normalized.startsWith('`') && normalized.endsWith('`')) {
     return false;
@@ -569,7 +573,15 @@ function buildKeyFileLookupPaths(
   const lookups = new Set<string>();
 
   if (path.isAbsolute(candidate)) {
-    lookups.add(path.resolve(candidate));
+    // T110 FIX: Normalize absolute paths to repo-relative before lookup.
+    // Absolute paths leak host-specific prefixes into key_files, making
+    // graph-metadata non-portable. Convert to repo-relative when possible.
+    if (repoRoot && candidate.startsWith(repoRoot)) {
+      const relative = path.relative(repoRoot, candidate).replace(/\\/g, '/');
+      lookups.add(path.resolve(repoRoot, relative));
+    } else {
+      lookups.add(path.resolve(candidate));
+    }
   } else {
     lookups.add(path.resolve(specFolderPath, normalized));
     if (repoRoot) {

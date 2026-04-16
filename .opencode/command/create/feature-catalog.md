@@ -423,7 +423,7 @@ You are in violation if you:
 - skip Phase 0 verification
 - split setup prompts into multiple interactions
 - proceed with missing required fields
-- generate only `FEATURE_CATALOG.md` without the per-feature file contract
+- generate only `feature_catalog.md` without the per-feature file contract
 - use obsolete package shapes or sidecar folders that differ from the shipped `sk-doc` contract
 - claim completion without validation
 

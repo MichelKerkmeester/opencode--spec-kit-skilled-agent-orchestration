@@ -137,7 +137,6 @@ def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         for item in results
         if item["expect_result"]
         and item["expected_top_any"]
-        and item["top"] is not None
     ]
     top1_correct = sum(1 for item in top1_cases if item["checks"]["top_ok"]) if top1_cases else 0
 

@@ -852,7 +852,17 @@ function clearTableForRestoreScope(
   }
 
   if (tableName === 'causal_edges') {
-    deleteCausalEdgesForMemoryIds(database, memoryIds);
+    // T112 FIX: Use the passed `database` handle directly instead of
+    // `deleteCausalEdgesForMemoryIds` which delegates to `deleteEdgesForMemory`
+    // in causal-edges.ts. That function uses its own module-level `db` variable,
+    // not the scoped `database` parameter, causing scoped restores to delete
+    // from the wrong database handle.
+    if (memoryIds.length > 0 && tableExists(database, 'causal_edges')) {
+      const idSet = Array.from(new Set(memoryIds.map(String)));
+      for (const memoryId of idSet) {
+        database.prepare('DELETE FROM causal_edges WHERE source_id = ? OR target_id = ?').run(memoryId, memoryId);
+      }
+    }
     return;
   }
 

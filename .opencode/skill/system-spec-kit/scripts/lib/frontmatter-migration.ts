@@ -1062,7 +1062,8 @@ function extractMemoryMetadataScalar(content: string, fieldNames: string[]): str
       continue;
     }
 
-    return line.substring(colonIndex + 1).trim().replace(/^['"]|['"]$/g, '');
+    const rawValue = stripTrailingYamlComment(line.substring(colonIndex + 1)).trim().replace(/^['"]|['"]$/g, '');
+    return rawValue;
   }
 
   return null;

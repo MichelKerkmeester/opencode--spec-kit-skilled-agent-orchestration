@@ -255,6 +255,16 @@ describe('Gate D intent routing regression', () => {
     vi.clearAllMocks();
   });
 
+  // NOTE: This suite mocks handleMemorySearch/handleMemoryMatchTriggers so it
+  // only verifies that handleMemoryContext *dispatches* to the right handler
+  // with the right arguments.  It does NOT exercise the live canonical-filtering
+  // pipeline (includeArchived, legacyFallbackEnabled, preferredDocumentTypes
+  // enforcement) because the mock returns pre-built rows.
+  //
+  // A complementary integration suite that calls the real handleMemorySearch
+  // against an in-memory DB (or at least against the real filtering code path)
+  // is required to close this coverage gap.  See review finding S3.5 #13.
+
   it('routes canonical queries across auto, quick, deep, focused, and resume without archived or legacy-memory fallback', async () => {
     const cases = [
       {
