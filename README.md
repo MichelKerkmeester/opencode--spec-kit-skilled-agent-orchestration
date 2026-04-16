@@ -58,7 +58,6 @@ The framework adds three layers on top of the base platform:
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
 
-&nbsp;
 ### How It All Connects
 
 ```
