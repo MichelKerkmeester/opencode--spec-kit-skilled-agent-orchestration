@@ -502,104 +502,88 @@ export function executeConflict(
       newMemory.id !== existingMemory.id;
 
     if (hasDistinctNewId) {
-      let abortStatus: ConflictAbortStatus | null = null;
-      // Atomic transaction: deprecate + edge must succeed or fail together.
-      // Without this, a failed insertEdge leaves an orphaned deprecation.
-      db.transaction(() => {
-        const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
-        if (!currentRow || isArchivedRow(currentRow)) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
-        if (hasScopeRetagged(predecessorSnapshot, currentRow)) {
-          abortStatus = 'scope_retagged';
-          return;
-        }
-        if (hasPredecessorChanged(predecessorSnapshot, currentRow)) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
+      const abortStatus = executeAtomicReconsolidationTxn(
+        db,
+        existingMemory,
+        predecessorSnapshot,
+        'deprecate',
+        {
+          deprecate: () => {
+            const updateResult = db.prepare(`
+              UPDATE memory_index
+              SET importance_tier = 'deprecated',
+                  updated_at = datetime('now')
+              WHERE id = @id
+                AND importance_tier != 'deprecated'
+                AND ((content_hash = @contentHash) OR (content_hash IS NULL AND @contentHash IS NULL))
+            `).run({
+              id: existingMemory.id,
+              contentHash: predecessorSnapshot.contentHash,
+            }) as { changes: number };
 
-        const updateResult = db.prepare(`
-          UPDATE memory_index
-          SET importance_tier = 'deprecated',
-              updated_at = datetime('now')
-          WHERE id = @id
-            AND importance_tier != 'deprecated'
-            AND ((content_hash = @contentHash) OR (content_hash IS NULL AND @contentHash IS NULL))
-        `).run({
-          id: existingMemory.id,
-          contentHash: predecessorSnapshot.contentHash,
-        }) as { changes: number };
+            if (updateResult.changes === 0) {
+              return false;
+            }
 
-        if (updateResult.changes === 0) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
-
-        const sourceId = newMemory.id;
-        const targetId = existingMemory.id;
-        if (sourceId == null || targetId == null) {
-          throw new Error('Reconsolidation source/target memory missing id — aborting');
-        }
-        edgeId = insertSupersedesEdge(db, sourceId, targetId);
-        if (edgeId == null) {
-          throw new Error(
-            `Failed to insert supersedes edge (${sourceId} -> ${targetId}) — aborting reconsolidation`
-          );
-        }
-      })();
+            const sourceId = newMemory.id;
+            const targetId = existingMemory.id;
+            if (sourceId == null || targetId == null) {
+              throw new Error('Reconsolidation source/target memory missing id — aborting');
+            }
+            edgeId = insertSupersedesEdge(db, sourceId, targetId);
+            if (edgeId == null) {
+              throw new Error(
+                `Failed to insert supersedes edge (${sourceId} -> ${targetId}) — aborting reconsolidation`
+              );
+            }
+            return true;
+          },
+        },
+      );
       if (abortStatus) {
         return buildConflictAbortResult(existingMemory, newMemory, abortStatus);
       }
     } else {
       // Atomic transaction: content + embedding + hash update together.
       const updatedHash = createHash('sha256').update(newMemory.content, 'utf-8').digest('hex');
-      let abortStatus: ConflictAbortStatus | null = null;
-      db.transaction(() => {
-        const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
-        if (!currentRow || isArchivedRow(currentRow)) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
-        if (hasScopeRetagged(predecessorSnapshot, currentRow)) {
-          abortStatus = 'scope_retagged';
-          return;
-        }
-        if (hasPredecessorChanged(predecessorSnapshot, currentRow)) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
+      const abortStatus = executeAtomicReconsolidationTxn(
+        db,
+        existingMemory,
+        predecessorSnapshot,
+        'content_update',
+        {
+          contentUpdate: () => {
+            const updateResult = db.prepare(`
+              UPDATE memory_index
+              SET content_text = ?,
+                  title = ?,
+                  content_hash = ?,
+                  updated_at = datetime('now')
+              WHERE id = ?
+                AND importance_tier != 'deprecated'
+                AND ((content_hash = ?) OR (content_hash IS NULL AND ? IS NULL))
+            `).run(
+              newMemory.content,
+              newMemory.title,
+              updatedHash,
+              existingMemory.id,
+              predecessorSnapshot.contentHash,
+              predecessorSnapshot.contentHash,
+            ) as { changes: number };
+            if (updateResult.changes === 0) {
+              return false;
+            }
 
-        const updateResult = db.prepare(`
-          UPDATE memory_index
-          SET content_text = ?,
-              title = ?,
-              content_hash = ?,
-              updated_at = datetime('now')
-          WHERE id = ?
-            AND importance_tier != 'deprecated'
-            AND ((content_hash = ?) OR (content_hash IS NULL AND ? IS NULL))
-        `).run(
-          newMemory.content,
-          newMemory.title,
-          updatedHash,
-          existingMemory.id,
-          predecessorSnapshot.contentHash,
-          predecessorSnapshot.contentHash,
-        ) as { changes: number };
-        if (updateResult.changes === 0) {
-          abortStatus = 'conflict_stale_predecessor';
-          return;
-        }
-
-        if (newMemory.embedding) {
-          const buffer = embeddingToBuffer(newMemory.embedding);
-          db.prepare(
-            'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
-          ).run(buffer, existingMemory.id);
-        }
-      })();
+            if (newMemory.embedding) {
+              const buffer = embeddingToBuffer(newMemory.embedding);
+              db.prepare(
+                'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
+              ).run(buffer, existingMemory.id);
+            }
+            return true;
+          },
+        },
+      );
       if (abortStatus) {
         return buildConflictAbortResult(existingMemory, newMemory, abortStatus);
       }
@@ -934,6 +918,46 @@ function hasPredecessorChanged(snapshot: PredecessorSnapshot, currentRow: Record
 function isArchivedRow(row: Record<string, unknown>): boolean {
   void row;
   return false;
+}
+
+function executeAtomicReconsolidationTxn(
+  db: Database.Database,
+  existingMemory: SimilarMemory,
+  predecessorSnapshot: PredecessorSnapshot,
+  mode: 'deprecate' | 'content_update',
+  operations: {
+    deprecate?: () => boolean;
+    contentUpdate?: () => boolean;
+  },
+): ConflictAbortStatus | null {
+  let abortStatus: ConflictAbortStatus | null = null;
+  db.transaction(() => {
+    const currentRow = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(existingMemory.id) as Record<string, unknown> | undefined;
+    if (!currentRow || isArchivedRow(currentRow)) {
+      abortStatus = 'conflict_stale_predecessor';
+      return;
+    }
+    if (hasScopeRetagged(predecessorSnapshot, currentRow)) {
+      abortStatus = 'scope_retagged';
+      return;
+    }
+    if (hasPredecessorChanged(predecessorSnapshot, currentRow)) {
+      abortStatus = 'conflict_stale_predecessor';
+      return;
+    }
+
+    const applyOperation = mode === 'deprecate'
+      ? operations.deprecate
+      : operations.contentUpdate;
+    if (!applyOperation) {
+      throw new Error(`Missing reconsolidation transaction operation for mode ${mode}`);
+    }
+    if (!applyOperation()) {
+      abortStatus = 'conflict_stale_predecessor';
+    }
+  })();
+
+  return abortStatus;
 }
 
 function buildMergeAbortResult(

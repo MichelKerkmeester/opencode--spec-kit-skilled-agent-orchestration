@@ -872,7 +872,88 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(selfSupersedes).toHaveLength(0);
     });
 
-  });
+    it('CP4: Distinct-id conflict aborts with scope_retagged before deprecating the predecessor', () => {
+      addColumnIfMissing(testDb, 'memory_index', 'tenant_id TEXT');
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, content_hash, importance_tier, tenant_id, created_at, updated_at
+        )
+        VALUES (
+          230, 'test-spec', '/test/230.md', 'Scoped old', 'Scoped old content', 'hash-230', 'normal', 'tenant-b',
+          datetime('now'), '2026-04-17T00:00:00Z'
+        )
+      `).run();
+
+      const existing = makeSimilarMemory({
+        id: 230,
+        similarity: 0.81,
+        content_hash: 'hash-230',
+        updated_at: '2026-04-17T00:00:00Z',
+        importance_tier: 'normal',
+        tenant_id: 'tenant-a',
+      });
+      const newMem = makeNewMemory({ id: 231, title: 'Scoped replacement', content: 'Scoped replacement content' });
+
+      const result = executeConflict(existing, newMem, testDb);
+
+      expect(result).toMatchObject({
+        action: 'conflict',
+        status: 'scope_retagged',
+        existingMemoryId: 230,
+        newMemoryId: 231,
+        causalEdgeId: null,
+      });
+      expect(
+        testDb.prepare('SELECT importance_tier FROM memory_index WHERE id = 230').get(),
+      ).toMatchObject({ importance_tier: 'normal' });
+      expect(getEdgesFrom(testDb, '231')).toHaveLength(0);
+    });
+
+    it('CP5: Legacy content-update conflict aborts when the predecessor snapshot hash is stale', () => {
+      testDb.prepare(`
+        INSERT INTO memory_index (
+          id, spec_folder, file_path, title, content_text, content_hash, importance_tier, created_at, updated_at
+        )
+        VALUES (
+          240, 'test-spec', '/test/240.md', 'Legacy old', 'Legacy old content', 'hash-current', 'normal',
+          datetime('now'), '2026-04-17T00:00:00Z'
+        )
+      `).run();
+
+      const existing = makeSimilarMemory({
+        id: 240,
+        similarity: 0.79,
+        title: 'Legacy old',
+        content_text: 'Legacy old content',
+        content_hash: 'hash-stale',
+        updated_at: '2026-04-17T00:00:00Z',
+        importance_tier: 'normal',
+      });
+      const newMem = makeNewMemory({
+        id: undefined,
+        title: 'Legacy updated',
+        content: 'Legacy updated content',
+      });
+
+      const result = executeConflict(existing, newMem, testDb);
+
+      expect(result).toMatchObject({
+        action: 'conflict',
+        status: 'conflict_stale_predecessor',
+        existingMemoryId: 240,
+        newMemoryId: 0,
+        causalEdgeId: null,
+      });
+      expect(
+        testDb.prepare('SELECT title, content_text, content_hash FROM memory_index WHERE id = 240').get(),
+      ).toMatchObject({
+        title: 'Legacy old',
+        content_text: 'Legacy old content',
+        content_hash: 'hash-current',
+      });
+    });
+
+   });
 
   /* ───────────────────────────────────────────────────────────────
      Complement Path (< 0.75)
