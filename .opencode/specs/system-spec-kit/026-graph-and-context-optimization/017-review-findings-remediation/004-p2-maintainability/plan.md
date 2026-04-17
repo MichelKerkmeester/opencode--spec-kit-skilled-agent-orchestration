@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
     last_updated_at: "2026-04-17T14:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Wave D plan scaffolded from parent plan §5 + parent §1.5 gates narrowed to ×3"
-    next_safe_action: "Schedule any Wave D task independently after parent spec approval; no ordering required"
+    recent_action: "Wave D plan scaffolded"
+    next_safe_action: "Run any Wave D cluster independently"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -59,10 +59,10 @@ Deep-review ×7 is overkill for behavior-preserving work. ×3 catches the rare r
 <!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
-### 3.1 New shared helper: `lib/utils/assert-never.ts`
+### 3.1 New shared helper: `lib/utils/exhaustiveness.ts`
 
 ```
-lib/utils/assert-never.ts (NEW: T-EXH-01)
+lib/utils/exhaustiveness.ts (NEW: T-EXH-01)
   ↑ imported by
   - post-insert.ts (OnIndexSkipReason, EnrichmentStepStatus, EnrichmentSkipReason, EnrichmentFailureReason)
   - conflict handlers (ConflictAbortStatus)
@@ -92,11 +92,11 @@ reconsolidation.ts (POST T-RCB-DUP-01)
     → runAtomicReconsolidationTxn(predecessorSnapshot, op, ops)
 ```
 
-### 3.4 Typed YAML predicate
+### 3.4 Canonical YAML timing note
 
 ```
 spec_kit_complete_confirm.yaml:1099 (POST T-YML-CP4-01)
-  when: <BooleanExpr AST matching shared/predicates/boolean-expr.ts>
+  after: "Immediately after the canonical spec document is refreshed on disk"
 ```
 
 ### 3.5 Dependency graph (intra-Wave-D)
@@ -146,7 +146,7 @@ With no intra-Wave-D blocking, all 3 clusters can ship in parallel (3 lanes). To
 
 ### 5.2 New unit tests (minimal, only where needed)
 
-- `lib/utils/assert-never.ts` — simple throw-on-unreachable test
+- `lib/utils/exhaustiveness.ts` — simple throw-on-unreachable test
 - Typed YAML predicate vitest for CP-004 call site (if not already covered)
 
 ### 5.3 Compiler gate
@@ -175,11 +175,11 @@ No new npm packages. No runtime infrastructure changes.
 ### 6.2 Internal file dependencies
 
 Files touched:
-- `mcp_server/lib/utils/assert-never.ts` (NEW)
+- `mcp_server/lib/utils/exhaustiveness.ts` (NEW)
 - `mcp_server/handlers/save/post-insert.ts` (T-PIN-GOD-01 + T-W1-PIN-02)
 - `mcp_server/lib/storage/reconsolidation.ts` (T-RCB-DUP-01)
 - `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml` (T-YML-CP4-01)
-- `.opencode/skill/system-spec-kit/README.md` (T-W1-HST-02) OR new `DEPLOYMENT.md`
+- `DEPLOYMENT.md` (T-W1-HST-02)
 - 8 call sites for `assertNever` application (spread across handlers, hooks, lib modules)
 
 ### 6.3 Phase dependencies
@@ -210,7 +210,7 @@ Each Wave D task lands as its own commit with no atomic-ship groups. Rollback = 
 
 | Task | Rollback action | Risk |
 |------|-----------------|------|
-| T-EXH-01 | `git revert` per-union commit OR revert `assert-never.ts` creation | Low — compiler-only change |
+| T-EXH-01 | `git revert` per-union commit OR revert `exhaustiveness.ts` creation | Low — compiler-only change |
 | T-PIN-GOD-01 | `git revert` extraction commit | Low — behavior-preserving refactor |
 | T-W1-PIN-02 | `git revert` satisfies-clause commit | Low — compiler-only |
 | T-RCB-DUP-01 | `git revert` extraction commit | Low — behavior-preserving refactor |

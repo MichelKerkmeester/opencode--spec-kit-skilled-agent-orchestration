@@ -1096,7 +1096,7 @@ workflow:
       mcp_tool: memory_save
       invocation: 'memory_save({ filePath: "[routed-canonical-spec-doc-path]" })'
       critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
-      when: "Immediately after the canonical spec document is refreshed on disk"
+      after: "Immediately after the canonical spec document is refreshed on disk"
 
     anchor_requirements:
       enforcement: MANDATORY

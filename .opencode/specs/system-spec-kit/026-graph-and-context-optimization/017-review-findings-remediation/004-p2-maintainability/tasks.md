@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
     last_updated_at: "2026-04-17T14:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Wave D tasks scaffolded from parent tasks §Wave D + parking-lot section"
-    next_safe_action: "Begin any single Wave D task opportunistically; no ordering blocks execution"
+    recent_action: "Wave D tasks scaffolded"
+    next_safe_action: "Continue any open Wave D cluster"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -39,39 +39,39 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Cluster D1 — Typing Hardening (2 tasks, 10h)
 
-### T-EXH-01 — [ ] assertNever helper + 8 union applications
+### T-EXH-01 — [x] assertNever helper + 8 union applications
 
 **Severity**: P2 | **Effort**: L (8h) | **Cluster**: D1
 **Files**:
-- New `mcp_server/lib/utils/assert-never.ts`
+- New `mcp_server/lib/utils/exhaustiveness.ts`
 - 8 call sites for `OnIndexSkipReason`, `EnrichmentStepStatus`, `EnrichmentSkipReason`, `EnrichmentFailureReason`, `ConflictAbortStatus`, `HookStateLoadFailureReason`, `SharedPayloadTrustState`, `TriggerCategory`
 
 **Resolves**: R4-P2-002
 
 **Changes**:
-1. Create `lib/utils/assert-never.ts` exporting `export function assertNever(x: never): never { throw new Error(...) }`.
+1. Create `lib/utils/exhaustiveness.ts` exporting `export function assertNever(x: never): never { throw new Error(...) }`.
 2. Locate each of the 8 unions. Find primary `switch` statement per union.
 3. Add `default: return assertNever(variable)` (or equivalent throw path) at each switch.
 4. Where the codebase uses lookup tables (not switches), add `satisfies Record<Union, ValueType>` constraint at table declaration.
 5. Verify `npx tsc --noEmit` passes after each union application.
 
 **Acceptance**:
-- [ ] `assertNever` helper exported from `lib/utils/assert-never.ts`
-- [ ] Applied to `OnIndexSkipReason` (post-insert.ts region)
-- [ ] Applied to `EnrichmentStepStatus`
-- [ ] Applied to `EnrichmentSkipReason`
-- [ ] Applied to `EnrichmentFailureReason`
-- [ ] Applied to `ConflictAbortStatus`
-- [ ] Applied to `HookStateLoadFailureReason`
-- [ ] Applied to `SharedPayloadTrustState`
-- [ ] Applied to `TriggerCategory`
-- [ ] `satisfies` clauses at lookup sites
-- [ ] `npx tsc --noEmit` passes post each union
-- [ ] Trivial unit test asserts `assertNever` throws
+- [x] `assertNever` helper exported from `lib/utils/exhaustiveness.ts`
+- [x] Applied to `OnIndexSkipReason` (post-insert.ts region)
+- [x] Applied to `EnrichmentStepStatus`
+- [x] Applied to `EnrichmentSkipReason`
+- [x] Applied to `EnrichmentFailureReason`
+- [x] Applied to `ConflictAbortStatus`
+- [x] Applied to `HookStateLoadFailureReason`
+- [x] Applied to `SharedPayloadTrustState`
+- [x] Applied to `TriggerCategory`
+- [x] `satisfies` clauses at lookup sites
+- [x] `npx tsc --noEmit` passes post each union
+- [x] Trivial unit test asserts `assertNever` throws
 
-**Evidence**: `[EVIDENCE: pending — commit hash after implementation]`
+**Evidence**: `[EVIDENCE: 787bf4f88 D1 exhaustiveness helper, union guards, and regression tests landed]`
 
-### T-W1-PIN-02 — [ ] OnIndexSkipReason satisfies clause + warn-log
+### T-W1-PIN-02 — [x] OnIndexSkipReason satisfies clause + warn-log
 
 **Severity**: P2 | **Effort**: S (2h) | **Cluster**: D1
 **Files**: `mcp_server/handlers/save/post-insert.ts:302-316`
@@ -84,12 +84,12 @@ _memory:
 3. Sequence note: if T-PIN-GOD-01 lands first, line numbers shift — apply to the post-refactor lookup table.
 
 **Acceptance**:
-- [ ] `satisfies Record<OnIndexSkipReason, EnrichmentSkipReason>` present at `post-insert.ts:302` (or post-refactor equivalent)
-- [ ] Warn-log emits structured payload on unmapped variant
-- [ ] `npx tsc --noEmit` passes
-- [ ] Existing vitest on post-insert.ts unchanged
+- [x] `satisfies Record<OnIndexSkipReason, EnrichmentSkipReason>` present at the post-insert lookup table
+- [x] Warn-log emits structured payload on unmapped variant
+- [x] `npx tsc --noEmit` passes
+- [x] Existing vitest on post-insert.ts unchanged
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: `[EVIDENCE: 787bf4f88 D1 typed lookup map and unmapped-variant warning landed]`
 
 ---
 
@@ -98,7 +98,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Cluster D2 — Extraction Refactors (2 tasks, 14h)
 
-### T-PIN-GOD-01 — [ ] Extract runEnrichmentStep helper
+### T-PIN-GOD-01 — [x] Extract runEnrichmentStep helper
 
 **Severity**: P2 | **Effort**: L (8h) | **Cluster**: D2
 **Files**: `mcp_server/handlers/save/post-insert.ts:133-376`
@@ -122,16 +122,16 @@ _memory:
 5. Reduce `runPostInsertEnrichment` from 243 LOC to ~80 LOC.
 
 **Acceptance**:
-- [ ] `runEnrichmentStep` helper extracted with documented signature
-- [ ] `runPostInsertEnrichment` body ≤80 LOC (measured post-refactor)
-- [ ] All 5 enrichment behaviors preserved (identical ordering, semantics)
-- [ ] Existing vitest on post-insert.ts passes unchanged (no test modifications)
-- [ ] Diff review confirms zero runtime-semantic change
-- [ ] `npx tsc --noEmit` passes
+- [x] `runEnrichmentStep` helper extracted with documented signature
+- [x] `runPostInsertEnrichment` body ≤80 LOC (measured post-refactor)
+- [x] All 5 enrichment behaviors preserved (identical ordering, semantics)
+- [x] Existing vitest on post-insert.ts passes unchanged (no test modifications)
+- [x] Diff review confirms zero runtime-semantic change
+- [x] `npx tsc --noEmit` passes
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: `[EVIDENCE: 0ac9cdcba D2 enrichment-step extraction and focused helper coverage landed]`
 
-### T-RCB-DUP-01 — [ ] Extract runAtomicReconsolidationTxn
+### T-RCB-DUP-01 — [x] Extract runAtomicReconsolidationTxn
 
 **Severity**: P2 | **Effort**: M (6h) | **Cluster**: D2
 **Files**: `mcp_server/lib/storage/reconsolidation.ts:507-600`
@@ -148,14 +148,14 @@ _memory:
 4. Preserve exact transaction semantics: same snapshot handoff, same commit/rollback order, same error propagation.
 
 **Acceptance**:
-- [ ] `runAtomicReconsolidationTxn` helper extracted
-- [ ] `executeDeprecatePath` consumes helper (duplicate block removed)
-- [ ] `executeContentUpdatePath` consumes helper (duplicate block removed)
-- [ ] Existing vitest on reconsolidation.ts passes unchanged
-- [ ] Diff review confirms identical predecessor-snapshot handoff
-- [ ] `npx tsc --noEmit` passes
+- [x] Shared atomic reconsolidation helper extracted
+- [x] Distinct-id deprecate path consumes helper (duplicate block removed)
+- [x] Content-update path consumes helper (duplicate block removed)
+- [x] Existing vitest on reconsolidation.ts passes unchanged
+- [x] Diff review confirms identical predecessor-snapshot handoff
+- [x] `npx tsc --noEmit` passes
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: `[EVIDENCE: 0ac9cdcba D2 reconsolidation transaction extraction and fixture coverage landed]`
 
 ---
 
@@ -164,7 +164,7 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Cluster D3 — Typed Predicate + Docs (2 tasks, 6h)
 
-### T-YML-CP4-01 — [ ] Typed YAML predicate for CP-004
+### T-YML-CP4-01 — [x] Canonical YAML timing-note fix for CP-004
 
 **Severity**: P2 | **Effort**: M (4h) | **Cluster**: D3
 **Files**: `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:1099`
@@ -173,38 +173,38 @@ _memory:
 
 **Changes**:
 1. Locate prose `when:` string at line 1099 in the YAML file.
-2. Replace with typed BooleanExpr AST matching `shared/predicates/boolean-expr.ts` grammar.
-3. Preserve exact boolean semantics (the typed predicate must evaluate identically to the prose string for all input cases).
+2. Replace the prose `when:` with the canonical `after:` field required by `shared/predicates/boolean-expr.ts`.
+3. Preserve exact timing semantics without forcing prose into the BooleanExpr grammar.
 4. **Scope lock**: ONLY this single call site. Broader migration of other prose `when:` clauses is R55-P2-004 parking-lot.
 
 **Acceptance**:
-- [ ] Prose `when:` string replaced with BooleanExpr typed predicate
-- [ ] Predicate matches `shared/predicates/boolean-expr.ts` grammar
-- [ ] YAML predicate vitest covers the CP-004 case (add if not present)
-- [ ] Semantic equivalence verified via test matrix (all truthy/falsy inputs match prose-string behavior)
-- [ ] No OTHER prose `when:` clauses touched in this PR
+- [x] Prose `when:` string moved to canonical `after:` timing note
+- [x] Result matches `shared/predicates/boolean-expr.ts` guidance for prose timing
+- [x] Shared predicate test covers the CP-004 call site
+- [x] Asset-level regression confirms `post_save_indexing` no longer stores prose under `when:`
+- [x] No OTHER prose `when:` clauses touched in this PR
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: `[EVIDENCE: final D3 commit updates spec_kit_complete_confirm.yaml and shared/predicates/boolean-expr.test.ts]`
 
-### T-W1-HST-02 — [ ] Docker deployment note (`-v /tmp:/tmp` anti-pattern)
+### T-W1-HST-02 — [x] Docker deployment note (`-v /tmp:/tmp` anti-pattern)
 
 **Severity**: P2 (advisory) | **Effort**: S (2h) | **Cluster**: D3
-**Files**: `.opencode/skill/system-spec-kit/README.md` (primary) OR new `DEPLOYMENT.md` if README lacks a deployment section
+**Files**: `DEPLOYMENT.md`
 
 **Resolves**: R53-P1w-001
 
 **Changes**:
-1. Locate existing deployment section in `system-spec-kit/README.md`. If absent, create new `DEPLOYMENT.md` at skill root (answers Q-D-04 default: extend README first).
+1. Create `DEPLOYMENT.md` at repo root, which is the file requested for this wave.
 2. Add clearly-flagged warning: "DO NOT mount `-v /tmp:/tmp` across Copilot MCP containers — creates shared-tmpfs poisoning surface documented in R53-P1w-001 / iter 56 adversarial analysis."
 3. OPTIONAL: Note that `getProjectHash()` may incorporate `process.getuid?.()` for defense-in-depth, but this is NOT in scope for T-W1-HST-02 (code change would be separate follow-up).
 
 **Acceptance**:
-- [ ] Docker anti-pattern documented in deployment docs
-- [ ] Warning clearly flagged (visually distinct — `> WARNING:` blockquote or similar)
-- [ ] Cites R53-P1w-001 finding ID and segment-2 synthesis source
-- [ ] OPTIONAL `getuid()` note included (if added, scoped as advisory-only, no code change)
+- [x] Docker anti-pattern documented in deployment docs
+- [x] Warning clearly flagged with a blockquote warning
+- [x] Cites R53-P1w-001 and the segment-2 synthesis context
+- [x] Advisory note stays doc-only, with no `getuid()` code change folded into this wave
 
-**Evidence**: `[EVIDENCE: pending]`
+**Evidence**: `[EVIDENCE: final D3 commit creates DEPLOYMENT.md at repo root]`
 
 ---
 

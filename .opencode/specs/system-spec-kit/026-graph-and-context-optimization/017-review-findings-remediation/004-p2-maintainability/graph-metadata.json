@@ -24,7 +24,7 @@
   "derived": {
     "status": "ready_for_implementation",
     "statusSource": "description.json.status",
-    "hasImplementationSummary": false,
+    "hasImplementationSummary": true,
     "hasChecklist": true,
     "checklistCompletionRatio": 0.0,
     "childPackets": [],
@@ -62,10 +62,10 @@
     "R55-P2-004"
   ],
   "files_touched": [
-    "mcp_server/lib/utils/assert-never.ts",
+    "mcp_server/lib/utils/exhaustiveness.ts",
     "mcp_server/handlers/save/post-insert.ts",
     "mcp_server/lib/storage/reconsolidation.ts",
     ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
-    ".opencode/skill/system-spec-kit/README.md"
+    "DEPLOYMENT.md"
   ]
 }

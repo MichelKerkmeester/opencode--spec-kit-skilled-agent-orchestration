@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
     last_updated_at: "2026-04-17T14:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Wave D child spec scaffolded from parent plan §5 + tasks §Wave D + checklist CHK-D-01..06"
-    next_safe_action: "Wave D is DEFERRABLE — schedule opportunistically after Waves A/B/C or in parallel with Phase 018"
+    recent_action: "Wave D spec scaffolded"
+    next_safe_action: "Schedule Wave D work opportunistically"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -64,12 +64,12 @@ The constituent problems:
 
 | Task ID | Description | Effort | Files |
 |---------|-------------|--------|-------|
-| T-EXH-01 | `assertNever` helper + apply to 8 typed unions | 8h (L) | New `lib/utils/assert-never.ts`; 8 call sites |
+| T-EXH-01 | `assertNever` helper + apply to 8 typed unions | 8h (L) | New `lib/utils/exhaustiveness.ts`; 8 call sites |
 | T-PIN-GOD-01 | Extract `runEnrichmentStep` helper; reduce `runPostInsertEnrichment` 243→80 LOC | 8h (L) | `handlers/save/post-insert.ts:133-376` |
 | T-W1-PIN-02 | `OnIndexSkipReason` `satisfies Record<...>` clause + warn-log on unmapped variant | 2h (S) | `handlers/save/post-insert.ts:302-316` |
 | T-RCB-DUP-01 | Extract `runAtomicReconsolidationTxn(predecessorSnapshot, op, ops)` | 6h (M) | `lib/storage/reconsolidation.ts:507-600` |
-| T-YML-CP4-01 | Replace prose `when:` with typed BooleanExpr predicate | 4h (M) | `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:1099` |
-| T-W1-HST-02 | Docker `-v /tmp:/tmp` anti-pattern note in deployment docs | 2h (S) | `.opencode/skill/system-spec-kit/README.md` or new `DEPLOYMENT.md` |
+| T-YML-CP4-01 | Move prose `when:` timing note to canonical `after:` field | 4h (M) | `.opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml:1099` |
+| T-W1-HST-02 | Docker `-v /tmp:/tmp` anti-pattern note in deployment docs | 2h (S) | `DEPLOYMENT.md` |
 
 **Total**: 6 tasks, ~30h scheduled work + ~10h review/integration buffer = ~40h effort budget.
 
@@ -112,19 +112,19 @@ Explicitly NOT touched in this wave:
 
 ### 4.1 Functional requirements
 
-- **FR-D-01** — `assertNever(x: never): never` helper exists at `lib/utils/assert-never.ts` with standard error-throwing body. Exported as named export.
+- **FR-D-01** — `assertNever(x: never): never` helper exists at `lib/utils/exhaustiveness.ts` with standard error-throwing body. Exported as named export.
 - **FR-D-02** — All 8 unions in §3.2 have at least one `switch` statement that terminates with `default: return assertNever(variable)` (or equivalent `satisfies` lookup check).
 - **FR-D-03** — `runEnrichmentStep(name, isEnabled, runner, options)` helper exists. `runPostInsertEnrichment` consumes it for all 5 enrichment behaviors with preserved semantics.
 - **FR-D-04** — `post-insert.ts:302-316` lookup table has `satisfies Record<OnIndexSkipReason, EnrichmentSkipReason>` clause. Unmapped variant triggers warn-log.
 - **FR-D-05** — `runAtomicReconsolidationTxn(predecessorSnapshot, op, ops)` helper exists. Both deprecate-path and content-update-path consume it with preserved semantics.
-- **FR-D-06** — `spec_kit_complete_confirm.yaml:1099` `when:` uses typed BooleanExpr matching `shared/predicates/boolean-expr.ts` grammar.
+- **FR-D-06** — `spec_kit_complete_confirm.yaml:1099` no longer stores prose timing under `when:`. The timing note lives under canonical `after:` per `shared/predicates/boolean-expr.ts`.
 - **FR-D-07** — Deployment docs warn against `-v /tmp:/tmp` across Copilot MCP containers. Optional: `getProjectHash()` incorporates `process.getuid?.()` for defense-in-depth.
 
 ### 4.2 Non-functional requirements
 
 - **NFR-D-01** — All 6 tasks are BEHAVIOR-PRESERVING. Vitest suite passes with zero new test additions required (existing tests remain green).
 - **NFR-D-02** — `runPostInsertEnrichment` post-refactor is ≤80 LOC (down from 243).
-- **NFR-D-03** — No new circular imports introduced by `lib/utils/assert-never.ts`.
+- **NFR-D-03** — No new circular imports introduced by `lib/utils/exhaustiveness.ts`.
 - **NFR-D-04** — Parking-lot items explicitly cited in `tasks.md` completion section — no silent drops.
 
 ### 4.3 Quality gate
@@ -169,7 +169,7 @@ If no Wave D task lands in Phase 017, **that is also acceptable** — the parent
 | T-RCB-DUP-01 extraction regresses atomic transaction semantics | Low | Medium | Unchanged vitest; manual trace of predecessor-snapshot handoff in both consumer paths |
 | T-EXH-01 `assertNever` introduces new build errors from un-exhausted switches | Medium | Low | Staged application (apply 1 union, verify `tsc --noEmit`, proceed); roll back per-union if any issue |
 | T-YML-CP4-01 typed predicate diverges from S7 YAML grammar | Low | Low | Reference `shared/predicates/boolean-expr.ts` directly; add YAML predicate vitest |
-| T-W1-HST-02 doc placement ambiguous (README vs new DEPLOYMENT.md) | Low | Low | Default to extending existing `README.md`; only create new file if explicitly absent |
+| T-W1-HST-02 doc placement ambiguity resolved to repo-root `DEPLOYMENT.md` | Low | Low | The user explicitly requested `DEPLOYMENT.md`, so the note now lives there. |
 | Parking-lot items silently drop | Low | Low | Explicit parking-lot citations in `tasks.md` + `checklist.md`; carry forward to Phase 018+ parking lot |
 | Wave D deferral creates perpetual backlog | Medium | Low | Phase 019 parking-lot entry explicit; revisit after Phase 018 completion |
 
@@ -182,7 +182,7 @@ If no Wave D task lands in Phase 017, **that is also acceptable** — the parent
 ### 6.3 File-collision analysis
 
 - `handlers/save/post-insert.ts` — T-PIN-GOD-01 + T-W1-PIN-02 both touch. Sequence as: T-PIN-GOD-01 first (larger refactor), T-W1-PIN-02 second (satisfies clause on post-refactor code). OR land both in one PR.
-- `lib/utils/assert-never.ts` — T-EXH-01 only. No collision.
+- `lib/utils/exhaustiveness.ts` — T-EXH-01 only. No collision.
 - `lib/storage/reconsolidation.ts` — T-RCB-DUP-01 only. No collision with Wave A/B/C.
 - `spec_kit_complete_confirm.yaml` — T-YML-CP4-01 only.
 - Deployment docs — T-W1-HST-02 only.
@@ -198,7 +198,7 @@ No atomic-ship groups required in Wave D (unlike Wave A). Each task can ship as 
 - **Q-D-01** — Should T-EXH-01 apply `assertNever` to ALL 8 unions in one PR, or stagger 1-union-per-PR for smaller review surface? **Default**: one PR per union, sequenced over time; acceptable to batch if reviewer prefers single-PR for all 8.
 - **Q-D-02** — Should T-PIN-GOD-01 preserve the existing enrichment ordering exactly, or is reorder permitted for cleaner helper signature? **Default**: preserve exact ordering to minimize regression risk.
 - **Q-D-03** — Should T-YML-CP4-01 migrate OTHER prose `when:` clauses across the YAML command tree, or only the CP-004 call site? **Default**: CP-004 only — broader migration is R55-P2-004 parking-lot.
-- **Q-D-04** — Should T-W1-HST-02 Docker note extend existing `system-spec-kit/README.md` or be new standalone `DEPLOYMENT.md`? **Default**: extend README first; only create new doc if README lacks deployment section.
+- **Q-D-04** — Resolved: T-W1-HST-02 uses repo-root `DEPLOYMENT.md`, per the implementation request.
 - **Q-D-05** — For parking-lot items (R55-P2-002/003/004), should they be tracked here or deferred to Phase 018 spec scaffold? **Default**: tracked here in `tasks.md` §parking-lot; carry-forward noted in implementation-summary.md when Phase 018 starts.
 - **Q-D-06** — Is ×3 deep-review sufficient for Wave D (vs Wave A/B/C ×7)? **Default**: yes — parent plan §5.7 explicitly specifies lighter gate for P2-only wave. If any iter flags P0/P1, escalate to ×7.
 <!-- /ANCHOR:questions -->

@@ -9,8 +9,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/017-review-findings-remediation/004-p2-maintainability"
     last_updated_at: "2026-04-17T14:45:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Wave D checklist scaffolded from parent checklist CHK-D-01..06 + tasks.md acceptance criteria"
-    next_safe_action: "Verify items as tasks land; partial completion acceptable (deferrable status)"
+    recent_action: "Wave D checklist scaffolded"
+    next_safe_action: "Record verification as tasks land"
     blockers: []
 ---
 <!-- SPECKIT_LEVEL: 2 -->
@@ -73,7 +73,7 @@ Continuous requirements across all Wave D tasks:
 
 Test-coverage verification for Wave D:
 
-- [ ] `lib/utils/assert-never.ts` has trivial throw-test [EVIDENCE: pending]
+- [x] `lib/utils/exhaustiveness.ts` has trivial throw-test [EVIDENCE: 787bf4f88 exhaustiveness.vitest.ts covers assertNever throw behavior]
 - [ ] Existing `post-insert.ts` enrichment vitest passes unchanged post T-PIN-GOD-01 [EVIDENCE: pending]
 - [ ] Existing `reconsolidation.ts` atomic-txn vitest passes unchanged post T-RCB-DUP-01 [EVIDENCE: pending]
 - [ ] `post-insert.ts` vitest covers `OnIndexSkipReason` satisfies-clause behavior post T-W1-PIN-02 [EVIDENCE: pending]
@@ -108,7 +108,7 @@ Documentation completeness verification:
 - [ ] `plan.md` light-gate rationale (×3) documented in §2 QUALITY GATES [EVIDENCE: pending]
 - [ ] `tasks.md` every completed task has `[EVIDENCE: <commit>]` citation [EVIDENCE: pending]
 - [ ] Parking-lot section in `tasks.md` cites R55-P2-002/003/004 with effort estimates [EVIDENCE: pending]
-- [ ] T-W1-HST-02 Docker deployment note published in README.md or DEPLOYMENT.md [EVIDENCE: pending]
+- [x] T-W1-HST-02 Docker deployment note published in DEPLOYMENT.md [EVIDENCE: final D3 commit creates DEPLOYMENT.md]
 - [ ] `implementation-summary.md` populated after partial/full Wave D completion [EVIDENCE: pending]
 - [ ] `description.json.lastUpdated` refreshed post-implementation [EVIDENCE: pending]
 - [ ] Carry-forward notes in implementation-summary.md for items rolled to Phase 018+ [EVIDENCE: pending]
@@ -119,7 +119,7 @@ Documentation completeness verification:
 <!-- ANCHOR:file-org -->
 ## File Organization Gates
 
-- [ ] `lib/utils/assert-never.ts` placed in canonical `mcp_server/lib/utils/` directory [EVIDENCE: pending]
+- [x] `lib/utils/exhaustiveness.ts` placed in canonical `mcp_server/lib/utils/` directory [EVIDENCE: 787bf4f88 helper created under mcp_server/lib/utils/]
 - [ ] No ad-hoc helpers added outside canonical locations [EVIDENCE: pending]
 - [ ] Test files co-located with convention (`*.vitest.ts` in `mcp_server/tests/` or `scripts/tests/`) [EVIDENCE: pending]
 - [ ] No temporary scratch files left in `scratch/` after Wave D completes [EVIDENCE: pending]
@@ -148,7 +148,7 @@ Final summary verification (end of Wave D — partial or full):
 
 ### CHK-D-01 — T-EXH-01 landed (any subset)
 
-- [ ] `mcp_server/lib/utils/assert-never.ts` exists [EVIDENCE: pending]
+- [x] `mcp_server/lib/utils/exhaustiveness.ts` exists [EVIDENCE: 787bf4f88 helper file created]
 - [ ] `assertNever(x: never): never` exported [EVIDENCE: pending]
 - [ ] Applied to `OnIndexSkipReason` [EVIDENCE: pending]
 - [ ] Applied to `EnrichmentStepStatus` [EVIDENCE: pending]

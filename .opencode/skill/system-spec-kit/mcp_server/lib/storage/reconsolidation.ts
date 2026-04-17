@@ -920,6 +920,10 @@ function isArchivedRow(row: Record<string, unknown>): boolean {
   return false;
 }
 
+/**
+ * Re-run the shared compare-and-swap guards before applying a conflict-path
+ * mutation so both transaction modes abort the same way on stale predecessors.
+ */
 function executeAtomicReconsolidationTxn(
   db: Database.Database,
   existingMemory: SimilarMemory,

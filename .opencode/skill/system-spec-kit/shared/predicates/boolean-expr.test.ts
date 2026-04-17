@@ -13,6 +13,8 @@ import {
   parseWhenField,
   validateBooleanExpr,
 } from './boolean-expr.js';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
 function assert(cond: boolean, label: string): void {
   if (!cond) {
@@ -127,6 +129,22 @@ function assert(cond: boolean, label: string): void {
   assert(
     asString.expr?.field === asObject.expr?.field && asString.expr?.op === asObject.expr?.op,
     'string and object forms produce equivalent predicates',
+  );
+}
+
+{
+  const assetPath = fileURLToPath(
+    new URL('../../../../command/spec_kit/assets/spec_kit_complete_confirm.yaml', import.meta.url),
+  );
+  const asset = readFileSync(assetPath, 'utf8');
+  const block = asset.match(/post_save_indexing:[\s\S]*?(?=\n\s{4}[A-Za-z_][A-Za-z0-9_]*:)/)?.[0] ?? '';
+  assert(
+    block.includes('after: "Immediately after the canonical spec document is refreshed on disk"'),
+    'post_save_indexing uses after for prose timing',
+  );
+  assert(
+    !block.includes('\n      when:'),
+    'post_save_indexing no longer stores prose timing under when',
   );
 }
 
