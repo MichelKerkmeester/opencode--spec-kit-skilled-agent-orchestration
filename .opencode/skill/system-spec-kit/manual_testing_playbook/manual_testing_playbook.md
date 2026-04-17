@@ -1,6 +1,7 @@
 ---
 title: "Spec Kit Memory: Manual Testing Playbook"
 description: "Operator-facing reference combining the manual testing directory, integrated review/orchestration guidance, execution expectations, and per-feature validation files for the Spec Kit Memory MCP server."
+last_updated: "2026-04-17"
 ---
 
 # Spec Kit Memory: Manual Testing Playbook
@@ -42,6 +43,7 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
+- [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
@@ -55,6 +57,46 @@ Canonical source artifacts:
 - [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
 - [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
 - [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+
+---
+
+## Phase 017 audit
+
+Audit date: `2026-04-17`
+
+Phase 017 re-audited the playbook against the review-findings remediation packet. Scenario coverage now includes canonical-save metadata refresh checks, the shared code-graph readiness contract, Copilot compact-cache parity, caller-bound session-resume auth, Unicode hardening, the strict evidence and normalizer lint paths, and the Wave D maintainability extracts.
+
+Active scenario entries: `300`
+Deprecated archival scenario entries: `0`
+Total scenario entries: `300`
+
+| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
+|---|---:|---:|---:|---:|---:|
+| `01--retrieval` | 0 | 0 | 0 | 0 | 0 |
+| `02--mutation` | 0 | 1 | 0 | 0 | 1 |
+| `03--discovery` | 0 | 0 | 0 | 0 | 0 |
+| `04--maintenance` | 0 | 0 | 0 | 0 | 0 |
+| `05--lifecycle` | 0 | 0 | 0 | 0 | 1 |
+| `06--analysis` | 0 | 0 | 0 | 0 | 0 |
+| `07--evaluation` | 0 | 0 | 0 | 0 | 0 |
+| `08--bug-fixes-and-data-integrity` | 0 | 0 | 0 | 0 | 1 |
+| `09--evaluation-and-measurement` | 0 | 0 | 0 | 0 | 0 |
+| `10--graph-signal-activation` | 0 | 0 | 0 | 0 | 0 |
+| `11--scoring-and-calibration` | 0 | 0 | 0 | 0 | 0 |
+| `12--query-intelligence` | 0 | 0 | 0 | 0 | 0 |
+| `13--memory-quality-and-indexing` | 0 | 1 | 0 | 0 | 0 |
+| `14--pipeline-architecture` | 0 | 0 | 0 | 0 | 1 |
+| `15--retrieval-enhancements` | 0 | 0 | 0 | 0 | 0 |
+| `16--tooling-and-scripts` | 0 | 1 | 0 | 0 | 2 |
+| `17--governance` | 0 | 0 | 0 | 0 | 1 |
+| `18--ux-hooks` | 0 | 0 | 0 | 0 | 1 |
+| `19--feature-flag-reference` | 0 | 0 | 0 | 0 | 0 |
+| `20--remediation-revalidation` | 0 | 0 | 0 | 0 | 0 |
+| `21--implement-and-remove-deprecated-features` | 0 | 0 | 0 | 0 | 0 |
+| `22--context-preservation-and-code-graph` | 0 | 1 | 0 | 0 | 1 |
+| **TOTAL** | 0 | 4 | 0 | 0 | 9 |
+
+- New phase-017 playbook coverage now lives in [`05--lifecycle/268-post-insert-retry-budget.md`](05--lifecycle/268-post-insert-retry-budget.md), [`08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md`](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md), [`14--pipeline-architecture/270-phase-017-maintainability-extracts.md`](14--pipeline-architecture/270-phase-017-maintainability-extracts.md), [`16--tooling-and-scripts/271-research-metadata-backfill.md`](16--tooling-and-scripts/271-research-metadata-backfill.md), [`16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md`](16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md), [`17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md`](17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md), [`18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md), [`22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md), and [`02--mutation/276-reconsolidation-conflict-transaction-helper.md`](02--mutation/276-reconsolidation-conflict-transaction-helper.md).
 
 ---
 
@@ -194,7 +236,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 313 scenario files while the feature catalog contains 294 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 300 scenario files while the feature catalog contains 286 feature files.
 5. No unresolved blocking triage item remains.
 6. Orphan scenario count is zero (every scenario file is linked in Section 12).
 
@@ -220,14 +262,14 @@ count += sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 313 ]; then
-  echo "Expected 313 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 300 ]; then
+  echo "Expected 300 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
 
 Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
-As of 2026-04-12, the root index links all 313 scenario files, including the archival phase-018 `_deprecated/` scenarios (0 orphan scenario files).
+As of 2026-04-17, the root index links all 300 scenario files, including the new Phase 017 additions (0 orphan scenario files).
 
 ### Destructive Scenario Rules
 
@@ -3246,6 +3288,134 @@ All 5 Level 2 files pass `validate.sh --strict` with exit code 0 and require no 
 
 ---
 
+### 268 | Post-insert retry budget
+
+#### Description
+Verify deferred enrichment retries stop after the documented three-attempt budget and reset after a successful completion.
+
+#### Current Reality
+Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise user-facing pass/fail verdict with the main reason.`
+
+First three retries allowed; fourth skipped; successful completion clears the budget
+
+#### Test Execution
+> **Feature File:** [268](05--lifecycle/268-post-insert-retry-budget.md)
+> **Catalog:** [05--lifecycle/09-post-insert-retry-budget.md](../feature_catalog/05--lifecycle/09-post-insert-retry-budget.md)
+
+### 269 | Scope normalizer canonicalization and lint
+
+#### Description
+Verify the canonical scope normalizer is the live helper and strict validation rejects new duplicate local helpers.
+
+#### Current Reality
+Prompt: `As a data-integrity validation operator, validate Scope normalizer canonicalization and lint against normalizeScopeValue(). Verify the documented callers all import the canonical helper, string and null semantics still match the parity matrix, and validate.sh --strict rejects a synthetic duplicate normalizeScope helper outside scope-governance.ts. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Canonical imports visible at the documented call sites; parity matrix still passes; synthetic duplicate helper fails the lint rule
+
+#### Test Execution
+> **Feature File:** [269](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md](../feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md)
+
+### 270 | Phase 017 maintainability extracts
+
+#### Description
+Verify the shared helper extracts replaced the old inline variants without changing the live pipeline contracts.
+
+#### Current Reality
+Prompt: `As a pipeline validation operator, validate Phase 017 maintainability extracts against the documented helper surfaces. Verify assertNever() handles the documented union exhaustiveness cases, runEnrichmentStep() still preserves lane-specific failure mapping, reconsolidation conflict handling routes through one shared transaction helper, and memory-context now reports advisoryPreset instead of readiness in the structural nudge metadata. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Helper-based code paths are active; tests for the extracted helpers pass; routing metadata uses advisoryPreset
+
+#### Test Execution
+> **Feature File:** [270](14--pipeline-architecture/270-phase-017-maintainability-extracts.md)
+> **Catalog:** [14--pipeline-architecture/24-phase-017-maintainability-extracts.md](../feature_catalog/14--pipeline-architecture/24-phase-017-maintainability-extracts.md)
+
+### 271 | Research metadata backfill
+
+#### Description
+Verify missing research iteration metadata is created without rewriting already-complete folders.
+
+#### Current Reality
+Prompt: `As a tooling validation operator, validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts. Verify missing metadata files are created under research iteration folders, complete folders are not rewritten, and canonical save follow-up coverage for research trees is restored. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Missing metadata files created; complete folders unchanged; output identifies only the folders that needed repair
+
+#### Test Execution
+> **Feature File:** [271](16--tooling-and-scripts/271-research-metadata-backfill.md)
+> **Catalog:** [16--tooling-and-scripts/34-research-metadata-backfill.md](../feature_catalog/16--tooling-and-scripts/34-research-metadata-backfill.md)
+
+### 272 | Strict validation add-ons: continuity freshness and evidence markers
+
+#### Description
+Verify strict validation now enforces continuity freshness, malformed evidence markers, and duplicate-normalizer rejection.
+
+#### Current Reality
+Prompt: `As a tooling validation operator, validate the strict-validation add-ons against validate.sh --strict. Verify stale _memory.continuity timestamps surface through continuity-freshness, malformed evidence markers fail through the strict lint wrapper, duplicate normalizeScope helpers fail through the normalizer lint rule, and the standalone audit script remains available for repair sweeps. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Strict validation surfaces the continuity, evidence-marker, and duplicate-normalizer failures; the audit script reports marker issues for repair use
+
+#### Test Execution
+> **Feature File:** [272](16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md)
+> **Catalog:** [16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md](../feature_catalog/16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md)
+
+### 273 | Session-resume caller binding and Unicode sanitization
+
+#### Description
+Verify strict session-resume caller binding plus the NFKC and zero-width sanitization guardrails.
+
+#### Current Reality
+Prompt: `As a governance validation operator, validate strict session-resume caller binding and Unicode sanitization. Verify session_resume rejects mismatched args.sessionId values in strict mode, permissive mode logs and continues for canary rollout, gate-3 normalizePrompt() applies NFKC plus zero-width stripping, and sanitizeRecoveredPayload() applies the same normalization to recovered payloads. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Strict mismatch rejected; permissive mismatch allowed with warning; Unicode confusables normalized in both sanitizers
+
+#### Test Execution
+> **Feature File:** [273](17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md)
+> **Catalog:** [17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md](../feature_catalog/17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md)
+
+### 274 | Shared provenance and Copilot compact-cache parity
+
+#### Description
+Verify Copilot now follows the same shared provenance and compact-cache contract as Claude and Gemini.
+
+#### Current Reality
+Prompt: `As a UX-hook validation operator, validate shared provenance and Copilot compact-cache parity. Verify Claude and Gemini re-export the shared provenance helpers, Copilot writes a cached provenance-wrapped payload, session-prime consumes the cached trustState, and the cached output matches the documented provenance format. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Shared helper imports visible; Copilot compact-cache emits cached provenance-wrapped output; session-prime consumes the cached trustState
+
+#### Test Execution
+> **Feature File:** [274](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md)
+> **Catalog:** [18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md](../feature_catalog/18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md)
+
+### 275 | Code-graph readiness contract
+
+#### Description
+Verify the code-graph sibling handlers emit one shared readiness vocabulary.
+
+#### Current Reality
+Prompt: `As a context-and-code-graph validation operator, validate the shared code-graph readiness contract. Verify query, scan, status, context, ccc-status, ccc-reindex, and ccc-feedback all emit readiness fields through one shared contract; trustState values stay inside the canonical SharedPayloadTrustState vocabulary; and the CCC trio uses the documented readiness_not_applicable stub behavior. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior
+
+#### Test Execution
+> **Feature File:** [275](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md)
+> **Catalog:** [22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md](../feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md)
+
+### 276 | Reconsolidation conflict transaction helper
+
+#### Description
+Verify both reconsolidation conflict branches still share one atomic transaction envelope.
+
+#### Current Reality
+Prompt: `As a mutation validation operator, validate shared reconsolidation conflict transactions against executeConflict(). Verify both conflict branches route through the shared transaction helper, stale-predecessor guards still apply, and failures roll back without leaving partial conflict writes behind. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Both conflict branches reuse one atomic transaction envelope and preserve rollback behavior on failure
+
+#### Test Execution
+> **Feature File:** [276](02--mutation/276-reconsolidation-conflict-transaction-helper.md)
+> **Catalog:** [02--mutation/11-reconsolidation-conflict-transaction-helper.md](../feature_catalog/02--mutation/11-reconsolidation-conflict-transaction-helper.md)
+
+---
+
 ## 9. PHASE SYSTEM FEATURES
 
 ### PHASE-001 | Phase detection scoring
@@ -3760,5 +3930,14 @@ This split playbook keeps automated coverage references in three places:
 | 265 | Context Preservation | Gemini CLI hooks session-prime | [265](22--context-preservation-and-code-graph/265-gemini-hooks.md) | [22--context-preservation-and-code-graph/21-gemini-cli-hooks.md](../feature_catalog/22--context-preservation-and-code-graph/21-gemini-cli-hooks.md) |
 | 266 | Context Preservation | Context preservation metrics quality score | [266](22--context-preservation-and-code-graph/266-context-metrics.md) | [22--context-preservation-and-code-graph/22-context-preservation-metrics.md](../feature_catalog/22--context-preservation-and-code-graph/22-context-preservation-metrics.md) |
 | 267 | Context Preservation | Tool routing enforcement | [267](22--context-preservation-and-code-graph/267-tool-routing-enforcement.md) | [22--context-preservation-and-code-graph/23-tool-routing-enforcement.md](../feature_catalog/22--context-preservation-and-code-graph/23-tool-routing-enforcement.md) |
+| 268 | Features | Post-insert retry budget | [268](05--lifecycle/268-post-insert-retry-budget.md) | [05--lifecycle/09-post-insert-retry-budget.md](../feature_catalog/05--lifecycle/09-post-insert-retry-budget.md) |
+| 269 | Features | Scope normalizer canonicalization and lint | [269](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md) | [08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md](../feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md) |
+| 270 | Features | Phase 017 maintainability extracts | [270](14--pipeline-architecture/270-phase-017-maintainability-extracts.md) | [14--pipeline-architecture/24-phase-017-maintainability-extracts.md](../feature_catalog/14--pipeline-architecture/24-phase-017-maintainability-extracts.md) |
+| 271 | Features | Research metadata backfill | [271](16--tooling-and-scripts/271-research-metadata-backfill.md) | [16--tooling-and-scripts/34-research-metadata-backfill.md](../feature_catalog/16--tooling-and-scripts/34-research-metadata-backfill.md) |
+| 272 | Features | Strict validation add-ons: continuity freshness and evidence markers | [272](16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md) | [16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md](../feature_catalog/16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md) |
+| 273 | Features | Session-resume caller binding and Unicode sanitization | [273](17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md) | [17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md](../feature_catalog/17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md) |
+| 274 | Features | Shared provenance and Copilot compact-cache parity | [274](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) | [18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md](../feature_catalog/18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md) |
+| 275 | Context Preservation | Code-graph readiness contract | [275](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md) | [22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md](../feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md) |
+| 276 | Features | Reconsolidation conflict transaction helper | [276](02--mutation/276-reconsolidation-conflict-transaction-helper.md) | [02--mutation/11-reconsolidation-conflict-transaction-helper.md](../feature_catalog/02--mutation/11-reconsolidation-conflict-transaction-helper.md) |
 
 ---

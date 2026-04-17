@@ -36,6 +36,8 @@ Phase awareness is built into the engine. If the target folder contains child di
 
 The current rule engine therefore behaves like a shell-based plugin host: central orchestration, distributed checks, configurable order, shared severity policy, and optional recursive traversal across phased spec packets.
 
+Phase 017 extended the strict path beyond the original shell-rule inventory. `validate.sh --strict` now runs the continuity-freshness check (`32a180bba`), the evidence-marker lint wrapper built on the new bracket-depth audit parser (`7d85861a0`, `e40dff0bb`), and the scope-normalizer duplication guard (`ded5ece07`). That means the rule engine now enforces stale continuity timestamps, malformed `[EVIDENCE:...]` markers, and new duplicate `normalizeScope*` helpers in the same operator-facing strict run instead of relying on ad hoc sweep scripts alone.
+
 ---
 
 ## 3. SOURCE FILES
@@ -45,6 +47,9 @@ The current rule engine therefore behaves like a shell-based plugin host: centra
 | File | Layer | Role |
 |------|-------|------|
 | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` | Orchestrator | Parses flags and config, detects level, resolves rule order, sources rule scripts, aggregates results, and handles recursive phase validation |
+| `.opencode/skill/system-spec-kit/scripts/validation/continuity-freshness.ts` | Validation helper | Warns when `_memory.continuity.last_updated_at` lags `graph-metadata.json.derived.last_save_at` |
+| `.opencode/skill/system-spec-kit/scripts/validation/evidence-marker-audit.ts` | Validation helper | Bracket-depth evidence-marker parser used for audit and repair sweeps |
+| `.opencode/skill/system-spec-kit/scripts/validation/evidence-marker-lint.ts` | Validation helper | Strict lint wrapper that fails malformed evidence-marker cases |
 
 ### Rule Inventory
 
@@ -60,6 +65,7 @@ The current rule engine therefore behaves like a shell-based plugin host: centra
 | `.opencode/skill/system-spec-kit/scripts/rules/check-level-match.sh` | Validation rule | Rule script discovered and executed by the orchestrator for level matching checks |
 | `.opencode/skill/system-spec-kit/scripts/rules/check-level.sh` | Validation rule | Rule script discovered and executed by the orchestrator for level declaration checks |
 | `.opencode/skill/system-spec-kit/scripts/rules/check-links.sh` | Validation rule | Rule script discovered and executed by the orchestrator for link validation |
+| `.opencode/skill/system-spec-kit/scripts/rules/check-normalizer-lint.sh` | Validation rule | Rule script discovered and executed by the orchestrator for duplicate scope-normalizer detection |
 | `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh` | Validation rule | Rule script discovered and executed by the orchestrator for parent-child phase linkage checks |
 | `.opencode/skill/system-spec-kit/scripts/rules/check-placeholders.sh` | Validation rule | Rule script discovered and executed by the orchestrator for placeholder detection |
 | `.opencode/skill/system-spec-kit/scripts/rules/check-priority-tags.sh` | Validation rule | Rule script discovered and executed by the orchestrator for checklist priority-tag checks |
@@ -74,5 +80,5 @@ The current rule engine therefore behaves like a shell-based plugin host: centra
 
 - Group: Tooling and Scripts
 - Source feature title: Spec Validation Rule Engine
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct audit of `validate.sh` plus filesystem inventory of `scripts/rules/*.sh`
+- Source spec: Deep research remediation 2026-03-26 plus Phase 017 validation hardening
+- Current reality source: direct audit of `validate.sh`, `scripts/validation/*.ts`, and filesystem inventory of `scripts/rules/*.sh`

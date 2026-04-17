@@ -14,12 +14,12 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 
 ## 2. CURRENT REALITY
 
-- **Objective**: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, and merges everything into a single `SessionResumeResult`. Failures must degrade into hints and status fields instead of crashing the tool. The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
+- **Objective**: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, binds explicit `args.sessionId` to the transport caller context by default, and merges everything into a single `SessionResumeResult`. Failures must degrade into hints and status fields instead of crashing the tool, except for strict auth mismatches which should reject cleanly. The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
 - **Prerequisites**:
   - MCP server running and accessible
   - A packet with at least one canonical recovery document (`handover.md`, `implementation-summary.md`, or sibling spec docs)
   - Code graph database present or intentionally empty
-- **Prompt**: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume rebuilds memory from the resume ladder (handover.md -> _memory.continuity -> spec docs), reports freshness-aware code graph status (fresh, stale, empty, or error), checks CocoIndex availability, appends the shared structural ready/stale/missing contract, and merges everything into a single SessionResumeResult. The response must include memory, codeGraph, cocoIndex, structuralContext, and hints. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- **Prompt**: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume rebuilds memory from the resume ladder (handover.md -> _memory.continuity -> spec docs), reports freshness-aware code graph status (fresh, stale, empty, or error), checks CocoIndex availability, appends the shared structural ready/stale/missing contract, rejects mismatched args.sessionId values in strict mode, allows them only under the permissive rollout flag, and merges everything else into a single SessionResumeResult. The response must include memory, codeGraph, cocoIndex, structuralContext, and hints when the auth check passes. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - **Expected signals**:
   - `memory.source` is one of `handover`, `continuity`, `spec-docs`, or `none`
   - `memory.summary` and `memory.documents` reflect the winning ladder source when packet docs exist
@@ -28,9 +28,10 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
   - structuralContext.status is one of `ready`, `stale`, `missing`
   - structuralContext.summary is a string, `recommendedAction` is a string, and `sourceSurface === "session_resume"`
   - hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`)
+  - strict mode rejects mismatched caller/session IDs; permissive mode logs and continues
 - **Pass/fail criteria**:
-  - PASS: All subsystem results and structuralContext fields are present in response, the memory payload follows the resume ladder contract, and degraded structural states emit the expected bootstrap guidance without throwing
-  - FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, or missing type fields
+  - PASS: All subsystem results and structuralContext fields are present in response when auth passes, the memory payload follows the resume ladder contract, degraded structural states emit the expected bootstrap guidance without throwing, and strict-vs-permissive session binding matches the documented contract
+  - FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, missing type fields, or incorrect auth-binding behavior
 
 ---
 
@@ -149,6 +150,37 @@ session_resume response JSON structuralContext + hints
 ### Failure Triage
 
 Check buildStructuralBootstrapContract() and degraded hint injection in session-resume.ts
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate session-resume auth binding against session_resume({ sessionId: "<session-id>" }). Verify a mismatched caller/session pair is rejected in strict mode, the same mismatch is allowed only when MCP_SESSION_RESUME_AUTH_MODE=permissive, and the permissive path still returns the normal merged payload shape. Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. Call `session_resume({ sessionId: "<mismatched-session-id>" })` in strict mode
+2. Re-run with `MCP_SESSION_RESUME_AUTH_MODE=permissive`
+3. Compare the strict rejection against the permissive merged payload
+
+### Expected
+
+Strict mode rejects the mismatch; permissive mode logs and returns the normal merged payload shape
+
+### Evidence
+
+Strict-mode rejection output plus permissive-mode response JSON
+
+### Pass / Fail
+
+- **Pass**: strict mode rejects the mismatch and permissive mode allows the same request while preserving the normal payload shape
+- **Fail**: strict mode silently allows the mismatch or permissive mode fails to return the documented payload
+
+### Failure Triage
+
+Check `caller-context.ts`, `context-server.ts`, and the strict-vs-permissive branch in `session-resume.ts`
 
 ## 4. REFERENCES
 

@@ -25,6 +25,8 @@ The canonical router now classifies save chunks across 8 categories: `narrative_
 
 Before the indexed write, the handler still normalizes content, generates embeddings, runs prediction-error arbitration, applies the three-layer quality gate and performs reconsolidation where enabled. The save path still records mutation history, invalidates caches and preserves async-embedding behavior, but those steps now feed spec-doc anchored continuity instead of treating legacy memory-file continuity as the primary source of truth.
 
+Phase 017 tightened the canonical writer contract in two places. Commit `aaf0f49a8` fixed H-56-1 so every successful canonical save refreshes packet metadata instead of treating repeat saves as a structural no-op, and commit `88063287b` added the research-tree follow-up that backfills missing `description.json` and `graph-metadata.json` files under research iteration folders when the saved packet owns those children. That means a successful `memory_save` now updates the merged spec doc, the packet metadata, and any newly missing research metadata surfaces in one canonical pass.
+
 The interesting part is what happens before the record is created. A Prediction Error (PE) gating system compares the new content against existing memories via cosine similarity and decides one of five actions. CREATE stores a new record when no similar memory exists. REINFORCE boosts the FSRS stability of an existing duplicate without creating a new entry (the system already knows this, so it strengthens the memory). UPDATE overwrites an existing high-similarity memory in-place when the new version supersedes the old. SUPERSEDE marks the old memory as deprecated, creates a new record and links them with a causal edge. CREATE_LINKED stores a new memory with a relationship edge to a similar but distinct existing memory.
 
 A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` is enabled (default ON). Layer 1 validates structure (title exists, content at least 50 characters, valid spec folder path). Layer 2 scores content quality across five dimensions (title, triggers, length, anchors, metadata) against a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity, rejecting near-duplicates above 0.92. A warn-only mode runs for the first 14 days after activation, logging would-reject decisions without blocking saves.
@@ -78,6 +80,8 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate and semantic dedup checks |
 | `mcp_server/lib/storage/history.ts` | Lib | ADD/UPDATE history logging used by the save path |
 | `shared/parsing/memory-template-contract.ts` | Shared | Rendered document structural contract validator |
+| `scripts/core/workflow.ts` | Script orchestrator | Canonical save workflow that now always refreshes packet metadata on successful saves |
+| `scripts/memory/backfill-research-metadata.ts` | Script | Research-tree metadata backfill step invoked from the canonical save workflow |
 
 ### Tests
 
@@ -87,6 +91,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/tests/memory-save-integration.vitest.ts` | Save-path PE arbitration integration tests |
 | `mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts` | Save pipeline enforcement and async/deferred embedding scenarios |
 | `mcp_server/tests/quality-loop.vitest.ts` | Quality loop behavior |
+| `scripts/tests/workflow-canonical-save-metadata.vitest.ts` | Canonical save metadata refresh coverage |
 
 ---
 

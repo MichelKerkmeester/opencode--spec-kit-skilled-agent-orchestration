@@ -1,6 +1,7 @@
 ---
 title: "Spec Kit Memory: Feature Catalog"
 description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
+last_updated: "2026-04-17"
 ---
 
 # Spec Kit Memory: Feature Catalog
@@ -11,29 +12,70 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ## TABLE OF CONTENTS
 
-- [Phase 018 audit](#phase-018-audit)
-- [1. OVERVIEW](#1-overview)
-- [2. RETRIEVAL](#2-retrieval)
-- [3. MUTATION](#3-mutation)
-- [4. DISCOVERY](#4-discovery)
-- [5. MAINTENANCE](#5-maintenance)
-- [6. LIFECYCLE](#6-lifecycle)
-- [7. ANALYSIS](#7-analysis)
-- [8. EVALUATION](#8-evaluation)
-- [9. BUG FIXES AND DATA INTEGRITY](#9-bug-fixes-and-data-integrity)
-- [10. EVALUATION AND MEASUREMENT](#10-evaluation-and-measurement)
-- [11. GRAPH SIGNAL ACTIVATION](#11-graph-signal-activation)
-- [12. SCORING AND CALIBRATION](#12-scoring-and-calibration)
-- [13. QUERY INTELLIGENCE](#13-query-intelligence)
-- [14. MEMORY QUALITY AND INDEXING](#14-memory-quality-and-indexing)
-- [15. PIPELINE ARCHITECTURE](#15-pipeline-architecture)
-- [16. RETRIEVAL ENHANCEMENTS](#16-retrieval-enhancements)
-- [17. TOOLING AND SCRIPTS](#17-tooling-and-scripts)
-- [18. GOVERNANCE](#18-governance)
-- [19. FEATURE FLAG REFERENCE](#19-feature-flag-reference)
-- [20. REMEDIATION REVALIDATION](#20-remediation-revalidation)
-- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21-implement-and-remove-deprecated-features)
-- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22-context-preservation-and-code-graph)
+- [PHASE 017 AUDIT](#phase-017-audit)
+- [PHASE 018 AUDIT](#phase-018-audit)
+- [1. OVERVIEW](#1--overview)
+- [2. RETRIEVAL](#2--retrieval)
+- [3. MUTATION](#3--mutation)
+- [4. DISCOVERY](#4--discovery)
+- [5. MAINTENANCE](#5--maintenance)
+- [6. LIFECYCLE](#6--lifecycle)
+- [7. ANALYSIS](#7--analysis)
+- [8. EVALUATION](#8--evaluation)
+- [9. BUG FIXES AND DATA INTEGRITY](#9--bug-fixes-and-data-integrity)
+- [10. EVALUATION AND MEASUREMENT](#10--evaluation-and-measurement)
+- [11. GRAPH SIGNAL ACTIVATION](#11--graph-signal-activation)
+- [12. SCORING AND CALIBRATION](#12--scoring-and-calibration)
+- [13. QUERY INTELLIGENCE](#13--query-intelligence)
+- [14. MEMORY QUALITY AND INDEXING](#14--memory-quality-and-indexing)
+- [15. PIPELINE ARCHITECTURE](#15--pipeline-architecture)
+- [16. RETRIEVAL ENHANCEMENTS](#16--retrieval-enhancements)
+- [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
+- [18. GOVERNANCE](#18--governance)
+- [19. FEATURE FLAG REFERENCE](#19--feature-flag-reference)
+- [20. REMEDIATION REVALIDATION](#20--remediation-revalidation)
+- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21--implement-and-remove-deprecated-features)
+- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22--context-preservation-and-code-graph)
+
+---
+
+## Phase 017 audit
+
+Audit date: `2026-04-17`
+
+Phase 017 audited the split feature catalog against the review-findings remediation packet. The catalog now records the canonical-save metadata fix, the shared code-graph readiness contract, Copilot compact-cache parity, caller-bound session-resume auth, the Unicode hardening pass, the strict evidence and normalizer lint surfaces, and the Wave D maintainability extracts.
+
+Active category entries: `286`
+Deprecated archival entries: `0`
+Total category entries: `286`
+
+| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
+|---|---:|---:|---:|---:|---:|
+| `01--retrieval` | 0 | 0 | 0 | 0 | 0 |
+| `02--mutation` | 0 | 1 | 0 | 0 | 1 |
+| `03--discovery` | 0 | 0 | 0 | 0 | 0 |
+| `04--maintenance` | 0 | 0 | 0 | 0 | 0 |
+| `05--lifecycle` | 0 | 0 | 0 | 0 | 1 |
+| `06--analysis` | 0 | 0 | 0 | 0 | 0 |
+| `07--evaluation` | 0 | 0 | 0 | 0 | 0 |
+| `08--bug-fixes-and-data-integrity` | 0 | 0 | 0 | 0 | 1 |
+| `09--evaluation-and-measurement` | 0 | 0 | 0 | 0 | 0 |
+| `10--graph-signal-activation` | 0 | 0 | 0 | 0 | 0 |
+| `11--scoring-and-calibration` | 0 | 0 | 0 | 0 | 0 |
+| `12--query-intelligence` | 0 | 0 | 0 | 0 | 0 |
+| `13--memory-quality-and-indexing` | 0 | 1 | 0 | 0 | 0 |
+| `14--pipeline-architecture` | 0 | 0 | 0 | 0 | 1 |
+| `15--retrieval-enhancements` | 0 | 0 | 0 | 0 | 0 |
+| `16--tooling-and-scripts` | 0 | 1 | 0 | 0 | 2 |
+| `17--governance` | 0 | 0 | 0 | 0 | 1 |
+| `18--ux-hooks` | 0 | 0 | 0 | 0 | 1 |
+| `19--feature-flag-reference` | 0 | 0 | 0 | 0 | 0 |
+| `20--remediation-revalidation` | 0 | 0 | 0 | 0 | 0 |
+| `21--implement-and-remove-deprecated-features` | 0 | 0 | 0 | 0 | 0 |
+| `22--context-preservation-and-code-graph` | 0 | 1 | 0 | 0 | 1 |
+| **TOTAL** | 0 | 4 | 0 | 0 | 9 |
+
+- New phase-017 coverage now lives in [`02--mutation/11-reconsolidation-conflict-transaction-helper.md`](02--mutation/11-reconsolidation-conflict-transaction-helper.md), [`05--lifecycle/09-post-insert-retry-budget.md`](05--lifecycle/09-post-insert-retry-budget.md), [`08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md`](08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md), [`14--pipeline-architecture/24-phase-017-maintainability-extracts.md`](14--pipeline-architecture/24-phase-017-maintainability-extracts.md), [`16--tooling-and-scripts/34-research-metadata-backfill.md`](16--tooling-and-scripts/34-research-metadata-backfill.md), [`16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md`](16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md), [`17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md`](17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md), [`18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md), and [`22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md).
 
 ---
 
@@ -352,7 +394,7 @@ See [`01--retrieval/11-session-recovery-spec-kit-resume.md`](01--retrieval/11-se
 
 ## 3. MUTATION
 
-This section documents 10 mutation features.
+This section documents 11 mutation features.
 
 ### Memory indexing (memory_save)
 
@@ -363,6 +405,8 @@ This is how you add new knowledge to the system. You point it at a file and it r
 #### Current Reality
 
 `memory_save` is the save entry point for the canonical packet continuity path. You point it at a packet document or other supported markdown input, and it routes the content through `contentRouter`, applies the selected merge behavior via `anchorMergeOperation`, and writes the result through `atomicIndexMemory` inside the existing spec-folder lock. `_memory.continuity` now lives as supporting frontmatter state inside the spec doc, and `/spec_kit:resume` remains the canonical recovery surface.
+
+Phase 017 hardened the canonical save follow-up behavior. Successful canonical saves now refresh packet metadata on every invocation instead of treating repeat saves as a structural no-op, and research packets can trigger metadata backfill for missing iteration metadata under the same workflow.
 
 The canonical router now classifies save chunks across 8 categories: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 1 handles structured and heuristic routes, Tier 2 compares against the routing prototype library, and Tier 3 is now wired into the live save handler by default and the configured LLM endpoint is available. Delivery cues now favor sequencing, gating, rollout, and verification language over generic implementation verbs, while the handover/drop boundary keeps hard transcript or telemetry wrappers on the refuse-to-route side and lets softer operational phrases survive when the chunk is clearly a stop-state note.
 
@@ -4639,10 +4683,10 @@ This category tracks the compact-code-graph rollout: hook lifecycle capture, hoo
 
 ### Current Reality
 
-The active package includes a dedicated category folder with 23 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, and tool-routing guidance.
+The active package includes a dedicated category folder with 24 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, tool-routing guidance, and the shared Phase 017 readiness contract.
 
 ### Source Files
 
 - Category overview: [`22--context-preservation-and-code-graph/01-category-overview.md`](22--context-preservation-and-code-graph/01-category-overview.md)
-- Latest enforcement feature: [`22--context-preservation-and-code-graph/23-tool-routing-enforcement.md`](22--context-preservation-and-code-graph/23-tool-routing-enforcement.md)
+- Latest feature: [`22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md)
 - Playbook counterpart: [`../manual_testing_playbook/22--context-preservation-and-code-graph/`](../manual_testing_playbook/22--context-preservation-and-code-graph/)
