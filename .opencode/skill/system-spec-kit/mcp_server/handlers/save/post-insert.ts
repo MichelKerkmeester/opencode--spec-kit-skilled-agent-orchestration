@@ -35,13 +35,41 @@ interface CausalLinksResult {
   errors: { type: string; reference: string; error: string }[];
 }
 
-// C5-4: Track which enrichment steps succeeded
+// M13: Per-step enum status refactor (R7-002, R8-001, R8-002, R11-005, R12-005, R14-003, R21-001).
+// Replaces boolean-valued record that collapsed success / feature-disabled skip /
+// nothing-to-do skip / deferral / density-guard skip / partial failure into `true`.
+export type EnrichmentStepStatus = 'ran' | 'skipped' | 'failed' | 'deferred' | 'partial';
+
+export type EnrichmentSkipReason =
+  | 'feature_disabled'
+  | 'nothing_to_do'
+  | 'planner_first_mode'
+  | 'density_guard'
+  | 'graph_lifecycle_no_op'
+  | 'extraction_not_ran'
+  | 'summary_not_stored';
+
+export type EnrichmentFailureReason =
+  | 'causal_links_exception'
+  | 'entity_extraction_exception'
+  | 'summary_exception'
+  | 'entity_linking_exception'
+  | 'graph_lifecycle_exception'
+  | 'partial_causal_link_unresolved'
+  | 'partial_causal_link_errors';
+
+export interface EnrichmentStepResult {
+  status: EnrichmentStepStatus;
+  reason?: EnrichmentSkipReason | EnrichmentFailureReason;
+  warnings?: string[];
+}
+
 export interface EnrichmentStatus {
-  causalLinks: boolean;
-  entityExtraction: boolean;
-  summaries: boolean;
-  entityLinking: boolean;
-  graphLifecycle: boolean;
+  causalLinks: EnrichmentStepResult;
+  entityExtraction: EnrichmentStepResult;
+  summaries: EnrichmentStepResult;
+  entityLinking: EnrichmentStepResult;
+  graphLifecycle: EnrichmentStepResult;
 }
 
 export interface PostInsertExecutionStatus {
@@ -64,6 +92,14 @@ export function shouldRunPostInsertEnrichment(plannerMode: SavePlannerMode = 'pl
   return plannerMode === 'full-auto' || isPostInsertEnrichmentEnabled();
 }
 
+function makeSkipped(reason: EnrichmentSkipReason): EnrichmentStepResult {
+  return { status: 'skipped', reason };
+}
+
+function makeDeferred(): EnrichmentStepResult {
+  return { status: 'deferred', reason: 'planner_first_mode' };
+}
+
 /**
  * Run post-insert enrichment pipeline for a newly saved memory.
  *
@@ -71,6 +107,10 @@ export function shouldRunPostInsertEnrichment(plannerMode: SavePlannerMode = 'pl
  * summary generation (R8), and cross-document entity linking (S5).
  * Each step is independently guarded by its feature flag and wrapped
  * in try-catch so a single failure does not block the others.
+ *
+ * M13 (R8-001): Each step returns a typed `EnrichmentStepResult` with
+ * distinct statuses for success ('ran'), skip ('skipped' + reason),
+ * failure ('failed' + reason), and partial outcomes ('partial').
  *
  * @param database - The SQLite database instance.
  * @param id - The memory row ID to enrich.
@@ -82,13 +122,13 @@ export async function runPostInsertEnrichment(
   id: number,
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
 ): Promise<PostInsertEnrichmentResult> {
-  // C5-4: Track enrichment step outcomes
+  // M13: Track enrichment step outcomes with typed OperationResult shape
   const enrichmentStatus: EnrichmentStatus = {
-    causalLinks: false,
-    entityExtraction: false,
-    summaries: false,
-    entityLinking: false,
-    graphLifecycle: false,
+    causalLinks: makeSkipped('nothing_to_do'),
+    entityExtraction: makeSkipped('feature_disabled'),
+    summaries: makeSkipped('feature_disabled'),
+    entityLinking: makeSkipped('feature_disabled'),
+    graphLifecycle: makeSkipped('feature_disabled'),
   };
 
   // CAUSAL LINKS PROCESSING
@@ -96,23 +136,45 @@ export async function runPostInsertEnrichment(
   if (parsed.hasCausalLinks && parsed.causalLinks) {
     try {
       causalLinksResult = processCausalLinks(database, id, parsed.causalLinks);
-      enrichmentStatus.causalLinks = true;
       if (causalLinksResult.inserted > 0) {
         console.error(`[causal-links] Processed ${causalLinksResult.inserted} causal edges for memory #${id}`);
       }
       if (causalLinksResult.unresolved.length > 0) {
         console.warn(`[causal-links] ${causalLinksResult.unresolved.length} references could not be resolved`);
       }
+      // T-PIN-04 (R14-003): partial causal-link failures must surface as `partial`, not `ran`.
+      const warnings: string[] = [];
+      if (causalLinksResult.unresolved.length > 0) {
+        warnings.push(`${causalLinksResult.unresolved.length} causal reference(s) unresolved`);
+      }
+      if (causalLinksResult.errors.length > 0) {
+        warnings.push(`${causalLinksResult.errors.length} causal reference(s) errored`);
+      }
+      if (warnings.length > 0) {
+        const reason: EnrichmentFailureReason = causalLinksResult.errors.length > 0
+          ? 'partial_causal_link_errors'
+          : 'partial_causal_link_unresolved';
+        enrichmentStatus.causalLinks = { status: 'partial', reason, warnings };
+      } else {
+        enrichmentStatus.causalLinks = { status: 'ran' };
+      }
     } catch (causal_err: unknown) {
       const message = toErrorMessage(causal_err);
       console.warn(`[memory-save] Causal links processing failed: ${message}`);
+      enrichmentStatus.causalLinks = {
+        status: 'failed',
+        reason: 'causal_links_exception',
+        warnings: [message],
+      };
     }
   } else {
-    // No causal links to process — not a failure
-    enrichmentStatus.causalLinks = true;
+    // No causal links to process — explicit skip with reason, not a silent success.
+    enrichmentStatus.causalLinks = makeSkipped('nothing_to_do');
   }
 
   // -- Auto Entity Extraction --
+  // T-PIN-01 (R7-002): only mark as 'ran' when extraction actually completed; on failure,
+  // downstream entity linking must NOT treat this row as having fresh entities.
   if (isAutoEntitiesEnabled()) {
     try {
       const rawEntities = extractEntities(parsed.content);
@@ -122,17 +184,22 @@ export async function runPostInsertEnrichment(
       if (entityResult.stored > 0) {
         console.error(`[entity-extraction] Extracted ${entityResult.stored} entities for memory #${id}`);
       }
-      enrichmentStatus.entityExtraction = true;
+      enrichmentStatus.entityExtraction = { status: 'ran' };
     } catch (entityErr: unknown) {
       const message = toErrorMessage(entityErr);
       console.warn(`[memory-save] R10 entity extraction failed: ${message}`);
+      enrichmentStatus.entityExtraction = {
+        status: 'failed',
+        reason: 'entity_extraction_exception',
+        warnings: [message],
+      };
     }
   } else {
-    // Feature disabled — not a failure
-    enrichmentStatus.entityExtraction = true;
+    enrichmentStatus.entityExtraction = makeSkipped('feature_disabled');
   }
 
   // -- R8: Memory Summary Generation --
+  // T-PIN-05 (R11-005): distinguish "summary stored" from "summary generator ran but stored nothing".
   if (isMemorySummariesEnabled()) {
     try {
       const summaryResult = await generateAndStoreSummary(
@@ -143,68 +210,99 @@ export async function runPostInsertEnrichment(
       );
       if (summaryResult.stored) {
         console.error(`[memory-summaries] Generated summary for memory #${id}`);
+        enrichmentStatus.summaries = { status: 'ran' };
+      } else {
+        enrichmentStatus.summaries = makeSkipped('summary_not_stored');
       }
-      enrichmentStatus.summaries = true;
     } catch (summaryErr: unknown) {
       const message = toErrorMessage(summaryErr);
       console.warn(`[memory-save] R8 summary generation failed: ${message}`);
+      enrichmentStatus.summaries = {
+        status: 'failed',
+        reason: 'summary_exception',
+        warnings: [message],
+      };
     }
   } else {
-    // Feature disabled — not a failure
-    enrichmentStatus.summaries = true;
+    enrichmentStatus.summaries = makeSkipped('feature_disabled');
   }
 
   // -- S5: Cross-Document Entity Linking --
-  // Runs after R10 entity storage; links entities across spec folders.
+  // T-PIN-03 (R8-002): gate on `entityExtraction.status === 'ran'`, not just feature flags.
+  // If extraction soft-failed or was skipped, linking must NOT run against stale rows.
+  // T-PIN-06 (R12-005): density-guard skip surfaces as `skipped` with reason `density_guard`.
+  const extractionRan = enrichmentStatus.entityExtraction.status === 'ran';
   if (isEntityLinkingEnabled() && isAutoEntitiesEnabled()) {
-    try {
-      const linkResult = runEntityLinkingForMemory(database, id);
-      if (linkResult.linksCreated > 0) {
-        console.error(`[entity-linking] Created ${linkResult.linksCreated} cross-doc links from ${linkResult.crossDocMatches} entity matches`);
-      } else if (linkResult.skippedByDensityGuard) {
-        const density = typeof linkResult.edgeDensity === 'number'
-          ? linkResult.edgeDensity.toFixed(3)
-          : 'unknown';
-        const threshold = typeof linkResult.densityThreshold === 'number'
-          ? linkResult.densityThreshold.toFixed(3)
-          : 'unknown';
-        console.error(`[entity-linking] Skipped by density guard (density=${density}, threshold=${threshold})`);
+    if (!extractionRan) {
+      // Extraction didn't run (failed or skipped) — do not run linking against stale entities.
+      enrichmentStatus.entityLinking = makeSkipped('extraction_not_ran');
+    } else {
+      try {
+        const linkResult = runEntityLinkingForMemory(database, id);
+        if (linkResult.skippedByDensityGuard) {
+          const density = typeof linkResult.edgeDensity === 'number'
+            ? linkResult.edgeDensity.toFixed(3)
+            : 'unknown';
+          const threshold = typeof linkResult.densityThreshold === 'number'
+            ? linkResult.densityThreshold.toFixed(3)
+            : 'unknown';
+          console.error(`[entity-linking] Skipped by density guard (density=${density}, threshold=${threshold})`);
+          enrichmentStatus.entityLinking = {
+            status: 'skipped',
+            reason: 'density_guard',
+            warnings: [`density=${density}, threshold=${threshold}`],
+          };
+        } else {
+          if (linkResult.linksCreated > 0) {
+            console.error(`[entity-linking] Created ${linkResult.linksCreated} cross-doc links from ${linkResult.crossDocMatches} entity matches`);
+          }
+          enrichmentStatus.entityLinking = { status: 'ran' };
+        }
+      } catch (linkErr: unknown) {
+        const message = toErrorMessage(linkErr);
+        console.warn(`[memory-save] S5 entity linking failed: ${message}`);
+        enrichmentStatus.entityLinking = {
+          status: 'failed',
+          reason: 'entity_linking_exception',
+          warnings: [message],
+        };
       }
-      enrichmentStatus.entityLinking = true;
-    } catch (linkErr: unknown) {
-      const message = toErrorMessage(linkErr);
-      console.warn(`[memory-save] S5 entity linking failed: ${message}`);
     }
   } else {
-    // Feature disabled — not a failure
-    enrichmentStatus.entityLinking = true;
+    enrichmentStatus.entityLinking = makeSkipped('feature_disabled');
   }
 
   // -- D3 REQ-D3-004: Graph Lifecycle — deterministic save-time enrichment --
   // Runs last; relies on entity extraction having completed above.
   // Gated via isGraphRefreshEnabled() OR SPECKIT_ENTITY_LINKING (any active graph flag).
-  // Default-OFF: no-op unless SPECKIT_GRAPH_REFRESH_MODE != 'off' or SPECKIT_ENTITY_LINKING active.
+  // T-PIN-05 (R11-005): distinguish "onIndex ran" from "onIndex returned skipped:true".
   if (isGraphRefreshEnabled() || isEntityLinkingEnabled()) {
     try {
       const indexResult = onIndex(database, id, parsed.content, {
         qualityScore: typeof parsed.qualityScore === 'number' ? parsed.qualityScore : 0,
       });
-      if (!indexResult.skipped) {
+      if (indexResult.skipped) {
+        enrichmentStatus.graphLifecycle = makeSkipped('graph_lifecycle_no_op');
+      } else {
         if (indexResult.edgesCreated > 0) {
           console.error(`[graph-lifecycle] Created ${indexResult.edgesCreated} typed edges for memory #${id}`);
         }
         if (indexResult.llmBackfillScheduled) {
           console.error(`[graph-lifecycle] LLM backfill scheduled for memory #${id}`);
         }
+        enrichmentStatus.graphLifecycle = { status: 'ran' };
       }
-      enrichmentStatus.graphLifecycle = true;
     } catch (glErr: unknown) {
       const message = toErrorMessage(glErr);
       console.warn(`[memory-save] D3 graph-lifecycle enrichment failed: ${message}`);
+      enrichmentStatus.graphLifecycle = {
+        status: 'failed',
+        reason: 'graph_lifecycle_exception',
+        warnings: [message],
+      };
     }
   } else {
-    // Feature disabled — not a failure
-    enrichmentStatus.graphLifecycle = true;
+    enrichmentStatus.graphLifecycle = makeSkipped('feature_disabled');
   }
 
   return {
@@ -221,14 +319,16 @@ export async function runPostInsertEnrichmentIfEnabled(
   options: PostInsertEnrichmentOptions = {},
 ): Promise<PostInsertEnrichmentResult> {
   if (!shouldRunPostInsertEnrichment(options.plannerMode)) {
+    // M13: Deferral is NOT success — each step reports `deferred` so consumers
+    // can route to runEnrichmentBackfill for recovery (R8-001, R21-001).
     return {
       causalLinksResult: null,
       enrichmentStatus: {
-        causalLinks: true,
-        entityExtraction: true,
-        summaries: true,
-        entityLinking: true,
-        graphLifecycle: true,
+        causalLinks: makeDeferred(),
+        entityExtraction: makeDeferred(),
+        summaries: makeDeferred(),
+        entityLinking: makeDeferred(),
+        graphLifecycle: makeDeferred(),
       },
       executionStatus: {
         status: 'deferred',

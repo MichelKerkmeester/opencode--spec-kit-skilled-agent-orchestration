@@ -128,6 +128,11 @@ function finalizeAssistiveRecommendation(
   };
 }
 
+// T-RBD-02 (R21-001): Aggregate per-step typed results into the response envelope.
+// Previous implementation collapsed any `false` boolean into a generic string;
+// the new shape propagates per-step status, reason, and warnings so MCP clients
+// can mechanically distinguish deferred / partial / skipped / failed / ran and
+// route to recovery (runEnrichmentBackfill) without re-running the entire save.
 function buildPostInsertEnrichmentResult(
   enrichmentStatus?: EnrichmentStatus,
   enrichmentExecutionStatus?: PostInsertExecutionStatus,
@@ -136,26 +141,62 @@ function buildPostInsertEnrichmentResult(
     return undefined;
   }
 
-  const failedEnrichmentSteps = enrichmentStatus
-    ? Object.entries(enrichmentStatus)
-      .filter(([, wasSuccessful]) => !wasSuccessful)
-      .map(([step]) => step)
+  const stepEntries = enrichmentStatus
+    ? Object.entries(enrichmentStatus) as Array<[
+        keyof EnrichmentStatus,
+        EnrichmentStatus[keyof EnrichmentStatus],
+      ]>
     : [];
-  const warnings = failedEnrichmentSteps.length > 0
-    ? [`Partial enrichment: ${failedEnrichmentSteps.join(', ')} failed`]
-    : undefined;
-  const status = enrichmentExecutionStatus?.status === 'deferred'
-    ? 'deferred'
-    : failedEnrichmentSteps.length > 0
-      ? 'partial'
-      : enrichmentExecutionStatus?.status ?? 'ran';
+
+  const failedSteps = stepEntries.filter(([, step]) => step.status === 'failed');
+  const partialSteps = stepEntries.filter(([, step]) => step.status === 'partial');
+  const deferredSteps = stepEntries.filter(([, step]) => step.status === 'deferred');
+
+  // Overall status precedence:
+  //   1. executionStatus='deferred' OR all steps deferred → 'deferred'
+  //   2. any step failed → 'failed' (recovery needed)
+  //   3. any step partial OR some deferred-but-not-all → 'partial'
+  //   4. executionStatus='ran' with no failures → 'ran'
+  let status: PostInsertOperationResult['status'];
+  if (enrichmentExecutionStatus?.status === 'deferred') {
+    status = 'deferred';
+  } else if (failedSteps.length > 0) {
+    // Mixed failure + success → 'partial'; all steps failed → 'failed'.
+    const nonFailedNonSkipped = stepEntries.some(
+      ([, step]) => step.status === 'ran' || step.status === 'partial',
+    );
+    status = nonFailedNonSkipped ? 'partial' : 'failed';
+  } else if (partialSteps.length > 0) {
+    status = 'partial';
+  } else if (deferredSteps.length > 0 && deferredSteps.length < stepEntries.length) {
+    status = 'partial';
+  } else {
+    status = enrichmentExecutionStatus?.status ?? 'ran';
+  }
+
+  const warnings: string[] = [];
+  if (failedSteps.length > 0) {
+    const names = failedSteps.map(([name]) => String(name)).join(', ');
+    warnings.push(`Enrichment failed: ${names}`);
+  }
+  if (partialSteps.length > 0) {
+    const names = partialSteps.map(([name]) => String(name)).join(', ');
+    warnings.push(`Enrichment partial: ${names}`);
+  }
+  for (const [name, step] of stepEntries) {
+    if (step.warnings && step.warnings.length > 0) {
+      for (const w of step.warnings) {
+        warnings.push(`[${String(name)}] ${w}`);
+      }
+    }
+  }
 
   return {
     status,
     ...(enrichmentExecutionStatus?.reason ? { reason: enrichmentExecutionStatus.reason } : {}),
     ...(enrichmentExecutionStatus?.followUpAction ? { followUpAction: enrichmentExecutionStatus.followUpAction } : {}),
     ...(enrichmentStatus ? { persistedState: enrichmentStatus } : {}),
-    ...(warnings ? { warnings } : {}),
+    ...(warnings.length > 0 ? { warnings } : {}),
   };
 }
 
