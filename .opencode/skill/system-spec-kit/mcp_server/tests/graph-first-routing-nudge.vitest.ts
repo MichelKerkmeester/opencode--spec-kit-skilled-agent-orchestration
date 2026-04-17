@@ -148,6 +148,7 @@ describe('memory_context advisory metadata', () => {
 
     expect(parsed.meta.structuralRoutingNudge).toMatchObject({
       advisory: true,
+      advisoryPreset: 'ready',
       preferredTool: 'code_graph_query',
     });
     expect(parsed.data.queryIntentRouting.routedBackend).toBe('structural');

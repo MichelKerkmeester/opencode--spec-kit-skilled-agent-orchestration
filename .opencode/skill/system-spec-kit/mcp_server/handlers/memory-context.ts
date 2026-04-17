@@ -197,7 +197,7 @@ interface StrategyErrorPayload {
 
 interface StructuralRoutingNudgeMeta {
   advisory: true;
-  readiness: 'ready';
+  advisoryPreset: 'ready';
   preferredTool: 'code_graph_query';
   message: string;
   preservesAuthority: 'session_bootstrap';
@@ -422,7 +422,7 @@ function buildStructuralRoutingNudge(
 
   return {
     advisory: true,
-    readiness: 'ready',
+    advisoryPreset: 'ready',
     preferredTool: 'code_graph_query',
     message: 'Advisory only: this looks like a structural question. Prefer `code_graph_query` before Grep or Glob for callers, imports, outline, and dependency lookups.',
     preservesAuthority: 'session_bootstrap',
